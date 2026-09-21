@@ -4,8 +4,14 @@
   "type": "module",
   "version": "0.0.0",
   "exports": {
-    "./browser": { "types": "./src/browser.ts", "import": "./src/browser.ts" },
-    "./node": { "types": "./src/node.ts", "import": "./src/node.ts" }
+    "./browser": {
+      "types": "./src/browser.ts",
+      "import": "./src/browser.ts"
+    },
+    "./node": {
+      "types": "./src/node.ts",
+      "import": "./src/node.ts"
+    }
   },
   "scripts": {
     "build": "tsc --noEmit"
@@ -21,5 +27,8 @@
     "sharp": {
       "optional": true
     }
+  },
+  "devDependencies": {
+    "sharp": "^0.35.4"
   }
 }

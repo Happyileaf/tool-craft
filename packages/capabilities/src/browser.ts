@@ -4,6 +4,7 @@ import { base64DecodeCapability } from './base64-decode/index';
 import { urlEncodeCapability } from './url-encode/index';
 import { jsonFormatCapability } from './json-format/index';
 import { timestampConvertCapability } from './timestamp-convert/index';
+import { imageResizeBrowserCapability } from './image-resize/browser';
 
 /**
  * 浏览器侧 Capability 注册入口（subpath './browser'）
@@ -21,6 +22,7 @@ function createBrowserRegistry(): CapabilityRegistry {
   registry.register(urlEncodeCapability);
   registry.register(jsonFormatCapability);
   registry.register(timestampConvertCapability);
+  registry.register(imageResizeBrowserCapability);
   return registry;
 }
 

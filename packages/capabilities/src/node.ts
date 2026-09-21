@@ -4,6 +4,7 @@ import { base64DecodeCapability } from './base64-decode/index';
 import { urlEncodeCapability } from './url-encode/index';
 import { jsonFormatCapability } from './json-format/index';
 import { timestampConvertCapability } from './timestamp-convert/index';
+import { imageResizeNodeCapability } from './image-resize/node';
 
 /**
  * Node 侧 Capability 注册入口（subpath './node'）
@@ -21,6 +22,7 @@ function createNodeRegistry(): CapabilityRegistry {
   registry.register(urlEncodeCapability);
   registry.register(jsonFormatCapability);
   registry.register(timestampConvertCapability);
+  registry.register(imageResizeNodeCapability);
   return registry;
 }
 
