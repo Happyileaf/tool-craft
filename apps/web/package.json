@@ -12,20 +12,24 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "clsx": "^2",
+    "geist": "^1.7.2",
+    "lucide-react": "^1.47.0",
     "next": "^16",
+    "qrcode": "^1.5.4",
     "react": "^19",
     "react-dom": "^19",
-    "clsx": "^2",
     "tailwind-merge": "^3"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4",
     "@tool-craft/config": "workspace:*",
     "@types/node": "^24",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "catalog:",
     "tailwindcss": "^4",
-    "@tailwindcss/postcss": "^4",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }

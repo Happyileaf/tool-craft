@@ -1,11 +1,8 @@
 import { notFound } from 'next/navigation';
 import RecentTracker from '@/components/recent-tracker';
 import ToolRunner from '@/components/tool-runner';
-import {
-  ToolCategoryLabelMap,
-  ToolProcessingLabelMap,
-} from '@/tools/constants';
-import { getToolBySlug, tools } from '@/tools/registry';
+import ToolWorkspace from '@/components/tool-workspace';
+import { getRelatedTools, getToolBySlug, tools } from '@/tools/registry';
 
 /**
  * 工具详情页动态路由参数
@@ -34,7 +31,7 @@ export function generateStaticParams() {
  *
  * @param props - 页面属性
  * @param props.params - 路由参数 Promise，解析后取得工具短标识
- * @returns 工具名称、描述、分类与处理方式标签以及工具运行区；工具不存在时返回 404
+ * @returns 工作台完整内容；工具不存在时返回 404
  */
 async function ToolDetailPage({ params }: ToolDetailPageProps) {
   const { slug } = await params;
@@ -43,21 +40,13 @@ async function ToolDetailPage({ params }: ToolDetailPageProps) {
     notFound();
   }
 
+  const relatedTools = getRelatedTools(tool.slug);
+
   return (
-    <main className="container mx-auto space-y-8 px-4 py-10">
-      <section className="space-y-3">
-        <h1 className="text-2xl font-bold">{tool.name}</h1>
-        <p className="text-slate-500">{tool.description}</p>
-        <div className="flex flex-wrap gap-2 text-xs">
-          <span className="rounded-full bg-slate-100 px-3 py-1 text-slate-600">
-            {ToolCategoryLabelMap[tool.category]}
-          </span>
-          <span className="rounded-full bg-slate-100 px-3 py-1 text-slate-600">
-            {ToolProcessingLabelMap[tool.processing]}
-          </span>
-        </div>
-      </section>
-      <ToolRunner slug={tool.slug} />
+    <main>
+      <ToolWorkspace tool={tool} relatedTools={relatedTools}>
+        <ToolRunner slug={tool.slug} />
+      </ToolWorkspace>
       <RecentTracker slug={tool.slug} />
     </main>
   );

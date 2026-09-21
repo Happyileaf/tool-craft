@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import EmptyState from '@/components/empty-state';
 import ToolCard from '@/components/tool-card';
 import {
+  ToolCategoryEnum,
   ToolCategoryLabelMap,
   ToolCategoryOptions,
 } from '@/tools/constants';
@@ -24,7 +25,9 @@ interface CategoryPageProps {
  * @returns 全部分类对应的路由参数集合
  */
 export function generateStaticParams() {
-  return ToolCategoryOptions.map((option) => ({
+  return ToolCategoryOptions.filter(
+    (option) => option.value !== ToolCategoryEnum.ALL,
+  ).map((option) => ({
     category: option.value,
   }));
 }
@@ -41,7 +44,7 @@ async function CategoryPage({ params }: CategoryPageProps) {
   const matchedOption = ToolCategoryOptions.find(
     (option) => option.value === category,
   );
-  if (!matchedOption) {
+  if (!matchedOption || matchedOption.value === ToolCategoryEnum.ALL) {
     notFound();
   }
 
