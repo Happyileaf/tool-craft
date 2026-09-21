@@ -1,0 +1,17 @@
+{
+  "name": "@tool-craft/config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./typescript-base": "./tsconfig.base.json",
+    "./eslint": "./eslint.config.js",
+    "./prettier": "./prettier.config.js"
+  },
+  "dependencies": {
+    "@typescript-eslint/parser": "^8.70.0",
+    "typescript": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:"
+  }
+}

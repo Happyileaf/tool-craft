@@ -1,0 +1,26 @@
+# Checklist
+
+- [x] 根 package.json 声明 engines（`node >=24 <25`）与 packageManager（pnpm 11），.nvmrc 为 24
+- [x] pnpm-workspace.yaml 配置 apps/*、packages/*，且跨包复用依赖通过 catalog 统一
+- [x] 全仓库 zod 只有一个实例（pnpm why zod 核查）
+- [x] turbo.json 编排 lint、typecheck、test、build 且缓存配置正确
+- [x] packages/config 可导出 TypeScript strict、ESLint、Prettier 配置并被两个应用引用
+- [x] apps/web 为 Next.js 16 + React 19 + Tailwind v4，shadcn/ui 源码入仓
+- [x] 工具注册表为唯一事实来源，首页、分类页、工具详情页构建期静态生成，运行时不查数据源
+- [x] localStorage 键 `tool-craft:recent` 记录最近使用且上限 10 条，不记录用户输入与结果
+- [x] JSON Formatter 合法输入正确格式化；非法输入展示可读错误且保留已输入内容
+- [x] JSON Formatter 全程不将用户数据发往服务器
+- [x] apps/api 结构化日志包含请求 ID、路径、状态码、耗时，且不记录请求体
+- [x] 统一错误体为 `{ "error": { code, message, details } }`，400/422/500 状态码与错误码正确
+- [x] 500 响应不包含堆栈、环境变量或内部路径
+- [x] GET /v1/health 返回 200 与 `{ "status": "ok" }`
+- [x] POST /v1/image/compress 成功返回图片二进制，响应头 X-Image-Width/Height、X-Original-Size、X-Processed-Size 正确
+- [x] quality 缺省 80、范围 1–100；format 缺省保持原格式，枚举 jpeg/png/webp
+- [x] 损坏图片返回 422 PROCESSING_ERROR；相同输入重复调用结果一致
+- [x] /docs 页面由当前 Zod Schema 生成，与路由契约一致
+- [x] 服务层为不依赖请求上下文的纯函数，并有 Vitest 单元测试覆盖
+- [x] Playwright 最小端到端用例覆盖 Web 首页/JSON Formatter 与 API health
+- [x] GitHub Actions 在 Node 24 / pnpm 11 下执行安装缓存、lint、typecheck、test、build、pnpm audit 并通过
+- [x] 两个应用均有 Serverless 部署配置，且为独立项目、环境变量隔离
+- [x] 平台 Node 24 运行时支持与函数时限等待实测项已保留为 [To be confirmed]
+- [x] 本阶段未创建 packages/ui，未引入鉴权、限流、数据库、账号、工作流、MCP/Agent 等范围外结构

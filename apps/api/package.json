@@ -1,0 +1,30 @@
+{
+  "name": "@tool-craft/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1",
+    "@hono/zod-openapi": "^1",
+    "@scalar/hono-api-reference": "^0.12",
+    "hono": "catalog:",
+    "sharp": "^0.35.4",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@tool-craft/config": "workspace:*",
+    "@types/node": "^24",
+    "eslint": "catalog:",
+    "tsx": "^4",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
