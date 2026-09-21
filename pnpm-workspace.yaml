@@ -1,5 +1,8 @@
 packages: [ 'apps/*', 'packages/*' ]
 
+# optional peer（如 sharp）由消费方显式安装，不由 pnpm 自动补装
+autoInstallPeers: false
+
 allowBuilds:
   esbuild: true
 

@@ -1,0 +1,25 @@
+{
+  "name": "@tool-craft/capabilities",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0",
+  "exports": {
+    "./browser": { "types": "./src/browser.ts", "import": "./src/browser.ts" },
+    "./node": { "types": "./src/node.ts", "import": "./src/node.ts" }
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tool-craft/core": "workspace:*",
+    "zod": "^4.6.5"
+  },
+  "peerDependencies": {
+    "sharp": ">=0.33"
+  },
+  "peerDependenciesMeta": {
+    "sharp": {
+      "optional": true
+    }
+  }
+}
