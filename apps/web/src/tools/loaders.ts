@@ -26,4 +26,5 @@ export const toolLoaders: Record<
   'markdown-preview': () => import('./markdown-preview'),
   'hash-generator': () => import('./hash-generator'),
   'qr-generator': () => import('./qr-generator'),
+  'word-count': () => import('./word-count'),
 };

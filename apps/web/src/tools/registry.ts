@@ -846,6 +846,92 @@ const tool = {
       },
     },
   },
+  {
+    slug: 'word-count',
+    name: '字数统计',
+    nameEn: 'Word & Character Counter',
+    description:
+      '实时统计文本的字符数、字数、行数和段落数，支持中英文混合统计。',
+    descriptionEn:
+      'Real-time count characters, words, lines, and paragraphs in text, supports mixed Chinese and English.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/word-count',
+    iconName: 'FileText',
+    tags: ['文本', '字数', '统计', '字符'],
+    tagsEn: ['Text', 'Word', 'Count', 'Character'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Hello World!\n\n这是一段测试文本，用于统计字数和字符数。\n\n包含多个段落。',
+    doc: {
+      zh: {
+        whatIsIt:
+          '简洁高效的文本统计工具，一键获取字符数（含空格）、字数、行数和段落数，支持中英文混合文本统计。',
+        coreFeatures: [
+          '多维度统计：同时输出字符数、字数、行数、段落数四个维度',
+          '实时更新：输入文字时统计结果自动刷新，无需额外点击',
+          '支持中英文：智能分词，中文字符和英文单词都能准确统计',
+          '纯本地运行：所有统计都在浏览器内完成，文本不离开设备',
+        ],
+        howToUse: [
+          '在输入框中粘贴或输入需要统计的文本',
+          '下方四个统计卡片会自动展示统计结果',
+          '结果实时更新，修改文本后即刻刷新',
+        ],
+        useCases: [
+          '写作时统计文章字数，满足投稿或作文要求',
+          '文案撰写时预估篇幅和阅读时间',
+          '代码开发前统计注释文本长度',
+        ],
+        privacyNote:
+          '所有统计运算都在本地浏览器完成，文本内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '中文会统计成一个字吗？',
+            answer:
+              '是的，每个中文字符会被统计为一个字，同时也会计入总字符数。',
+          },
+          {
+            question: '空格会被计入字符数吗？',
+            answer: '是的，空格、换行符都会统计到总字符数中。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A simple and efficient text statistics tool that instantly gets character count (including spaces), word count, line count, and paragraph count, supports mixed Chinese and English text.',
+        coreFeatures: [
+          'Multi-dimensional statistics: output four dimensions at the same time: characters, words, lines, paragraphs',
+          'Real-time update: results refresh automatically as you type, no extra clicks needed',
+          'Chinese & English support: intelligent word segmentation for accurate counting',
+          '100% local: all processing done in-browser, text never leaves your device',
+        ],
+        howToUse: [
+          'Paste or type your text in the input area',
+          'Four statistic cards will automatically show the results',
+          'Results update in real-time when you modify the text',
+        ],
+        useCases: [
+          'Counting words for essays and article submissions',
+          'Estimating article length and reading time for copywriting',
+          'Checking comment length before coding',
+        ],
+        privacyNote:
+          'All counting is done locally in your browser. Text content is never uploaded to any server, keeping your content private.',
+        faqs: [
+          {
+            question: 'Are Chinese characters counted as one word?',
+            answer:
+              'Yes, each Chinese character is counted as one word and is also included in the total character count.',
+          },
+          {
+            question: 'Are spaces included in the character count?',
+            answer: 'Yes, spaces and newlines are included in the total character count.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
