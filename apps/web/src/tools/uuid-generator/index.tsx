@@ -1,13 +1,14 @@
+'use client';
+
 import React from 'react';
-import { ToolComponentProps } from '../../types';
-import { Card, Button, Input, Radio, Space } from 'antd';
+import type { ToolComponentProps } from '../loaders';
+import { Card, Button, Input, Radio, Space, message, type RadioChangeEvent } from 'antd';
 import { ReloadOutlined, CopyOutlined } from '@ant-design/icons';
-import { message } from 'antd';
 import { generateUuid } from './utils/generator';
 import styles from './index.module.css';
-import { copyToClipboard } from '../../../utils/copy';
+import { copyToClipboard } from '@/lib/utils';
 
-const UuidGenerator: React.FC<ToolComponentProps> = ({ tool }) => {
+const UuidGenerator: React.FC<ToolComponentProps> = ({ defaultInput }) => {
   const [count, setCount] = React.useState<number>(1);
   const [uuids, setUuids] = React.useState<string[]>([]);
 
@@ -21,7 +22,7 @@ const UuidGenerator: React.FC<ToolComponentProps> = ({ tool }) => {
 
   React.useEffect(() => {
     generateNew();
-  }, []);
+  }, [count]);
 
   const handleCopy = () => {
     if (uuids.length === 0) {
@@ -41,7 +42,7 @@ const UuidGenerator: React.FC<ToolComponentProps> = ({ tool }) => {
             <span>生成数量：</span>
             <Radio.Group
               value={count}
-              onChange={(e) => setCount(e.target.value)}
+              onChange={(e: RadioChangeEvent) => setCount(parseInt(e.target.value as string, 10))}
               optionType="button"
               buttonStyle="solid"
             >

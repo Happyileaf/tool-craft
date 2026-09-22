@@ -2,11 +2,22 @@
 export function generateUuid(): string {
   // Use modern crypto API to generate random values
   const array = new Uint8Array(16);
-  crypto.getRandomValues(array);
+  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+    crypto.getRandomValues(array);
+  } else {
+    // Fallback for older browsers
+    for (let i = 0; i < 16; i++) {
+      array[i] = Math.floor(Math.random() * 256);
+    }
+  }
   
   // Set version (4) and variant (RFC4122)
-  array[6] = (array[6] & 0x0f) | 0x40;
-  array[8] = (array[8] & 0x3f) | 0x80;
+  if (array[6]) {
+    array[6] = (array[6] & 0x0f) | 0x40;
+  }
+  if (array[8]) {
+    array[8] = (array[8] & 0x3f) | 0x80;
+  }
   
   // Convert to hex string
   const hex = Array.from(array, byte => 
