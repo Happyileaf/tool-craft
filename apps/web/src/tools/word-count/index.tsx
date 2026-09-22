@@ -1,11 +1,13 @@
+'use client';
+
 import React from 'react';
-import { ToolComponentProps } from '../../types';
+import type { ToolComponentProps } from '../loaders';
 import { Card, Input, Statistic } from 'antd';
 import { CountResult, countWords } from './utils/count';
 import styles from './index.module.css';
 
-const WordCount: React.FC<ToolComponentProps> = ({ tool }) => {
-  const [text, setText] = React.useState(tool.defaultSampleInput);
+const WordCount: React.FC<ToolComponentProps> = ({ defaultInput }) => {
+  const [text, setText] = React.useState(defaultInput || '');
   const [result, setResult] = React.useState<CountResult>({
     characters: 0,
     words: 0,
@@ -22,7 +24,7 @@ const WordCount: React.FC<ToolComponentProps> = ({ tool }) => {
       <Card title="输入文本" className={styles.inputCard}>
         <Input.TextArea
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value)}
           placeholder="在这里输入需要统计的文本..."
           rows={12}
           autoSize={{ minRows: 8, maxRows: 20 }}

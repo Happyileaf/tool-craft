@@ -39,14 +39,14 @@ describe('countWords', () => {
   it('should handle Chinese text correctly', () => {
     const text = '你好，世界！这是一段测试文本。';
     const result = countWords(text);
-    expect(result.characters).toBe(16);
-    expect(result.words).toBe(8);
+    expect(result.characters).toBe(15);
+    expect(result.words).toBe(12);
   });
 
   it('should handle multiple spaces and punctuation', () => {
     const text = '   hello   world  !!  ';
     const result = countWords(text);
     expect(result.words).toBe(2);
-    expect(result.characters).toBe(18);
+    expect(result.characters).toBe(22);
   });
 });

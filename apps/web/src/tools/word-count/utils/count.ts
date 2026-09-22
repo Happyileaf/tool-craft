@@ -19,11 +19,9 @@ export function countWords(text: string): CountResult {
   const lines = text.split('\n').length;
   const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0).length;
 
-  // 分词统计：按空格、标点等分隔，统计非空单词数量
-  const words = text.trim()
-    .split(/[\s\n\r\t.,!?;：；。，！？、]+/)
-    .filter(word => word.length > 0)
-    .length;
+  // Get all tokens including individual Chinese characters and English words
+  const tokens = text.trim().match(/([\u4e00-\u9fa5]|[a-zA-Z0-9]+)/g) || [];
+  const words = tokens.filter(token => token.length > 0).length;
 
   return {
     characters,
