@@ -1099,6 +1099,99 @@ author:
       },
     },
   },
+  {
+    slug: 'json-to-yaml',
+    name: 'JSON 转 YAML',
+    nameEn: 'JSON to YAML Converter',
+    description:
+      '将 JSON 格式数据转换为格式化的 YAML 数据，支持实时预览转换结果。',
+    descriptionEn:
+      'Convert JSON formatted data to pretty-printed YAML with real-time preview.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-to-yaml',
+    iconName: 'Braces',
+    tags: ['JSON', 'YAML', '转换', '开发'],
+    tagsEn: ['JSON', 'YAML', 'Convert', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: JSON.stringify(
+      {
+        name: 'ToolCraft',
+        version: '1.0.0',
+        description: 'Online Toolkit',
+        features: ['json-to-yaml', 'yaml-to-json', 'online-tools'],
+        author: {
+          name: 'Developer',
+          email: 'dev@example.com',
+        },
+      },
+      null,
+      2,
+    ),
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 JSON 到 YAML 格式转换器，无需上传服务器，实时转换 JSON 配置为格式化 YAML。',
+        coreFeatures: [
+          '实时转换：输入 JSON 后即刻生成格式化 YAML',
+          '错误提示：JSON 语法错误时清晰展示错误信息',
+          '一键复制：转换成功后快速复制 YAML 结果',
+          '纯本地运行：所有转换在浏览器中完成，配置不离开设备',
+        ],
+        howToUse: [
+          '在左侧输入框粘贴需要转换的 JSON 内容',
+          '右侧会自动显示转换后的 YAML 结果',
+          '如果有语法错误，会显示错误详情',
+          '转换成功后点击右上角复制按钮获取结果',
+        ],
+        useCases: [
+          '开发中 JSON 配置文件转 YAML',
+          'API 文档 JSON 示例转 YAML',
+          'CI/CD 配置转换测试',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，配置内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持所有 JSON 语法吗？',
+            answer:
+              '目前支持大多数常用 JSON 语法，包括对象、数组、字符串、数字、布尔值和 null，满足日常开发需求。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient JSON to YAML converter that works entirely in your browser, converting JSON to formatted YAML in real-time.',
+        coreFeatures: [
+          'Real-time conversion: get formatted YAML instantly as you type JSON',
+          'Error reporting: clearly displays syntax errors when they occur',
+          'One-click copy: quickly copy YAML result after conversion',
+          '100% local: all conversion done in-browser, config never leaves your device',
+        ],
+        howToUse: [
+          'Paste your JSON content in the left input box',
+          'The converted YAML will automatically appear on the right',
+          'If there are syntax errors, error details will be displayed',
+          'Click the copy button in the top right to get the result',
+        ],
+        useCases: [
+          'Converting JSON config files to YAML in development',
+          'Converting JSON API examples to YAML',
+          'Testing CI/CD configuration conversions',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Configuration content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does it support all JSON syntax?',
+            answer:
+              'It supports most commonly used JSON syntax including objects, arrays, strings, numbers, booleans, and null, meeting daily development needs.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
