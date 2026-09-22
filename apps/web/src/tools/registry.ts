@@ -846,6 +846,259 @@ const tool = {
       },
     },
   },
+  {
+    slug: 'uuid-generator',
+    name: 'UUID 生成器',
+    nameEn: 'UUID Generator',
+    description:
+      '一键生成多个符合 RFC4122 标准的 v4 版本 UUID，支持批量生成多个。',
+    descriptionEn:
+      'Generate multiple RFC4122 compliant version 4 UUIDs in one click, supports bulk generation.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/uuid-generator',
+    iconName: 'Key',
+    tags: ['UUID', '生成器', '开发', 'ID'],
+    tagsEn: ['UUID', 'Generator', 'Dev', 'ID'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '基于浏览器原生 Crypto API 的安全 UUID v4 生成工具，可一次性生成多个符合 RFC4122 标准的 UUID。',
+        coreFeatures: [
+          '安全随机：使用浏览器原生 Crypto API 生成，随机性更强',
+          '批量生成：支持一次性生成 1、5、10、20 个 UUID',
+          '一键复制：生成结果可一次性全部复制到剪贴板',
+          '纯本地生成：所有操作都在本地完成，不依赖服务器',
+        ],
+        howToUse: [
+          '选择需要生成的数量',
+          '点击「重新生成」按钮即可得到新的 UUID',
+          '点击「复制全部」将所有生成的 UUID 复制到剪贴板',
+        ],
+        useCases: [
+          '开发中生成测试数据唯一标识',
+          '分布式系统生成全局唯一ID',
+          '快速生成临时会话ID',
+        ],
+        privacyNote:
+          '所有生成都在本地浏览器完成，不与服务器交互，安全可靠。',
+        faqs: [
+          {
+            question: '生成的 UUID 会重复吗？',
+            answer:
+              'UUID v4 有极其巨大的空间（128 bits），发生重复的概率可以忽略不计，满足绝大多数应用场景需求。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A secure UUID v4 generator based on browser native Crypto API, generates multiple RFC4122 compliant UUIDs in one go.',
+        coreFeatures: [
+          'Secure random: uses browser native Crypto API for stronger randomness',
+          'Bulk generation: supports generating 1, 5, 10, or 20 UUIDs at once',
+          'One-click copy: copy all generated UUIDs to clipboard in one click',
+          '100% local: all operations done locally, no server dependency',
+        ],
+        howToUse: [
+          'Select how many UUIDs you want to generate',
+          'Click "Regenerate" to get new UUIDs',
+          'Click "Copy All" to copy all generated UUIDs to clipboard',
+        ],
+        useCases: [
+          'Generating unique identifiers for test data in development',
+          'Generating globally unique IDs for distributed systems',
+          'Quickly generating temporary session IDs',
+        ],
+        privacyNote:
+          'All generation is done locally in your browser, no server interaction, safe and reliable.',
+        faqs: [
+          {
+            question: 'Can generated UUIDs duplicate?',
+            answer:
+              'UUID v4 has an extremely large space (128 bits), the probability of collision is negligible for most applications.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'yaml-to-json',
+    name: 'YAML 转 JSON',
+    nameEn: 'YAML to JSON Converter',
+    description:
+      '将 YAML 格式数据转换为格式化的 JSON 数据，支持实时预览转换结果。',
+    descriptionEn:
+      'Convert YAML formatted data to pretty-printed JSON with real-time preview.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/yaml-to-json',
+    iconName: 'Code',
+    tags: ['YAML', 'JSON', '转换', '开发'],
+    tagsEn: ['YAML', 'JSON', 'Convert', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `name: ToolCraft
+version: 1.0.0
+description: Online Toolkit
+features:
+  - yaml-to-json
+  - word-count
+  - online-tools
+author:
+  name: Developer
+  email: dev@example.com
+`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 YAML 到 JSON 格式转换器，无需上传服务器，实时转换 YAML 配置为格式化 JSON。',
+        coreFeatures: [
+          '实时转换：输入 YAML 后即刻生成格式化 JSON',
+          '错误提示：YAML 语法错误时清晰展示错误信息',
+          '一键复制：转换成功后快速复制 JSON 结果',
+          '纯本地运行：所有转换在浏览器中完成，配置不离开设备',
+        ],
+        howToUse: [
+          '在左侧输入框粘贴需要转换的 YAML 内容',
+          '右侧会自动显示转换后的 JSON 结果',
+          '如果有语法错误，会显示错误详情',
+          '转换成功后点击右上角复制按钮获取结果',
+        ],
+        useCases: [
+          '开发中 YAML 配置文件转 JSON',
+          'API 文档 YAML 示例转 JSON',
+          'CI/CD 配置转换测试',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，配置内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持所有 YAML 语法吗？',
+            answer:
+              '目前支持大多数常用 YAML 语法，包括键值对、嵌套对象、注释等，满足日常开发需求。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient YAML to JSON converter that works entirely in your browser, converting YAML to formatted JSON in real-time.',
+        coreFeatures: [
+          'Real-time conversion: get formatted JSON instantly as you type YAML',
+          'Error reporting: clearly displays syntax errors when they occur',
+          'One-click copy: quickly copy JSON result after conversion',
+          '100% local: all conversion done in-browser, config never leaves your device',
+        ],
+        howToUse: [
+          'Paste your YAML content in the left input box',
+          'The converted JSON will automatically appear on the right',
+          'If there are syntax errors, error details will be displayed',
+          'Click the copy button in the top right to get the result',
+        ],useCases: [
+          'Converting YAML config files to JSON in development',
+          'Converting YAML API examples to JSON',
+          'Testing CI/CD configuration conversions',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Configuration content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does it support all YAML syntax?',
+            answer:
+              'It supports most commonly used YAML syntax including key-value pairs, nested objects, comments, etc., meeting daily development needs.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'word-count',
+    name: '字数统计',
+    nameEn: 'Word & Character Counter',
+    description:
+      '实时统计文本的字符数、字数、行数和段落数，支持中英文混合统计。',
+    descriptionEn:
+      'Real-time count characters, words, lines, and paragraphs in text, supports mixed Chinese and English.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/word-count',
+    iconName: 'FileText',
+    tags: ['文本', '字数', '统计', '字符'],
+    tagsEn: ['Text', 'Word', 'Count', 'Character'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Hello World!\n\n这是一段测试文本，用于统计字数和字符数。\n\n包含多个段落。',
+    doc: {
+      zh: {
+        whatIsIt:
+          '简洁高效的文本统计工具，一键获取字符数（含空格）、字数、行数和段落数，支持中英文混合文本统计。',
+        coreFeatures: [
+          '多维度统计：同时输出字符数、字数、行数、段落数四个维度',
+          '实时更新：输入文字时统计结果自动刷新，无需额外点击',
+          '支持中英文：智能分词，中文字符和英文单词都能准确统计',
+          '纯本地运行：所有统计都在浏览器内完成，文本不离开设备',
+        ],
+        howToUse: [
+          '在输入框中粘贴或输入需要统计的文本',
+          '下方四个统计卡片会自动展示统计结果',
+          '结果实时更新，修改文本后即刻刷新',
+        ],
+        useCases: [
+          '写作时统计文章字数，满足投稿或作文要求',
+          '文案撰写时预估篇幅和阅读时间',
+          '代码开发前统计注释文本长度',
+        ],
+        privacyNote:
+          '所有统计运算都在本地浏览器完成，文本内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '中文会统计成一个字吗？',
+            answer:
+              '是的，每个中文字符会被统计为一个字，同时也会计入总字符数。',
+          },
+          {
+            question: '空格会被计入字符数吗？',
+            answer: '是的，空格、换行符都会统计到总字符数中。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A simple and efficient text statistics tool that instantly gets character count (including spaces), word count, line count, and paragraph count, supports mixed Chinese and English text.',
+        coreFeatures: [
+          'Multi-dimensional statistics: output four dimensions at the same time: characters, words, lines, paragraphs',
+          'Real-time update: results refresh automatically as you type, no extra clicks needed',
+          'Chinese & English support: intelligent word segmentation for accurate counting',
+          '100% local: all processing done in-browser, text never leaves your device',
+        ],
+        howToUse: [
+          'Paste or type your text in the input area',
+          'Four statistic cards will automatically show the results',
+          'Results update in real-time when you modify the text',
+        ],
+        useCases: [
+          'Counting words for essays and article submissions',
+          'Estimating article length and reading time for copywriting',
+          'Checking comment length before coding',
+        ],
+        privacyNote:
+          'All counting is done locally in your browser. Text content is never uploaded to any server, keeping your content private.',
+        faqs: [
+          {
+            question: 'Are Chinese characters counted as one word?',
+            answer:
+              'Yes, each Chinese character is counted as one word and is also included in the total character count.',
+          },
+          {
+            question: 'Are spaces included in the character count?',
+            answer: 'Yes, spaces and newlines are included in the total character count.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

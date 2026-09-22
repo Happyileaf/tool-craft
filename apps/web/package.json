@@ -12,6 +12,8 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.3.4",
+    "antd": "^6.6.5",
     "clsx": "^2",
     "geist": "^1.7.2",
     "lucide-react": "^1.47.0",
