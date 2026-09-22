@@ -1,0 +1,12 @@
+.container {
+  padding: 16px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.controlsCard {
+  margin-bottom: 16px;
+}
+
+.resultCard {
+}

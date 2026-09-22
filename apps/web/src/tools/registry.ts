@@ -847,6 +847,84 @@ const tool = {
     },
   },
   {
+    slug: 'uuid-generator',
+    name: 'UUID 生成器',
+    nameEn: 'UUID Generator',
+    description:
+      '一键生成多个符合 RFC4122 标准的 v4 版本 UUID，支持批量生成多个。',
+    descriptionEn:
+      'Generate multiple RFC4122 compliant version 4 UUIDs in one click, supports bulk generation.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/uuid-generator',
+    iconName: 'Key',
+    tags: ['UUID', '生成器', '开发', 'ID'],
+    tagsEn: ['UUID', 'Generator', 'Dev', 'ID'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '基于浏览器原生 Crypto API 的安全 UUID v4 生成工具，可一次性生成多个符合 RFC4122 标准的 UUID。',
+        coreFeatures: [
+          '安全随机：使用浏览器原生 Crypto API 生成，随机性更强',
+          '批量生成：支持一次性生成 1、5、10、20 个 UUID',
+          '一键复制：生成结果可一次性全部复制到剪贴板',
+          '纯本地生成：所有操作都在本地完成，不依赖服务器',
+        ],
+        howToUse: [
+          '选择需要生成的数量',
+          '点击「重新生成」按钮即可得到新的 UUID',
+          '点击「复制全部」将所有生成的 UUID 复制到剪贴板',
+        ],
+        useCases: [
+          '开发中生成测试数据唯一标识',
+          '分布式系统生成全局唯一ID',
+          '快速生成临时会话ID',
+        ],
+        privacyNote:
+          '所有生成都在本地浏览器完成，不与服务器交互，安全可靠。',
+        faqs: [
+          {
+            question: '生成的 UUID 会重复吗？',
+            answer:
+              'UUID v4 有极其巨大的空间（128 bits），发生重复的概率可以忽略不计，满足绝大多数应用场景需求。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A secure UUID v4 generator based on browser native Crypto API, generates multiple RFC4122 compliant UUIDs in one go.',
+        coreFeatures: [
+          'Secure random: uses browser native Crypto API for stronger randomness',
+          'Bulk generation: supports generating 1, 5, 10, or 20 UUIDs at once',
+          'One-click copy: copy all generated UUIDs to clipboard in one click',
+          '100% local: all operations done locally, no server dependency',
+        ],
+        howToUse: [
+          'Select how many UUIDs you want to generate',
+          'Click "Regenerate" to get new UUIDs',
+          'Click "Copy All" to copy all generated UUIDs to clipboard',
+        ],
+        useCases: [
+          'Generating unique identifiers for test data in development',
+          'Generating globally unique IDs for distributed systems',
+          'Quickly generating temporary session IDs',
+        ],
+        privacyNote:
+          'All generation is done locally in your browser, no server interaction, safe and reliable.',
+        faqs: [
+          {
+            question: 'Can generated UUIDs duplicate?',
+            answer:
+              'UUID v4 has an extremely large space (128 bits), the probability of collision is negligible for most applications.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'yaml-to-json',
     name: 'YAML 转 JSON',
     nameEn: 'YAML to JSON Converter',

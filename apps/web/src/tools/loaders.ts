@@ -28,4 +28,5 @@ export const toolLoaders: Record<
   'qr-generator': () => import('./qr-generator'),
   'word-count': () => import('./word-count'),
   'yaml-to-json': () => import('./yaml-to-json'),
+  'uuid-generator': () => import('./uuid-generator'),
 };
