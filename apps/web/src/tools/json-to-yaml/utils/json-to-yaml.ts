@@ -11,7 +11,6 @@ export function jsonToYaml(obj: any, indent: number = 2): string {
   const indentStr = ' '.repeat(indent);
 
   const processValue = (value: any, currentIndent: number): string => {
-    const indentPadding = ' '.repeat(currentIndent);
     if (value === null) return 'null';
     if (value === undefined) return '';
     if (typeof value === 'boolean' || typeof value === 'number') {
@@ -24,11 +23,12 @@ export function jsonToYaml(obj: any, indent: number = 2): string {
       }
       return value;
     }
+    const indentPadding = ' '.repeat(currentIndent);
     if (Array.isArray(value)) {
       if (value.length === 0) return '[]';
       const arrayLines = value.map(item => {
         if (typeof item === 'object' && item !== null) {
-          return `${indentPadding}-${processValue(item, currentIndent + indent).trimStart()}`;
+          return `${indentPadding}-${processValue(item, currentIndent + indent)}`;
         }
         return `${indentPadding}- ${processValue(item, currentIndent + indent)}`;
       });
@@ -37,7 +37,7 @@ export function jsonToYaml(obj: any, indent: number = 2): string {
     if (typeof value === 'object') {
       if (Object.keys(value).length === 0) return '{}';
       const objLines = Object.entries(value).map(([key, val]) => {
-        return `${indentPadding}${key}:${processValue(val, currentIndent + indent)}`;
+        return `${indentPadding}${key}: ${processValue(val, currentIndent + indent)}`;
       });
       return '\n' + objLines.join('\n');
     }
