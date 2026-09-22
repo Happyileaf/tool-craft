@@ -27,7 +27,6 @@
 1. 只在新建分支上工作，**绝不 push `main`**。
 2. 只创建 MR，**绝不 merge、绝不 close / review 他人 MR**。
 3. 每轮最多产出 **1 个工具实现 MR**，本轮全部实现工具汇总于其中（每个工具独立 commit，见 §3.6；backlog 记录 MR 不计入，见 §4）。
-4. 若**本轮开始时**已存在本流程产生的未合并实现 MR：本轮只执行 §3.1–§3.2 与 §4，**跳过实现**。
 5. 禁止一切破坏性 git 操作：force push、`reset --hard`、`branch -D`、`clean -f` 等。
 6. Web 工具必须**纯浏览器本地运算**（local-first 红线）：不调用任何服务端接口，不引入需要后端配合的能力。
 7. 不修改 CI 配置、部署配置、依赖版本与 lockfile（新依赖的例外见 §3.3 依赖规则）。
@@ -63,19 +62,29 @@ Agent 执行范围：开始 → 探索发现 → 评估筛选 → 实现 → 本
 
 **决策规则**：
 
-- 六维度综合排序，通过全部维度的 Idea 按排名构成本轮实现清单，数量不超过 §0「每轮实现数量上限」；未入选与被否决的 Idea 连同评估结论写入 `backlog.md`。
+- 六维度综合排序，通过全部维度的 Idea 按排名构成本轮实现清单，数量不超过 §0「每轮实现数量上限」；每个 Idea 必须在 `backlog.md` 中保留一条固定格式记录，并将最终状态写入 `状态` 字段。`backlog.md` 采用“状态总览表 + Idea 详情列表”的组织方式：总览表用于扫描全部 Idea 的当前状态，详情列表用于保存完整评估与结果。未入选与被否决的 Idea 不得只写在运行记录中。
 - 通过评估的数量不足上限时，只实现通过的部分，**不为凑数降低标准**；缺口由后续轮次继续生成新 Idea 筛选补足。
 - 全部候选被否决时，如实记录后正常结束本轮，**不强行为之**。
 - 实现清单确定后，在**同一分支**上逐个工具执行 §3.3–§3.4（每个工具独立 commit，规范见 §3.6）；全部工具完成后依次执行 §3.5–§3.7。
 
+**Idea 最终状态枚举**（只能使用以下值）：
+
+- `候选`：已生成但尚未完成评估。
+- `已选中`：通过评估并进入本轮实现清单。
+- `实现中`：已开始实现，但本轮尚未完成。
+- `已实现`：实现完成并已创建 PR，必须同时记录 PR 编号和 URL。
+- `已否决`：未通过至少一个评估维度，必须记录具体否决原因。
+- `待人工决策`：存在无法由 SOP 判断的边界问题，必须记录待决策问题、背景和建议。
+
+Idea 状态只能按实际流程推进；被否决的 Idea 不得标记为“未选中”或“候选”。本轮未进入实现清单但评估通过的 Idea 标记为 `候选`，并在“备注”中记录“通过评估但因实现数量上限未入选”。
+
 ### 3.3 实现
 
-**前置检查（本轮开始时逐项确认一次，全部通过才继续；分支只创建一次，每个工具开始前仅复核第 2 项）**：
+**前置检查（本轮开始时逐项确认一次，全部通过才继续；分支只创建一次，每个工具开始前仅复核工作区状态）**：
 
-1. 未合并 MR 检查：`gh pr list --state open` 确认不存在**本轮开始前**遗留的本流程未合并 MR；存在 → 按 §2.4 跳过实现，仅执行 §3.1–§3.2 与 §4。
-2. 工作区检查：`git status` 确认工作区干净；存在未提交改动 → 视为环境异常，放弃本轮实现并记入 backlog，**不得 stash / discard / 覆盖任何既有改动**。
-3. 分支创建：`git fetch origin` 后，从最新 `origin/main` 创建并切换到 `feat/autonomous-iteration-<YYYYMMDD>`（本轮全部工具共用此分支）。
-4. 分支确认：`git branch --show-current` 复核当前分支为新分支后，才允许修改任何文件。
+1. 工作区检查：`git status` 确认工作区干净；存在未提交改动 → 视为环境异常，放弃本轮实现并记入 backlog，**不得 stash / discard / 覆盖任何既有改动**。
+2. 分支创建：`git fetch origin` 后，从最新 `origin/main` 创建并切换到 `feat/autonomous-iteration-<YYYYMMDD>-<agent-name>-<sequence>`（本轮全部工具共用此分支）。`<agent-name>` 为当前 Agent 的稳定小写标识，仅允许小写字母、数字和连字符；`<sequence>` 为从 `1` 开始递增的数字序号，在同一日期和 Agent 名称下递增。创建前必须确认本地和远端不存在同名分支，禁止复用已有分支。
+3. 分支确认：`git branch --show-current` 复核当前分支为新分支后，才允许修改任何文件。
 
 **改动面**（严格模仿 `apps/web/src/tools/` 下现有工具的模式，可参考 `hash-generator`）：
 
@@ -117,7 +126,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
 
 ### 3.6 提交 MR
 
-- **分支**：`feat/autonomous-iteration-<YYYYMMDD>`，本轮全部工具共用同一分支，汇总为**一个 MR**（分支已在 §3.3 前置检查中从最新 `origin/main` 创建并切换）。
+- **分支**：`feat/autonomous-iteration-<YYYYMMDD>-<agent-name>-<sequence>`，本轮全部工具共用同一分支，汇总为**一个 MR**（分支已在 §3.3 前置检查中从最新 `origin/main` 创建并切换）。
 - **Commit**：遵循 Conventional Commits；**每个工具至少对应一个独立 commit**（如 `feat: add <slug> tool`），**禁止将多个工具的改动合并进同一个 commit**。commit 包含 AI 生成内容时，必须按 AI 归属规范在 footer 追加 trailer（人类始终是 author）：
 
   ```
@@ -158,7 +167,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
 4. **PR 真实创建**：执行 `gh pr view <分支名> --json url,number`（或 `gh pr list --head <分支名>`）确认 PR 真实存在，取得形如 `https://github.com/<owner>/<repo>/pull/<编号>` 的链接，写入本轮运行结论。
 
 - 以下链接**一律不算** PR 创建成功：`/compare/...` 对比链接、带 `?expand=1` 的新建引导链接、分支页链接、任何未经 `gh` 命令验证、由 Agent 自行拼接的 URL。
-- 任一验收项不通过 → 在**同一分支**修复后重新执行**全部**验收，最多 3 轮；仍不通过 → 如实记入 backlog（附失败详情），**不得谎报成功**。
+- 任一验收项不通过 → 在**同一分支**直接修复，使用新的 commit 提交修复内容，push 到远端后重新执行**全部**验收，最多 3 轮。无需 amend、rebase、squash 或其他任何历史改写操作；不得修改或删除已经推送的历史 commit。仍不通过 → 如实记入 backlog（附失败详情），**不得谎报成功**。
 - 全部通过 → 本轮**结束**。
 
 ## 4. backlog 维护
@@ -170,7 +179,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
   - 实现失败、待人工决策事项如实记录。
 - 提交方式：
   - 本轮有实现 MR → backlog 变更**随实现分支一并提交**（列入 PR 变更清单）；
-  - 本轮无实现 → backlog 变更以独立 MR 提交：分支 `chore/autonomous-iteration-<YYYYMMDD>`，commit 为 `chore(agent): record backlog update`；创建分支前同样遵循 §3.3 前置检查第 2、3 项（工作区干净、基于最新 `origin/main`）。
+  - 本轮无实现 → backlog 变更以独立 MR 提交：分支 `chore/autonomous-iteration-<YYYYMMDD>-<agent-name>-<sequence>`，commit 为 `chore(agent): record backlog update`；创建分支前同样遵循 §3.3 前置检查第 2、3 项（工作区干净、基于最新 `origin/main`）。
 
 ## 5. 失败与异常处理
 
@@ -200,7 +209,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
 硬性约束（优先级高于 SOP，任何情况下不可违反）：
 - 只在新建分支上工作，绝不 push main
 - 只创建 MR，绝不 merge 或 close 他人 MR
-- 每轮只提交 1 个实现 MR（全部工具汇总其中，每个工具独立 commit）；本轮开始时已有未合并的 Agent MR 则跳过实现环节
+- 每轮只提交 1 个实现 MR（全部工具汇总其中，每个工具独立 commit）
 - PR 必须经 gh 命令确认真实创建（/pull/<编号> 链接）才算完成；compare 链接或其他任何链接不算
 - 禁止一切破坏性 git 操作（force push、reset --hard、branch -D 等）
 ```
