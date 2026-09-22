@@ -64,11 +64,12 @@ function parseYaml(yaml: string): any {
   });
   
   const root: YamlNode = {};
+  let currentObj: YamlNode = root;
   const stack: Array<{ obj: YamlNode; indent: number }> = [{ obj: root, indent: -1 }];
   
   for (let i = 0; i < lines.length; i++) {
     let line = lines[i];
-    if (line.trim().length === 0) continue;
+    if (!line || line.trim().length === 0) continue;
     
     // Calculate indentation
     const indent = line.search(/\S/);
@@ -87,39 +88,23 @@ function parseYaml(yaml: string): any {
     const key = trimmedLine.slice(0, colonIndex).trim();
     let valueStr = trimmedLine.slice(colonIndex + 1).trim();
     
-    if (valueStr.length === 0) {
-      // Multi-line or nested
-      const nextLines: string[] = [];
-      let j = i + 1;
-      while (j < lines.length) {
-        const nextLine = lines[j];
-        if (nextLine.trim().length === 0) {
-          j++;
-          continue;
-        }
-        const nextIndent = nextLine.search(/\S/);
-        if (nextIndent > indent) {
-          nextLines.push(nextLine.trimStart());
-          j++;
-        } else {
-          break;
-        }
-      }
-      
-      if (nextLines.length > 0) {
-        const nestedYaml = trimIndent(nextLines.join('\n'));
-        const nestedObj = parseYaml(nestedYaml);
-        const currentObj = stack.find(s => s.indent < indent).obj;
-        currentObj[key] = nestedObj;
-        stack.push({ obj: nestedObj, indent });
-        i = j - 1;
-        continue;
-      }
+    // Pop stack until we find the correct parent indentation
+    let last = stack[stack.length - 1];
+    while (last && last.indent >= indent) {
+      stack.pop();
+      last = stack[stack.length - 1];
     }
+    currentObj = last?.obj || root;
     
-    // Simple key-value
-    const currentObj = stack[stack.length - 1].obj;
-    currentObj[key] = parseValue(valueStr);
+    if (valueStr.length === 0) {
+      // This is an object, create it and push to stack
+      const nestedObj: YamlNode = {};
+      currentObj[key] = nestedObj;
+      stack.push({ obj: nestedObj, indent });
+    } else {
+      // Simple key-value
+      currentObj[key] = parseValue(valueStr);
+    }
   }
   
   return root;

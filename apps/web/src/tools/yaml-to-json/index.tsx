@@ -1,21 +1,22 @@
+'use client';
+
 import React from 'react';
-import { ToolComponentProps } from '../../types';
-import { Card, Input, Result, Button } from 'antd';
+import type { ToolComponentProps } from '../loaders';
+import { Card, Input, Result, Button, message } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
 import { yamlToJson } from './utils/converter';
-import { message } from 'antd';
 import styles from './index.module.css';
-import { copyToClipboard } from '../../../utils/copy';
+import { copyToClipboard } from '@/lib/utils';
 
-interface YamlToJsonProps {
+interface YamlToJsonState {
   yaml: string;
   json: string;
   error: string | null;
 }
 
-const YamlToJson: React.FC<ToolComponentProps> = ({ tool }) => {
-  const [state, setState] = React.useState<YamlToJsonProps>({
-    yaml: tool.defaultSampleInput,
+const YamlToJson: React.FC<ToolComponentProps> = ({ defaultInput }) => {
+  const [state, setState] = React.useState<YamlToJsonState>({
+    yaml: defaultInput || '',
     json: '',
     error: null,
   });
@@ -55,7 +56,7 @@ const YamlToJson: React.FC<ToolComponentProps> = ({ tool }) => {
       <Card title="输入 YAML" className={styles.card}>
         <Input.TextArea
           value={state.yaml}
-          onChange={(e) => {
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
             const yaml = e.target.value;
             setState(prev => ({ ...prev, yaml }));
             tryConvert(yaml);
