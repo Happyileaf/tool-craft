@@ -1,6 +1,6 @@
 # Tool-Craft Agent 自迭代 SOP
 
-> **文档定位**：本文件是无人值守 Agent 在本仓库执行「自动新增 Web 工具」的唯一流程依据。外部定时任务以极简提示词引导读取本文件（触发模板见 §7）。对本文件的任何修订必须走 MR 人审，与代码共用同一迭代环。
+> **文档定位**：本文件是无人值守 Agent 在本仓库执行「自动新增 Web 工具」的唯一流程依据。外部定时任务以极简提示词引导读取本文件（触发模板见 §7）。对本文件的任何修订必须走 PR 人审，与代码共用同一迭代环。
 >
 > **配套状态文件**：`docs/sop/autonomous-iteration/backlog.md`（Idea 池与运行记录）。易变状态与流程文档分离存放，避免流程被历史记录淹没。
 
@@ -18,11 +18,11 @@
 
 ## 1. 目标与边界
 
-**每轮运行的目标**：探索并评估工具 Idea，将通过评估的 Idea（数量上限见 §0）逐一实现为完整可用的 Web 端工具，全部汇总在同一个分支、以**一个 MR** 提交，并通过统一验收（§3.7）复核。验收通过后**本轮立即结束**；人工验收在之后异步进行，Agent 不等待。
+**每轮运行的目标**：探索并评估工具 Idea，将通过评估的 Idea（数量上限见 §0）逐一实现为完整可用的 Web 端工具，全部汇总在同一个分支、以**一个 PR** 提交，并通过统一验收（§3.7）复核。验收通过后**本轮立即结束**；人工验收在之后异步进行，Agent 不等待。
 
 **明确不做**：
 
-- 不直接上线 / 部署；不 merge 任何 MR（merge 永远是人工环节）
+- 不直接上线 / 部署；不 merge 任何 PR（merge 永远是人工环节）
 - 不追求交互层 e2e 完善（交互质量由人工通过 Preview 验收；代码层验证见 §3.4）
 - 不修改 `apps/api`（本流程范围仅 Web 工具）
 - 不重构现有工具，不做与本流程无关的顺手改动
@@ -30,15 +30,15 @@
 ## 2. 硬性约束（红线，优先级高于本文件其余任何条款）
 
 1. 只在新建分支上工作，**绝不 push `main`**。
-2. 只创建 MR，**绝不 merge、绝不 close / review 他人 MR**。
-3. 每轮最多产出 **1 个工具实现 MR**，本轮全部实现工具汇总于其中（每个工具独立 commit，见 §3.6；backlog 记录 MR 不计入，见 §4）。
+2. 只创建 PR，**绝不 merge、绝不 close / review 他人 PR**。
+3. 每轮最多产出 **1 个工具实现 PR**，本轮全部实现工具汇总于其中（每个工具独立 commit，见 §3.6；backlog 记录 PR 不计入，见 §4）。
 5. 禁止一切破坏性 git 操作：force push、`reset --hard`、`branch -D`、`clean -f` 等。
 6. Web 工具必须**纯浏览器本地运算**（local-first 红线）：不调用任何服务端接口，不引入需要后端配合的能力。
 
 ## 3. 流程
 
 ```
-Agent 执行范围：开始 → 探索发现 → 评估筛选 → 实现 → 本地验证 → 维护变更日志 → 提交 MR → 统一验收 → 结束
+Agent 执行范围：开始 → 探索发现 → 评估筛选 → 实现 → 本地验证 → 维护变更日志 → 提交 PR → 统一验收 → 结束
 ```
 
 ### 3.1 探索发现
@@ -118,19 +118,19 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
 
 ### 3.5 维护变更日志
 
-全部工具通过本地验证后、提交 MR 前，更新 `apps/web/CHANGELOG.md`：
+全部工具通过本地验证后、提交 PR 前，更新 `apps/web/CHANGELOG.md`：
 
 - 在日志顶部登记本轮变更——当日已有条目时**追加整合进该条目**，不新建（详见填写指南）：
   - **新增**：工具中文名（slug）— 一句话功能；
   - **修改**：工具中文名（slug）— 变更说明（如有）；
   - **移除**：工具中文名（slug）— 原因（如有）。
-- 本轮无任何工具变更时，**不更新 CHANGELOG、不创建实现 MR**——变更日志只记录真实变更；轮次运行情况记入 `backlog.md` 运行记录。
-- 变更日志更新以独立 commit 提交（如 `docs(web): update changelog`），随本轮分支一并进入 MR。
+- 本轮无任何工具变更时，**不更新 CHANGELOG、不创建实现 PR**——变更日志只记录真实变更；轮次运行情况记入 `backlog.md` 运行记录。
+- 变更日志更新以独立 commit 提交（如 `docs(web): update changelog`），随本轮分支一并进入 PR。
 - 条目格式与填写规范以 `docs/guide/changelog-guide.md` 为准。
 
-### 3.6 提交 MR
+### 3.6 提交 PR
 
-- **分支**：依据 §0「实现分支格式」创建，本轮全部工具共用同一分支，汇总为**一个 MR**（分支已在 §3.3 前置检查中从最新 `origin/main` 创建并切换）。
+- **分支**：依据 §0「实现分支格式」创建，本轮全部工具共用同一分支，汇总为**一个 PR**（分支已在 §3.3 前置检查中从最新 `origin/main` 创建并切换）。
 - **Commit**：遵循 Conventional Commits；**每个工具至少对应一个独立 commit**（如 `feat: add <slug> tool`），**禁止将多个工具的改动合并进同一个 commit**。commit 包含 AI 生成内容时，必须按 AI 归属规范在 footer 追加 trailer（人类始终是 author）：
 
   ```
@@ -159,7 +159,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
   lint / typecheck / test / build 全部状态
   ```
 
-- **创建动作**：全部工具 commit 与变更日志 commit 均完成后，push 分支并通过 `gh pr create` 创建 MR，目标分支 `main`；本轮只创建这一个 MR。
+- **创建动作**：全部工具 commit 与变更日志 commit 均完成后，push 分支并通过 `gh pr create` 创建 PR，目标分支 `main`；本轮只创建这一个 PR。
 
 ### 3.7 统一验收（最终复核，不可跳过）
 
@@ -182,7 +182,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
   - 被否决 Idea 移入「已否决」并注明原因；
   - 实现失败、待人工决策事项如实记录。
 - 提交方式：
-  - 本轮有实现 MR → backlog 变更**随实现分支一并提交**（列入 PR 变更清单）；
+  - 本轮有实现 PR → backlog 变更**随实现分支一并提交**（列入 PR 变更清单）；
   - 本轮无实现 → 使用 §0「实现分支格式」创建仅用于记录 backlog 的分支，commit 为 `chore(agent): record backlog update`；创建分支前同样遵循 §3.3 前置检查第 1、2 项（工作区干净、基于最新 `origin/main`）。
 
 ## 5. 失败与异常处理
@@ -197,7 +197,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
 
 以下环节在 Agent 本轮结束后**异步进行**，Agent 不等待、不轮询其结果：
 
-- Review MR：读评估卡 + Vercel Preview 验收交互质量；CI 失败时决定处理方式（要求下轮修复或自行修复）。
+- Review PR：读评估卡 + Vercel Preview 验收交互质量；CI 失败时决定处理方式（要求下轮修复或自行修复）。
 - Merge。
 - 干预 backlog：删除 / 调整 / 补充 Idea。
 - 修订本 SOP 与定时任务提示词。
@@ -208,12 +208,12 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
 
 ```text
 工作目录：/Users/haoya/Desktop/projects/tool-craft
-读取 docs/sop/autonomous-iteration/autonomous-iteration-sop.md，严格按其完整流程执行（探索 → 评估 → 实现 → 验证 → 维护变更日志 → 提 MR → 统一验收）；通过统一验收后本轮立即结束，不等待 CI 结果或人工审核。
+读取 docs/sop/autonomous-iteration/autonomous-iteration-sop.md，严格按其完整流程执行（探索 → 评估 → 实现 → 验证 → 维护变更日志 → 提 PR → 统一验收）；通过统一验收后本轮立即结束，不等待 CI 结果或人工审核。
 
 硬性约束（优先级高于 SOP，任何情况下不可违反）：
 - 只在新建分支上工作，绝不 push main
-- 只创建 MR，绝不 merge 或 close 他人 MR
-- 每轮只提交 1 个实现 MR（全部工具汇总其中，每个工具独立 commit）
+- 只创建 PR，绝不 merge 或 close 他人 PR
+- 每轮只提交 1 个实现 PR（全部工具汇总其中，每个工具独立 commit）
 - PR 必须经 gh 命令确认真实创建（/pull/<编号> 链接）才算完成；compare 链接或其他任何链接不算
 - 禁止一切破坏性 git 操作（force push、reset --hard、branch -D 等）
 ```
