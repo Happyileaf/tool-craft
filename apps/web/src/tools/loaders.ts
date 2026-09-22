@@ -27,4 +27,5 @@ export const toolLoaders: Record<
   'hash-generator': () => import('./hash-generator'),
   'qr-generator': () => import('./qr-generator'),
   'word-count': () => import('./word-count'),
+  'yaml-to-json': () => import('./yaml-to-json'),
 };

@@ -847,6 +847,95 @@ const tool = {
     },
   },
   {
+    slug: 'yaml-to-json',
+    name: 'YAML 转 JSON',
+    nameEn: 'YAML to JSON Converter',
+    description:
+      '将 YAML 格式数据转换为格式化的 JSON 数据，支持实时预览转换结果。',
+    descriptionEn:
+      'Convert YAML formatted data to pretty-printed JSON with real-time preview.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/yaml-to-json',
+    iconName: 'Code',
+    tags: ['YAML', 'JSON', '转换', '开发'],
+    tagsEn: ['YAML', 'JSON', 'Convert', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `name: ToolCraft
+version: 1.0.0
+description: Online Toolkit
+features:
+  - yaml-to-json
+  - word-count
+  - online-tools
+author:
+  name: Developer
+  email: dev@example.com
+`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 YAML 到 JSON 格式转换器，无需上传服务器，实时转换 YAML 配置为格式化 JSON。',
+        coreFeatures: [
+          '实时转换：输入 YAML 后即刻生成格式化 JSON',
+          '错误提示：YAML 语法错误时清晰展示错误信息',
+          '一键复制：转换成功后快速复制 JSON 结果',
+          '纯本地运行：所有转换在浏览器中完成，配置不离开设备',
+        ],
+        howToUse: [
+          '在左侧输入框粘贴需要转换的 YAML 内容',
+          '右侧会自动显示转换后的 JSON 结果',
+          '如果有语法错误，会显示错误详情',
+          '转换成功后点击右上角复制按钮获取结果',
+        ],
+        useCases: [
+          '开发中 YAML 配置文件转 JSON',
+          'API 文档 YAML 示例转 JSON',
+          'CI/CD 配置转换测试',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，配置内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持所有 YAML 语法吗？',
+            answer:
+              '目前支持大多数常用 YAML 语法，包括键值对、嵌套对象、注释等，满足日常开发需求。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient YAML to JSON converter that works entirely in your browser, converting YAML to formatted JSON in real-time.',
+        coreFeatures: [
+          'Real-time conversion: get formatted JSON instantly as you type YAML',
+          'Error reporting: clearly displays syntax errors when they occur',
+          'One-click copy: quickly copy JSON result after conversion',
+          '100% local: all conversion done in-browser, config never leaves your device',
+        ],
+        howToUse: [
+          'Paste your YAML content in the left input box',
+          'The converted JSON will automatically appear on the right',
+          'If there are syntax errors, error details will be displayed',
+          'Click the copy button in the top right to get the result',
+        ],useCases: [
+          'Converting YAML config files to JSON in development',
+          'Converting YAML API examples to JSON',
+          'Testing CI/CD configuration conversions',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Configuration content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does it support all YAML syntax?',
+            answer:
+              'It supports most commonly used YAML syntax including key-value pairs, nested objects, comments, etc., meeting daily development needs.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'word-count',
     name: '字数统计',
     nameEn: 'Word & Character Counter',
