@@ -4,12 +4,17 @@
 >
 > **配套状态文件**：`docs/sop/autonomous-iteration/backlog.md`（Idea 池与运行记录）。易变状态与流程文档分离存放，避免流程被历史记录淹没。
 
-## 0. 流程参数（统一声明，调整数量只改这里）
+## 0. 流程参数（统一声明，调整只改这里）
 
 | 参数 | 默认值 | 说明 |
 | --- | --- | --- |
 | 初始 Idea 数量 | 10 | 每轮 §3.1 头脑风暴产出的候选 Idea 数量 |
 | 每轮实现数量上限 | 5 | 每轮经 §3.2 评估后最多实现的 Idea 数量；通过评估的数量不足时，只实现通过的部分，不为凑数降低标准 |
+| 实现分支格式 | `feat/autonomous-iteration-<YYYYMMDDHHmmss>-<agent-name>` | `<YYYYMMDDHHmmss>` 为本轮开始时间，使用 `Asia/Shanghai`；`<agent-name>` 为当前 Agent 的稳定小写标识，仅允许小写字母、数字和连字符 |
+
+分支命名参数要求：
+
+- 本轮开始时生成一次北京时间（`Asia/Shanghai`）运行时间戳，格式为 `YYYYMMDDHHmmss`，本轮后续所有步骤复用该值，不得重新生成。
 
 ## 1. 目标与边界
 
@@ -29,7 +34,6 @@
 3. 每轮最多产出 **1 个工具实现 MR**，本轮全部实现工具汇总于其中（每个工具独立 commit，见 §3.6；backlog 记录 MR 不计入，见 §4）。
 5. 禁止一切破坏性 git 操作：force push、`reset --hard`、`branch -D`、`clean -f` 等。
 6. Web 工具必须**纯浏览器本地运算**（local-first 红线）：不调用任何服务端接口，不引入需要后端配合的能力。
-7. 不修改 CI 配置、部署配置、依赖版本与 lockfile（新依赖的例外见 §3.3 依赖规则）。
 
 ## 3. 流程
 
@@ -83,7 +87,7 @@ Idea 状态只能按实际流程推进；被否决的 Idea 不得标记为“未
 **前置检查（本轮开始时逐项确认一次，全部通过才继续；分支只创建一次，每个工具开始前仅复核工作区状态）**：
 
 1. 工作区检查：`git status` 确认工作区干净；存在未提交改动 → 视为环境异常，放弃本轮实现并记入 backlog，**不得 stash / discard / 覆盖任何既有改动**。
-2. 分支创建：`git fetch origin` 后，从最新 `origin/main` 创建并切换到 `feat/autonomous-iteration-<YYYYMMDD>-<agent-name>-<sequence>`（本轮全部工具共用此分支）。`<agent-name>` 为当前 Agent 的稳定小写标识，仅允许小写字母、数字和连字符；`<sequence>` 为从 `1` 开始递增的数字序号，在同一日期和 Agent 名称下递增。创建前必须确认本地和远端不存在同名分支，禁止复用已有分支。
+2. 分支创建：执行 `git fetch origin` 后，依据 §0「实现分支格式」从最新 `origin/main` 创建并切换到本轮实现分支（本轮全部工具共用此分支）。
 3. 分支确认：`git branch --show-current` 复核当前分支为新分支后，才允许修改任何文件。
 
 **改动面**（严格模仿 `apps/web/src/tools/` 下现有工具的模式，可参考 `hash-generator`）：
@@ -126,7 +130,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
 
 ### 3.6 提交 MR
 
-- **分支**：`feat/autonomous-iteration-<YYYYMMDD>-<agent-name>-<sequence>`，本轮全部工具共用同一分支，汇总为**一个 MR**（分支已在 §3.3 前置检查中从最新 `origin/main` 创建并切换）。
+- **分支**：依据 §0「实现分支格式」创建，本轮全部工具共用同一分支，汇总为**一个 MR**（分支已在 §3.3 前置检查中从最新 `origin/main` 创建并切换）。
 - **Commit**：遵循 Conventional Commits；**每个工具至少对应一个独立 commit**（如 `feat: add <slug> tool`），**禁止将多个工具的改动合并进同一个 commit**。commit 包含 AI 生成内容时，必须按 AI 归属规范在 footer 追加 trailer（人类始终是 author）：
 
   ```
@@ -179,7 +183,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
   - 实现失败、待人工决策事项如实记录。
 - 提交方式：
   - 本轮有实现 MR → backlog 变更**随实现分支一并提交**（列入 PR 变更清单）；
-  - 本轮无实现 → backlog 变更以独立 MR 提交：分支 `chore/autonomous-iteration-<YYYYMMDD>-<agent-name>-<sequence>`，commit 为 `chore(agent): record backlog update`；创建分支前同样遵循 §3.3 前置检查第 2、3 项（工作区干净、基于最新 `origin/main`）。
+  - 本轮无实现 → 使用 §0「实现分支格式」创建仅用于记录 backlog 的分支，commit 为 `chore(agent): record backlog update`；创建分支前同样遵循 §3.3 前置检查第 1、2 项（工作区干净、基于最新 `origin/main`）。
 
 ## 5. 失败与异常处理
 
