@@ -1,7 +1,7 @@
 # Agent 自迭代 Backlog
 
-> 状态文件：记录工具 Idea 池、评估结论与运行记录。流程依据见 [sop.md](./sop.md)。
-> 人工可随时增删条目以干预方向；Agent 每轮运行后必须更新本文件（提交规则见 sop.md §4）。
+> 状态文件：记录工具 Idea 池、评估结论与运行记录。流程依据见 [autonomous-iteration-sop.md](./autonomous-iteration-sop.md)。
+> 人工可随时增删条目以干预方向；Agent 每轮运行后必须更新本文件（提交规则见 autonomous-iteration-sop.md §4）。
 
 ## Idea 池
 

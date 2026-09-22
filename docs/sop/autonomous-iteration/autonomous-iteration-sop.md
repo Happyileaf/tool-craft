@@ -2,7 +2,7 @@
 
 > **文档定位**：本文件是无人值守 Agent 在本仓库执行「自动新增 Web 工具」的唯一流程依据。外部定时任务以极简提示词引导读取本文件（触发模板见 §7）。对本文件的任何修订必须走 MR 人审，与代码共用同一迭代环。
 >
-> **配套状态文件**：`docs/agent/backlog.md`（Idea 池与运行记录）。易变状态与流程文档分离存放，避免流程被历史记录淹没。
+> **配套状态文件**：`docs/sop/autonomous-iteration/backlog.md`（Idea 池与运行记录）。易变状态与流程文档分离存放，避免流程被历史记录淹没。
 
 ## 0. 流程参数（统一声明，调整数量只改这里）
 
@@ -113,7 +113,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
   - **移除**：工具中文名（slug）— 原因（如有）。
 - 本轮无任何工具变更时，**不更新 CHANGELOG、不创建实现 MR**——变更日志只记录真实变更；轮次运行情况记入 `backlog.md` 运行记录。
 - 变更日志更新以独立 commit 提交（如 `docs(web): update changelog`），随本轮分支一并进入 MR。
-- 条目格式与填写规范以 `docs/guide/changelog.md` 为准。
+- 条目格式与填写规范以 `docs/guide/changelog-guide.md` 为准。
 
 ### 3.6 提交 MR
 
@@ -163,7 +163,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
 
 ## 4. backlog 维护
 
-- 状态文件路径：`docs/agent/backlog.md`（条目格式见该文件内说明）。
+- 状态文件路径：`docs/sop/autonomous-iteration/backlog.md`（条目格式见该文件内说明）。
 - 每轮运行**必须**更新 backlog：
   - 新 Idea 入池（含完整评估摘要）；
   - 被否决 Idea 移入「已否决」并注明原因；
@@ -195,7 +195,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
 
 ```text
 工作目录：/Users/haoya/Desktop/projects/tool-craft
-读取 docs/agent/sop.md，严格按其完整流程执行（探索 → 评估 → 实现 → 验证 → 维护变更日志 → 提 MR → 统一验收）；通过统一验收后本轮立即结束，不等待 CI 结果或人工审核。
+读取 docs/sop/autonomous-iteration/autonomous-iteration-sop.md，严格按其完整流程执行（探索 → 评估 → 实现 → 验证 → 维护变更日志 → 提 MR → 统一验收）；通过统一验收后本轮立即结束，不等待 CI 结果或人工审核。
 
 硬性约束（优先级高于 SOP，任何情况下不可违反）：
 - 只在新建分支上工作，绝不 push main

@@ -1,6 +1,6 @@
 # apps/web 变更日志
 
-> 变更日志填写规范见 [docs/guide/changelog.md](../../docs/guide/changelog.md)。
+> 变更日志填写规范见 [docs/guide/changelog-guide.md](../../docs/guide/changelog-guide.md)。
 
 ## 日志
 
