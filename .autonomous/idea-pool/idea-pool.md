@@ -13,4 +13,10 @@
 
 ---
 
+| ID             | Idea         | Description                 | Type       | Source      | Status  | Created At | Claimed By | Reject Reason | Result |
+| -------------- | ------------ | --------------------------- | ---------- | ----------- | ------- | ---------- | ---------- | ------------- | ------ |
+| 20260922231707 | CRON 表达式生成器 | 提供 CRON 表达式可视化生成和验证能力 | Web Tool | Exploration | Pending | 2026-09-22 | —          | —             | —      |
+| 20260922231708 | CSS 渐变生成器 | 生成 CSS 渐变代码，支持预览 | Web Tool | Exploration | Pending | 2026-09-22 | —          | —             | —      |
+| 20260922231709 | URL 编解码 | 提供 URL 编码和解码功能 | Web Tool | Exploration | Pending | 2026-09-22 | —          | —             | —      |
+
 <!-- 新 Idea 请添加在下方 -->
