@@ -4,6 +4,7 @@ import { defaultSampleInput as jsonToYamlDefaultInput } from './json-to-yaml/con
 import { defaultSampleInput as caseConverterDefaultInput } from './case-converter/constants';
 import { defaultSampleInput as removeDuplicateLinesDefaultInput } from './remove-duplicate-lines/constants';
 import { defaultSampleInput as cssBeautifierDefaultInput } from './css-beautifier/constants';
+import { defaultSampleInput as baseConverterDefaultInput } from './base-converter/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -1422,6 +1423,86 @@ author:
             question: 'Does formatting take a long time?',
             answer:
               'Even for larger CSS files, formatting completes instantly in the browser with almost no perceptible delay.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'base-converter',
+    name: '进制转换',
+    nameEn: 'Base Converter',
+    description:
+      '二进制、八进制、十进制和十六进制之间互相转换，支持正负整数。',
+    descriptionEn:
+      'Convert between binary, octal, decimal, and hexadecimal, supports positive and negative integers.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/base-converter',
+    iconName: 'Code',
+    tags: ['进制', '转换', '计算', '开发'],
+    tagsEn: ['Base', 'Convert', 'Math', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: baseConverterDefaultInput,
+    doc: {
+      zh: {
+        whatIsIt:
+          '简单实用的进制转换器，在二进制、八进制、十进制和十六进制之间快速转换，满足编程开发中的日常计算需求。',
+        coreFeatures: [
+          '支持四种常用进制互相转换',
+          '支持正负整数转换',
+          '一键复制转换结果',
+          '纯本地计算，无需后端',
+        ],
+        howToUse: [
+          '输入你要转换的数字',
+          '选择源进制和目标进制',
+          '下方立即显示转换结果',
+          '点击复制获取结果',
+        ],
+        useCases: [
+          '编程开发中的进制转换计算',
+          '学习计算机基础知识时的练习',
+          '调试网络协议或数据格式',
+        ],
+        privacyNote:
+          '所有计算都在本地浏览器完成，数据不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '支持小数转换吗？',
+            answer:
+              '目前只支持整数转换，小数转换将在后续版本中支持。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A simple and practical base converter that quickly converts between binary, octal, decimal, and hexadecimal, meeting everyday calculation needs in programming development.',
+        coreFeatures: [
+          'Supports conversion between four commonly used bases',
+          'Supports conversion of positive and negative integers',
+          'One-click copy of conversion result',
+          'Pure local calculation, no backend needed',
+        ],
+        howToUse: [
+          'Enter the number you want to convert',
+          'Select the source base and target base',
+          'The conversion result appears below immediately',
+          'Click copy to get the result',
+        ],
+        useCases: [
+          'Base conversion calculations in programming development',
+          'Practice when learning basic computer knowledge',
+          'Debugging network protocols or data formats',
+        ],
+        privacyNote:
+          'All calculations are done locally in your browser. Data is never uploaded to any server.',
+        faqs: [
+          {
+            question: 'Does it support decimal fraction conversion?',
+            answer:
+              'Currently only integer conversion is supported. Decimal fraction support will be added in future versions.',
           },
         ],
       },

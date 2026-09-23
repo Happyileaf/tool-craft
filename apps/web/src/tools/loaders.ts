@@ -33,4 +33,5 @@ export const toolLoaders: Record<
   'case-converter': () => import('./case-converter'),
   'remove-duplicate-lines': () => import('./remove-duplicate-lines'),
   'css-beautifier': () => import('./css-beautifier'),
+  'base-converter': () => import('./base-converter'),
 };
