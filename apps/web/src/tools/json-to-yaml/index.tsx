@@ -1,113 +1,88 @@
 'use client';
 
-import React from 'react';
-import type { ToolComponentProps } from '../loaders';
-import { Card, Input, Result, Button, message } from 'antd';
-import { CopyOutlined } from '@ant-design/icons';
-import { jsonToYaml } from './utils/json-to-yaml';
-import styles from './index.module.css';
-import { copyToClipboard } from '@/lib/utils';
+import { useState } from 'react';
+import { Check, Copy, Eraser } from 'lucide-react';
+import { useCopy } from '@/hooks/use-copy';
+import { ToolComponentProps } from '@/lib/tools/tool-component-props';
+import { defaultSampleInput } from './constants';
+import { jsonToYaml } from './utils/converter';
 
-interface JsonToYamlState {
-  json: string;
-  yaml: string;
-  error: string | null;
-}
+/**
+ * JSON to YAML converter tool
+ * Converts JSON data to formatted YAML output
+ */
+function JsonToYaml({ defaultInput }: ToolComponentProps) {
+  const [input, setInput] = useState(defaultInput || defaultSampleInput);
+  const [copied, copy] = useCopy();
 
-const JsonToYaml: React.FC<ToolComponentProps> = ({ defaultInput }) => {
-  const [state, setState] = React.useState<JsonToYamlState>({
-    json: defaultInput || '',
-    yaml: '',
-    error: null,
-  });
+  const convertResult = jsonToYaml(input);
 
-  React.useEffect(() => {
-    tryConvert(state.json);
-  }, []);
+  function handleClear() {
+    setInput('');
+  }
 
-  const tryConvert = (jsonStr: string) => {
-    try {
-      if (!jsonStr.trim()) {
-        setState({
-          json: jsonStr,
-          yaml: '',
-          error: null,
-        });
-        return;
-      }
-      const obj = JSON.parse(jsonStr);
-      const yaml = jsonToYaml(obj);
-      setState({
-        json: jsonStr,
-        yaml,
-        error: null,
-      });
-    } catch (e) {
-      setState({
-        json: jsonStr,
-        yaml: '',
-        error: (e as Error).message,
-      });
+  function handleCopy() {
+    if (convertResult.success) {
+      copy(convertResult.result);
     }
-  };
-
-  const handleCopy = () => {
-    if (state.error) {
-      message.error('当前JSON有错误，无法复制');
-      return;
-    }
-    copyToClipboard(state.yaml);
-    message.success('复制成功');
-  };
+  }
 
   return (
-    <div className={styles.container}>
-      <Card title="输入 JSON" className={styles.card}>
-        <Input.TextArea
-          value={state.json}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-            const json = e.target.value;
-            setState(prev => ({ ...prev, json }));
-            tryConvert(json);
-          }}
-          placeholder="在这里输入JSON..."
-          rows={12}
-          autoSize={{ minRows: 8, maxRows: 20 }}
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <label className="text-sm font-medium">JSON Input</label>
+        <textarea
+          className="w-full min-h-[200px] p-3 border rounded-md bg-background font-mono text-sm"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Paste your JSON here..."
         />
-      </Card>
+      </div>
 
-      <Card
-        title="输出 YAML"
-        className={styles.card}
-        extra={
-          !state.error && (
-            <Button
-              type="text"
-              icon={<CopyOutlined />}
+      <div className="flex gap-2 justify-end">
+        <button
+          onClick={handleClear}
+          className="flex items-center gap-2 px-4 py-2 rounded-md border bg-background hover:bg-accent transition-colors"
+        >
+          <Eraser className="w-4 h-4" />
+          Clear
+        </button>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <label className="text-sm font-medium">YAML Output</label>
+          {convertResult.success && (
+            <button
               onClick={handleCopy}
+              className="flex items-center gap-2 px-3 py-1 rounded-md border bg-background hover:bg-accent transition-colors text-sm"
             >
-              复制结果
-            </Button>
-          )
-        }
-      >
-        {state.error ? (
-          <Result
-            status="error"
-            title="JSON 解析错误"
-            subTitle={state.error}
-          />
+              {copied ? (
+                <>
+                  <Check className="w-4 h-4 text-green-500" />
+                  Copied
+                </>
+              ) : (
+                <>
+                  <Copy className="w-4 h-4" />
+                  Copy
+                </>
+              )}
+            </button>
+          )}
+        </div>
+        {convertResult.success ? (
+          <pre className="w-full min-h-[200px] p-3 border rounded-md bg-muted overflow-auto">
+            <code className="font-mono text-sm">{convertResult.result}</code>
+          </pre>
         ) : (
-          <Input.TextArea
-            value={state.yaml}
-            readOnly
-            rows={12}
-            autoSize={{ minRows: 8, maxRows: 20 }}
-          />
+          <div className="w-full min-h-[100px] p-3 border border-red-300 rounded-md bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400">
+            ❌ Error: {convertResult.error}
+          </div>
         )}
-      </Card>
+      </div>
     </div>
   );
-};
+}
 
 export default JsonToYaml;
