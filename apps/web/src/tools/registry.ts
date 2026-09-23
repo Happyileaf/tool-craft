@@ -1,6 +1,7 @@
 import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
 import { defaultSampleInput as jsonToYamlDefaultInput } from './json-to-yaml/constants';
+import { defaultSampleInput as caseConverterDefaultInput } from './case-converter/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -1175,6 +1176,86 @@ author:
             question: 'Does it support complex JSON structures?',
             answer:
               'Supports most commonly used JSON syntax including nested objects, arrays, strings, numbers, booleans, and null, meeting daily development needs.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'case-converter',
+    name: '大小写转换',
+    nameEn: 'Case Converter',
+    description:
+      '支持多种文本大小写转换，包括全小写、全大写、首字母大写和句首大写。',
+    descriptionEn:
+      'Convert text case with multiple modes: lowercase, uppercase, capitalize first letter, and sentence case.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/case-converter',
+    iconName: 'FileText',
+    tags: ['文本', '大小写', '转换', '格式'],
+    tagsEn: ['Text', 'Case', 'Convert', 'Format'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: caseConverterDefaultInput,
+    doc: {
+      zh: {
+        whatIsIt:
+          '简单便捷的文本大小写转换器，支持多种常用转换模式，满足文本编辑中的各种需求。',
+        coreFeatures: [
+          '四种转换模式：全小写、全大写、首字母大写、句首大写',
+          '实时预览：输入文字时立即展示转换结果',
+          '一键复制：转换完成后快速复制结果',
+          '纯本地运行：所有操作在浏览器内完成，数据不离开设备',
+        ],
+        howToUse: [
+          '在输入框中粘贴或输入需要转换的文本',
+          '点击对应转换模式按钮',
+          '下方立即显示转换后的结果',
+          '点击复制按钮获取转换后的文本',
+        ],
+        useCases: [
+          '统一代码注释或变量名大小写',
+          '修正文章标题或句子首字母大小写',
+          '转换整段文本大小写格式',
+        ],
+        privacyNote:
+          '所有转换都在本地浏览器完成，文本内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持中文文本吗？',
+            answer:
+              '中文不受大小写转换影响，只转换英文字母，所以支持中英文混合文本。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A simple and convenient text case converter that supports multiple common conversion modes to meet various needs in text editing.',
+        coreFeatures: [
+          'Four conversion modes: lowercase, uppercase, capitalize first letter, sentence case',
+          'Real-time preview: result is displayed instantly as you type',
+          'One-click copy: quickly get the converted result after conversion',
+          '100% local: all processing done in-browser, text never leaves your device',
+        ],
+        howToUse: [
+          'Paste or type your text in the input box',
+          'Click the button for the conversion mode you want',
+          'The converted result will immediately appear below',
+          'Click the copy button to get the converted text',
+        ],
+        useCases: [
+          'Unify case for code comments or variable names',
+          'Fix capitalization for titles and sentence beginnings',
+          'Convert case for entire paragraphs of text',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Text content is never uploaded to any server, keeping your content private.',
+        faqs: [
+          {
+            question: 'Does it support Chinese text?',
+            answer:
+              'Chinese characters are not affected by case conversion. Only English letters are converted, so mixed Chinese and English text is fully supported.',
           },
         ],
       },

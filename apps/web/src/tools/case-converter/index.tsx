@@ -1,110 +1,100 @@
 'use client';
 
-import React from 'react';
-import type { ToolComponentProps } from '../loaders';
-import { Card, Input, Radio, Button, message } from 'antd';
-import { CopyOutlined } from '@ant-design/icons';
-import { convertCase, type CaseFormat } from './utils/case-converter';
-import styles from './index.module.css';
-import { copyToClipboard } from '@/lib/utils';
+import { useState } from 'react';
+import { Check, Copy, Eraser } from 'lucide-react';
+import { useCopy } from '@/hooks/use-copy';
+import { ToolComponentProps } from '@/lib/tools/tool-component-props';
+import {
+  CaseConversionMode,
+  conversionModeLabels,
+  conversionModeLabelsEn,
+  defaultSampleInput,
+} from './constants';
+import { convertCase } from './utils/converter';
+import { useI18n } from '@/lib/i18n';
 
-interface CaseConverterState {
-  input: string;
-  output: string;
-  format: CaseFormat;
-}
+function CaseConverter({ defaultInput }: ToolComponentProps) {
+  const { t, locale } = useI18n();
+  const [input, setInput] = useState(defaultInput || defaultSampleInput);
+  const [mode, setMode] = useState<CaseConversionMode>(CaseConversionMode.LOWERCASE);
+  const [copied, copy] = useCopy();
 
-const CaseConverter: React.FC<ToolComponentProps> = ({ defaultInput }) => {
-  const [state, setState] = React.useState<CaseConverterState>({
-    input: defaultInput || '',
-    output: '',
-    format: 'camel',
-  });
+  const output = convertCase(input, mode);
 
-  const updateOutput = (newInput: string, newFormat: CaseFormat) => {
-    const output = convertCase(newInput, newFormat);
-    setState(prev => ({
-      ...prev,
-      input: newInput,
-      format: newFormat,
-      output,
-    }));
-  };
+  function handleClear() {
+    setInput('');
+  }
 
-  const handleCopy = () => {
-    if (!state.output) {
-      message.warning('没有可复制的结果');
-      return;
-    }
-    copyToClipboard(state.output);
-    message.success('复制成功');
-  };
-
-  const defaultSampleInput = `hello_world
-my-variable-name
-getUserById`;
+  function handleCopy() {
+    copy(output);
+  }
 
   return (
-    <div className={styles.container}>
-      <Card
-        title="输入需要转换的文本"
-        className={styles.card}
-        extra={
-          <Button
-            type="text"
-            onClick={() => updateOutput(defaultSampleInput, state.format)}
-          >
-            使用示例
-          </Button>
-        }
-      >
-        <Input.TextArea
-          value={state.input}
-          onChange={(e) => updateOutput(e.target.value, state.format)}
-          placeholder="在这里输入需要转换格式的标识符..."
-          rows={8}
-          autoSize={{ minRows: 6, maxRows: 16 }}
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <label className="text-sm font-medium">{t('tools.common.inputLabel')}</label>
+        <textarea
+          className="w-full min-h-[150px] p-3 border rounded-md bg-background font-mono text-sm"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder={t('tools.common.textPlaceholder')}
         />
+      </div>
 
-        <div className={styles.formatSelector}>
-          <div className={styles.label}>目标格式：</div>
-          <Radio.Group
-            value={state.format}
-            onChange={(e) => updateOutput(state.input, e.target.value)}
+      <div className="flex flex-wrap gap-2">
+        {Object.values(CaseConversionMode).map((conversionMode) => (
+          <button
+            key={conversionMode}
+            onClick={() => setMode(conversionMode)}
+            className={`px-4 py-2 rounded-md border transition-colors ${
+              mode === conversionMode
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-background hover:bg-accent'
+            }`}
           >
-            <Radio.Button value="camel">camelCase</Radio.Button>
-            <Radio.Button value="snake">snake_case</Radio.Button>
-            <Radio.Button value="kebab">kebab-case</Radio.Button>
-            <Radio.Button value="pascal">PascalCase</Radio.Button>
-            <Radio.Button value="upper">UPPER_CASE</Radio.Button>
-            <Radio.Button value="lower">lower_case</Radio.Button>
-          </Radio.Group>
-        </div>
-      </Card>
+            {locale === 'zh'
+              ? conversionModeLabels[conversionMode]
+              : conversionModeLabelsEn[conversionMode]}
+          </button>
+        ))}
+      </div>
 
-      <Card
-        title="转换结果"
-        className={styles.card}
-        extra={
-          <Button
-            type="text"
-            icon={<CopyOutlined />}
+      <div className="flex gap-2 justify-end">
+        <button
+          onClick={handleClear}
+          className="flex items-center gap-2 px-4 py-2 rounded-md border bg-background hover:bg-accent transition-colors"
+        >
+          <Eraser className="w-4 h-4" />
+          {t('tools.common.clear')}
+        </button>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <label className="text-sm font-medium">{t('tools.common.outputLabel')}</label>
+          <button
             onClick={handleCopy}
+            className="flex items-center gap-2 px-3 py-1 rounded-md border bg-background hover:bg-accent transition-colors text-sm"
           >
-            复制结果
-          </Button>
-        }
-      >
-        <Input.TextArea
-          value={state.output}
-          readOnly
-          placeholder="转换结果会在这里显示..."
-          rows={8}
-          autoSize={{ minRows: 6, maxRows: 16 }}
-        />
-      </Card>
+            {copied ? (
+              <>
+                <Check className="w-4 h-4 text-green-500" />
+                {t('tools.common.copied')}
+              </>
+            ) : (
+              <>
+                <Copy className="w-4 h-4" />
+                {t('tools.common.copy')}
+              </>
+            )}
+          </button>
+        </div>
+        <pre className="w-full min-h-[150px] p-3 border rounded-md bg-muted overflow-auto">
+          <code className="font-mono text-sm">{output}</code>
+        </pre>
+      </div>
     </div>
   );
-};
+}
 
 export default CaseConverter;

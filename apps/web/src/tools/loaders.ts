@@ -32,4 +32,5 @@ export const toolLoaders: Record<
   'case-converter': () => import('./case-converter'),
   'uuid-generator': () => import('./uuid-generator'),
   'json-to-yaml': () => import('./json-to-yaml'),
+  'case-converter': () => import('./case-converter'),
 };
