@@ -3,6 +3,7 @@ import type { ToolMeta } from './types';
 import { defaultSampleInput as jsonToYamlDefaultInput } from './json-to-yaml/constants';
 import { defaultSampleInput as caseConverterDefaultInput } from './case-converter/constants';
 import { defaultSampleInput as removeDuplicateLinesDefaultInput } from './remove-duplicate-lines/constants';
+import { defaultSampleInput as cssBeautifierDefaultInput } from './css-beautifier/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -1339,6 +1340,88 @@ author:
             question: 'What is "case-sensitive"?',
             answer:
               'When enabled, lines with the same content but different case will be treated as different lines (e.g., "Apple" and "apple" will both be kept); when disabled, they will be treated as the same and only the first one will be kept.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'css-beautifier',
+    name: 'CSS 格式化',
+    nameEn: 'CSS Beautifier',
+    description:
+      '格式化压缩/混乱的CSS代码，支持缩进设置，使其易于阅读和调试。',
+    descriptionEn:
+      'Beautify minified or messy CSS code with customizable indentation, making it easy to read and debug.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/css-beautifier',
+    iconName: 'Code',
+    tags: ['CSS', '格式化', '美化', '代码'],
+    tagsEn: ['CSS', 'Format', 'Beautify', 'Code'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: cssBeautifierDefaultInput,
+    doc: {
+      zh: {
+        whatIsIt:
+          '专业的CSS代码格式化工具，将压缩或混乱的CSS代码快速美化，提高代码可读性。',
+        coreFeatures: [
+          '支持自定义缩进大小（2空格或4空格）',
+          '使用成熟的js-beautify库保证格式化质量',
+          '实时预览格式化结果',
+          '一键复制格式化后的代码',
+          '纯浏览器本地运行，代码不离开设备',
+        ],
+        howToUse: [
+          '在输入框粘贴需要格式化的CSS代码',
+          '选择你喜欢的缩进大小（2或4空格）',
+          '下方立即显示格式化后的结果',
+          '点击复制按钮获取格式化后的代码',
+        ],
+        useCases: [
+          '美化从网站复制的压缩CSS代码',
+          '格式化混淆或压缩的CSS文件',
+          '统一团队代码格式风格',
+        ],
+        privacyNote:
+          '所有格式化都在本地浏览器完成，代码内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '格式化需要很长时间吗？',
+            answer:
+              '即使是较大的CSS文件，格式化也能在浏览器中瞬间完成，几乎感受不到延迟。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Professional CSS code formatting tool that quickly beautifies minified or messy CSS code to improve readability.',
+        coreFeatures: [
+          'Supports custom indent size (2 or 4 spaces)',
+          'Uses the mature js-beautify library to ensure formatting quality',
+          'Real-time preview of the formatted result',
+          'One-click copy of the formatted code',
+          '100% local processing in browser, code never leaves your device',
+        ],
+        howToUse: [
+          'Paste the CSS code you need to format into the input box',
+          'Select your preferred indent size (2 or 4 spaces)',
+          'The formatted result appears below immediately',
+          'Click the copy button to get the formatted code',
+        ],
+        useCases: [
+          'Beautifying minified CSS code copied from websites',
+          'Formatting obfuscated or compressed CSS files',
+          'Unifying team code formatting style',
+        ],
+        privacyNote:
+          'All formatting is done locally in your browser. Code content is never uploaded to any server, keeping your content private.',
+        faqs: [
+          {
+            question: 'Does formatting take a long time?',
+            answer:
+              'Even for larger CSS files, formatting completes instantly in the browser with almost no perceptible delay.',
           },
         ],
       },
