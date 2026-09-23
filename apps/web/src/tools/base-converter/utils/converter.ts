@@ -9,8 +9,15 @@ export function convertBase(input: string, fromBase: Base, toBase: Base): { succ
     return { success: false, result: '', error: 'Please enter a number' };
   }
 
-  // Validate input against base
-  for (const char of input) {
+  let isNegative = false;
+  let numberInput = input;
+  if (input.startsWith('-')) {
+    isNegative = true;
+    numberInput = input.slice(1);
+  }
+
+  // Validate input against base (skip negative sign)
+  for (const char of numberInput) {
     const index = digits.indexOf(char);
     if (index === -1 || index >= fromBase) {
       return {

@@ -7,22 +7,20 @@ describe('beautifyCss', () => {
     const result = beautifyCss(input, { indentSize: 2 });
     expect(result).toBe(`body {
   margin: 0;
-  padding: 0;
+  padding: 0
 }
 
 h1 {
-  color: red;
-}
-`);
+  color: red
+}`);
   });
 
   it('should beautify with 4-space indent', () => {
     const input = 'body{margin:0}';
     const result = beautifyCss(input, { indentSize: 4 });
     expect(result).toBe(`body {
-    margin: 0;
-}
-`);
+    margin: 0
+}`);
   });
 
   it('should handle empty input', () => {

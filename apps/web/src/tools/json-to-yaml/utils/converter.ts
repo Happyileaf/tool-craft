@@ -8,7 +8,7 @@ type JsonObject = { [key: string]: JsonValue };
 type JsonArray = JsonValue[];
 
 function escapeYamlString(str: string): string {
-  if (str.includes('\n') || str.includes(':') || str.includes('#') || str.includes('"') || str.includes("'")) {
+  if (str.includes('\n') || str.includes(':') || str.includes('#') || str.includes('"') || str.includes("'") || /^\d+$/.test(str)) {
     return `"${str.replace(/"/g, '\\"')}"`;
   }
   return str;

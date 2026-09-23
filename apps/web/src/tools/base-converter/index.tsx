@@ -6,10 +6,11 @@ import { useCopy } from '@/hooks/use-copy';
 import { ToolComponentProps } from '@/lib/tools/tool-component-props';
 import { Base, baseLabels, baseLabelsEn, defaultSampleInput } from './constants';
 import { convertBase } from './utils/converter';
-import { useI18n } from '@/lib/i18n';
+import { useI18n } from '@/lib/i18n/i18n-provider';
+import { LanguageEnum } from '@/lib/i18n/constants';
 
 function BaseConverter({ defaultInput }: ToolComponentProps) {
-  const { t, locale } = useI18n();
+  const { t, language } = useI18n();
   const [input, setInput] = useState(defaultInput || defaultSampleInput);
   const [fromBase, setFromBase] = useState<Base>(Base.DECIMAL);
   const [toBase, setToBase] = useState<Base>(Base.BINARY);
@@ -51,7 +52,7 @@ function BaseConverter({ defaultInput }: ToolComponentProps) {
           >
             {Object.values(Base).map((base) => (
               <option key={base} value={base}>
-                {locale === 'zh' ? baseLabels[base] : baseLabelsEn[base]}
+                {language === LanguageEnum.ZH ? baseLabels[base as Base] : baseLabelsEn[base as Base]}
               </option>
             ))}
           </select>
@@ -76,7 +77,7 @@ function BaseConverter({ defaultInput }: ToolComponentProps) {
           >
             {Object.values(Base).map((base) => (
               <option key={base} value={base}>
-                {locale === 'zh' ? baseLabels[base] : baseLabelsEn[base]}
+                {language === LanguageEnum.ZH ? baseLabels[base as Base] : baseLabelsEn[base as Base]}
               </option>
             ))}
           </select>
