@@ -2,6 +2,7 @@ import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
 import { defaultSampleInput as jsonToYamlDefaultInput } from './json-to-yaml/constants';
 import { defaultSampleInput as caseConverterDefaultInput } from './case-converter/constants';
+import { defaultSampleInput as removeDuplicateLinesDefaultInput } from './remove-duplicate-lines/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -1256,6 +1257,88 @@ author:
             question: 'Does it support Chinese text?',
             answer:
               'Chinese characters are not affected by case conversion. Only English letters are converted, so mixed Chinese and English text is fully supported.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'remove-duplicate-lines',
+    name: '行去重',
+    nameEn: 'Remove Duplicate Lines',
+    description:
+      '移除文本中的重复行，保留唯一内容，支持大小写敏感设置和结果排序。',
+    descriptionEn:
+      'Remove duplicate lines from text, keep only unique content, supports case sensitivity and result sorting.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/remove-duplicate-lines',
+    iconName: 'FileText',
+    tags: ['文本', '去重', '清理', '排序'],
+    tagsEn: ['Text', 'Deduplicate', 'Clean', 'Sort'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: removeDuplicateLinesDefaultInput,
+    doc: {
+      zh: {
+        whatIsIt:
+          '快速清理文本中重复行的实用工具，帮助你整理列表、日志等文本内容，得到唯一行集合。',
+        coreFeatures: [
+          '一键移除所有重复行，只保留第一次出现的行',
+          '可选大小写敏感去重',
+          '可选对结果进行排序',
+          '实时展示行数变化统计',
+          '纯本地运行，数据不离开浏览器',
+        ],
+        howToUse: [
+          '在输入框粘贴需要处理的文本',
+          '勾选需要的选项（大小写敏感、排序）',
+          '下方立即显示去重后的结果',
+          '点击复制按钮获取处理后的文本',
+        ],
+        useCases: [
+          '清理列表、日志中的重复条目',
+          '整理配置文件去除重复配置项',
+          '整理关键词列表去除重复词',
+        ],
+        privacyNote:
+          '所有处理都在本地浏览器完成，文本内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '什么是"大小写敏感"？',
+            answer:
+              '开启后，内容相同但大小写不同行会被视为不同行（比如 "Apple" 和 "apple" 都会保留）；关闭后，它们会被视为相同，只保留第一个。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A utility tool to quickly remove duplicate lines from text, helping you organize lists, logs and other text content to get a unique line collection.',
+        coreFeatures: [
+          'One-click removal of all duplicate lines, only keeps the first occurrence',
+          'Optional case-sensitive deduplication',
+          'Optional sorting of the result',
+          'Real-time line count statistics',
+          '100% local processing, data never leaves the browser',
+        ],
+        howToUse: [
+          'Paste the text you want to process in the input box',
+          'Check the options you need (case-sensitive, sort)',
+          'The deduplicated result appears below immediately',
+          'Click the copy button to get the processed text',
+        ],
+        useCases: [
+          'Cleaning up duplicate entries in lists and logs',
+          'Organizing config files by removing duplicate entries',
+          'Organizing keyword lists by removing duplicate words',
+        ],
+        privacyNote:
+          'All processing is done locally in your browser. Text content is never uploaded to any server, keeping your content private.',
+        faqs: [
+          {
+            question: 'What is "case-sensitive"?',
+            answer:
+              'When enabled, lines with the same content but different case will be treated as different lines (e.g., "Apple" and "apple" will both be kept); when disabled, they will be treated as the same and only the first one will be kept.',
           },
         ],
       },
