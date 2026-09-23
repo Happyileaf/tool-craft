@@ -1,5 +1,10 @@
 import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
+import { defaultSampleInput as jsonToYamlDefaultInput } from './json-to-yaml/constants';
+import { defaultSampleInput as caseConverterDefaultInput } from './case-converter/constants';
+import { defaultSampleInput as removeDuplicateLinesDefaultInput } from './remove-duplicate-lines/constants';
+import { defaultSampleInput as cssBeautifierDefaultInput } from './css-beautifier/constants';
+import { defaultSampleInput as baseConverterDefaultInput } from './base-converter/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -1094,6 +1099,410 @@ author:
           {
             question: 'Are spaces included in the character count?',
             answer: 'Yes, spaces and newlines are included in the total character count.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-to-yaml',
+    name: 'JSON 转 YAML',
+    nameEn: 'JSON to YAML Converter',
+    description:
+      '将 JSON 格式数据转换为格式化的 YAML 数据，支持实时预览转换结果。',
+    descriptionEn:
+      'Convert JSON formatted data to pretty-printed YAML with real-time preview.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-to-yaml',
+    iconName: 'Braces',
+    tags: ['JSON', 'YAML', '转换', '数据'],
+    tagsEn: ['JSON', 'YAML', 'Convert', 'Data'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: jsonToYamlDefaultInput,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 JSON 到 YAML 格式转换器，无需上传服务器，实时转换 JSON 配置为格式化 YAML。',
+        coreFeatures: [
+          '实时转换：输入 JSON 后即刻生成格式化 YAML',
+          '错误提示：JSON 语法错误时清晰展示错误信息',
+          '一键复制：转换成功后快速复制 YAML 结果',
+          '纯本地运行：所有转换在浏览器中完成，配置不离开设备',
+        ],
+        howToUse: [
+          '在左侧输入框粘贴需要转换的 JSON 内容',
+          '下方会自动显示转换后的 YAML 结果',
+          '如果有语法错误，会显示错误详情',
+          '转换成功后点击右上角复制按钮获取结果',
+        ],
+        useCases: [
+          '开发中 JSON 配置文件转 YAML',
+          'API 文档 JSON 示例转 YAML',
+          '配置格式迁移转换',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，配置内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持复杂的 JSON 结构吗？',
+            answer:
+              '支持大多数常用 JSON 语法，包括嵌套对象、数组、字符串、数字、布尔值和 null，满足日常开发需求。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient JSON to YAML format converter that works entirely in your browser, converting JSON to formatted YAML in real-time.',
+        coreFeatures: [
+          'Real-time conversion: get formatted YAML instantly as you type JSON',
+          'Error reporting: clearly displays syntax error details when JSON is invalid',
+          'One-click copy: quickly copy the YAML result after conversion succeeds',
+          '100% local: all conversion done in-browser, configuration never leaves your device',
+        ],
+        howToUse: [
+          'Paste your JSON content in the input area',
+          'The converted YAML result will automatically appear below',
+          'If there are syntax errors, error details will be displayed',
+          'Click the copy button after successful conversion to get the result',
+        ],
+        useCases: [
+          'Converting JSON config files to YAML in development',
+          'Converting JSON API examples to YAML',
+          'Configuration format migration',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Configuration content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does it support complex JSON structures?',
+            answer:
+              'Supports most commonly used JSON syntax including nested objects, arrays, strings, numbers, booleans, and null, meeting daily development needs.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'case-converter',
+    name: '大小写转换',
+    nameEn: 'Case Converter',
+    description:
+      '支持多种文本大小写转换，包括全小写、全大写、首字母大写和句首大写。',
+    descriptionEn:
+      'Convert text case with multiple modes: lowercase, uppercase, capitalize first letter, and sentence case.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/case-converter',
+    iconName: 'FileText',
+    tags: ['文本', '大小写', '转换', '格式'],
+    tagsEn: ['Text', 'Case', 'Convert', 'Format'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: caseConverterDefaultInput,
+    doc: {
+      zh: {
+        whatIsIt:
+          '简单便捷的文本大小写转换器，支持多种常用转换模式，满足文本编辑中的各种需求。',
+        coreFeatures: [
+          '四种转换模式：全小写、全大写、首字母大写、句首大写',
+          '实时预览：输入文字时立即展示转换结果',
+          '一键复制：转换完成后快速复制结果',
+          '纯本地运行：所有操作在浏览器内完成，数据不离开设备',
+        ],
+        howToUse: [
+          '在输入框中粘贴或输入需要转换的文本',
+          '点击对应转换模式按钮',
+          '下方立即显示转换后的结果',
+          '点击复制按钮获取转换后的文本',
+        ],
+        useCases: [
+          '统一代码注释或变量名大小写',
+          '修正文章标题或句子首字母大小写',
+          '转换整段文本大小写格式',
+        ],
+        privacyNote:
+          '所有转换都在本地浏览器完成，文本内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持中文文本吗？',
+            answer:
+              '中文不受大小写转换影响，只转换英文字母，所以支持中英文混合文本。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A simple and convenient text case converter that supports multiple common conversion modes to meet various needs in text editing.',
+        coreFeatures: [
+          'Four conversion modes: lowercase, uppercase, capitalize first letter, sentence case',
+          'Real-time preview: result is displayed instantly as you type',
+          'One-click copy: quickly get the converted result after conversion',
+          '100% local: all processing done in-browser, text never leaves your device',
+        ],
+        howToUse: [
+          'Paste or type your text in the input box',
+          'Click the button for the conversion mode you want',
+          'The converted result will immediately appear below',
+          'Click the copy button to get the converted text',
+        ],
+        useCases: [
+          'Unify case for code comments or variable names',
+          'Fix capitalization for titles and sentence beginnings',
+          'Convert case for entire paragraphs of text',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Text content is never uploaded to any server, keeping your content private.',
+        faqs: [
+          {
+            question: 'Does it support Chinese text?',
+            answer:
+              'Chinese characters are not affected by case conversion. Only English letters are converted, so mixed Chinese and English text is fully supported.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'remove-duplicate-lines',
+    name: '行去重',
+    nameEn: 'Remove Duplicate Lines',
+    description:
+      '移除文本中的重复行，保留唯一内容，支持大小写敏感设置和结果排序。',
+    descriptionEn:
+      'Remove duplicate lines from text, keep only unique content, supports case sensitivity and result sorting.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/remove-duplicate-lines',
+    iconName: 'FileText',
+    tags: ['文本', '去重', '清理', '排序'],
+    tagsEn: ['Text', 'Deduplicate', 'Clean', 'Sort'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: removeDuplicateLinesDefaultInput,
+    doc: {
+      zh: {
+        whatIsIt:
+          '快速清理文本中重复行的实用工具，帮助你整理列表、日志等文本内容，得到唯一行集合。',
+        coreFeatures: [
+          '一键移除所有重复行，只保留第一次出现的行',
+          '可选大小写敏感去重',
+          '可选对结果进行排序',
+          '实时展示行数变化统计',
+          '纯本地运行，数据不离开浏览器',
+        ],
+        howToUse: [
+          '在输入框粘贴需要处理的文本',
+          '勾选需要的选项（大小写敏感、排序）',
+          '下方立即显示去重后的结果',
+          '点击复制按钮获取处理后的文本',
+        ],
+        useCases: [
+          '清理列表、日志中的重复条目',
+          '整理配置文件去除重复配置项',
+          '整理关键词列表去除重复词',
+        ],
+        privacyNote:
+          '所有处理都在本地浏览器完成，文本内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '什么是"大小写敏感"？',
+            answer:
+              '开启后，内容相同但大小写不同行会被视为不同行（比如 "Apple" 和 "apple" 都会保留）；关闭后，它们会被视为相同，只保留第一个。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A utility tool to quickly remove duplicate lines from text, helping you organize lists, logs and other text content to get a unique line collection.',
+        coreFeatures: [
+          'One-click removal of all duplicate lines, only keeps the first occurrence',
+          'Optional case-sensitive deduplication',
+          'Optional sorting of the result',
+          'Real-time line count statistics',
+          '100% local processing, data never leaves the browser',
+        ],
+        howToUse: [
+          'Paste the text you want to process in the input box',
+          'Check the options you need (case-sensitive, sort)',
+          'The deduplicated result appears below immediately',
+          'Click the copy button to get the processed text',
+        ],
+        useCases: [
+          'Cleaning up duplicate entries in lists and logs',
+          'Organizing config files by removing duplicate entries',
+          'Organizing keyword lists by removing duplicate words',
+        ],
+        privacyNote:
+          'All processing is done locally in your browser. Text content is never uploaded to any server, keeping your content private.',
+        faqs: [
+          {
+            question: 'What is "case-sensitive"?',
+            answer:
+              'When enabled, lines with the same content but different case will be treated as different lines (e.g., "Apple" and "apple" will both be kept); when disabled, they will be treated as the same and only the first one will be kept.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'css-beautifier',
+    name: 'CSS 格式化',
+    nameEn: 'CSS Beautifier',
+    description:
+      '格式化压缩/混乱的CSS代码，支持缩进设置，使其易于阅读和调试。',
+    descriptionEn:
+      'Beautify minified or messy CSS code with customizable indentation, making it easy to read and debug.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/css-beautifier',
+    iconName: 'Code',
+    tags: ['CSS', '格式化', '美化', '代码'],
+    tagsEn: ['CSS', 'Format', 'Beautify', 'Code'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: cssBeautifierDefaultInput,
+    doc: {
+      zh: {
+        whatIsIt:
+          '专业的CSS代码格式化工具，将压缩或混乱的CSS代码快速美化，提高代码可读性。',
+        coreFeatures: [
+          '支持自定义缩进大小（2空格或4空格）',
+          '使用成熟的js-beautify库保证格式化质量',
+          '实时预览格式化结果',
+          '一键复制格式化后的代码',
+          '纯浏览器本地运行，代码不离开设备',
+        ],
+        howToUse: [
+          '在输入框粘贴需要格式化的CSS代码',
+          '选择你喜欢的缩进大小（2或4空格）',
+          '下方立即显示格式化后的结果',
+          '点击复制按钮获取格式化后的代码',
+        ],
+        useCases: [
+          '美化从网站复制的压缩CSS代码',
+          '格式化混淆或压缩的CSS文件',
+          '统一团队代码格式风格',
+        ],
+        privacyNote:
+          '所有格式化都在本地浏览器完成，代码内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '格式化需要很长时间吗？',
+            answer:
+              '即使是较大的CSS文件，格式化也能在浏览器中瞬间完成，几乎感受不到延迟。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Professional CSS code formatting tool that quickly beautifies minified or messy CSS code to improve readability.',
+        coreFeatures: [
+          'Supports custom indent size (2 or 4 spaces)',
+          'Uses the mature js-beautify library to ensure formatting quality',
+          'Real-time preview of the formatted result',
+          'One-click copy of the formatted code',
+          '100% local processing in browser, code never leaves your device',
+        ],
+        howToUse: [
+          'Paste the CSS code you need to format into the input box',
+          'Select your preferred indent size (2 or 4 spaces)',
+          'The formatted result appears below immediately',
+          'Click the copy button to get the formatted code',
+        ],
+        useCases: [
+          'Beautifying minified CSS code copied from websites',
+          'Formatting obfuscated or compressed CSS files',
+          'Unifying team code formatting style',
+        ],
+        privacyNote:
+          'All formatting is done locally in your browser. Code content is never uploaded to any server, keeping your content private.',
+        faqs: [
+          {
+            question: 'Does formatting take a long time?',
+            answer:
+              'Even for larger CSS files, formatting completes instantly in the browser with almost no perceptible delay.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'base-converter',
+    name: '进制转换',
+    nameEn: 'Base Converter',
+    description:
+      '二进制、八进制、十进制和十六进制之间互相转换，支持正负整数。',
+    descriptionEn:
+      'Convert between binary, octal, decimal, and hexadecimal, supports positive and negative integers.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/base-converter',
+    iconName: 'Code',
+    tags: ['进制', '转换', '计算', '开发'],
+    tagsEn: ['Base', 'Convert', 'Math', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: baseConverterDefaultInput,
+    doc: {
+      zh: {
+        whatIsIt:
+          '简单实用的进制转换器，在二进制、八进制、十进制和十六进制之间快速转换，满足编程开发中的日常计算需求。',
+        coreFeatures: [
+          '支持四种常用进制互相转换',
+          '支持正负整数转换',
+          '一键复制转换结果',
+          '纯本地计算，无需后端',
+        ],
+        howToUse: [
+          '输入你要转换的数字',
+          '选择源进制和目标进制',
+          '下方立即显示转换结果',
+          '点击复制获取结果',
+        ],
+        useCases: [
+          '编程开发中的进制转换计算',
+          '学习计算机基础知识时的练习',
+          '调试网络协议或数据格式',
+        ],
+        privacyNote:
+          '所有计算都在本地浏览器完成，数据不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '支持小数转换吗？',
+            answer:
+              '目前只支持整数转换，小数转换将在后续版本中支持。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A simple and practical base converter that quickly converts between binary, octal, decimal, and hexadecimal, meeting everyday calculation needs in programming development.',
+        coreFeatures: [
+          'Supports conversion between four commonly used bases',
+          'Supports conversion of positive and negative integers',
+          'One-click copy of conversion result',
+          'Pure local calculation, no backend needed',
+        ],
+        howToUse: [
+          'Enter the number you want to convert',
+          'Select the source base and target base',
+          'The conversion result appears below immediately',
+          'Click copy to get the result',
+        ],
+        useCases: [
+          'Base conversion calculations in programming development',
+          'Practice when learning basic computer knowledge',
+          'Debugging network protocols or data formats',
+        ],
+        privacyNote:
+          'All calculations are done locally in your browser. Data is never uploaded to any server.',
+        faqs: [
+          {
+            question: 'Does it support decimal fraction conversion?',
+            answer:
+              'Currently only integer conversion is supported. Decimal fraction support will be added in future versions.',
           },
         ],
       },

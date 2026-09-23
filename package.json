@@ -19,6 +19,10 @@
   },
   "devDependencies": {
     "@playwright/test": "^1",
+    "@types/js-beautify": "^1.14.3",
     "turbo": "^2.11.2"
+  },
+  "dependencies": {
+    "js-beautify": "^2.0.3"
   }
 }
