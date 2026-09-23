@@ -11,10 +11,11 @@ import {
   defaultSampleInput,
 } from './constants';
 import { convertCase } from './utils/converter';
-import { useI18n } from '@/lib/i18n';
+import { useI18n } from '@/lib/i18n/i18n-provider';
+import { LanguageEnum } from '@/lib/i18n/constants';
 
 function CaseConverter({ defaultInput }: ToolComponentProps) {
-  const { t, locale } = useI18n();
+  const { t, language } = useI18n();
   const [input, setInput] = useState(defaultInput || defaultSampleInput);
   const [mode, setMode] = useState<CaseConversionMode>(CaseConversionMode.LOWERCASE);
   const [copied, copy] = useCopy();
@@ -52,7 +53,7 @@ function CaseConverter({ defaultInput }: ToolComponentProps) {
                 : 'bg-background hover:bg-accent'
             }`}
           >
-            {locale === 'zh'
+            {language === LanguageEnum.ZH
               ? conversionModeLabels[conversionMode]
               : conversionModeLabelsEn[conversionMode]}
           </button>

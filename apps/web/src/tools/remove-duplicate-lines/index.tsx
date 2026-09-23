@@ -6,7 +6,7 @@ import { useCopy } from '@/hooks/use-copy';
 import { ToolComponentProps } from '@/lib/tools/tool-component-props';
 import { defaultSampleInput } from './constants';
 import { removeDuplicateLines } from './utils/remover';
-import { useI18n } from '@/lib/i18n';
+import { useI18n } from '@/lib/i18n/i18n-provider';
 
 function RemoveDuplicateLines({ defaultInput }: ToolComponentProps) {
   const { t } = useI18n();

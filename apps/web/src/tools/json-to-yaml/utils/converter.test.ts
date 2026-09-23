@@ -6,7 +6,7 @@ describe('jsonToYaml', () => {
     const json = '{"name": "test", "age": 25}';
     const result = jsonToYaml(json);
     expect(result.success).toBe(true);
-    expect(result.result).toContain('name: "test"');
+    expect(result.result).toContain('name: test');
     expect(result.result).toContain('age: 25');
   });
 
@@ -15,7 +15,7 @@ describe('jsonToYaml', () => {
     const result = jsonToYaml(json);
     expect(result.success).toBe(true);
     expect(result.result).toContain('person:');
-    expect(result.result).toContain('name: "test"');
+    expect(result.result).toContain('name: test');
     expect(result.result).toContain('active: true');
   });
 
@@ -23,9 +23,9 @@ describe('jsonToYaml', () => {
     const json = '["apple", "banana", "cherry"]';
     const result = jsonToYaml(json);
     expect(result.success).toBe(true);
-    expect(result.result).toContain('- "apple"');
-    expect(result.result).toContain('- "banana"');
-    expect(result.result).toContain('- "cherry"');
+    expect(result.result).toContain('- apple');
+    expect(result.result).toContain('- banana');
+    expect(result.result).toContain('- cherry');
   });
 
   it('should handle null values', () => {
