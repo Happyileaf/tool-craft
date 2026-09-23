@@ -29,4 +29,5 @@ export const toolLoaders: Record<
   'word-count': () => import('./word-count'),
   'yaml-to-json': () => import('./yaml-to-json'),
   'uuid-generator': () => import('./uuid-generator'),
+  'json-to-yaml': () => import('./json-to-yaml'),
 };
