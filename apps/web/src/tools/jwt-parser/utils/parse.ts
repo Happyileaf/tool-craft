@@ -61,13 +61,13 @@ export function parseJwt(token: string): JwtParseResult {
   }
 
   try {
-    const headerJson = base64UrlDecode(parts[0]);
-    const payloadJson = base64UrlDecode(parts[1]);
+    const headerJson = base64UrlDecode(parts[0]!);
+    const payloadJson = base64UrlDecode(parts[1]!);
 
     return {
       header: JSON.parse(headerJson),
       payload: JSON.parse(payloadJson),
-      signature: parts[2],
+      signature: parts[2]!,
       isValidFormat: true,
       error: null,
       parts,

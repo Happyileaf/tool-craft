@@ -1,13 +1,18 @@
 import { describe, expect, test } from 'vitest';
 import { convert } from './convert';
-import { UNIT_CATEGORIES } from '../constants';
+import { UNIT_CATEGORIES, UnitCategory } from '../constants';
+
+function getUnit(categoryKey: UnitCategory, unitKey: string) {
+  return UNIT_CATEGORIES.find(c => c.key === categoryKey)!
+    .units.find(u => u.key === unitKey)!;
+}
 
 describe('convert length', () => {
   const category = 'length';
-  const km = UNIT_CATEGORIES[0].units.find(u => u.key === 'km')!;
-  const m = UNIT_CATEGORIES[0].units.find(u => u.key === 'm')!;
-  const cm = UNIT_CATEGORIES[0].units.find(u => u.key === 'cm')!;
-  const inUnit = UNIT_CATEGORIES[0].units.find(u => u.key === 'in')!;
+  const km = getUnit(category, 'km');
+  const m = getUnit(category, 'm');
+  const cm = getUnit(category, 'cm');
+  const inUnit = getUnit(category, 'in');
 
   test('1 km to m', () => {
     expect(convert(1, km, m, category)).toBe(1000);
@@ -24,9 +29,9 @@ describe('convert length', () => {
 
 describe('convert temperature', () => {
   const category = 'temperature';
-  const c = UNIT_CATEGORIES[4].units.find(u => u.key === 'c')!;
-  const f = UNIT_CATEGORIES[4].units.find(u => u.key === 'f')!;
-  const k = UNIT_CATEGORIES[4].units.find(u => u.key === 'k')!;
+  const c = getUnit(category, 'c');
+  const f = getUnit(category, 'f');
+  const k = getUnit(category, 'k');
 
   test('0 C to F', () => {
     expect(convert(0, c, f, category)).toBe(32);
@@ -50,8 +55,10 @@ describe('convert temperature', () => {
 });
 
 describe('convert area', () => {
-  const category = 'area';
-  const km2 = UNIT_CATEGORIES[1].units.find(u => u.key === 'km2')!;
-  const m2 = UNIT_CATEGORIES[1].units.find(u => u.key === 'm2')!;
-  expect(convert(1, km2, m2, category)).toBe(1000000);
+  test('1 km2 to m2', () => {
+    const category = 'area';
+    const km2 = getUnit(category, 'km2');
+    const m2 = getUnit(category, 'm2');
+    expect(convert(1, km2, m2, category)).toBe(1000000);
+  });
 });

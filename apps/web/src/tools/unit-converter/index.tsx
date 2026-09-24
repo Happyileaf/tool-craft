@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { ArrowDownUp } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
+import { LanguageEnum } from '@/lib/i18n/constants';
 import {
   UNIT_CATEGORIES,
   DEFAULT_INPUT_VALUE,
@@ -13,14 +14,14 @@ import {
 import { convert } from './utils/convert';
 
 function UnitConverter() {
-  const { t, lang } = useI18n();
+  const { t, language } = useI18n();
   const [category, setCategory] = useState<UnitCategory>(DEFAULT_CATEGORY);
   const [inputValue, setInputValue] = useState<number>(DEFAULT_INPUT_VALUE);
   const [fromUnitKey, setFromUnitKey] = useState<string>(
-    UNIT_CATEGORIES[0].units[0].key
+    UNIT_CATEGORIES[0]!.units[0]!.key
   );
   const [toUnitKey, setToUnitKey] = useState<string>(
-    UNIT_CATEGORIES[0].units[1].key
+    UNIT_CATEGORIES[0]!.units[1]!.key
   );
 
   const currentCategory = UNIT_CATEGORIES.find(c => c.key === category)!;
@@ -42,7 +43,7 @@ function UnitConverter() {
         </label>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {UNIT_CATEGORIES.map(cat => {
-            const label = lang === 'zh' ? cat.label : cat.labelEn;
+            const label = language === LanguageEnum.ZH ? cat.label : cat.labelEn;
             return (
               <button
                 key={cat.key}
@@ -50,8 +51,8 @@ function UnitConverter() {
                 onClick={() => {
                   setCategory(cat.key);
                   // 切换分类后默认选前两个单位
-                  const firstUnit = cat.units[0].key;
-                  const secondUnit = cat.units.length > 1 ? cat.units[1].key : firstUnit;
+                  const firstUnit = cat.units[0]!.key;
+                  const secondUnit = cat.units.length > 1 ? cat.units[1]!.key : firstUnit;
                   setFromUnitKey(firstUnit);
                   setToUnitKey(secondUnit);
                 }}
@@ -86,7 +87,7 @@ function UnitConverter() {
             className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-slate-800 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:border-slate-500"
           >
             {currentCategory.units.map(unit => {
-              const label = lang === 'zh' ? unit.label : unit.labelEn;
+              const label = language === LanguageEnum.ZH ? unit.label : unit.labelEn;
               return (
                 <option key={unit.key} value={unit.key}>
                   {label}
@@ -121,7 +122,7 @@ function UnitConverter() {
             className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-slate-800 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:border-slate-500"
           >
             {currentCategory.units.map(unit => {
-              const label = lang === 'zh' ? unit.label : unit.labelEn;
+              const label = language === LanguageEnum.ZH ? unit.label : unit.labelEn;
               return (
                 <option key={unit.key} value={unit.key}>
                   {label}

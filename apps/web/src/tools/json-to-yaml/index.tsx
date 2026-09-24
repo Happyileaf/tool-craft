@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Check, Copy, Eraser } from 'lucide-react';
+import { Check, Copy, Eraser, X } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import yaml from 'yaml';
 import { DEFAULT_INPUT } from './constants';

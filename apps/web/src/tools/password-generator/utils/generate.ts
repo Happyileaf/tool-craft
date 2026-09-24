@@ -42,8 +42,8 @@ export function generatePassword(
   crypto.getRandomValues(array);
 
   for (let i = 0; i < length; i++) {
-    const randomIndex = array[i] % charset.length;
-    password += charset[randomIndex];
+    const randomIndex = array[i]! % charset.length;
+    password += charset[randomIndex]!;
   }
 
   return password;

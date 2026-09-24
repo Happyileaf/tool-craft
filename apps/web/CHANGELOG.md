@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-09-25 ：【自主迭代】新增 5 个工具
+
+- **新增**：JWT解析器（jwt-parser）— 解析并可视化JSON Web Token，自动识别过期时间
+- **新增**：密码生成器（password-generator）— 生成可自定义长度和字符集的高强度随机密码
+- **新增**：单位转换器（unit-converter）— 长度/面积/体积/重量/温度/时间/速度等多类别单位换算
+- **新增**：大小写转换器（case-converter）—  camelCase/PascalCase/snake_case/kebab-case/constant_case/Sentence case/Title Case互相转换
+- **新增**：JSON转YAML（json-to-yaml）— 将JSON格式数据转换为可读性更好的YAML
+
 ## 2026-09-22 ：【自主迭代】新增 3 个文本处理工具
 
 - **新增**：字数统计（word-count）— 实时统计文本字符数、字数、行数和段落数

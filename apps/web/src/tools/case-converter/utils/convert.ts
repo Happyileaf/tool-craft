@@ -4,20 +4,25 @@ import { CaseType } from '../constants';
  * 将输入文本分词，分割成单词数组
  */
 function tokenize(text: string): string[] {
-  // 先处理常见分隔符，分割成单词
+  // 先按空格分割，再对每个部分进一步分词
   let words: string[] = [];
 
   // 按换行分割处理多行
   const lines = text.split('\n');
   for (const line of lines) {
-    // 处理 snake_case, kebab-case, CONSTANT_CASE
-    const parts = line.split(/[-_]/);
-    for (const part of parts) {
-      if (!part) continue;
-      // 处理 camelCase/PascalCase 分词
-      // 在大写字母前分割
-      const camelParts = part.split(/(?=[A-Z])/);
-      words.push(...camelParts);
+    // 先按空格分割
+    const spaceParts = line.split(/\s+/);
+    for (const spacePart of spaceParts) {
+      if (!spacePart) continue;
+      // 处理 snake_case, kebab-case, CONSTANT_CASE
+      const parts = spacePart.split(/[-_]/);
+      for (const part of parts) {
+        if (!part) continue;
+        // 处理 camelCase/PascalCase 分词
+        // 在大写字母前分割
+        const camelParts = part.split(/(?=[A-Z])/);
+        words.push(...camelParts);
+      }
     }
   }
 
@@ -38,7 +43,7 @@ export function convertCase(text: string, targetCase: CaseType): string {
 
   switch (targetCase) {
     case CaseType.CAMEL:
-      return words[0].toLowerCase() + words.slice(1).map(capitalizeFirst).join('');
+      return words[0]!.toLowerCase() + words.slice(1).map(capitalizeFirst).join('');
     case CaseType.PASCAL:
       return words.map(capitalizeFirst).join('');
     case CaseType.SNAKE:
@@ -58,5 +63,5 @@ export function convertCase(text: string, targetCase: CaseType): string {
 
 function capitalizeFirst(word: string): string {
   if (!word) return word;
-  return word[0].toUpperCase() + word.slice(1).toLowerCase();
+  return word[0]!.toUpperCase() + word.slice(1).toLowerCase();
 }

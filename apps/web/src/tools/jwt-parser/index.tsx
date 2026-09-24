@@ -3,11 +3,12 @@
 import { useEffect, useState } from 'react';
 import { Check, Copy, Eraser, KeyRound, ShieldCheck, X } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
+import { LanguageEnum } from '@/lib/i18n/constants';
 import { DEFAULT_INPUT, JWT_CLAIM_LABELS, JWT_CLAIM_LABELS_EN } from './constants';
 import { parseJwt, formatTimestamp, isExpired, type JwtParseResult } from './utils/parse';
 
 function JwtParser() {
-  const { t, lang } = useI18n();
+  const { t, language } = useI18n();
   const [input, setInput] = useState(DEFAULT_INPUT);
   const [result, setResult] = useState<JwtParseResult | null>(null);
   const [copied, setCopied] = useState<'header' | 'payload' | null>(null);
@@ -35,7 +36,7 @@ function JwtParser() {
     }
   }
 
-  const claimLabels = lang === 'zh' ? JWT_CLAIM_LABELS : JWT_CLAIM_LABELS_EN;
+  const claimLabels = language === LanguageEnum.ZH ? JWT_CLAIM_LABELS : JWT_CLAIM_LABELS_EN;
 
   return (
     <div className="flex flex-col gap-4">
