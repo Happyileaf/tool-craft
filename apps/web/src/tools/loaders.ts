@@ -33,4 +33,5 @@ export const toolLoaders: Record<
   'password-generator': () => import('./password-generator'),
   'unit-converter': () => import('./unit-converter'),
   'case-converter': () => import('./case-converter'),
+  'json-to-yaml': () => import('./json-to-yaml'),
 };
