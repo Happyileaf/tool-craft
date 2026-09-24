@@ -32,4 +32,5 @@ export const toolLoaders: Record<
   'jwt-parser': () => import('./jwt-parser'),
   'password-generator': () => import('./password-generator'),
   'unit-converter': () => import('./unit-converter'),
+  'case-converter': () => import('./case-converter'),
 };

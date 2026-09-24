@@ -1368,6 +1368,99 @@ author:
       },
     },
   },
+  {
+    slug: 'case-converter',
+    name: '命名格式转换',
+    nameEn: 'Case Converter',
+    description:
+      '驼峰、帕斯卡、蛇形、烤肉串、常量、句子、标题等多种命名格式互相转换。',
+    descriptionEn:
+      'Convert between multiple naming formats: camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, Sentence case, Title Case.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/case-converter',
+    iconName: 'TextCursorInput',
+    tags: ['文本', '命名', '转换', '格式', '开发'],
+    tagsEn: ['Text', 'Naming', 'Convert', 'Format', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '开发者日常编码必备的命名格式转换工具，支持常见的多种命名格式互相自动转换，省去手动重命名麻烦。',
+        coreFeatures: [
+          '支持多种格式：驼峰、帕斯卡、蛇形、烤肉串、常量、句子、标题七种格式',
+          '智能分词：自动识别任意输入格式并分割单词',
+          '实时转换：选择目标格式后立即得到转换结果',
+          '一键复制：转换完成后直接复制结果到剪贴板',
+          '纯本地处理：所有转换在浏览器完成，不依赖服务器',
+        ],
+        howToUse: [
+          '在输入框粘贴需要转换的标识符或文本',
+          '点击选择目标格式',
+          '下方立即显示转换结果',
+          '点击复制按钮获取转换后的结果',
+        ],
+        useCases: [
+          '将后端 snake_case 字段转换为前端 camelCase',
+          '重构代码时快速重命名标识符',
+          '将 API 返回的常量格式转换为代码需要的格式',
+          '统一项目中的命名风格',
+        ],
+        privacyNote:
+          '所有转换都在本地浏览器完成，内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持哪些格式？',
+            answer:
+              '目前支持 camelCase、PascalCase、snake_case、kebab-case、CONSTANT_CASE、Sentence case、Title Case 七种格式。',
+          },
+          {
+            question: '输入可以是任意格式吗？',
+            answer:
+              '是的，工具会自动分词，不管输入是什么格式，都能正确分割单词然后转换为目标格式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'An essential naming format conversion tool for developers daily coding, supports automatic conversion between common naming formats, saves you the trouble of manual renaming.',
+        coreFeatures: [
+          'Supports multiple formats: camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, Sentence case, Title Case',
+          'Smart tokenization: automatically recognizes any input format and splits words',
+          'Real-time conversion: get result instantly after selecting target format',
+          'One-click copy: copy result directly to clipboard after conversion',
+          '100% local processing: all conversions done in the browser, no server dependency',
+        ],
+        howToUse: [
+          'Paste the identifier or text you want to convert in the input box',
+          'Click to select the target format',
+          'The converted result appears immediately below',
+          'Click the copy button to get the converted result',
+        ],
+        useCases: [
+          'Converting backend snake_case fields to frontend camelCase',
+          'Quickly renaming identifiers during code refactoring',
+          'Converting constant format from API responses to the format needed for code',
+          'Unifying naming styles in a project',
+        ],
+        privacyNote:
+          'All conversions are done locally in your browser. Content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'What formats are supported?',
+            answer:
+              'Currently supports seven formats: camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, Sentence case, and Title Case.',
+          },
+          {
+            question: 'Can input be in any format?',
+            answer:
+              'Yes, the tool automatically tokenizes words. No matter what format the input is in, it can correctly split words and convert to the target format.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
