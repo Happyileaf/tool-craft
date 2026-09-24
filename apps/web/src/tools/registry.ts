@@ -1099,6 +1099,99 @@ author:
       },
     },
   },
+  {
+    slug: 'jwt-parser',
+    name: 'JWT 解析器',
+    nameEn: 'JWT Parser',
+    description:
+      '解析并验证 JSON Web Token，展示头部、载荷和标准声明信息，检查过期状态。',
+    descriptionEn:
+      'Parse and validate JSON Web Tokens, display header, payload, and standard claims, check expiration status.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/jwt-parser',
+    iconName: 'Key',
+    tags: ['JWT', 'JSON', 'Token', '解析', '开发'],
+    tagsEn: ['JWT', 'JSON', 'Token', 'Parse', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 JWT 令牌解析调试工具，无需上传服务器，立即解析出头部、载荷和签名信息，检查令牌过期状态。',
+        coreFeatures: [
+          '快速解析：粘贴 JWT 令牌后立即展示格式化的头部和载荷',
+          '过期检查：自动识别 exp 标准声明，提示令牌是否已过期',
+          '标准声明标注：对 iss/sub/exp/nbf/iat/jti 等标准声明提供友好说明',
+          '一键复制：支持单独复制头部或载荷 JSON 结果',
+          '纯本地运行：所有解析都在浏览器中完成，令牌内容不离开设备',
+        ],
+        howToUse: [
+          '在输入框中粘贴完整的 JWT 令牌',
+          '下方会自动展示解析后的头部、载荷和签名信息',
+          '如果有时效性声明（如 exp 过期时间），会自动显示格式化时间和过期状态',
+          '点击复制按钮获取完整的头部或载荷 JSON',
+        ],
+        useCases: [
+          '开发调试 API 认证时快速查看 token 内容',
+          '检查 JWT 令牌的过期时间和签发信息',
+          '验证 token 格式是否正确',
+        ],
+        privacyNote:
+          '所有解析运算都在本地浏览器完成，令牌内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '这个工具会验证签名有效性吗？',
+            answer:
+              '目前只做格式解析和过期检查，不验证签名的密码学有效性。签名验证需要密钥，无法在纯前端完成。',
+          },
+          {
+            question: '支持哪些 JWT 格式？',
+            answer:
+              '支持标准的三段式 JWT 格式：header.payload.signature，这是目前绝大多数 JWT 使用的格式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient JWT token parsing and debugging tool that works entirely in your browser, instantly parses header, payload, and signature information, and checks token expiration.',
+        coreFeatures: [
+          'Fast parsing: paste JWT token and instantly get formatted header and payload',
+          'Expiration check: automatically detects exp standard claim and indicates if token is expired',
+          'Standard claim labeling: provides friendly descriptions for standard claims like iss/sub/exp/nbf/iat/jti',
+          'One-click copy: supports copying header or payload JSON separately',
+          '100% local: all parsing done in-browser, token never leaves your device',
+        ],
+        howToUse: [
+          'Paste the complete JWT token in the input box',
+          'The parsed header, payload, and signature will automatically display below',
+          'If there are time-based claims like expiration, it will automatically show formatted time and expiration status',
+          'Click the copy button to get the complete header or payload JSON',
+        ],
+        useCases: [
+          'Quickly viewing token content during API authentication development and debugging',
+          'Checking JWT token expiration and issuance information',
+          'Verifying if token format is correct',
+        ],
+        privacyNote:
+          'All parsing is done locally in your browser. Token content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does this tool verify signature validity?',
+            answer:
+              'Currently this tool only does format parsing and expiration checking. It does not verify the cryptographic validity of the signature because signature verification requires a secret key and cannot be done purely client-side.',
+          },
+          {
+            question: 'What JWT formats are supported?',
+            answer:
+              'Supports the standard three-part JWT format: header.payload.signature, which is the format used by the vast majority of JWT tokens today.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
