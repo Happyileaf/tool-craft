@@ -31,4 +31,5 @@ export const toolLoaders: Record<
   'uuid-generator': () => import('./uuid-generator'),
   'jwt-parser': () => import('./jwt-parser'),
   'password-generator': () => import('./password-generator'),
+  'unit-converter': () => import('./unit-converter'),
 };

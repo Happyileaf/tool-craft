@@ -1285,6 +1285,89 @@ author:
       },
     },
   },
+  {
+    slug: 'unit-converter',
+    name: '单位换算器',
+    nameEn: 'Unit Converter',
+    description:
+      '常见度量单位互相转换，支持长度、面积、体积、重量、温度、时间、速度等类别。',
+    descriptionEn:
+      'Convert between common measurement units, supports length, area, volume, weight, temperature, time, speed and more.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/unit-converter',
+    iconName: 'Calculator',
+    tags: ['单位', '换算', '转换', '度量', '计算'],
+    tagsEn: ['Unit', 'Convert', 'Conversion', 'Measurement', 'Calc'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的度量单位换算工具，覆盖日常生活和工作中最常用的单位类别，快速换算任意单位。',
+        coreFeatures: [
+          '覆盖广泛：支持长度、面积、体积、重量、温度、时间、速度七大类常用单位',
+          '公制英制都支持：千米↔英里，千克↔磅，摄氏度↔华氏度等',
+          '一键交换：点击交换按钮快速互换输入输出单位',
+          '纯本地计算：所有换算都在浏览器完成，不依赖服务器',
+        ],
+        howToUse: [
+          '点击分类选择需要换算的单位类别',
+          '输入需要换算的数值',
+          '分别选择源单位和目标单位',
+          '下方立即显示换算结果',
+          '点击交换按钮可以快速交换源单位和目标单位',
+        ],
+        useCases: [
+          '日常购物时转换不同单位的商品规格',
+          '出国旅行时转换温度、长度、重量单位',
+          '开发和工程计算中不同单位体系转换',
+          '烹饪食谱中不同容量单位转换',
+        ],
+        privacyNote:
+          '所有换算都在本地浏览器完成，数据不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持哪些单位类别？',
+            answer:
+              '目前支持长度、面积、体积、重量、温度、时间、速度七大类，包含公制、英制等常用单位。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient measurement unit conversion tool that covers the most commonly used unit categories in daily life and work, quickly convert between any units.',
+        coreFeatures: [
+          'Wide coverage: supports seven major categories of commonly used units: length, area, volume, weight, temperature, time, and speed',
+          'Supports both metric and imperial: convert kilometers to miles, kilograms to pounds, Celsius to Fahrenheit, and more',
+          'One-click swap: click the swap button to quickly swap input and output units',
+          '100% local calculation: all conversions done in the browser, no server dependency',
+        ],
+        howToUse: [
+          'Click the category to select the unit category you want to convert',
+          'Enter the value you want to convert',
+          'Select the source unit and target unit respectively',
+          'The conversion result is displayed immediately below',
+          'Click the swap button to quickly swap source and target units',
+        ],
+        useCases: [
+          'Converting product specifications between different units when shopping',
+          'Converting temperature, length, and weight units when traveling abroad',
+          'Converting between different unit systems in development and engineering calculations',
+          'Converting different capacity units in cooking recipes',
+        ],
+        privacyNote:
+          'All conversions are done locally in your browser. Data is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'What unit categories are supported?',
+            answer:
+              'Currently supports seven categories: length, area, volume, weight, temperature, time, and speed, including common units from both metric and imperial systems.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
