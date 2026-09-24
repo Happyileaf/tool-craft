@@ -1099,6 +1099,447 @@ author:
       },
     },
   },
+  {
+    slug: 'jwt-parser',
+    name: 'JWT 解析器',
+    nameEn: 'JWT Parser',
+    description:
+      '解析并验证 JSON Web Token，展示头部、载荷和标准声明信息，检查过期状态。',
+    descriptionEn:
+      'Parse and validate JSON Web Tokens, display header, payload, and standard claims, check expiration status.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/jwt-parser',
+    iconName: 'Key',
+    tags: ['JWT', 'JSON', 'Token', '解析', '开发'],
+    tagsEn: ['JWT', 'JSON', 'Token', 'Parse', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 JWT 令牌解析调试工具，无需上传服务器，立即解析出头部、载荷和签名信息，检查令牌过期状态。',
+        coreFeatures: [
+          '快速解析：粘贴 JWT 令牌后立即展示格式化的头部和载荷',
+          '过期检查：自动识别 exp 标准声明，提示令牌是否已过期',
+          '标准声明标注：对 iss/sub/exp/nbf/iat/jti 等标准声明提供友好说明',
+          '一键复制：支持单独复制头部或载荷 JSON 结果',
+          '纯本地运行：所有解析都在浏览器中完成，令牌内容不离开设备',
+        ],
+        howToUse: [
+          '在输入框中粘贴完整的 JWT 令牌',
+          '下方会自动展示解析后的头部、载荷和签名信息',
+          '如果有时效性声明（如 exp 过期时间），会自动显示格式化时间和过期状态',
+          '点击复制按钮获取完整的头部或载荷 JSON',
+        ],
+        useCases: [
+          '开发调试 API 认证时快速查看 token 内容',
+          '检查 JWT 令牌的过期时间和签发信息',
+          '验证 token 格式是否正确',
+        ],
+        privacyNote:
+          '所有解析运算都在本地浏览器完成，令牌内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '这个工具会验证签名有效性吗？',
+            answer:
+              '目前只做格式解析和过期检查，不验证签名的密码学有效性。签名验证需要密钥，无法在纯前端完成。',
+          },
+          {
+            question: '支持哪些 JWT 格式？',
+            answer:
+              '支持标准的三段式 JWT 格式：header.payload.signature，这是目前绝大多数 JWT 使用的格式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient JWT token parsing and debugging tool that works entirely in your browser, instantly parses header, payload, and signature information, and checks token expiration.',
+        coreFeatures: [
+          'Fast parsing: paste JWT token and instantly get formatted header and payload',
+          'Expiration check: automatically detects exp standard claim and indicates if token is expired',
+          'Standard claim labeling: provides friendly descriptions for standard claims like iss/sub/exp/nbf/iat/jti',
+          'One-click copy: supports copying header or payload JSON separately',
+          '100% local: all parsing done in-browser, token never leaves your device',
+        ],
+        howToUse: [
+          'Paste the complete JWT token in the input box',
+          'The parsed header, payload, and signature will automatically display below',
+          'If there are time-based claims like expiration, it will automatically show formatted time and expiration status',
+          'Click the copy button to get the complete header or payload JSON',
+        ],
+        useCases: [
+          'Quickly viewing token content during API authentication development and debugging',
+          'Checking JWT token expiration and issuance information',
+          'Verifying if token format is correct',
+        ],
+        privacyNote:
+          'All parsing is done locally in your browser. Token content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does this tool verify signature validity?',
+            answer:
+              'Currently this tool only does format parsing and expiration checking. It does not verify the cryptographic validity of the signature because signature verification requires a secret key and cannot be done purely client-side.',
+          },
+          {
+            question: 'What JWT formats are supported?',
+            answer:
+              'Supports the standard three-part JWT format: header.payload.signature, which is the format used by the vast majority of JWT tokens today.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'password-generator',
+    name: '随机密码生成器',
+    nameEn: 'Random Password Generator',
+    description:
+      '生成可自定义长度、字符集的高强度随机密码，支持排除易混淆字符。',
+    descriptionEn:
+      'Generate high-strength random passwords with customizable length and character sets, supports excluding ambiguous characters.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/password-generator',
+    iconName: 'KeyRound',
+    tags: ['密码', '随机', '安全', '生成', '加密'],
+    tagsEn: ['Password', 'Random', 'Security', 'Generate', 'Crypto'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '基于浏览器原生 Crypto API 的高强度随机密码生成工具，可自定义长度和字符集，满足不同场景的密码安全需求。',
+        coreFeatures: [
+          '安全随机：使用浏览器原生 crypto API 生成，随机性更强',
+          '自定义长度：支持 4 到 64 位任意长度密码',
+          '字符集选择：支持大写、小写、数字、符号自由组合',
+          '排除相似字符：可排除 0/O/o/1/I/l/i 等易混淆字符',
+          '一键复制：生成后直接复制密码到剪贴板',
+          '纯本地生成：所有操作都在本地完成，不依赖服务器',
+        ],
+        howToUse: [
+          '滑动滑块选择密码长度',
+          '勾选需要包含的字符集',
+          '如需排除相似字符，勾选"排除相似字符"选项',
+          '点击"重新生成"按钮获取新密码',
+          '点击"复制"按钮复制生成的密码',
+        ],
+        useCases: [
+          '注册账户时生成高强度新密码',
+          '为不同账户生成唯一安全密码',
+          '重置密码时快速生成候选密码',
+        ],
+        privacyNote:
+          '所有生成都在本地浏览器完成，生成的密码不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '为什么这个生成的密码更安全？',
+            answer:
+              '使用浏览器原生的 crypto.getRandomValues API 生成随机数，比 Math.random() 提供更强的随机性，更难被猜测。',
+          },
+          {
+            question: '最长能生成多少位密码？',
+            answer: '当前支持最长 64 位密码，满足绝大多数场景的安全需求。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'High-strength random password generator based on browser native Crypto API, with customizable length and character sets to meet password security requirements for different scenarios.',
+        coreFeatures: [
+          'Secure random: uses browser native Crypto API for stronger randomness',
+          'Custom length: supports any length from 4 to 64 characters',
+          'Character set selection: freely combine uppercase, lowercase, numbers, and symbols',
+          'Exclude ambiguous characters: can exclude confusing characters like 0/O/o/1/I/l/i',
+          'One-click copy: copy generated password directly to clipboard',
+          '100% local: all operations done locally, no server dependency',
+        ],
+        howToUse: [
+          'Slide the slider to select password length',
+          'Check the character sets you want to include',
+          'If you want to exclude similar characters, check the "exclude similar characters" option',
+          'Click the "Regenerate" button to get a new password',
+          'Click the "Copy" button to copy the generated password',
+        ],
+        useCases: [
+          'Generating strong new passwords when registering accounts',
+          'Generating unique secure passwords for different accounts',
+          'Quickly generating candidate passwords when resetting passwords',
+        ],
+        privacyNote:
+          'All generation is done locally in your browser. Generated passwords are never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Why is this generated password more secure?',
+            answer:
+              'Uses the browser native crypto.getRandomValues API to generate random numbers, providing stronger randomness than Math.random() and making it much harder to guess.',
+          },
+          {
+            question: 'What is the maximum password length?',
+            answer: 'Currently supports up to 64 characters, meeting the security requirements of most scenarios.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'unit-converter',
+    name: '单位换算器',
+    nameEn: 'Unit Converter',
+    description:
+      '常见度量单位互相转换，支持长度、面积、体积、重量、温度、时间、速度等类别。',
+    descriptionEn:
+      'Convert between common measurement units, supports length, area, volume, weight, temperature, time, speed and more.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/unit-converter',
+    iconName: 'Calculator',
+    tags: ['单位', '换算', '转换', '度量', '计算'],
+    tagsEn: ['Unit', 'Convert', 'Conversion', 'Measurement', 'Calc'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的度量单位换算工具，覆盖日常生活和工作中最常用的单位类别，快速换算任意单位。',
+        coreFeatures: [
+          '覆盖广泛：支持长度、面积、体积、重量、温度、时间、速度七大类常用单位',
+          '公制英制都支持：千米↔英里，千克↔磅，摄氏度↔华氏度等',
+          '一键交换：点击交换按钮快速互换输入输出单位',
+          '纯本地计算：所有换算都在浏览器完成，不依赖服务器',
+        ],
+        howToUse: [
+          '点击分类选择需要换算的单位类别',
+          '输入需要换算的数值',
+          '分别选择源单位和目标单位',
+          '下方立即显示换算结果',
+          '点击交换按钮可以快速交换源单位和目标单位',
+        ],
+        useCases: [
+          '日常购物时转换不同单位的商品规格',
+          '出国旅行时转换温度、长度、重量单位',
+          '开发和工程计算中不同单位体系转换',
+          '烹饪食谱中不同容量单位转换',
+        ],
+        privacyNote:
+          '所有换算都在本地浏览器完成，数据不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持哪些单位类别？',
+            answer:
+              '目前支持长度、面积、体积、重量、温度、时间、速度七大类，包含公制、英制等常用单位。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient measurement unit conversion tool that covers the most commonly used unit categories in daily life and work, quickly convert between any units.',
+        coreFeatures: [
+          'Wide coverage: supports seven major categories of commonly used units: length, area, volume, weight, temperature, time, and speed',
+          'Supports both metric and imperial: convert kilometers to miles, kilograms to pounds, Celsius to Fahrenheit, and more',
+          'One-click swap: click the swap button to quickly swap input and output units',
+          '100% local calculation: all conversions done in the browser, no server dependency',
+        ],
+        howToUse: [
+          'Click the category to select the unit category you want to convert',
+          'Enter the value you want to convert',
+          'Select the source unit and target unit respectively',
+          'The conversion result is displayed immediately below',
+          'Click the swap button to quickly swap source and target units',
+        ],
+        useCases: [
+          'Converting product specifications between different units when shopping',
+          'Converting temperature, length, and weight units when traveling abroad',
+          'Converting between different unit systems in development and engineering calculations',
+          'Converting different capacity units in cooking recipes',
+        ],
+        privacyNote:
+          'All conversions are done locally in your browser. Data is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'What unit categories are supported?',
+            answer:
+              'Currently supports seven categories: length, area, volume, weight, temperature, time, and speed, including common units from both metric and imperial systems.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'case-converter',
+    name: '命名格式转换',
+    nameEn: 'Case Converter',
+    description:
+      '驼峰、帕斯卡、蛇形、烤肉串、常量、句子、标题等多种命名格式互相转换。',
+    descriptionEn:
+      'Convert between multiple naming formats: camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, Sentence case, Title Case.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/case-converter',
+    iconName: 'TextCursorInput',
+    tags: ['文本', '命名', '转换', '格式', '开发'],
+    tagsEn: ['Text', 'Naming', 'Convert', 'Format', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '开发者日常编码必备的命名格式转换工具，支持常见的多种命名格式互相自动转换，省去手动重命名麻烦。',
+        coreFeatures: [
+          '支持多种格式：驼峰、帕斯卡、蛇形、烤肉串、常量、句子、标题七种格式',
+          '智能分词：自动识别任意输入格式并分割单词',
+          '实时转换：选择目标格式后立即得到转换结果',
+          '一键复制：转换完成后直接复制结果到剪贴板',
+          '纯本地处理：所有转换在浏览器完成，不依赖服务器',
+        ],
+        howToUse: [
+          '在输入框粘贴需要转换的标识符或文本',
+          '点击选择目标格式',
+          '下方立即显示转换结果',
+          '点击复制按钮获取转换后的结果',
+        ],
+        useCases: [
+          '将后端 snake_case 字段转换为前端 camelCase',
+          '重构代码时快速重命名标识符',
+          '将 API 返回的常量格式转换为代码需要的格式',
+          '统一项目中的命名风格',
+        ],
+        privacyNote:
+          '所有转换都在本地浏览器完成，内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持哪些格式？',
+            answer:
+              '目前支持 camelCase、PascalCase、snake_case、kebab-case、CONSTANT_CASE、Sentence case、Title Case 七种格式。',
+          },
+          {
+            question: '输入可以是任意格式吗？',
+            answer:
+              '是的，工具会自动分词，不管输入是什么格式，都能正确分割单词然后转换为目标格式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'An essential naming format conversion tool for developers daily coding, supports automatic conversion between common naming formats, saves you the trouble of manual renaming.',
+        coreFeatures: [
+          'Supports multiple formats: camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, Sentence case, Title Case',
+          'Smart tokenization: automatically recognizes any input format and splits words',
+          'Real-time conversion: get result instantly after selecting target format',
+          'One-click copy: copy result directly to clipboard after conversion',
+          '100% local processing: all conversions done in the browser, no server dependency',
+        ],
+        howToUse: [
+          'Paste the identifier or text you want to convert in the input box',
+          'Click to select the target format',
+          'The converted result appears immediately below',
+          'Click the copy button to get the converted result',
+        ],
+        useCases: [
+          'Converting backend snake_case fields to frontend camelCase',
+          'Quickly renaming identifiers during code refactoring',
+          'Converting constant format from API responses to the format needed for code',
+          'Unifying naming styles in a project',
+        ],
+        privacyNote:
+          'All conversions are done locally in your browser. Content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'What formats are supported?',
+            answer:
+              'Currently supports seven formats: camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, Sentence case, and Title Case.',
+          },
+          {
+            question: 'Can input be in any format?',
+            answer:
+              'Yes, the tool automatically tokenizes words. No matter what format the input is in, it can correctly split words and convert to the target format.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-to-yaml',
+    name: 'JSON 转 YAML',
+    nameEn: 'JSON to YAML Converter',
+    description:
+      '将 JSON 格式数据转换为格式化的 YAML 数据，支持实时预览转换结果。',
+    descriptionEn:
+      'Convert JSON formatted data to pretty-printed YAML with real-time preview.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-to-yaml',
+    iconName: 'Braces',
+    tags: ['JSON', 'YAML', '转换', '开发'],
+    tagsEn: ['JSON', 'YAML', 'Convert', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 JSON 到 YAML 格式转换器，无需上传服务器，实时转换 JSON 配置为格式化 YAML。',
+        coreFeatures: [
+          '实时转换：输入 JSON 后即刻生成格式化 YAML',
+          '错误提示：JSON 语法错误时清晰展示错误信息',
+          '一键复制：转换成功后快速复制 YAML 结果',
+          '纯本地运行：所有转换在浏览器中完成，配置不离开设备',
+        ],
+        howToUse: [
+          '在左侧输入框粘贴需要转换的 JSON 内容',
+          '右侧会自动显示转换后的 YAML 结果',
+          '如果有语法错误，会显示错误详情',
+          '转换成功后点击右上角复制按钮获取结果',
+        ],
+        useCases: [
+          '开发中 JSON 配置文件转 YAML',
+          'API 文档 JSON 示例转 YAML',
+          'CI/CD 配置转换测试',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，配置内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持所有 JSON 语法吗？',
+            answer:
+              '是的，使用标准 yaml 库解析转换，支持所有标准 JSON 语法。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient JSON to YAML converter that works entirely in your browser, converting JSON to formatted YAML in real-time.',
+        coreFeatures: [
+          'Real-time conversion: get formatted YAML instantly as you type JSON',
+          'Error reporting: clearly displays syntax errors when they occur',
+          'One-click copy: quickly copy YAML result after conversion',
+          '100% local: all conversion done in-browser, config never leaves your device',
+        ],
+        howToUse: [
+          'Paste your JSON content in the input box',
+          'The converted YAML will automatically appear on the right',
+          'If there are syntax errors, error details will be displayed',
+          'Click the copy button in the top right to get the result',
+        ],
+        useCases: [
+          'Converting JSON config files to YAML in development',
+          'Converting JSON API examples to YAML',
+          'Testing CI/CD configuration conversions',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Configuration content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does it support all JSON syntax?',
+            answer:
+              'Yes, uses the standard yaml library for parsing and conversion, supports all standard JSON syntax.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
