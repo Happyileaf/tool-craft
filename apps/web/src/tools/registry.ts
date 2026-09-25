@@ -1192,6 +1192,96 @@ author:
       },
     },
   },
+  {
+    slug: 'case-converter',
+    name: '命名风格转换',
+    nameEn: 'Case Converter',
+    description:
+      '多种代码命名风格互相转换，支持 camelCase、PascalCase、snake_case、kebab-case、CONSTANT_CASE 等。',
+    descriptionEn:
+      'Convert between different identifier naming conventions: camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE and more.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/case-converter',
+    iconName: 'Code',
+    tags: ['命名', '转换', '标识符', '开发'],
+    tagsEn: ['Case', 'Convert', 'Identifier', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'hello_world_example',
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的代码标识符命名风格转换器，一键在多种常用命名风格之间互相转换，适合重构代码时批量修改标识符格式。',
+        coreFeatures: [
+          '支持七种常见命名风格：camelCase、PascalCase、snake_case、kebab-case、CONSTANT_CASE、Title Case、Sentence case',
+          '智能分词：自动识别混合格式和多种分隔符',
+          '实时预览：选择目标格式后即时显示转换结果',
+          '纯本地运行：所有转换在浏览器中完成，代码不离开设备',
+        ],
+        howToUse: [
+          '在输入框中粘贴需要转换的标识符',
+          '选择目标命名风格',
+          '下方即刻显示转换后的结果',
+          '点击复制按钮获取转换结果',
+        ],
+        useCases: [
+          '重构代码时修改标识符命名风格',
+          '适配不同语言/框架的编码规范',
+          'API字段格式转换',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，代码内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持哪些格式？',
+            answer:
+              '目前支持 camelCase（小驼峰）、PascalCase（大驼峰）、snake_case（下划线）、kebab-case（短横线）、CONSTANT_CASE（全大写下划线）、Title Case（标题首字母大写）、Sentence case（句首字母大写）。',
+          },
+          {
+            question: '能自动识别原格式吗？',
+            answer:
+              '不需要手动指定原格式，工具会自动分词处理，无论原格式是什么都能正确分割单词，然后转换到目标格式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient identifier naming case converter that instantly converts between popular naming conventions, perfect for refactoring code identifiers.',
+        coreFeatures: [
+          'Supports 7 common naming conventions: camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, Title Case, Sentence case',
+          'Smart word splitting: automatically handles mixed formats and multiple separators',
+          'Real-time preview: shows result instantly when you select target case',
+          '100% local: all conversion done in-browser, code never leaves your device',
+        ],
+        howToUse: [
+          'Paste the identifier you want to convert into the input box',
+          'Select the target naming case',
+          'The converted result appears below instantly',
+          'Click the copy button to get the result',
+        ],
+        useCases: [
+          'Changing identifier naming style during code refactoring',
+          'Adapting to coding conventions of different languages/frameworks',
+          'Converting API field formats',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Code content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'What formats are supported?',
+            answer:
+              'Currently supports camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, Title Case, and Sentence case.',
+          },
+          {
+            question: 'Does it auto-detect the original format?',
+            answer:
+              "No need to manually specify the original format. The tool automatically splits words correctly regardless of the original format, then converts to the target format.",
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
