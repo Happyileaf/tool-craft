@@ -1370,6 +1370,94 @@ author:
       },
     },
   },
+  {
+    slug: 'url-parser',
+    name: 'URL 解析器',
+    nameEn: 'URL Parser',
+    description:
+      '解析 URL 各个组成部分，提取协议、主机、端口、路径、查询参数、锚点等详细信息。',
+    descriptionEn:
+      'Parse URL into its components: extract protocol, host, port, path, query parameters, anchor and more.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/url-parser',
+    iconName: 'Link',
+    tags: ['URL', '解析', '网络', '开发'],
+    tagsEn: ['URL', 'Parse', 'Network', 'Dev'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'https://www.example.com:8080/path/to/page?name=foo&age=42#section-1',
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 URL 解析工具，将完整 URL 分解为各个组成部分，方便开发者调试网络请求、排查链接问题。',
+        coreFeatures: [
+          '提取 URL 所有主要组成部分：协议、主机、端口、路径、哈希、查询参数等',
+          '自动展开所有查询参数到单独的键值对',
+          '自动补全协议，支持不带协议的 URL 输入',
+          '使用浏览器原生 URL API，准确可靠',
+        ],
+        howToUse: [
+          '在输入框粘贴需要解析的完整 URL',
+          '下方会自动显示解析后的各个组成部分',
+          '如果 URL 格式有误，会显示具体的错误信息',
+        ],
+        useCases: [
+          '调试 API 请求，分解 URL 各部分',
+          '排查链接跳转问题，确认各部分是否正确',
+          '提取 URL 中的查询参数进行调试',
+        ],
+        privacyNote:
+          '所有解析运算都在本地浏览器完成，URL 内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持不带协议的 URL 吗？',
+            answer:
+              '支持，如果输入没有协议前缀，工具会自动补全 https:// 再进行解析，满足日常粘贴使用习惯。',
+          },
+          {
+            question: '解析用的什么算法？',
+            answer:
+              '直接使用浏览器内置的 URL 构造函数解析，结果和浏览器实际处理一致，准确可靠。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient URL parsing tool that decomposes a complete URL into its components, helping developers debug network requests and troubleshoot link issues.',
+        coreFeatures: [
+          'Extract all major URL components: protocol, host, port, path, hash, query parameters and more',
+          'Automatically expands all query parameters into separate key-value pairs',
+          'Auto-completes protocol for URLs entered without it',
+          'Uses browser native URL API for accuracy and reliability',
+        ],
+        howToUse: [
+          'Paste the full URL you want to parse into the input box',
+          'The parsed components will automatically appear below',
+          'If the URL format is incorrect, specific error information will be displayed',
+        ],
+        useCases: [
+          'Debugging API requests by breaking down URL components',
+          'Troubleshooting link redirection issues by confirming each part is correct',
+          'Extracting query parameters from URL for debugging',
+        ],
+        privacyNote:
+          'All parsing is done locally in your browser. URL content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does it support URLs without protocol?',
+            answer:
+              "Yes, if you enter a URL without the protocol prefix, the tool will automatically add 'https://' before parsing, matching common paste usage habits.",
+          },
+          {
+            question: 'What algorithm is used for parsing?',
+            answer:
+              "It parses directly using the browser's built-in URL constructor, so the result matches what the browser actually processes, accurate and reliable.",
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

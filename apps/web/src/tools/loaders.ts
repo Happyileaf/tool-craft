@@ -32,4 +32,5 @@ export const toolLoaders: Record<
   'json-to-yaml': () => import('./json-to-yaml'),
   'case-converter': () => import('./case-converter'),
   'lorem-ipsum': () => import('./lorem-ipsum'),
+  'url-parser': () => import('./url-parser'),
 };
