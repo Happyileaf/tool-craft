@@ -4,6 +4,13 @@
 
 ## 日志
 
+## 2026-09-26 ：【自主迭代】新增 4 个开发/文本工具
+
+- **新增**：JSON 转 YAML（json-to-yaml）— 将 JSON 格式数据转换为格式化 YAML
+- **新增**：命名风格转换（case-converter）— 多种代码命名风格互相转换（camelCase/PascalCase/snake_case/kebab-case/CONSTANT_CASE 等）
+- **新增**：Lorem Ipsum 占位文本生成（lorem-ipsum）— 快速生成经典 Lorem Ipsum 占位测试文本
+- **新增**：URL 解析器（url-parser）— 解析 URL 各个组成部分，提取协议、主机、端口、路径、查询参数等详细信息
+
 ## 2026-09-22 ：【自主迭代】新增 3 个文本处理工具
 
 - **新增**：字数统计（word-count）— 实时统计文本字符数、字数、行数和段落数
