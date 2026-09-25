@@ -1282,6 +1282,94 @@ author:
       },
     },
   },
+  {
+    slug: 'lorem-ipsum',
+    name: 'Lorem Ipsum 占位文本生成',
+    nameEn: 'Lorem Ipsum Generator',
+    description:
+      '快速生成经典 Lorem Ipsum 占位测试文本，支持自定义段落数量用于原型设计和UI填充。',
+    descriptionEn:
+      'Quickly generate classic Lorem Ipsum placeholder text, supports custom paragraph count for prototyping and UI wireframes.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/lorem-ipsum',
+    iconName: 'FileText',
+    tags: ['占位', '文本', '原型', '生成'],
+    tagsEn: ['Lorem', 'Ipsum', 'Placeholder', 'Generate'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '经典的 Lorem Ipsum 占位文本生成器，用于在原型设计、UI稿和排版预览中填充测试文字，快速生成符合语法习惯的占位内容。',
+        coreFeatures: [
+          '支持自定义段落数量（1-20段）',
+          '一键重新生成不同的随机文本',
+          '生成结果可一键复制到剪贴板',
+          '纯本地生成，无需网络',
+        ],
+        howToUse: [
+          '拖动滑块选择需要生成的段落数量',
+          '点击「重新生成」获得不同的随机文本',
+          '点击「复制结果」获取生成的文本',
+        ],
+        useCases: [
+          '原型设计稿填充占位文字',
+          'UI排版测试和预览',
+          '设计稿占位，避免设计稿缺少文字内容',
+        ],
+        privacyNote:
+          '所有文本生成都在本地浏览器完成，不依赖网络不传输任何数据。',
+        faqs: [
+          {
+            question: '什么是 Lorem Ipsum？',
+            answer:
+              'Lorem Ipsum 是设计和排版领域常用的占位文本，起源于古罗马，用来模拟文章段落，让设计师专注于布局排版而不是内容本身。',
+          },
+          {
+            question: '最多能生成多少段落？',
+            answer:
+              '当前界面支持最多生成 20 段，足够满足大多数网页原型设计需求。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A classic Lorem Ipsum placeholder text generator for prototyping, UI wireframes, and layout previews. Quickly generates grammatically-correct dummy text.',
+        coreFeatures: [
+          'Supports custom paragraph count from 1 to 20',
+          'One-click regenerate different random text',
+          'Copy result to clipboard with one click',
+          '100% local generation, no network needed',
+        ],
+        howToUse: [
+          'Drag the slider to select how many paragraphs you need',
+          'Click "Regenerate" to get different random text',
+          'Click "Copy Result" to get the generated text',
+        ],
+        useCases: [
+          'Filling placeholder text in design prototypes',
+          'Testing and previewing UI typography',
+          'Placeholder for design drafts',
+        ],
+        privacyNote:
+          'All text generation is done locally in your browser, no network dependency, no data is transmitted.',
+        faqs: [
+          {
+            question: 'What is Lorem Ipsum?',
+            answer:
+              'Lorem Ipsum is commonly used placeholder text in design and typography, originating from ancient Rome. It lets designers focus on layout and typography instead of content.',
+          },
+          {
+            question: 'What is the maximum number of paragraphs?',
+            answer:
+              'The current interface supports generating up to 20 paragraphs, which is enough for most web prototyping needs.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -31,4 +31,5 @@ export const toolLoaders: Record<
   'uuid-generator': () => import('./uuid-generator'),
   'json-to-yaml': () => import('./json-to-yaml'),
   'case-converter': () => import('./case-converter'),
+  'lorem-ipsum': () => import('./lorem-ipsum'),
 };
