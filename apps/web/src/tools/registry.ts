@@ -1099,6 +1099,365 @@ author:
       },
     },
   },
+  {
+    slug: 'json-to-yaml',
+    name: 'JSON 转 YAML',
+    nameEn: 'JSON to YAML Converter',
+    description:
+      '将 JSON 格式数据转换为格式化的 YAML 数据，支持实时预览转换结果。',
+    descriptionEn:
+      'Convert JSON formatted data to pretty-printed YAML with real-time preview.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-yaml',
+    iconName: 'Code',
+    tags: ['JSON', 'YAML', '转换', '开发'],
+    tagsEn: ['JSON', 'YAML', 'Convert', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `{
+  "name": "ToolCraft",
+  "version": "1.0.0",
+  "description": "Online Toolkit",
+  "features": [
+    "json-to-yaml",
+    "yaml-to-json",
+    "word-count"
+  ],
+  "author": {
+    "name": "Developer",
+    "email": "dev@example.com"
+  }
+}`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 JSON 到 YAML 格式转换器，无需上传服务器，实时转换 JSON 配置为格式化 YAML。',
+        coreFeatures: [
+          '实时转换：输入 JSON 后即刻生成格式化 YAML',
+          '错误提示：JSON 语法错误时清晰展示错误信息',
+          '一键复制：转换成功后快速复制 YAML 结果',
+          '纯本地运行：所有转换在浏览器中完成，配置不离开设备',
+        ],
+        howToUse: [
+          '在左侧输入框粘贴需要转换的 JSON 内容',
+          '右侧会自动显示转换后的 YAML 结果',
+          '如果有语法错误，会显示错误详情',
+          '转换成功后点击右上角复制按钮获取结果',
+        ],
+        useCases: [
+          '开发中 JSON 配置文件转 YAML',
+          'API 文档 JSON 示例转 YAML',
+          'CI/CD 配置转换测试',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，配置内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持所有 JSON 语法吗？',
+            answer:
+              '目前支持大多数常用 JSON 语法，包括键值对、数组、嵌套对象、null/布尔/数字/字符串，满足日常开发需求。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient JSON to YAML converter that works entirely in your browser, converting JSON to formatted YAML in real-time.',
+        coreFeatures: [
+          'Real-time conversion: get formatted YAML instantly as you type JSON',
+          'Error reporting: clearly displays syntax errors when they occur',
+          'One-click copy: quickly copy YAML result after conversion',
+          '100% local: all conversion done in-browser, config never leaves your device',
+        ],
+        howToUse: [
+          'Paste your JSON content in the left input box',
+          'The converted YAML result will automatically appear on the right',
+          'If there are syntax errors, error details will be displayed',
+          'Click the copy button in the top right to get the result after successful conversion',
+        ],
+        useCases: [
+          'Converting JSON config files to YAML in development',
+          'Converting JSON API examples to YAML',
+          'Testing CI/CD configuration conversions',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Configuration content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does it support all JSON syntax?',
+            answer:
+              'It supports most commonly used JSON syntax including key-value pairs, arrays, nested objects, null/booleans/numbers/strings, meeting daily development needs.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'case-converter',
+    name: '命名风格转换',
+    nameEn: 'Case Converter',
+    description:
+      '多种代码命名风格互相转换，支持 camelCase、PascalCase、snake_case、kebab-case、CONSTANT_CASE 等。',
+    descriptionEn:
+      'Convert between different identifier naming conventions: camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE and more.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/case-converter',
+    iconName: 'Code',
+    tags: ['命名', '转换', '标识符', '开发'],
+    tagsEn: ['Case', 'Convert', 'Identifier', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'hello_world_example',
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的代码标识符命名风格转换器，一键在多种常用命名风格之间互相转换，适合重构代码时批量修改标识符格式。',
+        coreFeatures: [
+          '支持七种常见命名风格：camelCase、PascalCase、snake_case、kebab-case、CONSTANT_CASE、Title Case、Sentence case',
+          '智能分词：自动识别混合格式和多种分隔符',
+          '实时预览：选择目标格式后即时显示转换结果',
+          '纯本地运行：所有转换在浏览器中完成，代码不离开设备',
+        ],
+        howToUse: [
+          '在输入框中粘贴需要转换的标识符',
+          '选择目标命名风格',
+          '下方即刻显示转换后的结果',
+          '点击复制按钮获取转换结果',
+        ],
+        useCases: [
+          '重构代码时修改标识符命名风格',
+          '适配不同语言/框架的编码规范',
+          'API字段格式转换',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，代码内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持哪些格式？',
+            answer:
+              '目前支持 camelCase（小驼峰）、PascalCase（大驼峰）、snake_case（下划线）、kebab-case（短横线）、CONSTANT_CASE（全大写下划线）、Title Case（标题首字母大写）、Sentence case（句首字母大写）。',
+          },
+          {
+            question: '能自动识别原格式吗？',
+            answer:
+              '不需要手动指定原格式，工具会自动分词处理，无论原格式是什么都能正确分割单词，然后转换到目标格式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient identifier naming case converter that instantly converts between popular naming conventions, perfect for refactoring code identifiers.',
+        coreFeatures: [
+          'Supports 7 common naming conventions: camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, Title Case, Sentence case',
+          'Smart word splitting: automatically handles mixed formats and multiple separators',
+          'Real-time preview: shows result instantly when you select target case',
+          '100% local: all conversion done in-browser, code never leaves your device',
+        ],
+        howToUse: [
+          'Paste the identifier you want to convert into the input box',
+          'Select the target naming case',
+          'The converted result appears below instantly',
+          'Click the copy button to get the result',
+        ],
+        useCases: [
+          'Changing identifier naming style during code refactoring',
+          'Adapting to coding conventions of different languages/frameworks',
+          'Converting API field formats',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Code content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'What formats are supported?',
+            answer:
+              'Currently supports camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, Title Case, and Sentence case.',
+          },
+          {
+            question: 'Does it auto-detect the original format?',
+            answer:
+              "No need to manually specify the original format. The tool automatically splits words correctly regardless of the original format, then converts to the target format.",
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'lorem-ipsum',
+    name: 'Lorem Ipsum 占位文本生成',
+    nameEn: 'Lorem Ipsum Generator',
+    description:
+      '快速生成经典 Lorem Ipsum 占位测试文本，支持自定义段落数量用于原型设计和UI填充。',
+    descriptionEn:
+      'Quickly generate classic Lorem Ipsum placeholder text, supports custom paragraph count for prototyping and UI wireframes.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/lorem-ipsum',
+    iconName: 'FileText',
+    tags: ['占位', '文本', '原型', '生成'],
+    tagsEn: ['Lorem', 'Ipsum', 'Placeholder', 'Generate'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '经典的 Lorem Ipsum 占位文本生成器，用于在原型设计、UI稿和排版预览中填充测试文字，快速生成符合语法习惯的占位内容。',
+        coreFeatures: [
+          '支持自定义段落数量（1-20段）',
+          '一键重新生成不同的随机文本',
+          '生成结果可一键复制到剪贴板',
+          '纯本地生成，无需网络',
+        ],
+        howToUse: [
+          '拖动滑块选择需要生成的段落数量',
+          '点击「重新生成」获得不同的随机文本',
+          '点击「复制结果」获取生成的文本',
+        ],
+        useCases: [
+          '原型设计稿填充占位文字',
+          'UI排版测试和预览',
+          '设计稿占位，避免设计稿缺少文字内容',
+        ],
+        privacyNote:
+          '所有文本生成都在本地浏览器完成，不依赖网络不传输任何数据。',
+        faqs: [
+          {
+            question: '什么是 Lorem Ipsum？',
+            answer:
+              'Lorem Ipsum 是设计和排版领域常用的占位文本，起源于古罗马，用来模拟文章段落，让设计师专注于布局排版而不是内容本身。',
+          },
+          {
+            question: '最多能生成多少段落？',
+            answer:
+              '当前界面支持最多生成 20 段，足够满足大多数网页原型设计需求。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A classic Lorem Ipsum placeholder text generator for prototyping, UI wireframes, and layout previews. Quickly generates grammatically-correct dummy text.',
+        coreFeatures: [
+          'Supports custom paragraph count from 1 to 20',
+          'One-click regenerate different random text',
+          'Copy result to clipboard with one click',
+          '100% local generation, no network needed',
+        ],
+        howToUse: [
+          'Drag the slider to select how many paragraphs you need',
+          'Click "Regenerate" to get different random text',
+          'Click "Copy Result" to get the generated text',
+        ],
+        useCases: [
+          'Filling placeholder text in design prototypes',
+          'Testing and previewing UI typography',
+          'Placeholder for design drafts',
+        ],
+        privacyNote:
+          'All text generation is done locally in your browser, no network dependency, no data is transmitted.',
+        faqs: [
+          {
+            question: 'What is Lorem Ipsum?',
+            answer:
+              'Lorem Ipsum is commonly used placeholder text in design and typography, originating from ancient Rome. It lets designers focus on layout and typography instead of content.',
+          },
+          {
+            question: 'What is the maximum number of paragraphs?',
+            answer:
+              'The current interface supports generating up to 20 paragraphs, which is enough for most web prototyping needs.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'url-parser',
+    name: 'URL 解析器',
+    nameEn: 'URL Parser',
+    description:
+      '解析 URL 各个组成部分，提取协议、主机、端口、路径、查询参数、锚点等详细信息。',
+    descriptionEn:
+      'Parse URL into its components: extract protocol, host, port, path, query parameters, anchor and more.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/url-parser',
+    iconName: 'Link',
+    tags: ['URL', '解析', '网络', '开发'],
+    tagsEn: ['URL', 'Parse', 'Network', 'Dev'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'https://www.example.com:8080/path/to/page?name=foo&age=42#section-1',
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 URL 解析工具，将完整 URL 分解为各个组成部分，方便开发者调试网络请求、排查链接问题。',
+        coreFeatures: [
+          '提取 URL 所有主要组成部分：协议、主机、端口、路径、哈希、查询参数等',
+          '自动展开所有查询参数到单独的键值对',
+          '自动补全协议，支持不带协议的 URL 输入',
+          '使用浏览器原生 URL API，准确可靠',
+        ],
+        howToUse: [
+          '在输入框粘贴需要解析的完整 URL',
+          '下方会自动显示解析后的各个组成部分',
+          '如果 URL 格式有误，会显示具体的错误信息',
+        ],
+        useCases: [
+          '调试 API 请求，分解 URL 各部分',
+          '排查链接跳转问题，确认各部分是否正确',
+          '提取 URL 中的查询参数进行调试',
+        ],
+        privacyNote:
+          '所有解析运算都在本地浏览器完成，URL 内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持不带协议的 URL 吗？',
+            answer:
+              '支持，如果输入没有协议前缀，工具会自动补全 https:// 再进行解析，满足日常粘贴使用习惯。',
+          },
+          {
+            question: '解析用的什么算法？',
+            answer:
+              '直接使用浏览器内置的 URL 构造函数解析，结果和浏览器实际处理一致，准确可靠。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient URL parsing tool that decomposes a complete URL into its components, helping developers debug network requests and troubleshoot link issues.',
+        coreFeatures: [
+          'Extract all major URL components: protocol, host, port, path, hash, query parameters and more',
+          'Automatically expands all query parameters into separate key-value pairs',
+          'Auto-completes protocol for URLs entered without it',
+          'Uses browser native URL API for accuracy and reliability',
+        ],
+        howToUse: [
+          'Paste the full URL you want to parse into the input box',
+          'The parsed components will automatically appear below',
+          'If the URL format is incorrect, specific error information will be displayed',
+        ],
+        useCases: [
+          'Debugging API requests by breaking down URL components',
+          'Troubleshooting link redirection issues by confirming each part is correct',
+          'Extracting query parameters from URL for debugging',
+        ],
+        privacyNote:
+          'All parsing is done locally in your browser. URL content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does it support URLs without protocol?',
+            answer:
+              "Yes, if you enter a URL without the protocol prefix, the tool will automatically add 'https://' before parsing, matching common paste usage habits.",
+          },
+          {
+            question: 'What algorithm is used for parsing?',
+            answer:
+              "It parses directly using the browser's built-in URL constructor, so the result matches what the browser actually processes, accurate and reliable.",
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
