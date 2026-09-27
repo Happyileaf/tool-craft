@@ -1191,6 +1191,98 @@ Bob,25,London,Designer`,
       },
     },
   },
+  {
+    slug: 'text-case-converter',
+    name: '文本大小写转换',
+    nameEn: 'Text Case Converter',
+    description:
+      '支持多种大小写转换模式：全小写、全大写、首字母大写、标题大小写、句子大小写。',
+    descriptionEn:
+      'Convert text case between multiple formats: lowercase, uppercase, capitalize, title case, and sentence case.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/text-case-converter',
+    iconName: 'FileText',
+    tags: ['文本', '大小写', '转换', '格式'],
+    tagsEn: ['Text', 'Case', 'Convert', 'Format'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'the quick brown fox jumps over the lazy dog',
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的文本大小写转换器，一键切换多种大小写格式，满足不同场景下的文本格式化需求。',
+        coreFeatures: [
+          '多种转换模式：支持全小写、全大写、首字母大写、标题大小写、句子大小写',
+          '实时转换：选择模式后一键生成结果',
+          '一键复制：快速获取转换后的文本',
+          '纯本地运行：所有转换在本地浏览器完成',
+        ],
+        howToUse: [
+          '在输入框粘贴需要转换的文本',
+          '选择需要的转换模式',
+          '点击开始转换获取结果',
+          '点击复制按钮将结果复制到剪贴板',
+        ],
+        useCases: [
+          '代码标识符命名格式转换',
+          '文章标题格式标准化',
+          '段落句子首字母大写修正',
+          '批量调整文本大小写格式',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，文本内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持中文文本吗？',
+            answer:
+              '支持，中文汉字不影响大小写转换，只对英文字母进行转换处理。',
+          },
+          {
+            question: '标题大小写和句子大小写有什么区别？',
+            answer:
+              '标题大小写会将每个单词的首字母大写，适合文章标题；句子大小写只将每个句子的第一个单词首字母大写，适合段落文本。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient text case converter that supports multiple case formats, quickly format text for different scenarios.',
+        coreFeatures: [
+          'Multiple conversion modes: lowercase, uppercase, capitalize, title case, sentence case',
+          'Instant conversion: get result with one click',
+          'One-click copy: quickly copy the converted text',
+          '100% local: all processing done in-browser',
+        ],
+        howToUse: [
+          'Paste your text in the input area',
+          'Select the desired conversion mode',
+          'Click convert to get the result',
+          'Click copy to get the text to clipboard',
+        ],
+        useCases: [
+          'Code identifier naming format conversion',
+          'Article title format standardization',
+          'Fix sentence capitalization',
+          'Batch adjust text case formatting',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Text content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does it support Chinese text?',
+            answer:
+              'Yes, Chinese characters are not affected; only English letters are converted.',
+          },
+          {
+            question: 'What is the difference between title case and sentence case?',
+            answer:
+              'Title case capitalizes the first letter of every word, suitable for titles; sentence case only capitalizes the first word of each sentence, suitable for paragraph text.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
