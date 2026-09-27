@@ -1,0 +1,31 @@
+.container {
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  flex: 1;
+}
+
+.formatSelector {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.label {
+  font-weight: 500;
+  white-space: nowrap;
+}

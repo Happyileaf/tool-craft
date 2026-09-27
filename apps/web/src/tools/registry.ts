@@ -1099,6 +1099,185 @@ author:
       },
     },
   },
+  {
+    slug: 'json-to-yaml',
+    name: 'JSON 转 YAML',
+    nameEn: 'JSON to YAML Converter',
+    description:
+      '将 JSON 格式数据转换为格式化的 YAML 数据，支持实时预览转换结果。',
+    descriptionEn:
+      'Convert JSON formatted data to pretty-printed YAML with real-time preview.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-to-yaml',
+    iconName: 'Braces',
+    tags: ['JSON', 'YAML', '转换', '开发'],
+    tagsEn: ['JSON', 'YAML', 'Convert', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: JSON.stringify(
+      {
+        name: 'ToolCraft',
+        version: '1.0.0',
+        description: 'Online Toolkit',
+        features: ['json-to-yaml', 'yaml-to-json', 'online-tools'],
+        author: {
+          name: 'Developer',
+          email: 'dev@example.com',
+        },
+      },
+      null,
+      2,
+    ),
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 JSON 到 YAML 格式转换器，无需上传服务器，实时转换 JSON 配置为格式化 YAML。',
+        coreFeatures: [
+          '实时转换：输入 JSON 后即刻生成格式化 YAML',
+          '错误提示：JSON 语法错误时清晰展示错误信息',
+          '一键复制：转换成功后快速复制 YAML 结果',
+          '纯本地运行：所有转换在浏览器中完成，配置不离开设备',
+        ],
+        howToUse: [
+          '在左侧输入框粘贴需要转换的 JSON 内容',
+          '右侧会自动显示转换后的 YAML 结果',
+          '如果有语法错误，会显示错误详情',
+          '转换成功后点击右上角复制按钮获取结果',
+        ],
+        useCases: [
+          '开发中 JSON 配置文件转 YAML',
+          'API 文档 JSON 示例转 YAML',
+          'CI/CD 配置转换测试',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，配置内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持所有 JSON 语法吗？',
+            answer:
+              '目前支持大多数常用 JSON 语法，包括对象、数组、字符串、数字、布尔值和 null，满足日常开发需求。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient JSON to YAML converter that works entirely in your browser, converting JSON to formatted YAML in real-time.',
+        coreFeatures: [
+          'Real-time conversion: get formatted YAML instantly as you type JSON',
+          'Error reporting: clearly displays syntax errors when they occur',
+          'One-click copy: quickly copy YAML result after conversion',
+          '100% local: all conversion done in-browser, config never leaves your device',
+        ],
+        howToUse: [
+          'Paste your JSON content in the left input box',
+          'The converted YAML will automatically appear on the right',
+          'If there are syntax errors, error details will be displayed',
+          'Click the copy button in the top right to get the result',
+        ],
+        useCases: [
+          'Converting JSON config files to YAML in development',
+          'Converting JSON API examples to YAML',
+          'Testing CI/CD configuration conversions',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Configuration content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does it support all JSON syntax?',
+            answer:
+              'It supports most commonly used JSON syntax including objects, arrays, strings, numbers, booleans, and null, meeting daily development needs.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'case-converter',
+    name: '命名格式转换器',
+    nameEn: 'Case & Naming Format Converter',
+    description:
+      '驼峰、下划线、短横线命名格式互转，支持大小写转换，一键转换变量命名格式。',
+    descriptionEn:
+      'Convert between camelCase, snake_case, kebab-case, PascalCase, UPPER_CASE. Instant variable naming format conversion.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/case-converter',
+    iconName: 'FileText',
+    tags: ['命名', '转换', '驼峰', '下划线', '开发'],
+    tagsEn: ['Case', 'Convert', 'CamelCase', 'SnakeCase', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'hello_world\nmy-variable-name\ngetUserById',
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的变量命名格式转换器，支持多种命名格式互转，帮助开发者快速统一代码命名风格。',
+        coreFeatures: [
+          '支持多种格式：camelCase、snake_case、kebab-case、PascalCase、UPPER_CASE、lower_case',
+          '智能识别：自动识别输入格式，无需手动指定',
+          '一键转换：输入后即刻得到转换结果',
+          '纯本地运行：所有转换在浏览器中完成',
+        ],
+        howToUse: [
+          '在输入框中粘贴或输入需要转换的标识符',
+          '选择你想要转换的目标格式',
+          '右侧立即显示转换后的结果',
+          '点击复制按钮获取转换结果',
+        ],
+        useCases: [
+          '不同代码风格之间的转换，比如从Java风格转到JavaScript风格',
+          '重构代码时统一命名格式',
+          '复制粘贴代码后快速适配当前项目风格',
+        ],
+        privacyNote:
+          '所有转换都在本地浏览器完成，代码内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持多个标识符一次性转换吗？',
+            answer: '是的，每一行会被当做一个标识符分别转换，保留原有的换行格式。',
+          },
+          {
+            question: '输入包含空格能正确处理吗？',
+            answer: '可以，空格会被当做分隔符，智能分割成多个单词后再转换为目标格式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient variable naming format converter that supports conversion between multiple naming formats, helping developers quickly unify code naming style.',
+        coreFeatures: [
+          'Supports multiple formats: camelCase, snake_case, kebab-case, PascalCase, UPPER_CASE, lower_case',
+          'Smart detection: automatically identifies input format, no manual specification needed',
+          'Instant conversion: get result immediately after input',
+          '100% local: all conversion done in-browser',
+        ],
+        howToUse: [
+          'Paste or type the identifiers you want to convert in the input area',
+          'Select the target format you want to convert to',
+          'The converted result will be displayed immediately on the right',
+          'Click the copy button to get the result',
+        ],
+        useCases: [
+          'Converting between different code styles, e.g., from Java style to JavaScript style',
+          'Unifying naming format during code refactoring',
+          'Quickly adapting to current project style after copying code',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Code content is never uploaded to any server, keeping your content private.',
+        faqs: [
+          {
+            question: 'Does it support converting multiple identifiers at once?',
+            answer: 'Yes, each line is treated as one identifier and converted separately, preserving the original line breaks.',
+          },
+          {
+            question: 'Does it handle input with spaces correctly?',
+            answer: 'Yes, spaces are treated as separators, smartly split into multiple words before converting to target format.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
