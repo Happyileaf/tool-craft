@@ -1,0 +1,238 @@
+# Tool-Craft Agent 工具开发 SOP
+
+> **文档定位**：本文件是无人值守 Agent 在本仓库执行「从 Idea 池领取并实现 Web 工具」的唯一流程依据。外部定时任务以极简提示词引导读取本文件（触发模板见 §7）。对本文件的任何修订必须走 PR 人审，与代码共用同一迭代环。
+>
+> **配套状态文件**：
+> - `docs/sop/tool-development/backlog.md` — 评估结论与运行记录（易变状态与流程文档分离存放，避免流程被历史记录淹没）
+> - `.autonomous/idea-pool/idea-pool.md` — Idea 池（与 idea-generation SOP 及人工共用；格式、字段与状态机见同目录 README.md）
+
+## 0. 流程参数（统一声明，调整只改这里）
+
+| 参数 | 默认值 | 说明 |
+| --- | --- | --- |
+| 每轮领取数量上限 | 5 | 每轮从 Idea 池领取并进入实现清单的 Idea 数量上限；通过评估的数量不足时，只实现通过的部分，不为凑数降低标准 |
+| 实现分支格式 | `feat/tool-development-<YYYYMMDDHHmmss>-<agent-name>` | `<YYYYMMDDHHmmss>` 为本轮开始时间，使用 `Asia/Shanghai`；`<agent-name>` 为当前 Agent 的稳定小写标识，仅允许小写字母、数字和连字符 |
+
+分支命名参数要求：
+
+- 本轮开始时生成一次北京时间（`Asia/Shanghai`）运行时间戳，格式为 `YYYYMMDDHHmmss`，本轮后续所有步骤复用该值，不得重新生成。
+
+## 1. 目标与边界
+
+**每轮运行的目标**：从 Idea 池领取通过评估的 Idea（数量上限见 §0），逐一实现为完整可用的 Web 端工具，全部汇总在同一个分支、以**一个 PR** 提交，同步更新 Idea 池与 backlog 状态，并通过统一验收（§3.7）复核。验收通过后**本轮立即结束**；人工验收在之后异步进行，Agent 不等待。
+
+**明确不做**：
+
+- 不自主探索 / 头脑风暴产生新 Idea，不向 Idea 池新增条目（Idea 产生由 idea-generation SOP 与人工负责；池内无可领取 Idea 时如实结束本轮，不自行补位）
+- 不直接上线 / 部署；不 merge 任何 PR（merge 永远是人工环节）
+- 不追求交互层 e2e 完善（交互质量由人工通过 Preview 验收；代码层验证见 §3.4）
+- 不修改 `apps/api`（本流程范围仅 Web 工具）
+- 不重构现有工具，不做与本流程无关的顺手改动
+
+## 2. 硬性约束（红线，优先级高于本文件其余任何条款）
+
+1. 只在新建分支上工作，**绝不 push `main`**。
+2. 只创建 PR，**绝不 merge、绝不 close / review 他人 PR**。
+3. 每轮最多产出 **1 个工具实现 PR**，本轮全部实现工具汇总于其中（每个工具独立 commit，见 §3.6；领取登记与终态同步等状态维护 commit 不计入，见 §4）。
+4. 禁止一切破坏性 git 操作：force push、`reset --hard`、`branch -D`、`clean -f` 等。
+5. Web 工具必须**纯浏览器本地运算**（local-first 红线）：不调用任何服务端接口，不引入需要后端配合的能力。
+6. Idea 只能来自 `.autonomous/idea-pool/idea-pool.md` 中 `Type=Web Tool` 且 `Status=Pending` 的条目；`API` / `MCP` 类型与其他状态一律不领取、不实现。
+7. 池条目只允许更新状态相关字段（`Status` / `Claimed By` / `Reject Reason` / `Result`），且必须遵循池 README 定义的状态机；`Completed` / `Rejected` 为终态，**绝不修改历史终态条目**。
+
+## 3. 流程
+
+```
+Agent 执行范围：开始 → 池内筛选 → 评估筛选 → 领取登记 → 实现 → 本地验证 → 维护变更日志 → 提交 PR → 终态同步 → 统一验收 → 结束
+```
+
+### 3.1 池内筛选
+
+Idea 池（`.autonomous/idea-pool/idea-pool.md`）是本轮唯一的 Idea 来源：
+
+1. **机械筛选**：只保留同时满足 `Type=Web Tool` 且 `Status=Pending` 的条目。
+2. **可执行性初筛**：描述可明确理解、粒度足以构成单个研发任务；描述无法理解的条目不猜测——池内保持 `Pending` 不动，在 backlog 中记 `待人工决策`，不进入评估。
+3. **池内去重**：多个条目功能实质重复时（池内可能存在历史重复条目），仅保留 `ID` 最小（创建最早）的一条进入评估，其余重复条目在 §3.2 中按查重未通过处理。
+
+**产出**：候选 Idea 清单（含池内 ID、名称、描述、Source），进入 §3.2 逐项评估。池内无候选 → 本轮结束，按 §4 提交运行记录，**不强行为之**。
+
+### 3.2 评估筛选（rubric）
+
+每个候选 Idea 必须逐项过以下维度，形成结构化评估：
+
+| 维度 | 要求 |
+| --- | --- |
+| 查重 | 对照 registry 中**全部**已注册工具、`backlog.md` 历史条目（含已否决）与池内其他同类条目，逐一说明与可能重叠对象的差异；功能实质重复 → 直接否决 |
+| 高频度与价值 | 依据池内条目的 Source、Description 及其中隐含的需求信号，说明为什么值得做；依据不足且无法判断 → 不猜测，转待人工决策 |
+| 纯客户端可行性 | 不能依赖服务端计算、存储或账号体系 |
+| 依赖量 | 优先零新依赖；确需引入时仅限小型纯前端库，说明理由与体积影响 |
+| 处理载体 | 预计单次处理阻塞 UI 超过约 100ms 的走 Web Worker，其余主线程 |
+| 实现复杂度 | S（纯函数 + 简单交互）/ M（多状态交互）/ L（重交互或 WASM）；本轮只实现 S–M |
+
+**决策规则**：
+
+- 六维度综合排序，通过全部维度的 Idea 按排名构成本轮实现清单，数量不超过 §0「每轮领取数量上限」；每个 Idea 必须在 `backlog.md` 中保留一条固定格式记录（格式见该文件内说明；`信号来源` 填「Idea 池（ID <池内ID>）」及池内 Source），并将最终状态写入 `状态` 字段。`backlog.md` 采用“状态总览表 + Idea 详情列表”的组织方式，未入选与被否决的 Idea 不得只写在运行记录中。
+- 评估未通过的 Idea：池内标 `Rejected` 并填写 `Reject Reason`（未通过维度 + 具体原因），backlog 标 `已否决`；池内状态变更随领取登记 commit 一并提交（见 §4.2）。
+- 通过评估但超出领取上限的 Idea：池内保持 `Pending` 不动，backlog 标 `候选`，并在“备注”中记录“通过评估但因领取数量上限未入选”。
+- 存在无法由 SOP 判断的边界问题：池内保持 `Pending` 不动，backlog 标 `待人工决策`，记录待决策问题、背景和建议。
+- 池内候选全部未通过或无候选：如实记录后正常结束本轮，**不强行为之**。
+- 实现清单确定后，在**同一分支**上先提交领取登记 commit（见 §4.2），再逐个工具执行 §3.3–§3.4（每个工具独立 commit，规范见 §3.6）；全部工具完成后依次执行 §3.5–§3.7。
+
+**Idea 最终状态枚举**（backlog，只能使用以下值）：
+
+- `候选`：已进入评估但尚未完成评估，或通过评估但因领取数量上限未入选。
+- `已选中`：通过评估并进入本轮实现清单。
+- `实现中`：已开始实现，但本轮尚未完成。
+- `已实现`：实现完成并已创建 PR，必须同时记录 PR 编号和 URL。
+- `已否决`：未通过至少一个评估维度，或实现中途放弃，必须记录具体否决原因。
+- `待人工决策`：存在无法由 SOP 判断的边界问题，必须记录待决策问题、背景和建议。
+
+Idea 状态只能按实际流程推进；被否决的 Idea 不得标记为“候选”或“未选中”。
+
+### 3.3 实现
+
+**前置检查（本轮开始时逐项确认一次，全部通过才继续；分支只创建一次，每个工具开始前仅复核工作区状态）**：
+
+1. 工作区检查：`git status` 确认工作区干净；存在未提交改动 → 视为环境异常，放弃本轮实现并记入 backlog，**不得 stash / discard / 覆盖任何既有改动**。
+2. 分支创建：执行 `git fetch origin` 后，依据 §0「实现分支格式」从最新 `origin/main` 创建并切换到本轮实现分支（本轮全部工具共用此分支）。
+3. 分支确认：`git branch --show-current` 复核当前分支为新分支后，才允许修改任何文件。
+
+**改动面**（严格模仿 `apps/web/src/tools/` 下现有工具的模式，可参考 `hash-generator`）：
+
+1. 新建 `apps/web/src/tools/<slug>/`：
+   - `index.tsx` — 工具组件（默认导出，接受 `ToolComponentProps`）
+   - `constants.ts` — 工具内常量
+   - `utils/<x>.ts` — 处理逻辑，**纯函数**，不触碰 DOM / React
+   - `utils/<x>.test.ts` — 与源码同目录的单测（Vitest）
+2. `apps/web/src/tools/registry.ts` — 追加一条完整 `ToolMeta`（含中英文 name / description / tags / doc 双语文档与 `defaultSampleInput`）
+3. `apps/web/src/tools/loaders.ts` — 追加一行懒加载映射
+
+**不新增**：路由文件（`generateStaticParams` 自动生成）、i18n 词条（注册表已承载双语内容）、共享组件与 lib 改动。
+
+**依赖规则**：默认零新依赖。确需引入时：仅限纯前端运行时依赖，评估卡中说明理由，且 lockfile 变更必须在 PR 变更清单中单独标注。
+
+### 3.4 本地验证
+
+按序执行，**全部通过才允许提交**：
+
+```bash
+pnpm lint && pnpm typecheck && pnpm test && pnpm build
+```
+
+- e2e（`pnpm test:e2e`）不在本地强制执行，由远端 CI 在 PR 上复核（结果由人工处理，Agent 不等待）。
+- 每个工具通过全部验证后**立即提交对应 commit**（规范见 §3.6；该 commit 同时将池内对应条目置为 `In Progress`，见 §4.2），再开始下一个工具。
+- 失败处理：修复后重试，**最多 3 轮**；仍失败 → 放弃该工具的实现并继续清单中的下一个，原因记入 `backlog.md`，不提交半成品（该 Idea 在终态同步时标 `Rejected`，见 §4.2）。
+
+### 3.5 维护变更日志
+
+全部工具通过本地验证后、提交 PR 前，更新 `apps/web/CHANGELOG.md`：
+
+- 在日志顶部登记本轮变更——当日已有条目时**追加整合进该条目**，不新建（详见填写指南）：
+  - **新增**：工具中文名（slug）— 一句话功能；
+  - **修改**：工具中文名（slug）— 变更说明（如有）；
+  - **移除**：工具中文名（slug）— 原因（如有）。
+- 本轮无任何工具变更时，**不更新 CHANGELOG、不创建实现 PR**——变更日志只记录真实变更；轮次运行情况记入 `backlog.md` 运行记录。
+- 变更日志更新以独立 commit 提交（如 `docs(web): update changelog`），随本轮分支一并进入 PR。
+- 条目格式与填写规范以 `docs/guide/changelog-guide.md` 为准。
+
+### 3.6 提交 PR
+
+- **分支**：依据 §0「实现分支格式」创建，本轮全部工具共用同一分支，汇总为**一个 PR**（分支已在 §3.3 前置检查中从最新 `origin/main` 创建并切换）。
+- **Commit**：遵循 Conventional Commits；**每个工具至少对应一个独立 commit**（如 `feat: add <slug> tool`），**禁止将多个工具的改动合并进同一个 commit**；领取登记与终态同步按 §4.2 使用独立 chore commit。commit 包含 AI 生成内容时，必须按 AI 归属规范在 footer 追加 trailer（人类始终是 author）：
+
+  ```
+  Co-authored-by: <Agent 名> <Agent 邮箱>
+  ```
+
+  规范全文：<https://github.com/Happyileaf/ai-toolkit/blob/main/docs/agents/ai-attribution.md>（Trae 使用 `trae-agent@users.noreply.github.com`）
+
+- **PR 标题**：`feat: 新增 <N> 个工具（<slug1>、<slug2>…）`
+- **PR 描述**：为清单中的**每个工具**分别填写一张评估卡，模板：
+
+  ```markdown
+  ## 需求来源
+  （池内 Idea ID 与 Source，引用评估结论）
+
+  ## 查重结论
+  （与现有工具、backlog 历史与池内同类条目逐一对比的结果）
+
+  ## 技术选型
+  （依赖、处理载体、复杂度评级）
+
+  ## 变更清单
+  （文件级列表；如有依赖 / lockfile 变更单独标注）
+
+  ## 自验结果
+  lint / typecheck / test / build 全部状态
+  ```
+
+- **创建动作**：全部工具 commit 与变更日志 commit 均完成后，push 分支并通过 `gh pr create` 创建 PR，目标分支 `main`；本轮只创建这一个 PR。
+
+### 3.7 统一验收（最终复核，不可跳过）
+
+在 §3.6 之后，先完成 §4.2 的终态同步 commit 并 push，再对整个轮次的产出**重新做一次**完整验收——不沿用此前各环节的结论，逐项重查：
+
+1. **实现完整性**：对照 §3.2 实现清单逐项核对，每个入选 Idea 均已实现、各自提交了对应 commit、并出现在 PR 变更清单中。
+2. **本地验证**：在当前分支重新执行 `pnpm lint && pnpm typecheck && pnpm test && pnpm build`，确认全部通过。
+3. **变更日志**：重新核对 `apps/web/CHANGELOG.md`——有工具变更则条目存在且内容一致，无遗漏、无虚报；无变更则确认未产生多余条目。
+4. **PR 真实创建**：执行 `gh pr view <分支名> --json url,number`（或 `gh pr list --head <分支名>`）确认 PR 真实存在，取得形如 `https://github.com/<owner>/<repo>/pull/<编号>` 的链接，写入本轮运行结论与池内 `Result` 字段。
+5. **池与 backlog 同步**：重新核对 `.autonomous/idea-pool/idea-pool.md` 与 `backlog.md`——实现清单内每个 Idea 均已标 `Completed` 且 `Result` 填写第 4 项取得的 PR 链接；评估未过与中途放弃的均已标 `Rejected` 且 `Reject Reason` 具体；通过评估未入选的保持 `Pending` 未被误改；无任何终态条目被回改；backlog 总览表与详情列表状态一致。
+
+- 以下链接**一律不算** PR 创建成功：`/compare/...` 对比链接、带 `?expand=1` 的新建引导链接、分支页链接、任何未经 `gh` 命令验证、由 Agent 自行拼接的 URL。
+- 任一验收项不通过 → 在**同一分支**直接修复，使用新的 commit 提交修复内容，push 到远端后重新执行**全部**验收，最多 3 轮。无需 amend、rebase、squash 或其他任何历史改写操作；不得修改或删除已经推送的历史 commit。仍不通过 → 如实记入 backlog（附失败详情），**不得谎报成功**。
+- 全部通过 → 本轮**结束**。
+
+## 4. Idea 池与 backlog 维护
+
+### 4.1 状态文件
+
+- **Idea 池**：`.autonomous/idea-pool/idea-pool.md`（格式与状态机见同目录 README.md）。本 SOP 与 idea-generation SOP、人工共用；本 SOP 只更新状态相关字段。
+- **backlog**：`docs/sop/tool-development/backlog.md`（条目格式见该文件内说明），记录评估结论与运行记录。
+
+### 4.2 同步时点（严格按序）
+
+1. **领取登记 commit**（实现清单确定、分支创建后、首个工具开工前）：commit 信息 `chore(agent): claim ideas from idea pool`。内容包括：实现清单内条目 → `Claimed`（`Claimed By` 填当前 Agent 标识）；评估未过与池内重复条目 → `Rejected`（`Reject Reason` 填未通过维度与具体原因）；`backlog.md` 登记本轮全部 Idea 条目与评估结论（清单内标 `已选中`，否决标 `已否决`）。
+2. **工具实现 commit**：每个工具的 `feat: add <slug> tool` commit 中，同时把池内对应条目置为 `In Progress`。
+3. **终态同步 commit**（PR 创建后、统一验收前）：commit 信息 `chore(agent): sync idea pool and backlog`。内容包括：已实现条目 → `Completed`（`Result` 填 PR 编号与 URL，链接来源见 §3.7 第 4 项）；中途放弃条目 → `Rejected`（`Reject Reason` 填放弃原因与失败摘要）；`backlog.md` 对应条目同步为 `已实现`（含 PR 链接）或 `已否决`，并在运行记录追加本轮结论。完成后 push 到同一分支（PR 自动包含，**不新建 PR**）。
+
+### 4.3 提交方式
+
+- 本轮有实现 PR → 池与 backlog 的全部变更随实现分支进入该 PR（列入 PR 变更清单）。
+- 本轮无实现（无候选 / 全部未过评估）→ 使用 §0「实现分支格式」创建仅用于记录池与 backlog 变更的分支，commit 为 `chore(agent): record backlog update`；创建分支前同样遵循 §3.3 前置检查第 1、2 项（工作区干净、基于最新 `origin/main`）。
+- 池与 backlog 均基于 Git 存储，并行的 idea-generation、其他定时任务或人工写入可能产生合并冲突；冲突不在本轮分支上自行合并或 rebase，如实记入 backlog 待人工处理。
+
+## 5. 失败与异常处理
+
+| 情形 | 处理 |
+| --- | --- |
+| 池内无可领取候选 | 不强行为之，正常结束本轮；backlog 运行记录追加一行结论 |
+| 本地验证 3 轮未通过 | 放弃该工具实现，继续清单中的下一项；该 Idea 在终态同步时标 `Rejected`（含失败摘要），原因记入 backlog |
+| 统一验收任一项不通过 | 同一分支修复后重新执行全部验收，最多 3 轮；仍不通过 → 记入 backlog（附失败详情），不得谎报成功 |
+| PR 与 main 产生合并冲突 | 不自行 merge / rebase / 改写历史，在 backlog 记录待人工决策后本轮结束 |
+| 无法判断的边界情况 | 不猜测，池内条目保持 `Pending`，记入 backlog「待人工决策」，跳过该项 |
+
+## 6. 人工环节（不在本 SOP 范围内）
+
+以下环节在 Agent 本轮结束后**异步进行**，Agent 不等待、不轮询其结果：
+
+- Review PR：读评估卡 + Vercel Preview 验收交互质量；CI 失败时决定处理方式（要求下轮修复或自行修复）。
+- Merge。
+- 维护 Idea 池：增删改条目、干预 `Rejected` 判断、处理 PR 合并冲突。
+- 干预 backlog：删除 / 调整 / 补充 Idea 记录。
+- 修订本 SOP 与定时任务提示词。
+
+## 7. 触发约定
+
+定时任务提示词只做极简引导：指定工作目录、指向本文件、重申 §2 红线。模板：
+
+```text
+工作目录：/Users/haoya/Desktop/projects/tool-craft
+读取 docs/sop/tool-development/tool-development-sop.md，严格按其完整流程执行（池内筛选 → 评估 → 领取登记 → 实现 → 验证 → 维护变更日志 → 提 PR → 终态同步 → 统一验收）；通过统一验收后本轮立即结束，不等待 CI 结果或人工审核。
+
+硬性约束（优先级高于 SOP，任何情况下不可违反）：
+- 只在新建分支上工作，绝不 push main
+- 只创建 PR，绝不 merge 或 close 他人 PR
+- 每轮只提交 1 个实现 PR（全部工具汇总其中，每个工具独立 commit）
+- Idea 只来自 .autonomous/idea-pool/idea-pool.md 的 Web Tool 且 Pending 条目，不自主探索；池内无可领取 Idea 时如实结束
+- PR 必须经 gh 命令确认真实创建（/pull/<编号> 链接）才算完成；compare 链接或其他任何链接不算
+- 禁止一切破坏性 git 操作（force push、reset --hard、branch -D 等）
+```
