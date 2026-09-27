@@ -1099,6 +1099,98 @@ author:
       },
     },
   },
+  {
+    slug: 'csv-json-converter',
+    name: 'CSV JSON 互转',
+    nameEn: 'CSV JSON Converter',
+    description:
+      'CSV 与 JSON 格式双向互转，支持自定义分隔符，满足数据格式快速转换需求。',
+    descriptionEn:
+      'Bidirectional CSV to JSON format conversion with custom delimiter support for quick data format transformation.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/csv-json-converter',
+    iconName: 'Table',
+    tags: ['CSV', 'JSON', '转换', '数据', '格式'],
+    tagsEn: ['CSV', 'JSON', 'Convert', 'Data', 'Format'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `name,age,city,job
+Alice,30,New York,Engineer
+Bob,25,London,Designer`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 CSV 与 JSON 双向格式转换器，支持自定义分隔符，在浏览器本地快速完成数据格式转换。',
+        coreFeatures: [
+          '双向互转：CSV 转 JSON 和 JSON 转 CSV 一键切换',
+          '自定义分隔符：支持逗号、制表符、分号、竖线多种分隔符',
+          '错误提示：格式错误时清晰展示具体原因',
+          '纯本地运行：所有转换运算在本地完成，数据不离开设备',
+        ],
+        howToUse: [
+          '选择转换方向（CSV→JSON 或 JSON→CSV）',
+          '选择正确的分隔符（默认为逗号）',
+          '在左侧输入框粘贴原始内容',
+          '点击开始转换，右侧显示转换结果',
+        ],
+        useCases: [
+          '将电子表格导出的 CSV 转换为开发可用的 JSON',
+          '将接口返回的 JSON 数组转换为便于查看的表格格式',
+          '快速在不同数据格式之间切换调试',
+        ],
+        privacyNote:
+          '所有转换运算都在浏览器本地完成，数据不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持带引号的 CSV 字段吗？',
+            answer:
+              '是的，支持带有引号和转义引号的标准 CSV 格式，可以正确处理包含分隔符的字段内容。',
+          },
+          {
+            question: 'JSON 必须是数组格式吗？',
+            answer:
+              '是的，JSON 到 CSV 转换要求输入是 JSON 数组格式，每个数组元素对应 CSV 的一行数据。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient bidirectional CSV to JSON converter that works entirely in your browser, supporting custom delimiters for quick data format conversion.',
+        coreFeatures: [
+          'Bidirectional conversion: switch between CSV to JSON and JSON to CSV',
+          'Custom delimiters: supports comma, tab, semicolon, and pipe',
+          'Error reporting: clearly displays error details when parsing fails',
+          '100% local: all processing done in-browser, data never leaves your device',
+        ],
+        howToUse: [
+          'Select conversion direction (CSV→JSON or JSON→CSV)',
+          'Choose the correct delimiter (default is comma)',
+          'Paste your content in the input area',
+          'Click convert and get the result instantly',
+        ],
+        useCases: [
+          'Convert CSV exported from spreadsheets to JSON for development',
+          'Convert JSON array from API responses to tabular format',
+          'Quickly debug and switch between different data formats',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Data is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does it support quoted CSV fields?',
+            answer:
+              'Yes, it supports standard CSV format with quoted fields and escaped quotes, can correctly handle fields containing delimiters.',
+          },
+          {
+            question: 'Does JSON need to be an array?',
+            answer:
+              'Yes, JSON to CSV conversion requires the input to be a JSON array, where each element corresponds to a row in CSV.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
