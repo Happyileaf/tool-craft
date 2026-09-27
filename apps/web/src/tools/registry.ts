@@ -1283,6 +1283,98 @@ Bob,25,London,Designer`,
       },
     },
   },
+  {
+    slug: 'html-entity-codec',
+    name: 'HTML 实体编解码',
+    nameEn: 'HTML Entity Codec',
+    description:
+      'HTML特殊字符实体编码与解码，处理< > & " \'等字符的转义转换。',
+    descriptionEn:
+      'Encode and decode HTML special character entities, handle escaping for < > & " \'.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/html-entity-codec',
+    iconName: 'Code',
+    tags: ['HTML', '实体', '编码', '解码', '转义'],
+    tagsEn: ['HTML', 'Entity', 'Encode', 'Decode', 'Escape'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '<p class="test">Hello & Welcome</p>',
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTML特殊字符实体编解码转换器，可将HTML中需要转义的特殊字符编码为实体，或将实体解码为原始字符。',
+        coreFeatures: [
+          '双向转换：支持编码和解码两种模式一键切换',
+          '常用实体覆盖：转换 & < > " \' 五种常用HTML实体',
+          '实时转换：输入后一键获取转换结果',
+          '纯本地运行：所有转换在浏览器本地完成',
+        ],
+        howToUse: [
+          '在输入框粘贴需要处理的HTML',
+          '选择操作模式（编码或解码）',
+          '点击转换按钮获取结果',
+          '点击复制结果到剪贴板',
+        ],
+        useCases: [
+          '在博客中展示HTML代码示例时进行转义',
+          '提取网页内容时还原转义后的HTML',
+          '调试前端模板引擎输出',
+          '处理包含HTML的字符串显示',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，代码内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持哪些HTML实体？',
+            answer:
+              '目前支持五种最常用的HTML实体：& → &amp;、< → &lt;、> → &gt;、" → &quot;、\' → &#39;，满足日常开发需求。',
+          },
+          {
+            question: '为什么需要HTML实体编码？',
+            answer:
+              '当你需要在HTML页面中显示包含HTML标签的代码时，如果不进行编码，浏览器会解析这些标签，导致显示异常；编码后可以安全显示原始代码。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'HTML special character entity encoder and decoder, convert special characters to HTML entities and decode back to original characters.',
+        coreFeatures: [
+          'Bidirectional conversion: support both encode and decode modes with one-click toggle',
+          'Common entities covered: encodes & < > " \' five most used HTML entities',
+          'Instant conversion: get result with one click',
+          '100% local: all processing done in-browser',
+        ],
+        howToUse: [
+          'Paste your HTML in the input area',
+          'Select operation mode (encode or decode)',
+          'Click convert to get the result',
+          'Click copy to get the result to clipboard',
+        ],
+        useCases: [
+          'Escape HTML code examples when displaying them in blog posts',
+          'Decode escaped HTML when extracting content from web pages',
+          'Debug frontend template engine output',
+          'Handle strings containing HTML characters',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Which HTML entities are supported?',
+            answer:
+              'Currently supports five most commonly used HTML entities: & → &amp;, < → &lt;, > → &gt;, " → &quot;, \' → &#39;, which meets daily development needs.',
+          },
+          {
+            question: 'Why do we need HTML entity encoding?',
+            answer:
+              'When you need to display HTML code examples on an HTML page, without encoding the browser will parse the tags and cause display issues; encoding allows the original code to be displayed safely.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
