@@ -1014,6 +1014,444 @@ author:
     },
   },
   {
+    slug: 'css-prefixer',
+    name: 'CSS 前缀工具',
+    nameEn: 'CSS Prefixer',
+    description:
+      '自动为 CSS 属性添加浏览器兼容前缀（-webkit-, -moz-, -ms-），提高旧浏览器兼容性。',
+    descriptionEn:
+      'Automatically adds browser vendor prefixes (-webkit-, -moz-, -ms-) to CSS properties for better compatibility with older browsers.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/css-prefixer',
+    iconName: 'Code',
+    tags: ['CSS', '前缀', '兼容性', '浏览器', '开发'],
+    tagsEn: ['CSS', 'Prefix', 'Compatibility', 'Browser', 'Dev'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `.container {
+  appearance: none;
+  display: flex;
+  background: linear-gradient(to bottom, #fff, #000);
+  transform: translate(0, 0);
+  user-select: none;
+  transition: all 0.3s;
+}`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的CSS前缀添加工具，自动识别需要兼容前缀的CSS属性和值，自动添加-webkit-, -moz-, -ms-, -o-前缀，帮助你快速兼容旧版本浏览器。',
+        coreFeatures: [
+          '自动识别：自动识别需要前缀的CSS属性和渐变等值',
+          '完整前缀：支持webkit, moz, ms, o四个主流厂商前缀',
+          '保留原代码：在添加前缀后保留原标准语法，符合现代CSS开发规范',
+          '纯本地运行：所有处理都在浏览器本地完成，代码不离开设备',
+        ],
+        howToUse: [
+          '在输入框粘贴需要处理的CSS代码',
+          '点击「添加浏览器前缀」按钮',
+          '工具会自动为需要兼容的属性和值添加前缀',
+          '复制处理后的CSS代码到你的项目中',
+        ],
+        useCases: [
+          '需要兼容旧版本浏览器时为现代CSS属性添加前缀',
+          '快速生成兼容多浏览器的CSS渐变代码',
+          '减少手动添加前缀的重复工作',
+        ],
+        privacyNote:
+          '所有处理都在本地浏览器完成，CSS代码不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '这个工具会删除原有代码吗？',
+            answer:
+              '不会。工具会保留原有的无前缀代码，并在前面添加带前缀的版本，这样既兼容旧浏览器，也保留标准写法供现代浏览器使用。',
+          },
+          {
+            question: '支持哪些属性需要前缀？',
+            answer:
+              '支持常见需要前缀的属性，包括appearance、transform、transition、animation、flex、user-select等，覆盖绝大多数日常开发场景。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient CSS prefix tool that automatically identifies CSS properties and values that need vendor prefixes, automatically adds -webkit-, -moz-, -ms-, -o- prefixes to help you quickly achieve compatibility with older browsers.',
+        coreFeatures: [
+          'Auto detection: automatically identifies properties and gradient values that need prefixes',
+          'Complete prefixes: supports four major vendor prefixes: webkit, moz, ms, o',
+          'Preserve original: keeps the original standard syntax after adding prefixes, follows modern CSS development practices',
+          '100% local: all processing done in-browser, code never leaves your device',
+        ],
+        howToUse: [
+          'Paste the CSS code you need to process into the input area',
+          'Click the "Add Vendor Prefixes" button',
+          'The tool will automatically add prefixes to properties and values that need compatibility',
+          'Copy the processed CSS code to your project',
+        ],
+        useCases: [
+          'Adding prefixes to modern CSS properties when compatibility with older browsers is needed',
+          'Quickly generating multi-browser compatible gradient CSS code',
+          'Reducing repetitive manual work of adding prefixes',
+        ],
+        privacyNote:
+          'All processing is done locally in your browser. CSS code is never uploaded to any server, keeping your code private.',
+        faqs: [
+          {
+            question: 'Does this tool remove the original unprefixed code?',
+            answer:
+              'No. The tool keeps the original unprefixed code and adds prefixed versions before it. This provides compatibility with older browsers while keeping the standard syntax for modern browsers.',
+          },
+          {
+            question: 'Which properties are supported?',
+            answer:
+              'Supports common properties that require prefixes including appearance, transform, transition, animation, flex, user-select, and more, covering most daily development scenarios.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'regex-generator',
+    name: '正则表达式生成器',
+    nameEn: 'Regular Expression Generator',
+    description:
+      '根据自然语言描述生成正则表达式，提供常用预设选择。',
+    descriptionEn:
+      'Generates regular expressions from natural language descriptions, with common presets.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/regex-generator',
+    iconName: 'Code',
+    tags: ['正则', 'Regex', '生成', '开发', 'AI'],
+    tagsEn: ['Regex', 'Generator', 'Dev', 'AI'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'AI驱动的正则表达式生成工具，你只需要用自然语言描述你需要匹配什么，它就能帮你生成对应的正则表达式，还提供常用格式预设。',
+        coreFeatures: [
+          '自然语言描述：用你习惯的中文描述需求即可',
+          '常用预设：内置邮箱、URL、手机号、日期等常用正则预设，一键生成',
+          '支持修饰符：可选择全局匹配、忽略大小写等修饰符',
+          'AI生成：基于GPT模型，理解能力强',
+        ],
+        howToUse: [
+          '可以从预设中选择你需要的格式，或直接在输入框描述你的需求',
+          '勾选需要的正则修饰符',
+          '点击「生成正则表达式」按钮',
+          '复制生成结果使用即可',
+        ],
+        useCases: [
+          '快速生成你需要的匹配规则，不用再查正则语法书',
+          '复杂匹配规则可以通过描述让AI帮你生成',
+          '验证正则表达是否符合预期',
+        ],
+        privacyNote:
+          '描述和生成过程使用OpenAI API，请不要在描述中包含敏感信息。',
+        faqs: [
+          {
+            question: '生成结果不准确怎么办？',
+            answer:
+              '可以尝试更详细清晰的描述，比如明确说明需要匹配什么不匹配什么，然后重新生成。',
+          },
+          {
+            question: '需要API密钥吗？',
+            answer:
+              '项目已经配置了共享API密钥，直接使用即可。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'AI-powered regular expression generator. Just describe what you need to match in natural language, and it will generate the regex for you, with common presets included.',
+        coreFeatures: [
+          'Natural language description: describe your needs in plain English or Chinese',
+          'Common presets: built-in presets for email, URL, phone, date, and other common formats',
+          'Flags support: select global match, case-insensitive and other flags',
+          'AI-generated: powered by GPT model with good understanding',
+        ],
+        howToUse: [
+          'Select a preset from the common presets, or describe your requirement directly',
+          'Check the regex flags you need',
+          'Click the "Generate Regular Expression" button',
+          'Copy the generated result and use it',
+        ],
+        useCases: [
+          'Quickly get the regex you need without looking up regex references',
+          'Let AI generate complex matching rules based on your description',
+          'Verify if the regex meets your expectations',
+        ],
+        privacyNote:
+          'The description and generation uses the OpenAI API. Please do not include sensitive information in your description.',
+        faqs: [
+          {
+            question: 'The result is not accurate, what should I do?',
+            answer:
+              'Try to describe your requirement more clearly and specifically, including what should match and what should not, then generate again.',
+          },
+          {
+            question: 'Do I need an API key?',
+            answer:
+              'The project already has a shared API key configured, you can use it directly.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'url-codec',
+    name: 'URL 编解码',
+    nameEn: 'URL Encoder/Decoder',
+    description:
+      '快速对 URL 进行编码和解码，处理 URL 参数中的特殊字符。',
+    descriptionEn:
+      'Quickly encode and decode URLs, handles special characters in URL parameters.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/url-codec',
+    iconName: 'Link',
+    tags: ['URL', '编码', '解码', '编解码'],
+    tagsEn: ['URL', 'Encode', 'Decode', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'https://example.com/search?q=hello world&lang=en',
+    doc: {
+      zh: {
+        whatIsIt:
+          '简单快速的 URL 编解码工具，可以一键对 URL 进行编码或解码，方便处理 URL 参数中的特殊字符。',
+        coreFeatures: [
+          '双向操作：支持编码和解码两种操作，一键切换',
+          '原生 API：使用浏览器原生 API，结果准确可靠',
+          '一键复制：处理完成后可快速复制结果',
+          '纯本地运算：所有操作都在浏览器本地完成',
+        ],
+        howToUse: [
+          '选择操作类型：编码或解码',
+          '在输入框粘贴需要处理的 URL',
+          '点击对应的操作按钮',
+          '复制处理结果使用',
+        ],
+        useCases: [
+          '需要将 URL 作为参数传递时对其编码',
+          '解码编码后的 URL 查看原始内容',
+          '调试 URL 参数问题时快速转换',
+        ],
+        privacyNote:
+          '所有操作都在本地浏览器完成，URL 内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '和 base64 编码有什么区别？',
+            answer:
+              '这是标准的 URL 百分号编码，用于处理 URL 参数中的特殊字符，和 base64 是不同的编码方式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A simple and fast URL encoder/decoder tool that can encode or decode URLs with one click, handles special characters in URL parameters conveniently.',
+        coreFeatures: [
+          'Bidirectional: supports both encode and decode, switch with one click',
+          'Native API: uses browser native APIs for accurate and reliable results',
+          'One-click copy: quickly copy the result after processing',
+          '100% local: all operations done in-browser',
+        ],
+        howToUse: [
+          'Select operation type: encode or decode',
+          'Paste the URL you need to process into the input area',
+          'Click the corresponding operation button',
+          'Copy the processed result and use it',
+        ],
+        useCases: [
+          'Encode URL when it needs to be passed as a parameter',
+          'Decode an encoded URL to see the original content',
+          'Quick conversion when debugging URL parameter issues',
+        ],
+        privacyNote:
+          'All operations are done locally in your browser. URL content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: "What's the difference between this and base64 encoding?",
+            answer:
+              "This is standard URL percent-encoding used for handling special characters in URL parameters. It's a different encoding method from base64.",
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'html-entity-codec',
+    name: 'HTML 实体编解码',
+    nameEn: 'HTML Entity Encoder/Decoder',
+    description:
+      'HTML 实体编码与解码转换，处理 HTML 中的特殊字符。',
+    descriptionEn:
+      'HTML entity encoding and decoding conversion, handles special characters in HTML.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/html-entity-codec',
+    iconName: 'Code',
+    tags: ['HTML', '实体', '编码', '解码', '编解码'],
+    tagsEn: ['HTML', 'Entity', 'Encode', 'Decode', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '<div class="container">Hello &amp; World!</div>',
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 HTML 实体编解码工具，可快速对 HTML 中的特殊字符进行编码或解码，方便调试和处理 HTML 源码中的特殊字符。',
+        coreFeatures: [
+          '双向转换：支持编码和解码两种操作，一键切换',
+          '完整支持：覆盖常用 HTML 实体，包含命名实体、十进制和十六进制数值实体',
+          '一键复制：处理完成后快速复制结果',
+          '纯本地运算：所有操作都在浏览器本地完成',
+        ],
+        howToUse: [
+          '选择操作类型：编码或解码',
+          '在输入框粘贴需要处理的 HTML',
+          '点击「编码」或「解码」按钮',
+          '复制处理结果使用',
+        ],
+        useCases: [
+          '在展示 HTML 源码时对特殊字符进行编码',
+          '将编码后的 HTML 实体还原为原始字符',
+          '调试 HTML 源码中的字符显示问题',
+        ],
+        privacyNote:
+          '所有操作都在本地浏览器完成，HTML 内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '什么是 HTML 实体？',
+            answer:
+              'HTML 实体是用于在 HTML 文档中表示特殊字符的方式，比如 < 在 HTML 中表示标签开始，需要用 &lt; 表示才能正确显示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient HTML entity encoder/decoder that quickly encodes or decodes special characters in HTML, convenient for debugging and handling special characters in HTML source.',
+        coreFeatures: [
+          'Bidirectional conversion: supports both encoding and decoding, switch with one click',
+          'Complete support: covers common HTML entities including named entities, decimal and hexadecimal numeric entities',
+          'One-click copy: quickly copy the result after processing',
+          '100% local: all operations done in-browser',
+        ],
+        howToUse: [
+          'Select operation type: encode or decode',
+          'Paste the HTML you need to process into the input area',
+          'Click the "Encode" or "Decode" button',
+          'Copy the processed result and use it',
+        ],
+        useCases: [
+          'Encode special characters when displaying HTML source code',
+          'Restore encoded HTML entities to original characters',
+          'Debug character display issues in HTML source',
+        ],
+        privacyNote:
+          'All operations are done locally in your browser. HTML content is never uploaded to any server, keeping your content private.',
+        faqs: [
+          {
+            question: 'What are HTML entities?',
+            answer:
+              'HTML entities are a way to represent special characters in HTML documents. For example, the < character starts an HTML tag, so it needs to be written as &lt; to display correctly.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'csv-json-converter',
+    name: 'CSV JSON 互转',
+    nameEn: 'CSV JSON Converter',
+    description:
+      '双向转换 CSV 和 JSON 格式数据，支持带引号和转义字符的标准 CSV 格式。',
+    descriptionEn:
+      'Bidirectional converter between CSV and JSON format, supports standard CSV with quotes and escaped characters.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/csv-json-converter',
+    iconName: 'FileText',
+    tags: ['CSV', 'JSON', '转换', '数据'],
+    tagsEn: ['CSV', 'JSON', 'Convert', 'Data'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `name,age,city
+Alice,30,New York
+Bob,25,London`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的数据格式转换工具，可在CSV和JSON格式之间互相转换，支持标准CSV格式特性如引号包含和转义字符。',
+        coreFeatures: [
+          '双向转换：支持CSV转JSON和JSON转CSV',
+          '标准CSV兼容：正确处理带逗号、引号和转义的标准CSV格式',
+          '智能类型识别：自动识别数字和布尔值类型',
+          '纯本地运算：所有转换都在浏览器本地完成，数据不离开设备',
+        ],
+        howToUse: [
+          '选择转换方向（CSV → JSON 或 JSON → CSV）',
+          '在输入框粘贴原始数据',
+          '点击「转换」按钮，即刻得到格式化的转换结果',
+          '点击「复制结果」获取转换后的数据',
+        ],
+        useCases: [
+          '将导出的CSV表格数据转换为JSON用于开发测试',
+          '将API返回的JSON数组转换为CSV便于在表格软件中查看分析',
+          '快速在不同格式之间转换数据，无需依赖后端服务',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，数据内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持包含逗号的CSV单元格吗？',
+            answer:
+              '支持。按照标准CSV格式，如果单元格内容包含逗号，需要用双引号将整个单元格内容包裹起来，本工具可以正确解析这种情况。',
+          },
+          {
+            question: 'JSON必须是数组吗？',
+            answer:
+              '是的，JSON转CSV要求输入是一个对象数组，每个对象代表CSV表格中的一行数据。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient data format converter that converts between CSV and JSON, supports standard CSV features like quoted values and escaped characters.',
+        coreFeatures: [
+          'Bidirectional conversion: supports CSV to JSON and JSON to CSV',
+          'Standard CSV compatible: correctly handles commas inside cells, quotes, and escape characters',
+          'Smart type detection: automatically recognizes numeric and boolean types',
+          '100% local: all processing done in-browser, data never leaves your device',
+        ],
+        howToUse: [
+          'Select conversion direction (CSV → JSON or JSON → CSV)',
+          'Paste your raw data into the input area',
+          'Click "Convert" to get formatted conversion result instantly',
+          'Click "Copy Result" to get the converted data',
+        ],
+        useCases: [
+          'Convert exported CSV table data to JSON for development testing',
+          'Convert JSON array from API response to CSV for spreadsheet analysis',
+          'Quickly convert data between formats without backend services',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Data content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does it support cells containing commas?',
+            answer:
+              'Yes. According to standard CSV format, if a cell contains commas, the entire cell content should be wrapped in double quotes. This tool correctly handles this case.',
+          },
+          {
+            question: 'Does JSON need to be an array?',
+            answer:
+              'Yes. For JSON to CSV conversion, the input must be an array of objects, where each object represents a row in the CSV table.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'word-count',
     name: '字数统计',
     nameEn: 'Word & Character Counter',
