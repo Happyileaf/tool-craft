@@ -1014,6 +1014,85 @@ author:
     },
   },
   {
+    slug: 'csv-json-converter',
+    name: 'CSV JSON 双向转换器',
+    nameEn: 'CSV JSON Converter',
+    description:
+      '双向快速转换 CSV 和 JSON 格式数据，支持表头识别，处理带引号和逗号的复杂格式。',
+    descriptionEn:
+      'Bidirectional fast converter between CSV and JSON formats, supports header detection and handles quoted fields and commas.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/csv-json-converter',
+    iconName: 'Table',
+    tags: ['CSV', 'JSON', '转换', '数据'],
+    tagsEn: ['CSV', 'JSON', 'Convert', 'Data'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DEFAULT_CSV_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          '纯浏览器本地运行的 CSV JSON 双向转换器，瞬间完成格式互转，支持处理复杂格式数据。',
+        coreFeatures: [
+          '双向转换：支持 CSV → JSON 和 JSON → CSV 一键切换',
+          '复杂格式支持：正确处理带引号、转义引号和逗号的字段',
+          '表头选项：可选择是否第一行为表头生成对象数组',
+          '纯本地运算：所有转换在浏览器完成，数据不上传服务器',
+        ],
+        howToUse: [
+          '选择转换方向（CSV 转 JSON 或 JSON 转 CSV）',
+          '输入原始数据，勾选「第一行为表头」（CSV 转 JSON 时）',
+          '转换结果会实时显示在右侧输出框中',
+          '复制结果使用即可',
+        ],
+        useCases: [
+          '表格数据导出 JSON 用于开发测试',
+          'JSON 数组转换为 CSV 用于导入表格软件',
+          'API 返回数据格式快速转换',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，数据内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持带逗号和引号的复杂字段吗？',
+            answer: '是的，工具完整支持标准 CSV 格式规范，可以正确处理嵌套引号和包含逗号的字段。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully in-browser bidirectional converter between CSV and JSON formats, instantly converts between formats and handles complex data correctly.',
+        coreFeatures: [
+          'Bidirectional conversion: supports one-click switching between CSV → JSON and JSON → CSV',
+          'Complex format support: correctly handles quoted fields, escaped quotes, and commas within fields',
+          'Header option: optional first-row-header for generating object arrays',
+          '100% local: all conversion done in-browser, data never leaves your device',
+        ],
+        howToUse: [
+          'Choose conversion direction (CSV to JSON or JSON to CSV)',
+          'Input your raw data, check "First row as header" for CSV to JSON',
+          'The converted result will appear in real-time in the output box',
+          'Copy the result for use',
+        ],
+        useCases: [
+          'Converting spreadsheet data to JSON for development testing',
+          'Converting JSON arrays to CSV for importing into spreadsheet software',
+          'Quick format conversion for API response data',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Data content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does it support complex fields with commas and quotes?',
+            answer:
+              'Yes, the tool fully supports standard CSV format specification and can correctly handle nested quotes and fields containing commas.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'word-count',
     name: '字数统计',
     nameEn: 'Word & Character Counter',
