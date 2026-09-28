@@ -187,8 +187,6 @@ export const en: Dictionary = {
     privacyGuarantee: 'Pure In-Browser Computing · Privacy Guaranteed',
     privacyBadge: 'Pure Browser Local Execution · Zero Data Telemetry',
     copyright: 'Modern Lightweight Web Toolkit',
-    themeAuto: 'Supports Light, Dark & System Themes',
-    allClientExecution: '100% Client-Side Local Execution',
   },
   pmModal: {
     title: 'ToolCraft Architecture & Design Thinking (PM Design Spec)',

@@ -91,11 +91,6 @@ function Footer() {
           <div>
             © {new Date().getFullYear()} ToolCraft. {t('footer.copyright')}
           </div>
-          <div className="flex items-center gap-3">
-            <span>{t('footer.themeAuto')}</span>
-            <span>·</span>
-            <span>{t('footer.allClientExecution')}</span>
-          </div>
         </div>
       </div>
     </footer>

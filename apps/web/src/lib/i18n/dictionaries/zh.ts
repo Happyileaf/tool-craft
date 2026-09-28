@@ -138,7 +138,7 @@ export const zh = {
     timeAgoDays: '{n} 天前',
     openWorkspace: '打开工作台',
     removeFromFavorites: '移出常用',
-    zeroUpload: '100% 客户端沙盒运算，无任何云端中转',
+    zeroUpload: '零数据上报',
   },
   workspace: {
     backToHub: '返回工具列表',
@@ -165,7 +165,7 @@ export const zh = {
     privacyAdvocate: 'ToolCraft 倡导极简与零侵入性。页面加载完成后，一切编解码、图像渲染、正则运算与哈希生成均属于纯浏览器本地运算，绝不向任何第三方或云端接口上传原始数据。',
     privacySafetyTitle: '隐私安全与本地计算声明',
     privacySafetyDesc: 'ToolCraft 倡导极简与零侵入性。页面加载完成后，一切编解码、图像渲染、正则运算与哈希生成均属于纯浏览器本地运算，绝不向任何第三方或云端接口上传原始数据。',
-    zeroUpload: '100% 客户端沙盒运算，无任何云端中转',
+    zeroUpload: '零数据上报',
     relatedTools: '探索相关协同工具',
     sampleInput: '填入测试样例',
     clearInput: '清空输入',
@@ -185,8 +185,6 @@ export const zh = {
     privacyGuarantee: '纯浏览器本地运算 · 隐私安全保证',
     privacyBadge: '纯浏览器本地运算 · 零数据上报',
     copyright: '现代轻量 Web 效率工具箱',
-    themeAuto: '支持深浅与系统主题自适应',
-    allClientExecution: '全功能纯浏览器本地运算',
   },
   pmModal: {
     title: 'ToolCraft 产品架构与设计思考推演 (PM Design Spec)',
