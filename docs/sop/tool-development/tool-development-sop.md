@@ -85,6 +85,19 @@ Idea 池（`.autonomous/idea-pool/idea-pool.md`）是本轮唯一的 Idea 来源
 2. 分支创建：执行 `git fetch origin` 后，依据 §0「实现分支格式」从最新 `origin/main` 创建并切换到本轮实现分支（本轮全部工具共用此分支）。
 3. 分支确认：`git branch --show-current` 复核当前分支为新分支后，才允许修改任何文件。
 
+**UI 范例学习（每个工具开始实现前完成，先理解再动手）**：
+
+新工具的 UI 必须与现有工具保持一致的风格。动手写代码前，认真研读以下范例工具的完整源码，理解其 UI 设计：
+
+- `apps/web/src/tools/json-formatter/` — JSON 格式化与校验器
+- `apps/web/src/tools/image-resizer/` — 图片智能压缩与裁剪
+- `apps/web/src/tools/text-diff/` — 文本差异对比 (Diff)
+- `apps/web/src/tools/regex-tester/` — 正则表达式实时测试
+- `apps/web/src/tools/base64-codec/` — Base64 & URL 编解码
+- `apps/web/src/tools/color-palette/` — 调色板与 WCAG 对比度检查
+
+重点理解：页面区块划分（输入 / 选项 / 结果）、布局与间距、按钮 / 图标 / 复制与下载等操作反馈、加载与空状态的处理方式。实现时优先复用范例中已出现的布局结构，向功能最接近的范例对齐，**不自行发明新的视觉模式**。
+
 **改动面**（严格模仿 `apps/web/src/tools/` 下现有工具的模式，可参考 `hash-generator`）：
 
 1. 新建 `apps/web/src/tools/<slug>/`：

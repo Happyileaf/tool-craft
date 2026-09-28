@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import type { ToolComponentProps } from '../loaders';
+import type { ToolComponentProps } from '@/tools/loaders';
 import { Card, Input, Result, Button, message } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
 import { yamlToJson } from './utils/converter';
