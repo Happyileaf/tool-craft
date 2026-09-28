@@ -11,18 +11,21 @@ export function csvToJson(csv: string, headerFirst: boolean = true): any[] {
   const result: any[] = [];
   
   if (headerFirst) {
-    const headers = parseLine(lines[0]);
+    const headers = parseLine(lines[0] ?? '');
     for (let i = 1; i < lines.length; i++) {
       const obj: any = {};
-      const currentLine = parseLine(lines[i]);
+      const currentLine = parseLine(lines[i] ?? '');
       for (let j = 0; j < headers.length; j++) {
-        obj[headers[j]] = currentLine[j] || '';
+        const header = headers[j];
+        if (typeof currentLine[j] !== 'undefined' && header) {
+          obj[header] = currentLine[j] || '';
+        }
       }
       result.push(obj);
     }
   } else {
     for (let i = 0; i < lines.length; i++) {
-      result.push(parseLine(lines[i]));
+      result.push(parseLine(lines[i] ?? ''));
     }
   }
 
@@ -86,11 +89,12 @@ function parseLine(line: string): string[] {
   return result;
 }
 
-function formatLine(fields: string[]): string {
+function formatLine(fields: (string | undefined)[]): string {
   return fields.map(field => {
-    if (field.includes('"') || field.includes(',') || field.includes('\n') || field.includes('\r')) {
-      return `"${field.replace(/"/g, '""')}"`;
+    const f = field ?? '';
+    if (f.includes('"') || f.includes(',') || f.includes('\n') || f.includes('\r')) {
+      return `"${f.replace(/"/g, '""')}"`;
     }
-    return field;
+    return f;
   }).join(',');
 }

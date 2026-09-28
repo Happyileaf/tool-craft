@@ -1,5 +1,7 @@
+'use client';
+
 import { useState, useEffect } from 'react';
-import { ToolComponentProps } from '../constants';
+import { ToolComponentProps } from '../loaders';
 import { COMMON_PATTERNS, RegexPattern } from './utils/generator';
 import { DEFAULT_PATTERN } from './constants';
 

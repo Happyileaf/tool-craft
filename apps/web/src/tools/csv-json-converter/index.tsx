@@ -1,5 +1,7 @@
+'use client';
+
 import { useState, useEffect } from 'react';
-import { ToolComponentProps } from '../constants';
+import { ToolComponentProps } from '../loaders';
 import { DEFAULT_CSV_SAMPLE, DEFAULT_JSON_SAMPLE } from './constants';
 import { csvToJson, jsonToCsv } from './utils/convert';
 

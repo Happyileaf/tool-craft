@@ -10,7 +10,7 @@ describe('decodeHtmlEntities', () => {
 
   it('should decode decimal entities', () => {
     expect(decodeHtmlEntities('&#65;')).toBe('A');
-    expect(decodeHtmlEntities('Hello &#32; world')).toBe('Hello  world');
+    expect(decodeHtmlEntities('Hello &#32; world')).toBe('Hello   world');
   });
 
   it('should decode hex entities', () => {

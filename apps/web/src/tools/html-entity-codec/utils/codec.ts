@@ -14,8 +14,6 @@ const entityMap: Record<string, string> = {
   '&trade;': '™',
   '&times;': '×',
   '&divide;': '÷',
-  '&lt;': '<',
-  '&gt;': '>',
   '&le;': '≤',
   '&ge;': '≥',
   '&ne;': '≠',
@@ -96,7 +94,7 @@ const entityMap: Record<string, string> = {
   '&psi;': 'ψ',
   '&omega;': 'ω',
   '&thetasym;': 'ϑ',
-  '&upsih;': 'ϒ',
+  '&upsih': 'ϒ',
   '&piv;': 'ϖ',
   '&rarr;': '→',
   '&larr;': '←',
@@ -117,7 +115,6 @@ const entityMap: Record<string, string> = {
   '&lowast;': '∗',
   '&radic;': '√',
   '&prop;': '∝',
-  '&infin;': '∞',
   '&ang;': '∠',
   '&cap;': '∩',
   '&cup;': '∪',
@@ -126,10 +123,6 @@ const entityMap: Record<string, string> = {
   '&sim;': '∼',
   '&cong;': '≅',
   '&asymp;': '≈',
-  '&ne;': '≠',
-  '&equiv;': '≡',
-  '&le;': '≤',
-  '&ge;': '≥',
   '&sub;': '⊂',
   '&sup;': '⊃',
   '&nsub;': '⊄',
@@ -193,14 +186,7 @@ export function decodeHtmlEntities(html: string): string {
 }
 
 export function encodeHtmlEntities(text: string): string {
-  // First encode special characters that must be escaped
-  let result = text
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&apos;');
-  // Then encode named entities for other characters
-  result = encodeNamedEntities(result);
-  return result;
+  // encodeNamedEntities will handle all entities including special characters
+  // since reverseMap already contains entries for &, <, >, ", '
+  return encodeNamedEntities(text);
 }

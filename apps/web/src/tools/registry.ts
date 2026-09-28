@@ -1,6 +1,7 @@
 import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
 import { DEFAULT_SAMPLE } from './css-prefixer/constants';
+import { DEFAULT_CSV_SAMPLE } from './csv-json-converter/constants';
 import { DEFAULT_PATTERN } from './regex-generator/constants';
 import { DEFAULT_SAMPLE as URL_DEFAULT_SAMPLE } from './url-codec/constants';
 import { DEFAULT_SAMPLE as HTML_DEFAULT_SAMPLE } from './html-entity-codec/constants';

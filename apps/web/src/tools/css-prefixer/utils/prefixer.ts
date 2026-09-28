@@ -16,6 +16,7 @@ const PREFIX_MAP: Record<string, string[]> = {
   'column-rule': ['-webkit-', '-moz-'],
   'column-span': ['-webkit-', '-moz-'],
   'column-width': ['-webkit-', '-moz-'],
+  'display': ['-webkit-', '-ms-'],
   'flex': ['-webkit-', '-ms-'],
   'flexbox': ['-webkit-', '-ms-'],
   'flex-direction': ['-webkit-', '-ms-'],
@@ -58,7 +59,8 @@ function addPrefixesToProperty(property: string): string[] {
   if (!prefixes) {
     return [property];
   }
-  return [...prefixes, property];
+  // Add prefixed versions plus the original property
+  return [...prefixes.map(prefix => prefix + property), property];
 }
 
 function processDeclaration(property: string, value: string): string {
@@ -69,24 +71,31 @@ function processDeclaration(property: string, value: string): string {
 function tokenize(css: string): string[] {
   // Remove comments
   css = css.replace(/\/\*[\s\S]*?\*\//g, '');
-  // Split into tokens while preserving braces and semicolons
+  // Add spaces around special characters to handle compact formatting
+  css = css.replace(/([{};:])/g, ' $1 ');
+  // Split into tokens while preserving braces, semicolons and colons
   const tokens: string[] = [];
   let current = '';
   let inString = false;
   let stringChar = '';
 
   for (let i = 0; i < css.length; i++) {
-    const char = css[i];
+    const char = css[i]!; // css[i] is guaranteed to be string due to loop condition
     if ((char === '"' || char === "'") && (!inString || stringChar === char)) {
       inString = !inString;
       stringChar = inString ? char : '';
       current += char;
-    } else if (!inString && (char === '{' || char === '}' || char === ';')) {
+    } else if (!inString && (char === '{' || char === '}' || char === ';' || char === ':')) {
       if (current.trim()) {
         tokens.push(current.trim());
       }
       tokens.push(char);
       current = '';
+    } else if (!inString && /\s/.test(char)) {
+      if (current.trim()) {
+        tokens.push(current.trim());
+        current = '';
+      }
     } else {
       current += char;
     }
@@ -125,24 +134,23 @@ export function prefixCss(css: string): string {
       i++;
     } else if (braceLevel > 0 && i + 1 < tokens.length && tokens[i + 1] === ':') {
       // This is a property
-      const property = token;
+      const property = token ?? '';
+      i++; // property
       i++; // skip colon
-      i++; // skip value start
       let value = '';
       // Collect value until semicolon or brace
       while (i < tokens.length && tokens[i] !== ';' && tokens[i] !== '{' && tokens[i] !== '}') {
-        value += tokens[i];
+        if (value) {
+          value += ' ';
+        }
+        value += tokens[i] ?? '';
         i++;
       }
-      // Remove colon if it's at the start
-  value = value.replace(/^:\s*/, '');
+      value = (value ?? '').trim();
       const processed = processDeclaration(property, value);
       result += processed;
       if (i < tokens.length && tokens[i] === ';') {
-        if (processed) {
-          // already added newlines, don't add another semicolon
-          i++;
-        }
+        i++; // skip semicolon, already added in processDeclaration
       }
     } else {
       result += token;
@@ -152,5 +160,9 @@ export function prefixCss(css: string): string {
 
   // Clean up extra newlines
   result = result.replace(/\n\s*\n/g, '\n');
-  return result.trim() + (result.endsWith('}') ? '' : '\n');
+  const trimmed = result.trim();
+  if (trimmed === '') {
+    return '';
+  }
+  return trimmed + (trimmed.endsWith('}') ? '' : '\n');
 }

@@ -31,6 +31,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "catalog:",
+    "sass": "^1.105.0",
     "tailwindcss": "^4",
     "typescript": "catalog:",
     "vitest": "catalog:"

@@ -1,5 +1,7 @@
+'use client';
+
 import { useState, useEffect } from 'react';
-import { ToolComponentProps } from '../constants';
+import { ToolComponentProps } from '../loaders';
 import { DEFAULT_SAMPLE } from './constants';
 import { decodeHtmlEntities, encodeHtmlEntities } from './utils/codec';
 
