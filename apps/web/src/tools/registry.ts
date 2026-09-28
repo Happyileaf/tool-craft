@@ -1099,6 +1099,98 @@ author:
       },
     },
   },
+  {
+    slug: 'csv-json-converter',
+    name: 'CSV JSON 双向转换器',
+    nameEn: 'CSV JSON Converter',
+    description:
+      '双向转换 CSV 和 JSON 格式数据，支持带引号的 CSV 字段处理，纯浏览器本地转换无需上传。',
+    descriptionEn:
+      'Bidirectional CSV to JSON and JSON to CSV converter, supports quoted CSV fields, 100% local in-browser conversion.',
+    category: CATEGORY,
+    path: '/tools/csv-json-converter',
+    iconName: 'Table',
+    tags: ['CSV', 'JSON', '转换', '数据'],
+    tagsEn: ['CSV', 'JSON', 'Convert', 'Data'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `name,age,city
+Alice,30,New York
+Bob,25,London`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 CSV 与 JSON 双向格式转换器，支持处理带引号和转义的复杂 CSV 字段，纯浏览器本地运算无需上传数据。',
+        coreFeatures: [
+          '双向互转：支持 CSV 转 JSON 和 JSON 转 CSV',
+          '完整兼容：处理带逗号、引号和换行的复杂 CSV 字段',
+          '即时转换：输入即实时输出结果',
+          '纯本地运行：转换不经过服务器，数据安全有保障',
+        ],
+        howToUse: [
+          '选择转换方向（CSV 转 JSON 或 JSON 转 CSV）',
+          '在左侧输入框中粘贴原始数据',
+          '右侧会自动显示转换后的结果',
+          '点击交换按钮可以快速反向转换',
+        ],
+        useCases: [
+          '开发中 CSV 配置文件转 JSON',
+          '表格数据导出后格式转换',
+          'API 数据格式互转测试',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，数据内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持复杂的 CSV 格式吗？',
+            answer:
+              '支持标准 CSV 格式，包括带引号的字段、包含逗号的字段、转义双引号等常见复杂情况。',
+          },
+          {
+            question: 'JSON 转 CSV 时对象的键会自动提取吗？',
+            answer:
+              '是的，JSON 转 CSV 会自动提取数组中所有对象的键作为表头，无需手动指定。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient bidirectional converter between CSV and JSON, supports complex CSV fields with quotes and escapes, all computation done locally in browser without data upload.',
+        coreFeatures: [
+          'Bidirectional conversion: supports CSV to JSON and JSON to CSV',
+          'Full compatibility: handles complex CSV fields with commas, quotes and newlines',
+          'Instant conversion: real-time output as you type',
+          '100% local processing: conversion never touches servers, data security guaranteed',
+        ],
+        howToUse: [
+          'Select conversion direction (CSV to JSON or JSON to CSV)',
+          'Paste your raw data in the left input area',
+          'The converted result will automatically appear on the right',
+          'Click the swap button for quick reverse conversion',
+        ],
+        useCases: [
+          'Converting CSV configuration files to JSON in development',
+          'Format conversion after exporting table data',
+          'Testing API data format conversion',
+        ],
+        privacyNote:
+          'All conversion operations are completed in the local browser, data content will not be uploaded to any server, protecting privacy and security.',
+        faqs: [
+          {
+            question: 'Does it support complex CSV formats?',
+            answer:
+              'Supports standard CSV formats, including quoted fields, fields with commas, escaped double quotes and other common complex cases.',
+          },
+          {
+            question: 'Does JSON to CSV automatically extract object keys?',
+            answer:
+              'Yes, JSON to CSV automatically extracts keys from all objects in the array as headers, no manual specification required.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
