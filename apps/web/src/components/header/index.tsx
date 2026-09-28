@@ -109,7 +109,7 @@ function Header() {
 
           <a
             id="github-repo-link"
-            href="https://github.com"
+            href="https://github.com/Happyileaf/tool-craft"
             target="_blank"
             rel="noopener noreferrer"
             title={t('header.githubRepo')}
