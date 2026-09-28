@@ -14,6 +14,7 @@
 | 20260928103007 | Lorem Ipsum generator | 生成占位测试文本 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
 | 20260928103008 | Password generator | 生成安全随机密码 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
 | 20260928103009 | CRON expression parser | 解析和验证 CRON 表达式，预览执行时间 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
+| 20260929103000 | Base64 图片转换器 | 将图片文件转换为 Base64 Data URL 供嵌入使用，反之亦可将 Data URL 导出为图片文件 | Web Tool | Exploration | Pending | 2026-09-29 | | | |
 | -------------- | ------------ | --------------------------- | ---------- | ----------- | ------- | ---------- | ---------- | ------------- | ------ |
 
 
