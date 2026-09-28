@@ -1014,6 +1014,103 @@ author:
     },
   },
   {
+    slug: 'css-prefixer',
+    name: 'CSS 前缀工具',
+    nameEn: 'CSS Prefixer',
+    description:
+      '自动为 CSS 属性添加浏览器兼容前缀（-webkit-, -moz-, -ms-），提高旧浏览器兼容性。',
+    descriptionEn:
+      'Automatically adds browser vendor prefixes (-webkit-, -moz-, -ms-) to CSS properties for better compatibility with older browsers.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/css-prefixer',
+    iconName: 'Code',
+    tags: ['CSS', '前缀', '兼容性', '浏览器', '开发'],
+    tagsEn: ['CSS', 'Prefix', 'Compatibility', 'Browser', 'Dev'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `.container {
+  appearance: none;
+  display: flex;
+  background: linear-gradient(to bottom, #fff, #000);
+  transform: translate(0, 0);
+  user-select: none;
+  transition: all 0.3s;
+}`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的CSS前缀添加工具，自动识别需要兼容前缀的CSS属性和值，自动添加-webkit-, -moz-, -ms-, -o-前缀，帮助你快速兼容旧版本浏览器。',
+        coreFeatures: [
+          '自动识别：自动识别需要前缀的CSS属性和渐变等值',
+          '完整前缀：支持webkit, moz, ms, o四个主流厂商前缀',
+          '保留原代码：在添加前缀后保留原标准语法，符合现代CSS开发规范',
+          '纯本地运行：所有处理都在浏览器本地完成，代码不离开设备',
+        ],
+        howToUse: [
+          '在输入框粘贴需要处理的CSS代码',
+          '点击「添加浏览器前缀」按钮',
+          '工具会自动为需要兼容的属性和值添加前缀',
+          '复制处理后的CSS代码到你的项目中',
+        ],
+        useCases: [
+          '需要兼容旧版本浏览器时为现代CSS属性添加前缀',
+          '快速生成兼容多浏览器的CSS渐变代码',
+          '减少手动添加前缀的重复工作',
+        ],
+        privacyNote:
+          '所有处理都在本地浏览器完成，CSS代码不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '这个工具会删除原有代码吗？',
+            answer:
+              '不会。工具会保留原有的无前缀代码，并在前面添加带前缀的版本，这样既兼容旧浏览器，也保留标准写法供现代浏览器使用。',
+          },
+          {
+            question: '支持哪些属性需要前缀？',
+            answer:
+              '支持常见需要前缀的属性，包括appearance、transform、transition、animation、flex、user-select等，覆盖绝大多数日常开发场景。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient CSS prefix tool that automatically identifies CSS properties and values that need vendor prefixes, automatically adds -webkit-, -moz-, -ms-, -o- prefixes to help you quickly achieve compatibility with older browsers.',
+        coreFeatures: [
+          'Auto detection: automatically identifies properties and gradient values that need prefixes',
+          'Complete prefixes: supports four major vendor prefixes: webkit, moz, ms, o',
+          'Preserve original: keeps the original standard syntax after adding prefixes, follows modern CSS development practices',
+          '100% local: all processing done in-browser, code never leaves your device',
+        ],
+        howToUse: [
+          'Paste the CSS code you need to process into the input area',
+          'Click the "Add Vendor Prefixes" button',
+          'The tool will automatically add prefixes to properties and values that need compatibility',
+          'Copy the processed CSS code to your project',
+        ],
+        useCases: [
+          'Adding prefixes to modern CSS properties when compatibility with older browsers is needed',
+          'Quickly generating multi-browser compatible gradient CSS code',
+          'Reducing repetitive manual work of adding prefixes',
+        ],
+        privacyNote:
+          'All processing is done locally in your browser. CSS code is never uploaded to any server, keeping your code private.',
+        faqs: [
+          {
+            question: 'Does this tool remove the original unprefixed code?',
+            answer:
+              'No. The tool keeps the original unprefixed code and adds prefixed versions before it. This provides compatibility with older browsers while keeping the standard syntax for modern browsers.',
+          },
+          {
+            question: 'Which properties are supported?',
+            answer:
+              'Supports common properties that require prefixes including appearance, transform, transition, animation, flex, user-select, and more, covering most daily development scenarios.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'csv-json-converter',
     name: 'CSV JSON 互转',
     nameEn: 'CSV JSON Converter',
