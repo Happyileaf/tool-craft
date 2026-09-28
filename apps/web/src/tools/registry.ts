@@ -1,5 +1,10 @@
 import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
+import { DEFAULT_SAMPLE } from './css-prefixer/constants';
+import { DEFAULT_CSV_SAMPLE } from './csv-json-converter/constants';
+import { DEFAULT_PATTERN } from './regex-generator/constants';
+import { DEFAULT_SAMPLE as URL_DEFAULT_SAMPLE } from './url-codec/constants';
+import { DEFAULT_SAMPLE as HTML_DEFAULT_SAMPLE } from './html-entity-codec/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -1008,6 +1013,412 @@ author:
             question: 'Does it support all YAML syntax?',
             answer:
               'It supports most commonly used YAML syntax including key-value pairs, nested objects, comments, etc., meeting daily development needs.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'csv-json-converter',
+    name: 'CSV JSON 双向转换器',
+    nameEn: 'CSV JSON Converter',
+    description:
+      '双向快速转换 CSV 和 JSON 格式数据，支持表头识别，处理带引号和逗号的复杂格式。',
+    descriptionEn:
+      'Bidirectional fast converter between CSV and JSON formats, supports header detection and handles quoted fields and commas.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/csv-json-converter',
+    iconName: 'Table',
+    tags: ['CSV', 'JSON', '转换', '数据'],
+    tagsEn: ['CSV', 'JSON', 'Convert', 'Data'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DEFAULT_CSV_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          '纯浏览器本地运行的 CSV JSON 双向转换器，瞬间完成格式互转，支持处理复杂格式数据。',
+        coreFeatures: [
+          '双向转换：支持 CSV → JSON 和 JSON → CSV 一键切换',
+          '复杂格式支持：正确处理带引号、转义引号和逗号的字段',
+          '表头选项：可选择是否第一行为表头生成对象数组',
+          '纯本地运算：所有转换在浏览器完成，数据不上传服务器',
+        ],
+        howToUse: [
+          '选择转换方向（CSV 转 JSON 或 JSON 转 CSV）',
+          '输入原始数据，勾选「第一行为表头」（CSV 转 JSON 时）',
+          '转换结果会实时显示在右侧输出框中',
+          '复制结果使用即可',
+        ],
+        useCases: [
+          '表格数据导出 JSON 用于开发测试',
+          'JSON 数组转换为 CSV 用于导入表格软件',
+          'API 返回数据格式快速转换',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，数据内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持带逗号和引号的复杂字段吗？',
+            answer: '是的，工具完整支持标准 CSV 格式规范，可以正确处理嵌套引号和包含逗号的字段。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully in-browser bidirectional converter between CSV and JSON formats, instantly converts between formats and handles complex data correctly.',
+        coreFeatures: [
+          'Bidirectional conversion: supports one-click switching between CSV → JSON and JSON → CSV',
+          'Complex format support: correctly handles quoted fields, escaped quotes, and commas within fields',
+          'Header option: optional first-row-header for generating object arrays',
+          '100% local: all conversion done in-browser, data never leaves your device',
+        ],
+        howToUse: [
+          'Choose conversion direction (CSV to JSON or JSON to CSV)',
+          'Input your raw data, check "First row as header" for CSV to JSON',
+          'The converted result will appear in real-time in the output box',
+          'Copy the result for use',
+        ],
+        useCases: [
+          'Converting spreadsheet data to JSON for development testing',
+          'Converting JSON arrays to CSV for importing into spreadsheet software',
+          'Quick format conversion for API response data',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Data content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does it support complex fields with commas and quotes?',
+            answer:
+              'Yes, the tool fully supports standard CSV format specification and can correctly handle nested quotes and fields containing commas.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'css-prefixer',
+    name: 'CSS 浏览器前缀生成器',
+    nameEn: 'CSS Vendor Prefixer',
+    description:
+      '自动给 CSS 属性添加浏览器前缀，提高老旧浏览器的兼容性。',
+    descriptionEn:
+      'Automatically adds vendor prefixes to CSS properties for better legacy browser compatibility.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/css-prefixer',
+    iconName: 'Code',
+    tags: ['CSS', '前缀', '兼容性', '浏览器'],
+    tagsEn: ['CSS', 'Prefix', 'Compatibility', 'Browser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DEFAULT_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          '纯浏览器本地运行的 CSS 前缀自动添加工具，为需要兼容老旧浏览器的 CSS 属性自动添加-webkit-、-moz-、-ms-、-o- 等浏览器厂商前缀。',
+        coreFeatures: [
+          '实时前缀添加：输入 CSS 后即刻输出带前缀的结果',
+          '覆盖常见属性：内置了常见需要前缀的 CSS 属性映射',
+          '保留原有格式：保持你的代码缩进和结构不变',
+          '纯本地运算：所有处理都在浏览器完成，不上传代码到服务器',
+        ],
+        howToUse: [
+          '在左侧输入框粘贴你需要添加前缀的 CSS 代码',
+          '右侧会实时显示添加了浏览器前缀的结果',
+          '复制处理后的代码即可使用',
+        ],
+        useCases: [
+          '需要兼容老旧浏览器（如 IE、旧版 Android/iOS Safari）的项目',
+          '开源项目需要扩大兼容范围',
+          '快速为实验性 CSS 属性添加前缀',
+        ],
+        privacyNote:
+          '所有 CSS 处理都在本地浏览器完成，代码内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '为什么有些 CSS 属性不需要前缀？',
+            answer: '只有那些在标准化过程中需要浏览器厂商提前实现的实验性或部分支持的属性才需要前缀，已经广泛标准化的属性不需要添加前缀。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully in-browser CSS vendor prefixer that automatically adds -webkit-, -moz-, -ms-, and -o- vendor prefixes to CSS properties for better legacy browser compatibility.',
+        coreFeatures: [
+          'Real-time processing: instantly outputs prefixed CSS as you type',
+          'Comprehensive coverage: built-in mapping for common properties needing prefixes',
+          'Preserves formatting: keeps your original indentation and structure',
+          '100% local: all processing done in-browser, no code uploaded to servers',
+        ],
+        howToUse: [
+          'Paste your CSS code in the left input box',
+          'The prefixed CSS result will appear on the right in real-time',
+          'Copy the processed CSS and use it in your project',
+        ],
+        useCases: [
+          'Projects needing compatibility with older browsers like IE and legacy Android/iOS Safari',
+          'Open source projects needing broader compatibility',
+          'Quickly add prefixes to experimental CSS properties',
+        ],
+        privacyNote:
+          'All CSS processing is done locally in your browser. Your code is never uploaded to any server, keeping it private and secure.',
+        faqs: [
+          {
+            question: 'Why don\'t some CSS properties need prefixes?',
+            answer:
+              'Only experimental or partially-supported properties during the standardization process require prefixes. Properties that are widely standardized do not need additional prefixes.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'regex-generator',
+    name: '正则表达式生成器',
+    nameEn: 'Regular Expression Generator',
+    description:
+      '提供常用正则表达式模板，支持预览生成结果，快速获取你需要的正则。',
+    descriptionEn:
+      'Provides common regex templates with preview, quickly get the regex you need.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/regex-generator',
+    iconName: 'Code',
+    tags: ['正则', 'Regex', '生成', '模板', '开发'],
+    tagsEn: ['Regex', 'Generator', 'Template', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DEFAULT_PATTERN,
+    doc: {
+      zh: {
+        whatIsIt:
+          '不想记忆正则语法？直接从常用模板中选择你需要的正则表达式，立即在页面测试匹配结果，复制即可使用。',
+        coreFeatures: [
+          '分类整理常用正则：邮箱、手机号、URL、日期、身份证、颜色等一网打尽',
+          '点击模板直接插入，支持按名称搜索匹配',
+          '内置测试区，生成后立即测试匹配效果',
+          '支持 flags 设置：全局匹配、不区分大小写、多行模式等',
+          '纯本地运算：全部在浏览器完成，无需联网',
+        ],
+        howToUse: [
+          '从左侧分类选择你需要的正则类别',
+          '点击正则模板自动插入到上方输入框',
+          '在测试文本区输入你要匹配的文本',
+          '下方会自动高亮匹配结果并展示分组',
+          '复制生成的正则表达式使用即可',
+        ],
+        useCases: [
+          '表单校验规则开发，快速获取常用正则',
+          '测试正则表达式的匹配效果',
+          '忘记正则语法时查询常用模板',
+          '新手学习正则表达式的匹配效果',
+        ],
+        privacyNote:
+          '所有操作都在浏览器本地完成，不会上传你输入的任何数据到服务器，保护隐私。',
+        faqs: [
+          {
+            question: '找不到我需要的正则怎么办？',
+            answer: '你可以手动输入正则表达式，工具同样会帮你测试匹配效果。',
+          },
+          {
+            question: '和现有 regex-tester 工具有什么区别？',
+            answer: 'regex-tester 侧重测试你手写的正则，本工具侧重从常用模板快速生成并测试，两者配合使用效果更好。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          "Can't remember regex syntax? Pick the regex you need from common templates, test the matching result instantly, and copy it for use.",
+        coreFeatures: [
+          'Organized common regex templates: email, phone, URL, date, ID card, color and more',
+          'Click to insert template, supports searching by name',
+          'Built-in test area, test matching immediately after generation',
+          'Flags support: global match, case-insensitive, multiline mode, etc.',
+          '100% local: everything done in browser, no network required',
+        ],
+        howToUse: [
+          'Select the category from the left sidebar',
+          'Click the regex template to insert into the input box above',
+          'Input your test text in the test area',
+          'The matching results will be automatically highlighted and groups displayed below',
+          'Copy the generated regex for use',
+        ],
+        useCases: [
+          'Developing form validation rules, quickly get common regex',
+          'Testing the matching effect of regex',
+          'Querying common templates when you forget syntax',
+          'Beginners learning regex matching behavior',
+        ],
+        privacyNote:
+          'All operations are done locally in your browser. No data is uploaded to any server, keeping your content private.',
+        faqs: [
+          {
+            question: "What if I can't find the regex I need?",
+            answer: 'You can manually input your regex and the tool will still help you test the matching result.',
+          },
+          {
+            question: 'What is the difference from the existing regex-tester tool?',
+            answer: 'regex-tester focuses on testing your handwritten regex, while this tool focuses on quickly generating from common templates and testing. They work better together.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'url-codec',
+    name: 'URL 编解码',
+    nameEn: 'URL Encoder Decoder',
+    description:
+      '快速对 URL 组件或完整 URI 进行编解码，支持 encodeURI 和 encodeURIComponent 两种模式。',
+    descriptionEn:
+      'Quickly encode or decode URL components or full URIs, supports both encodeURI and encodeURIComponent modes.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/url-codec',
+    iconName: 'Link',
+    tags: ['URL', '编码', '解码', 'URI'],
+    tagsEn: ['URL', 'Encode', 'Decode', 'URI'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: URL_DEFAULT_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          '纯浏览器本地运行的 URL 编解码工具，支持 URL 组件和完整 URI 两种编解码模式，实时显示转换结果。',
+        coreFeatures: [
+          '两种模式：支持 encodeURIComponent（URL 组件编码）和 encodeURI（完整 URI 编码）',
+          '双向转换：支持编码和解码一键切换',
+          '实时转换：输入后即刻显示结果',
+          '纯本地运算：所有转换在浏览器完成，数据不上传服务器',
+        ],
+        howToUse: [
+          '选择操作模式（编码或解码）',
+          '选择类型（URL 组件或完整 URI）',
+          '输入原始文本，输出会实时显示',
+          '复制结果使用即可',
+        ],
+        useCases: [
+          '对 URL 查询参数进行编码/解码',
+          '调试网络请求 URL',
+          '处理包含特殊字符的 URL',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，数据内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: 'URL 组件和完整 URI 的区别是什么？',
+            answer: 'URL 组件编码会编码所有特殊字符，包括 : / ? # 等，适合单独编码查询参数等组件；完整 URI 编码会保留 URI 的结构符号（如 : / ? #），适合编码完整 URL。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully in-browser URL encoder and decoder, supports both URL component and full URI encoding/decoding modes, shows result in real-time.',
+        coreFeatures: [
+          'Two modes: supports encodeURIComponent (for URL components) and encodeURI (for full URI)',
+          'Bidirectional conversion: one-click switch between encode and decode',
+          'Real-time conversion: result appears instantly as you type',
+          '100% local: all conversion done in-browser, data never leaves your device',
+        ],
+        howToUse: [
+          'Choose operation mode (encode or decode)',
+          'Choose type (URL component or full URI)',
+          'Input your raw text, the output will appear in real-time',
+          'Copy the result for use',
+        ],
+        useCases: [
+          'Encoding/decoding URL query parameters',
+          'Debugging network request URLs',
+          'Handling URLs containing special characters',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Data content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'What is the difference between URL component and full URI?',
+            answer:
+              'URL component encoding encodes all special characters including : / ? #, which is suitable for encoding individual query parameters. Full URI encoding preserves URI structure characters like : / ? #, which is suitable for encoding complete URLs.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'html-entity-codec',
+    name: 'HTML 实体编解码',
+    nameEn: 'HTML Entity Encoder Decoder',
+    description:
+      'HTML 实体与普通字符互相转换，支持命名实体、十进制和十六进制编码。',
+    descriptionEn:
+      'Convert between HTML entities and plain text, supports named entities, decimal and hexadecimal encoding.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/html-entity-codec',
+    iconName: 'Code',
+    tags: ['HTML', '实体', '编码', '解码'],
+    tagsEn: ['HTML', 'Entity', 'Encode', 'Decode'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: HTML_DEFAULT_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          '纯浏览器本地运行的 HTML 实体编解码工具，支持将 HTML 实体解码为普通字符，或将特殊字符编码为 HTML 实体。',
+        coreFeatures: [
+          '双向转换：支持编码和解码',
+          '完整覆盖：支持常用命名实体、十进制 &#nnn; 和十六进制 &#xnn; 格式',
+          '自动识别：解码时自动识别所有格式的实体',
+          '纯本地运算：所有转换在浏览器完成，数据不上传服务器',
+        ],
+        howToUse: [
+          '选择操作（编码或解码）',
+          '输入原始文本',
+          '下方实时显示转换结果',
+          '复制结果使用',
+        ],
+        useCases: [
+          '调试 HTML 代码中的特殊字符',
+          '将 HTML 源码中的实体还原为可阅读文本',
+          '将特殊字符编码为 HTML 实体避免渲染问题',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，你输入的 HTML 内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '什么是 HTML 实体？',
+            answer: 'HTML 实体是用于在 HTML 文档中表示特殊字符的编码方式，比如用 &amp; 表示 &，用 &lt; 表示 <，避免这些字符与 HTML 标签语法冲突。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully in-browser HTML entity encoder and decoder, converts between HTML entities and plain text, supports named entities, decimal, and hexadecimal formats.',
+        coreFeatures: [
+          'Bidirectional conversion: supports both encoding and decoding',
+          'Complete coverage: supports common named entities, decimal &#nnn; and hexadecimal &#xnn; formats',
+          'Auto detection: automatically recognizes all formats when decoding',
+          '100% local: all conversion done in-browser, data never leaves your device',
+        ],
+        howToUse: [
+          'Choose operation (encode or decode)',
+          'Input your raw text',
+          'The result appears below in real-time',
+          'Copy the result for use',
+        ],
+        useCases: [
+          'Debugging special characters in HTML code',
+          'Restoring entities in HTML source to readable text',
+          'Encoding special characters to HTML entities to avoid rendering issues',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Your HTML content is never uploaded to any server, keeping it private.',
+        faqs: [
+          {
+            question: 'What are HTML entities?',
+            answer:
+              'HTML entities are encodings used to represent special characters in HTML documents. For example, &amp; is used for & and &lt; for < to avoid conflicts with HTML tag syntax.',
           },
         ],
       },
