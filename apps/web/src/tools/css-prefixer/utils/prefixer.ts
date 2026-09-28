@@ -92,8 +92,8 @@ export function addCssPrefixes(css: string): string {
 
   // 遍历每个规则块
   while ((match = ruleRegex.exec(css)) !== null) {
-    const selector = match[1];
-    const declarations = match[2];
+    const selector = match[1] as string;
+    const declarations = match[2] as string;
     const processedDeclarations = processDeclarations(declarations);
     const processedRule = `${selector.trim()} {
 ${processedDeclarations}

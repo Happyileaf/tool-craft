@@ -1,6 +1,8 @@
+'use client';
+
 import { useState, useMemo } from 'react';
-import { ToolComponentProps } from '@/tools/types';
-import { DualTextEditor } from '@/components/DualTextEditor';
+import type { ToolComponentProps } from '../loaders';
+import { DualTextEditor } from '@/components/tool-workspace/DualTextEditor';
 import { CATEGORY } from './constants';
 import { urlEncode, urlDecode, fullUrlEncode, fullUrlDecode } from './utils/converter';
 

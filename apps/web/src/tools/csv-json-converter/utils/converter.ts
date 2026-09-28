@@ -4,18 +4,18 @@
  * 支持带引号的 CSV 字段（包含逗号或换行）
  */
 export function csvToJson(csv: string): any[] {
-  const lines = csv.split('\n').filter(line => line.trim() !== '');
+  const lines = (csv || '').split('\n').filter(line => line.trim() !== '');
   if (lines.length === 0) {
     return [];
   }
 
   // 解析表头
-  const headers = parseCsvLine(lines[0]);
+  const headers = parseCsvLine(lines[0] ?? '');
   const result: any[] = [];
 
   // 解析数据行
   for (let i = 1; i < lines.length; i++) {
-    const values = parseCsvLine(lines[i]);
+    const values = parseCsvLine(lines[i] ?? '');
     const row: any = {};
     headers.forEach((header, index) => {
       row[header.trim()] = values[index] || '';

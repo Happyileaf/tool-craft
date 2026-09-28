@@ -4,6 +4,8 @@ import type { ComponentType } from 'react';
  * 工具实现组件的统一属性，defaultInput 为可选的默认样例输入
  */
 export interface ToolComponentProps {
+  /** 工具容器 className */
+  className?: string;
   /** 工具首次载入时填入的样例内容 */
   defaultInput?: string;
 }

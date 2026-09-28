@@ -25,7 +25,7 @@ const reverseEntityMap: Record<string, string> = Object.entries(entityMap).reduc
 export function htmlEntityEncode(input: string): string {
   let result = input;
   // 先处理已有的 & 避免重复编码
-  result = result.replace(/&/g, entityMap['&']);
+  result = result.replace(/&/g, (substring) => entityMap[substring] ?? substring);
   // 再处理其他字符
   for (const [char, entity] of Object.entries(entityMap)) {
     if (char === '&') continue; // 已经处理过了
@@ -43,13 +43,13 @@ export function htmlEntityDecode(input: string): string {
   let result = input;
   // 匹配命名实体和数字实体
   const entityPattern = /&(#(?:x[0-9a-fA-F]+|[0-9]+)|[a-zA-Z][0-9a-zA-Z]+);/g;
-  result = result.replace(entityPattern, (match, entityName) => {
+  result = result.replace(entityPattern, (match: string, entityName?: string) => {
     // 检查是否是预定义的命名实体
     if (reverseEntityMap[match]) {
       return reverseEntityMap[match];
     }
     // 检查数字实体
-    if (entityName.startsWith('#')) {
+    if (entityName && entityName.startsWith('#')) {
       let code: number;
       if (entityName.startsWith('#x')) {
         // 十六进制

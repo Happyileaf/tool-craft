@@ -1,8 +1,10 @@
+'use client';
+
 import { useState, useMemo } from 'react';
-import { ToolComponentProps } from '@/tools/types';
+import type { ToolComponentProps } from '../loaders';
 import { CATEGORY } from './constants';
 import { getCommonPatterns, generateRegexByName } from './utils/generator';
-import { DualTextEditor } from '@/components/DualTextEditor';
+import { DualTextEditor } from '@/components/tool-workspace/DualTextEditor';
 
 export default function RegexGenerator({ className }: ToolComponentProps) {
   const [selectedPattern, setSelectedPattern] = useState('email');
@@ -34,6 +36,7 @@ ${generated.description}`;
       </div>
       <DualTextEditor
         input=""
+        onInputChange={() => {}}
         output={result}
         disabledInput
         leftLabel="选择类型"
