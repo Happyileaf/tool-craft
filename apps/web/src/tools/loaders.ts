@@ -30,4 +30,5 @@ export const toolLoaders: Record<
   'yaml-to-json': () => import('./yaml-to-json'),
   'uuid-generator': () => import('./uuid-generator'),
   'csv-json-converter': () => import('./csv-json-converter'),
+  'url-codec': () => import('./url-codec'),
 };

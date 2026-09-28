@@ -1191,6 +1191,94 @@ Bob,25,London`,
       },
     },
   },
+  {
+    slug: 'url-codec',
+    name: 'URL 编解码器',
+    nameEn: 'URL Encoder/Decoder',
+    description:
+      '支持 URL 参数编码/解码和完整 URL 编码/解码，基于浏览器原生 API 实现。',
+    descriptionEn:
+      'Supports URL component encoding/decoding and full URL encoding/decoding, powered by browser native APIs.',
+    category: CATEGORY,
+    path: '/tools/url-codec',
+    iconName: 'Link',
+    tags: ['URL', '编码', '解码', '编解码'],
+    tagsEn: ['URL', 'Encode', 'Decode', 'Codec'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'https://example.com/path?name=Hello World 你好世界',
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 URL 编解码工具，支持两种编码模式：URL 参数组件编码（encodeURIComponent）和完整 URL 编码（encodeURI），纯浏览器本地运行。',
+        coreFeatures: [
+          '双向转换：支持编码和解码',
+          '两种模式：提供参数组件编码和完整 URL 编码两种模式',
+          '即时结果：输入即实时输出结果',
+          '纯本地运行：不经过服务器，数据安全有保障',
+        ],
+        howToUse: [
+          '选择编码/解码模式',
+          '在输入框粘贴原始文本',
+          '查看输出结果',
+        ],
+        useCases: [
+          'URL 参数编码用于 HTTP 请求',
+          '调试 API 请求参数',
+          '解析编码后的 URL 链接',
+        ],
+        privacyNote:
+          '所有编解码运算都在本地浏览器完成，数据不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: 'encodeURIComponent 和 encodeURI 有什么区别？',
+            answer:
+              'encodeURIComponent 会编码所有特殊字符，适合编码 URL 参数；encodeURI 保留 URL 特殊字符如 : / ? #，适合编码完整的 URL。',
+          },
+          {
+            question: '支持中文编码吗？',
+            answer:
+              '支持，本工具基于浏览器原生 API，完美支持 UTF-8 中文编码与解码。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient URL encoder and decoder tool, supports two encoding modes: URL component encoding (encodeURIComponent) and full URL encoding (encodeURI), runs 100% locally in browser.',
+        coreFeatures: [
+          'Bidirectional conversion: supports both encoding and decoding',
+          'Two modes: provides URL component mode and full URL mode',
+          'Instant results: real-time output as you type',
+          '100% local: never touches servers, data is secure',
+        ],
+        howToUse: [
+          'Select encode/decode mode',
+          'Paste your original text in the input box',
+          'View the output result',
+        ],
+        useCases: [
+          'Encoding URL parameters for HTTP requests',
+          'Debugging API request parameters',
+          'Parsing encoded URLs',
+        ],
+        privacyNote:
+          'All encoding and decoding operations are completed in the local browser, data will not be uploaded to any server, protecting privacy and security.',
+        faqs: [
+          {
+            question: 'What is the difference between encodeURIComponent and encodeURI?',
+            answer:
+              'encodeURIComponent encodes all special characters, suitable for encoding URL parameters; encodeURI preserves special URL characters like : / ? #, suitable for encoding complete URLs.',
+          },
+          {
+            question: 'Does it support Chinese characters?',
+            answer:
+              'Yes, this tool is based on browser native APIs and perfectly supports UTF-8 Chinese encoding and decoding.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
