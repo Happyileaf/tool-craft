@@ -4,6 +4,9 @@ export interface JWT {
   header: Record<string, any>;
   payload: Record<string, any>;
   signature: string;
+  headerPart: string;
+  payloadPart: string;
+  signaturePart: string;
   isValidFormat: boolean;
 }
 
@@ -68,6 +71,9 @@ export function parseJWT(token: string): JWT {
       header: {},
       payload: {},
       signature: '',
+      headerPart: '',
+      payloadPart: '',
+      signaturePart: '',
       isValidFormat: false,
     };
   }
@@ -80,6 +86,9 @@ export function parseJWT(token: string): JWT {
       header: JSON.parse(headerJson),
       payload: JSON.parse(payloadJson),
       signature: parts[2]!,
+      headerPart: parts[0]!,
+      payloadPart: parts[1]!,
+      signaturePart: parts[2]!,
       isValidFormat: true,
     };
   } catch {
@@ -87,6 +96,9 @@ export function parseJWT(token: string): JWT {
       header: {},
       payload: {},
       signature: '',
+      headerPart: parts[0] ?? '',
+      payloadPart: parts[1] ?? '',
+      signaturePart: parts[2] ?? '',
       isValidFormat: false,
     };
   }

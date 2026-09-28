@@ -1,8 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Check, Copy } from 'lucide-react';
+import {
+  AlertCircle,
+  Check,
+  Copy,
+  ShieldCheck,
+  Split,
+} from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
+import { cn } from '@/lib/utils';
 import { Mode, Algorithm, AlgorithmLabels } from './constants';
 import {
   parseJWT,
@@ -13,13 +20,18 @@ import {
   type JwtOperationError,
 } from './utils/jwt';
 
-const DEFAULT_PARSE_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
 const DEFAULT_HEADER = JSON.stringify({ alg: 'HS256', typ: 'JWT' }, null, 2);
-const DEFAULT_PAYLOAD = JSON.stringify({
-  sub: '1234567890',
-  name: 'John Doe',
-  iat: Math.floor(Date.now() / 1000),
-}, null, 2);
+function createDefaultPayload() {
+  return JSON.stringify(
+    {
+      sub: '1234567890',
+      name: 'John Doe',
+      iat: Math.floor(Date.now() / 1000),
+    },
+    null,
+    2,
+  );
+}
 
 /**
  * JWT 生成器/解析器，支持解析已有的 JWT，查看 Header 和 Payload，验证签名，也可以生成新的 JWT。
@@ -30,35 +42,50 @@ const DEFAULT_PAYLOAD = JSON.stringify({
 function JWTParser() {
   const { t } = useI18n();
   const [mode, setMode] = useState<Mode>(Mode.PARSE);
-  const [token, setToken] = useState(DEFAULT_PARSE_TOKEN);
+  const [token, setToken] = useState('');
   const [headerStr, setHeaderStr] = useState(DEFAULT_HEADER);
-  const [payloadStr, setPayloadStr] = useState(DEFAULT_PAYLOAD);
+  const [payloadStr, setPayloadStr] = useState(createDefaultPayload);
+  const [parts, setParts] = useState<{
+    header: string;
+    payload: string;
+    signature: string;
+  }>({
+    header: '',
+    payload: '',
+    signature: '',
+  });
   const [secret, setSecret] = useState('');
   const [algorithm, setAlgorithm] = useState<Algorithm>(Algorithm.HS256);
-  const [parsed, setParsed] = useState<ReturnType<typeof parseJWT> | null>(null);
   const [generatedToken, setGeneratedToken] = useState('');
   const [isValidFormat, setIsValidFormat] = useState(false);
   const [isSignatureValid, setIsSignatureValid] = useState<boolean | null>(null);
   const [verifyError, setVerifyError] = useState<JwtOperationError | null>(null);
   const [jsonError, setJsonError] = useState<JwtOperationError | null>(null);
   const [copied, setCopied] = useState(false);
+  const [copiedPart, setCopiedPart] = useState<'header' | 'payload' | 'signature' | null>(null);
 
-  // Parse mode: parse token when token changes
   useEffect(() => {
     if (mode !== Mode.PARSE) return;
 
-    const result = parseJWT(token.trim());
-    setParsed(result);
+    const trimmedToken = token.trim();
+    const result = parseJWT(trimmedToken);
     setIsValidFormat(result.isValidFormat);
     if (result.isValidFormat) {
+      const tokenParts = trimmedToken.split('.');
+      setParts({
+        header: tokenParts[0] ?? '',
+        payload: tokenParts[1] ?? '',
+        signature: tokenParts[2] ?? '',
+      });
       setHeaderStr(JSON.stringify(result.header, null, 2));
       setPayloadStr(JSON.stringify(result.payload, null, 2));
+    } else {
+      setParts({ header: '', payload: '', signature: '' });
     }
     setIsSignatureValid(null);
     setVerifyError(null);
   }, [token, mode]);
 
-  // Verify signature when token or secret changes
   useEffect(() => {
     async function doVerify() {
       if (!isValidFormat || !secret) {
@@ -74,7 +101,7 @@ function JWTParser() {
         parts[1]!,
         parts[2]!,
         secret,
-        algorithm
+        algorithm,
       );
       setIsSignatureValid(result.valid);
       setVerifyError(result.error ?? null);
@@ -112,266 +139,392 @@ function JWTParser() {
   }
 
   async function handleCopy() {
-    const textToCopy = mode === Mode.PARSE ? token : generatedToken;
-    if (!textToCopy) return;
-    try {
-      await navigator.clipboard.writeText(textToCopy);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Copy failed
-    }
+    const text = mode === Mode.PARSE ? token.trim() : generatedToken;
+    if (!text) return;
+
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 2000);
   }
+
+  async function handleCopyPart(part: 'header' | 'payload' | 'signature', value: string) {
+    if (!value) return;
+    await navigator.clipboard.writeText(value);
+    setCopiedPart(part);
+    window.setTimeout(() => setCopiedPart(null), 2000);
+  }
+
+  function handleSwitchMode(nextMode: Mode) {
+    if (mode === nextMode) return;
+
+    setToken('');
+    setHeaderStr(DEFAULT_HEADER);
+    setPayloadStr(createDefaultPayload());
+    setParts({ header: '', payload: '', signature: '' });
+    setSecret('');
+    setAlgorithm(Algorithm.HS256);
+    setGeneratedToken('');
+    setIsValidFormat(false);
+    setIsSignatureValid(null);
+    setVerifyError(null);
+    setJsonError(null);
+    setCopied(false);
+    setCopiedPart(null);
+    setMode(nextMode);
+  }
+
+  const algorithmBar = (
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-900">
+      <span className="px-1 text-xs font-medium text-slate-500 dark:text-slate-400">
+        {t('tools.jwtParser.algorithm')}
+      </span>
+      <div className="flex items-center gap-4">
+        {Object.values(Algorithm).map((alg) => (
+          <label
+            key={alg}
+            className="flex cursor-pointer select-none items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400"
+          >
+            <input
+              type="radio"
+              name="jwt-algorithm"
+              value={alg}
+              checked={algorithm === alg}
+              onChange={(event) =>
+                setAlgorithm(event.target.value as Algorithm)
+              }
+              className="h-3.5 w-3.5 border-slate-300 text-slate-900 focus:ring-slate-900 dark:border-slate-700 dark:text-slate-100 dark:focus:ring-slate-400"
+            />
+            {AlgorithmLabels[alg]}
+          </label>
+        ))}
+      </div>
+    </div>
+  );
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Mode selector */}
-      <div className="flex items-center justify-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex items-center rounded-lg border border-slate-200 bg-white p-1 text-xs dark:border-slate-700 dark:bg-slate-800">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-900">
+        <div className="flex items-center rounded-lg border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-800">
           <button
             type="button"
-            onClick={() => setMode(Mode.PARSE)}
-            className={
+            onClick={() => handleSwitchMode(Mode.PARSE)}
+            className={cn(
+              'rounded px-3 py-1 text-xs font-medium transition-colors',
               mode === Mode.PARSE
-                ? 'rounded bg-slate-900 px-3 py-1 font-medium text-white dark:bg-slate-100 dark:text-slate-900'
-                : 'rounded px-3 py-1 font-medium text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
-            }
+                ? 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white',
+            )}
           >
             {t('tools.jwtParser.parseMode')}
           </button>
           <button
             type="button"
-            onClick={() => setMode(Mode.GENERATE)}
-            className={
+            onClick={() => handleSwitchMode(Mode.GENERATE)}
+            className={cn(
+              'rounded px-3 py-1 text-xs font-medium transition-colors',
               mode === Mode.GENERATE
-                ? 'rounded bg-slate-900 px-3 py-1 font-medium text-white dark:bg-slate-100 dark:text-slate-900'
-                : 'rounded px-3 py-1 font-medium text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
-            }
+                ? 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white',
+            )}
           >
             {t('tools.jwtParser.generateMode')}
           </button>
         </div>
+        <span className="hidden items-center gap-1.5 text-xs text-emerald-600 sm:flex dark:text-emerald-400">
+          <ShieldCheck className="h-3.5 w-3.5" />
+          {t('common.clientSideExecution')}
+        </span>
       </div>
 
-      <div className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900">
-        {mode === Mode.PARSE && (
-          /* Parse mode input */
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-              {t('tools.jwtParser.tokenInput')}
-            </label>
-            <div className="flex items-start gap-2">
-              <textarea
-                value={token}
-                onChange={(e) => setToken(e.target.value)}
-                placeholder={t('tools.jwtParser.tokenPlaceholder')}
-                className="min-h-[80px] flex-1 rounded-lg border border-slate-200 bg-white px-4 py-3 font-mono text-sm dark:border-slate-700 dark:bg-slate-800"
-              />
+      {mode === Mode.PARSE && (
+        <>
+          <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+            <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
+              <span>{t('tools.jwtParser.tokenInput')}</span>
               <button
                 type="button"
                 onClick={handleCopy}
-                className="flex h-11 w-11 items-center justify-center rounded-lg border border-slate-200 bg-white transition-colors hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
-                title={t('common.copyResult')}
+                className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
               >
                 {copied ? (
-                  <Check className="h-5 w-5 text-green-600" />
+                  <>
+                    <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                    <span className="text-emerald-600 dark:text-emerald-400">
+                      {t('common.copySuccess')}
+                    </span>
+                  </>
                 ) : (
-                  <Copy className="h-5 w-5 text-slate-600 dark:text-slate-400" />
+                  <>
+                    <Copy className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+                    {t('common.copy')}
+                  </>
                 )}
               </button>
             </div>
-
+            <div className="px-4 py-3">
+              <textarea
+                value={token}
+                onChange={(event) => setToken(event.target.value)}
+                placeholder={t('tools.jwtParser.tokenPlaceholder')}
+                className="min-h-[88px] w-full resize-y bg-transparent font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
+              />
+            </div>
             {!isValidFormat && token && (
-              <div className="mt-2 rounded-lg border border-red-200 bg-red-50 p-3 dark:border-red-900 dark:bg-red-950">
-                <p className="text-sm font-medium text-red-700 dark:text-red-400">
+              <div className="mx-4 mb-3 flex items-start gap-2 rounded-lg border border-rose-200 bg-rose-50 p-3 dark:border-rose-900 dark:bg-rose-950/40">
+                <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-rose-600 dark:text-rose-400" />
+                <p className="text-xs font-medium text-rose-700 dark:text-rose-300">
                   {t('tools.jwtParser.invalidTokenFormat')}
                 </p>
               </div>
             )}
           </div>
-        )}
 
-        {mode === Mode.PARSE && isValidFormat && (
-          <>
-            {/* Header */}
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                  {t('tools.jwtParser.header')}
-                </label>
-              </div>
-              <pre className="overflow-auto rounded-lg border border-slate-200 bg-white p-3 text-sm dark:border-slate-700 dark:bg-slate-800">
-                {headerStr}
-              </pre>
+          <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+            <div className="flex items-center gap-2 border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
+              <Split className="h-3.5 w-3.5 text-slate-400" />
+              {t('tools.jwtParser.partsTitle')}
             </div>
-
-            {/* Payload */}
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                  {t('tools.jwtParser.payload')}
-                </label>
-              </div>
-              <pre className="overflow-auto rounded-lg border border-slate-200 bg-white p-3 text-sm dark:border-slate-700 dark:bg-slate-800">
-                {payloadStr}
-              </pre>
-            </div>
-
-            {/* Signature verification */}
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                {t('tools.jwtParser.secretKey')}
-              </label>
-              <input
-                type="text"
-                value={secret}
-                onChange={(e) => setSecret(e.target.value)}
-                placeholder={t('tools.jwtParser.secretPlaceholder')}
-                className="rounded-lg border border-slate-200 bg-white px-4 py-2 dark:border-slate-700 dark:bg-slate-800"
-              />
-
-              {isSignatureValid !== null && (
-                <div
-                  className={`mt-2 rounded-lg border p-3 ${
-                    isSignatureValid
-                      ? 'border-green-200 bg-green-50 dark:border-green-900 dark:bg-green-950'
-                      : 'border-red-200 bg-red-50 dark:border-red-900 dark:bg-red-950'
-                  }`}
-                >
-                  <p
-                    className={`text-sm font-medium ${
-                      isSignatureValid
-                        ? 'text-green-700 dark:text-green-400'
-                        : 'text-red-700 dark:text-red-400'
-                    }`}
+            <div className="flex flex-col">
+              {isValidFormat ? (
+                (
+                  [
+                    { key: 'header', label: t('tools.jwtParser.headerPart'), value: parts.header },
+                    { key: 'payload', label: t('tools.jwtParser.payloadPart'), value: parts.payload },
+                    { key: 'signature', label: t('tools.jwtParser.signaturePart'), value: parts.signature },
+                  ] as const
+                ).map((part, index) => (
+                  <div
+                    key={part.key}
+                    className={cn(
+                      'flex flex-col gap-1.5 px-4 py-3',
+                      index !== 0 && 'border-t border-slate-100 dark:border-slate-800',
+                    )}
                   >
-                    {isSignatureValid
-                      ? t('tools.jwtParser.signatureValid')
-                      : t('tools.jwtParser.signatureInvalid')}
-                  </p>
-                  {verifyError && (
-                    <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-                      {t(`tools.jwtParser.${verifyError.key}`, verifyError.params)}
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                        {part.label}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleCopyPart(part.key, part.value)}
+                        disabled={!part.value}
+                        className="flex items-center gap-1 text-[11px] font-medium text-slate-500 transition-colors hover:text-slate-700 disabled:cursor-default dark:text-slate-400 dark:hover:text-slate-200"
+                      >
+                        {copiedPart === part.key ? (
+                          <>
+                            <Check className="h-3 w-3 text-emerald-500" />
+                            <span className="text-emerald-600 dark:text-emerald-400">
+                              {t('common.copySuccess')}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-3 w-3" />
+                            {t('common.copy')}
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    <p className="break-all font-mono text-xs text-slate-800 dark:text-slate-200">
+                      {part.value}
                     </p>
-                  )}
-                </div>
+                  </div>
+                ))
+              ) : (
+                <p className="px-4 py-6 text-center text-xs text-slate-400 dark:text-slate-500">
+                  {t('tools.jwtParser.partsEmpty')}
+                </p>
               )}
             </div>
-          </>
-        )}
+          </div>
 
-        {mode === Mode.GENERATE && (
-          <>
-            {/* Algorithm selector */}
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                {t('tools.jwtParser.algorithm')}
-              </label>
-              <div className="flex items-center gap-2">
-                {Object.values(Algorithm).map((alg) => (
-                  <label
-                    key={alg}
-                    className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300"
+          {isValidFormat && (
+            <>
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+                  <div className="border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
+                    {t('tools.jwtParser.header')}
+                  </div>
+                  <div className="bg-slate-900 p-4 dark:bg-slate-950">
+                    <pre className="overflow-auto font-mono text-xs text-emerald-400">
+                      {headerStr}
+                    </pre>
+                  </div>
+                </div>
+
+                <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+                  <div className="border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
+                    {t('tools.jwtParser.payload')}
+                  </div>
+                  <div className="bg-slate-900 p-4 dark:bg-slate-950">
+                    <pre className="overflow-auto font-mono text-xs text-emerald-400">
+                      {payloadStr}
+                    </pre>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {isValidFormat && (
+            <>
+              {algorithmBar}
+
+              <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+                <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
+                  <span>{t('tools.jwtParser.secretKey')}</span>
+                  <span
+                    aria-hidden={isSignatureValid === null}
+                    className={cn(
+                      'flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-medium transition-opacity',
+                      isSignatureValid === null
+                        ? 'border-transparent opacity-0'
+                        : isSignatureValid
+                          ? 'border-emerald-200 bg-emerald-50 text-emerald-600 dark:border-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-400'
+                          : 'border-rose-200 bg-rose-50 text-rose-600 dark:border-rose-900 dark:bg-rose-950/50 dark:text-rose-400',
+                    )}
                   >
-                    <input
-                      type="radio"
-                      name="algorithm"
-                      value={alg}
-                      checked={algorithm === alg}
-                      onChange={(e) =>
-                        setAlgorithm(e.target.value as Algorithm)
-                      }
-                      className="h-4 w-4 border-slate-300 text-slate-900 focus:ring-slate-900 dark:border-slate-600 dark:bg-slate-800"
+                    <span
+                      className={cn(
+                        'h-1.5 w-1.5 rounded-full',
+                        isSignatureValid === null
+                          ? 'bg-transparent'
+                          : isSignatureValid
+                            ? 'bg-emerald-500'
+                            : 'bg-rose-500',
+                      )}
                     />
-                    {AlgorithmLabels[alg]}
-                  </label>
-                ))}
+                    {isSignatureValid === null
+                      ? t('tools.jwtParser.signatureInvalid')
+                      : isSignatureValid
+                        ? t('tools.jwtParser.signatureValid')
+                        : t('tools.jwtParser.signatureInvalid')}
+                  </span>
+                </div>
+                <div className="px-4 py-3">
+                  <input
+                    type="text"
+                    value={secret}
+                    onChange={(event) => setSecret(event.target.value)}
+                    placeholder={t('tools.jwtParser.secretPlaceholder')}
+                    className="w-full bg-transparent font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
+                  />
+                </div>
+                {verifyError && (
+                  <div className="flex items-start gap-2 border-t border-rose-200 bg-rose-50/60 px-4 py-2 dark:border-rose-900/60 dark:bg-rose-950/30">
+                    <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-rose-600 dark:text-rose-400" />
+                    <p className="text-xs text-rose-700 dark:text-rose-300">
+                      {t(
+                        `tools.jwtParser.${verifyError.key}`,
+                        verifyError.params,
+                      )}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </>
+      )}
+
+      {mode === Mode.GENERATE && (
+        <>
+          {algorithmBar}
+
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+              <div className="border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
+                {t('tools.jwtParser.headerJson')}
+              </div>
+              <div className="px-4 py-3">
+                <textarea
+                  value={headerStr}
+                  onChange={(event) => setHeaderStr(event.target.value)}
+                  className="min-h-[120px] w-full resize-y bg-transparent font-mono text-xs focus:outline-none focus:ring-0 sm:text-sm"
+                />
               </div>
             </div>
 
-            {/* Header editor */}
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                {t('tools.jwtParser.headerJson')}
-              </label>
-              <textarea
-                value={headerStr}
-                onChange={(e) => setHeaderStr(e.target.value)}
-                className="min-h-[100px] flex-1 rounded-lg border border-slate-200 bg-white px-4 py-3 font-mono text-sm dark:border-slate-700 dark:bg-slate-800"
-              />
-            </div>
-
-            {/* Payload editor */}
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+              <div className="border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
                 {t('tools.jwtParser.payloadJson')}
-              </label>
-              <textarea
-                value={payloadStr}
-                onChange={(e) => setPayloadStr(e.target.value)}
-                className="min-h-[150px] flex-1 rounded-lg border border-slate-200 bg-white px-4 py-3 font-mono text-sm dark:border-slate-700 dark:bg-slate-800"
-              />
+              </div>
+              <div className="px-4 py-3">
+                <textarea
+                  value={payloadStr}
+                  onChange={(event) => setPayloadStr(event.target.value)}
+                  className="min-h-[120px] w-full resize-y bg-transparent font-mono text-xs focus:outline-none focus:ring-0 sm:text-sm"
+                />
+              </div>
             </div>
+          </div>
 
-            {/* Secret */}
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                {t('tools.jwtParser.secretKey')}
-              </label>
+          <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+            <div className="border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
+              {t('tools.jwtParser.secretKey')}
+            </div>
+            <div className="flex items-center gap-2 px-4 py-3">
               <input
                 type="text"
                 value={secret}
-                onChange={(e) => setSecret(e.target.value)}
-                placeholder={t('tools.jwtParser.secretPlaceholderGenerate')}
-                className="rounded-lg border border-slate-200 bg-white px-4 py-2 dark:border-slate-700 dark:bg-slate-800"
+                onChange={(event) => setSecret(event.target.value)}
+                placeholder={t(
+                  'tools.jwtParser.secretPlaceholderGenerate',
+                )}
+                className="flex-1 bg-transparent font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
               />
+              <button
+                type="button"
+                onClick={handleGenerate}
+                className="flex shrink-0 items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
+              >
+                <ShieldCheck className="h-3.5 w-3.5" />
+                {t('tools.jwtParser.generateButton')}
+              </button>
             </div>
-
             {jsonError && (
-              <div className="rounded-lg border border-red-200 bg-red-50 p-3 dark:border-red-900 dark:bg-red-950">
-                <p className="text-sm font-medium text-red-700 dark:text-red-400">
+              <div className="flex items-start gap-2 border-t border-rose-200 bg-rose-50/60 px-4 py-2 dark:border-rose-900/60 dark:bg-rose-950/30">
+                <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-rose-600 dark:text-rose-400" />
+                <p className="text-xs text-rose-700 dark:text-rose-300">
                   {t(`tools.jwtParser.${jsonError.key}`, jsonError.params)}
                 </p>
               </div>
             )}
+          </div>
 
-            <button
-              type="button"
-              onClick={handleGenerate}
-              className="rounded-lg bg-slate-900 px-4 py-2 font-medium text-white transition-colors hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600"
-            >
-              {t('tools.jwtParser.generateButton')}
-            </button>
-
-            {generatedToken && (
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                    {t('tools.jwtParser.generatedToken')}
-                  </label>
-                </div>
-                <div className="flex items-start gap-2">
-                  <pre className="overflow-auto flex-1 break-all rounded-lg border border-slate-200 bg-white p-3 text-sm dark:border-slate-700 dark:bg-slate-800">
-                    {generatedToken}
-                  </pre>
-                  <button
-                    type="button"
-                    onClick={handleCopy}
-                    className="flex h-11 w-11 items-center justify-center rounded-lg border border-slate-200 bg-white transition-colors hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
-                    title={t('common.copyResult')}
-                  >
-                    {copied ? (
-                      <Check className="h-5 w-5 text-green-600" />
-                    ) : (
-                      <Copy className="h-5 w-5 text-slate-600 dark:text-slate-400" />
-                    )}
-                  </button>
-                </div>
+          {generatedToken && (
+            <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+              <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
+                <span>{t('tools.jwtParser.generatedToken')}</span>
+                <button
+                  type="button"
+                  onClick={handleCopy}
+                  className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                      <span className="text-emerald-600 dark:text-emerald-400">
+                        {t('common.copySuccess')}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+                      {t('common.copy')}
+                    </>
+                  )}
+                </button>
               </div>
-            )}
-          </>
-        )}
-      </div>
+              <div className="bg-slate-900 p-4 dark:bg-slate-950">
+                <p className="break-all font-mono text-xs leading-relaxed text-emerald-400">
+                  {generatedToken}
+                </p>
+              </div>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }

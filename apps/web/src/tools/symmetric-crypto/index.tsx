@@ -1,8 +1,17 @@
 'use client';
 
-import { useState } from 'react';
-import { Check, Copy } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import {
+  AlertCircle,
+  Check,
+  Copy,
+  KeyRound,
+  Lock,
+  LockOpen,
+  ShieldCheck,
+} from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
+import { cn } from '@/lib/utils';
 import {
   encrypt,
   decrypt,
@@ -19,217 +28,201 @@ const DEFAULT_KEY = 'your-secret-key';
  */
 function SymmetricCrypto() {
   const { t } = useI18n();
-  const [plaintext, setPlaintext] = useState(() =>
-    t('tools.aes.defaultPlaintext'),
-  );
+  const [plaintext, setPlaintext] = useState('');
   const [key, setKey] = useState(DEFAULT_KEY);
   const [encrypted, setEncrypted] = useState('');
   const [toDecrypt, setToDecrypt] = useState('');
   const [decrypted, setDecrypted] = useState('');
-  const [error, setError] = useState<AesOperationError | null>(null);
+  const [encryptError, setEncryptError] = useState<AesOperationError | null>(
+    null,
+  );
+  const [decryptError, setDecryptError] = useState<AesOperationError | null>(
+    null,
+  );
   const [copied, setCopied] = useState(false);
 
-  async function doEncrypt() {
-    if (!plaintext || !key) {
-      setEncrypted('');
-      return;
+  useEffect(() => {
+    setPlaintext(t('tools.aes.defaultPlaintext'));
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function doEncrypt() {
+      if (!plaintext || !key) {
+        setEncrypted('');
+        setEncryptError(null);
+        return;
+      }
+      const result = await encrypt(plaintext, key);
+      if (cancelled) return;
+      if (result.success) {
+        setEncrypted(result.encrypted);
+        setEncryptError(null);
+      } else {
+        setEncrypted('');
+        setEncryptError(result.error);
+      }
     }
-    const result = await encrypt(plaintext, key);
-    if (result.success) {
-      setEncrypted(result.encrypted);
-      setError(null);
-    } else {
-      setEncrypted('');
-      setError(result.error);
-    }
-  }
+
+    doEncrypt();
+    return () => {
+      cancelled = true;
+    };
+  }, [plaintext, key]);
 
   async function doDecrypt() {
     if (!toDecrypt || !key) {
       setDecrypted('');
+      setDecryptError(null);
       return;
     }
     const result = await decrypt(toDecrypt, key);
     if (result.success) {
       setDecrypted(result.plaintext);
-      setError(null);
+      setDecryptError(null);
     } else {
       setDecrypted('');
-      setError(result.error);
+      setDecryptError(result.error);
     }
-  }
-
-  // Auto encrypt when plaintext or key changes
-  if (plaintext && key) {
-    doEncrypt();
   }
 
   async function handleCopy() {
-    const textToCopy = encrypted;
-    if (!textToCopy) return;
-    try {
-      await navigator.clipboard.writeText(textToCopy);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Copy failed
-    }
+    if (!encrypted) return;
+    await navigator.clipboard.writeText(encrypted);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 2000);
   }
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {/* Encrypt section */}
-        <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900">
-          <h3 className="text-base font-medium text-slate-800 dark:text-slate-200">
-            {t('tools.aes.encryptTitle')}
-          </h3>
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-900">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <KeyRound className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+          <input
+            type="text"
+            value={key}
+            onChange={(event) => setKey(event.target.value)}
+            placeholder={t('tools.aes.keyPlaceholder')}
+            className="min-w-0 flex-1 bg-transparent font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
+          />
+        </div>
+        <span className="hidden items-center gap-1.5 text-xs text-emerald-600 sm:flex dark:text-emerald-400">
+          <ShieldCheck className="h-3.5 w-3.5" />
+          {t('common.clientSideExecution')}
+        </span>
+      </div>
 
-          {/* Plaintext input */}
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-              {t('tools.aes.plaintextLabel')}
-            </label>
+      <p className="-mt-1 px-1 text-[11px] text-slate-400 dark:text-slate-500">
+        {t('tools.aes.keyHint')}
+      </p>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
+            <span className="flex items-center gap-1.5">
+              <Lock className="h-3.5 w-3.5" />
+              {t('tools.aes.encryptTitle')}
+            </span>
+            <button
+              type="button"
+              onClick={handleCopy}
+              disabled={!encrypted}
+              className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+            >
+              {copied ? (
+                <>
+                  <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span className="text-emerald-600 dark:text-emerald-400">
+                    {t('common.copySuccess')}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Copy className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+                  {t('common.copy')}
+                </>
+              )}
+            </button>
+          </div>
+          <div className="border-b border-slate-200 px-4 py-3 dark:border-slate-800">
             <textarea
               value={plaintext}
-              onChange={(e) => setPlaintext(e.target.value)}
+              onChange={(event) => setPlaintext(event.target.value)}
               placeholder={t('tools.aes.plaintextPlaceholder')}
-              className="min-h-[140px] rounded-lg border border-slate-200 bg-white px-4 py-3 font-mono text-sm dark:border-slate-700 dark:bg-slate-800"
+              className="min-h-[96px] w-full resize-y bg-transparent font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
             />
           </div>
-
-          {/* Key input */}
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-              {t('tools.aes.secretKey')}
-            </label>
-            <input
-              type="text"
-              value={key}
-              onChange={(e) => setKey(e.target.value)}
-              placeholder={t('tools.aes.keyPlaceholder')}
-              className="rounded-lg border border-slate-200 bg-white px-4 py-2 dark:border-slate-700 dark:bg-slate-800"
-            />
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              {t('tools.aes.keyHint')}
-            </p>
-          </div>
-
-          {/* Encrypted result */}
-          {encrypted && (
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                  {t('tools.aes.encryptedResult')}
-                </label>
-              </div>
-              <div className="flex items-start gap-2">
-                <pre className="overflow-auto break-all flex-1 rounded-lg border border-slate-200 bg-white p-3 text-sm dark:border-slate-700 dark:bg-slate-800">
-                  {encrypted}
-                </pre>
-                <button
-                  type="button"
-                  onClick={handleCopy}
-                  className="flex h-11 w-11 items-center justify-center rounded-lg border border-slate-200 bg-white transition-colors hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
-                  title={t('common.copyResult')}
-                >
-                  {copied ? (
-                    <Check className="h-5 w-5 text-green-600" />
-                  ) : (
-                    <Copy className="h-5 w-5 text-slate-600 dark:text-slate-400" />
-                  )}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {error && (
-            <div className="rounded-lg border border-red-200 bg-red-50 p-3 dark:border-red-900 dark:bg-red-950">
-              <p className="text-sm font-medium text-red-700 dark:text-red-400">
-                {t(`tools.aes.${error.key}`)}
+          <div className="bg-slate-900 p-4 dark:bg-slate-950">
+            {encryptError ? (
+              <p className="flex items-start gap-1.5 font-mono text-xs text-rose-400">
+                <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                {t(`tools.aes.${encryptError.key}`)}
               </p>
-            </div>
-          )}
+            ) : encrypted ? (
+              <p className="break-all font-mono text-xs leading-relaxed text-emerald-400">
+                {encrypted}
+              </p>
+            ) : (
+              <p className="font-mono text-xs text-slate-500">
+                {t('tools.aes.encryptedResult')}
+              </p>
+            )}
+          </div>
         </div>
 
-        {/* Decrypt section */}
-        <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900">
-          <h3 className="text-base font-medium text-slate-800 dark:text-slate-200">
-            {t('tools.aes.decryptTitle')}
-          </h3>
-
-          {/* Ciphertext input */}
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-              {t('tools.aes.ciphertextLabel')}
-            </label>
+        <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
+            <span className="flex items-center gap-1.5">
+              <LockOpen className="h-3.5 w-3.5" />
+              {t('tools.aes.decryptTitle')}
+            </span>
+            <button
+              type="button"
+              onClick={doDecrypt}
+              disabled={!toDecrypt || !key}
+              className={cn(
+                'flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-medium transition-colors disabled:opacity-50',
+                'bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white',
+              )}
+            >
+              {t('tools.aes.decryptButton')}
+            </button>
+          </div>
+          <div className="border-b border-slate-200 px-4 py-3 dark:border-slate-800">
             <textarea
               value={toDecrypt}
-              onChange={(e) => {
-                setToDecrypt(e.target.value);
+              onChange={(event) => {
+                setToDecrypt(event.target.value);
                 setDecrypted('');
-                setError(null);
+                setDecryptError(null);
               }}
               placeholder={t('tools.aes.ciphertextPlaceholder')}
-              className="min-h-[140px] rounded-lg border border-slate-200 bg-white px-4 py-3 font-mono text-sm dark:border-slate-700 dark:bg-slate-800"
+              className="min-h-[96px] w-full resize-y bg-transparent font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
             />
           </div>
-
-          {/* Key input */}
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-              {t('tools.aes.secretKey')}
-            </label>
-            <input
-              type="text"
-              value={key}
-              onChange={(e) => setKey(e.target.value)}
-              placeholder={t('tools.aes.keyPlaceholder')}
-              className="rounded-lg border border-slate-200 bg-white px-4 py-2 dark:border-slate-700 dark:bg-slate-800"
-            />
-          </div>
-
-          {/* Decrypt button */}
-          <button
-            type="button"
-            onClick={doDecrypt}
-            disabled={!toDecrypt || !key}
-            className="rounded-lg bg-slate-900 px-4 py-2 font-medium text-white transition-colors hover:bg-slate-800 disabled:opacity-50 dark:bg-slate-700 dark:hover:bg-slate-600"
-          >
-            {t('tools.aes.decryptButton')}
-          </button>
-
-          {/* Decrypted result */}
-          {decrypted && (
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                  {t('tools.aes.decryptedResult')}
-                </label>
-              </div>
-              <pre className="overflow-auto break-all rounded-lg border border-green-200 bg-green-50 p-3 text-sm dark:border-green-900 dark:bg-green-950">
-                {decrypted}
-              </pre>
-            </div>
-          )}
-
-          {error && (
-            <div className="rounded-lg border border-red-200 bg-red-50 p-3 dark:border-red-900 dark:bg-red-950">
-              <p className="text-sm font-medium text-red-700 dark:text-red-400">
-                {t(`tools.aes.${error.key}`)}
+          <div className="bg-slate-900 p-4 dark:bg-slate-950">
+            {decryptError ? (
+              <p className="flex items-start gap-1.5 font-mono text-xs text-rose-400">
+                <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                {t(`tools.aes.${decryptError.key}`)}
               </p>
-            </div>
-          )}
+            ) : decrypted ? (
+              <p className="break-all font-mono text-xs leading-relaxed text-emerald-400">
+                {decrypted}
+              </p>
+            ) : (
+              <p className="font-mono text-xs text-slate-500">
+                {t('tools.aes.decryptedResult')}
+              </p>
+            )}
+          </div>
         </div>
       </div>
 
-      {error && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950">
-          <p className="text-sm text-amber-800 dark:text-amber-300">
-            {t('tools.aes.note')}
-          </p>
-        </div>
-      )}
+      <p className="px-1 text-[11px] text-slate-400 dark:text-slate-500">
+        {t('tools.aes.note')}
+      </p>
     </div>
   );
 }
