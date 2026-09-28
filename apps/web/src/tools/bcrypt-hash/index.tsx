@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   Check,
   Copy,
   KeyRound,
+  RotateCw,
   ShieldCheck,
 } from 'lucide-react';
 import bcrypt from 'bcryptjs';
@@ -28,15 +29,15 @@ function BCryptHash() {
   const [verifyResult, setVerifyResult] = useState<boolean | null>(null);
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    if (mode !== Mode.HASH || !password) {
-      setHash('');
-      return;
-    }
+  /**
+   * 依据当前密码与计算成本生成哈希，未输入密码时不执行
+   */
+  function handleGenerate() {
+    if (!password) return;
     const salt = bcrypt.genSaltSync(rounds);
     setHash(bcrypt.hashSync(password, salt));
     setCopied(false);
-  }, [password, rounds, mode]);
+  }
 
   function doVerify() {
     if (!passwordToVerify || !hashToVerify) {
@@ -53,16 +54,30 @@ function BCryptHash() {
     window.setTimeout(() => setCopied(false), 2000);
   }
 
+  /**
+   * 切换哈希生成与验证模式，同时清空两个模式下的输入与结果
+   *
+   * @param nextMode - 目标模式
+   */
+  function switchMode(nextMode: Mode) {
+    if (mode === nextMode) return;
+    setPassword('');
+    setRounds(DEFAULT_ROUNDS);
+    setHash('');
+    setPasswordToVerify('');
+    setHashToVerify('');
+    setVerifyResult(null);
+    setCopied(false);
+    setMode(nextMode);
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-900">
         <div className="flex items-center rounded-lg border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-800">
           <button
             type="button"
-            onClick={() => {
-              setMode(Mode.HASH);
-              setVerifyResult(null);
-            }}
+            onClick={() => switchMode(Mode.HASH)}
             className={cn(
               'rounded px-3 py-1 text-xs font-medium transition-colors',
               mode === Mode.HASH
@@ -74,10 +89,7 @@ function BCryptHash() {
           </button>
           <button
             type="button"
-            onClick={() => {
-              setMode(Mode.VERIFY);
-              setVerifyResult(null);
-            }}
+            onClick={() => switchMode(Mode.VERIFY)}
             className={cn(
               'rounded px-3 py-1 text-xs font-medium transition-colors',
               mode === Mode.VERIFY
@@ -96,6 +108,27 @@ function BCryptHash() {
 
       {mode === Mode.HASH && (
         <>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs dark:border-slate-800 dark:bg-slate-900">
+            <span className="flex items-center gap-2">
+              <KeyRound className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+              <span className="whitespace-nowrap font-medium text-slate-500 dark:text-slate-400">
+                {t('tools.bcrypt.costFactor')}：
+                <span className="inline-block w-5 tabular-nums">{rounds}</span>
+              </span>
+              <input
+                type="range"
+                min={MIN_ROUNDS}
+                max={MAX_ROUNDS}
+                value={rounds}
+                onChange={(event) => setRounds(Number(event.target.value))}
+                className="w-48 shrink-0 cursor-pointer accent-slate-900 dark:accent-slate-100"
+              />
+            </span>
+            <span className="text-[11px] text-slate-400 dark:text-slate-500">
+              {t('tools.bcrypt.costFactorHint')}
+            </span>
+          </div>
+
           <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
             <div className="border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
               {t('tools.bcrypt.passwordToHash')}
@@ -111,44 +144,32 @@ function BCryptHash() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-            <div className="mb-3 flex items-center justify-between">
-              <span className="flex items-center gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-400">
-                <KeyRound className="h-3.5 w-3.5" />
-                {t('tools.bcrypt.costFactor')}：{rounds}
-              </span>
-              <span className="text-[11px] text-slate-400 dark:text-slate-500">
-                {t('tools.bcrypt.costFactorHint')}
-              </span>
-            </div>
-            <input
-              type="range"
-              min={MIN_ROUNDS}
-              max={MAX_ROUNDS}
-              value={rounds}
-              onChange={(event) => setRounds(Number(event.target.value))}
-              className="w-full cursor-pointer accent-slate-900 dark:accent-slate-100"
-            />
-            <div className="mt-1 flex justify-between text-[11px] text-slate-400 dark:text-slate-500">
-              <span>{MIN_ROUNDS}</span>
-              <span>{MAX_ROUNDS}</span>
-            </div>
-          </div>
-
           <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
             <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
               <span>{t('tools.bcrypt.generatedHash')}</span>
               <div className="flex items-center gap-2">
-                {hash && (
-                  <span className="text-[11px] text-slate-400 dark:text-slate-500">
-                    {t('tools.bcrypt.hashLength')}：{hash.length}
-                  </span>
-                )}
+                <span
+                  className={cn(
+                    'text-[11px] text-slate-400 dark:text-slate-500',
+                    !hash && 'invisible',
+                  )}
+                >
+                  {t('tools.bcrypt.hashLength')}：{hash.length}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleGenerate}
+                  disabled={!password}
+                  className="flex items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
+                >
+                  <RotateCw className="h-3.5 w-3.5" />
+                  {t('tools.bcrypt.generate')}
+                </button>
                 <button
                   type="button"
                   onClick={handleCopy}
                   disabled={!hash}
-                  className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                  className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
                 >
                   {copied ? (
                     <>
@@ -166,14 +187,14 @@ function BCryptHash() {
                 </button>
               </div>
             </div>
-            <div className="bg-slate-900 p-4 dark:bg-slate-950">
+            <div className="flex min-h-[72px] items-center bg-slate-900 p-4 dark:bg-slate-950">
               {hash ? (
                 <p className="break-all font-mono text-xs leading-relaxed text-emerald-400">
                   {hash}
                 </p>
               ) : (
-                <p className="font-mono text-xs text-slate-500">
-                  {t('tools.bcrypt.passwordPlaceholder')}
+                <p className="w-full text-center font-mono text-xs text-slate-500">
+                  {t('tools.bcrypt.emptyResult')}
                 </p>
               )}
             </div>
@@ -204,26 +225,33 @@ function BCryptHash() {
           <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
             <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
               <span>{t('tools.bcrypt.hashToVerify')}</span>
-              {verifyResult !== null && (
-                <span
-                  className={cn(
-                    'flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium',
-                    verifyResult
+              <span
+                aria-hidden={verifyResult === null}
+                className={cn(
+                  'flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-medium transition-opacity',
+                  verifyResult === null
+                    ? 'border-transparent opacity-0'
+                    : verifyResult
                       ? 'border-emerald-200 bg-emerald-50 text-emerald-600 dark:border-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-400'
                       : 'border-rose-200 bg-rose-50 text-rose-600 dark:border-rose-900 dark:bg-rose-950/50 dark:text-rose-400',
+                )}
+              >
+                <span
+                  className={cn(
+                    'h-1.5 w-1.5 rounded-full',
+                    verifyResult === null
+                      ? 'bg-transparent'
+                      : verifyResult
+                        ? 'bg-emerald-500'
+                        : 'bg-rose-500',
                   )}
-                >
-                  <span
-                    className={cn(
-                      'h-1.5 w-1.5 rounded-full',
-                      verifyResult ? 'bg-emerald-500' : 'bg-rose-500',
-                    )}
-                  />
-                  {verifyResult
+                />
+                {verifyResult === null
+                  ? t('tools.bcrypt.notMatch')
+                  : verifyResult
                     ? t('tools.bcrypt.match')
                     : t('tools.bcrypt.notMatch')}
-                </span>
-              )}
+              </span>
             </div>
             <div className="px-4 py-3">
               <textarea
@@ -241,7 +269,7 @@ function BCryptHash() {
                 type="button"
                 onClick={doVerify}
                 disabled={!passwordToVerify || !hashToVerify}
-                className="flex items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-slate-800 disabled:opacity-50 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
+                className="flex items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
               >
                 <ShieldCheck className="h-3.5 w-3.5" />
                 {t('tools.bcrypt.verifyButton')}

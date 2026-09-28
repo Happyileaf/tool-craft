@@ -39,37 +39,31 @@ function SymmetricCrypto() {
   const [decryptError, setDecryptError] = useState<AesOperationError | null>(
     null,
   );
-  const [copied, setCopied] = useState(false);
+  const [copiedPlaintext, setCopiedPlaintext] = useState(false);
+  const [copiedCiphertext, setCopiedCiphertext] = useState(false);
+  const [copiedEncrypted, setCopiedEncrypted] = useState(false);
+  const [copiedDecrypted, setCopiedDecrypted] = useState(false);
 
   useEffect(() => {
     setPlaintext(t('tools.aes.defaultPlaintext'));
   }, []);
 
-  useEffect(() => {
-    let cancelled = false;
-
-    async function doEncrypt() {
-      if (!plaintext || !key) {
-        setEncrypted('');
-        setEncryptError(null);
-        return;
-      }
-      const result = await encrypt(plaintext, key);
-      if (cancelled) return;
-      if (result.success) {
-        setEncrypted(result.encrypted);
-        setEncryptError(null);
-      } else {
-        setEncrypted('');
-        setEncryptError(result.error);
-      }
+  async function doEncrypt() {
+    if (!plaintext || !key) {
+      setEncrypted('');
+      setEncryptError(null);
+      return;
     }
-
-    doEncrypt();
-    return () => {
-      cancelled = true;
-    };
-  }, [plaintext, key]);
+    const result = await encrypt(plaintext, key);
+    setCopiedEncrypted(false);
+    if (result.success) {
+      setEncrypted(result.encrypted);
+      setEncryptError(null);
+    } else {
+      setEncrypted('');
+      setEncryptError(result.error);
+    }
+  }
 
   async function doDecrypt() {
     if (!toDecrypt || !key) {
@@ -78,6 +72,7 @@ function SymmetricCrypto() {
       return;
     }
     const result = await decrypt(toDecrypt, key);
+    setCopiedDecrypted(false);
     if (result.success) {
       setDecrypted(result.plaintext);
       setDecryptError(null);
@@ -87,11 +82,32 @@ function SymmetricCrypto() {
     }
   }
 
-  async function handleCopy() {
+  async function handleCopyPlaintext() {
+    if (!plaintext) return;
+    await navigator.clipboard.writeText(plaintext);
+    setCopiedPlaintext(true);
+    window.setTimeout(() => setCopiedPlaintext(false), 2000);
+  }
+
+  async function handleCopyCiphertext() {
+    if (!toDecrypt) return;
+    await navigator.clipboard.writeText(toDecrypt);
+    setCopiedCiphertext(true);
+    window.setTimeout(() => setCopiedCiphertext(false), 2000);
+  }
+
+  async function handleCopyEncrypted() {
     if (!encrypted) return;
     await navigator.clipboard.writeText(encrypted);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2000);
+    setCopiedEncrypted(true);
+    window.setTimeout(() => setCopiedEncrypted(false), 2000);
+  }
+
+  async function handleCopyDecrypted() {
+    if (!decrypted) return;
+    await navigator.clipboard.writeText(decrypted);
+    setCopiedDecrypted(true);
+    window.setTimeout(() => setCopiedDecrypted(false), 2000);
   }
 
   return (
@@ -102,7 +118,11 @@ function SymmetricCrypto() {
           <input
             type="text"
             value={key}
-            onChange={(event) => setKey(event.target.value)}
+            onChange={(event) => {
+              setKey(event.target.value);
+              setEncrypted('');
+              setEncryptError(null);
+            }}
             placeholder={t('tools.aes.keyPlaceholder')}
             className="min-w-0 flex-1 bg-transparent font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
           />
@@ -124,13 +144,119 @@ function SymmetricCrypto() {
               <Lock className="h-3.5 w-3.5" />
               {t('tools.aes.encryptTitle')}
             </span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={doEncrypt}
+                disabled={!plaintext || !key}
+                className={cn(
+                  'flex items-center gap-1 rounded-md border border-transparent px-2.5 py-1 text-xs font-medium transition-colors disabled:opacity-50',
+                  'bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white',
+                )}
+              >
+                {t('tools.aes.encryptButton')}
+              </button>
+              <button
+                type="button"
+                onClick={handleCopyPlaintext}
+                disabled={!plaintext}
+                className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+              >
+                {copiedPlaintext ? (
+                  <>
+                    <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                    <span className="text-emerald-600 dark:text-emerald-400">
+                      {t('common.copySuccess')}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+                    {t('common.copy')}
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+          <textarea
+            value={plaintext}
+            onChange={(event) => {
+              setPlaintext(event.target.value);
+              setEncrypted('');
+              setEncryptError(null);
+            }}
+            placeholder={t('tools.aes.plaintextPlaceholder')}
+            className="min-h-[320px] w-full flex-1 resize-none bg-transparent px-4 py-3 font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
+          />
+        </div>
+
+        <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
+            <span className="flex items-center gap-1.5">
+              <LockOpen className="h-3.5 w-3.5" />
+              {t('tools.aes.decryptTitle')}
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={doDecrypt}
+                disabled={!toDecrypt || !key}
+                className={cn(
+                  'flex items-center gap-1 rounded-md border border-transparent px-2.5 py-1 text-xs font-medium transition-colors disabled:opacity-50',
+                  'bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white',
+                )}
+              >
+                {t('tools.aes.decryptButton')}
+              </button>
+              <button
+                type="button"
+                onClick={handleCopyCiphertext}
+                disabled={!toDecrypt}
+                className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+              >
+                {copiedCiphertext ? (
+                  <>
+                    <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                    <span className="text-emerald-600 dark:text-emerald-400">
+                      {t('common.copySuccess')}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+                    {t('common.copy')}
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+          <textarea
+            value={toDecrypt}
+            onChange={(event) => {
+              setToDecrypt(event.target.value);
+              setDecrypted('');
+              setDecryptError(null);
+            }}
+            placeholder={t('tools.aes.ciphertextPlaceholder')}
+            className="min-h-[320px] w-full flex-1 resize-none bg-transparent px-4 py-3 font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
+            <span className="flex items-center gap-1.5">
+              <Lock className="h-3.5 w-3.5" />
+              {t('tools.aes.encryptedResult')}
+            </span>
             <button
               type="button"
-              onClick={handleCopy}
+              onClick={handleCopyEncrypted}
               disabled={!encrypted}
               className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
             >
-              {copied ? (
+              {copiedEncrypted ? (
                 <>
                   <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                   <span className="text-emerald-600 dark:text-emerald-400">
@@ -145,15 +271,7 @@ function SymmetricCrypto() {
               )}
             </button>
           </div>
-          <div className="border-b border-slate-200 px-4 py-3 dark:border-slate-800">
-            <textarea
-              value={plaintext}
-              onChange={(event) => setPlaintext(event.target.value)}
-              placeholder={t('tools.aes.plaintextPlaceholder')}
-              className="min-h-[96px] w-full resize-y bg-transparent font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
-            />
-          </div>
-          <div className="bg-slate-900 p-4 dark:bg-slate-950">
+          <div className="max-h-72 flex-1 overflow-y-auto bg-slate-900 p-4 dark:bg-slate-950">
             {encryptError ? (
               <p className="flex items-start gap-1.5 font-mono text-xs text-rose-400">
                 <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
@@ -165,7 +283,7 @@ function SymmetricCrypto() {
               </p>
             ) : (
               <p className="font-mono text-xs text-slate-500">
-                {t('tools.aes.encryptedResult')}
+                {t('tools.aes.encryptedEmpty')}
               </p>
             )}
           </div>
@@ -175,33 +293,30 @@ function SymmetricCrypto() {
           <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
             <span className="flex items-center gap-1.5">
               <LockOpen className="h-3.5 w-3.5" />
-              {t('tools.aes.decryptTitle')}
+              {t('tools.aes.decryptedResult')}
             </span>
             <button
               type="button"
-              onClick={doDecrypt}
-              disabled={!toDecrypt || !key}
-              className={cn(
-                'flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-medium transition-colors disabled:opacity-50',
-                'bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white',
-              )}
+              onClick={handleCopyDecrypted}
+              disabled={!decrypted}
+              className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
             >
-              {t('tools.aes.decryptButton')}
+              {copiedDecrypted ? (
+                <>
+                  <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span className="text-emerald-600 dark:text-emerald-400">
+                    {t('common.copySuccess')}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Copy className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+                  {t('common.copy')}
+                </>
+              )}
             </button>
           </div>
-          <div className="border-b border-slate-200 px-4 py-3 dark:border-slate-800">
-            <textarea
-              value={toDecrypt}
-              onChange={(event) => {
-                setToDecrypt(event.target.value);
-                setDecrypted('');
-                setDecryptError(null);
-              }}
-              placeholder={t('tools.aes.ciphertextPlaceholder')}
-              className="min-h-[96px] w-full resize-y bg-transparent font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
-            />
-          </div>
-          <div className="bg-slate-900 p-4 dark:bg-slate-950">
+          <div className="max-h-72 flex-1 overflow-y-auto bg-slate-900 p-4 dark:bg-slate-950">
             {decryptError ? (
               <p className="flex items-start gap-1.5 font-mono text-xs text-rose-400">
                 <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
@@ -213,16 +328,13 @@ function SymmetricCrypto() {
               </p>
             ) : (
               <p className="font-mono text-xs text-slate-500">
-                {t('tools.aes.decryptedResult')}
+                {t('tools.aes.decryptedEmpty')}
               </p>
             )}
           </div>
         </div>
       </div>
 
-      <p className="px-1 text-[11px] text-slate-400 dark:text-slate-500">
-        {t('tools.aes.note')}
-      </p>
     </div>
   );
 }

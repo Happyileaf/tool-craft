@@ -33,15 +33,14 @@ function CRC32Checksum() {
           CRC32
         </span>
         <div className="flex items-center gap-2">
-          {input !== DEFAULT_INPUT && (
-            <button
-              type="button"
-              onClick={() => setInput(DEFAULT_INPUT)}
-              className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
-            >
-              {t('common.sample')}
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={() => setInput(DEFAULT_INPUT)}
+            disabled={input === DEFAULT_INPUT}
+            className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-default disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
+          >
+            {t('common.sample')}
+          </button>
           <button
             type="button"
             onClick={() => setInput('')}
