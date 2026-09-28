@@ -1371,6 +1371,98 @@ Bob,25,London`,
       },
     },
   },
+  {
+    slug: 'css-prefixer',
+    name: 'CSS 浏览器前缀添加器',
+    nameEn: 'CSS Vendor Prefixer',
+    description:
+      '自动给现代 CSS 属性添加浏览器厂商前缀，提高兼容性，支持完整规则块和内联样式。',
+    descriptionEn:
+      'Automatically adds vendor prefixes to modern CSS properties to improve compatibility, supports full rule blocks and inline styles.',
+    category: CATEGORY,
+    path: '/tools/css-prefixer',
+    iconName: 'Code',
+    tags: ['CSS', '前缀', '兼容性', '浏览器', '开发'],
+    tagsEn: ['CSS', 'Prefix', 'Vendor', 'Compatibility', 'Dev'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s;
+  transform: translate(10px, 20px);
+}`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 CSS 前缀添加工具，自动给需要兼容的 CSS 属性添加浏览器厂商前缀，提高在旧版浏览器上的兼容性。',
+        coreFeatures: [
+          '自动添加前缀：识别需要前缀的 CSS 属性并自动添加',
+          '支持完整 CSS 规则块和内联样式',
+          '覆盖现代常用 CSS 属性：flexbox、grid、transform、transition 等',
+          '纯本地运行：不经过服务器，CSS 代码不离开设备',
+        ],
+        howToUse: [
+          '在左侧输入框粘贴原始 CSS 代码',
+          '右侧自动显示添加前缀后的 CSS',
+          '复制结果使用',
+        ],
+        useCases: [
+          '开发需要兼容旧浏览器的页面',
+          '手动添加前缀到实验性 CSS 属性',
+          '了解不同浏览器对哪些属性需要前缀',
+        ],
+        privacyNote:
+          '所有处理都在本地浏览器完成，CSS 代码不会上传到任何服务器，保护代码隐私。',
+        faqs: [
+          {
+            question: '覆盖了哪些 CSS 属性？',
+            answer:
+              '覆盖了 flexbox、grid、transform、transition、appearance、columns、hyphens 等常见现代 CSS 属性，包含webkit、moz、ms、o 等厂商前缀。',
+          },
+          {
+            question: '支持规则块和内联样式吗？',
+            answer: '是的，既支持完整的带选择器的规则块，也支持内联样式声明。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient CSS vendor prefixer tool that automatically adds vendor prefixes to CSS properties that need compatibility, improves compatibility on older browsers.',
+        coreFeatures: [
+          'Automatic prefixing: identifies properties that need prefixes and adds them automatically',
+          'Supports full CSS rule blocks and inline styles',
+          'Covers common modern CSS properties: flexbox, grid, transform, transition, etc.',
+          '100% local processing: never touches servers, CSS code never leaves your device',
+        ],
+        howToUse: [
+          'Paste your original CSS code in the left input box',
+          'The prefixed CSS automatically appears on the right',
+          'Copy the result for use',
+        ],
+        useCases: [
+          'Developing pages that need compatibility with older browsers',
+          'Manually adding prefixes to experimental CSS properties',
+          'Understanding which properties need prefixes for different browsers',
+        ],
+        privacyNote:
+          'All processing is done locally in your browser, CSS code will not be uploaded to any server, protecting your code privacy.',
+        faqs: [
+          {
+            question: 'Which CSS properties are covered?',
+            answer:
+              'Covers common modern CSS properties including flexbox, grid, transform, transition, appearance, columns, hyphens, etc., includes webkit, moz, ms, o vendor prefixes.',
+          },
+          {
+            question: 'Does it support rule blocks and inline styles?',
+            answer: 'Yes, it supports both full rule blocks with selectors and inline style declarations.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

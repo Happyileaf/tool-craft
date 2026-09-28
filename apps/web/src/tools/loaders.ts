@@ -32,4 +32,5 @@ export const toolLoaders: Record<
   'csv-json-converter': () => import('./csv-json-converter'),
   'url-codec': () => import('./url-codec'),
   'html-entity-codec': () => import('./html-entity-codec'),
+  'css-prefixer': () => import('./css-prefixer'),
 };
