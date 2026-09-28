@@ -3,6 +3,7 @@ import type { ToolMeta } from './types';
 import { DEFAULT_SAMPLE } from './css-prefixer/constants';
 import { DEFAULT_PATTERN } from './regex-generator/constants';
 import { DEFAULT_SAMPLE as URL_DEFAULT_SAMPLE } from './url-codec/constants';
+import { DEFAULT_SAMPLE as HTML_DEFAULT_SAMPLE } from './html-entity-codec/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -1338,6 +1339,85 @@ author:
             question: 'What is the difference between URL component and full URI?',
             answer:
               'URL component encoding encodes all special characters including : / ? #, which is suitable for encoding individual query parameters. Full URI encoding preserves URI structure characters like : / ? #, which is suitable for encoding complete URLs.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'html-entity-codec',
+    name: 'HTML 实体编解码',
+    nameEn: 'HTML Entity Encoder Decoder',
+    description:
+      'HTML 实体与普通字符互相转换，支持命名实体、十进制和十六进制编码。',
+    descriptionEn:
+      'Convert between HTML entities and plain text, supports named entities, decimal and hexadecimal encoding.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/html-entity-codec',
+    iconName: 'Code',
+    tags: ['HTML', '实体', '编码', '解码'],
+    tagsEn: ['HTML', 'Entity', 'Encode', 'Decode'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: HTML_DEFAULT_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          '纯浏览器本地运行的 HTML 实体编解码工具，支持将 HTML 实体解码为普通字符，或将特殊字符编码为 HTML 实体。',
+        coreFeatures: [
+          '双向转换：支持编码和解码',
+          '完整覆盖：支持常用命名实体、十进制 &#nnn; 和十六进制 &#xnn; 格式',
+          '自动识别：解码时自动识别所有格式的实体',
+          '纯本地运算：所有转换在浏览器完成，数据不上传服务器',
+        ],
+        howToUse: [
+          '选择操作（编码或解码）',
+          '输入原始文本',
+          '下方实时显示转换结果',
+          '复制结果使用',
+        ],
+        useCases: [
+          '调试 HTML 代码中的特殊字符',
+          '将 HTML 源码中的实体还原为可阅读文本',
+          '将特殊字符编码为 HTML 实体避免渲染问题',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，你输入的 HTML 内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '什么是 HTML 实体？',
+            answer: 'HTML 实体是用于在 HTML 文档中表示特殊字符的编码方式，比如用 &amp; 表示 &，用 &lt; 表示 <，避免这些字符与 HTML 标签语法冲突。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully in-browser HTML entity encoder and decoder, converts between HTML entities and plain text, supports named entities, decimal, and hexadecimal formats.',
+        coreFeatures: [
+          'Bidirectional conversion: supports both encoding and decoding',
+          'Complete coverage: supports common named entities, decimal &#nnn; and hexadecimal &#xnn; formats',
+          'Auto detection: automatically recognizes all formats when decoding',
+          '100% local: all conversion done in-browser, data never leaves your device',
+        ],
+        howToUse: [
+          'Choose operation (encode or decode)',
+          'Input your raw text',
+          'The result appears below in real-time',
+          'Copy the result for use',
+        ],
+        useCases: [
+          'Debugging special characters in HTML code',
+          'Restoring entities in HTML source to readable text',
+          'Encoding special characters to HTML entities to avoid rendering issues',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Your HTML content is never uploaded to any server, keeping it private.',
+        faqs: [
+          {
+            question: 'What are HTML entities?',
+            answer:
+              'HTML entities are encodings used to represent special characters in HTML documents. For example, &amp; is used for & and &lt; for < to avoid conflicts with HTML tag syntax.',
           },
         ],
       },
