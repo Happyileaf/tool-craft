@@ -1,5 +1,6 @@
 import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
+import { DEFAULT_SAMPLE } from './css-prefixer/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -1087,6 +1088,83 @@ author:
             question: 'Does it support complex fields with commas and quotes?',
             answer:
               'Yes, the tool fully supports standard CSV format specification and can correctly handle nested quotes and fields containing commas.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'css-prefixer',
+    name: 'CSS 浏览器前缀生成器',
+    nameEn: 'CSS Vendor Prefixer',
+    description:
+      '自动给 CSS 属性添加浏览器前缀，提高老旧浏览器的兼容性。',
+    descriptionEn:
+      'Automatically adds vendor prefixes to CSS properties for better legacy browser compatibility.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/css-prefixer',
+    iconName: 'Code',
+    tags: ['CSS', '前缀', '兼容性', '浏览器'],
+    tagsEn: ['CSS', 'Prefix', 'Compatibility', 'Browser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DEFAULT_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          '纯浏览器本地运行的 CSS 前缀自动添加工具，为需要兼容老旧浏览器的 CSS 属性自动添加-webkit-、-moz-、-ms-、-o- 等浏览器厂商前缀。',
+        coreFeatures: [
+          '实时前缀添加：输入 CSS 后即刻输出带前缀的结果',
+          '覆盖常见属性：内置了常见需要前缀的 CSS 属性映射',
+          '保留原有格式：保持你的代码缩进和结构不变',
+          '纯本地运算：所有处理都在浏览器完成，不上传代码到服务器',
+        ],
+        howToUse: [
+          '在左侧输入框粘贴你需要添加前缀的 CSS 代码',
+          '右侧会实时显示添加了浏览器前缀的结果',
+          '复制处理后的代码即可使用',
+        ],
+        useCases: [
+          '需要兼容老旧浏览器（如 IE、旧版 Android/iOS Safari）的项目',
+          '开源项目需要扩大兼容范围',
+          '快速为实验性 CSS 属性添加前缀',
+        ],
+        privacyNote:
+          '所有 CSS 处理都在本地浏览器完成，代码内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '为什么有些 CSS 属性不需要前缀？',
+            answer: '只有那些在标准化过程中需要浏览器厂商提前实现的实验性或部分支持的属性才需要前缀，已经广泛标准化的属性不需要添加前缀。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully in-browser CSS vendor prefixer that automatically adds -webkit-, -moz-, -ms-, and -o- vendor prefixes to CSS properties for better legacy browser compatibility.',
+        coreFeatures: [
+          'Real-time processing: instantly outputs prefixed CSS as you type',
+          'Comprehensive coverage: built-in mapping for common properties needing prefixes',
+          'Preserves formatting: keeps your original indentation and structure',
+          '100% local: all processing done in-browser, no code uploaded to servers',
+        ],
+        howToUse: [
+          'Paste your CSS code in the left input box',
+          'The prefixed CSS result will appear on the right in real-time',
+          'Copy the processed CSS and use it in your project',
+        ],
+        useCases: [
+          'Projects needing compatibility with older browsers like IE and legacy Android/iOS Safari',
+          'Open source projects needing broader compatibility',
+          'Quickly add prefixes to experimental CSS properties',
+        ],
+        privacyNote:
+          'All CSS processing is done locally in your browser. Your code is never uploaded to any server, keeping it private and secure.',
+        faqs: [
+          {
+            question: 'Why don\'t some CSS properties need prefixes?',
+            answer:
+              'Only experimental or partially-supported properties during the standardization process require prefixes. Properties that are widely standardized do not need additional prefixes.',
           },
         ],
       },
