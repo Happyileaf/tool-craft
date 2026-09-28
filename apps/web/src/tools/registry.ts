@@ -1279,6 +1279,98 @@ Bob,25,London`,
       },
     },
   },
+  {
+    slug: 'html-entity-codec',
+    name: 'HTML 实体编解码器',
+    nameEn: 'HTML Entity Encoder/Decoder',
+    description:
+      'HTML 实体编码与解码工具，支持命名实体和数字实体，方便转义 HTML 内容。',
+    descriptionEn:
+      'HTML Entity encoding and decoding tool, supports named entities and numeric entities, helps escape HTML content easily.',
+    category: CATEGORY,
+    path: '/tools/html-entity-codec',
+    iconName: 'Code',
+    tags: ['HTML', '实体', '编码', '解码', '编解码'],
+    tagsEn: ['HTML', 'Entity', 'Encode', 'Decode', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `<div class="container">
+  <h1>Hello & Welcome</h1>
+</div>`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 HTML 实体编解码工具，支持常见 HTML 实体编码与解码，包括命名实体和数字实体（十进制、十六进制），纯浏览器本地运行。',
+        coreFeatures: [
+          '双向转换：支持编码和解码',
+          '完整支持：支持命名实体和十进制、十六进制数字实体',
+          '即时结果：输入即实时输出结果',
+          '纯本地运行：不经过服务器，数据安全有保障',
+        ],
+        howToUse: [
+          '选择编码或解码方向',
+          '在左侧输入框粘贴原始 HTML',
+          '右侧会自动显示转换结果',
+          '点击交换按钮可以快速反向转换',
+        ],
+        useCases: [
+          '在文本中展示 HTML 源代码',
+          '转义 HTML 特殊字符避免解析错误',
+          '调试 HTML 实体相关问题',
+        ],
+        privacyNote:
+          '所有编解码运算都在本地浏览器完成，数据不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持哪些 HTML 实体？',
+            answer:
+              '支持所有常见的 HTML 实体，如 &amp; &lt; &gt; &quot; 等，也支持十进制和十六进制数字实体。',
+          },
+          {
+            question: '会对空格和换行做处理吗？',
+            answer:
+              '编码时空格会被转换为 &amp;nbsp;，换行会被转换为 &lt;br&gt;，解码时也会还原。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient HTML entity encoder and decoder tool, supports common HTML entity encoding and decoding, including named entities and numeric entities (decimal and hexadecimal), runs 100% locally in browser.',
+        coreFeatures: [
+          'Bidirectional conversion: supports both encoding and decoding',
+          'Full support: supports named entities and decimal/hexadecimal numeric entities',
+          'Instant results: real-time output as you type',
+          '100% local: never touches servers, data is secure',
+        ],
+        howToUse: [
+          'Select encode or decode direction',
+          'Paste your original HTML in the left input box',
+          'The converted result will automatically appear on the right',
+          'Click the swap button for quick reverse conversion',
+        ],
+        useCases: [
+          'Displaying HTML source code in text',
+          'Escaping HTML special characters to avoid parsing errors',
+          'Debugging HTML entity related issues',
+        ],
+        privacyNote:
+          'All encoding and decoding operations are completed in the local browser, data will not be uploaded to any server, protecting privacy and security.',
+        faqs: [
+          {
+            question: 'Which HTML entities are supported?',
+            answer:
+              'Supports all common HTML entities such as &amp; &lt; &gt; &quot; etc., also supports decimal and hexadecimal numeric entities.',
+          },
+          {
+            question: 'Does it handle spaces and newlines?',
+            answer:
+              'During encoding, spaces are converted to &amp;nbsp; and newlines are converted to &lt;br&gt;, and they are restored during decoding.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
