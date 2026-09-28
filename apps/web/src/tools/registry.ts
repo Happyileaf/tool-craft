@@ -1,6 +1,7 @@
 import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
 import { DEFAULT_SAMPLE } from './css-prefixer/constants';
+import { DEFAULT_PATTERN } from './regex-generator/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -1165,6 +1166,98 @@ author:
             question: 'Why don\'t some CSS properties need prefixes?',
             answer:
               'Only experimental or partially-supported properties during the standardization process require prefixes. Properties that are widely standardized do not need additional prefixes.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'regex-generator',
+    name: '正则表达式生成器',
+    nameEn: 'Regular Expression Generator',
+    description:
+      '提供常用正则表达式模板，支持预览生成结果，快速获取你需要的正则。',
+    descriptionEn:
+      'Provides common regex templates with preview, quickly get the regex you need.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/regex-generator',
+    iconName: 'Code',
+    tags: ['正则', 'Regex', '生成', '模板', '开发'],
+    tagsEn: ['Regex', 'Generator', 'Template', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DEFAULT_PATTERN,
+    doc: {
+      zh: {
+        whatIsIt:
+          '不想记忆正则语法？直接从常用模板中选择你需要的正则表达式，立即在页面测试匹配结果，复制即可使用。',
+        coreFeatures: [
+          '分类整理常用正则：邮箱、手机号、URL、日期、身份证、颜色等一网打尽',
+          '点击模板直接插入，支持按名称搜索匹配',
+          '内置测试区，生成后立即测试匹配效果',
+          '支持 flags 设置：全局匹配、不区分大小写、多行模式等',
+          '纯本地运算：全部在浏览器完成，无需联网',
+        ],
+        howToUse: [
+          '从左侧分类选择你需要的正则类别',
+          '点击正则模板自动插入到上方输入框',
+          '在测试文本区输入你要匹配的文本',
+          '下方会自动高亮匹配结果并展示分组',
+          '复制生成的正则表达式使用即可',
+        ],
+        useCases: [
+          '表单校验规则开发，快速获取常用正则',
+          '测试正则表达式的匹配效果',
+          '忘记正则语法时查询常用模板',
+          '新手学习正则表达式的匹配效果',
+        ],
+        privacyNote:
+          '所有操作都在浏览器本地完成，不会上传你输入的任何数据到服务器，保护隐私。',
+        faqs: [
+          {
+            question: '找不到我需要的正则怎么办？',
+            answer: '你可以手动输入正则表达式，工具同样会帮你测试匹配效果。',
+          },
+          {
+            question: '和现有 regex-tester 工具有什么区别？',
+            answer: 'regex-tester 侧重测试你手写的正则，本工具侧重从常用模板快速生成并测试，两者配合使用效果更好。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          "Can't remember regex syntax? Pick the regex you need from common templates, test the matching result instantly, and copy it for use.",
+        coreFeatures: [
+          'Organized common regex templates: email, phone, URL, date, ID card, color and more',
+          'Click to insert template, supports searching by name',
+          'Built-in test area, test matching immediately after generation',
+          'Flags support: global match, case-insensitive, multiline mode, etc.',
+          '100% local: everything done in browser, no network required',
+        ],
+        howToUse: [
+          'Select the category from the left sidebar',
+          'Click the regex template to insert into the input box above',
+          'Input your test text in the test area',
+          'The matching results will be automatically highlighted and groups displayed below',
+          'Copy the generated regex for use',
+        ],
+        useCases: [
+          'Developing form validation rules, quickly get common regex',
+          'Testing the matching effect of regex',
+          'Querying common templates when you forget syntax',
+          'Beginners learning regex matching behavior',
+        ],
+        privacyNote:
+          'All operations are done locally in your browser. No data is uploaded to any server, keeping your content private.',
+        faqs: [
+          {
+            question: "What if I can't find the regex I need?",
+            answer: 'You can manually input your regex and the tool will still help you test the matching result.',
+          },
+          {
+            question: 'What is the difference from the existing regex-tester tool?',
+            answer: 'regex-tester focuses on testing your handwritten regex, while this tool focuses on quickly generating from common templates and testing. They work better together.',
           },
         ],
       },

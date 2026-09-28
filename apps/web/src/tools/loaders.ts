@@ -31,4 +31,5 @@ export const toolLoaders: Record<
   'uuid-generator': () => import('./uuid-generator'),
   'csv-json-converter': () => import('./csv-json-converter'),
   'css-prefixer': () => import('./css-prefixer'),
+  'regex-generator': () => import('./regex-generator'),
 };
