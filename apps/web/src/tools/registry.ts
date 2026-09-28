@@ -1280,6 +1280,86 @@ author:
     },
   },
   {
+    slug: 'html-entity-codec',
+    name: 'HTML 实体编解码',
+    nameEn: 'HTML Entity Encoder/Decoder',
+    description:
+      'HTML 实体编码与解码转换，处理 HTML 中的特殊字符。',
+    descriptionEn:
+      'HTML entity encoding and decoding conversion, handles special characters in HTML.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/html-entity-codec',
+    iconName: 'Code',
+    tags: ['HTML', '实体', '编码', '解码', '编解码'],
+    tagsEn: ['HTML', 'Entity', 'Encode', 'Decode', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '<div class="container">Hello &amp; World!</div>',
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 HTML 实体编解码工具，可快速对 HTML 中的特殊字符进行编码或解码，方便调试和处理 HTML 源码中的特殊字符。',
+        coreFeatures: [
+          '双向转换：支持编码和解码两种操作，一键切换',
+          '完整支持：覆盖常用 HTML 实体，包含命名实体、十进制和十六进制数值实体',
+          '一键复制：处理完成后快速复制结果',
+          '纯本地运算：所有操作都在浏览器本地完成',
+        ],
+        howToUse: [
+          '选择操作类型：编码或解码',
+          '在输入框粘贴需要处理的 HTML',
+          '点击「编码」或「解码」按钮',
+          '复制处理结果使用',
+        ],
+        useCases: [
+          '在展示 HTML 源码时对特殊字符进行编码',
+          '将编码后的 HTML 实体还原为原始字符',
+          '调试 HTML 源码中的字符显示问题',
+        ],
+        privacyNote:
+          '所有操作都在本地浏览器完成，HTML 内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '什么是 HTML 实体？',
+            answer:
+              'HTML 实体是用于在 HTML 文档中表示特殊字符的方式，比如 < 在 HTML 中表示标签开始，需要用 &lt; 表示才能正确显示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient HTML entity encoder/decoder that quickly encodes or decodes special characters in HTML, convenient for debugging and handling special characters in HTML source.',
+        coreFeatures: [
+          'Bidirectional conversion: supports both encoding and decoding, switch with one click',
+          'Complete support: covers common HTML entities including named entities, decimal and hexadecimal numeric entities',
+          'One-click copy: quickly copy the result after processing',
+          '100% local: all operations done in-browser',
+        ],
+        howToUse: [
+          'Select operation type: encode or decode',
+          'Paste the HTML you need to process into the input area',
+          'Click the "Encode" or "Decode" button',
+          'Copy the processed result and use it',
+        ],
+        useCases: [
+          'Encode special characters when displaying HTML source code',
+          'Restore encoded HTML entities to original characters',
+          'Debug character display issues in HTML source',
+        ],
+        privacyNote:
+          'All operations are done locally in your browser. HTML content is never uploaded to any server, keeping your content private.',
+        faqs: [
+          {
+            question: 'What are HTML entities?',
+            answer:
+              'HTML entities are a way to represent special characters in HTML documents. For example, the < character starts an HTML tag, so it needs to be written as &lt; to display correctly.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'csv-json-converter',
     name: 'CSV JSON 互转',
     nameEn: 'CSV JSON Converter',
