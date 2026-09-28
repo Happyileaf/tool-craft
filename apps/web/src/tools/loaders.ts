@@ -29,4 +29,10 @@ export const toolLoaders: Record<
   'word-count': () => import('./word-count'),
   'yaml-to-json': () => import('./yaml-to-json'),
   'uuid-generator': () => import('./uuid-generator'),
+  'strong-password-generator': () => import('./strong-password-generator'),
+  'password-strength-checker': () => import('./password-strength-checker'),
+  'jwt-parser': () => import('./jwt-parser'),
+  'crc32-checksum': () => import('./crc32-checksum'),
+  'bcrypt-hash': () => import('./bcrypt-hash'),
+  'symmetric-crypto': () => import('./symmetric-crypto'),
 };

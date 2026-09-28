@@ -1099,6 +1099,532 @@ author:
       },
     },
   },
+  {
+    slug: 'strong-password-generator',
+    name: '强密码生成器',
+    nameEn: 'Strong Password Generator',
+    description:
+      '生成自定义长度、包含大小写、数字、特殊符号的高强度随机密码。',
+    descriptionEn:
+      'Generate strong random passwords with customizable length, mixed case, numbers, and symbols.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/strong-password-generator',
+    iconName: 'Key',
+    tags: ['密码', '随机', '安全', '生成', '强度'],
+    tagsEn: ['Password', 'Random', 'Security', 'Generator', 'Strength'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '基于浏览器原生 Crypto API 的安全随机密码生成器，帮你快速创建符合安全要求的高强度密码。',
+        coreFeatures: [
+          '自定义密码长度 4~32 位',
+          '可选择包含小写、大写、数字、特殊符号',
+          '强制至少包含一个选中类型的字符，避免生成不满足要求的密码',
+          '纯浏览器本地生成，密码绝不离开设备',
+        ],
+        howToUse: [
+          'Drag the slider to adjust password length',
+          'Check the character types you want to include (at least one)',
+          '点击刷新按钮重新生成',
+          '点击复制按钮复制生成的密码',
+        ],
+        useCases: [
+          '注册网站/APP 账号时生成安全密码',
+          '重置密码时创建新的高强度密码',
+          '为不同网站生成唯一密码',
+        ],
+        privacyNote:
+          '所有生成过程都在浏览器本地完成，使用原生加密安全随机数生成器，绝不记录生成的密码。',
+        faqs: [
+          {
+            question: '为什么这个生成器比普通的更安全？',
+            answer:
+              '本工具使用浏览器原生 `crypto.getRandomValues` API 生成随机数，相比 `Math.random()` 提供更高熵值，更难被破解。',
+          },
+          {
+            question: '可以生成多长的密码？',
+            answer:
+              '支持 4 到 32 位长度，一般推荐 12 位以上，对安全性要求高的场景可以使用 16 位以上。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A cryptographically secure random password generator based on browser native Crypto API, helps you quickly create strong passwords that meet security requirements.',
+        coreFeatures: [
+          'Customizable password length from 4 to 32 characters',
+          'Option to include lowercase, uppercase, numbers, and symbols',
+          'Enforces at least one character from each selected category',
+          '100% local generation, password never leaves your device',
+        ],
+        howToUse: [
+          'Drag the slider to adjust password length',
+          'Check the character types you want to include (at least one)',
+          'Click the refresh button to regenerate',
+          'Click the copy button to copy the generated password',
+        ],
+        useCases: [
+          'Generating secure passwords when registering for websites/apps',
+          'Creating new strong passwords when resetting',
+          'Generating unique passwords for different sites',
+        ],
+        privacyNote:
+          'All generation is done locally in your browser using the native cryptographically secure random number generator, passwords are never logged.',
+        faqs: [
+          {
+            question: 'Why is this generator more secure than others?',
+            answer:
+              'This tool uses the browser native `crypto.getRandomValues` API to generate random numbers, which provides higher entropy than `Math.random()` and is harder to crack.',
+          },
+          {
+            question: 'What length of password can I generate?',
+            answer:
+              'Supports 4 to 32 characters. 12+ characters is generally recommended, use 16+ for higher security requirements.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'password-strength-checker',
+    name: '密码强度检测器',
+    nameEn: 'Password Strength Checker',
+    description:
+      '检测密码强度，根据长度和字符多样性给出安全性评分和改进建议。',
+    descriptionEn:
+      'Check password security strength based on length and character diversity, gives improvement suggestions.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/password-strength-checker',
+    iconName: 'Shield',
+    tags: ['密码', '安全', '检测', '强度', '评分'],
+    tagsEn: ['Password', 'Security', 'Check', 'Strength', 'Score'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '帮助你评估密码安全性，根据长度、大小写混合、数字和特殊符号给出评分，提供具体改进建议。',
+        coreFeatures: [
+          '实时检测输入密码强度',
+          '评分分为弱/中/强三级',
+          '给出具体改进建议，告诉你缺少什么字符类型',
+          '纯浏览器本地运算，不泄露你的密码',
+        ],
+        howToUse: [
+          '在输入框中输入要检测的密码',
+          '下方会实时显示强度评分和进度条',
+          '如果密码不够强，会列出具体改进建议',
+        ],
+        useCases: [
+          '注册账号时评估你选择的密码强度',
+          '修改密码时确保新密码足够安全',
+          '检查现有密码安全性',
+        ],
+        privacyNote:
+          '所有检测都在浏览器本地完成，你的密码不会上传到任何服务器，隐私安全有保障。',
+        faqs: [
+          {
+            question: '什么样的密码算强密码？',
+            answer:
+              '一般建议长度至少 8 位，最好 12 位以上，同时包含大小写字母、数字和特殊符号，就是一个强度足够的密码。',
+          },
+          {
+            question: '为什么要混合不同类型的字符？',
+            answer:
+              '混合更多类型的字符会大大增加密码的熵值，让暴力破解需要尝试更多组合，所以安全性更高。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Helps you evaluate password security, gives a score based on length, mixed case, numbers, and symbols, and provides specific improvement suggestions.',
+        coreFeatures: [
+          'Real-time password strength detection',
+          'Three levels of rating: weak, medium, strong',
+          'Provides specific improvement suggestions to tell you what character types are missing',
+          'Pure in-browser calculation, does not leak your password',
+        ],
+        howToUse: [
+          'Enter the password you want to check in the input box',
+          'The strength score and progress bar are displayed in real time below',
+          'If the password is not strong enough, specific improvement suggestions will be listed',
+        ],
+        useCases: [
+          'Evaluate the strength of the password you choose when registering an account',
+          'Ensure the new password is secure enough when changing password',
+          'Check the security of existing passwords',
+        ],
+        privacyNote:
+          'All checking is done locally in your browser, your password will not be uploaded to any server, so privacy and security are guaranteed.',
+        faqs: [
+          {
+            question: 'What counts as a strong password?',
+            answer:
+              'It is generally recommended to be at least 8 characters in length, preferably 12+ characters, and contain lowercase, uppercase, numbers, and special symbols. That would be a sufficiently strong password.',
+          },
+          {
+            question: 'Why mix different types of characters?',
+            answer:
+              'Mixing more types of characters greatly increases the entropy of the password. Brute force cracking needs to try more combinations, so the security is higher.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'jwt-parser',
+    name: 'JWT 生成器/解析器',
+    nameEn: 'JWT Generator & Parser',
+    description:
+      '解析 JSON Web Token，查看 Header/Payload，验证签名，也可以生成新的 JWT。',
+    descriptionEn:
+      'Parse JSON Web Token, inspect Header/Payload, verify signature, and also generate new JWT.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/jwt-parser',
+    iconName: 'Key',
+    tags: ['JWT', 'Token', '解析', '生成', '签名'],
+    tagsEn: ['JWT', 'Token', 'Parser', 'Generator', 'Signature'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一站式 JWT 工具，支持解析已有 Token，查看 Header 和 Payload 信息，验证 HMAC-SHA256 签名，也可以根据自定义 Header 和 Payload 生成新的 JWT。',
+        coreFeatures: [
+          '解析模式：输入 JWT 自动解析，格式化展示 JSON',
+          '生成模式：输入 Header、Payload 和密钥，生成签名后的 JWT',
+          '支持验证 HMAC-SHA256 签名',
+          '纯浏览器本地操作，密钥不会离开设备',
+        ],
+        howToUse: [
+          '选择「解析」模式，粘贴 JWT Token，就能看到解析后的 Header 和 Payload',
+          '输入签名密钥可以验证签名有效性',
+          '选择「生成」模式，输入 JSON 格式的 Header 和 Payload，输入密钥，点击生成即可',
+        ],
+        useCases: [
+          '开发调试 API 鉴权时解析 JWT 内容',
+          '验证 JWT 签名是否正确',
+          '生成测试用的 JWT Token',
+        ],
+        privacyNote:
+          '所有操作都在浏览器本地完成，JWT 和密钥都不会上传到服务器，保护你的密钥安全。',
+        faqs: [
+          {
+            question: '支持哪些算法？',
+            answer: '目前只支持 HS256 (HMAC-SHA256)，这是最常用的对称签名算法。',
+          },
+          {
+            question: '验证失败一定是密钥错了吗？',
+            answer:
+              '验证失败可能是密钥错误，也可能是算法不匹配，或者 Token 本身格式不正确。请检查 Token 格式和密钥。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'All-in-one JWT tool. Supports parsing existing tokens, viewing Header and Payload information, verifying HMAC-SHA256 signatures, and can also generate new JWTs with custom Headers and Payloads.',
+        coreFeatures: [
+          'Parse mode: input JWT and automatically parse, format and display JSON',
+          'Generate mode: input custom Header, Payload and secret, generate signed JWT',
+          'Supports HMAC-SHA256 signature verification',
+          'Pure in-browser operation, secret never leaves your device',
+        ],
+        howToUse: [
+          'Select "Parse" mode, paste your JWT Token, you will see the parsed Header and Payload',
+          'Enter the signature secret to verify the signature validity',
+          'Select "Generate" mode, enter JSON format Header and Payload, enter secret, click generate',
+        ],
+        useCases: [
+          'Parsing JWT content when developing and debugging API authentication',
+          'Verifying if JWT signature is correct',
+          'Generating JWT tokens for testing',
+        ],
+        privacyNote:
+          'All operations are done locally in your browser, JWT and secret will not be uploaded to any server, protects your secret security.',
+        faqs: [
+          {
+            question: 'What algorithms are supported?',
+            answer: 'Currently only HS256 (HMAC-SHA256) is supported, which is the most commonly used symmetric signature algorithm.',
+          },
+          {
+            question: 'Does verification failure always mean wrong secret?',
+            answer:
+              'Verification failure may be due to wrong secret, mismatched algorithm, or incorrect Token format. Please check the Token format and secret.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'crc32-checksum',
+    name: 'CRC32 校验和',
+    nameEn: 'CRC32 Checksum',
+    description:
+      '计算文本/字符串的 CRC32 校验值，用于数据完整性校验。',
+    descriptionEn:
+      'Calculate CRC32 checksum for text/string, used for data integrity verification.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/crc32-checksum',
+    iconName: 'Fingerprint',
+    tags: ['CRC32', '校验', '完整性', '哈希'],
+    tagsEn: ['CRC32', 'Checksum', 'Integrity', 'Hash'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '计算文本的 CRC32 校验和，用于验证数据在传输或存储后是否完整。',
+        coreFeatures: [
+          '实时计算输入文本的 CRC32 值',
+          '输出十六进制小写结果',
+          '纯浏览器本地运算，大文本也能秒出结果',
+          '标准 CRC32 算法，结果与其他工具兼容',
+        ],
+        howToUse: [
+          '在输入框中输入需要计算的文本',
+          '下方会自动显示计算结果',
+          '点击复制按钮复制结果',
+        ],
+        useCases: [
+          '验证下载文件的完整性，和下载站提供的校验值对比',
+          '检查文本内容是否被修改',
+          '快速生成数据的短指纹',
+        ],
+        privacyNote:
+          '所有计算都在浏览器本地完成，你的文本不会上传到任何服务器。',
+        faqs: [
+          {
+            question: 'CRC32 可以用于加密吗？',
+            answer:
+              'CRC32 是校验算法，不是加密算法，主要用于检测数据完整性，不适合用于密码存储或加密用途。',
+          },
+          {
+            question: '结果和其他工具算出来不一样？',
+            answer:
+              '本工具使用标准的 CRC32 算法，如果你使用不同初始值或不同多项式，结果会不一样。一般来说结果和大多数标准工具一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Calculate CRC32 checksum for text, used to verify if data is complete after transmission or storage.',
+        coreFeatures: [
+          'Real-time calculation of CRC32 value for input text',
+          'Output hexadecimal lowercase result',
+          'Pure in-browser calculation, fast even for large text',
+          'Standard CRC32 algorithm, result compatible with other tools',
+        ],
+        howToUse: [
+          'Enter the text you need to calculate in the input box',
+          'The calculation result is automatically displayed below',
+          'Click the copy button to copy the result',
+        ],
+        useCases: [
+          'Verify the integrity of downloaded files, compare with the checksum provided by the download site',
+          'Check if text content has been modified',
+          'Quickly generate a short fingerprint of data',
+        ],
+        privacyNote:
+          'All calculations are done locally in your browser, your text will not be uploaded to any server.',
+        faqs: [
+          {
+            question: 'Can CRC32 be used for encryption?',
+            answer:
+              'CRC32 is a checksum algorithm, not an encryption algorithm. It is mainly used for detecting data integrity and is not suitable for password storage or encryption purposes.',
+          },
+          {
+            question: 'The result is different from other tools, why?',
+            answer:
+              'This tool uses the standard CRC32 algorithm. If you use a different initial value or a different polynomial, the result will be different. Generally speaking, the result is consistent with most standard tools.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'bcrypt-hash',
+    name: 'BCrypt 哈希',
+    nameEn: 'BCrypt Hash',
+    description:
+      '对密码进行 BCrypt 哈希加密，也可以验证密码是否匹配哈希值。',
+    descriptionEn:
+      'Generate BCrypt password hashes, and verify if a password matches a hash.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/bcrypt-hash',
+    iconName: 'Lock',
+    tags: ['BCrypt', '哈希', '密码', '加密', '验证'],
+    tagsEn: ['BCrypt', 'Hash', 'Password', 'Crypto', 'Verify'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'BCrypt 密码哈希工具，支持生成密码哈希和验证密码匹配，可自定义 cost factor 控制计算难度。',
+        coreFeatures: [
+          '生成模式：输入密码生成 BCrypt 哈希',
+          '验证模式：输入密码和哈希，验证是否匹配',
+          '可自定义 cost factor (rounds)，从 4 到 16',
+          '纯浏览器本地运算，密码不离开设备',
+        ],
+        howToUse: [
+          '选择「生成」模式，输入密码，调整 cost factor，即可生成哈希',
+          '选择「验证」模式，输入密码和要验证的哈希，点击验证按钮',
+        ],
+        useCases: [
+          '开发调试时生成 BCrypt 密码哈希用于测试',
+          '验证某个密码是否匹配已知哈希',
+          '测试不同 cost factor 对生成时间的影响',
+        ],
+        privacyNote:
+          '所有运算都在浏览器本地完成，密码和哈希都不会上传到服务器，保护你的隐私安全。',
+        faqs: [
+          {
+            question: '什么是 cost factor (rounds)?',
+            answer:
+              'cost factor 决定了哈希计算的迭代次数，数值越大，计算越慢，暴力破解越困难。每增加 1，计算时间翻倍。一般 10~12 就足够安全了。',
+          },
+          {
+            question: '为什么生成很慢当 rounds 很大时？',
+            answer:
+              '这是设计如此，BCrypt 故意设计成计算缓慢，用来抵抗暴力破解。rounds 越大，安全性越高，但生成和验证也越慢。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'BCrypt password hash tool, supports generating password hashes and verifying password matches, with customizable cost factor to control computational difficulty.',
+        coreFeatures: [
+          'Generate mode: input password and generate BCrypt hash',
+          'Verify mode: input password and hash, verify if they match',
+          'Customizable cost factor (rounds), from 4 to 16',
+          'Pure in-browser operation, password never leaves your device',
+        ],
+        howToUse: [
+          'Select "Generate" mode, enter password, adjust cost factor, generate the hash',
+          'Select "Verify" mode, enter password and hash to verify, click verify button',
+        ],
+        useCases: [
+          'Generating BCrypt password hashes for testing during development debugging',
+          'Verifying if a password matches a known hash',
+          'Testing the effect of different cost factors on generation time',
+        ],
+        privacyNote:
+          'All operations are done locally in your browser, passwords and hashes will not be uploaded to any server, protects your privacy.',
+        faqs: [
+          {
+            question: 'What is cost factor (rounds)?',
+            answer:
+              'The cost factor determines the number of hashing iterations. A larger value means slower computation and harder brute force cracking. Increasing by 1 doubles the computation time. Generally 10~12 is sufficiently secure.',
+          },
+          {
+            question: 'Why is generation slow when rounds is large?',
+            answer:
+              'This is by design. BCrypt is intentionally slow to resist brute force attacks. Larger rounds mean higher security but slower generation and verification.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'symmetric-crypto',
+    name: 'AES 对称加密',
+    nameEn: 'AES Symmetric Encryption',
+    description:
+      '使用 AES-GCM 算法对文本进行加密/解密，分享敏感信息只有知道密钥才能解密。',
+    descriptionEn:
+      'Encrypt/decrypt text with AES-GCM algorithm, share sensitive information only those who know the key can decrypt.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/symmetric-crypto',
+    iconName: 'Lock',
+    tags: ['AES', '加密', '解密', '对称加密', 'GCM'],
+    tagsEn: ['AES', 'Encrypt', 'Decrypt', 'Symmetric', 'GCM'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '使用浏览器原生 AES-GCM 算法加密文本，方便分享敏感信息，只有知道密钥的人才能解密查看内容。',
+        coreFeatures: [
+          '同时支持加密和解密，一站式加解密',
+          '使用推荐的 12 字节随机 IV，每次加密生成不同的 IV',
+          '输出格式为 iv.ciphertext，标准格式可直接在其他工具中使用',
+          '纯浏览器本地运算，使用原生 Web Crypto API 硬件加速，密钥绝不离开设备',
+        ],
+        howToUse: [
+          '左边输入要加密的明文和密钥，右边会自动生成加密结果',
+          '右边粘贴加密后的内容和相同的密钥，点击解密就能得到明文',
+          '分享加密结果时记得同时分享密钥给对方（通过其他渠道安全分享）',
+        ],
+        useCases: [
+          '通过不安全渠道分享敏感信息，只有知道密钥才能解密',
+          '加密存储敏感文本在公共笔记中',
+          '交换加密信息，双方提前约定好密钥即可',
+        ],
+        privacyNote:
+          '所有加解密运算都在浏览器本地完成，明文和密钥都不会上传到任何服务器，完全隐私保护。',
+        faqs: [
+          {
+            question: '密钥长度有要求吗？',
+            answer:
+              'AES 支持 128 位（16 字节）、192 位（24 字节）、256 位（32 字节）密钥。如果你的密钥是文本，会直接使用 UTF-8 编码作为密钥，长度取决于你输入多少字符。推荐使用至少 16 字符（16 字节 128 位）密钥。',
+          },
+          {
+            question: '为什么每次加密相同明文结果不一样？',
+            answer:
+              '每次加密都会生成一个新的随机初始化向量（IV），所以即使相同明文密钥结果也不一样，这是 AES-GCM 推荐做法，提高安全性。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Encrypt text with browser native AES-GCM algorithm, convenient for sharing sensitive information. Only people with the key can decrypt and view the content.',
+        coreFeatures: [
+          'Supports both encryption and decryption, all-in-one tool',
+          'Uses recommended 12-byte random IV, generates different IV for each encryption',
+          'Output format is iv.ciphertext, standard format can be used directly in other tools',
+          'Pure in-browser operation uses native Web Crypto API hardware acceleration, key never leaves your device',
+        ],
+        howToUse: [
+          'Enter plaintext and key on the left, encrypted result is automatically generated on the right',
+          'Paste encrypted content and the same key on the right, click decrypt to get plaintext',
+          'When sharing encrypted result, remember to share the key with the other party (share securely through another channel)',
+        ],
+        useCases: [
+          'Share sensitive information through insecure channels, only those with key can decrypt',
+          'Encrypt and store sensitive text in public notes',
+          'Exchange encrypted messages, both parties agree on the key in advance',
+        ],
+        privacyNote:
+          'All encryption and decryption operations are done locally in your browser, plaintext and key will not be uploaded to any server, complete privacy protection.',
+        faqs: [
+          {
+            question: 'Is there any requirement on key length?',
+            answer:
+              'AES supports 128-bit (16 bytes), 192-bit (24 bytes), and 256-bit (32 bytes) keys. If your key is text, it will be directly encoded as UTF-8 bytes, length depends on how many characters you enter. It is recommended to use at least 16 characters (16 bytes = 128 bits) key.',
+          },
+          {
+            question: 'Why is the result different every time even for the same plaintext?',
+            answer:
+              'A new random initialization vector (IV) is generated for each encryption, so even with the same plaintext and key the result is different. This is the recommended practice for AES-GCM to improve security.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
