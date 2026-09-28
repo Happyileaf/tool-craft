@@ -2425,6 +2425,176 @@ author:
       },
     },
   },
+  {
+    slug: 'strong-password-generator',
+    name: '强密码生成器',
+    nameEn: 'Strong Password Generator',
+    description:
+      '生成自定义长度、包含大小写、数字、特殊符号的高强度随机密码，支持一键复制。',
+    descriptionEn:
+      'Generate high-strength random passwords with customizable length, including uppercase, lowercase, numbers, and symbols, supports one-click copying.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/strong-password-generator',
+    iconName: 'ShieldCheck',
+    tags: ['密码', '生成器', '随机', '安全', '加密'],
+    tagsEn: ['Password', 'Generator', 'Random', 'Security', 'Crypto'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '基于浏览器原生 Crypto API 的高强度随机密码生成工具，可自定义长度和字符类型，生成安全可靠的高强度密码。',
+        coreFeatures: [
+          '自定义密码长度（4-64位）',
+          '可选择包含小写字母、大写字母、数字和特殊符号',
+          '确保至少包含每种选中类型一个字符，保证密码强度',
+          '一键复制生成结果，重新生成快速便捷',
+          '纯浏览器本地生成，密码绝不离开设备',
+        ],
+        howToUse: [
+          '滑动滑块选择所需的密码长度',
+          '勾选你希望包含的字符类型',
+          '点击"重新生成"按钮获取新密码',
+          '点击"复制"按钮将密码复制到剪贴板',
+        ],
+        useCases: [
+          '注册网站、APP账号时生成高强度随机密码',
+          'WiFi密码、管理员密码等重要密码生成',
+          '测试数据生成随机密码样本',
+        ],
+        privacyNote:
+          '所有密码生成运算都在浏览器本地完成，绝不向服务器传输任何信息，保障隐私安全。',
+        faqs: [
+          {
+            question: '为什么这个生成器比普通的更安全？',
+            answer:
+              '本工具使用浏览器原生的 Crypto.getRandomValues API 生成真随机数，而不是不安全的 Math.random()，并且通过 Fisher-Yates 洗牌算法打乱字符顺序，确保各类字符分布均匀，密码强度更高。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A high-strength random password generator based on the browser native Crypto API, supports customizable length and character types, generates secure and reliable strong passwords.',
+        coreFeatures: [
+          'Customizable password length (4-64 bits)',
+          'Optional inclusion of lowercase letters, uppercase letters, numbers, and special symbols',
+          'Ensures at least one character of each selected type to guarantee password strength',
+          'One-click copy of generated results, quick regeneration',
+          'Generated locally in the browser, password never leaves your device',
+        ],
+        howToUse: [
+          'Slide the slider to select the desired password length',
+          'Check the character types you want to include',
+          'Click the "Regenerate" button to get a new password',
+          'Click the "Copy" button to copy the password to your clipboard',
+        ],
+        useCases: [
+          'Generate high-strength random passwords when registering website and APP accounts',
+          'Generate important passwords such as WiFi passwords and administrator passwords',
+          'Generate random password samples for test data',
+        ],
+        privacyNote:
+          'All password generation operations are done locally in the browser, never transmit any information to the server, protecting privacy and security.',
+        faqs: [
+          {
+            question: 'Why is this generator safer than ordinary ones?',
+            answer:
+              'This tool uses the browser native Crypto.getRandomValues API to generate true random numbers instead of the unsafe Math.random(), and shuffles the character order through the Fisher-Yates shuffle algorithm to ensure uniform distribution of various character types, resulting in higher password strength.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'password-strength-checker',
+    name: '密码强度检测器',
+    nameEn: 'Password Strength Checker',
+    description:
+      '检测密码强度，根据长度、字符多样性给出安全性评分，并提供改进建议。',
+    descriptionEn:
+      'Check password strength, give a security score based on length and character diversity, and provide improvement suggestions.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/password-strength-checker',
+    iconName: 'ShieldCheck',
+    tags: ['密码', '安全', '检测', '强度', '加密'],
+    tagsEn: ['Password', 'Security', 'Check', 'Strength', 'Crypto'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '帮助你快速评估密码强度，基于长度、字符多样性和常见模式给出科学评分，并提供针对性的改进建议，让你知道如何设置更安全的密码。',
+        coreFeatures: [
+          '实时检测：输入密码即刻给出强度评分',
+          '五级强度分级：极弱、弱、中等、强、极强',
+          '可视化进度条展示强度',
+          '针对性改进建议告诉你如何增强密码',
+          '纯本地运算：输入密码绝不离开浏览器',
+        ],
+        howToUse: [
+          '在输入框中输入你想要检测的密码',
+          '查看评分和强度等级',
+          '根据改进建议优化你的密码',
+        ],
+        useCases: [
+          '注册新账号时评估拟用密码强度',
+          '检查现有密码是否需要升级',
+          '学习如何设置更安全的密码',
+        ],
+        privacyNote:
+          '所有检测都在浏览器本地完成，你输入的密码不会上传到任何服务器，隐私安全有保障。',
+        faqs: [
+          {
+            question: '评分标准是什么？',
+            answer:
+              '评分考虑了密码长度、字符种类（小写、大写、数字、特殊符号），并对连续重复字符、顺序字符和重复模式进行减分，满分 10 分。',
+          },
+          {
+            question: '什么样的密码算是强密码？',
+            answer: '长度至少 8 位，同时包含小写字母、大写字母、数字和特殊符号，评分一般在 7 分以上，就是比较安全的强密码了。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Helps you quickly evaluate password strength, gives a scientific score based on length, character diversity, and common patterns, and provides targeted improvement suggestions to help you set more secure passwords.',
+        coreFeatures: [
+          'Real-time detection: get strength score instantly as you type',
+          'Five strength levels: Very Weak, Weak, Medium, Strong, Very Strong',
+          'Visual progress bar displays strength',
+          'Targeted improvement suggestions tell you how to enhance password',
+          'Local processing only: input password never leaves your browser',
+        ],
+        howToUse: [
+          'Enter the password you want to check in the input box',
+          'View the score and strength level',
+          'Optimize your password according to the improvement suggestions',
+        ],
+        useCases: [
+          'Evaluate password strength when registering a new account',
+          'Check if existing passwords need to be upgraded',
+          'Learn how to set more secure passwords',
+        ],
+        privacyNote:
+          'All checks are done locally in your browser, the passwords you enter will never be uploaded to any server, so privacy and security are guaranteed.',
+        faqs: [
+          {
+            question: 'What is the scoring criteria?',
+            answer:
+              'Scoring considers password length, character types (lowercase, uppercase, numbers, special symbols), and deducts points for consecutive repeated characters, sequential characters, and repeating patterns. Full score is 10 points.',
+          },
+          {
+            question: 'What counts as a strong password?',
+            answer: 'A strong password should be at least 8 characters long, contain lowercase, uppercase, numbers, and special symbols, and usually score above 7 points.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

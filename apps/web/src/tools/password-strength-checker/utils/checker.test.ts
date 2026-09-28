@@ -1,54 +1,56 @@
-import { describe, expect, test } from 'vitest';
-import { checkPassword, SuggestionKey } from './checker';
-import { PasswordStrength } from '../constants';
 
-describe('checkPassword', () => {
-  test('empty password', () => {
-    const result = checkPassword('');
-    expect(result.score).toBe(0);
-    expect(result.strength).toBe(PasswordStrength.WEAK);
-    expect(result.suggestions).toContain(SuggestionKey.EMPTY);
+import { describe, expect, it } from 'vitest';
+import { checkPasswordStrength } from './checker';
+import { PasswordStrengthLevel } from '../constants';
+
+describe('checkPasswordStrength', () => {
+  it('should return very weak for short password', () => {
+    const result = checkPasswordStrength('abc');
+    expect(result.level).toBe(PasswordStrengthLevel.VERY_WEAK);
   });
 
-  test('very short password, only lowercase', () => {
-    const result = checkPassword('abc');
-    expect(result.score).toBe(1);
-    expect(result.strength).toBe(PasswordStrength.WEAK);
-    expect(result.suggestions).toContain(SuggestionKey.UPPERCASE);
-    expect(result.suggestions).toContain(SuggestionKey.NUMBERS);
-    expect(result.suggestions).toContain(SuggestionKey.SYMBOLS);
-    expect(result.suggestions).toContain(SuggestionKey.MIN_LENGTH);
+  it('should detect weak password with only lowercase', () => {
+    const result = checkPasswordStrength('abcdefgh');
+    expect(result.level).toBe(PasswordStrengthLevel.WEAK);
+    expect(result.suggestions).toContainEqual(expect.stringContaining('大写字母'));
+    expect(result.suggestions).toContainEqual(expect.stringContaining('数字'));
+    expect(result.suggestions).toContainEqual(expect.stringContaining('特殊符号'));
   });
 
-  test('8 characters, mixed case no numbers or symbols', () => {
-    const result = checkPassword('Abcdefgh');
-    expect(result.score).toBe(3);
-    expect(result.strength).toBe(PasswordStrength.MEDIUM);
-    expect(result.suggestions).toContain(SuggestionKey.NUMBERS);
-    expect(result.suggestions).toContain(SuggestionKey.SYMBOLS);
-    expect(result.suggestions).not.toContain(SuggestionKey.MIN_LENGTH);
+  it('should detect medium password with lowercase and numbers', () => {
+    const result = checkPasswordStrength('abc12345');
+    expect(result.level).toBe(PasswordStrengthLevel.MEDIUM);
   });
 
-  test('12 characters, all character types', () => {
-    const result = checkPassword('Abc123!@#xyz');
-    expect(result.score).toBe(6);
-    expect(result.strength).toBe(PasswordStrength.STRONG);
-    expect(result.suggestions).toHaveLength(0);
+  it('should detect strong password with mixed types', () => {
+    const result = checkPasswordStrength('Abc123!@#');
+    expect(result.level).toBe(PasswordStrengthLevel.STRONG);
   });
 
-  test('10 characters, all character types', () => {
-    const result = checkPassword('Abc123!@#x');
-    expect(result.score).toBe(5);
-    expect(result.strength).toBe(PasswordStrength.STRONG);
-    expect(result.suggestions).toHaveLength(0);
+  it('should detect very strong password', () => {
+    const result = checkPasswordStrength('K9@q!xY2#pZ7$d');
+    expect(result.level).toBe(PasswordStrengthLevel.VERY_STRONG);
   });
 
-  test('only numbers 8 digits', () => {
-    const result = checkPassword('12345678');
-    expect(result.score).toBe(2);
-    expect(result.strength).toBe(PasswordStrength.WEAK);
-    expect(result.suggestions).toContain(SuggestionKey.LOWERCASE);
-    expect(result.suggestions).toContain(SuggestionKey.UPPERCASE);
-    expect(result.suggestions).toContain(SuggestionKey.SYMBOLS);
+  it('should suggest adding special symbols', () => {
+    const result = checkPasswordStrength('Password123');
+    expect(result.suggestions).toContainEqual(expect.stringContaining('特殊符号'));
+  });
+
+  it('should penalize sequential characters', () => {
+    const result1 = checkPasswordStrength('abc123!');
+    const result2 = checkPasswordStrength('123abc!');
+    expect(result1.score).toBeLessThan(6);
+    expect(result2.score).toBeLessThan(6);
+  });
+
+  it('should penalize repeated pattern', () => {
+    const result = checkPasswordStrength('abababab');
+    expect(result.suggestions).toContainEqual(expect.stringContaining('重复'));
+  });
+
+  it('should handle empty password', () => {
+    const result = checkPasswordStrength('');
+    expect(result.level).toBe(PasswordStrengthLevel.VERY_WEAK);
   });
 });
