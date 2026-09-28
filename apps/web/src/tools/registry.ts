@@ -1463,6 +1463,92 @@ Bob,25,London`,
       },
     },
   },
+  {
+    slug: 'regex-generator',
+    name: '正则表达式生成器',
+    nameEn: 'Regular Expression Generator',
+    description:
+      '根据常用场景生成正则表达式，包含邮箱、URL、电话、日期等数十种常用正则。',
+    descriptionEn:
+      'Generates regular expressions for common scenarios, includes dozens of common patterns like email, URL, phone, date, etc.',
+    category: CATEGORY,
+    path: '/tools/regex-generator',
+    iconName: 'Code',
+    tags: ['正则', '正则表达式', '生成', '开发'],
+    tagsEn: ['Regex', 'Regular Expression', 'Generator', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的常用正则表达式生成工具，根据不同场景快速生成对应的正则表达式，无需记忆复杂语法。',
+        coreFeatures: [
+          '数十种常用场景：包含邮箱、URL、IP、电话、邮政编码、日期、颜色、密码、哈希等',
+          '一键获取正则：点击选择类型即可得到带标志位的正则表达式',
+          '纯本地运行：无需网络，所有数据都在本地处理',
+        ],
+        howToUse: [
+          '在下拉列表中选择你需要的正则类型',
+          '右侧会自动显示生成的正则表达式（包含标志位和描述）',
+          '复制正则表达式使用',
+        ],
+        useCases: [
+          '开发表单验证正则',
+          '快速获取常用正则用于文本处理',
+          '忘记语法时快速查询',
+        ],
+        privacyNote:
+          '所有处理都在本地浏览器完成，不会上传任何数据到服务器。',
+        faqs: [
+          {
+            question: '包含哪些类型的正则？',
+            answer:
+              '包含邮箱、URL、IPv4、IPv6、手机号、邮政编码、日期、时间、颜色、用户名、密码、HTML标签、哈希值、Base64、UUID、MAC地址等，持续增加中。',
+          },
+          {
+            question: '这些正则可以直接使用吗？',
+            answer:
+              '是的，生成的正则已经包含正确的转义和标志位，可以直接复制到代码中使用。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient regular expression generator for common scenarios, quickly generates the corresponding regex without needing to remember complex syntax.',
+        coreFeatures: [
+          'Dozens of common scenarios: includes email, URL, IP, phone, zip code, date, color, password, hash, etc.',
+          'Get regex in one click: select the type and get the regex with flags',
+          '100% local: no network required, all processing done locally',
+        ],
+        howToUse: [
+          'Select the regex type you need from the dropdown',
+          'The generated regex with flags and description automatically appears on the right',
+          'Copy the regex for use',
+        ],
+        useCases: [
+          'Developing form validation regex',
+          'Quickly get common regex for text processing',
+          'Quick lookup when you forget the syntax',
+        ],
+        privacyNote:
+          'All processing is done locally in your browser, no data is uploaded to any server.',
+        faqs: [
+          {
+            question: 'What types of regex are included?',
+            answer:
+              'Includes email, URL, IPv4, IPv6, phone number, zip code, date, time, color, username, password, HTML tag, hash, Base64, UUID, MAC address and more, and is continuously being added.',
+          },
+          {
+            question: 'Can these regex be used directly?',
+            answer:
+              'Yes, the generated regex already includes correct escaping and flags, you can copy it directly into your code for use.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
