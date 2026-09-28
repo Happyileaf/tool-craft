@@ -1,15 +1,25 @@
 import {
+  Blend,
   Braces,
   Clock,
   Code,
+  Droplets,
+  Eye,
   FileCode,
   FileText,
   Fingerprint,
+  Gauge,
   Image,
+  Layers,
   LayoutGrid,
+  MoonStar,
   Palette,
+  Pipette,
   QrCode,
   ShieldCheck,
+  Shuffle,
+  Sparkles,
+  Tags,
   type LucideProps,
 } from 'lucide-react';
 
@@ -28,6 +38,16 @@ const toolIconMap = {
   FileCode,
   Fingerprint,
   QrCode,
+  Pipette,
+  Blend,
+  Gauge,
+  Shuffle,
+  MoonStar,
+  Droplets,
+  Layers,
+  Tags,
+  Eye,
+  Sparkles,
 };
 
 /**

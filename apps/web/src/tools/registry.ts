@@ -1625,6 +1625,806 @@ author:
       },
     },
   },
+  {
+    slug: 'image-color-extractor',
+    name: '图片调色板提取器',
+    nameEn: 'Image Color Extractor',
+    description:
+      '上传图片自动提取主色调，基于中位切分量化算法生成调色板，一键复制 CSS 变量。',
+    descriptionEn:
+      'Upload an image to extract its dominant colors with median-cut quantization, and copy them as CSS variables in one click.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/image-color-extractor',
+    iconName: 'Pipette',
+    tags: ['取色', '图片', '调色板', '主色调', 'CSS 变量'],
+    tagsEn: ['Color Picker', 'Image', 'Palette', 'Dominant Colors', 'CSS Variables'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '图片调色板提取器是一款纯浏览器本地运行的取色工具，通过 Canvas 读取图片像素并使用中位切分量化算法，从任意图片中提取出具有代表性的主色调。',
+        coreFeatures: [
+          '中位切分量化：对海量像素聚类，输出视觉上最具代表性的颜色',
+          '颜色数量可调：支持 4 / 6 / 8 色三档提取',
+          '一键导出：点击色块复制 HEX，或批量复制、下载 CSS 变量',
+          '纯本地运算：图片只在浏览器 Canvas 中处理，绝不会上传',
+        ],
+        howToUse: [
+          '点击上传区域或直接拖入一张本地图片',
+          '通过分段按钮选择需要提取的颜色数量',
+          '在提取结果中点击任意色块复制单个 HEX 值',
+          '点击「复制 CSS 变量」或「下载 CSS」获取完整调色板代码',
+        ],
+        useCases: [
+          '从参考图、摄影作品中提炼品牌色与设计灵感',
+          '为网页或 App 配图提取与画面协调的配色方案',
+          '快速生成设计规范中的 CSS 颜色变量',
+        ],
+        privacyNote:
+          '图片像素仅在浏览器本地 Canvas 中读取与计算，文件不会上传至任何服务器。',
+        faqs: [
+          {
+            question: '提取的颜色和肉眼看到的主色不一致？',
+            answer:
+              '颜色提取基于像素中位切分量化，会综合出现频率与色彩分布。可以尝试切换颜色数量，通常 6 色或 8 色结果更接近视觉主色。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Image Color Extractor is a fully browser-based color picker. It reads image pixels through Canvas and uses median-cut quantization to extract representative dominant colors from any image.',
+        coreFeatures: [
+          'Median-cut quantization: clusters millions of pixels into the most representative colors',
+          'Adjustable palette size: extract 4, 6, or 8 colors',
+          'One-click export: click a swatch to copy HEX, or copy/download CSS variables in bulk',
+          '100% local: images are processed only in the browser Canvas and never uploaded',
+        ],
+        howToUse: [
+          'Click the upload area or drag in a local image',
+          'Choose the number of colors to extract with the segmented buttons',
+          'Click any swatch in the result list to copy its HEX value',
+          'Click "Copy CSS Variables" or "Download CSS" to get the full palette code',
+        ],
+        useCases: [
+          'Deriving brand colors and inspiration from reference photos or artwork',
+          'Building color schemes that match the imagery of a website or app',
+          'Quickly producing CSS color variables for design specs',
+        ],
+        privacyNote:
+          'Image pixels are read and computed only in the local browser Canvas. Files are never uploaded to any server.',
+        faqs: [
+          {
+            question: 'Why do extracted colors differ from the dominant colors I see?',
+            answer:
+              'Extraction is based on median-cut quantization of pixels, combining frequency and color distribution. Try switching the color count; 6 or 8 colors usually match visual perception best.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'gradient-generator',
+    name: '渐变色生成器',
+    nameEn: 'CSS Gradient Generator',
+    description:
+      '可视化调节线性、径向、圆锥渐变与颜色节点，实时预览并输出 CSS 与 Tailwind 代码。',
+    descriptionEn:
+      'Visually craft linear, radial, and conic gradients with editable color stops, then copy ready-to-use CSS and Tailwind code.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/gradient-generator',
+    iconName: 'Blend',
+    tags: ['渐变', 'CSS', 'Tailwind', '背景', 'linear-gradient'],
+    tagsEn: ['Gradient', 'CSS', 'Tailwind', 'Background', 'linear-gradient'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '渐变色生成器是一款可视化的 CSS 渐变设计工具，支持线性、径向与圆锥三种渐变类型，可自由增删颜色节点并实时预览效果。',
+        coreFeatures: [
+          '三种渐变类型：线性、径向、圆锥一键切换',
+          '节点自由编辑：增删颜色节点、调节位置与取色',
+          '内置精选预设：一键套用美观的渐变方案',
+          '双格式输出：同时生成标准 CSS 与 Tailwind 类名',
+        ],
+        howToUse: [
+          '选择渐变类型，并在线性模式下调整角度',
+          '在颜色节点区修改颜色或位置，点击「添加节点」扩展渐变',
+          '也可直接点击预设快速套用方案',
+          '在底部复制 CSS 代码或 Tailwind 类名',
+        ],
+        useCases: [
+          '制作网页 Hero 横幅、按钮与卡片背景',
+          '为海报、封面快速试验渐变配色',
+          '生成可直接粘贴到样式文件的渐变代码',
+        ],
+        privacyNote:
+          '所有渐变计算与预览均在浏览器本地完成，不涉及任何数据上传。',
+        faqs: [
+          {
+            question: '支持哪些浏览器？',
+            answer:
+              '生成的 linear-gradient 与 radial-gradient 被所有现代浏览器支持；conic-gradient 在 Chrome、Safari、Firefox、Edge 现行版本中同样可用。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'CSS Gradient Generator is a visual tool for designing CSS gradients. It supports linear, radial, and conic types with freely editable color stops and live preview.',
+        coreFeatures: [
+          'Three gradient types: switch between linear, radial, and conic',
+          'Freely editable stops: add or remove stops, adjust position and color',
+          'Curated presets: apply beautiful gradient schemes in one click',
+          'Dual output: generates both standard CSS and Tailwind class names',
+        ],
+        howToUse: [
+          'Choose a gradient type and adjust the angle in linear mode',
+          'Edit colors or positions in the stops area, or click "Add Stop" to extend the gradient',
+          'You can also click a preset to apply a scheme instantly',
+          'Copy the CSS code or Tailwind class at the bottom',
+        ],
+        useCases: [
+          'Creating hero banners, button backgrounds, and card backgrounds',
+          'Experimenting with gradient colors for posters and covers',
+          'Generating gradient code ready to paste into stylesheets',
+        ],
+        privacyNote:
+          'All gradient computation and preview happen locally in the browser with no data upload.',
+        faqs: [
+          {
+            question: 'Which browsers are supported?',
+            answer:
+              'The generated linear-gradient and radial-gradient work in all modern browsers; conic-gradient is also supported in current versions of Chrome, Safari, Firefox, and Edge.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'oklch-workbench',
+    name: 'OKLCH 色彩工作台',
+    nameEn: 'OKLCH Color Workbench',
+    description:
+      '基于感知均匀的 OKLCH 色彩空间调色，拖动 L/C/H 滑杆并生成感知均匀的色阶。',
+    descriptionEn:
+      'Mix colors in the perceptually uniform OKLCH space with L/C/H sliders, and generate perceptually even shade scales.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/oklch-workbench',
+    iconName: 'Gauge',
+    tags: ['OKLCH', '色彩空间', '色阶', 'Tailwind', 'CSS Color 4'],
+    tagsEn: ['OKLCH', 'Color Space', 'Shades', 'Tailwind', 'CSS Color 4'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'OKLCH 色彩工作台基于现代 CSS Color 4 标准中的 OKLCH 色彩空间。相比 HSL，OKLCH 在感知上更加均匀，调整亮度或色度时颜色变化更符合人眼直觉。',
+        coreFeatures: [
+          '精确转换：HEX 与 OKLCH 互转，基于 OKLab 数学模型',
+          '三轴调节：亮度 L、色度 C、色相 H 滑杆实时调色',
+          '色域保护：超 sRGB 色域时自动收缩色度，避免输出无效颜色',
+          '感知均匀色阶：一键生成从浅到深过渡自然的 10 档色阶',
+        ],
+        howToUse: [
+          '在取色器中选择颜色，或直接输入 HEX 值',
+          '拖动 L、C、H 滑杆微调颜色，超色域时会自动裁剪',
+          '查看下方感知均匀色阶，点击任意色块复制',
+          '点击「复制 oklch()」获取可直接使用的 CSS 值',
+        ],
+        useCases: [
+          '构建 Tailwind 风格的感知均匀色阶体系',
+          '为设计系统选择视觉亮度一致的功能色',
+          '在现代项目中使用 oklch() 提升配色可控性',
+        ],
+        privacyNote:
+          '所有色彩数学运算均在浏览器本地完成，不会上传任何数据。',
+        faqs: [
+          {
+            question: 'OKLCH 与 HSL 有什么区别？',
+            answer:
+              'HSL 是几何均匀但感知不均匀的色彩空间，相同亮度的不同色相看起来明暗不一；OKLCH 基于 OKLab，相同 L 值在视觉上亮度一致，因此更适合构建色阶与设计系统。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'OKLCH Color Workbench is built on the OKLCH color space from the modern CSS Color 4 standard. Compared with HSL, OKLCH is perceptually uniform, so lightness and chroma changes match human vision.',
+        coreFeatures: [
+          'Accurate conversion: HEX to OKLCH and back, based on the OKLab model',
+          'Three-axis control: tune lightness L, chroma C, and hue H with live sliders',
+          'Gamut protection: automatically reduces chroma beyond sRGB to avoid invalid colors',
+          'Perceptual shades: generate 10 evenly transitioning shades in one click',
+        ],
+        howToUse: [
+          'Pick a color in the color picker or enter a HEX value directly',
+          'Drag the L, C, and H sliders to fine-tune; out-of-gamut colors are clipped automatically',
+          'Review the perceptually uniform shades below and click any swatch to copy',
+          'Click "Copy oklch()" to get a ready-to-use CSS value',
+        ],
+        useCases: [
+          'Building Tailwind-style perceptually uniform shade scales',
+          'Choosing functional colors with consistent visual lightness in design systems',
+          'Using oklch() in modern projects for more controllable palettes',
+        ],
+        privacyNote:
+          'All color math runs locally in the browser; no data is uploaded.',
+        faqs: [
+          {
+            question: 'What is the difference between OKLCH and HSL?',
+            answer:
+              'HSL is geometrically uniform but perceptually uneven: hues with the same lightness can look quite different. OKLCH is based on OKLab, so the same L value looks equally bright, making it better for shade scales and design systems.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'color-harmony',
+    name: '色彩调和方案生成器',
+    nameEn: 'Color Harmony Generator',
+    description:
+      '基于色轮理论生成互补、邻近、三色、分裂互补等六种调和方案，一键复制搭配。',
+    descriptionEn:
+      'Generate six color-wheel harmony schemes including complementary, analogous, triadic, and more, then copy the palette in one click.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/color-harmony',
+    iconName: 'Shuffle',
+    tags: ['色彩调和', '色轮', '配色方案', '互补色', '邻近色'],
+    tagsEn: ['Color Harmony', 'Color Wheel', 'Palette', 'Complementary', 'Analogous'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '色彩调和方案生成器基于经典色轮理论，输入一个基色即可自动生成互补、邻近、三色、分裂互补、四色与单色六种科学配色方案。',
+        coreFeatures: [
+          '六种调和规则：覆盖主流色彩理论中的经典搭配',
+          '基色自由输入：取色器或 HEX 输入，支持随机基色',
+          '条纹与卡片双预览：直观查看颜色搭配关系',
+          '一键复制：点击色块复制 HEX，或批量复制全部颜色',
+        ],
+        howToUse: [
+          '选择基色（取色器、HEX 输入或随机生成）',
+          '在分段控件中切换调和类型',
+          '在预览区查看搭配效果与各色 HEX / HSL 值',
+          '点击单个色块复制，或点击「复制全部」',
+        ],
+        useCases: [
+          '为 UI、海报、品牌设计快速寻找配色方向',
+          '为已有主色推导辅助色与强调色',
+          '学习和理解色轮与色彩调和理论',
+        ],
+        privacyNote:
+          '全部配色计算都在浏览器本地完成，不涉及数据上传。',
+        faqs: [
+          {
+            question: '六种方案分别适合什么场景？',
+            answer:
+              '互补色对比强烈适合强调；邻近色和谐自然适合大面积配色；三色活泼均衡；分裂互补对比柔和；四色层次丰富；单色系克制统一，适合数据界面与极简风格。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Color Harmony Generator is based on classic color-wheel theory. Given a base color, it automatically produces six scientific schemes: complementary, analogous, triadic, split-complementary, tetradic, and monochromatic.',
+        coreFeatures: [
+          'Six harmony rules covering the classic combinations in color theory',
+          'Flexible base color: picker, HEX input, or random generation',
+          'Dual preview: stripes and cards show how colors relate',
+          'One-click copy: copy individual swatches or the whole palette',
+        ],
+        howToUse: [
+          'Choose a base color (picker, HEX input, or random)',
+          'Switch harmony type in the segmented control',
+          'Review the palette and each color’s HEX / HSL values in the preview',
+          'Click a single swatch to copy, or click "Copy All"',
+        ],
+        useCases: [
+          'Quickly finding color directions for UI, posters, and branding',
+          'Deriving supporting and accent colors from an existing primary color',
+          'Learning color-wheel and harmony theory',
+        ],
+        privacyNote:
+          'All palette computation runs locally in the browser with no data upload.',
+        faqs: [
+          {
+            question: 'Which scheme fits which situation?',
+            answer:
+              'Complementary gives strong contrast for accents; analogous is harmonious for large areas; triadic is lively and balanced; split-complementary offers softer contrast; tetradic is rich and layered; monochromatic is restrained and unified for dashboards and minimal styles.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'dark-mode-converter',
+    name: '深色模式配色转换器',
+    nameEn: 'Dark Mode Color Converter',
+    description:
+      '将浅色语义令牌自动转换为深色模式配色，三种策略可选，输出 :root 与 .dark 变量。',
+    descriptionEn:
+      'Convert light semantic tokens into dark-mode palettes with three strategies, outputting :root and .dark variables.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/dark-mode-converter',
+    iconName: 'MoonStar',
+    tags: ['深色模式', '暗色主题', 'CSS 变量', '语义令牌', '主题切换'],
+    tagsEn: ['Dark Mode', 'Dark Theme', 'CSS Variables', 'Semantic Tokens', 'Theming'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '深色模式配色转换器可将一套浅色语义颜色令牌自动映射为深色模式对应值，避免简单反色带来的刺眼与脏色问题，直接产出可用的 CSS 变量。',
+        coreFeatures: [
+          '三种转换策略：反转明度、柔和降低、保持鲜艳，适配不同风格',
+          '语义化对照：背景、前景、边框、主色等令牌浅深并排展示',
+          '实时预览：每个令牌均可直接看到浅色与深色效果',
+          '标准 CSS 输出：生成 :root 与 .dark 两套变量，直接接入主题切换',
+        ],
+        howToUse: [
+          '在策略分段控件中选择深色转换策略',
+          '在对照表中查看并按需微调颜色（可使用取色器）',
+          '预览各令牌在浅色与深色下的实际效果',
+          '点击「复制 CSS」将变量代码粘贴到项目样式文件',
+        ],
+        useCases: [
+          '为现有网站或应用补齐深色模式主题',
+          '设计系统中维护浅 / 深双套语义令牌',
+          '快速评估产品在暗色环境下的配色表现',
+        ],
+        privacyNote:
+          '所有颜色转换均在浏览器本地完成，颜色数据不会离开设备。',
+        faqs: [
+          {
+            question: '为什么不直接反色？',
+            answer:
+              '直接反色会让深色背景过于纯黑、品牌色色相偏移且对比刺眼。本工具在 HSL 空间按策略重新映射明度与饱和度，深色更柔和、层次更自然。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Dark Mode Color Converter automatically maps a set of light semantic color tokens to their dark-mode counterparts. It avoids the harsh and muddy results of naive inversion and produces ready-to-use CSS variables.',
+        coreFeatures: [
+          'Three strategies: invert lightness, soft reduction, and keep vivid for different styles',
+          'Semantic comparison: background, foreground, border, and primary tokens shown side by side',
+          'Live preview: see light and dark versions of every token instantly',
+          'Standard CSS output: generates :root and .dark variable sets for theme switching',
+        ],
+        howToUse: [
+          'Choose a dark conversion strategy in the segmented control',
+          'Review and fine-tune colors in the comparison table (a color picker is available)',
+          'Preview how each token looks in light and dark modes',
+          'Click "Copy CSS" and paste the variables into your stylesheet',
+        ],
+        useCases: [
+          'Adding a dark theme to an existing website or application',
+          'Maintaining light/dark semantic tokens in a design system',
+          'Quickly evaluating how a product palette performs in dark environments',
+        ],
+        privacyNote:
+          'All color conversion runs locally in the browser; color data never leaves the device.',
+        faqs: [
+          {
+            question: 'Why not just invert colors?',
+            answer:
+              'Naive inversion produces pure-black backgrounds, shifted brand hues, and harsh contrast. This tool remaps lightness and saturation in HSL according to a strategy, yielding softer darks and more natural layering.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'color-mixer',
+    name: '混合色调色计算器',
+    nameEn: 'Color Mixer',
+    description:
+      '按比例混合两种颜色，生成等分中间色带，并输出 CSS color-mix() 函数代码。',
+    descriptionEn:
+      'Mix two colors by ratio, generate an evenly spaced intermediate scale, and output CSS color-mix() code.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/color-mixer',
+    iconName: 'Droplets',
+    tags: ['混色', 'color-mix', '调色', '渐变色带', 'CSS Color 5'],
+    tagsEn: ['Color Mixing', 'color-mix', 'Palette', 'Color Scale', 'CSS Color 5'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '混合色调色计算器可按任意比例混合两个 HEX 颜色，实时查看混合结果与等分中间色带，并生成现代浏览器支持的 color-mix() 代码。',
+        coreFeatures: [
+          '任意比例混合：拖动滑杆在 0%–100% 间精确控制',
+          '等分中间色：自动生成从颜色 A 到颜色 B 的过渡色带',
+          '双通道计算：在 sRGB 空间线性混合，结果稳定可预期',
+          '现代 CSS 输出：直接生成 color-mix(in srgb, ...) 函数',
+        ],
+        howToUse: [
+          '分别设置颜色 A 与颜色 B（支持取色器与 HEX 输入）',
+          '拖动混合比例滑杆查看混合结果',
+          '在等分中间色区域点击色块复制过渡色',
+          '复制 color-mix() 代码用于支持该函数的浏览器环境',
+        ],
+        useCases: [
+          '为 hover、禁用等交互状态推导颜色变体',
+          '在两种品牌色之间寻找过渡色',
+          '为不支持 color-mix() 的环境预算实际混合色值',
+        ],
+        privacyNote:
+          '混色计算完全在浏览器本地进行，不收集任何输入数据。',
+        faqs: [
+          {
+            question: 'color-mix() 的浏览器兼容性如何？',
+            answer:
+              'color-mix() 已在 Chrome 111+、Safari 16.2+、Firefox 113+ 中支持。对于旧环境，可直接使用工具计算出的混合 HEX 值。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Color Mixer blends two HEX colors at any ratio, showing the result and an evenly spaced intermediate scale live, and generates code for the modern color-mix() function.',
+        coreFeatures: [
+          'Any-ratio mixing: precise control from 0% to 100% with a slider',
+          'Intermediate steps: automatically generate a scale from color A to color B',
+          'Dual-channel math: linear mixing in sRGB for stable, predictable results',
+          'Modern CSS output: generates color-mix(in srgb, ...) directly',
+        ],
+        howToUse: [
+          'Set color A and color B (picker and HEX input supported)',
+          'Drag the mix ratio slider to see the mixed result',
+          'Click swatches in the intermediate scale to copy transition colors',
+          'Copy the color-mix() code for browsers that support it',
+        ],
+        useCases: [
+          'Deriving color variants for hover and disabled states',
+          'Finding transition colors between two brand colors',
+          'Precomputing mixed values for environments without color-mix()',
+        ],
+        privacyNote:
+          'Mixing runs entirely in the browser; no input data is collected.',
+        faqs: [
+          {
+            question: 'How good is browser support for color-mix()?',
+            answer:
+              'color-mix() is supported in Chrome 111+, Safari 16.2+, and Firefox 113+. For older environments, use the mixed HEX values computed by the tool directly.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'box-shadow-generator',
+    name: '阴影生成器',
+    nameEn: 'Box Shadow Generator',
+    description:
+      '可视化叠加多层 box-shadow，调节偏移、模糊、扩散与透明度，实时预览并复制 CSS。',
+    descriptionEn:
+      'Visually stack multiple box-shadow layers with offset, blur, spread, and opacity controls, then copy the CSS.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/box-shadow-generator',
+    iconName: 'Layers',
+    tags: ['阴影', 'box-shadow', 'CSS', '层级', '投影'],
+    tagsEn: ['Shadow', 'box-shadow', 'CSS', 'Layers', 'Elevation'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '阴影生成器是一款可视化的 box-shadow 设计工具，支持多层阴影叠加，可精细调节每层的偏移、模糊、扩散、透明度与内阴影，打造真实的层级与投影效果。',
+        coreFeatures: [
+          '多层叠加：自由添加、删除阴影层，组合出复杂投影',
+          '完整参数：水平 / 垂直偏移、模糊、扩散、透明度、inset 全覆盖',
+          '实时预览：在卡片上即时呈现阴影效果',
+          '预设方案：内置柔和、悬浮、Neumorphism 等常用阴影',
+        ],
+        howToUse: [
+          '点击预设快速起步，或直接在参数面板调节当前阴影层',
+          '通过层级切换选择要编辑的阴影，点击「添加阴影层」扩展',
+          '在预览区查看卡片的实际投影效果',
+          '满意后复制 box-shadow CSS 代码',
+        ],
+        useCases: [
+          '设计卡片、弹窗、按钮的悬浮与点击投影',
+          '制作 Neumorphism 新拟态等特殊风格',
+          '为设计系统定义统一的 elevation 层级阴影',
+        ],
+        privacyNote:
+          '所有参数调节与代码生成均在浏览器本地完成。',
+        faqs: [
+          {
+            question: '多层阴影的顺序有影响吗？',
+            answer:
+              '有。box-shadow 列表中先写的阴影渲染在上层，多层叠加时顺序会影响视觉效果，工具按列表顺序生成代码，可通过层级列表调整。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Box Shadow Generator is a visual tool for designing box-shadow effects. It supports stacking multiple shadow layers with fine control over offset, blur, spread, opacity, and inset to create realistic elevation.',
+        coreFeatures: [
+          'Multi-layer stacking: freely add and remove layers for complex shadows',
+          'Complete controls: horizontal/vertical offset, blur, spread, opacity, and inset',
+          'Live preview: see the shadow on a card instantly',
+          'Presets: soft, hover, neumorphism, and other common shadows built in',
+        ],
+        howToUse: [
+          'Start from a preset or adjust the current shadow layer directly in the panel',
+          'Switch between layers to edit, and click "Add Shadow Layer" to expand',
+          'Check the actual effect on the card in the preview area',
+          'Copy the box-shadow CSS when you are satisfied',
+        ],
+        useCases: [
+          'Designing hover and press shadows for cards, modals, and buttons',
+          'Creating special styles such as neumorphism',
+          'Defining unified elevation shadows for design systems',
+        ],
+        privacyNote:
+          'All adjustments and code generation happen locally in the browser.',
+        faqs: [
+          {
+            question: 'Does the order of multiple shadows matter?',
+            answer:
+              'Yes. Shadows listed first render on top, so order affects the look of stacked shadows. The tool generates code in list order, adjustable via the layer list.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'color-naming-token',
+    name: '颜色令牌生成器',
+    nameEn: 'Color Naming & Token Generator',
+    description:
+      '为颜色统一命名并同步生成 CSS、JS、SCSS 三种格式的设计令牌代码。',
+    descriptionEn:
+      'Name colors consistently and synchronize them into CSS, JS, and SCSS design-token formats.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/color-naming-token',
+    iconName: 'Tags',
+    tags: ['设计令牌', '命名', 'CSS 变量', 'SCSS', 'Design Token'],
+    tagsEn: ['Design Tokens', 'Naming', 'CSS Variables', 'SCSS', 'Design Token'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '颜色令牌生成器帮助你为一组颜色进行语义化命名，并将同一份颜色数据同步输出为 CSS 变量、JavaScript 对象与 SCSS 变量，保证多端样式令牌一致。',
+        coreFeatures: [
+          '一处维护：增删改颜色令牌，三种格式同步更新',
+          '自动命名规范化：名称自动转换为 kebab-case、camelCase 等格式',
+          '三种输出：CSS 自定义属性、JS / TS 对象、SCSS 变量',
+          '语义化默认令牌：内置 primary、success、warning 等常用令牌',
+        ],
+        howToUse: [
+          '在令牌列表中修改名称与颜色值，或点击「添加令牌」',
+          '名称会按各格式要求自动规范化',
+          '在输出区切换 CSS / JS / SCSS 查看代码',
+          '点击复制按钮将令牌代码粘贴到项目中',
+        ],
+        useCases: [
+          '构建设计系统的多平台颜色令牌',
+          '在 CSS、JS 主题配置与 SCSS 之间保持颜色同步',
+          '规范团队内部对颜色的语义化命名',
+        ],
+        privacyNote:
+          '所有令牌数据仅保存在浏览器内存中，不会上传或持久化到服务器。',
+        faqs: [
+          {
+            question: '命名支持哪些格式？',
+            answer:
+              '输入名称后会自动生成 kebab-case（如 color-primary）、camelCase（colorPrimary）与 SCREAMING_SNAKE_CASE，分别用于 CSS、JS 与常量场景。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Color Naming & Token Generator helps you semantically name a set of colors and synchronize the same data into CSS variables, JavaScript objects, and SCSS variables, keeping tokens consistent across platforms.',
+        coreFeatures: [
+          'Single source of truth: add, edit, or remove tokens and all formats update together',
+          'Automatic normalization: names convert to kebab-case, camelCase, and more',
+          'Three outputs: CSS custom properties, JS/TS objects, and SCSS variables',
+          'Semantic defaults: primary, success, warning, and other common tokens built in',
+        ],
+        howToUse: [
+          'Edit names and colors in the token list, or click "Add Token"',
+          'Names are automatically normalized per output format',
+          'Switch between CSS / JS / SCSS in the output area',
+          'Click copy to paste the token code into your project',
+        ],
+        useCases: [
+          'Building cross-platform color tokens for design systems',
+          'Keeping colors in sync between CSS, JS theme config, and SCSS',
+          'Standardizing semantic color naming within a team',
+        ],
+        privacyNote:
+          'All token data stays in browser memory and is never uploaded or persisted on a server.',
+        faqs: [
+          {
+            question: 'Which naming formats are supported?',
+            answer:
+              'From your input it generates kebab-case (e.g. color-primary), camelCase (colorPrimary), and SCREAMING_SNAKE_CASE for CSS, JS, and constant use respectively.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'color-blind-simulator',
+    name: '色盲模拟器与安全调色板',
+    nameEn: 'Color Blind Simulator',
+    description:
+      '上传图片模拟四种色觉效果，校验调色板可读性，并提供 Okabe-Ito 安全配色。',
+    descriptionEn:
+      'Upload an image to simulate four color-vision types, verify palette legibility, and get the Okabe-Ito safe palette.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/color-blind-simulator',
+    iconName: 'Eye',
+    tags: ['色盲', '无障碍', '可访问性', '安全配色', 'a11y'],
+    tagsEn: ['Color Blindness', 'Accessibility', 'A11y', 'Safe Palette', 'WCAG'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '色盲模拟器通过 LMS 色彩空间矩阵，在浏览器本地模拟红色盲、绿色盲、蓝色盲与全色盲四种色觉效果，并可校验任意调色板在色觉差异下是否仍可区分。',
+        coreFeatures: [
+          '四种色觉模拟：基于科学的 LMS 矩阵转换图片像素',
+          '并排对比：正常色觉与模拟效果同屏查看',
+          '调色板校验：粘贴 HEX 列表检查颜色是否会混淆',
+          '安全配色推荐：内置业界经典的 Okabe-Ito 色盲友好调色板',
+        ],
+        howToUse: [
+          '上传一张本地图片，查看不同色觉条件下的模拟效果',
+          '在调色板输入框中粘贴逗号或空格分隔的 HEX 颜色',
+          '查看每对颜色的 PASS / RISK 安全状态',
+          '从安全配色区复制 Okabe-Ito 推荐颜色',
+        ],
+        useCases: [
+          '检查数据图表中仅靠颜色区分的系列是否可读',
+          '优化状态色（成功 / 警告 / 错误）的可访问性',
+          '设计在色觉差异人群中依然清晰的界面与信息图',
+        ],
+        privacyNote:
+          '图片与调色板数据均在浏览器本地处理，绝不会上传服务器。',
+        faqs: [
+          {
+            question: '模拟结果可以代替真实用户测试吗？',
+            answer:
+              '模拟算法基于色觉缺陷的数学模型，可用于设计阶段的快速自查，但不能完全替代真实用户测试。重要产品建议结合图标、文字标签等冗余编码，并邀请相关用户参与验证。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Color Blind Simulator uses LMS color-space matrices to simulate protanopia, deuteranopia, tritanopia, and achromatopsia locally in the browser, and checks whether any palette stays distinguishable across color-vision differences.',
+        coreFeatures: [
+          'Four vision simulations: scientifically based LMS matrices transform image pixels',
+          'Side-by-side comparison: normal vision and simulations on one screen',
+          'Palette checking: paste HEX values to see whether colors collapse together',
+          'Safe palette recommendation: the classic Okabe-Ito color-blind-friendly set built in',
+        ],
+        howToUse: [
+          'Upload a local image to see simulations under different vision types',
+          'Paste comma- or space-separated HEX colors into the palette input',
+          'Review the PASS / RISK status for each color pair',
+          'Copy recommended colors from the Okabe-Ito safe palette',
+        ],
+        useCases: [
+          'Checking whether chart series distinguished only by color remain readable',
+          'Improving accessibility of status colors (success / warning / error)',
+          'Designing interfaces and infographics that stay clear for color-vision-deficient users',
+        ],
+        privacyNote:
+          'Images and palette data are processed locally in the browser and never uploaded.',
+        faqs: [
+          {
+            question: 'Can simulation replace testing with real users?',
+            answer:
+              'The simulation is a mathematical model useful for quick self-checks during design, but it cannot fully replace real-user testing. For important products, add redundant encoding such as icons and text labels and involve affected users in validation.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'css-filter-generator',
+    name: 'CSS 滤镜与毛玻璃生成器',
+    nameEn: 'CSS Filter & Glassmorphism Generator',
+    description:
+      '可视化调节图片 filter 滤镜或毛玻璃卡片参数，实时预览并输出 filter / backdrop-filter 代码。',
+    descriptionEn:
+      'Visually tune image filter or glassmorphism card parameters, preview live, and copy filter / backdrop-filter CSS.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/css-filter-generator',
+    iconName: 'Sparkles',
+    tags: ['滤镜', '毛玻璃', 'backdrop-filter', 'Glassmorphism', 'filter'],
+    tagsEn: ['Filter', 'Frosted Glass', 'backdrop-filter', 'Glassmorphism', 'CSS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS 滤镜与毛玻璃生成器是一款双模式可视化工具：既可调节 blur、亮度、对比度等图片滤镜，也可设计背景透明、模糊、高光边框的毛玻璃（Glassmorphism）卡片，并直接生成可用 CSS。',
+        coreFeatures: [
+          '双模式切换：图片滤镜与毛玻璃卡片一站式设计',
+          '八项滤镜参数：模糊、亮度、对比度、饱和度、灰度、褐色、反相、色相旋转',
+          '真实毛玻璃效果：透明度、模糊、饱和度、圆角与半透明边框实时渲染',
+          '内置预设与图片上传：快速起步，图片仅在本地处理',
+        ],
+        howToUse: [
+          '在顶部切换「图片滤镜」或「毛玻璃」模式',
+          '滤镜模式下可上传本地图片并应用预设或手动调节滑杆',
+          '毛玻璃模式下调节透明度、模糊、圆角与边框参数',
+          '在底部复制 filter 或 backdrop-filter CSS 代码',
+        ],
+        useCases: [
+          '制作弹窗、导航栏、卡片的毛玻璃效果',
+          '为网页图片快速添加风格化滤镜',
+          '学习与试验现代 CSS 视觉效果',
+        ],
+        privacyNote:
+          '上传的图片通过 FileReader 在浏览器本地读取，不会上传至任何服务器。',
+        faqs: [
+          {
+            question: '毛玻璃效果需要注意什么？',
+            answer:
+              'backdrop-filter 作用于元素背后的内容，因此元素背景需保留一定透明度才能看到模糊效果；同时建议添加 -webkit-backdrop-filter 以兼容 Safari，工具生成的代码已包含该前缀。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'CSS Filter & Glassmorphism Generator is a dual-mode visual tool: tune image filters such as blur, brightness, and contrast, or design frosted-glass cards with translucent backgrounds, blur, and highlight borders, and generate ready-to-use CSS.',
+        coreFeatures: [
+          'Dual modes: image filter and frosted-glass card design in one tool',
+          'Eight filter parameters: blur, brightness, contrast, saturate, grayscale, sepia, invert, and hue-rotate',
+          'Realistic glassmorphism: opacity, blur, saturate, radius, and translucent border rendered live',
+          'Built-in presets and image upload: quick start, images processed locally only',
+        ],
+        howToUse: [
+          'Switch between "Image Filter" and "Frosted Glass" modes at the top',
+          'In filter mode, upload a local image and apply presets or drag the sliders manually',
+          'In glass mode, adjust opacity, blur, radius, and border parameters',
+          'Copy the filter or backdrop-filter CSS at the bottom',
+        ],
+        useCases: [
+          'Creating glassmorphism effects for modals, navigation bars, and cards',
+          'Quickly adding stylized filters to web images',
+          'Experimenting with modern CSS visual effects',
+        ],
+        privacyNote:
+          'Uploaded images are read locally via FileReader in the browser and are never uploaded to any server.',
+        faqs: [
+          {
+            question: 'What should I note for frosted-glass effects?',
+            answer:
+              'backdrop-filter applies to content behind the element, so the element background must keep some transparency to see the blur. It is also advisable to include -webkit-backdrop-filter for Safari, which the generated code already contains.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
