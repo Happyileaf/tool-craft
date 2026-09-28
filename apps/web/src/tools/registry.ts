@@ -1200,6 +1200,86 @@ author:
     },
   },
   {
+    slug: 'url-codec',
+    name: 'URL 编解码',
+    nameEn: 'URL Encoder/Decoder',
+    description:
+      '快速对 URL 进行编码和解码，处理 URL 参数中的特殊字符。',
+    descriptionEn:
+      'Quickly encode and decode URLs, handles special characters in URL parameters.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/url-codec',
+    iconName: 'Link',
+    tags: ['URL', '编码', '解码', '编解码'],
+    tagsEn: ['URL', 'Encode', 'Decode', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'https://example.com/search?q=hello world&lang=en',
+    doc: {
+      zh: {
+        whatIsIt:
+          '简单快速的 URL 编解码工具，可以一键对 URL 进行编码或解码，方便处理 URL 参数中的特殊字符。',
+        coreFeatures: [
+          '双向操作：支持编码和解码两种操作，一键切换',
+          '原生 API：使用浏览器原生 API，结果准确可靠',
+          '一键复制：处理完成后可快速复制结果',
+          '纯本地运算：所有操作都在浏览器本地完成',
+        ],
+        howToUse: [
+          '选择操作类型：编码或解码',
+          '在输入框粘贴需要处理的 URL',
+          '点击对应的操作按钮',
+          '复制处理结果使用',
+        ],
+        useCases: [
+          '需要将 URL 作为参数传递时对其编码',
+          '解码编码后的 URL 查看原始内容',
+          '调试 URL 参数问题时快速转换',
+        ],
+        privacyNote:
+          '所有操作都在本地浏览器完成，URL 内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '和 base64 编码有什么区别？',
+            answer:
+              '这是标准的 URL 百分号编码，用于处理 URL 参数中的特殊字符，和 base64 是不同的编码方式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A simple and fast URL encoder/decoder tool that can encode or decode URLs with one click, handles special characters in URL parameters conveniently.',
+        coreFeatures: [
+          'Bidirectional: supports both encode and decode, switch with one click',
+          'Native API: uses browser native APIs for accurate and reliable results',
+          'One-click copy: quickly copy the result after processing',
+          '100% local: all operations done in-browser',
+        ],
+        howToUse: [
+          'Select operation type: encode or decode',
+          'Paste the URL you need to process into the input area',
+          'Click the corresponding operation button',
+          'Copy the processed result and use it',
+        ],
+        useCases: [
+          'Encode URL when it needs to be passed as a parameter',
+          'Decode an encoded URL to see the original content',
+          'Quick conversion when debugging URL parameter issues',
+        ],
+        privacyNote:
+          'All operations are done locally in your browser. URL content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: "What's the difference between this and base64 encoding?",
+            answer:
+              "This is standard URL percent-encoding used for handling special characters in URL parameters. It's a different encoding method from base64.",
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'csv-json-converter',
     name: 'CSV JSON 互转',
     nameEn: 'CSV JSON Converter',
