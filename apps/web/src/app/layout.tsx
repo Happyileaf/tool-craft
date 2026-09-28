@@ -16,6 +16,9 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'ToolCraft',
   description: '纯前端、隐私优先的在线工具箱，所有处理均在浏览器本地完成。',
+  icons: {
+    icon: '/vercel.svg',
+  },
 };
 
 /**
