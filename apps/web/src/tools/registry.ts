@@ -2,6 +2,7 @@ import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
 import { DEFAULT_SAMPLE } from './css-prefixer/constants';
 import { DEFAULT_PATTERN } from './regex-generator/constants';
+import { DEFAULT_SAMPLE as URL_DEFAULT_SAMPLE } from './url-codec/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -1258,6 +1259,85 @@ author:
           {
             question: 'What is the difference from the existing regex-tester tool?',
             answer: 'regex-tester focuses on testing your handwritten regex, while this tool focuses on quickly generating from common templates and testing. They work better together.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'url-codec',
+    name: 'URL 编解码',
+    nameEn: 'URL Encoder Decoder',
+    description:
+      '快速对 URL 组件或完整 URI 进行编解码，支持 encodeURI 和 encodeURIComponent 两种模式。',
+    descriptionEn:
+      'Quickly encode or decode URL components or full URIs, supports both encodeURI and encodeURIComponent modes.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/url-codec',
+    iconName: 'Link',
+    tags: ['URL', '编码', '解码', 'URI'],
+    tagsEn: ['URL', 'Encode', 'Decode', 'URI'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: URL_DEFAULT_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          '纯浏览器本地运行的 URL 编解码工具，支持 URL 组件和完整 URI 两种编解码模式，实时显示转换结果。',
+        coreFeatures: [
+          '两种模式：支持 encodeURIComponent（URL 组件编码）和 encodeURI（完整 URI 编码）',
+          '双向转换：支持编码和解码一键切换',
+          '实时转换：输入后即刻显示结果',
+          '纯本地运算：所有转换在浏览器完成，数据不上传服务器',
+        ],
+        howToUse: [
+          '选择操作模式（编码或解码）',
+          '选择类型（URL 组件或完整 URI）',
+          '输入原始文本，输出会实时显示',
+          '复制结果使用即可',
+        ],
+        useCases: [
+          '对 URL 查询参数进行编码/解码',
+          '调试网络请求 URL',
+          '处理包含特殊字符的 URL',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，数据内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: 'URL 组件和完整 URI 的区别是什么？',
+            answer: 'URL 组件编码会编码所有特殊字符，包括 : / ? # 等，适合单独编码查询参数等组件；完整 URI 编码会保留 URI 的结构符号（如 : / ? #），适合编码完整 URL。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully in-browser URL encoder and decoder, supports both URL component and full URI encoding/decoding modes, shows result in real-time.',
+        coreFeatures: [
+          'Two modes: supports encodeURIComponent (for URL components) and encodeURI (for full URI)',
+          'Bidirectional conversion: one-click switch between encode and decode',
+          'Real-time conversion: result appears instantly as you type',
+          '100% local: all conversion done in-browser, data never leaves your device',
+        ],
+        howToUse: [
+          'Choose operation mode (encode or decode)',
+          'Choose type (URL component or full URI)',
+          'Input your raw text, the output will appear in real-time',
+          'Copy the result for use',
+        ],
+        useCases: [
+          'Encoding/decoding URL query parameters',
+          'Debugging network request URLs',
+          'Handling URLs containing special characters',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Data content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'What is the difference between URL component and full URI?',
+            answer:
+              'URL component encoding encodes all special characters including : / ? #, which is suitable for encoding individual query parameters. Full URI encoding preserves URI structure characters like : / ? #, which is suitable for encoding complete URLs.',
           },
         ],
       },
