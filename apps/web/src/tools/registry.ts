@@ -1111,6 +1111,95 @@ author:
     },
   },
   {
+    slug: 'regex-generator',
+    name: '正则表达式生成器',
+    nameEn: 'Regular Expression Generator',
+    description:
+      '根据自然语言描述生成正则表达式，提供常用预设选择。',
+    descriptionEn:
+      'Generates regular expressions from natural language descriptions, with common presets.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/regex-generator',
+    iconName: 'Code',
+    tags: ['正则', 'Regex', '生成', '开发', 'AI'],
+    tagsEn: ['Regex', 'Generator', 'Dev', 'AI'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'AI驱动的正则表达式生成工具，你只需要用自然语言描述你需要匹配什么，它就能帮你生成对应的正则表达式，还提供常用格式预设。',
+        coreFeatures: [
+          '自然语言描述：用你习惯的中文描述需求即可',
+          '常用预设：内置邮箱、URL、手机号、日期等常用正则预设，一键生成',
+          '支持修饰符：可选择全局匹配、忽略大小写等修饰符',
+          'AI生成：基于GPT模型，理解能力强',
+        ],
+        howToUse: [
+          '可以从预设中选择你需要的格式，或直接在输入框描述你的需求',
+          '勾选需要的正则修饰符',
+          '点击「生成正则表达式」按钮',
+          '复制生成结果使用即可',
+        ],
+        useCases: [
+          '快速生成你需要的匹配规则，不用再查正则语法书',
+          '复杂匹配规则可以通过描述让AI帮你生成',
+          '验证正则表达是否符合预期',
+        ],
+        privacyNote:
+          '描述和生成过程使用OpenAI API，请不要在描述中包含敏感信息。',
+        faqs: [
+          {
+            question: '生成结果不准确怎么办？',
+            answer:
+              '可以尝试更详细清晰的描述，比如明确说明需要匹配什么不匹配什么，然后重新生成。',
+          },
+          {
+            question: '需要API密钥吗？',
+            answer:
+              '项目已经配置了共享API密钥，直接使用即可。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'AI-powered regular expression generator. Just describe what you need to match in natural language, and it will generate the regex for you, with common presets included.',
+        coreFeatures: [
+          'Natural language description: describe your needs in plain English or Chinese',
+          'Common presets: built-in presets for email, URL, phone, date, and other common formats',
+          'Flags support: select global match, case-insensitive and other flags',
+          'AI-generated: powered by GPT model with good understanding',
+        ],
+        howToUse: [
+          'Select a preset from the common presets, or describe your requirement directly',
+          'Check the regex flags you need',
+          'Click the "Generate Regular Expression" button',
+          'Copy the generated result and use it',
+        ],
+        useCases: [
+          'Quickly get the regex you need without looking up regex references',
+          'Let AI generate complex matching rules based on your description',
+          'Verify if the regex meets your expectations',
+        ],
+        privacyNote:
+          'The description and generation uses the OpenAI API. Please do not include sensitive information in your description.',
+        faqs: [
+          {
+            question: 'The result is not accurate, what should I do?',
+            answer:
+              'Try to describe your requirement more clearly and specifically, including what should match and what should not, then generate again.',
+          },
+          {
+            question: 'Do I need an API key?',
+            answer:
+              'The project already has a shared API key configured, you can use it directly.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'csv-json-converter',
     name: 'CSV JSON 互转',
     nameEn: 'CSV JSON Converter',

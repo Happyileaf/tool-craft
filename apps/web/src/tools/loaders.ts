@@ -46,5 +46,6 @@ export const toolLoaders: Record<
   'color-blind-simulator': () => import('./color-blind-simulator'),
   'css-filter-generator': () => import('./css-filter-generator'),
   'css-prefixer': () => import('./css-prefixer'),
+  'regex-generator': () => import('./regex-generator'),
   'csv-json-converter': () => import('./csv-json-converter'),
 };
