@@ -2693,6 +2693,90 @@ author:
       },
     },
   },
+  {
+    slug: 'crc32-checksum',
+    name: 'CRC32 校验和',
+    nameEn: 'CRC32 Checksum Calculator',
+    description:
+      '计算文本字符串的 CRC32 校验值，用于数据完整性验证。',
+    descriptionEn:
+      'Calculate CRC32 checksum for text strings, used for data integrity verification.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/crc32-checksum',
+    iconName: 'Fingerprint',
+    tags: ['CRC32', '校验', '哈希', '完整性'],
+    tagsEn: ['CRC32', 'Checksum', 'Hash', 'Integrity'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'The quick brown fox jumps over the lazy dog',
+    doc: {
+      zh: {
+        whatIsIt:
+          '纯浏览器本地的 CRC32 校验和计算器，快速计算文本字符串的 32 位循环冗余校验值，输出十六进制结果。',
+        coreFeatures: [
+          '实时计算：输入文本变化即时更新结果',
+          '支持任意长度文本，大文本计算也流畅',
+          '一键复制十六进制结果',
+          '纯本地运算，数据不离开设备',
+        ],
+        howToUse: [
+          '在输入框中粘贴或输入需要计算的文本',
+          '下方会自动显示计算得到的 CRC32 校验和',
+          '点击复制按钮获取结果',
+        ],
+        useCases: [
+          '验证文件/数据下载后的完整性',
+          '快速比对两段文本是否完全一致',
+          '为数据生成简短的指纹摘要',
+        ],
+        privacyNote:
+          '所有计算都在浏览器本地完成，输入数据绝不会上传到任何服务器，保障数据隐私。',
+        faqs: [
+          {
+            question: 'CRC32 有什么用途？',
+            answer: 'CRC32 主要用于数据完整性校验，下载文件后可以比对计算出的 CRC32 值和网站提供的值是否一致，确认文件在传输过程中没有损坏或被篡改。',
+          },
+          {
+            question: '结果输出格式是什么？',
+            answer: '输出小写十六进制格式，总是补齐 8 位字符，方便直接复制使用。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          '100% browser-local CRC32 checksum calculator, quickly calculates 32-bit cyclic redundancy check value for text strings, outputs hexadecimal result.',
+        coreFeatures: [
+          'Real-time calculation: result updates instantly as you type',
+          'Supports any length of text, even large text calculates smoothly',
+          'One-click copy of hexadecimal result',
+          '100% local processing, data never leaves your device',
+        ],
+        howToUse: [
+          'Paste or enter the text you want to calculate in the input box',
+          'The calculated CRC32 checksum will automatically appear below',
+          'Click the copy button to get the result',
+        ],
+        useCases: [
+          'Verify integrity after downloading files/data',
+          'Quickly compare if two texts are exactly the same',
+          'Generate a short fingerprint digest for data',
+        ],
+        privacyNote:
+          'All calculations are done locally in your browser. Input data is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'What is CRC32 used for?',
+            answer: 'CRC32 is mainly used for data integrity verification. After downloading a file, you can compare the calculated CRC32 value with the value provided by the website to confirm that the file has not been corrupted or tampered with during transmission.',
+          },
+          {
+            question: 'What is the output format?',
+            answer: 'Outputs lowercase hexadecimal format, always padded to 8 characters for easy copying and use.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

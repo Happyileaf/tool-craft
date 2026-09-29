@@ -1,109 +1,82 @@
 'use client';
 
-import { useState } from 'react';
-import { Check, Copy, Hash, RefreshCw } from 'lucide-react';
-import { useI18n } from '@/lib/i18n';
-import { calculateCRC32 } from './utils/crc32';
+import { useState, useEffect } from 'react';
+import { Copy, Check, Hash } from 'lucide-react';
+import { ToolComponentProps } from '@/types/tool';
+import { computeCRC32 } from './utils/crc32';
 
-const DEFAULT_INPUT = 'The quick brown fox jumps over the lazy dog';
+function CRC32Checksum({ defaultSampleInput = 'The quick brown fox jumps over the lazy dog' }: ToolComponentProps) {
+  const [input, setInput] = useState(defaultSampleInput);
+  const [result, setResult] = useState('');
+  const [isCopied, setIsCopied] = useState(false);
 
-/**
- * CRC32 校验和计算器，输入文本计算 CRC32 校验值，用于数据完整性验证
- *
- * @returns CRC32 计算工具交互界面
- */
-function CRC32Checksum() {
-  const { t } = useI18n();
-  const [input, setInput] = useState(DEFAULT_INPUT);
-  const [copied, setCopied] = useState(false);
-  const result = calculateCRC32(input);
+  useEffect(() => {
+    if (!input) {
+      setResult('');
+      return;
+    }
+    setResult(computeCRC32(input));
+  }, [input]);
 
-  async function handleCopy() {
+  const handleCopy = async () => {
     if (!result) return;
-    await navigator.clipboard.writeText(result);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2000);
-  }
+    try {
+      await navigator.clipboard.writeText(result);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch {}
+  };
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-900">
-        <span className="flex items-center gap-1.5 px-1 text-xs font-medium text-slate-500 dark:text-slate-400">
-          <Hash className="h-3.5 w-3.5" />
-          CRC32
-        </span>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setInput(DEFAULT_INPUT)}
-            disabled={input === DEFAULT_INPUT}
-            className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-default disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
-          >
-            {t('common.sample')}
-          </button>
-          <button
-            type="button"
-            onClick={() => setInput('')}
-            className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-rose-50 hover:text-rose-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-rose-950/30 dark:hover:text-rose-400"
-          >
-            <RefreshCw className="h-3.5 w-3.5" />
-            {t('common.clear')}
-          </button>
+      <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-300">
+            <Hash className="h-4 w-4 text-slate-500 dark:text-slate-400" />
+            输入文本
+          </label>
         </div>
+        <textarea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="输入需要计算 CRC32 校验和的文本..."
+          spellCheck={false}
+          className="h-24 w-full rounded-lg border border-slate-300 bg-white p-3 font-mono text-xs text-slate-900 placeholder:text-slate-400 focus:border-slate-800 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-600"
+        />
+        <p className="text-[11px] text-slate-400 dark:text-slate-500">
+          所有计算均在浏览器本地完成，输入数据不会上传至服务器。
+        </p>
       </div>
 
-      <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
-        <div className="border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
-          {t('tools.crc32.inputLabel')}
-        </div>
-        <div className="px-4 py-3">
-          <textarea
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            placeholder={t('tools.crc32.placeholder')}
-            className="min-h-[140px] w-full resize-y bg-transparent font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
-          />
-        </div>
-        <div className="flex items-center justify-between border-t border-slate-200 bg-slate-50/50 px-4 py-2 text-xs text-slate-500 dark:border-slate-800 dark:bg-slate-800/30 dark:text-slate-400">
-          <span>
-            {t('tools.crc32.length')}：{input.length}{' '}
-            {t('tools.crc32.characters')}
-          </span>
-          <span className="text-emerald-600 dark:text-emerald-400">
-            {t('common.clientSideExecution')}
-          </span>
-        </div>
-      </div>
-
-      <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
-          <span>{t('tools.crc32.resultLabel')}</span>
-          <button
-            type="button"
-            onClick={handleCopy}
-            className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
-          >
-            {copied ? (
-              <>
-                <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                <span className="text-emerald-600 dark:text-emerald-400">
-                  {t('common.copySuccess')}
-                </span>
-              </>
-            ) : (
-              <>
-                <Copy className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
-                {t('common.copy')}
-              </>
-            )}
-          </button>
-        </div>
-        <div className="bg-slate-900 p-4 dark:bg-slate-950">
-          <p className="break-all font-mono text-xl font-bold tracking-[0.2em] text-emerald-400">
+      {result && (
+        <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-xs dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              CRC32 校验和（十六进制）
+            </span>
+            <button
+              type="button"
+              onClick={handleCopy}
+              className="flex shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+            >
+              {isCopied ? (
+                <>
+                  <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span className="text-emerald-600 dark:text-emerald-400">已复制</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+                  <span>复制</span>
+                </>
+              )}
+            </button>
+          </div>
+          <div className="break-all rounded-lg bg-slate-50 p-3 font-mono text-sm text-slate-700 dark:bg-slate-800 dark:text-slate-300">
             {result}
-          </p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
