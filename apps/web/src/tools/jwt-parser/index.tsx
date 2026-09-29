@@ -2,14 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { Copy, Check, Key, ShieldCheck, ShieldX } from 'lucide-react';
-import { ToolComponentProps } from '@/types/tool';
-import JSONFormatter from '@/components/JSONFormatter';
+import type { ToolComponentProps } from '../loaders';
 import { parseJwt, generateJwt, verifySignature, ParseResult, JWTParts } from './utils/jwt';
 
 const DEFAULT_SAMPLE = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ';
 
-function JwtParser({ defaultSampleInput = DEFAULT_SAMPLE }: ToolComponentProps) {
-  const [token, setToken] = useState(defaultSampleInput);
+function JwtParser({ defaultInput = DEFAULT_SAMPLE }: ToolComponentProps) {
+  const [token, setToken] = useState(defaultInput);
   const [parseResult, setParseResult] = useState<ParseResult | null>(null);
   const [secret, setSecret] = useState('');
   const [isVerified, setIsVerified] = useState<boolean | null>(null);
@@ -96,7 +95,9 @@ function JwtParser({ defaultSampleInput = DEFAULT_SAMPLE }: ToolComponentProps) 
               Header
             </h3>
             <div className="rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/50">
-              <JSONFormatter data={parseResult.parts.headerJson} />
+              <pre className="whitespace-pre-wrap p-3 font-mono text-xs leading-relaxed text-slate-700 dark:text-slate-300">
+{JSON.stringify(parseResult.parts!.headerJson, null, 2)}
+              </pre>
             </div>
           </div>
 
@@ -105,7 +106,9 @@ function JwtParser({ defaultSampleInput = DEFAULT_SAMPLE }: ToolComponentProps) 
               Payload
             </h3>
             <div className="rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/50">
-              <JSONFormatter data={parseResult.parts.payloadJson} />
+              <pre className="whitespace-pre-wrap p-3 font-mono text-xs leading-relaxed text-slate-700 dark:text-slate-300">
+{JSON.stringify(parseResult.parts!.payloadJson, null, 2)}
+              </pre>
             </div>
           </div>
 

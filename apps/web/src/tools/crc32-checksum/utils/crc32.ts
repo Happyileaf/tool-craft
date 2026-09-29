@@ -28,8 +28,9 @@ export function computeCRC32(str: string): string {
   let crc = 0 ^ (-1);
   const bytes = new TextEncoder().encode(str);
 
+  // crcTable is guaranteed to be initialized above
   for (const byte of bytes) {
-    crc = crcTable[(crc ^ byte) & 0xff] ^ (crc >>> 8);
+    crc = crcTable[(crc ^ byte) & 0xff]! ^ (crc >>> 8);
   }
   crc = (crc ^ (-1)) >>> 0;
 

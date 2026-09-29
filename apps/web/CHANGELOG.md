@@ -4,6 +4,14 @@
 
 ## 日志
 
+## [Unreleased]
+### Added
+- 强密码生成器 (strong-password-generator) - 生成自定义长度高强度密码
+- 密码强度检测器 (password-strength-checker) - 检测密码安全性评分
+- JWT 解析器 (jwt-parser) - 解析JWT Header/Payload并验证HS256签名
+- CRC32 校验和 (crc32-checksum) - 计算文本CRC32校验值
+- BCrypt 加密验证 (bcrypt-hash) - 生成/验证BCrypt密码哈希
+
 ## 2026-09-22 ：【自主迭代】新增 3 个文本处理工具
 
 - **新增**：字数统计（word-count）— 实时统计文本字符数、字数、行数和段落数

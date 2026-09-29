@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import { Copy, Check, ShieldCheck, KeyRound } from 'lucide-react';
-import { ToolComponentProps } from '@/types/tool';
+import type { ToolComponentProps } from '../loaders';
 import { hashPassword, verifyPassword } from './utils/bcrypt';
 
-function BcryptHash({ defaultSampleInput }: ToolComponentProps) {
-  const [password, setPassword] = useState(defaultSampleInput || '');
+function BcryptHash({ defaultInput }: ToolComponentProps) {
+  const [password, setPassword] = useState(defaultInput || '');
   const [costFactor, setCostFactor] = useState(10);
   const [hash, setHash] = useState('');
-  const [verifyPassword, setVerifyPassword] = useState('');
+  const [inputVerifyPassword, setInputVerifyPassword] = useState('');
   const [verifyResult, setVerifyResult] = useState<boolean | null>(null);
   const [isHashing, setIsHashing] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
@@ -32,13 +32,13 @@ function BcryptHash({ defaultSampleInput }: ToolComponentProps) {
   };
 
   const handleVerify = async () => {
-    if (!verifyPassword || !hash) {
+    if (!inputVerifyPassword || !hash) {
       setVerifyResult(null);
       return;
     }
     setIsVerifying(true);
     try {
-      const result = await verifyPassword({ password: verifyPassword, hash });
+      const result = await verifyPassword({ password: inputVerifyPassword, hash });
       setVerifyResult(result);
     } catch {
       setVerifyResult(false);
@@ -144,9 +144,9 @@ function BcryptHash({ defaultSampleInput }: ToolComponentProps) {
           <div className="flex flex-col gap-2 sm:flex-row">
             <input
               type="password"
-              value={verifyPassword}
+              value={inputVerifyPassword}
               onChange={(e) => {
-                setVerifyPassword(e.target.value);
+                setInputVerifyPassword(e.target.value);
                 setVerifyResult(null);
               }}
               placeholder="输入密码验证是否匹配..."
@@ -157,7 +157,7 @@ function BcryptHash({ defaultSampleInput }: ToolComponentProps) {
             <button
               type="button"
               onClick={handleVerify}
-              disabled={!verifyPassword || isVerifying}
+              disabled={!inputVerifyPassword || isVerifying}
               className="mt-2 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed dark:bg-slate-700 dark:hover:bg-slate-600 sm:mt-0 sm:w-auto"
             >
               <ShieldCheck className="h-3.5 w-3.5" />

@@ -10,7 +10,8 @@ describe('bcrypt', () => {
       costFactor: 10,
     });
     
-    expect(hash).startsWith('$2a$10$');
+    // bcryptjs uses $2b$ by default but accepts $2a$
+    expect(hash.startsWith('$2b$10$') || hash.startsWith('$2a$10$')).toBe(true);
     
     const isValid = await verifyPassword({
       password,
@@ -31,6 +32,6 @@ describe('bcrypt', () => {
       password,
       costFactor: 4,
     });
-    expect(hash).startsWith('$2a$04$');
+    expect(hash.startsWith('$2b$04$') || hash.startsWith('$2a$04$')).toBe(true);
   });
 });

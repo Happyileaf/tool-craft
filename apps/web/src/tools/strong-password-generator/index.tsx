@@ -2,13 +2,13 @@
 
 import { useState, useCallback } from 'react';
 import { Copy, RefreshCw, Check, Key, Eraser } from 'lucide-react';
-import { ToolComponentProps } from '@/types/tool';
+import type { ToolComponentProps } from '../loaders';
 import { generatePassword } from './utils/generate';
 
 const DEFAULT_PASSWORD_LENGTH = 16;
 
-function StrongPasswordGenerator({ defaultSampleInput }: ToolComponentProps) {
-  const [password, setPassword] = useState(defaultSampleInput || '');
+function StrongPasswordGenerator({ defaultInput }: ToolComponentProps) {
+  const [password, setPassword] = useState(defaultInput || '');
   const [length, setLength] = useState(DEFAULT_PASSWORD_LENGTH);
   const [includeLowercase, setIncludeLowercase] = useState(true);
   const [includeUppercase, setIncludeUppercase] = useState(true);

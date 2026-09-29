@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { Copy, Check, Hash } from 'lucide-react';
-import { ToolComponentProps } from '@/types/tool';
+import type { ToolComponentProps } from '../loaders';
 import { computeCRC32 } from './utils/crc32';
 
-function CRC32Checksum({ defaultSampleInput = 'The quick brown fox jumps over the lazy dog' }: ToolComponentProps) {
-  const [input, setInput] = useState(defaultSampleInput);
+function CRC32Checksum({ defaultInput = 'The quick brown fox jumps over the lazy dog' }: ToolComponentProps) {
+  const [input, setInput] = useState(defaultInput);
   const [result, setResult] = useState('');
   const [isCopied, setIsCopied] = useState(false);
 

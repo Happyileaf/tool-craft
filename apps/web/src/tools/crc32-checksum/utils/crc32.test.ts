@@ -13,10 +13,10 @@ describe('computeCRC32', () => {
   });
 
   it('should compute correct CRC32 for "Hello World"', () => {
-    expect(computeCRC32('Hello World')).toBe('d4a1185');
+    expect(computeCRC32('Hello World')).toBe('4a17b156');
   });
 
   it('should handle Chinese characters', () => {
-    expect(computeCRC32('你好，世界')).toBe('a931d6a9');
+    expect(computeCRC32('你好，世界')).toBe('acf5da54');
   });
 });

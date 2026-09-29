@@ -47,12 +47,15 @@ export function generatePassword(options: GeneratePasswordOptions): string {
   
   // 填充剩余长度
   const remainingLength = length - password.length;
-  for (let i = 0; i < remainingLength; i++) {
-    password += getRandomChar(charPool);
-  }
+  if (charPool) {
+    for (let i = 0; i < remainingLength; i++) {
+      password += getRandomChar(charPool);
+    }
   
-  // 打乱字符顺序，避免强制字符集中在开头
-  return shuffleString(password);
+    // 打乱字符顺序，避免强制字符集中在开头
+    return shuffleString(password);
+  }
+  return '';
 }
 
 /**
@@ -62,9 +65,9 @@ export function generatePassword(options: GeneratePasswordOptions): string {
  */
 function getRandomChar(charPool: string): string {
   const array = new Uint32Array(1);
-  crypto.getRandomValues(array);
-  const index = array[0] % charPool.length;
-  return charPool[index];
+  const result = crypto.getRandomValues(array);
+  const index = result[0]! % charPool.length;
+  return charPool[index]!;
 }
 
 /**
@@ -75,8 +78,9 @@ function getRandomChar(charPool: string): string {
 function shuffleString(str: string): string {
   const array = str.split('');
   for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] % (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+    const randomValue = crypto.getRandomValues(new Uint32Array(1));
+    const j = Math.floor(randomValue[0]! % (i + 1));
+    [array[i], array[j]] = [array[j]!, array[i]!];
   }
   return array.join('');
 }

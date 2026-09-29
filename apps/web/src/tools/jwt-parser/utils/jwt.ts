@@ -20,6 +20,11 @@ export interface GenerateOptions {
   algorithm: 'HS256';
 }
 
+// 获取全局 crypto 对象
+function getCrypto(): Crypto {
+  return typeof window !== 'undefined' ? window.crypto : globalThis.crypto;
+}
+
 /**
  * Base64URL 解码
  */
@@ -57,15 +62,16 @@ export function parseJwt(token: string): ParseResult {
 
   try {
     const [headerB64, payloadB64, signature] = parts;
-    const headerJson = JSON.parse(base64UrlDecode(headerB64));
-    const payloadJson = JSON.parse(base64UrlDecode(payloadB64));
+    // parts is guaranteed to have 3 elements from the split above, so non-null assertion is safe
+    const headerJson = JSON.parse(base64UrlDecode(headerB64!));
+    const payloadJson = JSON.parse(base64UrlDecode(payloadB64!));
     
     return {
       success: true,
       parts: {
-        header: headerB64,
-        payload: payloadB64,
-        signature,
+        header: headerB64!,
+        payload: payloadB64!,
+        signature: signature!,
         headerJson,
         payloadJson,
       }
@@ -92,12 +98,13 @@ export async function verifySignature(token: string, secret: string): Promise<bo
   const keyData = new TextEncoder().encode(secret);
   
   try {
+    const crypto = getCrypto();
     const cryptoKey = await crypto.subtle.importKey(
       'raw',
       keyData,
       { name: 'HMAC', hash: { name: 'SHA-256' } },
       false,
-      ['verify']
+      ['sign', 'verify']
     );
     
     const expectedSignature = await crypto.subtle.sign(
@@ -132,6 +139,7 @@ export async function generateJwt(options: GenerateOptions): Promise<string> {
   
   const data = new TextEncoder().encode(`${headerB64}.${payloadB64}`);
   const keyData = new TextEncoder().encode(secret);
+  const crypto = getCrypto();
   
   const cryptoKey = await crypto.subtle.importKey(
     'raw',

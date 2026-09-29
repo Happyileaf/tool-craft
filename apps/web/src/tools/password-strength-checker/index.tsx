@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { ShieldAlert, ShieldCheck, ShieldQuestion } from 'lucide-react';
-import { ToolComponentProps } from '@/types/tool';
+import type { ToolComponentProps } from '../loaders';
 import { checkPasswordStrength, PasswordStrength, CheckResult } from './utils/check';
 
 const strengthLabels = ['弱', '中', '强'];
@@ -17,8 +17,8 @@ const strengthIcons = {
   [PasswordStrength.STRONG]: ShieldCheck,
 };
 
-function PasswordStrengthChecker({ defaultSampleInput }: ToolComponentProps) {
-  const [password, setPassword] = useState(defaultSampleInput || '');
+function PasswordStrengthChecker({ defaultInput }: ToolComponentProps) {
+  const [password, setPassword] = useState(defaultInput || '');
   const [result, setResult] = useState<CheckResult | null>(null);
 
   useEffect(() => {
