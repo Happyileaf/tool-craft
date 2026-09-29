@@ -14,6 +14,9 @@
 | 20260928103007 | Lorem Ipsum generator | 生成占位测试文本 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
 | 20260928103008 | Password generator | 生成安全随机密码 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
 | 20260928103009 | CRON expression parser | 解析和验证 CRON 表达式，预览执行时间 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
+| 20260930000100 | BIP39 mnemonic generator | 生成符合 BIP39 标准的助记词，用于加密货币钱包 | Web Tool | Exploration | Pending | 2026-09-30 | | | |
+| 20260930000101 | Epoch converter | 将 Unix 时间戳转换为本地日期时间，反之亦然 | Web Tool | Exploration | Pending | 2026-09-30 | | | |
+| 20260930000102 | Base58 encoder/decoder | Base58 编解码工具，常用于比特币地址 | Web Tool | Exploration | Pending | 2026-09-30 | | | |
 | -------------- | ------------ | --------------------------- | ---------- | ----------- | ------- | ---------- | ---------- | ------------- | ------ |
 
 
