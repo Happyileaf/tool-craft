@@ -2425,6 +2425,96 @@ author:
       },
     },
   },
+  {
+    slug: 'strong-password-generator',
+    name: '强密码生成器',
+    nameEn: 'Strong Password Generator',
+    description:
+      '生成自定义长度、包含大小写、数字、特殊符号的高强度随机密码。',
+    descriptionEn:
+      'Generate strong random passwords with customizable length, mixed case, numbers, and symbols.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/strong-password-generator',
+    iconName: 'Key',
+    tags: ['密码', '随机', '安全', '生成', '强度'],
+    tagsEn: ['Password', 'Random', 'Security', 'Generator', 'Strength'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '基于浏览器原生 Crypto API 的安全随机密码生成器，帮你快速创建符合安全要求的高强度密码。',
+        coreFeatures: [
+          '自定义密码长度 4~64 位',
+          '可选择包含小写、大写、数字、特殊符号',
+          '强制至少包含一个选中类型的字符，避免生成不满足要求的密码',
+          '纯浏览器本地生成，密码绝不离开设备',
+          '一键复制生成结果',
+        ],
+        howToUse: [
+          '拖动滑块调整密码长度',
+          '勾选想要包含的字符类型（至少勾选一个）',
+          '点击「重新生成」按钮获取新密码',
+          '点击「复制」按钮复制生成的密码',
+        ],
+        useCases: [
+          '注册网站/APP 账号时生成安全密码',
+          '重置密码时创建新的高强度密码',
+          '为不同网站生成唯一密码',
+        ],
+        privacyNote:
+          '所有生成过程都在浏览器本地完成，使用原生加密安全随机数生成器，绝不记录生成的密码。',
+        faqs: [
+          {
+            question: '为什么这个生成器比普通的更安全？',
+            answer:
+              '本工具使用浏览器原生 `crypto.getRandomValues` API 生成随机数，相比 `Math.random()` 提供更高熵值，更难被破解。',
+          },
+          {
+            question: '可以生成多长的密码？',
+            answer: '支持 4 到 64 位长度的密码，满足绝大多数场景对密码长度的要求。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A secure random password generator based on the browser native Crypto API that helps you quickly create high-strength passwords that meet security requirements.',
+        coreFeatures: [
+          'Customizable password length from 4 to 64 characters',
+          'Toggle inclusion of lowercase, uppercase, numbers, and special symbols',
+          'Ensures at least one character from each selected type to avoid invalid passwords',
+          '100% browser-local generation, passwords never leave your device',
+          'One-click copy to clipboard',
+        ],
+        howToUse: [
+          'Drag the slider to adjust password length',
+          'Check the character types you want to include (at least one)',
+          'Click "Regenerate" to get a new password',
+          'Click "Copy" to copy the generated password',
+        ],
+        useCases: [
+          'Generating secure passwords when registering website/app accounts',
+          'Creating new high-strength passwords when resetting passwords',
+          'Generating unique passwords for different websites',
+        ],
+        privacyNote:
+          'All generation is done locally in your browser using the native cryptographically secure random number generator. Generated passwords are never logged.',
+        faqs: [
+          {
+            question: 'Why is this generator more secure than others?',
+            answer:
+              'This tool uses the browser native `crypto.getRandomValues` API to generate random numbers, which provides higher entropy than `Math.random()` and is much harder to crack.',
+          },
+          {
+            question: 'What is the maximum password length supported?',
+            answer: 'Supports passwords from 4 to 64 characters long, meeting the requirements of most scenarios.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

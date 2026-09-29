@@ -1,3 +1,8 @@
-export const DEFAULT_PASSWORD_LENGTH = 16;
-export const MIN_PASSWORD_LENGTH = 4;
-export const MAX_PASSWORD_LENGTH = 32;
+
+/**
+ * 字符集定义
+ */
+export const LOWERCASE_CHARS = 'abcdefghijklmnopqrstuvwxyz';
+export const UPPERCASE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+export const DIGIT_CHARS = '0123456789';
+export const SYMBOL_CHARS = '!@#$%^&*()_+-=[]{}|;:,.<>?';
