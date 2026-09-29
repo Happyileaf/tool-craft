@@ -2515,6 +2515,98 @@ author:
       },
     },
   },
+  {
+    slug: 'password-strength-checker',
+    name: '密码强度检测器',
+    nameEn: 'Password Strength Checker',
+    description:
+      '检测密码强度，根据长度、字符多样性给出安全性评分和改进建议。',
+    descriptionEn:
+      'Check password security strength and give improvement suggestions based on length and character diversity.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/password-strength-checker',
+    iconName: 'ShieldCheck',
+    tags: ['密码', '安全', '检测', '评分', '强度'],
+    tagsEn: ['Password', 'Security', 'Check', 'Score', 'Strength'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '帮助你评估密码安全性的工具，根据密码长度、字符多样性给出分数和强度等级，并提供具体的改进建议。',
+        coreFeatures: [
+          '即时分析：输入密码实时显示强度评分和等级',
+          '多维度评估：检查长度、小写、大写、数字、特殊符号',
+          '识别常见缺陷：连续字符、重复字符、全同字符等弱密码模式',
+          '给出明确改进建议：告诉你具体需要增加什么',
+          '纯本地运算：密码绝不离开你的浏览器',
+        ],
+        howToUse: [
+          '在输入框中输入你想要检查的密码',
+          '下方会自动显示强度评分和强度条',
+          '如果有改进建议，会列出具体需要优化的点',
+          '强度达到「强」且无改进建议就是安全密码',
+        ],
+        useCases: [
+          '设置新密码时检查强度是否达标',
+          '评估现有密码安全性，决定是否需要更换',
+          '学习什么样的密码更安全',
+        ],
+        privacyNote:
+          '所有分析都在浏览器本地完成，密码不会被记录或上传到任何服务器，隐私完全保障。',
+        faqs: [
+          {
+            question: '分数是怎么计算的？',
+            answer:
+              '满分 6 分：长度达标得 2 分，包含小写、大写、数字、特殊符号各得 1 分，弱密码模式会扣分。0-2 分为弱，3-4 分为中，5-6 分为强。',
+          },
+          {
+            question: '多少分算安全密码？',
+            answer:
+              '一般网站至少需要中强度（分数≥3），敏感账号（如邮箱、支付）建议使用高强度（分数≥5）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A tool to help you evaluate password security, gives a score and strength rating based on password length and character diversity, and provides specific improvement suggestions.',
+        coreFeatures: [
+          'Instant analysis: displays strength score and rating in real-time as you type',
+          'Multi-dimensional assessment: checks length, lowercase, uppercase, numbers, and special symbols',
+          'Detects common weaknesses: sequential characters, repeated characters, all identical characters and other weak patterns',
+          'Provides clear improvement suggestions: tells you exactly what needs to be added',
+          '100% local processing: password never leaves your browser',
+        ],
+        howToUse: [
+          'Enter the password you want to check in the input box',
+          'The strength score and bar will automatically display below',
+          'If there are suggestions for improvement, it will list what specifically needs to be optimized',
+          'A password that reaches "Strong" with no suggestions is a secure password',
+        ],
+        useCases: [
+          'Check if your new password meets strength requirements',
+          'Evaluate the security of existing passwords and decide if you need to change it',
+          'Learn what makes a password more secure',
+        ],
+        privacyNote:
+          'All analysis is done locally in your browser. Passwords are never logged or uploaded to any server, so your privacy is fully protected.',
+        faqs: [
+          {
+            question: 'How is the score calculated?',
+            answer:
+              'Maximum score is 6 points: 2 points for sufficient length, 1 point each for including lowercase, uppercase, numbers, and special symbols. Weak patterns will deduct points. 0-2 points = Weak, 3-4 points = Medium, 5-6 points = Strong.',
+          },
+          {
+            question: 'What score is considered a secure password?',
+            answer:
+              'Most regular websites require at least medium strength (score ≥3). Sensitive accounts like email or banking should use strong strength (score ≥5).',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
