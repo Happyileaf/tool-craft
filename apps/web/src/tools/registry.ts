@@ -2777,6 +2777,94 @@ author:
       },
     },
   },
+  {
+    slug: 'bcrypt-hash',
+    name: 'BCrypt 加密验证',
+    nameEn: 'BCrypt Password Hasher & Verifier',
+    description:
+      '对密码进行 BCrypt 哈希加密，支持验证密码是否匹配哈希值。',
+    descriptionEn:
+      'Generate BCrypt password hash and verify password against the hash.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/bcrypt-hash',
+    iconName: 'ShieldCheck',
+    tags: ['BCrypt', '密码', '哈希', '加密', '验证'],
+    tagsEn: ['BCrypt', 'Password', 'Hash', 'Crypto', 'Verify'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'BCrypt 密码哈希生成与验证工具，支持调整 cost 因子控制加密强度，所有运算在浏览器本地完成。',
+        coreFeatures: [
+          '可调整 cost 加密因子（4 ~ 16），值越大越安全但计算越慢',
+          '生成 BCrypt 格式的哈希密码',
+          '直接验证密码是否匹配已有哈希',
+          '纯本地运算，密码不离开浏览器',
+        ],
+        howToUse: [
+          '在原始密码框输入你想要加密的密码',
+          '拖动滑块调整 cost 因子（一般推荐 10 ~ 12）',
+          '点击「生成 BCrypt 哈希」等待计算完成',
+          '复制生成的哈希结果保存使用',
+          '如果需要验证，在验证框输入密码，点击验证即可知道是否匹配',
+        ],
+        useCases: [
+          '开发调试时生成 BCrypt 格式密码哈希',
+          '验证存储的哈希密码是否与原始密码匹配',
+          '学习 BCrypt 加盐哈希加密原理',
+        ],
+        privacyNote:
+          '所有加密和验证都在浏览器本地完成，你的密码不会发送到任何服务器，隐私完全保障。',
+        faqs: [
+          {
+            question: '什么是 cost factor？',
+            answer: 'BCrypt 使用 cost factor（也叫 work factor）控制迭代次数，值每增加 1，计算量就翻倍。值越大，暴力破解越困难，但计算耗时也越长。一般网站推荐使用 10 ~ 12。',
+          },
+          {
+            question: 'BCrypt 为什么安全？',
+            answer: 'BCrypt 会自动为每个密码生成随机盐（salt），并且通过多次迭代增加计算成本，使得暴力破解成本非常高，是目前最推荐的密码存储算法之一。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'BCrypt password hash generation and verification tool. Supports adjusting the cost factor to control encryption strength. All operations are done locally in the browser.',
+        coreFeatures: [
+          'Adjustable cost factor (4 ~ 16): higher value is more secure but slower',
+          'Generate BCrypt format password hash',
+          'Directly verify if password matches an existing hash',
+          '100% local processing, password never leaves your browser',
+        ],
+        howToUse: [
+          'Enter the password you want to hash in the original password box',
+          'Drag the slider to adjust the cost factor (10 ~ 12 is generally recommended)',
+          'Click "Generate BCrypt Hash" and wait for calculation to complete',
+          'Copy the generated hash result for saving and use',
+          'To verify, enter the password in the verification box and click verify to see if it matches',
+        ],
+        useCases: [
+          'Generate BCrypt format password hashes during development debugging',
+          'Verify that a stored hash password matches the original password',
+          'Learn about BCrypt salted hashing encryption',
+        ],
+        privacyNote:
+          'All encryption and verification is done locally in your browser. Your password is never sent to any server, so your privacy is fully protected.',
+        faqs: [
+          {
+            question: 'What is cost factor?',
+            answer: 'BCrypt uses a cost factor (also called work factor) to control the number of iterations. Each increment of 1 doubles the amount of computation. Higher values make brute force cracking more difficult but also slower. 10 ~ 12 is recommended for most websites.',
+          },
+          {
+            question: 'Why is BCrypt secure?',
+            answer: 'BCrypt automatically generates a random salt for each password and uses multiple iterations to increase computational cost, making brute-force cracking very expensive. It is currently one of the most recommended algorithms for password storage.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
