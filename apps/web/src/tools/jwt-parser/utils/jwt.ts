@@ -1,250 +1,156 @@
-import { Algorithm } from '../constants';
 
-export interface JWT {
-  header: Record<string, any>;
-  payload: Record<string, any>;
+export interface JWTParts {
+  header: string;
+  payload: string;
   signature: string;
-  headerPart: string;
-  payloadPart: string;
-  signaturePart: string;
-  isValidFormat: boolean;
+  headerJson: any;
+  payloadJson: any;
 }
 
-export const JwtErrorKey = {
-  INVALID_HEADER_JSON: 'invalidHeaderJson',
-  INVALID_PAYLOAD_JSON: 'invalidPayloadJson',
-  SECRET_REQUIRED: 'secretRequired',
-  VERIFY_SECRET_REQUIRED: 'errorSecretRequired',
-  UNSUPPORTED_ALGORITHM: 'errorUnsupportedAlgorithm',
-  CRYPTO_FAILED: 'errorCrypto',
-} as const;
-
-export type JwtErrorKey = (typeof JwtErrorKey)[keyof typeof JwtErrorKey];
-
-export interface JwtOperationError {
-  key: JwtErrorKey;
-  params?: Record<string, string | number>;
+export interface ParseResult {
+  success: boolean;
+  error?: string;
+  parts?: JWTParts;
 }
 
-export interface VerifyResult {
-  valid: boolean;
-  error?: JwtOperationError;
+export interface GenerateOptions {
+  header: any;
+  payload: any;
+  secret: string;
+  algorithm: 'HS256';
 }
-
-export type GenerateResult =
-  | { success: true; token: string }
-  | { success: false; error: JwtOperationError };
 
 /**
- * Base64Url 解码
- * Base64Url 是 Base64 的变体，用于 URL 安全传输
+ * Base64URL 解码
  */
 function base64UrlDecode(input: string): string {
-  let base64 = input.replace(/-/g, '+').replace(/_/g, '/');
-  const pad = 4 - (base64.length % 4);
-  if (pad > 0 && pad < 4) {
-    base64 += '='.repeat(pad);
+  // Base64URL 替换字符
+  let output = input.replace(/-/g, '+').replace(/_/g, '/');
+  // 添加填充
+  const padding = 4 - (output.length % 4);
+  if (padding > 0 && padding < 4) {
+    output += '='.repeat(padding);
   }
-  return decodeURIComponent(
-    escape(atob(base64))
-  );
+  // 解码
+  return atob(output);
 }
 
 /**
- * Base64Url 编码
+ * Base64URL 编码
  */
 function base64UrlEncode(input: string): string {
-  return btoa(unescape(encodeURIComponent(input)))
+  return btoa(input).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+/**
+ * 解析 JWT
+ */
+export function parseJwt(token: string): ParseResult {
+  const parts = token.split('.');
+  
+  if (parts.length !== 3) {
+    return {
+      success: false,
+      error: 'JWT 格式错误，必须包含 3 部分，用 . 分隔'
+    };
+  }
+
+  try {
+    const [headerB64, payloadB64, signature] = parts;
+    const headerJson = JSON.parse(base64UrlDecode(headerB64));
+    const payloadJson = JSON.parse(base64UrlDecode(payloadB64));
+    
+    return {
+      success: true,
+      parts: {
+        header: headerB64,
+        payload: payloadB64,
+        signature,
+        headerJson,
+        payloadJson,
+      }
+    };
+  } catch (e) {
+    return {
+      success: false,
+      error: '解析失败，JSON 格式错误'
+    };
+  }
+}
+
+/**
+ * 使用 HMAC-SHA256 验证 JWT 签名
+ */
+export async function verifySignature(token: string, secret: string): Promise<boolean> {
+  const parts = token.split('.');
+  if (parts.length !== 3) {
+    return false;
+  }
+
+  const [headerB64, payloadB64, signature] = parts;
+  const data = new TextEncoder().encode(`${headerB64}.${payloadB64}`);
+  const keyData = new TextEncoder().encode(secret);
+  
+  try {
+    const cryptoKey = await crypto.subtle.importKey(
+      'raw',
+      keyData,
+      { name: 'HMAC', hash: { name: 'SHA-256' } },
+      false,
+      ['verify']
+    );
+    
+    const expectedSignature = await crypto.subtle.sign(
+      'HMAC',
+      cryptoKey,
+      data
+    );
+    
+    // 将 expectedSignature 转换为 Base64URL
+    const expectedSignatureBase64 = btoa(String.fromCharCode(...new Uint8Array(expectedSignature)))
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+    
+    return expectedSignatureBase64 === signature;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * 使用 HMAC-SHA256 生成 JWT 签名并组装完整 token
+ */
+export async function generateJwt(options: GenerateOptions): Promise<string> {
+  const { header, payload, secret, algorithm } = options;
+  
+  const headerJson = JSON.stringify(header);
+  const payloadJson = JSON.stringify(payload);
+  
+  const headerB64 = base64UrlEncode(headerJson);
+  const payloadB64 = base64UrlEncode(payloadJson);
+  
+  const data = new TextEncoder().encode(`${headerB64}.${payloadB64}`);
+  const keyData = new TextEncoder().encode(secret);
+  
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw',
+    keyData,
+    { name: 'HMAC', hash: { name: algorithm === 'HS256' ? 'SHA-256' : 'SHA-256' } },
+    false,
+    ['sign']
+  );
+  
+  const signature = await crypto.subtle.sign(
+    'HMAC',
+    cryptoKey,
+    data
+  );
+  
+  const signatureBase64 = btoa(String.fromCharCode(...new Uint8Array(signature)))
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
     .replace(/=+$/, '');
-}
-
-/**
- * 解析 JWT token，分离 header、payload、signature
- */
-export function parseJWT(token: string): JWT {
-  const parts = token.split('.');
-
-  if (parts.length !== 3) {
-    return {
-      header: {},
-      payload: {},
-      signature: '',
-      headerPart: '',
-      payloadPart: '',
-      signaturePart: '',
-      isValidFormat: false,
-    };
-  }
-
-  try {
-    const headerJson = base64UrlDecode(parts[0]!);
-    const payloadJson = base64UrlDecode(parts[1]!);
-
-    return {
-      header: JSON.parse(headerJson),
-      payload: JSON.parse(payloadJson),
-      signature: parts[2]!,
-      headerPart: parts[0]!,
-      payloadPart: parts[1]!,
-      signaturePart: parts[2]!,
-      isValidFormat: true,
-    };
-  } catch {
-    return {
-      header: {},
-      payload: {},
-      signature: '',
-      headerPart: parts[0] ?? '',
-      payloadPart: parts[1] ?? '',
-      signaturePart: parts[2] ?? '',
-      isValidFormat: false,
-    };
-  }
-}
-
-/**
- * 使用 Web Crypto API 验证 HMAC 签名，失败原因以错误 key 返回
- */
-export async function verifySignature(
-  headerB64: string,
-  payloadB64: string,
-  signature: string,
-  secret: string,
-  algorithm: Algorithm
-): Promise<VerifyResult> {
-  if (!secret) {
-    return {
-      valid: false,
-      error: { key: JwtErrorKey.VERIFY_SECRET_REQUIRED },
-    };
-  }
-
-  const data = new TextEncoder().encode(`${headerB64}.${payloadB64}`);
-  const keyBytes = new TextEncoder().encode(secret);
-
-  let hashAlgorithm: string;
-  switch (algorithm) {
-    case Algorithm.HS256:
-      hashAlgorithm = 'SHA-256';
-      break;
-    default:
-      return {
-        valid: false,
-        error: {
-          key: JwtErrorKey.UNSUPPORTED_ALGORITHM,
-          params: { algorithm },
-        },
-      };
-  }
-
-  try {
-    const cryptoKey = await crypto.subtle.importKey(
-      'raw',
-      keyBytes,
-      { name: 'HMAC', hash: { name: hashAlgorithm } },
-      false,
-      ['sign']
-    );
-
-    const hmacBuffer = await crypto.subtle.sign(
-      'HMAC',
-      cryptoKey,
-      data
-    );
-
-    const expectedB64 = btoa(String.fromCharCode(...new Uint8Array(hmacBuffer)))
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '');
-
-    if (expectedB64.length !== signature.length) {
-      return { valid: false };
-    }
-    let result = 0;
-    for (let i = 0; i < expectedB64.length; i++) {
-      result |= expectedB64.charCodeAt(i) ^ signature.charCodeAt(i);
-    }
-
-    return { valid: result === 0 };
-  } catch {
-    return {
-      valid: false,
-      error: { key: JwtErrorKey.CRYPTO_FAILED },
-    };
-  }
-}
-
-/**
- * 生成 JWT token，返回成功结果或结构化错误，不抛出异常
- */
-export async function generateJWT(
-  header: Record<string, any>,
-  payload: Record<string, any>,
-  secret: string,
-  algorithm: Algorithm
-): Promise<GenerateResult> {
-  const headerB64 = base64UrlEncode(JSON.stringify(header));
-  const payloadB64 = base64UrlEncode(JSON.stringify(payload));
-
-  const data = new TextEncoder().encode(`${headerB64}.${payloadB64}`);
-  const keyBytes = new TextEncoder().encode(secret);
-
-  let hashAlgorithm: string;
-  switch (algorithm) {
-    case Algorithm.HS256:
-      hashAlgorithm = 'SHA-256';
-      break;
-    default:
-      return {
-        success: false,
-        error: {
-          key: JwtErrorKey.UNSUPPORTED_ALGORITHM,
-          params: { algorithm },
-        },
-      };
-  }
-
-  try {
-    const cryptoKey = await crypto.subtle.importKey(
-      'raw',
-      keyBytes,
-      { name: 'HMAC', hash: { name: hashAlgorithm } },
-      false,
-      ['sign']
-    );
-
-    const signatureBuffer = await crypto.subtle.sign(
-      'HMAC',
-      cryptoKey,
-      data
-    );
-
-    const signatureB64 = btoa(String.fromCharCode(...new Uint8Array(signatureBuffer)))
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '');
-
-    return {
-      success: true,
-      token: `${headerB64}.${payloadB64}.${signatureB64}`,
-    };
-  } catch {
-    return {
-      success: false,
-      error: { key: JwtErrorKey.CRYPTO_FAILED },
-    };
-  }
-}
-
-/**
- * 尝试解析为 JSON 对象，如果失败返回 null
- */
-export function tryParseJSON(jsonStr: string): Record<string, any> | null {
-  try {
-    return JSON.parse(jsonStr);
-  } catch {
-    return null;
-  }
+  
+  return `${headerB64}.${payloadB64}.${signatureBase64}`;
 }
