@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-10-02 ：【自主迭代】新增 5 个开发工具
+
+- **新增**：URL 编解码 (url-encoder-decoder) — URL 组件编码与解码工具
+- **新增**：HTML 实体编解码 (html-entity-encoder-decoder) — HTML 命名实体和数字实体编码与解码
+- **新增**：JWT 解析器 (jwt-decoder) — 解析 JWT 的头部和载荷，查看过期时间等信息
+- **新增**：Lorem Ipsum 生成器 (lorem-ipsum-generator) — 生成占位文本，支持自定义段落数
+- **新增**：密码生成器 (password-generator) — 生成安全随机密码，支持强度计算
+
 ## 2026-09-22 ：【自主迭代】新增 3 个文本处理工具
 
 - **新增**：字数统计（word-count）— 实时统计文本字符数、字数、行数和段落数
