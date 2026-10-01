@@ -1,6 +1,13 @@
 import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
 
+// 新工具默认输入导入
+import { DEFAULT_INPUT as URL_DEFAULT_INPUT } from './url-encoder-decoder/constants';
+import { DEFAULT_INPUT as HTML_DEFAULT_INPUT } from './html-entity-encoder-decoder/constants';
+import { DEFAULT_INPUT as JWT_DEFAULT_INPUT } from './jwt-decoder/constants';
+import { DEFAULT_PARAGRAPHS as LOREM_DEFAULT_PARAGRAPHS } from './lorem-ipsum-generator/constants';
+import { DEFAULT_LENGTH as PASSWORD_DEFAULT_LENGTH } from './password-generator/constants';
+
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
  */
@@ -2422,6 +2429,332 @@ author:
               'backdrop-filter applies to content behind the element, so the element background must keep some transparency to see the blur. It is also advisable to include -webkit-backdrop-filter for Safari, which the generated code already contains.',
           },
         ],
+      },
+    },
+  },
+  {
+    slug: 'url-encoder-decoder',
+    name: 'URL 编解码',
+    nameEn: 'URL Encoder/Decoder',
+    description:
+      'URL 组件编码与解码，支持 UTF-8 中文，一键互转，复制结果。',
+    descriptionEn:
+      'URL Component encoding and decoding with full UTF-8 Chinese support, one-click swap and copy.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/url-encoder-decoder',
+    iconName: 'Link',
+    tags: ['URL', '编码', '解码', '转义', 'percent'],
+    tagsEn: ['URL', 'Encode', 'Decode', 'Escape', 'Percent'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: URL_DEFAULT_INPUT,
+    doc: {
+      zh: {
+        whatIsIt:
+          '纯浏览器本地运行的 URL 编码解码工具，支持对 URL 组件进行标准百分号编码与解码转换，完美兼容中文 UTF-8。',
+        coreFeatures: [
+          '一键编码/解码：输入后点击对应按钮立即得到结果',
+          '支持双向转换：一键交换输入输出，省去重新粘贴',
+          '完美兼容 UTF-8，彻底解决中文乱码问题',
+          '所有运算本地完成，不传输数据到服务器',
+        ],
+        howToUse: [
+          '在输入框粘贴你需要编解码的文本',
+          '如果要编码为 URL 安全格式，点击「编码」按钮',
+          '如果要从 URL 编码格式还原，点击「解码」按钮',
+          '结果出来后点击复制按钮拿到结果',
+        ],
+        useCases: [
+          '调试带中文参数的 URL 链接',
+          '生成需要传递的 Query 参数编码',
+          '解析接口返回的编码字符串',
+        ],
+        privacyNote:
+          '所有编码解码运算都在你的浏览器本地完成，数据永远不会离开你的设备。',
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based URL encoder and decoder tool that performs standard percent-encoding and decoding with perfect UTF-8 compatibility.',
+        coreFeatures: [
+          'One-click encode/decode: get results instantly after input',
+          'Bidirectional conversion: swap input and output with one click',
+          'Full UTF-8 compatibility, solves Chinese character mojibake completely',
+          'All operations run locally, no data transmitted to servers',
+        ],
+        howToUse: [
+          'Paste the text you need to encode or decode into the input box',
+          'Click "Encode" to get URL-safe percent-encoded output',
+          'Click "Decode" to restore the original text from percent-encoding',
+          'Click the copy button to get the result',
+        ],
+        useCases: [
+          'Debugging URL links containing Chinese parameters',
+          'Generating properly encoded query parameters',
+          'Parsing encoded strings returned by APIs',
+        ],
+        privacyNote:
+          'All encoding and decoding operations are performed locally in your browser; your data never leaves your device.',
+      },
+    },
+  },
+  {
+    slug: 'html-entity-encoder-decoder',
+    name: 'HTML 实体编解码',
+    nameEn: 'HTML Entity Encoder/Decoder',
+    description:
+      'HTML 特殊字符实体编码与解码，支持命名实体与数值实体。',
+    descriptionEn:
+      'Encode and decode HTML special character entities, supports named and numeric entities.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/html-entity-encoder-decoder',
+    iconName: 'Code',
+    tags: ['HTML', '实体', '编码', '解码', '转义'],
+    tagsEn: ['HTML', 'Entity', 'Encode', 'Decode', 'Escape'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: HTML_DEFAULT_INPUT,
+    doc: {
+      zh: {
+        whatIsIt:
+          '纯本地运行的 HTML 实体编解码工具，可将 HTML 特殊字符转换为安全的实体编码，也可将实体编码还原为原始字符。',
+        coreFeatures: [
+          '支持常见 HTML 实体编码 (&amp;, &lt;, &gt; 等)',
+          '同时支持十六进制和十进制数值实体解码',
+          '一键双向转换，操作简洁高效',
+          '纯浏览器本地运算，隐私安全',
+        ],
+        howToUse: [
+          '输入原始 HTML 或已编码文本',
+          '点击「编码」转换特殊字符为实体，或点击「解码」还原原始 HTML',
+          '复制结果使用',
+        ],
+        useCases: [
+          '在页面中展示 HTML 源码示例',
+          '把展示源码时可能造成解析错误的字符转义',
+          '调试包含实体编码的 HTML 片段',
+        ],
+        privacyNote: '所有操作均在浏览器本地完成，数据不上传服务器。',
+      },
+      en: {
+        whatIsIt:
+          'A fully local HTML entity encoder and decoder, converts special HTML characters to safe entity encoding and restores original characters from entity encoding.',
+        coreFeatures: [
+          'Supports common HTML entities (&amp;, &lt;, &gt;, etc.)',
+          'Supports both hexadecimal and decimal numeric entity decoding',
+          'One-click bidirectional conversion, simple and efficient',
+          '100% in-browser operation, privacy and security',
+        ],
+        howToUse: [
+          'Input raw HTML or already-encoded text',
+          'Click "Encode" to convert special characters to entities, or click "Decode" to restore original HTML',
+          'Copy and use the result',
+        ],
+        useCases: [
+          'Displaying HTML source code examples on a page',
+          'Escaping characters that would cause parsing errors when displaying source code',
+          'Debugging HTML fragments containing entity encoding',
+        ],
+        privacyNote:
+          'All operations are completed locally in the browser; data is never uploaded to any server.',
+      },
+    },
+  },
+  {
+    slug: 'jwt-decoder',
+    name: 'JWT 解码',
+    nameEn: 'JWT Decoder',
+    description:
+      '解析 JWT JSON Web Token，查看头部与 payload 内容，显示过期时间。',
+    descriptionEn:
+      'Parse and decode JWT JSON Web Token, inspect header and payload content, display expiration time.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/jwt-decoder',
+    iconName: 'Key',
+    tags: ['JWT', 'token', '解码', '解析', '认证'],
+    tagsEn: ['JWT', 'Token', 'Decode', 'Parse', 'Auth'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: JWT_DEFAULT_INPUT,
+    doc: {
+      zh: {
+        whatIsIt:
+          '轻量 JWT token 解析工具，快速拆解 JWT 的头部、payload 和签名，显示过期时间和签发时间等信息，纯本地运行不泄露 token。',
+        coreFeatures: [
+          '一键解析 JWT token，自动拆分三个部分',
+          '格式化展示 header 和 payload JSON',
+          '显示 iat/exp/nbf 时间戳的可读日期',
+          '过期 token 会标记 Expired，一目了然',
+          '所有操作浏览器本地完成，token 不上传',
+        ],
+        howToUse: [
+          '粘贴你的 JWT token 到输入框',
+          '点击「解码」按钮',
+          '下方即可查看解析后的 header、payload 和签名',
+        ],
+        useCases: [
+          '开发调试时快速查看 JWT 内容',
+          '验证 token 是否过期',
+          '检查 claims 字段内容是否正确',
+        ],
+        privacyNote:
+          'JWT token 只在你浏览器本地解析，不会发送给任何服务器，敏感 token 可以安全解析。',
+      },
+      en: {
+        whatIsIt:
+          'A lightweight JWT token parser that quickly splits JWT into header, payload, and signature, displays expiration and issued dates, all locally without leaking your token.',
+        coreFeatures: [
+          'One-click parse JWT token, automatically splits into three parts',
+          'Pretty-printed header and payload JSON',
+          'Displays human-readable dates for iat/exp/nbf timestamps',
+          'Expired tokens are clearly marked',
+          'All operations done locally, token never sent to servers',
+        ],
+        howToUse: [
+          'Paste your JWT token into the input box',
+          'Click the "Decode" button',
+          'View parsed header, payload, and signature below',
+        ],
+        useCases: [
+          'Quickly inspect JWT content during development debugging',
+          'Verify if token is expired',
+          'Check claims field content',
+        ],
+        privacyNote:
+          'JWT tokens are parsed only locally in your browser and never sent to any server, so you can safely parse sensitive tokens.',
+      },
+    },
+  },
+  {
+    slug: 'lorem-ipsum-generator',
+    name: 'Lorem Ipsum 占位文本',
+    nameEn: 'Lorem Ipsum Generator',
+    description:
+      '生成经典占位测试文本，可指定段落数量，用于设计原型和排版测试。',
+    descriptionEn:
+      'Generate classic Lorem Ipsum placeholder text, specify number of paragraphs, perfect for design prototypes and layout testing.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/lorem-ipsum-generator',
+    iconName: 'FileText',
+    tags: ['Lorem Ipsum', '占位符', '文本', '测试', '生成'],
+    tagsEn: ['Lorem Ipsum', 'Placeholder', 'Text', 'Test', 'Generate'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '经典 Lorem Ipsum 占位文本生成器，快速生成指定段落数量的占位文本，供设计原型、排版测试和草图使用。',
+        coreFeatures: [
+          '可指定段落数量 1~20 段',
+          '点击重新生成随时得到新文本',
+          '一键复制生成结果到剪贴板',
+          '纯本地随机生成，不依赖网络',
+        ],
+        howToUse: [
+          '使用输入框调整需要生成的段落数量',
+          '点击「重新生成」得到新文本',
+          '生成完成后点击复制即可使用',
+        ],
+        useCases: [
+          'UI 设计原型占位',
+          '测试排版效果和行高',
+          '文章或区块占位填充',
+        ],
+        privacyNote: '文本在浏览器本地随机生成，不与服务器交互。',
+      },
+      en: {
+        whatIsIt:
+          'Classic Lorem Ipsum placeholder text generator that quickly generates placeholder text with specified number of paragraphs for design prototypes, layout testing, and wireframes.',
+        coreFeatures: [
+          'Specify paragraph count from 1 to 20',
+          'Click regenerate to get new text anytime',
+          'One-click copy result to clipboard',
+          'Generated locally, no network dependency',
+        ],
+        howToUse: [
+          'Adjust the number of paragraphs you need with the input',
+          'Click "Regenerate" to get new text',
+          'Click copy after generation and use it',
+        ],
+        useCases: [
+          'Placeholder for UI design prototypes',
+          'Testing typography and line height',
+          'Filling placeholders for articles or sections',
+        ],
+        privacyNote:
+          'Text is randomly generated locally in your browser; no interaction with servers.',
+      },
+    },
+  },
+  {
+    slug: 'password-generator',
+    name: '随机密码生成器',
+    nameEn: 'Password Generator',
+    description:
+      '使用浏览器原生 Crypto API 生成高强度安全随机密码，支持自定义长度和字符类型。',
+    descriptionEn:
+      'Generate high-strength secure random passwords using browser native Crypto API, supports custom length and character types.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/password-generator',
+    iconName: 'KeyRound',
+    tags: ['密码', '随机', '生成', '安全', '高强度'],
+    tagsEn: ['Password', 'Random', 'Generate', 'Secure', 'High-strength'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '安全随机密码生成工具，使用浏览器原生 Crypto API 生成密码熵值更高更安全，可自定义长度和字符组合，实时显示密码强度。',
+        coreFeatures: [
+          '原生 Crypto API 生成，随机性更强更安全',
+          '密码长度可在 4~32 位之间自由调节',
+          '可独立开关小写、大写、数字、特殊符号四种字符类型',
+          '实时计算并显示密码强度评级',
+          '一键重新生成和复制，操作便捷',
+          '所有密码本地生成，不上传服务器',
+        ],
+        howToUse: [
+          '拖动滑块选择密码长度',
+          '勾选需要包含的字符类型',
+          '点击刷新按钮重新生成',
+          '点击复制按钮得到密码',
+        ],
+        useCases: [
+          '生成新账户的安全密码',
+          '测试密码强度',
+          '一次性临时密码生成',
+        ],
+        privacyNote:
+          '密码使用浏览器原生 Crypto API 在本地生成，绝不会传输给任何第三方服务器，安全可靠。',
+      },
+      en: {
+        whatIsIt:
+          'Secure random password generator that uses browser-native Crypto API for higher entropy and better security, supports custom length and character combinations with real-time strength indication.',
+        coreFeatures: [
+          'Native Crypto API generation for better randomness and security',
+          'Password length adjustable between 4~32 characters',
+          'Independently toggle lowercase, uppercase, numbers, and symbols',
+          'Real-time password strength calculation and rating',
+          'One-click regenerate and copy, convenient operation',
+          'All passwords generated locally, never uploaded to servers',
+        ],
+        howToUse: [
+          'Drag the slider to select password length',
+          'Check the character types you want to include',
+          'Click the refresh button to regenerate',
+          'Click copy to get your password',
+        ],
+        useCases: [
+          'Generating secure passwords for new accounts',
+          'Testing password strength',
+          'Generating one-time temporary passwords',
+        ],
+        privacyNote:
+          'Passwords are generated locally using your browser native Crypto API and are never transmitted to any third-party server. Safe and reliable.',
       },
     },
   },

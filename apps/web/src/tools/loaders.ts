@@ -45,4 +45,9 @@ export const toolLoaders: Record<
   'color-naming-token': () => import('./color-naming-token'),
   'color-blind-simulator': () => import('./color-blind-simulator'),
   'css-filter-generator': () => import('./css-filter-generator'),
+  'url-encoder-decoder': () => import('./url-encoder-decoder'),
+  'html-entity-encoder-decoder': () => import('./html-entity-encoder-decoder'),
+  'jwt-decoder': () => import('./jwt-decoder'),
+  'lorem-ipsum-generator': () => import('./lorem-ipsum-generator'),
+  'password-generator': () => import('./password-generator'),
 };
