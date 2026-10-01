@@ -34,7 +34,7 @@ function ToolRunner({ slug }: ToolRunnerProps) {
     ),
   });
 
-  return <ToolImplementation />;
+  return <ToolImplementation t={(key) => key} />;
 }
 
 export default ToolRunner;

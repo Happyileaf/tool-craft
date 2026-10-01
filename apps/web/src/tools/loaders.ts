@@ -6,6 +6,8 @@ import type { ComponentType } from 'react';
 export interface ToolComponentProps {
   /** 工具首次载入时填入的样例内容 */
   defaultInput?: string;
+  /** i18n 翻译函数 */
+  t: (key: string) => string;
 }
 
 /**
