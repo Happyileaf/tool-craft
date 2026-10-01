@@ -14,6 +14,10 @@
 | 20260928103007 | Lorem Ipsum generator | 生成占位测试文本 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
 | 20260928103008 | Password generator | 生成安全随机密码 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
 | 20260928103009 | CRON expression parser | 解析和验证 CRON 表达式，预览执行时间 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
+| 20261002000001 | JSON/YAML converter | 双向转换 JSON 和 YAML 格式 | Web Tool | Exploration | Pending | 2026-10-02 | | | |
+| 20261002000002 | Image format converter | 在常见图片格式（JPEG/PNG/WebP/GIF）之间相互转换 | Web Tool | Existing Gap | Pending | 2026-10-02 | | | |
+| 20261002000003 | SVG preview and editor | 提供 SVG 代码预览和基础编辑功能 | Web Tool | Exploration | Pending | 2026-10-02 | | | |
+| 20261002000004 | SQL formatter | 格式化美化 SQL 代码，提高可读性 | Web Tool | Exploration | Pending | 2026-10-02 | | | |
 | -------------- | ------------ | --------------------------- | ---------- | ----------- | ------- | ---------- | ---------- | ------------- | ------ |
 
 
