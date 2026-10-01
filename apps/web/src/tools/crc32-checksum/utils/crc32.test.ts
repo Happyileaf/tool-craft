@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { calculateCRC32 } from './crc32';
 
+// Mock TextEncoder which is available in browser but need global for test
+if (typeof TextEncoder === 'undefined') {
+  global.TextEncoder = require('util').TextEncoder;
+}
+
 describe('calculateCRC32', () => {
   it('should calculate correct CRC32 for empty string', () => {
     expect(calculateCRC32('')).toBe('00000000');
@@ -12,11 +17,11 @@ describe('calculateCRC32', () => {
   });
 
   it('should calculate correct CRC32 for "Hello World"', () => {
-    expect(calculateCRC32('Hello World')).toBe('d4a1185');
+    expect(calculateCRC32('Hello World')).toBe('4a17b156');
   });
 
-  it('should calculate correct CRC32 for Chinese text', () => {
-    expect(calculateCRC32('你好，世界')).toBe('a93ebd6d');
+  it('should calculate correct CRC32 for Chinese text "你好，世界"', () => {
+    expect(calculateCRC32('你好，世界')).toBe('acf5da54');
   });
 
   it('should return 8-character hex string', () => {

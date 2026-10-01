@@ -51,17 +51,19 @@ const CRC_TABLE = new Uint32Array([
  * @returns CRC32 十六进制小写结果
  */
 export function calculateCRC32(text: string): string {
-  let crc = 0 ^ (-1);
+  let crc = 0xffffffff;
 
   // 将字符串转换为 UTF-8 字节
   const encoder = new TextEncoder();
   const bytes = encoder.encode(text);
 
+  const table = CRC_TABLE; // CRC_TABLE is always defined
   for (const byte of bytes) {
-    crc = (crc >>> 8) ^ CRC_TABLE[(crc ^ byte) & 0xff];
+    const index = ((crc ^ byte) & 0xff);
+    crc = (crc >>> 8) ^ table[index]!;
   }
 
-  crc = crc ^ (-1);
-  // 转换为无符号整数后转十六进制
-  return (crc >>> 0).toString(16).toLowerCase();
+  crc = crc ^ 0xffffffff;
+  // 转换为无符号整数后转十六进制，补齐到 8 位
+  return (crc >>> 0).toString(16).padStart(8, '0').toLowerCase();
 }
