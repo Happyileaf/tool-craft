@@ -45,7 +45,7 @@ export function checkPasswordStrength(password: string): PasswordStrengthResult 
   }
 
   // 特殊符号检查
-  if (!/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test(password)) {
+  if (!/[!@#$%^&*()_+\-=[\]{}|;:,.<>?]/.test(password)) {
     suggestions.push('添加特殊符号（!@#$%^&* 等）');
   } else {
     score += 1;
