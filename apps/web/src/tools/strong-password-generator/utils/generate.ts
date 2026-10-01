@@ -54,16 +54,39 @@ export function generateStrongPassword(
 
   // 填充剩余长度
   const remainingLength = length - password.length;
-  for (let i = 0; i < remainingLength; i++) {
-    const randomIndex = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] % allChars.length);
-    password += allChars[randomIndex];
+  // Using non-null assertion because allChars can't be empty here
+  const cryptoObj = window.crypto;
+  if (!cryptoObj) {
+    // Fallback for browsers without crypto API (should not happen in modern browsers)
+    for (let i = 0; i < remainingLength; i++) {
+      const randomIndex = Math.floor(Math.random() * allChars.length);
+      password += allChars[randomIndex]!;
+    }
+  } else {
+    const randomArr = new Uint32Array(1);
+    const cryptoNonNull = cryptoObj!;
+    for (let i = 0; i < remainingLength; i++) {
+      const randomValue = cryptoNonNull.getRandomValues(randomArr)[0]!;
+      const randomIndex = Math.floor(randomValue % allChars.length);
+      password += allChars[randomIndex]!;
+    }
   }
 
   // 打乱密码顺序（Fisher-Yates 洗牌算法）
   const passwordArray = password.split('');
-  for (let i = passwordArray.length - 1; i > 0; i--) {
-    const j = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] % (i + 1));
-    [passwordArray[i], passwordArray[j]] = [passwordArray[j], passwordArray[i]];
+  if (!cryptoObj) {
+    for (let i = passwordArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [passwordArray[i], passwordArray[j]] = [passwordArray[j]!, passwordArray[i]!];
+    }
+  } else {
+    const randomArr = new Uint32Array(1);
+    const cryptoNonNull = cryptoObj!;
+    for (let i = passwordArray.length - 1; i > 0; i--) {
+      const randomValue = cryptoNonNull.getRandomValues(randomArr)[0]!;
+      const j = Math.floor(randomValue % (i + 1));
+      [passwordArray[i], passwordArray[j]] = [passwordArray[j]!, passwordArray[i]!];
+    }
   }
 
   return passwordArray.join('');

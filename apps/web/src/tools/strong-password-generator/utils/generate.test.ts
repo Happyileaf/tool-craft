@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { generateStrongPassword } from './generate';
 
+// Mock window for testing
+global.window = { crypto: require('crypto').webcrypto } as any;
+
 describe('generateStrongPassword', () => {
   it('should generate password with correct length', () => {
     const password = generateStrongPassword(16, true, true, true, true);
