@@ -1,89 +1,75 @@
 'use client';
 
-import { useState } from 'react';
-import { Check, Copy, Hash, RefreshCw } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Check, Copy, Fingerprint } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
-import { calculateCRC32 } from './utils/crc32';
-
-const DEFAULT_INPUT = 'The quick brown fox jumps over the lazy dog';
+import { DEFAULT_SAMPLE_INPUT } from './constants';
+import { computeCrc32 } from './utils/crc32';
 
 /**
- * CRC32 校验和计算器，输入文本计算 CRC32 校验值，用于数据完整性验证
- *
- * @returns CRC32 计算工具交互界面
+ * CRC32 校验和计算工具，计算文本的 CRC32 校验值，用于数据完整性校验，全部运算本地完成。
+ * @returns CRC32 工具界面
  */
-function CRC32Checksum() {
+function Crc32Checksum() {
   const { t } = useI18n();
-  const [input, setInput] = useState(DEFAULT_INPUT);
-  const [copied, setCopied] = useState(false);
-  const result = calculateCRC32(input);
+  const [input, setInput] = useState('');
+  const [checksum, setChecksum] = useState('00000000');
+  const [isCopied, setIsCopied] = useState(false);
 
-  async function handleCopy() {
-    if (!result) return;
-    await navigator.clipboard.writeText(result);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2000);
-  }
+  useEffect(() => {
+    const result = computeCrc32(input);
+    // 补齐到 8 位十六进制
+    const paddedResult = result.padStart(8, '0');
+    setChecksum(paddedResult);
+  }, [input]);
+
+  const handleCopy = async () => {
+    if (!checksum) return;
+    try {
+      await navigator.clipboard.writeText(checksum);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch {
+      setIsCopied(false);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-900">
-        <span className="flex items-center gap-1.5 px-1 text-xs font-medium text-slate-500 dark:text-slate-400">
-          <Hash className="h-3.5 w-3.5" />
-          CRC32
-        </span>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setInput(DEFAULT_INPUT)}
-            disabled={input === DEFAULT_INPUT}
-            className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-default disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
-          >
-            {t('common.sample')}
-          </button>
-          <button
-            type="button"
-            onClick={() => setInput('')}
-            className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-rose-50 hover:text-rose-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-rose-950/30 dark:hover:text-rose-400"
-          >
-            <RefreshCw className="h-3.5 w-3.5" />
-            {t('common.clear')}
-          </button>
+      <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900">
+        <div className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-300">
+          <Fingerprint className="h-4 w-4 text-slate-500 dark:text-slate-400" />
+          {t('tools.crc32-checksum.inputLabel')}
         </div>
+        <textarea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder={t('tools.crc32-checksum.inputPlaceholder')}
+          spellCheck={false}
+          className="h-24 w-full rounded-lg border border-slate-300 bg-white p-3 font-mono text-xs text-slate-900 placeholder:text-slate-400 focus:border-slate-800 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-600 sm:text-sm"
+        />
+        <p className="text-[11px] text-slate-400 dark:text-slate-500">
+          {t('tools.crc32-checksum.localNotice')}
+        </p>
       </div>
 
-      <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
-        <div className="border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
-          {t('tools.crc32.inputLabel')}
-        </div>
-        <div className="px-4 py-3">
-          <textarea
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            placeholder={t('tools.crc32.placeholder')}
-            className="min-h-[140px] w-full resize-y bg-transparent font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
-          />
-        </div>
-        <div className="flex items-center justify-between border-t border-slate-200 bg-slate-50/50 px-4 py-2 text-xs text-slate-500 dark:border-slate-800 dark:bg-slate-800/30 dark:text-slate-400">
-          <span>
-            {t('tools.crc32.length')}：{input.length}{' '}
-            {t('tools.crc32.characters')}
-          </span>
-          <span className="text-emerald-600 dark:text-emerald-400">
-            {t('common.clientSideExecution')}
-          </span>
-        </div>
-      </div>
-
-      <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
-          <span>{t('tools.crc32.resultLabel')}</span>
+      <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-xs dark:border-slate-800 dark:bg-slate-900">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex flex-col gap-1">
+            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              {t('tools.crc32-checksum.resultLabel')}:
+            </span>
+            <span className="font-mono text-sm text-slate-700 dark:text-slate-300">
+              {checksum}
+            </span>
+          </div>
           <button
             type="button"
             onClick={handleCopy}
-            className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+            disabled={!checksum}
+            className="flex shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
           >
-            {copied ? (
+            {isCopied ? (
               <>
                 <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                 <span className="text-emerald-600 dark:text-emerald-400">
@@ -93,19 +79,14 @@ function CRC32Checksum() {
             ) : (
               <>
                 <Copy className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
-                {t('common.copy')}
+                <span>{t('common.copy')}</span>
               </>
             )}
           </button>
-        </div>
-        <div className="bg-slate-900 p-4 dark:bg-slate-950">
-          <p className="break-all font-mono text-xl font-bold tracking-[0.2em] text-emerald-400">
-            {result}
-          </p>
         </div>
       </div>
     </div>
   );
 }
 
-export default CRC32Checksum;
+export default Crc32Checksum;
