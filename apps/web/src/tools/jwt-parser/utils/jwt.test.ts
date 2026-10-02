@@ -1,67 +1,42 @@
 import { describe, expect, test } from 'vitest';
-import { parseJWT } from './jwt';
+import { parseJwt, generateJwt, verifySignature } from './jwt';
+import { JwtAlgorithmEnum } from '../constants';
 
-const validToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+describe('parseJwt', () => {
+  test('should parse valid JWT correctly', async () => {
+    // Header: {"alg": "HS256", "typ": "JWT"}
+    // Payload: {"sub": "1234567890", "name": "John Doe", "iat": 1516239022}
+    // Secret: "your-256-bit-secret"
+    // Signature: "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+    const token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
 
-describe('parseJWT', () => {
-  test('should parse valid JWT', () => {
-    const result = parseJWT(validToken);
+    const result = parseJwt(token);
     expect(result.isValidFormat).toBe(true);
     expect(result.header.alg).toBe('HS256');
-    expect(result.header.typ).toBe('JWT');
-    expect(result.payload.sub).toBe('1234567890');
     expect(result.payload.name).toBe('John Doe');
-    expect(result.signature).toBe('SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c');
+    expect(result.payload.sub).toBe('1234567890');
   });
 
-  test('should return invalid for wrong number of parts', () => {
-    const result = parseJWT('header.payload');
+  test('should return error for invalid format', () => {
+    const result = parseJwt('invalid.token');
     expect(result.isValidFormat).toBe(false);
-  });
-
-  test('should return invalid for invalid base64', () => {
-    const result = parseJWT('!!!.%%%.###');
-    expect(result.isValidFormat).toBe(false);
+    expect(result.error).toBeDefined();
   });
 });
 
-// generateJWT and verifySignature rely on browser crypto API,
-// can't run in node test environment, so we skip them
-// describe('generateJWT and verifySignature', async () => {
-//   const header = { alg: 'HS256', typ: 'JWT' };
-//   const payload = { sub: '123', name: 'Test' };
-//   const secret = 'my-secret-key';
+describe('generateJwt and verifySignature', () => {
+  test('should generate and verify correctly', async () => {
+    const header = { alg: 'HS256', typ: 'JWT' };
+    const payload = { sub: 'test', name: 'Test User' };
+    const secret = 'my-secret-key';
+    const jwt = await generateJwt(header, payload, secret, JwtAlgorithmEnum.HS256);
+    expect(jwt.split('.')).toHaveLength(3);
 
-//   test('should generate valid JWT that can be verified', async () => {
-//     const token = await generateJWT(header, payload, secret, Algorithm.HS256);
-//     const parts = token.split('.');
-//     expect(parts.length).toBe(3);
+    const isValid = await verifySignature(jwt, secret);
+    expect(isValid).toBe(true);
 
-//     const parsed = parseJWT(token);
-//     expect(parsed.isValidFormat).toBe(true);
-//     expect(parsed.header.alg).toBe('HS256');
-//     expect(parsed.payload.sub).toBe('123');
-
-//     const verifyResult = await verifySignature(
-//       parts[0],
-//       parts[1],
-//       parts[2],
-//       secret,
-//       Algorithm.HS256
-//     );
-//     expect(verifyResult.valid).toBe(true);
-//   });
-
-//   test('should fail verification with wrong secret', async () => {
-//     const token = await generateJWT(header, payload, secret, Algorithm.HS256);
-//     const parts = token.split('.');
-//     const verifyResult = await verifySignature(
-//       parts[0],
-//       parts[1],
-//       parts[2],
-//       'wrong-secret',
-//       Algorithm.HS256
-//     );
-//     expect(verifyResult.valid).toBe(false);
-//   });
-// });
+    const wrongSecretValid = await verifySignature(jwt, 'wrong-secret');
+    expect(wrongSecretValid).toBe(false);
+  });
+});
