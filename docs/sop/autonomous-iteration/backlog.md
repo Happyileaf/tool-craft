@@ -112,7 +112,7 @@
 - **评估-复杂度**：S
 - **状态**：已实现
 - **状态日期**：2026-10-03
-- **结果/原因**：PR 待创建后更新URL
+- **结果/原因**：PR [#27](https://github.com/Happyileaf/tool-craft/pull/27)
 - **备注**：支持自定义长度（4-64）、可选包含小写、大写、数字、特殊符号，一键复制
 
 ### 密码强度检测器（password-strength-checker）
@@ -128,7 +128,7 @@
 - **评估-复杂度**：S
 - **状态**：已实现
 - **状态日期**：2026-10-03
-- **结果/原因**：PR 待创建后更新URL
+- **结果/原因**：PR [#27](https://github.com/Happyileaf/tool-craft/pull/27)
 - **备注**：评分等级弱/中/强，给出具体改进建议（增加长度、混合大小写、加入数字和符号等）
 
 ### JWT生成器/解析器（jwt-parser）
@@ -144,7 +144,7 @@
 - **评估-复杂度**：S
 - **状态**：已实现
 - **状态日期**：2026-10-03
-- **结果/原因**：PR 待创建后更新URL
+- **结果/原因**：PR [#27](https://github.com/Happyileaf/tool-craft/pull/27)
 - **备注**：自动分割Token三部分，格式化展示JSON，支持生成和验证HMAC-SHA256签名，使用原生Web Crypto API
 
 ### HTML实体编解码（html-entity-codec）
@@ -176,7 +176,7 @@
 - **评估-复杂度**：S
 - **状态**：已实现
 - **状态日期**：2026-10-03
-- **结果/原因**：PR 待创建后更新URL
+- **结果/原因**：PR [#27](https://github.com/Happyileaf/tool-craft/pull/27)
 - **备注**：输出8位十六进制结果，标准CRC32算法实现，支持大文本计算
 
 ### BCrypt加密验证（bcrypt-hash）
