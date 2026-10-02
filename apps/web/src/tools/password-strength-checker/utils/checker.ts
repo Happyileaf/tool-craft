@@ -32,10 +32,6 @@ export function checkPasswordStrength(password: string): PasswordCheckResult {
     suggestions: [],
   };
 
-  if (!password) {
-    return result;
-  }
-
   // 检查字符类型
   result.hasLower = /[a-z]/.test(password);
   result.hasUpper = /[A-Z]/.test(password);

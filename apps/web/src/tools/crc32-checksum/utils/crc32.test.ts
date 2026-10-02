@@ -14,6 +14,6 @@ describe('computeCrc32', () => {
   });
 
   test('another test case', () => {
-    expect(computeCrc32('Hello World')).toBe('0d4a1185');
+    expect(computeCrc32('Hello World')).toBe('4a17b156');
   });
 });

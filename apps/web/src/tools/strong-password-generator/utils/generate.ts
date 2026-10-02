@@ -27,11 +27,11 @@ export function generateStrongPassword(
 
   // 使用 crypto.getRandomValues 生成安全随机数
   const randomValues = new Uint32Array(length);
-  crypto.getRandomValues(randomValues);
+  globalThis.crypto.getRandomValues(randomValues);
 
   for (let i = 0; i < length; i++) {
-    const randomIndex = randomValues[i] % charCount;
-    result += charArray[randomIndex];
+    const randomIndex = randomValues[i]! % charCount;
+    result += charArray[randomIndex]!;
   }
 
   // 确保每个选中的字符集至少有一个字符出现在结果中

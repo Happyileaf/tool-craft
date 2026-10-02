@@ -1,5 +1,3 @@
-import { CRC32_TABLE } from '../constants';
-
 /**
  * 计算字符串的 CRC32 校验和
  * @param text - 输入文本字符串
@@ -10,14 +8,25 @@ export function computeCrc32(text: string): string {
     return '00000000';
   }
 
-  let crc = 0 ^ (-1);
+  // Convert string to byte array (UTF-8)
+  const encoder = new TextEncoder();
+  const bytes = encoder.encode(text);
 
-  for (let i = 0; i < text.length; i++) {
-    const byte = text.charCodeAt(i);
-    crc = (crc >>> 8) ^ CRC32_TABLE[(crc ^ byte) & 0xff];
+  let crc = 0 ^ (-1);
+  const polynomial = 0xEDB88320;
+
+  for (const byte of bytes) {
+    crc = crc ^ byte;
+    for (let i = 0; i < 8; i++) {
+      if (crc & 1) {
+        crc = (crc >>> 1) ^ polynomial;
+      } else {
+        crc = crc >>> 1;
+      }
+    }
   }
 
   crc = crc ^ (-1);
-  // 转换为无符号 32 位整数，然后转为十六进制小写
-  return ((crc >>> 0) & 0xffffffff).toString(16);
+  // 转换为无符号 32 位整数，然后转为十六进制小写，补齐到 8 位
+  return (crc >>> 0).toString(16).padStart(8, '0');
 }

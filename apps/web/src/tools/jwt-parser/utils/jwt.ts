@@ -64,13 +64,13 @@ export function parseJwt(token: string): JwtParseResult {
   }
 
   try {
-    const headerJson = base64UrlDecode(parts[0]);
-    const payloadJson = base64UrlDecode(parts[1]);
+    const headerJson = base64UrlDecode(parts[0]!);
+    const payloadJson = base64UrlDecode(parts[1]!);
 
     return {
       header: JSON.parse(headerJson),
       payload: JSON.parse(payloadJson),
-      signature: parts[2],
+      signature: parts[2]!,
       isValidFormat: true,
     };
   } catch (e) {
@@ -164,13 +164,13 @@ export async function verifySignature(
   const expectedSignature = await signHmacSha256(data, secret);
 
   // 恒定时间比较，防止时序攻击
-  if (expectedSignature.length !== parts[2].length) {
+  if (expectedSignature.length !== parts[2]!.length) {
     return false;
   }
 
   let result = 0;
   for (let i = 0; i < expectedSignature.length; i++) {
-    result |= expectedSignature.charCodeAt(i) ^ parts[2].charCodeAt(i);
+    result |= expectedSignature.charCodeAt(i) ^ parts[2]!.charCodeAt(i);
   }
 
   return result === 0;
