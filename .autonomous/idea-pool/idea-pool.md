@@ -14,6 +14,7 @@
 | 20260928103007 | Lorem Ipsum generator | 生成占位测试文本 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
 | 20260928103008 | Password generator | 生成安全随机密码 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
 | 20260928103009 | CRON expression parser | 解析和验证 CRON 表达式，预览执行时间 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
+| 20261004143001 | QR Code generator | 生成自定义二维码图片，支持调整大小和纠错级别 | Web Tool | Exploration | Pending | 2026-10-04 | | | |
 | -------------- | ------------ | --------------------------- | ---------- | ----------- | ------- | ---------- | ---------- | ------------- | ------ |
 
 
