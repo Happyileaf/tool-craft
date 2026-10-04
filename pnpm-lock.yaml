@@ -28,6 +28,10 @@ catalogs:
 importers:
 
   .:
+    dependencies:
+      bcryptjs:
+        specifier: ^3.0.3
+        version: 3.0.3
     devDependencies:
       '@playwright/test':
         specifier: ^1
