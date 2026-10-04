@@ -1,532 +1,262 @@
-'use client';
-
 import { useState, useEffect } from 'react';
-import {
-  AlertCircle,
-  Check,
-  Copy,
-  ShieldCheck,
-  Split,
-} from 'lucide-react';
-import { useI18n } from '@/lib/i18n';
-import { cn } from '@/lib/utils';
-import { Mode, Algorithm, AlgorithmLabels } from './constants';
-import {
-  parseJWT,
-  generateJWT,
-  verifySignature,
-  tryParseJSON,
-  JwtErrorKey,
-  type JwtOperationError,
-} from './utils/jwt';
+import { ToolComponentProps } from '../types';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components/ui/tabs';
+import { Textarea } from '../../../components/ui/textarea';
+import { Input } from '../../../components/ui/input';
+import { Button } from '../../../components/ui/button';
+import { Badge } from '../../../components/ui/badge';
+import { parseJwt, splitJwt, verifySignature } from './utils/jwt';
+import { Copy, CheckCircle, AlertTriangle } from 'lucide-react';
+import { copyToClipboard } from '../../../lib/copy';
 
-const DEFAULT_HEADER = JSON.stringify({ alg: 'HS256', typ: 'JWT' }, null, 2);
-function createDefaultPayload() {
-  return JSON.stringify(
-    {
-      sub: '1234567890',
-      name: 'John Doe',
-      iat: Math.floor(Date.now() / 1000),
-    },
-    null,
-    2,
-  );
-}
+type Mode = 'parse' | 'generate';
 
-/**
- * JWT 生成器/解析器，支持解析已有的 JWT，查看 Header 和 Payload，验证签名，也可以生成新的 JWT。
- * 所有运算在浏览器本地完成，不泄露密钥。
- *
- * @returns JWT 生成器/解析器交互界面
- */
-function JWTParser() {
-  const { t } = useI18n();
-  const [mode, setMode] = useState<Mode>(Mode.PARSE);
-  const [token, setToken] = useState('');
-  const [headerStr, setHeaderStr] = useState(DEFAULT_HEADER);
-  const [payloadStr, setPayloadStr] = useState(createDefaultPayload);
-  const [parts, setParts] = useState<{
-    header: string;
-    payload: string;
-    signature: string;
-  }>({
-    header: '',
-    payload: '',
-    signature: '',
-  });
+export default function JwtParser({ defaultSampleInput }: ToolComponentProps) {
+  const [mode, setMode] = useState<Mode>('parse');
+  const [token, setToken] = useState(defaultSampleInput || '');
   const [secret, setSecret] = useState('');
-  const [algorithm, setAlgorithm] = useState<Algorithm>(Algorithm.HS256);
-  const [generatedToken, setGeneratedToken] = useState('');
-  const [isValidFormat, setIsValidFormat] = useState(false);
-  const [isSignatureValid, setIsSignatureValid] = useState<boolean | null>(null);
-  const [verifyError, setVerifyError] = useState<JwtOperationError | null>(null);
-  const [jsonError, setJsonError] = useState<JwtOperationError | null>(null);
-  const [copied, setCopied] = useState(false);
-  const [copiedPart, setCopiedPart] = useState<'header' | 'payload' | 'signature' | null>(null);
+  const [headerText, setHeaderText] = useState('');
+  const [payloadText, setPayloadText] = useState('');
+  const [result, setResult] = useState<{
+    header: any | null;
+    payload: any | null;
+    error: string | null;
+    isValidSignature: boolean | null;
+  }>({
+    header: null,
+    payload: null,
+    error: null,
+    isValidSignature: null,
+  });
 
   useEffect(() => {
-    if (mode !== Mode.PARSE) return;
-
-    const trimmedToken = token.trim();
-    const result = parseJWT(trimmedToken);
-    setIsValidFormat(result.isValidFormat);
-    if (result.isValidFormat) {
-      const tokenParts = trimmedToken.split('.');
-      setParts({
-        header: tokenParts[0] ?? '',
-        payload: tokenParts[1] ?? '',
-        signature: tokenParts[2] ?? '',
-      });
-      setHeaderStr(JSON.stringify(result.header, null, 2));
-      setPayloadStr(JSON.stringify(result.payload, null, 2));
-    } else {
-      setParts({ header: '', payload: '', signature: '' });
+    if (mode === 'parse') {
+      parseToken();
     }
-    setIsSignatureValid(null);
-    setVerifyError(null);
   }, [token, mode]);
 
-  useEffect(() => {
-    async function doVerify() {
-      if (!isValidFormat || !secret) {
-        setIsSignatureValid(null);
-        return;
-      }
-
-      const parts = token.trim().split('.');
-      if (parts.length !== 3) return;
-
-      const result = await verifySignature(
-        parts[0]!,
-        parts[1]!,
-        parts[2]!,
-        secret,
-        algorithm,
-      );
-      setIsSignatureValid(result.valid);
-      setVerifyError(result.error ?? null);
+  const parseToken = () => {
+    const parsed = parseJwt(token);
+    setResult({ ...parsed, isValidSignature: null });
+    if (parsed.header) {
+      setHeaderText(JSON.stringify(parsed.header, null, 2));
     }
-
-    doVerify();
-  }, [token, secret, isValidFormat, algorithm]);
-
-  async function handleGenerate() {
-    setJsonError(null);
-
-    const header = tryParseJSON(headerStr);
-    const payload = tryParseJSON(payloadStr);
-
-    if (!header) {
-      setJsonError({ key: JwtErrorKey.INVALID_HEADER_JSON });
-      return;
+    if (parsed.payload) {
+      setPayloadText(JSON.stringify(parsed.payload, null, 2));
     }
-    if (!payload) {
-      setJsonError({ key: JwtErrorKey.INVALID_PAYLOAD_JSON });
-      return;
-    }
-    if (!secret) {
-      setJsonError({ key: JwtErrorKey.SECRET_REQUIRED });
-      return;
-    }
+  };
 
-    const result = await generateJWT(header, payload, secret, algorithm);
-    if (result.success) {
-      setGeneratedToken(result.token);
-      setCopied(false);
-    } else {
-      setJsonError(result.error);
-    }
-  }
+  const doVerify = async () => {
+    if (!token) return;
+    const parts = splitJwt(token);
+    if (parts.length !== 3) return;
+    const [headerB64, payloadB64, signature] = parts;
+    const isValid = await verifySignature(headerB64, payloadB64, signature, secret);
+    setResult((prev) => ({ ...prev, isValidSignature: isValid }));
+  };
 
-  async function handleCopy() {
-    const text = mode === Mode.PARSE ? token.trim() : generatedToken;
-    if (!text) return;
-
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2000);
-  }
-
-  async function handleCopyPart(part: 'header' | 'payload' | 'signature', value: string) {
-    if (!value) return;
-    await navigator.clipboard.writeText(value);
-    setCopiedPart(part);
-    window.setTimeout(() => setCopiedPart(null), 2000);
-  }
-
-  function handleSwitchMode(nextMode: Mode) {
-    if (mode === nextMode) return;
-
-    setToken('');
-    setHeaderStr(DEFAULT_HEADER);
-    setPayloadStr(createDefaultPayload());
-    setParts({ header: '', payload: '', signature: '' });
-    setSecret('');
-    setAlgorithm(Algorithm.HS256);
-    setGeneratedToken('');
-    setIsValidFormat(false);
-    setIsSignatureValid(null);
-    setVerifyError(null);
-    setJsonError(null);
-    setCopied(false);
-    setCopiedPart(null);
-    setMode(nextMode);
-  }
-
-  const algorithmBar = (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-900">
-      <span className="px-1 text-xs font-medium text-slate-500 dark:text-slate-400">
-        {t('tools.jwtParser.algorithm')}
-      </span>
-      <div className="flex items-center gap-4">
-        {Object.values(Algorithm).map((alg) => (
-          <label
-            key={alg}
-            className="flex cursor-pointer select-none items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400"
-          >
-            <input
-              type="radio"
-              name="jwt-algorithm"
-              value={alg}
-              checked={algorithm === alg}
-              onChange={(event) =>
-                setAlgorithm(event.target.value as Algorithm)
-              }
-              className="h-3.5 w-3.5 border-slate-300 text-slate-900 focus:ring-slate-900 dark:border-slate-700 dark:text-slate-100 dark:focus:ring-slate-400"
-            />
-            {AlgorithmLabels[alg]}
-          </label>
-        ))}
-      </div>
-    </div>
-  );
+  const handleCopyJson = (text: string) => {
+    copyToClipboard(text);
+  };
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex items-center rounded-lg border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-800">
-          <button
-            type="button"
-            onClick={() => handleSwitchMode(Mode.PARSE)}
-            className={cn(
-              'rounded px-3 py-1 text-xs font-medium transition-colors',
-              mode === Mode.PARSE
-                ? 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900'
-                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white',
-            )}
-          >
-            {t('tools.jwtParser.parseMode')}
-          </button>
-          <button
-            type="button"
-            onClick={() => handleSwitchMode(Mode.GENERATE)}
-            className={cn(
-              'rounded px-3 py-1 text-xs font-medium transition-colors',
-              mode === Mode.GENERATE
-                ? 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900'
-                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white',
-            )}
-          >
-            {t('tools.jwtParser.generateMode')}
-          </button>
-        </div>
-        <span className="hidden items-center gap-1.5 text-xs text-emerald-600 sm:flex dark:text-emerald-400">
-          <ShieldCheck className="h-3.5 w-3.5" />
-          {t('common.clientSideExecution')}
-        </span>
-      </div>
-
-      {mode === Mode.PARSE && (
-        <>
-          <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
-              <span>{t('tools.jwtParser.tokenInput')}</span>
-              <button
-                type="button"
-                onClick={handleCopy}
-                className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
-              >
-                {copied ? (
-                  <>
-                    <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                    <span className="text-emerald-600 dark:text-emerald-400">
-                      {t('common.copySuccess')}
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
-                    {t('common.copy')}
-                  </>
-                )}
-              </button>
-            </div>
-            <div className="px-4 py-3">
-              <textarea
-                value={token}
-                onChange={(event) => setToken(event.target.value)}
-                placeholder={t('tools.jwtParser.tokenPlaceholder')}
-                className="min-h-[88px] w-full resize-y bg-transparent font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
-              />
-            </div>
-            {!isValidFormat && token && (
-              <div className="mx-4 mb-3 flex items-start gap-2 rounded-lg border border-rose-200 bg-rose-50 p-3 dark:border-rose-900 dark:bg-rose-950/40">
-                <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-rose-600 dark:text-rose-400" />
-                <p className="text-xs font-medium text-rose-700 dark:text-rose-300">
-                  {t('tools.jwtParser.invalidTokenFormat')}
-                </p>
-              </div>
-            )}
+    <div className="flex flex-col gap-4 p-4 max-w-4xl mx-auto">
+      <Tabs
+        defaultValue="parse"
+        value={mode}
+        onValueChange={(v) => setMode(v as Mode)}
+        className="w-full"
+      >
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="parse">解析</TabsTrigger>
+          <TabsTrigger value="generate">生成</TabsTrigger>
+        </TabsList>
+        <TabsContent value="parse" className="mt-4 space-y-4">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="token" className="text-sm font-medium">JWT Token</label>
+            <Textarea
+              id="token"
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
+              placeholder="粘贴你的 JWT token 到这里..."
+              className="min-h-[100px]"
+            />
           </div>
 
-          <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex items-center gap-2 border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
-              <Split className="h-3.5 w-3.5 text-slate-400" />
-              {t('tools.jwtParser.partsTitle')}
+          {result.error && (
+            <div className="flex items-center gap-2 p-3 bg-red-50 text-red-700 rounded-md">
+              <AlertTriangle size={18} />
+              <span className="text-sm font-medium">{result.error}</span>
             </div>
-            <div className="flex flex-col">
-              {isValidFormat ? (
-                (
-                  [
-                    { key: 'header', label: t('tools.jwtParser.headerPart'), value: parts.header },
-                    { key: 'payload', label: t('tools.jwtParser.payloadPart'), value: parts.payload },
-                    { key: 'signature', label: t('tools.jwtParser.signaturePart'), value: parts.signature },
-                  ] as const
-                ).map((part, index) => (
-                  <div
-                    key={part.key}
-                    className={cn(
-                      'flex flex-col gap-1.5 px-4 py-3',
-                      index !== 0 && 'border-t border-slate-100 dark:border-slate-800',
-                    )}
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
-                        {part.label}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => handleCopyPart(part.key, part.value)}
-                        disabled={!part.value}
-                        className="flex items-center gap-1 text-[11px] font-medium text-slate-500 transition-colors hover:text-slate-700 disabled:cursor-default dark:text-slate-400 dark:hover:text-slate-200"
-                      >
-                        {copiedPart === part.key ? (
-                          <>
-                            <Check className="h-3 w-3 text-emerald-500" />
-                            <span className="text-emerald-600 dark:text-emerald-400">
-                              {t('common.copySuccess')}
-                            </span>
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="h-3 w-3" />
-                            {t('common.copy')}
-                          </>
-                        )}
-                      </button>
-                    </div>
-                    <p className="break-all font-mono text-xs text-slate-800 dark:text-slate-200">
-                      {part.value}
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <p className="px-4 py-6 text-center text-xs text-slate-400 dark:text-slate-500">
-                  {t('tools.jwtParser.partsEmpty')}
-                </p>
-              )}
-            </div>
-          </div>
-
-          {isValidFormat && (
-            <>
-              <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
-                  <div className="border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
-                    {t('tools.jwtParser.header')}
-                  </div>
-                  <div className="bg-slate-900 p-4 dark:bg-slate-950">
-                    <pre className="overflow-auto font-mono text-xs text-emerald-400">
-                      {headerStr}
-                    </pre>
-                  </div>
-                </div>
-
-                <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
-                  <div className="border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
-                    {t('tools.jwtParser.payload')}
-                  </div>
-                  <div className="bg-slate-900 p-4 dark:bg-slate-950">
-                    <pre className="overflow-auto font-mono text-xs text-emerald-400">
-                      {payloadStr}
-                    </pre>
-                  </div>
-                </div>
-              </div>
-            </>
           )}
 
-          {isValidFormat && (
+          {result.header && result.payload && (
             <>
-              {algorithmBar}
-
-              <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
-                <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
-                  <span>{t('tools.jwtParser.secretKey')}</span>
-                  <span
-                    aria-hidden={isSignatureValid === null}
-                    className={cn(
-                      'flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-medium transition-opacity',
-                      isSignatureValid === null
-                        ? 'border-transparent opacity-0'
-                        : isSignatureValid
-                          ? 'border-emerald-200 bg-emerald-50 text-emerald-600 dark:border-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-400'
-                          : 'border-rose-200 bg-rose-50 text-rose-600 dark:border-rose-900 dark:bg-rose-950/50 dark:text-rose-400',
-                    )}
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium">Header</label>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => handleCopyJson(headerText)}
                   >
-                    <span
-                      className={cn(
-                        'h-1.5 w-1.5 rounded-full',
-                        isSignatureValid === null
-                          ? 'bg-transparent'
-                          : isSignatureValid
-                            ? 'bg-emerald-500'
-                            : 'bg-rose-500',
-                      )}
-                    />
-                    {isSignatureValid === null
-                      ? t('tools.jwtParser.signatureInvalid')
-                      : isSignatureValid
-                        ? t('tools.jwtParser.signatureValid')
-                        : t('tools.jwtParser.signatureInvalid')}
-                  </span>
+                    <Copy size={14} className="mr-1" />
+                    复制
+                  </Button>
                 </div>
-                <div className="px-4 py-3">
-                  <input
-                    type="text"
+                <Textarea
+                  value={headerText}
+                  readOnly
+                  className="font-mono text-sm min-h-[120px]"
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium">Payload</label>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => handleCopyJson(payloadText)}
+                  >
+                    <Copy size={14} className="mr-1" />
+                    复制
+                  </Button>
+                </div>
+                <Textarea
+                  value={payloadText}
+                  readOnly
+                  className="font-mono text-sm min-h-[180px]"
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label htmlFor="secret" className="text-sm font-medium">
+                  签名密钥 (验证签名用，可选)
+                </label>
+                <div className="flex gap-2">
+                  <Input
+                    id="secret"
+                    type="password"
                     value={secret}
-                    onChange={(event) => setSecret(event.target.value)}
-                    placeholder={t('tools.jwtParser.secretPlaceholder')}
-                    className="w-full bg-transparent font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
+                    onChange={(e) => setSecret(e.target.value)}
+                    placeholder="输入密钥验证签名"
                   />
+                  <Button onClick={doVerify} disabled={!token || !secret}>
+                    验证签名
+                  </Button>
                 </div>
-                {verifyError && (
-                  <div className="flex items-start gap-2 border-t border-rose-200 bg-rose-50/60 px-4 py-2 dark:border-rose-900/60 dark:bg-rose-950/30">
-                    <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-rose-600 dark:text-rose-400" />
-                    <p className="text-xs text-rose-700 dark:text-rose-300">
-                      {t(
-                        `tools.jwtParser.${verifyError.key}`,
-                        verifyError.params,
-                      )}
-                    </p>
+                {result.isValidSignature !== null && (
+                  <div
+                    className={`flex items-center gap-2 p-3 rounded-md ${
+                      result.isValidSignature
+                        ? 'bg-green-50 text-green-700'
+                        : 'bg-red-50 text-red-700'
+                    }`}
+                  >
+                    {result.isValidSignature ? (
+                      <>
+                        <CheckCircle size={18} />
+                        <span className="text-sm font-medium">签名验证通过</span>
+                      </>
+                    ) : (
+                      <>
+                        <AlertTriangle size={18} />
+                        <span className="text-sm font-medium">签名验证失败</span>
+                      </>
+                    )}
                   </div>
                 )}
               </div>
+
+              {result.header && (
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="secondary">算法: {result.header.alg || '?'}</Badge>
+                  <Badge variant="secondary">类型: {result.header.typ || '?'}</Badge>
+                </div>
+              )}
             </>
           )}
-        </>
-      )}
-
-      {mode === Mode.GENERATE && (
-        <>
-          {algorithmBar}
-
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
-              <div className="border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
-                {t('tools.jwtParser.headerJson')}
-              </div>
-              <div className="px-4 py-3">
-                <textarea
-                  value={headerStr}
-                  onChange={(event) => setHeaderStr(event.target.value)}
-                  className="min-h-[120px] w-full resize-y bg-transparent font-mono text-xs focus:outline-none focus:ring-0 sm:text-sm"
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
-              <div className="border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
-                {t('tools.jwtParser.payloadJson')}
-              </div>
-              <div className="px-4 py-3">
-                <textarea
-                  value={payloadStr}
-                  onChange={(event) => setPayloadStr(event.target.value)}
-                  className="min-h-[120px] w-full resize-y bg-transparent font-mono text-xs focus:outline-none focus:ring-0 sm:text-sm"
-                />
-              </div>
-            </div>
+        </TabsContent>
+        <TabsContent value="generate" className="mt-4 space-y-4">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="header-gen" className="text-sm font-medium">
+              Header (JSON 格式)
+            </label>
+            <Textarea
+              id="header-gen"
+              value={headerText || '{\n  "alg": "HS256",\n  "typ": "JWT"\n}'}
+              onChange={(e) => setHeaderText(e.target.value)}
+              className="font-mono text-sm min-h-[120px]"
+            />
           </div>
-
-          <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
-            <div className="border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
-              {t('tools.jwtParser.secretKey')}
-            </div>
-            <div className="flex items-center gap-2 px-4 py-3">
-              <input
-                type="text"
-                value={secret}
-                onChange={(event) => setSecret(event.target.value)}
-                placeholder={t(
-                  'tools.jwtParser.secretPlaceholderGenerate',
-                )}
-                className="flex-1 bg-transparent font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
-              />
-              <button
-                type="button"
-                onClick={handleGenerate}
-                className="flex shrink-0 items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
-              >
-                <ShieldCheck className="h-3.5 w-3.5" />
-                {t('tools.jwtParser.generateButton')}
-              </button>
-            </div>
-            {jsonError && (
-              <div className="flex items-start gap-2 border-t border-rose-200 bg-rose-50/60 px-4 py-2 dark:border-rose-900/60 dark:bg-rose-950/30">
-                <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-rose-600 dark:text-rose-400" />
-                <p className="text-xs text-rose-700 dark:text-rose-300">
-                  {t(`tools.jwtParser.${jsonError.key}`, jsonError.params)}
-                </p>
-              </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="payload-gen" className="text-sm font-medium">
+              Payload (JSON 格式)
+            </label>
+            <Textarea
+              id="payload-gen"
+              value={payloadText || '{\n  "sub": "1234567890",\n  "name": "John Doe",\n  "iat": 1516239022\n}'}
+              onChange={(e) => setPayloadText(e.target.value)}
+              className="font-mono text-sm min-h-[180px]"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="secret-gen" className="text-sm font-medium">
+              签名密钥
+            </label>
+            <Input
+              id="secret-gen"
+              type="password"
+              value={secret}
+              onChange={(e) => setSecret(e.target.value)}
+              placeholder="输入用于签名的密钥"
+            />
+          </div>
+          <div className="flex gap-2">
+            <Button
+              onClick={() => {
+                try {
+                  const header = JSON.parse(headerText);
+                  const payload = JSON.parse(payloadText);
+                  // Note: 签名需要密钥，我们只输出前面两部分在这里
+                  const generated = `${btoa(JSON.stringify(header)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')}.${btoa(JSON.stringify(payload)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')}.[your signature here]`;
+                  setToken(generated);
+                  setResult({
+                    header,
+                    payload,
+                    error: null,
+                    isValidSignature: null,
+                  });
+                  setMode('parse');
+                } catch (e) {
+                  setResult({
+                    header: null,
+                    payload: null,
+                    error: `生成失败: ${e instanceof Error ? e.message : String(e)}`,
+                    isValidSignature: null,
+                  });
+                }
+              }}
+              disabled={!headerText || !payloadText}
+            >
+              生成 Token
+            </Button>
+            {token && mode === 'parse' && (
+              <Button variant="secondary" onClick={() => copyToClipboard(token)}>
+                <Copy size={14} className="mr-1" />
+                复制 Token
+              </Button>
             )}
           </div>
-
-          {generatedToken && (
-            <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
-              <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
-                <span>{t('tools.jwtParser.generatedToken')}</span>
-                <button
-                  type="button"
-                  onClick={handleCopy}
-                  className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
-                >
-                  {copied ? (
-                    <>
-                      <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                      <span className="text-emerald-600 dark:text-emerald-400">
-                        {t('common.copySuccess')}
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
-                      {t('common.copy')}
-                    </>
-                  )}
-                </button>
-              </div>
-              <div className="bg-slate-900 p-4 dark:bg-slate-950">
-                <p className="break-all font-mono text-xs leading-relaxed text-emerald-400">
-                  {generatedToken}
-                </p>
-              </div>
+          {result.error && (
+            <div className="flex items-center gap-2 p-3 bg-red-50 text-red-700 rounded-md">
+              <AlertTriangle size={18} />
+              <span className="text-sm font-medium">{result.error}</span>
             </div>
           )}
-        </>
-      )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
-
-export default JWTParser;

@@ -1,67 +1,60 @@
-import { describe, expect, test } from 'vitest';
-import { parseJWT } from './jwt';
+import { splitJwt, base64UrlDecode, base64UrlEncode, parseJwt } from './jwt';
 
-const validToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+describe('jwt utils', () => {
+  describe('splitJwt', () => {
+    it('should split simple jwt into three parts', () => {
+      const token = 'header.payload.signature';
+      expect(splitJwt(token)).toEqual(['header', 'payload', 'signature']);
+    });
 
-describe('parseJWT', () => {
-  test('should parse valid JWT', () => {
-    const result = parseJWT(validToken);
-    expect(result.isValidFormat).toBe(true);
-    expect(result.header.alg).toBe('HS256');
-    expect(result.header.typ).toBe('JWT');
-    expect(result.payload.sub).toBe('1234567890');
-    expect(result.payload.name).toBe('John Doe');
-    expect(result.signature).toBe('SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c');
+    it('should remove Bearer prefix', () => {
+      const token = 'Bearer header.payload.signature';
+      expect(splitJwt(token)).toEqual(['header', 'payload', 'signature']);
+    });
+
+    it('should handle lowercase bearer', () => {
+      const token = 'bearer header.payload.signature';
+      expect(splitJwt(token)).toEqual(['header', 'payload', 'signature']);
+    });
   });
 
-  test('should return invalid for wrong number of parts', () => {
-    const result = parseJWT('header.payload');
-    expect(result.isValidFormat).toBe(false);
+  describe('base64Url encoding/decoding', () => {
+    it('should encode and decode correctly', () => {
+      const input = 'test string+/=';
+      const encoded = base64UrlEncode(input);
+      expect(encoded).toBe('dGVzdCBzdHJpbmcrLw');
+      const decoded = base64UrlDecode(encoded);
+      expect(decoded).toBe(input);
+    });
   });
 
-  test('should return invalid for invalid base64', () => {
-    const result = parseJWT('!!!.%%%.###');
-    expect(result.isValidFormat).toBe(false);
+  describe('parseJwt', () => {
+    it('should parse valid jwt', () => {
+      // Example JWT: header {"alg": "HS256", "typ": "JWT"}, payload {"sub": "1234567890", "name": "John Doe", "iat": 1516239022}
+      const token =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+      const result = parseJwt(token);
+      expect(result.error).toBeNull();
+      expect(result.header).toEqual({ alg: 'HS256', typ: 'JWT' });
+      expect(result.payload).toEqual({
+        sub: '1234567890',
+        name: 'John Doe',
+        iat: 1516239022,
+      });
+    });
+
+    it('should return error for invalid format', () => {
+      const token = 'header.payload';
+      const result = parseJwt(token);
+      expect(result.error).not.toBeNull();
+      expect(result.header).toBeNull();
+      expect(result.payload).toBeNull();
+    });
+
+    it('should return error for invalid json', () => {
+      const token = 'invalidjson.invalidjson.signature';
+      const result = parseJwt(token);
+      expect(result.error).not.toBeNull();
+    });
   });
 });
-
-// generateJWT and verifySignature rely on browser crypto API,
-// can't run in node test environment, so we skip them
-// describe('generateJWT and verifySignature', async () => {
-//   const header = { alg: 'HS256', typ: 'JWT' };
-//   const payload = { sub: '123', name: 'Test' };
-//   const secret = 'my-secret-key';
-
-//   test('should generate valid JWT that can be verified', async () => {
-//     const token = await generateJWT(header, payload, secret, Algorithm.HS256);
-//     const parts = token.split('.');
-//     expect(parts.length).toBe(3);
-
-//     const parsed = parseJWT(token);
-//     expect(parsed.isValidFormat).toBe(true);
-//     expect(parsed.header.alg).toBe('HS256');
-//     expect(parsed.payload.sub).toBe('123');
-
-//     const verifyResult = await verifySignature(
-//       parts[0],
-//       parts[1],
-//       parts[2],
-//       secret,
-//       Algorithm.HS256
-//     );
-//     expect(verifyResult.valid).toBe(true);
-//   });
-
-//   test('should fail verification with wrong secret', async () => {
-//     const token = await generateJWT(header, payload, secret, Algorithm.HS256);
-//     const parts = token.split('.');
-//     const verifyResult = await verifySignature(
-//       parts[0],
-//       parts[1],
-//       parts[2],
-//       'wrong-secret',
-//       Algorithm.HS256
-//     );
-//     expect(verifyResult.valid).toBe(false);
-//   });
-// });
