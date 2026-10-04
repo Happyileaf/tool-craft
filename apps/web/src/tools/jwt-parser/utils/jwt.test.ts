@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { splitJwt, base64UrlDecode, base64UrlEncode, parseJwt } from './jwt';
 
 describe('jwt utils', () => {
@@ -22,7 +23,7 @@ describe('jwt utils', () => {
     it('should encode and decode correctly', () => {
       const input = 'test string+/=';
       const encoded = base64UrlEncode(input);
-      expect(encoded).toBe('dGVzdCBzdHJpbmcrLw');
+      expect(encoded).toBe('dGVzdCBzdHJpbmcrLz0');
       const decoded = base64UrlDecode(encoded);
       expect(decoded).toBe(input);
     });

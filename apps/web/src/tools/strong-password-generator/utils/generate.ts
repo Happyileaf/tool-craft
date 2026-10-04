@@ -49,7 +49,7 @@ export function generatePassword(options: Partial<GeneratePasswordOptions> = {})
 
   let password = '';
   for (let i = 0; i < length; i++) {
-    password += charset[array[i] % charset.length];
+    password += charset[array[i]! % charset.length];
   }
 
   return password;

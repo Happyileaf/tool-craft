@@ -1,13 +1,14 @@
+'use client';
+
 import { useState, useEffect } from 'react';
-import { ToolComponentProps } from '../types';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components/ui/tabs';
-import { Textarea } from '../../../components/ui/textarea';
-import { Input } from '../../../components/ui/input';
-import { Button } from '../../../components/ui/button';
-import { Badge } from '../../../components/ui/badge';
+import { ToolComponentProps } from '../loaders';
+import { Tabs, Input, Button, Badge } from 'antd';
+import type { TabsProps } from 'antd';
 import { parseJwt, splitJwt, verifySignature } from './utils/jwt';
 import { Copy, CheckCircle, AlertTriangle } from 'lucide-react';
-import { copyToClipboard } from '../../../lib/copy';
+import { copyToClipboard } from '@/lib/utils';
+
+const { TabPane } = Tabs;
 
 type Mode = 'parse' | 'generate';
 
@@ -36,7 +37,7 @@ export default function JwtParser({ defaultSampleInput }: ToolComponentProps) {
   }, [token, mode]);
 
   const parseToken = () => {
-    const parsed = parseJwt(token);
+    const parsed = parseJwt(token || '');
     setResult({ ...parsed, isValidSignature: null });
     if (parsed.header) {
       setHeaderText(JSON.stringify(parsed.header, null, 2));
@@ -51,7 +52,7 @@ export default function JwtParser({ defaultSampleInput }: ToolComponentProps) {
     const parts = splitJwt(token);
     if (parts.length !== 3) return;
     const [headerB64, payloadB64, signature] = parts;
-    const isValid = await verifySignature(headerB64, payloadB64, signature, secret);
+    const isValid = await verifySignature(headerB64!, payloadB64!, signature ?? '', secret);
     setResult((prev) => ({ ...prev, isValidSignature: isValid }));
   };
 
@@ -62,24 +63,21 @@ export default function JwtParser({ defaultSampleInput }: ToolComponentProps) {
   return (
     <div className="flex flex-col gap-4 p-4 max-w-4xl mx-auto">
       <Tabs
-        defaultValue="parse"
-        value={mode}
-        onValueChange={(v) => setMode(v as Mode)}
+        defaultActiveKey="parse"
+        activeKey={mode}
+        onChange={(v: string) => setMode(v as Mode)}
         className="w-full"
       >
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="parse">解析</TabsTrigger>
-          <TabsTrigger value="generate">生成</TabsTrigger>
-        </TabsList>
-        <TabsContent value="parse" className="mt-4 space-y-4">
-          <div className="flex flex-col gap-2">
+        <TabPane tab="解析" key="parse">
+          <div className="flex flex-col gap-2 mt-4 space-y-4">
             <label htmlFor="token" className="text-sm font-medium">JWT Token</label>
-            <Textarea
+            <textarea
               id="token"
               value={token}
-              onChange={(e) => setToken(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setToken(e.target.value)}
               placeholder="粘贴你的 JWT token 到这里..."
-              className="min-h-[100px]"
+              className="min-h-[100px] w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              style={{ minHeight: '100px' }}
             />
           </div>
 
@@ -96,18 +94,19 @@ export default function JwtParser({ defaultSampleInput }: ToolComponentProps) {
                 <div className="flex items-center justify-between">
                   <label className="text-sm font-medium">Header</label>
                   <Button
-                    size="sm"
-                    variant="ghost"
+                    size="small"
+                    type="text"
                     onClick={() => handleCopyJson(headerText)}
                   >
                     <Copy size={14} className="mr-1" />
                     复制
                   </Button>
                 </div>
-                <Textarea
+                <textarea
                   value={headerText}
                   readOnly
-                  className="font-mono text-sm min-h-[120px]"
+                  className="font-mono text-sm min-h-[120px] w-full border border-gray-300 rounded-md p-2"
+                  style={{ minHeight: '120px' }}
                 />
               </div>
 
@@ -115,18 +114,19 @@ export default function JwtParser({ defaultSampleInput }: ToolComponentProps) {
                 <div className="flex items-center justify-between">
                   <label className="text-sm font-medium">Payload</label>
                   <Button
-                    size="sm"
-                    variant="ghost"
+                    size="small"
+                    type="text"
                     onClick={() => handleCopyJson(payloadText)}
                   >
                     <Copy size={14} className="mr-1" />
                     复制
                   </Button>
                 </div>
-                <Textarea
+                <textarea
                   value={payloadText}
                   readOnly
-                  className="font-mono text-sm min-h-[180px]"
+                  className="font-mono text-sm min-h-[180px] w-full border border-gray-300 rounded-md p-2"
+                  style={{ minHeight: '180px' }}
                 />
               </div>
 
@@ -139,7 +139,7 @@ export default function JwtParser({ defaultSampleInput }: ToolComponentProps) {
                     id="secret"
                     type="password"
                     value={secret}
-                    onChange={(e) => setSecret(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSecret(e.target.value)}
                     placeholder="输入密钥验证签名"
                   />
                   <Button onClick={doVerify} disabled={!token || !secret}>
@@ -171,34 +171,36 @@ export default function JwtParser({ defaultSampleInput }: ToolComponentProps) {
 
               {result.header && (
                 <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">算法: {result.header.alg || '?'}</Badge>
-                  <Badge variant="secondary">类型: {result.header.typ || '?'}</Badge>
+                  <span className="px-2 py-1 text-xs bg-gray-100 rounded">算法: {result.header.alg || '?'}</span>
+                  <span className="px-2 py-1 text-xs bg-gray-100 rounded">类型: {result.header.typ || '?'}</span>
                 </div>
               )}
             </>
           )}
-        </TabsContent>
-        <TabsContent value="generate" className="mt-4 space-y-4">
-          <div className="flex flex-col gap-2">
+        </TabPane>
+        <TabPane tab="生成" key="generate">
+          <div className="flex flex-col gap-2 mt-4 space-y-4">
             <label htmlFor="header-gen" className="text-sm font-medium">
               Header (JSON 格式)
             </label>
-            <Textarea
+            <textarea
               id="header-gen"
               value={headerText || '{\n  "alg": "HS256",\n  "typ": "JWT"\n}'}
-              onChange={(e) => setHeaderText(e.target.value)}
-              className="font-mono text-sm min-h-[120px]"
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setHeaderText(e.target.value)}
+              className="font-mono text-sm min-h-[120px] w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              style={{ minHeight: '120px' }}
             />
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="payload-gen" className="text-sm font-medium">
               Payload (JSON 格式)
             </label>
-            <Textarea
+            <textarea
               id="payload-gen"
               value={payloadText || '{\n  "sub": "1234567890",\n  "name": "John Doe",\n  "iat": 1516239022\n}'}
-              onChange={(e) => setPayloadText(e.target.value)}
-              className="font-mono text-sm min-h-[180px]"
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setPayloadText(e.target.value)}
+              className="font-mono text-sm min-h-[180px] w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              style={{ minHeight: '180px' }}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -209,7 +211,7 @@ export default function JwtParser({ defaultSampleInput }: ToolComponentProps) {
               id="secret-gen"
               type="password"
               value={secret}
-              onChange={(e) => setSecret(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSecret(e.target.value)}
               placeholder="输入用于签名的密钥"
             />
           </div>
@@ -243,7 +245,7 @@ export default function JwtParser({ defaultSampleInput }: ToolComponentProps) {
               生成 Token
             </Button>
             {token && mode === 'parse' && (
-              <Button variant="secondary" onClick={() => copyToClipboard(token)}>
+              <Button type="dashed" onClick={() => copyToClipboard(token)}>
                 <Copy size={14} className="mr-1" />
                 复制 Token
               </Button>
@@ -255,7 +257,7 @@ export default function JwtParser({ defaultSampleInput }: ToolComponentProps) {
               <span className="text-sm font-medium">{result.error}</span>
             </div>
           )}
-        </TabsContent>
+        </TabPane>
       </Tabs>
     </div>
   );

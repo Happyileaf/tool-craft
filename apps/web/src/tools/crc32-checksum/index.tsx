@@ -1,15 +1,15 @@
+'use client';
+
 import { useState } from 'react';
-import { ToolComponentProps } from '../types';
-import { Textarea } from '../../../components/ui/textarea';
-import { Input } from '../../../components/ui/input';
-import { Button } from '../../../components/ui/button';
+import { ToolComponentProps } from '../loaders';
+import { Input, Button } from 'antd';
 import { crc32 } from './utils/crc32';
 import { Copy } from 'lucide-react';
-import { copyToClipboard } from '../../../lib/copy';
+import { copyToClipboard } from '@/lib/utils';
 
 export default function Crc32Checksum({ defaultSampleInput }: ToolComponentProps) {
-  const [text, setText] = useState(defaultSampleInput || '');
-  const [result, setResult] = useState('');
+  const [text, setText] = useState<string>(defaultSampleInput || '');
+  const [result, setResult] = useState<string>('');
 
   const calculate = () => {
     setResult(crc32(text));
@@ -25,12 +25,13 @@ export default function Crc32Checksum({ defaultSampleInput }: ToolComponentProps
     <div className="flex flex-col gap-4 p-4 max-w-2xl mx-auto">
       <div className="flex flex-col gap-2">
         <label htmlFor="text" className="text-sm font-medium">输入文本</label>
-        <Textarea
+        <textarea
           id="text"
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value)}
           placeholder="输入需要计算CRC32校验和的文本"
-          className="min-h-[150px]"
+          className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          style={{ minHeight: '200px' }}
         />
       </div>
 

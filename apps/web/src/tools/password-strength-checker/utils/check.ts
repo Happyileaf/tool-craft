@@ -4,10 +4,15 @@ export interface PasswordStrengthResult {
   suggestions: string[];
 }
 
-const hasLowercase = /[a-z]/.test;
-const hasUppercase = /[A-Z]/.test;
-const hasDigit = /\d/.test;
-const hasSymbol = /[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test;
+const lowercaseRegex = /[a-z]/;
+const uppercaseRegex = /[A-Z]/;
+const digitRegex = /\d/;
+const symbolRegex = /[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/;
+
+const hasLowercase = (password: string) => lowercaseRegex.test(password);
+const hasUppercase = (password: string) => uppercaseRegex.test(password);
+const hasDigit = (password: string) => digitRegex.test(password);
+const hasSymbol = (password: string) => symbolRegex.test(password);
 
 const MIN_LENGTH_WEAK = 6;
 const MIN_LENGTH_MEDIUM = 8;

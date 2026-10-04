@@ -1,6 +1,8 @@
+'use client';
+
 import { useState } from 'react';
-import { ToolComponentProps } from '../types';
-import { Input } from '../../../components/ui/input';
+import { ToolComponentProps } from '../loaders';
+import { Input } from 'antd';
 import { checkPasswordStrength, PasswordStrengthResult } from './utils/check';
 import { Eye, EyeOff } from 'lucide-react';
 
@@ -36,7 +38,7 @@ export default function PasswordStrengthChecker({ defaultSampleInput }: ToolComp
             id="password"
             type={showPassword ? 'text' : 'password'}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             placeholder="请输入要检测的密码"
             className="pr-10"
           />

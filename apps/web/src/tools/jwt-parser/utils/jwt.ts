@@ -42,9 +42,9 @@ export function parseJwt(token: string): {
       return { header: null, payload: null, error: '无效的JWT格式，JWT应该包含三个部分，用点分隔' };
     }
 
-    const [headerB64, payloadB64, signature] = parts;
-    const headerJson = base64UrlDecode(headerB64);
-    const payloadJson = base64UrlDecode(payloadB64);
+    const [headerB64, payloadB64] = parts;
+    const headerJson = base64UrlDecode(headerB64!);
+    const payloadJson = base64UrlDecode(payloadB64!);
 
     return {
       header: JSON.parse(headerJson),
@@ -85,7 +85,7 @@ export async function verifySignature(
     const algorithm = { name: 'HMAC', hash: { name: 'SHA-256' } };
     const key = await crypto.subtle.importKey('raw', keyData, algorithm, false, ['verify']);
     const data = encoder.encode(`${headerB64}.${payloadB64}`);
-    const signatureBuffer = Uint8Array.from(atob(signature), c => c.charCodeAt(0));
+    const signatureBuffer = Uint8Array.from(atob(signature), (c) => c.charCodeAt(0));
     return await crypto.subtle.verify('HMAC', key, signatureBuffer, data);
   } catch (e) {
     return false;

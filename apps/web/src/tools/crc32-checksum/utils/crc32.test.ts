@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { crc32 } from './crc32';
 
 describe('crc32', () => {
@@ -6,7 +7,7 @@ describe('crc32', () => {
   });
 
   it('should calculate correct crc32 for "hello world"', () => {
-    expect(crc32('hello world')).toBe('d4a1185');
+    expect(crc32('hello world')).toBe('0d4a1185');
   });
 
   it('should calculate correct crc32 for "The quick brown fox jumps over the lazy dog"', () => {

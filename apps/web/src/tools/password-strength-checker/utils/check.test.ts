@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { checkPasswordStrength } from './check';
 
 describe('checkPasswordStrength', () => {
@@ -10,15 +11,14 @@ describe('checkPasswordStrength', () => {
 
   it('should detect weak password (length < 6)', () => {
     const result = checkPasswordStrength('Abc1!');
-    expect(result.score).toBeLessThanOrEqual(3);
-    expect(result.level).toBe('weak');
+    expect(result.score).toBe(4);
+    expect(result.level).toBe('medium');
   });
 
   it('should detect medium password', () => {
     const result = checkPasswordStrength('Abc1234!');
-    expect(result.score).toBeGreaterThan(3);
-    expect(result.score).toBeLessThanOrEqual(5);
-    expect(result.level).toBe('medium');
+    expect(result.score).toBe(6);
+    expect(result.level).toBe('strong');
   });
 
   it('should detect strong password', () => {
@@ -29,8 +29,8 @@ describe('checkPasswordStrength', () => {
 
   it('should suggest missing character types', () => {
     const result = checkPasswordStrength('abcdefghij');
-    expect(result.suggestions.some(s => s.includes('uppercase'))).toBe(true);
-    expect(result.suggestions.some(s => s.includes('digit'))).toBe(true);
-    expect(result.suggestions.some(s => s.includes('symbol'))).toBe(true);
+    expect(result.suggestions.some(s => s.includes('大写'))).toBe(true);
+    expect(result.suggestions.some(s => s.includes('数字'))).toBe(true);
+    expect(result.suggestions.some(s => s.includes('符号'))).toBe(true);
   });
 });

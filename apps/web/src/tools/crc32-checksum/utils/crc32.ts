@@ -27,9 +27,9 @@ export function crc32(str: string): string {
   let crc = 0 ^ -1;
   const encoder = new TextEncoder();
   const bytes = encoder.encode(str);
-  for (let i = 0; i < bytes.length; i++) {
-    const byte = bytes[i];
-    crc = table[(crc ^ byte) & 0xff] ^ (crc >>> 8);
+  for (const byte of bytes) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    crc = table[(crc ^ byte) & 0xff]! ^ (crc >>> 8);
   }
   crc = crc ^ -1;
   // Convert to unsigned 32-bit integer and format as 8-character lowercase hex
