@@ -20,5 +20,9 @@
   "devDependencies": {
     "@playwright/test": "^1",
     "turbo": "^2.11.2"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.6.1",
+    "postcss": "^8.5.28"
   }
 }
