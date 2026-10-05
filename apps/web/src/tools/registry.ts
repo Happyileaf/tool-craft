@@ -1,5 +1,6 @@
 import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
+import { DEFAULT_SAMPLE_CSS } from './css-prefixer/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -2500,6 +2501,86 @@ Bob Johnson,25,bob@example.com`,
           {
             question: 'Does it support complex CSV with commas and quotes inside cells?',
             answer: 'Yes, fully supported. It correctly handles double-quoted cells according to RFC 4180 standard, commas, newlines and escaped quotes are all parsed correctly.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'css-prefixer',
+    name: 'CSS 前缀生成器',
+    nameEn: 'CSS Prefixer',
+    description:
+      '自动给 CSS 添加浏览器厂商前缀，提高跨浏览器兼容性。',
+    descriptionEn:
+      'Automatically adds vendor prefixes to CSS for better cross-browser compatibility.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/css-prefixer',
+    iconName: 'Code',
+    tags: ['CSS', '前缀', '兼容性', '浏览器', '开发'],
+    tagsEn: ['CSS', 'Prefix', 'Compatibility', 'Browser', 'Dev'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DEFAULT_SAMPLE_CSS,
+    doc: {
+      zh: {
+        whatIsIt:
+          '基于业界标准 autoprefixer 的 CSS 前缀添加工具，自动为现代 CSS 特性添加浏览器厂商前缀，让你的样式在更多浏览器上正常工作。',
+        coreFeatures: [
+          '业界标准引擎：使用 autoprefixer，结果准确可靠',
+          '三种浏览器预设：默认推荐、现代浏览器、兼容IE',
+          '支持自定义浏览器范围，满足特殊项目需求',
+          '纯浏览器本地运算，CSS 绝不离开设备',
+        ],
+        howToUse: [
+          '选择预设浏览器范围或自定义范围',
+          '在左侧输入框粘贴原始 CSS',
+          '右侧自动输出添加前缀后的结果',
+          '点击复制按钮获取结果',
+        ],
+        useCases: [
+          '需要兼容旧版本浏览器的项目',
+          '发布开源组件前确保兼容性',
+          '校验现代 CSS 特性是否需要前缀',
+        ],
+        privacyNote:
+          '所有处理都在浏览器本地完成，你的 CSS 代码不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '什么是浏览器厂商前缀？',
+            answer:
+              '在 CSS 新特性标准化过程中，不同浏览器会使用 -webkit-、-moz-、-ms- 等前缀来实验性支持这些特性，autoprefixer 根据你指定的浏览器范围自动添加需要的前缀。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Based on the industry-standard autoprefixer, this tool automatically adds vendor prefixes to your CSS, ensuring your styles work correctly across more browsers.',
+        coreFeatures: [
+          'Industry-standard engine: uses autoprefixer for accurate and reliable results',
+          'Three browser presets: recommended, modern browsers, and IE compatible',
+          'Supports custom browser targets for special project requirements',
+          'Pure in-browser processing, CSS never leaves your device',
+        ],
+        howToUse: [
+          'Choose a preset or enter a custom browser query',
+          'Paste your raw CSS in the left input',
+          'The prefixed output automatically appears on the right',
+          'Click copy to get the result',
+        ],
+        useCases: [
+          'Projects that need compatibility with older browsers',
+          'Ensuring compatibility before releasing open-source components',
+          'Checking if modern CSS features need prefixes',
+        ],
+        privacyNote:
+          'All processing is done locally in your browser. Your CSS code is never uploaded to any server.',
+        faqs: [
+          {
+            question: 'What are vendor prefixes?',
+            answer:
+              'During the standardization process of new CSS features, different browsers use prefixes like -webkit-, -moz-, -ms- to implement experimental support. Autoprefixer automatically adds the required prefixes based on your browser target range.',
           },
         ],
       },
