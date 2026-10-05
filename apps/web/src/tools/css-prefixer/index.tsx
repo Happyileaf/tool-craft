@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { Check, Copy, Eraser } from 'lucide-react';
-import { ToolComponentProps } from '@/lib/tools/tool-component-props';
+import type { ToolComponentProps } from '../loaders';
 import { prefixCss, BROWSER_PRESETS } from './utils/prefixer';
 import { DEFAULT_SAMPLE_CSS } from './constants';
 
-export default function CssPrefixer({ className }: ToolComponentProps) {
+export default function CssPrefixer({ className }: { className?: string } & ToolComponentProps) {
   const [input, setInput] = useState(DEFAULT_SAMPLE_CSS);
   const [output, setOutput] = useState('');
   const [preset, setPreset] = useState<keyof typeof BROWSER_PRESETS>('default');

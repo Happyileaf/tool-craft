@@ -89,7 +89,7 @@ const ENTITY_MAP: Record<string, string> = {
 };
 
 const REVERSE_ENTITY_MAP: Record<string, string> = Object.entries(ENTITY_MAP).reduce(
-  (acc, [entity, char]) => {
+  (acc: Record<string, string>, [entity, char]) => {
     acc[char] = entity;
     return acc;
   },

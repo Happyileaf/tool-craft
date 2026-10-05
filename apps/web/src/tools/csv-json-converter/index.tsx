@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { Check, Copy, ArrowLeftRight, Eraser } from 'lucide-react';
-import { ToolComponentProps } from '@/lib/tools/tool-component-props';
+import type { ToolComponentProps } from '../loaders';
 import { csvToJson, jsonToCsv } from './utils/converter';
 import { DEFAULT_SAMPLE_CSV, DEFAULT_SAMPLE_JSON } from './constants';
 
 type Mode = 'csv-to-json' | 'json-to-csv';
 
-export default function CsvJsonConverter({ className }: ToolComponentProps) {
+export default function CsvJsonConverter({ className }: { className?: string } & ToolComponentProps) {
   const [input, setInput] = useState(DEFAULT_SAMPLE_CSV);
   const [output, setOutput] = useState('');
   const [mode, setMode] = useState<Mode>('csv-to-json');

@@ -11,14 +11,14 @@ export function csvToJson(csv: string): any[] {
     return [];
   }
 
-  const headers = parseCSVLine(lines[0]);
-  const result = [];
+  const headers = parseCSVLine(lines[0] as string);
+  const result: any[] = [];
 
   for (let i = 1; i < lines.length; i++) {
-    const data = parseCSVLine(lines[i]);
-    const obj = {};
+    const data = parseCSVLine(lines[i] as string);
+    const obj: Record<string, string> = {};
     for (let j = 0; j < headers.length; j++) {
-      obj[headers[j]] = j < data.length ? data[j] : '';
+      obj[headers[j] as string] = j < data.length ? data[j] as string : '';
     }
     result.push(obj);
   }

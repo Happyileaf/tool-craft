@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { Check, Copy, ArrowLeftRight, Eraser } from 'lucide-react';
-import { ToolComponentProps } from '@/lib/tools/tool-component-props';
+import type { ToolComponentProps } from '../loaders';
 import { decodeHtmlEntities, encodeHtmlEntities } from './utils/codec';
 import { DEFAULT_SAMPLE_INPUT } from './constants';
 
 type Mode = 'encode' | 'decode';
 
-export default function HtmlEntityCodec({ className }: ToolComponentProps) {
+export default function HtmlEntityCodec({ className }: { className?: string } & ToolComponentProps) {
   const [input, setInput] = useState(DEFAULT_SAMPLE_INPUT);
   const [output, setOutput] = useState('');
   const [mode, setMode] = useState<Mode>('decode');

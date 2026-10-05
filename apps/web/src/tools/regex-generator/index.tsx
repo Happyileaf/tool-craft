@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Check, Copy } from 'lucide-react';
-import { ToolComponentProps } from '@/lib/tools/tool-component-props';
+import type { ToolComponentProps } from '../loaders';
 import {
   REGEX_PATTERNS,
   getCategories,
@@ -11,18 +11,18 @@ import {
 } from './utils/generator';
 import { DEFAULT_SELECTED_PATTERN } from './constants';
 
-export default function RegexGenerator({ className }: ToolComponentProps) {
+export default function RegexGenerator({ className }: { className?: string } & ToolComponentProps) {
   const categories = getCategories();
   const [selectedCategory, setSelectedCategory] = useState<string>(
-    categories[0],
+    categories[0] || '',
   );
   const patterns = getPatternsByCategory(selectedCategory);
   const [selectedPattern, setSelectedPattern] = useState<RegexPattern | null>(
-    () => REGEX_PATTERNS.find(p => p.name === DEFAULT_SELECTED_PATTERN) || null,
+    REGEX_PATTERNS.find(p => p.name === DEFAULT_SELECTED_PATTERN) || null,
   );
-  const [customPattern, setCustomPattern] = useState('');
-  const [flags, setFlags] = useState('');
-  const [testText, setTestText] = useState('');
+  const [customPattern, setCustomPattern] = useState<string>('');
+  const [flags, setFlags] = useState<string>('');
+  const [testText, setTestText] = useState<string>('');
   const [copied, setCopied] = useState(false);
   const [matches, setMatches] = useState<Array<{text: string; index: number}>>([]);
 
@@ -31,7 +31,7 @@ export default function RegexGenerator({ className }: ToolComponentProps) {
       setCustomPattern(selectedPattern.pattern);
       setFlags(selectedPattern.flags);
       if (selectedPattern.examples.length > 0) {
-        setTestText(selectedPattern.examples[0]);
+        setTestText(selectedPattern.examples[0] || '');
       }
     }
   }, [selectedPattern]);
@@ -126,7 +126,7 @@ export default function RegexGenerator({ className }: ToolComponentProps) {
   const hasError = (() => {
     if (!customPattern) return false;
     try {
-      // eslint-disable-next-line no-new
+       
       new RegExp(customPattern, flags);
       return false;
     } catch {

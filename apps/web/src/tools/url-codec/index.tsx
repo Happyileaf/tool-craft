@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { Check, Copy, ArrowLeftRight, Eraser } from 'lucide-react';
-import { ToolComponentProps } from '@/lib/tools/tool-component-props';
+import type { ToolComponentProps } from '../loaders';
 import { encodeUriComponent, decodeUriComponent, encodeUri, decodeUri } from './utils/codec';
 import { DEFAULT_SAMPLE_INPUT } from './constants';
 
 type Mode = 'encode-component' | 'decode-component' | 'encode-uri' | 'decode-uri';
 
-export default function UrlCodec({ className }: ToolComponentProps) {
+export default function UrlCodec({ className }: { className?: string } & ToolComponentProps) {
   const [input, setInput] = useState(DEFAULT_SAMPLE_INPUT);
   const [output, setOutput] = useState('');
   const [mode, setMode] = useState<Mode>('decode-component');

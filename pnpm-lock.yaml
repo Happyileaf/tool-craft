@@ -32,6 +32,9 @@ importers:
       autoprefixer:
         specifier: ^10.6.1
         version: 10.6.1(postcss@8.5.28)
+      postcss:
+        specifier: ^8.5.28
+        version: 8.5.28
     devDependencies:
       '@playwright/test':
         specifier: ^1
