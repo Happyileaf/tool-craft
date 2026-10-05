@@ -14,6 +14,7 @@
 | 20260928103007 | Lorem Ipsum generator | 生成占位测试文本 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
 | 20260928103008 | Password generator | 生成安全随机密码 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
 | 20260928103009 | CRON expression parser | 解析和验证 CRON 表达式，预览执行时间 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
+| 20261006180740 | JSON to YAML converter | 实现 JSON 转 YAML 格式数据转换，与已有 YAML to JSON 组成双向转换 | Web Tool | Existing Gap | Pending | 2026-10-06 | | | |
 | -------------- | ------------ | --------------------------- | ---------- | ----------- | ------- | ---------- | ---------- | ------------- | ------ |
 
 
