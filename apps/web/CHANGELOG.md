@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-10-06 ：【自主迭代】新增 5 个开发工具
+
+- **新增**：CSV JSON 双向转换器（csv-json-converter）— 双向转换 CSV 和 JSON 格式，支持带引号和逗号的复杂单元格
+- **新增**：CSS 前缀生成器（css-prefixer）— 自动给 CSS 添加浏览器厂商前缀，提高跨浏览器兼容性
+- **新增**：正则表达式生成器（regex-generator）— 根据常见需求快速生成正则表达式，支持分类选择和实时测试匹配
+- **新增**：URL 编解码工具（url-codec）— 对 URL 或 URL 组件进行编码或解码，支持 encodeURI 和 encodeURIComponent 两种模式
+- **新增**：HTML 实体编解码（html-entity-codec）— 编码特殊字符为 HTML 实体，或解码 HTML 实体为纯文本
+
 ## 2026-09-22 ：【自主迭代】新增 3 个文本处理工具
 
 - **新增**：字数统计（word-count）— 实时统计文本字符数、字数、行数和段落数
