@@ -1,6 +1,7 @@
 import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
 import { DEFAULT_SAMPLE_CSS } from './css-prefixer/constants';
+import { DEFAULT_SAMPLE_INPUT } from './url-codec/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -2663,6 +2664,86 @@ Bob Johnson,25,bob@example.com`,
             question: 'What does each flag letter mean?',
             answer:
               'g = global match (find all matches rather than stopping after the first match); i = case-insensitive matching; m = multiline mode; s = dotall mode (allows . to match newline characters); u = Unicode support; y = sticky matching that only matches starting from the current lastIndex.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'url-codec',
+    name: 'URL 编解码工具',
+    nameEn: 'URL Encoder/Decoder',
+    description:
+      '对 URL 或 URL 组件进行编码或解码，支持 encodeURI 和 encodeURIComponent 两种模式。',
+    descriptionEn:
+      'Encode or decode URLs or URL components, supports both encodeURI and encodeURIComponent modes.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/url-codec',
+    iconName: 'Link',
+    tags: ['URL', '编码', '解码', 'encode', 'decode'],
+    tagsEn: ['URL', 'Encode', 'Decode', 'Encoding', 'Decoding'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DEFAULT_SAMPLE_INPUT,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 URL 编解码工具，支持对整个 URL 或单个 URL 组件进行编码和解码，四种模式一键切换，方便开发者处理 URL 参数。',
+        coreFeatures: [
+          '四种操作模式：编码组件、解码组件、编码完整 URI、解码完整 URI',
+          '一键翻转输入输出方向，方便对比',
+          '纯浏览器原生实现，使用标准 JavaScript API',
+          '结果即时生成，支持一键复制',
+        ],
+        howToUse: [
+          '选择需要的操作模式（encode/decode + component/full URI）',
+          '在左侧输入框粘贴需要处理的 URL',
+          '右侧自动输出处理结果',
+          '点击复制获取结果',
+        ],
+        useCases: [
+          '对 URL 查询参数进行编码以便安全传递',
+          '解码编码后的 URL 参数以便阅读',
+          '调试 URL 编码问题，查看编码前后对比',
+        ],
+        privacyNote:
+          '所有编解码操作都在浏览器本地完成，URL 不会上传到任何服务器。',
+        faqs: [
+          {
+            question: 'encodeURIComponent 和 encodeURI 有什么区别？',
+            answer:
+              'encodeURIComponent 会编码所有特殊字符包括 : / ? # 等，适合对单个查询参数等组件编码；encodeURI 不会编码保留这些结构字符，用于对完整 URI 编码保持结构不变。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient URL encoder and decoder supporting encoding and decoding of entire URLs or individual URL components. Four modes with one-click switching helps developers handle URL parameters easily.',
+        coreFeatures: [
+          'Four operation modes: encode component, decode component, encode full URI, decode full URI',
+          'One-click flip input and output direction for easy comparison',
+          'Pure browser native implementation using standard JavaScript API',
+          'Instant result generation with one-click copy',
+        ],
+        howToUse: [
+          'Choose the operation mode you need (encode/decode + component/full URI)',
+          'Paste the URL you need to process in the left input',
+          'The processed result automatically appears on the right',
+          'Click copy to get the result',
+        ],
+        useCases: [
+          'Encoding URL query parameters for safe transmission',
+          'Decoding encoded URL parameters for readability',
+          'Debugging URL encoding issues by comparing before and after',
+        ],
+        privacyNote:
+          'All encoding and decoding operations are done locally in the browser, URLs are never uploaded to any server.',
+        faqs: [
+          {
+            question: 'What is the difference between encodeURIComponent and encodeURI?',
+            answer:
+              'encodeURIComponent encodes all special characters including : / ? # etc., suitable for encoding individual query parameters. encodeURI does not encode these characters and preserves the URI structure, used for encoding the entire URI.',
           },
         ],
       },
