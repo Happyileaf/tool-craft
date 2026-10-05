@@ -2425,6 +2425,86 @@ author:
       },
     },
   },
+  {
+    slug: 'csv-json-converter',
+    name: 'CSV JSON 双向转换器',
+    nameEn: 'CSV JSON Converter',
+    description:
+      '双向转换 CSV 和 JSON 格式数据，支持带引号和逗号的复杂格式。',
+    descriptionEn:
+      'Bidirectional converter between CSV and JSON formats, supports quoted values and commas inside cells.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/csv-json-converter',
+    iconName: 'FileText',
+    tags: ['CSV', 'JSON', '转换', '格式', '开发'],
+    tagsEn: ['CSV', 'JSON', 'Convert', 'Format', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `name,age,email
+Alice Smith,30,alice@example.com
+Bob Johnson,25,bob@example.com`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 CSV 与 JSON 双向转换器，基于纯浏览器本地运算，一键翻转转换方向，完美处理带引号的复杂单元格。',
+        coreFeatures: [
+          '双向转换：CSV → JSON 和 JSON → CSV 一键切换',
+          '完整格式支持：正确处理包含逗号、引号和换行的单元格',
+          '实时预览：输入后立即得到格式化结果',
+          '一键复制：转换完成后快速复制结果',
+        ],
+        howToUse: [
+          '选择转换方向，在输入区粘贴原始数据',
+          '右侧自动输出格式化的结果',
+          '如果输入错误，会显示清晰的错误提示',
+          '点击复制按钮获取转换结果',
+        ],
+        useCases: [
+          '将导出的 CSV 表格转为 JSON 用于开发测试',
+          '将 API 返回的 JSON 数组转为 CSV 用于分析',
+          '快速在两种格式之间转换数据',
+        ],
+        privacyNote:
+          '所有转换运算都在浏览器本地完成，数据绝不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '支持包含逗号和引号的复杂 CSV 吗？',
+            answer: '是的，完全支持。按照 RFC 4180 标准正确处理用双引号包裹的单元格，包含逗号、换行和转义引号都可以正确解析。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient bidirectional converter between CSV and JSON formats, runs entirely in the browser, supports one-click direction swap, handles complex quoted cells perfectly.',
+        coreFeatures: [
+          'Bidirectional conversion: swap between CSV → JSON and JSON → CSV with one click',
+          'Full format support: correctly handles cells containing commas, quotes, and newlines',
+          'Real-time preview: get formatted result instantly after input',
+          'One-click copy: quickly copy the result when conversion is done',
+        ],
+        howToUse: [
+          'Choose conversion direction and paste source data in the input area',
+          'The formatted result automatically appears on the right',
+          'Clear error messages will be shown if there are syntax issues',
+          'Click the copy button to get the result',
+        ],
+        useCases: [
+          'Convert exported CSV tables to JSON for development testing',
+          'Convert JSON array from API responses to CSV for analysis',
+          'Quickly convert data between the two formats',
+        ],
+        privacyNote:
+          'All conversion runs locally in your browser, data is never uploaded to any server.',
+        faqs: [
+          {
+            question: 'Does it support complex CSV with commas and quotes inside cells?',
+            answer: 'Yes, fully supported. It correctly handles double-quoted cells according to RFC 4180 standard, commas, newlines and escaped quotes are all parsed correctly.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
