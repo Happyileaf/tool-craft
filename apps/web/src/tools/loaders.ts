@@ -47,4 +47,5 @@ export const toolLoaders: Record<
   'css-filter-generator': () => import('./css-filter-generator'),
   'csv-json-converter': () => import('./csv-json-converter'),
   'css-prefixer': () => import('./css-prefixer'),
+  'regex-generator': () => import('./regex-generator'),
 };

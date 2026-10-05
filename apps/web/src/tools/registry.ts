@@ -2586,6 +2586,88 @@ Bob Johnson,25,bob@example.com`,
       },
     },
   },
+  {
+    slug: 'regex-generator',
+    name: '正则表达式生成器',
+    nameEn: 'Regular Expression Generator',
+    description:
+      '根据常见需求快速生成正则表达式，支持分类选择和实时测试匹配。',
+    descriptionEn:
+      'Quickly generate regular expressions for common needs, with categorized selection and real-time matching testing.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/regex-generator',
+    iconName: 'Code',
+    tags: ['正则', '生成', '测试', '匹配', '开发'],
+    tagsEn: ['Regex', 'Generate', 'Test', 'Match', 'Dev'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '正则表达式生成器帮助你快速获取常用场景的正则，按分类浏览选择，生成后可立即在工具中测试匹配效果。',
+        coreFeatures: [
+          '分类整理：验证、标识符、通用场景三大分类',
+          '二十多种常用正则直接选用：邮箱、URL、IP、手机号等',
+          '支持自定义正则和 flag 开关',
+          '实时测试匹配，高亮显示匹配结果',
+        ],
+        howToUse: [
+          '左侧选择分类和具体正则模板',
+          '中间编辑正则表达式和 flags',
+          '底部输入测试文本查看匹配结果',
+          '匹配项会高亮显示在测试文本中',
+          '点击复制按钮复制完整正则表达式',
+        ],
+        useCases: [
+          '快速获取常用验证正则，不用反复搜索',
+          '开发调试正则表达式，现场测试匹配效果',
+          '学习正则表达式常见写法',
+        ],
+        privacyNote:
+          '所有生成和匹配都在浏览器本地完成，数据不会上传服务器。',
+        faqs: [
+          {
+            question: 'flags 每个字母代表什么意思？',
+            answer:
+              'g = 全局匹配（查找所有匹配而非在第一个匹配后停止）；i = 不区分大小写；m = 多行模式；s = 让 . 匹配包括换行符在内的所有字符；u = 开启 Unicode 支持；y = 粘性匹配，只匹配从 lastIndex 开始的位置。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Regular Expression Generator helps you quickly get regex for common scenarios, browse by category, and test matching results immediately after generation.',
+        coreFeatures: [
+          'Categorized: validation, identifiers, common patterns',
+          '20+ common regex patterns: email, URL, IP, phone, and more',
+          'Supports custom regex and flag toggles',
+          'Real-time matching testing with highlighted results',
+        ],
+        howToUse: [
+          'Select category and regex template on the left',
+          'Edit the regex pattern and flags in the middle',
+          'Enter test text at the bottom to see matching results',
+          'Matches are highlighted in the test text',
+          'Click copy to get the complete regex',
+        ],
+        useCases: [
+          'Quickly get common validation regex without searching',
+          'Develop and debug regex, test matching on the spot',
+          'Learn common regex patterns',
+        ],
+        privacyNote:
+          'All generation and matching is done locally in the browser, data is never uploaded.',
+        faqs: [
+          {
+            question: 'What does each flag letter mean?',
+            answer:
+              'g = global match (find all matches rather than stopping after the first match); i = case-insensitive matching; m = multiline mode; s = dotall mode (allows . to match newline characters); u = Unicode support; y = sticky matching that only matches starting from the current lastIndex.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
