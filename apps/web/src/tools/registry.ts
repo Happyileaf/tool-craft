@@ -2,6 +2,7 @@ import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
 import { DEFAULT_SAMPLE_CSS } from './css-prefixer/constants';
 import { DEFAULT_SAMPLE_INPUT } from './url-codec/constants';
+import { DEFAULT_SAMPLE_INPUT as DEFAULT_HTML_SAMPLE_INPUT } from './html-entity-codec/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -2744,6 +2745,86 @@ Bob Johnson,25,bob@example.com`,
             question: 'What is the difference between encodeURIComponent and encodeURI?',
             answer:
               'encodeURIComponent encodes all special characters including : / ? # etc., suitable for encoding individual query parameters. encodeURI does not encode these characters and preserves the URI structure, used for encoding the entire URI.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'html-entity-codec',
+    name: 'HTML 实体编解码',
+    nameEn: 'HTML Entity Encoder/Decoder',
+    description:
+      '编码特殊字符为 HTML 实体，或解码 HTML 实体为纯文本，支持常用命名实体。',
+    descriptionEn:
+      'Encode special characters to HTML entities, or decode HTML entities to plain text, supports common named entities.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/html-entity-codec',
+    iconName: 'Code',
+    tags: ['HTML', '实体', '编码', '解码', 'entity'],
+    tagsEn: ['HTML', 'Entity', 'Encode', 'Decode', 'Encoding'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DEFAULT_HTML_SAMPLE_INPUT,
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTML 实体编解码工具，用于在纯文本和 HTML 实体之间转换，支持数十种常用 HTML 命名实体，编码会自动转换 &lt; &gt; &amp; &quot; &apos; 这些特殊字符。',
+        coreFeatures: [
+          '双向转换：编码和解码一键切换',
+          '支持常用 HTML 命名实体（© ® — … 等）',
+          '自动处理特殊语法字符，保证 HTML 输出正确',
+          '纯浏览器本地运算，不接触服务器',
+        ],
+        howToUse: [
+          '选择解码或编码模式',
+          '在左侧输入框粘贴需要转换的内容',
+          '右侧自动输出转换结果',
+          '点击复制获取结果',
+        ],
+        useCases: [
+          '在网页中显示 HTML 源码需要转义特殊字符',
+          '从 HTML 源码提取纯文本时解码实体',
+          '调试 HTML 字符编码问题',
+        ],
+        privacyNote:
+          '所有转换都在浏览器本地完成，内容不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '什么是 HTML 实体？',
+            answer:
+              'HTML 实体是特殊字符的转义表示方式，比如 &lt; 表示 <，&amp; 表示 &，这样这些字符就可以在 HTML 内容中正常显示而不会被解析为标签。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'HTML Entity encoder and decoder tool for converting between plain text and HTML entities. Supports dozens of common HTML named entities, automatically encodes special characters like &lt; &gt; &amp; &quot; &apos;.',
+        coreFeatures: [
+          'Bidirectional conversion: one-click toggle between encode and decode',
+          'Supports common HTML named entities (© ® — … etc)',
+          'Automatically handles special syntax characters to ensure correct HTML output',
+          'Pure in-browser processing, no server contact',
+        ],
+        howToUse: [
+          'Choose decode or encode mode',
+          'Paste the content to convert in the left input',
+          'The converted result automatically appears on the right',
+          'Click copy to get the result',
+        ],
+        useCases: [
+          'Escaping special characters when displaying HTML source code on a webpage',
+          'Decoding entities when extracting plain text from HTML source',
+          'Debugging HTML character encoding issues',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser, content is never uploaded to any server.',
+        faqs: [
+          {
+            question: 'What are HTML entities?',
+            answer:
+              'HTML entities are escape representations of special characters. For example, &lt; represents < and &amp; represents &, allowing these characters to appear normally in HTML content without being parsed as tags.',
           },
         ],
       },

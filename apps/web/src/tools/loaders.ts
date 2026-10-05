@@ -49,4 +49,5 @@ export const toolLoaders: Record<
   'css-prefixer': () => import('./css-prefixer'),
   'regex-generator': () => import('./regex-generator'),
   'url-codec': () => import('./url-codec'),
+  'html-entity-codec': () => import('./html-entity-codec'),
 };
