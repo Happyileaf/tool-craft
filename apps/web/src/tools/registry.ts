@@ -2509,6 +2509,94 @@ Bob Johnson,bob@example.org,25,Canada`,
       },
     },
   },
+  {
+    slug: 'css-prefixer',
+    name: 'CSS 自动前缀',
+    nameEn: 'CSS Prefixer',
+    description:
+      '自动给 CSS 属性添加浏览器厂商前缀，提高旧浏览器兼容性，支持自定义浏览器范围。',
+    descriptionEn:
+      'Automatically adds vendor prefixes to CSS properties for better browser compatibility, supports custom browser target ranges.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/css-prefixer',
+    iconName: 'Code',
+    tags: ['CSS', '前缀', '兼容性', '浏览器'],
+    tagsEn: ['CSS', 'Prefix', 'Compatibility', 'Browser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `::placeholder {
+  color: gray;
+}
+
+.user-card {
+  backdrop-filter: blur(10px);
+  user-select: none;
+  border-radius: 8px;
+}`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '基于 autoprefixer 的纯浏览器本地 CSS 前缀自动添加工具，帮助开发者快速生成兼容不同浏览器的 CSS 代码，避免手动添加前缀的麻烦。',
+        coreFeatures: [
+          '自动前缀：基于 browserslist 规则自动添加需要的-webkit-、-moz-、-ms- 等前缀',
+          '自定义范围：支持输入自定义浏览器查询，精确控制前缀生成范围',
+          '实时预览：输入 CSS 后实时输出带前缀的结果',
+          '纯本地运行：CSS 代码完全在浏览器处理，不上传服务器',
+        ],
+        howToUse: [
+          '在上方输入框粘贴需要添加前缀的原始 CSS 代码',
+          '确认或修改浏览器查询范围',
+          '下方会自动显示添加前缀后的 CSS 结果',
+          '点击复制按钮获取最终代码',
+        ],
+        useCases: [
+          '需要兼容旧版本浏览器时生成带前缀的 CSS',
+          '验证现代 CSS 属性需要哪些前缀',
+          '开发阶段快速生成兼容性代码',
+        ],
+        privacyNote:
+          '所有前缀计算都在本地浏览器完成，CSS 代码内容不会上传到任何服务器，保护你的代码隐私。',
+        faqs: [
+          {
+            question: '浏览器查询语法是什么格式？',
+            answer:
+              '使用标准 browserslist 查询语法，例如 `> 0.5%, last 2 versions, not dead` 表示覆盖全球使用率大于 0.5% 的浏览器，每个主流浏览器的最近两个版本，排除已经不再维护的浏览器。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully client-side CSS prefixer based on autoprefixer, helps developers quickly generate CSS compatible with different browsers, avoiding the trouble of manually adding vendor prefixes.',
+        coreFeatures: [
+          'Automatic prefixing: adds required -webkit-, -moz-, -ms- prefixes based on browserslist rules',
+          'Custom range: supports custom browser queries to precisely control prefix generation',
+          'Live preview: get prefixed CSS results instantly as you type',
+          '100% local: all processing done in-browser, CSS never leaves your device',
+        ],
+        howToUse: [
+          'Paste your original CSS into the top input box',
+          'Confirm or modify the browser query range',
+          'The prefixed CSS result automatically appears below',
+          'Click copy to get the final code',
+        ],
+        useCases: [
+          'Generate prefixed CSS when compatibility with older browsers is needed',
+          'Check what prefixes are required for modern CSS properties',
+          'Quickly generate compatible CSS during development',
+        ],
+        privacyNote:
+          'All processing is done locally in your browser, CSS code is never uploaded to any server, keeping your code private.',
+        faqs: [
+          {
+            question: 'What is the format for browser query?',
+            answer:
+              'Uses the standard browserslist query syntax. For example, `> 0.5%, last 2 versions, not dead` means coverage browsers with >0.5% global usage, the last 2 versions of each major browser, and excludes dead browsers that are no longer maintained.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
