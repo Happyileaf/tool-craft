@@ -1,85 +1,92 @@
-const LOWERCASE_CHARS = 'abcdefghijklmnopqrstuvwxyz';
-const UPPERCASE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-const NUMBER_CHARS = '0123456789';
-const SYMBOL_CHARS = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+import {
+  DIGIT_CHARS,
+  LOWERCASE_CHARS,
+  SYMBOL_CHARS,
+  UPPERCASE_CHARS,
+} from '../constants';
 
-export interface GeneratePasswordOptions {
+/**
+ * 密码生成选项
+ */
+export interface GenerateOptions {
   length: number;
   includeLowercase: boolean;
   includeUppercase: boolean;
-  includeNumbers: boolean;
+  includeDigits: boolean;
   includeSymbols: boolean;
 }
 
 /**
- * 使用浏览器原生 crypto API 生成安全随机数
- * @param max 最大值（不包含）
- * @returns 0 ~ max-1 之间的随机整数
+ * 从指定字符集中随机获取一个字符
  */
-function getSecureRandomInt(max: number): number {
+function getRandomChar(chars: string): string {
   const array = new Uint32Array(1);
-  crypto.getRandomValues(array);
-  return (array[0] as number) % max;
+  const cryptoObj = typeof window !== 'undefined' ? window.crypto : crypto;
+  (cryptoObj as Crypto).getRandomValues(array);
+  const index = (array[0] as number) % chars.length;
+  return chars[index] as string;
 }
 
 /**
- * 生成强随机密码
+ * 生成强密码
  * @param options 生成选项
- * @returns 生成的密码
+ * @returns 生成的密码字符串
  */
-export function generatePassword(options: GeneratePasswordOptions): string {
+export function generateStrongPassword(options: GenerateOptions): string {
   const {
     length,
     includeLowercase,
     includeUppercase,
-    includeNumbers,
+    includeDigits,
     includeSymbols,
   } = options;
 
-  let charset = '';
-  let password = '';
+  // 收集选中的字符集
+  let allChars = '';
+  const requiredSets: string[] = [];
 
   if (includeLowercase) {
-    charset += LOWERCASE_CHARS;
-    // 确保至少包含一个小写字符
-    password += LOWERCASE_CHARS[getSecureRandomInt(LOWERCASE_CHARS.length)];
+    allChars += LOWERCASE_CHARS;
+    requiredSets.push(LOWERCASE_CHARS);
   }
-
   if (includeUppercase) {
-    charset += UPPERCASE_CHARS;
-    // 确保至少包含一个大写字符
-    password += UPPERCASE_CHARS[getSecureRandomInt(UPPERCASE_CHARS.length)];
+    allChars += UPPERCASE_CHARS;
+    requiredSets.push(UPPERCASE_CHARS);
   }
-
-  if (includeNumbers) {
-    charset += NUMBER_CHARS;
-    // 确保至少包含一个数字
-    password += NUMBER_CHARS[getSecureRandomInt(NUMBER_CHARS.length)];
+  if (includeDigits) {
+    allChars += DIGIT_CHARS;
+    requiredSets.push(DIGIT_CHARS);
   }
-
   if (includeSymbols) {
-    charset += SYMBOL_CHARS;
-    // 确保至少包含一个特殊符号
-    password += SYMBOL_CHARS[getSecureRandomInt(SYMBOL_CHARS.length)];
+    allChars += SYMBOL_CHARS;
+    requiredSets.push(SYMBOL_CHARS);
   }
 
-  // 如果没有选择任何字符集，默认使用小写
-  if (charset === '') {
-    charset = LOWERCASE_CHARS;
+  // 如果没有选中任何字符集，返回空字符串
+  if (allChars.length === 0) {
+    return '';
   }
 
-  // 生成剩余长度的字符
+  // 确保至少从每个选中的字符集中取出一个字符
+  let password = '';
+  for (const set of requiredSets) {
+    password += getRandomChar(set);
+  }
+
+  // 填充剩余长度
   const remainingLength = length - password.length;
   for (let i = 0; i < remainingLength; i++) {
-    const randomIndex = getSecureRandomInt(charset.length);
-    password += charset[randomIndex];
+    password += getRandomChar(allChars);
   }
 
-  // 打乱密码顺序（因为开头几个字符是按类别强制加入的）
+  // 打乱顺序（Fisher-Yates 洗牌算法），确保第一个字符不一定来自第一个集合
   const passwordArray = password.split('');
   for (let i = passwordArray.length - 1; i > 0; i--) {
-    const j = getSecureRandomInt(i + 1);
-    const temp = passwordArray[i]!;
+    const array = new Uint32Array(1);
+    const cryptoObj = typeof window !== 'undefined' ? window.crypto : crypto;
+    (cryptoObj as Crypto).getRandomValues(array);
+    const j = (array[0] as number) % (i + 1);
+    const temp = passwordArray[i];
     passwordArray[i] = passwordArray[j]!;
     passwordArray[j] = temp!;
   }

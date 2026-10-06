@@ -1,89 +1,85 @@
-import { describe, expect, test } from 'vitest';
-import { generatePassword } from './generator';
+import { describe, expect, it } from 'vitest';
+import { generateStrongPassword } from './generator';
 
-describe('generatePassword', () => {
-  test('should generate password of correct length', () => {
-    const password = generatePassword({
-      length: 16,
+describe('generateStrongPassword', () => {
+  it('should return empty string when no character set is selected', () => {
+    const password = generateStrongPassword({
+      length: 10,
+      includeLowercase: false,
+      includeUppercase: false,
+      includeDigits: false,
+      includeSymbols: false,
+    });
+    expect(password).toBe('');
+  });
+
+  it('should generate password with correct length', () => {
+    const password = generateStrongPassword({
+      length: 8,
+      includeLowercase: true,
+      includeUppercase: false,
+      includeDigits: false,
+      includeSymbols: false,
+    });
+    expect(password.length).toBe(8);
+  });
+
+  it('should include at least one lowercase when enabled', () => {
+    const password = generateStrongPassword({
+      length: 10,
       includeLowercase: true,
       includeUppercase: true,
-      includeNumbers: true,
+      includeDigits: true,
       includeSymbols: true,
     });
-    expect(password.length).toBe(16);
+    const hasLowercase = /[a-z]/.test(password);
+    expect(hasLowercase).toBe(true);
   });
 
-  test('should include lowercase when selected', () => {
-    const password = generatePassword({
-      length: 8,
-      includeLowercase: true,
-      includeUppercase: false,
-      includeNumbers: false,
-      includeSymbols: false,
-    });
-    expect(password).toMatch(/[a-z]/);
-    expect(password.length).toBe(8);
-  });
-
-  test('should include uppercase when selected', () => {
-    const password = generatePassword({
-      length: 8,
-      includeLowercase: false,
-      includeUppercase: true,
-      includeNumbers: false,
-      includeSymbols: false,
-    });
-    expect(password).toMatch(/[A-Z]/);
-    expect(password.length).toBe(8);
-  });
-
-  test('should include numbers when selected', () => {
-    const password = generatePassword({
-      length: 8,
-      includeLowercase: false,
-      includeUppercase: false,
-      includeNumbers: true,
-      includeSymbols: false,
-    });
-    expect(password).toMatch(/[0-9]/);
-    expect(password.length).toBe(8);
-  });
-
-  test('should include symbols when selected', () => {
-    const password = generatePassword({
-      length: 8,
-      includeLowercase: false,
-      includeUppercase: false,
-      includeNumbers: false,
-      includeSymbols: true,
-    });
-    expect(password).toMatch(/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/);
-    expect(password.length).toBe(8);
-  });
-
-  test('should work with all options selected', () => {
-    const password = generatePassword({
-      length: 12,
+  it('should include at least one uppercase when enabled', () => {
+    const password = generateStrongPassword({
+      length: 10,
       includeLowercase: true,
       includeUppercase: true,
-      includeNumbers: true,
+      includeDigits: true,
       includeSymbols: true,
     });
-    expect(password).toMatch(/[a-z]/);
-    expect(password).toMatch(/[A-Z]/);
-    expect(password).toMatch(/[0-9]/);
-    expect(password).toMatch(/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/);
-    expect(password.length).toBe(12);
+    const hasUppercase = /[A-Z]/.test(password);
+    expect(hasUppercase).toBe(true);
   });
 
-  test('should fall back to lowercase if no options selected', () => {
-    const password = generatePassword({
-      length: 8,
-      includeLowercase: false,
+  it('should include at least one digit when enabled', () => {
+    const password = generateStrongPassword({
+      length: 10,
+      includeLowercase: true,
+      includeUppercase: true,
+      includeDigits: true,
+      includeSymbols: true,
+    });
+    const hasDigit = /[0-9]/.test(password);
+    expect(hasDigit).toBe(true);
+  });
+
+  it('should include at least one symbol when enabled', () => {
+    const password = generateStrongPassword({
+      length: 10,
+      includeLowercase: true,
+      includeUppercase: true,
+      includeDigits: true,
+      includeSymbols: true,
+    });
+    const hasSymbol = /[!@#$%^&*()_+\-=[\]{}|;:,.<>?]/.test(password);
+    expect(hasSymbol).toBe(true);
+  });
+
+  it('should only contain lowercase when only lowercase is enabled', () => {
+    const password = generateStrongPassword({
+      length: 20,
+      includeLowercase: true,
       includeUppercase: false,
-      includeNumbers: false,
+      includeDigits: false,
       includeSymbols: false,
     });
-    expect(password).toMatch(/^[a-z]{8}$/);
+    expect(password).toMatch(/^[a-z]+$/);
   });
 });
