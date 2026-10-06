@@ -2425,6 +2425,90 @@ author:
       },
     },
   },
+  {
+    slug: 'csv-json-converter',
+    name: 'CSV JSON 双向转换器',
+    nameEn: 'CSV to JSON / JSON to CSV Converter',
+    description:
+      '双向转换 CSV 和 JSON 格式数据，支持自定义分隔符，实时预览转换结果。',
+    descriptionEn:
+      'Bidirectional conversion between CSV and JSON formatted data, supports custom delimiters and real-time preview.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/csv-json-converter',
+    iconName: 'FileJson',
+    tags: ['CSV', 'JSON', '转换', '数据'],
+    tagsEn: ['CSV', 'JSON', 'Convert', 'Data'],
+    isPopular: true,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `name,email,age,country
+Alice Smith,alice@example.com,30,USA
+Bob Johnson,bob@example.org,25,Canada`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '纯浏览器本地实现的 CSV JSON 双向转换工具，方便开发者快速在这两种常用数据格式之间切换，支持自定义分隔符和换行符。',
+        coreFeatures: [
+          '双向互转：支持 CSV 转 JSON 和 JSON 转 CSV',
+          '智能解析：自动处理表头，跳过空行，支持多种格式',
+          '自定义选项：可手动指定分隔符和换行符',
+          '实时错误提示：语法错误即时显示，帮助快速修正',
+          '纯本地运行：数据完全在浏览器中处理，不上传服务器',
+        ],
+        howToUse: [
+          '选择转换方向（CSV 转 JSON 或 JSON 转 CSV）',
+          '在输入框中粘贴原始数据',
+          '右侧会自动显示转换后的结果',
+          '点击复制按钮获取结果',
+        ],
+        useCases: [
+          'API 返回数据格式转换',
+          '表格数据导出为 JSON',
+          '开发测试数据格式转换',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，数据内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '支持不规则的 CSV 格式吗？',
+            answer:
+              '基于 Papaparse 解析，支持大多数常用 CSV 格式，包括带引号和转义字符的单元格。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully client-side bidirectional converter between CSV and JSON formats, helps developers quickly switch between these two common data formats with custom delimiter support.',
+        coreFeatures: [
+          'Bidirectional conversion: CSV to JSON and JSON to CSV',
+          'Smart parsing: automatically handles headers, skips empty lines',
+          'Customizable options: manually specify delimiter and newline character',
+          'Instant error reporting: syntax errors displayed immediately for quick fixing',
+          '100% local: all processing done in-browser, data never leaves your device',
+        ],
+        howToUse: [
+          'Select the conversion direction (CSV to JSON or JSON to CSV)',
+          'Paste your raw data into the input box',
+          'The converted result automatically appears on the right',
+          'Click the copy button to get the result',
+        ],
+        useCases: [
+          'Converting API response data formats',
+          'Exporting spreadsheet data to JSON',
+          'Converting test data during development',
+        ],
+        privacyNote:
+          'All conversion operations are performed locally in your browser, data is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Does it support irregular CSV formats?',
+            answer:
+              'Powered by Papaparse, it supports most common CSV formats including quoted cells and escaped characters.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

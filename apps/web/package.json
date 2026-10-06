@@ -19,6 +19,7 @@
     "geist": "^1.7.2",
     "lucide-react": "^1.47.0",
     "next": "^16",
+    "papaparse": "^5.7.0",
     "qrcode": "^1.5.4",
     "react": "^19",
     "react-dom": "^19",
