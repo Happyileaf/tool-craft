@@ -14,6 +14,7 @@
 | 20260928103007 | Lorem Ipsum generator | 生成占位测试文本 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
 | 20260928103008 | Password generator | 生成安全随机密码 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
 | 20260928103009 | CRON expression parser | 解析和验证 CRON 表达式，预览执行时间 | Web Tool | Exploration | Pending | 2026-09-28 | | | |
+| 20261007013228 | Image compression web tool | 提供图片压缩功能的在线 Web 工具，调用后端 API 进行压缩 | Web Tool | Existing Gap | Pending | 2026-10-07 | | | |
 | -------------- | ------------ | --------------------------- | ---------- | ----------- | ------- | ---------- | ---------- | ------------- | ------ |
 
 
