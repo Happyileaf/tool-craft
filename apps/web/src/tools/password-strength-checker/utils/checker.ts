@@ -1,90 +1,81 @@
-import { PasswordStrength } from '../constants';
-
-export const SuggestionKey = {
-  EMPTY: 'suggestionEmpty',
-  LOWERCASE: 'suggestionLowercase',
-  UPPERCASE: 'suggestionUppercase',
-  NUMBERS: 'suggestionNumbers',
-  SYMBOLS: 'suggestionSymbols',
-  MIN_LENGTH: 'suggestionMinLength',
-} as const;
-
-export type SuggestionKey = (typeof SuggestionKey)[keyof typeof SuggestionKey];
-
-export interface PasswordCheckResult {
-  score: number;
-  strength: PasswordStrength;
-  suggestions: SuggestionKey[];
+/**
+ * 密码强度评分结果
+ */
+export interface PasswordStrengthResult {
+  score: number; // 0-4，分数越高越强
+  level: 'weak' | 'medium' | 'strong';
+  hasLower: boolean;
+  hasUpper: boolean;
+  hasDigit: boolean;
+  hasSymbol: boolean;
+  suggestions: string[];
 }
 
-const hasLowercase = /[a-z]/;
-const hasUppercase = /[A-Z]/;
-const hasNumber = /[0-9]/;
-const hasSymbol = /[^A-Za-z0-9]/;
-const hasMinLength = /.{8,}/;
-const hasMediumLength = /.{12,}/;
+const SYMBOL_REGEX = /[!@#$%^&*()_+\-=[\]{}|;:,.<>?]/;
 
 /**
- * 检测密码强度，基于多个规则给出评分，建议项返回稳定 key 由界面层翻译
- * @param password 要检测的密码
- * @returns 检测结果，包含分数、强度等级和建议 key 列表
+ * 检测密码强度
+ * @param password - 要检测的密码
+ * @returns 检测结果，包含分数、等级、字符类型检查和改进建议
  */
-export function checkPassword(password: string): PasswordCheckResult {
+export function checkPasswordStrength(password: string): PasswordStrengthResult {
   let score = 0;
-  const suggestions: SuggestionKey[] = [];
+  const hasLower = /[a-z]/.test(password);
+  const hasUpper = /[A-Z]/.test(password);
+  const hasDigit = /[0-9]/.test(password);
+  const hasSymbol = SYMBOL_REGEX.test(password);
+  const suggestions: string[] = [];
 
-  if (!password) {
-    return {
-      score: 0,
-      strength: PasswordStrength.WEAK,
-      suggestions: [SuggestionKey.EMPTY],
-    };
+  // 长度加分
+  if (password.length >= 8) score++;
+  if (password.length >= 12) score++;
+  if (password.length >= 16) score++;
+
+  // 字符多样性加分
+  if (hasLower) score++;
+  if (hasUpper) score++;
+  if (hasDigit) score++;
+  if (hasSymbol) score++;
+
+  // 上限为 4 分（匹配 UI 的四级评分）
+  score = Math.min(score, 4);
+
+  // 生成改进建议
+  if (!hasLower) {
+    suggestions.push('添加小写字母 (a-z)');
+  }
+  if (!hasUpper) {
+    suggestions.push('添加大写字母 (A-Z)');
+  }
+  if (!hasDigit) {
+    suggestions.push('添加数字 (0-9)');
+  }
+  if (!hasSymbol) {
+    suggestions.push('添加特殊符号 (!@#$%...)');
+  }
+  if (password.length < 8) {
+    suggestions.push('增加密码长度到至少 8 位');
+  } else if (password.length < 12 && score < 3) {
+    suggestions.push('增加密码长度到至少 12 位可以提高强度');
   }
 
-  if (hasLowercase.test(password)) {
-    score += 1;
+  // 确定强度等级
+  let level: 'weak' | 'medium' | 'strong';
+  if (score <= 1) {
+    level = 'weak';
+  } else if (score <= 2) {
+    level = 'medium';
   } else {
-    suggestions.push(SuggestionKey.LOWERCASE);
-  }
-
-  if (hasUppercase.test(password)) {
-    score += 1;
-  } else {
-    suggestions.push(SuggestionKey.UPPERCASE);
-  }
-
-  if (hasNumber.test(password)) {
-    score += 1;
-  } else {
-    suggestions.push(SuggestionKey.NUMBERS);
-  }
-
-  if (hasSymbol.test(password)) {
-    score += 1;
-  } else {
-    suggestions.push(SuggestionKey.SYMBOLS);
-  }
-
-  if (hasMediumLength.test(password)) {
-    score += 2;
-  } else if (hasMinLength.test(password)) {
-    score += 1;
-  } else {
-    suggestions.push(SuggestionKey.MIN_LENGTH);
-  }
-
-  let strength: PasswordStrength;
-  if (score <= 2) {
-    strength = PasswordStrength.WEAK;
-  } else if (score <= 4) {
-    strength = PasswordStrength.MEDIUM;
-  } else {
-    strength = PasswordStrength.STRONG;
+    level = 'strong';
   }
 
   return {
     score,
-    strength,
+    level,
+    hasLower,
+    hasUpper,
+    hasDigit,
+    hasSymbol,
     suggestions,
   };
 }
