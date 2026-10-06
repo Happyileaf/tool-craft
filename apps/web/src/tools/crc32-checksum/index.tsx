@@ -1,111 +1,67 @@
 'use client';
 
-import { useState } from 'react';
-import { Check, Copy, Hash, RefreshCw } from 'lucide-react';
-import { useI18n } from '@/lib/i18n';
+import { useState, useEffect } from 'react';
+import { Check, Copy } from 'lucide-react';
+import { message } from 'antd';
+import { ToolCategoryLabelMap, ToolCategoryEnum } from '@/tools/constants';
+import { copyToClipboard } from '@/lib/utils';
+import type { ToolComponentProps } from '../loaders';
 import { calculateCRC32 } from './utils/crc32';
 
-const DEFAULT_INPUT = 'The quick brown fox jumps over the lazy dog';
+export default function CRC32Checksum({ defaultInput }: ToolComponentProps) {
+  const [input, setInput] = useState(defaultInput || '');
+  const [checksum, setChecksum] = useState('');
 
-/**
- * CRC32 校验和计算器，输入文本计算 CRC32 校验值，用于数据完整性验证
- *
- * @returns CRC32 计算工具交互界面
- */
-function CRC32Checksum() {
-  const { t } = useI18n();
-  const [input, setInput] = useState(DEFAULT_INPUT);
-  const [copied, setCopied] = useState(false);
-  const result = calculateCRC32(input);
+  useEffect(() => {
+    if (!input) {
+      setChecksum('');
+      return;
+    }
+    setChecksum(calculateCRC32(input));
+  }, [input]);
 
-  async function handleCopy() {
-    if (!result) return;
-    await navigator.clipboard.writeText(result);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2000);
-  }
+  const handleCopy = async () => {
+    if (checksum) {
+      await copyToClipboard(checksum);
+      message.success('复制成功');
+    }
+  };
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-900">
-        <span className="flex items-center gap-1.5 px-1 text-xs font-medium text-slate-500 dark:text-slate-400">
-          <Hash className="h-3.5 w-3.5" />
-          CRC32
-        </span>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setInput(DEFAULT_INPUT)}
-            disabled={input === DEFAULT_INPUT}
-            className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-default disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
-          >
-            {t('common.sample')}
-          </button>
-          <button
-            type="button"
-            onClick={() => setInput('')}
-            className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-rose-50 hover:text-rose-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-rose-950/30 dark:hover:text-rose-400"
-          >
-            <RefreshCw className="h-3.5 w-3.5" />
-            {t('common.clear')}
-          </button>
-        </div>
-      </div>
+    <div className="flex flex-col gap-6 container mx-auto p-4 max-w-5xl">
+      <h1 className="text-2xl font-bold text-center md:text-left">
+        {ToolCategoryLabelMap[ToolCategoryEnum.CRYPTO_ENCODING]} / CRC32 校验和
+      </h1>
 
-      <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
-        <div className="border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
-          {t('tools.crc32.inputLabel')}
-        </div>
-        <div className="px-4 py-3">
+      <div className="p-4 bg-card rounded-lg border shadow-sm">
+        <div className="flex flex-col gap-3">
+          <label className="font-medium">输入文本</label>
           <textarea
             value={input}
-            onChange={(event) => setInput(event.target.value)}
-            placeholder={t('tools.crc32.placeholder')}
-            className="min-h-[140px] w-full resize-y bg-transparent font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-400 sm:text-sm dark:placeholder:text-slate-500"
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="在这里输入需要计算 CRC32 校验和的文本..."
+            className="w-full h-32 px-4 py-2 rounded-md border bg-background focus:outline-none focus:ring-2 focus:ring-ring resize-none"
           />
-        </div>
-        <div className="flex items-center justify-between border-t border-slate-200 bg-slate-50/50 px-4 py-2 text-xs text-slate-500 dark:border-slate-800 dark:bg-slate-800/30 dark:text-slate-400">
-          <span>
-            {t('tools.crc32.length')}：{input.length}{' '}
-            {t('tools.crc32.characters')}
-          </span>
-          <span className="text-emerald-600 dark:text-emerald-400">
-            {t('common.clientSideExecution')}
-          </span>
         </div>
       </div>
 
-      <div className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300">
-          <span>{t('tools.crc32.resultLabel')}</span>
-          <button
-            type="button"
-            onClick={handleCopy}
-            className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
-          >
-            {copied ? (
-              <>
-                <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                <span className="text-emerald-600 dark:text-emerald-400">
-                  {t('common.copySuccess')}
-                </span>
-              </>
-            ) : (
-              <>
-                <Copy className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
-                {t('common.copy')}
-              </>
-            )}
-          </button>
+      {checksum && (
+        <div className="p-4 bg-card rounded-lg border shadow-sm">
+          <div className="flex items-center gap-2">
+            <div className="flex-1">
+              <div className="text-sm text-muted-foreground mb-1">CRC32 校验值（十六进制）:</div>
+              <div className="text-xl font-mono font-medium">{checksum}</div>
+            </div>
+            <button
+              onClick={handleCopy}
+              className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+            >
+              <Copy size={18} />
+              复制
+            </button>
+          </div>
         </div>
-        <div className="bg-slate-900 p-4 dark:bg-slate-950">
-          <p className="break-all font-mono text-xl font-bold tracking-[0.2em] text-emerald-400">
-            {result}
-          </p>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
-
-export default CRC32Checksum;
