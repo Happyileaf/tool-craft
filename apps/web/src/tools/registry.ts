@@ -2597,6 +2597,92 @@ Bob Johnson,bob@example.org,25,Canada`,
       },
     },
   },
+  {
+    slug: 'regex-generator',
+    name: '正则表达式生成器',
+    nameEn: 'Regular Expression Generator',
+    description:
+      '根据常用场景快速生成正则表达式，支持自定义 flags 和实时预览匹配结果。',
+    descriptionEn:
+      'Quickly generate regular expressions for common use cases, supports custom flags and live preview matching results.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/regex-generator',
+    iconName: 'Code',
+    tags: ['正则', 'RegExp', '生成', '匹配', '开发'],
+    tagsEn: ['Regex', 'RegExp', 'Generator', 'Match', 'Dev'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DEFAULT_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          '正则表达式生成器提供了多种常用场景的预设模板，可快速生成正则表达式，支持自定义 flags 并在文本中实时预览匹配结果，适合快速获取正则和测试学习。',
+        coreFeatures: [
+          '常用预设：内置邮箱、URL、IP、手机号、身份证等多种常用正则模板',
+          '自定义 flags：可切换全局匹配、忽略大小写等多个修饰符',
+          '自定义正则：支持输入自己的正则表达式测试匹配',
+          '实时匹配：在测试文本中实时展示所有匹配结果，包括分组捕获',
+          '纯本地运行：完全在浏览器中运行，数据不离开设备',
+        ],
+        howToUse: [
+          '从左侧列表选择一个预设模板，或输入自定义正则表达式',
+          '勾选需要的修饰符（flags）',
+          '在测试文本框中输入需要匹配的文本',
+          '下方会自动显示所有匹配结果',
+          '点击复制按钮复制完整的正则表达式',
+        ],
+        useCases: [
+          '快速获取常用场景的正则表达式',
+          '学习测试正则表达式匹配效果',
+          '开发表单验证规则时快速测试正则',
+          '提取文本中符合特定模式的内容',
+        ],
+        privacyNote:
+          '所有运算都在本地浏览器完成，测试文本和正则表达式不会上传到任何服务器，保护隐私。',
+        faqs: [
+          {
+            question: '各个 flags 修饰符的含义是什么？',
+            answer:
+              '- g：全局匹配，找到所有匹配项而非第一个就停止\n- i：匹配时不区分大小写\n- m：多行模式，^ 和 $ 匹配每行的首尾而非整个字符串\n- s：点号 . 可以匹配换行符\n- u：开启 Unicode 模式，支持完整的 Unicode 识别',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Regular Expression Generator provides preset templates for many common scenarios, quickly generates regex with custom flags and live preview matching results in text, great for quick access and learning.',
+        coreFeatures: [
+          'Common presets: built-in templates for email, URL, IPv4, phone, ID card and many other common uses',
+          'Custom flags: toggle global match, ignore case and other modifiers',
+          'Custom regex: supports entering your own regex for testing',
+          'Live matching: instantly shows all matches with capturing groups',
+          '100% local: all processing done in-browser, data never leaves your device',
+        ],
+        howToUse: [
+          'Select a preset template from the list, or enter your custom regex',
+          'Check the flags (modifiers) you need',
+          'Enter the text you want to match in the test text box',
+          'All matches will automatically show below',
+          'Click copy to get the full regular expression',
+        ],
+        useCases: [
+          'Quickly get regex for common scenarios',
+          'Learn and test regex matching behavior',
+          'Test regex during development of form validation',
+          'Extract content matching specific patterns from text',
+        ],
+        privacyNote:
+          'All processing is done locally in your browser, test text and regex are never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'What do the flags mean?',
+            answer:
+              '- g: global match, find all matches instead of stopping after the first\n- i: case-insensitive match\n- m: multiline mode, ^ and $ match start/end of each line instead of the whole string\n- s: dot matches all characters including newlines\n- u: Unicode mode, enables full Unicode support',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
