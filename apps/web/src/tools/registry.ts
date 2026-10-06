@@ -1,4 +1,5 @@
 import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
+import { DEFAULT_SAMPLE } from './html-entity-converter/constants';
 import type { ToolMeta } from './types';
 
 /**
@@ -2678,6 +2679,88 @@ Bob Johnson,bob@example.org,25,Canada`,
             question: 'What do the flags mean?',
             answer:
               '- g: global match, find all matches instead of stopping after the first\n- i: case-insensitive match\n- m: multiline mode, ^ and $ match start/end of each line instead of the whole string\n- s: dot matches all characters including newlines\n- u: Unicode mode, enables full Unicode support',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'html-entity-converter',
+    name: 'HTML 实体编解码',
+    nameEn: 'HTML Entity Encoder/Decoder',
+    description:
+      '双向转换 HTML 实体，编码特殊字符为实体表示，或解码实体为原始字符，支持命名实体、十进制和十六进制编码。',
+    descriptionEn:
+      'Bidirectional HTML entity conversion, encode special characters to entities or decode entities to original characters, supports named entities, decimal and hexadecimal encodings.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/html-entity-converter',
+    iconName: 'Code',
+    tags: ['HTML', '实体', '编码', '解码', '转换'],
+    tagsEn: ['HTML', 'Entity', 'Encode', 'Decode', 'Convert'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DEFAULT_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          '纯浏览器本地的 HTML 实体双向转换工具，可将 HTML 中的特殊字符编码为安全的实体表示，也可将编码后的实体解码为原始字符，支持常用命名实体、十进制和十六进制编码格式。',
+        coreFeatures: [
+          '双向转换：支持编码原始字符为实体，也支持解码实体为原始字符',
+          '支持多种格式：支持命名实体（如 &amp;nbsp;）、十进制（&#32;）和十六进制（&#x20;）',
+          '常用特殊字符自动编码：包含 &amp; &lt; &gt; &quot; &#39; 等常用 HTML 特殊字符',
+          '实时预览：输入后立即得到转换结果',
+          '纯本地运行：所有转换在浏览器中完成，不涉及网络传输',
+        ],
+        howToUse: [
+          '选择转换方向：解码（实体 → 原始）或编码（原始 → 实体）',
+          '在左侧输入框粘贴需要转换的文本',
+          '右侧自动显示转换后的结果',
+          '点击复制按钮获取结果',
+        ],
+        useCases: [
+          '在网页中显示 HTML 源码时编码特殊字符',
+          '从网页提取内容时解码 HTML 实体为原始字符',
+          '调试 HTML 实体相关问题',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，输入内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '什么是 HTML 实体？',
+            answer:
+              'HTML 实体是用于表示 HTML 中保留字符的特殊语法。例如 < 在 HTML 中表示标签开始，如果要显示 < 字符本身，需要写成 &lt;，这就是 HTML 实体。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Fully client-side bidirectional HTML entity converter, can encode special HTML characters to safe entity representations or decode entities back to original characters, supports named entities, decimal and hexadecimal formats.',
+        coreFeatures: [
+          'Bidirectional conversion: encode raw characters to entities or decode entities to raw characters',
+          'Supports multiple formats: named entities (like &amp;nbsp;), decimal (&#32;) and hexadecimal (&#x20;)',
+          'Automatic encoding of common special characters: includes &amp; &lt; &gt; &quot; &#39; and other common HTML special characters',
+          'Instant preview: get converted result immediately as you type',
+          '100% local: all processing done in-browser, no network transfer',
+        ],
+        howToUse: [
+          'Select conversion direction: decode (entity → raw) or encode (raw → entity)',
+          'Paste your text to convert in the left input box',
+          'The converted result automatically appears on the right',
+          'Click copy to get the result',
+        ],
+        useCases: [
+          'Encode special characters when displaying HTML source code on a webpage',
+          'Decode HTML entities to original characters when extracting content from web pages',
+          'Debugging HTML entity related issues',
+        ],
+        privacyNote:
+          'All conversion operations are performed locally in your browser, input content is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'What are HTML entities?',
+            answer:
+              'HTML entities are special syntax used to represent reserved characters in HTML. For example, the < character starts a tag in HTML, so if you want to display the < character itself, you need to write it as &lt;, which is an HTML entity.',
           },
         ],
       },
