@@ -165,7 +165,10 @@ Base64 编解码
 
 Idea 应回答：**具体想增加什么能力或解决什么问题？**
 
-写入时遵循 [Idea Pool README](../../../.autonomous/idea-pool/README.md) 中定义的格式规范和状态规则。
+写入时遵循 [Idea Pool README](../../../.autonomous/idea-pool/README.md) 中定义的格式规范和状态规则。每个新 Idea 写入两个位置：
+
+1. 复制 `idea-details/_template.md` 创建 `idea-details/<ID>.md` 详情文件，`Pending` 阶段至少填写「基本信息」和「描述」；
+2. 在 `idea-pool.md` 表格末尾追加一行索引，并使索引行「详情」列指向该详情文件。
 
 ### 3.6 提交 PR
 
@@ -186,7 +189,7 @@ Idea 应回答：**具体想增加什么能力或解决什么问题？**
 
 在 §3.6 之后，对整个轮次的产出**重新做一次**完整验收——不沿用此前各环节的结论，逐项重查：
 
-1. **完整性**：对照探索产生的候选 Idea，确认所有通过去重的 Idea 都已正确写入 `idea-pool.md`，格式符合规范。
+1. **完整性**：对照探索产生的候选 Idea，确认所有通过去重的 Idea 都已创建对应 `idea-details/<ID>.md` 详情文件并在 `idea-pool.md` 追加索引行，格式符合规范。
 2. **工作区状态**：`git status` 确认没有未提交的改动。
 3. **PR 真实创建**：执行 `gh pr view <分支名> --json url,number`（或 `gh pr list --head <分支名>`）确认 PR 真实存在，取得形如 `https://github.com/<owner>/<repo>/pull/<编号>` 的链接。
 
@@ -200,10 +203,10 @@ Idea Pool 存储在 Git 仓库中：Idea 既可由 Idea Generator 自动生成�
 
 自动生成 Idea 写入前，按序执行：
 
-1. 读取最新的 `.autonomous/idea-pool/idea-pool.md`。
+1. 读取最新的 `.autonomous/idea-pool/idea-pool.md` 活动索引及 `completed.md` / `rejected.md` 归档。
 2. 检查是否存在重复 Idea。
 3. 检查是否已有人添加了相同 Idea。
-4. 再写入新的 Idea。
+4. 再创建详情文件并写入新的索引行。
 
 ## 5. 文件职责边界
 
@@ -222,12 +225,20 @@ docs/sop/idea-generation/
         │   │
         │   └── 定义 Idea 格式规范、类型、来源和状态机（由 Idea 本身遵循）
         │
-        └── idea-pool.md
+        ├── idea-pool.md
+        │   │
+        │   └── 活动索引：保存「现在有哪些未终态 Idea 以及它们处于什么状态」
+        │
+        ├── completed.md / rejected.md
+        │   │
+        │   └── 终态归档：已完成 / 已淘汰 Idea 的索引
+        │
+        └── idea-details/<ID>.md
             │
-            └── 保存「现在有哪些 Idea 以及它们处于什么状态」
+            └── 每个 Idea 的完整内容（描述、设计内容、验收标准、处理记录）
 ```
 
-以下内容**不写入** `idea-pool.md`：
+以下内容**不写入** `idea-pool.md` 活动索引（描述与设计内容写入 `idea-details/` 详情文件）：
 
 - 详细技术方案
 - 代码实现步骤

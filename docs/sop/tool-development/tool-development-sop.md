@@ -2,7 +2,7 @@
 
 > **文档定位**：本文件是无人值守 Agent 在本仓库执行「从 Idea 池领取并实现 Web 工具」的唯一流程依据。外部定时任务以极简提示词引导读取本文件（触发模板见 §7）。对本文件的任何修订必须走 PR 人审，与代码共用同一迭代环。
 >
-> **配套状态文件**：`.autonomous/idea-pool/idea-pool.md`（Idea 池，与 idea-generation SOP 及人工共用；格式、字段与状态机见同目录 README.md）
+> **配套状态文件**：`.autonomous/idea-pool/`（Idea 池：`idea-pool.md` 活动索引 + `completed.md` / `rejected.md` 终态归档 + `idea-details/` 详情文件，与 idea-generation SOP 及人工共用；格式、字段、结构与状态机见同目录 README.md）
 
 ## 0. 流程参数（统一声明，调整只改这里）
 
@@ -59,7 +59,7 @@ Idea 池（`.autonomous/idea-pool/idea-pool.md`）是本轮唯一的 Idea 来源
 
 | 维度 | 要求 |
 | --- | --- |
-| 查重 | 对照 registry 中**全部**已注册工具、池内 `Rejected` 历史条目与其他同类条目，逐一说明与可能重叠对象的差异；功能实质重复 → 直接否决 |
+| 查重 | 对照 registry 中**全部**已注册工具、`rejected.md` 归档的历史条目与其他同类条目，逐一说明与可能重叠对象的差异；功能实质重复 → 直接否决 |
 | 高频度与价值 | 依据池内条目的 Source、Description 及其中隐含的需求信号，说明为什么值得做；依据不足且无法判断 → 不猜测，转待人工决策 |
 | 纯客户端可行性 | 不能依赖服务端计算、存储或账号体系 |
 | 依赖量 | 优先零新依赖；确需引入时仅限小型纯前端库，说明理由与体积影响 |
@@ -173,7 +173,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
 2. **本地验证**：在当前分支重新执行 `pnpm lint && pnpm typecheck && pnpm test && pnpm build`，确认全部通过。
 3. **变更日志**：重新核对 `apps/web/CHANGELOG.md`——有工具变更则条目存在且内容一致，无遗漏、无虚报；无变更则确认未产生多余条目。
 4. **PR 真实创建**：执行 `gh pr view <分支名> --json url,number`（或 `gh pr list --head <分支名>`）确认 PR 真实存在，取得形如 `https://github.com/<owner>/<repo>/pull/<编号>` 的链接，写入池内 `Result` 字段。
-5. **池状态同步**：重新核对 `.autonomous/idea-pool/idea-pool.md`——实现清单内每个 Idea 均已标 `Completed` 且 `Result` 填写第 4 项取得的 PR 链接；评估未过与中途放弃的均已标 `Rejected` 且 `Reject Reason` 具体；通过评估未入选的保持 `Pending` 未被误改；无任何终态条目被回改。
+5. **池状态同步**：重新核对 `.autonomous/idea-pool/`——实现清单内每个 Idea 均已标 `Completed`、详情文件 `Result` 填写第 4 项取得的 PR 链接，且已从 `idea-pool.md` 移入 `completed.md`；评估未过与中途放弃的均已标 `Rejected`、`Reject Reason` 具体，且已移入 `rejected.md`；通过评估未入选的保持 `Pending` 留在活动索引未被误改；无任何终态条目被回改或留在活动索引中。
 
 - 以下链接**一律不算** PR 创建成功：`/compare/...` 对比链接、带 `?expand=1` 的新建引导链接、分支页链接、任何未经 `gh` 命令验证、由 Agent 自行拼接的 URL。
 - 任一验收项不通过 → 在**同一分支**直接修复，使用新的 commit 提交修复内容，push 到远端后重新执行**全部**验收，最多 3 轮。无需 amend、rebase、squash 或其他任何历史改写操作；不得修改或删除已经推送的历史 commit。仍不通过 → 如实记录失败详情（当轮 PR 描述或运行结论），**不得谎报成功**。
@@ -183,13 +183,13 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
 
 ### 4.1 状态文件
 
-- **Idea 池**：`.autonomous/idea-pool/idea-pool.md`（格式与状态机见同目录 README.md）。本 SOP 与 idea-generation SOP、人工共用；本 SOP 只更新状态相关字段（`Status` / `Claimed By` / `Reject Reason` / `Result`）。
+- **Idea 池**：`.autonomous/idea-pool/`（格式、结构与状态机见同目录 README.md）。本 SOP 与 idea-generation SOP、人工共用；本 SOP 更新活动索引 `idea-pool.md`、对应 `idea-details/<ID>.md` 详情文件，以及终态归档 `completed.md` / `rejected.md`，只改动状态相关字段（`Status` / `Claimed By` / `Reject Reason` / `Result`）。
 
 ### 4.2 同步时点（严格按序）
 
-1. **领取登记 commit**（实现清单确定、分支创建后、首个工具开工前）：commit 信息 `chore(agent): claim ideas from idea pool`。内容包括：实现清单内条目 → `Claimed`（`Claimed By` 填当前 Agent 标识）；评估未过与池内重复条目 → `Rejected`（`Reject Reason` 填未通过维度与具体原因）。
-2. **工具实现 commit**：每个工具的 `feat: add <slug> tool` commit 中，同时把池内对应条目置为 `In Progress`。
-3. **终态同步 commit**（PR 创建后、统一验收前）：commit 信息 `chore(agent): sync idea pool status`。内容包括：已实现条目 → `Completed`（`Result` 填 PR 编号与 URL，链接来源见 §3.7 第 4 项）；中途放弃条目 → `Rejected`（`Reject Reason` 填放弃原因与失败摘要）。完成后 push 到同一分支（PR 自动包含，**不新建 PR**）。
+1. **领取登记 commit**（实现清单确定、分支创建后、首个工具开工前）：commit 信息 `chore(agent): claim ideas from idea pool`。内容包括：实现清单内条目在索引行与详情文件中同步置为 `Claimed`（`Claimed By` 填当前 Agent 标识，并在详情文件「处理记录」追加一条）；评估未过与池内重复条目 → 置为 `Rejected`（详情文件 `Reject Reason` 填未通过维度与具体原因），从活动索引移除并归档至 `rejected.md`。
+2. **工具实现 commit**：每个工具的 `feat: add <slug> tool` commit 中，同时把对应条目在索引行与详情文件中置为 `In Progress`。
+3. **终态同步 commit**（PR 创建后、统一验收前）：commit 信息 `chore(agent): sync idea pool status`。内容包括：已实现条目 → `Completed`（详情文件 `Result` 填工具 slug、PR 编号与 URL，链接来源见 §3.7 第 4 项），从活动索引移除并归档至 `completed.md`；中途放弃条目 → `Rejected`（`Reject Reason` 填放弃原因与失败摘要），归档至 `rejected.md`。每次状态变更同步更新详情文件「更新时间」与「处理记录」。完成后 push 到同一分支（PR 自动包含，**不新建 PR**）。
 
 ### 4.3 提交方式
 
