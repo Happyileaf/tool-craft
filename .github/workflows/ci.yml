@@ -8,6 +8,9 @@ on:
 
 jobs:
   verify:
+    # 注意：不要为此 job 设置 name，check 上下文名必须与
+    # main 分支保护中的 required status check "verify" 严格一致，
+    # 否则 auto-merge 会因 check 永不满足而永久挂起
     runs-on: ubuntu-latest
     steps:
       - name: 检出代码

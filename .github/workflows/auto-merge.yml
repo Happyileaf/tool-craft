@@ -1,0 +1,59 @@
+name: auto-merge
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, synchronize, labeled, unlabeled]
+
+permissions:
+  # enablePullRequestAutoMerge 变更要求 contents: write，
+  # 仅 pull-requests: write 会报 "Resource not accessible by integration"
+  contents: write
+  pull-requests: write
+
+jobs:
+  enable-auto-merge:
+    name: enable auto-merge
+    runs-on: ubuntu-latest
+    if: >-
+      github.event.pull_request.base.ref == 'main' &&
+      (
+        startsWith(github.event.pull_request.head.ref, 'feat/tool-development-') ||
+        startsWith(github.event.pull_request.head.ref, 'feat/idea-generation-') ||
+        startsWith(github.event.pull_request.head.ref, 'feat/autonomous-iteration-')
+      ) &&
+      !github.event.pull_request.draft
+    steps:
+      # 熔断护栏：触及受保护路径的 PR 不自动合并，转人工审查。
+      # 同时监听 synchronize，防止 PR 在启用 auto-merge 后追加危险提交。
+      - name: Guard changed paths
+        id: guard
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          FILES=$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files" --paginate --jq '.[].filename')
+          echo "Changed files in PR #${PR_NUMBER}:"
+          printf '%s\n' "$FILES"
+          if printf '%s\n' "$FILES" | grep -Eq '^\.github/|^docs/sop/|^apps/api/|^packages/config/|^package\.json$|^(bun\.lock|pnpm-lock\.yaml|package-lock\.json|yarn\.lock)$|^pnpm-workspace\.yaml$|^turbo\.json$|^\.env'; then
+            echo "unsafe=true" >> "$GITHUB_OUTPUT"
+            echo '::notice::触及受保护路径（.github/、docs/sop/、apps/api/、packages/config/、根 package.json、锁文件、pnpm-workspace.yaml、turbo.json、.env*），自动合并已熔断，转人工审查。'
+          else
+            echo "unsafe=false" >> "$GITHUB_OUTPUT"
+            echo 'All changed paths are safe for auto-merge.'
+          fi
+
+      - name: Disable auto-merge (unsafe paths or no-auto-merge label)
+        if: steps.guard.outputs.unsafe == 'true' || contains(github.event.pull_request.labels.*.name, 'no-auto-merge')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr merge --disable-auto "$PR_URL" || true
+
+      - name: Enable auto-merge when all required checks pass
+        if: steps.guard.outputs.unsafe != 'true' && !contains(github.event.pull_request.labels.*.name, 'no-auto-merge')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          gh pr merge "$PR_URL" --auto --merge
+          echo "Auto-merge enabled; PR will merge once all required checks pass."
