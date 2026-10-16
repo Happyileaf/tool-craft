@@ -23,3 +23,4 @@
 | 20260928103007 | Lorem Ipsum generator | Web Tool | Exploration | Pending | 2026-09-28 | | [详情](./idea-details/20260928103007.md) |
 | 20260928103008 | Password generator | Web Tool | Exploration | Pending | 2026-09-28 | | [详情](./idea-details/20260928103008.md) |
 | 20260928103009 | CRON expression parser | Web Tool | Exploration | Pending | 2026-09-28 | | [详情](./idea-details/20260928103009.md) |
+| 20261017075143 | JSON to YAML converter | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017075143.md) |
