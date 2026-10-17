@@ -50,3 +50,4 @@
 | 20261017183434 | 数字转中文大写金额 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017183434.md) |
 | 20261017183435 | Punycode / IDN 域名转换器 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017183435.md) |
 | 20261017183436 | HTTP 状态码速查 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017183436.md) |
+| 20261017183437 | 百分比计算器 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017183437.md) |
