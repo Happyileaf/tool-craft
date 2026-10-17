@@ -28,3 +28,11 @@
 | 20261017100236 | X.509 certificate decoder | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017100236.md) |
 | 20261017100237 | CIDR / IP subnet calculator | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017100237.md) |
 | 20261017100238 | cURL to code converter | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017100238.md) |
+| 20261017125912 | XML formatter & validator | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017125912.md) |
+| 20261017125913 | XML ↔ JSON converter | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017125913.md) |
+| 20261017125914 | SQL formatter & beautifier | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017125914.md) |
+| 20261017125915 | Code minifier & beautifier (HTML/CSS/JS) | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017125915.md) |
+| 20261017125916 | URL parser & query string editor | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017125916.md) |
+| 20261017125917 | Line operations (sort, dedupe, reverse, filter) | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017125917.md) |
+| 20261017125918 | HMAC signature generator | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017125918.md) |
+| 20261017125919 | Random data generator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017125919.md) |
