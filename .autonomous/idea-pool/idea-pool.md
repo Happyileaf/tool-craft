@@ -73,3 +73,4 @@
 | 20261017220048 | HTTP 安全响应头生成器（CSP / HSTS 等） | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017220048.md) |
 | 20261017220049 | 列表集合运算（交集 / 并集 / 差集） | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220049.md) |
 | 20261017220050 | 小数与分数互转 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220050.md) |
+| 20261018000141 | CSS 选择器权重计算器 | Web Tool | Existing Gap | Pending | 2026-10-18 | | [详情](./idea-details/20261018000141.md) |
