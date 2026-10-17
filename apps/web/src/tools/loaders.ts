@@ -57,4 +57,5 @@ export const toolLoaders: Record<
   'curl-to-code': () => import('./curl-to-code'),
   'line-operations': () => import('./line-operations'),
   'semver-parser': () => import('./semver-parser'),
+  'number-base-converter': () => import('./number-base-converter'),
 };

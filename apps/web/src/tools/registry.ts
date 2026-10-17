@@ -3548,6 +3548,97 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'number-base-converter',
+    name: '进制互转与位运算',
+    nameEn: 'Number Base & Bit Converter',
+    description:
+      '在二进制 / 八进制 / 十进制 / 十六进制之间互转，支持大整数与正负号，并可视化二进制位与位运算结果。',
+    descriptionEn:
+      'Convert numbers between binary, octal, decimal, and hexadecimal with big-integer support, and visualize bit groups plus bitwise operations.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/number-base-converter',
+    iconName: 'Gauge',
+    tags: ['进制', '二进制', '十六进制', '位运算', 'BigInt'],
+    tagsEn: ['Base', 'Binary', 'Hex', 'Bitwise', 'BigInt'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '255',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的进制与位运算工具，可在二进制 / 八进制 / 十进制 / 十六进制之间互转，展示指定位宽下的二进制位分组与置位统计，并执行 AND / OR / XOR / NOT / 位移等位运算。',
+        coreFeatures: [
+          '进制互转：2 / 8 / 10 / 16 进制一览输出，支持正负号与常见前缀',
+          '大整数：基于 BigInt，超出 32 位的整数不丢精度',
+          '位可视化：按 8 / 16 / 32 / 64 位宽分组展示二进制位并统计置位个数',
+          '位运算：AND / OR / XOR / NOT / 左移 / 右移，按定位宽处理补位',
+          '错误提示：非法字符、超出所选进制范围的输入给出明确提示',
+          '纯本地运行：所有运算在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '在「进制互转」选择输入进制并输入数值，查看各进制结果',
+          '在「位可视化」选择位宽，查看分组后的二进制位与置位统计',
+          '在「位运算」输入操作数 A / B 选择运算符，或对 A 执行取反与位移',
+        ],
+        useCases: [
+          '底层调试：快速查看数值的二进制与十六进制表示',
+          '权限与标志位：解析 chmod 权限位、协议标志字段',
+          '协议解析：换算报文中的字段与校验值',
+        ],
+        privacyNote: '所有转换与位运算均在浏览器本地完成，输入的数值不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么可以处理超过 32 位的整数？',
+            answer:
+              '工具内部使用 BigInt 进行运算，不经过 JavaScript 的 32 位位运算截断，因此大整数不会丢失精度。',
+          },
+          {
+            question: 'NOT 取反的结果如何计算？',
+            answer:
+              '取反按所选位宽处理：先在位宽内对原值取补码，再与全 1 掩码异或，得到该位宽下的取反结果。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first number base and bit tool that converts between binary, octal, decimal, and hexadecimal, shows grouped bits and popcount at a chosen width, and performs AND / OR / XOR / NOT and shift operations.',
+        coreFeatures: [
+          'Base conversion: binary / octal / decimal / hexadecimal output with sign and prefix support',
+          'Big integers: powered by BigInt so values beyond 32 bits keep full precision',
+          'Bit visualization: grouped bits and set-bit count at 8 / 16 / 32 / 64 bit widths',
+          'Bitwise operations: AND / OR / XOR / NOT / left and right shift within the selected width',
+          'Clear errors: explicit messages for invalid characters or digits out of range',
+          'Local-first: all computation runs in the browser with no network requests',
+        ],
+        howToUse: [
+          'In "Base conversion", pick the input base and enter a value to see every base',
+          'In "Bit visualization", choose a bit width to see grouped bits and popcount',
+          'In "Bitwise", enter operands A / B with an operator, or apply NOT and shifts to A',
+        ],
+        useCases: [
+          'Low-level debugging: inspect the binary and hex form of a value',
+          'Permissions and flags: decode chmod bits and protocol flag fields',
+          'Protocol parsing: convert field values and checksums',
+        ],
+        privacyNote:
+          'All conversions and bitwise operations run locally in the browser; entered values are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How can it handle integers beyond 32 bits?',
+            answer:
+              'The tool uses BigInt internally, avoiding the 32-bit truncation of JavaScript bitwise operators, so large integers keep full precision.',
+          },
+          {
+            question: 'How is NOT computed?',
+            answer:
+              'NOT works within the selected width: the value is normalized to its two’s-complement form and XORed with an all-ones mask.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
