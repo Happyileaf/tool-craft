@@ -2883,6 +2883,111 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'json-to-typescript',
+    name: 'JSON 转 TypeScript 类型',
+    nameEn: 'JSON to TypeScript Interface Generator',
+    description:
+      '根据 JSON 样例数据自动推断结构并生成等价的 TypeScript 接口与类型定义，支持嵌套命名、数组联合类型与键名安全。',
+    descriptionEn:
+      'Infer TypeScript interfaces and type definitions from sample JSON data, with nested naming, array union types, and safe key quoting.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-typescript',
+    iconName: 'FileCode',
+    tags: ['JSON', 'TypeScript', '类型', '接口', '开发'],
+    tagsEn: ['JSON', 'TypeScript', 'Type', 'Interface', 'Dev'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `{
+  "id": 1024,
+  "name": "ToolCraft",
+  "active": true,
+  "tags": ["json", "typescript"],
+  "profile": {
+    "email": "dev@toolcraft.io",
+    "score": 4.5
+  },
+  "projects": [
+    { "title": "Formatter", "stars": 128 },
+    { "title": "Diff", "stars": 64 }
+  ]
+}`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 JSON 转 TypeScript 类型生成器，粘贴 JSON 样例数据即可自动推断结构，生成可直接复用的 interface / type 定义，无需上传任何数据。',
+        coreFeatures: [
+          '结构推断：递归分析对象、数组、字符串、数字、布尔与 null，自动生成对应类型',
+          '嵌套命名：嵌套对象生成独立 interface，名称由父类型与属性名组合并自动去重',
+          '数组联合类型：同一数组内元素类型不一致时合并为联合类型，空数组推断为 unknown[]',
+          '键名安全：不是合法标识符的键自动加双引号，保证输出为合法 TypeScript',
+          '纯本地运行：所有推断都在浏览器完成，数据不离开设备',
+        ],
+        howToUse: [
+          '在左侧输入框粘贴 JSON 样例数据',
+          '按需填写根类型名、选择缩进宽度、决定是否导出根类型',
+          '右侧实时显示生成的 TypeScript 类型定义',
+          '点击右上角复制按钮取用生成结果',
+        ],
+        useCases: [
+          '把接口返回的 JSON 样例快速转成 TypeScript 接口定义',
+          '第三方 API 缺少类型文档时，由样例数据反推类型',
+          '为 mock 数据生成类型定义，保证前后端类型一致',
+        ],
+        privacyNote:
+          '所有类型推断都在本地浏览器完成，数据不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '数组里元素类型不一致会怎么处理？',
+            answer:
+              '工具会收集数组内所有元素推断出的类型并合并为联合类型，例如同时出现字符串与数字时输出 (string | number)[]；空数组则推断为 unknown[]。',
+          },
+          {
+            question: '嵌套对象会生成什么？',
+            answer:
+              '每个嵌套对象都会生成一个独立 interface，名称由父类型名与属性名组合（如 RootUser）并自动去重，属性类型引用对应接口。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based JSON to TypeScript generator that infers the shape from sample JSON data and emits ready-to-use interface / type definitions without uploading anything.',
+        coreFeatures: [
+          'Shape inference: recursively analyzes objects, arrays, strings, numbers, booleans, and null to emit matching types',
+          'Nested naming: nested objects become dedicated interfaces named from parent type plus property, with automatic de-duplication',
+          'Array unions: mixed element types are merged into a union, and empty arrays become unknown[]',
+          'Safe keys: keys that are not valid identifiers are automatically double-quoted so the output is valid TypeScript',
+          '100% local: all inference happens in-browser, data never leaves your device',
+        ],
+        howToUse: [
+          'Paste your sample JSON into the left input box',
+          'Optionally set the root type name, choose the indent width, and toggle exporting the root type',
+          'The generated TypeScript appears instantly on the right',
+          'Click the copy button in the top right to grab the result',
+        ],
+        useCases: [
+          'Turning a sample API response into a TypeScript interface quickly',
+          'Reverse-engineering types from sample data when third-party API docs lack type info',
+          'Generating type definitions for mock data to keep frontend and backend in sync',
+        ],
+        privacyNote:
+          'All type inference is done locally in your browser. Data is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'What happens when array elements have different types?',
+            answer:
+              'The tool collects every inferred element type and merges them into a union, e.g. (string | number)[] when both strings and numbers appear; an empty array becomes unknown[].',
+          },
+          {
+            question: 'What is generated for nested objects?',
+            answer:
+              'Each nested object becomes its own interface, named from the parent type plus the property (such as RootUser) with automatic de-duplication, and the property references that interface.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -50,4 +50,5 @@ export const toolLoaders: Record<
   'cron-parser': () => import('./cron-parser'),
   'html-entity-codec': () => import('./html-entity-codec'),
   'lorem-ipsum-generator': () => import('./lorem-ipsum-generator'),
+  'json-to-typescript': () => import('./json-to-typescript'),
 };
