@@ -59,4 +59,5 @@ export const toolLoaders: Record<
   'semver-parser': () => import('./semver-parser'),
   'number-base-converter': () => import('./number-base-converter'),
   'url-parser': () => import('./url-parser'),
+  'base32-codec': () => import('./base32-codec'),
 };

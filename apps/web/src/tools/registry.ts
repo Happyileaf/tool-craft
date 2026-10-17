@@ -3730,6 +3730,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'base32-codec',
+    name: 'Base32 编解码',
+    nameEn: 'Base32 Encoder & Decoder',
+    description:
+      '按 RFC 4648 标准字母表做 Base32 文本编解码，支持填充与去填充变体，并校验非法字符与长度。',
+    descriptionEn:
+      'Encode and decode Base32 text with the RFC 4648 alphabet, supporting padded and unpadded variants with validation.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/base32-codec',
+    iconName: 'Fingerprint',
+    tags: ['Base32', '编解码', 'RFC 4648', 'TOTP', '密钥'],
+    tagsEn: ['Base32', 'Encode', 'RFC 4648', 'TOTP', 'Secret'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'foobar',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 Base32 编解码工具，使用 RFC 4648 标准字母表 A-Z2-7 在文本与 Base32 字符串之间双向转换，支持填充与去填充变体，并对输入做合法性校验。',
+        coreFeatures: [
+          '编码：文本按 UTF-8 编码为 Base32，可选输出填充 = 或去填充变体',
+          '解码：大小写不敏感，兼容带填充与去填充输入',
+          '校验：非法字符、非法长度、填充位置或数量错误均给出明确提示与位置',
+          '实用场景：快速转换 TOTP secret、密钥材料等 Base32 字符串',
+          '纯本地运行：所有转换在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择「编码」或「解码」方向',
+          '在输入框粘贴文本或 Base32 字符串，结果即时更新',
+          '编码时可勾选「去填充」省略 =；解码失败会展示具体原因',
+        ],
+        useCases: [
+          '认证配置：把 TOTP secret 的 Base32 字符串转回原始字节或反向生成',
+          '密钥处理：在 Base32 与文本之间做快速转换',
+          '数据核对：校验 Base32 字符串是否合法及其问题位置',
+        ],
+        privacyNote: '所有编解码均在浏览器本地完成，输入的文本与 Base32 字符串不会被上传或记录。',
+        faqs: [
+          {
+            question: 'Base32 和 Base64 有什么区别？',
+            answer:
+              'Base32 使用 32 个字符（A-Z 与 2-7），编码后体积更大但对大小写不敏感的场合更友好，常用于 TOTP 密钥等场景。',
+          },
+          {
+            question: '为什么解码会提示填充字符数量不正确？',
+            answer:
+              '带填充的 Base32 长度必须是 8 的倍数，且填充数量由数据长度唯一确定；数量不匹配说明输入被破坏。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first Base32 codec that converts between text and Base32 strings using the RFC 4648 alphabet A-Z2-7, with padded and unpadded variants plus validation.',
+        coreFeatures: [
+          'Encode: UTF-8 text to Base32, with padded or unpadded output',
+          'Decode: case-insensitive, accepting both padded and unpadded input',
+          'Validation: clear messages with positions for invalid characters, lengths, and padding',
+          'Handy for converting TOTP secrets and key material in Base32',
+          'Local-first: all conversion runs in the browser with no network requests',
+        ],
+        howToUse: [
+          'Pick the "Encode" or "Decode" direction',
+          'Paste text or a Base32 string and the result updates instantly',
+          'When encoding, tick "Unpadded" to omit =; decode failures show the exact reason',
+        ],
+        useCases: [
+          'Auth setup: turn a TOTP secret Base32 string back into bytes or the other way',
+          'Key handling: convert quickly between Base32 and text',
+          'Data checks: validate whether a Base32 string is well-formed and where problems are',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally in the browser; entered text and Base32 strings are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How is Base32 different from Base64?',
+            answer:
+              'Base32 uses 32 characters (A-Z and 2-7); it is larger in size but friendlier for case-insensitive contexts, and is common for TOTP secrets.',
+          },
+          {
+            question: 'Why does decoding report an incorrect padding count?',
+            answer:
+              'Padded Base32 must be a multiple of 8 characters, and the padding count is uniquely determined by the data length; a mismatch means the input was corrupted.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
