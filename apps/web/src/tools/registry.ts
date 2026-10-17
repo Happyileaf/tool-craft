@@ -2702,6 +2702,96 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'html-entity-codec',
+    name: 'HTML 实体编解码',
+    nameEn: 'HTML Entity Encoder / Decoder',
+    description:
+      '在文本与 HTML 实体之间双向转换，覆盖命名实体与十进制、十六进制数字实体，可选编码非 ASCII 字符。',
+    descriptionEn:
+      'Convert between plain text and HTML entities in both directions, covering named and numeric entities with an optional non-ASCII mode.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/html-entity-codec',
+    iconName: 'Code',
+    tags: ['HTML', '实体', '编解码', '转义', 'Escape'],
+    tagsEn: ['HTML', 'Entity', 'Encode', 'Decode', 'Escape'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '© 2026 <ToolCraft> — "fast & offline"',
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTML 实体编解码是一款纯浏览器本地运算的工具，可在不上传数据的前提下，把文本中的敏感字符转义为 HTML 实体，或把 HTML 实体还原为原始字符。',
+        coreFeatures: [
+          '双向转换：支持「文本 → HTML 实体」编码与「HTML 实体 → 文本」解码',
+          '覆盖常见实体：`&` `<` `>` `"` 与单引号分别转义为 `&amp;` `&lt;` `&gt;` `&quot;` `&#39;`，并避免 `&` 二次转义',
+          '数字实体解码：十进制 `&#123;` 与十六进制 `&#x1F600;`（含 emoji）均可还原为字符',
+          '可选编码非 ASCII：开启后 Unicode 字符命中命名实体表则用命名实体，否则用十进制数字实体',
+        ],
+        howToUse: [
+          '在顶部选择「编码」或「解码」方向',
+          '编码模式下可开启「编码非 ASCII 字符」，决定是否把中文、符号等转成实体',
+          '在左侧输入原始文本或含实体的文本，右侧会实时显示转换结果',
+          '点击「复制结果」取用输出，或「载入示例 / 清空」重置输入',
+        ],
+        useCases: [
+          '把用户输入内容转义后再嵌入 HTML 模板，避免 XSS 与结构破坏',
+          '排查网页源码里 `&amp;`、`&#x1F600;` 等实体的真实含义',
+          '在富文本、邮件模板与纯文本之间安全互转内容',
+        ],
+        privacyNote:
+          '所有编码与解码均在浏览器本地完成，输入内容不会上传到任何服务器，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么输出的 `&` 没有被再次转义？',
+            answer:
+              '工具对文本逐字符单次处理，`&` 只在遇到原文时才转为 `&amp;`，不会对已生成的实体二次转义。',
+          },
+          {
+            question: '遇到未知实体或非法数字实体会怎样？',
+            answer:
+              '未知命名实体与非法数字实体（如 `&#xZZ;`、超出 Unicode 范围的码点）会保留原文，不会报错或丢字符。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'HTML Entity Encoder / Decoder is a fully browser-based utility that escapes sensitive characters into HTML entities or restores entities back to plain characters without uploading any data.',
+        coreFeatures: [
+          'Two-way conversion: encode plain text into HTML entities, or decode entities back into text',
+          'Common coverage: escapes `&`, `<`, `>`, `"`, and the apostrophe into `&amp;`, `&lt;`, `&gt;`, `&quot;`, and `&#39;` without double-escaping `&`',
+          'Numeric decoding: restores decimal `&#123;` and hexadecimal `&#x1F600;` (including emoji) entities',
+          'Optional non-ASCII mode: uses a named entity when available, otherwise a decimal numeric entity',
+        ],
+        howToUse: [
+          'Pick "Encode" or "Decode" at the top',
+          'In encode mode, toggle "Encode non-ASCII" to control whether symbols and CJK become entities',
+          'Type your text on the left; the converted result appears instantly on the right',
+          'Click "Copy" to grab the result, or "Sample" / "Clear" to reset the input',
+        ],
+        useCases: [
+          'Escaping user input before embedding it into an HTML template to avoid XSS and broken markup',
+          'Figuring out what `&amp;` or `&#x1F600;` actually means in a page source',
+          'Safely moving content between rich text, email templates, and plain text',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally in your browser. Your input is never uploaded and no network request is made.',
+        faqs: [
+          {
+            question: 'Why is the generated `&` not escaped again?',
+            answer:
+              'The tool processes the text character by character in a single pass, so `&` only becomes `&amp;` when it appears literally in the source.',
+          },
+          {
+            question: 'What happens with unknown or invalid entities?',
+            answer:
+              'Unknown named entities and invalid numeric entities (such as `&#xZZ;` or out-of-range code points) are kept as-is, without throwing or losing characters.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
