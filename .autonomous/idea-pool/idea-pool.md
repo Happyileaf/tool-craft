@@ -44,3 +44,4 @@
 | 20261017160152 | Unit & measurement converter | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017160152.md) |
 | 20261017160153 | Unicode character inspector & invisible character detector | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017160153.md) |
 | 20261017183430 | RSA / 非对称密钥对生成器与加解密 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017183430.md) |
+| 20261017183431 | Base58 & Base58Check 编解码器 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017183431.md) |
