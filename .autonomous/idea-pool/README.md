@@ -20,7 +20,7 @@
 
 | 配置项 | 值 | 说明 |
 | ------ | --- | ---- |
-| `MAX_PENDING_IDEAS` | 10 | `Pending` 状态 Idea 的最大数量。达到上限后，需要先领取一些 Idea 才能添加新的。 |
+| `MAX_PENDING_IDEAS` | 100 | `Pending` 状态 Idea 的最大数量。达到上限后，需要先领取一些 Idea 才能添加新的。 |
 
 ## 更新规则
 
