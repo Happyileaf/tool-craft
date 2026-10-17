@@ -47,4 +47,5 @@ export const toolLoaders: Record<
   'css-filter-generator': () => import('./css-filter-generator'),
   'json-to-yaml': () => import('./json-to-yaml'),
   'csv-json-converter': () => import('./csv-json-converter'),
+  'cron-parser': () => import('./cron-parser'),
 };

@@ -2612,6 +2612,96 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'cron-parser',
+    name: 'CRON 表达式解析器',
+    nameEn: 'CRON Expression Parser',
+    description:
+      '解析与校验标准 5 段 CRON 表达式，逐字段展示解析结果与人类可读说明，并预览未来执行时间。',
+    descriptionEn:
+      'Parse and validate standard 5-field CRON expressions, inspect each field in plain language, and preview upcoming run times.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/cron-parser',
+    iconName: 'Clock',
+    tags: ['CRON', '表达式', '定时任务', '调度', '解析'],
+    tagsEn: ['CRON', 'Expression', 'Scheduler', 'Cron Job', 'Parser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '*/15 9-17 * * MON-FRI',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CRON 表达式解析器是一款纯浏览器本地运算的工具，帮助你在不上传任何数据的前提下解析、校验标准 5 段 CRON 表达式，并直观预览未来的执行时间。',
+        coreFeatures: [
+          '逐字段解析：展示分、时、日、月、周五个字段的原始写法、展开取值与人类可读说明',
+          '完整语法支持：兼容 `*`、`,`（列表）、`-`（范围）、`/`（步长）以及月份、星期英文缩写',
+          '精确报错：字段数量、取值越界、步长为 0 等问题均给出具体错误定位',
+          '执行时间预览：按浏览器本地时区推算接下来的执行时刻，并设有搜索上限避免死循环',
+        ],
+        howToUse: [
+          '在输入框中输入或粘贴 CRON 表达式，例如 `*/15 9-17 * * MON-FRI`',
+          '左侧「解析结果」面板会实时展示各字段的解析区间与说明，非法表达式会给出错误提示',
+          '右侧「执行时间预览」面板按本地时区列出后续执行时间，可切换预览条数',
+          '点击顶部示例按钮可快速载入常用表达式，「清空」可重置输入',
+        ],
+        useCases: [
+          '编写或审查服务器定时任务（crontab）时快速核对表达式',
+          '确认表达式是否按预期在每周一至周五的指定时段触发',
+          '向团队解释一条复杂 CRON 表达式的实际含义',
+        ],
+        privacyNote:
+          '所有解析与时间推算均在浏览器本地完成，表达式内容不会上传到任何服务器，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '支持 6 段（含秒）或 7 段（含年份）的 CRON 吗？',
+            answer:
+              '本工具聚焦标准 5 段写法（分 时 日 月 周）。输入字段数量不为 5 时会给出明确提示，请先裁剪为 5 段。',
+          },
+          {
+            question: '执行时间按哪个时区计算？',
+            answer:
+              '按浏览器所在设备的本地时区计算，与服务器 crontab 的时区可能不同，跨时区使用时请留意时差。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'CRON Expression Parser is a fully browser-based utility that helps you parse and validate standard 5-field CRON expressions and preview upcoming run times without uploading any data.',
+        coreFeatures: [
+          'Field-by-field parsing: see the raw text, expanded values, and plain-language description for minute, hour, day, month, and weekday',
+          'Full syntax support: `*`, lists (`,`), ranges (`-`), steps (`/`), plus month and weekday name aliases',
+          'Precise errors: wrong field count, out-of-range values, and zero steps are all reported with a concrete message',
+          'Run-time preview: computes upcoming runs in your local timezone with a search cap that prevents infinite loops',
+        ],
+        howToUse: [
+          'Type or paste a CRON expression such as `*/15 9-17 * * MON-FRI`',
+          'The "Parse result" panel shows each field\u2019s range and description in real time, and flags invalid expressions',
+          'The "Upcoming runs" panel lists the next run times in your local timezone; you can change how many to preview',
+          'Click the sample buttons to load common expressions, or "Clear" to reset the input',
+        ],
+        useCases: [
+          'Double-checking a crontab expression before deploying',
+          'Confirming an expression triggers only during weekday business hours as intended',
+          'Explaining what a complex CRON expression actually means to your team',
+        ],
+        privacyNote:
+          'All parsing and time computation run locally in your browser. Your expression is never uploaded and no network request is made.',
+        faqs: [
+          {
+            question: 'Does it support 6-field (with seconds) or 7-field CRON?',
+            answer:
+              'This tool focuses on the standard 5-field form (minute hour day month weekday). Any other field count is reported with a clear message.',
+          },
+          {
+            question: 'Which timezone are the run times in?',
+            answer:
+              'The local timezone of your device. This may differ from a server\u2019s crontab timezone, so mind the offset when working across regions.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
