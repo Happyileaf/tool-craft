@@ -2988,6 +2988,96 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'text-case-converter',
+    name: '文本命名风格转换',
+    nameEn: 'Text Case Converter',
+    description:
+      '把文本在 camelCase、PascalCase、snake_case、kebab-case、CONSTANT_CASE、Title Case 等常见命名风格之间一键互转。',
+    descriptionEn:
+      'Convert text between common naming styles such as camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, and Title Case.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/text-case-converter',
+    iconName: 'FileText',
+    tags: ['命名', '大小写', '驼峰', '下划线', '文本'],
+    tagsEn: ['Case', 'Naming', 'Camel', 'Snake', 'Text'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'get user profile',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的文本命名风格转换器，把任意文本一键在 camelCase、PascalCase、snake_case、kebab-case、CONSTANT_CASE、Title Case 等常见风格之间互转，全部在本地完成。',
+        coreFeatures: [
+          '十种风格：支持 camelCase / PascalCase / snake_case / SCREAMING_SNAKE_CASE / kebab-case / dot.case / Title Case / Sentence case / lower / UPPER',
+          '智能分词：自动识别 camelCase / PascalCase 边界与连续大写缩写，如 getUserID 可正确拆为 get + user + id',
+          '全量对照：一次列出所有风格结果，逐项一键复制',
+          '纯本地运行：无任何网络请求，输入内容不离开设备',
+        ],
+        howToUse: [
+          '在输入框输入或粘贴任意文本',
+          '选择目标风格查看主结果，或直接查看下方全部风格对照',
+          '点击对应条目的复制按钮取用结果',
+          '需要时可清空输入或重新载入示例',
+        ],
+        useCases: [
+          '把后端 snake_case 字段名转成前端 camelCase',
+          '把自然语言文案转成常量名 CONSTANT_CASE 或类名 PascalCase',
+          '统一团队命名风格，快速生成变量名与文件名',
+        ],
+        privacyNote:
+          '所有转换都在本地浏览器完成，输入内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '输入 camelCase 或 PascalCase 文本能正确拆分吗？',
+            answer:
+              '可以。工具会按大小写边界拆分，并把连续大写缩写视为一个词，如 HTTPResponse 拆为 HTTP + Response，getUserID 拆为 get + User + ID。',
+          },
+          {
+            question: '空输入会怎样？',
+            answer:
+              '输入为空或只包含分隔符时，所有风格都返回空结果，并给出提示，不会产出错误内容。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based text case converter that switches any text between camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, Title Case, and more, all locally.',
+        coreFeatures: [
+          'Ten styles: camelCase / PascalCase / snake_case / SCREAMING_SNAKE_CASE / kebab-case / dot.case / Title Case / Sentence case / lower / UPPER',
+          'Smart tokenizing: detects camelCase / PascalCase boundaries and acronym runs, so getUserID splits into get + user + id',
+          'Full comparison: lists every style at once, each with one-click copy',
+          '100% local: no network requests, your input never leaves your device',
+        ],
+        howToUse: [
+          'Type or paste any text into the input box',
+          'Pick a target style to see the main result, or scan the full comparison below',
+          'Click the copy button on any entry to grab that result',
+          'Clear the input or reload the sample whenever needed',
+        ],
+        useCases: [
+          'Converting snake_case backend field names to camelCase for the frontend',
+          'Turning copy text into CONSTANT_CASE constants or PascalCase class names',
+          'Standardizing naming conventions across a team',
+        ],
+        privacyNote:
+          'All conversion happens locally in your browser. Your input is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Can it split camelCase or PascalCase input correctly?',
+            answer:
+              'Yes. It splits on case boundaries and treats runs of capitals as one word, so HTTPResponse becomes HTTP + Response and getUserID becomes get + User + ID.',
+          },
+          {
+            question: 'What happens with empty input?',
+            answer:
+              'When the input is empty or only separators, every style returns an empty result and a hint is shown instead of wrong content.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
