@@ -23,23 +23,18 @@
 | 20261017075143 | JSON to YAML converter | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017075143.md) |
 | 20261017100231 | JSON to TypeScript interface generator | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017100231.md) |
 | 20261017100232 | Text case converter | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017100232.md) |
-| 20261017100233 | Number base and bit converter | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017100233.md) |
 | 20261017100234 | TOTP (2FA) code generator | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017100234.md) |
 | 20261017100237 | CIDR / IP subnet calculator | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017100237.md) |
 | 20261017100238 | cURL to code converter | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017100238.md) |
-| 20261017125916 | URL parser & query string editor | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017125916.md) |
-| 20261017125917 | Line operations (sort, dedupe, reverse, filter) | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017125917.md) |
 | 20261017125919 | Random data generator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017125919.md) |
 | 20261017140151 | Unix file permission (chmod) calculator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140151.md) |
 | 20261017140152 | .gitignore generator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140152.md) |
 | 20261017140153 | User-Agent parser | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017140153.md) |
-| 20261017140154 | Base32 encoder/decoder | Web Tool | Existing Gap | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017140154.md) |
 | 20261017140155 | Programming string literal escape/unescape | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140155.md) |
 | 20261017140156 | Barcode generator | Web Tool | External Reference | Pending | 2026-10-17 | | [详情](./idea-details/20261017140156.md) |
 | 20261017140158 | Date & business day calculator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140158.md) |
 | 20261017140159 | .env parser & converter | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140159.md) |
 | 20261017160148 | ULID generator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017160148.md) |
 | 20261017160149 | CSS unit converter (px / rem / em / pt) | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017160149.md) |
-| 20261017160151 | Semantic version (SemVer) parser & comparator | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017160151.md) |
 | 20261017160152 | Unit & measurement converter | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017160152.md) |
 | 20261017160153 | Unicode character inspector & invisible character detector | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017160153.md) |
