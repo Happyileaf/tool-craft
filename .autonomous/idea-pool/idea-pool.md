@@ -20,4 +20,4 @@
 | 20260928103005 | HTML entity encoder/decoder | Web Tool | Exploration | Claimed | 2026-09-28 | trae-agent | [详情](./idea-details/20260928103005.md) |
 | 20260928103007 | Lorem Ipsum generator | Web Tool | Exploration | Claimed | 2026-09-28 | trae-agent | [详情](./idea-details/20260928103007.md) |
 | 20260928103009 | CRON expression parser | Web Tool | Exploration | Claimed | 2026-09-28 | trae-agent | [详情](./idea-details/20260928103009.md) |
-| 20261017075143 | JSON to YAML converter | Web Tool | Existing Gap | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017075143.md) |
+| 20261017075143 | JSON to YAML converter | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017075143.md) |

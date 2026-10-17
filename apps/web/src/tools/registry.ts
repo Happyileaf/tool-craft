@@ -2425,6 +2425,101 @@ author:
       },
     },
   },
+  {
+    slug: 'json-to-yaml',
+    name: 'JSON 转 YAML',
+    nameEn: 'JSON to YAML Converter',
+    description:
+      '将 JSON 格式数据转换为格式化的 YAML 数据，补齐 YAML 转 JSON 的反向转换能力。',
+    descriptionEn:
+      'Convert JSON data into formatted YAML, completing the reverse of the YAML to JSON conversion.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-yaml',
+    iconName: 'Code',
+    tags: ['JSON', 'YAML', '转换', '开发'],
+    tagsEn: ['JSON', 'YAML', 'Convert', 'Dev'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `{
+  "name": "ToolCraft",
+  "version": "2.4.0",
+  "offlineReady": true,
+  "modules": ["Formatter", "Encoder", "Diff"]
+}`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 JSON 到 YAML 格式转换器，无需上传服务器，实时把 JSON 数据转换为等效的 YAML 文本，与站点现有的「YAML 转 JSON」工具形成双向互转闭环。',
+        coreFeatures: [
+          '实时转换：输入 JSON 后即刻生成缩进规整的 YAML',
+          '类型安全：会被 YAML 误判为数字/布尔/null 的字符串自动加引号，保证类型不丢失',
+          '错误提示：JSON 语法错误时清晰展示错误原因，不产出错误结果',
+          '纯本地运行：所有转换在浏览器中完成，数据不离开设备',
+        ],
+        howToUse: [
+          '在左侧输入框粘贴或输入需要转换的 JSON 内容',
+          '右侧会自动显示转换后的 YAML 结果',
+          '可按需切换缩进宽度（2 空格 / 4 空格）或重新载入示例',
+          '点击右上角复制按钮获取转换结果',
+        ],
+        useCases: [
+          '开发中把 JSON 接口数据整理为 YAML 配置',
+          'Kubernetes / CI 配置编写时由 JSON 快速转成 YAML',
+          '核对 JSON 与 YAML 两种表示是否等价',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，数据不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '为什么有些字符串会自动加上双引号？',
+            answer:
+              '当字符串看起来像数字、布尔值或 null，或含有会破坏 YAML 结构的特殊字符时，YAML 会把它误解析为其他类型，因此工具会自动加双引号以保持原始字符串类型。',
+          },
+          {
+            question: '支持嵌套对象与数组吗？',
+            answer:
+              '支持。对象、数组、字符串、数字、布尔与 null 的任意嵌套都会被正确转换，并保持层级缩进。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient JSON to YAML converter that runs entirely in your browser, turning JSON data into equivalent YAML text in real-time and completing the round trip with the existing YAML to JSON tool.',
+        coreFeatures: [
+          'Real-time conversion: get well-indented YAML instantly as you type JSON',
+          'Type safe: strings that look like numbers, booleans, or null are quoted automatically so their type is preserved',
+          'Error reporting: invalid JSON shows a clear reason without emitting a wrong result',
+          '100% local: all conversion happens in-browser, data never leaves your device',
+        ],
+        howToUse: [
+          'Paste or type the JSON you want to convert into the left input box',
+          'The converted YAML appears automatically on the right',
+          'Switch the indent width (2 or 4 spaces) or reload the sample as needed',
+          'Click the copy button in the top right to grab the result',
+        ],
+        useCases: [
+          'Turning JSON API payloads into YAML config while developing',
+          'Quickly deriving YAML from JSON for Kubernetes or CI configuration',
+          'Checking that a JSON and a YAML representation are equivalent',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Data is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Why are some strings wrapped in double quotes?',
+            answer:
+              'When a string looks like a number, boolean, or null, or contains special characters that would break YAML structure, the tool adds double quotes so the original string type is preserved.',
+          },
+          {
+            question: 'Does it support nested objects and arrays?',
+            answer:
+              'Yes. Any nesting of objects, arrays, strings, numbers, booleans, and null is converted correctly with proper indentation.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
