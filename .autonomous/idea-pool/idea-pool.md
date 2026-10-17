@@ -76,3 +76,4 @@
 | 20261018000141 | CSS 选择器权重计算器 | Web Tool | Existing Gap | Pending | 2026-10-18 | | [详情](./idea-details/20261018000141.md) |
 | 20261018000142 | Open Graph / SEO 元标签生成器 | Web Tool | Exploration | Pending | 2026-10-18 | | [详情](./idea-details/20261018000142.md) |
 | 20261018000143 | JSON 结构化差异对比 | Web Tool | Existing Gap | Pending | 2026-10-18 | | [详情](./idea-details/20261018000143.md) |
+| 20261018000144 | ISO 8601 时长解析与格式化 | Web Tool | Exploration | Pending | 2026-10-18 | | [详情](./idea-details/20261018000144.md) |
