@@ -55,4 +55,9 @@ export const toolLoaders: Record<
   'totp-generator': () => import('./totp-generator'),
   'cidr-subnet-calculator': () => import('./cidr-subnet-calculator'),
   'curl-to-code': () => import('./curl-to-code'),
+  'line-operations': () => import('./line-operations'),
+  'semver-parser': () => import('./semver-parser'),
+  'number-base-converter': () => import('./number-base-converter'),
+  'url-parser': () => import('./url-parser'),
+  'base32-codec': () => import('./base32-codec'),
 };

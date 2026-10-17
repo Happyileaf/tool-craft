@@ -3357,6 +3357,468 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'line-operations',
+    name: '行级文本处理',
+    nameEn: 'Line Operations',
+    description:
+      '对多行文本执行排序、去重、反转行序与过滤（去空行、按关键字或正则保留 / 剔除），用于清洗日志与整理列表。',
+    descriptionEn:
+      'Sort, deduplicate, reverse, and filter the lines of multi-line text — remove blank lines, or keep/remove lines by keyword or regex — to clean up logs and tidy lists.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/line-operations',
+    iconName: 'Shuffle',
+    tags: ['文本', '行操作', '排序', '去重', '过滤', '日志'],
+    tagsEn: ['Text', 'Lines', 'Sort', 'Dedupe', 'Filter', 'Log'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `error: failed to connect 10.0.0.2
+info: cache warmed
+
+warn: retry scheduled
+error: failed to connect 10.0.0.2
+info: request finished`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的行级文本处理工具，针对日志、清单等逐行数据提供排序、去重、反转与过滤等操作，粘贴文本即可实时得到清洗结果。',
+        coreFeatures: [
+          '排序：支持字典序、自然序（数字按数值比较）、按行长、按数值四种方式，可升可降',
+          '去重：去除重复行并保留首次出现，可切换是否区分大小写',
+          '反转：一键按行反转顺序',
+          '过滤：移除空行，或按关键字 / 正则保留、剔除命中行',
+          '兼容换行：自动识别 LF / CRLF 并保持原有行尾风格',
+          '纯本地运行：文本不离开浏览器，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '把需要处理的多行文本粘贴到左侧输入框',
+          '在顶部选择排序方式与方向，并按需勾选去重、反转、去空白、移除空行等选项',
+          '需要筛选时选择过滤模式（关键字 / 正则）并输入条件，选择保留或剔除命中行',
+          '右侧实时展示处理结果与行数变化，点击「复制结果」取用',
+        ],
+        useCases: [
+          '清洗日志：去除重复报错行、剔除空行、提取包含某关键字的相关行',
+          '整理列表：对配置项、域名、版本号等排序与去重',
+          '数据预处理：把文本清单按长度或数值排序后再使用',
+        ],
+        privacyNote:
+          '所有文本处理均基于纯浏览器本地运算，绝不记录或向云端传输任何数据。',
+        faqs: [
+          {
+            question: '“自然序”和“字典序”有什么区别？',
+            answer:
+              '字典序按字符逐位比较，会出现 item10 排在 item2 之前；自然序会把连续数字当作数值比较，因此 item2 排在 item10 之前，更符合人的直觉。',
+          },
+          {
+            question: '过滤时正则表达式写错了会怎样？',
+            answer:
+              '工具会捕获非法正则并给出明确错误提示，不会中断页面或抛异常，修正后即可继续使用。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based line processing tool for multi-line text such as logs and lists. Paste your text and get sorting, deduplication, reversal, and filtering results in real time.',
+        coreFeatures: [
+          'Sorting: lexical, natural (numeric-aware), by line length, or by numeric value — ascending or descending',
+          'Deduplication: drop duplicate lines while keeping the first occurrence, with a case-sensitivity toggle',
+          'Reverse: flip the line order in one click',
+          'Filtering: remove blank lines, or keep/remove lines by keyword or regex',
+          'Newline-aware: detects LF / CRLF and preserves the original line endings',
+          '100% local: text never leaves your browser and no network request is ever made',
+        ],
+        howToUse: [
+          'Paste the multi-line text you want to process into the left input',
+          'Pick a sort mode and direction at the top, and toggle dedupe, reverse, trim, or blank-line removal as needed',
+          'To filter, choose keyword or regex mode, enter your condition, and pick whether to keep or remove matches',
+          'The right panel shows the result and the line-count change; click "Copy result" to use it',
+        ],
+        useCases: [
+          'Cleaning logs: drop duplicate errors, remove blank lines, extract lines matching a keyword',
+          'Tidying lists: sort and deduplicate config entries, domains, or version strings',
+          'Data prep: sort a text list by length or numeric value before reuse',
+        ],
+        privacyNote:
+          'All processing happens locally in your browser. Nothing is logged or sent to any server.',
+        faqs: [
+          {
+            question: 'How is "natural" sorting different from "lexical"?',
+            answer:
+              'Lexical sorting compares characters one by one, so item10 comes before item2. Natural sorting treats runs of digits as numbers, so item2 comes before item10, matching human intuition.',
+          },
+          {
+            question: 'What happens if my filter regex is invalid?',
+            answer:
+              'The tool catches the invalid pattern and shows a clear error instead of crashing, so you can fix it and continue.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'semver-parser',
+    name: '语义化版本解析与比较',
+    nameEn: 'SemVer Parser & Comparator',
+    description:
+      '解析与校验 SemVer 2.0.0 版本号，比较两个版本大小，并判断指定版本是否命中 ^、~、>= < 等 npm 风格范围表达式。',
+    descriptionEn:
+      'Parse and validate SemVer 2.0.0 versions, compare two versions, and check whether a given version satisfies npm-style ranges such as ^, ~, and >= <.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/semver-parser',
+    iconName: 'Tags',
+    tags: ['SemVer', '版本', '比较', '范围', 'npm', '依赖'],
+    tagsEn: ['SemVer', 'Version', 'Compare', 'Range', 'npm', 'Dependency'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1.2.3-alpha.1+build.7',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的语义化版本工具，可校验并拆解 SemVer 2.0.0 版本号、比较两个版本的大小关系，并判断某个版本是否落入指定的 npm 风格范围表达式。',
+        coreFeatures: [
+          '版本解析：拆出 major / minor / patch 与 pre-release、build 元数据',
+          '合法性校验：严格遵循 SemVer 2.0.0（数字段不得有前导零、必须三段式）',
+          '版本比较：按规范比较主次修订号与预发布优先级',
+          '范围匹配：支持 ^、~、>=、<=、>、<、=、x 通配、空格（与）、||（或）与连字符区间',
+          '预发布语义：普通范围不会命中预发布版本，与 npm 规则一致',
+          '纯本地运行：所有运算在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '在「版本校验与解析」输入版本号，查看是否合法与各段取值',
+          '在「版本比较」输入 A、B 两个版本，查看大小关系',
+          '在「范围命中判断」输入范围表达式与版本号，查看是否命中',
+        ],
+        useCases: [
+          '排查依赖冲突：确认某版本是否满足依赖声明的范围',
+          '发版校验：检查版本字符串是否符合语义化版本规范',
+          '文档与脚本编写：验证版本比较与范围表达式行为',
+        ],
+        privacyNote:
+          '所有解析与比较均在浏览器本地完成，输入的版本信息不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么 1.0 会被判为非法？',
+            answer:
+              'SemVer 2.0.0 要求版本号必须是 major.minor.patch 三段式，1.0 缺少修订号，因此非法。',
+          },
+          {
+            question: '为什么 ^1.2.3 不命中 1.3.0-alpha？',
+            answer:
+              '按 npm 语义，不含预发布标识的范围默认不会命中预发布版本，以避免不稳定版本被意外选中。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based Semantic Versioning tool. Validate and break down SemVer 2.0.0 strings, compare two versions, and check whether a version satisfies an npm-style range expression.',
+        coreFeatures: [
+          'Version parsing: decompose major / minor / patch plus pre-release and build metadata',
+          'Validation: strict SemVer 2.0.0 (no leading zeros, three segments required)',
+          'Comparison: compares major/minor/patch and pre-release precedence per spec',
+          'Range matching: ^, ~, >=, <=, >, <, =, x wildcards, space (AND), || (OR), and hyphen ranges',
+          'Pre-release semantics: plain ranges do not match pre-release versions, consistent with npm',
+          '100% local: everything runs in your browser and no network request is ever made',
+        ],
+        howToUse: [
+          'Enter a version in "Validation & parsing" to check validity and see each segment',
+          'Enter two versions in "Comparison" to see their ordering',
+          'Enter a range expression and a version in "Range matching" to see whether it is satisfied',
+        ],
+        useCases: [
+          'Debugging dependency conflicts: check whether a version satisfies a declared range',
+          'Release validation: verify a version string against the semantic versioning spec',
+          'Docs and scripting: confirm version comparison and range behavior',
+        ],
+        privacyNote:
+          'All parsing and comparison happen locally in your browser. Entered versions are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why is 1.0 considered invalid?',
+            answer:
+              'SemVer 2.0.0 requires three segments (major.minor.patch). 1.0 is missing the patch segment, so it is invalid.',
+          },
+          {
+            question: 'Why does ^1.2.3 not match 1.3.0-alpha?',
+            answer:
+              'Per npm semantics, ranges without a pre-release identifier do not match pre-release versions by default, so unstable versions are not accidentally selected.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'number-base-converter',
+    name: '进制互转与位运算',
+    nameEn: 'Number Base & Bit Converter',
+    description:
+      '在二进制 / 八进制 / 十进制 / 十六进制之间互转，支持大整数与正负号，并可视化二进制位与位运算结果。',
+    descriptionEn:
+      'Convert numbers between binary, octal, decimal, and hexadecimal with big-integer support, and visualize bit groups plus bitwise operations.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/number-base-converter',
+    iconName: 'Gauge',
+    tags: ['进制', '二进制', '十六进制', '位运算', 'BigInt'],
+    tagsEn: ['Base', 'Binary', 'Hex', 'Bitwise', 'BigInt'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '255',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的进制与位运算工具，可在二进制 / 八进制 / 十进制 / 十六进制之间互转，展示指定位宽下的二进制位分组与置位统计，并执行 AND / OR / XOR / NOT / 位移等位运算。',
+        coreFeatures: [
+          '进制互转：2 / 8 / 10 / 16 进制一览输出，支持正负号与常见前缀',
+          '大整数：基于 BigInt，超出 32 位的整数不丢精度',
+          '位可视化：按 8 / 16 / 32 / 64 位宽分组展示二进制位并统计置位个数',
+          '位运算：AND / OR / XOR / NOT / 左移 / 右移，按定位宽处理补位',
+          '错误提示：非法字符、超出所选进制范围的输入给出明确提示',
+          '纯本地运行：所有运算在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '在「进制互转」选择输入进制并输入数值，查看各进制结果',
+          '在「位可视化」选择位宽，查看分组后的二进制位与置位统计',
+          '在「位运算」输入操作数 A / B 选择运算符，或对 A 执行取反与位移',
+        ],
+        useCases: [
+          '底层调试：快速查看数值的二进制与十六进制表示',
+          '权限与标志位：解析 chmod 权限位、协议标志字段',
+          '协议解析：换算报文中的字段与校验值',
+        ],
+        privacyNote: '所有转换与位运算均在浏览器本地完成，输入的数值不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么可以处理超过 32 位的整数？',
+            answer:
+              '工具内部使用 BigInt 进行运算，不经过 JavaScript 的 32 位位运算截断，因此大整数不会丢失精度。',
+          },
+          {
+            question: 'NOT 取反的结果如何计算？',
+            answer:
+              '取反按所选位宽处理：先在位宽内对原值取补码，再与全 1 掩码异或，得到该位宽下的取反结果。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first number base and bit tool that converts between binary, octal, decimal, and hexadecimal, shows grouped bits and popcount at a chosen width, and performs AND / OR / XOR / NOT and shift operations.',
+        coreFeatures: [
+          'Base conversion: binary / octal / decimal / hexadecimal output with sign and prefix support',
+          'Big integers: powered by BigInt so values beyond 32 bits keep full precision',
+          'Bit visualization: grouped bits and set-bit count at 8 / 16 / 32 / 64 bit widths',
+          'Bitwise operations: AND / OR / XOR / NOT / left and right shift within the selected width',
+          'Clear errors: explicit messages for invalid characters or digits out of range',
+          'Local-first: all computation runs in the browser with no network requests',
+        ],
+        howToUse: [
+          'In "Base conversion", pick the input base and enter a value to see every base',
+          'In "Bit visualization", choose a bit width to see grouped bits and popcount',
+          'In "Bitwise", enter operands A / B with an operator, or apply NOT and shifts to A',
+        ],
+        useCases: [
+          'Low-level debugging: inspect the binary and hex form of a value',
+          'Permissions and flags: decode chmod bits and protocol flag fields',
+          'Protocol parsing: convert field values and checksums',
+        ],
+        privacyNote:
+          'All conversions and bitwise operations run locally in the browser; entered values are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How can it handle integers beyond 32 bits?',
+            answer:
+              'The tool uses BigInt internally, avoiding the 32-bit truncation of JavaScript bitwise operators, so large integers keep full precision.',
+          },
+          {
+            question: 'How is NOT computed?',
+            answer:
+              'NOT works within the selected width: the value is normalized to its two’s-complement form and XORed with an all-ones mask.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'url-parser',
+    name: 'URL 解析与查询参数编辑',
+    nameEn: 'URL Parser & Query Editor',
+    description:
+      '将 URL 拆解为协议、主机、端口、路径、查询参数与哈希，支持增删改查询参数后实时重新拼接。',
+    descriptionEn:
+      'Break a URL into scheme, host, port, path, query parameters, and hash, then add, edit, or remove params and re-assemble it live.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/url-parser',
+    iconName: 'Layers',
+    tags: ['URL', '查询参数', '解析', '编辑', '链接'],
+    tagsEn: ['URL', 'Query', 'Parse', 'Edit', 'Link'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'https://example.com/search?q=hello%20world&tag=a&tag=b&flag#results',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 URL 工具，可将链接拆解为协议、用户名、密码、主机、端口、路径、查询参数与哈希，并以表格形式增删改查询参数，实时重新拼接出完整 URL。',
+        coreFeatures: [
+          '结构化解析：拆出 scheme / username / password / host / port / pathname / query / hash',
+          '查询参数编辑：增删改参数、启用停用，支持重复键与无值参数',
+          '原始与解码：每个键值同时展示原始与百分号解码后的形式',
+          '实时拼接：按 encodeURIComponent 规范重新编码，可切换保留原始编码',
+          '相对地址：支持无协议、仅有路径的输入',
+          '纯本地运行：所有解析与拼接在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '在顶部输入 URL，中部会即时展示拆解出的各组件',
+          '在「查询参数编辑」增删改参数，或停用不需要的参数',
+          '查看「实时拼接结果」并复制，可切换「保留原始编码」',
+        ],
+        useCases: [
+          '接口调试：拆解复杂链接，确认各查询参数取值',
+          '清理跟踪参数：删除 utm 等无用的查询参数',
+          '构造分享链接：增改参数后得到规整的 URL',
+        ],
+        privacyNote: '所有解析与拼接均在浏览器本地完成，输入的 URL 不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么 + 会被解码成空格？',
+            answer:
+              '查询串沿用 application/x-www-form-urlencoded 约定，+ 代表空格；工具会同时给出原始与解码后的形式。',
+          },
+          {
+            question: '重复的查询参数会被合并吗？',
+            answer: '不会。工具按出现顺序保留所有参数，重复键会原样保留并参与重新拼接。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first URL tool that breaks a link into scheme, username, password, host, port, path, query params, and hash, and lets you add, edit, or remove query parameters to re-assemble the URL live.',
+        coreFeatures: [
+          'Structured parsing: scheme / username / password / host / port / pathname / query / hash',
+          'Query editing: add, edit, remove, enable or disable params, with duplicate keys and valueless params',
+          'Raw and decoded: each key and value is shown in both raw and percent-decoded form',
+          'Live re-assembly: re-encodes per encodeURIComponent, with an option to keep the raw encoding',
+          'Relative addresses: supports inputs with no scheme, path only',
+          'Local-first: all parsing and assembly run in the browser with no network requests',
+        ],
+        howToUse: [
+          'Enter a URL at the top to see its components parsed instantly',
+          'In "Query parameters", add, edit, or remove params, or disable ones you do not need',
+          'Review the "Assembled URL" and copy it, optionally keeping the raw encoding',
+        ],
+        useCases: [
+          'API debugging: break a complex link down and confirm each query value',
+          'Cleaning tracking params: drop UTM and other noisy query parameters',
+          'Building share links: tweak params to get a tidy URL',
+        ],
+        privacyNote:
+          'All parsing and assembly run locally in the browser; entered URLs are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why is + decoded as a space?',
+            answer:
+              'Query strings follow the application/x-www-form-urlencoded convention where + means a space; the tool shows both raw and decoded forms.',
+          },
+          {
+            question: 'Are duplicate query parameters merged?',
+            answer:
+              'No. All params are kept in order; duplicate keys are preserved as-is and included when re-assembling.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'base32-codec',
+    name: 'Base32 编解码',
+    nameEn: 'Base32 Encoder & Decoder',
+    description:
+      '按 RFC 4648 标准字母表做 Base32 文本编解码，支持填充与去填充变体，并校验非法字符与长度。',
+    descriptionEn:
+      'Encode and decode Base32 text with the RFC 4648 alphabet, supporting padded and unpadded variants with validation.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/base32-codec',
+    iconName: 'Fingerprint',
+    tags: ['Base32', '编解码', 'RFC 4648', 'TOTP', '密钥'],
+    tagsEn: ['Base32', 'Encode', 'RFC 4648', 'TOTP', 'Secret'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'foobar',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 Base32 编解码工具，使用 RFC 4648 标准字母表 A-Z2-7 在文本与 Base32 字符串之间双向转换，支持填充与去填充变体，并对输入做合法性校验。',
+        coreFeatures: [
+          '编码：文本按 UTF-8 编码为 Base32，可选输出填充 = 或去填充变体',
+          '解码：大小写不敏感，兼容带填充与去填充输入',
+          '校验：非法字符、非法长度、填充位置或数量错误均给出明确提示与位置',
+          '实用场景：快速转换 TOTP secret、密钥材料等 Base32 字符串',
+          '纯本地运行：所有转换在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择「编码」或「解码」方向',
+          '在输入框粘贴文本或 Base32 字符串，结果即时更新',
+          '编码时可勾选「去填充」省略 =；解码失败会展示具体原因',
+        ],
+        useCases: [
+          '认证配置：把 TOTP secret 的 Base32 字符串转回原始字节或反向生成',
+          '密钥处理：在 Base32 与文本之间做快速转换',
+          '数据核对：校验 Base32 字符串是否合法及其问题位置',
+        ],
+        privacyNote: '所有编解码均在浏览器本地完成，输入的文本与 Base32 字符串不会被上传或记录。',
+        faqs: [
+          {
+            question: 'Base32 和 Base64 有什么区别？',
+            answer:
+              'Base32 使用 32 个字符（A-Z 与 2-7），编码后体积更大但对大小写不敏感的场合更友好，常用于 TOTP 密钥等场景。',
+          },
+          {
+            question: '为什么解码会提示填充字符数量不正确？',
+            answer:
+              '带填充的 Base32 长度必须是 8 的倍数，且填充数量由数据长度唯一确定；数量不匹配说明输入被破坏。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first Base32 codec that converts between text and Base32 strings using the RFC 4648 alphabet A-Z2-7, with padded and unpadded variants plus validation.',
+        coreFeatures: [
+          'Encode: UTF-8 text to Base32, with padded or unpadded output',
+          'Decode: case-insensitive, accepting both padded and unpadded input',
+          'Validation: clear messages with positions for invalid characters, lengths, and padding',
+          'Handy for converting TOTP secrets and key material in Base32',
+          'Local-first: all conversion runs in the browser with no network requests',
+        ],
+        howToUse: [
+          'Pick the "Encode" or "Decode" direction',
+          'Paste text or a Base32 string and the result updates instantly',
+          'When encoding, tick "Unpadded" to omit =; decode failures show the exact reason',
+        ],
+        useCases: [
+          'Auth setup: turn a TOTP secret Base32 string back into bytes or the other way',
+          'Key handling: convert quickly between Base32 and text',
+          'Data checks: validate whether a Base32 string is well-formed and where problems are',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally in the browser; entered text and Base32 strings are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How is Base32 different from Base64?',
+            answer:
+              'Base32 uses 32 characters (A-Z and 2-7); it is larger in size but friendlier for case-insensitive contexts, and is common for TOTP secrets.',
+          },
+          {
+            question: 'Why does decoding report an incorrect padding count?',
+            answer:
+              'Padded Base32 must be a multiple of 8 characters, and the padding count is uniquely determined by the data length; a mismatch means the input was corrupted.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -1,6 +1,6 @@
 # Idea 池（活动索引）
 
-> 本文件是所有**未终态 Idea** 的唯一活动索引，由「Idea Generation SOP」（`docs/sop/idea-generation/idea-generation-sop.md`）与「Tool Development SOP」（`docs/sop/tool-development/tool-development-sop.md`）共同维护。格式规范、类型、来源与状态机见 [README.md](./README.md)。
+> 本文件是所有**未终态 Idea**的唯一活动索引，由「Idea Generation SOP」（`docs/sop/idea-generation/idea-generation-sop.md`）与「Tool Development SOP」（`docs/sop/tool-development/tool-development-sop.md`）共同维护。格式规范、类型、来源与状态机见 [README.md](./README.md)。
 
 ## 规则
 
@@ -23,33 +23,23 @@
 | 20261017075143 | JSON to YAML converter | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017075143.md) |
 | 20261017100231 | JSON to TypeScript interface generator | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017100231.md) |
 | 20261017100232 | Text case converter | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017100232.md) |
-| 20261017100233 | Number base and bit converter | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017100233.md) |
+| 20261017100233 | Number base and bit converter | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017100233.md) |
 | 20261017100234 | TOTP (2FA) code generator | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017100234.md) |
-| 20261017100236 | X.509 certificate decoder | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017100236.md) |
 | 20261017100237 | CIDR / IP subnet calculator | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017100237.md) |
 | 20261017100238 | cURL to code converter | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017100238.md) |
-| 20261017125912 | XML formatter & validator | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017125912.md) |
-| 20261017125913 | XML ↔ JSON converter | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017125913.md) |
-| 20261017125914 | SQL formatter & beautifier | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017125914.md) |
-| 20261017125915 | Code minifier & beautifier (HTML/CSS/JS) | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017125915.md) |
-| 20261017125916 | URL parser & query string editor | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017125916.md) |
-| 20261017125917 | Line operations (sort, dedupe, reverse, filter) | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017125917.md) |
-| 20261017125918 | HMAC signature generator | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017125918.md) |
+| 20261017125916 | URL parser & query string editor | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017125916.md) |
+| 20261017125917 | Line operations (sort, dedupe, reverse, filter) | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017125917.md) |
 | 20261017125919 | Random data generator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017125919.md) |
 | 20261017140151 | Unix file permission (chmod) calculator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140151.md) |
 | 20261017140152 | .gitignore generator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140152.md) |
 | 20261017140153 | User-Agent parser | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017140153.md) |
-| 20261017140154 | Base32 encoder/decoder | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017140154.md) |
+| 20261017140154 | Base32 encoder/decoder | Web Tool | Existing Gap | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017140154.md) |
 | 20261017140155 | Programming string literal escape/unescape | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140155.md) |
 | 20261017140156 | Barcode generator | Web Tool | External Reference | Pending | 2026-10-17 | | [详情](./idea-details/20261017140156.md) |
-| 20261017140157 | Image EXIF metadata viewer & stripper | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017140157.md) |
 | 20261017140158 | Date & business day calculator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140158.md) |
 | 20261017140159 | .env parser & converter | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140159.md) |
-| 20261017160146 | TOML ↔ JSON converter | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017160146.md) |
-| 20261017160147 | HTML to Markdown converter | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017160147.md) |
 | 20261017160148 | ULID generator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017160148.md) |
 | 20261017160149 | CSS unit converter (px / rem / em / pt) | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017160149.md) |
-| 20261017160150 | JSON Schema generator & validator | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017160150.md) |
-| 20261017160151 | Semantic version (SemVer) parser & comparator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017160151.md) |
+| 20261017160151 | Semantic version (SemVer) parser & comparator | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017160151.md) |
 | 20261017160152 | Unit & measurement converter | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017160152.md) |
 | 20261017160153 | Unicode character inspector & invisible character detector | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017160153.md) |

@@ -1,0 +1,77 @@
+.container {
+  padding: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.label {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+}
+
+.components {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 16px;
+  margin-top: 12px;
+}
+
+.componentItem {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+  font-size: 13px;
+}
+
+.componentKey {
+  color: rgba(0, 0, 0, 0.45);
+  white-space: nowrap;
+}
+
+.componentValue {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  word-break: break-all;
+}
+
+.paramRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.paramInput {
+  flex: 1;
+  min-width: 0;
+}
+
+.equals {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.assembled {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  word-break: break-all;
+  background: rgba(0, 0, 0, 0.03);
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 12px;
+}
+
+@media (max-width: 640px) {
+  .components {
+    grid-template-columns: 1fr;
+  }
+}
