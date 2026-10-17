@@ -58,4 +58,5 @@ export const toolLoaders: Record<
   'line-operations': () => import('./line-operations'),
   'semver-parser': () => import('./semver-parser'),
   'number-base-converter': () => import('./number-base-converter'),
+  'url-parser': () => import('./url-parser'),
 };

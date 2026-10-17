@@ -3639,6 +3639,97 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'url-parser',
+    name: 'URL 解析与查询参数编辑',
+    nameEn: 'URL Parser & Query Editor',
+    description:
+      '将 URL 拆解为协议、主机、端口、路径、查询参数与哈希，支持增删改查询参数后实时重新拼接。',
+    descriptionEn:
+      'Break a URL into scheme, host, port, path, query parameters, and hash, then add, edit, or remove params and re-assemble it live.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/url-parser',
+    iconName: 'Layers',
+    tags: ['URL', '查询参数', '解析', '编辑', '链接'],
+    tagsEn: ['URL', 'Query', 'Parse', 'Edit', 'Link'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'https://example.com/search?q=hello%20world&tag=a&tag=b&flag#results',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 URL 工具，可将链接拆解为协议、用户名、密码、主机、端口、路径、查询参数与哈希，并以表格形式增删改查询参数，实时重新拼接出完整 URL。',
+        coreFeatures: [
+          '结构化解析：拆出 scheme / username / password / host / port / pathname / query / hash',
+          '查询参数编辑：增删改参数、启用停用，支持重复键与无值参数',
+          '原始与解码：每个键值同时展示原始与百分号解码后的形式',
+          '实时拼接：按 encodeURIComponent 规范重新编码，可切换保留原始编码',
+          '相对地址：支持无协议、仅有路径的输入',
+          '纯本地运行：所有解析与拼接在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '在顶部输入 URL，中部会即时展示拆解出的各组件',
+          '在「查询参数编辑」增删改参数，或停用不需要的参数',
+          '查看「实时拼接结果」并复制，可切换「保留原始编码」',
+        ],
+        useCases: [
+          '接口调试：拆解复杂链接，确认各查询参数取值',
+          '清理跟踪参数：删除 utm 等无用的查询参数',
+          '构造分享链接：增改参数后得到规整的 URL',
+        ],
+        privacyNote: '所有解析与拼接均在浏览器本地完成，输入的 URL 不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么 + 会被解码成空格？',
+            answer:
+              '查询串沿用 application/x-www-form-urlencoded 约定，+ 代表空格；工具会同时给出原始与解码后的形式。',
+          },
+          {
+            question: '重复的查询参数会被合并吗？',
+            answer: '不会。工具按出现顺序保留所有参数，重复键会原样保留并参与重新拼接。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first URL tool that breaks a link into scheme, username, password, host, port, path, query params, and hash, and lets you add, edit, or remove query parameters to re-assemble the URL live.',
+        coreFeatures: [
+          'Structured parsing: scheme / username / password / host / port / pathname / query / hash',
+          'Query editing: add, edit, remove, enable or disable params, with duplicate keys and valueless params',
+          'Raw and decoded: each key and value is shown in both raw and percent-decoded form',
+          'Live re-assembly: re-encodes per encodeURIComponent, with an option to keep the raw encoding',
+          'Relative addresses: supports inputs with no scheme, path only',
+          'Local-first: all parsing and assembly run in the browser with no network requests',
+        ],
+        howToUse: [
+          'Enter a URL at the top to see its components parsed instantly',
+          'In "Query parameters", add, edit, or remove params, or disable ones you do not need',
+          'Review the "Assembled URL" and copy it, optionally keeping the raw encoding',
+        ],
+        useCases: [
+          'API debugging: break a complex link down and confirm each query value',
+          'Cleaning tracking params: drop UTM and other noisy query parameters',
+          'Building share links: tweak params to get a tidy URL',
+        ],
+        privacyNote:
+          'All parsing and assembly run locally in the browser; entered URLs are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why is + decoded as a space?',
+            answer:
+              'Query strings follow the application/x-www-form-urlencoded convention where + means a space; the tool shows both raw and decoded forms.',
+          },
+          {
+            question: 'Are duplicate query parameters merged?',
+            answer:
+              'No. All params are kept in order; duplicate keys are preserved as-is and included when re-assembling.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
