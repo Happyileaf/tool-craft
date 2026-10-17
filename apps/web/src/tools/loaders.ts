@@ -53,4 +53,5 @@ export const toolLoaders: Record<
   'json-to-typescript': () => import('./json-to-typescript'),
   'text-case-converter': () => import('./text-case-converter'),
   'totp-generator': () => import('./totp-generator'),
+  'cidr-subnet-calculator': () => import('./cidr-subnet-calculator'),
 };

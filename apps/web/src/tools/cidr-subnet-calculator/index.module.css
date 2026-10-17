@@ -1,0 +1,61 @@
+.container {
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.input {
+  margin-bottom: 16px;
+}
+
+.resultCard {
+  min-width: 0;
+  margin-bottom: 16px;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.fieldRow:last-child {
+  border-bottom: none;
+}
+
+.fieldLabel {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.fieldValue {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #1677ff;
+  word-break: break-all;
+}
+
+.binaryRow {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.binaryValue {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 1px;
+  color: rgba(0, 0, 0, 0.85);
+  word-break: break-all;
+}

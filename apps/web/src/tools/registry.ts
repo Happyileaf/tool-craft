@@ -3170,6 +3170,98 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'cidr-subnet-calculator',
+    name: 'CIDR / IP 子网计算器',
+    nameEn: 'CIDR / IP Subnet Calculator',
+    description:
+      '输入 IP 地址与 CIDR 前缀或子网掩码，一键计算网络地址、广播地址、可用主机范围、主机数量与掩码信息，支持 IPv4 与 IPv6。',
+    descriptionEn:
+      'Enter an IP address with a CIDR prefix or netmask to compute the network address, broadcast address, usable host range, host count, and mask details for IPv4 and IPv6.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/cidr-subnet-calculator',
+    iconName: 'Gauge',
+    tags: ['CIDR', '子网', 'IP', '网络', 'IPv6'],
+    tagsEn: ['CIDR', 'Subnet', 'IP', 'Networking', 'IPv6'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '192.168.1.10/24',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 CIDR / IP 子网计算器，输入 IP 地址与 CIDR 前缀（或点分掩码）即可得到网络地址、广播地址、可用主机范围、主机数量、掩码与地址类别，并支持 IPv6 前缀长度计算，便于网络规划与排障。',
+        coreFeatures: [
+          '双栈支持：同时计算 IPv4 与 IPv6，IPv6 前缀运算使用 BigInt 保证大地址空间精度',
+          '多输入形式：接受 `IP/前缀`、`IP 掩码`、`IP` 等写法，自动识别地址族',
+          '结果齐全：给出网络地址、广播地址、首个/最后可用主机、地址总数与可用主机数',
+          '掩码视图：展示子网掩码、通配符掩码与 32 位二进制分组视图',
+          '纯本地运行：所有计算都在浏览器内完成，不发起任何网络探测或请求',
+        ],
+        howToUse: [
+          '在输入框填写 IP 地址与 CIDR 前缀，例如 192.168.1.10/24，或使用「IP 掩码」形式',
+          '按需切换识别模式（自动 / IPv4 / IPv6）或点击常用示例按钮',
+          '查看右侧结果卡片中的网络地址、可用主机范围、掩码与地址类别等信息',
+          '点击「复制结果」导出全部计算字段',
+        ],
+        useCases: [
+          '划分网段、规划子网掩码时快速核算可用主机数量',
+          '排查网络不通问题时确认网络地址与广播地址是否正确',
+          '学习 IPv4 / IPv6 寻址与 CIDR 记法时对照计算结果',
+        ],
+        privacyNote:
+          '输入内容仅在浏览器本地参与计算，绝不会上传、记录或发送到任何服务器。',
+        faqs: [
+          {
+            question: '支持哪些输入格式？',
+            answer:
+              '支持 `192.168.1.10/24`、`192.168.1.10 255.255.255.0`、单独的 `192.168.1.10`（按 /32 计算）以及 `2001:db8::1/64` 等 IPv6 写法；非法输入会给出明确错误提示。',
+          },
+          {
+            question: '/31 和 /32 的主机数为什么要特殊处理？',
+            answer:
+              '按 RFC 3021，/31 的两个地址可用于点对点链路，因此可用主机数为 2；而 /32 为单主机地址。小前缀等级下不存在传统意义上的广播地址。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based CIDR / IP subnet calculator. Enter an IP address with a CIDR prefix (or dotted netmask) to get the network address, broadcast address, usable host range, host count, netmask, and address class, with IPv6 prefix support for network planning and troubleshooting.',
+        coreFeatures: [
+          'Dual-stack: computes both IPv4 and IPv6, using BigInt for IPv6 prefix math to keep large address spaces precise',
+          'Flexible input: accepts `IP/prefix`, `IP netmask`, and plain `IP` forms with automatic address-family detection',
+          'Complete results: network address, broadcast address, first/last usable host, total addresses, and usable host count',
+          'Mask view: shows the subnet mask, wildcard mask, and a grouped 32-bit binary view',
+          '100% local: every calculation runs in your browser with zero network probing or requests',
+        ],
+        howToUse: [
+          'Enter an IP address and CIDR prefix, such as 192.168.1.10/24, or use the "IP netmask" form',
+          'Switch the detection mode (auto / IPv4 / IPv6) or click a common sample button',
+          'Read the network address, usable host range, mask, and address class from the result card',
+          'Click "Copy result" to export every computed field',
+        ],
+        useCases: [
+          'Quickly verifying usable host counts while carving subnets and planning netmasks',
+          'Confirming network and broadcast addresses while debugging connectivity problems',
+          'Learning IPv4 / IPv6 addressing and CIDR notation against computed results',
+        ],
+        privacyNote:
+          'Your input only participates in local computation in the browser. Nothing is uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'Which input formats are supported?',
+            answer:
+              'Forms like `192.168.1.10/24`, `192.168.1.10 255.255.255.0`, a bare `192.168.1.10` (treated as /32), and IPv6 like `2001:db8::1/64` are supported; invalid input produces a clear error.',
+          },
+          {
+            question: 'Why are /31 and /32 host counts special?',
+            answer:
+              'Per RFC 3021, both addresses in a /31 can be used on point-to-point links, so the usable host count is 2, while /32 is a single host address. These prefixes have no traditional broadcast address.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
