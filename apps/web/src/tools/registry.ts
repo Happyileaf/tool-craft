@@ -3357,6 +3357,105 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'line-operations',
+    name: '行级文本处理',
+    nameEn: 'Line Operations',
+    description:
+      '对多行文本执行排序、去重、反转行序与过滤（去空行、按关键字或正则保留 / 剔除），用于清洗日志与整理列表。',
+    descriptionEn:
+      'Sort, deduplicate, reverse, and filter the lines of multi-line text — remove blank lines, or keep/remove lines by keyword or regex — to clean up logs and tidy lists.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/line-operations',
+    iconName: 'Shuffle',
+    tags: ['文本', '行操作', '排序', '去重', '过滤', '日志'],
+    tagsEn: ['Text', 'Lines', 'Sort', 'Dedupe', 'Filter', 'Log'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `error: failed to connect 10.0.0.2
+info: cache warmed
+
+warn: retry scheduled
+error: failed to connect 10.0.0.2
+info: request finished`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的行级文本处理工具，针对日志、清单等逐行数据提供排序、去重、反转与过滤等操作，粘贴文本即可实时得到清洗结果。',
+        coreFeatures: [
+          '排序：支持字典序、自然序（数字按数值比较）、按行长、按数值四种方式，可升可降',
+          '去重：去除重复行并保留首次出现，可切换是否区分大小写',
+          '反转：一键按行反转顺序',
+          '过滤：移除空行，或按关键字 / 正则保留、剔除命中行',
+          '兼容换行：自动识别 LF / CRLF 并保持原有行尾风格',
+          '纯本地运行：文本不离开浏览器，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '把需要处理的多行文本粘贴到左侧输入框',
+          '在顶部选择排序方式与方向，并按需勾选去重、反转、去空白、移除空行等选项',
+          '需要筛选时选择过滤模式（关键字 / 正则）并输入条件，选择保留或剔除命中行',
+          '右侧实时展示处理结果与行数变化，点击「复制结果」取用',
+        ],
+        useCases: [
+          '清洗日志：去除重复报错行、剔除空行、提取包含某关键字的相关行',
+          '整理列表：对配置项、域名、版本号等排序与去重',
+          '数据预处理：把文本清单按长度或数值排序后再使用',
+        ],
+        privacyNote:
+          '所有文本处理均基于纯浏览器本地运算，绝不记录或向云端传输任何数据。',
+        faqs: [
+          {
+            question: '“自然序”和“字典序”有什么区别？',
+            answer:
+              '字典序按字符逐位比较，会出现 item10 排在 item2 之前；自然序会把连续数字当作数值比较，因此 item2 排在 item10 之前，更符合人的直觉。',
+          },
+          {
+            question: '过滤时正则表达式写错了会怎样？',
+            answer:
+              '工具会捕获非法正则并给出明确错误提示，不会中断页面或抛异常，修正后即可继续使用。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based line processing tool for multi-line text such as logs and lists. Paste your text and get sorting, deduplication, reversal, and filtering results in real time.',
+        coreFeatures: [
+          'Sorting: lexical, natural (numeric-aware), by line length, or by numeric value — ascending or descending',
+          'Deduplication: drop duplicate lines while keeping the first occurrence, with a case-sensitivity toggle',
+          'Reverse: flip the line order in one click',
+          'Filtering: remove blank lines, or keep/remove lines by keyword or regex',
+          'Newline-aware: detects LF / CRLF and preserves the original line endings',
+          '100% local: text never leaves your browser and no network request is ever made',
+        ],
+        howToUse: [
+          'Paste the multi-line text you want to process into the left input',
+          'Pick a sort mode and direction at the top, and toggle dedupe, reverse, trim, or blank-line removal as needed',
+          'To filter, choose keyword or regex mode, enter your condition, and pick whether to keep or remove matches',
+          'The right panel shows the result and the line-count change; click "Copy result" to use it',
+        ],
+        useCases: [
+          'Cleaning logs: drop duplicate errors, remove blank lines, extract lines matching a keyword',
+          'Tidying lists: sort and deduplicate config entries, domains, or version strings',
+          'Data prep: sort a text list by length or numeric value before reuse',
+        ],
+        privacyNote:
+          'All processing happens locally in your browser. Nothing is logged or sent to any server.',
+        faqs: [
+          {
+            question: 'How is "natural" sorting different from "lexical"?',
+            answer:
+              'Lexical sorting compares characters one by one, so item10 comes before item2. Natural sorting treats runs of digits as numbers, so item2 comes before item10, matching human intuition.',
+          },
+          {
+            question: 'What happens if my filter regex is invalid?',
+            answer:
+              'The tool catches the invalid pattern and shows a clear error instead of crashing, so you can fix it and continue.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
