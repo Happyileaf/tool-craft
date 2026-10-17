@@ -119,38 +119,40 @@ const JsonToYaml: React.FC<ToolComponentProps> = ({ defaultInput }) => {
         </Space>
       </div>
 
-      <Card title="输入 JSON" className={styles.card}>
-        <Input.TextArea
-          value={json}
-          onChange={handleInputChange}
-          placeholder="在这里输入或粘贴 JSON..."
-          rows={14}
-          autoSize={{ minRows: 10, maxRows: 24 }}
-        />
-      </Card>
-
-      <Card
-        title="输出 YAML"
-        className={styles.card}
-        extra={
-          !error && (
-            <Button type="text" icon={<CopyOutlined />} onClick={handleCopy}>
-              复制结果
-            </Button>
-          )
-        }
-      >
-        {error ? (
-          <Result status="error" title="JSON 解析错误" subTitle={error} />
-        ) : (
+      <div className={styles.panels}>
+        <Card title="输入 JSON" className={styles.card}>
           <Input.TextArea
-            value={yaml}
-            readOnly
+            value={json}
+            onChange={handleInputChange}
+            placeholder="在这里输入或粘贴 JSON..."
             rows={14}
             autoSize={{ minRows: 10, maxRows: 24 }}
           />
-        )}
-      </Card>
+        </Card>
+
+        <Card
+          title="输出 YAML"
+          className={styles.card}
+          extra={
+            !error && (
+              <Button type="text" icon={<CopyOutlined />} onClick={handleCopy}>
+                复制结果
+              </Button>
+            )
+          }
+        >
+          {error ? (
+            <Result status="error" title="JSON 解析错误" subTitle={error} />
+          ) : (
+            <Input.TextArea
+              value={yaml}
+              readOnly
+              rows={14}
+              autoSize={{ minRows: 10, maxRows: 24 }}
+            />
+          )}
+        </Card>
+      </div>
     </div>
   );
 };
