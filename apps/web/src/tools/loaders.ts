@@ -45,4 +45,9 @@ export const toolLoaders: Record<
   'color-naming-token': () => import('./color-naming-token'),
   'color-blind-simulator': () => import('./color-blind-simulator'),
   'css-filter-generator': () => import('./css-filter-generator'),
+  'json-to-yaml': () => import('./json-to-yaml'),
+  'csv-json-converter': () => import('./csv-json-converter'),
+  'cron-parser': () => import('./cron-parser'),
+  'html-entity-codec': () => import('./html-entity-codec'),
+  'lorem-ipsum-generator': () => import('./lorem-ipsum-generator'),
 };

@@ -2425,6 +2425,464 @@ author:
       },
     },
   },
+  {
+    slug: 'json-to-yaml',
+    name: 'JSON 转 YAML',
+    nameEn: 'JSON to YAML Converter',
+    description:
+      '将 JSON 格式数据转换为格式化的 YAML 数据，补齐 YAML 转 JSON 的反向转换能力。',
+    descriptionEn:
+      'Convert JSON data into formatted YAML, completing the reverse of the YAML to JSON conversion.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-yaml',
+    iconName: 'Code',
+    tags: ['JSON', 'YAML', '转换', '开发'],
+    tagsEn: ['JSON', 'YAML', 'Convert', 'Dev'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `{
+  "name": "ToolCraft",
+  "version": "2.4.0",
+  "offlineReady": true,
+  "modules": ["Formatter", "Encoder", "Diff"]
+}`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '便捷的 JSON 到 YAML 格式转换器，无需上传服务器，实时把 JSON 数据转换为等效的 YAML 文本，与站点现有的「YAML 转 JSON」工具形成双向互转闭环。',
+        coreFeatures: [
+          '实时转换：输入 JSON 后即刻生成缩进规整的 YAML',
+          '类型安全：会被 YAML 误判为数字/布尔/null 的字符串自动加引号，保证类型不丢失',
+          '错误提示：JSON 语法错误时清晰展示错误原因，不产出错误结果',
+          '纯本地运行：所有转换在浏览器中完成，数据不离开设备',
+        ],
+        howToUse: [
+          '在左侧输入框粘贴或输入需要转换的 JSON 内容',
+          '右侧会自动显示转换后的 YAML 结果',
+          '可按需切换缩进宽度（2 空格 / 4 空格）或重新载入示例',
+          '点击右上角复制按钮获取转换结果',
+        ],
+        useCases: [
+          '开发中把 JSON 接口数据整理为 YAML 配置',
+          'Kubernetes / CI 配置编写时由 JSON 快速转成 YAML',
+          '核对 JSON 与 YAML 两种表示是否等价',
+        ],
+        privacyNote:
+          '所有转换运算都在本地浏览器完成，数据不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '为什么有些字符串会自动加上双引号？',
+            answer:
+              '当字符串看起来像数字、布尔值或 null，或含有会破坏 YAML 结构的特殊字符时，YAML 会把它误解析为其他类型，因此工具会自动加双引号以保持原始字符串类型。',
+          },
+          {
+            question: '支持嵌套对象与数组吗？',
+            answer:
+              '支持。对象、数组、字符串、数字、布尔与 null 的任意嵌套都会被正确转换，并保持层级缩进。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A convenient JSON to YAML converter that runs entirely in your browser, turning JSON data into equivalent YAML text in real-time and completing the round trip with the existing YAML to JSON tool.',
+        coreFeatures: [
+          'Real-time conversion: get well-indented YAML instantly as you type JSON',
+          'Type safe: strings that look like numbers, booleans, or null are quoted automatically so their type is preserved',
+          'Error reporting: invalid JSON shows a clear reason without emitting a wrong result',
+          '100% local: all conversion happens in-browser, data never leaves your device',
+        ],
+        howToUse: [
+          'Paste or type the JSON you want to convert into the left input box',
+          'The converted YAML appears automatically on the right',
+          'Switch the indent width (2 or 4 spaces) or reload the sample as needed',
+          'Click the copy button in the top right to grab the result',
+        ],
+        useCases: [
+          'Turning JSON API payloads into YAML config while developing',
+          'Quickly deriving YAML from JSON for Kubernetes or CI configuration',
+          'Checking that a JSON and a YAML representation are equivalent',
+        ],
+        privacyNote:
+          'All conversion is done locally in your browser. Data is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Why are some strings wrapped in double quotes?',
+            answer:
+              'When a string looks like a number, boolean, or null, or contains special characters that would break YAML structure, the tool adds double quotes so the original string type is preserved.',
+          },
+          {
+            question: 'Does it support nested objects and arrays?',
+            answer:
+              'Yes. Any nesting of objects, arrays, strings, numbers, booleans, and null is converted correctly with proper indentation.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'csv-json-converter',
+    name: 'CSV 与 JSON 双向转换',
+    nameEn: 'CSV to JSON / JSON to CSV Converter',
+    description:
+      '在 CSV 与 JSON 之间双向转换，支持自定义分隔符与表头开关，完整处理引号与换行转义。',
+    descriptionEn:
+      'Convert between CSV and JSON in both directions with custom delimiters, header toggle, and full quote/escape handling.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/csv-json-converter',
+    iconName: 'FileText',
+    tags: ['CSV', 'JSON', '转换', '表格', '数据'],
+    tagsEn: ['CSV', 'JSON', 'Convert', 'Table', 'Data'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `name,age,city
+"Smith, John",30,New York
+Jane,25,London`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 CSV 与 JSON 双向转换器，可在不上传数据的前提下，把表格数据与 JSON 对象数组相互转换，并完整处理引号、分隔符与换行等转义场景。',
+        coreFeatures: [
+          '双向转换：支持 CSV → JSON 与 JSON → CSV 两个方向',
+          'RFC 4180 兼容：正确处理引号包裹字段内的分隔符、换行与双引号',
+          '灵活选项：可切换逗号 / 制表符 / 分号分隔符，并控制首行是否作为表头',
+          '纯本地运行：所有解析与生成均在浏览器完成，数据不离开设备',
+        ],
+        howToUse: [
+          '在顶部选择转换方向（CSV → JSON 或 JSON → CSV）',
+          '按需选择字段分隔符，CSV → JSON 时可关闭「首行作为表头」',
+          '在左侧输入原始文本，右侧会自动显示转换结果',
+          '出现错误时会展示具体原因，成功后可点击复制按钮取用结果',
+        ],
+        useCases: [
+          '把导出的 CSV 报表转换为 JSON 供程序处理',
+          '把接口返回的 JSON 数组整理为可直接导入表格软件的 CSV',
+          '核对两种格式互转后的数据是否一致',
+        ],
+        privacyNote:
+          '所有解析与生成均在浏览器本地完成，数据不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '字段里包含逗号或换行会出错吗？',
+            answer:
+              '不会。工具遵循 RFC 4180 规则，会自动识别并处理引号包裹字段内的分隔符、换行与双引号转义。',
+          },
+          {
+            question: 'JSON 转 CSV 时表头是怎么确定的？',
+            answer:
+              '工具会按对象键出现顺序取并集作为表头；某个对象缺少的键会填入空值。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based CSV ↔ JSON converter that turns tabular data and JSON object arrays into each other without uploading anything, correctly handling quotes, delimiters, and newlines.',
+        coreFeatures: [
+          'Bidirectional: convert CSV → JSON and JSON → CSV',
+          'RFC 4180 compliant: correctly handles delimiters, newlines, and escaped quotes inside quoted fields',
+          'Flexible options: switch between comma, tab, and semicolon delimiters, and toggle the header row',
+          '100% local: all parsing and generation happen in-browser, data never leaves your device',
+        ],
+        howToUse: [
+          'Choose the conversion direction (CSV → JSON or JSON → CSV) at the top',
+          'Pick a field delimiter, and turn off "first row as header" when needed',
+          'Type or paste your source text on the left; the result appears on the right',
+          'Errors are shown with a concrete reason; copy the result once successful',
+        ],
+        useCases: [
+          'Turning exported CSV reports into JSON for programmatic use',
+          'Turning a JSON array from an API into CSV ready for spreadsheet import',
+          'Verifying that data stays consistent when converted between the two formats',
+        ],
+        privacyNote:
+          'All parsing and generation happen locally in your browser. Data is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Will commas or newlines inside fields break the output?',
+            answer:
+              'No. The tool follows RFC 4180, recognizing and handling delimiters, newlines, and escaped quotes inside quoted fields.',
+          },
+          {
+            question: 'How is the header row determined for JSON → CSV?',
+            answer:
+              'The tool takes the union of object keys in order of appearance as the header; any missing key in a record becomes an empty cell.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'cron-parser',
+    name: 'CRON 表达式解析器',
+    nameEn: 'CRON Expression Parser',
+    description:
+      '解析与校验标准 5 段 CRON 表达式，逐字段展示解析结果与人类可读说明，并预览未来执行时间。',
+    descriptionEn:
+      'Parse and validate standard 5-field CRON expressions, inspect each field in plain language, and preview upcoming run times.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/cron-parser',
+    iconName: 'Clock',
+    tags: ['CRON', '表达式', '定时任务', '调度', '解析'],
+    tagsEn: ['CRON', 'Expression', 'Scheduler', 'Cron Job', 'Parser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '*/15 9-17 * * MON-FRI',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CRON 表达式解析器是一款纯浏览器本地运算的工具，帮助你在不上传任何数据的前提下解析、校验标准 5 段 CRON 表达式，并直观预览未来的执行时间。',
+        coreFeatures: [
+          '逐字段解析：展示分、时、日、月、周五个字段的原始写法、展开取值与人类可读说明',
+          '完整语法支持：兼容 `*`、`,`（列表）、`-`（范围）、`/`（步长）以及月份、星期英文缩写',
+          '精确报错：字段数量、取值越界、步长为 0 等问题均给出具体错误定位',
+          '执行时间预览：按浏览器本地时区推算接下来的执行时刻，并设有搜索上限避免死循环',
+        ],
+        howToUse: [
+          '在输入框中输入或粘贴 CRON 表达式，例如 `*/15 9-17 * * MON-FRI`',
+          '左侧「解析结果」面板会实时展示各字段的解析区间与说明，非法表达式会给出错误提示',
+          '右侧「执行时间预览」面板按本地时区列出后续执行时间，可切换预览条数',
+          '点击顶部示例按钮可快速载入常用表达式，「清空」可重置输入',
+        ],
+        useCases: [
+          '编写或审查服务器定时任务（crontab）时快速核对表达式',
+          '确认表达式是否按预期在每周一至周五的指定时段触发',
+          '向团队解释一条复杂 CRON 表达式的实际含义',
+        ],
+        privacyNote:
+          '所有解析与时间推算均在浏览器本地完成，表达式内容不会上传到任何服务器，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '支持 6 段（含秒）或 7 段（含年份）的 CRON 吗？',
+            answer:
+              '本工具聚焦标准 5 段写法（分 时 日 月 周）。输入字段数量不为 5 时会给出明确提示，请先裁剪为 5 段。',
+          },
+          {
+            question: '执行时间按哪个时区计算？',
+            answer:
+              '按浏览器所在设备的本地时区计算，与服务器 crontab 的时区可能不同，跨时区使用时请留意时差。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'CRON Expression Parser is a fully browser-based utility that helps you parse and validate standard 5-field CRON expressions and preview upcoming run times without uploading any data.',
+        coreFeatures: [
+          'Field-by-field parsing: see the raw text, expanded values, and plain-language description for minute, hour, day, month, and weekday',
+          'Full syntax support: `*`, lists (`,`), ranges (`-`), steps (`/`), plus month and weekday name aliases',
+          'Precise errors: wrong field count, out-of-range values, and zero steps are all reported with a concrete message',
+          'Run-time preview: computes upcoming runs in your local timezone with a search cap that prevents infinite loops',
+        ],
+        howToUse: [
+          'Type or paste a CRON expression such as `*/15 9-17 * * MON-FRI`',
+          'The "Parse result" panel shows each field\u2019s range and description in real time, and flags invalid expressions',
+          'The "Upcoming runs" panel lists the next run times in your local timezone; you can change how many to preview',
+          'Click the sample buttons to load common expressions, or "Clear" to reset the input',
+        ],
+        useCases: [
+          'Double-checking a crontab expression before deploying',
+          'Confirming an expression triggers only during weekday business hours as intended',
+          'Explaining what a complex CRON expression actually means to your team',
+        ],
+        privacyNote:
+          'All parsing and time computation run locally in your browser. Your expression is never uploaded and no network request is made.',
+        faqs: [
+          {
+            question: 'Does it support 6-field (with seconds) or 7-field CRON?',
+            answer:
+              'This tool focuses on the standard 5-field form (minute hour day month weekday). Any other field count is reported with a clear message.',
+          },
+          {
+            question: 'Which timezone are the run times in?',
+            answer:
+              'The local timezone of your device. This may differ from a server\u2019s crontab timezone, so mind the offset when working across regions.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'html-entity-codec',
+    name: 'HTML 实体编解码',
+    nameEn: 'HTML Entity Encoder / Decoder',
+    description:
+      '在文本与 HTML 实体之间双向转换，覆盖命名实体与十进制、十六进制数字实体，可选编码非 ASCII 字符。',
+    descriptionEn:
+      'Convert between plain text and HTML entities in both directions, covering named and numeric entities with an optional non-ASCII mode.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/html-entity-codec',
+    iconName: 'Code',
+    tags: ['HTML', '实体', '编解码', '转义', 'Escape'],
+    tagsEn: ['HTML', 'Entity', 'Encode', 'Decode', 'Escape'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '© 2026 <ToolCraft> — "fast & offline"',
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTML 实体编解码是一款纯浏览器本地运算的工具，可在不上传数据的前提下，把文本中的敏感字符转义为 HTML 实体，或把 HTML 实体还原为原始字符。',
+        coreFeatures: [
+          '双向转换：支持「文本 → HTML 实体」编码与「HTML 实体 → 文本」解码',
+          '覆盖常见实体：`&` `<` `>` `"` 与单引号分别转义为 `&amp;` `&lt;` `&gt;` `&quot;` `&#39;`，并避免 `&` 二次转义',
+          '数字实体解码：十进制 `&#123;` 与十六进制 `&#x1F600;`（含 emoji）均可还原为字符',
+          '可选编码非 ASCII：开启后 Unicode 字符命中命名实体表则用命名实体，否则用十进制数字实体',
+        ],
+        howToUse: [
+          '在顶部选择「编码」或「解码」方向',
+          '编码模式下可开启「编码非 ASCII 字符」，决定是否把中文、符号等转成实体',
+          '在左侧输入原始文本或含实体的文本，右侧会实时显示转换结果',
+          '点击「复制结果」取用输出，或「载入示例 / 清空」重置输入',
+        ],
+        useCases: [
+          '把用户输入内容转义后再嵌入 HTML 模板，避免 XSS 与结构破坏',
+          '排查网页源码里 `&amp;`、`&#x1F600;` 等实体的真实含义',
+          '在富文本、邮件模板与纯文本之间安全互转内容',
+        ],
+        privacyNote:
+          '所有编码与解码均在浏览器本地完成，输入内容不会上传到任何服务器，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么输出的 `&` 没有被再次转义？',
+            answer:
+              '工具对文本逐字符单次处理，`&` 只在遇到原文时才转为 `&amp;`，不会对已生成的实体二次转义。',
+          },
+          {
+            question: '遇到未知实体或非法数字实体会怎样？',
+            answer:
+              '未知命名实体与非法数字实体（如 `&#xZZ;`、超出 Unicode 范围的码点）会保留原文，不会报错或丢字符。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'HTML Entity Encoder / Decoder is a fully browser-based utility that escapes sensitive characters into HTML entities or restores entities back to plain characters without uploading any data.',
+        coreFeatures: [
+          'Two-way conversion: encode plain text into HTML entities, or decode entities back into text',
+          'Common coverage: escapes `&`, `<`, `>`, `"`, and the apostrophe into `&amp;`, `&lt;`, `&gt;`, `&quot;`, and `&#39;` without double-escaping `&`',
+          'Numeric decoding: restores decimal `&#123;` and hexadecimal `&#x1F600;` (including emoji) entities',
+          'Optional non-ASCII mode: uses a named entity when available, otherwise a decimal numeric entity',
+        ],
+        howToUse: [
+          'Pick "Encode" or "Decode" at the top',
+          'In encode mode, toggle "Encode non-ASCII" to control whether symbols and CJK become entities',
+          'Type your text on the left; the converted result appears instantly on the right',
+          'Click "Copy" to grab the result, or "Sample" / "Clear" to reset the input',
+        ],
+        useCases: [
+          'Escaping user input before embedding it into an HTML template to avoid XSS and broken markup',
+          'Figuring out what `&amp;` or `&#x1F600;` actually means in a page source',
+          'Safely moving content between rich text, email templates, and plain text',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally in your browser. Your input is never uploaded and no network request is made.',
+        faqs: [
+          {
+            question: 'Why is the generated `&` not escaped again?',
+            answer:
+              'The tool processes the text character by character in a single pass, so `&` only becomes `&amp;` when it appears literally in the source.',
+          },
+          {
+            question: 'What happens with unknown or invalid entities?',
+            answer:
+              'Unknown named entities and invalid numeric entities (such as `&#xZZ;` or out-of-range code points) are kept as-is, without throwing or losing characters.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'lorem-ipsum-generator',
+    name: 'Lorem Ipsum 占位文本生成器',
+    nameEn: 'Lorem Ipsum Generator',
+    description:
+      '按段落、句子或单词三种单位生成 Lorem Ipsum 占位文本，可控制数量并选择以经典开头起始。',
+    descriptionEn:
+      'Generate Lorem Ipsum placeholder text by paragraph, sentence, or word, with a count control and an option to start with the classic opening.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/lorem-ipsum-generator',
+    iconName: 'FileText',
+    tags: ['Lorem', '占位文本', '假文', '测试数据', '段落'],
+    tagsEn: ['Lorem', 'Ipsum', 'Placeholder', 'Dummy Text', 'Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Lorem Ipsum 占位文本生成器是一款纯浏览器本地运算的工具，可按段落、句子或单词三种单位快速生成排版用的假文占位内容，无需联网、不上传任何数据。',
+        coreFeatures: [
+          '三种计量单位：按段落、句子或单词生成，数量可自由调节',
+          '经典开头选项：可让首句以经典 Lorem ipsum dolor sit amet... 起始',
+          '一键重新生成：每次点击都会换一批随机内容，便于反复挑选',
+          '安全上限：对极大数量做合理限制，避免生成过多导致页面卡顿',
+        ],
+        howToUse: [
+          '在顶部选择生成单位（段落 / 句子 / 单词）与数量',
+          '按需开启「以经典 Lorem ipsum 开头」，让首句使用经典文案',
+          '结果区会即时展示生成的占位文本，点击「重新生成」可换一批',
+          '点击「复制结果」把占位文本粘贴到设计稿或草稿中',
+        ],
+        useCases: [
+          '设计稿与原型中填充占位文案，专注排版与视觉呈现',
+          '开发联调时快速生成批量测试文本',
+          '演示文档、邮件模板中需要假文占位的场景',
+        ],
+        privacyNote:
+          '所有占位文本均基于浏览器本地随机词库即时生成，不使用任何服务器计算，也不发起网络请求。',
+        faqs: [
+          {
+            question: '生成的文本有实际含义吗？',
+            answer:
+              '没有。Lorem Ipsum 是用于排版的占位假文，本身不含实际语义，请勿直接作为正式对外的生产内容。',
+          },
+          {
+            question: '为什么每次生成的内容都不一样？',
+            answer:
+              '文本由本地随机词库即时组合而成，「重新生成」会重新采样，因此每次结果都会变化。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Lorem Ipsum Generator is a fully browser-based utility that instantly produces placeholder copy by paragraph, sentence, or word for layout work, with no network access and no data upload.',
+        coreFeatures: [
+          'Three units: generate by paragraph, sentence, or word with an adjustable count',
+          'Classic opening option: start the first sentence with the classic Lorem ipsum dolor sit amet opening',
+          'One-click regenerate: every click reshuffles the random content for easy comparison',
+          'Safe caps: extreme counts are capped to keep the page responsive',
+        ],
+        howToUse: [
+          'Pick the unit (paragraph, sentence, or word) and the count at the top',
+          'Toggle "Start with classic Lorem ipsum" to begin with the classic opening sentence',
+          'The output panel shows the generated text instantly; click "Regenerate" for a new batch',
+          'Click "Copy" to paste the placeholder text into your design or draft',
+        ],
+        useCases: [
+          'Filling design mockups and prototypes with placeholder copy to focus on layout',
+          'Quickly producing bulk test text during development',
+          'Providing dummy text for demos, slide decks, and email templates',
+        ],
+        privacyNote:
+          'All placeholder text is generated locally from a built-in random word bank. No server computation is used and no network request is made.',
+        faqs: [
+          {
+            question: 'Is the generated text meaningful?',
+            answer:
+              'No. Lorem Ipsum is placeholder text with no real meaning; do not use it as production copy.',
+          },
+          {
+            question: 'Why does each generation differ?',
+            answer:
+              'The text is assembled on the fly from a local random word bank, so "Regenerate" re-samples and produces different content every time.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

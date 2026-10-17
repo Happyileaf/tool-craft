@@ -14,13 +14,10 @@
 
 | ID | Idea | Type | Source | Status | Created At | Claimed By | 详情 |
 |---|---|---|---|---|---|---|---|
-| 20260928103001 | CSV to JSON/JSON to CSV converter | Web Tool | Exploration | Pending | 2026-09-28 | | [详情](./idea-details/20260928103001.md) |
+| 20260928103001 | CSV to JSON/JSON to CSV converter | Web Tool | Exploration | In Progress | 2026-09-28 | trae-agent | [详情](./idea-details/20260928103001.md) |
 | 20260928103002 | CSS prefixer | Web Tool | Exploration | Pending | 2026-09-28 | | [详情](./idea-details/20260928103002.md) |
 | 20260928103003 | Regular expression generator | Web Tool | Existing Gap | Pending | 2026-09-28 | | [详情](./idea-details/20260928103003.md) |
-| 20260928103004 | URL encoder/decoder | Web Tool | Exploration | Pending | 2026-09-28 | | [详情](./idea-details/20260928103004.md) |
-| 20260928103005 | HTML entity encoder/decoder | Web Tool | Exploration | Pending | 2026-09-28 | | [详情](./idea-details/20260928103005.md) |
-| 20260928103006 | JWT decoder | Web Tool | Exploration | Pending | 2026-09-28 | | [详情](./idea-details/20260928103006.md) |
-| 20260928103007 | Lorem Ipsum generator | Web Tool | Exploration | Pending | 2026-09-28 | | [详情](./idea-details/20260928103007.md) |
-| 20260928103008 | Password generator | Web Tool | Exploration | Pending | 2026-09-28 | | [详情](./idea-details/20260928103008.md) |
-| 20260928103009 | CRON expression parser | Web Tool | Exploration | Pending | 2026-09-28 | | [详情](./idea-details/20260928103009.md) |
-| 20261017075143 | JSON to YAML converter | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017075143.md) |
+| 20260928103005 | HTML entity encoder/decoder | Web Tool | Exploration | In Progress | 2026-09-28 | trae-agent | [详情](./idea-details/20260928103005.md) |
+| 20260928103007 | Lorem Ipsum generator | Web Tool | Exploration | In Progress | 2026-09-28 | trae-agent | [详情](./idea-details/20260928103007.md) |
+| 20260928103009 | CRON expression parser | Web Tool | Exploration | In Progress | 2026-09-28 | trae-agent | [详情](./idea-details/20260928103009.md) |
+| 20261017075143 | JSON to YAML converter | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017075143.md) |
