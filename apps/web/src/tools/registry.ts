@@ -2792,6 +2792,97 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'lorem-ipsum-generator',
+    name: 'Lorem Ipsum 占位文本生成器',
+    nameEn: 'Lorem Ipsum Generator',
+    description:
+      '按段落、句子或单词三种单位生成 Lorem Ipsum 占位文本，可控制数量并选择以经典开头起始。',
+    descriptionEn:
+      'Generate Lorem Ipsum placeholder text by paragraph, sentence, or word, with a count control and an option to start with the classic opening.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/lorem-ipsum-generator',
+    iconName: 'FileText',
+    tags: ['Lorem', '占位文本', '假文', '测试数据', '段落'],
+    tagsEn: ['Lorem', 'Ipsum', 'Placeholder', 'Dummy Text', 'Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Lorem Ipsum 占位文本生成器是一款纯浏览器本地运算的工具，可按段落、句子或单词三种单位快速生成排版用的假文占位内容，无需联网、不上传任何数据。',
+        coreFeatures: [
+          '三种计量单位：按段落、句子或单词生成，数量可自由调节',
+          '经典开头选项：可让首句以经典 Lorem ipsum dolor sit amet... 起始',
+          '一键重新生成：每次点击都会换一批随机内容，便于反复挑选',
+          '安全上限：对极大数量做合理限制，避免生成过多导致页面卡顿',
+        ],
+        howToUse: [
+          '在顶部选择生成单位（段落 / 句子 / 单词）与数量',
+          '按需开启「以经典 Lorem ipsum 开头」，让首句使用经典文案',
+          '结果区会即时展示生成的占位文本，点击「重新生成」可换一批',
+          '点击「复制结果」把占位文本粘贴到设计稿或草稿中',
+        ],
+        useCases: [
+          '设计稿与原型中填充占位文案，专注排版与视觉呈现',
+          '开发联调时快速生成批量测试文本',
+          '演示文档、邮件模板中需要假文占位的场景',
+        ],
+        privacyNote:
+          '所有占位文本均基于浏览器本地随机词库即时生成，不使用任何服务器计算，也不发起网络请求。',
+        faqs: [
+          {
+            question: '生成的文本有实际含义吗？',
+            answer:
+              '没有。Lorem Ipsum 是用于排版的占位假文，本身不含实际语义，请勿直接作为正式对外的生产内容。',
+          },
+          {
+            question: '为什么每次生成的内容都不一样？',
+            answer:
+              '文本由本地随机词库即时组合而成，「重新生成」会重新采样，因此每次结果都会变化。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Lorem Ipsum Generator is a fully browser-based utility that instantly produces placeholder copy by paragraph, sentence, or word for layout work, with no network access and no data upload.',
+        coreFeatures: [
+          'Three units: generate by paragraph, sentence, or word with an adjustable count',
+          'Classic opening option: start the first sentence with the classic Lorem ipsum dolor sit amet opening',
+          'One-click regenerate: every click reshuffles the random content for easy comparison',
+          'Safe caps: extreme counts are capped to keep the page responsive',
+        ],
+        howToUse: [
+          'Pick the unit (paragraph, sentence, or word) and the count at the top',
+          'Toggle "Start with classic Lorem ipsum" to begin with the classic opening sentence',
+          'The output panel shows the generated text instantly; click "Regenerate" for a new batch',
+          'Click "Copy" to paste the placeholder text into your design or draft',
+        ],
+        useCases: [
+          'Filling design mockups and prototypes with placeholder copy to focus on layout',
+          'Quickly producing bulk test text during development',
+          'Providing dummy text for demos, slide decks, and email templates',
+        ],
+        privacyNote:
+          'All placeholder text is generated locally from a built-in random word bank. No server computation is used and no network request is made.',
+        faqs: [
+          {
+            question: 'Is the generated text meaningful?',
+            answer:
+              'No. Lorem Ipsum is placeholder text with no real meaning; do not use it as production copy.',
+          },
+          {
+            question: 'Why does each generation differ?',
+            answer:
+              'The text is assembled on the fly from a local random word bank, so "Regenerate" re-samples and produces different content every time.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

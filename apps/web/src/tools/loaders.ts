@@ -49,4 +49,5 @@ export const toolLoaders: Record<
   'csv-json-converter': () => import('./csv-json-converter'),
   'cron-parser': () => import('./cron-parser'),
   'html-entity-codec': () => import('./html-entity-codec'),
+  'lorem-ipsum-generator': () => import('./lorem-ipsum-generator'),
 };
