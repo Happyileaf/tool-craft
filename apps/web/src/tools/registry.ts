@@ -3456,6 +3456,98 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'semver-parser',
+    name: '语义化版本解析与比较',
+    nameEn: 'SemVer Parser & Comparator',
+    description:
+      '解析与校验 SemVer 2.0.0 版本号，比较两个版本大小，并判断指定版本是否命中 ^、~、>= < 等 npm 风格范围表达式。',
+    descriptionEn:
+      'Parse and validate SemVer 2.0.0 versions, compare two versions, and check whether a given version satisfies npm-style ranges such as ^, ~, and >= <.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/semver-parser',
+    iconName: 'Tags',
+    tags: ['SemVer', '版本', '比较', '范围', 'npm', '依赖'],
+    tagsEn: ['SemVer', 'Version', 'Compare', 'Range', 'npm', 'Dependency'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1.2.3-alpha.1+build.7',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的语义化版本工具，可校验并拆解 SemVer 2.0.0 版本号、比较两个版本的大小关系，并判断某个版本是否落入指定的 npm 风格范围表达式。',
+        coreFeatures: [
+          '版本解析：拆出 major / minor / patch 与 pre-release、build 元数据',
+          '合法性校验：严格遵循 SemVer 2.0.0（数字段不得有前导零、必须三段式）',
+          '版本比较：按规范比较主次修订号与预发布优先级',
+          '范围匹配：支持 ^、~、>=、<=、>、<、=、x 通配、空格（与）、||（或）与连字符区间',
+          '预发布语义：普通范围不会命中预发布版本，与 npm 规则一致',
+          '纯本地运行：所有运算在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '在「版本校验与解析」输入版本号，查看是否合法与各段取值',
+          '在「版本比较」输入 A、B 两个版本，查看大小关系',
+          '在「范围命中判断」输入范围表达式与版本号，查看是否命中',
+        ],
+        useCases: [
+          '排查依赖冲突：确认某版本是否满足依赖声明的范围',
+          '发版校验：检查版本字符串是否符合语义化版本规范',
+          '文档与脚本编写：验证版本比较与范围表达式行为',
+        ],
+        privacyNote:
+          '所有解析与比较均在浏览器本地完成，输入的版本信息不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么 1.0 会被判为非法？',
+            answer:
+              'SemVer 2.0.0 要求版本号必须是 major.minor.patch 三段式，1.0 缺少修订号，因此非法。',
+          },
+          {
+            question: '为什么 ^1.2.3 不命中 1.3.0-alpha？',
+            answer:
+              '按 npm 语义，不含预发布标识的范围默认不会命中预发布版本，以避免不稳定版本被意外选中。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based Semantic Versioning tool. Validate and break down SemVer 2.0.0 strings, compare two versions, and check whether a version satisfies an npm-style range expression.',
+        coreFeatures: [
+          'Version parsing: decompose major / minor / patch plus pre-release and build metadata',
+          'Validation: strict SemVer 2.0.0 (no leading zeros, three segments required)',
+          'Comparison: compares major/minor/patch and pre-release precedence per spec',
+          'Range matching: ^, ~, >=, <=, >, <, =, x wildcards, space (AND), || (OR), and hyphen ranges',
+          'Pre-release semantics: plain ranges do not match pre-release versions, consistent with npm',
+          '100% local: everything runs in your browser and no network request is ever made',
+        ],
+        howToUse: [
+          'Enter a version in "Validation & parsing" to check validity and see each segment',
+          'Enter two versions in "Comparison" to see their ordering',
+          'Enter a range expression and a version in "Range matching" to see whether it is satisfied',
+        ],
+        useCases: [
+          'Debugging dependency conflicts: check whether a version satisfies a declared range',
+          'Release validation: verify a version string against the semantic versioning spec',
+          'Docs and scripting: confirm version comparison and range behavior',
+        ],
+        privacyNote:
+          'All parsing and comparison happen locally in your browser. Entered versions are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why is 1.0 considered invalid?',
+            answer:
+              'SemVer 2.0.0 requires three segments (major.minor.patch). 1.0 is missing the patch segment, so it is invalid.',
+          },
+          {
+            question: 'Why does ^1.2.3 not match 1.3.0-alpha?',
+            answer:
+              'Per npm semantics, ranges without a pre-release identifier do not match pre-release versions by default, so unstable versions are not accidentally selected.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

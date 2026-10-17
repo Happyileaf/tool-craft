@@ -56,4 +56,5 @@ export const toolLoaders: Record<
   'cidr-subnet-calculator': () => import('./cidr-subnet-calculator'),
   'curl-to-code': () => import('./curl-to-code'),
   'line-operations': () => import('./line-operations'),
+  'semver-parser': () => import('./semver-parser'),
 };
