@@ -2883,6 +2883,480 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'json-to-typescript',
+    name: 'JSON 转 TypeScript 类型',
+    nameEn: 'JSON to TypeScript Interface Generator',
+    description:
+      '根据 JSON 样例数据自动推断结构并生成等价的 TypeScript 接口与类型定义，支持嵌套命名、数组联合类型与键名安全。',
+    descriptionEn:
+      'Infer TypeScript interfaces and type definitions from sample JSON data, with nested naming, array union types, and safe key quoting.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-typescript',
+    iconName: 'FileCode',
+    tags: ['JSON', 'TypeScript', '类型', '接口', '开发'],
+    tagsEn: ['JSON', 'TypeScript', 'Type', 'Interface', 'Dev'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `{
+  "id": 1024,
+  "name": "ToolCraft",
+  "active": true,
+  "tags": ["json", "typescript"],
+  "profile": {
+    "email": "dev@toolcraft.io",
+    "score": 4.5
+  },
+  "projects": [
+    { "title": "Formatter", "stars": 128 },
+    { "title": "Diff", "stars": 64 }
+  ]
+}`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 JSON 转 TypeScript 类型生成器，粘贴 JSON 样例数据即可自动推断结构，生成可直接复用的 interface / type 定义，无需上传任何数据。',
+        coreFeatures: [
+          '结构推断：递归分析对象、数组、字符串、数字、布尔与 null，自动生成对应类型',
+          '嵌套命名：嵌套对象生成独立 interface，名称由父类型与属性名组合并自动去重',
+          '数组联合类型：同一数组内元素类型不一致时合并为联合类型，空数组推断为 unknown[]',
+          '键名安全：不是合法标识符的键自动加双引号，保证输出为合法 TypeScript',
+          '纯本地运行：所有推断都在浏览器完成，数据不离开设备',
+        ],
+        howToUse: [
+          '在左侧输入框粘贴 JSON 样例数据',
+          '按需填写根类型名、选择缩进宽度、决定是否导出根类型',
+          '右侧实时显示生成的 TypeScript 类型定义',
+          '点击右上角复制按钮取用生成结果',
+        ],
+        useCases: [
+          '把接口返回的 JSON 样例快速转成 TypeScript 接口定义',
+          '第三方 API 缺少类型文档时，由样例数据反推类型',
+          '为 mock 数据生成类型定义，保证前后端类型一致',
+        ],
+        privacyNote:
+          '所有类型推断都在本地浏览器完成，数据不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '数组里元素类型不一致会怎么处理？',
+            answer:
+              '工具会收集数组内所有元素推断出的类型并合并为联合类型，例如同时出现字符串与数字时输出 (string | number)[]；空数组则推断为 unknown[]。',
+          },
+          {
+            question: '嵌套对象会生成什么？',
+            answer:
+              '每个嵌套对象都会生成一个独立 interface，名称由父类型名与属性名组合（如 RootUser）并自动去重，属性类型引用对应接口。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based JSON to TypeScript generator that infers the shape from sample JSON data and emits ready-to-use interface / type definitions without uploading anything.',
+        coreFeatures: [
+          'Shape inference: recursively analyzes objects, arrays, strings, numbers, booleans, and null to emit matching types',
+          'Nested naming: nested objects become dedicated interfaces named from parent type plus property, with automatic de-duplication',
+          'Array unions: mixed element types are merged into a union, and empty arrays become unknown[]',
+          'Safe keys: keys that are not valid identifiers are automatically double-quoted so the output is valid TypeScript',
+          '100% local: all inference happens in-browser, data never leaves your device',
+        ],
+        howToUse: [
+          'Paste your sample JSON into the left input box',
+          'Optionally set the root type name, choose the indent width, and toggle exporting the root type',
+          'The generated TypeScript appears instantly on the right',
+          'Click the copy button in the top right to grab the result',
+        ],
+        useCases: [
+          'Turning a sample API response into a TypeScript interface quickly',
+          'Reverse-engineering types from sample data when third-party API docs lack type info',
+          'Generating type definitions for mock data to keep frontend and backend in sync',
+        ],
+        privacyNote:
+          'All type inference is done locally in your browser. Data is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'What happens when array elements have different types?',
+            answer:
+              'The tool collects every inferred element type and merges them into a union, e.g. (string | number)[] when both strings and numbers appear; an empty array becomes unknown[].',
+          },
+          {
+            question: 'What is generated for nested objects?',
+            answer:
+              'Each nested object becomes its own interface, named from the parent type plus the property (such as RootUser) with automatic de-duplication, and the property references that interface.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'text-case-converter',
+    name: '文本命名风格转换',
+    nameEn: 'Text Case Converter',
+    description:
+      '把文本在 camelCase、PascalCase、snake_case、kebab-case、CONSTANT_CASE、Title Case 等常见命名风格之间一键互转。',
+    descriptionEn:
+      'Convert text between common naming styles such as camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, and Title Case.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/text-case-converter',
+    iconName: 'FileText',
+    tags: ['命名', '大小写', '驼峰', '下划线', '文本'],
+    tagsEn: ['Case', 'Naming', 'Camel', 'Snake', 'Text'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'get user profile',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的文本命名风格转换器，把任意文本一键在 camelCase、PascalCase、snake_case、kebab-case、CONSTANT_CASE、Title Case 等常见风格之间互转，全部在本地完成。',
+        coreFeatures: [
+          '十种风格：支持 camelCase / PascalCase / snake_case / SCREAMING_SNAKE_CASE / kebab-case / dot.case / Title Case / Sentence case / lower / UPPER',
+          '智能分词：自动识别 camelCase / PascalCase 边界与连续大写缩写，如 getUserID 可正确拆为 get + user + id',
+          '全量对照：一次列出所有风格结果，逐项一键复制',
+          '纯本地运行：无任何网络请求，输入内容不离开设备',
+        ],
+        howToUse: [
+          '在输入框输入或粘贴任意文本',
+          '选择目标风格查看主结果，或直接查看下方全部风格对照',
+          '点击对应条目的复制按钮取用结果',
+          '需要时可清空输入或重新载入示例',
+        ],
+        useCases: [
+          '把后端 snake_case 字段名转成前端 camelCase',
+          '把自然语言文案转成常量名 CONSTANT_CASE 或类名 PascalCase',
+          '统一团队命名风格，快速生成变量名与文件名',
+        ],
+        privacyNote:
+          '所有转换都在本地浏览器完成，输入内容不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '输入 camelCase 或 PascalCase 文本能正确拆分吗？',
+            answer:
+              '可以。工具会按大小写边界拆分，并把连续大写缩写视为一个词，如 HTTPResponse 拆为 HTTP + Response，getUserID 拆为 get + User + ID。',
+          },
+          {
+            question: '空输入会怎样？',
+            answer:
+              '输入为空或只包含分隔符时，所有风格都返回空结果，并给出提示，不会产出错误内容。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based text case converter that switches any text between camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, Title Case, and more, all locally.',
+        coreFeatures: [
+          'Ten styles: camelCase / PascalCase / snake_case / SCREAMING_SNAKE_CASE / kebab-case / dot.case / Title Case / Sentence case / lower / UPPER',
+          'Smart tokenizing: detects camelCase / PascalCase boundaries and acronym runs, so getUserID splits into get + user + id',
+          'Full comparison: lists every style at once, each with one-click copy',
+          '100% local: no network requests, your input never leaves your device',
+        ],
+        howToUse: [
+          'Type or paste any text into the input box',
+          'Pick a target style to see the main result, or scan the full comparison below',
+          'Click the copy button on any entry to grab that result',
+          'Clear the input or reload the sample whenever needed',
+        ],
+        useCases: [
+          'Converting snake_case backend field names to camelCase for the frontend',
+          'Turning copy text into CONSTANT_CASE constants or PascalCase class names',
+          'Standardizing naming conventions across a team',
+        ],
+        privacyNote:
+          'All conversion happens locally in your browser. Your input is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Can it split camelCase or PascalCase input correctly?',
+            answer:
+              'Yes. It splits on case boundaries and treats runs of capitals as one word, so HTTPResponse becomes HTTP + Response and getUserID becomes get + User + ID.',
+          },
+          {
+            question: 'What happens with empty input?',
+            answer:
+              'When the input is empty or only separators, every style returns an empty result and a hint is shown instead of wrong content.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'totp-generator',
+    name: 'TOTP 动态验证码生成器',
+    nameEn: 'TOTP (2FA) Code Generator',
+    description:
+      '按 RFC 6238 由 Base32 密钥生成基于时间的一次性密码，实时显示当前验证码与剩余有效期，用于本地调试两步验证。',
+    descriptionEn:
+      'Generate RFC 6238 time-based one-time passwords from a Base32 secret, with a live code and remaining validity window for local 2FA debugging.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/totp-generator',
+    iconName: 'ShieldCheck',
+    tags: ['TOTP', '2FA', '验证码', '双因素', '安全'],
+    tagsEn: ['TOTP', '2FA', 'OTP', 'Authenticator', 'Security'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 TOTP 动态验证码生成器，输入 Base32 密钥即可按 RFC 6238 生成与认证器一致的六位或八位一次性密码，并实时显示剩余有效期，用于本地调试两步验证流程。',
+        coreFeatures: [
+          '标准实现：遵循 RFC 6238 / RFC 4226，支持 SHA-1 / SHA-256 / SHA-512 与 6 / 8 位验证码',
+          '实时倒计时：展示当前验证码的剩余有效秒数与进度条，随系统时间自动刷新',
+          '参数可调：时间步长（30s / 60s）与哈希算法可按需切换，便于对齐不同服务端配置',
+          '测试向量：内置 RFC 6238 附录 B 测试向量，一键载入校验实现正确性',
+          '纯本地运行：密钥与验证码都不离开浏览器，绝不发起网络请求',
+        ],
+        howToUse: [
+          '在输入框填入 Base32 编码的共享密钥（可含空格与 = 填充）',
+          '按需选择哈希算法、验证码位数与时间步长',
+          '页面实时显示当前验证码与剩余有效期，并自动刷新',
+          '点击复制按钮取用验证码，或用「载入测试向量」校验实现',
+        ],
+        useCases: [
+          '本地调试 TOTP 双因素认证时快速获取当前验证码',
+          '核对服务端与认证器实现是否一致',
+          '学习 RFC 6238 算法时对照标准测试向量验证结果',
+        ],
+        privacyNote:
+          '密钥仅在浏览器内存中参与本地 HMAC 运算，绝不上传、不记录、不发送到任何服务器。',
+        faqs: [
+          {
+            question: '密钥有什么格式要求？',
+            answer:
+              '需为 Base32 编码（字母 A-Z 与数字 2-7）。工具会自动忽略空格、统一大小写并去掉 = 填充；包含其他字符时会给出明确错误。',
+          },
+          {
+            question: '为什么验证码每 30 秒会变化？',
+            answer:
+              'TOTP 以时间步长为单位计算计数器，默认每 30 秒进入下一个时间步，验证码随之更新，界面同时展示本步剩余秒数。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based TOTP generator that turns a Base32 secret into RFC 6238 time-based one-time passwords matching your authenticator, with a live code and remaining validity window for local 2FA debugging.',
+        coreFeatures: [
+          'Standards-based: follows RFC 6238 / RFC 4226 with SHA-1 / SHA-256 / SHA-512 and 6- or 8-digit codes',
+          'Live countdown: shows the remaining seconds of the current code with a progress bar that refreshes automatically',
+          'Tunable parameters: switch the time step (30s / 60s) and hash algorithm to match different server settings',
+          'Test vectors: built-in RFC 6238 Appendix B vectors let you validate the implementation in one click',
+          '100% local: neither the secret nor the code ever leaves your browser, with zero network requests',
+        ],
+        howToUse: [
+          'Enter the Base32 shared secret in the input box (spaces and = padding are allowed)',
+          'Optionally pick the hash algorithm, code length, and time step',
+          'The current code and remaining validity update live and refresh automatically',
+          'Copy the code, or click "Load test vector" to validate the implementation',
+        ],
+        useCases: [
+          'Grabbing the current code quickly while debugging TOTP two-factor auth locally',
+          'Checking that a server implementation matches a standard authenticator',
+          'Verifying results against RFC 6238 test vectors while studying the algorithm',
+        ],
+        privacyNote:
+          'The secret only participates in local HMAC computation in browser memory. Nothing is uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'What format does the secret need?',
+            answer:
+              'It must be Base32 (letters A-Z and digits 2-7). The tool ignores spaces, normalizes case, and strips = padding; any other character produces a clear error.',
+          },
+          {
+            question: 'Why does the code change every 30 seconds?',
+            answer:
+              'TOTP derives a counter per time step. With the default 30-second step, a new step begins every 30 seconds and the code updates, while the UI shows the remaining seconds.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'cidr-subnet-calculator',
+    name: 'CIDR / IP 子网计算器',
+    nameEn: 'CIDR / IP Subnet Calculator',
+    description:
+      '输入 IP 地址与 CIDR 前缀或子网掩码，一键计算网络地址、广播地址、可用主机范围、主机数量与掩码信息，支持 IPv4 与 IPv6。',
+    descriptionEn:
+      'Enter an IP address with a CIDR prefix or netmask to compute the network address, broadcast address, usable host range, host count, and mask details for IPv4 and IPv6.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/cidr-subnet-calculator',
+    iconName: 'Gauge',
+    tags: ['CIDR', '子网', 'IP', '网络', 'IPv6'],
+    tagsEn: ['CIDR', 'Subnet', 'IP', 'Networking', 'IPv6'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '192.168.1.10/24',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 CIDR / IP 子网计算器，输入 IP 地址与 CIDR 前缀（或点分掩码）即可得到网络地址、广播地址、可用主机范围、主机数量、掩码与地址类别，并支持 IPv6 前缀长度计算，便于网络规划与排障。',
+        coreFeatures: [
+          '双栈支持：同时计算 IPv4 与 IPv6，IPv6 前缀运算使用 BigInt 保证大地址空间精度',
+          '多输入形式：接受 `IP/前缀`、`IP 掩码`、`IP` 等写法，自动识别地址族',
+          '结果齐全：给出网络地址、广播地址、首个/最后可用主机、地址总数与可用主机数',
+          '掩码视图：展示子网掩码、通配符掩码与 32 位二进制分组视图',
+          '纯本地运行：所有计算都在浏览器内完成，不发起任何网络探测或请求',
+        ],
+        howToUse: [
+          '在输入框填写 IP 地址与 CIDR 前缀，例如 192.168.1.10/24，或使用「IP 掩码」形式',
+          '按需切换识别模式（自动 / IPv4 / IPv6）或点击常用示例按钮',
+          '查看右侧结果卡片中的网络地址、可用主机范围、掩码与地址类别等信息',
+          '点击「复制结果」导出全部计算字段',
+        ],
+        useCases: [
+          '划分网段、规划子网掩码时快速核算可用主机数量',
+          '排查网络不通问题时确认网络地址与广播地址是否正确',
+          '学习 IPv4 / IPv6 寻址与 CIDR 记法时对照计算结果',
+        ],
+        privacyNote:
+          '输入内容仅在浏览器本地参与计算，绝不会上传、记录或发送到任何服务器。',
+        faqs: [
+          {
+            question: '支持哪些输入格式？',
+            answer:
+              '支持 `192.168.1.10/24`、`192.168.1.10 255.255.255.0`、单独的 `192.168.1.10`（按 /32 计算）以及 `2001:db8::1/64` 等 IPv6 写法；非法输入会给出明确错误提示。',
+          },
+          {
+            question: '/31 和 /32 的主机数为什么要特殊处理？',
+            answer:
+              '按 RFC 3021，/31 的两个地址可用于点对点链路，因此可用主机数为 2；而 /32 为单主机地址。小前缀等级下不存在传统意义上的广播地址。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based CIDR / IP subnet calculator. Enter an IP address with a CIDR prefix (or dotted netmask) to get the network address, broadcast address, usable host range, host count, netmask, and address class, with IPv6 prefix support for network planning and troubleshooting.',
+        coreFeatures: [
+          'Dual-stack: computes both IPv4 and IPv6, using BigInt for IPv6 prefix math to keep large address spaces precise',
+          'Flexible input: accepts `IP/prefix`, `IP netmask`, and plain `IP` forms with automatic address-family detection',
+          'Complete results: network address, broadcast address, first/last usable host, total addresses, and usable host count',
+          'Mask view: shows the subnet mask, wildcard mask, and a grouped 32-bit binary view',
+          '100% local: every calculation runs in your browser with zero network probing or requests',
+        ],
+        howToUse: [
+          'Enter an IP address and CIDR prefix, such as 192.168.1.10/24, or use the "IP netmask" form',
+          'Switch the detection mode (auto / IPv4 / IPv6) or click a common sample button',
+          'Read the network address, usable host range, mask, and address class from the result card',
+          'Click "Copy result" to export every computed field',
+        ],
+        useCases: [
+          'Quickly verifying usable host counts while carving subnets and planning netmasks',
+          'Confirming network and broadcast addresses while debugging connectivity problems',
+          'Learning IPv4 / IPv6 addressing and CIDR notation against computed results',
+        ],
+        privacyNote:
+          'Your input only participates in local computation in the browser. Nothing is uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'Which input formats are supported?',
+            answer:
+              'Forms like `192.168.1.10/24`, `192.168.1.10 255.255.255.0`, a bare `192.168.1.10` (treated as /32), and IPv6 like `2001:db8::1/64` are supported; invalid input produces a clear error.',
+          },
+          {
+            question: 'Why are /31 and /32 host counts special?',
+            answer:
+              'Per RFC 3021, both addresses in a /31 can be used on point-to-point links, so the usable host count is 2, while /32 is a single host address. These prefixes have no traditional broadcast address.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'curl-to-code',
+    name: 'cURL 转代码',
+    nameEn: 'cURL to Code Converter',
+    description:
+      '把一条 cURL 命令解析为请求方法、URL、请求头与请求体，一键生成 JavaScript fetch、Node axios、Python requests 或 Go 代码片段。',
+    descriptionEn:
+      'Parse a cURL command into its method, URL, headers, and body, then generate equivalent JavaScript fetch, Node axios, Python requests, or Go code in one click.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/curl-to-code',
+    iconName: 'Code',
+    tags: ['cURL', '代码生成', 'HTTP', 'API', '调试'],
+    tagsEn: ['cURL', 'Codegen', 'HTTP', 'API', 'Debug'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `curl -X POST 'https://api.example.com/items' \\
+  -H 'Content-Type: application/json' \\
+  -H 'Accept: application/json' \\
+  -d '{"name": "A", "price": 12}'`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 cURL 转代码工具，粘贴一条 cURL 命令即可解析出请求方法、URL、请求头与请求体，并生成等价的多语言代码片段，省去手工改写 API 调用的时间。',
+        coreFeatures: [
+          '完整解析：识别 -X 方法、-H 请求头、-d/--data 请求体、-u 基本认证、--data-raw 等常用参数',
+          '多目标语言：一键生成 JavaScript fetch、Node.js axios、Python requests 与 Go net/http 代码',
+          '转义感知：正确处理单引号 / 双引号、反斜杠换行与转义字符',
+          '实时预览：输入即解析并生成代码，解析失败时给出明确错误定位',
+          '纯本地运行：命令内容不离开浏览器，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '把从浏览器开发者工具「Copy as cURL」复制到的命令粘贴到左侧输入框',
+          '在顶部选择目标语言（JavaScript fetch / Node axios / Python requests / Go）',
+          '右侧实时生成等价代码，点击「复制代码」取用',
+          '若命令格式不被识别，按提示检查引号与参数写法',
+        ],
+        useCases: [
+          '把浏览器里复制的请求快速转写成项目使用的 HTTP 客户端代码',
+          '对照不同语言实现同一请求时的差异',
+          '教学或文档中生成标准的多语言请求示例',
+        ],
+        privacyNote:
+          '粘贴的 cURL 命令只在浏览器内存中解析与生成，绝不会上传、记录或发送到任何服务器。',
+        faqs: [
+          {
+            question: '支持哪些 cURL 参数？',
+            answer:
+              '目前支持 -X/--request、-H/--header、-d/--data、--data-raw/--data-binary、-u/--user 等最常用参数；复杂或不常见参数可能不被识别，会给出提示。',
+          },
+          {
+            question: '生成的代码能直接运行吗？',
+            answer:
+              '生成的是等价的标准代码片段。axios 与 requests 等示例可能需要在项目中先安装对应依赖，请按目标语言环境补充。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based cURL-to-code converter. Paste a cURL command and it parses the method, URL, headers, and body, then generates equivalent multi-language code snippets so you can skip manually rewriting API calls.',
+        coreFeatures: [
+          'Full parsing: recognizes -X method, -H headers, -d/--data body, -u basic auth, --data-raw, and other common flags',
+          'Multiple targets: generate JavaScript fetch, Node.js axios, Python requests, and Go net/http code in one click',
+          'Escape-aware: correctly handles single/double quotes, backslash line continuations, and escaped characters',
+          'Live preview: parse and generate as you type, with clear error messages on failure',
+          '100% local: the command never leaves your browser and no network request is ever made',
+        ],
+        howToUse: [
+          'Paste a command copied with "Copy as cURL" from your browser devtools into the left input',
+          'Pick the target language (JavaScript fetch / Node axios / Python requests / Go) at the top',
+          'The equivalent code appears live on the right; click "Copy code" to use it',
+          'If the command is not recognized, follow the hint to check quotes and argument syntax',
+        ],
+        useCases: [
+          'Quickly rewriting a request copied from the browser into your project HTTP client code',
+          'Comparing how the same request looks across different languages',
+          'Producing standard multi-language request samples for teaching or docs',
+        ],
+        privacyNote:
+          'The pasted cURL command is only parsed and rendered in browser memory. Nothing is uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'Which cURL flags are supported?',
+            answer:
+              'The most common flags are supported: -X/--request, -H/--header, -d/--data, --data-raw/--data-binary, -u/--user, and more. Uncommon or complex flags may not be recognized and will produce a hint.',
+          },
+          {
+            question: 'Can the generated code run directly?',
+            answer:
+              'It is an equivalent standard snippet. Examples using axios or requests may require installing those dependencies in your project first, per your target language environment.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

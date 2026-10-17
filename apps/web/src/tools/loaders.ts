@@ -50,4 +50,9 @@ export const toolLoaders: Record<
   'cron-parser': () => import('./cron-parser'),
   'html-entity-codec': () => import('./html-entity-codec'),
   'lorem-ipsum-generator': () => import('./lorem-ipsum-generator'),
+  'json-to-typescript': () => import('./json-to-typescript'),
+  'text-case-converter': () => import('./text-case-converter'),
+  'totp-generator': () => import('./totp-generator'),
+  'cidr-subnet-calculator': () => import('./cidr-subnet-calculator'),
+  'curl-to-code': () => import('./curl-to-code'),
 };
