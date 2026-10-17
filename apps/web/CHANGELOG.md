@@ -4,6 +4,15 @@
 
 ## 日志
 
+## 2026-10-17 ：【Agent自主迭代】新增 5 个数据、编码与文本工具
+
+- **新增**：JSON转YAML（json-to-yaml）— 将 JSON 文本序列化为等效 YAML，支持自定义缩进与字符串引号保护
+- **新增**：CSV 与 JSON 双向转换（csv-json-converter）— 在 CSV 与 JSON 之间双向转换，支持分隔符与表头选项
+- **新增**：CRON 表达式解析器（cron-parser）— 解析校验 5 段 CRON 表达式并预览后续执行时间
+- **新增**：HTML 实体编解码（html-entity-codec）— 文本与 HTML 实体双向转换，覆盖命名与数字实体
+- **新增**：Lorem Ipsum 占位文本生成器（lorem-ipsum-generator）— 按段落 / 句子 / 单词生成占位假文
+- **修改**：JSON转YAML（json-to-yaml）— 调整布局结构，补齐顶栏与双栏网格容器
+
 ## 2026-09-22 ：【自主迭代】新增 3 个文本处理工具
 
 - **新增**：字数统计（word-count）— 实时统计文本字符数、字数、行数和段落数
