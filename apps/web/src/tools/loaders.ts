@@ -46,4 +46,5 @@ export const toolLoaders: Record<
   'color-blind-simulator': () => import('./color-blind-simulator'),
   'css-filter-generator': () => import('./css-filter-generator'),
   'json-to-yaml': () => import('./json-to-yaml'),
+  'csv-json-converter': () => import('./csv-json-converter'),
 };

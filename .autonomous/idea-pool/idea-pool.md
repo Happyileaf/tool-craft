@@ -14,7 +14,7 @@
 
 | ID | Idea | Type | Source | Status | Created At | Claimed By | 详情 |
 |---|---|---|---|---|---|---|---|
-| 20260928103001 | CSV to JSON/JSON to CSV converter | Web Tool | Exploration | Claimed | 2026-09-28 | trae-agent | [详情](./idea-details/20260928103001.md) |
+| 20260928103001 | CSV to JSON/JSON to CSV converter | Web Tool | Exploration | In Progress | 2026-09-28 | trae-agent | [详情](./idea-details/20260928103001.md) |
 | 20260928103002 | CSS prefixer | Web Tool | Exploration | Pending | 2026-09-28 | | [详情](./idea-details/20260928103002.md) |
 | 20260928103003 | Regular expression generator | Web Tool | Existing Gap | Pending | 2026-09-28 | | [详情](./idea-details/20260928103003.md) |
 | 20260928103005 | HTML entity encoder/decoder | Web Tool | Exploration | Claimed | 2026-09-28 | trae-agent | [详情](./idea-details/20260928103005.md) |

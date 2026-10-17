@@ -2520,6 +2520,98 @@ author:
       },
     },
   },
+  {
+    slug: 'csv-json-converter',
+    name: 'CSV 与 JSON 双向转换',
+    nameEn: 'CSV to JSON / JSON to CSV Converter',
+    description:
+      '在 CSV 与 JSON 之间双向转换，支持自定义分隔符与表头开关，完整处理引号与换行转义。',
+    descriptionEn:
+      'Convert between CSV and JSON in both directions with custom delimiters, header toggle, and full quote/escape handling.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/csv-json-converter',
+    iconName: 'FileText',
+    tags: ['CSV', 'JSON', '转换', '表格', '数据'],
+    tagsEn: ['CSV', 'JSON', 'Convert', 'Table', 'Data'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `name,age,city
+"Smith, John",30,New York
+Jane,25,London`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 CSV 与 JSON 双向转换器，可在不上传数据的前提下，把表格数据与 JSON 对象数组相互转换，并完整处理引号、分隔符与换行等转义场景。',
+        coreFeatures: [
+          '双向转换：支持 CSV → JSON 与 JSON → CSV 两个方向',
+          'RFC 4180 兼容：正确处理引号包裹字段内的分隔符、换行与双引号',
+          '灵活选项：可切换逗号 / 制表符 / 分号分隔符，并控制首行是否作为表头',
+          '纯本地运行：所有解析与生成均在浏览器完成，数据不离开设备',
+        ],
+        howToUse: [
+          '在顶部选择转换方向（CSV → JSON 或 JSON → CSV）',
+          '按需选择字段分隔符，CSV → JSON 时可关闭「首行作为表头」',
+          '在左侧输入原始文本，右侧会自动显示转换结果',
+          '出现错误时会展示具体原因，成功后可点击复制按钮取用结果',
+        ],
+        useCases: [
+          '把导出的 CSV 报表转换为 JSON 供程序处理',
+          '把接口返回的 JSON 数组整理为可直接导入表格软件的 CSV',
+          '核对两种格式互转后的数据是否一致',
+        ],
+        privacyNote:
+          '所有解析与生成均在浏览器本地完成，数据不会上传到任何服务器，保护隐私安全。',
+        faqs: [
+          {
+            question: '字段里包含逗号或换行会出错吗？',
+            answer:
+              '不会。工具遵循 RFC 4180 规则，会自动识别并处理引号包裹字段内的分隔符、换行与双引号转义。',
+          },
+          {
+            question: 'JSON 转 CSV 时表头是怎么确定的？',
+            answer:
+              '工具会按对象键出现顺序取并集作为表头；某个对象缺少的键会填入空值。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based CSV ↔ JSON converter that turns tabular data and JSON object arrays into each other without uploading anything, correctly handling quotes, delimiters, and newlines.',
+        coreFeatures: [
+          'Bidirectional: convert CSV → JSON and JSON → CSV',
+          'RFC 4180 compliant: correctly handles delimiters, newlines, and escaped quotes inside quoted fields',
+          'Flexible options: switch between comma, tab, and semicolon delimiters, and toggle the header row',
+          '100% local: all parsing and generation happen in-browser, data never leaves your device',
+        ],
+        howToUse: [
+          'Choose the conversion direction (CSV → JSON or JSON → CSV) at the top',
+          'Pick a field delimiter, and turn off "first row as header" when needed',
+          'Type or paste your source text on the left; the result appears on the right',
+          'Errors are shown with a concrete reason; copy the result once successful',
+        ],
+        useCases: [
+          'Turning exported CSV reports into JSON for programmatic use',
+          'Turning a JSON array from an API into CSV ready for spreadsheet import',
+          'Verifying that data stays consistent when converted between the two formats',
+        ],
+        privacyNote:
+          'All parsing and generation happen locally in your browser. Data is never uploaded to any server, keeping your data private.',
+        faqs: [
+          {
+            question: 'Will commas or newlines inside fields break the output?',
+            answer:
+              'No. The tool follows RFC 4180, recognizing and handling delimiters, newlines, and escaped quotes inside quoted fields.',
+          },
+          {
+            question: 'How is the header row determined for JSON → CSV?',
+            answer:
+              'The tool takes the union of object keys in order of appearance as the header; any missing key in a record becomes an empty cell.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
