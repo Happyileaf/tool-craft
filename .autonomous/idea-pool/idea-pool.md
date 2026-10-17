@@ -45,3 +45,11 @@
 | 20261017140157 | Image EXIF metadata viewer & stripper | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017140157.md) |
 | 20261017140158 | Date & business day calculator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140158.md) |
 | 20261017140159 | .env parser & converter | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140159.md) |
+| 20261017160146 | TOML ↔ JSON converter | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017160146.md) |
+| 20261017160147 | HTML to Markdown converter | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017160147.md) |
+| 20261017160148 | ULID generator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017160148.md) |
+| 20261017160149 | CSS unit converter (px / rem / em / pt) | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017160149.md) |
+| 20261017160150 | JSON Schema generator & validator | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017160150.md) |
+| 20261017160151 | Semantic version (SemVer) parser & comparator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017160151.md) |
+| 20261017160152 | Unit & measurement converter | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017160152.md) |
+| 20261017160153 | Unicode character inspector & invisible character detector | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017160153.md) |
