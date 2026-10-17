@@ -1,0 +1,44 @@
+.container {
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.input {
+  margin-bottom: 16px;
+}
+
+.card {
+  min-width: 0;
+}
+
+.codeArea {
+  padding: 8px 0;
+}
+
+.code {
+  margin-bottom: 16px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: clamp(32px, 8vw, 56px);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-align: center;
+  color: #1677ff;
+  word-break: break-all;
+}
+
+.remaining {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.65);
+}

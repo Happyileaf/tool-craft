@@ -52,4 +52,5 @@ export const toolLoaders: Record<
   'lorem-ipsum-generator': () => import('./lorem-ipsum-generator'),
   'json-to-typescript': () => import('./json-to-typescript'),
   'text-case-converter': () => import('./text-case-converter'),
+  'totp-generator': () => import('./totp-generator'),
 };

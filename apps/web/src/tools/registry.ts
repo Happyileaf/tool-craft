@@ -3078,6 +3078,98 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'totp-generator',
+    name: 'TOTP 动态验证码生成器',
+    nameEn: 'TOTP (2FA) Code Generator',
+    description:
+      '按 RFC 6238 由 Base32 密钥生成基于时间的一次性密码，实时显示当前验证码与剩余有效期，用于本地调试两步验证。',
+    descriptionEn:
+      'Generate RFC 6238 time-based one-time passwords from a Base32 secret, with a live code and remaining validity window for local 2FA debugging.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/totp-generator',
+    iconName: 'ShieldCheck',
+    tags: ['TOTP', '2FA', '验证码', '双因素', '安全'],
+    tagsEn: ['TOTP', '2FA', 'OTP', 'Authenticator', 'Security'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 TOTP 动态验证码生成器，输入 Base32 密钥即可按 RFC 6238 生成与认证器一致的六位或八位一次性密码，并实时显示剩余有效期，用于本地调试两步验证流程。',
+        coreFeatures: [
+          '标准实现：遵循 RFC 6238 / RFC 4226，支持 SHA-1 / SHA-256 / SHA-512 与 6 / 8 位验证码',
+          '实时倒计时：展示当前验证码的剩余有效秒数与进度条，随系统时间自动刷新',
+          '参数可调：时间步长（30s / 60s）与哈希算法可按需切换，便于对齐不同服务端配置',
+          '测试向量：内置 RFC 6238 附录 B 测试向量，一键载入校验实现正确性',
+          '纯本地运行：密钥与验证码都不离开浏览器，绝不发起网络请求',
+        ],
+        howToUse: [
+          '在输入框填入 Base32 编码的共享密钥（可含空格与 = 填充）',
+          '按需选择哈希算法、验证码位数与时间步长',
+          '页面实时显示当前验证码与剩余有效期，并自动刷新',
+          '点击复制按钮取用验证码，或用「载入测试向量」校验实现',
+        ],
+        useCases: [
+          '本地调试 TOTP 双因素认证时快速获取当前验证码',
+          '核对服务端与认证器实现是否一致',
+          '学习 RFC 6238 算法时对照标准测试向量验证结果',
+        ],
+        privacyNote:
+          '密钥仅在浏览器内存中参与本地 HMAC 运算，绝不上传、不记录、不发送到任何服务器。',
+        faqs: [
+          {
+            question: '密钥有什么格式要求？',
+            answer:
+              '需为 Base32 编码（字母 A-Z 与数字 2-7）。工具会自动忽略空格、统一大小写并去掉 = 填充；包含其他字符时会给出明确错误。',
+          },
+          {
+            question: '为什么验证码每 30 秒会变化？',
+            answer:
+              'TOTP 以时间步长为单位计算计数器，默认每 30 秒进入下一个时间步，验证码随之更新，界面同时展示本步剩余秒数。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based TOTP generator that turns a Base32 secret into RFC 6238 time-based one-time passwords matching your authenticator, with a live code and remaining validity window for local 2FA debugging.',
+        coreFeatures: [
+          'Standards-based: follows RFC 6238 / RFC 4226 with SHA-1 / SHA-256 / SHA-512 and 6- or 8-digit codes',
+          'Live countdown: shows the remaining seconds of the current code with a progress bar that refreshes automatically',
+          'Tunable parameters: switch the time step (30s / 60s) and hash algorithm to match different server settings',
+          'Test vectors: built-in RFC 6238 Appendix B vectors let you validate the implementation in one click',
+          '100% local: neither the secret nor the code ever leaves your browser, with zero network requests',
+        ],
+        howToUse: [
+          'Enter the Base32 shared secret in the input box (spaces and = padding are allowed)',
+          'Optionally pick the hash algorithm, code length, and time step',
+          'The current code and remaining validity update live and refresh automatically',
+          'Copy the code, or click "Load test vector" to validate the implementation',
+        ],
+        useCases: [
+          'Grabbing the current code quickly while debugging TOTP two-factor auth locally',
+          'Checking that a server implementation matches a standard authenticator',
+          'Verifying results against RFC 6238 test vectors while studying the algorithm',
+        ],
+        privacyNote:
+          'The secret only participates in local HMAC computation in browser memory. Nothing is uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'What format does the secret need?',
+            answer:
+              'It must be Base32 (letters A-Z and digits 2-7). The tool ignores spaces, normalizes case, and strips = padding; any other character produces a clear error.',
+          },
+          {
+            question: 'Why does the code change every 30 seconds?',
+            answer:
+              'TOTP derives a counter per time step. With the default 30-second step, a new step begins every 30 seconds and the code updates, while the UI shows the remaining seconds.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
