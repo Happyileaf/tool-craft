@@ -3262,6 +3262,101 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'curl-to-code',
+    name: 'cURL 转代码',
+    nameEn: 'cURL to Code Converter',
+    description:
+      '把一条 cURL 命令解析为请求方法、URL、请求头与请求体，一键生成 JavaScript fetch、Node axios、Python requests 或 Go 代码片段。',
+    descriptionEn:
+      'Parse a cURL command into its method, URL, headers, and body, then generate equivalent JavaScript fetch, Node axios, Python requests, or Go code in one click.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/curl-to-code',
+    iconName: 'Code',
+    tags: ['cURL', '代码生成', 'HTTP', 'API', '调试'],
+    tagsEn: ['cURL', 'Codegen', 'HTTP', 'API', 'Debug'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `curl -X POST 'https://api.example.com/items' \\
+  -H 'Content-Type: application/json' \\
+  -H 'Accept: application/json' \\
+  -d '{"name": "A", "price": 12}'`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 cURL 转代码工具，粘贴一条 cURL 命令即可解析出请求方法、URL、请求头与请求体，并生成等价的多语言代码片段，省去手工改写 API 调用的时间。',
+        coreFeatures: [
+          '完整解析：识别 -X 方法、-H 请求头、-d/--data 请求体、-u 基本认证、--data-raw 等常用参数',
+          '多目标语言：一键生成 JavaScript fetch、Node.js axios、Python requests 与 Go net/http 代码',
+          '转义感知：正确处理单引号 / 双引号、反斜杠换行与转义字符',
+          '实时预览：输入即解析并生成代码，解析失败时给出明确错误定位',
+          '纯本地运行：命令内容不离开浏览器，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '把从浏览器开发者工具「Copy as cURL」复制到的命令粘贴到左侧输入框',
+          '在顶部选择目标语言（JavaScript fetch / Node axios / Python requests / Go）',
+          '右侧实时生成等价代码，点击「复制代码」取用',
+          '若命令格式不被识别，按提示检查引号与参数写法',
+        ],
+        useCases: [
+          '把浏览器里复制的请求快速转写成项目使用的 HTTP 客户端代码',
+          '对照不同语言实现同一请求时的差异',
+          '教学或文档中生成标准的多语言请求示例',
+        ],
+        privacyNote:
+          '粘贴的 cURL 命令只在浏览器内存中解析与生成，绝不会上传、记录或发送到任何服务器。',
+        faqs: [
+          {
+            question: '支持哪些 cURL 参数？',
+            answer:
+              '目前支持 -X/--request、-H/--header、-d/--data、--data-raw/--data-binary、-u/--user 等最常用参数；复杂或不常见参数可能不被识别，会给出提示。',
+          },
+          {
+            question: '生成的代码能直接运行吗？',
+            answer:
+              '生成的是等价的标准代码片段。axios 与 requests 等示例可能需要在项目中先安装对应依赖，请按目标语言环境补充。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based cURL-to-code converter. Paste a cURL command and it parses the method, URL, headers, and body, then generates equivalent multi-language code snippets so you can skip manually rewriting API calls.',
+        coreFeatures: [
+          'Full parsing: recognizes -X method, -H headers, -d/--data body, -u basic auth, --data-raw, and other common flags',
+          'Multiple targets: generate JavaScript fetch, Node.js axios, Python requests, and Go net/http code in one click',
+          'Escape-aware: correctly handles single/double quotes, backslash line continuations, and escaped characters',
+          'Live preview: parse and generate as you type, with clear error messages on failure',
+          '100% local: the command never leaves your browser and no network request is ever made',
+        ],
+        howToUse: [
+          'Paste a command copied with "Copy as cURL" from your browser devtools into the left input',
+          'Pick the target language (JavaScript fetch / Node axios / Python requests / Go) at the top',
+          'The equivalent code appears live on the right; click "Copy code" to use it',
+          'If the command is not recognized, follow the hint to check quotes and argument syntax',
+        ],
+        useCases: [
+          'Quickly rewriting a request copied from the browser into your project HTTP client code',
+          'Comparing how the same request looks across different languages',
+          'Producing standard multi-language request samples for teaching or docs',
+        ],
+        privacyNote:
+          'The pasted cURL command is only parsed and rendered in browser memory. Nothing is uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'Which cURL flags are supported?',
+            answer:
+              'The most common flags are supported: -X/--request, -H/--header, -d/--data, --data-raw/--data-binary, -u/--user, and more. Uncommon or complex flags may not be recognized and will produce a hint.',
+          },
+          {
+            question: 'Can the generated code run directly?',
+            answer:
+              'It is an equivalent standard snippet. Examples using axios or requests may require installing those dependencies in your project first, per your target language environment.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

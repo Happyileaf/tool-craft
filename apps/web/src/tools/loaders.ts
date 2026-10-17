@@ -54,4 +54,5 @@ export const toolLoaders: Record<
   'text-case-converter': () => import('./text-case-converter'),
   'totp-generator': () => import('./totp-generator'),
   'cidr-subnet-calculator': () => import('./cidr-subnet-calculator'),
+  'curl-to-code': () => import('./curl-to-code'),
 };
