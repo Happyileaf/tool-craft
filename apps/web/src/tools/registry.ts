@@ -3819,6 +3819,97 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'percentage-calculator',
+    name: '百分比计算器',
+    nameEn: 'Percentage Calculator',
+    description:
+      '一键完成三类常用百分比运算：X 的 Y% 是多少、X 是 Y 的百分之几、X 较 Y 增长或下降百分之几，输入实时联动，除零与非法输入有明确提示。',
+    descriptionEn:
+      'Perform three everyday percentage calculations instantly: Y% of X, what percent X is of Y, and the percentage increase or decrease from Y to X, with live updates and clear messages for invalid input or division by zero.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/percentage-calculator',
+    iconName: 'Gauge',
+    tags: ['百分比', '折扣', '增长率', '比例', '换算'],
+    tagsEn: ['Percentage', 'Discount', 'Growth Rate', 'Ratio', 'Calculator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的百分比工具，覆盖「X 的 Y% 是多少」「X 是 Y 的百分之几」「X 较 Y 增长/下降百分之几」三类高频场景，输入即时联动并对除零、非法输入给出明确提示。',
+        coreFeatures: [
+          '三种模式：求部分值、求占比、求变化率，按钮式切换',
+          '实时联动：输入即算，无需点击按钮',
+          '智能提示：任一输入为空或非法时显示空态，除数为 0 时明确警示',
+          '增减标识：变化模式用标签区分增长、下降与无变化',
+          '精度控制：内部全精度计算，展示至多 6 位小数并去除尾随 0',
+          '纯本地运行：所有运算在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '点击顶部按钮选择要使用的百分比运算模式',
+          '在输入框中填入十进制数字（支持小数与负数），结果即时更新',
+          '变化率模式下注意「变化后」与「变化前」的填写顺序',
+        ],
+        useCases: [
+          '购物打折：快速计算原价的折扣价与优惠金额',
+          '财务统计：计算增长率、下降率与完成率',
+          '日常换算：求部分占整体的百分比或反向求部分值',
+        ],
+        privacyNote:
+          '所有计算均在浏览器本地完成，输入的数字不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么变化前的值为 0 时无法计算？',
+            answer:
+              '变化率公式为（变化后 − 变化前）÷ 变化前 × 100%，变化前为 0 时数学上未定义，因此工具会给出提示而非输出结果。',
+          },
+          {
+            question: '为什么结果有时会被截断小数位？',
+            answer:
+              '内部始终使用完整精度计算，仅在展示时保留至多 6 位小数并去除尾随 0，以避免长小数影响阅读。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based percentage tool covering three everyday cases: Y% of X, what percent X is of Y, and the percentage increase or decrease from Y to X, with live updates and clear messages for invalid input or division by zero.',
+        coreFeatures: [
+          'Three modes: percentage of a value, ratio, and percentage change, switched with segmented buttons',
+          'Live calculation: results update as you type, no button required',
+          'Smart hints: an empty state for blank or invalid input, and a clear warning on division by zero',
+          'Trend tag: the change mode tags results as increase, decrease, or no change',
+          'Precision control: full-precision math internally, displayed with up to 6 decimals and trailing zeros trimmed',
+          '100% local: everything runs in your browser and no network request is ever made',
+        ],
+        howToUse: [
+          'Use the top buttons to pick the percentage operation you need',
+          'Enter decimal numbers (decimals and negatives are supported); the result updates instantly',
+          'In change mode, mind the order of the "after" and "before" inputs',
+        ],
+        useCases: [
+          'Shopping discounts: quickly find discounted prices and savings',
+          'Finance: calculate growth rates, decline rates, and completion ratios',
+          'Everyday math: find what share a part is of a whole, or reverse it',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser; the numbers you enter are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why is there no result when the "before" value is 0?',
+            answer:
+              'Percentage change is (after − before) ÷ before × 100%. When "before" is 0 the value is mathematically undefined, so the tool shows a hint instead of a result.',
+          },
+          {
+            question: 'Why are some decimal digits trimmed?',
+            answer:
+              'Calculations always use full precision internally; only the display keeps up to 6 decimals and trims trailing zeros for readability.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
