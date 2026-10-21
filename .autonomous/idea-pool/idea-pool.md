@@ -87,3 +87,13 @@
 | 20261021180804 | JSON to CSV flatten 导出（嵌套数组展开） | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021180804.md) |
 | 20261021180805 | Hex / 文本互转与十六进制转储视图（Hex dump viewer） | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021180805.md) |
 | 20261021180806 | URL slug 生成器（标题转友好 URL） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021180806.md) |
+| 20261021200100 | Docker Compose ↔ docker run 命令互转 | Web Tool | External Reference | Pending | 2026-10-21 | | [详情](./idea-details/20261021200100.md) |
+| 20261021200101 | JSONC / 带注释 JSON 转 JSON | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021200101.md) |
+| 20261021200102 | 中文排版盘古之白（中英文之间自动加空格） | Web Tool | External Reference | Pending | 2026-10-21 | | [详情](./idea-details/20261021200102.md) |
+| 20261021200103 | 原始 HTTP 请求报文解析器 | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021200103.md) |
+| 20261021200104 | Glob 模式匹配测试器 | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021200104.md) |
+| 20261021200105 | 全角 / 半角字符互转 | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021200105.md) |
+| 20261021200106 | 换行符与 BOM 转换（LF / CRLF / CR） | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021200106.md) |
+| 20261021200107 | 文本相似度与重复度分析（Levenshtein / Jaccard） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021200107.md) |
+| 20261021200108 | NDJSON 与 JSON 数组互转 | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021200108.md) |
+| 20261021200109 | 数字转英文金额与英文单词（123 → one hundred twenty-three） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021200109.md) |
