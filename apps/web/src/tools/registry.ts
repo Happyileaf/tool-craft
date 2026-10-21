@@ -3819,6 +3819,461 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'percentage-calculator',
+    name: '百分比计算器',
+    nameEn: 'Percentage Calculator',
+    description:
+      '一键完成三类常用百分比运算：X 的 Y% 是多少、X 是 Y 的百分之几、X 较 Y 增长或下降百分之几，输入实时联动，除零与非法输入有明确提示。',
+    descriptionEn:
+      'Perform three everyday percentage calculations instantly: Y% of X, what percent X is of Y, and the percentage increase or decrease from Y to X, with live updates and clear messages for invalid input or division by zero.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/percentage-calculator',
+    iconName: 'Gauge',
+    tags: ['百分比', '折扣', '增长率', '比例', '换算'],
+    tagsEn: ['Percentage', 'Discount', 'Growth Rate', 'Ratio', 'Calculator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的百分比工具，覆盖「X 的 Y% 是多少」「X 是 Y 的百分之几」「X 较 Y 增长/下降百分之几」三类高频场景，输入即时联动并对除零、非法输入给出明确提示。',
+        coreFeatures: [
+          '三种模式：求部分值、求占比、求变化率，按钮式切换',
+          '实时联动：输入即算，无需点击按钮',
+          '智能提示：任一输入为空或非法时显示空态，除数为 0 时明确警示',
+          '增减标识：变化模式用标签区分增长、下降与无变化',
+          '精度控制：内部全精度计算，展示至多 6 位小数并去除尾随 0',
+          '纯本地运行：所有运算在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '点击顶部按钮选择要使用的百分比运算模式',
+          '在输入框中填入十进制数字（支持小数与负数），结果即时更新',
+          '变化率模式下注意「变化后」与「变化前」的填写顺序',
+        ],
+        useCases: [
+          '购物打折：快速计算原价的折扣价与优惠金额',
+          '财务统计：计算增长率、下降率与完成率',
+          '日常换算：求部分占整体的百分比或反向求部分值',
+        ],
+        privacyNote:
+          '所有计算均在浏览器本地完成，输入的数字不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么变化前的值为 0 时无法计算？',
+            answer:
+              '变化率公式为（变化后 − 变化前）÷ 变化前 × 100%，变化前为 0 时数学上未定义，因此工具会给出提示而非输出结果。',
+          },
+          {
+            question: '为什么结果有时会被截断小数位？',
+            answer:
+              '内部始终使用完整精度计算，仅在展示时保留至多 6 位小数并去除尾随 0，以避免长小数影响阅读。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based percentage tool covering three everyday cases: Y% of X, what percent X is of Y, and the percentage increase or decrease from Y to X, with live updates and clear messages for invalid input or division by zero.',
+        coreFeatures: [
+          'Three modes: percentage of a value, ratio, and percentage change, switched with segmented buttons',
+          'Live calculation: results update as you type, no button required',
+          'Smart hints: an empty state for blank or invalid input, and a clear warning on division by zero',
+          'Trend tag: the change mode tags results as increase, decrease, or no change',
+          'Precision control: full-precision math internally, displayed with up to 6 decimals and trailing zeros trimmed',
+          '100% local: everything runs in your browser and no network request is ever made',
+        ],
+        howToUse: [
+          'Use the top buttons to pick the percentage operation you need',
+          'Enter decimal numbers (decimals and negatives are supported); the result updates instantly',
+          'In change mode, mind the order of the "after" and "before" inputs',
+        ],
+        useCases: [
+          'Shopping discounts: quickly find discounted prices and savings',
+          'Finance: calculate growth rates, decline rates, and completion ratios',
+          'Everyday math: find what share a part is of a whole, or reverse it',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser; the numbers you enter are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why is there no result when the "before" value is 0?',
+            answer:
+              'Percentage change is (after − before) ÷ before × 100%. When "before" is 0 the value is mathematically undefined, so the tool shows a hint instead of a result.',
+          },
+          {
+            question: 'Why are some decimal digits trimmed?',
+            answer:
+              'Calculations always use full precision internally; only the display keeps up to 6 decimals and trims trailing zeros for readability.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'css-unit-converter',
+    name: 'CSS 单位换算（px / rem / em / pt）',
+    nameEn: 'CSS Unit Converter (px / rem / em / pt)',
+    description:
+      '在 px、rem、em、pt 之间实时互转，可自定义根字号与父级字号基准，并提供常用 px 值四单位对照表，适配设计稿还原与响应式开发。',
+    descriptionEn:
+      'Convert between px, rem, em, and pt in real time with customizable root and parent font sizes, plus a quick-reference scale table for design-to-code and responsive workflows.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/css-unit-converter',
+    iconName: 'Pipette',
+    tags: ['CSS', '单位换算', 'px', 'rem', 'em', 'pt', '响应式'],
+    tagsEn: ['CSS', 'Unit', 'px', 'rem', 'em', 'pt', 'Responsive'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 CSS 长度单位换算工具，以 px 为内部基准（1in = 96px = 72pt），支持 px / rem / em / pt 四向互转，根字号与父级字号可调，并给出常用数值对照表。',
+        coreFeatures: [
+          '四向互转：px / rem / em / pt 任一作为源，实时输出其余三个单位',
+          '基准可调：根字号（rem 基准）与父级字号（em 基准）均可自定义',
+          '对照表：1–48px 常用数值对应的 rem / em / pt 一览',
+          '实时联动：修改数值或基准后所有结果即时刷新',
+          '严谨提示：基准为空、非数字或小于等于 0 时明确警示',
+          '纯本地运行：所有运算在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '输入数值并选择源单位，其余三个单位结果即时展示',
+          '按项目设置修改根字号（rem 基准）与父级字号（em 基准）',
+          '在下方对照表中快速查阅常用 px 值的换算结果',
+        ],
+        useCases: [
+          '设计稿还原：按设计稿根字号在 px 与 rem 之间快速换算',
+          '响应式适配：确认不同基准下 rem / em 的实际像素值',
+          '排版校对：在 pt 与 px 之间换算打印或设计软件数值',
+        ],
+        privacyNote:
+          '所有换算均在浏览器本地完成，输入的数值不会被上传或记录。',
+        faqs: [
+          {
+            question: 'rem 和 em 的区别是什么？',
+            answer:
+              'rem 相对于根元素（html）的字号，em 相对于当前元素继承到的字号；工具中分别用「根字号」与「父级字号」两个基准计算。',
+          },
+          {
+            question: '为什么基准必须大于 0？',
+            answer:
+              'rem 与 em 的换算需要用数值除以基准字号，基准为 0 时数学上未定义，非正数也没有实际排版意义，因此会提示修正。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based CSS length converter using px as the internal base (1in = 96px = 72pt). It converts between px, rem, em, and pt in every direction with adjustable root and parent font sizes and a quick-reference scale table.',
+        coreFeatures: [
+          'All-direction conversion: pick any of px / rem / em / pt as the source and see the other three instantly',
+          'Adjustable bases: customize the root font size (rem) and parent font size (em)',
+          'Scale table: common 1–48px values mapped to rem, em, and pt',
+          'Live updates: results refresh immediately when values or bases change',
+          'Strict validation: clear warnings for empty, non-numeric, or non-positive bases',
+          '100% local: everything runs in your browser and no network request is ever made',
+        ],
+        howToUse: [
+          'Enter a value and choose the source unit; the other three units update instantly',
+          'Set the root font size (rem base) and parent font size (em base) to match your project',
+          'Use the scale table below to look up common px values at a glance',
+        ],
+        useCases: [
+          'Design handoff: convert px to rem with the design root font size',
+          'Responsive layouts: verify actual pixels of rem/em under different bases',
+          'Typography checks: convert pt values from print or design tools to px',
+        ],
+        privacyNote:
+          'All conversions run locally in your browser; entered values are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the difference between rem and em?',
+            answer:
+              'rem is relative to the root (html) font size, while em is relative to the font size inherited by the current element. The tool computes them with separate "root" and "parent" bases.',
+          },
+          {
+            question: 'Why must the base be greater than 0?',
+            answer:
+              'rem and em conversion divides by the base font size. A zero base is mathematically undefined, and non-positive values have no typographic meaning, so a warning is shown.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'list-set-operations',
+    name: '列表集合运算（交集 / 并集 / 差集）',
+    nameEn: 'List Set Operations',
+    description:
+      '对两段逐行列表执行交集、并集、左右差集与对称差集运算，支持忽略空白、忽略大小写与结果去重开关，适用于账号、权限、ID 等清单的差异比对。',
+    descriptionEn:
+      'Compute intersection, union, left/right difference, and symmetric difference between two line-by-line lists, with options to trim whitespace, ignore case, and deduplicate — ideal for comparing accounts, permissions, and ID lists.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/list-set-operations',
+    iconName: 'Layers',
+    tags: ['集合', '交集', '并集', '差集', '列表', '比对'],
+    tagsEn: ['Set', 'Intersection', 'Union', 'Difference', 'List', 'Compare'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的双列表集合工具，对两段每行一项的文本列表执行交集、并集、仅左侧独有、仅右侧独有与对称差集五种运算，并统计每个结果集的条目数量。',
+        coreFeatures: [
+          '五种运算：交集、并集、A−B、B−A、对称差集同屏展示',
+          '预处理开关：忽略首尾空白、忽略大小写，比较前两侧统一归一',
+          '重复项语义：结果去重可开关，关闭时保留基准列表中的重复次数',
+          '稳定保序：结果一律按在 A / B 中首次出现的顺序排列',
+          '实时联动：输入或开关变化即刻重算，每个结果区可一键复制',
+          '纯本地运行：所有运算在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '在两个文本框中分别粘贴列表 A 与列表 B，每行一项',
+          '按需切换「忽略首尾空白」「忽略大小写」「结果去重」开关',
+          '查看五个结果区的条目与计数，使用复制按钮导出结果',
+        ],
+        useCases: [
+          '权限核对：比对两人或两环境的账号、权限、标签差异',
+          '数据清洗：找出两份 ID / 邮箱清单的重合与遗漏项',
+          '发布检查：对比灰度名单与全量名单，确认覆盖范围',
+        ],
+        privacyNote:
+          '所有列表与运算均在浏览器本地完成，粘贴的清单内容不会被上传或记录。',
+        faqs: [
+          {
+            question: '关闭「结果去重」后重复项如何处理？',
+            answer:
+              '命中的交集项以列表 A 为基准，保留其在 A 中全部重复次数；差集保留两侧相减后剩余的次数，顺序仍以对应基准列表（A 或 B）中首次出现的位置为准。',
+          },
+          {
+            question: '空行和首尾空白会参与比较吗？',
+            answer:
+              '「忽略首尾空白」开启（默认）时每行先 trim，trim 后为空的行直接丢弃；关闭后空白行会被视为空字符串条目。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based tool for two line-by-line lists. It computes intersection, union, left-only, right-only, and symmetric difference, and counts the items in every result set.',
+        coreFeatures: [
+          'Five operations at once: intersection, union, A−B, B−A, and symmetric difference',
+          'Preprocessing toggles: trim whitespace and ignore case normalize both sides before comparing',
+          'Duplicate semantics: deduplication can be switched off to keep multiplicities from the base list',
+          'Stable ordering: results always follow first-occurrence order in A or B',
+          'Live recomputation on every input or toggle change, with copy buttons per result',
+          '100% local: everything runs in your browser and no network request is ever made',
+        ],
+        howToUse: [
+          'Paste list A and list B into the two text areas, one item per line',
+          'Toggle "Trim whitespace", "Ignore case", and "Deduplicate results" as needed',
+          'Review the five result sets with counts and export any of them with the copy button',
+        ],
+        useCases: [
+          'Access reviews: compare accounts, permissions, or tags across people or environments',
+          'Data cleanup: find overlaps and missing entries between ID or email lists',
+          'Rollout checks: compare canary and full-rollout lists to confirm coverage',
+        ],
+        privacyNote:
+          'All lists and calculations stay in your browser. Pasted content is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How are duplicates handled when deduplication is off?',
+            answer:
+              'Matched intersection items follow list A and keep all of its repetitions; differences keep the remainder after subtraction, and ordering still follows first occurrence in the base list (A or B).',
+          },
+          {
+            question: 'Do blank lines and surrounding spaces participate in comparison?',
+            answer:
+              'With "Trim whitespace" on (default), each line is trimmed first and lines that become empty are dropped. When off, blank lines are treated as empty-string items.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'hash-type-identifier',
+    name: '哈希类型识别器',
+    nameEn: 'Hash Type Identifier',
+    description:
+      '粘贴一段散列值，依据 crypt(3) 前缀结构与十六进制长度推断候选算法，覆盖 MD5、SHA-1/224/256/384/512、CRC32、bcrypt 与各类 crypt 加盐格式，并给出 high/medium/low 置信度与歧义说明。',
+    descriptionEn:
+      'Paste a hash and infer candidate algorithms from its crypt(3) prefix structure and hex length — covering MD5, SHA-1/224/256/384/512, CRC32, bcrypt, and crypt salted formats — with high/medium/low confidence and ambiguity notes.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/hash-type-identifier',
+    iconName: 'Fingerprint',
+    tags: ['哈希', '算法识别', 'MD5', 'SHA', 'bcrypt', 'crypt'],
+    tagsEn: ['Hash', 'Algorithm Detection', 'MD5', 'SHA', 'bcrypt', 'crypt'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的哈希类型识别工具：输入一段散列值，它依据 $ 分隔的 crypt 前缀结构与纯十六进制摘要长度，列出可能的算法候选及置信度，而非给出武断的单一结论。',
+        coreFeatures: [
+          'crypt(3) 前缀优先：识别 $1$、$apr1$、$5$（可选 rounds）、$6$、$2[aby]?$ 等加盐格式',
+          '长度规则：32/40/56/64/96/128 位对应 MD5 与 SHA 系列，8 位提示 CRC32',
+          '歧义标注：32 位同时列出 MD5（高）与 NTLM/MD4（低），8 位提示可能是截断摘要',
+          'bcrypt cost 校验：cost 超出 4–31 常见范围时置信度降级为中',
+          '自动归一：去除首尾空白、不区分大小写，输入即识别',
+          '纯本地运行：识别过程不发起任何网络请求，不持久化输入',
+        ],
+        howToUse: [
+          '在输入框粘贴待识别的散列值（支持带前后空白或大写形式）',
+          '工具即时列出候选算法，按置信度从高到低排列',
+          '阅读每条候选的判定依据；低置信度表示仅凭长度无法确认',
+        ],
+        useCases: [
+          '应急分析：拿到未知来源的散列值时快速缩小算法范围',
+          'CTF 与安全研究：区分裸 MD5/SHA 与 crypt、bcrypt 加盐结构',
+          '数据迁移：核对旧系统密码字段的存储格式',
+        ],
+        privacyNote:
+          '所有识别均在浏览器本地完成，粘贴的散列值不会被上传、记录或持久化。',
+        faqs: [
+          {
+            question: '为什么 32 位哈希同时给出 MD5 和 NTLM/MD4？',
+            answer:
+              'MD5、NTLM（MD4）摘要同为 32 位十六进制，仅凭摘要本身无法区分，因此 MD5 标为高置信度候选，NTLM/MD4 作为等长低置信度候选一并列出。',
+          },
+          {
+            question: '识别结果能否作为算法的最终确认？',
+            answer:
+              '不能。本工具只依据结构与长度推断，无法逆向验证算法；加盐自定义格式、RIPEMD 等冷门算法无结构特征时会提示无法识别。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based hash type identifier: paste a digest and it lists candidate algorithms with confidence levels based on $-delimited crypt prefixes or plain hex length, instead of jumping to a single arbitrary verdict.',
+        coreFeatures: [
+          'crypt(3) prefix first: recognizes $1$, $apr1$, $5$ (optional rounds), $6$, and $2[aby]?$ salted formats',
+          'Length rules: 32/40/56/64/96/128 hex chars map to MD5 and the SHA family; 8 chars suggest CRC32',
+          'Ambiguity notes: 32 chars list MD5 (high) plus NTLM/MD4 (low); 8 chars warn it may be a truncated digest',
+          'bcrypt cost check: confidence drops to medium when cost is outside the usual 4–31 range',
+          'Automatic normalization: trims surrounding whitespace, ignores case, and detects as you type',
+          '100% local: detection makes no network request and never persists input',
+        ],
+        howToUse: [
+          'Paste the hash into the input field (leading/trailing whitespace and uppercase are fine)',
+          'Candidate algorithms appear instantly, ordered by confidence',
+          'Read the rationale for each candidate; low confidence means length alone cannot confirm it',
+        ],
+        useCases: [
+          'Incident analysis: quickly narrow down the algorithm of a hash from an unknown source',
+          'CTF and security research: tell raw MD5/SHA apart from crypt and bcrypt salted structures',
+          'Data migration: inspect password storage formats in legacy systems',
+        ],
+        privacyNote:
+          'All detection runs locally in your browser. Pasted hashes are never uploaded, logged, or persisted.',
+        faqs: [
+          {
+            question: 'Why does a 32-character hash return MD5 together with NTLM/MD4?',
+            answer:
+              'MD5 and NTLM (MD4) digests are all 32 hex characters and cannot be distinguished from the digest alone, so MD5 is shown as the high-confidence candidate while NTLM/MD4 are listed as equal-length low-confidence candidates.',
+          },
+          {
+            question: 'Can the result be treated as a definitive algorithm confirmation?',
+            answer:
+              'No. The tool only infers from structure and length and cannot verify an algorithm by reversal; custom salted formats or uncommon algorithms such as RIPEMD without structural features are reported as unrecognized.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'chmod-calculator',
+    name: 'chmod 权限计算器',
+    nameEn: 'chmod Permission Calculator',
+    description:
+      '在 3 位八进制数字（如 755）、9 字符符号串（如 rwxr-xr-x）与读/写/执行勾选网格之间三向联动换算，并实时生成可复制的 chmod 命令，文件名可编辑，用于服务器权限排查与设置。',
+    descriptionEn:
+      'Convert between 3-digit octal modes (e.g. 755), 9-character symbolic strings (e.g. rwxr-xr-x), and a read/write/execute checkbox grid, with a live, copyable chmod command and an editable file name — built for server permission troubleshooting.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/chmod-calculator',
+    iconName: 'Lock',
+    tags: ['chmod', '权限', 'Unix', 'Linux', '八进制', '运维'],
+    tagsEn: ['chmod', 'Permissions', 'Unix', 'Linux', 'Octal', 'DevOps'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 Unix 文件权限换算工具，覆盖属主 / 属组 / 其他三类角色与读（4）/ 写（2）/ 执行（1）三种权限，共基础 9 个权限位，并即时生成 chmod 命令文本。',
+        coreFeatures: [
+          '三向联动：勾选网格、八进制数字、符号串任一变化实时刷新其余两者',
+          '典型值覆盖：755、644、000、777、400 等常见模式即时换算',
+          '严格校验：数字限 3 位 0–7 八进制，符号限 9 字符且按 r/w/x 顺序',
+          '非法输入提示：格式错误时明确告警且不破坏当前权限网格',
+          '命令生成：输出形如 chmod 755 myfile.txt 的命令，文件名可编辑、一键复制',
+          '纯本地运行：不执行任何系统命令，不发起网络请求',
+        ],
+        howToUse: [
+          '直接勾选三类角色的读 / 写 / 执行位，或在数字框输入 3 位八进制、在符号框输入 9 字符符号串',
+          '三种表示会自动保持同步，非法输入会在失焦后回填为当前有效值',
+          '在命令区编辑目标文件名，复制生成的 chmod 命令到终端使用',
+        ],
+        useCases: [
+          '部署排障：快速确认 Web 目录 755 / 文件 644 等权限是否正确',
+          '脚本授权：给可执行脚本添加属主执行位并查看对应数字模式',
+          '运维教学：直观理解 rwx 符号与 4/2/1 权重、三组角色的对应关系',
+        ],
+        privacyNote:
+          '所有换算均在浏览器本地完成，文件名与权限设置不会被上传或记录，工具不会执行任何系统命令。',
+        faqs: [
+          {
+            question: '支持 setuid、setgid、sticky 等特殊位吗？',
+            answer:
+              '不支持。本工具仅覆盖基础 9 个权限位（三组 rwx），暂不处理 4 位数字模式中的特殊位，也不支持 u+x 风格的符号赋值语法。',
+          },
+          {
+            question: '为什么输入含空格的文件名无法生成命令？',
+            answer:
+              '为保证生成的命令可直接粘贴执行，文件名不允许包含空白；如需对含空格的文件使用 chmod，请在终端中自行为文件名加引号。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based Unix file permission converter covering owner / group / other roles and read (4) / write (2) / execute (1) permissions — the nine basic permission bits — with an instantly generated chmod command.',
+        coreFeatures: [
+          'Three-way sync: editing the checkbox grid, octal number, or symbolic string updates the other two live',
+          'Common modes: 755, 644, 000, 777, 400 and more convert instantly',
+          'Strict validation: the number must be 3 octal digits (0–7), the symbolic string 9 characters in r/w/x order',
+          'Invalid-input handling: clear warnings without corrupting the current permission grid',
+          'Command builder: outputs commands like chmod 755 myfile.txt with an editable, copyable file name',
+          '100% local: no system commands are executed and no network requests are made',
+        ],
+        howToUse: [
+          'Toggle read/write/execute bits for the three roles, or type a 3-digit octal mode / 9-character symbolic string',
+          'All three representations stay in sync; invalid input reverts to the current valid value on blur',
+          'Edit the target file name in the command panel and copy the generated chmod command into your terminal',
+        ],
+        useCases: [
+          'Deployment troubleshooting: quickly verify 755 directories and 644 files on web servers',
+          'Script authorization: add the owner execute bit and see the matching numeric mode',
+          'Ops training: visualize how rwx symbols, 4/2/1 weights, and the three roles relate',
+        ],
+        privacyNote:
+          'All conversion runs locally in your browser. File names and permission settings are never uploaded or logged, and the tool executes no system commands.',
+        faqs: [
+          {
+            question: 'Does it support setuid, setgid, or sticky bits?',
+            answer:
+              'No. The tool covers only the nine basic permission bits (three groups of rwx); it does not handle the special bits of 4-digit modes or symbolic assignment syntax such as u+x.',
+          },
+          {
+            question: 'Why cannot a file name containing spaces produce a command?',
+            answer:
+              'To keep generated commands ready to paste and run, file names cannot contain whitespace; for such files, quote the name yourself when running chmod in a terminal.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

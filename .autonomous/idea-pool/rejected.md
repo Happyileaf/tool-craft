@@ -5,6 +5,8 @@
 
 | ID | Idea | Type | Source | 阶段（评估/开发/验收） | Reject Reason | 处理时间 | 详情 |
 |---|---|---|---|---|---|---|---|
+| 20260928103002 | CSS prefixer | Web Tool | Exploration | 评估 | 依赖量与价值/可验收性未通过：正确前缀依赖持续更新的 caniuse 数据与属性规则表，零依赖静态表易陈旧误导，引入 autoprefixer/postcss 属大型重依赖；前缀集合随数据版本变化，验收用例不可固定；现代浏览器/构建链已普遍自动前缀 | 2026-10-21 | [详情](./idea-details/20260928103002.md) |
+| 20260928103003 | Regular expression generator | Web Tool | Existing Gap | 评估 | 可验收性/复杂度未通过：从开放自然语言生成正则无语义理解之外的确定性算法，纯函数只能覆盖少量模板句式，可用质量须依赖 LLM（违反本地运算红线）；开放输入的正确性无法用固定用例验收 | 2026-10-21 | [详情](./idea-details/20260928103003.md) |
 | 20260928103004 | URL encoder/decoder | Web Tool | Exploration | 评估 | 查重未通过：与已注册工具 base64-codec（"Base64 & URL Encoder/Decoder"）功能实质重复，其 `runCodec` 已内置 URL 编解码模式 | 2026-10-17 | [详情](./idea-details/20260928103004.md) |
 | 20260928103006 | JWT decoder | Web Tool | Exploration | 评估 | 查重未通过：与已注册工具 jwt-parser（JWT 生成器/解析器）功能实质重复，其 `parseJWT` 已覆盖 header/payload 解析，本条为其真子集 | 2026-10-17 | [详情](./idea-details/20260928103006.md) |
 | 20260928103008 | Password generator | Web Tool | Exploration | 评估 | 查重未通过：与已注册工具 strong-password-generator 功能实质重复，其 `generatePassword` 已提供安全随机密码生成 | 2026-10-17 | [详情](./idea-details/20260928103008.md) |
@@ -19,3 +21,5 @@
 | 20261017160146 | TOML ↔ JSON converter | Web Tool | Existing Gap | 评估 | 实现复杂度未通过：需完整 TOML 1.0 语法解析（标准表 / 内联表 / 表数组 / 点分键 / 多行与字面字符串 / 日期时间类型）并带行号错误定位，JSON → TOML 还需键序与引号规则，自研属 L 级；引入 smol-toml / @iarna/toml 属新增依赖 | 2026-10-17 | [详情](./idea-details/20261017160146.md) |
 | 20261017160147 | HTML to Markdown converter | Web Tool | Existing Gap | 评估 | 实现复杂度未通过：需完整 HTML DOM 解析并逐节点映射为 Markdown（嵌套列表 / 表格 / 代码块 / 内联元素换行与转义），自研属 L 级；改用 DOMParser 无法在纯函数单测环境运行，引入 html-to-md 属新增依赖 | 2026-10-17 | [详情](./idea-details/20261017160147.md) |
 | 20261017160150 | JSON Schema generator & validator | Web Tool | Existing Gap | 评估 | 实现复杂度未通过：校验需完整实现 Draft-07 语义（type / required / properties / items / pattern / enum / oneOf / anyOf / allOf / const 及数值与字符串约束）与 `$ref` / `$defs` 解析及错误路径定位，自研属 L 级；引入 ajv 属新增依赖 | 2026-10-17 | [详情](./idea-details/20261017160150.md) |
+| 20261017200237 | JSONPath 查询表达式求值器 | Web Tool | Existing Gap | 评估 | 实现复杂度/依赖量未通过：完整 JSONPath 需自研 tokenizer + 递归下降解析 + 过滤器表达式求值 + 路径走查错误定位（含递归下降 `..` 与切片），属 L 级；引入 jsonpath-plus 属新增运行时依赖 | 2026-10-21 | [详情](./idea-details/20261017200237.md) |
+| 20261017200241 | Emoji 表情检索与复制 | Web Tool | Exploration | 评估 | 依赖量/可维护性未通过：肤色修饰符与 ZWJ 序列检索依赖随 Unicode 版本更新的大型静态数据集（emoji + CLDR 多语言关键词 + ZWJ/肤色表），零依赖手写体量大易陈旧，引入 emoji 数据集包属重依赖 | 2026-10-21 | [详情](./idea-details/20261017200241.md) |

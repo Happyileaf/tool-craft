@@ -1,0 +1,51 @@
+.container {
+  padding: 16px;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.resultGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.resultCard {
+  padding: 16px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.resultLabel {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.45);
+  margin-bottom: 4px;
+}
+
+.resultValue {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 22px;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.resultUnit {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.45);
+  margin-left: 4px;
+}
+
+.tableValue {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
