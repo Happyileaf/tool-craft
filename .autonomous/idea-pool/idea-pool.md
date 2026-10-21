@@ -83,3 +83,11 @@
 | 20261018000148 | 哈希类型识别器 | Web Tool | Existing Gap | Pending | 2026-10-18 | | [详情](./idea-details/20261018000148.md) |
 | 20261018000149 | CSS clamp() 流式排版生成器 | Web Tool | Exploration | Pending | 2026-10-18 | | [详情](./idea-details/20261018000149.md) |
 | 20261018000150 | 宽高比计算器 | Web Tool | Exploration | Pending | 2026-10-18 | | [详情](./idea-details/20261018000150.md) |
+| 20261021180759 | JSON flatten / unflatten（嵌套对象与点路径互转） | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021180759.md) |
+| 20261021180800 | Cookie 字符串解析与生成器 | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021180800.md) |
+| 20261021180801 | JSON to multiple language models (Go struct / Python dataclass / Java class / C# 等) | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021180801.md) |
+| 20261021180802 | 文本词频统计与高频词分析 | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021180802.md) |
+| 20261021180803 | 贷款 / 月供计算器（等额本息与等额本金） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021180803.md) |
+| 20261021180804 | JSON to CSV flatten 导出（嵌套数组展开） | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021180804.md) |
+| 20261021180805 | Hex / 文本互转与十六进制转储视图（Hex dump viewer） | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021180805.md) |
+| 20261021180806 | URL slug 生成器（标题转友好 URL） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021180806.md) |
