@@ -4001,6 +4001,97 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'list-set-operations',
+    name: '列表集合运算（交集 / 并集 / 差集）',
+    nameEn: 'List Set Operations',
+    description:
+      '对两段逐行列表执行交集、并集、左右差集与对称差集运算，支持忽略空白、忽略大小写与结果去重开关，适用于账号、权限、ID 等清单的差异比对。',
+    descriptionEn:
+      'Compute intersection, union, left/right difference, and symmetric difference between two line-by-line lists, with options to trim whitespace, ignore case, and deduplicate — ideal for comparing accounts, permissions, and ID lists.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/list-set-operations',
+    iconName: 'Layers',
+    tags: ['集合', '交集', '并集', '差集', '列表', '比对'],
+    tagsEn: ['Set', 'Intersection', 'Union', 'Difference', 'List', 'Compare'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的双列表集合工具，对两段每行一项的文本列表执行交集、并集、仅左侧独有、仅右侧独有与对称差集五种运算，并统计每个结果集的条目数量。',
+        coreFeatures: [
+          '五种运算：交集、并集、A−B、B−A、对称差集同屏展示',
+          '预处理开关：忽略首尾空白、忽略大小写，比较前两侧统一归一',
+          '重复项语义：结果去重可开关，关闭时保留基准列表中的重复次数',
+          '稳定保序：结果一律按在 A / B 中首次出现的顺序排列',
+          '实时联动：输入或开关变化即刻重算，每个结果区可一键复制',
+          '纯本地运行：所有运算在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '在两个文本框中分别粘贴列表 A 与列表 B，每行一项',
+          '按需切换「忽略首尾空白」「忽略大小写」「结果去重」开关',
+          '查看五个结果区的条目与计数，使用复制按钮导出结果',
+        ],
+        useCases: [
+          '权限核对：比对两人或两环境的账号、权限、标签差异',
+          '数据清洗：找出两份 ID / 邮箱清单的重合与遗漏项',
+          '发布检查：对比灰度名单与全量名单，确认覆盖范围',
+        ],
+        privacyNote:
+          '所有列表与运算均在浏览器本地完成，粘贴的清单内容不会被上传或记录。',
+        faqs: [
+          {
+            question: '关闭「结果去重」后重复项如何处理？',
+            answer:
+              '交集取两侧重复次数的较小值，差集保留被减后剩余的次数，顺序仍以对应基准列表（A 或 B）中首次出现的位置为准。',
+          },
+          {
+            question: '空行和首尾空白会参与比较吗？',
+            answer:
+              '「忽略首尾空白」开启（默认）时每行先 trim，trim 后为空的行直接丢弃；关闭后空白行会被视为空字符串条目。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based tool for two line-by-line lists. It computes intersection, union, left-only, right-only, and symmetric difference, and counts the items in every result set.',
+        coreFeatures: [
+          'Five operations at once: intersection, union, A−B, B−A, and symmetric difference',
+          'Preprocessing toggles: trim whitespace and ignore case normalize both sides before comparing',
+          'Duplicate semantics: deduplication can be switched off to keep multiplicities from the base list',
+          'Stable ordering: results always follow first-occurrence order in A or B',
+          'Live recomputation on every input or toggle change, with copy buttons per result',
+          '100% local: everything runs in your browser and no network request is ever made',
+        ],
+        howToUse: [
+          'Paste list A and list B into the two text areas, one item per line',
+          'Toggle "Trim whitespace", "Ignore case", and "Deduplicate results" as needed',
+          'Review the five result sets with counts and export any of them with the copy button',
+        ],
+        useCases: [
+          'Access reviews: compare accounts, permissions, or tags across people or environments',
+          'Data cleanup: find overlaps and missing entries between ID or email lists',
+          'Rollout checks: compare canary and full-rollout lists to confirm coverage',
+        ],
+        privacyNote:
+          'All lists and calculations stay in your browser. Pasted content is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How are duplicates handled when deduplication is off?',
+            answer:
+              'Intersection keeps the smaller multiplicity of the two sides, differences keep the remainder after subtraction, and ordering still follows first occurrence in the base list (A or B).',
+          },
+          {
+            question: 'Do blank lines and surrounding spaces participate in comparison?',
+            answer:
+              'With "Trim whitespace" on (default), each line is trimmed first and lines that become empty are dropped. When off, blank lines are treated as empty-string items.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
