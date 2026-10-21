@@ -1,0 +1,29 @@
+.container {
+  padding: 16px;
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hashInput {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+}
+
+.candidateNote {
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 13px;
+}
+
+.emptyText {
+  color: rgba(0, 0, 0, 0.35);
+  font-size: 13px;
+}
+
+.candidateMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

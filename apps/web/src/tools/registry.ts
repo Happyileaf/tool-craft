@@ -4045,7 +4045,7 @@ info: request finished`,
           {
             question: '关闭「结果去重」后重复项如何处理？',
             answer:
-              '交集取两侧重复次数的较小值，差集保留被减后剩余的次数，顺序仍以对应基准列表（A 或 B）中首次出现的位置为准。',
+              '命中的交集项以列表 A 为基准，保留其在 A 中全部重复次数；差集保留两侧相减后剩余的次数，顺序仍以对应基准列表（A 或 B）中首次出现的位置为准。',
           },
           {
             question: '空行和首尾空白会参与比较吗？',
@@ -4081,12 +4081,103 @@ info: request finished`,
           {
             question: 'How are duplicates handled when deduplication is off?',
             answer:
-              'Intersection keeps the smaller multiplicity of the two sides, differences keep the remainder after subtraction, and ordering still follows first occurrence in the base list (A or B).',
+              'Matched intersection items follow list A and keep all of its repetitions; differences keep the remainder after subtraction, and ordering still follows first occurrence in the base list (A or B).',
           },
           {
             question: 'Do blank lines and surrounding spaces participate in comparison?',
             answer:
               'With "Trim whitespace" on (default), each line is trimmed first and lines that become empty are dropped. When off, blank lines are treated as empty-string items.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'hash-type-identifier',
+    name: '哈希类型识别器',
+    nameEn: 'Hash Type Identifier',
+    description:
+      '粘贴一段散列值，依据 crypt(3) 前缀结构与十六进制长度推断候选算法，覆盖 MD5、SHA-1/224/256/384/512、CRC32、bcrypt 与各类 crypt 加盐格式，并给出 high/medium/low 置信度与歧义说明。',
+    descriptionEn:
+      'Paste a hash and infer candidate algorithms from its crypt(3) prefix structure and hex length — covering MD5, SHA-1/224/256/384/512, CRC32, bcrypt, and crypt salted formats — with high/medium/low confidence and ambiguity notes.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/hash-type-identifier',
+    iconName: 'Fingerprint',
+    tags: ['哈希', '算法识别', 'MD5', 'SHA', 'bcrypt', 'crypt'],
+    tagsEn: ['Hash', 'Algorithm Detection', 'MD5', 'SHA', 'bcrypt', 'crypt'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的哈希类型识别工具：输入一段散列值，它依据 $ 分隔的 crypt 前缀结构与纯十六进制摘要长度，列出可能的算法候选及置信度，而非给出武断的单一结论。',
+        coreFeatures: [
+          'crypt(3) 前缀优先：识别 $1$、$apr1$、$5$（可选 rounds）、$6$、$2[aby]?$ 等加盐格式',
+          '长度规则：32/40/56/64/96/128 位对应 MD5 与 SHA 系列，8 位提示 CRC32',
+          '歧义标注：32 位同时列出 MD5（高）与 NTLM/MD4（低），8 位提示可能是截断摘要',
+          'bcrypt cost 校验：cost 超出 4–31 常见范围时置信度降级为中',
+          '自动归一：去除首尾空白、不区分大小写，输入即识别',
+          '纯本地运行：识别过程不发起任何网络请求，不持久化输入',
+        ],
+        howToUse: [
+          '在输入框粘贴待识别的散列值（支持带前后空白或大写形式）',
+          '工具即时列出候选算法，按置信度从高到低排列',
+          '阅读每条候选的判定依据；低置信度表示仅凭长度无法确认',
+        ],
+        useCases: [
+          '应急分析：拿到未知来源的散列值时快速缩小算法范围',
+          'CTF 与安全研究：区分裸 MD5/SHA 与 crypt、bcrypt 加盐结构',
+          '数据迁移：核对旧系统密码字段的存储格式',
+        ],
+        privacyNote:
+          '所有识别均在浏览器本地完成，粘贴的散列值不会被上传、记录或持久化。',
+        faqs: [
+          {
+            question: '为什么 32 位哈希同时给出 MD5 和 NTLM/MD4？',
+            answer:
+              'MD5、NTLM（MD4）摘要同为 32 位十六进制，仅凭摘要本身无法区分，因此 MD5 标为高置信度候选，NTLM/MD4 作为等长低置信度候选一并列出。',
+          },
+          {
+            question: '识别结果能否作为算法的最终确认？',
+            answer:
+              '不能。本工具只依据结构与长度推断，无法逆向验证算法；加盐自定义格式、RIPEMD 等冷门算法无结构特征时会提示无法识别。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based hash type identifier: paste a digest and it lists candidate algorithms with confidence levels based on $-delimited crypt prefixes or plain hex length, instead of jumping to a single arbitrary verdict.',
+        coreFeatures: [
+          'crypt(3) prefix first: recognizes $1$, $apr1$, $5$ (optional rounds), $6$, and $2[aby]?$ salted formats',
+          'Length rules: 32/40/56/64/96/128 hex chars map to MD5 and the SHA family; 8 chars suggest CRC32',
+          'Ambiguity notes: 32 chars list MD5 (high) plus NTLM/MD4 (low); 8 chars warn it may be a truncated digest',
+          'bcrypt cost check: confidence drops to medium when cost is outside the usual 4–31 range',
+          'Automatic normalization: trims surrounding whitespace, ignores case, and detects as you type',
+          '100% local: detection makes no network request and never persists input',
+        ],
+        howToUse: [
+          'Paste the hash into the input field (leading/trailing whitespace and uppercase are fine)',
+          'Candidate algorithms appear instantly, ordered by confidence',
+          'Read the rationale for each candidate; low confidence means length alone cannot confirm it',
+        ],
+        useCases: [
+          'Incident analysis: quickly narrow down the algorithm of a hash from an unknown source',
+          'CTF and security research: tell raw MD5/SHA apart from crypt and bcrypt salted structures',
+          'Data migration: inspect password storage formats in legacy systems',
+        ],
+        privacyNote:
+          'All detection runs locally in your browser. Pasted hashes are never uploaded, logged, or persisted.',
+        faqs: [
+          {
+            question: 'Why does a 32-character hash return MD5 together with NTLM/MD4?',
+            answer:
+              'MD5 and NTLM (MD4) digests are all 32 hex characters and cannot be distinguished from the digest alone, so MD5 is shown as the high-confidence candidate while NTLM/MD4 are listed as equal-length low-confidence candidates.',
+          },
+          {
+            question: 'Can the result be treated as a definitive algorithm confirmation?',
+            answer:
+              'No. The tool only infers from structure and length and cannot verify an algorithm by reversal; custom salted formats or uncommon algorithms such as RIPEMD without structural features are reported as unrecognized.',
           },
         ],
       },
