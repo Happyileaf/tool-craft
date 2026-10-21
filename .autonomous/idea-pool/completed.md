@@ -4,4 +4,8 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
-| _（暂无已完成 Idea）_ | | | | | | |
+| 20261017183437 | 百分比计算器 | Web Tool | Existing Gap | percentage-calculator / https://github.com/Happyileaf/tool-craft/pull/49 | 2026-10-21 | [详情](./idea-details/20261017183437.md) |
+| 20261017160149 | CSS unit converter (px / rem / em / pt) | Web Tool | Existing Gap | css-unit-converter / https://github.com/Happyileaf/tool-craft/pull/49 | 2026-10-21 | [详情](./idea-details/20261017160149.md) |
+| 20261017220049 | 列表集合运算（交集 / 并集 / 差集） | Web Tool | Exploration | list-set-operations / https://github.com/Happyileaf/tool-craft/pull/49 | 2026-10-21 | [详情](./idea-details/20261017220049.md) |
+| 20261018000148 | 哈希类型识别器 | Web Tool | Existing Gap | hash-type-identifier / https://github.com/Happyileaf/tool-craft/pull/49 | 2026-10-21 | [详情](./idea-details/20261018000148.md) |
+| 20261017140151 | Unix file permission (chmod) calculator | Web Tool | Exploration | chmod-calculator / https://github.com/Happyileaf/tool-craft/pull/49 | 2026-10-21 | [详情](./idea-details/20261017140151.md) |
