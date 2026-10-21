@@ -87,3 +87,11 @@
 | 20261021180804 | JSON to CSV flatten 导出（嵌套数组展开） | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021180804.md) |
 | 20261021180805 | Hex / 文本互转与十六进制转储视图（Hex dump viewer） | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021180805.md) |
 | 20261021180806 | URL slug 生成器（标题转友好 URL） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021180806.md) |
+| 20261021221301 | 本地文件哈希校验（拖拽文件计算 MD5/SHA 校验和） | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021221301.md) |
+| 20261021221302 | UUID 解析校验器（版本/变体/时间戳提取与合法性检查） | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021221302.md) |
+| 20261021221303 | Favicon 生成器（图片导出多尺寸 PNG 与 .ico） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021221303.md) |
+| 20261021221304 | Flexbox 布局可视化生成器（输出 CSS） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021221304.md) |
+| 20261021221305 | 键盘事件 / 按键码查看器（keyCode、code、修饰键速查与监听） | Web Tool | External Reference | Pending | 2026-10-21 | | [详情](./idea-details/20261021221305.md) |
+| 20261021221306 | IBAN 银行账号校验与格式化（校验位算法） | Web Tool | External Reference | Pending | 2026-10-21 | | [详情](./idea-details/20261021221306.md) |
+| 20261021221307 | INI 配置解析与 JSON 双向转换 | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021221307.md) |
+| 20261021221308 | docker run 命令转 docker-compose.yml | Web Tool | External Reference | Pending | 2026-10-21 | | [详情](./idea-details/20261021221308.md) |
