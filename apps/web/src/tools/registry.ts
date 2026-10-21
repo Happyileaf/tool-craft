@@ -4183,6 +4183,97 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'chmod-calculator',
+    name: 'chmod 权限计算器',
+    nameEn: 'chmod Permission Calculator',
+    description:
+      '在 3 位八进制数字（如 755）、9 字符符号串（如 rwxr-xr-x）与读/写/执行勾选网格之间三向联动换算，并实时生成可复制的 chmod 命令，文件名可编辑，用于服务器权限排查与设置。',
+    descriptionEn:
+      'Convert between 3-digit octal modes (e.g. 755), 9-character symbolic strings (e.g. rwxr-xr-x), and a read/write/execute checkbox grid, with a live, copyable chmod command and an editable file name — built for server permission troubleshooting.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/chmod-calculator',
+    iconName: 'Lock',
+    tags: ['chmod', '权限', 'Unix', 'Linux', '八进制', '运维'],
+    tagsEn: ['chmod', 'Permissions', 'Unix', 'Linux', 'Octal', 'DevOps'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 Unix 文件权限换算工具，覆盖属主 / 属组 / 其他三类角色与读（4）/ 写（2）/ 执行（1）三种权限，共基础 9 个权限位，并即时生成 chmod 命令文本。',
+        coreFeatures: [
+          '三向联动：勾选网格、八进制数字、符号串任一变化实时刷新其余两者',
+          '典型值覆盖：755、644、000、777、400 等常见模式即时换算',
+          '严格校验：数字限 3 位 0–7 八进制，符号限 9 字符且按 r/w/x 顺序',
+          '非法输入提示：格式错误时明确告警且不破坏当前权限网格',
+          '命令生成：输出形如 chmod 755 myfile.txt 的命令，文件名可编辑、一键复制',
+          '纯本地运行：不执行任何系统命令，不发起网络请求',
+        ],
+        howToUse: [
+          '直接勾选三类角色的读 / 写 / 执行位，或在数字框输入 3 位八进制、在符号框输入 9 字符符号串',
+          '三种表示会自动保持同步，非法输入会在失焦后回填为当前有效值',
+          '在命令区编辑目标文件名，复制生成的 chmod 命令到终端使用',
+        ],
+        useCases: [
+          '部署排障：快速确认 Web 目录 755 / 文件 644 等权限是否正确',
+          '脚本授权：给可执行脚本添加属主执行位并查看对应数字模式',
+          '运维教学：直观理解 rwx 符号与 4/2/1 权重、三组角色的对应关系',
+        ],
+        privacyNote:
+          '所有换算均在浏览器本地完成，文件名与权限设置不会被上传或记录，工具不会执行任何系统命令。',
+        faqs: [
+          {
+            question: '支持 setuid、setgid、sticky 等特殊位吗？',
+            answer:
+              '不支持。本工具仅覆盖基础 9 个权限位（三组 rwx），暂不处理 4 位数字模式中的特殊位，也不支持 u+x 风格的符号赋值语法。',
+          },
+          {
+            question: '为什么输入含空格的文件名无法生成命令？',
+            answer:
+              '为保证生成的命令可直接粘贴执行，文件名不允许包含空白；如需对含空格的文件使用 chmod，请在终端中自行为文件名加引号。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based Unix file permission converter covering owner / group / other roles and read (4) / write (2) / execute (1) permissions — the nine basic permission bits — with an instantly generated chmod command.',
+        coreFeatures: [
+          'Three-way sync: editing the checkbox grid, octal number, or symbolic string updates the other two live',
+          'Common modes: 755, 644, 000, 777, 400 and more convert instantly',
+          'Strict validation: the number must be 3 octal digits (0–7), the symbolic string 9 characters in r/w/x order',
+          'Invalid-input handling: clear warnings without corrupting the current permission grid',
+          'Command builder: outputs commands like chmod 755 myfile.txt with an editable, copyable file name',
+          '100% local: no system commands are executed and no network requests are made',
+        ],
+        howToUse: [
+          'Toggle read/write/execute bits for the three roles, or type a 3-digit octal mode / 9-character symbolic string',
+          'All three representations stay in sync; invalid input reverts to the current valid value on blur',
+          'Edit the target file name in the command panel and copy the generated chmod command into your terminal',
+        ],
+        useCases: [
+          'Deployment troubleshooting: quickly verify 755 directories and 644 files on web servers',
+          'Script authorization: add the owner execute bit and see the matching numeric mode',
+          'Ops training: visualize how rwx symbols, 4/2/1 weights, and the three roles relate',
+        ],
+        privacyNote:
+          'All conversion runs locally in your browser. File names and permission settings are never uploaded or logged, and the tool executes no system commands.',
+        faqs: [
+          {
+            question: 'Does it support setuid, setgid, or sticky bits?',
+            answer:
+              'No. The tool covers only the nine basic permission bits (three groups of rwx); it does not handle the special bits of 4-digit modes or symbolic assignment syntax such as u+x.',
+          },
+          {
+            question: 'Why cannot a file name containing spaces produce a command?',
+            answer:
+              'To keep generated commands ready to paste and run, file names cannot contain whitespace; for such files, quote the name yourself when running chmod in a terminal.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

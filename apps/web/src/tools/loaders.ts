@@ -64,4 +64,5 @@ export const toolLoaders: Record<
   'css-unit-converter': () => import('./css-unit-converter'),
   'list-set-operations': () => import('./list-set-operations'),
   'hash-type-identifier': () => import('./hash-type-identifier'),
+  'chmod-calculator': () => import('./chmod-calculator'),
 };
