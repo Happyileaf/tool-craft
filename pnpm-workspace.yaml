@@ -1,6 +1,10 @@
 packages:
   - 'apps/*'
   - 'packages/*'
+# GHSA-68fv-2mgg-jv7q：source-map-js <1.2.2 存在事件循环 DoS 高危漏洞，
+# 经 next > postcss 传递引入，上游尚未发布修复版本，先通过 override 提升
+overrides:
+  source-map-js: ^1.2.2
 allowBuilds:
   esbuild: true
 catalog:
