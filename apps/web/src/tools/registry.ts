@@ -3910,6 +3910,97 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'css-unit-converter',
+    name: 'CSS 单位换算（px / rem / em / pt）',
+    nameEn: 'CSS Unit Converter (px / rem / em / pt)',
+    description:
+      '在 px、rem、em、pt 之间实时互转，可自定义根字号与父级字号基准，并提供常用 px 值四单位对照表，适配设计稿还原与响应式开发。',
+    descriptionEn:
+      'Convert between px, rem, em, and pt in real time with customizable root and parent font sizes, plus a quick-reference scale table for design-to-code and responsive workflows.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/css-unit-converter',
+    iconName: 'Pipette',
+    tags: ['CSS', '单位换算', 'px', 'rem', 'em', 'pt', '响应式'],
+    tagsEn: ['CSS', 'Unit', 'px', 'rem', 'em', 'pt', 'Responsive'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 CSS 长度单位换算工具，以 px 为内部基准（1in = 96px = 72pt），支持 px / rem / em / pt 四向互转，根字号与父级字号可调，并给出常用数值对照表。',
+        coreFeatures: [
+          '四向互转：px / rem / em / pt 任一作为源，实时输出其余三个单位',
+          '基准可调：根字号（rem 基准）与父级字号（em 基准）均可自定义',
+          '对照表：1–48px 常用数值对应的 rem / em / pt 一览',
+          '实时联动：修改数值或基准后所有结果即时刷新',
+          '严谨提示：基准为空、非数字或小于等于 0 时明确警示',
+          '纯本地运行：所有运算在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '输入数值并选择源单位，其余三个单位结果即时展示',
+          '按项目设置修改根字号（rem 基准）与父级字号（em 基准）',
+          '在下方对照表中快速查阅常用 px 值的换算结果',
+        ],
+        useCases: [
+          '设计稿还原：按设计稿根字号在 px 与 rem 之间快速换算',
+          '响应式适配：确认不同基准下 rem / em 的实际像素值',
+          '排版校对：在 pt 与 px 之间换算打印或设计软件数值',
+        ],
+        privacyNote:
+          '所有换算均在浏览器本地完成，输入的数值不会被上传或记录。',
+        faqs: [
+          {
+            question: 'rem 和 em 的区别是什么？',
+            answer:
+              'rem 相对于根元素（html）的字号，em 相对于当前元素继承到的字号；工具中分别用「根字号」与「父级字号」两个基准计算。',
+          },
+          {
+            question: '为什么基准必须大于 0？',
+            answer:
+              'rem 与 em 的换算需要用数值除以基准字号，基准为 0 时数学上未定义，非正数也没有实际排版意义，因此会提示修正。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based CSS length converter using px as the internal base (1in = 96px = 72pt). It converts between px, rem, em, and pt in every direction with adjustable root and parent font sizes and a quick-reference scale table.',
+        coreFeatures: [
+          'All-direction conversion: pick any of px / rem / em / pt as the source and see the other three instantly',
+          'Adjustable bases: customize the root font size (rem) and parent font size (em)',
+          'Scale table: common 1–48px values mapped to rem, em, and pt',
+          'Live updates: results refresh immediately when values or bases change',
+          'Strict validation: clear warnings for empty, non-numeric, or non-positive bases',
+          '100% local: everything runs in your browser and no network request is ever made',
+        ],
+        howToUse: [
+          'Enter a value and choose the source unit; the other three units update instantly',
+          'Set the root font size (rem base) and parent font size (em base) to match your project',
+          'Use the scale table below to look up common px values at a glance',
+        ],
+        useCases: [
+          'Design handoff: convert px to rem with the design root font size',
+          'Responsive layouts: verify actual pixels of rem/em under different bases',
+          'Typography checks: convert pt values from print or design tools to px',
+        ],
+        privacyNote:
+          'All conversions run locally in your browser; entered values are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the difference between rem and em?',
+            answer:
+              'rem is relative to the root (html) font size, while em is relative to the font size inherited by the current element. The tool computes them with separate "root" and "parent" bases.',
+          },
+          {
+            question: 'Why must the base be greater than 0?',
+            answer:
+              'rem and em conversion divides by the base font size. A zero base is mathematically undefined, and non-positive values have no typographic meaning, so a warning is shown.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

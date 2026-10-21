@@ -61,4 +61,5 @@ export const toolLoaders: Record<
   'url-parser': () => import('./url-parser'),
   'base32-codec': () => import('./base32-codec'),
   'percentage-calculator': () => import('./percentage-calculator'),
+  'css-unit-converter': () => import('./css-unit-converter'),
 };
