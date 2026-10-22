@@ -119,3 +119,4 @@
 | 20261023040536 | 文本信息熵计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023040536.md) |
 | 20261023040537 | Geohash 编解码器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023040537.md) |
 | 20261023040538 | NATO 音标字母转换器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023040538.md) |
+| 20261023040539 | ISBN-10 ↔ ISBN-13 校验与互转 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023040539.md) |
