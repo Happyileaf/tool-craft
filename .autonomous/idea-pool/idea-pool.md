@@ -95,3 +95,10 @@
 | 20261021221306 | IBAN 银行账号校验与格式化（校验位算法） | Web Tool | External Reference | Pending | 2026-10-21 | | [详情](./idea-details/20261021221306.md) |
 | 20261021221307 | INI 配置解析与 JSON 双向转换 | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021221307.md) |
 | 20261021221308 | docker run 命令转 docker-compose.yml | Web Tool | External Reference | Pending | 2026-10-21 | | [详情](./idea-details/20261021221308.md) |
+| 20261022221403 | 全角/半角字符批量转换器 | Web Tool | Existing Gap | Pending | 2026-10-22 | | [详情](./idea-details/20261022221403.md) |
+| 20261022221404 | 文本相似度计算器 | Web Tool | Existing Gap | Pending | 2026-10-22 | | [详情](./idea-details/20261022221404.md) |
+| 20261022221405 | Glob 模式匹配测试器 | Web Tool | Existing Gap | Pending | 2026-10-22 | | [详情](./idea-details/20261022221405.md) |
+| 20261022221406 | Conventional Commits 提交信息生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221406.md) |
+| 20261022221407 | Shields.io 徽章生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221407.md) |
+| 20261022221408 | ASCII 文件树生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221408.md) |
+| 20261022221409 | ANSI 终端颜色码生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221409.md) |
