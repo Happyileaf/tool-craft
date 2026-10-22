@@ -101,3 +101,4 @@
 | 20261022221406 | Conventional Commits 提交信息生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221406.md) |
 | 20261022221407 | Shields.io 徽章生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221407.md) |
 | 20261022221408 | ASCII 文件树生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221408.md) |
+| 20261022221409 | ANSI 终端颜色码生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221409.md) |
