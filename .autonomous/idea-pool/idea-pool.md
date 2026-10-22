@@ -109,3 +109,4 @@
 | 20261023020511 | Snowflake ID 解析器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023020511.md) |
 | 20261023020512 | SPF 记录生成与校验器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023020512.md) |
 | 20261023020513 | sitemap.xml 生成器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023020513.md) |
+| 20261023020514 | 占位图片生成器 | Web Tool | External Reference | Pending | 2026-10-23 | | [详情](./idea-details/20261023020514.md) |
