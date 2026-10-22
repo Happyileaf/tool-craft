@@ -107,3 +107,4 @@
 | 20261023020509 | Web App Manifest 生成器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023020509.md) |
 | 20261023020510 | CSS 形状生成器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023020510.md) |
 | 20261023020511 | Snowflake ID 解析器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023020511.md) |
+| 20261023020512 | SPF 记录生成与校验器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023020512.md) |
