@@ -98,3 +98,4 @@
 | 20261022221403 | 全角/半角字符批量转换器 | Web Tool | Existing Gap | Pending | 2026-10-22 | | [详情](./idea-details/20261022221403.md) |
 | 20261022221404 | 文本相似度计算器 | Web Tool | Existing Gap | Pending | 2026-10-22 | | [详情](./idea-details/20261022221404.md) |
 | 20261022221405 | Glob 模式匹配测试器 | Web Tool | Existing Gap | Pending | 2026-10-22 | | [详情](./idea-details/20261022221405.md) |
+| 20261022221406 | Conventional Commits 提交信息生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221406.md) |
