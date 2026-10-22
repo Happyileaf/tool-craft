@@ -102,3 +102,4 @@
 | 20261022221407 | Shields.io 徽章生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221407.md) |
 | 20261022221408 | ASCII 文件树生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221408.md) |
 | 20261022221409 | ANSI 终端颜色码生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221409.md) |
+| 20261023020507 | SRT ↔ WebVTT 字幕转换器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023020507.md) |
