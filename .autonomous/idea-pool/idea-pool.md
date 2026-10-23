@@ -132,3 +132,4 @@
 | 20261023141144 | 屏幕 PPI / 像素密度计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141144.md) |
 | 20261023141145 | 文件下载时间估算器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023141145.md) |
 | 20261023141146 | JSON-LD 结构化数据生成器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141146.md) |
+| 20261023141147 | BPM 音符时长与延迟时间计算器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023141147.md) |
