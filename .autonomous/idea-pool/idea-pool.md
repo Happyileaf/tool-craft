@@ -129,3 +129,4 @@
 | 20261023141141 | MIDI 音符与频率互转计算器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023141141.md) |
 | 20261023141142 | CSS transform 矩阵计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141142.md) |
 | 20261023141143 | 日出日落与晨昏时刻计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141143.md) |
+| 20261023141144 | 屏幕 PPI / 像素密度计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141144.md) |
