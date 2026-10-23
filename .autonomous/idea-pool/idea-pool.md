@@ -130,3 +130,4 @@
 | 20261023101002 | 复利计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023101002.md) |
 | 20261023101003 | 电阻色环计算器（色环 ↔ 阻值） | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023101003.md) |
 | 20261023101004 | 公历 ↔ 农历转换器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023101004.md) |
+| 20261023101005 | 数字转英文单词（Number to English Words） | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023101005.md) |
