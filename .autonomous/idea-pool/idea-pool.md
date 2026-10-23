@@ -128,3 +128,4 @@
 | 20261023081556 | CHANGELOG.md 生成器（Keep a Changelog） | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023081556.md) |
 | 20261023101001 | 跨时区时间转换器（任意时间 × 任意源时区） | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023101001.md) |
 | 20261023101002 | 复利计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023101002.md) |
+| 20261023101003 | 电阻色环计算器（色环 ↔ 阻值） | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023101003.md) |
