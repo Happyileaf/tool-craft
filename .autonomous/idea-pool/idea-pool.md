@@ -121,3 +121,4 @@
 | 20261023040538 | NATO 音标字母转换器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023040538.md) |
 | 20261023040539 | ISBN-10 ↔ ISBN-13 校验与互转 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023040539.md) |
 | 20261023081551 | 文本模式批量提取器（邮箱 / URL / IP / UUID 等常用模式） | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023081551.md) |
+| 20261023081552 | 身份证号码校验与升位（GB 11643-1999） | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023081552.md) |
