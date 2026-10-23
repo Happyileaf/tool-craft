@@ -132,3 +132,4 @@
 | 20261023101004 | 公历 ↔ 农历转换器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023101004.md) |
 | 20261023101005 | 数字转英文单词（Number to English Words） | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023101005.md) |
 | 20261023101006 | Excel 列标 ↔ 列号转换器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023101006.md) |
+| 20261023101007 | Gzip / Deflate 文本压缩解压器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023101007.md) |
