@@ -4,16 +4,13 @@
 
 ## 日志
 
-## 2026-10-26 ：【Agent自主迭代】新增 5 个编码、数据清洗、标识与数学计算工具
+## 2026-10-26 ：【Agent自主迭代】新增 10 个安全认证、编码、数据清洗、标识、财务与数学计算工具
 
 - **新增**：Ascii85 / Base85 编解码（ascii85-codec）— 文本与 Ascii85（含 btoa/adobe 风格 `<~ ~>` 包裹与 z 简写）及 Z85 双向编解码，带严格模式、错误位置提示与实时校验
 - **新增**：JSON ↔ NDJSON 互转（json-ndjson-converter）— JSON 数组与逐行 NDJSON 双向转换，支持单对象输入、容错解析与批量分隔设置
 - **新增**：UUID 检查器（uuid-inspector）— 批量识别 RFC 9562 的 v1/v3/v4/v5/v6/v7，提取时间戳（v1/v6/v7）、节点（v1/v6）、命名空间（v3/v5）等字段，按规范形式去重并统计
 - **新增**：ISBN-10 / ISBN-13 校验与互转（isbn-converter）— 按 ISO 2108 核验校验位并定位错误，978 前缀双向互转（979 明确提示不适用），输出组区分隔规范形式并按 ISBN-13 去重
 - **新增**：排列组合计算器（combinatorics-calculator）— 一次算出阶乘、排列、组合、重复排列、重复组合与圆排列六项，全程 BigInt 任意精度精确计算，超大整数附科学计数法近似值
-
-## 2026-10-26 ：【Agent自主迭代】新增 5 个安全认证、编码、财务与开发工具
-
 - **新增**：OAuth2 PKCE 生成器（pkce-generator）— 生成符合 RFC 7636 的 code_verifier / code_challenge 参数对，支持 S256 与 plain、长度切换、手动编辑校验与一键复制
 - **新增**：Base58 / Base58Check 编解码（base58-codec）— 文本与 Base58 双向编解码，支持 Bitcoin / Flickr / Ripple 字母表与带版本前缀、double-SHA256 校验和的 Base58Check
 - **新增**：数字转中文大写金额（chinese-currency）— 阿拉伯数字金额实时转换为人民币中文大写，正确处理连续零、万 / 亿进位与角分边界，支持千分位与四舍五入到分
