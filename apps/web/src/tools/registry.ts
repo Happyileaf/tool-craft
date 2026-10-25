@@ -4274,6 +4274,109 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'pkce-generator',
+    name: 'OAuth2 PKCE 生成器',
+    nameEn: 'OAuth2 PKCE Generator',
+    description:
+      '生成符合 RFC 7636 的 PKCE 参数对：密码学安全随机 code_verifier（43–128 位 unreserved 字符）与对应 code_challenge（S256 为无填充 BASE64URL(SHA-256)，可选 plain），支持长度切换、手动编辑校验、一键复制与重新生成，用于 OAuth 2.0 授权码流程联调。',
+    descriptionEn:
+      'Generate RFC 7636 PKCE parameter pairs: a cryptographically random code_verifier (43–128 unreserved characters) and its code_challenge (S256 = unpadded BASE64URL(SHA-256), with plain as a fallback), with length presets, manual-edit validation, one-click copy, and regeneration — built for OAuth 2.0 authorization-code debugging.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/pkce-generator',
+    iconName: 'ShieldCheck',
+    tags: ['PKCE', 'OAuth2', 'RFC 7636', 'code_verifier', 'code_challenge', 'S256'],
+    tagsEn: ['PKCE', 'OAuth2', 'RFC 7636', 'code_verifier', 'code_challenge', 'S256'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 OAuth 2.0 PKCE（Proof Key for Code Exchange，RFC 7636）参数生成器，使用 Web Crypto 的 CSPRNG 生成 code_verifier，并用 SHA-256 推导 code_challenge，供 SPA、移动端、CLI 等公共客户端在授权码流程中联调使用。',
+        coreFeatures: [
+          '标准合规：严格按 RFC 7636 §4.1/§4.2 生成 43–128 位 unreserved 字符的 code_verifier',
+          '无偏随机：基于 crypto.getRandomValues 的拒绝采样，每个字符等概率出现',
+          'S256 派生：输出无填充的 BASE64URL(SHA-256(ASCII(verifier)))，命中 RFC 7636 附录 B 测试向量',
+          'plain 兼容：服务端不支持 S256 时可切换 plain 方法（界面明确提示不推荐）',
+          '可编辑校验：粘贴已有 code_verifier 时实时校验长度与字符集，非法输入给出具体原因',
+          '长度预设：提供 43 / 64 / 96 / 128 位快捷选项与一键重新生成、一键复制',
+        ],
+        howToUse: [
+          '打开工具即自动生成一组合法参数，选择所需的 code_verifier 长度后点击「重新生成」可换一组',
+          '保持方法为 S256，将 code_challenge 填入授权请求的 code_challenge 参数，方法名填入 code_challenge_method',
+          'code_verifier 只保存在本地，在换取令牌（token endpoint）时原样上送，切勿提前发送或外泄',
+          '也可以粘贴已有的 code_verifier，工具会实时校验并推导其 code_challenge',
+        ],
+        useCases: [
+          '前端联调：为 SPA / 移动端的 OAuth 2.0 授权码 + PKCE 流程快速准备合法参数',
+          '后端自测：验证授权服务器的 S256 校验逻辑是否符合 RFC 7636',
+          '协议学习：直观观察 verifier 与 challenge 的派生关系及 plain / S256 差异',
+        ],
+        privacyNote:
+          '所有随机数生成与 SHA-256 摘要均在浏览器本地通过 Web Crypto 完成，code_verifier 与 code_challenge 不会被上传、记录或持久化。',
+        faqs: [
+          {
+            question: 'S256 和 plain 有什么区别，该选哪个？',
+            answer:
+              'S256 对 code_verifier 做 SHA-256 后再 base64url 编码，授权链路上只暴露 challenge，能防截获，是 RFC 7636 的强制推荐；plain 直接上送原文，仅在服务端不支持 S256 时临时使用。',
+          },
+          {
+            question: 'code_verifier 为什么必须是 43 位以上？',
+            answer:
+              'RFC 7636 §4.1 规定 code_verifier 长度为 43–128 位，且只能使用 A-Z、a-z、0-9 与 - . _ ~；43 位取自 68 字符表时可提供约 256 位熵，保证拦截者无法暴力猜测。',
+          },
+          {
+            question: '每次重新生成后旧参数还能用吗？',
+            answer:
+              '不能。授权请求中登记的 code_challenge 必须与换取令牌时上送的 code_verifier 配对，请对同一次授权流程固定使用同一组参数，不要在流程中途重新生成。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local generator for OAuth 2.0 PKCE (Proof Key for Code Exchange, RFC 7636). It creates the code_verifier with the Web Crypto CSPRNG and derives the code_challenge with SHA-256, helping public clients such as SPAs, mobile apps, and CLIs debug the authorization-code flow.',
+        coreFeatures: [
+          'Standards-compliant: code_verifier uses 43–128 unreserved characters exactly per RFC 7636 §4.1/§4.2',
+          'Unbiased randomness: rejection sampling over crypto.getRandomValues makes every character equiprobable',
+          'S256 derivation: outputs unpadded BASE64URL(SHA-256(ASCII(verifier))), matching RFC 7636 Appendix B',
+          'plain fallback: switch to plain when the server lacks S256 support (clearly marked as discouraged)',
+          'Editable validation: pasting an existing verifier checks length and charset live, with specific error reasons',
+          'Length presets: 43 / 64 / 96 / 128 characters, plus one-click regeneration and copy',
+        ],
+        howToUse: [
+          'A valid pair is generated on open; pick a verifier length and click "Regenerate" for a new pair',
+          'Keep S256 selected, put code_challenge into the authorization request and S256 into code_challenge_method',
+          'Keep code_verifier local and send it unchanged only at the token endpoint — never send or leak it earlier',
+          'You can also paste an existing code_verifier; the tool validates it live and derives its challenge',
+        ],
+        useCases: [
+          'Frontend debugging: prepare valid parameters for OAuth 2.0 authorization-code + PKCE flows in SPAs and mobile apps',
+          'Backend testing: verify an authorization server implements S256 checks per RFC 7636',
+          'Protocol learning: visualize the verifier-to-challenge derivation and the plain vs S256 difference',
+        ],
+        privacyNote:
+          'All random generation and SHA-256 hashing run locally in your browser via Web Crypto; the code_verifier and code_challenge are never uploaded, logged, or persisted.',
+        faqs: [
+          {
+            question: 'What is the difference between S256 and plain?',
+            answer:
+              'S256 hashes the code_verifier with SHA-256 and base64url-encodes it, exposing only the challenge on the authorization request so interception is mitigated — it is the RFC 7636-mandated default. plain sends the verifier as-is and should be used only temporarily when the server cannot do S256.',
+          },
+          {
+            question: 'Why must the code_verifier be at least 43 characters?',
+            answer:
+              'RFC 7636 §4.1 requires 43–128 characters from A-Z, a-z, 0-9, and - . _ ~. Forty-three characters from a 68-symbol alphabet provide about 256 bits of entropy, making brute-force guessing by an interceptor infeasible.',
+          },
+          {
+            question: 'Does an old pair still work after I regenerate?',
+            answer:
+              'No. The code_challenge registered in the authorization request must match the code_verifier sent at token exchange. Keep one fixed pair per authorization flow and never regenerate midway through it.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

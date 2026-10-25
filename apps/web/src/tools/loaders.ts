@@ -65,4 +65,5 @@ export const toolLoaders: Record<
   'list-set-operations': () => import('./list-set-operations'),
   'hash-type-identifier': () => import('./hash-type-identifier'),
   'chmod-calculator': () => import('./chmod-calculator'),
+  'pkce-generator': () => import('./pkce-generator'),
 };

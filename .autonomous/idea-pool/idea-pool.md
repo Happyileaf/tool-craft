@@ -132,4 +132,4 @@
 | 20261023141145 | 文件下载时间估算器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023141145.md) |
 | 20261023141146 | JSON-LD 结构化数据生成器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141146.md) |
 | 20261023141147 | BPM 音符时长与延迟时间计算器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023141147.md) |
-| 20261023200245 | OAuth2 PKCE 生成器（code_verifier / code_challenge） | Web Tool | Existing Gap | Claimed | 2026-10-23 | trae-agent | [详情](./idea-details/20261023200245.md) |
+| 20261023200245 | OAuth2 PKCE 生成器（code_verifier / code_challenge） | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023200245.md) |
