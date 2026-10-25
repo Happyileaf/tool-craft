@@ -68,4 +68,5 @@ export const toolLoaders: Record<
   'pkce-generator': () => import('./pkce-generator'),
   'base58-codec': () => import('./base58-codec'),
   'chinese-currency': () => import('./chinese-currency'),
+  'json-flatten': () => import('./json-flatten'),
 };

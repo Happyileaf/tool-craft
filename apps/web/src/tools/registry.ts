@@ -4583,6 +4583,111 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'json-flatten',
+    name: 'JSON 扁平化 / 还原',
+    nameEn: 'JSON Flatten / Unflatten',
+    description:
+      '在嵌套 JSON 与点路径单层键值 JSON 之间双向转换（如 a.b[0].c ↔ 嵌套对象），支持自定义分隔符、数组展开开关与根数组，路径冲突（如 a 与 a.b 并存）给出明确报错；纯浏览器本地运算。',
+    descriptionEn:
+      'Bidirectionally convert between nested JSON and dot-path flat key-value JSON (e.g. a.b[0].c), with custom separators, an array-expansion toggle, root-array support, and clear path-conflict errors (a vs a.b). Runs entirely in your browser.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-flatten',
+    iconName: 'LayoutGrid',
+    tags: ['JSON', '扁平化', 'flatten', '嵌套', '点路径', '数据转换'],
+    tagsEn: ['JSON', 'Flatten', 'Unflatten', 'Dot Path', 'Nested', 'Data Transform'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 JSON 结构转换工具，可把任意嵌套对象 / 数组扁平化为点路径单层键值（如 {"a":{"b":[1]}} → {"a.b[0]":1}），也可把扁平键值无损还原为嵌套结构，常用于数据比对、表格导入导出与配置排查。',
+        coreFeatures: [
+          '双向转换：扁平化 Flatten 与反向还原 Unflatten 一键切换',
+          '数组处理：数组项以 [索引] 标记（如 users[0].name），支持根数组与嵌套数组',
+          '自定义分隔符：点号、下划线、斜杠、连字符可选，适配不同扁平化约定',
+          '数组开关：可关闭数组展开，把整个数组作为叶子值保留',
+          '叶子保留：null、空对象 {}、空数组 [] 等边界值正确保留并可往返还原',
+          '冲突检测：同一节点既是叶子又有下级路径（如 a 与 a.b）时给出明确错误',
+        ],
+        howToUse: [
+          '选择方向：「扁平化」把嵌套 JSON 转为单层键值，「还原」执行反向操作',
+          '在左侧粘贴 JSON，右侧实时显示转换结果，点击「复制结果」即可使用',
+          '通过「分隔符」下拉切换路径连接符；扁平化时可用复选框控制是否展开数组',
+          '输入非法 JSON 或还原时路径冲突，结果区会显示具体错误位置与原因',
+        ],
+        useCases: [
+          '数据比对：把深层嵌套 JSON 压平后按路径做字段级 diff',
+          '表格互转：与 CSV / Excel 行列结构互导时预处理 JSON 字段',
+          '配置排查：快速定位深路径字段、核对环境变量映射（如 a.b.c → A_B_C）',
+          '接口调试：理解或构造 Elasticsearch、表单序列化等点路径风格数据',
+        ],
+        privacyNote:
+          '所有解析与转换均在浏览器本地完成，JSON 内容不会被上传或记录。',
+        faqs: [
+          {
+            question: '扁平化后还能无损还原吗？',
+            answer:
+              '可以。数组以 [数字] 标记、对象键以分隔符连接，还原时按 token 重建对象与数组；null、空对象、空数组都会保留。前提是键路径本身不含与分隔符 / 方括号冲突的歧义，或换用不冲突的分隔符。',
+          },
+          {
+            question: '什么是「路径冲突」？',
+            answer:
+              '还原时同一路径不能既是叶子又包含下级，例如 {"a":1,"a.b":2} 中 a 已经是数字，无法再容纳键 b。工具会直接报错而不是静默覆盖，避免数据丢失。',
+          },
+          {
+            question: '关闭「展开数组」会怎样？',
+            answer:
+              '扁平化时数组整体作为一个叶子值保留（如 {"a":[1,2]} 原样保留），对象仍会继续展开；适合下游不支持 [索引] 路径、只需要对象层级压平的场景。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local tool that flattens arbitrarily nested JSON objects / arrays into single-level dot-path key-value pairs (e.g. {"a":{"b":[1]}} → {"a.b[0]":1}) and unflattens them back losslessly — useful for data comparison, spreadsheet import/export, and config inspection.',
+        coreFeatures: [
+          'Bidirectional: switch between Flatten and Unflatten instantly',
+          'Array paths: array items use [index] markers (e.g. users[0].name), including root and nested arrays',
+          'Custom separators: dot, underscore, slash, or hyphen to match different flattening conventions',
+          'Array toggle: keep whole arrays as leaf values instead of expanding them',
+          'Edge-safe leaves: null, empty objects {}, and empty arrays [] are preserved and survive a round trip',
+          'Conflict detection: a node that is both a leaf and has children (e.g. a vs a.b) raises a clear error',
+        ],
+        howToUse: [
+          'Pick a direction: Flatten turns nested JSON into flat key-value pairs; Unflatten reverses it',
+          'Paste JSON on the left; the result appears on the right in real time, then click Copy',
+          'Switch the path separator from the dropdown; toggle array expansion while flattening',
+          'Invalid JSON or unflatten path conflicts produce a specific error in the result panel',
+        ],
+        useCases: [
+          'Data comparison: flatten deep JSON before field-level diffing by path',
+          'Spreadsheet exchange: preprocess JSON fields when importing from / exporting to CSV or Excel',
+          'Config inspection: locate deep fields and derive environment-variable mappings (a.b.c → A_B_C)',
+          'API debugging: work with dot-path styles used by Elasticsearch, form serialization, and similar systems',
+        ],
+        privacyNote:
+          'All parsing and conversion happens locally in your browser; JSON content is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Is the conversion reversible?',
+            answer:
+              'Yes. Arrays are marked with [index] and object keys are joined with the separator; unflatten rebuilds objects and arrays, preserving null, empty objects, and empty arrays — provided keys do not ambiguously contain the separator or brackets (choose another separator if they do).',
+          },
+          {
+            question: 'What is a "path conflict"?',
+            answer:
+              'During unflatten, the same path cannot be both a leaf and contain children, e.g. {"a":1,"a.b":2} makes a a number that cannot also hold b. The tool reports this instead of silently overwriting data.',
+          },
+          {
+            question: 'What happens when array expansion is off?',
+            answer:
+              'Arrays are kept intact as leaf values while flattening (e.g. {"a":[1,2]} stays as-is), while objects are still expanded — handy when the downstream tool does not understand [index] paths.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

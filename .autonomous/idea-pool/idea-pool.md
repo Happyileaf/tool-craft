@@ -79,7 +79,7 @@
 | 20261018000148 | 哈希类型识别器 | Web Tool | Existing Gap | In Progress | 2026-10-18 | trae-agent | [详情](./idea-details/20261018000148.md) |
 | 20261018000149 | CSS clamp() 流式排版生成器 | Web Tool | Exploration | Pending | 2026-10-18 | | [详情](./idea-details/20261018000149.md) |
 | 20261018000150 | 宽高比计算器 | Web Tool | Exploration | Pending | 2026-10-18 | | [详情](./idea-details/20261018000150.md) |
-| 20261021180759 | JSON flatten / unflatten（嵌套对象与点路径互转） | Web Tool | Existing Gap | Claimed | 2026-10-21 | trae-agent | [详情](./idea-details/20261021180759.md) |
+| 20261021180759 | JSON flatten / unflatten（嵌套对象与点路径互转） | Web Tool | Existing Gap | In Progress | 2026-10-21 | trae-agent | [详情](./idea-details/20261021180759.md) |
 | 20261021180800 | Cookie 字符串解析与生成器 | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021180800.md) |
 | 20261021180801 | JSON to multiple language models (Go struct / Python dataclass / Java class / C# 等) | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021180801.md) |
 | 20261021180802 | 文本词频统计与高频词分析 | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021180802.md) |
