@@ -71,4 +71,5 @@ export const toolLoaders: Record<
   'json-flatten': () => import('./json-flatten'),
   'string-escape': () => import('./string-escape'),
   'ascii85-codec': () => import('./ascii85-codec'),
+  'json-ndjson-converter': () => import('./json-ndjson-converter'),
 };

@@ -4882,6 +4882,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'json-ndjson-converter',
+    name: 'JSON ↔ NDJSON（JSON Lines）互转',
+    nameEn: 'JSON to NDJSON / JSON Lines Converter',
+    description:
+      '在 JSON 数组与 JSON Lines（NDJSON，每行一个独立 JSON 对象）之间双向转换，兼容日志采集与数据管道的批量导入导出，错误提示精确定位到行号。',
+    descriptionEn:
+      'Convert between a JSON array and JSON Lines (NDJSON, one JSON value per line), suitable for log ingestion and batch import/export in data pipelines, with line-precise error messages.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-ndjson-converter',
+    iconName: 'UnorderedList',
+    tags: ['JSON', 'NDJSON', 'JSON Lines', '日志', '数据转换'],
+    tagsEn: ['JSON', 'NDJSON', 'JSON Lines', 'Logs', 'Convert'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '[\n  { "id": 1, "name": "Alice" },\n  { "id": 2, "name": "Bob" }\n]',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 JSON 数组与 JSON Lines（NDJSON）互转工具。JSON Lines 把数组的每个元素独立序列化为一行 JSON，没有外层数组与行尾逗号，是结构化日志与数据管道中的事实标准格式。',
+        coreFeatures: [
+          '双向转换：JSON 数组逐元素展开为 NDJSON，NDJSON 逐行解析回 JSON 数组',
+          '规范输出：JSON → NDJSON 时每条记录紧凑单行，内部换行自动转义，不破坏行结构',
+          '容错解析：NDJSON → JSON 时自动忽略空行、兼容 CRLF 与每行前后空白',
+          '精确报错：非法 JSON 行直接指出所在行号，便于快速定位脏数据',
+          '纯本地运行：所有解析与序列化在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择「JSON 数组 → NDJSON」或「NDJSON → JSON 数组」方向',
+          '在输入框粘贴内容，输出即时更新；切换方向会自动载入对应示例',
+          '点击「复制结果」获取转换内容，或「清空」重新输入',
+        ],
+        useCases: [
+          '结构化日志：把日志系统导出的 NDJSON 聚合成 JSON 数组做查看与二次处理',
+          '数据管道：准备 BigQuery、Elasticsearch Bulk 等按行 JSON 记录的导入数据',
+          '接口调试：在 JSON 数组与逐行记录格式之间快速互转',
+        ],
+        privacyNote: '所有转换均在浏览器本地完成，输入的 JSON 数据不会被上传或记录。',
+        faqs: [
+          {
+            question: 'NDJSON 和普通 JSON 文件有什么区别？',
+            answer:
+              'NDJSON（JSON Lines）没有外层数组和逗号，每一行本身就是一个完整合法的 JSON 值。它特别适合日志这类持续追加的写入场景：单行损坏不影响其他行，且无需读取整个文件就能流式处理。',
+          },
+          {
+            question: '为什么某一行提示不是合法 JSON？',
+            answer:
+              'NDJSON 要求每行都是完整、紧凑的单行 JSON，不支持跨行对象，也不能带行尾逗号或 JavaScript 风格注释。错误信息会给出具体行号，修正该行后即可继续转换。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first converter between a JSON array and JSON Lines (NDJSON). JSON Lines serializes each array element onto its own line — no wrapping array or trailing commas — making it the de facto format for structured logs and data pipelines.',
+        coreFeatures: [
+          'Bidirectional: expand a JSON array into NDJSON lines, or parse NDJSON lines back into a JSON array',
+          'Spec-compliant output: JSON → NDJSON emits compact single-line records with embedded newlines properly escaped',
+          'Tolerant parsing: NDJSON → JSON ignores empty lines, accepts CRLF, and trims surrounding whitespace per line',
+          'Line-precise errors: invalid JSON lines are reported with their line number for quick dirty-data location',
+          'Local-first: all parsing and serialization run in the browser with no network requests',
+        ],
+        howToUse: [
+          'Choose "JSON array → NDJSON" or "NDJSON → JSON array"',
+          'Paste content and the output updates instantly; switching direction loads the matching sample',
+          'Use "Copy result" to grab the output, or "Clear" to start over',
+        ],
+        useCases: [
+          'Structured logs: aggregate NDJSON exports from logging systems into a JSON array for inspection',
+          'Data pipelines: prepare line-delimited records for BigQuery, Elasticsearch Bulk, and similar imports',
+          'API debugging: quickly switch between array payloads and line-delimited record streams',
+        ],
+        privacyNote:
+          'All conversion runs locally in the browser; entered JSON data is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How is NDJSON different from a regular JSON file?',
+            answer:
+              'NDJSON (JSON Lines) has no wrapping array or commas: every line is a complete, standalone JSON value. It suits append-only logs well — a corrupted line does not break the others, and the file can be processed as a stream without reading it all.',
+          },
+          {
+            question: 'Why is a line reported as invalid JSON?',
+            answer:
+              'Each NDJSON line must be complete, compact, single-line JSON with no multi-line objects, trailing commas, or JavaScript-style comments. The error message includes the line number; fix that line and convert again.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
