@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-10-26 ：【Agent自主迭代】新增 5 个安全认证、编码、财务与开发工具
+
+- **新增**：OAuth2 PKCE 生成器（pkce-generator）— 生成符合 RFC 7636 的 code_verifier / code_challenge 参数对，支持 S256 与 plain、长度切换、手动编辑校验与一键复制
+- **新增**：Base58 / Base58Check 编解码（base58-codec）— 文本与 Base58 双向编解码，支持 Bitcoin / Flickr / Ripple 字母表与带版本前缀、double-SHA256 校验和的 Base58Check
+- **新增**：数字转中文大写金额（chinese-currency）— 阿拉伯数字金额实时转换为人民币中文大写，正确处理连续零、万 / 亿进位与角分边界，支持千分位与四舍五入到分
+- **新增**：JSON 扁平化 / 还原（json-flatten）— 嵌套 JSON 与点路径单层键值 JSON 双向转换，支持自定义分隔符、数组展开开关与路径冲突报错
+- **新增**：字符串字面量转义 / 反转义（string-escape）— 原始文本与 JavaScript / JSON、Python、Java 字符串字面量双向转义，覆盖代理对、`\xHH`、`\u{码点}` 等方言差异并可包裹 / 剥离外层引号
+
 ## 2026-10-21 ：【Agent自主迭代】新增 5 个数值、集合、编码与开发运维工具
 
 - **新增**：百分比计算器（percentage-calculator）— 一键完成「X 的 Y%」「X 是 Y 的百分之几」「X 较 Y 增减百分比」三类运算，实时联动并提示除零与非法输入

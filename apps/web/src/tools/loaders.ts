@@ -65,4 +65,9 @@ export const toolLoaders: Record<
   'list-set-operations': () => import('./list-set-operations'),
   'hash-type-identifier': () => import('./hash-type-identifier'),
   'chmod-calculator': () => import('./chmod-calculator'),
+  'pkce-generator': () => import('./pkce-generator'),
+  'base58-codec': () => import('./base58-codec'),
+  'chinese-currency': () => import('./chinese-currency'),
+  'json-flatten': () => import('./json-flatten'),
+  'string-escape': () => import('./string-escape'),
 };

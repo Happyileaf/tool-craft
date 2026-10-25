@@ -4274,6 +4274,525 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'pkce-generator',
+    name: 'OAuth2 PKCE 生成器',
+    nameEn: 'OAuth2 PKCE Generator',
+    description:
+      '生成符合 RFC 7636 的 PKCE 参数对：密码学安全随机 code_verifier（43–128 位 unreserved 字符）与对应 code_challenge（S256 为无填充 BASE64URL(SHA-256)，可选 plain），支持长度切换、手动编辑校验、一键复制与重新生成，用于 OAuth 2.0 授权码流程联调。',
+    descriptionEn:
+      'Generate RFC 7636 PKCE parameter pairs: a cryptographically random code_verifier (43–128 unreserved characters) and its code_challenge (S256 = unpadded BASE64URL(SHA-256), with plain as a fallback), with length presets, manual-edit validation, one-click copy, and regeneration — built for OAuth 2.0 authorization-code debugging.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/pkce-generator',
+    iconName: 'ShieldCheck',
+    tags: ['PKCE', 'OAuth2', 'RFC 7636', 'code_verifier', 'code_challenge', 'S256'],
+    tagsEn: ['PKCE', 'OAuth2', 'RFC 7636', 'code_verifier', 'code_challenge', 'S256'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 OAuth 2.0 PKCE（Proof Key for Code Exchange，RFC 7636）参数生成器，使用 Web Crypto 的 CSPRNG 生成 code_verifier，并用 SHA-256 推导 code_challenge，供 SPA、移动端、CLI 等公共客户端在授权码流程中联调使用。',
+        coreFeatures: [
+          '标准合规：严格按 RFC 7636 §4.1/§4.2 生成 43–128 位 unreserved 字符的 code_verifier',
+          '无偏随机：基于 crypto.getRandomValues 的拒绝采样，每个字符等概率出现',
+          'S256 派生：输出无填充的 BASE64URL(SHA-256(ASCII(verifier)))，命中 RFC 7636 附录 B 测试向量',
+          'plain 兼容：服务端不支持 S256 时可切换 plain 方法（界面明确提示不推荐）',
+          '可编辑校验：粘贴已有 code_verifier 时实时校验长度与字符集，非法输入给出具体原因',
+          '长度预设：提供 43 / 64 / 96 / 128 位快捷选项与一键重新生成、一键复制',
+        ],
+        howToUse: [
+          '打开工具即自动生成一组合法参数，选择所需的 code_verifier 长度后点击「重新生成」可换一组',
+          '保持方法为 S256，将 code_challenge 填入授权请求的 code_challenge 参数，方法名填入 code_challenge_method',
+          'code_verifier 只保存在本地，在换取令牌（token endpoint）时原样上送，切勿提前发送或外泄',
+          '也可以粘贴已有的 code_verifier，工具会实时校验并推导其 code_challenge',
+        ],
+        useCases: [
+          '前端联调：为 SPA / 移动端的 OAuth 2.0 授权码 + PKCE 流程快速准备合法参数',
+          '后端自测：验证授权服务器的 S256 校验逻辑是否符合 RFC 7636',
+          '协议学习：直观观察 verifier 与 challenge 的派生关系及 plain / S256 差异',
+        ],
+        privacyNote:
+          '所有随机数生成与 SHA-256 摘要均在浏览器本地通过 Web Crypto 完成，code_verifier 与 code_challenge 不会被上传、记录或持久化。',
+        faqs: [
+          {
+            question: 'S256 和 plain 有什么区别，该选哪个？',
+            answer:
+              'S256 对 code_verifier 做 SHA-256 后再 base64url 编码，授权链路上只暴露 challenge，能防截获，是 RFC 7636 的强制推荐；plain 直接上送原文，仅在服务端不支持 S256 时临时使用。',
+          },
+          {
+            question: 'code_verifier 为什么必须是 43 位以上？',
+            answer:
+              'RFC 7636 §4.1 规定 code_verifier 长度为 43–128 位，且只能使用 A-Z、a-z、0-9 与 - . _ ~；43 位取自 68 字符表时可提供约 256 位熵，保证拦截者无法暴力猜测。',
+          },
+          {
+            question: '每次重新生成后旧参数还能用吗？',
+            answer:
+              '不能。授权请求中登记的 code_challenge 必须与换取令牌时上送的 code_verifier 配对，请对同一次授权流程固定使用同一组参数，不要在流程中途重新生成。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local generator for OAuth 2.0 PKCE (Proof Key for Code Exchange, RFC 7636). It creates the code_verifier with the Web Crypto CSPRNG and derives the code_challenge with SHA-256, helping public clients such as SPAs, mobile apps, and CLIs debug the authorization-code flow.',
+        coreFeatures: [
+          'Standards-compliant: code_verifier uses 43–128 unreserved characters exactly per RFC 7636 §4.1/§4.2',
+          'Unbiased randomness: rejection sampling over crypto.getRandomValues makes every character equiprobable',
+          'S256 derivation: outputs unpadded BASE64URL(SHA-256(ASCII(verifier))), matching RFC 7636 Appendix B',
+          'plain fallback: switch to plain when the server lacks S256 support (clearly marked as discouraged)',
+          'Editable validation: pasting an existing verifier checks length and charset live, with specific error reasons',
+          'Length presets: 43 / 64 / 96 / 128 characters, plus one-click regeneration and copy',
+        ],
+        howToUse: [
+          'A valid pair is generated on open; pick a verifier length and click "Regenerate" for a new pair',
+          'Keep S256 selected, put code_challenge into the authorization request and S256 into code_challenge_method',
+          'Keep code_verifier local and send it unchanged only at the token endpoint — never send or leak it earlier',
+          'You can also paste an existing code_verifier; the tool validates it live and derives its challenge',
+        ],
+        useCases: [
+          'Frontend debugging: prepare valid parameters for OAuth 2.0 authorization-code + PKCE flows in SPAs and mobile apps',
+          'Backend testing: verify an authorization server implements S256 checks per RFC 7636',
+          'Protocol learning: visualize the verifier-to-challenge derivation and the plain vs S256 difference',
+        ],
+        privacyNote:
+          'All random generation and SHA-256 hashing run locally in your browser via Web Crypto; the code_verifier and code_challenge are never uploaded, logged, or persisted.',
+        faqs: [
+          {
+            question: 'What is the difference between S256 and plain?',
+            answer:
+              'S256 hashes the code_verifier with SHA-256 and base64url-encodes it, exposing only the challenge on the authorization request so interception is mitigated — it is the RFC 7636-mandated default. plain sends the verifier as-is and should be used only temporarily when the server cannot do S256.',
+          },
+          {
+            question: 'Why must the code_verifier be at least 43 characters?',
+            answer:
+              'RFC 7636 §4.1 requires 43–128 characters from A-Z, a-z, 0-9, and - . _ ~. Forty-three characters from a 68-symbol alphabet provide about 256 bits of entropy, making brute-force guessing by an interceptor infeasible.',
+          },
+          {
+            question: 'Does an old pair still work after I regenerate?',
+            answer:
+              'No. The code_challenge registered in the authorization request must match the code_verifier sent at token exchange. Keep one fixed pair per authorization flow and never regenerate midway through it.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'base58-codec',
+    name: 'Base58 / Base58Check 编解码',
+    nameEn: 'Base58 & Base58Check Encoder & Decoder',
+    description:
+      '在文本与 Base58 之间双向编解码，并支持带版本前缀与 4 字节 double-SHA256 校验和的 Base58Check（比特币地址、IPFS CID、XRP 地址等），可切换 Bitcoin / Flickr / Ripple 三种字母表，非法字符与校验和失败均有明确提示。',
+    descriptionEn:
+      'Encode and decode text with Base58, plus Base58Check with a version prefix and a 4-byte double-SHA256 checksum (Bitcoin addresses, IPFS CIDs, XRP addresses), with switchable Bitcoin / Flickr / Ripple alphabets and clear errors for bad characters or checksum mismatch.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/base58-codec',
+    iconName: 'Fingerprint',
+    tags: ['Base58', 'Base58Check', '比特币', 'Bitcoin', 'IPFS', 'XRP', '编解码'],
+    tagsEn: ['Base58', 'Base58Check', 'Bitcoin', 'IPFS', 'XRP', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 Base58 系列编解码工具。Base58 在 Base62 的基础上再去掉易混的 0、O、I、l，是比特币地址、IPFS CID 等的通用表示；Base58Check 进一步附加 1 字节版本前缀与 4 字节 double-SHA256 校验和，可发现抄写或传输错误。',
+        coreFeatures: [
+          '三向模式：Base58 文本互转、Base58Check 编码、Base58Check 解码校验',
+          '三种字母表：Bitcoin / IPFS 标准表、Flickr 表、Ripple / XRP Ledger 表',
+          '严格校验：字母表外字符给出具体位置，Base58Check 校验和不匹配时明确告警',
+          'UTF-8 支持：文本按 UTF-8 编码；解码结果非合法 UTF-8 时同时给出原始十六进制字节',
+          '十六进制载荷：Base58Check 模式以 hex 编辑载荷与版本字节（0x00 P2PKH / 0x05 P2SH）',
+          '纯本地运行：SHA-256 经 Web Crypto 完成，不发起网络请求',
+        ],
+        howToUse: [
+          '选择字母表（一般区块链地址保持默认 Bitcoin 表，XRP 地址切换 Ripple 表）',
+          '「Base58 文本编码」模式下直接输入文本或粘贴 Base58 并切换编 / 解方向',
+          '「Base58Check 编码」模式下输入偶数长度十六进制载荷与版本字节，即时生成地址样式字符串',
+          '「Base58Check 解码」模式下粘贴地址，可查看版本字节、载荷 hex 与校验和是否通过',
+        ],
+        useCases: [
+          '区块链开发：手工构造 / 解析 P2PKH、P2SH 地址，验证地址抄写是否正确',
+          'IPFS / 分布式系统：在 CID 片段与原始字节、十六进制之间转换',
+          '协议学习：理解前导零保留（1）、版本前缀与校验和的作用',
+        ],
+        privacyNote:
+          '所有编码、解码与 SHA-256 校验和均在浏览器本地完成，输入文本、地址与密钥材料不会被上传或记录。',
+        faqs: [
+          {
+            question: 'Base58 和 Base64 有什么区别？',
+            answer:
+              'Base58 去掉了 0、O、I、l 以及 +、/ 等肉眼或抄写时易混淆的字符，且没有填充符；它也不是 2 的幂进制，需按大整数（BigInt）逐字节换算。代价是相同数据编码后略长于 Base64。',
+          },
+          {
+            question: '为什么解出来不是正常文本？',
+            answer:
+              '地址、哈希等 Base58 内容本来就是任意字节而非 UTF-8 文本，工具会在报错时同时给出解码字节的十六进制表示；Base58Check 场景请直接使用「解码校验」模式查看版本字节与载荷 hex。',
+          },
+          {
+            question: 'Base58Check 的版本字节是什么？',
+            answer:
+              '编码数据的第一字节，用于区分数据类型与网络：比特币主网 P2PKH 地址为 0x00（地址以 1 开头）、P2SH 为 0x05（以 3 开头）；其后再附 4 字节 double-SHA256 校验和。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local Base58 family codec. Base58 removes the easily confused 0, O, I, and l from Base62 and is used by Bitcoin addresses and IPFS CIDs; Base58Check adds a 1-byte version prefix and a 4-byte double-SHA256 checksum so transcription errors are detectable.',
+        coreFeatures: [
+          'Three modes: Base58 text codec, Base58Check encode, and Base58Check decode with verification',
+          'Three alphabets: Bitcoin / IPFS standard, Flickr, and Ripple / XRP Ledger',
+          'Strict validation: out-of-alphabet characters report their position, and Base58Check checksum failures raise a clear warning',
+          'UTF-8 aware: text is encoded as UTF-8; non-UTF-8 decode results still show the raw hex bytes',
+          'Hex payload: edit payload and version byte (0x00 P2PKH / 0x05 P2SH) in Base58Check mode',
+          '100% local: SHA-256 runs through Web Crypto with no network requests',
+        ],
+        howToUse: [
+          'Pick an alphabet (keep the default Bitcoin table for most chains; switch to Ripple for XRP addresses)',
+          'In "Base58 text codec", type text or paste Base58 and toggle the encode / decode direction',
+          'In "Base58Check encode", enter an even-length hex payload and a version byte to get an address-style string',
+          'In "Base58Check decode", paste an address to inspect its version byte, payload hex, and checksum',
+        ],
+        useCases: [
+          'Blockchain development: manually build or parse P2PKH / P2SH addresses and verify transcriptions',
+          'IPFS / distributed systems: convert CID fragments to and from raw bytes or hexadecimal',
+          'Protocol learning: see leading-zero preservation (1), version prefixes, and checksums in action',
+        ],
+        privacyNote:
+          'All encoding, decoding, and SHA-256 checksums run locally in your browser. Input text, addresses, and key material are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How is Base58 different from Base64?',
+            answer:
+              'Base58 drops 0, O, I, l, +, and / — characters that are easy to confuse when read or copied — and has no padding. Because 58 is not a power of two, conversion uses big-integer (BigInt) arithmetic per byte, so the output is slightly longer than Base64 for the same data.',
+          },
+          {
+            question: 'Why does decoding not produce readable text?',
+            answer:
+              'Base58 content such as addresses and hashes is arbitrary bytes rather than UTF-8 text. The tool shows the decoded bytes in hexadecimal alongside the error; for Base58Check data use the dedicated decode mode to inspect version and payload hex.',
+          },
+          {
+            question: 'What is the Base58Check version byte?',
+            answer:
+              'The first byte of the encoded payload, identifying network and data type: Bitcoin mainnet P2PKH is 0x00 (addresses start with 1) and P2SH is 0x05 (starts with 3). Four bytes of double-SHA256 checksum follow the payload.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'chinese-currency',
+    name: '数字转中文大写金额',
+    nameEn: 'Number to Chinese RMB Amount',
+    description:
+      '将阿拉伯数字金额实时转换为人民币中文大写（壹贰叁、元角分、整），用于发票、收据与合同填写；正确处理零、连续零、万 / 亿节进位与角分边界，支持千分位逗号，两位以上小数自动四舍五入到分。',
+    descriptionEn:
+      'Convert numeric amounts into formal Chinese RMB uppercase text (壹贰叁, 元角分, 整) for invoices, receipts, and contracts, with correct handling of zeros, ten-thousand / hundred-million sections, and jiao/fen boundaries, thousands separators, and rounding to cents.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/chinese-currency',
+    iconName: 'Gauge',
+    tags: ['中文大写', '人民币', '金额', '发票', '财务', '元角分'],
+    tagsEn: ['Chinese Uppercase', 'RMB', 'Currency', 'Invoice', 'Finance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的金额大写转换工具，把阿拉伯数字金额转换为票据规范的中文大写人民币，覆盖零、连续零、万 / 亿节单位、角分与「整」字等中文金额书写难点，输入即转换。',
+        coreFeatures: [
+          '实时转换：输入阿拉伯数字即时输出中文大写，无需点击',
+          '边界完整：零元、整元、有角无分、有分、角为零均按票据规范处理',
+          '大节进位：按 4 位分节正确处理万、亿、万亿（最高 16 位整数）',
+          '容错输入：允许首尾空白与标准千分位逗号，三位以上小数四舍五入到分',
+          '明确提示：非法字符、负数、超长整数给出可读错误',
+          '纯本地运行：不发起任何网络请求，合同金额不出本机',
+        ],
+        howToUse: [
+          '在输入框填写阿拉伯数字金额（如 12345.67），可点击示例快速填充',
+          '结果区即时显示中文大写，点击「复制」即可粘贴到发票或合同',
+          '千分位逗号（如 1,234.56）可直接粘贴，无需手工去除',
+          '超过两位小数时自动按分四舍五入；整数金额末尾自动补「整」',
+        ],
+        useCases: [
+          '财务开票：填写发票、收据、报销单上的人民币大写栏',
+          '合同与公文：撰写合同金额条款、支票与结算凭证',
+          '学习核对：验证已有大写金额书写是否规范',
+        ],
+        privacyNote:
+          '所有转换均在浏览器本地完成，金额数字不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么有的金额后面有「整」，有的没有？',
+            answer:
+              '按票据填写规范，金额到「元」为止时在元后写「整」；到「角」为止时角后可以不写「整」（本工具统一省略）；有「分」时分后不写「整」。',
+          },
+          {
+            question: '0.05 元为什么是「伍分」而不是「零元零角伍分」？',
+            answer:
+              '整数部分为零时不输出「零元」；角为零而分非零时，若存在整数部分会用「零」连接（如 1.05 → 壹元零伍分），纯角分金额直接输出「伍分」。',
+          },
+          {
+            question: '支持的最大金额是多少？',
+            answer:
+              '整数部分最多 16 位（即壹仟万亿元以内），小数最多 2 位；超出范围会给出明确提示，避免节单位（万、亿）歧义。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local converter that turns numeric amounts into formal Chinese RMB uppercase wording used on financial vouchers, covering zeros, ten-thousand / hundred-million section units, jiao/fen, and the trailing 整 marker, with instant conversion.',
+        coreFeatures: [
+          'Instant conversion: Arabic numerals become Chinese uppercase text as you type',
+          'Complete edge cases: zero, whole yuan, jiao without fen, fen present, and zero jiao follow voucher conventions',
+          'Large sections: groups digits by four with correct 万 / 亿 / 万亿 units (up to 16 integer digits)',
+          'Forgiving input: surrounding whitespace and standard thousands commas are accepted; extra decimals round to fen',
+          'Clear errors: illegal characters, negative values, and oversized integers are explained',
+          '100% local: no network requests, contract amounts never leave the device',
+        ],
+        howToUse: [
+          'Type an Arabic-numeral amount (e.g. 12345.67) or click an example chip',
+          'The result area shows the Chinese uppercase wording instantly; click Copy to paste it onto an invoice or contract',
+          'Thousands separators such as 1,234.56 can be pasted directly',
+          'More than two decimal places are rounded to fen; whole-yuan amounts automatically end with 整',
+        ],
+        useCases: [
+          'Invoicing: fill the RMB uppercase field on invoices, receipts, and expense claims',
+          'Contracts and vouchers: draft amount clauses, cheques, and settlement documents',
+          'Review and learning: verify whether an existing uppercase amount is written correctly',
+        ],
+        privacyNote:
+          'All conversion runs locally in your browser; amount figures are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'When is 整 appended at the end?',
+            answer:
+              'Per Chinese voucher conventions, 整 follows 元 for whole-yuan amounts; it may be omitted after 角 when there is no fen, and never follows 分. This tool follows that convention consistently.',
+          },
+          {
+            question: 'Why is 0.05 just 伍分, without 零元?',
+            answer:
+              'When the integer part is zero, 零元 is omitted. When jiao is zero but fen is present and an integer part exists, 零 links the two, as in 1.05 → 壹元零伍分; a pure jiao/fen amount is rendered directly as 伍分.',
+          },
+          {
+            question: 'What is the maximum supported amount?',
+            answer:
+              'Up to 16 integer digits (within one thousand trillion yuan) and 2 decimal places. Larger input raises a clear message to avoid ambiguity around section units (万, 亿).',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-flatten',
+    name: 'JSON 扁平化 / 还原',
+    nameEn: 'JSON Flatten / Unflatten',
+    description:
+      '在嵌套 JSON 与点路径单层键值 JSON 之间双向转换（如 a.b[0].c ↔ 嵌套对象），支持自定义分隔符、数组展开开关与根数组，路径冲突（如 a 与 a.b 并存）给出明确报错；纯浏览器本地运算。',
+    descriptionEn:
+      'Bidirectionally convert between nested JSON and dot-path flat key-value JSON (e.g. a.b[0].c), with custom separators, an array-expansion toggle, root-array support, and clear path-conflict errors (a vs a.b). Runs entirely in your browser.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-flatten',
+    iconName: 'LayoutGrid',
+    tags: ['JSON', '扁平化', 'flatten', '嵌套', '点路径', '数据转换'],
+    tagsEn: ['JSON', 'Flatten', 'Unflatten', 'Dot Path', 'Nested', 'Data Transform'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 JSON 结构转换工具，可把任意嵌套对象 / 数组扁平化为点路径单层键值（如 {"a":{"b":[1]}} → {"a.b[0]":1}），也可把扁平键值无损还原为嵌套结构，常用于数据比对、表格导入导出与配置排查。',
+        coreFeatures: [
+          '双向转换：扁平化 Flatten 与反向还原 Unflatten 一键切换',
+          '数组处理：数组项以 [索引] 标记（如 users[0].name），支持根数组与嵌套数组',
+          '自定义分隔符：点号、下划线、斜杠、连字符可选，适配不同扁平化约定',
+          '数组开关：可关闭数组展开，把整个数组作为叶子值保留',
+          '叶子保留：null、空对象 {}、空数组 [] 等边界值正确保留并可往返还原',
+          '冲突检测：同一节点既是叶子又有下级路径（如 a 与 a.b）时给出明确错误',
+        ],
+        howToUse: [
+          '选择方向：「扁平化」把嵌套 JSON 转为单层键值，「还原」执行反向操作',
+          '在左侧粘贴 JSON，右侧实时显示转换结果，点击「复制结果」即可使用',
+          '通过「分隔符」下拉切换路径连接符；扁平化时可用复选框控制是否展开数组',
+          '输入非法 JSON 或还原时路径冲突，结果区会显示具体错误位置与原因',
+        ],
+        useCases: [
+          '数据比对：把深层嵌套 JSON 压平后按路径做字段级 diff',
+          '表格互转：与 CSV / Excel 行列结构互导时预处理 JSON 字段',
+          '配置排查：快速定位深路径字段、核对环境变量映射（如 a.b.c → A_B_C）',
+          '接口调试：理解或构造 Elasticsearch、表单序列化等点路径风格数据',
+        ],
+        privacyNote:
+          '所有解析与转换均在浏览器本地完成，JSON 内容不会被上传或记录。',
+        faqs: [
+          {
+            question: '扁平化后还能无损还原吗？',
+            answer:
+              '可以。数组以 [数字] 标记、对象键以分隔符连接，还原时按 token 重建对象与数组；null、空对象、空数组都会保留。前提是键路径本身不含与分隔符 / 方括号冲突的歧义，或换用不冲突的分隔符。',
+          },
+          {
+            question: '什么是「路径冲突」？',
+            answer:
+              '还原时同一路径不能既是叶子又包含下级，例如 {"a":1,"a.b":2} 中 a 已经是数字，无法再容纳键 b。工具会直接报错而不是静默覆盖，避免数据丢失。',
+          },
+          {
+            question: '关闭「展开数组」会怎样？',
+            answer:
+              '扁平化时数组整体作为一个叶子值保留（如 {"a":[1,2]} 原样保留），对象仍会继续展开；适合下游不支持 [索引] 路径、只需要对象层级压平的场景。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local tool that flattens arbitrarily nested JSON objects / arrays into single-level dot-path key-value pairs (e.g. {"a":{"b":[1]}} → {"a.b[0]":1}) and unflattens them back losslessly — useful for data comparison, spreadsheet import/export, and config inspection.',
+        coreFeatures: [
+          'Bidirectional: switch between Flatten and Unflatten instantly',
+          'Array paths: array items use [index] markers (e.g. users[0].name), including root and nested arrays',
+          'Custom separators: dot, underscore, slash, or hyphen to match different flattening conventions',
+          'Array toggle: keep whole arrays as leaf values instead of expanding them',
+          'Edge-safe leaves: null, empty objects {}, and empty arrays [] are preserved and survive a round trip',
+          'Conflict detection: a node that is both a leaf and has children (e.g. a vs a.b) raises a clear error',
+        ],
+        howToUse: [
+          'Pick a direction: Flatten turns nested JSON into flat key-value pairs; Unflatten reverses it',
+          'Paste JSON on the left; the result appears on the right in real time, then click Copy',
+          'Switch the path separator from the dropdown; toggle array expansion while flattening',
+          'Invalid JSON or unflatten path conflicts produce a specific error in the result panel',
+        ],
+        useCases: [
+          'Data comparison: flatten deep JSON before field-level diffing by path',
+          'Spreadsheet exchange: preprocess JSON fields when importing from / exporting to CSV or Excel',
+          'Config inspection: locate deep fields and derive environment-variable mappings (a.b.c → A_B_C)',
+          'API debugging: work with dot-path styles used by Elasticsearch, form serialization, and similar systems',
+        ],
+        privacyNote:
+          'All parsing and conversion happens locally in your browser; JSON content is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Is the conversion reversible?',
+            answer:
+              'Yes. Arrays are marked with [index] and object keys are joined with the separator; unflatten rebuilds objects and arrays, preserving null, empty objects, and empty arrays — provided keys do not ambiguously contain the separator or brackets (choose another separator if they do).',
+          },
+          {
+            question: 'What is a "path conflict"?',
+            answer:
+              'During unflatten, the same path cannot be both a leaf and contain children, e.g. {"a":1,"a.b":2} makes a a number that cannot also hold b. The tool reports this instead of silently overwriting data.',
+          },
+          {
+            question: 'What happens when array expansion is off?',
+            answer:
+              'Arrays are kept intact as leaf values while flattening (e.g. {"a":[1,2]} stays as-is), while objects are still expanded — handy when the downstream tool does not understand [index] paths.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'string-escape',
+    name: '字符串字面量转义 / 反转义',
+    nameEn: 'String Literal Escape / Unescape',
+    description:
+      '在多行原始文本与 JavaScript / JSON、Python、Java 字符串字面量之间双向转义（\\n、\\t、\\"、\\xHH、\\uXXXX、\\u{码点}、\\Uxxxxxxxx、代理对），可自动包裹或剥离外层引号；语言不支持的序列给出明确报错，纯浏览器本地运算。',
+    descriptionEn:
+      'Escape and unescape between raw multiline text and JavaScript / JSON, Python, or Java string literals (\\n, \\t, \\", \\xHH, \\uXXXX, \\u{code point}, \\Uxxxxxxxx, surrogate pairs), with optional quote wrapping/stripping and clear errors for unsupported sequences. Runs entirely in your browser.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/string-escape',
+    iconName: 'FileCode',
+    tags: ['字符串转义', 'Escape', '字面量', 'JavaScript', 'Python', 'Java'],
+    tagsEn: ['String Escape', 'Literal', 'JavaScript', 'Python', 'Java', 'Unicode'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的编程语言字符串转义工具，把含换行、制表符、引号、反斜杠、中文与 emoji 的原始文本转换为可直接粘贴进代码的双引号字面量内容，也可把日志中的 \\n、\\uXXXX 等转义串还原为可读明文；覆盖 JavaScript / JSON、Python、Java 三种主流风格。',
+        coreFeatures: [
+          '双向转换：原始文本 → 字面量内容（Escape）与字面量内容 → 原始文本（Unescape）一键切换',
+          '三种语言：JavaScript / JSON（含 \\/、\\u{码点}）、Python（\\xHH、\\Uxxxxxxxx、\\a、行连接）、Java（\\uXXXX）',
+          '完整序列：\\b \\f \\n \\r \\t \\" \\\\ 以及控制字符与非 ASCII 字符',
+          'Unicode 完整：BMP 码点输出 \\uXXXX，astral 码点（如 emoji）自动拆成代理对，反转义时重新合并',
+          '引号处理：转义结果可选包裹双引号；反转义时自动剥离成对的 "…" / \'…\' / `…` 外层引号',
+          '安全报错：孤立反斜杠、位数不足、语言不支持的序列（如 Java 的 \\x）给出具体原因，孤立代理替换为 U+FFFD 而非崩溃',
+        ],
+        howToUse: [
+          '选择转换方向与目标语言，在左侧粘贴原始文本或转义串',
+          '右侧实时显示结果，点击「复制结果」即可粘贴进源码或日志分析工具',
+          '转义时可用复选框控制是否在外层包裹双引号；反转义时可开关自动剥离外层引号',
+          '遇到红色错误面板时，按提示检查反斜杠序列的位数与当前语言是否支持',
+        ],
+        useCases: [
+          '代码开发：把多行文案、正则、SQL 片段安全嵌入 JavaScript / Python / Java 字符串',
+          '日志排查：把日志里的 \\n、\\u003c 等转义内容还原为可读明文',
+          '接口调试：手工构造或核对 JSON 字符串字段中的转义内容',
+          '教学演示：理解不同语言字符串转义规则与 Unicode 代理对编码',
+        ],
+        privacyNote:
+          '所有转义与反转义均在浏览器本地完成，文本内容不会被上传或记录。',
+        faqs: [
+          {
+            question: 'JavaScript / JSON 与 Python、Java 的转义有什么区别？',
+            answer:
+              '通用短转义（\\n、\\t、\\"、\\\\、\\uXXXX）三者一致；差异在于 JavaScript 额外接受 \\/ 与 \\u{码点}，Python 使用 \\xHH 和 8 位的 \\Uxxxxxxxx 并支持行连接反斜杠，而 Java 只认标准短转义与 4 位 \\uXXXX，不支持 \\x 与 \\u{}。切换语言后工具会按对应规则校验。',
+          },
+          {
+            question: 'emoji 等 4 字节字符会怎样处理？',
+            answer:
+              '转义时自动编码为一对 UTF-16 代理单元（如 😀 → \\ud83d\\ude00），反转义时识别连续的高 / 低代理并合并回原字符；若只出现孤立的半个代理，则替换为 U+FFFD 替代字符而不是报错中断。',
+          },
+          {
+            question: '输入带引号的完整字面量（如 "a\\nb"）需要先手动去引号吗？',
+            answer:
+              '不需要。反转义模式默认开启「自动剥离成对外层引号」，会先去掉首尾成对的双引号、单引号或反引号再解析；若你处理的只是字面量内部片段，可关闭该开关。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local string-literal escaper that converts raw multiline text — with newlines, tabs, quotes, backslashes, CJK characters, and emoji — into double-quoted literal content ready to paste into code, and unescapes log strings such as \\n or \\uXXXX back into readable plaintext. It covers three mainstream dialects: JavaScript / JSON, Python, and Java.',
+        coreFeatures: [
+          'Bidirectional: switch between Escape (raw text → literal content) and Unescape (literal content → raw text)',
+          'Three dialects: JavaScript / JSON (including \\/ and \\u{code point}), Python (\\xHH, \\Uxxxxxxxx, \\a, line continuation), and Java (\\uXXXX)',
+          'Complete sequences: \\b \\f \\n \\r \\t \\" \\\\ plus control and non-ASCII characters',
+          'Full Unicode: BMP code points become \\uXXXX, astral code points (e.g. emoji) are split into surrogate pairs and recombined when unescaping',
+          'Quote handling: optionally wrap escaped output in double quotes; unescape auto-strips matching outer "…", \'…\', or `…` quotes',
+          'Safe errors: dangling backslashes, truncated hex digits, and unsupported sequences (e.g. \\x in Java) produce specific messages; lone surrogates become U+FFFD instead of crashing',
+        ],
+        howToUse: [
+          'Pick a direction and a target language, then paste raw text or an escaped string on the left',
+          'The result updates on the right in real time; click Copy to paste it into source code or a log analyzer',
+          'Toggle outer double-quote wrapping when escaping, or automatic outer-quote stripping when unescaping',
+          'When the error panel appears, check the hex digit count and whether the selected language supports the sequence',
+        ],
+        useCases: [
+          'Development: embed multiline copy, regexes, or SQL snippets safely in JavaScript / Python / Java strings',
+          'Log analysis: turn \\n and \\u003c style log content back into readable plaintext',
+          'API debugging: handcraft or verify escaped JSON string fields',
+          'Learning: compare string escape rules and Unicode surrogate-pair encoding across languages',
+        ],
+        privacyNote:
+          'All escaping and unescaping runs locally in your browser; text content is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How do JavaScript / JSON, Python, and Java escapes differ?',
+            answer:
+              'Common short escapes (\\n, \\t, \\", \\\\, \\uXXXX) are identical. JavaScript additionally accepts \\/ and \\u{code point}; Python uses \\xHH and 8-digit \\Uxxxxxxxx with line continuation; Java only accepts the standard short escapes and 4-digit \\uXXXX — no \\x or \\u{}. The tool validates against the selected dialect.',
+          },
+          {
+            question: 'How are 4-byte characters such as emoji handled?',
+            answer:
+              'They are encoded as a UTF-16 surrogate pair (e.g. 😀 → \\ud83d\\ude00). When unescaping, consecutive high/low surrogates are merged back into the original character; a lone half-surrogate becomes U+FFFD instead of aborting the conversion.',
+          },
+          {
+            question: 'Do I have to remove the surrounding quotes from a full literal like "a\\nb"?',
+            answer:
+              'No. Unescape mode strips matching outer double, single, or backtick quotes automatically before parsing. Turn the toggle off if your input is just the inner fragment without quotes.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
