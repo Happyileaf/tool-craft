@@ -88,7 +88,7 @@
 | 20261021180805 | Hex / 文本互转与十六进制转储视图（Hex dump viewer） | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021180805.md) |
 | 20261021180806 | URL slug 生成器（标题转友好 URL） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021180806.md) |
 | 20261021221301 | 本地文件哈希校验（拖拽文件计算 MD5/SHA 校验和） | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021221301.md) |
-| 20261021221302 | UUID 解析校验器（版本/变体/时间戳提取与合法性检查） | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021221302.md) |
+| 20261021221302 | UUID 解析校验器（版本/变体/时间戳提取与合法性检查） | Web Tool | Existing Gap | Claimed | 2026-10-21 | trae-agent | [详情](./idea-details/20261021221302.md) |
 | 20261021221303 | Favicon 生成器（图片导出多尺寸 PNG 与 .ico） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021221303.md) |
 | 20261021221304 | Flexbox 布局可视化生成器（输出 CSS） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021221304.md) |
 | 20261021221305 | 键盘事件 / 按键码查看器（keyCode、code、修饰键速查与监听） | Web Tool | External Reference | Pending | 2026-10-21 | | [详情](./idea-details/20261021221305.md) |
@@ -113,13 +113,13 @@
 | 20261023040530 | CSS Grid 布局可视化生成器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023040530.md) |
 | 20261023040531 | SVG 源码预览与 PNG 导出 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023040531.md) |
 | 20261023040532 | CSS @keyframes 动画生成器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023040532.md) |
-| 20261023040533 | 排列组合计算器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023040533.md) |
+| 20261023040533 | 排列组合计算器 | Web Tool | Exploration | Claimed | 2026-10-23 | trae-agent | [详情](./idea-details/20261023040533.md) |
 | 20261023040534 | Quoted-Printable 编解码器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023040534.md) |
 | 20261023040535 | nginx server 配置生成器 | Web Tool | External Reference | Pending | 2026-10-23 | | [详情](./idea-details/20261023040535.md) |
 | 20261023040536 | 文本信息熵计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023040536.md) |
 | 20261023040537 | Geohash 编解码器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023040537.md) |
 | 20261023040538 | NATO 音标字母转换器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023040538.md) |
-| 20261023040539 | ISBN-10 ↔ ISBN-13 校验与互转 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023040539.md) |
+| 20261023040539 | ISBN-10 ↔ ISBN-13 校验与互转 | Web Tool | Exploration | Claimed | 2026-10-23 | trae-agent | [详情](./idea-details/20261023040539.md) |
 | 20261023081551 | 文本模式批量提取器（邮箱 / URL / IP / UUID 等常用模式） | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023081551.md) |
 | 20261023081552 | 身份证号码校验与升位（GB 11643-1999） | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023081552.md) |
 | 20261023081553 | IPv4 / IPv6 地址与整数 / 十六进制互转 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023081553.md) |
@@ -133,9 +133,9 @@
 | 20261023141146 | JSON-LD 结构化数据生成器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141146.md) |
 | 20261023141147 | BPM 音符时长与延迟时间计算器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023141147.md) |
 | 20261023200245 | OAuth2 PKCE 生成器（code_verifier / code_challenge） | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023200245.md) |
-| 20261026020134 | Ascii85 / Base85 编解码器 | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026020134.md) |
+| 20261026020134 | Ascii85 / Base85 编解码器 | Web Tool | Existing Gap | Claimed | 2026-10-26 | trae-agent | [详情](./idea-details/20261026020134.md) |
 | 20261026020135 | 统一社会信用代码校验与解析器 | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026020135.md) |
 | 20261026020136 | WGS-84 / GCJ-02 / BD-09 坐标系互转器 | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026020136.md) |
 | 20261026020137 | 密码学安全随机整数 / 抽签 / 分组 / 洗牌工具 | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026020137.md) |
 | 20261026020138 | Vigenère 维吉尼亚密码加解密 | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026020138.md) |
-| 20261026020139 | JSON ↔ JSON Lines（NDJSON）互转器 | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026020139.md) |
+| 20261026020139 | JSON ↔ JSON Lines（NDJSON）互转器 | Web Tool | Existing Gap | Claimed | 2026-10-26 | trae-agent | [详情](./idea-details/20261026020139.md) |
