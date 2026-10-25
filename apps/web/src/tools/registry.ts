@@ -4971,6 +4971,103 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'uuid-inspector',
+    name: 'UUID 解析与校验',
+    nameEn: 'UUID Inspector',
+    description:
+      '批量解析 UUID（RFC 4122 / RFC 9562），识别版本 v1–v8 与 nil/max、判定变体，提取 v1/v2/v6/v7 内嵌时间戳及 v1/v2 节点与时钟序列，并统计重复。',
+    descriptionEn:
+      'Inspect UUIDs in bulk against RFC 4122 / RFC 9562: detect versions v1–v8 and nil/max, identify the variant, extract timestamps embedded in v1/v2/v6/v7 plus node and clock sequence for v1/v2, and count duplicates.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/uuid-inspector',
+    iconName: 'Fingerprint',
+    tags: ['UUID', 'GUID', 'RFC 4122', 'RFC 9562', '校验'],
+    tagsEn: ['UUID', 'GUID', 'RFC 4122', 'RFC 9562', 'Validator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'f81d4fae-7dec-11d0-a765-00a0c91e6bf6\n550e8400-e29b-41d4-a716-446655440000\n017f22e2-79b0-7cc3-98c4-dc0c0c07398f',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 UUID 解析与批量校验工具。它把一个或多个 UUID 规范化为标准小写连字符形式，识别其版本（v1–v8、nil、max）与变体（RFC 4122、NCS、Microsoft、保留），并从时间型 UUID 中还原生成时间，辅助开发排障与数据审计。',
+        coreFeatures: [
+          '版本识别：支持 v1–v8 及 nil/max 特殊 UUID，未知版本字段给出保留值提示',
+          '变体判定：识别 RFC 4122、NCS 遗留、Microsoft 与保留变体，并对版本/变体不匹配给出警告',
+          '时间戳提取：还原 v1/v2/v6（UUID 纪元 100ns 计数）与 v7（Unix 毫秒）内嵌时间',
+          '节点信息：提取 v1/v2 的 MAC 风格节点与时钟序列',
+          '批量统计：按空白、逗号、分号分隔多个 UUID，统计合法/非法数量并按规范化形式去重、标记重复',
+          '格式兼容：接受大写、urn:uuid: 前缀与花括号包裹，输出统一的规范形式',
+        ],
+        howToUse: [
+          '把一个或多个 UUID 粘贴到输入框，每行一个（也支持逗号、分号或空格分隔）',
+          '解析结果即时更新，逐条展示规范形式、版本、变体与时间戳等信息',
+          '查看顶部统计卡片了解合法、非法、去重后数量与重复次数',
+          '点击「载入示例」查看混合样例，或点击「清空」重新输入',
+        ],
+        useCases: [
+          '排障审计：核对日志、数据库或消息队列中的 UUID 版本是否符合约定',
+          '时间还原：从 v1/v6/v7 UUID 直接读出记录创建时间，无需额外元数据',
+          '数据清洗：批量校验导入数据中的 UUID 格式并发现重复主键',
+          '协议分析：判断第三方系统使用的 UUID 变体与生成策略',
+        ],
+        privacyNote:
+          '所有解析均在浏览器本地完成，输入的 UUID 不会被上传、存储或记录。',
+        faqs: [
+          {
+            question: 'v1、v4、v7 UUID 有什么区别？',
+            answer:
+              'v1 基于时间戳与节点 MAC 生成，可还原生成时间与节点；v4 完全随机，不含可提取信息；v7 以 Unix 毫秒时间戳开头，天然按时间有序，适合数据库主键。v6 是 v1 时间字段的重排版本，时间有序且同样可还原时间。',
+          },
+          {
+            question: '为什么有的 UUID 被标记为「重复」？',
+            answer:
+              '工具会先把每个片段规范化（小写、去 urn:uuid: 前缀与花括号），再按规范形式比较。同一 UUID 的大写形式、花括号或 URN 写法都会被视为同一条，出现两次及以上时每条都会标记为重复，并计入「重复次数」。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first UUID parser and bulk validator. It normalizes one or more UUIDs to the canonical lowercase hyphenated form, detects the version (v1–v8, nil, max) and variant (RFC 4122, NCS, Microsoft, reserved), and recovers the embedded generation time from time-based UUIDs to aid debugging and data audits.',
+        coreFeatures: [
+          'Version detection: v1–v8 plus the nil/max special UUIDs, with reserved-value hints for unknown version fields',
+          'Variant detection: RFC 4122, legacy NCS, Microsoft, and reserved variants, with warnings on version/variant mismatch',
+          'Timestamp extraction: recovers embedded times from v1/v2/v6 (UUID-epoch 100ns ticks) and v7 (Unix milliseconds)',
+          'Node info: extracts the MAC-style node and clock sequence from v1/v2 UUIDs',
+          'Bulk statistics: splits on whitespace, commas, and semicolons; counts valid/invalid, dedupes by canonical form, and flags duplicates',
+          'Format tolerance: accepts uppercase, the urn:uuid: prefix, and curly braces, and outputs the canonical form',
+        ],
+        howToUse: [
+          'Paste one or more UUIDs into the input box, one per line (commas, semicolons, and spaces also work as separators)',
+          'Results update instantly, showing the canonical form, version, variant, timestamp, and other fields per item',
+          'Check the summary cards for valid/invalid counts, unique count, and duplicate occurrences',
+          'Use "Load sample" for a mixed example or "Clear" to start over',
+        ],
+        useCases: [
+          'Debugging and audits: verify whether UUIDs in logs, databases, or message queues match the agreed version',
+          'Time recovery: read record creation times directly from v1/v6/v7 UUIDs without extra metadata',
+          'Data cleansing: bulk-validate UUID formats in imports and spot duplicate keys',
+          'Protocol analysis: identify the UUID variant and generation strategy used by third-party systems',
+        ],
+        privacyNote:
+          'All parsing runs locally in your browser; entered UUIDs are never uploaded, stored, or logged.',
+        faqs: [
+          {
+            question: 'What is the difference between v1, v4, and v7 UUIDs?',
+            answer:
+              'v1 is based on a timestamp and the node MAC, so its generation time and node can be recovered; v4 is fully random with no extractable information; v7 starts with a Unix-millisecond timestamp and is naturally time-ordered, making it a good database primary key. v6 is a reordered layout of the v1 time fields — also time-ordered and recoverable.',
+          },
+          {
+            question: 'Why are some UUIDs flagged as duplicates?',
+            answer:
+              'Each token is first canonicalized (lowercase, with urn:uuid: prefix and curly braces removed) and compared by canonical form. Uppercase, brace-wrapped, or URN spellings of the same UUID count as one entry; when it appears two or more times, every occurrence is flagged and counted under "duplicate occurrences".',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
