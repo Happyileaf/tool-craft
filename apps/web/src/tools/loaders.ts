@@ -70,4 +70,5 @@ export const toolLoaders: Record<
   'chinese-currency': () => import('./chinese-currency'),
   'json-flatten': () => import('./json-flatten'),
   'string-escape': () => import('./string-escape'),
+  'ascii85-codec': () => import('./ascii85-codec'),
 };

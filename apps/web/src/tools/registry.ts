@@ -4793,6 +4793,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'ascii85-codec',
+    name: 'Ascii85（Base85）编解码',
+    nameEn: 'Ascii85 (Base85) Encoder & Decoder',
+    description:
+      '在文本与 Ascii85/Base85 之间双向转换，兼容标准 Adobe/PostScript 变体（<~ ~> 定界、z 压缩）与 btoa v4.2 变体（xbtoa 定界、y=4 空格），自动识别并报告错误位置。',
+    descriptionEn:
+      'Convert between text and Ascii85/Base85, supporting both the standard Adobe/PostScript variant (<~ ~> delimiters, z shorthand) and the btoa v4.2 variant (xbtoa delimiters, y for four spaces), with auto-detection and position-aware errors.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/ascii85-codec',
+    iconName: 'Binary',
+    tags: ['Ascii85', 'Base85', '编解码', 'PostScript', 'PDF'],
+    tagsEn: ['Ascii85', 'Base85', 'Encode', 'PostScript', 'PDF'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'foobar',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 Ascii85（Base85）编解码工具，使用 !–u 字母表把文本（按 UTF-8 处理）与 Ascii85 字符串双向转换，兼容 Adobe/PostScript 标准变体与 UNIX btoa v4.2 变体，并对损坏输入给出带位置的错误提示。',
+        coreFeatures: [
+          '双变体：标准 Ascii85（Adobe，<~ ~> 定界、z=4 零字节压缩）与 btoa v4.2（xbtoa Begin/End 定界，额外支持 y=4 空格）',
+          '自动识别：解码时按 <~ ~>、xbtoa Begin/End 定界符或 y 简写自动判断变体，并忽略其中任意空白',
+          '严谨尾组：尾组按补位与半档偏置规则还原，与 Python base64.a85decode 向量逐一交叉验证',
+          '错误定位：非法字符、缺失定界符、尾组溢出、简写位置错误均给出具体字符位置',
+          '纯本地运行：所有转换在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择「编码」或「解码」方向，并选择标准 Ascii85 或 btoa v4.2 变体',
+          '在输入框粘贴文本或 Ascii85 字符串，结果即时更新',
+          '编码时可勾选是否输出定界符、是否启用 z/y 压缩简写；解码时无需手动设置，自动识别',
+        ],
+        useCases: [
+          'PDF/PostScript 调试：解析内容流中的 ASCII85Encode 数据（<~ … ~>）',
+          '遗留系统：处理老式 UNIX btoa/atob 工具生成的 xbtoa Begin/End 数据',
+          '数据核对：校验 Ascii85 字符串是否合法、定位损坏字符的具体位置',
+        ],
+        privacyNote: '所有编解码均在浏览器本地完成，输入的文本与 Ascii85 字符串不会被上传或记录。',
+        faqs: [
+          {
+            question: 'Ascii85 和 Base64 有什么区别？',
+            answer:
+              'Ascii85 用 85 个字符表示数据，每 4 字节编码为 5 个字符，体积仅膨胀 25%，比 Base64 的 33% 更紧凑；它常见于 PDF/PostScript，并支持 z 这样的零字节压缩简写。',
+          },
+          {
+            question: '标准 Ascii85 与 btoa 变体有什么不同？',
+            answer:
+              '两者使用相同的 !–u 字母表，区别在封装与简写：标准 Ascii85 用 <~ ~> 定界、z 代表 4 个零字节；UNIX btoa v4.2 用 xbtoa Begin/End 定界，除 z 外还额外用 y 代表 4 个空格。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first Ascii85 (Base85) codec that converts between UTF-8 text and Ascii85 strings using the !–u alphabet, compatible with both the Adobe/PostScript variant and the UNIX btoa v4.2 variant, with position-aware errors for corrupted input.',
+        coreFeatures: [
+          'Two variants: standard Ascii85 (Adobe, <~ ~> delimiters, z for four zero bytes) and btoa v4.2 (xbtoa Begin/End delimiters, plus y for four spaces)',
+          'Auto-detection: the decoder detects the variant from <~ ~>, xbtoa Begin/End, or the y shorthand, and ignores any whitespace',
+          'Correct tail groups: tails are reconstructed with padding and half-step bias, cross-checked against Python base64.a85decode vectors',
+          'Position-aware errors for invalid characters, missing delimiters, tail overflow, and misplaced shorthands',
+          'Local-first: all conversion runs in the browser with no network requests',
+        ],
+        howToUse: [
+          'Pick the "Encode" or "Decode" direction and choose standard Ascii85 or btoa v4.2',
+          'Paste text or an Ascii85 string and the result updates instantly',
+          'When encoding, optionally enable delimiters and z/y shorthands; decoding detects everything automatically',
+        ],
+        useCases: [
+          'PDF/PostScript debugging: parse ASCII85Encode data (<~ … ~>) in content streams',
+          'Legacy systems: handle xbtoa Begin/End data produced by old UNIX btoa/atob tools',
+          'Data checks: validate Ascii85 strings and locate the exact position of corrupted characters',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally in the browser; entered text and Ascii85 strings are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How is Ascii85 different from Base64?',
+            answer:
+              'Ascii85 uses 85 characters and encodes every 4 bytes into 5 characters — only 25% overhead versus 33% for Base64. It is common in PDF/PostScript and supports shorthands such as z for zero bytes.',
+          },
+          {
+            question: 'What differs between standard Ascii85 and the btoa variant?',
+            answer:
+              'Both share the same !–u alphabet; they differ in wrapping and shorthands. Standard Ascii85 uses <~ ~> delimiters and z for four zero bytes, while UNIX btoa v4.2 uses xbtoa Begin/End and adds y for four spaces.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
