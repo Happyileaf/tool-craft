@@ -5068,6 +5068,102 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'isbn-converter',
+    name: 'ISBN-10 / ISBN-13 校验与互转',
+    nameEn: 'ISBN Converter & Validator',
+    description:
+      '批量校验 ISBN-10 / ISBN-13，按 ISO 2108 加权规则核验校验位并指出错误，在两种格式间双向互转（978 前缀；979 不适用），输出带 GS1/组区分隔的规范形式并按换算后的 ISBN-13 去重。',
+    descriptionEn:
+      'Bulk-validate ISBN-10 / ISBN-13 codes against ISO 2108 weighted check digits with error reporting, convert between the two formats (978 prefix; not applicable for 979), render canonical GS1/group-hyphenated forms, and dedupe by the resulting ISBN-13.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/isbn-converter',
+    iconName: 'Tags',
+    tags: ['ISBN', '图书', '校验位', '数据清洗', '出版'],
+    tagsEn: ['ISBN', 'Books', 'Check Digit', 'Data Cleansing', 'Publishing'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '020161622X\n9780201616224\n978-0-13-235088-4',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 ISBN 校验与互转工具。它依据 ISO 2108 标准核验 ISBN-10（10..2 加权模 11，末位 10 记为 X）与 ISBN-13（1/3 交替加权模 10）的校验位，在两种格式之间双向转换，并给出带 GS1 前缀与组区分隔的规范展示，适合出版、图书馆与图书电商的数据核对场景。',
+        coreFeatures: [
+          '双格式校验：同时支持 ISBN-10 与 ISBN-13，校验位错误时给出期望值与错误位置',
+          '双向互转：ISBN-10 自动换算为 978 前缀 ISBN-13；978 前缀 ISBN-13 可反向转换，979 前缀明确提示不存在 ISBN-10',
+          '规范分组：依据 ISBN International 组区范围表输出「前缀-组区号-出版段-校验位」分隔形式',
+          '批量去重：ISBN-10 与其对应 ISBN-13 视为同一条，按换算后的 ISBN-13 统计重复',
+          '格式兼容：自动忽略连字符、空白，兼容小写 x 与各种非规范分隔写法',
+          '错误诊断：区分长度错误、非法字符、X 位置错误、前缀错误与校验位不匹配',
+        ],
+        howToUse: [
+          '把一个或多个 ISBN 粘贴到输入框，每行一个（也支持逗号、分号或空格分隔）',
+          '结果即时更新，逐条展示类型、ISBN-13、ISBN-10 与规范分组形式',
+          '鼠标悬停紧凑编号可查看带分隔的规范形式；非法条目会显示具体错误原因',
+          '点击「载入示例」查看混合样例，或点击「清空」重新输入',
+        ],
+        useCases: [
+          '出版编目：核对版权页、CIP 数据与库存系统中的 ISBN 是否一致',
+          '图书电商：批量清洗导入表格中的 ISBN，找出错号、混格式与重复条目',
+          '图书馆：在旧版 ISBN-10 馆藏数据与新版 ISBN-13 系统之间迁移转换',
+          '爬虫与数据分析：把抓取到的多种 ISBN 写法统一为规范的 13 位形式',
+        ],
+        privacyNote:
+          '所有校验与转换均在浏览器本地完成，输入的 ISBN 不会被上传、存储或记录。',
+        faqs: [
+          {
+            question: '为什么有些 ISBN-13 不能转换成 ISBN-10？',
+            answer:
+              'ISBN-13 使用 978 和 979 两个 GS1 前缀。978 前缀只是在原 ISBN-10 前加前缀并重算校验位，可以双向转换；979 前缀是 2007 年号码资源扩充后启用的，从来没有对应的 10 位形式，因此无法转换。',
+          },
+          {
+            question: '规范分组为什么只分到组区号，不拆分出版社代码？',
+            answer:
+              '完整的组区号-出版者码-书名码边界由 ISBN International 维护的范围表逐号段定义，数据庞大且定期更新。本工具内置前缀与组区号规则，保证前缀、组区与校验位的分隔准确；出版者与书名码合并为一段展示，避免凭猜测切分产生错误。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first ISBN validator and converter. It checks ISBN-10 (10..2 weighted mod 11, with 10 written as X) and ISBN-13 (alternating 1/3 weights mod 10) check digits per ISO 2108, converts between the two formats, and renders canonical GS1/group-hyphenated forms for publishing, library, and book-retail data checks.',
+        coreFeatures: [
+          'Dual-format validation: supports both ISBN-10 and ISBN-13, reporting the expected check digit and the error position on mismatch',
+          'Two-way conversion: ISBN-10 maps to a 978-prefixed ISBN-13 and back; 979-prefixed codes are clearly marked as having no ISBN-10 form',
+          'Canonical grouping: renders "prefix-group-publication-check" hyphenation from the ISBN International group range table',
+          'Bulk dedupe: an ISBN-10 and its ISBN-13 twin count as one entry, with duplicates keyed by the resulting ISBN-13',
+          'Tolerant input: hyphens and whitespace are ignored; lowercase x and irregular separators are accepted',
+          'Error diagnosis: distinguishes length, illegal-character, X-placement, prefix, and check-digit errors',
+        ],
+        howToUse: [
+          'Paste one or more ISBNs into the input box, one per line (commas, semicolons, and spaces also work)',
+          'Results update instantly, showing the kind, ISBN-13, ISBN-10, and canonical grouped form per item',
+          'Hover over a compact code to see the hyphenated form; invalid items show a specific error reason',
+          'Use "Load sample" for a mixed example or "Clear" to start over',
+        ],
+        useCases: [
+          'Publishing cataloguing: reconcile ISBNs across copyright pages, CIP records, and inventory systems',
+          'Book retail: clean imported spreadsheets, spotting bad codes, mixed formats, and duplicates',
+          'Libraries: migrate legacy ISBN-10 holdings to ISBN-13-based systems',
+          'Scraping and analytics: normalize ISBNs captured in assorted formats into canonical 13-digit codes',
+        ],
+        privacyNote:
+          'All validation and conversion run locally in your browser; entered ISBNs are never uploaded, stored, or logged.',
+        faqs: [
+          {
+            question: 'Why can some ISBN-13 codes not be converted to ISBN-10?',
+            answer:
+              'ISBN-13 uses two GS1 prefixes, 978 and 979. The 978 prefix simply prepends a prefix to the old ISBN-10 and recomputes the check digit, so conversion works both ways. The 979 prefix was introduced in 2007 to expand numbering capacity and never had a 10-digit counterpart, so no conversion exists.',
+          },
+          {
+            question: 'Why does the grouped output stop at the group, without splitting the publisher code?',
+            answer:
+              'The exact group-publisher-title boundaries are defined segment by segment in the large, periodically updated range file maintained by ISBN International. This tool embeds prefix and group rules so the prefix, group, and check digit splits are exact; the publisher and title parts are shown as one publication segment to avoid guessing boundaries.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

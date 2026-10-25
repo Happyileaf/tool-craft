@@ -73,4 +73,5 @@ export const toolLoaders: Record<
   'ascii85-codec': () => import('./ascii85-codec'),
   'json-ndjson-converter': () => import('./json-ndjson-converter'),
   'uuid-inspector': () => import('./uuid-inspector'),
+  'isbn-converter': () => import('./isbn-converter'),
 };
