@@ -4377,6 +4377,109 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'base58-codec',
+    name: 'Base58 / Base58Check 编解码',
+    nameEn: 'Base58 & Base58Check Encoder & Decoder',
+    description:
+      '在文本与 Base58 之间双向编解码，并支持带版本前缀与 4 字节 double-SHA256 校验和的 Base58Check（比特币地址、IPFS CID、XRP 地址等），可切换 Bitcoin / Flickr / Ripple 三种字母表，非法字符与校验和失败均有明确提示。',
+    descriptionEn:
+      'Encode and decode text with Base58, plus Base58Check with a version prefix and a 4-byte double-SHA256 checksum (Bitcoin addresses, IPFS CIDs, XRP addresses), with switchable Bitcoin / Flickr / Ripple alphabets and clear errors for bad characters or checksum mismatch.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/base58-codec',
+    iconName: 'Fingerprint',
+    tags: ['Base58', 'Base58Check', '比特币', 'Bitcoin', 'IPFS', 'XRP', '编解码'],
+    tagsEn: ['Base58', 'Base58Check', 'Bitcoin', 'IPFS', 'XRP', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 Base58 系列编解码工具。Base58 在 Base62 的基础上再去掉易混的 0、O、I、l，是比特币地址、IPFS CID 等的通用表示；Base58Check 进一步附加 1 字节版本前缀与 4 字节 double-SHA256 校验和，可发现抄写或传输错误。',
+        coreFeatures: [
+          '三向模式：Base58 文本互转、Base58Check 编码、Base58Check 解码校验',
+          '三种字母表：Bitcoin / IPFS 标准表、Flickr 表、Ripple / XRP Ledger 表',
+          '严格校验：字母表外字符给出具体位置，Base58Check 校验和不匹配时明确告警',
+          'UTF-8 支持：文本按 UTF-8 编码；解码结果非合法 UTF-8 时同时给出原始十六进制字节',
+          '十六进制载荷：Base58Check 模式以 hex 编辑载荷与版本字节（0x00 P2PKH / 0x05 P2SH）',
+          '纯本地运行：SHA-256 经 Web Crypto 完成，不发起网络请求',
+        ],
+        howToUse: [
+          '选择字母表（一般区块链地址保持默认 Bitcoin 表，XRP 地址切换 Ripple 表）',
+          '「Base58 文本编码」模式下直接输入文本或粘贴 Base58 并切换编 / 解方向',
+          '「Base58Check 编码」模式下输入偶数长度十六进制载荷与版本字节，即时生成地址样式字符串',
+          '「Base58Check 解码」模式下粘贴地址，可查看版本字节、载荷 hex 与校验和是否通过',
+        ],
+        useCases: [
+          '区块链开发：手工构造 / 解析 P2PKH、P2SH 地址，验证地址抄写是否正确',
+          'IPFS / 分布式系统：在 CID 片段与原始字节、十六进制之间转换',
+          '协议学习：理解前导零保留（1）、版本前缀与校验和的作用',
+        ],
+        privacyNote:
+          '所有编码、解码与 SHA-256 校验和均在浏览器本地完成，输入文本、地址与密钥材料不会被上传或记录。',
+        faqs: [
+          {
+            question: 'Base58 和 Base64 有什么区别？',
+            answer:
+              'Base58 去掉了 0、O、I、l 以及 +、/ 等肉眼或抄写时易混淆的字符，且没有填充符；它也不是 2 的幂进制，需按大整数（BigInt）逐字节换算。代价是相同数据编码后略长于 Base64。',
+          },
+          {
+            question: '为什么解出来不是正常文本？',
+            answer:
+              '地址、哈希等 Base58 内容本来就是任意字节而非 UTF-8 文本，工具会在报错时同时给出解码字节的十六进制表示；Base58Check 场景请直接使用「解码校验」模式查看版本字节与载荷 hex。',
+          },
+          {
+            question: 'Base58Check 的版本字节是什么？',
+            answer:
+              '编码数据的第一字节，用于区分数据类型与网络：比特币主网 P2PKH 地址为 0x00（地址以 1 开头）、P2SH 为 0x05（以 3 开头）；其后再附 4 字节 double-SHA256 校验和。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local Base58 family codec. Base58 removes the easily confused 0, O, I, and l from Base62 and is used by Bitcoin addresses and IPFS CIDs; Base58Check adds a 1-byte version prefix and a 4-byte double-SHA256 checksum so transcription errors are detectable.',
+        coreFeatures: [
+          'Three modes: Base58 text codec, Base58Check encode, and Base58Check decode with verification',
+          'Three alphabets: Bitcoin / IPFS standard, Flickr, and Ripple / XRP Ledger',
+          'Strict validation: out-of-alphabet characters report their position, and Base58Check checksum failures raise a clear warning',
+          'UTF-8 aware: text is encoded as UTF-8; non-UTF-8 decode results still show the raw hex bytes',
+          'Hex payload: edit payload and version byte (0x00 P2PKH / 0x05 P2SH) in Base58Check mode',
+          '100% local: SHA-256 runs through Web Crypto with no network requests',
+        ],
+        howToUse: [
+          'Pick an alphabet (keep the default Bitcoin table for most chains; switch to Ripple for XRP addresses)',
+          'In "Base58 text codec", type text or paste Base58 and toggle the encode / decode direction',
+          'In "Base58Check encode", enter an even-length hex payload and a version byte to get an address-style string',
+          'In "Base58Check decode", paste an address to inspect its version byte, payload hex, and checksum',
+        ],
+        useCases: [
+          'Blockchain development: manually build or parse P2PKH / P2SH addresses and verify transcriptions',
+          'IPFS / distributed systems: convert CID fragments to and from raw bytes or hexadecimal',
+          'Protocol learning: see leading-zero preservation (1), version prefixes, and checksums in action',
+        ],
+        privacyNote:
+          'All encoding, decoding, and SHA-256 checksums run locally in your browser. Input text, addresses, and key material are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How is Base58 different from Base64?',
+            answer:
+              'Base58 drops 0, O, I, l, +, and / — characters that are easy to confuse when read or copied — and has no padding. Because 58 is not a power of two, conversion uses big-integer (BigInt) arithmetic per byte, so the output is slightly longer than Base64 for the same data.',
+          },
+          {
+            question: 'Why does decoding not produce readable text?',
+            answer:
+              'Base58 content such as addresses and hashes is arbitrary bytes rather than UTF-8 text. The tool shows the decoded bytes in hexadecimal alongside the error; for Base58Check data use the dedicated decode mode to inspect version and payload hex.',
+          },
+          {
+            question: 'What is the Base58Check version byte?',
+            answer:
+              'The first byte of the encoded payload, identifying network and data type: Bitcoin mainnet P2PKH is 0x00 (addresses start with 1) and P2SH is 0x05 (starts with 3). Four bytes of double-SHA256 checksum follow the payload.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

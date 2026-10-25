@@ -66,4 +66,5 @@ export const toolLoaders: Record<
   'hash-type-identifier': () => import('./hash-type-identifier'),
   'chmod-calculator': () => import('./chmod-calculator'),
   'pkce-generator': () => import('./pkce-generator'),
+  'base58-codec': () => import('./base58-codec'),
 };
