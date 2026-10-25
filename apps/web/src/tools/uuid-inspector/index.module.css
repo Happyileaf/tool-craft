@@ -1,0 +1,101 @@
+.container {
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.card {
+  min-width: 0;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.statItem {
+  flex: 1 1 140px;
+}
+
+.hint {
+  font-size: 12px;
+  opacity: 0.45;
+  margin-top: 8px;
+}
+
+.resultList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.resultItem {
+  min-width: 0;
+}
+
+.itemHeader {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.itemIndex {
+  font-size: 12px;
+  opacity: 0.45;
+  min-width: 28px;
+}
+
+.mono {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+  word-break: break-all;
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.metaGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 8px;
+}
+
+.metaItem {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.metaLabel {
+  font-size: 12px;
+  opacity: 0.45;
+  white-space: nowrap;
+}
+
+.metaValue {
+  font-size: 13px;
+  word-break: break-all;
+}

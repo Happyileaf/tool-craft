@@ -70,4 +70,9 @@ export const toolLoaders: Record<
   'chinese-currency': () => import('./chinese-currency'),
   'json-flatten': () => import('./json-flatten'),
   'string-escape': () => import('./string-escape'),
+  'ascii85-codec': () => import('./ascii85-codec'),
+  'json-ndjson-converter': () => import('./json-ndjson-converter'),
+  'uuid-inspector': () => import('./uuid-inspector'),
+  'isbn-converter': () => import('./isbn-converter'),
+  'combinatorics-calculator': () => import('./combinatorics-calculator'),
 };

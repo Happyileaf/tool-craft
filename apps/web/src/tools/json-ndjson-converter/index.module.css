@@ -1,0 +1,36 @@
+.container {
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  min-width: 0;
+}
+
+.hint {
+  font-size: 12px;
+  opacity: 0.45;
+  margin-top: 8px;
+}

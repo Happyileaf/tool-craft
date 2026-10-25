@@ -4793,6 +4793,473 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'ascii85-codec',
+    name: 'Ascii85（Base85）编解码',
+    nameEn: 'Ascii85 (Base85) Encoder & Decoder',
+    description:
+      '在文本与 Ascii85/Base85 之间双向转换，兼容标准 Adobe/PostScript 变体（<~ ~> 定界、z 压缩）与 btoa v4.2 变体（xbtoa 定界、y=4 空格），自动识别并报告错误位置。',
+    descriptionEn:
+      'Convert between text and Ascii85/Base85, supporting both the standard Adobe/PostScript variant (<~ ~> delimiters, z shorthand) and the btoa v4.2 variant (xbtoa delimiters, y for four spaces), with auto-detection and position-aware errors.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/ascii85-codec',
+    iconName: 'Binary',
+    tags: ['Ascii85', 'Base85', '编解码', 'PostScript', 'PDF'],
+    tagsEn: ['Ascii85', 'Base85', 'Encode', 'PostScript', 'PDF'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'foobar',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 Ascii85（Base85）编解码工具，使用 !–u 字母表把文本（按 UTF-8 处理）与 Ascii85 字符串双向转换，兼容 Adobe/PostScript 标准变体与 UNIX btoa v4.2 变体，并对损坏输入给出带位置的错误提示。',
+        coreFeatures: [
+          '双变体：标准 Ascii85（Adobe，<~ ~> 定界、z=4 零字节压缩）与 btoa v4.2（xbtoa Begin/End 定界，额外支持 y=4 空格）',
+          '自动识别：解码时按 <~ ~>、xbtoa Begin/End 定界符或 y 简写自动判断变体，并忽略其中任意空白',
+          '严谨尾组：尾组按补位与半档偏置规则还原，与 Python base64.a85decode 向量逐一交叉验证',
+          '错误定位：非法字符、缺失定界符、尾组溢出、简写位置错误均给出具体字符位置',
+          '纯本地运行：所有转换在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择「编码」或「解码」方向，并选择标准 Ascii85 或 btoa v4.2 变体',
+          '在输入框粘贴文本或 Ascii85 字符串，结果即时更新',
+          '编码时可勾选是否输出定界符、是否启用 z/y 压缩简写；解码时无需手动设置，自动识别',
+        ],
+        useCases: [
+          'PDF/PostScript 调试：解析内容流中的 ASCII85Encode 数据（<~ … ~>）',
+          '遗留系统：处理老式 UNIX btoa/atob 工具生成的 xbtoa Begin/End 数据',
+          '数据核对：校验 Ascii85 字符串是否合法、定位损坏字符的具体位置',
+        ],
+        privacyNote: '所有编解码均在浏览器本地完成，输入的文本与 Ascii85 字符串不会被上传或记录。',
+        faqs: [
+          {
+            question: 'Ascii85 和 Base64 有什么区别？',
+            answer:
+              'Ascii85 用 85 个字符表示数据，每 4 字节编码为 5 个字符，体积仅膨胀 25%，比 Base64 的 33% 更紧凑；它常见于 PDF/PostScript，并支持 z 这样的零字节压缩简写。',
+          },
+          {
+            question: '标准 Ascii85 与 btoa 变体有什么不同？',
+            answer:
+              '两者使用相同的 !–u 字母表，区别在封装与简写：标准 Ascii85 用 <~ ~> 定界、z 代表 4 个零字节；UNIX btoa v4.2 用 xbtoa Begin/End 定界，除 z 外还额外用 y 代表 4 个空格。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first Ascii85 (Base85) codec that converts between UTF-8 text and Ascii85 strings using the !–u alphabet, compatible with both the Adobe/PostScript variant and the UNIX btoa v4.2 variant, with position-aware errors for corrupted input.',
+        coreFeatures: [
+          'Two variants: standard Ascii85 (Adobe, <~ ~> delimiters, z for four zero bytes) and btoa v4.2 (xbtoa Begin/End delimiters, plus y for four spaces)',
+          'Auto-detection: the decoder detects the variant from <~ ~>, xbtoa Begin/End, or the y shorthand, and ignores any whitespace',
+          'Correct tail groups: tails are reconstructed with padding and half-step bias, cross-checked against Python base64.a85decode vectors',
+          'Position-aware errors for invalid characters, missing delimiters, tail overflow, and misplaced shorthands',
+          'Local-first: all conversion runs in the browser with no network requests',
+        ],
+        howToUse: [
+          'Pick the "Encode" or "Decode" direction and choose standard Ascii85 or btoa v4.2',
+          'Paste text or an Ascii85 string and the result updates instantly',
+          'When encoding, optionally enable delimiters and z/y shorthands; decoding detects everything automatically',
+        ],
+        useCases: [
+          'PDF/PostScript debugging: parse ASCII85Encode data (<~ … ~>) in content streams',
+          'Legacy systems: handle xbtoa Begin/End data produced by old UNIX btoa/atob tools',
+          'Data checks: validate Ascii85 strings and locate the exact position of corrupted characters',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally in the browser; entered text and Ascii85 strings are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How is Ascii85 different from Base64?',
+            answer:
+              'Ascii85 uses 85 characters and encodes every 4 bytes into 5 characters — only 25% overhead versus 33% for Base64. It is common in PDF/PostScript and supports shorthands such as z for zero bytes.',
+          },
+          {
+            question: 'What differs between standard Ascii85 and the btoa variant?',
+            answer:
+              'Both share the same !–u alphabet; they differ in wrapping and shorthands. Standard Ascii85 uses <~ ~> delimiters and z for four zero bytes, while UNIX btoa v4.2 uses xbtoa Begin/End and adds y for four spaces.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-ndjson-converter',
+    name: 'JSON ↔ NDJSON（JSON Lines）互转',
+    nameEn: 'JSON to NDJSON / JSON Lines Converter',
+    description:
+      '在 JSON 数组与 JSON Lines（NDJSON，每行一个独立 JSON 对象）之间双向转换，兼容日志采集与数据管道的批量导入导出，错误提示精确定位到行号。',
+    descriptionEn:
+      'Convert between a JSON array and JSON Lines (NDJSON, one JSON value per line), suitable for log ingestion and batch import/export in data pipelines, with line-precise error messages.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-ndjson-converter',
+    iconName: 'UnorderedList',
+    tags: ['JSON', 'NDJSON', 'JSON Lines', '日志', '数据转换'],
+    tagsEn: ['JSON', 'NDJSON', 'JSON Lines', 'Logs', 'Convert'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '[\n  { "id": 1, "name": "Alice" },\n  { "id": 2, "name": "Bob" }\n]',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 JSON 数组与 JSON Lines（NDJSON）互转工具。JSON Lines 把数组的每个元素独立序列化为一行 JSON，没有外层数组与行尾逗号，是结构化日志与数据管道中的事实标准格式。',
+        coreFeatures: [
+          '双向转换：JSON 数组逐元素展开为 NDJSON，NDJSON 逐行解析回 JSON 数组',
+          '规范输出：JSON → NDJSON 时每条记录紧凑单行，内部换行自动转义，不破坏行结构',
+          '容错解析：NDJSON → JSON 时自动忽略空行、兼容 CRLF 与每行前后空白',
+          '精确报错：非法 JSON 行直接指出所在行号，便于快速定位脏数据',
+          '纯本地运行：所有解析与序列化在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择「JSON 数组 → NDJSON」或「NDJSON → JSON 数组」方向',
+          '在输入框粘贴内容，输出即时更新；切换方向会自动载入对应示例',
+          '点击「复制结果」获取转换内容，或「清空」重新输入',
+        ],
+        useCases: [
+          '结构化日志：把日志系统导出的 NDJSON 聚合成 JSON 数组做查看与二次处理',
+          '数据管道：准备 BigQuery、Elasticsearch Bulk 等按行 JSON 记录的导入数据',
+          '接口调试：在 JSON 数组与逐行记录格式之间快速互转',
+        ],
+        privacyNote: '所有转换均在浏览器本地完成，输入的 JSON 数据不会被上传或记录。',
+        faqs: [
+          {
+            question: 'NDJSON 和普通 JSON 文件有什么区别？',
+            answer:
+              'NDJSON（JSON Lines）没有外层数组和逗号，每一行本身就是一个完整合法的 JSON 值。它特别适合日志这类持续追加的写入场景：单行损坏不影响其他行，且无需读取整个文件就能流式处理。',
+          },
+          {
+            question: '为什么某一行提示不是合法 JSON？',
+            answer:
+              'NDJSON 要求每行都是完整、紧凑的单行 JSON，不支持跨行对象，也不能带行尾逗号或 JavaScript 风格注释。错误信息会给出具体行号，修正该行后即可继续转换。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first converter between a JSON array and JSON Lines (NDJSON). JSON Lines serializes each array element onto its own line — no wrapping array or trailing commas — making it the de facto format for structured logs and data pipelines.',
+        coreFeatures: [
+          'Bidirectional: expand a JSON array into NDJSON lines, or parse NDJSON lines back into a JSON array',
+          'Spec-compliant output: JSON → NDJSON emits compact single-line records with embedded newlines properly escaped',
+          'Tolerant parsing: NDJSON → JSON ignores empty lines, accepts CRLF, and trims surrounding whitespace per line',
+          'Line-precise errors: invalid JSON lines are reported with their line number for quick dirty-data location',
+          'Local-first: all parsing and serialization run in the browser with no network requests',
+        ],
+        howToUse: [
+          'Choose "JSON array → NDJSON" or "NDJSON → JSON array"',
+          'Paste content and the output updates instantly; switching direction loads the matching sample',
+          'Use "Copy result" to grab the output, or "Clear" to start over',
+        ],
+        useCases: [
+          'Structured logs: aggregate NDJSON exports from logging systems into a JSON array for inspection',
+          'Data pipelines: prepare line-delimited records for BigQuery, Elasticsearch Bulk, and similar imports',
+          'API debugging: quickly switch between array payloads and line-delimited record streams',
+        ],
+        privacyNote:
+          'All conversion runs locally in the browser; entered JSON data is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How is NDJSON different from a regular JSON file?',
+            answer:
+              'NDJSON (JSON Lines) has no wrapping array or commas: every line is a complete, standalone JSON value. It suits append-only logs well — a corrupted line does not break the others, and the file can be processed as a stream without reading it all.',
+          },
+          {
+            question: 'Why is a line reported as invalid JSON?',
+            answer:
+              'Each NDJSON line must be complete, compact, single-line JSON with no multi-line objects, trailing commas, or JavaScript-style comments. The error message includes the line number; fix that line and convert again.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'uuid-inspector',
+    name: 'UUID 解析与校验',
+    nameEn: 'UUID Inspector',
+    description:
+      '批量解析 UUID（RFC 4122 / RFC 9562），识别版本 v1–v8 与 nil/max、判定变体，提取 v1/v2/v6/v7 内嵌时间戳及 v1/v2 节点与时钟序列，并统计重复。',
+    descriptionEn:
+      'Inspect UUIDs in bulk against RFC 4122 / RFC 9562: detect versions v1–v8 and nil/max, identify the variant, extract timestamps embedded in v1/v2/v6/v7 plus node and clock sequence for v1/v2, and count duplicates.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/uuid-inspector',
+    iconName: 'Fingerprint',
+    tags: ['UUID', 'GUID', 'RFC 4122', 'RFC 9562', '校验'],
+    tagsEn: ['UUID', 'GUID', 'RFC 4122', 'RFC 9562', 'Validator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'f81d4fae-7dec-11d0-a765-00a0c91e6bf6\n550e8400-e29b-41d4-a716-446655440000\n017f22e2-79b0-7cc3-98c4-dc0c0c07398f',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 UUID 解析与批量校验工具。它把一个或多个 UUID 规范化为标准小写连字符形式，识别其版本（v1–v8、nil、max）与变体（RFC 4122、NCS、Microsoft、保留），并从时间型 UUID 中还原生成时间，辅助开发排障与数据审计。',
+        coreFeatures: [
+          '版本识别：支持 v1–v8 及 nil/max 特殊 UUID，未知版本字段给出保留值提示',
+          '变体判定：识别 RFC 4122、NCS 遗留、Microsoft 与保留变体，并对版本/变体不匹配给出警告',
+          '时间戳提取：还原 v1/v2/v6（UUID 纪元 100ns 计数）与 v7（Unix 毫秒）内嵌时间',
+          '节点信息：提取 v1/v2 的 MAC 风格节点与时钟序列',
+          '批量统计：按空白、逗号、分号分隔多个 UUID，统计合法/非法数量并按规范化形式去重、标记重复',
+          '格式兼容：接受大写、urn:uuid: 前缀与花括号包裹，输出统一的规范形式',
+        ],
+        howToUse: [
+          '把一个或多个 UUID 粘贴到输入框，每行一个（也支持逗号、分号或空格分隔）',
+          '解析结果即时更新，逐条展示规范形式、版本、变体与时间戳等信息',
+          '查看顶部统计卡片了解合法、非法、去重后数量与重复次数',
+          '点击「载入示例」查看混合样例，或点击「清空」重新输入',
+        ],
+        useCases: [
+          '排障审计：核对日志、数据库或消息队列中的 UUID 版本是否符合约定',
+          '时间还原：从 v1/v6/v7 UUID 直接读出记录创建时间，无需额外元数据',
+          '数据清洗：批量校验导入数据中的 UUID 格式并发现重复主键',
+          '协议分析：判断第三方系统使用的 UUID 变体与生成策略',
+        ],
+        privacyNote:
+          '所有解析均在浏览器本地完成，输入的 UUID 不会被上传、存储或记录。',
+        faqs: [
+          {
+            question: 'v1、v4、v7 UUID 有什么区别？',
+            answer:
+              'v1 基于时间戳与节点 MAC 生成，可还原生成时间与节点；v4 完全随机，不含可提取信息；v7 以 Unix 毫秒时间戳开头，天然按时间有序，适合数据库主键。v6 是 v1 时间字段的重排版本，时间有序且同样可还原时间。',
+          },
+          {
+            question: '为什么有的 UUID 被标记为「重复」？',
+            answer:
+              '工具会先把每个片段规范化（小写、去 urn:uuid: 前缀与花括号），再按规范形式比较。同一 UUID 的大写形式、花括号或 URN 写法都会被视为同一条，出现两次及以上时每条都会标记为重复，并计入「重复次数」。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first UUID parser and bulk validator. It normalizes one or more UUIDs to the canonical lowercase hyphenated form, detects the version (v1–v8, nil, max) and variant (RFC 4122, NCS, Microsoft, reserved), and recovers the embedded generation time from time-based UUIDs to aid debugging and data audits.',
+        coreFeatures: [
+          'Version detection: v1–v8 plus the nil/max special UUIDs, with reserved-value hints for unknown version fields',
+          'Variant detection: RFC 4122, legacy NCS, Microsoft, and reserved variants, with warnings on version/variant mismatch',
+          'Timestamp extraction: recovers embedded times from v1/v2/v6 (UUID-epoch 100ns ticks) and v7 (Unix milliseconds)',
+          'Node info: extracts the MAC-style node and clock sequence from v1/v2 UUIDs',
+          'Bulk statistics: splits on whitespace, commas, and semicolons; counts valid/invalid, dedupes by canonical form, and flags duplicates',
+          'Format tolerance: accepts uppercase, the urn:uuid: prefix, and curly braces, and outputs the canonical form',
+        ],
+        howToUse: [
+          'Paste one or more UUIDs into the input box, one per line (commas, semicolons, and spaces also work as separators)',
+          'Results update instantly, showing the canonical form, version, variant, timestamp, and other fields per item',
+          'Check the summary cards for valid/invalid counts, unique count, and duplicate occurrences',
+          'Use "Load sample" for a mixed example or "Clear" to start over',
+        ],
+        useCases: [
+          'Debugging and audits: verify whether UUIDs in logs, databases, or message queues match the agreed version',
+          'Time recovery: read record creation times directly from v1/v6/v7 UUIDs without extra metadata',
+          'Data cleansing: bulk-validate UUID formats in imports and spot duplicate keys',
+          'Protocol analysis: identify the UUID variant and generation strategy used by third-party systems',
+        ],
+        privacyNote:
+          'All parsing runs locally in your browser; entered UUIDs are never uploaded, stored, or logged.',
+        faqs: [
+          {
+            question: 'What is the difference between v1, v4, and v7 UUIDs?',
+            answer:
+              'v1 is based on a timestamp and the node MAC, so its generation time and node can be recovered; v4 is fully random with no extractable information; v7 starts with a Unix-millisecond timestamp and is naturally time-ordered, making it a good database primary key. v6 is a reordered layout of the v1 time fields — also time-ordered and recoverable.',
+          },
+          {
+            question: 'Why are some UUIDs flagged as duplicates?',
+            answer:
+              'Each token is first canonicalized (lowercase, with urn:uuid: prefix and curly braces removed) and compared by canonical form. Uppercase, brace-wrapped, or URN spellings of the same UUID count as one entry; when it appears two or more times, every occurrence is flagged and counted under "duplicate occurrences".',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'isbn-converter',
+    name: 'ISBN-10 / ISBN-13 校验与互转',
+    nameEn: 'ISBN Converter & Validator',
+    description:
+      '批量校验 ISBN-10 / ISBN-13，按 ISO 2108 加权规则核验校验位并指出错误，在两种格式间双向互转（978 前缀；979 不适用），输出带 GS1/组区分隔的规范形式并按换算后的 ISBN-13 去重。',
+    descriptionEn:
+      'Bulk-validate ISBN-10 / ISBN-13 codes against ISO 2108 weighted check digits with error reporting, convert between the two formats (978 prefix; not applicable for 979), render canonical GS1/group-hyphenated forms, and dedupe by the resulting ISBN-13.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/isbn-converter',
+    iconName: 'Tags',
+    tags: ['ISBN', '图书', '校验位', '数据清洗', '出版'],
+    tagsEn: ['ISBN', 'Books', 'Check Digit', 'Data Cleansing', 'Publishing'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '020161622X\n9780201616224\n978-0-13-235088-4',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 ISBN 校验与互转工具。它依据 ISO 2108 标准核验 ISBN-10（10..2 加权模 11，末位 10 记为 X）与 ISBN-13（1/3 交替加权模 10）的校验位，在两种格式之间双向转换，并给出带 GS1 前缀与组区分隔的规范展示，适合出版、图书馆与图书电商的数据核对场景。',
+        coreFeatures: [
+          '双格式校验：同时支持 ISBN-10 与 ISBN-13，校验位错误时给出期望值与错误位置',
+          '双向互转：ISBN-10 自动换算为 978 前缀 ISBN-13；978 前缀 ISBN-13 可反向转换，979 前缀明确提示不存在 ISBN-10',
+          '规范分组：依据 ISBN International 组区范围表输出「前缀-组区号-出版段-校验位」分隔形式',
+          '批量去重：ISBN-10 与其对应 ISBN-13 视为同一条，按换算后的 ISBN-13 统计重复',
+          '格式兼容：自动忽略连字符、空白，兼容小写 x 与各种非规范分隔写法',
+          '错误诊断：区分长度错误、非法字符、X 位置错误、前缀错误与校验位不匹配',
+        ],
+        howToUse: [
+          '把一个或多个 ISBN 粘贴到输入框，每行一个（也支持逗号、分号或空格分隔）',
+          '结果即时更新，逐条展示类型、ISBN-13、ISBN-10 与规范分组形式',
+          '鼠标悬停紧凑编号可查看带分隔的规范形式；非法条目会显示具体错误原因',
+          '点击「载入示例」查看混合样例，或点击「清空」重新输入',
+        ],
+        useCases: [
+          '出版编目：核对版权页、CIP 数据与库存系统中的 ISBN 是否一致',
+          '图书电商：批量清洗导入表格中的 ISBN，找出错号、混格式与重复条目',
+          '图书馆：在旧版 ISBN-10 馆藏数据与新版 ISBN-13 系统之间迁移转换',
+          '爬虫与数据分析：把抓取到的多种 ISBN 写法统一为规范的 13 位形式',
+        ],
+        privacyNote:
+          '所有校验与转换均在浏览器本地完成，输入的 ISBN 不会被上传、存储或记录。',
+        faqs: [
+          {
+            question: '为什么有些 ISBN-13 不能转换成 ISBN-10？',
+            answer:
+              'ISBN-13 使用 978 和 979 两个 GS1 前缀。978 前缀只是在原 ISBN-10 前加前缀并重算校验位，可以双向转换；979 前缀是 2007 年号码资源扩充后启用的，从来没有对应的 10 位形式，因此无法转换。',
+          },
+          {
+            question: '规范分组为什么只分到组区号，不拆分出版社代码？',
+            answer:
+              '完整的组区号-出版者码-书名码边界由 ISBN International 维护的范围表逐号段定义，数据庞大且定期更新。本工具内置前缀与组区号规则，保证前缀、组区与校验位的分隔准确；出版者与书名码合并为一段展示，避免凭猜测切分产生错误。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first ISBN validator and converter. It checks ISBN-10 (10..2 weighted mod 11, with 10 written as X) and ISBN-13 (alternating 1/3 weights mod 10) check digits per ISO 2108, converts between the two formats, and renders canonical GS1/group-hyphenated forms for publishing, library, and book-retail data checks.',
+        coreFeatures: [
+          'Dual-format validation: supports both ISBN-10 and ISBN-13, reporting the expected check digit and the error position on mismatch',
+          'Two-way conversion: ISBN-10 maps to a 978-prefixed ISBN-13 and back; 979-prefixed codes are clearly marked as having no ISBN-10 form',
+          'Canonical grouping: renders "prefix-group-publication-check" hyphenation from the ISBN International group range table',
+          'Bulk dedupe: an ISBN-10 and its ISBN-13 twin count as one entry, with duplicates keyed by the resulting ISBN-13',
+          'Tolerant input: hyphens and whitespace are ignored; lowercase x and irregular separators are accepted',
+          'Error diagnosis: distinguishes length, illegal-character, X-placement, prefix, and check-digit errors',
+        ],
+        howToUse: [
+          'Paste one or more ISBNs into the input box, one per line (commas, semicolons, and spaces also work)',
+          'Results update instantly, showing the kind, ISBN-13, ISBN-10, and canonical grouped form per item',
+          'Hover over a compact code to see the hyphenated form; invalid items show a specific error reason',
+          'Use "Load sample" for a mixed example or "Clear" to start over',
+        ],
+        useCases: [
+          'Publishing cataloguing: reconcile ISBNs across copyright pages, CIP records, and inventory systems',
+          'Book retail: clean imported spreadsheets, spotting bad codes, mixed formats, and duplicates',
+          'Libraries: migrate legacy ISBN-10 holdings to ISBN-13-based systems',
+          'Scraping and analytics: normalize ISBNs captured in assorted formats into canonical 13-digit codes',
+        ],
+        privacyNote:
+          'All validation and conversion run locally in your browser; entered ISBNs are never uploaded, stored, or logged.',
+        faqs: [
+          {
+            question: 'Why can some ISBN-13 codes not be converted to ISBN-10?',
+            answer:
+              'ISBN-13 uses two GS1 prefixes, 978 and 979. The 978 prefix simply prepends a prefix to the old ISBN-10 and recomputes the check digit, so conversion works both ways. The 979 prefix was introduced in 2007 to expand numbering capacity and never had a 10-digit counterpart, so no conversion exists.',
+          },
+          {
+            question: 'Why does the grouped output stop at the group, without splitting the publisher code?',
+            answer:
+              'The exact group-publisher-title boundaries are defined segment by segment in the large, periodically updated range file maintained by ISBN International. This tool embeds prefix and group rules so the prefix, group, and check digit splits are exact; the publisher and title parts are shown as one publication segment to avoid guessing boundaries.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'combinatorics-calculator',
+    name: '排列组合计算器',
+    nameEn: 'Combinatorics Calculator',
+    description:
+      '输入 n 与 r，一次算出阶乘 n!、排列 P(n,r)、组合 C(n,r)、重复排列 nʳ、重复组合 C(n+r−1,r) 与圆排列 (n−1)!，全程 BigInt 精确计算，超大整数附科学计数法近似值。',
+    descriptionEn:
+      'Enter n and r to get factorial n!, permutation P(n,r), combination C(n,r), repetition permutation n^r, repetition combination C(n+r-1,r), and circular permutation (n-1)! at once — exact BigInt arithmetic with scientific-notation approximations for huge results.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/combinatorics-calculator',
+    iconName: 'Shuffle',
+    tags: ['排列组合', '阶乘', '组合数学', '概率', 'BigInt'],
+    tagsEn: ['Permutation', 'Combination', 'Factorial', 'Combinatorics', 'Probability'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的排列组合计算器。给定元素总数 n 与选取数量 r，它同时给出阶乘、排列、组合、可放回排列（nʳ）、可放回组合与圆排列六类常见计数结果，全部使用 BigInt 精确整数运算，即便是 1000! 这样有 2568 位的大整数也逐位精确，并对超大结果附科学计数法近似值，服务于算法复杂度估算、概率统计与竞赛数学等场景。',
+        coreFeatures: [
+          '六项合一：阶乘、排列、组合、重复排列、重复组合、圆排列一次全部算出',
+          'BigInt 精确计算：不使用浮点近似，任意大的计数结果逐位精确并带千位分隔',
+          '科学计数法：结果超过 10^15 时自动给出保留 10 位有效数字的近似值',
+          '边界完备：正确处理 0! = 1、C(n,0) = 1、n=0、r>n 等边界与退化情形',
+          '适用性提示：r>n 时排列与组合明确标注不适用及原因，圆排列对 n≥1 才可用',
+          '输入校验：仅接受 0～1000 的非负整数，非法、超限输入即时给出错误提示',
+        ],
+        howToUse: [
+          '在 n 输入框填写元素总数，在 r 输入框填写选取数量（均为非负整数）',
+          '结果随输入实时更新，每个卡片显示名称、记号、公式与精确值',
+          '悬停记号可查看公式与语义说明；悬停精确值可查看未加分隔的完整数字',
+          '不适用的变体（如 r>n 时的排列）会置灰并解释原因',
+        ],
+        useCases: [
+          '算法分析：估算暴力搜索、全排列、子集枚举等方案的复杂度规模',
+          '概率统计：计算抽样、彩票、扑克牌型等问题的样本空间与有利事件数',
+          '竞赛数学：快速核对排列组合、隔板法与环形排列题目的计数结果',
+          '教学演示：对比有无放回、是否计顺序、直线与环形排列之间的数量差异',
+        ],
+        privacyNote:
+          '所有计算均在浏览器本地完成，输入的 n、r 不会被上传、存储或记录。',
+        faqs: [
+          {
+            question: '为什么结果能显示几百上千位而不失真？',
+            answer:
+              '内部全程使用 JavaScript 的 BigInt 任意精度整数类型做乘除运算，不经过浮点数，因此不存在 Number 的安全整数上限（约 9e15）问题；界面上展示的精确值逐位可靠，科学计数法仅作为阅读超长数字时的辅助近似。',
+          },
+          {
+            question: '重复排列 nʳ 和重复组合 C(n+r−1,r) 有什么区别？',
+            answer:
+              '两者都假设每次选取后放回、n 保持不变。重复排列计顺序，例如两次掷骰子的结果 (1,2) 与 (2,1) 不同，共 nʳ 种；重复组合不计顺序，(1,2) 与 (2,1) 视为同一种多重集，数量为 C(n+r−1,r)。普通的 P(n,r)、C(n,r) 则是不放回的情形。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first combinatorics calculator. Given a population size n and selection size r, it returns six common counts at once — factorial, permutation, combination, repetition permutation (n^r), repetition combination, and circular permutation. Everything is computed with exact BigInt integer arithmetic, so even 2568-digit results like 1000! stay exact, with scientific-notation approximations appended for readability.',
+        coreFeatures: [
+          'Six results at once: factorial, permutation, combination, repetition permutation, repetition combination, and circular permutation',
+          'Exact BigInt arithmetic: no floating-point approximation, with digit-perfect results and thousands separators',
+          'Scientific notation: results above 10^15 get an approximation rounded to 10 significant figures',
+          'Edge-case complete: handles 0! = 1, C(n,0) = 1, n=0, and r>n degeneracies correctly',
+          'Applicability hints: permutation and combination are marked not applicable (with reasons) when r>n; circular permutation requires n≥1',
+          'Input validation: only non-negative integers from 0 to 1000 are accepted, with instant error messages',
+        ],
+        howToUse: [
+          'Enter the population size in the n field and the selection size in the r field (non-negative integers)',
+          'All cards update live, each showing the name, notation, formula, and exact value',
+          'Hover the notation for its formula and meaning; hover the exact value for the raw digit string',
+          'Inapplicable variants (e.g. permutation when r>n) are greyed out with an explanation',
+        ],
+        useCases: [
+          'Algorithm analysis: gauge the scale of brute-force, full-permutation, or subset-enumeration approaches',
+          'Probability and statistics: count sample spaces and favorable outcomes in sampling, lottery, or poker problems',
+          'Math competitions: quickly verify permutation, stars-and-bars, and circular-arrangement answers',
+          'Teaching: contrast with/without replacement, ordered vs unordered, and linear vs circular arrangements',
+        ],
+        privacyNote:
+          'All computation happens locally in your browser; the entered n and r are never uploaded, stored, or logged.',
+        faqs: [
+          {
+            question: 'How can it show hundreds or thousands of digits without losing precision?',
+            answer:
+              'Internally every multiplication and division uses JavaScript BigInt arbitrary-precision integers instead of floating point, so the Number safe-integer limit (~9e15) never applies. The displayed exact values are reliable digit by digit; scientific notation is only a reading aid for very long numbers.',
+          },
+          {
+            question: 'What is the difference between repetition permutation n^r and repetition combination C(n+r-1,r)?',
+            answer:
+              'Both assume selection with replacement, so n stays constant. Repetition permutation cares about order — two dice rolls (1,2) and (2,1) differ, giving n^r outcomes. Repetition combination ignores order, treating (1,2) and (2,1) as the same multiset, counted by C(n+r-1,r). The plain P(n,r) and C(n,r) are the without-replacement cases.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
