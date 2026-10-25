@@ -69,4 +69,5 @@ export const toolLoaders: Record<
   'base58-codec': () => import('./base58-codec'),
   'chinese-currency': () => import('./chinese-currency'),
   'json-flatten': () => import('./json-flatten'),
+  'string-escape': () => import('./string-escape'),
 };

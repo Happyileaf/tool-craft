@@ -4688,6 +4688,111 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'string-escape',
+    name: '字符串字面量转义 / 反转义',
+    nameEn: 'String Literal Escape / Unescape',
+    description:
+      '在多行原始文本与 JavaScript / JSON、Python、Java 字符串字面量之间双向转义（\\n、\\t、\\"、\\xHH、\\uXXXX、\\u{码点}、\\Uxxxxxxxx、代理对），可自动包裹或剥离外层引号；语言不支持的序列给出明确报错，纯浏览器本地运算。',
+    descriptionEn:
+      'Escape and unescape between raw multiline text and JavaScript / JSON, Python, or Java string literals (\\n, \\t, \\", \\xHH, \\uXXXX, \\u{code point}, \\Uxxxxxxxx, surrogate pairs), with optional quote wrapping/stripping and clear errors for unsupported sequences. Runs entirely in your browser.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/string-escape',
+    iconName: 'FileCode',
+    tags: ['字符串转义', 'Escape', '字面量', 'JavaScript', 'Python', 'Java'],
+    tagsEn: ['String Escape', 'Literal', 'JavaScript', 'Python', 'Java', 'Unicode'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的编程语言字符串转义工具，把含换行、制表符、引号、反斜杠、中文与 emoji 的原始文本转换为可直接粘贴进代码的双引号字面量内容，也可把日志中的 \\n、\\uXXXX 等转义串还原为可读明文；覆盖 JavaScript / JSON、Python、Java 三种主流风格。',
+        coreFeatures: [
+          '双向转换：原始文本 → 字面量内容（Escape）与字面量内容 → 原始文本（Unescape）一键切换',
+          '三种语言：JavaScript / JSON（含 \\/、\\u{码点}）、Python（\\xHH、\\Uxxxxxxxx、\\a、行连接）、Java（\\uXXXX）',
+          '完整序列：\\b \\f \\n \\r \\t \\" \\\\ 以及控制字符与非 ASCII 字符',
+          'Unicode 完整：BMP 码点输出 \\uXXXX，astral 码点（如 emoji）自动拆成代理对，反转义时重新合并',
+          '引号处理：转义结果可选包裹双引号；反转义时自动剥离成对的 "…" / \'…\' / `…` 外层引号',
+          '安全报错：孤立反斜杠、位数不足、语言不支持的序列（如 Java 的 \\x）给出具体原因，孤立代理替换为 U+FFFD 而非崩溃',
+        ],
+        howToUse: [
+          '选择转换方向与目标语言，在左侧粘贴原始文本或转义串',
+          '右侧实时显示结果，点击「复制结果」即可粘贴进源码或日志分析工具',
+          '转义时可用复选框控制是否在外层包裹双引号；反转义时可开关自动剥离外层引号',
+          '遇到红色错误面板时，按提示检查反斜杠序列的位数与当前语言是否支持',
+        ],
+        useCases: [
+          '代码开发：把多行文案、正则、SQL 片段安全嵌入 JavaScript / Python / Java 字符串',
+          '日志排查：把日志里的 \\n、\\u003c 等转义内容还原为可读明文',
+          '接口调试：手工构造或核对 JSON 字符串字段中的转义内容',
+          '教学演示：理解不同语言字符串转义规则与 Unicode 代理对编码',
+        ],
+        privacyNote:
+          '所有转义与反转义均在浏览器本地完成，文本内容不会被上传或记录。',
+        faqs: [
+          {
+            question: 'JavaScript / JSON 与 Python、Java 的转义有什么区别？',
+            answer:
+              '通用短转义（\\n、\\t、\\"、\\\\、\\uXXXX）三者一致；差异在于 JavaScript 额外接受 \\/ 与 \\u{码点}，Python 使用 \\xHH 和 8 位的 \\Uxxxxxxxx 并支持行连接反斜杠，而 Java 只认标准短转义与 4 位 \\uXXXX，不支持 \\x 与 \\u{}。切换语言后工具会按对应规则校验。',
+          },
+          {
+            question: 'emoji 等 4 字节字符会怎样处理？',
+            answer:
+              '转义时自动编码为一对 UTF-16 代理单元（如 😀 → \\ud83d\\ude00），反转义时识别连续的高 / 低代理并合并回原字符；若只出现孤立的半个代理，则替换为 U+FFFD 替代字符而不是报错中断。',
+          },
+          {
+            question: '输入带引号的完整字面量（如 "a\\nb"）需要先手动去引号吗？',
+            answer:
+              '不需要。反转义模式默认开启「自动剥离成对外层引号」，会先去掉首尾成对的双引号、单引号或反引号再解析；若你处理的只是字面量内部片段，可关闭该开关。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local string-literal escaper that converts raw multiline text — with newlines, tabs, quotes, backslashes, CJK characters, and emoji — into double-quoted literal content ready to paste into code, and unescapes log strings such as \\n or \\uXXXX back into readable plaintext. It covers three mainstream dialects: JavaScript / JSON, Python, and Java.',
+        coreFeatures: [
+          'Bidirectional: switch between Escape (raw text → literal content) and Unescape (literal content → raw text)',
+          'Three dialects: JavaScript / JSON (including \\/ and \\u{code point}), Python (\\xHH, \\Uxxxxxxxx, \\a, line continuation), and Java (\\uXXXX)',
+          'Complete sequences: \\b \\f \\n \\r \\t \\" \\\\ plus control and non-ASCII characters',
+          'Full Unicode: BMP code points become \\uXXXX, astral code points (e.g. emoji) are split into surrogate pairs and recombined when unescaping',
+          'Quote handling: optionally wrap escaped output in double quotes; unescape auto-strips matching outer "…", \'…\', or `…` quotes',
+          'Safe errors: dangling backslashes, truncated hex digits, and unsupported sequences (e.g. \\x in Java) produce specific messages; lone surrogates become U+FFFD instead of crashing',
+        ],
+        howToUse: [
+          'Pick a direction and a target language, then paste raw text or an escaped string on the left',
+          'The result updates on the right in real time; click Copy to paste it into source code or a log analyzer',
+          'Toggle outer double-quote wrapping when escaping, or automatic outer-quote stripping when unescaping',
+          'When the error panel appears, check the hex digit count and whether the selected language supports the sequence',
+        ],
+        useCases: [
+          'Development: embed multiline copy, regexes, or SQL snippets safely in JavaScript / Python / Java strings',
+          'Log analysis: turn \\n and \\u003c style log content back into readable plaintext',
+          'API debugging: handcraft or verify escaped JSON string fields',
+          'Learning: compare string escape rules and Unicode surrogate-pair encoding across languages',
+        ],
+        privacyNote:
+          'All escaping and unescaping runs locally in your browser; text content is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How do JavaScript / JSON, Python, and Java escapes differ?',
+            answer:
+              'Common short escapes (\\n, \\t, \\", \\\\, \\uXXXX) are identical. JavaScript additionally accepts \\/ and \\u{code point}; Python uses \\xHH and 8-digit \\Uxxxxxxxx with line continuation; Java only accepts the standard short escapes and 4-digit \\uXXXX — no \\x or \\u{}. The tool validates against the selected dialect.',
+          },
+          {
+            question: 'How are 4-byte characters such as emoji handled?',
+            answer:
+              'They are encoded as a UTF-16 surrogate pair (e.g. 😀 → \\ud83d\\ude00). When unescaping, consecutive high/low surrogates are merged back into the original character; a lone half-surrogate becomes U+FFFD instead of aborting the conversion.',
+          },
+          {
+            question: 'Do I have to remove the surrounding quotes from a full literal like "a\\nb"?',
+            answer:
+              'No. Unescape mode strips matching outer double, single, or backtick quotes automatically before parsing. Turn the toggle off if your input is just the inner fragment without quotes.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
