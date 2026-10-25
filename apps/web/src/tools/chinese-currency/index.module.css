@@ -1,0 +1,51 @@
+.container {
+  padding: 16px;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.result {
+  padding: 20px 16px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.02);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.resultValue {
+  font-size: 22px;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.resultEmpty {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.hint {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+}

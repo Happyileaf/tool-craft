@@ -4480,6 +4480,109 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'chinese-currency',
+    name: '数字转中文大写金额',
+    nameEn: 'Number to Chinese RMB Amount',
+    description:
+      '将阿拉伯数字金额实时转换为人民币中文大写（壹贰叁、元角分、整），用于发票、收据与合同填写；正确处理零、连续零、万 / 亿节进位与角分边界，支持千分位逗号，两位以上小数自动四舍五入到分。',
+    descriptionEn:
+      'Convert numeric amounts into formal Chinese RMB uppercase text (壹贰叁, 元角分, 整) for invoices, receipts, and contracts, with correct handling of zeros, ten-thousand / hundred-million sections, and jiao/fen boundaries, thousands separators, and rounding to cents.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/chinese-currency',
+    iconName: 'Gauge',
+    tags: ['中文大写', '人民币', '金额', '发票', '财务', '元角分'],
+    tagsEn: ['Chinese Uppercase', 'RMB', 'Currency', 'Invoice', 'Finance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的金额大写转换工具，把阿拉伯数字金额转换为票据规范的中文大写人民币，覆盖零、连续零、万 / 亿节单位、角分与「整」字等中文金额书写难点，输入即转换。',
+        coreFeatures: [
+          '实时转换：输入阿拉伯数字即时输出中文大写，无需点击',
+          '边界完整：零元、整元、有角无分、有分、角为零均按票据规范处理',
+          '大节进位：按 4 位分节正确处理万、亿、万亿（最高 16 位整数）',
+          '容错输入：允许首尾空白与标准千分位逗号，三位以上小数四舍五入到分',
+          '明确提示：非法字符、负数、超长整数给出可读错误',
+          '纯本地运行：不发起任何网络请求，合同金额不出本机',
+        ],
+        howToUse: [
+          '在输入框填写阿拉伯数字金额（如 12345.67），可点击示例快速填充',
+          '结果区即时显示中文大写，点击「复制」即可粘贴到发票或合同',
+          '千分位逗号（如 1,234.56）可直接粘贴，无需手工去除',
+          '超过两位小数时自动按分四舍五入；整数金额末尾自动补「整」',
+        ],
+        useCases: [
+          '财务开票：填写发票、收据、报销单上的人民币大写栏',
+          '合同与公文：撰写合同金额条款、支票与结算凭证',
+          '学习核对：验证已有大写金额书写是否规范',
+        ],
+        privacyNote:
+          '所有转换均在浏览器本地完成，金额数字不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么有的金额后面有「整」，有的没有？',
+            answer:
+              '按票据填写规范，金额到「元」为止时在元后写「整」；到「角」为止时角后可以不写「整」（本工具统一省略）；有「分」时分后不写「整」。',
+          },
+          {
+            question: '0.05 元为什么是「伍分」而不是「零元零角伍分」？',
+            answer:
+              '整数部分为零时不输出「零元」；角为零而分非零时，若存在整数部分会用「零」连接（如 1.05 → 壹元零伍分），纯角分金额直接输出「伍分」。',
+          },
+          {
+            question: '支持的最大金额是多少？',
+            answer:
+              '整数部分最多 16 位（即壹仟万亿元以内），小数最多 2 位；超出范围会给出明确提示，避免节单位（万、亿）歧义。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local converter that turns numeric amounts into formal Chinese RMB uppercase wording used on financial vouchers, covering zeros, ten-thousand / hundred-million section units, jiao/fen, and the trailing 整 marker, with instant conversion.',
+        coreFeatures: [
+          'Instant conversion: Arabic numerals become Chinese uppercase text as you type',
+          'Complete edge cases: zero, whole yuan, jiao without fen, fen present, and zero jiao follow voucher conventions',
+          'Large sections: groups digits by four with correct 万 / 亿 / 万亿 units (up to 16 integer digits)',
+          'Forgiving input: surrounding whitespace and standard thousands commas are accepted; extra decimals round to fen',
+          'Clear errors: illegal characters, negative values, and oversized integers are explained',
+          '100% local: no network requests, contract amounts never leave the device',
+        ],
+        howToUse: [
+          'Type an Arabic-numeral amount (e.g. 12345.67) or click an example chip',
+          'The result area shows the Chinese uppercase wording instantly; click Copy to paste it onto an invoice or contract',
+          'Thousands separators such as 1,234.56 can be pasted directly',
+          'More than two decimal places are rounded to fen; whole-yuan amounts automatically end with 整',
+        ],
+        useCases: [
+          'Invoicing: fill the RMB uppercase field on invoices, receipts, and expense claims',
+          'Contracts and vouchers: draft amount clauses, cheques, and settlement documents',
+          'Review and learning: verify whether an existing uppercase amount is written correctly',
+        ],
+        privacyNote:
+          'All conversion runs locally in your browser; amount figures are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'When is 整 appended at the end?',
+            answer:
+              'Per Chinese voucher conventions, 整 follows 元 for whole-yuan amounts; it may be omitted after 角 when there is no fen, and never follows 分. This tool follows that convention consistently.',
+          },
+          {
+            question: 'Why is 0.05 just 伍分, without 零元?',
+            answer:
+              'When the integer part is zero, 零元 is omitted. When jiao is zero but fen is present and an integer part exists, 零 links the two, as in 1.05 → 壹元零伍分; a pure jiao/fen amount is rendered directly as 伍分.',
+          },
+          {
+            question: 'What is the maximum supported amount?',
+            answer:
+              'Up to 16 integer digits (within one thousand trillion yuan) and 2 decimal places. Larger input raises a clear message to avoid ambiguity around section units (万, 亿).',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

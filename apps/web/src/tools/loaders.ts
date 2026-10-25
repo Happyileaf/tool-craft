@@ -67,4 +67,5 @@ export const toolLoaders: Record<
   'chmod-calculator': () => import('./chmod-calculator'),
   'pkce-generator': () => import('./pkce-generator'),
   'base58-codec': () => import('./base58-codec'),
+  'chinese-currency': () => import('./chinese-currency'),
 };
