@@ -74,4 +74,5 @@ export const toolLoaders: Record<
   'json-ndjson-converter': () => import('./json-ndjson-converter'),
   'uuid-inspector': () => import('./uuid-inspector'),
   'isbn-converter': () => import('./isbn-converter'),
+  'combinatorics-calculator': () => import('./combinatorics-calculator'),
 };

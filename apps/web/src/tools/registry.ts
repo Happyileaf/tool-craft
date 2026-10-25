@@ -5164,6 +5164,102 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'combinatorics-calculator',
+    name: '排列组合计算器',
+    nameEn: 'Combinatorics Calculator',
+    description:
+      '输入 n 与 r，一次算出阶乘 n!、排列 P(n,r)、组合 C(n,r)、重复排列 nʳ、重复组合 C(n+r−1,r) 与圆排列 (n−1)!，全程 BigInt 精确计算，超大整数附科学计数法近似值。',
+    descriptionEn:
+      'Enter n and r to get factorial n!, permutation P(n,r), combination C(n,r), repetition permutation n^r, repetition combination C(n+r-1,r), and circular permutation (n-1)! at once — exact BigInt arithmetic with scientific-notation approximations for huge results.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/combinatorics-calculator',
+    iconName: 'Shuffle',
+    tags: ['排列组合', '阶乘', '组合数学', '概率', 'BigInt'],
+    tagsEn: ['Permutation', 'Combination', 'Factorial', 'Combinatorics', 'Probability'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的排列组合计算器。给定元素总数 n 与选取数量 r，它同时给出阶乘、排列、组合、可放回排列（nʳ）、可放回组合与圆排列六类常见计数结果，全部使用 BigInt 精确整数运算，即便是 1000! 这样有 2568 位的大整数也逐位精确，并对超大结果附科学计数法近似值，服务于算法复杂度估算、概率统计与竞赛数学等场景。',
+        coreFeatures: [
+          '六项合一：阶乘、排列、组合、重复排列、重复组合、圆排列一次全部算出',
+          'BigInt 精确计算：不使用浮点近似，任意大的计数结果逐位精确并带千位分隔',
+          '科学计数法：结果超过 10^15 时自动给出保留 10 位有效数字的近似值',
+          '边界完备：正确处理 0! = 1、C(n,0) = 1、n=0、r>n 等边界与退化情形',
+          '适用性提示：r>n 时排列与组合明确标注不适用及原因，圆排列对 n≥1 才可用',
+          '输入校验：仅接受 0～1000 的非负整数，非法、超限输入即时给出错误提示',
+        ],
+        howToUse: [
+          '在 n 输入框填写元素总数，在 r 输入框填写选取数量（均为非负整数）',
+          '结果随输入实时更新，每个卡片显示名称、记号、公式与精确值',
+          '悬停记号可查看公式与语义说明；悬停精确值可查看未加分隔的完整数字',
+          '不适用的变体（如 r>n 时的排列）会置灰并解释原因',
+        ],
+        useCases: [
+          '算法分析：估算暴力搜索、全排列、子集枚举等方案的复杂度规模',
+          '概率统计：计算抽样、彩票、扑克牌型等问题的样本空间与有利事件数',
+          '竞赛数学：快速核对排列组合、隔板法与环形排列题目的计数结果',
+          '教学演示：对比有无放回、是否计顺序、直线与环形排列之间的数量差异',
+        ],
+        privacyNote:
+          '所有计算均在浏览器本地完成，输入的 n、r 不会被上传、存储或记录。',
+        faqs: [
+          {
+            question: '为什么结果能显示几百上千位而不失真？',
+            answer:
+              '内部全程使用 JavaScript 的 BigInt 任意精度整数类型做乘除运算，不经过浮点数，因此不存在 Number 的安全整数上限（约 9e15）问题；界面上展示的精确值逐位可靠，科学计数法仅作为阅读超长数字时的辅助近似。',
+          },
+          {
+            question: '重复排列 nʳ 和重复组合 C(n+r−1,r) 有什么区别？',
+            answer:
+              '两者都假设每次选取后放回、n 保持不变。重复排列计顺序，例如两次掷骰子的结果 (1,2) 与 (2,1) 不同，共 nʳ 种；重复组合不计顺序，(1,2) 与 (2,1) 视为同一种多重集，数量为 C(n+r−1,r)。普通的 P(n,r)、C(n,r) 则是不放回的情形。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first combinatorics calculator. Given a population size n and selection size r, it returns six common counts at once — factorial, permutation, combination, repetition permutation (n^r), repetition combination, and circular permutation. Everything is computed with exact BigInt integer arithmetic, so even 2568-digit results like 1000! stay exact, with scientific-notation approximations appended for readability.',
+        coreFeatures: [
+          'Six results at once: factorial, permutation, combination, repetition permutation, repetition combination, and circular permutation',
+          'Exact BigInt arithmetic: no floating-point approximation, with digit-perfect results and thousands separators',
+          'Scientific notation: results above 10^15 get an approximation rounded to 10 significant figures',
+          'Edge-case complete: handles 0! = 1, C(n,0) = 1, n=0, and r>n degeneracies correctly',
+          'Applicability hints: permutation and combination are marked not applicable (with reasons) when r>n; circular permutation requires n≥1',
+          'Input validation: only non-negative integers from 0 to 1000 are accepted, with instant error messages',
+        ],
+        howToUse: [
+          'Enter the population size in the n field and the selection size in the r field (non-negative integers)',
+          'All cards update live, each showing the name, notation, formula, and exact value',
+          'Hover the notation for its formula and meaning; hover the exact value for the raw digit string',
+          'Inapplicable variants (e.g. permutation when r>n) are greyed out with an explanation',
+        ],
+        useCases: [
+          'Algorithm analysis: gauge the scale of brute-force, full-permutation, or subset-enumeration approaches',
+          'Probability and statistics: count sample spaces and favorable outcomes in sampling, lottery, or poker problems',
+          'Math competitions: quickly verify permutation, stars-and-bars, and circular-arrangement answers',
+          'Teaching: contrast with/without replacement, ordered vs unordered, and linear vs circular arrangements',
+        ],
+        privacyNote:
+          'All computation happens locally in your browser; the entered n and r are never uploaded, stored, or logged.',
+        faqs: [
+          {
+            question: 'How can it show hundreds or thousands of digits without losing precision?',
+            answer:
+              'Internally every multiplication and division uses JavaScript BigInt arbitrary-precision integers instead of floating point, so the Number safe-integer limit (~9e15) never applies. The displayed exact values are reliable digit by digit; scientific notation is only a reading aid for very long numbers.',
+          },
+          {
+            question: 'What is the difference between repetition permutation n^r and repetition combination C(n+r-1,r)?',
+            answer:
+              'Both assume selection with replacement, so n stays constant. Repetition permutation cares about order — two dice rolls (1,2) and (2,1) differ, giving n^r outcomes. Repetition combination ignores order, treating (1,2) and (2,1) as the same multiset, counted by C(n+r-1,r). The plain P(n,r) and C(n,r) are the without-replacement cases.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
