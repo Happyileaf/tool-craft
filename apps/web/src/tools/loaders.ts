@@ -94,4 +94,5 @@ export const toolLoaders: Record<
   'css-specificity-calculator': () => import('./css-specificity-calculator'),
   'number-locale-formatter': () => import('./number-locale-formatter'),
   'nato-phonetic-converter': () => import('./nato-phonetic-converter'),
+  'iso8601-duration': () => import('./iso8601-duration'),
 };

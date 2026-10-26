@@ -7010,6 +7010,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'iso8601-duration',
+    name: 'ISO 8601 时长解析与格式化',
+    nameEn: 'ISO 8601 Duration Parser & Formatter',
+    description:
+      '解析 P1Y2M3DT4H5M6S、PT90M、P2W 等 ISO 8601 时长字符串为年 / 月 / 周 / 日 / 时 / 分 / 秒明细与折算总秒数，并可把任意秒数反向进位归一化为标准时长；支持负时长、小数分量与非法语法诊断。',
+    descriptionEn:
+      'Parse ISO 8601 durations such as P1Y2M3DT4H5M6S, PT90M, and P2W into year/month/week/day/hour/minute/second components and an approximate total in seconds, or normalize any number of seconds back into the standard format—with support for negative durations, fractional components, and strict syntax diagnostics.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/iso8601-duration',
+    iconName: 'Clock',
+    tags: ['ISO 8601', '时长', 'Duration', '时间间隔', 'PT1H'],
+    tagsEn: ['ISO 8601', 'Duration', 'Time Interval', 'Parser', 'Formatter'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'P1Y2M3DT4H5M6S',
+    doc: {
+      zh: {
+        whatIsIt:
+          'ISO 8601 时长解析与格式化工具处理「时长 / 间隔」维度的标准表示：解析方向把 PnYnMnDTnHnMnS（及 PnW）字符串拆解为年、月、周、日、时、分、秒七个分量，并按 365 天/年、30 天/月、7 天/周折算总秒数；格式化方向把任意秒数（含负数与小数）按「日 → 时 → 分 → 秒」进位归一化后输出标准字符串。解析器严格校验语法：分量顺序、重复分量、周与其他分量互斥、只有最后一个分量允许小数等，出错时给出具体原因。所有计算在浏览器本地完成。',
+        coreFeatures: [
+          '严格解析 ISO 8601 时长：PnYnMnDTnHnMnS 与周表示 PnW，支持负号（-P1D）与正号',
+          '七分量明细展示（年/月/周/日/时/分/秒），并按固定折算给出总秒数',
+          '秒数反向格式化：自动进位归一化、零时长 PT0S、负数输出 -PT…',
+          '支持逗号或点的小数分量（PT1,5H）、大小写 t、毫秒级小数秒（最多 3 位）',
+          '纯函数零依赖与明确的语法诊断（重复单位、周混用、小数位置、T 段错位等）',
+        ],
+        howToUse: [
+          '在「解析」模式输入 ISO 时长（如 P1Y2M3DT4H5M6S 或 PT90M），即时看到七个分量与总秒数',
+          '切换到「格式化」模式，输入任意秒数（如 90540），得到归一化的 P1DT1H9M 与中文可读描述',
+          '输入负秒数或负时长（-PT30S）可验证负向时间间隔的表示',
+          '点击「复制」可复制原始 ISO 字符串或新生成的标准时长',
+        ],
+        useCases: [
+          '阅读 API 文档或日志中的 ISO 时长字段（视频时长、缓存 TTL、任务超时）',
+          '构造媒体播放时长（ISO BMFF / FFmpeg 等常用 PT#H#M#S）并核对总秒数',
+          '把用户输入的秒数配置转换为符合 ISO 8601 的配置值',
+          '排查非法时长字符串：快速定位是分量重复、周混用还是小数位置错误',
+        ],
+        privacyNote: '所有解析与格式化均在浏览器本地完成，不发送任何数据到服务器。',
+        faqs: [
+          {
+            question: '为什么总秒数对「年 / 月」是近似值？',
+            answer:
+              '公历年可能是 365 或 366 天，月份从 28 到 31 天不等，ISO 8601 的年月分量本身没有固定秒数。工具按常见工程约定（365 天/年、30 天/月）折算并明确标注；需要精确历法加减应改用具体起止日期计算。',
+          },
+          {
+            question: '为什么 P1W1D 报错？',
+            answer:
+              'ISO 8601 规定周（W）分量不能与年、月、日及时间分量混用。两周就是 P2W；如需「一周零一天」请统一折算为 P8D。',
+          },
+          {
+            question: 'P1Y0.5M 为什么不合法？',
+            answer:
+              '标准规定小数只能出现在最后一个（最小）分量上。带小数时应直接用最小单位表达，例如 1 年 6 个月写作 P1.5Y，或一个半小时写作 PT1.5H 而不是 PT1H0.5M。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ISO 8601 Duration Parser & Formatter covers the "duration / interval" dimension of the standard: the parser breaks PnYnMnDTnHnMnS (and PnW) strings into year, month, week, day, hour, minute, and second components and approximates the total seconds using 365 days/year, 30 days/month, and 7 days/week; the formatter normalizes any number of seconds (negative or fractional) with day → hour → minute → second carry and emits a standard string. The parser validates syntax strictly—component order, duplicates, the week-exclusivity rule, and fractional components only in the last position—and explains exact error causes. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Strict parsing of PnYnMnDTnHnMnS and week form PnW, with negative (-P1D) and positive signs',
+          'Seven-component breakdown plus an approximate total-seconds figure with fixed conversions',
+          'Reverse formatting of arbitrary seconds with carry normalization, PT0S for zero, and -PT… for negatives',
+          'Fractional components via comma or dot (PT1,5H), lowercase t, and millisecond precision (up to 3 decimals)',
+          'Pure functions, zero dependencies, and precise diagnostics (duplicates, mixed weeks, fraction position, T-section errors)',
+        ],
+        howToUse: [
+          'In Parse mode, enter an ISO duration (e.g. P1Y2M3DT4H5M6S or PT90M) to see the seven components and total seconds instantly',
+          'Switch to Format mode, type any number of seconds (e.g. 90540), and get normalized output like P1DT1H9M plus a readable description',
+          'Try negative seconds or durations (-PT30S) to see how negative intervals are represented',
+          'Use Copy to grab either the original ISO string or the freshly formatted duration',
+        ],
+        useCases: [
+          'Reading ISO duration fields in API docs or logs (video length, cache TTL, task timeout)',
+          'Building media durations (PT#H#M#S common in ISO BMFF / FFmpeg) and checking total seconds',
+          'Converting second-based configuration values into ISO 8601 strings',
+          'Debugging malformed durations—duplicate units, mixed weeks, or misplaced fractions',
+        ],
+        privacyNote: 'All parsing and formatting run locally in the browser; no data is sent anywhere.',
+        faqs: [
+          {
+            question: 'Why are total seconds only approximate for years and months?',
+            answer:
+              'Calendar years have 365 or 366 days and months range from 28 to 31, so ISO year/month components have no fixed length in seconds. The tool uses the common engineering convention (365 days/year, 30 days/month) and labels it as such; exact calendar arithmetic should use concrete start and end dates.',
+          },
+          {
+            question: 'Why does P1W1D fail?',
+            answer:
+              'ISO 8601 forbids combining the week (W) component with years, months, days, or time components. Two weeks is P2W; for "one week and one day", express it uniformly as P8D.',
+          },
+          {
+            question: 'Why is P1Y0.5M invalid?',
+            answer:
+              'The standard allows a fraction only on the final (smallest) component. Use the smallest unit instead—1 year 6 months as P1.5Y, or one and a half hours as PT1.5H rather than PT1H0.5M.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
