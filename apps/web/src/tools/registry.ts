@@ -6332,6 +6332,96 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'mac-address-converter',
+    name: 'MAC 地址格式转换与校验',
+    nameEn: 'MAC Address Format Converter & Validator',
+    description:
+      '解析冒号、连字符、Cisco 点分与裸十六进制四种写法的 MAC-48 / EUI-64 地址，一键互转并规范化大小写，同时校验合法性、解读 I/G 单播组播位与 U/L 全球/本地管理位、拆分 OUI 与设备标识，并为 MAC-48 派生 EUI-64。',
+    descriptionEn:
+      'Parse MAC-48/EUI-64 addresses in colon, hyphen, Cisco dotted, and bare-hex notations, convert between all four formats with normalized case, validate input, decode the I/G (unicast/multicast) and U/L (universal/local) bits, split OUI from device identifier, and derive EUI-64 from a MAC-48 address.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/mac-address-converter',
+    iconName: 'Fingerprint',
+    tags: ['MAC 地址', 'EUI-64', 'OUI', '网络', '格式转换'],
+    tagsEn: ['MAC Address', 'EUI-64', 'OUI', 'Networking', 'Format Conversion'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'AA:BB:CC:DD:EE:FF',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 MAC 地址校验与格式转换工具。输入任意一种常见写法——冒号分隔（AA:BB:CC:DD:EE:FF）、连字符分隔（AA-BB-CC-DD-EE-FF）、Cisco 三点分（aabb.ccdd.eeff）或连续裸十六进制（AABBCCDDEEFF）——即可自动识别格式、校验合法性，并同时输出四种规范写法。工具还会解读首位字节的两个标志位：最低位 bit0 为 I/G 位（0 单播、1 组播），次低位 bit1 为 U/L 位（0 厂商分配的全球唯一地址 UAA、1 软件设置的本地管理地址 LAA）；同时拆分前 3 字节 OUI 厂商代码与其余字节的设备标识。对 6 字节 MAC-48，工具按 RFC 2373 在 OUI 与设备标识之间插入 FF:FE 派生 8 字节 EUI-64（不翻转 U/L 位）。',
+        coreFeatures: [
+          '自动识别冒号、连字符、Cisco 点分、裸十六进制四种输入，同时支持 MAC-48（6 字节）与 EUI-64（8 字节）',
+          '一次解析输出全部四种规范格式，可切换 A-F 大小写，每行结果一键复制',
+          '严格校验：每组位数、非法字符、组数（如 Cisco 3 组 / 4 组）与总长度，错误信息中文说明原因',
+          '解读首字节 I/G（单播/组播）与 U/L（全球唯一/本地管理）标志位，给出 8 位二进制与 OUI、设备标识拆分',
+          'MAC-48 → EUI-64 派生（插入 FF:FE）；纯本地运算，零新增依赖',
+        ],
+        howToUse: [
+          '在输入框粘贴或输入 MAC 地址，四种写法均可，工具会自动识别并即时校验',
+          '勾选「大写输出」可在大写（AA:BB:...）与小写（aa:bb:...）之间切换全部结果',
+          '查看结果区的传输类型、管理方式标签，以及 OUI 厂商代码与设备标识',
+          'MAC-48 地址会额外显示 EUI-64 派生值；在输出表格中点击「复制」即可取走所需格式',
+        ],
+        useCases: [
+          '网络运维中把交换机、路由器配置里的 MAC 写法互转（如 Cisco aabb.ccdd.eeff ↔ 标准冒号格式）',
+          '配置白名单 / ACL / DHCP 静态绑定时核对 MAC 合法性并统一大小写与分隔符',
+          'IPv6 无状态自动配置（SLAAC）教学中理解 MAC-48 到 EUI-64 的 FF:FE 插入过程',
+        ],
+        privacyNote: '所有解析与转换均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: 'I/G 位和 U/L 位分别是什么？',
+            answer:
+              '它们是 MAC 地址首字节最低的两个比特。bit0 是 I/G（Individual/Group）位：0 表示单播地址（指向一块网卡），1 表示组播地址（如 01:00:5E:...），FF:FF:FF:FF:FF:FF 广播地址该位也为 1。bit1 是 U/L（Universal/Local）位：0 表示由厂商烧录、OUI 全局唯一的地址（UAA），1 表示由软件/管理员自行设置的本地管理地址（LAA，常见于虚拟机、随机化 MAC）。例如首字节 0x02 = 00000010，即全球单播位不变、本地管理位置位。',
+          },
+          {
+            question: 'MAC-48 派生 EUI-64 时为什么插入 FF:FE？会不会翻转 U/L 位？',
+            answer:
+              '按 RFC 2373 的 IPv6 接口标识符规则，把 6 字节 MAC-48 从中间（OUI 之后）切开，插入固定两字节 FF:FE，即得到 8 字节 EUI-64，如 AA:BB:CC:DD:EE:FF → AA:BB:CC:FF:FE:DD:EE:FF。需要注意：EUI-64 标识符本身只是插入 FF:FE；而从 EUI-64 生成 IPv6 链路本地地址（fe80::/64）时才要求把首字节的 U/L 位翻转。本工具只做 EUI-64 派生，不翻转 U/L 位，并在结果中保留原地址的标志位解读。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local MAC address validator and format converter. Paste any common notation—colon-separated (AA:BB:CC:DD:EE:FF), hyphen-separated (AA-BB-CC-DD-EE-FF), Cisco dotted (aabb.ccdd.eeff), or contiguous bare hex (AABBCCDDEEFF)—and the tool auto-detects the format, validates it, and emits all four canonical notations at once. It also decodes the two flag bits in the first octet: the least-significant bit (bit 0) is the I/G bit (0 unicast, 1 multicast), and bit 1 is the U/L bit (0 universally administered/UAA burned in by the vendor, 1 locally administered/LAA set by software). It splits the 3-byte OUI from the device identifier and, for a 6-byte MAC-48, derives an 8-byte EUI-64 per RFC 2373 by inserting FF:FE between the OUI and device identifier (without flipping the U/L bit).',
+        coreFeatures: [
+          'Auto-detects colon, hyphen, Cisco dotted, and bare-hex input; supports both MAC-48 (6 bytes) and EUI-64 (8 bytes)',
+          'One parse emits all four canonical notations, with an A-F uppercase toggle and per-row copy buttons',
+          'Strict validation of per-group width, illegal characters, group count (e.g., Cisco 3 vs 4 groups), and total length, with clear error messages',
+          'Decodes the first-octet I/G (unicast/multicast) and U/L (universal/local) bits, shows 8-bit binary, and splits OUI from device identifier',
+          'MAC-48 → EUI-64 derivation (FF:FE insertion); purely local computation with zero new dependencies',
+        ],
+        howToUse: [
+          'Paste or type a MAC address in any of the four notations; the format is detected and validated instantly',
+          'Toggle "uppercase output" to switch every result between uppercase (AA:BB:...) and lowercase (aa:bb:...)',
+          'Review the transmission-type and administration tags plus the OUI vendor code and device identifier',
+          'MAC-48 input additionally shows the derived EUI-64; click "copy" on any output row to take the notation you need',
+        ],
+        useCases: [
+          'Converting MAC notations across switch/router configs in network operations (e.g., Cisco aabb.ccdd.eeff ↔ standard colon form)',
+          'Validating MAC addresses and normalizing case/separators for whitelists, ACLs, or static DHCP bindings',
+          'Teaching the MAC-48 to EUI-64 FF:FE insertion used by IPv6 stateless autoconfiguration (SLAAC)',
+        ],
+        privacyNote: 'All parsing and conversion run locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'What are the I/G bit and the U/L bit?',
+            answer:
+              'They are the two least-significant bits of the first MAC octet. Bit 0 is the I/G (Individual/Group) bit: 0 means unicast (a single NIC) and 1 means multicast (e.g., 01:00:5E:...); the broadcast FF:FF:FF:FF:FF:FF also has this bit set. Bit 1 is the U/L (Universal/Local) bit: 0 means a vendor-burned, OUI-globally-unique address (UAA), while 1 means a locally administered address (LAA) set by software or an administrator, common for VMs and randomized MACs. For example, a first octet of 0x02 (00000010) is unicast but locally administered.',
+          },
+          {
+            question: 'Why is FF:FE inserted for EUI-64, and is the U/L bit flipped?',
+            answer:
+              'Per RFC 2373, the 6-byte MAC-48 is split after the OUI and the fixed two bytes FF:FE are inserted to form an 8-byte EUI-64—AA:BB:CC:DD:EE:FF becomes AA:BB:CC:FF:FE:DD:EE:FF. Note that EUI-64 derivation itself only inserts FF:FE; flipping the first-octet U/L bit is a separate step applied only when building an IPv6 link-local address (fe80::/64) from the EUI-64 identifier. This tool performs EUI-64 derivation only, leaves the U/L bit untouched, and keeps the original flag-bit analysis in its output.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
