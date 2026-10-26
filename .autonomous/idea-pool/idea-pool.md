@@ -57,7 +57,7 @@
 | 20261017200240 | MIME 类型速查与识别 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200240.md) |
 | 20261017220042 | 银行卡号校验与卡种识别 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017220042.md) |
 | 20261017220043 | 地理坐标格式转换（十进制 ↔ 度分秒） | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220043.md) |
-| 20261017220044 | 数字千分位与货币格式化 | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017220044.md) |
+| 20261017220044 | 数字千分位与货币格式化 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017220044.md) |
 | 20261017220045 | vCard（VCF）名片生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220045.md) |
 | 20261017220046 | 敏感信息脱敏（PII 掩码） | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017220046.md) |
 | 20261017220047 | 开源许可证生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220047.md) |

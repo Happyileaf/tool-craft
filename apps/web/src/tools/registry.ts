@@ -6806,6 +6806,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'number-locale-formatter',
+    name: '数字千分位与货币格式化',
+    nameEn: 'Number & Currency Locale Formatter',
+    description:
+      '把同一数值按多个区域设置渲染成本地化排版：千分位分组符、小数点、小数位与舍入、货币符号与位置、负数括号、百分比与紧凑记法（1.2K / 123 万），基于浏览器原生 Intl.NumberFormat，零新依赖。',
+    descriptionEn:
+      'Render one number in multiple locales at once: thousands separators, decimal marks, fraction digits and rounding, currency symbols and placement, accounting parentheses, percentages, and compact notation (1.2K / 123 万), powered by the native Intl.NumberFormat with zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/number-locale-formatter',
+    iconName: 'Gauge',
+    tags: ['数字格式化', '千分位', '货币', 'Intl', '本地化', 'i18n'],
+    tagsEn: ['Number Format', 'Thousands Separator', 'Currency', 'Intl', 'Locale', 'i18n'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1234567.895',
+    doc: {
+      zh: {
+        whatIsIt:
+          '数字千分位与货币格式化工具把同一个数值按一个或多个 BCP 47 区域设置（如 zh-CN、en-US、de-DE）渲染为本地化文本，直观对比各地区的千分位分组符、小数点符号、货币符号及其位置、小数位与舍入、负数会计括号写法、百分比以及紧凑记法（1.2K / 123 万）。工具是浏览器原生 Intl.NumberFormat 的纯函数封装，不引入任何运行时依赖，也不发送网络请求，常用于多语言产品文案、报价单与财务报表的格式核对。',
+        coreFeatures: [
+          '同一数值同时对比多个区域设置，覆盖中、英、德、法、日、印地语等常用地区',
+          '数字 / 货币（ISO 4217 代码）/ 百分比三种模式，货币符号位置与默认小数位随区域自动变化',
+          '标准与紧凑记法切换（1,234,567 ↔ 1.2M / 123 万），可开关千分位分组',
+          '可选固定小数位（0-20，四舍五入）与负数括号写法（如 ($1,234.50)）',
+          '纯函数 + 原生 Intl 封装、零新依赖、输入实时联动',
+        ],
+        howToUse: [
+          '在顶部输入一个有限数字（不要带千分位逗号），例如 -1234567.89',
+          '选择数字、货币或百分比模式；货币模式再选择 ISO 货币代码（如 USD、CNY、JPY）',
+          '按需切换紧凑记法、千分位分组、负数括号与固定小数位',
+          '在「对比区域」中勾选一个或多个区域设置，下方即时列出各区域排版结果',
+        ],
+        useCases: [
+          '多语言产品中核对同一金额在不同地区的展示（$1,234.50 / 1.234,50 € / ￥1,235）',
+          '财务报表与发票的会计括号负数写法、固定小数位核对',
+          '前端开发验证 Intl.NumberFormat 参数（notation、currencyDisplay、分组）的实际输出',
+          '运营文案中 K / M / 万等紧凑数字在各语言下的写法确认',
+        ],
+        privacyNote: '所有格式化均在浏览器本地通过原生 Intl 完成，不发送任何数据到服务器。',
+        faqs: [
+          {
+            question: '和已有的「数字转中文大写金额」工具有什么区别？',
+            answer:
+              '中文大写金额工具输出的是壹贰叁、元角分形式的发票合同文本；本工具关注的是各地区的数字排版（分组符、小数点、货币符号位置、负数与百分比写法），两者用途不同、互不替代。',
+          },
+          {
+            question: '为什么输入 1,234.5 提示无法解析？',
+            answer:
+              '输入框要求的是纯数字字面量，千分位逗号属于「输出排版」而不是输入语法。请直接输入 1234.5；如需查看带逗号的结果，选择对应区域设置后会自动渲染。',
+          },
+          {
+            question: '紧凑记法在中文下为什么没有空格？',
+            answer:
+              '输出由浏览器内置 ICU 数据决定，不同区域（甚至不同浏览器 / ICU 版本）可能存在空格或字形的细微差异，例如部分环境输出「123万」，另一些输出「123 万」。工具如实反映当前运行环境的 Intl 结果。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Number & Currency Locale Formatter renders one numeric value in one or more BCP 47 locales (such as zh-CN, en-US, de-DE), making it easy to compare thousands separators, decimal marks, currency symbols and their placement, fraction digits and rounding, accounting parentheses for negatives, percentages, and compact notation (1.2K / 123 万). It is a thin pure-function wrapper over the native Intl.NumberFormat API with no runtime dependencies and no network requests, ideal for checking formats in localized copy, quotations, and financial reports.',
+        coreFeatures: [
+          'Compare several locales simultaneously, including Chinese, English, German, French, Japanese, and Hindi regions',
+          'Decimal, currency (ISO 4217 codes), and percent modes with locale-driven symbol placement and default digits',
+          'Switch between standard and compact notation (1,234,567 ↔ 1.2M / 123 万) and toggle grouping',
+          'Optional fixed fraction digits (0-20, rounded) and accounting parentheses for negatives (e.g. ($1,234.50))',
+          'Pure functions over native Intl, zero new dependencies, live-linked results',
+        ],
+        howToUse: [
+          'Enter a finite number at the top (without thousands commas), for example -1234567.89',
+          'Pick decimal, currency, or percent mode; in currency mode choose an ISO code such as USD, CNY, or JPY',
+          'Toggle compact notation, grouping, negative parentheses, and fixed fraction digits as needed',
+          'Select one or more locales in the comparison selector to see every localized rendering instantly',
+        ],
+        useCases: [
+          'Checking how one amount appears across regions ($1,234.50 / 1.234,50 € / ￥1,235) in localized products',
+          'Verifying accounting parentheses and fixed decimals on financial statements and invoices',
+          'Testing the actual output of Intl.NumberFormat options (notation, currencyDisplay, grouping) during frontend work',
+          'Confirming compact K / M / 万 styles across languages for marketing copy',
+        ],
+        privacyNote: 'All formatting runs locally in the browser via native Intl; no data is sent anywhere.',
+        faqs: [
+          {
+            question: 'How is this different from the existing Chinese RMB amount tool?',
+            answer:
+              'The RMB tool produces formal uppercase Chinese text (壹贰叁, 元角分) for invoices and contracts; this tool focuses on regional numeric typography—grouping separators, decimal marks, currency symbol placement, negatives, and percentages. They serve different purposes.',
+          },
+          {
+            question: 'Why is 1,234.5 rejected as input?',
+            answer:
+              'The input expects a plain numeric literal; thousands commas are output typography, not input syntax. Type 1234.5 directly, then choose a locale to render the grouped representation.',
+          },
+          {
+            question: 'Why does Chinese compact output sometimes lack a space?',
+            answer:
+              'Output comes from the browser’s built-in ICU data, so minor spacing or glyph differences can occur across locales and even across browsers or ICU versions (e.g. "123万" vs "123 万"). The tool faithfully reports the Intl result of the current runtime.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
