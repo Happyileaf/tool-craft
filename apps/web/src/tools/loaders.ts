@@ -75,4 +75,5 @@ export const toolLoaders: Record<
   'uuid-inspector': () => import('./uuid-inspector'),
   'isbn-converter': () => import('./isbn-converter'),
   'combinatorics-calculator': () => import('./combinatorics-calculator'),
+  'base45-codec': () => import('./base45-codec'),
 };

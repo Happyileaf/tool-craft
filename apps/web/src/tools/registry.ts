@@ -5260,6 +5260,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'base45-codec',
+    name: 'Base45（RFC 9285）编解码',
+    nameEn: 'Base45 (RFC 9285) Encoder & Decoder',
+    description:
+      '在 UTF-8 文本与 Base45 字符串之间双向转换，使用 RFC 9285 定义的 0-9、A-Z 与 " $%*+-./:" 共 45 字符集，严格校验非法字符、非法尾序列与数值溢出并报告位置。',
+    descriptionEn:
+      'Convert between UTF-8 text and Base45 strings using the RFC 9285 alphabet (0-9, A-Z, and " $%*+-./:"), with strict validation of illegal characters, illegal tail groups, and value overflow, reporting exact positions.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/base45-codec',
+    iconName: 'Binary',
+    tags: ['Base45', 'RFC 9285', '编解码', '二维码', 'DCC'],
+    tagsEn: ['Base45', 'RFC 9285', 'Encode', 'QR Code', 'DCC'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Hello!!',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 Base45 编解码工具。Base45 由 RFC 9285 定义，使用 45 个可打印字符表示二进制数据，每 2 个字节编码为 3 个字符，是欧盟数字健康证书（DCC）二维码等字符集受限介质的标准承载编码。',
+        coreFeatures: [
+          '严格遵循 RFC 9285：字符集为 0-9、A-Z 与 " $%*+-./:"，2 字节→3 字符、末字节→2 字符',
+          '双向转换：UTF-8 文本即时编码为 Base45，Base45 严格解码回文本',
+          '精确报错：非法字符、非法单字符尾序列、尾组数值溢出均报告具体位置与原因',
+          'UTF-8 校验：解码后字节不是合法 UTF-8 序列时明确提示，不输出乱码',
+          '纯本地运行：所有转换在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择「编码」或「解码」方向，切换时自动载入对应示例',
+          '在输入框粘贴文本或 Base45 字符串，结果即时更新',
+          '点击「复制结果」获取转换内容，或「清空」重新输入',
+        ],
+        useCases: [
+          '解析欧盟数字健康证书（DCC）二维码 Payload 中的 Base45 数据',
+          '在可表示字符集受限的二维码、票据、印刷介质上承载二进制内容',
+          '校验 Base45 字符串是否合法并定位损坏字符的具体位置',
+        ],
+        privacyNote: '所有编解码均在浏览器本地完成，输入的文本与 Base45 字符串不会被上传或记录。',
+        faqs: [
+          {
+            question: 'Base45 和 Base64 有什么区别？',
+            answer:
+              'Base64 面向 8 位字节通道，每 3 字节编码为 4 字符（A-Z、a-z、0-9、+、/）；Base45 面向只能高效表示大写字母与数字的二维码等介质，字符表更小（含部分标点），每 2 字节编码为 3 字符，且单字节尾组合法。',
+          },
+          {
+            question: '为什么解码时提示尾序列非法？',
+            answer:
+              'RFC 9285 规定输入长度只能是 3 的倍数（完整双字节组）或模 3 余 2（末尾一个单字节组）。长度余 1 时最后一个字符无法对应任何字节，属于损坏或截断的输入。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first Base45 codec. Defined by RFC 9285, Base45 represents binary data with 45 printable characters, encoding every 2 bytes into 3 characters. It is the standard transport encoding for payloads such as the EU Digital COVID Certificate (DCC) QR codes.',
+        coreFeatures: [
+          'Strict RFC 9285: alphabet 0-9, A-Z, and " $%*+-./:"; 2 bytes to 3 chars, one trailing byte to 2 chars',
+          'Bidirectional: UTF-8 text to Base45 instantly, and strict Base45 decoding back to text',
+          'Precise errors: illegal characters, illegal single-char tails, and overflow report exact position and reason',
+          'UTF-8 validation: decoded bytes that are not valid UTF-8 are reported instead of showing mojibake',
+          'Local-first: all conversion runs in the browser with no network requests',
+        ],
+        howToUse: [
+          'Pick the "Encode" or "Decode" direction; switching loads the matching sample automatically',
+          'Paste text or a Base45 string into the input area and the result updates instantly',
+          'Click "Copy result" to copy the conversion, or "Clear" to start over',
+        ],
+        useCases: [
+          'Decode Base45 payloads inside EU Digital COVID Certificate (DCC) QR codes',
+          'Carry binary content over QR codes, tickets, or printed media with restricted character sets',
+          'Validate whether a Base45 string is well-formed and locate corrupted characters',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally in the browser; entered text and Base45 strings are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How does Base45 differ from Base64?',
+            answer:
+              'Base64 targets 8-bit channels and encodes 3 bytes into 4 characters (A-Z, a-z, 0-9, +, /). Base45 targets media such as QR codes that efficiently represent uppercase letters and digits; it uses a smaller alphabet (with selected punctuation), encodes 2 bytes into 3 characters, and allows a one-byte tail group.',
+          },
+          {
+            question: 'Why does decoding report an illegal tail sequence?',
+            answer:
+              'RFC 9285 allows input lengths that are multiples of 3 (full two-byte groups) or with a remainder of 2 (one trailing single-byte group). A remainder of 1 means the final character cannot map to any byte, indicating corrupted or truncated input.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
