@@ -147,3 +147,4 @@
 | 20261026140923 | 数字英文读法转换器（Number to English Words） | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026140923.md) |
 | 20261026140924 | MessagePack ↔ JSON 双向编解码器 | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026140924.md) |
 | 20261026140925 | 日期时间差计算与日期加减计算器 | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026140925.md) |
+| 20261026140926 | 换行符检测与批量转换器（LF / CRLF / CR） | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026140926.md) |
