@@ -18,6 +18,7 @@ import {
   QrCode,
   ShieldCheck,
   Shuffle,
+  Snowflake,
   Sparkles,
   Tags,
   type LucideProps,
@@ -48,6 +49,7 @@ const toolIconMap = {
   Tags,
   Eye,
   Sparkles,
+  Snowflake,
 };
 
 /**

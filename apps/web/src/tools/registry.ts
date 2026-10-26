@@ -5883,6 +5883,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'snowflake-id-parser',
+    name: 'Snowflake ID 解析器',
+    nameEn: 'Snowflake ID Parser',
+    description:
+      '按「纪元 + 41 位毫秒时间戳 + 10 位机器位 + 12 位序列号」位布局拆解 Snowflake ID，内置 Twitter/X 与 Discord 纪元并支持自定义纪元，输出创建时间（UTC/本地）、机器位、序列号与十六进制/二进制，并支持反向拼装示例 ID。',
+    descriptionEn:
+      'Decompose Snowflake IDs into epoch + a 41-bit millisecond timestamp + a 10-bit machine ID + a 12-bit sequence, with built-in Twitter/X and Discord epochs (plus custom epochs), showing the creation time in UTC/local, machine and worker/process fields, sequence, hex and binary, with reverse ID building.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/snowflake-id-parser',
+    iconName: 'Snowflake',
+    tags: ['Snowflake', 'Discord', '位运算', 'ID 解析'],
+    tagsEn: ['Snowflake', 'Discord', 'Bit Twiddling', 'ID Parser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '175928847299117063',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 Snowflake ID 解析与拼装工具。Snowflake 是 Twitter/X 提出、Discord 等平台广泛采用的 64 位分布式 ID 方案：最高位保留，随后 41 位是相对平台纪元的毫秒时间戳，再 10 位是机器/Worker 标识（Discord 进一步拆成 5 位 worker + 5 位 process），最低 12 位是同毫秒内自增的序列号。工具基于 BigInt 做无精度损失的 64 位运算，并把结果还原为可读时间。',
+        coreFeatures: [
+          '64 位 Snowflake ID 位拆解：41 位时间戳 + 10 位机器位 + 12 位序列号',
+          '内置 Twitter/X（1288834974657）与 Discord（1420070400000）纪元，支持自定义纪元毫秒值',
+          '输出毫秒时间戳、UTC 与本地时间、机器 ID 及 worker/process 拆分、序列号',
+          '同步展示十进制、十六进制与补齐 64 位的二进制，方便核对位布局',
+          '反向拼装：给定时间戳、机器位与序列号生成示例 ID，再解析可字段一致地往返',
+        ],
+        howToUse: [
+          '粘贴 Snowflake ID（如 Discord 消息/用户/频道链接中的长数字），选择对应平台纪元',
+          '查看创建时间、机器位与序列号；Discord ID 会同时显示 worker 与 process 拆分',
+          '在「反向拼装」卡片选择时间与机器位/序列号，点击「拼装 ID」生成示例',
+        ],
+        useCases: [
+          '社区运营与客服根据 Discord 消息/用户 ID 还原内容或账号的创建时间',
+          '数据迁移与排障时核对 Twitter/X、Discord 等平台 Snowflake ID 的来源机器与顺序',
+          '开发联调时构造指定时间戳的测试 Snowflake ID',
+        ],
+        privacyNote: 'ID 解析与拼装全部在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么不同平台解析同一个 ID 得到的时间不一样？',
+            answer:
+              'Snowflake 的时间戳是相对各自平台纪元的毫秒差。Twitter/X 纪元是 2010-11-04 的 1288834974657，Discord 纪元是 2015-01-01 的 1420070400000。同一个 ID 套用错误纪元会整体偏移，因此解析前要先选择正确的平台纪元；工具在结果早于纪元时会给出提示。',
+          },
+          {
+            question: '机器位为什么还拆成 worker 和 process？',
+            answer:
+              '标准 Snowflake 用 10 位机器位（0–1023）标识产生 ID 的节点。Discord 在其官方文档中把这 10 位进一步拆成 5 位内部 worker（0–31）与 5 位 process（0–31）。工具同时展示两种视角：机器 ID 是完整 10 位值，worker/process 是 Discord 风格的 5+5 拆分。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local parser and builder for 64-bit Snowflake IDs, the distributed identifier scheme introduced by Twitter/X and used by Discord and many others: a reserved top bit, then 41 bits of milliseconds since a platform epoch, then 10 bits of machine/worker identity (Discord splits this into 5 worker bits + 5 process bits), and finally 12 bits of a per-millisecond sequence. All math uses BigInt so 64-bit values stay exact, and timestamps render as readable dates.',
+        coreFeatures: [
+          '64-bit decomposition into a 41-bit timestamp, 10-bit machine ID, and 12-bit sequence',
+          'Built-in Twitter/X (1288834974657) and Discord (1420070400000) epochs plus a custom epoch',
+          'Millisecond timestamp, UTC and local time, machine ID with worker/process split, and sequence',
+          'Decimal, hexadecimal, and zero-padded 64-bit binary views for checking the bit layout',
+          'Reverse builder: assemble an example ID from timestamp, machine, and sequence and round-trip it',
+        ],
+        howToUse: [
+          'Paste a Snowflake ID (such as the long number in a Discord message/user/channel link) and pick the matching epoch',
+          'Inspect the creation time, machine fields, and sequence; Discord IDs also show worker and process',
+          'Use the builder card with a time, machine ID, and sequence to create an example ID',
+        ],
+        useCases: [
+          'Community managers and support staff dating Discord messages or accounts from their IDs',
+          'Data migration and debugging of Snowflake IDs from Twitter/X, Discord, and similar platforms',
+          'Generating test Snowflake IDs pinned to specific timestamps during development',
+        ],
+        privacyNote:
+          'All parsing and building happens locally in your browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why does the same ID show different times on different platforms?',
+            answer:
+              'A Snowflake timestamp is milliseconds relative to each platform\u2019s own epoch. The Twitter/X epoch is 1288834974657 (2010-11-04) and Discord\u2019s is 1420070400000 (2015-01-01), so applying the wrong epoch shifts the result; choose the correct platform before parsing, and the tool warns when the result predates the epoch.',
+          },
+          {
+            question: 'Why is the machine ID also split into worker and process?',
+            answer:
+              'Classic Snowflake uses 10 machine bits (0\u20131023) for the node that issued the ID. Discord documents those 10 bits as 5 internal worker bits (0\u201331) plus 5 process bits (0\u201331). The tool shows both views: the full 10-bit machine ID and the Discord-style 5+5 worker/process split.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

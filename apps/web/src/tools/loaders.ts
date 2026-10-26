@@ -82,4 +82,5 @@ export const toolLoaders: Record<
   'morse-codec': () => import('./morse-codec'),
   'caesar-cipher': () => import('./caesar-cipher'),
   'ulid-generator': () => import('./ulid-generator'),
+  'snowflake-id-parser': () => import('./snowflake-id-parser'),
 };
