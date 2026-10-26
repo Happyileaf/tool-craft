@@ -6602,6 +6602,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'aspect-ratio-calculator',
+    name: '宽高比计算器',
+    nameEn: 'Aspect Ratio Calculator',
+    description:
+      '化简宽高为最简整数比，已知尺寸与比值时补全缺失边长，支持按目标宽高或倍数等比缩放，并识别 16:9、4:3、3:2、21:9 等常见标准比例。',
+    descriptionEn:
+      'Simplify width and height to the smallest integer ratio, solve the missing side from a ratio and one known dimension, scale proportionally to a target side or factor, and detect common ratios such as 16:9, 4:3, 3:2, and 21:9.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/aspect-ratio-calculator',
+    iconName: 'Calculator',
+    tags: ['宽高比', '比例', '分辨率', '缩放', '尺寸'],
+    tagsEn: ['Aspect Ratio', 'Ratio', 'Resolution', 'Scale', 'Dimension'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1920×1080',
+    doc: {
+      zh: {
+        whatIsIt:
+          '宽高比计算器用于在宽度、高度与比值之间快速换算：输入任意宽高即可得到最简整数比（如 1920×1080 → 16:9），并自动与 16:9、4:3、3:2、16:10、21:9、9:16 等常见标准比例做近似匹配（容差 1%）；也可以给定比值与一条边补全另一条边，或把原始尺寸按目标宽度、目标高度或倍数等比缩放。全部计算在浏览器本地实时完成，不涉及任何网络请求。',
+        coreFeatures: [
+          '任意正实数宽高一键化简为最简整数比（内部按 6 位小数整数化后约去最大公约数）',
+          '自动识别 16:9、4:3、3:2、16:10、21:9、9:16、1:1 等常见标准比例，给出相对误差',
+          '「知二求三」：给定 W:H 比值与一条边，补全另一条边',
+          '按目标宽度、目标高度或缩放倍数等比缩放，自动换算另一维度',
+          '纯函数计算、零新依赖、结果实时联动',
+        ],
+        howToUse: [
+          '在顶部选择模式：化简比例、知二求三或按比例缩放',
+          '化简比例：输入宽度与高度，下方即时显示最简整数比与标准比例匹配结果',
+          '知二求三：选择求宽度还是求高度，输入形如 16:9 的比值与已知边长',
+          '按比例缩放：输入原始宽高，选择缩放到宽度 / 高度或按倍数，并填入目标值',
+        ],
+        useCases: [
+          '图片、视频导出时根据分辨率确认应使用的宽高比（如 1920×1080 对应 16:9）',
+          '前端响应式布局与 Canvas / 视频容器尺寸推导，保持画面不变形',
+          '设计稿等比缩放到目标宽度或高度，快速得到另一维度像素值',
+          '竖版短视频（9:16）、超宽屏（21:9）等场景的比例核对',
+        ],
+        privacyNote: '所有计算均在浏览器本地完成，不发送任何数据到服务器。',
+        faqs: [
+          {
+            question: '输入的宽高不是整数，能正确化简吗？',
+            answer:
+              '可以。内部会先把宽高按 6 位小数放大并四舍五入为整数，再用欧几里得算法约去最大公约数，因此 1.6:0.9 这类小数比例也能正确化简为 16:9。',
+          },
+          {
+            question: '标准比例的「近似匹配」是怎么判定的？',
+            answer:
+              '工具会计算实际宽高比与参考表中每个标准比例的相对误差，取误差最小者；只有相对误差不超过 1% 才判定为近似命中，并展示具体误差百分比，否则提示无匹配。',
+          },
+          {
+            question: '缩放结果为什么是小数？',
+            answer:
+              '按目标宽度或高度等比缩放时，另一维度按同一比例换算，结果不一定是整数。工具最多保留 4 位小数并去掉尾随 0；实际用于像素时可自行取整（CSS 中浏览器也支持小数像素）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Aspect Ratio Calculator converts between width, height, and ratio values: enter any width and height to get the smallest integer ratio (e.g. 1920×1080 → 16:9) and an automatic nearest-match against common standards such as 16:9, 4:3, 3:2, 16:10, 21:9, and 9:16 (1% tolerance). You can also solve the missing side when a W:H ratio and one side are known, or scale an original size proportionally to a target width, target height, or factor. Everything runs locally in the browser with no network requests.',
+        coreFeatures: [
+          'Reduce any positive numeric width/height to the smallest integer ratio (integerized at 6 decimals, then divided by the GCD)',
+          'Detect common standards including 16:9, 4:3, 3:2, 16:10, 21:9, 9:16, and 1:1 with relative deviation',
+          'Solve-for-side mode: given a W:H ratio and one dimension, compute the other',
+          'Scale proportionally to a target width, target height, or factor, deriving the other dimension',
+          'Pure functions, zero new dependencies, live-linked results',
+        ],
+        howToUse: [
+          'Choose a mode at the top: simplify, solve, or scale',
+          'Simplify: enter width and height to see the reduced ratio and the nearest standard ratio',
+          'Solve: choose whether the width or height is unknown, enter a ratio such as 16:9 and the known side',
+          'Scale: enter the original width and height, choose target width/height or factor, and type the target value',
+        ],
+        useCases: [
+          'Confirming the aspect ratio of an image or video export resolution (e.g. 1920×1080 is 16:9)',
+          'Responsive layout, Canvas, and video container math without distorting the picture',
+          'Scaling a design to a target width or height and quickly deriving the other pixel dimension',
+          'Checking portrait short-video (9:16) and ultrawide (21:9) deliverables',
+        ],
+        privacyNote: 'All calculations run locally in the browser; no data is sent anywhere.',
+        faqs: [
+          {
+            question: 'Can it simplify non-integer dimensions?',
+            answer:
+              'Yes. Width and height are scaled by 1,000,000 and rounded to integers before the Euclidean GCD reduction, so decimal inputs such as 1.6:0.9 correctly reduce to 16:9.',
+          },
+          {
+            question: 'How is the "nearest standard ratio" decided?',
+            answer:
+              'The tool computes the relative deviation between the actual ratio and every standard ratio in the reference table, picks the smallest one, and reports a match only when the deviation is within 1%; otherwise it shows no match along with the exact deviation when matched.',
+          },
+          {
+            question: 'Why are some scaled results fractional?',
+            answer:
+              'When scaling to a target width or height, the other dimension is derived by the same proportion and may not be an integer. Results keep at most 4 decimals with trailing zeros removed; round as needed for whole-pixel use cases.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

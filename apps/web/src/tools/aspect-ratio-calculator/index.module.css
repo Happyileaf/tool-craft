@@ -1,0 +1,56 @@
+.container {
+  padding: 16px;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.label {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+}
+
+.result {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resultLine {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.resultValue {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 28px;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.resultSuffix {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.subtle {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.45);
+}

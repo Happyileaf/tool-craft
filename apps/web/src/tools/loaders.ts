@@ -90,4 +90,5 @@ export const toolLoaders: Record<
   'mac-address-converter': () => import('./mac-address-converter'),
   'number-to-words': () => import('./number-to-words'),
   'fullwidth-halfwidth-converter': () => import('./fullwidth-halfwidth-converter'),
+  'aspect-ratio-calculator': () => import('./aspect-ratio-calculator'),
 };
