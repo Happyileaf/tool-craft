@@ -83,4 +83,5 @@ export const toolLoaders: Record<
   'caesar-cipher': () => import('./caesar-cipher'),
   'ulid-generator': () => import('./ulid-generator'),
   'snowflake-id-parser': () => import('./snowflake-id-parser'),
+  'number-theory-calculator': () => import('./number-theory-calculator'),
 };

@@ -54,7 +54,7 @@
 | 20261017200232 | 字符集解码与乱码修复 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017200232.md) |
 | 20261017200233 | 数学表达式求值器 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017200233.md) |
 | 20261017200234 | 描述性统计计算器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200234.md) |
-| 20261017200235 | 最大公约数 / 最小公倍数 / 质因数分解计算器 | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017200235.md) |
+| 20261017200235 | 最大公约数 / 最小公倍数 / 质因数分解计算器 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017200235.md) |
 | 20261017200236 | CSS 缓动函数（cubic-bezier）生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200236.md) |
 | 20261017200238 | Markdown 表格生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200238.md) |
 | 20261017200239 | robots.txt 生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200239.md) |

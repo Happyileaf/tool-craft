@@ -5972,6 +5972,94 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'number-theory-calculator',
+    name: '数论计算器（GCD/LCM/质因数分解）',
+    nameEn: 'Number Theory Calculator',
+    description:
+      '输入 2–10 个整数计算最大公约数 GCD 与最小公倍数 LCM（欧几里得算法、先除后乘防溢出），并对单个整数做质因数分解、列出全部正因数、判定质数/合数，负数自动按绝对值分析。',
+    descriptionEn:
+      'Compute the GCD and LCM of 2–10 integers with Euclid\u2019s algorithm and overflow-safe division-first multiplication, and analyze a single integer with prime factorization, a sorted list of all positive divisors, and prime/composite classification (negatives use their absolute value).',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/number-theory-calculator',
+    iconName: 'Calculator',
+    tags: ['最大公约数', '最小公倍数', '质因数分解', '质数'],
+    tagsEn: ['GCD', 'LCM', 'Prime Factorization', 'Prime Number'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '360',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的整数数论工具，覆盖算法学习、分数化简与数论验证中最常用的四类计算：多个整数的最大公约数（GCD）与最小公倍数（LCM）、单个数的质因数分解、全部正因数枚举、质数与合数判定。GCD 使用欧几里得辗转相除，LCM 采用先除后乘避免中间乘积溢出，质因数分解与因数枚举均用试除法在 √n 范围内完成。',
+        coreFeatures: [
+          '2–10 个整数的 GCD / LCM，支持负数与含 0 输入（含 0 时 LCM 为 0）',
+          '欧几里得算法 + LCM 先除后乘，结果在安全整数范围内精确',
+          '质因数分解输出 n = p1^e1 × p2^e2 形式，并统计正因数个数',
+          '成对枚举至 √n，给出升序排列的全部正因数',
+          '质数 / 合数 / 单位数（1）/ 零四态分类，负数自动取绝对值',
+        ],
+        howToUse: [
+          '在第一张卡片输入 2–10 个整数（逗号、空格、换行、顿号等分隔），即时得到 GCD 与 LCM',
+          '在第二张卡片输入单个整数，查看质因数分解、因数个数、全部因数与质数判定',
+          '输入非整数或超出安全整数范围时会给出明确错误提示',
+        ],
+        useCases: [
+          '分数通分与化简、比例合并时求 GCD / LCM',
+          '算法与数论学习中验证质因数分解、因数个数与质数判定',
+          '编程题与 CTF 中快速分析整数结构',
+        ],
+        privacyNote: '所有计算均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么 LCM 要“先除后乘”？',
+            answer:
+              '直接计算 |a × b| / GCD 时，两个数即使各自在安全整数范围内，乘积也可能超出 Number.MAX_SAFE_INTEGER 而丢失精度。先把其中一个数除以 GCD（结果必然整除），再与另一个数相乘，可以显著缩小中间值；工具内部按 (a / gcd) × b 的顺序计算。',
+          },
+          {
+            question: '0 和 1 算质数吗？负数呢？',
+            answer:
+              '质数定义是“大于 1 且只有 1 与自身两个正因数”的自然数，因此 0 与 1 既不是质数也不是合数（1 称为单位数）。负整数按其绝对值分析，例如 -13 被视为质数 13。0 没有有限的正因数集合，LCM 中只要含 0 结果就规定为 0。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local integer number-theory tool covering four everyday tasks for algorithm study, fraction simplification, and verification: the greatest common divisor (GCD) and least common multiple (LCM) of several integers, prime factorization of one integer, enumeration of all its positive divisors, and prime/composite classification. GCD uses Euclid\u2019s algorithm, LCM divides before multiplying to avoid intermediate overflow, and factorization/divisor enumeration use trial division up to \u221An.',
+        coreFeatures: [
+          'GCD/LCM for 2–10 integers, including negatives and zero (LCM is 0 when any input is 0)',
+          'Euclid\u2019s algorithm with division-first LCM, exact within the safe-integer range',
+          'Factorization rendered as n = p1^e1 × p2^e2 with the divisor count',
+          'Pairwise enumeration to \u221An producing every positive divisor in ascending order',
+          'Four-way classification (prime/composite/unit 1/zero); negatives use the absolute value',
+        ],
+        howToUse: [
+          'Enter 2–10 integers in the first card (separated by commas, spaces, newlines, etc.) to get GCD and LCM instantly',
+          'Enter one integer in the second card to see its factorization, divisor count, divisors, and primality',
+          'Non-integers or values beyond the safe-integer range produce a clear error',
+        ],
+        useCases: [
+          'Reducing fractions and finding common denominators or merged ratios',
+          'Verifying factorizations, divisor counts, and primality while learning algorithms or number theory',
+          'Quick integer analysis for programming problems and CTF challenges',
+        ],
+        privacyNote: 'Every computation runs locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why divide before multiplying for the LCM?',
+            answer:
+              'Computing |a × b| / GCD directly can overflow Number.MAX_SAFE_INTEGER even when both inputs are safe individually. Dividing one operand by the GCD first (an exact division) and then multiplying by the other keeps the intermediate value much smaller; the tool computes (a / gcd) × b.',
+          },
+          {
+            question: 'Are 0 or 1 prime? What about negative numbers?',
+            answer:
+              'A prime is a natural number greater than 1 with exactly two positive divisors (1 and itself), so 0 and 1 are neither prime nor composite (1 is a unit). Negative integers are analyzed by absolute value, so -13 is treated as the prime 13. Zero has no finite divisor set, and an LCM containing zero is defined as 0.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

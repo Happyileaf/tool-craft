@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 900px;
+}
+
+.card {
+  width: 100%;
+}
+
+.monoOutput {
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+}
+
+.monoText {
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.resultValue {
+  font-family: var(--font-mono, monospace);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.inlineHint {
+  margin-left: 8px;
+  color: rgb(0 0 0 / 45%);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.hint {
+  color: rgb(0 0 0 / 45%);
+  font-size: 12px;
+  line-height: 1.7;
+}

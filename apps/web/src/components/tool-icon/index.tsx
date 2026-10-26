@@ -1,6 +1,7 @@
 import {
   Blend,
   Braces,
+  Calculator,
   Clock,
   Code,
   Droplets,
@@ -50,6 +51,7 @@ const toolIconMap = {
   Eye,
   Sparkles,
   Snowflake,
+  Calculator,
 };
 
 /**
