@@ -5260,6 +5260,451 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'base45-codec',
+    name: 'Base45（RFC 9285）编解码',
+    nameEn: 'Base45 (RFC 9285) Encoder & Decoder',
+    description:
+      '在 UTF-8 文本与 Base45 字符串之间双向转换，使用 RFC 9285 定义的 0-9、A-Z 与 " $%*+-./:" 共 45 字符集，严格校验非法字符、非法尾序列与数值溢出并报告位置。',
+    descriptionEn:
+      'Convert between UTF-8 text and Base45 strings using the RFC 9285 alphabet (0-9, A-Z, and " $%*+-./:"), with strict validation of illegal characters, illegal tail groups, and value overflow, reporting exact positions.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/base45-codec',
+    iconName: 'Binary',
+    tags: ['Base45', 'RFC 9285', '编解码', '二维码', 'DCC'],
+    tagsEn: ['Base45', 'RFC 9285', 'Encode', 'QR Code', 'DCC'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Hello!!',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 Base45 编解码工具。Base45 由 RFC 9285 定义，使用 45 个可打印字符表示二进制数据，每 2 个字节编码为 3 个字符，是欧盟数字健康证书（DCC）二维码等字符集受限介质的标准承载编码。',
+        coreFeatures: [
+          '严格遵循 RFC 9285：字符集为 0-9、A-Z 与 " $%*+-./:"，2 字节→3 字符、末字节→2 字符',
+          '双向转换：UTF-8 文本即时编码为 Base45，Base45 严格解码回文本',
+          '精确报错：非法字符、非法单字符尾序列、尾组数值溢出均报告具体位置与原因',
+          'UTF-8 校验：解码后字节不是合法 UTF-8 序列时明确提示，不输出乱码',
+          '纯本地运行：所有转换在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择「编码」或「解码」方向，切换时自动载入对应示例',
+          '在输入框粘贴文本或 Base45 字符串，结果即时更新',
+          '点击「复制结果」获取转换内容，或「清空」重新输入',
+        ],
+        useCases: [
+          '解析欧盟数字健康证书（DCC）二维码 Payload 中的 Base45 数据',
+          '在可表示字符集受限的二维码、票据、印刷介质上承载二进制内容',
+          '校验 Base45 字符串是否合法并定位损坏字符的具体位置',
+        ],
+        privacyNote: '所有编解码均在浏览器本地完成，输入的文本与 Base45 字符串不会被上传或记录。',
+        faqs: [
+          {
+            question: 'Base45 和 Base64 有什么区别？',
+            answer:
+              'Base64 面向 8 位字节通道，每 3 字节编码为 4 字符（A-Z、a-z、0-9、+、/）；Base45 面向只能高效表示大写字母与数字的二维码等介质，字符表更小（含部分标点），每 2 字节编码为 3 字符，且单字节尾组合法。',
+          },
+          {
+            question: '为什么解码时提示尾序列非法？',
+            answer:
+              'RFC 9285 规定输入长度只能是 3 的倍数（完整双字节组）或模 3 余 2（末尾一个单字节组）。长度余 1 时最后一个字符无法对应任何字节，属于损坏或截断的输入。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first Base45 codec. Defined by RFC 9285, Base45 represents binary data with 45 printable characters, encoding every 2 bytes into 3 characters. It is the standard transport encoding for payloads such as the EU Digital COVID Certificate (DCC) QR codes.',
+        coreFeatures: [
+          'Strict RFC 9285: alphabet 0-9, A-Z, and " $%*+-./:"; 2 bytes to 3 chars, one trailing byte to 2 chars',
+          'Bidirectional: UTF-8 text to Base45 instantly, and strict Base45 decoding back to text',
+          'Precise errors: illegal characters, illegal single-char tails, and overflow report exact position and reason',
+          'UTF-8 validation: decoded bytes that are not valid UTF-8 are reported instead of showing mojibake',
+          'Local-first: all conversion runs in the browser with no network requests',
+        ],
+        howToUse: [
+          'Pick the "Encode" or "Decode" direction; switching loads the matching sample automatically',
+          'Paste text or a Base45 string into the input area and the result updates instantly',
+          'Click "Copy result" to copy the conversion, or "Clear" to start over',
+        ],
+        useCases: [
+          'Decode Base45 payloads inside EU Digital COVID Certificate (DCC) QR codes',
+          'Carry binary content over QR codes, tickets, or printed media with restricted character sets',
+          'Validate whether a Base45 string is well-formed and locate corrupted characters',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally in the browser; entered text and Base45 strings are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How does Base45 differ from Base64?',
+            answer:
+              'Base64 targets 8-bit channels and encodes 3 bytes into 4 characters (A-Z, a-z, 0-9, +, /). Base45 targets media such as QR codes that efficiently represent uppercase letters and digits; it uses a smaller alphabet (with selected punctuation), encodes 2 bytes into 3 characters, and allows a one-byte tail group.',
+          },
+          {
+            question: 'Why does decoding report an illegal tail sequence?',
+            answer:
+              'RFC 9285 allows input lengths that are multiples of 3 (full two-byte groups) or with a remainder of 2 (one trailing single-byte group). A remainder of 1 means the final character cannot map to any byte, indicating corrupted or truncated input.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'nano-id-generator',
+    name: 'Nano ID 生成器',
+    nameEn: 'Nano ID Generator',
+    description:
+      '生成 URL-safe 的紧凑随机标识符：支持自定义长度与字母表、批量生成，使用 Web Crypto 密码学安全随机源并以拒绝采样消除取模偏置。',
+    descriptionEn:
+      'Generate compact URL-safe random identifiers with custom length and alphabet and bulk output. Uses the Web Crypto secure source with rejection sampling to remove modulo bias.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/nano-id-generator',
+    iconName: 'Shuffle',
+    tags: ['Nano ID', '随机ID', '标识符', 'URL-safe', '生成器'],
+    tagsEn: ['Nano ID', 'Random ID', 'Identifier', 'URL-safe', 'Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 Nano ID 风格随机标识符生成器。Nano ID 使用 A-Za-z0-9_- 共 64 个 URL-safe 字符，默认 21 位即可达到与 UUID v4 相近的碰撞概率，产物更短、对 URL 与 HTML id 友好，且长度与字母表均可自定义。',
+        coreFeatures: [
+          '密码学安全：随机字节来自 Web Crypto getRandomValues，非 Math.random 伪随机',
+          '拒绝采样：丢弃落入偏置区间的字节，保证字母表内每个字符严格等概率',
+          '灵活定制：长度可选 12/21/32/64，字母表内置 5 套预设并支持自定义（字符不可重复）',
+          '批量生成：一次生成 1/5/10/20 个 ID 并一键复制全部',
+          '纯本地运行：生成过程不发起任何网络请求，标识符不会离开浏览器',
+        ],
+        howToUse: [
+          '选择需要的长度与生成数量，页面会自动按当前参数生成',
+          '需要定制字符集时把字母表切换为「自定义」并输入 1–256 个不重复字符',
+          '点击「重新生成」刷新结果，或「复制全部」按行复制所有 ID',
+        ],
+        useCases: [
+          '前端本地数据、草稿、看板卡片的短主键与 DOM id',
+          'URL 短链、文件名、日志 trace 等对长度与字符集敏感的标识',
+          '需要自定义字母表（如纯数字、十六进制）的测试数据与 mock 场景',
+        ],
+        privacyNote: '所有 ID 均在浏览器本地由密码学安全随机源生成，不会上传或记录。',
+        faqs: [
+          {
+            question: 'Nano ID 和 UUID 有什么区别？',
+            answer:
+              'UUID v4 固定 36 字符且结构固定（含连字符与版本位）；Nano ID 默认仅 21 个 URL-safe 字符，体积更小、可直接放进 URL 与 HTML id，长度和字母表还可按需调整。两者碰撞概率在默认配置下处于同一量级。',
+          },
+          {
+            question: '什么是取模偏置？为什么要拒绝采样？',
+            answer:
+              '当 256 不能被字母表字符数整除时，直接对随机字节取模会让靠前的字符出现概率略高。拒绝采样会丢弃落在最后一个不完整区间内的字节（例如 63 字符字母表时丢弃 252–255）后重抽，保证每个字符等概率。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first Nano ID style random identifier generator. Nano ID uses a 64-character URL-safe alphabet (A-Za-z0-9_-); the default 21-character ID has a collision probability comparable to UUID v4 while being shorter and URL/HTML-id friendly, with customizable length and alphabet.',
+        coreFeatures: [
+          'Cryptographically secure: bytes come from Web Crypto getRandomValues, not Math.random',
+          'Rejection sampling: bytes in the biased tail are discarded so every character is uniformly distributed',
+          'Flexible: lengths 12/21/32/64 and five built-in alphabet presets plus a custom alphabet (no duplicate chars)',
+          'Bulk output: generate 1/5/10/20 IDs at once and copy all of them in one click',
+          'Local-first: generation makes no network requests and identifiers never leave the browser',
+        ],
+        howToUse: [
+          'Pick the desired length and count; IDs regenerate automatically from current settings',
+          'Switch the alphabet to "Custom" and enter 1–256 unique characters for a custom charset',
+          'Click "Regenerate" for fresh IDs or "Copy all" to copy every ID as newline-separated text',
+        ],
+        useCases: [
+          'Short primary keys and DOM ids for local frontend data, drafts, and kanban cards',
+          'Identifiers for short URLs, filenames, and log traces where length and charset matter',
+          'Test data and mocks requiring special alphabets such as digits-only or hexadecimal',
+        ],
+        privacyNote:
+          'All IDs are generated locally in the browser from a cryptographically secure source and are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How does Nano ID differ from UUID?',
+            answer:
+              'UUID v4 is fixed at 36 characters with hyphens and version/variant bits. Nano ID defaults to just 21 URL-safe characters, is smaller, can be embedded directly in URLs and HTML ids, and supports custom lengths and alphabets. Default configurations offer collision probabilities in the same order of magnitude.',
+          },
+          {
+            question: 'What is modulo bias and why use rejection sampling?',
+            answer:
+              'When 256 is not evenly divisible by the alphabet size, reducing random bytes with modulo makes earlier characters slightly more likely. Rejection sampling discards bytes in the final incomplete bucket (e.g. 252–255 for a 63-character alphabet) and redraws, keeping every character equiprobable.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'bencode-codec',
+    name: 'Bencode 编解码器',
+    nameEn: 'Bencode Encoder & Decoder',
+    description:
+      '解析与生成 BitTorrent 生态的 Bencode 格式（整数、二进制安全字节串、列表、按键字节序排序的字典），支持与 JSON 双向转换，原始字节串以标记对象呈现，非法语法与字典键乱序等错误带精确定位。',
+    descriptionEn:
+      'Parse and generate the BitTorrent Bencode format (integers, binary-safe byte strings, lists, and dictionaries sorted by raw key bytes), convert to and from JSON, represent raw byte strings with a marker object, and pinpoint errors such as invalid syntax or unsorted dictionary keys.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/bencode-codec',
+    iconName: 'Braces',
+    tags: ['Bencode', 'BitTorrent', 'torrent', '编解码', 'JSON'],
+    tagsEn: ['Bencode', 'BitTorrent', 'torrent', 'Codec', 'JSON'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'd4:spami1ee',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 Bencode 编解码器。Bencode 是 BitTorrent 协议与 .torrent 文件使用的序列化格式，仅包含四种结构：整数 i<数字>e、二进制安全字节串 <长度>:<字节>、列表 l..e 与字典 d..e（键必须是字节串并按原始字节序升序排列）。本工具可将 Bencode 解析为格式化 JSON 预览，也可把 JSON 编码回 Bencode。',
+        coreFeatures: [
+          '四种结构全覆盖：整数、字节串、列表、字典的严格解析与生成',
+          'Bencode ↔ JSON 双向转换，解码结果按缩进格式化，便于阅读 .torrent 字段',
+          '二进制安全：非 UTF-8 字节串以 {"$$bencodeBytes$$": "<十六进制>"} 标记对象呈现并可无损还原',
+          '精确报错：非法起始字符、前导零、长度不符、字典键乱序或重复等错误均报告具体位置',
+          '编码时字典键自动按字节序升序排列，纯本地运算、零新增依赖',
+        ],
+        howToUse: [
+          '选择「解码（Bencode → JSON）」或「编码（JSON → Bencode）」，切换时自动载入示例',
+          '粘贴 .torrent 片段等 Bencode 文本或合法 JSON，结果即时更新',
+          '需要承载原始字节时，在 JSON 中使用 {"$$bencodeBytes$$": "<偶数位十六进制>"} 标记对象',
+        ],
+        useCases: [
+          '解析 .torrent 文件的 announce、info.name、piece length、文件列表等字段',
+          '调试 BitTorrent 扩展协议（BEP）中以 Bencode 承载的消息与元数据',
+          '从 JSON 快速生成符合规范（字典键排序、整数严格）的 Bencode 数据',
+        ],
+        privacyNote: '所有解析与编码均在浏览器本地完成，输入的 Bencode 与 JSON 数据不会被上传或记录。',
+        faqs: [
+          {
+            question: 'Bencode 和 JSON 有什么区别？',
+            answer:
+              'Bencode 只有整数、字节串、列表、字典四种类型，没有布尔、null 或浮点数；字节串是二进制安全的（可承载任意字节，不限于文本）；字典键必须是字节串且严格按原始字节序升序排列，不允许重复键。JSON 则是面向文本的通用格式，类型更丰富但不保证键序。',
+          },
+          {
+            question: '$$bencodeBytes$$ 标记对象是什么？',
+            answer:
+              'Bencode 字节串可以包含任意字节，不一定是合法 UTF-8 文本，无法直接显示为 JSON 字符串。遇到这类字节串时，解码结果用 {"$$bencodeBytes$$": "十六进制"} 表示其原始字节；反向编码时该标记会被还原为字节串，保证往返无损。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first Bencode encoder and decoder. Bencode is the serialization format used by the BitTorrent protocol and .torrent files, with exactly four structures: integers i<digits>e, binary-safe byte strings <length>:<bytes>, lists l..e, and dictionaries d..e (keys must be byte strings sorted lexicographically by raw bytes). It decodes Bencode into pretty-printed JSON and encodes JSON back to Bencode.',
+        coreFeatures: [
+          'All four structures: strict parsing and generation of integers, byte strings, lists, and dictionaries',
+          'Bidirectional Bencode ↔ JSON conversion with indented, easy-to-read .torrent field previews',
+          'Binary-safe: non-UTF-8 byte strings appear as {"$$bencodeBytes$$": "<hex>"} marker objects and round-trip losslessly',
+          'Precise errors: illegal start characters, leading zeros, length mismatches, unsorted or duplicate keys all report exact positions',
+          'Dictionary keys are automatically sorted by raw byte order on encode; fully local, zero new dependencies',
+        ],
+        howToUse: [
+          'Choose "Decode (Bencode → JSON)" or "Encode (JSON → Bencode)"; switching loads the matching sample',
+          'Paste a .torrent-style Bencode fragment or valid JSON and the result updates instantly',
+          'To carry raw bytes, use the marker object {"$$bencodeBytes$$": "<even-length hex>"} in JSON',
+        ],
+        useCases: [
+          'Inspect announce, info.name, piece length, and file list fields of .torrent files',
+          'Debug Bencode payloads in BitTorrent Extension Protocol (BEP) messages and metadata',
+          'Generate spec-compliant Bencode (sorted dictionary keys, strict integers) from JSON',
+        ],
+        privacyNote:
+          'All parsing and encoding run locally in the browser; entered Bencode and JSON data are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How does Bencode differ from JSON?',
+            answer:
+              'Bencode has only four types — integers, byte strings, lists, and dictionaries — with no booleans, null, or floats. Byte strings are binary-safe (arbitrary bytes, not just text), and dictionary keys must be byte strings strictly sorted by raw byte order with no duplicates. JSON is a text-oriented general format with richer types and no mandated key order.',
+          },
+          {
+            question: 'What is the $$bencodeBytes$$ marker object?',
+            answer:
+              'Bencode byte strings may contain arbitrary bytes that are not valid UTF-8 and therefore cannot be shown as JSON strings. Such strings are decoded as {"$$bencodeBytes$$": "hexadecimal"}; when encoding, the marker is converted back into a byte string, ensuring lossless round trips.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'non-crypto-hash',
+    name: '非加密哈希批量计算',
+    nameEn: 'Non-cryptographic Hash Calculator',
+    description:
+      '一次输入同时计算 FNV-1 / FNV-1a（32 位与 64 位）、MurmurHash3 x86 32 位（种子可调）、djb2、sdbm 与 Java String.hashCode()，输出十进制与十六进制结果，用于哈希表分桶、分片路由与算法教学。',
+    descriptionEn:
+      'Compute FNV-1 / FNV-1a (32-bit and 64-bit), MurmurHash3 x86 32-bit with adjustable seed, djb2, sdbm, and Java String.hashCode() in one pass, showing both decimal and hexadecimal output for hash bucketing, shard routing, and algorithm teaching.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/non-crypto-hash',
+    iconName: 'Gauge',
+    tags: ['FNV', 'MurmurHash', 'djb2', 'sdbm', '哈希'],
+    tagsEn: ['FNV', 'MurmurHash', 'djb2', 'sdbm', 'Hash'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'The quick brown fox jumps over the lazy dog',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的非加密哈希批量计算器。非加密哈希（Non-cryptographic Hash）追求极致速度与均匀分布，而非抗碰撞能力，常用于哈希表、数据分片、负载均衡路由键与算法教学。本工具一次输入同时输出 8 个经典算法结果：FNV-1 与 FNV-1a 的 32 位 / 64 位版本、MurmurHash3 x86 32 位（支持自定义种子）、djb2、sdbm，以及 Java String.hashCode()。',
+        coreFeatures: [
+          '8 个结果一次出齐：FNV-1/1a 32 位与 64 位、MurmurHash3、djb2、sdbm、Java hashCode',
+          'MurmurHash3 种子（seed）可任意指定，提供 0、1、42 等常用值快捷按钮',
+          '每个结果同时给出十进制与无符号十六进制，64 位结果以 BigInt 完整呈现不丢精度',
+          '统一按 UTF-8 字节计算（Java hashCode 按 UTF-16 码元，与 JVM 行为一致），空串也合法',
+          '纯函数实现、零依赖、纯本地运算，逐行复制或一键复制全部结果',
+        ],
+        howToUse: [
+          '在输入框中粘贴待计算文本，结果表格随输入实时刷新',
+          '需要复现特定 MurmurHash3 结果时，在顶部调整种子（0 为算法默认值）',
+          '点击单行「复制」取用十六进制值，或用右上角「复制全部」导出 TSV',
+        ],
+        useCases: [
+          '设计分库分表 / 一致性哈希路由时，比较不同哈希函数对业务键的分布效果',
+          '复现 Java、C++、Go 等代码里历史遗留的 FNV、djb2、sdbm、hashCode 数值',
+          '算法与数据结构教学中直观对比同一输入在不同经典哈希函数下的输出',
+        ],
+        privacyNote: '所有哈希均在浏览器本地由纯函数计算，输入文本不会被上传或记录。',
+        faqs: [
+          {
+            question: '这些哈希能用来校验文件完整性或存储密码吗？',
+            answer:
+              '不能。非加密哈希不具备抗碰撞能力，攻击者可以轻易构造不同输入得到相同输出，因此不适合完整性校验、数字签名或密码存储；这类需求应使用 SHA-256 等密码学哈希。非加密哈希的价值在于速度快、分布均匀，适合哈希表分桶与分片路由。',
+          },
+          {
+            question: '为什么 Java hashCode 的十进制可能是负数，而其他算法不是？',
+            answer:
+              'Java 的 int 是 32 位有符号整数，String.hashCode() 直接返回这个有符号值，所以可能为负；表中其十六进制仍按无符号呈现以便对照。其余算法统一按无符号 32 位 / 64 位整数展示。另外 Java hashCode 按 UTF-16 码元迭代，而其他算法按 UTF-8 字节迭代，因此非 ASCII 文本的结果口径不同。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first batch calculator for non-cryptographic hashes. Non-cryptographic hashes optimize for speed and uniform distribution rather than collision resistance, and are widely used in hash tables, data sharding, load-balancing routing keys, and algorithm education. One input produces eight classic results at once: FNV-1 and FNV-1a in both 32-bit and 64-bit variants, MurmurHash3 x86 32-bit (with a custom seed), djb2, sdbm, and Java String.hashCode().',
+        coreFeatures: [
+          'Eight results at once: FNV-1/1a 32-bit and 64-bit, MurmurHash3, djb2, sdbm, and Java hashCode',
+          'Adjustable MurmurHash3 seed with quick presets such as 0, 1, and 42',
+          'Every result shows both decimal and unsigned hexadecimal; 64-bit values use BigInt with no precision loss',
+          'Consistent UTF-8 byte semantics (Java hashCode uses UTF-16 code units, matching the JVM); empty input is valid',
+          'Pure-function, zero-dependency, fully local computation; copy one row or export all results as TSV',
+        ],
+        howToUse: [
+          'Paste the text into the input box; the result table refreshes in real time',
+          'Set the seed at the top (0 is the algorithm default) when reproducing a specific MurmurHash3 value',
+          'Use the row "Copy" action for its hexadecimal value, or "Copy all" to export all rows as TSV',
+        ],
+        useCases: [
+          'Compare how different hash functions distribute business keys when designing sharding or consistent-hashing routing',
+          'Reproduce legacy FNV, djb2, sdbm, or hashCode values found in Java, C++, or Go code',
+          'Teach algorithms and data structures by showing outputs of classic hash functions side by side',
+        ],
+        privacyNote:
+          'All hashes are computed locally in the browser by pure functions; entered text is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Can these hashes verify file integrity or store passwords?',
+            answer:
+              'No. Non-cryptographic hashes are not collision-resistant: an attacker can easily craft different inputs with the same output, so they must not be used for integrity checks, digital signatures, or password storage — use cryptographic hashes such as SHA-256 instead. Their value is speed and uniform distribution for hash-table bucketing and shard routing.',
+          },
+          {
+            question: 'Why can the Java hashCode decimal be negative while the others cannot?',
+            answer:
+              'A Java int is a signed 32-bit integer and String.hashCode() returns that signed value directly, so it may be negative; its hexadecimal in the table is still shown unsigned for easy comparison. The other algorithms are shown as unsigned 32-bit/64-bit integers. Also, Java hashCode iterates UTF-16 code units while the other algorithms iterate UTF-8 bytes, so non-ASCII inputs follow different byte semantics.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'morse-codec',
+    name: '摩尔斯电码编解码器',
+    nameEn: 'Morse Code Translator',
+    description:
+      '在普通文本与国际摩尔斯电码（点 . / 划 -）之间双向转换，覆盖 A–Z、0–9 与常用标点，支持可调字符 / 单词间隔与本地音频播放，适用于业余无线电、谜题解密与报务教学。',
+    descriptionEn:
+      'Translate between plain text and International Morse Code (dots and dashes) in both directions, covering A–Z, 0–9, and common punctuation, with adjustable letter/word gaps and local audio playback for amateur radio, puzzles, and telegraphy training.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/morse-codec',
+    iconName: 'Sparkles',
+    tags: ['摩尔斯', 'Morse', '编码', '音频'],
+    tagsEn: ['Morse', 'Codec', 'Encoding', 'Audio'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'SOS MORSE CODE 1844',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的摩尔斯电码双向转换工具，遵循 ITU-R M.1677-1 国际摩尔斯电码表，支持 A–Z 字母、0–9 数字以及句号、逗号、问号、@ 等 18 个常用标点与业务符号。编码方向把文本转为点（.）划（-）序列，字符间隔与单词间隔均可按点长单位调整（标准为 3 与 7）；解码方向容忍手写输入的空格差异，也接受斜杠（/）作为单词分隔。内置 Web Audio 振荡器，可按慢 / 标准 / 快三档速度把电码真实发声播放出来。',
+        coreFeatures: [
+          '文本与摩尔斯电码双向转换，覆盖 26 个字母、10 个数字与 18 个常用标点符号',
+          '字符间隔（标准 3 点长）与单词间隔（标准 7 点长）均可调，范围 1–20 且自动校验',
+          '解码容错：1–4 空格视为字符间隔，斜杠或 5 个以上空格视为单词间隔',
+          '基于 Web Audio 的音频播放，600Hz 正弦波、三档点长速度，可随时停止',
+          '纯函数 + 零依赖实现，转换与发声均在本地完成，支持一键复制结果',
+        ],
+        howToUse: [
+          '选择「编码」或「解码」方向，在输入框中粘贴文本或点划电码，结果实时刷新',
+          '编码方向可调整字符 / 单词间隔（单词间隔必须大于字符间隔），解码方向可直接粘贴斜杠格式',
+          '点击「播放电码」按当前速度收听，可切换慢 / 标准 / 快速；满意后点「复制结果」取用',
+        ],
+        useCases: [
+          '业余无线电（CW 通联）练习收发报文，对照标准点划与时序听辨训练',
+          '密室逃脱、解谜游戏与 CTF 中遇到摩尔斯线索时快速编解码',
+          '通信史与信息技术课堂上演示点划编码、间隔规则与电报发声原理',
+        ],
+        privacyNote: '转换与音频播放全部在浏览器本地完成，输入内容不会被上传或记录。',
+        faqs: [
+          {
+            question: '编码后每个字符之间的三个空格有什么用？',
+            answer:
+              '空格承载的是时间间隔而不是可见符号：按 ITU 标准，码元（点划）间隔为 1 个点长、字符间隔为 3 个点长、单词间隔为 7 个点长。本工具直接用对应数量的空格表示间隔，因此默认输出中字符间是 3 个空格、单词间是 7 个空格；音频播放时这些空格会被换算成真实的静默时长。',
+          },
+          {
+            question: '解码时怎样区分字符间隔和单词间隔？',
+            answer:
+              '规则为：1–4 个空格一律视为字符间隔（对手写输入容错），斜杠（/，前后是否带空格均可）或 5 个及以上空格视为单词间隔。标准编码器输出的 3 空格 / 7 空格可以无损往返；若你把间隔调成了很小的值再想解码，建议用斜杠显式分隔单词，例如 “.... .. / - .... . .-. .”。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local, bidirectional translator for International Morse Code per ITU-R M.1677-1, covering A–Z, 0–9, and 18 common punctuation and procedural symbols such as period, comma, question mark, and @. Encoding turns text into dots (.) and dashes (-) with adjustable letter and word gaps (3 and 7 dot lengths by standard); decoding tolerates handwritten spacing variations and also accepts a slash (/) as the word separator. A built-in Web Audio oscillator plays the code aloud at slow, standard, or fast speed.',
+        coreFeatures: [
+          'Bidirectional translation covering 26 letters, 10 digits, and 18 common punctuation/procedural symbols',
+          'Adjustable letter gap (standard 3 dot lengths) and word gap (standard 7), range 1–20 with automatic validation',
+          'Lenient decoding: 1–4 spaces are letter gaps; a slash or 5+ spaces denotes a word gap',
+          'Web Audio playback with a 600 Hz sine wave, three dot-length speeds, and instant stop',
+          'Pure-function, zero-dependency implementation; conversion and audio stay local, one-click copy included',
+        ],
+        howToUse: [
+          'Pick the Encode or Decode direction and paste text or dot-dash code; the result refreshes live',
+          'Tune letter/word gaps when encoding (the word gap must be larger); paste slash-separated code when decoding',
+          'Click "Play code" to listen at the current speed (slow/standard/fast), then use "Copy result"',
+        ],
+        useCases: [
+          'Practice CW traffic in amateur radio and train ear copy against standard timing',
+          'Encode or decode Morse clues in escape rooms, puzzle games, and CTF challenges',
+          'Demonstrate dot-dash encoding, gap rules, and telegraph sound in communications-history classes',
+        ],
+        privacyNote:
+          'All conversion and audio playback run locally in the browser; input is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the purpose of the three spaces between encoded letters?',
+            answer:
+              'The spaces encode timing rather than a visible symbol: per the ITU standard the gap between elements (dots/dashes) is 1 dot length, between letters 3 dot lengths, and between words 7 dot lengths. The tool represents these gaps with the matching number of spaces, so default output shows 3 spaces between letters and 7 between words; audio playback converts the spaces into real silence.',
+          },
+          {
+            question: 'How does decoding distinguish letter gaps from word gaps?',
+            answer:
+              'The rule is: 1–4 spaces are always treated as letter gaps (tolerant of handwritten input), while a slash (with or without surrounding spaces) or 5+ spaces marks a word gap. Standard encoder output (3/7 spaces) round-trips losslessly; if you encoded with very small custom gaps, separate words explicitly with a slash, e.g. ".... .. / - .... . .-. .".',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

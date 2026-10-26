@@ -75,4 +75,9 @@ export const toolLoaders: Record<
   'uuid-inspector': () => import('./uuid-inspector'),
   'isbn-converter': () => import('./isbn-converter'),
   'combinatorics-calculator': () => import('./combinatorics-calculator'),
+  'base45-codec': () => import('./base45-codec'),
+  'nano-id-generator': () => import('./nano-id-generator'),
+  'bencode-codec': () => import('./bencode-codec'),
+  'non-crypto-hash': () => import('./non-crypto-hash'),
+  'morse-codec': () => import('./morse-codec'),
 };
