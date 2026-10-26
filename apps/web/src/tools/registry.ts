@@ -6242,6 +6242,96 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'decimal-fraction-converter',
+    name: '小数分数互转器',
+    nameEn: 'Decimal Fraction Converter',
+    description:
+      '基于 BigInt 有理数运算，在有限小数、循环小数（圆括号记法）、最简分数、带分数与百分数之间精确互转，自动标注循环节并展示约分与长除法过程，无浮点误差。',
+    descriptionEn:
+      'Exact conversion between terminating/repeating decimals (parenthesis notation), reduced fractions, mixed numbers, and percentages using BigInt rational arithmetic—with repeat detection and step-by-step reduction, free of floating-point error.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/decimal-fraction-converter',
+    iconName: 'Percentage',
+    tags: ['小数', '分数', '百分数', '循环小数', '有理数'],
+    tagsEn: ['Decimal', 'Fraction', 'Percentage', 'Repeating Decimal', 'Rational Number'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0.1(6)',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的小数与分数精确互转工具。所有数值都以 BigInt 表示的有理数（分子/分母）参与运算，从根本上避免 0.1 + 0.2 这类浮点误差。小数转分数时，有限小数直接写成分母 10ⁿ 再约分；循环小数（如 0.1(6)、33.(3)%）按代数法处理——设 A 为含整数部分与不循环部分的数字、B 为 A 后接循环节组成的数字，分子 = B − A，分母 = 10^m × (10^n − 1)（m 为不循环位数、n 为循环节长度）。分数转小数用长除法并记录每个余数首次出现的位置，余数重复即定位循环节，以圆括号输出（如 1/7 → 0.(142857)）。',
+        coreFeatures: [
+          '小数（含负数、.5 简写）→ 最简分数，自动约分并给出带分数写法',
+          '循环小数识别与互转：0.(3)、0.1(6)、1.2(14) 等圆括号记法，循环节最长支持 1000 位',
+          '分数 → 小数长除法展开，自动判定有限 / 循环并标出循环节与循环节长度',
+          '百分数 ↔ 分数互转（25% ↔ 1/4、33.(3)% ↔ 1/3），带分数与假分数互化',
+          '展示约分（gcd）与循环小数代数推导过程；BigInt 精确运算，零新增依赖',
+        ],
+        howToUse: [
+          '通过顶部按钮选择转换方向：小数→分数、分数→小数、百分数→分数、分数→百分数、带分数↔假分数',
+          '小数模式输入如 0.25、-1.25、0.(3)、0.1(6)，循环节放在圆括号内',
+          '分数模式输入如 3/4、-5/2，带分数写作「1 1/2」（整数与分数间空格）',
+          '结果区即时显示最简形式、循环节标签与可复制的结果，并附计算过程说明',
+        ],
+        useCases: [
+          '数学作业中循环小数化分数、分数化小数的答案核对与步骤讲解',
+          '配方、配比与工程取值中把无限小数表达为精确分数，避免舍入误差',
+          '百分数与分数互化时处理 33.(3)% 这类非有限百分数',
+        ],
+        privacyNote: '所有运算均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '循环小数是怎样化成分数的？',
+            answer:
+              '采用代数消元法。对 0.1(6)（1 位不循环、1 位循环）：设 A=1、B=16，分子 = B − A = 15，分母 = 10¹ × (10¹ − 1) = 90，即 15/90，约分得 1/6。一般地，m 位不循环、n 位循环时，分子 =（含整数部分的全部数字拼接值）−（整数与不循环部分的拼接值），分母 = 10^m × (10^n − 1)，最后用 gcd 约分。纯循环小数（如 0.(142857)）m=0，分母即 999999。',
+          },
+          {
+            question: '为什么不直接用 JavaScript 的 Number 计算？',
+            answer:
+              'Number 是 IEEE-754 双精度浮点数，0.1 + 0.2 = 0.30000000000000004，且无法精确表达 1/3 这类无限循环小数。本工具全部使用 BigInt 分子/分母运算：比较、约分（欧几里得 gcd）、长除法都在整数域完成，只有最终展示时才转成十进制文本，因此任意有理数都能精确往返互转（如 17/23 → 0.(7391304347826086956521) → 17/23）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local tool for exact conversion between decimals and fractions. Every value is represented as a BigInt rational (numerator/denominator), eliminating floating-point errors such as 0.1 + 0.2. Terminating decimals are written over 10ⁿ and reduced; repeating decimals (e.g., 0.1(6), 33.(3)%) use the algebraic method—if A is the digits through the non-repeating part and B is A followed by the repeat block, numerator = B − A and denominator = 10^m × (10^n − 1), where m is the non-repeating length and n the repeat length. Fraction-to-decimal performs long division while recording the first position of each remainder; a repeated remainder locates the cycle, printed in parentheses (e.g., 1/7 → 0.(142857)).',
+        coreFeatures: [
+          'Decimals (including negatives and .5 shorthand) to reduced fractions with mixed-number form',
+          'Repeating-decimal support: 0.(3), 0.1(6), 1.2(14) in parenthesis notation, cycles up to 1000 digits',
+          'Fraction-to-decimal long division with automatic terminating/repeating detection and cycle length',
+          'Percentage ↔ fraction conversion (25% ↔ 1/4, 33.(3)% ↔ 1/3) and mixed ↔ improper fraction conversion',
+          'Shows gcd reduction and the algebraic derivation; precise BigInt arithmetic, zero new dependencies',
+        ],
+        howToUse: [
+          'Pick a direction at the top: decimal→fraction, fraction→decimal, percent→fraction, fraction→percent, or mixed↔improper',
+          'In decimal mode enter values like 0.25, -1.25, 0.(3), 0.1(6), placing the repeat block in parentheses',
+          'In fraction mode enter values like 3/4 or -5/2; mixed numbers are written as "1 1/2" (space between)',
+          'The result area instantly shows the reduced form, repeat tags, a copyable value, and step-by-step work',
+        ],
+        useCases: [
+          'Checking homework answers for repeating-decimal/fraction conversion with explanatory steps',
+          'Expressing endless decimals as exact fractions in recipes, ratios, and engineering values',
+          'Handling non-terminating percentages such as 33.(3)% when converting between percent and fraction',
+        ],
+        privacyNote: 'All computation runs locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'How is a repeating decimal converted to a fraction?',
+            answer:
+              'Via algebraic elimination. For 0.1(6) (one non-repeating digit, one repeating digit): let A = 1 and B = 16; numerator = B − A = 15, denominator = 10¹ × (10¹ − 1) = 90, giving 15/90, which reduces to 1/6. In general, with m non-repeating and n repeating digits, numerator = (all digits concatenated) − (integer and non-repeating digits concatenated), denominator = 10^m × (10^n − 1), then reduce by the gcd. A purely repeating decimal such as 0.(142857) has m = 0 and denominator 999999.',
+          },
+          {
+            question: 'Why not just use JavaScript Number?',
+            answer:
+              'Number is an IEEE-754 double, so 0.1 + 0.2 = 0.30000000000000004 and values like 1/3 cannot be represented exactly. This tool keeps everything as BigInt numerator/denominator pairs—comparison, gcd reduction, and long division all happen over integers—and decimal text is produced only for display, so any rational number round-trips exactly (e.g., 17/23 → 0.(7391304347826086956521) → 17/23).',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

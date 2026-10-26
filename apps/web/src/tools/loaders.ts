@@ -86,4 +86,5 @@ export const toolLoaders: Record<
   'number-theory-calculator': () => import('./number-theory-calculator'),
   'roman-numeral-converter': () => import('./roman-numeral-converter'),
   'line-ending-converter': () => import('./line-ending-converter'),
+  'decimal-fraction-converter': () => import('./decimal-fraction-converter'),
 };

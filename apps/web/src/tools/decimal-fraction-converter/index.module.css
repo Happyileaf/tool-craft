@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 900px;
+}
+
+.card {
+  width: 100%;
+}
+
+.monoOutput {
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+}
+
+.resultValue {
+  font-family: var(--font-mono, monospace);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.stepsList {
+  margin: 0;
+  padding-left: 18px;
+
+  li {
+    margin-bottom: 4px;
+    line-height: 1.7;
+  }
+}
+
+.hint {
+  color: rgb(0 0 0 / 45%);
+  font-size: 12px;
+  line-height: 1.7;
+}
