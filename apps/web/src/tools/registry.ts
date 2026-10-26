@@ -6422,6 +6422,96 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'number-to-words',
+    name: '数字英文读法转换器',
+    nameEn: 'Number to English Words',
+    description:
+      '将整数或金额数字转换为规范英文读法：基数词（12345 → twelve thousand three hundred forty-five）、序数词（21st → twenty-first）与美元支票读法（123.45 → one hundred twenty-three dollars and forty-five cents），支持短级差大数、负数与连字符开关。',
+    descriptionEn:
+      'Convert numbers to canonical English: cardinal words (12345 → twelve thousand three hundred forty-five), ordinals (21st → twenty-first), and USD check amounts (123.45 → one hundred twenty-three dollars and forty-five cents), with short-scale large numbers, negatives, and a hyphenation toggle.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/number-to-words',
+    iconName: 'UnorderedList',
+    tags: ['数字读法', '英文', '基数词', '序数词', '支票金额'],
+    tagsEn: ['Number Words', 'English', 'Cardinal', 'Ordinal', 'Check Amount'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '12345',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的数字英文读法工具，输出符合英语书写规范的 cardinal number words。整数采用短级差（short scale）按 3 位分节：thousand、million、billion、trillion；21-99 的复合词默认加连字符（twenty-one，遵循 Chicago/APA 等主流风格指南）。提供三种模式：基数词（整数或小数，小数按 point 逐位读出，如 3.14 → three point one four）、序数词（1 → first、21 → twenty-first、100 → one hundredth，复合序数词仅末位变形）、美元金额支票读法（123.45 → one hundred twenty-three dollars and forty-five cents，自动处理 dollar/dollars 与 cent/cents 单复数）。支持前导正负号、千分位逗号输入，内部用 BigInt 处理整数避免大数丢精度，支持绝对值小于 10¹⁵ 的整数。',
+        coreFeatures: [
+          '基数词模式：短级差 thousand / million / billion / trillion，覆盖负数与零（zero）',
+          '序数词模式：first、second、third、fifth、twelfth 等不规则变形，复合词仅末位变序数',
+          '美元金额模式：dollars and cents 支票读法，一位小数按十分位补零，自动单复数',
+          '支持千分位逗号、正负号、小数逐位读法；可切换 twenty-one 连字符规则',
+          'BigInt 整数运算，支持至 999 万亿；纯本地确定性算法，零新增依赖',
+        ],
+        howToUse: [
+          '顶部选择模式：基数词、序数词或美元金额',
+          '输入数字，如 12345、1,234,567、-42、3.14（基数词）、21（序数词）、123.45（金额）',
+          '通过复选框切换复合词连字符（twenty-one ↔ twenty one）',
+          '结果即时显示在绿色结果条中，点击「复制英文读法」即可取走',
+        ],
+        useCases: [
+          '填写英文支票、合同与发票金额的美元英文表述',
+          '生成测试数据、英文报表中的数字自然语言描述',
+          '英语学习与教学中核对基数词、序数词与大数分节读法',
+        ],
+        privacyNote: '所有运算均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '什么是短级差（short scale）？',
+            answer:
+              '短级差是美式英语及当代英语世界通用的大数命名体系，每增加 3 位（1000 倍）换一个新单位：thousand（10³）、million（10⁶）、billion（10⁹）、trillion（10¹²）。例如 1,234,567 读作 one million two hundred thirty-four thousand five hundred sixty-seven。注意它与英式旧称「长级差」（billion 表示 10¹²）不同；本工具遵循短级差。',
+          },
+          {
+            question: '为什么 forty-two 有连字符？金额里 1 dollar 为什么是单数？',
+            answer:
+              'Chicago Manual of Style、APA 等主流英文写作规范要求 21-99 的复合基数词在书写时加连字符，如 forty-two、twenty-one、one hundred twenty-three；序数词同理（twenty-first）。可通过复选框关闭。金额模式遵循支票惯例：整数部分精确为 1 时用单数 dollar（one dollar and ...），其余一律 dollars；美分精确为 1 时用 cent，否则 cents；没有小数时读作 ... and zero cents。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local tool that turns numbers into canonical English cardinal number words. Integers use the short scale in groups of three: thousand, million, billion, trillion; compound numbers 21–99 are hyphenated by default (twenty-one, per mainstream style guides such as Chicago/APA). Three modes are offered: cardinals (integers or decimals, with the fraction read digit by digit after "point", e.g., 3.14 → three point one four), ordinals (1 → first, 21 → twenty-first, 100 → one hundredth; only the final word is ordinalized), and USD check amounts (123.45 → one hundred twenty-three dollars and forty-five cents, with automatic dollar/dollars and cent/cents singular forms). Signed input and thousands separators are accepted, integers are handled with BigInt to avoid precision loss, and absolute values below 10¹⁵ are supported.',
+        coreFeatures: [
+          'Cardinal mode: short-scale thousand/million/billion/trillion, including negatives and zero',
+          'Ordinal mode: irregular forms (first, second, third, fifth, twelfth); only the last word of a compound is ordinalized',
+          'USD money mode: dollars-and-cents check reading, one decimal digit zero-padded as dimes, automatic singular/plural units',
+          'Accepts thousands separators, signs, and digit-by-digit decimals; toggleable twenty-one hyphenation rule',
+          'BigInt integer math up to 999 trillion; deterministic local algorithm with zero new dependencies',
+        ],
+        howToUse: [
+          'Pick a mode at the top: cardinal, ordinal, or USD money',
+          'Enter a number such as 12345, 1,234,567, -42, 3.14 (cardinal), 21 (ordinal), or 123.45 (money)',
+          'Use the checkbox to toggle compound hyphenation (twenty-one vs twenty one)',
+          'The result appears instantly in the green banner; click "copy English words" to take it',
+        ],
+        useCases: [
+          'Writing USD amounts on English-language checks, contracts, and invoices',
+          'Generating natural-language numbers for test data and English reports',
+          'Learning or teaching English cardinal words, ordinals, and large-number grouping',
+        ],
+        privacyNote: 'All computation runs locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'What is the short scale?',
+            answer:
+              'The short scale is the large-number naming system used in American English and today’s English-speaking world: every additional group of three digits (a factor of 1000) introduces a new unit—thousand (10³), million (10⁶), billion (10⁹), trillion (10¹²). For example, 1,234,567 is read as one million two hundred thirty-four thousand five hundred sixty-seven. It differs from the historical British "long scale" (where a billion meant 10¹²); this tool follows the short scale.',
+          },
+          {
+            question: 'Why is forty-two hyphenated, and why is 1 dollar singular?',
+            answer:
+              'Mainstream English style guides (Chicago Manual of Style, APA) require compound cardinals from 21 to 99 to be hyphenated—forty-two, twenty-one, one hundred twenty-three—and ordinals follow suit (twenty-first). The checkbox disables this. Money mode follows check-writing convention: exactly one whole unit uses the singular "one dollar and ...", everything else uses dollars; exactly one cent uses cent, otherwise cents; with no fractional part it reads "... and zero cents".',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
