@@ -5438,6 +5438,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'bencode-codec',
+    name: 'Bencode 编解码器',
+    nameEn: 'Bencode Encoder & Decoder',
+    description:
+      '解析与生成 BitTorrent 生态的 Bencode 格式（整数、二进制安全字节串、列表、按键字节序排序的字典），支持与 JSON 双向转换，原始字节串以标记对象呈现，非法语法与字典键乱序等错误带精确定位。',
+    descriptionEn:
+      'Parse and generate the BitTorrent Bencode format (integers, binary-safe byte strings, lists, and dictionaries sorted by raw key bytes), convert to and from JSON, represent raw byte strings with a marker object, and pinpoint errors such as invalid syntax or unsorted dictionary keys.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/bencode-codec',
+    iconName: 'Braces',
+    tags: ['Bencode', 'BitTorrent', 'torrent', '编解码', 'JSON'],
+    tagsEn: ['Bencode', 'BitTorrent', 'torrent', 'Codec', 'JSON'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'd4:spami1ee',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 Bencode 编解码器。Bencode 是 BitTorrent 协议与 .torrent 文件使用的序列化格式，仅包含四种结构：整数 i<数字>e、二进制安全字节串 <长度>:<字节>、列表 l..e 与字典 d..e（键必须是字节串并按原始字节序升序排列）。本工具可将 Bencode 解析为格式化 JSON 预览，也可把 JSON 编码回 Bencode。',
+        coreFeatures: [
+          '四种结构全覆盖：整数、字节串、列表、字典的严格解析与生成',
+          'Bencode ↔ JSON 双向转换，解码结果按缩进格式化，便于阅读 .torrent 字段',
+          '二进制安全：非 UTF-8 字节串以 {"$$bencodeBytes$$": "<十六进制>"} 标记对象呈现并可无损还原',
+          '精确报错：非法起始字符、前导零、长度不符、字典键乱序或重复等错误均报告具体位置',
+          '编码时字典键自动按字节序升序排列，纯本地运算、零新增依赖',
+        ],
+        howToUse: [
+          '选择「解码（Bencode → JSON）」或「编码（JSON → Bencode）」，切换时自动载入示例',
+          '粘贴 .torrent 片段等 Bencode 文本或合法 JSON，结果即时更新',
+          '需要承载原始字节时，在 JSON 中使用 {"$$bencodeBytes$$": "<偶数位十六进制>"} 标记对象',
+        ],
+        useCases: [
+          '解析 .torrent 文件的 announce、info.name、piece length、文件列表等字段',
+          '调试 BitTorrent 扩展协议（BEP）中以 Bencode 承载的消息与元数据',
+          '从 JSON 快速生成符合规范（字典键排序、整数严格）的 Bencode 数据',
+        ],
+        privacyNote: '所有解析与编码均在浏览器本地完成，输入的 Bencode 与 JSON 数据不会被上传或记录。',
+        faqs: [
+          {
+            question: 'Bencode 和 JSON 有什么区别？',
+            answer:
+              'Bencode 只有整数、字节串、列表、字典四种类型，没有布尔、null 或浮点数；字节串是二进制安全的（可承载任意字节，不限于文本）；字典键必须是字节串且严格按原始字节序升序排列，不允许重复键。JSON 则是面向文本的通用格式，类型更丰富但不保证键序。',
+          },
+          {
+            question: '$$bencodeBytes$$ 标记对象是什么？',
+            answer:
+              'Bencode 字节串可以包含任意字节，不一定是合法 UTF-8 文本，无法直接显示为 JSON 字符串。遇到这类字节串时，解码结果用 {"$$bencodeBytes$$": "十六进制"} 表示其原始字节；反向编码时该标记会被还原为字节串，保证往返无损。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first Bencode encoder and decoder. Bencode is the serialization format used by the BitTorrent protocol and .torrent files, with exactly four structures: integers i<digits>e, binary-safe byte strings <length>:<bytes>, lists l..e, and dictionaries d..e (keys must be byte strings sorted lexicographically by raw bytes). It decodes Bencode into pretty-printed JSON and encodes JSON back to Bencode.',
+        coreFeatures: [
+          'All four structures: strict parsing and generation of integers, byte strings, lists, and dictionaries',
+          'Bidirectional Bencode ↔ JSON conversion with indented, easy-to-read .torrent field previews',
+          'Binary-safe: non-UTF-8 byte strings appear as {"$$bencodeBytes$$": "<hex>"} marker objects and round-trip losslessly',
+          'Precise errors: illegal start characters, leading zeros, length mismatches, unsorted or duplicate keys all report exact positions',
+          'Dictionary keys are automatically sorted by raw byte order on encode; fully local, zero new dependencies',
+        ],
+        howToUse: [
+          'Choose "Decode (Bencode → JSON)" or "Encode (JSON → Bencode)"; switching loads the matching sample',
+          'Paste a .torrent-style Bencode fragment or valid JSON and the result updates instantly',
+          'To carry raw bytes, use the marker object {"$$bencodeBytes$$": "<even-length hex>"} in JSON',
+        ],
+        useCases: [
+          'Inspect announce, info.name, piece length, and file list fields of .torrent files',
+          'Debug Bencode payloads in BitTorrent Extension Protocol (BEP) messages and metadata',
+          'Generate spec-compliant Bencode (sorted dictionary keys, strict integers) from JSON',
+        ],
+        privacyNote:
+          'All parsing and encoding run locally in the browser; entered Bencode and JSON data are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How does Bencode differ from JSON?',
+            answer:
+              'Bencode has only four types — integers, byte strings, lists, and dictionaries — with no booleans, null, or floats. Byte strings are binary-safe (arbitrary bytes, not just text), and dictionary keys must be byte strings strictly sorted by raw byte order with no duplicates. JSON is a text-oriented general format with richer types and no mandated key order.',
+          },
+          {
+            question: 'What is the $$bencodeBytes$$ marker object?',
+            answer:
+              'Bencode byte strings may contain arbitrary bytes that are not valid UTF-8 and therefore cannot be shown as JSON strings. Such strings are decoded as {"$$bencodeBytes$$": "hexadecimal"}; when encoding, the marker is converted back into a byte string, ensuring lossless round trips.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
