@@ -6704,6 +6704,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'css-specificity-calculator',
+    name: 'CSS 选择器权重计算器',
+    nameEn: 'CSS Specificity Calculator',
+    description:
+      '逐行解析 CSS 选择器，按标准三元组 (a, b, c) 计算权重，正确处理 ID、类、属性、伪类、伪元素、:is()/:not()/:has()/:where() 及 nth-child of 语法，并自动标出权重最高的选择器。',
+    descriptionEn:
+      'Parse CSS selectors line by line and compute the standard specificity triple (a, b, c), with correct handling of IDs, classes, attributes, pseudo-classes, pseudo-elements, :is()/:not()/:has()/:where(), and nth-child(... of S), highlighting the highest-specificity selector.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/css-specificity-calculator',
+    iconName: 'Code',
+    tags: ['CSS', '选择器', '权重', 'Specificity', '前端'],
+    tagsEn: ['CSS', 'Selector', 'Specificity', 'Frontend'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '#nav .item > a:hover',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS 选择器权重（Specificity）决定多条规则同时命中一个元素时哪条生效。本工具逐行解析选择器，输出标准三元组 (a, b, c)：a 为 ID 选择器数量，b 为类、属性与伪类数量，c 为类型与伪元素数量；比较顺序为 a → b → c。工具内置零依赖的递归下降解析器，正确处理后代 / 子代 / 相邻 / 兄弟组合子、属性选择器（含引号与逗号）、:is() / :not() / :has()（采纳参数列表最高权重）、:where()（权重恒为 0）以及 :nth-child(An+B of S) 过滤语法，并在多行输入中标记权重最高的一条。全部计算在浏览器本地实时完成。',
+        coreFeatures: [
+          '标准三元组 (a, b, c) 计算：ID / 类·属性·伪类 / 类型·伪元素',
+          '支持后代、子代（>）、相邻（+）、兄弟（~）组合子与选择器列表',
+          '正确处理 :is()、:not()、:has() 采纳参数最高权重，:where() 恒为 0',
+          '支持旧式单冒号伪元素（:before）与 :nth-child(... of S) 的过滤选择器权重叠加',
+          '多行批量对比，自动高亮权重最高的选择器，非法选择器逐行报错',
+        ],
+        howToUse: [
+          '在文本框中每行输入一个 CSS 选择器',
+          '结果区实时显示每个选择器的 (a, b, c) 三元组',
+          '绿色底色行表示当前所有合法选择器中权重最高（将优先生效）的一条',
+          '无法解析的行会以错误提示标出，可据此检查括号配对或尾随组合子',
+        ],
+        useCases: [
+          '排查「样式为什么被覆盖」：对比命中同一元素的多条选择器权重',
+          '编写组件库或 CSS 方案时评估选择器优先级，避免 !important 滥用',
+          '面试与教学中验证 :is()、:where()、:has() 等新伪类的权重规则',
+          '代码评审中快速核对复杂嵌套选择器的实际权重',
+        ],
+        privacyNote: '所有计算均在浏览器本地完成，不发送任何数据到服务器。',
+        faqs: [
+          {
+            question: '为什么 div::before 的 c 是 2 而不是 1？',
+            answer:
+              '三元组统计的是各类简单选择器的数量：div 是一个类型选择器（c +1），::before 是一个伪元素（c +1），合计 (0, 0, 2)。旧式单冒号 :before 在规范中同样按伪元素计。',
+          },
+          {
+            question: ':has() 自己会不会加一个伪类权重？',
+            answer:
+              '不会。与 :is()、:not() 一样，:has() 的权重采纳参数列表中最高权重的选择器，函数伪类自身不额外 +1。例如 section:has(> h2) 的权重为 (0, 0, 2)；:where() 则特殊，无论参数如何权重恒为 0。',
+          },
+          {
+            question: '权重相同的多条选择器怎么判定？',
+            answer:
+              '当三元组完全相同时，工具会把最先出现的一条标记为「权重最高」；这与浏览器行为一致——特异性相同时，由源码顺序（后出现的规则生效）决定，本工具只负责权重计算，源码顺序需结合实际样式表判断。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'CSS specificity decides which rule wins when multiple rules match the same element. This tool parses selectors line by line and outputs the standard triple (a, b, c): a counts ID selectors, b counts classes, attribute selectors, and pseudo-classes, and c counts type selectors and pseudo-elements; comparison proceeds a → b → c. A zero-dependency recursive-descent parser correctly handles descendant / child / adjacent / sibling combinators, attribute selectors (including quotes and commas), :is() / :not() / :has() (which take the highest specificity of their arguments), :where() (always zero), and :nth-child(An+B of S) filters. Among multiple lines the highest-specificity selector is highlighted. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Standard (a, b, c) triple: IDs / classes·attributes·pseudo-classes / types·pseudo-elements',
+          'Descendant, child (>), adjacent (+), and sibling (~) combinators plus selector lists',
+          ':is(), :not(), and :has() adopt the maximum argument specificity; :where() is always zero',
+          'Legacy single-colon pseudo-elements (:before) and :nth-child(... of S) filter specificity',
+          'Batch line-by-line comparison with the winner highlighted and per-line errors for invalid input',
+        ],
+        howToUse: [
+          'Enter one CSS selector per line in the text area',
+          'The result list shows the (a, b, c) triple for every selector in real time',
+          'The green-tinted row is the highest-specificity valid selector (the one that would win)',
+          'Unparseable lines are flagged with an error message so you can spot unmatched parentheses or trailing combinators',
+        ],
+        useCases: [
+          'Debugging "why is my style overridden" by comparing selectors that match the same element',
+          'Evaluating selector priorities when authoring component libraries to avoid !important',
+          'Verifying the rules of newer pseudo-classes such as :is(), :where(), and :has() in interviews or teaching',
+          'Quickly checking the real specificity of deeply nested selectors during code review',
+        ],
+        privacyNote: 'All calculations run locally in the browser; no data is sent anywhere.',
+        faqs: [
+          {
+            question: 'Why does div::before give c = 2 instead of 1?',
+            answer:
+              'The triple counts simple selectors: div is one type selector (c +1) and ::before is one pseudo-element (c +1), totaling (0, 0, 2). The legacy single-colon :before is also treated as a pseudo-element per spec.',
+          },
+          {
+            question: 'Does :has() add its own pseudo-class weight?',
+            answer:
+              'No. Like :is() and :not(), :has() takes the highest specificity of its argument list without adding +1 for the functional pseudo-class itself. For example, section:has(> h2) is (0, 0, 2). :where() is the special case whose specificity is always zero regardless of its arguments.',
+          },
+          {
+            question: 'How are ties between equal-specificity selectors decided?',
+            answer:
+              'When triples are identical the tool marks the first occurrence as the winner; this mirrors the browser model—equal specificity is resolved by source order (the later rule wins). The tool computes specificity only; source order must be checked against the actual stylesheet.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

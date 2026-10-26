@@ -91,4 +91,5 @@ export const toolLoaders: Record<
   'number-to-words': () => import('./number-to-words'),
   'fullwidth-halfwidth-converter': () => import('./fullwidth-halfwidth-converter'),
   'aspect-ratio-calculator': () => import('./aspect-ratio-calculator'),
+  'css-specificity-calculator': () => import('./css-specificity-calculator'),
 };
