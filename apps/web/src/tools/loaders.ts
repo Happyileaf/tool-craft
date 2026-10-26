@@ -81,4 +81,5 @@ export const toolLoaders: Record<
   'non-crypto-hash': () => import('./non-crypto-hash'),
   'morse-codec': () => import('./morse-codec'),
   'caesar-cipher': () => import('./caesar-cipher'),
+  'ulid-generator': () => import('./ulid-generator'),
 };

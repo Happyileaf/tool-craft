@@ -5794,6 +5794,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'ulid-generator',
+    name: 'ULID 生成器与解析器',
+    nameEn: 'ULID Generator & Parser',
+    description:
+      '生成符合规范的 26 字符 ULID（10 字符毫秒时间戳 + 16 字符 Crockford Base32 随机段），支持批量生成、指定时间戳与同毫秒单调递增，并可把 ULID 反解为 UTC / 本地时间与随机段十六进制。',
+    descriptionEn:
+      'Generate spec-compliant 26-char ULIDs (a 10-char millisecond timestamp plus a 16-char Crockford Base32 random part) in bulk, with an optional fixed timestamp and same-millisecond monotonicity, and parse any ULID back into UTC/local time and the random-part hex.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ulid-generator',
+    iconName: 'Fingerprint',
+    tags: ['ULID', '标识符', 'Crockford Base32', '有序主键'],
+    tagsEn: ['ULID', 'Identifier', 'Crockford Base32', 'Sortable ID'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '01ARYZ6S41TSV4RRFFQ69G5FAV',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 ULID（Universally Unique Lexicographically Sortable Identifier）生成与解析工具，遵循 ULID 规范：固定 26 个字符，采用 Crockford Base32（0–9A–Z，排除易混淆的 I、L、O、U），前 10 字符编码 48 位毫秒时间戳，后 16 字符编码 80 位随机数。随机字节取自 Web Crypto getRandomValues，同一毫秒内连续生成时随机段自动加一，保证标识符既唯一又可直接按字符串字典序排序。',
+        coreFeatures: [
+          '符合规范的 26 字符 ULID，Crockford Base32 字符集，时间戳段 + 随机段布局',
+          '批量生成 1–500 个，结果严格按字典序升序，支持一键复制全部',
+          '可指定毫秒时间戳前缀；同毫秒单调递增，时钟回拨直接报错',
+          'Web Crypto 密码学安全随机源，80 位随机段无取模偏置',
+          '反解任意 ULID：毫秒时间戳、UTC / 本地时间、分段与随机段 20 位十六进制，非法字符与长度即时报错',
+        ],
+        howToUse: [
+          '选择生成数量，可选填写固定毫秒时间戳（留空使用当前时间），点击「重新生成」',
+          '点击「复制全部」获取按行分隔的 ULID；它们可直接按字典序排序并反映创建先后',
+          '在「ULID 解析」卡片粘贴任意 ULID，即时查看时间与随机段信息',
+        ],
+        useCases: [
+          '分布式系统与数据库中需要时间有序的唯一主键（日志、事件、订单号）',
+          '替代自增 ID 暴露业务量，同时保持索引友好的字典序特性',
+          '排查问题时把他人给出的 ULID 反解为可读的生成时间',
+        ],
+        privacyNote: '时间戳与随机数全部在浏览器本地生成和解析，不发起任何网络请求。',
+        faqs: [
+          {
+            question: 'ULID 和 UUID v4 有什么区别？',
+            answer:
+              'UUID v4 是 36 字符（含连字符）的纯随机标识，字符串顺序与创建时间无关；ULID 是 26 字符、URL 友好的 Crockford Base32 标识，前 48 位直接编码毫秒时间戳，因此按字符串字典序排序就等于按创建时间排序，更适合做数据库有序主键与日志标识，同时保留 80 位随机空间保证碰撞概率极低。',
+          },
+          {
+            question: '同一毫秒内连续生成会不会重复？',
+            answer:
+              '不会。本工具实现了 ULID 规范的单调性（monotonicity）：当时间戳前进时重新抽取随机段；当多次生成落在同一毫秒时，对 80 位随机段做整数加一并在溢出时报错，因此同一毫秒内的结果严格递增。只有随机段在该毫秒内全部进位到上界（约 2^80 次）才会失败，正常使用不可能触发。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local generator and parser for ULIDs (Universally Unique Lexicographically Sortable Identifier) following the ULID spec: always 26 characters in Crockford Base32 (0–9A–Z without the confusing I, L, O, U), where the first 10 characters encode a 48-bit millisecond timestamp and the last 16 encode 80 random bits. Random bytes come from Web Crypto getRandomValues, and generations within the same millisecond increment the random part, so IDs are both unique and sortable by plain lexicographic order.',
+        coreFeatures: [
+          'Spec-compliant 26-char ULIDs in Crockford Base32 with a timestamp part and a random part',
+          'Bulk generation of 1–500 IDs in strict lexicographic order, with one-click copy',
+          'Optional fixed millisecond timestamp; same-millisecond monotonicity; clock-rollback errors',
+          'Web Crypto secure randomness with 80 unbiased random bits',
+          'Parse any ULID into its millisecond timestamp, UTC/local time, parts, and 20-hex randomness, with instant errors for bad length or characters',
+        ],
+        howToUse: [
+          'Pick a count, optionally enter a fixed millisecond timestamp (or leave it blank for now), then click "Regenerate"',
+          'Click "Copy all" to get newline-separated ULIDs that sort lexicographically by creation time',
+          'Paste any ULID into the parse card to inspect its time and random part instantly',
+        ],
+        useCases: [
+          'Time-sortable unique keys in distributed systems and databases (logs, events, orders)',
+          'Replacing auto-increment IDs that reveal business volume while keeping index-friendly ordering',
+          'Decoding a ULID from elsewhere into a readable creation time during debugging',
+        ],
+        privacyNote:
+          'Timestamps and random values are generated and parsed entirely in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'How is a ULID different from a UUID v4?',
+            answer:
+              'A UUID v4 is a 36-character (hyphenated) fully random identifier whose string order is unrelated to creation time; a ULID is a 26-character, URL-friendly Crockford Base32 identifier whose first 48 bits encode the millisecond timestamp, so lexicographic sorting equals chronological sorting. That makes ULIDs better suited as sortable database keys and log IDs, while 80 random bits still keep collisions negligible.',
+          },
+          {
+            question: 'Can IDs generated in the same millisecond collide?',
+            answer:
+              'No. The tool implements spec monotonicity: when time moves forward it draws fresh randomness, and when several IDs fall in the same millisecond it increments the 80-bit random part as an integer and errors only on overflow, keeping results strictly increasing. Failure requires exhausting the random part within one millisecond (roughly 2^80 increments), which cannot happen in practice.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
