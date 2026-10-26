@@ -36,7 +36,7 @@
 | 20261017140156 | Barcode generator | Web Tool | External Reference | Pending | 2026-10-17 | | [详情](./idea-details/20261017140156.md) |
 | 20261017140158 | Date & business day calculator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140158.md) |
 | 20261017140159 | .env parser & converter | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140159.md) |
-| 20261017160148 | ULID generator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017160148.md) |
+| 20261017160148 | ULID generator | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017160148.md) |
 | 20261017160149 | CSS unit converter (px / rem / em / pt) | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017160149.md) |
 | 20261017160151 | Semantic version (SemVer) parser & comparator | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017160151.md) |
 | 20261017160152 | Unit & measurement converter | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017160152.md) |
@@ -44,7 +44,7 @@
 | 20261017183430 | RSA / 非对称密钥对生成器与加解密 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017183430.md) |
 | 20261017183431 | Base58 & Base58Check 编解码器 | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017183431.md) |
 | 20261017183432 | 摩尔斯电码编解码器 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017183432.md) |
-| 20261017183433 | ROT13 与凯撒密码 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017183433.md) |
+| 20261017183433 | ROT13 与凯撒密码 | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017183433.md) |
 | 20261017183434 | 数字转中文大写金额 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017183434.md) |
 | 20261017183435 | Punycode / IDN 域名转换器 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017183435.md) |
 | 20261017183436 | HTTP 状态码速查 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017183436.md) |
@@ -54,12 +54,12 @@
 | 20261017200232 | 字符集解码与乱码修复 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017200232.md) |
 | 20261017200233 | 数学表达式求值器 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017200233.md) |
 | 20261017200234 | 描述性统计计算器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200234.md) |
-| 20261017200235 | 最大公约数 / 最小公倍数 / 质因数分解计算器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200235.md) |
+| 20261017200235 | 最大公约数 / 最小公倍数 / 质因数分解计算器 | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017200235.md) |
 | 20261017200236 | CSS 缓动函数（cubic-bezier）生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200236.md) |
 | 20261017200238 | Markdown 表格生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200238.md) |
 | 20261017200239 | robots.txt 生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200239.md) |
 | 20261017200240 | MIME 类型速查与识别 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200240.md) |
-| 20261017220041 | 罗马数字转换器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220041.md) |
+| 20261017220041 | 罗马数字转换器 | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017220041.md) |
 | 20261017220042 | 银行卡号校验与卡种识别 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017220042.md) |
 | 20261017220043 | 地理坐标格式转换（十进制 ↔ 度分秒） | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220043.md) |
 | 20261017220044 | 数字千分位与货币格式化 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220044.md) |
@@ -106,7 +106,7 @@
 | 20261023020508 | iCalendar (.ics) 日历事件文件生成器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023020508.md) |
 | 20261023020509 | Web App Manifest 生成器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023020509.md) |
 | 20261023020510 | CSS 形状生成器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023020510.md) |
-| 20261023020511 | Snowflake ID 解析器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023020511.md) |
+| 20261023020511 | Snowflake ID 解析器 | Web Tool | Exploration | Claimed | 2026-10-23 | trae-agent | [详情](./idea-details/20261023020511.md) |
 | 20261023020512 | SPF 记录生成与校验器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023020512.md) |
 | 20261023020513 | sitemap.xml 生成器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023020513.md) |
 | 20261023020514 | 占位图片生成器 | Web Tool | External Reference | Pending | 2026-10-23 | | [详情](./idea-details/20261023020514.md) |
