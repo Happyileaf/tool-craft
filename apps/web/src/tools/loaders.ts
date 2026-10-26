@@ -85,4 +85,5 @@ export const toolLoaders: Record<
   'snowflake-id-parser': () => import('./snowflake-id-parser'),
   'number-theory-calculator': () => import('./number-theory-calculator'),
   'roman-numeral-converter': () => import('./roman-numeral-converter'),
+  'line-ending-converter': () => import('./line-ending-converter'),
 };

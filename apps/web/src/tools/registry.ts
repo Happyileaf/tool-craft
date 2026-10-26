@@ -6150,6 +6150,98 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'line-ending-converter',
+    name: '换行符转换器',
+    nameEn: 'Line Ending Converter',
+    description:
+      '检测文本中 LF / CRLF / CR 行结束符的数量与混排情况、UTF-8 BOM、末尾换行与字节大小，并一键在 LF（Unix/macOS）、CRLF（Windows）、CR（经典 Mac）之间归一化转换。',
+    descriptionEn:
+      'Detect LF/CRLF/CR line ending counts and mixed endings, UTF-8 BOM, final newline, and byte size, then normalize line endings in one click between LF (Unix/macOS), CRLF (Windows), and CR (classic Mac).',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/line-ending-converter',
+    iconName: 'AlignLeft',
+    tags: ['换行符', 'LF', 'CRLF', 'BOM', '文本规范化'],
+    tagsEn: ['Line Endings', 'LF', 'CRLF', 'BOM', 'Text Normalization'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'name,email\r\n张三,zhangsan@example.com\r\n李四,lisi@example.com\r\n',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的换行符检测与转换工具。它按「先匹配 CRLF（\\r\\n），再匹配独立 LF（\\n）与 CR（\\r）」的顺序扫描文本，精确统计三种行结束符各自的出现次数、判定是否混排（mixed line endings），并报告总行数、UTF-8 字节大小、末尾是否以换行符结尾以及开头是否存在 UTF-8 BOM（U+FEFF / EF BB BF）；转换时将全部行结束符统一替换为目标格式（LF / CRLF / CR），可选剥离开头 BOM，并给出转换前后的字节变化（如 CRLF→LF 每个换行节省 1 字节）。',
+        coreFeatures: [
+          '检测 LF、CRLF、CR 三种行结束符的数量、主导类型与混排情况',
+          '一键在 LF（Unix/macOS）、CRLF（Windows）、CR（经典 Mac）之间归一化',
+          '检测开头 UTF-8 BOM（EF BB BF），转换时可选剥离',
+          '显示总行数、末尾换行有无、转换前后 UTF-8 字节大小与差值',
+          '纯字符串扫描，零新增依赖，全部处理在浏览器本地完成',
+        ],
+        howToUse: [
+          '将文本粘贴到输入框，下方立即显示各类换行符计数与文本结构信息',
+          '通过按钮选择目标换行符（LF / CRLF / CR），输出框实时给出归一化结果',
+          '勾选或取消「剥离开头 BOM」控制是否移除开头的 U+FEFF 字符',
+          '点击「复制转换结果」获取归一化后的文本',
+        ],
+        useCases: [
+          '消除跨平台协作时 git diff 因 CRLF/LF 不一致导致的整文件变动',
+          '修复 shell 脚本在 Linux 上的 bad interpreter: ^M 报错',
+          '清洗从旧 Windows 系统或大型机导出的 CR / CRLF 文本',
+          '检查文件是否带 BOM、是否缺少末尾换行等提交规范问题',
+        ],
+        privacyNote: '所有检测与转换均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '混排时三种换行符的计数会不会重复？',
+            answer:
+              '不会。扫描正则按 \\r\\n、\\r、\\n 的优先级匹配：一个 CRLF 会被整体识别为 1 个 CRLF，而不是 1 个 CR 加 1 个 LF；只有独立出现的 \\n 与 \\r 才计入各自计数，因此总数与实际行结束符数量严格相等。',
+          },
+          {
+            question: '转换后字节数是如何变化的？',
+            answer:
+              'CRLF 占 2 字节、LF 与 CR 各占 1 字节：CRLF→LF/CR 每个换行节省 1 字节，LF/CR→CRLF 每个换行增加 1 字节，同格式转换字节不变。若同时剥离了开头 BOM（UTF-8 下 EF BB BF 占 3 字节），差值中还会包含这 3 字节的减少。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local tool that inspects and converts text line endings. It scans in priority order—CRLF (\\r\\n) first, then standalone LF (\\n) and CR (\\r)—to count each ending precisely, detect mixed line endings, and report the total line count, UTF-8 byte size, final-newline presence, and a leading UTF-8 BOM (U+FEFF / EF BB BF). Conversion replaces every ending with the chosen target (LF, CRLF, or CR), optionally strips a leading BOM, and shows the byte-size delta (e.g., CRLF→LF saves one byte per line).',
+        coreFeatures: [
+          'Counts LF, CRLF, and CR endings with dominant type and mixed-ending detection',
+          'One-click normalization among LF (Unix/macOS), CRLF (Windows), and CR (classic Mac)',
+          'Detects a leading UTF-8 BOM (EF BB BF) with optional stripping',
+          'Shows line count, final newline state, and UTF-8 byte size before/after conversion',
+          'Pure string scanning with zero new dependencies, entirely in the browser',
+        ],
+        howToUse: [
+          'Paste text into the input area; per-type ending counts and structure info appear immediately',
+          'Pick the target ending (LF / CRLF / CR) to see the normalized output in real time',
+          'Toggle "strip leading BOM" to control removal of the leading U+FEFF character',
+          'Click "copy result" to take the normalized text',
+        ],
+        useCases: [
+          'Removing whole-file git diff noise caused by inconsistent CRLF/LF across platforms',
+          'Fixing "bad interpreter: ^M" errors when shell scripts run on Linux',
+          'Cleaning CR/CRLF text exported from legacy Windows or mainframe systems',
+          'Checking files for BOM presence and missing final newline before committing',
+        ],
+        privacyNote: 'All analysis and conversion run locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Are the three ending counts double-counted when endings are mixed?',
+            answer:
+              'No. The scanner matches \\r\\n before \\r and \\n: a CRLF is counted once as CRLF rather than as one CR plus one LF, and only standalone \\n and \\r characters are counted separately, so the totals exactly equal the real ending occurrences.',
+          },
+          {
+            question: 'How does the byte size change after conversion?',
+            answer:
+              'CRLF takes 2 bytes while LF and CR each take 1: CRLF→LF/CR saves one byte per ending, LF/CR→CRLF adds one, and converting to the same format changes nothing. If the leading BOM is also stripped (EF BB BF is 3 bytes in UTF-8), the delta includes an additional 3-byte reduction.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
