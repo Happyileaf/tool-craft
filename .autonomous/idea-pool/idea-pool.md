@@ -147,3 +147,9 @@
 | 20261026200348 | 化学式摩尔质量计算器 | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026200348.md) |
 | 20261026200349 | 线性代数矩阵计算器（乘法 / 行列式 / 逆 / 秩 / RREF） | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026200349.md) |
 | 20261026200350 | 原始 HTTP 报文解析器（请求 / 响应） | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026200350.md) |
+| 20261027020214 | DMARC 记录生成与校验器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027020214.md) |
+| 20261027020215 | Markdown 转 HTML 转换器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027020215.md) |
+| 20261027020216 | 多时区会议时间规划器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027020216.md) |
+| 20261027020217 | CSS clip-path 可视化生成器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027020217.md) |
+| 20261027020218 | 盲文（Braille）点阵编解码器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027020218.md) |
+| 20261027020219 | CRC16 / Adler-32 等多算法校验和计算器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027020219.md) |
