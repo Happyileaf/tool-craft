@@ -5616,6 +5616,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'morse-codec',
+    name: '摩尔斯电码编解码器',
+    nameEn: 'Morse Code Translator',
+    description:
+      '在普通文本与国际摩尔斯电码（点 . / 划 -）之间双向转换，覆盖 A–Z、0–9 与常用标点，支持可调字符 / 单词间隔与本地音频播放，适用于业余无线电、谜题解密与报务教学。',
+    descriptionEn:
+      'Translate between plain text and International Morse Code (dots and dashes) in both directions, covering A–Z, 0–9, and common punctuation, with adjustable letter/word gaps and local audio playback for amateur radio, puzzles, and telegraphy training.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/morse-codec',
+    iconName: 'Sparkles',
+    tags: ['摩尔斯', 'Morse', '编码', '音频'],
+    tagsEn: ['Morse', 'Codec', 'Encoding', 'Audio'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'SOS MORSE CODE 1844',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的摩尔斯电码双向转换工具，遵循 ITU-R M.1677-1 国际摩尔斯电码表，支持 A–Z 字母、0–9 数字以及句号、逗号、问号、@ 等 18 个常用标点与业务符号。编码方向把文本转为点（.）划（-）序列，字符间隔与单词间隔均可按点长单位调整（标准为 3 与 7）；解码方向容忍手写输入的空格差异，也接受斜杠（/）作为单词分隔。内置 Web Audio 振荡器，可按慢 / 标准 / 快三档速度把电码真实发声播放出来。',
+        coreFeatures: [
+          '文本与摩尔斯电码双向转换，覆盖 26 个字母、10 个数字与 18 个常用标点符号',
+          '字符间隔（标准 3 点长）与单词间隔（标准 7 点长）均可调，范围 1–20 且自动校验',
+          '解码容错：1–4 空格视为字符间隔，斜杠或 5 个以上空格视为单词间隔',
+          '基于 Web Audio 的音频播放，600Hz 正弦波、三档点长速度，可随时停止',
+          '纯函数 + 零依赖实现，转换与发声均在本地完成，支持一键复制结果',
+        ],
+        howToUse: [
+          '选择「编码」或「解码」方向，在输入框中粘贴文本或点划电码，结果实时刷新',
+          '编码方向可调整字符 / 单词间隔（单词间隔必须大于字符间隔），解码方向可直接粘贴斜杠格式',
+          '点击「播放电码」按当前速度收听，可切换慢 / 标准 / 快速；满意后点「复制结果」取用',
+        ],
+        useCases: [
+          '业余无线电（CW 通联）练习收发报文，对照标准点划与时序听辨训练',
+          '密室逃脱、解谜游戏与 CTF 中遇到摩尔斯线索时快速编解码',
+          '通信史与信息技术课堂上演示点划编码、间隔规则与电报发声原理',
+        ],
+        privacyNote: '转换与音频播放全部在浏览器本地完成，输入内容不会被上传或记录。',
+        faqs: [
+          {
+            question: '编码后每个字符之间的三个空格有什么用？',
+            answer:
+              '空格承载的是时间间隔而不是可见符号：按 ITU 标准，码元（点划）间隔为 1 个点长、字符间隔为 3 个点长、单词间隔为 7 个点长。本工具直接用对应数量的空格表示间隔，因此默认输出中字符间是 3 个空格、单词间是 7 个空格；音频播放时这些空格会被换算成真实的静默时长。',
+          },
+          {
+            question: '解码时怎样区分字符间隔和单词间隔？',
+            answer:
+              '规则为：1–4 个空格一律视为字符间隔（对手写输入容错），斜杠（/，前后是否带空格均可）或 5 个及以上空格视为单词间隔。标准编码器输出的 3 空格 / 7 空格可以无损往返；若你把间隔调成了很小的值再想解码，建议用斜杠显式分隔单词，例如 “.... .. / - .... . .-. .”。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local, bidirectional translator for International Morse Code per ITU-R M.1677-1, covering A–Z, 0–9, and 18 common punctuation and procedural symbols such as period, comma, question mark, and @. Encoding turns text into dots (.) and dashes (-) with adjustable letter and word gaps (3 and 7 dot lengths by standard); decoding tolerates handwritten spacing variations and also accepts a slash (/) as the word separator. A built-in Web Audio oscillator plays the code aloud at slow, standard, or fast speed.',
+        coreFeatures: [
+          'Bidirectional translation covering 26 letters, 10 digits, and 18 common punctuation/procedural symbols',
+          'Adjustable letter gap (standard 3 dot lengths) and word gap (standard 7), range 1–20 with automatic validation',
+          'Lenient decoding: 1–4 spaces are letter gaps; a slash or 5+ spaces denotes a word gap',
+          'Web Audio playback with a 600 Hz sine wave, three dot-length speeds, and instant stop',
+          'Pure-function, zero-dependency implementation; conversion and audio stay local, one-click copy included',
+        ],
+        howToUse: [
+          'Pick the Encode or Decode direction and paste text or dot-dash code; the result refreshes live',
+          'Tune letter/word gaps when encoding (the word gap must be larger); paste slash-separated code when decoding',
+          'Click "Play code" to listen at the current speed (slow/standard/fast), then use "Copy result"',
+        ],
+        useCases: [
+          'Practice CW traffic in amateur radio and train ear copy against standard timing',
+          'Encode or decode Morse clues in escape rooms, puzzle games, and CTF challenges',
+          'Demonstrate dot-dash encoding, gap rules, and telegraph sound in communications-history classes',
+        ],
+        privacyNote:
+          'All conversion and audio playback run locally in the browser; input is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the purpose of the three spaces between encoded letters?',
+            answer:
+              'The spaces encode timing rather than a visible symbol: per the ITU standard the gap between elements (dots/dashes) is 1 dot length, between letters 3 dot lengths, and between words 7 dot lengths. The tool represents these gaps with the matching number of spaces, so default output shows 3 spaces between letters and 7 between words; audio playback converts the spaces into real silence.',
+          },
+          {
+            question: 'How does decoding distinguish letter gaps from word gaps?',
+            answer:
+              'The rule is: 1–4 spaces are always treated as letter gaps (tolerant of handwritten input), while a slash (with or without surrounding spaces) or 5+ spaces marks a word gap. Standard encoder output (3/7 spaces) round-trips losslessly; if you encoded with very small custom gaps, separate words explicitly with a slash, e.g. ".... .. / - .... . .-. .".',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

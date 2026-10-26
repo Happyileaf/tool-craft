@@ -79,4 +79,5 @@ export const toolLoaders: Record<
   'nano-id-generator': () => import('./nano-id-generator'),
   'bencode-codec': () => import('./bencode-codec'),
   'non-crypto-hash': () => import('./non-crypto-hash'),
+  'morse-codec': () => import('./morse-codec'),
 };
