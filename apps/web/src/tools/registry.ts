@@ -6908,6 +6908,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'nato-phonetic-converter',
+    name: 'NATO 音标字母转换器',
+    nameEn: 'NATO Phonetic Alphabet Converter',
+    description:
+      '在普通文本与 NATO/ICAO 标准音标字母（Alpha / Bravo / Charlie …）之间双向转换，覆盖 A–Z 与 0–9（数字读 Zero–Niner），逐字符给出拼写对照，适用于客服报读订单号、电话核对验证码与无线电航空通信。',
+    descriptionEn:
+      'Convert between plain text and the NATO/ICAO radiotelephony spelling alphabet (Alpha / Bravo / Charlie …) in both directions, covering A–Z and 0–9 (Zero–Niner) with character-by-character spelling cards—ideal for reading order numbers over support calls, verifying codes by phone, and radio/aviation communication.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/nato-phonetic-converter',
+    iconName: 'Type',
+    tags: ['NATO 音标', '字母解释法', '拼读', '无线电', '客服'],
+    tagsEn: ['NATO Phonetic', 'Spelling Alphabet', 'ICAO', 'Radio', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'TRAE 42',
+    doc: {
+      zh: {
+        whatIsIt:
+          'NATO 音标字母转换器把普通文本与国际无线电音标字母（ITU/ICAO 标准拼读表）互相转换：输入文本时逐字符拼出 Alfa、Bravo、Charlie …… 并以斜杠区分不同源单词；输入音标串时可还原为大写文本。覆盖 26 个字母与 10 个数字（数字采用 Zero、One、…、Niner 标准读法，9 读 Niner 以与 5 的发音区分），常用于客服口述订单号、电话核对验证码、航空与无线电通信等需要无歧义拼写确认的场景。全部计算在浏览器本地完成，不发送任何数据。',
+        coreFeatures: [
+          '双向转换：文本拼写为音标，音标串一键还原为大写文本',
+          '完整覆盖 A–Z 与 0–9 共 36 个字符的 ITU/ICAO 标准拼读表',
+          '逐字符拼写卡片，源字符与音标单词一一对应，便于边看边读',
+          '以 “ / ” 标记源单词边界，还原时支持斜杠或多段空白',
+          '还原忽略大小写，并兼容 Alpha / Juliet / Nine 等常见异写，零新依赖',
+        ],
+        howToUse: [
+          '默认处于「拼写」模式，输入字母与数字（如 TRAE 42），即时得到音标串与逐字符卡片',
+          '源文本中的空格会变成输出中的 “ / ”，朗读时可在斜杠处停顿',
+          '切换到「还原」模式，粘贴或输入音标单词（如 Tango Romeo Alfa Echo / Four Two）',
+          '使用「复制结果」可一键复制音标串或还原文本',
+        ],
+        useCases: [
+          '客服 / 电话销售向客户逐字母确认订单号、优惠券码与邮箱拼写',
+          '电话中核对短信验证码、银行卡号等易错读的数字字母串',
+          '航空、无线电、应急通信按标准拼读表呼叫呼号与坐标',
+          '英语学习者记忆 NATO 字母解释法，或为剧本 / 游戏制作对讲台词',
+        ],
+        privacyNote: '所有转换均在浏览器本地完成，不发送任何输入数据到服务器。',
+        faqs: [
+          {
+            question: '和已有的摩尔斯电码编解码器有什么区别？',
+            answer:
+              '摩尔斯电码是点（.）划（-）电报编码，面向电报与信号；本工具是把字母读成 Alfa、Bravo 这类单词的口头拼读表，面向人声无歧义确认，两套映射体系与使用场景完全不同。',
+          },
+          {
+            question: '为什么数字 9 拼成 Niner 而不是 Nine？',
+            answer:
+              '这是 ITU/ICAO 航空通信标准：9 读 Niner（奈纳）以避免与德语词 Nein（不）混淆，同时与 5（Five / Fife）的发音更清晰地区分。还原时 Nine 与 Niner 都会被识别为 9。',
+          },
+          {
+            question: '为什么输入标点或中文会报错？',
+            answer:
+              '标准音标表只定义了 A–Z 与 0–9 共 36 个字符的读法，没有统一的标点拼读规范。遇到连字符、符号等字符时工具会明确指出，避免在通信中产生歧义。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The NATO Phonetic Alphabet Converter translates between plain text and the international radiotelephony spelling alphabet (the ITU/ICAO standard): type text to spell it out character by character as Alfa, Bravo, Charlie … with slashes separating source words, or paste a phonetic string to reconstruct the uppercase text. It covers all 26 letters and 10 digits (read as Zero, One, …, Niner; 9 is "Niner" to stay distinct from 5). It is built for unambiguous spelling confirmation in customer support calls, code verification by phone, aviation, and radio communication. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Bidirectional: spell text into code words, or reconstruct uppercase text from a phonetic string',
+          'Complete ITU/ICAO table for A–Z and 0–9, 36 characters in total',
+          'Character-by-character spelling cards pairing each source character with its code word',
+          'Source word boundaries marked with “ / ”; reconstruction accepts slashes or extra whitespace',
+          'Case-insensitive decoding with aliases such as Alpha / Juliet / Nine; zero new dependencies',
+        ],
+        howToUse: [
+          'In the default "Spell" mode, type letters and digits (e.g. TRAE 42) to get the phonetic string and per-character cards instantly',
+          'Spaces in the source text become “ / ” in the output—pause at each slash when reading aloud',
+          'Switch to "Reconstruct" mode and paste code words, e.g. Tango Romeo Alfa Echo / Four Two',
+          'Use "Copy result" to copy either the phonetic string or the reconstructed text',
+        ],
+        useCases: [
+          'Support agents confirming order numbers, coupon codes, and email spelling letter by letter',
+          'Verifying SMS codes and bank numbers that are easy to mishear over the phone',
+          'Aviation, radio, and emergency communication of call signs and coordinates per the standard table',
+          'Learners memorizing the NATO alphabet, or scriptwriters preparing radio dialogue',
+        ],
+        privacyNote: 'All conversion happens locally in the browser; no input ever leaves your device.',
+        faqs: [
+          {
+            question: 'How is this different from the existing Morse code tool?',
+            answer:
+              'Morse code is a dot/dash telegraph encoding for signals, while this tool is a spoken spelling alphabet that turns letters into words like Alfa and Bravo for unambiguous voice communication. The mappings and use cases are entirely different.',
+          },
+          {
+            question: 'Why is the digit 9 spelled "Niner" instead of "Nine"?',
+            answer:
+              'It is the ITU/ICAO aviation standard: 9 becomes "Niner" to avoid confusion with the German word "nein" (no) and to stay clearly distinct from 5 (Five/Fife). When decoding, both Nine and Niner map to 9.',
+          },
+          {
+            question: 'Why do punctuation or Chinese characters raise an error?',
+            answer:
+              'The standard spelling table only defines readings for A–Z and 0–9; there is no unified convention for punctuation. The tool flags unsupported characters explicitly rather than inventing ambiguous readings.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

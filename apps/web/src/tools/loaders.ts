@@ -93,4 +93,5 @@ export const toolLoaders: Record<
   'aspect-ratio-calculator': () => import('./aspect-ratio-calculator'),
   'css-specificity-calculator': () => import('./css-specificity-calculator'),
   'number-locale-formatter': () => import('./number-locale-formatter'),
+  'nato-phonetic-converter': () => import('./nato-phonetic-converter'),
 };
