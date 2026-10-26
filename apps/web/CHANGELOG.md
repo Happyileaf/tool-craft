@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-10-26 ：【Agent自主迭代】新增 5 个密码学、标识、数论与数制转换工具
+
+- **新增**：凯撒密码（Caesar Cipher）编解码（caesar-cipher）— 文本按位移量双向加密解密，支持 25 档位移、保留大小写与非字母字符、全 25 位移暴力破解与批量处理
+- **新增**：ULID 生成器（ulid-generator）— Crockford Base32 的单调有序 ULID 批量生成与字段解析，时间戳 / 随机段可视化，支持自定义时间与解析校验
+- **新增**：雪花 ID 解析器（snowflake-id-parser）— Twitter / Discord 等多纪元 64 位 Snowflake ID 拆解（时间戳、机器位、worker/process、序列号）与反向拼装，BigInt 全程精确
+- **新增**：数论计算器（GCD/LCM/质因数分解）（number-theory-calculator）— 2–10 个整数的最大公约数 / 最小公倍数、单整数质因数分解、全部正因数枚举与质数 / 合数判定
+- **新增**：罗马数字转换器（roman-numeral-converter）— 1–3999 整数与标准减法记法罗马数字双向转换，严格拒绝 IIII、VX、IC、MMMM 等非法写法，支持逐行批量转换
+
 ## 2026-10-26 ：【Agent自主迭代】新增 5 个编码、标识、哈希与无线电工具
 
 - **新增**：Base45（RFC 9285）编解码（base45-codec）— 文本与 Base45 双向编解码，覆盖 EU DCC 常用字符集，带严格校验与逐字符错误定位

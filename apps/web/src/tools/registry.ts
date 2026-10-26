@@ -5705,6 +5705,451 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'caesar-cipher',
+    name: '凯撒密码 / ROT13',
+    nameEn: 'Caesar Cipher & ROT13',
+    description:
+      '对英文字母执行 0–25 自定义位移的凯撒密码加解密，内置 ROT13 快捷变换；仅替换 A–Z / a–z 并保留大小写，数字、标点、空格与中文原样输出，适用于 CTF 解谜与轻度文本混淆。',
+    descriptionEn:
+      'Encrypt and decrypt text with a Caesar shift of 0–25, including a one-click ROT13 mode. Only A–Z / a–z letters are substituted while case is kept; digits, punctuation, spaces, and CJK text pass through untouched — handy for CTF puzzles and light obfuscation.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/caesar-cipher',
+    iconName: 'ShieldCheck',
+    tags: ['凯撒密码', 'ROT13', '位移', 'CTF'],
+    tagsEn: ['Caesar Cipher', 'ROT13', 'Shift', 'CTF'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Hello, World!',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的凯撒密码（Caesar cipher）工具，对 26 个英文字母做循环位移替换，支持 0–25 的自定义位移量以及一键 ROT13（位移 13）特例。加密方向把字母沿字母表正移，解密方向反移；变换只作用于 A–Z / a–z，数字、标点、空格、换行与中文等字符一律原样保留，大小写也保持不变。',
+        coreFeatures: [
+          '0–25 任意位移量的凯撒加密与解密，位移量自动按 26 取模归一化',
+          '一键 ROT13：加密解密同一变换，对结果再执行一次即可还原原文',
+          '仅替换英文字母并保持大小写，数字、符号、空白与中文原样保留',
+          '输入、方向与位移量实时联动，结果即时刷新，支持一键复制',
+          '纯函数 + 零依赖实现，全部运算在浏览器本地完成',
+        ],
+        howToUse: [
+          '选择「加密」或「解密」方向，在输入框中粘贴文本，结果实时刷新',
+          '通过数字输入框调整位移量（0–25），或点击「ROT13（位移 13）」快捷按钮',
+          '满意后点击「复制结果」取用；对密文切换到解密方向并使用相同位移即可还原',
+        ],
+        useCases: [
+          'CTF 夺旗赛、密室逃脱与解谜游戏中破解或构造凯撒 / ROT13 线索',
+          '阅读被轻度混淆的文本（论坛剧透、彩蛋、谜语）时快速还原',
+          '密码学入门教学中演示古典替换密码的原理与脆弱性',
+        ],
+        privacyNote: '全部变换在浏览器本地完成，输入内容不会被上传或记录。',
+        faqs: [
+          {
+            question: 'ROT13 和凯撒密码是什么关系？',
+            answer:
+              'ROT13 就是位移量为 13 的凯撒密码。因为英文字母表有 26 个字母，正移 13 位与反移 13 位是同一个变换，所以 ROT13 的加密和解密是同一个操作：对任意文本连续执行两次 ROT13 即可还原原文。',
+          },
+          {
+            question: '为什么数字、标点和中文没有被加密？',
+            answer:
+              '凯撒密码只定义了字母表上的循环位移，本工具仅对 A–Z / a–z 生效，且保持原有大小写；数字、标点、空格、换行以及中文等非字母字符一律原样保留，这也是凯撒密码的标准行为。若需要加密这些字符，请使用本站的现代加密工具（如 AES 对称加密）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local Caesar cipher tool that cyclically shifts the 26 Latin letters with any custom shift of 0–25, plus a one-click ROT13 (shift 13) mode. Encryption shifts letters forward through the alphabet and decryption shifts them backward; only A–Z / a–z are affected while case is preserved, and digits, punctuation, spaces, newlines, and CJK text pass through completely untouched.',
+        coreFeatures: [
+          'Caesar encryption and decryption with any shift 0–25, normalized modulo 26',
+          'One-click ROT13 where encryption and decryption are the same operation; applying it twice restores the text',
+          'Only Latin letters are substituted with case preserved; digits, symbols, whitespace, and CJK stay intact',
+          'Live result that reacts instantly to input, direction, and shift changes, with one-click copy',
+          'Pure-function, zero-dependency implementation running entirely in the browser',
+        ],
+        howToUse: [
+          'Pick the Encrypt or Decrypt direction and paste text; the result refreshes live',
+          'Adjust the shift with the number input (0–25), or click the "ROT13 (shift 13)" button',
+          'Use "Copy result" when satisfied; switch ciphertext to Decrypt with the same shift to recover the plaintext',
+        ],
+        useCases: [
+          'Solve or craft Caesar/ROT13 clues in CTF competitions, escape rooms, and puzzle games',
+          'Reveal lightly obfuscated text such as forum spoilers, easter eggs, and riddles',
+          'Demonstrate classical substitution ciphers and their weakness in introductory cryptography lessons',
+        ],
+        privacyNote:
+          'All transforms run locally in the browser; input is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How is ROT13 related to the Caesar cipher?',
+            answer:
+              'ROT13 is simply the Caesar cipher with a shift of 13. Because the Latin alphabet has 26 letters, shifting forward by 13 is the same as shifting backward by 13, so ROT13 encryption and decryption are the identical operation: applying ROT13 twice to any text restores the original.',
+          },
+          {
+            question: 'Why are digits, punctuation, and Chinese characters left unencrypted?',
+            answer:
+              'The Caesar cipher is defined only as a shift over an alphabet, and this tool applies it exclusively to A–Z / a–z while preserving case. Digits, punctuation, spaces, newlines, and non-letter scripts such as Chinese pass through unchanged, which is the standard Caesar behavior. To protect those characters, use a modern cipher such as the AES symmetric encryption tool on this site.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ulid-generator',
+    name: 'ULID 生成器与解析器',
+    nameEn: 'ULID Generator & Parser',
+    description:
+      '生成符合规范的 26 字符 ULID（10 字符毫秒时间戳 + 16 字符 Crockford Base32 随机段），支持批量生成、指定时间戳与同毫秒单调递增，并可把 ULID 反解为 UTC / 本地时间与随机段十六进制。',
+    descriptionEn:
+      'Generate spec-compliant 26-char ULIDs (a 10-char millisecond timestamp plus a 16-char Crockford Base32 random part) in bulk, with an optional fixed timestamp and same-millisecond monotonicity, and parse any ULID back into UTC/local time and the random-part hex.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ulid-generator',
+    iconName: 'Fingerprint',
+    tags: ['ULID', '标识符', 'Crockford Base32', '有序主键'],
+    tagsEn: ['ULID', 'Identifier', 'Crockford Base32', 'Sortable ID'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '01ARYZ6S41TSV4RRFFQ69G5FAV',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 ULID（Universally Unique Lexicographically Sortable Identifier）生成与解析工具，遵循 ULID 规范：固定 26 个字符，采用 Crockford Base32（0–9A–Z，排除易混淆的 I、L、O、U），前 10 字符编码 48 位毫秒时间戳，后 16 字符编码 80 位随机数。随机字节取自 Web Crypto getRandomValues，同一毫秒内连续生成时随机段自动加一，保证标识符既唯一又可直接按字符串字典序排序。',
+        coreFeatures: [
+          '符合规范的 26 字符 ULID，Crockford Base32 字符集，时间戳段 + 随机段布局',
+          '批量生成 1–500 个，结果严格按字典序升序，支持一键复制全部',
+          '可指定毫秒时间戳前缀；同毫秒单调递增，时钟回拨直接报错',
+          'Web Crypto 密码学安全随机源，80 位随机段无取模偏置',
+          '反解任意 ULID：毫秒时间戳、UTC / 本地时间、分段与随机段 20 位十六进制，非法字符与长度即时报错',
+        ],
+        howToUse: [
+          '选择生成数量，可选填写固定毫秒时间戳（留空使用当前时间），点击「重新生成」',
+          '点击「复制全部」获取按行分隔的 ULID；它们可直接按字典序排序并反映创建先后',
+          '在「ULID 解析」卡片粘贴任意 ULID，即时查看时间与随机段信息',
+        ],
+        useCases: [
+          '分布式系统与数据库中需要时间有序的唯一主键（日志、事件、订单号）',
+          '替代自增 ID 暴露业务量，同时保持索引友好的字典序特性',
+          '排查问题时把他人给出的 ULID 反解为可读的生成时间',
+        ],
+        privacyNote: '时间戳与随机数全部在浏览器本地生成和解析，不发起任何网络请求。',
+        faqs: [
+          {
+            question: 'ULID 和 UUID v4 有什么区别？',
+            answer:
+              'UUID v4 是 36 字符（含连字符）的纯随机标识，字符串顺序与创建时间无关；ULID 是 26 字符、URL 友好的 Crockford Base32 标识，前 48 位直接编码毫秒时间戳，因此按字符串字典序排序就等于按创建时间排序，更适合做数据库有序主键与日志标识，同时保留 80 位随机空间保证碰撞概率极低。',
+          },
+          {
+            question: '同一毫秒内连续生成会不会重复？',
+            answer:
+              '不会。本工具实现了 ULID 规范的单调性（monotonicity）：当时间戳前进时重新抽取随机段；当多次生成落在同一毫秒时，对 80 位随机段做整数加一并在溢出时报错，因此同一毫秒内的结果严格递增。只有随机段在该毫秒内全部进位到上界（约 2^80 次）才会失败，正常使用不可能触发。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local generator and parser for ULIDs (Universally Unique Lexicographically Sortable Identifier) following the ULID spec: always 26 characters in Crockford Base32 (0–9A–Z without the confusing I, L, O, U), where the first 10 characters encode a 48-bit millisecond timestamp and the last 16 encode 80 random bits. Random bytes come from Web Crypto getRandomValues, and generations within the same millisecond increment the random part, so IDs are both unique and sortable by plain lexicographic order.',
+        coreFeatures: [
+          'Spec-compliant 26-char ULIDs in Crockford Base32 with a timestamp part and a random part',
+          'Bulk generation of 1–500 IDs in strict lexicographic order, with one-click copy',
+          'Optional fixed millisecond timestamp; same-millisecond monotonicity; clock-rollback errors',
+          'Web Crypto secure randomness with 80 unbiased random bits',
+          'Parse any ULID into its millisecond timestamp, UTC/local time, parts, and 20-hex randomness, with instant errors for bad length or characters',
+        ],
+        howToUse: [
+          'Pick a count, optionally enter a fixed millisecond timestamp (or leave it blank for now), then click "Regenerate"',
+          'Click "Copy all" to get newline-separated ULIDs that sort lexicographically by creation time',
+          'Paste any ULID into the parse card to inspect its time and random part instantly',
+        ],
+        useCases: [
+          'Time-sortable unique keys in distributed systems and databases (logs, events, orders)',
+          'Replacing auto-increment IDs that reveal business volume while keeping index-friendly ordering',
+          'Decoding a ULID from elsewhere into a readable creation time during debugging',
+        ],
+        privacyNote:
+          'Timestamps and random values are generated and parsed entirely in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'How is a ULID different from a UUID v4?',
+            answer:
+              'A UUID v4 is a 36-character (hyphenated) fully random identifier whose string order is unrelated to creation time; a ULID is a 26-character, URL-friendly Crockford Base32 identifier whose first 48 bits encode the millisecond timestamp, so lexicographic sorting equals chronological sorting. That makes ULIDs better suited as sortable database keys and log IDs, while 80 random bits still keep collisions negligible.',
+          },
+          {
+            question: 'Can IDs generated in the same millisecond collide?',
+            answer:
+              'No. The tool implements spec monotonicity: when time moves forward it draws fresh randomness, and when several IDs fall in the same millisecond it increments the 80-bit random part as an integer and errors only on overflow, keeping results strictly increasing. Failure requires exhausting the random part within one millisecond (roughly 2^80 increments), which cannot happen in practice.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'snowflake-id-parser',
+    name: 'Snowflake ID 解析器',
+    nameEn: 'Snowflake ID Parser',
+    description:
+      '按「纪元 + 41 位毫秒时间戳 + 10 位机器位 + 12 位序列号」位布局拆解 Snowflake ID，内置 Twitter/X 与 Discord 纪元并支持自定义纪元，输出创建时间（UTC/本地）、机器位、序列号与十六进制/二进制，并支持反向拼装示例 ID。',
+    descriptionEn:
+      'Decompose Snowflake IDs into epoch + a 41-bit millisecond timestamp + a 10-bit machine ID + a 12-bit sequence, with built-in Twitter/X and Discord epochs (plus custom epochs), showing the creation time in UTC/local, machine and worker/process fields, sequence, hex and binary, with reverse ID building.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/snowflake-id-parser',
+    iconName: 'Snowflake',
+    tags: ['Snowflake', 'Discord', '位运算', 'ID 解析'],
+    tagsEn: ['Snowflake', 'Discord', 'Bit Twiddling', 'ID Parser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '175928847299117063',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 Snowflake ID 解析与拼装工具。Snowflake 是 Twitter/X 提出、Discord 等平台广泛采用的 64 位分布式 ID 方案：最高位保留，随后 41 位是相对平台纪元的毫秒时间戳，再 10 位是机器/Worker 标识（Discord 进一步拆成 5 位 worker + 5 位 process），最低 12 位是同毫秒内自增的序列号。工具基于 BigInt 做无精度损失的 64 位运算，并把结果还原为可读时间。',
+        coreFeatures: [
+          '64 位 Snowflake ID 位拆解：41 位时间戳 + 10 位机器位 + 12 位序列号',
+          '内置 Twitter/X（1288834974657）与 Discord（1420070400000）纪元，支持自定义纪元毫秒值',
+          '输出毫秒时间戳、UTC 与本地时间、机器 ID 及 worker/process 拆分、序列号',
+          '同步展示十进制、十六进制与补齐 64 位的二进制，方便核对位布局',
+          '反向拼装：给定时间戳、机器位与序列号生成示例 ID，再解析可字段一致地往返',
+        ],
+        howToUse: [
+          '粘贴 Snowflake ID（如 Discord 消息/用户/频道链接中的长数字），选择对应平台纪元',
+          '查看创建时间、机器位与序列号；Discord ID 会同时显示 worker 与 process 拆分',
+          '在「反向拼装」卡片选择时间与机器位/序列号，点击「拼装 ID」生成示例',
+        ],
+        useCases: [
+          '社区运营与客服根据 Discord 消息/用户 ID 还原内容或账号的创建时间',
+          '数据迁移与排障时核对 Twitter/X、Discord 等平台 Snowflake ID 的来源机器与顺序',
+          '开发联调时构造指定时间戳的测试 Snowflake ID',
+        ],
+        privacyNote: 'ID 解析与拼装全部在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么不同平台解析同一个 ID 得到的时间不一样？',
+            answer:
+              'Snowflake 的时间戳是相对各自平台纪元的毫秒差。Twitter/X 纪元是 2010-11-04 的 1288834974657，Discord 纪元是 2015-01-01 的 1420070400000。同一个 ID 套用错误纪元会整体偏移，因此解析前要先选择正确的平台纪元；工具在结果早于纪元时会给出提示。',
+          },
+          {
+            question: '机器位为什么还拆成 worker 和 process？',
+            answer:
+              '标准 Snowflake 用 10 位机器位（0–1023）标识产生 ID 的节点。Discord 在其官方文档中把这 10 位进一步拆成 5 位内部 worker（0–31）与 5 位 process（0–31）。工具同时展示两种视角：机器 ID 是完整 10 位值，worker/process 是 Discord 风格的 5+5 拆分。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local parser and builder for 64-bit Snowflake IDs, the distributed identifier scheme introduced by Twitter/X and used by Discord and many others: a reserved top bit, then 41 bits of milliseconds since a platform epoch, then 10 bits of machine/worker identity (Discord splits this into 5 worker bits + 5 process bits), and finally 12 bits of a per-millisecond sequence. All math uses BigInt so 64-bit values stay exact, and timestamps render as readable dates.',
+        coreFeatures: [
+          '64-bit decomposition into a 41-bit timestamp, 10-bit machine ID, and 12-bit sequence',
+          'Built-in Twitter/X (1288834974657) and Discord (1420070400000) epochs plus a custom epoch',
+          'Millisecond timestamp, UTC and local time, machine ID with worker/process split, and sequence',
+          'Decimal, hexadecimal, and zero-padded 64-bit binary views for checking the bit layout',
+          'Reverse builder: assemble an example ID from timestamp, machine, and sequence and round-trip it',
+        ],
+        howToUse: [
+          'Paste a Snowflake ID (such as the long number in a Discord message/user/channel link) and pick the matching epoch',
+          'Inspect the creation time, machine fields, and sequence; Discord IDs also show worker and process',
+          'Use the builder card with a time, machine ID, and sequence to create an example ID',
+        ],
+        useCases: [
+          'Community managers and support staff dating Discord messages or accounts from their IDs',
+          'Data migration and debugging of Snowflake IDs from Twitter/X, Discord, and similar platforms',
+          'Generating test Snowflake IDs pinned to specific timestamps during development',
+        ],
+        privacyNote:
+          'All parsing and building happens locally in your browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why does the same ID show different times on different platforms?',
+            answer:
+              'A Snowflake timestamp is milliseconds relative to each platform\u2019s own epoch. The Twitter/X epoch is 1288834974657 (2010-11-04) and Discord\u2019s is 1420070400000 (2015-01-01), so applying the wrong epoch shifts the result; choose the correct platform before parsing, and the tool warns when the result predates the epoch.',
+          },
+          {
+            question: 'Why is the machine ID also split into worker and process?',
+            answer:
+              'Classic Snowflake uses 10 machine bits (0\u20131023) for the node that issued the ID. Discord documents those 10 bits as 5 internal worker bits (0\u201331) plus 5 process bits (0\u201331). The tool shows both views: the full 10-bit machine ID and the Discord-style 5+5 worker/process split.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'number-theory-calculator',
+    name: '数论计算器（GCD/LCM/质因数分解）',
+    nameEn: 'Number Theory Calculator',
+    description:
+      '输入 2–10 个整数计算最大公约数 GCD 与最小公倍数 LCM（欧几里得算法、先除后乘防溢出），并对单个整数做质因数分解、列出全部正因数、判定质数/合数，负数自动按绝对值分析。',
+    descriptionEn:
+      'Compute the GCD and LCM of 2–10 integers with Euclid\u2019s algorithm and overflow-safe division-first multiplication, and analyze a single integer with prime factorization, a sorted list of all positive divisors, and prime/composite classification (negatives use their absolute value).',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/number-theory-calculator',
+    iconName: 'Calculator',
+    tags: ['最大公约数', '最小公倍数', '质因数分解', '质数'],
+    tagsEn: ['GCD', 'LCM', 'Prime Factorization', 'Prime Number'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '360',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的整数数论工具，覆盖算法学习、分数化简与数论验证中最常用的四类计算：多个整数的最大公约数（GCD）与最小公倍数（LCM）、单个数的质因数分解、全部正因数枚举、质数与合数判定。GCD 使用欧几里得辗转相除，LCM 采用先除后乘避免中间乘积溢出，质因数分解与因数枚举均用试除法在 √n 范围内完成。',
+        coreFeatures: [
+          '2–10 个整数的 GCD / LCM，支持负数与含 0 输入（含 0 时 LCM 为 0）',
+          '欧几里得算法 + LCM 先除后乘，结果在安全整数范围内精确',
+          '质因数分解输出 n = p1^e1 × p2^e2 形式，并统计正因数个数',
+          '成对枚举至 √n，给出升序排列的全部正因数',
+          '质数 / 合数 / 单位数（1）/ 零四态分类，负数自动取绝对值',
+        ],
+        howToUse: [
+          '在第一张卡片输入 2–10 个整数（逗号、空格、换行、顿号等分隔），即时得到 GCD 与 LCM',
+          '在第二张卡片输入单个整数，查看质因数分解、因数个数、全部因数与质数判定',
+          '输入非整数或超出安全整数范围时会给出明确错误提示',
+        ],
+        useCases: [
+          '分数通分与化简、比例合并时求 GCD / LCM',
+          '算法与数论学习中验证质因数分解、因数个数与质数判定',
+          '编程题与 CTF 中快速分析整数结构',
+        ],
+        privacyNote: '所有计算均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么 LCM 要“先除后乘”？',
+            answer:
+              '直接计算 |a × b| / GCD 时，两个数即使各自在安全整数范围内，乘积也可能超出 Number.MAX_SAFE_INTEGER 而丢失精度。先把其中一个数除以 GCD（结果必然整除），再与另一个数相乘，可以显著缩小中间值；工具内部按 (a / gcd) × b 的顺序计算。',
+          },
+          {
+            question: '0 和 1 算质数吗？负数呢？',
+            answer:
+              '质数定义是“大于 1 且只有 1 与自身两个正因数”的自然数，因此 0 与 1 既不是质数也不是合数（1 称为单位数）。负整数按其绝对值分析，例如 -13 被视为质数 13。0 没有有限的正因数集合，LCM 中只要含 0 结果就规定为 0。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local integer number-theory tool covering four everyday tasks for algorithm study, fraction simplification, and verification: the greatest common divisor (GCD) and least common multiple (LCM) of several integers, prime factorization of one integer, enumeration of all its positive divisors, and prime/composite classification. GCD uses Euclid\u2019s algorithm, LCM divides before multiplying to avoid intermediate overflow, and factorization/divisor enumeration use trial division up to \u221An.',
+        coreFeatures: [
+          'GCD/LCM for 2–10 integers, including negatives and zero (LCM is 0 when any input is 0)',
+          'Euclid\u2019s algorithm with division-first LCM, exact within the safe-integer range',
+          'Factorization rendered as n = p1^e1 × p2^e2 with the divisor count',
+          'Pairwise enumeration to \u221An producing every positive divisor in ascending order',
+          'Four-way classification (prime/composite/unit 1/zero); negatives use the absolute value',
+        ],
+        howToUse: [
+          'Enter 2–10 integers in the first card (separated by commas, spaces, newlines, etc.) to get GCD and LCM instantly',
+          'Enter one integer in the second card to see its factorization, divisor count, divisors, and primality',
+          'Non-integers or values beyond the safe-integer range produce a clear error',
+        ],
+        useCases: [
+          'Reducing fractions and finding common denominators or merged ratios',
+          'Verifying factorizations, divisor counts, and primality while learning algorithms or number theory',
+          'Quick integer analysis for programming problems and CTF challenges',
+        ],
+        privacyNote: 'Every computation runs locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why divide before multiplying for the LCM?',
+            answer:
+              'Computing |a × b| / GCD directly can overflow Number.MAX_SAFE_INTEGER even when both inputs are safe individually. Dividing one operand by the GCD first (an exact division) and then multiplying by the other keeps the intermediate value much smaller; the tool computes (a / gcd) × b.',
+          },
+          {
+            question: 'Are 0 or 1 prime? What about negative numbers?',
+            answer:
+              'A prime is a natural number greater than 1 with exactly two positive divisors (1 and itself), so 0 and 1 are neither prime nor composite (1 is a unit). Negative integers are analyzed by absolute value, so -13 is treated as the prime 13. Zero has no finite divisor set, and an LCM containing zero is defined as 0.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'roman-numeral-converter',
+    name: '罗马数字转换器',
+    nameEn: 'Roman Numeral Converter',
+    description:
+      '在 1–3999 范围内完成整数与标准减法记法罗马数字的双向精确转换（IV/IX/XL/XC/CD/CM），严格拒绝 IIII、VX、IC、MMMM 等非法写法，并支持逐行批量转换。',
+    descriptionEn:
+      'Convert integers (1–3999) to and from standard subtractive Roman numerals (IV/IX/XL/XC/CD/CM), strictly rejecting non-canonical forms such as IIII, VX, IC, and MMMM, with line-by-line batch conversion.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/roman-numeral-converter',
+    iconName: 'Type',
+    tags: ['罗马数字', '数制转换', '编号', '批量转换'],
+    tagsEn: ['Roman Numerals', 'Number Conversion', 'Numbering', 'Batch Conversion'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1994',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的罗马数字转换工具，在 1–3999 范围内完成整数与罗马数字的双向精确转换。整数转罗马按 1000/900/500/400/…/1 的「值-符号」降序表贪心匹配，天然输出标准减法记法（IV、IX、XL、XC、CD、CM）；罗马转整数逐字符查表，当前字符值小于右侧字符值时减去、否则累加，并通过「解码后重新规范化编码必须与输入一致」严格校验合法性，拒绝 IIII、VX、IC、MMMM 等非标准写法。',
+        coreFeatures: [
+          '整数 ↔ 罗马数字双向转换，自动识别输入方向，也可手动指定',
+          '标准减法记法：1994 → MCMXCIV、3999 → MMMCMXCIX',
+          '严格合法性校验：拒绝 IIII、VX、IC、MMMM 及含非罗马字符、空串等输入',
+          '0、负数、大于 3999、小数等越界整数给出明确错误提示',
+          '逐行批量转换，表格展示每行结果或错误，一键复制全部输出',
+        ],
+        howToUse: [
+          '在单行卡片输入整数（如 1994）或罗马数字（如 MCMXCIV），即时显示转换结果',
+          '通过顶部切换按钮可强制「整数 → 罗马」或「罗马 → 整数」方向',
+          '在批量卡片中每行输入一个值，结果表格逐行给出转换值或错误原因',
+          '罗马数字输入容忍大小写与首尾空白，但必须是标准减法记法',
+        ],
+        useCases: [
+          '文档编号、书籍章节、影视续集与钟表刻度等罗马数字书写',
+          '年份、君主/教皇名号等罗马数字的解读与换算',
+          '编程题与算法学习中验证罗马数字转换逻辑',
+        ],
+        privacyNote: '所有转换均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么 IIII、VX、IC、MMMM 会被判定为非法？',
+            answer:
+              '标准罗马数字采用减法记法并有固定规则：4 写作 IV 而非 IIII，9 写作 IX；减法组合只允许 I/ X/ C 出现在 V/ X、L/ C、D/ M 之前（即 IV、IX、XL、XC、CD、CM 六种），V、L、D 永不做减法，因此 VX（5 当作 5-10）、IC（99 直接用 I 减 C）都不合法；同一符号连续重复最多 3 次，所以 4000 不能写作 MMMM，工具支持的上限是 3999（MMMCMXCIX）。',
+          },
+          {
+            question: '工具是如何保证罗马数字输入合法的？',
+            answer:
+              '先按字符查表累加（左小右大则减），得到整数后再用贪心算法把该整数重新编码为标准罗马数字；只有重新编码的结果与去空白、大写化后的输入完全一致时才接受。任何非标准写法在这一步都会暴露，从而给出明确错误，同时也保证双向转换互为逆运算。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local tool that converts between integers (1–3999) and Roman numerals in both directions. Integer-to-Roman uses a greedy match against the descending value-symbol table (1000/900/500/400/…/1), which always yields canonical subtractive notation (IV, IX, XL, XC, CD, CM). Roman-to-integer reads the symbol table character by character, subtracting when a symbol is smaller than the one to its right and adding otherwise, then validates canonicity by re-encoding the decoded integer—rejecting non-standard forms such as IIII, VX, IC, and MMMM.',
+        coreFeatures: [
+          'Bidirectional integer ↔ Roman numeral conversion with automatic direction detection (or manual override)',
+          'Canonical subtractive notation: 1994 → MCMXCIV, 3999 → MMMCMXCIX',
+          'Strict validation rejecting IIII, VX, IC, MMMM, non-Roman characters, and empty input',
+          'Clear errors for out-of-range integers: zero, negatives, values above 3999, and decimals',
+          'Line-by-line batch conversion with a per-row result/error table and one-click copy',
+        ],
+        howToUse: [
+          'Enter an integer (e.g., 1994) or a Roman numeral (e.g., MCMXCIV) in the single-line card to see the result instantly',
+          'Use the top toggle to force "integer → Roman" or "Roman → integer" direction',
+          'Put one value per line in the batch card; the table shows each converted value or its error',
+          'Roman input is case-insensitive and tolerates surrounding whitespace but must use canonical subtractive notation',
+        ],
+        useCases: [
+          'Writing Roman numerals for document numbering, book chapters, sequels, and clock faces',
+          'Reading and converting years or regnal/papal names written in Roman numerals',
+          'Verifying Roman-numeral conversion logic for programming problems and algorithm study',
+        ],
+        privacyNote: 'Every conversion runs locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why are IIII, VX, IC, and MMMM considered invalid?',
+            answer:
+              'Canonical Roman numerals follow fixed subtractive rules: 4 is IV rather than IIII, 9 is IX; subtractive pairs are limited to IV, IX, XL, XC, CD, and CM, and V, L, D are never subtracted, so VX and IC are invalid. No symbol may repeat more than three times, so 4000 cannot be written as MMMM—the supported maximum is 3999 (MMMCMXCIX).',
+          },
+          {
+            question: 'How does the tool validate Roman numeral input?',
+            answer:
+              'It first decodes the symbols into an integer (subtracting when a smaller symbol precedes a larger one), then greedily re-encodes that integer into canonical form. The input is accepted only if the re-encoded string exactly matches the trimmed, uppercased input. Every non-standard spelling fails this round-trip check, which also guarantees the two directions are exact inverses.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

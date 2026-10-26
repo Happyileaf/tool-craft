@@ -80,4 +80,9 @@ export const toolLoaders: Record<
   'bencode-codec': () => import('./bencode-codec'),
   'non-crypto-hash': () => import('./non-crypto-hash'),
   'morse-codec': () => import('./morse-codec'),
+  'caesar-cipher': () => import('./caesar-cipher'),
+  'ulid-generator': () => import('./ulid-generator'),
+  'snowflake-id-parser': () => import('./snowflake-id-parser'),
+  'number-theory-calculator': () => import('./number-theory-calculator'),
+  'roman-numeral-converter': () => import('./roman-numeral-converter'),
 };

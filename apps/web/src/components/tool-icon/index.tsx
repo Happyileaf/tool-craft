@@ -1,6 +1,7 @@
 import {
   Blend,
   Braces,
+  Calculator,
   Clock,
   Code,
   Droplets,
@@ -18,8 +19,10 @@ import {
   QrCode,
   ShieldCheck,
   Shuffle,
+  Snowflake,
   Sparkles,
   Tags,
+  Type,
   type LucideProps,
 } from 'lucide-react';
 
@@ -48,6 +51,9 @@ const toolIconMap = {
   Tags,
   Eye,
   Sparkles,
+  Snowflake,
+  Calculator,
+  Type,
 };
 
 /**

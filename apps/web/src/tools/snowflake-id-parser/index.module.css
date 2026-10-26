@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 900px;
+}
+
+.card {
+  width: 100%;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.label {
+  white-space: nowrap;
+  color: rgb(0 0 0 / 65%);
+}
+
+.numberInput {
+  width: 240px;
+}
+
+.smallInput {
+  width: 120px;
+}
+
+.monoOutput {
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+}
+
+.monoText {
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.binaryText {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  word-break: break-all;
+  letter-spacing: 1px;
+}
+
+.hint {
+  color: rgb(0 0 0 / 45%);
+  font-size: 12px;
+  line-height: 1.7;
+}
