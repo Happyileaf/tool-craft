@@ -44,7 +44,7 @@
 | 20261017183430 | RSA / 非对称密钥对生成器与加解密 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017183430.md) |
 | 20261017183431 | Base58 & Base58Check 编解码器 | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017183431.md) |
 | 20261017183432 | 摩尔斯电码编解码器 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017183432.md) |
-| 20261017183433 | ROT13 与凯撒密码 | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017183433.md) |
+| 20261017183433 | ROT13 与凯撒密码 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017183433.md) |
 | 20261017183434 | 数字转中文大写金额 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017183434.md) |
 | 20261017183435 | Punycode / IDN 域名转换器 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017183435.md) |
 | 20261017183436 | HTTP 状态码速查 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017183436.md) |

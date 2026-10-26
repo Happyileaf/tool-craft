@@ -80,4 +80,5 @@ export const toolLoaders: Record<
   'bencode-codec': () => import('./bencode-codec'),
   'non-crypto-hash': () => import('./non-crypto-hash'),
   'morse-codec': () => import('./morse-codec'),
+  'caesar-cipher': () => import('./caesar-cipher'),
 };

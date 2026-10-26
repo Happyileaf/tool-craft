@@ -5705,6 +5705,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'caesar-cipher',
+    name: '凯撒密码 / ROT13',
+    nameEn: 'Caesar Cipher & ROT13',
+    description:
+      '对英文字母执行 0–25 自定义位移的凯撒密码加解密，内置 ROT13 快捷变换；仅替换 A–Z / a–z 并保留大小写，数字、标点、空格与中文原样输出，适用于 CTF 解谜与轻度文本混淆。',
+    descriptionEn:
+      'Encrypt and decrypt text with a Caesar shift of 0–25, including a one-click ROT13 mode. Only A–Z / a–z letters are substituted while case is kept; digits, punctuation, spaces, and CJK text pass through untouched — handy for CTF puzzles and light obfuscation.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/caesar-cipher',
+    iconName: 'ShieldCheck',
+    tags: ['凯撒密码', 'ROT13', '位移', 'CTF'],
+    tagsEn: ['Caesar Cipher', 'ROT13', 'Shift', 'CTF'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Hello, World!',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的凯撒密码（Caesar cipher）工具，对 26 个英文字母做循环位移替换，支持 0–25 的自定义位移量以及一键 ROT13（位移 13）特例。加密方向把字母沿字母表正移，解密方向反移；变换只作用于 A–Z / a–z，数字、标点、空格、换行与中文等字符一律原样保留，大小写也保持不变。',
+        coreFeatures: [
+          '0–25 任意位移量的凯撒加密与解密，位移量自动按 26 取模归一化',
+          '一键 ROT13：加密解密同一变换，对结果再执行一次即可还原原文',
+          '仅替换英文字母并保持大小写，数字、符号、空白与中文原样保留',
+          '输入、方向与位移量实时联动，结果即时刷新，支持一键复制',
+          '纯函数 + 零依赖实现，全部运算在浏览器本地完成',
+        ],
+        howToUse: [
+          '选择「加密」或「解密」方向，在输入框中粘贴文本，结果实时刷新',
+          '通过数字输入框调整位移量（0–25），或点击「ROT13（位移 13）」快捷按钮',
+          '满意后点击「复制结果」取用；对密文切换到解密方向并使用相同位移即可还原',
+        ],
+        useCases: [
+          'CTF 夺旗赛、密室逃脱与解谜游戏中破解或构造凯撒 / ROT13 线索',
+          '阅读被轻度混淆的文本（论坛剧透、彩蛋、谜语）时快速还原',
+          '密码学入门教学中演示古典替换密码的原理与脆弱性',
+        ],
+        privacyNote: '全部变换在浏览器本地完成，输入内容不会被上传或记录。',
+        faqs: [
+          {
+            question: 'ROT13 和凯撒密码是什么关系？',
+            answer:
+              'ROT13 就是位移量为 13 的凯撒密码。因为英文字母表有 26 个字母，正移 13 位与反移 13 位是同一个变换，所以 ROT13 的加密和解密是同一个操作：对任意文本连续执行两次 ROT13 即可还原原文。',
+          },
+          {
+            question: '为什么数字、标点和中文没有被加密？',
+            answer:
+              '凯撒密码只定义了字母表上的循环位移，本工具仅对 A–Z / a–z 生效，且保持原有大小写；数字、标点、空格、换行以及中文等非字母字符一律原样保留，这也是凯撒密码的标准行为。若需要加密这些字符，请使用本站的现代加密工具（如 AES 对称加密）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local Caesar cipher tool that cyclically shifts the 26 Latin letters with any custom shift of 0–25, plus a one-click ROT13 (shift 13) mode. Encryption shifts letters forward through the alphabet and decryption shifts them backward; only A–Z / a–z are affected while case is preserved, and digits, punctuation, spaces, newlines, and CJK text pass through completely untouched.',
+        coreFeatures: [
+          'Caesar encryption and decryption with any shift 0–25, normalized modulo 26',
+          'One-click ROT13 where encryption and decryption are the same operation; applying it twice restores the text',
+          'Only Latin letters are substituted with case preserved; digits, symbols, whitespace, and CJK stay intact',
+          'Live result that reacts instantly to input, direction, and shift changes, with one-click copy',
+          'Pure-function, zero-dependency implementation running entirely in the browser',
+        ],
+        howToUse: [
+          'Pick the Encrypt or Decrypt direction and paste text; the result refreshes live',
+          'Adjust the shift with the number input (0–25), or click the "ROT13 (shift 13)" button',
+          'Use "Copy result" when satisfied; switch ciphertext to Decrypt with the same shift to recover the plaintext',
+        ],
+        useCases: [
+          'Solve or craft Caesar/ROT13 clues in CTF competitions, escape rooms, and puzzle games',
+          'Reveal lightly obfuscated text such as forum spoilers, easter eggs, and riddles',
+          'Demonstrate classical substitution ciphers and their weakness in introductory cryptography lessons',
+        ],
+        privacyNote:
+          'All transforms run locally in the browser; input is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How is ROT13 related to the Caesar cipher?',
+            answer:
+              'ROT13 is simply the Caesar cipher with a shift of 13. Because the Latin alphabet has 26 letters, shifting forward by 13 is the same as shifting backward by 13, so ROT13 encryption and decryption are the identical operation: applying ROT13 twice to any text restores the original.',
+          },
+          {
+            question: 'Why are digits, punctuation, and Chinese characters left unencrypted?',
+            answer:
+              'The Caesar cipher is defined only as a shift over an alphabet, and this tool applies it exclusively to A–Z / a–z while preserving case. Digits, punctuation, spaces, newlines, and non-letter scripts such as Chinese pass through unchanged, which is the standard Caesar behavior. To protect those characters, use a modern cipher such as the AES symmetric encryption tool on this site.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
