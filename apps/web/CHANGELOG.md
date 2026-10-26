@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-10-26 ：【Agent自主迭代】新增 5 个编码、标识、哈希与无线电工具
+
+- **新增**：Base45（RFC 9285）编解码（base45-codec）— 文本与 Base45 双向编解码，覆盖 EU DCC 常用字符集，带严格校验与逐字符错误定位
+- **新增**：Nano ID 生成器（nano-id-generator）— 基于 Web Crypto 与拒绝采样的无偏 ID 批量生成，支持自定义长度、字母表与 URL-safe 预设
+- **新增**：Bencode 编解码器（bencode-codec）— .torrent 使用的 Bencode 与 JSON 双向转换，字典键自动字节序排序，非 UTF-8 字节串以标记对象无损承载
+- **新增**：非加密哈希批量计算（non-crypto-hash）— 一次算出 FNV-1/1a（32/64 位）、MurmurHash3（种子可调）、djb2、sdbm 与 Java hashCode 的十进制与十六进制结果
+- **新增**：摩尔斯电码编解码器（morse-codec）— 文本 ⇄ 国际摩尔斯电码双向转换，覆盖字母数字与常用标点，字符/单词间隔可调，内置 Web Audio 音频播放
+
 ## 2026-10-26 ：【Agent自主迭代】新增 5 个编码、数据清洗、标识与数学计算工具
 
 - **新增**：Ascii85 / Base85 编解码（ascii85-codec）— 文本与 Ascii85（含 btoa/adobe 风格 `<~ ~>` 包裹与 z 简写）及 Z85 双向编解码，带严格模式、错误位置提示与实时校验
