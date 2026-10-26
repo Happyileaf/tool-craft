@@ -6060,6 +6060,96 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'roman-numeral-converter',
+    name: '罗马数字转换器',
+    nameEn: 'Roman Numeral Converter',
+    description:
+      '在 1–3999 范围内完成整数与标准减法记法罗马数字的双向精确转换（IV/IX/XL/XC/CD/CM），严格拒绝 IIII、VX、IC、MMMM 等非法写法，并支持逐行批量转换。',
+    descriptionEn:
+      'Convert integers (1–3999) to and from standard subtractive Roman numerals (IV/IX/XL/XC/CD/CM), strictly rejecting non-canonical forms such as IIII, VX, IC, and MMMM, with line-by-line batch conversion.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/roman-numeral-converter',
+    iconName: 'Type',
+    tags: ['罗马数字', '数制转换', '编号', '批量转换'],
+    tagsEn: ['Roman Numerals', 'Number Conversion', 'Numbering', 'Batch Conversion'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1994',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的罗马数字转换工具，在 1–3999 范围内完成整数与罗马数字的双向精确转换。整数转罗马按 1000/900/500/400/…/1 的「值-符号」降序表贪心匹配，天然输出标准减法记法（IV、IX、XL、XC、CD、CM）；罗马转整数逐字符查表，当前字符值小于右侧字符值时减去、否则累加，并通过「解码后重新规范化编码必须与输入一致」严格校验合法性，拒绝 IIII、VX、IC、MMMM 等非标准写法。',
+        coreFeatures: [
+          '整数 ↔ 罗马数字双向转换，自动识别输入方向，也可手动指定',
+          '标准减法记法：1994 → MCMXCIV、3999 → MMMCMXCIX',
+          '严格合法性校验：拒绝 IIII、VX、IC、MMMM 及含非罗马字符、空串等输入',
+          '0、负数、大于 3999、小数等越界整数给出明确错误提示',
+          '逐行批量转换，表格展示每行结果或错误，一键复制全部输出',
+        ],
+        howToUse: [
+          '在单行卡片输入整数（如 1994）或罗马数字（如 MCMXCIV），即时显示转换结果',
+          '通过顶部切换按钮可强制「整数 → 罗马」或「罗马 → 整数」方向',
+          '在批量卡片中每行输入一个值，结果表格逐行给出转换值或错误原因',
+          '罗马数字输入容忍大小写与首尾空白，但必须是标准减法记法',
+        ],
+        useCases: [
+          '文档编号、书籍章节、影视续集与钟表刻度等罗马数字书写',
+          '年份、君主/教皇名号等罗马数字的解读与换算',
+          '编程题与算法学习中验证罗马数字转换逻辑',
+        ],
+        privacyNote: '所有转换均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么 IIII、VX、IC、MMMM 会被判定为非法？',
+            answer:
+              '标准罗马数字采用减法记法并有固定规则：4 写作 IV 而非 IIII，9 写作 IX；减法组合只允许 I/ X/ C 出现在 V/ X、L/ C、D/ M 之前（即 IV、IX、XL、XC、CD、CM 六种），V、L、D 永不做减法，因此 VX（5 当作 5-10）、IC（99 直接用 I 减 C）都不合法；同一符号连续重复最多 3 次，所以 4000 不能写作 MMMM，工具支持的上限是 3999（MMMCMXCIX）。',
+          },
+          {
+            question: '工具是如何保证罗马数字输入合法的？',
+            answer:
+              '先按字符查表累加（左小右大则减），得到整数后再用贪心算法把该整数重新编码为标准罗马数字；只有重新编码的结果与去空白、大写化后的输入完全一致时才接受。任何非标准写法在这一步都会暴露，从而给出明确错误，同时也保证双向转换互为逆运算。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local tool that converts between integers (1–3999) and Roman numerals in both directions. Integer-to-Roman uses a greedy match against the descending value-symbol table (1000/900/500/400/…/1), which always yields canonical subtractive notation (IV, IX, XL, XC, CD, CM). Roman-to-integer reads the symbol table character by character, subtracting when a symbol is smaller than the one to its right and adding otherwise, then validates canonicity by re-encoding the decoded integer—rejecting non-standard forms such as IIII, VX, IC, and MMMM.',
+        coreFeatures: [
+          'Bidirectional integer ↔ Roman numeral conversion with automatic direction detection (or manual override)',
+          'Canonical subtractive notation: 1994 → MCMXCIV, 3999 → MMMCMXCIX',
+          'Strict validation rejecting IIII, VX, IC, MMMM, non-Roman characters, and empty input',
+          'Clear errors for out-of-range integers: zero, negatives, values above 3999, and decimals',
+          'Line-by-line batch conversion with a per-row result/error table and one-click copy',
+        ],
+        howToUse: [
+          'Enter an integer (e.g., 1994) or a Roman numeral (e.g., MCMXCIV) in the single-line card to see the result instantly',
+          'Use the top toggle to force "integer → Roman" or "Roman → integer" direction',
+          'Put one value per line in the batch card; the table shows each converted value or its error',
+          'Roman input is case-insensitive and tolerates surrounding whitespace but must use canonical subtractive notation',
+        ],
+        useCases: [
+          'Writing Roman numerals for document numbering, book chapters, sequels, and clock faces',
+          'Reading and converting years or regnal/papal names written in Roman numerals',
+          'Verifying Roman-numeral conversion logic for programming problems and algorithm study',
+        ],
+        privacyNote: 'Every conversion runs locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why are IIII, VX, IC, and MMMM considered invalid?',
+            answer:
+              'Canonical Roman numerals follow fixed subtractive rules: 4 is IV rather than IIII, 9 is IX; subtractive pairs are limited to IV, IX, XL, XC, CD, and CM, and V, L, D are never subtracted, so VX and IC are invalid. No symbol may repeat more than three times, so 4000 cannot be written as MMMM—the supported maximum is 3999 (MMMCMXCIX).',
+          },
+          {
+            question: 'How does the tool validate Roman numeral input?',
+            answer:
+              'It first decodes the symbols into an integer (subtracting when a smaller symbol precedes a larger one), then greedily re-encodes that integer into canonical form. The input is accepted only if the re-encoded string exactly matches the trimmed, uppercased input. Every non-standard spelling fails this round-trip check, which also guarantees the two directions are exact inverses.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

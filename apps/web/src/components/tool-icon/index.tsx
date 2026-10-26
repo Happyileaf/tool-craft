@@ -22,6 +22,7 @@ import {
   Snowflake,
   Sparkles,
   Tags,
+  Type,
   type LucideProps,
 } from 'lucide-react';
 
@@ -52,6 +53,7 @@ const toolIconMap = {
   Sparkles,
   Snowflake,
   Calculator,
+  Type,
 };
 
 /**
