@@ -144,3 +144,8 @@
 | 20261026140925 | 日期时间差计算与日期加减计算器 | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026140925.md) |
 | 20261026140926 | 换行符检测与批量转换器（LF / CRLF / CR） | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026140926.md) |
 | 20261026140927 | 知名 TCP/UDP 端口号速查表 | Web Tool | External Reference | Pending | 2026-10-26 | | [详情](./idea-details/20261026140927.md) |
+| 20261026200346 | RGB565 / RGB555 嵌入式颜色格式转换器 | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026200346.md) |
+| 20261026200347 | 电阻器色环计算器（4 / 5 / 6 环双向） | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026200347.md) |
+| 20261026200348 | 化学式摩尔质量计算器 | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026200348.md) |
+| 20261026200349 | 线性代数矩阵计算器（乘法 / 行列式 / 逆 / 秩 / RREF） | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026200349.md) |
+| 20261026200350 | 原始 HTTP 报文解析器（请求 / 响应） | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026200350.md) |
