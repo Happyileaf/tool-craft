@@ -1,0 +1,29 @@
+.container {
+  width: 100%;
+}
+
+.card {
+  width: 100%;
+}
+
+.monoInput {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', Menus, monospace);
+  letter-spacing: 0.03em;
+}
+
+.modeTag {
+  width: fit-content;
+}
+
+.wordsOutput {
+  font-size: 18px;
+  line-height: 1.7;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.hint {
+  color: var(--color-text-3, rgba(0, 0, 0, 0.45));
+  font-size: 13px;
+  line-height: 1.7;
+}

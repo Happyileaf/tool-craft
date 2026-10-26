@@ -6150,6 +6150,458 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'line-ending-converter',
+    name: '换行符转换器',
+    nameEn: 'Line Ending Converter',
+    description:
+      '检测文本中 LF / CRLF / CR 行结束符的数量与混排情况、UTF-8 BOM、末尾换行与字节大小，并一键在 LF（Unix/macOS）、CRLF（Windows）、CR（经典 Mac）之间归一化转换。',
+    descriptionEn:
+      'Detect LF/CRLF/CR line ending counts and mixed endings, UTF-8 BOM, final newline, and byte size, then normalize line endings in one click between LF (Unix/macOS), CRLF (Windows), and CR (classic Mac).',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/line-ending-converter',
+    iconName: 'AlignLeft',
+    tags: ['换行符', 'LF', 'CRLF', 'BOM', '文本规范化'],
+    tagsEn: ['Line Endings', 'LF', 'CRLF', 'BOM', 'Text Normalization'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'name,email\r\n张三,zhangsan@example.com\r\n李四,lisi@example.com\r\n',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的换行符检测与转换工具。它按「先匹配 CRLF（\\r\\n），再匹配独立 LF（\\n）与 CR（\\r）」的顺序扫描文本，精确统计三种行结束符各自的出现次数、判定是否混排（mixed line endings），并报告总行数、UTF-8 字节大小、末尾是否以换行符结尾以及开头是否存在 UTF-8 BOM（U+FEFF / EF BB BF）；转换时将全部行结束符统一替换为目标格式（LF / CRLF / CR），可选剥离开头 BOM，并给出转换前后的字节变化（如 CRLF→LF 每个换行节省 1 字节）。',
+        coreFeatures: [
+          '检测 LF、CRLF、CR 三种行结束符的数量、主导类型与混排情况',
+          '一键在 LF（Unix/macOS）、CRLF（Windows）、CR（经典 Mac）之间归一化',
+          '检测开头 UTF-8 BOM（EF BB BF），转换时可选剥离',
+          '显示总行数、末尾换行有无、转换前后 UTF-8 字节大小与差值',
+          '纯字符串扫描，零新增依赖，全部处理在浏览器本地完成',
+        ],
+        howToUse: [
+          '将文本粘贴到输入框，下方立即显示各类换行符计数与文本结构信息',
+          '通过按钮选择目标换行符（LF / CRLF / CR），输出框实时给出归一化结果',
+          '勾选或取消「剥离开头 BOM」控制是否移除开头的 U+FEFF 字符',
+          '点击「复制转换结果」获取归一化后的文本',
+        ],
+        useCases: [
+          '消除跨平台协作时 git diff 因 CRLF/LF 不一致导致的整文件变动',
+          '修复 shell 脚本在 Linux 上的 bad interpreter: ^M 报错',
+          '清洗从旧 Windows 系统或大型机导出的 CR / CRLF 文本',
+          '检查文件是否带 BOM、是否缺少末尾换行等提交规范问题',
+        ],
+        privacyNote: '所有检测与转换均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '混排时三种换行符的计数会不会重复？',
+            answer:
+              '不会。扫描正则按 \\r\\n、\\r、\\n 的优先级匹配：一个 CRLF 会被整体识别为 1 个 CRLF，而不是 1 个 CR 加 1 个 LF；只有独立出现的 \\n 与 \\r 才计入各自计数，因此总数与实际行结束符数量严格相等。',
+          },
+          {
+            question: '转换后字节数是如何变化的？',
+            answer:
+              'CRLF 占 2 字节、LF 与 CR 各占 1 字节：CRLF→LF/CR 每个换行节省 1 字节，LF/CR→CRLF 每个换行增加 1 字节，同格式转换字节不变。若同时剥离了开头 BOM（UTF-8 下 EF BB BF 占 3 字节），差值中还会包含这 3 字节的减少。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local tool that inspects and converts text line endings. It scans in priority order—CRLF (\\r\\n) first, then standalone LF (\\n) and CR (\\r)—to count each ending precisely, detect mixed line endings, and report the total line count, UTF-8 byte size, final-newline presence, and a leading UTF-8 BOM (U+FEFF / EF BB BF). Conversion replaces every ending with the chosen target (LF, CRLF, or CR), optionally strips a leading BOM, and shows the byte-size delta (e.g., CRLF→LF saves one byte per line).',
+        coreFeatures: [
+          'Counts LF, CRLF, and CR endings with dominant type and mixed-ending detection',
+          'One-click normalization among LF (Unix/macOS), CRLF (Windows), and CR (classic Mac)',
+          'Detects a leading UTF-8 BOM (EF BB BF) with optional stripping',
+          'Shows line count, final newline state, and UTF-8 byte size before/after conversion',
+          'Pure string scanning with zero new dependencies, entirely in the browser',
+        ],
+        howToUse: [
+          'Paste text into the input area; per-type ending counts and structure info appear immediately',
+          'Pick the target ending (LF / CRLF / CR) to see the normalized output in real time',
+          'Toggle "strip leading BOM" to control removal of the leading U+FEFF character',
+          'Click "copy result" to take the normalized text',
+        ],
+        useCases: [
+          'Removing whole-file git diff noise caused by inconsistent CRLF/LF across platforms',
+          'Fixing "bad interpreter: ^M" errors when shell scripts run on Linux',
+          'Cleaning CR/CRLF text exported from legacy Windows or mainframe systems',
+          'Checking files for BOM presence and missing final newline before committing',
+        ],
+        privacyNote: 'All analysis and conversion run locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Are the three ending counts double-counted when endings are mixed?',
+            answer:
+              'No. The scanner matches \\r\\n before \\r and \\n: a CRLF is counted once as CRLF rather than as one CR plus one LF, and only standalone \\n and \\r characters are counted separately, so the totals exactly equal the real ending occurrences.',
+          },
+          {
+            question: 'How does the byte size change after conversion?',
+            answer:
+              'CRLF takes 2 bytes while LF and CR each take 1: CRLF→LF/CR saves one byte per ending, LF/CR→CRLF adds one, and converting to the same format changes nothing. If the leading BOM is also stripped (EF BB BF is 3 bytes in UTF-8), the delta includes an additional 3-byte reduction.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'decimal-fraction-converter',
+    name: '小数分数互转器',
+    nameEn: 'Decimal Fraction Converter',
+    description:
+      '基于 BigInt 有理数运算，在有限小数、循环小数（圆括号记法）、最简分数、带分数与百分数之间精确互转，自动标注循环节并展示约分与长除法过程，无浮点误差。',
+    descriptionEn:
+      'Exact conversion between terminating/repeating decimals (parenthesis notation), reduced fractions, mixed numbers, and percentages using BigInt rational arithmetic—with repeat detection and step-by-step reduction, free of floating-point error.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/decimal-fraction-converter',
+    iconName: 'Percentage',
+    tags: ['小数', '分数', '百分数', '循环小数', '有理数'],
+    tagsEn: ['Decimal', 'Fraction', 'Percentage', 'Repeating Decimal', 'Rational Number'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0.1(6)',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的小数与分数精确互转工具。所有数值都以 BigInt 表示的有理数（分子/分母）参与运算，从根本上避免 0.1 + 0.2 这类浮点误差。小数转分数时，有限小数直接写成分母 10ⁿ 再约分；循环小数（如 0.1(6)、33.(3)%）按代数法处理——设 A 为含整数部分与不循环部分的数字、B 为 A 后接循环节组成的数字，分子 = B − A，分母 = 10^m × (10^n − 1)（m 为不循环位数、n 为循环节长度）。分数转小数用长除法并记录每个余数首次出现的位置，余数重复即定位循环节，以圆括号输出（如 1/7 → 0.(142857)）。',
+        coreFeatures: [
+          '小数（含负数、.5 简写）→ 最简分数，自动约分并给出带分数写法',
+          '循环小数识别与互转：0.(3)、0.1(6)、1.2(14) 等圆括号记法，循环节最长支持 1000 位',
+          '分数 → 小数长除法展开，自动判定有限 / 循环并标出循环节与循环节长度',
+          '百分数 ↔ 分数互转（25% ↔ 1/4、33.(3)% ↔ 1/3），带分数与假分数互化',
+          '展示约分（gcd）与循环小数代数推导过程；BigInt 精确运算，零新增依赖',
+        ],
+        howToUse: [
+          '通过顶部按钮选择转换方向：小数→分数、分数→小数、百分数→分数、分数→百分数、带分数↔假分数',
+          '小数模式输入如 0.25、-1.25、0.(3)、0.1(6)，循环节放在圆括号内',
+          '分数模式输入如 3/4、-5/2，带分数写作「1 1/2」（整数与分数间空格）',
+          '结果区即时显示最简形式、循环节标签与可复制的结果，并附计算过程说明',
+        ],
+        useCases: [
+          '数学作业中循环小数化分数、分数化小数的答案核对与步骤讲解',
+          '配方、配比与工程取值中把无限小数表达为精确分数，避免舍入误差',
+          '百分数与分数互化时处理 33.(3)% 这类非有限百分数',
+        ],
+        privacyNote: '所有运算均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '循环小数是怎样化成分数的？',
+            answer:
+              '采用代数消元法。对 0.1(6)（1 位不循环、1 位循环）：设 A=1、B=16，分子 = B − A = 15，分母 = 10¹ × (10¹ − 1) = 90，即 15/90，约分得 1/6。一般地，m 位不循环、n 位循环时，分子 =（含整数部分的全部数字拼接值）−（整数与不循环部分的拼接值），分母 = 10^m × (10^n − 1)，最后用 gcd 约分。纯循环小数（如 0.(142857)）m=0，分母即 999999。',
+          },
+          {
+            question: '为什么不直接用 JavaScript 的 Number 计算？',
+            answer:
+              'Number 是 IEEE-754 双精度浮点数，0.1 + 0.2 = 0.30000000000000004，且无法精确表达 1/3 这类无限循环小数。本工具全部使用 BigInt 分子/分母运算：比较、约分（欧几里得 gcd）、长除法都在整数域完成，只有最终展示时才转成十进制文本，因此任意有理数都能精确往返互转（如 17/23 → 0.(7391304347826086956521) → 17/23）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local tool for exact conversion between decimals and fractions. Every value is represented as a BigInt rational (numerator/denominator), eliminating floating-point errors such as 0.1 + 0.2. Terminating decimals are written over 10ⁿ and reduced; repeating decimals (e.g., 0.1(6), 33.(3)%) use the algebraic method—if A is the digits through the non-repeating part and B is A followed by the repeat block, numerator = B − A and denominator = 10^m × (10^n − 1), where m is the non-repeating length and n the repeat length. Fraction-to-decimal performs long division while recording the first position of each remainder; a repeated remainder locates the cycle, printed in parentheses (e.g., 1/7 → 0.(142857)).',
+        coreFeatures: [
+          'Decimals (including negatives and .5 shorthand) to reduced fractions with mixed-number form',
+          'Repeating-decimal support: 0.(3), 0.1(6), 1.2(14) in parenthesis notation, cycles up to 1000 digits',
+          'Fraction-to-decimal long division with automatic terminating/repeating detection and cycle length',
+          'Percentage ↔ fraction conversion (25% ↔ 1/4, 33.(3)% ↔ 1/3) and mixed ↔ improper fraction conversion',
+          'Shows gcd reduction and the algebraic derivation; precise BigInt arithmetic, zero new dependencies',
+        ],
+        howToUse: [
+          'Pick a direction at the top: decimal→fraction, fraction→decimal, percent→fraction, fraction→percent, or mixed↔improper',
+          'In decimal mode enter values like 0.25, -1.25, 0.(3), 0.1(6), placing the repeat block in parentheses',
+          'In fraction mode enter values like 3/4 or -5/2; mixed numbers are written as "1 1/2" (space between)',
+          'The result area instantly shows the reduced form, repeat tags, a copyable value, and step-by-step work',
+        ],
+        useCases: [
+          'Checking homework answers for repeating-decimal/fraction conversion with explanatory steps',
+          'Expressing endless decimals as exact fractions in recipes, ratios, and engineering values',
+          'Handling non-terminating percentages such as 33.(3)% when converting between percent and fraction',
+        ],
+        privacyNote: 'All computation runs locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'How is a repeating decimal converted to a fraction?',
+            answer:
+              'Via algebraic elimination. For 0.1(6) (one non-repeating digit, one repeating digit): let A = 1 and B = 16; numerator = B − A = 15, denominator = 10¹ × (10¹ − 1) = 90, giving 15/90, which reduces to 1/6. In general, with m non-repeating and n repeating digits, numerator = (all digits concatenated) − (integer and non-repeating digits concatenated), denominator = 10^m × (10^n − 1), then reduce by the gcd. A purely repeating decimal such as 0.(142857) has m = 0 and denominator 999999.',
+          },
+          {
+            question: 'Why not just use JavaScript Number?',
+            answer:
+              'Number is an IEEE-754 double, so 0.1 + 0.2 = 0.30000000000000004 and values like 1/3 cannot be represented exactly. This tool keeps everything as BigInt numerator/denominator pairs—comparison, gcd reduction, and long division all happen over integers—and decimal text is produced only for display, so any rational number round-trips exactly (e.g., 17/23 → 0.(7391304347826086956521) → 17/23).',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'mac-address-converter',
+    name: 'MAC 地址格式转换与校验',
+    nameEn: 'MAC Address Format Converter & Validator',
+    description:
+      '解析冒号、连字符、Cisco 点分与裸十六进制四种写法的 MAC-48 / EUI-64 地址，一键互转并规范化大小写，同时校验合法性、解读 I/G 单播组播位与 U/L 全球/本地管理位、拆分 OUI 与设备标识，并为 MAC-48 派生 EUI-64。',
+    descriptionEn:
+      'Parse MAC-48/EUI-64 addresses in colon, hyphen, Cisco dotted, and bare-hex notations, convert between all four formats with normalized case, validate input, decode the I/G (unicast/multicast) and U/L (universal/local) bits, split OUI from device identifier, and derive EUI-64 from a MAC-48 address.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/mac-address-converter',
+    iconName: 'Fingerprint',
+    tags: ['MAC 地址', 'EUI-64', 'OUI', '网络', '格式转换'],
+    tagsEn: ['MAC Address', 'EUI-64', 'OUI', 'Networking', 'Format Conversion'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'AA:BB:CC:DD:EE:FF',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 MAC 地址校验与格式转换工具。输入任意一种常见写法——冒号分隔（AA:BB:CC:DD:EE:FF）、连字符分隔（AA-BB-CC-DD-EE-FF）、Cisco 三点分（aabb.ccdd.eeff）或连续裸十六进制（AABBCCDDEEFF）——即可自动识别格式、校验合法性，并同时输出四种规范写法。工具还会解读首位字节的两个标志位：最低位 bit0 为 I/G 位（0 单播、1 组播），次低位 bit1 为 U/L 位（0 厂商分配的全球唯一地址 UAA、1 软件设置的本地管理地址 LAA）；同时拆分前 3 字节 OUI 厂商代码与其余字节的设备标识。对 6 字节 MAC-48，工具按 RFC 2373 在 OUI 与设备标识之间插入 FF:FE 派生 8 字节 EUI-64（不翻转 U/L 位）。',
+        coreFeatures: [
+          '自动识别冒号、连字符、Cisco 点分、裸十六进制四种输入，同时支持 MAC-48（6 字节）与 EUI-64（8 字节）',
+          '一次解析输出全部四种规范格式，可切换 A-F 大小写，每行结果一键复制',
+          '严格校验：每组位数、非法字符、组数（如 Cisco 3 组 / 4 组）与总长度，错误信息中文说明原因',
+          '解读首字节 I/G（单播/组播）与 U/L（全球唯一/本地管理）标志位，给出 8 位二进制与 OUI、设备标识拆分',
+          'MAC-48 → EUI-64 派生（插入 FF:FE）；纯本地运算，零新增依赖',
+        ],
+        howToUse: [
+          '在输入框粘贴或输入 MAC 地址，四种写法均可，工具会自动识别并即时校验',
+          '勾选「大写输出」可在大写（AA:BB:...）与小写（aa:bb:...）之间切换全部结果',
+          '查看结果区的传输类型、管理方式标签，以及 OUI 厂商代码与设备标识',
+          'MAC-48 地址会额外显示 EUI-64 派生值；在输出表格中点击「复制」即可取走所需格式',
+        ],
+        useCases: [
+          '网络运维中把交换机、路由器配置里的 MAC 写法互转（如 Cisco aabb.ccdd.eeff ↔ 标准冒号格式）',
+          '配置白名单 / ACL / DHCP 静态绑定时核对 MAC 合法性并统一大小写与分隔符',
+          'IPv6 无状态自动配置（SLAAC）教学中理解 MAC-48 到 EUI-64 的 FF:FE 插入过程',
+        ],
+        privacyNote: '所有解析与转换均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: 'I/G 位和 U/L 位分别是什么？',
+            answer:
+              '它们是 MAC 地址首字节最低的两个比特。bit0 是 I/G（Individual/Group）位：0 表示单播地址（指向一块网卡），1 表示组播地址（如 01:00:5E:...），FF:FF:FF:FF:FF:FF 广播地址该位也为 1。bit1 是 U/L（Universal/Local）位：0 表示由厂商烧录、OUI 全局唯一的地址（UAA），1 表示由软件/管理员自行设置的本地管理地址（LAA，常见于虚拟机、随机化 MAC）。例如首字节 0x02 = 00000010，即全球单播位不变、本地管理位置位。',
+          },
+          {
+            question: 'MAC-48 派生 EUI-64 时为什么插入 FF:FE？会不会翻转 U/L 位？',
+            answer:
+              '按 RFC 2373 的 IPv6 接口标识符规则，把 6 字节 MAC-48 从中间（OUI 之后）切开，插入固定两字节 FF:FE，即得到 8 字节 EUI-64，如 AA:BB:CC:DD:EE:FF → AA:BB:CC:FF:FE:DD:EE:FF。需要注意：EUI-64 标识符本身只是插入 FF:FE；而从 EUI-64 生成 IPv6 链路本地地址（fe80::/64）时才要求把首字节的 U/L 位翻转。本工具只做 EUI-64 派生，不翻转 U/L 位，并在结果中保留原地址的标志位解读。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local MAC address validator and format converter. Paste any common notation—colon-separated (AA:BB:CC:DD:EE:FF), hyphen-separated (AA-BB-CC-DD-EE-FF), Cisco dotted (aabb.ccdd.eeff), or contiguous bare hex (AABBCCDDEEFF)—and the tool auto-detects the format, validates it, and emits all four canonical notations at once. It also decodes the two flag bits in the first octet: the least-significant bit (bit 0) is the I/G bit (0 unicast, 1 multicast), and bit 1 is the U/L bit (0 universally administered/UAA burned in by the vendor, 1 locally administered/LAA set by software). It splits the 3-byte OUI from the device identifier and, for a 6-byte MAC-48, derives an 8-byte EUI-64 per RFC 2373 by inserting FF:FE between the OUI and device identifier (without flipping the U/L bit).',
+        coreFeatures: [
+          'Auto-detects colon, hyphen, Cisco dotted, and bare-hex input; supports both MAC-48 (6 bytes) and EUI-64 (8 bytes)',
+          'One parse emits all four canonical notations, with an A-F uppercase toggle and per-row copy buttons',
+          'Strict validation of per-group width, illegal characters, group count (e.g., Cisco 3 vs 4 groups), and total length, with clear error messages',
+          'Decodes the first-octet I/G (unicast/multicast) and U/L (universal/local) bits, shows 8-bit binary, and splits OUI from device identifier',
+          'MAC-48 → EUI-64 derivation (FF:FE insertion); purely local computation with zero new dependencies',
+        ],
+        howToUse: [
+          'Paste or type a MAC address in any of the four notations; the format is detected and validated instantly',
+          'Toggle "uppercase output" to switch every result between uppercase (AA:BB:...) and lowercase (aa:bb:...)',
+          'Review the transmission-type and administration tags plus the OUI vendor code and device identifier',
+          'MAC-48 input additionally shows the derived EUI-64; click "copy" on any output row to take the notation you need',
+        ],
+        useCases: [
+          'Converting MAC notations across switch/router configs in network operations (e.g., Cisco aabb.ccdd.eeff ↔ standard colon form)',
+          'Validating MAC addresses and normalizing case/separators for whitelists, ACLs, or static DHCP bindings',
+          'Teaching the MAC-48 to EUI-64 FF:FE insertion used by IPv6 stateless autoconfiguration (SLAAC)',
+        ],
+        privacyNote: 'All parsing and conversion run locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'What are the I/G bit and the U/L bit?',
+            answer:
+              'They are the two least-significant bits of the first MAC octet. Bit 0 is the I/G (Individual/Group) bit: 0 means unicast (a single NIC) and 1 means multicast (e.g., 01:00:5E:...); the broadcast FF:FF:FF:FF:FF:FF also has this bit set. Bit 1 is the U/L (Universal/Local) bit: 0 means a vendor-burned, OUI-globally-unique address (UAA), while 1 means a locally administered address (LAA) set by software or an administrator, common for VMs and randomized MACs. For example, a first octet of 0x02 (00000010) is unicast but locally administered.',
+          },
+          {
+            question: 'Why is FF:FE inserted for EUI-64, and is the U/L bit flipped?',
+            answer:
+              'Per RFC 2373, the 6-byte MAC-48 is split after the OUI and the fixed two bytes FF:FE are inserted to form an 8-byte EUI-64—AA:BB:CC:DD:EE:FF becomes AA:BB:CC:FF:FE:DD:EE:FF. Note that EUI-64 derivation itself only inserts FF:FE; flipping the first-octet U/L bit is a separate step applied only when building an IPv6 link-local address (fe80::/64) from the EUI-64 identifier. This tool performs EUI-64 derivation only, leaves the U/L bit untouched, and keeps the original flag-bit analysis in its output.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'number-to-words',
+    name: '数字英文读法转换器',
+    nameEn: 'Number to English Words',
+    description:
+      '将整数或金额数字转换为规范英文读法：基数词（12345 → twelve thousand three hundred forty-five）、序数词（21st → twenty-first）与美元支票读法（123.45 → one hundred twenty-three dollars and forty-five cents），支持短级差大数、负数与连字符开关。',
+    descriptionEn:
+      'Convert numbers to canonical English: cardinal words (12345 → twelve thousand three hundred forty-five), ordinals (21st → twenty-first), and USD check amounts (123.45 → one hundred twenty-three dollars and forty-five cents), with short-scale large numbers, negatives, and a hyphenation toggle.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/number-to-words',
+    iconName: 'UnorderedList',
+    tags: ['数字读法', '英文', '基数词', '序数词', '支票金额'],
+    tagsEn: ['Number Words', 'English', 'Cardinal', 'Ordinal', 'Check Amount'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '12345',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的数字英文读法工具，输出符合英语书写规范的 cardinal number words。整数采用短级差（short scale）按 3 位分节：thousand、million、billion、trillion；21-99 的复合词默认加连字符（twenty-one，遵循 Chicago/APA 等主流风格指南）。提供三种模式：基数词（整数或小数，小数按 point 逐位读出，如 3.14 → three point one four）、序数词（1 → first、21 → twenty-first、100 → one hundredth，复合序数词仅末位变形）、美元金额支票读法（123.45 → one hundred twenty-three dollars and forty-five cents，自动处理 dollar/dollars 与 cent/cents 单复数）。支持前导正负号、千分位逗号输入，内部用 BigInt 处理整数避免大数丢精度，支持绝对值小于 10¹⁵ 的整数。',
+        coreFeatures: [
+          '基数词模式：短级差 thousand / million / billion / trillion，覆盖负数与零（zero）',
+          '序数词模式：first、second、third、fifth、twelfth 等不规则变形，复合词仅末位变序数',
+          '美元金额模式：dollars and cents 支票读法，一位小数按十分位补零，自动单复数',
+          '支持千分位逗号、正负号、小数逐位读法；可切换 twenty-one 连字符规则',
+          'BigInt 整数运算，支持至 999 万亿；纯本地确定性算法，零新增依赖',
+        ],
+        howToUse: [
+          '顶部选择模式：基数词、序数词或美元金额',
+          '输入数字，如 12345、1,234,567、-42、3.14（基数词）、21（序数词）、123.45（金额）',
+          '通过复选框切换复合词连字符（twenty-one ↔ twenty one）',
+          '结果即时显示在绿色结果条中，点击「复制英文读法」即可取走',
+        ],
+        useCases: [
+          '填写英文支票、合同与发票金额的美元英文表述',
+          '生成测试数据、英文报表中的数字自然语言描述',
+          '英语学习与教学中核对基数词、序数词与大数分节读法',
+        ],
+        privacyNote: '所有运算均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '什么是短级差（short scale）？',
+            answer:
+              '短级差是美式英语及当代英语世界通用的大数命名体系，每增加 3 位（1000 倍）换一个新单位：thousand（10³）、million（10⁶）、billion（10⁹）、trillion（10¹²）。例如 1,234,567 读作 one million two hundred thirty-four thousand five hundred sixty-seven。注意它与英式旧称「长级差」（billion 表示 10¹²）不同；本工具遵循短级差。',
+          },
+          {
+            question: '为什么 forty-two 有连字符？金额里 1 dollar 为什么是单数？',
+            answer:
+              'Chicago Manual of Style、APA 等主流英文写作规范要求 21-99 的复合基数词在书写时加连字符，如 forty-two、twenty-one、one hundred twenty-three；序数词同理（twenty-first）。可通过复选框关闭。金额模式遵循支票惯例：整数部分精确为 1 时用单数 dollar（one dollar and ...），其余一律 dollars；美分精确为 1 时用 cent，否则 cents；没有小数时读作 ... and zero cents。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local tool that turns numbers into canonical English cardinal number words. Integers use the short scale in groups of three: thousand, million, billion, trillion; compound numbers 21–99 are hyphenated by default (twenty-one, per mainstream style guides such as Chicago/APA). Three modes are offered: cardinals (integers or decimals, with the fraction read digit by digit after "point", e.g., 3.14 → three point one four), ordinals (1 → first, 21 → twenty-first, 100 → one hundredth; only the final word is ordinalized), and USD check amounts (123.45 → one hundred twenty-three dollars and forty-five cents, with automatic dollar/dollars and cent/cents singular forms). Signed input and thousands separators are accepted, integers are handled with BigInt to avoid precision loss, and absolute values below 10¹⁵ are supported.',
+        coreFeatures: [
+          'Cardinal mode: short-scale thousand/million/billion/trillion, including negatives and zero',
+          'Ordinal mode: irregular forms (first, second, third, fifth, twelfth); only the last word of a compound is ordinalized',
+          'USD money mode: dollars-and-cents check reading, one decimal digit zero-padded as dimes, automatic singular/plural units',
+          'Accepts thousands separators, signs, and digit-by-digit decimals; toggleable twenty-one hyphenation rule',
+          'BigInt integer math up to 999 trillion; deterministic local algorithm with zero new dependencies',
+        ],
+        howToUse: [
+          'Pick a mode at the top: cardinal, ordinal, or USD money',
+          'Enter a number such as 12345, 1,234,567, -42, 3.14 (cardinal), 21 (ordinal), or 123.45 (money)',
+          'Use the checkbox to toggle compound hyphenation (twenty-one vs twenty one)',
+          'The result appears instantly in the green banner; click "copy English words" to take it',
+        ],
+        useCases: [
+          'Writing USD amounts on English-language checks, contracts, and invoices',
+          'Generating natural-language numbers for test data and English reports',
+          'Learning or teaching English cardinal words, ordinals, and large-number grouping',
+        ],
+        privacyNote: 'All computation runs locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'What is the short scale?',
+            answer:
+              'The short scale is the large-number naming system used in American English and today’s English-speaking world: every additional group of three digits (a factor of 1000) introduces a new unit—thousand (10³), million (10⁶), billion (10⁹), trillion (10¹²). For example, 1,234,567 is read as one million two hundred thirty-four thousand five hundred sixty-seven. It differs from the historical British "long scale" (where a billion meant 10¹²); this tool follows the short scale.',
+          },
+          {
+            question: 'Why is forty-two hyphenated, and why is 1 dollar singular?',
+            answer:
+              'Mainstream English style guides (Chicago Manual of Style, APA) require compound cardinals from 21 to 99 to be hyphenated—forty-two, twenty-one, one hundred twenty-three—and ordinals follow suit (twenty-first). The checkbox disables this. Money mode follows check-writing convention: exactly one whole unit uses the singular "one dollar and ...", everything else uses dollars; exactly one cent uses cent, otherwise cents; with no fractional part it reads "... and zero cents".',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'fullwidth-halfwidth-converter',
+    name: '全角半角字符转换器',
+    nameEn: 'Fullwidth / Halfwidth Converter',
+    description:
+      '基于固定 Unicode 码位映射（U+FF01–U+FF5E ↔ U+0021–U+007E、U+3000 ↔ U+0020）在全角与半角之间双向批量转换，支持按全部 / 仅字母数字 / 仅标点与空格三种范围处理，并统计字母数字、标点、空格的替换数量。',
+    descriptionEn:
+      'Batch-convert between fullwidth and halfwidth characters via fixed Unicode mappings (U+FF01–U+FF5E ↔ U+0021–U+007E and U+3000 ↔ U+0020), with all / alphanumeric-only / punctuation-and-space scopes and per-category replacement counts.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/fullwidth-halfwidth-converter',
+    iconName: 'Shuffle',
+    tags: ['全角', '半角', 'Unicode', '文本处理', '标点'],
+    tagsEn: ['Fullwidth', 'Halfwidth', 'Unicode', 'Text Tools', 'Punctuation'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Ｈｅｌｌｏ，Ｗｏｒｌｄ！',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的全角 / 半角批量转换工具。中文输入法误切换时常在代码、命令行参数、配置文件、SQL 中混入全角字符（如 ＡＢＣ、１２３、全角逗号与感叹号、全角空格），引发难以定位的语法错误。本工具依据固定的 Unicode 码位映射进行双向转换：全角区 U+FF01–U+FF5E 与 ASCII 可打印区 U+0021–U+007E 一一对应（码位差恰好为 0xFEE0），全角空格 U+3000（表意文字空格）对应普通空格 U+0020。可选择三种范围：全部、仅字母数字（A-Z/a-z/0-9）、仅标点与空格，并分别统计三类替换数量。映射区之外的字符（中文汉字、中文弯引号 “”、emoji 等）原样保留。',
+        coreFeatures: [
+          '全角 → 半角、半角 → 全角双向一键转换，大文本实时处理',
+          '固定码位映射 U+FF01–FF5E ↔ U+0021–007E（偏移 0xFEE0）及 U+3000 ↔ U+0020',
+          '三种范围：全部字符 / 仅字母数字 / 仅标点与空格，互不干扰',
+          '分类统计替换数量：字母数字、标点、空格，转换结果一键复制',
+          '中文汉字、中文弯引号、emoji 等非映射区字符原样保留；纯函数实现，零新增依赖',
+        ],
+        howToUse: [
+          '粘贴或输入待处理文本到上方文本框',
+          '选择方向：全角→半角（清理误输入）或半角→全角（排版需要）',
+          '选择范围：全部字符、仅字母数字，或仅标点与空格',
+          '下方即时显示转换结果与各类替换计数，点击「复制转换结果」取走',
+        ],
+        useCases: [
+          '清理代码、命令行、配置、SQL 中因中文输入法产生的全角字母数字与标点',
+          '整理从文档、PDF、聊天记录复制出来的含全角空格（U+3000）的文本',
+          '面向日文 / 全角排版场景把 ASCII 内容批量转为全角形式',
+        ],
+        privacyNote: '所有处理均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么中文逗号「，」有时会被转换、有时不会？',
+            answer:
+              '取决于该字符的实际码位。常用的全角逗号「，」是 U+FF0C、全角感叹号「！」是 U+FF01、全角句号「．」是 U+FF0E，它们都落在 U+FF01–FF5E 的「半角及全角形式」区块内，与 ASCII 有一一映射，所以会被转换为 ","、"!"、"."。而中文弯引号 “ ”（U+201C/U+201D）、中文书名号《》、顿号「、」（U+3001）等没有对应的 ASCII 码位，不在映射范围内，会原样保留。',
+          },
+          {
+            question: '全角空格（U+3000）和普通空格有什么区别？',
+            answer:
+              '普通空格是 U+0020（ASCII Space），全角空格是 U+3000（Ideographic Space，表意文字空格），宽度通常等于一个 CJK 字符，常见于中文排版与日文文本。肉眼几乎无法区分，但代码、Markdown 缩进、CSV 与命令行参数中混入 U+3000 会导致解析失败。本工具把 U+3000 ↔ U+0020 纳入映射，并在统计中单列空格数量，便于发现这类隐形问题。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local tool for batch fullwidth/halfwidth conversion. Accidentally leaving an IME in fullwidth mode often injects fullwidth characters (ＡＢＣ, １２３, fullwidth comma and exclamation mark, ideographic space) into code, CLI arguments, config files, or SQL, causing hard-to-find syntax errors. The tool converts in both directions using fixed Unicode mappings: the fullwidth block U+FF01–U+FF5E corresponds one-to-one with printable ASCII U+0021–U+007E (a constant code-point offset of 0xFEE0), and the ideographic space U+3000 maps to the ordinary space U+0020. Three scopes are available—all, alphanumeric only (A-Z/a-z/0-9), or punctuation and space only—with separate replacement counts. Characters outside the mapping (CJK ideographs, curly quotes “”, emoji) are left untouched.',
+        coreFeatures: [
+          'One-click fullwidth→halfwidth and halfwidth→fullwidth conversion, live for large text',
+          'Fixed mappings U+FF01–FF5E ↔ U+0021–007E (offset 0xFEE0) plus U+3000 ↔ U+0020',
+          'Three scopes: all characters, alphanumeric only, or punctuation and space only',
+          'Per-category counts for alphanumeric, punctuation, and space replacements; copyable output',
+          'Non-mapped characters (CJK ideographs, curly quotes, emoji) preserved; pure functions with zero new dependencies',
+        ],
+        howToUse: [
+          'Paste or type the text into the upper text area',
+          'Choose a direction: fullwidth→halfwidth (cleanup) or halfwidth→fullwidth (typesetting)',
+          'Choose a scope: all characters, alphanumeric only, or punctuation and space only',
+          'The result and per-category counts appear instantly below; click "copy result" to take it',
+        ],
+        useCases: [
+          'Cleaning fullwidth letters, digits, and punctuation accidentally typed into code, CLI input, config, or SQL',
+          'Normalizing text copied from documents, PDFs, or chats that contains ideographic spaces (U+3000)',
+          'Bulk-converting ASCII content to fullwidth form for Japanese or fullwidth typesetting scenarios',
+        ],
+        privacyNote: 'All processing runs locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why is the Chinese comma "，" sometimes converted and sometimes not?',
+            answer:
+              'It depends on the actual code point. The common fullwidth comma "，" is U+FF0C, the fullwidth exclamation mark "！" is U+FF01, and the fullwidth full stop "．" is U+FF0E—all inside the Halfwidth and Fullwidth Forms block U+FF01–FF5E, which maps one-to-one with ASCII, so they become ",", "!", and ".". By contrast, curly quotes “ ” (U+201C/U+201D), CJK book-title brackets 《》, and the ideographic comma "、" (U+3001) have no ASCII counterpart and are left untouched.',
+          },
+          {
+            question: 'What is the difference between an ideographic space (U+3000) and a normal space?',
+            answer:
+              'A normal space is U+0020 (ASCII Space); the ideographic space is U+3000, typically as wide as a CJK character and common in Chinese/Japanese typesetting. They are nearly indistinguishable visually, but a stray U+3000 in code, Markdown indentation, CSV, or CLI arguments breaks parsing. This tool maps U+3000 ↔ U+0020 and reports space replacements in a dedicated count so the invisible issue is easy to spot.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
