@@ -1,0 +1,62 @@
+.container {
+  padding: 16px;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.resultList {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resultLine {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.02);
+  flex-wrap: wrap;
+}
+
+.resultLineHighest {
+  background: rgba(82, 196, 26, 0.1);
+}
+
+.lineNo {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+  min-width: 32px;
+}
+
+.selectorText {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 14px;
+  word-break: break-all;
+  flex: 1;
+  min-width: 180px;
+}
+
+.triple {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.subtle {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.45);
+}

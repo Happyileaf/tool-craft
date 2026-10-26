@@ -1,0 +1,58 @@
+.container {
+  padding: 16px;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.label {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+}
+
+.resultList {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resultLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.02);
+  flex-wrap: wrap;
+}
+
+.localeName {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.resultValue {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 18px;
+  font-weight: 600;
+  word-break: break-all;
+  text-align: right;
+}
+
+.subtle {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.45);
+}

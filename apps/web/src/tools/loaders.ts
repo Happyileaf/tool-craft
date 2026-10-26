@@ -90,4 +90,9 @@ export const toolLoaders: Record<
   'mac-address-converter': () => import('./mac-address-converter'),
   'number-to-words': () => import('./number-to-words'),
   'fullwidth-halfwidth-converter': () => import('./fullwidth-halfwidth-converter'),
+  'aspect-ratio-calculator': () => import('./aspect-ratio-calculator'),
+  'css-specificity-calculator': () => import('./css-specificity-calculator'),
+  'number-locale-formatter': () => import('./number-locale-formatter'),
+  'nato-phonetic-converter': () => import('./nato-phonetic-converter'),
+  'iso8601-duration': () => import('./iso8601-duration'),
 };

@@ -6602,6 +6602,516 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'aspect-ratio-calculator',
+    name: '宽高比计算器',
+    nameEn: 'Aspect Ratio Calculator',
+    description:
+      '化简宽高为最简整数比，已知尺寸与比值时补全缺失边长，支持按目标宽高或倍数等比缩放，并识别 16:9、4:3、3:2、21:9 等常见标准比例。',
+    descriptionEn:
+      'Simplify width and height to the smallest integer ratio, solve the missing side from a ratio and one known dimension, scale proportionally to a target side or factor, and detect common ratios such as 16:9, 4:3, 3:2, and 21:9.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/aspect-ratio-calculator',
+    iconName: 'Calculator',
+    tags: ['宽高比', '比例', '分辨率', '缩放', '尺寸'],
+    tagsEn: ['Aspect Ratio', 'Ratio', 'Resolution', 'Scale', 'Dimension'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1920×1080',
+    doc: {
+      zh: {
+        whatIsIt:
+          '宽高比计算器用于在宽度、高度与比值之间快速换算：输入任意宽高即可得到最简整数比（如 1920×1080 → 16:9），并自动与 16:9、4:3、3:2、16:10、21:9、9:16 等常见标准比例做近似匹配（容差 1%）；也可以给定比值与一条边补全另一条边，或把原始尺寸按目标宽度、目标高度或倍数等比缩放。全部计算在浏览器本地实时完成，不涉及任何网络请求。',
+        coreFeatures: [
+          '任意正实数宽高一键化简为最简整数比（内部按 6 位小数整数化后约去最大公约数）',
+          '自动识别 16:9、4:3、3:2、16:10、21:9、9:16、1:1 等常见标准比例，给出相对误差',
+          '「知二求三」：给定 W:H 比值与一条边，补全另一条边',
+          '按目标宽度、目标高度或缩放倍数等比缩放，自动换算另一维度',
+          '纯函数计算、零新依赖、结果实时联动',
+        ],
+        howToUse: [
+          '在顶部选择模式：化简比例、知二求三或按比例缩放',
+          '化简比例：输入宽度与高度，下方即时显示最简整数比与标准比例匹配结果',
+          '知二求三：选择求宽度还是求高度，输入形如 16:9 的比值与已知边长',
+          '按比例缩放：输入原始宽高，选择缩放到宽度 / 高度或按倍数，并填入目标值',
+        ],
+        useCases: [
+          '图片、视频导出时根据分辨率确认应使用的宽高比（如 1920×1080 对应 16:9）',
+          '前端响应式布局与 Canvas / 视频容器尺寸推导，保持画面不变形',
+          '设计稿等比缩放到目标宽度或高度，快速得到另一维度像素值',
+          '竖版短视频（9:16）、超宽屏（21:9）等场景的比例核对',
+        ],
+        privacyNote: '所有计算均在浏览器本地完成，不发送任何数据到服务器。',
+        faqs: [
+          {
+            question: '输入的宽高不是整数，能正确化简吗？',
+            answer:
+              '可以。内部会先把宽高按 6 位小数放大并四舍五入为整数，再用欧几里得算法约去最大公约数，因此 1.6:0.9 这类小数比例也能正确化简为 16:9。',
+          },
+          {
+            question: '标准比例的「近似匹配」是怎么判定的？',
+            answer:
+              '工具会计算实际宽高比与参考表中每个标准比例的相对误差，取误差最小者；只有相对误差不超过 1% 才判定为近似命中，并展示具体误差百分比，否则提示无匹配。',
+          },
+          {
+            question: '缩放结果为什么是小数？',
+            answer:
+              '按目标宽度或高度等比缩放时，另一维度按同一比例换算，结果不一定是整数。工具最多保留 4 位小数并去掉尾随 0；实际用于像素时可自行取整（CSS 中浏览器也支持小数像素）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Aspect Ratio Calculator converts between width, height, and ratio values: enter any width and height to get the smallest integer ratio (e.g. 1920×1080 → 16:9) and an automatic nearest-match against common standards such as 16:9, 4:3, 3:2, 16:10, 21:9, and 9:16 (1% tolerance). You can also solve the missing side when a W:H ratio and one side are known, or scale an original size proportionally to a target width, target height, or factor. Everything runs locally in the browser with no network requests.',
+        coreFeatures: [
+          'Reduce any positive numeric width/height to the smallest integer ratio (integerized at 6 decimals, then divided by the GCD)',
+          'Detect common standards including 16:9, 4:3, 3:2, 16:10, 21:9, 9:16, and 1:1 with relative deviation',
+          'Solve-for-side mode: given a W:H ratio and one dimension, compute the other',
+          'Scale proportionally to a target width, target height, or factor, deriving the other dimension',
+          'Pure functions, zero new dependencies, live-linked results',
+        ],
+        howToUse: [
+          'Choose a mode at the top: simplify, solve, or scale',
+          'Simplify: enter width and height to see the reduced ratio and the nearest standard ratio',
+          'Solve: choose whether the width or height is unknown, enter a ratio such as 16:9 and the known side',
+          'Scale: enter the original width and height, choose target width/height or factor, and type the target value',
+        ],
+        useCases: [
+          'Confirming the aspect ratio of an image or video export resolution (e.g. 1920×1080 is 16:9)',
+          'Responsive layout, Canvas, and video container math without distorting the picture',
+          'Scaling a design to a target width or height and quickly deriving the other pixel dimension',
+          'Checking portrait short-video (9:16) and ultrawide (21:9) deliverables',
+        ],
+        privacyNote: 'All calculations run locally in the browser; no data is sent anywhere.',
+        faqs: [
+          {
+            question: 'Can it simplify non-integer dimensions?',
+            answer:
+              'Yes. Width and height are scaled by 1,000,000 and rounded to integers before the Euclidean GCD reduction, so decimal inputs such as 1.6:0.9 correctly reduce to 16:9.',
+          },
+          {
+            question: 'How is the "nearest standard ratio" decided?',
+            answer:
+              'The tool computes the relative deviation between the actual ratio and every standard ratio in the reference table, picks the smallest one, and reports a match only when the deviation is within 1%; otherwise it shows no match along with the exact deviation when matched.',
+          },
+          {
+            question: 'Why are some scaled results fractional?',
+            answer:
+              'When scaling to a target width or height, the other dimension is derived by the same proportion and may not be an integer. Results keep at most 4 decimals with trailing zeros removed; round as needed for whole-pixel use cases.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'css-specificity-calculator',
+    name: 'CSS 选择器权重计算器',
+    nameEn: 'CSS Specificity Calculator',
+    description:
+      '逐行解析 CSS 选择器，按标准三元组 (a, b, c) 计算权重，正确处理 ID、类、属性、伪类、伪元素、:is()/:not()/:has()/:where() 及 nth-child of 语法，并自动标出权重最高的选择器。',
+    descriptionEn:
+      'Parse CSS selectors line by line and compute the standard specificity triple (a, b, c), with correct handling of IDs, classes, attributes, pseudo-classes, pseudo-elements, :is()/:not()/:has()/:where(), and nth-child(... of S), highlighting the highest-specificity selector.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/css-specificity-calculator',
+    iconName: 'Code',
+    tags: ['CSS', '选择器', '权重', 'Specificity', '前端'],
+    tagsEn: ['CSS', 'Selector', 'Specificity', 'Frontend'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '#nav .item > a:hover',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS 选择器权重（Specificity）决定多条规则同时命中一个元素时哪条生效。本工具逐行解析选择器，输出标准三元组 (a, b, c)：a 为 ID 选择器数量，b 为类、属性与伪类数量，c 为类型与伪元素数量；比较顺序为 a → b → c。工具内置零依赖的递归下降解析器，正确处理后代 / 子代 / 相邻 / 兄弟组合子、属性选择器（含引号与逗号）、:is() / :not() / :has()（采纳参数列表最高权重）、:where()（权重恒为 0）以及 :nth-child(An+B of S) 过滤语法，并在多行输入中标记权重最高的一条。全部计算在浏览器本地实时完成。',
+        coreFeatures: [
+          '标准三元组 (a, b, c) 计算：ID / 类·属性·伪类 / 类型·伪元素',
+          '支持后代、子代（>）、相邻（+）、兄弟（~）组合子与选择器列表',
+          '正确处理 :is()、:not()、:has() 采纳参数最高权重，:where() 恒为 0',
+          '支持旧式单冒号伪元素（:before）与 :nth-child(... of S) 的过滤选择器权重叠加',
+          '多行批量对比，自动高亮权重最高的选择器，非法选择器逐行报错',
+        ],
+        howToUse: [
+          '在文本框中每行输入一个 CSS 选择器',
+          '结果区实时显示每个选择器的 (a, b, c) 三元组',
+          '绿色底色行表示当前所有合法选择器中权重最高（将优先生效）的一条',
+          '无法解析的行会以错误提示标出，可据此检查括号配对或尾随组合子',
+        ],
+        useCases: [
+          '排查「样式为什么被覆盖」：对比命中同一元素的多条选择器权重',
+          '编写组件库或 CSS 方案时评估选择器优先级，避免 !important 滥用',
+          '面试与教学中验证 :is()、:where()、:has() 等新伪类的权重规则',
+          '代码评审中快速核对复杂嵌套选择器的实际权重',
+        ],
+        privacyNote: '所有计算均在浏览器本地完成，不发送任何数据到服务器。',
+        faqs: [
+          {
+            question: '为什么 div::before 的 c 是 2 而不是 1？',
+            answer:
+              '三元组统计的是各类简单选择器的数量：div 是一个类型选择器（c +1），::before 是一个伪元素（c +1），合计 (0, 0, 2)。旧式单冒号 :before 在规范中同样按伪元素计。',
+          },
+          {
+            question: ':has() 自己会不会加一个伪类权重？',
+            answer:
+              '不会。与 :is()、:not() 一样，:has() 的权重采纳参数列表中最高权重的选择器，函数伪类自身不额外 +1。例如 section:has(> h2) 的权重为 (0, 0, 2)；:where() 则特殊，无论参数如何权重恒为 0。',
+          },
+          {
+            question: '权重相同的多条选择器怎么判定？',
+            answer:
+              '当三元组完全相同时，工具会把最先出现的一条标记为「权重最高」；这与浏览器行为一致——特异性相同时，由源码顺序（后出现的规则生效）决定，本工具只负责权重计算，源码顺序需结合实际样式表判断。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'CSS specificity decides which rule wins when multiple rules match the same element. This tool parses selectors line by line and outputs the standard triple (a, b, c): a counts ID selectors, b counts classes, attribute selectors, and pseudo-classes, and c counts type selectors and pseudo-elements; comparison proceeds a → b → c. A zero-dependency recursive-descent parser correctly handles descendant / child / adjacent / sibling combinators, attribute selectors (including quotes and commas), :is() / :not() / :has() (which take the highest specificity of their arguments), :where() (always zero), and :nth-child(An+B of S) filters. Among multiple lines the highest-specificity selector is highlighted. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Standard (a, b, c) triple: IDs / classes·attributes·pseudo-classes / types·pseudo-elements',
+          'Descendant, child (>), adjacent (+), and sibling (~) combinators plus selector lists',
+          ':is(), :not(), and :has() adopt the maximum argument specificity; :where() is always zero',
+          'Legacy single-colon pseudo-elements (:before) and :nth-child(... of S) filter specificity',
+          'Batch line-by-line comparison with the winner highlighted and per-line errors for invalid input',
+        ],
+        howToUse: [
+          'Enter one CSS selector per line in the text area',
+          'The result list shows the (a, b, c) triple for every selector in real time',
+          'The green-tinted row is the highest-specificity valid selector (the one that would win)',
+          'Unparseable lines are flagged with an error message so you can spot unmatched parentheses or trailing combinators',
+        ],
+        useCases: [
+          'Debugging "why is my style overridden" by comparing selectors that match the same element',
+          'Evaluating selector priorities when authoring component libraries to avoid !important',
+          'Verifying the rules of newer pseudo-classes such as :is(), :where(), and :has() in interviews or teaching',
+          'Quickly checking the real specificity of deeply nested selectors during code review',
+        ],
+        privacyNote: 'All calculations run locally in the browser; no data is sent anywhere.',
+        faqs: [
+          {
+            question: 'Why does div::before give c = 2 instead of 1?',
+            answer:
+              'The triple counts simple selectors: div is one type selector (c +1) and ::before is one pseudo-element (c +1), totaling (0, 0, 2). The legacy single-colon :before is also treated as a pseudo-element per spec.',
+          },
+          {
+            question: 'Does :has() add its own pseudo-class weight?',
+            answer:
+              'No. Like :is() and :not(), :has() takes the highest specificity of its argument list without adding +1 for the functional pseudo-class itself. For example, section:has(> h2) is (0, 0, 2). :where() is the special case whose specificity is always zero regardless of its arguments.',
+          },
+          {
+            question: 'How are ties between equal-specificity selectors decided?',
+            answer:
+              'When triples are identical the tool marks the first occurrence as the winner; this mirrors the browser model—equal specificity is resolved by source order (the later rule wins). The tool computes specificity only; source order must be checked against the actual stylesheet.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'number-locale-formatter',
+    name: '数字千分位与货币格式化',
+    nameEn: 'Number & Currency Locale Formatter',
+    description:
+      '把同一数值按多个区域设置渲染成本地化排版：千分位分组符、小数点、小数位与舍入、货币符号与位置、负数括号、百分比与紧凑记法（1.2K / 123 万），基于浏览器原生 Intl.NumberFormat，零新依赖。',
+    descriptionEn:
+      'Render one number in multiple locales at once: thousands separators, decimal marks, fraction digits and rounding, currency symbols and placement, accounting parentheses, percentages, and compact notation (1.2K / 123 万), powered by the native Intl.NumberFormat with zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/number-locale-formatter',
+    iconName: 'Gauge',
+    tags: ['数字格式化', '千分位', '货币', 'Intl', '本地化', 'i18n'],
+    tagsEn: ['Number Format', 'Thousands Separator', 'Currency', 'Intl', 'Locale', 'i18n'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1234567.895',
+    doc: {
+      zh: {
+        whatIsIt:
+          '数字千分位与货币格式化工具把同一个数值按一个或多个 BCP 47 区域设置（如 zh-CN、en-US、de-DE）渲染为本地化文本，直观对比各地区的千分位分组符、小数点符号、货币符号及其位置、小数位与舍入、负数会计括号写法、百分比以及紧凑记法（1.2K / 123 万）。工具是浏览器原生 Intl.NumberFormat 的纯函数封装，不引入任何运行时依赖，也不发送网络请求，常用于多语言产品文案、报价单与财务报表的格式核对。',
+        coreFeatures: [
+          '同一数值同时对比多个区域设置，覆盖中、英、德、法、日、印地语等常用地区',
+          '数字 / 货币（ISO 4217 代码）/ 百分比三种模式，货币符号位置与默认小数位随区域自动变化',
+          '标准与紧凑记法切换（1,234,567 ↔ 1.2M / 123 万），可开关千分位分组',
+          '可选固定小数位（0-20，四舍五入）与负数括号写法（如 ($1,234.50)）',
+          '纯函数 + 原生 Intl 封装、零新依赖、输入实时联动',
+        ],
+        howToUse: [
+          '在顶部输入一个有限数字（不要带千分位逗号），例如 -1234567.89',
+          '选择数字、货币或百分比模式；货币模式再选择 ISO 货币代码（如 USD、CNY、JPY）',
+          '按需切换紧凑记法、千分位分组、负数括号与固定小数位',
+          '在「对比区域」中勾选一个或多个区域设置，下方即时列出各区域排版结果',
+        ],
+        useCases: [
+          '多语言产品中核对同一金额在不同地区的展示（$1,234.50 / 1.234,50 € / ￥1,235）',
+          '财务报表与发票的会计括号负数写法、固定小数位核对',
+          '前端开发验证 Intl.NumberFormat 参数（notation、currencyDisplay、分组）的实际输出',
+          '运营文案中 K / M / 万等紧凑数字在各语言下的写法确认',
+        ],
+        privacyNote: '所有格式化均在浏览器本地通过原生 Intl 完成，不发送任何数据到服务器。',
+        faqs: [
+          {
+            question: '和已有的「数字转中文大写金额」工具有什么区别？',
+            answer:
+              '中文大写金额工具输出的是壹贰叁、元角分形式的发票合同文本；本工具关注的是各地区的数字排版（分组符、小数点、货币符号位置、负数与百分比写法），两者用途不同、互不替代。',
+          },
+          {
+            question: '为什么输入 1,234.5 提示无法解析？',
+            answer:
+              '输入框要求的是纯数字字面量，千分位逗号属于「输出排版」而不是输入语法。请直接输入 1234.5；如需查看带逗号的结果，选择对应区域设置后会自动渲染。',
+          },
+          {
+            question: '紧凑记法在中文下为什么没有空格？',
+            answer:
+              '输出由浏览器内置 ICU 数据决定，不同区域（甚至不同浏览器 / ICU 版本）可能存在空格或字形的细微差异，例如部分环境输出「123万」，另一些输出「123 万」。工具如实反映当前运行环境的 Intl 结果。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Number & Currency Locale Formatter renders one numeric value in one or more BCP 47 locales (such as zh-CN, en-US, de-DE), making it easy to compare thousands separators, decimal marks, currency symbols and their placement, fraction digits and rounding, accounting parentheses for negatives, percentages, and compact notation (1.2K / 123 万). It is a thin pure-function wrapper over the native Intl.NumberFormat API with no runtime dependencies and no network requests, ideal for checking formats in localized copy, quotations, and financial reports.',
+        coreFeatures: [
+          'Compare several locales simultaneously, including Chinese, English, German, French, Japanese, and Hindi regions',
+          'Decimal, currency (ISO 4217 codes), and percent modes with locale-driven symbol placement and default digits',
+          'Switch between standard and compact notation (1,234,567 ↔ 1.2M / 123 万) and toggle grouping',
+          'Optional fixed fraction digits (0-20, rounded) and accounting parentheses for negatives (e.g. ($1,234.50))',
+          'Pure functions over native Intl, zero new dependencies, live-linked results',
+        ],
+        howToUse: [
+          'Enter a finite number at the top (without thousands commas), for example -1234567.89',
+          'Pick decimal, currency, or percent mode; in currency mode choose an ISO code such as USD, CNY, or JPY',
+          'Toggle compact notation, grouping, negative parentheses, and fixed fraction digits as needed',
+          'Select one or more locales in the comparison selector to see every localized rendering instantly',
+        ],
+        useCases: [
+          'Checking how one amount appears across regions ($1,234.50 / 1.234,50 € / ￥1,235) in localized products',
+          'Verifying accounting parentheses and fixed decimals on financial statements and invoices',
+          'Testing the actual output of Intl.NumberFormat options (notation, currencyDisplay, grouping) during frontend work',
+          'Confirming compact K / M / 万 styles across languages for marketing copy',
+        ],
+        privacyNote: 'All formatting runs locally in the browser via native Intl; no data is sent anywhere.',
+        faqs: [
+          {
+            question: 'How is this different from the existing Chinese RMB amount tool?',
+            answer:
+              'The RMB tool produces formal uppercase Chinese text (壹贰叁, 元角分) for invoices and contracts; this tool focuses on regional numeric typography—grouping separators, decimal marks, currency symbol placement, negatives, and percentages. They serve different purposes.',
+          },
+          {
+            question: 'Why is 1,234.5 rejected as input?',
+            answer:
+              'The input expects a plain numeric literal; thousands commas are output typography, not input syntax. Type 1234.5 directly, then choose a locale to render the grouped representation.',
+          },
+          {
+            question: 'Why does Chinese compact output sometimes lack a space?',
+            answer:
+              'Output comes from the browser’s built-in ICU data, so minor spacing or glyph differences can occur across locales and even across browsers or ICU versions (e.g. "123万" vs "123 万"). The tool faithfully reports the Intl result of the current runtime.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'nato-phonetic-converter',
+    name: 'NATO 音标字母转换器',
+    nameEn: 'NATO Phonetic Alphabet Converter',
+    description:
+      '在普通文本与 NATO/ICAO 标准音标字母（Alpha / Bravo / Charlie …）之间双向转换，覆盖 A–Z 与 0–9（数字读 Zero–Niner），逐字符给出拼写对照，适用于客服报读订单号、电话核对验证码与无线电航空通信。',
+    descriptionEn:
+      'Convert between plain text and the NATO/ICAO radiotelephony spelling alphabet (Alpha / Bravo / Charlie …) in both directions, covering A–Z and 0–9 (Zero–Niner) with character-by-character spelling cards—ideal for reading order numbers over support calls, verifying codes by phone, and radio/aviation communication.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/nato-phonetic-converter',
+    iconName: 'Type',
+    tags: ['NATO 音标', '字母解释法', '拼读', '无线电', '客服'],
+    tagsEn: ['NATO Phonetic', 'Spelling Alphabet', 'ICAO', 'Radio', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'TRAE 42',
+    doc: {
+      zh: {
+        whatIsIt:
+          'NATO 音标字母转换器把普通文本与国际无线电音标字母（ITU/ICAO 标准拼读表）互相转换：输入文本时逐字符拼出 Alfa、Bravo、Charlie …… 并以斜杠区分不同源单词；输入音标串时可还原为大写文本。覆盖 26 个字母与 10 个数字（数字采用 Zero、One、…、Niner 标准读法，9 读 Niner 以与 5 的发音区分），常用于客服口述订单号、电话核对验证码、航空与无线电通信等需要无歧义拼写确认的场景。全部计算在浏览器本地完成，不发送任何数据。',
+        coreFeatures: [
+          '双向转换：文本拼写为音标，音标串一键还原为大写文本',
+          '完整覆盖 A–Z 与 0–9 共 36 个字符的 ITU/ICAO 标准拼读表',
+          '逐字符拼写卡片，源字符与音标单词一一对应，便于边看边读',
+          '以 “ / ” 标记源单词边界，还原时支持斜杠或多段空白',
+          '还原忽略大小写，并兼容 Alpha / Juliet / Nine 等常见异写，零新依赖',
+        ],
+        howToUse: [
+          '默认处于「拼写」模式，输入字母与数字（如 TRAE 42），即时得到音标串与逐字符卡片',
+          '源文本中的空格会变成输出中的 “ / ”，朗读时可在斜杠处停顿',
+          '切换到「还原」模式，粘贴或输入音标单词（如 Tango Romeo Alfa Echo / Four Two）',
+          '使用「复制结果」可一键复制音标串或还原文本',
+        ],
+        useCases: [
+          '客服 / 电话销售向客户逐字母确认订单号、优惠券码与邮箱拼写',
+          '电话中核对短信验证码、银行卡号等易错读的数字字母串',
+          '航空、无线电、应急通信按标准拼读表呼叫呼号与坐标',
+          '英语学习者记忆 NATO 字母解释法，或为剧本 / 游戏制作对讲台词',
+        ],
+        privacyNote: '所有转换均在浏览器本地完成，不发送任何输入数据到服务器。',
+        faqs: [
+          {
+            question: '和已有的摩尔斯电码编解码器有什么区别？',
+            answer:
+              '摩尔斯电码是点（.）划（-）电报编码，面向电报与信号；本工具是把字母读成 Alfa、Bravo 这类单词的口头拼读表，面向人声无歧义确认，两套映射体系与使用场景完全不同。',
+          },
+          {
+            question: '为什么数字 9 拼成 Niner 而不是 Nine？',
+            answer:
+              '这是 ITU/ICAO 航空通信标准：9 读 Niner（奈纳）以避免与德语词 Nein（不）混淆，同时与 5（Five / Fife）的发音更清晰地区分。还原时 Nine 与 Niner 都会被识别为 9。',
+          },
+          {
+            question: '为什么输入标点或中文会报错？',
+            answer:
+              '标准音标表只定义了 A–Z 与 0–9 共 36 个字符的读法，没有统一的标点拼读规范。遇到连字符、符号等字符时工具会明确指出，避免在通信中产生歧义。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The NATO Phonetic Alphabet Converter translates between plain text and the international radiotelephony spelling alphabet (the ITU/ICAO standard): type text to spell it out character by character as Alfa, Bravo, Charlie … with slashes separating source words, or paste a phonetic string to reconstruct the uppercase text. It covers all 26 letters and 10 digits (read as Zero, One, …, Niner; 9 is "Niner" to stay distinct from 5). It is built for unambiguous spelling confirmation in customer support calls, code verification by phone, aviation, and radio communication. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Bidirectional: spell text into code words, or reconstruct uppercase text from a phonetic string',
+          'Complete ITU/ICAO table for A–Z and 0–9, 36 characters in total',
+          'Character-by-character spelling cards pairing each source character with its code word',
+          'Source word boundaries marked with “ / ”; reconstruction accepts slashes or extra whitespace',
+          'Case-insensitive decoding with aliases such as Alpha / Juliet / Nine; zero new dependencies',
+        ],
+        howToUse: [
+          'In the default "Spell" mode, type letters and digits (e.g. TRAE 42) to get the phonetic string and per-character cards instantly',
+          'Spaces in the source text become “ / ” in the output—pause at each slash when reading aloud',
+          'Switch to "Reconstruct" mode and paste code words, e.g. Tango Romeo Alfa Echo / Four Two',
+          'Use "Copy result" to copy either the phonetic string or the reconstructed text',
+        ],
+        useCases: [
+          'Support agents confirming order numbers, coupon codes, and email spelling letter by letter',
+          'Verifying SMS codes and bank numbers that are easy to mishear over the phone',
+          'Aviation, radio, and emergency communication of call signs and coordinates per the standard table',
+          'Learners memorizing the NATO alphabet, or scriptwriters preparing radio dialogue',
+        ],
+        privacyNote: 'All conversion happens locally in the browser; no input ever leaves your device.',
+        faqs: [
+          {
+            question: 'How is this different from the existing Morse code tool?',
+            answer:
+              'Morse code is a dot/dash telegraph encoding for signals, while this tool is a spoken spelling alphabet that turns letters into words like Alfa and Bravo for unambiguous voice communication. The mappings and use cases are entirely different.',
+          },
+          {
+            question: 'Why is the digit 9 spelled "Niner" instead of "Nine"?',
+            answer:
+              'It is the ITU/ICAO aviation standard: 9 becomes "Niner" to avoid confusion with the German word "nein" (no) and to stay clearly distinct from 5 (Five/Fife). When decoding, both Nine and Niner map to 9.',
+          },
+          {
+            question: 'Why do punctuation or Chinese characters raise an error?',
+            answer:
+              'The standard spelling table only defines readings for A–Z and 0–9; there is no unified convention for punctuation. The tool flags unsupported characters explicitly rather than inventing ambiguous readings.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'iso8601-duration',
+    name: 'ISO 8601 时长解析与格式化',
+    nameEn: 'ISO 8601 Duration Parser & Formatter',
+    description:
+      '解析 P1Y2M3DT4H5M6S、PT90M、P2W 等 ISO 8601 时长字符串为年 / 月 / 周 / 日 / 时 / 分 / 秒明细与折算总秒数，并可把任意秒数反向进位归一化为标准时长；支持负时长、小数分量与非法语法诊断。',
+    descriptionEn:
+      'Parse ISO 8601 durations such as P1Y2M3DT4H5M6S, PT90M, and P2W into year/month/week/day/hour/minute/second components and an approximate total in seconds, or normalize any number of seconds back into the standard format—with support for negative durations, fractional components, and strict syntax diagnostics.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/iso8601-duration',
+    iconName: 'Clock',
+    tags: ['ISO 8601', '时长', 'Duration', '时间间隔', 'PT1H'],
+    tagsEn: ['ISO 8601', 'Duration', 'Time Interval', 'Parser', 'Formatter'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'P1Y2M3DT4H5M6S',
+    doc: {
+      zh: {
+        whatIsIt:
+          'ISO 8601 时长解析与格式化工具处理「时长 / 间隔」维度的标准表示：解析方向把 PnYnMnDTnHnMnS（及 PnW）字符串拆解为年、月、周、日、时、分、秒七个分量，并按 365 天/年、30 天/月、7 天/周折算总秒数；格式化方向把任意秒数（含负数与小数）按「日 → 时 → 分 → 秒」进位归一化后输出标准字符串。解析器严格校验语法：分量顺序、重复分量、周与其他分量互斥、只有最后一个分量允许小数等，出错时给出具体原因。所有计算在浏览器本地完成。',
+        coreFeatures: [
+          '严格解析 ISO 8601 时长：PnYnMnDTnHnMnS 与周表示 PnW，支持负号（-P1D）与正号',
+          '七分量明细展示（年/月/周/日/时/分/秒），并按固定折算给出总秒数',
+          '秒数反向格式化：自动进位归一化、零时长 PT0S、负数输出 -PT…',
+          '支持逗号或点的小数分量（PT1,5H）、大小写 t、毫秒级小数秒（最多 3 位）',
+          '纯函数零依赖与明确的语法诊断（重复单位、周混用、小数位置、T 段错位等）',
+        ],
+        howToUse: [
+          '在「解析」模式输入 ISO 时长（如 P1Y2M3DT4H5M6S 或 PT90M），即时看到七个分量与总秒数',
+          '切换到「格式化」模式，输入任意秒数（如 90540），得到归一化的 P1DT1H9M 与中文可读描述',
+          '输入负秒数或负时长（-PT30S）可验证负向时间间隔的表示',
+          '点击「复制」可复制原始 ISO 字符串或新生成的标准时长',
+        ],
+        useCases: [
+          '阅读 API 文档或日志中的 ISO 时长字段（视频时长、缓存 TTL、任务超时）',
+          '构造媒体播放时长（ISO BMFF / FFmpeg 等常用 PT#H#M#S）并核对总秒数',
+          '把用户输入的秒数配置转换为符合 ISO 8601 的配置值',
+          '排查非法时长字符串：快速定位是分量重复、周混用还是小数位置错误',
+        ],
+        privacyNote: '所有解析与格式化均在浏览器本地完成，不发送任何数据到服务器。',
+        faqs: [
+          {
+            question: '为什么总秒数对「年 / 月」是近似值？',
+            answer:
+              '公历年可能是 365 或 366 天，月份从 28 到 31 天不等，ISO 8601 的年月分量本身没有固定秒数。工具按常见工程约定（365 天/年、30 天/月）折算并明确标注；需要精确历法加减应改用具体起止日期计算。',
+          },
+          {
+            question: '为什么 P1W1D 报错？',
+            answer:
+              'ISO 8601 规定周（W）分量不能与年、月、日及时间分量混用。两周就是 P2W；如需「一周零一天」请统一折算为 P8D。',
+          },
+          {
+            question: 'P1Y0.5M 为什么不合法？',
+            answer:
+              '标准规定小数只能出现在最后一个（最小）分量上。带小数时应直接用最小单位表达，例如 1 年 6 个月写作 P1.5Y，或一个半小时写作 PT1.5H 而不是 PT1H0.5M。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ISO 8601 Duration Parser & Formatter covers the "duration / interval" dimension of the standard: the parser breaks PnYnMnDTnHnMnS (and PnW) strings into year, month, week, day, hour, minute, and second components and approximates the total seconds using 365 days/year, 30 days/month, and 7 days/week; the formatter normalizes any number of seconds (negative or fractional) with day → hour → minute → second carry and emits a standard string. The parser validates syntax strictly—component order, duplicates, the week-exclusivity rule, and fractional components only in the last position—and explains exact error causes. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Strict parsing of PnYnMnDTnHnMnS and week form PnW, with negative (-P1D) and positive signs',
+          'Seven-component breakdown plus an approximate total-seconds figure with fixed conversions',
+          'Reverse formatting of arbitrary seconds with carry normalization, PT0S for zero, and -PT… for negatives',
+          'Fractional components via comma or dot (PT1,5H), lowercase t, and millisecond precision (up to 3 decimals)',
+          'Pure functions, zero dependencies, and precise diagnostics (duplicates, mixed weeks, fraction position, T-section errors)',
+        ],
+        howToUse: [
+          'In Parse mode, enter an ISO duration (e.g. P1Y2M3DT4H5M6S or PT90M) to see the seven components and total seconds instantly',
+          'Switch to Format mode, type any number of seconds (e.g. 90540), and get normalized output like P1DT1H9M plus a readable description',
+          'Try negative seconds or durations (-PT30S) to see how negative intervals are represented',
+          'Use Copy to grab either the original ISO string or the freshly formatted duration',
+        ],
+        useCases: [
+          'Reading ISO duration fields in API docs or logs (video length, cache TTL, task timeout)',
+          'Building media durations (PT#H#M#S common in ISO BMFF / FFmpeg) and checking total seconds',
+          'Converting second-based configuration values into ISO 8601 strings',
+          'Debugging malformed durations—duplicate units, mixed weeks, or misplaced fractions',
+        ],
+        privacyNote: 'All parsing and formatting run locally in the browser; no data is sent anywhere.',
+        faqs: [
+          {
+            question: 'Why are total seconds only approximate for years and months?',
+            answer:
+              'Calendar years have 365 or 366 days and months range from 28 to 31, so ISO year/month components have no fixed length in seconds. The tool uses the common engineering convention (365 days/year, 30 days/month) and labels it as such; exact calendar arithmetic should use concrete start and end dates.',
+          },
+          {
+            question: 'Why does P1W1D fail?',
+            answer:
+              'ISO 8601 forbids combining the week (W) component with years, months, days, or time components. Two weeks is P2W; for "one week and one day", express it uniformly as P8D.',
+          },
+          {
+            question: 'Why is P1Y0.5M invalid?',
+            answer:
+              'The standard allows a fraction only on the final (smallest) component. Use the smallest unit instead—1 year 6 months as P1.5Y, or one and a half hours as PT1.5H rather than PT1H0.5M.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

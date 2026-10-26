@@ -4,13 +4,18 @@
 
 ## 日志
 
-## 2026-10-27 ：【Agent自主迭代】新增 5 个文本规范化、数值与网络标识转换工具
+## 2026-10-27 ：【Agent自主迭代】新增 10 个文本规范化、数值转换、开发计算与时间通信工具
 
 - **新增**：换行符转换器（line-ending-converter）— 在 LF（Unix）、CRLF（Windows）、CR（经典 Mac）三种换行风格间批量转换，实时统计各类换行数量并支持一键复制
 - **新增**：小数分数互转器（decimal-fraction-converter）— 有限小数与最简分数双向互转，展示约分过程与分母质因数判定，支持超长整数与循环小数提示
 - **新增**：MAC 地址格式转换与校验（mac-address-converter）— 解析冒号 / 连字符 / Cisco 点分 / 裸十六进制四种 MAC-48、EUI-64 格式，解读 I/G、U/L 标志位、OUI 与设备标识并推导 EUI-64
 - **新增**：数字英文读法转换器（number-to-words）— 按短级差（short scale）输出基数词、序数词与美元支票读法，支持负数、小数逐位读法、连字符开关与千分位输入
 - **新增**：全角半角字符转换器（fullwidth-halfwidth-converter）— 依据 Unicode U+FF01–FF5E 与 U+3000 固定码位映射双向转换，可限定全部 / 字母数字 / 标点与空格范围并分类统计变更数
+- **新增**：宽高比计算器（aspect-ratio-calculator）— 化简宽高为最简整数比，已知尺寸与比值时补全缺失边长，支持按目标宽高或倍数等比缩放并识别 16:9、4:3 等常见标准比例
+- **新增**：CSS 选择器权重计算器（css-specificity-calculator）— 逐行解析选择器并按标准三元组 (a, b, c) 计算权重，正确处理 :is()/:not()/:has()/:where()、伪元素与 nth-child of 语法，自动标出最高权重行
+- **新增**：数字千分位与货币格式化（number-locale-formatter）— 同一数值按多区域设置渲染本地化排版，覆盖千分位、小数位与舍入、货币符号、负数括号、百分比与紧凑记法，基于原生 Intl.NumberFormat
+- **新增**：NATO 音标字母转换器（nato-phonetic-converter）— 普通文本与 NATO/ICAO 标准音标（Alfa / Bravo … Zero–Niner）双向转换，覆盖 A–Z 与 0–9，逐字符给出拼写对照并兼容常见异写
+- **新增**：ISO 8601 时长解析与格式化（iso8601-duration）— 解析 P1Y2M3DT4H5M6S、PT90M、P2W 等时长字符串为七分量明细与折算总秒数，或把秒数反向归一化为标准格式，支持负时长、小数分量与严格语法诊断
 
 ## 2026-10-26 ：【Agent自主迭代】新增 5 个密码学、标识、数论与数制转换工具
 
