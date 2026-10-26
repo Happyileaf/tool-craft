@@ -78,4 +78,5 @@ export const toolLoaders: Record<
   'base45-codec': () => import('./base45-codec'),
   'nano-id-generator': () => import('./nano-id-generator'),
   'bencode-codec': () => import('./bencode-codec'),
+  'non-crypto-hash': () => import('./non-crypto-hash'),
 };

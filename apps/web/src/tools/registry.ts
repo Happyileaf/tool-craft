@@ -5527,6 +5527,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'non-crypto-hash',
+    name: '非加密哈希批量计算',
+    nameEn: 'Non-cryptographic Hash Calculator',
+    description:
+      '一次输入同时计算 FNV-1 / FNV-1a（32 位与 64 位）、MurmurHash3 x86 32 位（种子可调）、djb2、sdbm 与 Java String.hashCode()，输出十进制与十六进制结果，用于哈希表分桶、分片路由与算法教学。',
+    descriptionEn:
+      'Compute FNV-1 / FNV-1a (32-bit and 64-bit), MurmurHash3 x86 32-bit with adjustable seed, djb2, sdbm, and Java String.hashCode() in one pass, showing both decimal and hexadecimal output for hash bucketing, shard routing, and algorithm teaching.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/non-crypto-hash',
+    iconName: 'Gauge',
+    tags: ['FNV', 'MurmurHash', 'djb2', 'sdbm', '哈希'],
+    tagsEn: ['FNV', 'MurmurHash', 'djb2', 'sdbm', 'Hash'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'The quick brown fox jumps over the lazy dog',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的非加密哈希批量计算器。非加密哈希（Non-cryptographic Hash）追求极致速度与均匀分布，而非抗碰撞能力，常用于哈希表、数据分片、负载均衡路由键与算法教学。本工具一次输入同时输出 8 个经典算法结果：FNV-1 与 FNV-1a 的 32 位 / 64 位版本、MurmurHash3 x86 32 位（支持自定义种子）、djb2、sdbm，以及 Java String.hashCode()。',
+        coreFeatures: [
+          '8 个结果一次出齐：FNV-1/1a 32 位与 64 位、MurmurHash3、djb2、sdbm、Java hashCode',
+          'MurmurHash3 种子（seed）可任意指定，提供 0、1、42 等常用值快捷按钮',
+          '每个结果同时给出十进制与无符号十六进制，64 位结果以 BigInt 完整呈现不丢精度',
+          '统一按 UTF-8 字节计算（Java hashCode 按 UTF-16 码元，与 JVM 行为一致），空串也合法',
+          '纯函数实现、零依赖、纯本地运算，逐行复制或一键复制全部结果',
+        ],
+        howToUse: [
+          '在输入框中粘贴待计算文本，结果表格随输入实时刷新',
+          '需要复现特定 MurmurHash3 结果时，在顶部调整种子（0 为算法默认值）',
+          '点击单行「复制」取用十六进制值，或用右上角「复制全部」导出 TSV',
+        ],
+        useCases: [
+          '设计分库分表 / 一致性哈希路由时，比较不同哈希函数对业务键的分布效果',
+          '复现 Java、C++、Go 等代码里历史遗留的 FNV、djb2、sdbm、hashCode 数值',
+          '算法与数据结构教学中直观对比同一输入在不同经典哈希函数下的输出',
+        ],
+        privacyNote: '所有哈希均在浏览器本地由纯函数计算，输入文本不会被上传或记录。',
+        faqs: [
+          {
+            question: '这些哈希能用来校验文件完整性或存储密码吗？',
+            answer:
+              '不能。非加密哈希不具备抗碰撞能力，攻击者可以轻易构造不同输入得到相同输出，因此不适合完整性校验、数字签名或密码存储；这类需求应使用 SHA-256 等密码学哈希。非加密哈希的价值在于速度快、分布均匀，适合哈希表分桶与分片路由。',
+          },
+          {
+            question: '为什么 Java hashCode 的十进制可能是负数，而其他算法不是？',
+            answer:
+              'Java 的 int 是 32 位有符号整数，String.hashCode() 直接返回这个有符号值，所以可能为负；表中其十六进制仍按无符号呈现以便对照。其余算法统一按无符号 32 位 / 64 位整数展示。另外 Java hashCode 按 UTF-16 码元迭代，而其他算法按 UTF-8 字节迭代，因此非 ASCII 文本的结果口径不同。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first batch calculator for non-cryptographic hashes. Non-cryptographic hashes optimize for speed and uniform distribution rather than collision resistance, and are widely used in hash tables, data sharding, load-balancing routing keys, and algorithm education. One input produces eight classic results at once: FNV-1 and FNV-1a in both 32-bit and 64-bit variants, MurmurHash3 x86 32-bit (with a custom seed), djb2, sdbm, and Java String.hashCode().',
+        coreFeatures: [
+          'Eight results at once: FNV-1/1a 32-bit and 64-bit, MurmurHash3, djb2, sdbm, and Java hashCode',
+          'Adjustable MurmurHash3 seed with quick presets such as 0, 1, and 42',
+          'Every result shows both decimal and unsigned hexadecimal; 64-bit values use BigInt with no precision loss',
+          'Consistent UTF-8 byte semantics (Java hashCode uses UTF-16 code units, matching the JVM); empty input is valid',
+          'Pure-function, zero-dependency, fully local computation; copy one row or export all results as TSV',
+        ],
+        howToUse: [
+          'Paste the text into the input box; the result table refreshes in real time',
+          'Set the seed at the top (0 is the algorithm default) when reproducing a specific MurmurHash3 value',
+          'Use the row "Copy" action for its hexadecimal value, or "Copy all" to export all rows as TSV',
+        ],
+        useCases: [
+          'Compare how different hash functions distribute business keys when designing sharding or consistent-hashing routing',
+          'Reproduce legacy FNV, djb2, sdbm, or hashCode values found in Java, C++, or Go code',
+          'Teach algorithms and data structures by showing outputs of classic hash functions side by side',
+        ],
+        privacyNote:
+          'All hashes are computed locally in the browser by pure functions; entered text is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Can these hashes verify file integrity or store passwords?',
+            answer:
+              'No. Non-cryptographic hashes are not collision-resistant: an attacker can easily craft different inputs with the same output, so they must not be used for integrity checks, digital signatures, or password storage — use cryptographic hashes such as SHA-256 instead. Their value is speed and uniform distribution for hash-table bucketing and shard routing.',
+          },
+          {
+            question: 'Why can the Java hashCode decimal be negative while the others cannot?',
+            answer:
+              'A Java int is a signed 32-bit integer and String.hashCode() returns that signed value directly, so it may be negative; its hexadecimal in the table is still shown unsigned for easy comparison. The other algorithms are shown as unsigned 32-bit/64-bit integers. Also, Java hashCode iterates UTF-16 code units while the other algorithms iterate UTF-8 bytes, so non-ASCII inputs follow different byte semantics.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
