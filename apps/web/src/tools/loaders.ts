@@ -89,4 +89,5 @@ export const toolLoaders: Record<
   'decimal-fraction-converter': () => import('./decimal-fraction-converter'),
   'mac-address-converter': () => import('./mac-address-converter'),
   'number-to-words': () => import('./number-to-words'),
+  'fullwidth-halfwidth-converter': () => import('./fullwidth-halfwidth-converter'),
 };

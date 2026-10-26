@@ -6512,6 +6512,96 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'fullwidth-halfwidth-converter',
+    name: '全角半角字符转换器',
+    nameEn: 'Fullwidth / Halfwidth Converter',
+    description:
+      '基于固定 Unicode 码位映射（U+FF01–U+FF5E ↔ U+0021–U+007E、U+3000 ↔ U+0020）在全角与半角之间双向批量转换，支持按全部 / 仅字母数字 / 仅标点与空格三种范围处理，并统计字母数字、标点、空格的替换数量。',
+    descriptionEn:
+      'Batch-convert between fullwidth and halfwidth characters via fixed Unicode mappings (U+FF01–U+FF5E ↔ U+0021–U+007E and U+3000 ↔ U+0020), with all / alphanumeric-only / punctuation-and-space scopes and per-category replacement counts.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/fullwidth-halfwidth-converter',
+    iconName: 'Shuffle',
+    tags: ['全角', '半角', 'Unicode', '文本处理', '标点'],
+    tagsEn: ['Fullwidth', 'Halfwidth', 'Unicode', 'Text Tools', 'Punctuation'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Ｈｅｌｌｏ，Ｗｏｒｌｄ！',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的全角 / 半角批量转换工具。中文输入法误切换时常在代码、命令行参数、配置文件、SQL 中混入全角字符（如 ＡＢＣ、１２３、全角逗号与感叹号、全角空格），引发难以定位的语法错误。本工具依据固定的 Unicode 码位映射进行双向转换：全角区 U+FF01–U+FF5E 与 ASCII 可打印区 U+0021–U+007E 一一对应（码位差恰好为 0xFEE0），全角空格 U+3000（表意文字空格）对应普通空格 U+0020。可选择三种范围：全部、仅字母数字（A-Z/a-z/0-9）、仅标点与空格，并分别统计三类替换数量。映射区之外的字符（中文汉字、中文弯引号 “”、emoji 等）原样保留。',
+        coreFeatures: [
+          '全角 → 半角、半角 → 全角双向一键转换，大文本实时处理',
+          '固定码位映射 U+FF01–FF5E ↔ U+0021–007E（偏移 0xFEE0）及 U+3000 ↔ U+0020',
+          '三种范围：全部字符 / 仅字母数字 / 仅标点与空格，互不干扰',
+          '分类统计替换数量：字母数字、标点、空格，转换结果一键复制',
+          '中文汉字、中文弯引号、emoji 等非映射区字符原样保留；纯函数实现，零新增依赖',
+        ],
+        howToUse: [
+          '粘贴或输入待处理文本到上方文本框',
+          '选择方向：全角→半角（清理误输入）或半角→全角（排版需要）',
+          '选择范围：全部字符、仅字母数字，或仅标点与空格',
+          '下方即时显示转换结果与各类替换计数，点击「复制转换结果」取走',
+        ],
+        useCases: [
+          '清理代码、命令行、配置、SQL 中因中文输入法产生的全角字母数字与标点',
+          '整理从文档、PDF、聊天记录复制出来的含全角空格（U+3000）的文本',
+          '面向日文 / 全角排版场景把 ASCII 内容批量转为全角形式',
+        ],
+        privacyNote: '所有处理均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么中文逗号「，」有时会被转换、有时不会？',
+            answer:
+              '取决于该字符的实际码位。常用的全角逗号「，」是 U+FF0C、全角感叹号「！」是 U+FF01、全角句号「．」是 U+FF0E，它们都落在 U+FF01–FF5E 的「半角及全角形式」区块内，与 ASCII 有一一映射，所以会被转换为 ","、"!"、"."。而中文弯引号 “ ”（U+201C/U+201D）、中文书名号《》、顿号「、」（U+3001）等没有对应的 ASCII 码位，不在映射范围内，会原样保留。',
+          },
+          {
+            question: '全角空格（U+3000）和普通空格有什么区别？',
+            answer:
+              '普通空格是 U+0020（ASCII Space），全角空格是 U+3000（Ideographic Space，表意文字空格），宽度通常等于一个 CJK 字符，常见于中文排版与日文文本。肉眼几乎无法区分，但代码、Markdown 缩进、CSV 与命令行参数中混入 U+3000 会导致解析失败。本工具把 U+3000 ↔ U+0020 纳入映射，并在统计中单列空格数量，便于发现这类隐形问题。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local tool for batch fullwidth/halfwidth conversion. Accidentally leaving an IME in fullwidth mode often injects fullwidth characters (ＡＢＣ, １２３, fullwidth comma and exclamation mark, ideographic space) into code, CLI arguments, config files, or SQL, causing hard-to-find syntax errors. The tool converts in both directions using fixed Unicode mappings: the fullwidth block U+FF01–U+FF5E corresponds one-to-one with printable ASCII U+0021–U+007E (a constant code-point offset of 0xFEE0), and the ideographic space U+3000 maps to the ordinary space U+0020. Three scopes are available—all, alphanumeric only (A-Z/a-z/0-9), or punctuation and space only—with separate replacement counts. Characters outside the mapping (CJK ideographs, curly quotes “”, emoji) are left untouched.',
+        coreFeatures: [
+          'One-click fullwidth→halfwidth and halfwidth→fullwidth conversion, live for large text',
+          'Fixed mappings U+FF01–FF5E ↔ U+0021–007E (offset 0xFEE0) plus U+3000 ↔ U+0020',
+          'Three scopes: all characters, alphanumeric only, or punctuation and space only',
+          'Per-category counts for alphanumeric, punctuation, and space replacements; copyable output',
+          'Non-mapped characters (CJK ideographs, curly quotes, emoji) preserved; pure functions with zero new dependencies',
+        ],
+        howToUse: [
+          'Paste or type the text into the upper text area',
+          'Choose a direction: fullwidth→halfwidth (cleanup) or halfwidth→fullwidth (typesetting)',
+          'Choose a scope: all characters, alphanumeric only, or punctuation and space only',
+          'The result and per-category counts appear instantly below; click "copy result" to take it',
+        ],
+        useCases: [
+          'Cleaning fullwidth letters, digits, and punctuation accidentally typed into code, CLI input, config, or SQL',
+          'Normalizing text copied from documents, PDFs, or chats that contains ideographic spaces (U+3000)',
+          'Bulk-converting ASCII content to fullwidth form for Japanese or fullwidth typesetting scenarios',
+        ],
+        privacyNote: 'All processing runs locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why is the Chinese comma "，" sometimes converted and sometimes not?',
+            answer:
+              'It depends on the actual code point. The common fullwidth comma "，" is U+FF0C, the fullwidth exclamation mark "！" is U+FF01, and the fullwidth full stop "．" is U+FF0E—all inside the Halfwidth and Fullwidth Forms block U+FF01–FF5E, which maps one-to-one with ASCII, so they become ",", "!", and ".". By contrast, curly quotes “ ” (U+201C/U+201D), CJK book-title brackets 《》, and the ideographic comma "、" (U+3001) have no ASCII counterpart and are left untouched.',
+          },
+          {
+            question: 'What is the difference between an ideographic space (U+3000) and a normal space?',
+            answer:
+              'A normal space is U+0020 (ASCII Space); the ideographic space is U+3000, typically as wide as a CJK character and common in Chinese/Japanese typesetting. They are nearly indistinguishable visually, but a stray U+3000 in code, Markdown indentation, CSV, or CLI arguments breaks parsing. This tool maps U+3000 ↔ U+0020 and reports space replacements in a dedicated count so the invisible issue is easy to spot.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
