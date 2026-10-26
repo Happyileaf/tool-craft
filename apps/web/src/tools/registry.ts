@@ -5349,6 +5349,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'nano-id-generator',
+    name: 'Nano ID 生成器',
+    nameEn: 'Nano ID Generator',
+    description:
+      '生成 URL-safe 的紧凑随机标识符：支持自定义长度与字母表、批量生成，使用 Web Crypto 密码学安全随机源并以拒绝采样消除取模偏置。',
+    descriptionEn:
+      'Generate compact URL-safe random identifiers with custom length and alphabet and bulk output. Uses the Web Crypto secure source with rejection sampling to remove modulo bias.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/nano-id-generator',
+    iconName: 'Shuffle',
+    tags: ['Nano ID', '随机ID', '标识符', 'URL-safe', '生成器'],
+    tagsEn: ['Nano ID', 'Random ID', 'Identifier', 'URL-safe', 'Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 Nano ID 风格随机标识符生成器。Nano ID 使用 A-Za-z0-9_- 共 64 个 URL-safe 字符，默认 21 位即可达到与 UUID v4 相近的碰撞概率，产物更短、对 URL 与 HTML id 友好，且长度与字母表均可自定义。',
+        coreFeatures: [
+          '密码学安全：随机字节来自 Web Crypto getRandomValues，非 Math.random 伪随机',
+          '拒绝采样：丢弃落入偏置区间的字节，保证字母表内每个字符严格等概率',
+          '灵活定制：长度可选 12/21/32/64，字母表内置 5 套预设并支持自定义（字符不可重复）',
+          '批量生成：一次生成 1/5/10/20 个 ID 并一键复制全部',
+          '纯本地运行：生成过程不发起任何网络请求，标识符不会离开浏览器',
+        ],
+        howToUse: [
+          '选择需要的长度与生成数量，页面会自动按当前参数生成',
+          '需要定制字符集时把字母表切换为「自定义」并输入 1–256 个不重复字符',
+          '点击「重新生成」刷新结果，或「复制全部」按行复制所有 ID',
+        ],
+        useCases: [
+          '前端本地数据、草稿、看板卡片的短主键与 DOM id',
+          'URL 短链、文件名、日志 trace 等对长度与字符集敏感的标识',
+          '需要自定义字母表（如纯数字、十六进制）的测试数据与 mock 场景',
+        ],
+        privacyNote: '所有 ID 均在浏览器本地由密码学安全随机源生成，不会上传或记录。',
+        faqs: [
+          {
+            question: 'Nano ID 和 UUID 有什么区别？',
+            answer:
+              'UUID v4 固定 36 字符且结构固定（含连字符与版本位）；Nano ID 默认仅 21 个 URL-safe 字符，体积更小、可直接放进 URL 与 HTML id，长度和字母表还可按需调整。两者碰撞概率在默认配置下处于同一量级。',
+          },
+          {
+            question: '什么是取模偏置？为什么要拒绝采样？',
+            answer:
+              '当 256 不能被字母表字符数整除时，直接对随机字节取模会让靠前的字符出现概率略高。拒绝采样会丢弃落在最后一个不完整区间内的字节（例如 63 字符字母表时丢弃 252–255）后重抽，保证每个字符等概率。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first Nano ID style random identifier generator. Nano ID uses a 64-character URL-safe alphabet (A-Za-z0-9_-); the default 21-character ID has a collision probability comparable to UUID v4 while being shorter and URL/HTML-id friendly, with customizable length and alphabet.',
+        coreFeatures: [
+          'Cryptographically secure: bytes come from Web Crypto getRandomValues, not Math.random',
+          'Rejection sampling: bytes in the biased tail are discarded so every character is uniformly distributed',
+          'Flexible: lengths 12/21/32/64 and five built-in alphabet presets plus a custom alphabet (no duplicate chars)',
+          'Bulk output: generate 1/5/10/20 IDs at once and copy all of them in one click',
+          'Local-first: generation makes no network requests and identifiers never leave the browser',
+        ],
+        howToUse: [
+          'Pick the desired length and count; IDs regenerate automatically from current settings',
+          'Switch the alphabet to "Custom" and enter 1–256 unique characters for a custom charset',
+          'Click "Regenerate" for fresh IDs or "Copy all" to copy every ID as newline-separated text',
+        ],
+        useCases: [
+          'Short primary keys and DOM ids for local frontend data, drafts, and kanban cards',
+          'Identifiers for short URLs, filenames, and log traces where length and charset matter',
+          'Test data and mocks requiring special alphabets such as digits-only or hexadecimal',
+        ],
+        privacyNote:
+          'All IDs are generated locally in the browser from a cryptographically secure source and are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How does Nano ID differ from UUID?',
+            answer:
+              'UUID v4 is fixed at 36 characters with hyphens and version/variant bits. Nano ID defaults to just 21 URL-safe characters, is smaller, can be embedded directly in URLs and HTML ids, and supports custom lengths and alphabets. Default configurations offer collision probabilities in the same order of magnitude.',
+          },
+          {
+            question: 'What is modulo bias and why use rejection sampling?',
+            answer:
+              'When 256 is not evenly divisible by the alphabet size, reducing random bytes with modulo makes earlier characters slightly more likely. Rejection sampling discards bytes in the final incomplete bucket (e.g. 252–255 for a 63-character alphabet) and redraws, keeping every character equiprobable.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

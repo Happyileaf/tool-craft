@@ -76,4 +76,5 @@ export const toolLoaders: Record<
   'isbn-converter': () => import('./isbn-converter'),
   'combinatorics-calculator': () => import('./combinatorics-calculator'),
   'base45-codec': () => import('./base45-codec'),
+  'nano-id-generator': () => import('./nano-id-generator'),
 };
