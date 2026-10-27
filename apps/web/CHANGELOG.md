@@ -23,7 +23,7 @@
 - **新增**：NATO 音标字母转换器（nato-phonetic-converter）— 普通文本与 NATO/ICAO 标准音标（Alfa / Bravo … Zero–Niner）双向转换，覆盖 A–Z 与 0–9，逐字符给出拼写对照并兼容常见异写
 - **新增**：ISO 8601 时长解析与格式化（iso8601-duration）— 解析 P1Y2M3DT4H5M6S、PT90M、P2W 等时长字符串为七分量明细与折算总秒数，或把秒数反向归一化为标准格式，支持负时长、小数分量与严格语法诊断
 
-- **新增**：Geohash 编解码器（geohash-codec）— 经纬度与 Base32 Geohash 串互转，支持 1–12 位精度选择、邻居格计算与相邻方向（N/S/E/W）编码
+- **新增**：Geohash 编解码器（geohash-codec）— 经纬度与 Base32 Geohash 串互转，支持 1–12 位精度选择、逐字符区间二分过程展示与解码中心点 / 边界框 / 误差输出
 - **新增**：Unicode 规范化与同形字检测器（unicode-normalization）— NFC/NFD/NFKC/NFKD 四种规范化、可视化码点序列、同形字（混淆字符）检测与兼容字符分解对比
 - **新增**：JSON Merge Patch 生成与应用器（json-merge-patch）— 按 RFC 7386 / 7396 应用或生成最小 merge patch（null 删除键），非法 JSON 带行列定位，覆盖 RFC 附录 A 全部官方向量
 - **新增**：WGS-84 / GCJ-02 / BD-09 坐标系互转器（coordinate-system-converter）— GPS、高德 / 腾讯火星坐标与百度坐标两两批量互转，逐行校验、境外坐标不偏移并给出明细表
