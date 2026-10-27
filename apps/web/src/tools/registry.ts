@@ -9022,6 +9022,111 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'env-converter',
+    name: '.env 配置格式转换器',
+    nameEn: '.env Config Converter',
+    description:
+      '解析 .env 配置并在 dotenv、JSON、扁平 YAML 与 shell export 四种格式间实时互转。支持单/双引号与无引号值、双引号转义（\\n、\\t、\\"、\\\\）、# 注释、export 前缀与值内含 =；非法键名、未闭合引号等错误带行号提示，重复键产生警告并以后值为准。纯浏览器本地运行，适合环境变量整理与跨部署格式迁移。',
+    descriptionEn:
+      'Parse .env configuration and convert live between dotenv, JSON, flat YAML, and shell export formats. Supports single/double-quoted and unquoted values, double-quote escapes (\\n, \\t, \\", \\\\), # comments, the export prefix, and equals signs inside values. Invalid key names and unclosed quotes are reported with line numbers; duplicate keys produce a warning and the later value wins. Runs entirely in the browser for tidying environment variables and migrating between deployment formats.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/env-converter',
+    iconName: 'FileCode',
+    tags: ['env', '环境变量', 'dotenv', 'JSON', 'YAML', '配置迁移'],
+    tagsEn: ['env', 'Environment Variables', 'dotenv', 'JSON', 'YAML', 'Config'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的环境变量配置解析与格式转换工具。逐行解析 KEY=VALUE 文本，忽略空行与 # 注释，识别可选的 export 前缀，正确处理单引号、双引号（含 \\n、\\t、\\"、\\\\ 转义）与无引号值（含行内注释剥离），并可在 dotenv、JSON、扁平 YAML、shell export 四种格式之间双向互转。非法键名、缺少等号、未闭合引号、嵌套结构等错误带行号提示，重复键给出警告且以后值为准，解析与序列化全部由零依赖纯函数完成。',
+        coreFeatures: [
+          '四格式互转：.env（dotenv）、JSON、扁平 YAML、shell export 语句',
+          '完整解析：空行 / 注释 / export 前缀 / 单双引号 / 双引号转义 / 值内含 =',
+          '错误定位：非法键名、缺少分隔符、未闭合引号等错误精确到行号，不抛异常',
+          '重复键检测：给出带行号的警告，以后值为准',
+          '一键交换输入/输出格式，转换结果可直接复制',
+          '纯本地计算：零新增依赖，输入内容不上传',
+        ],
+        howToUse: [
+          '在左侧卡片顶部选择源格式（.env / JSON / YAML / export），粘贴或编辑配置文本',
+          '在右侧卡片顶部选择目标格式，结果实时生成；有错时显示带行号的红色提示',
+          '出现黄色警告表示存在重复键等可继续的问题，结果仍会生成（以后值为准）',
+          '点击「交换输入 / 输出格式」可把当前结果作为新输入，快速做下一段转换',
+          '点击「复制」把转换结果复制到剪贴板',
+        ],
+        useCases: [
+          '部署迁移：把 .env 转成容器平台或 CI 系统需要的 JSON / YAML 键值结构',
+          '配置整理：检查历史 .env 中的重复键、非法键名与引号错误',
+          '脚本协作：在 dotenv 与 shell export 语句之间互转，便于本地 source 或导出',
+        ],
+        privacyNote:
+          '配置解析与转换全部在浏览器本地由纯函数完成，不发起任何网络请求；粘贴的密钥、Token 等敏感内容不会离开设备。',
+        faqs: [
+          {
+            question: '支持嵌套 JSON 或 YAML 吗？',
+            answer:
+              '不支持。环境变量本质是扁平的 KEY=VALUE 集合，本工具只接受扁平对象与每行一个的 key: value；遇到嵌套对象、数组或缩进行会明确报错提示，避免把层级结构错误拍平。',
+          },
+          {
+            question: '重复键如何处理？',
+            answer:
+              '重复键不会导致转换失败，而是产生一条带行号的黄色警告，并按 dotenv 常见约定以后出现的值覆盖先出现的值；输出中每个键只保留一个最终值。',
+          },
+          {
+            question: '单引号和双引号有什么区别？',
+            answer:
+              '双引号内会处理 \\n、\\t、\\"、\\\\ 等转义序列；单引号内的内容原样保留，不做转义，适合存放包含特殊字符的密钥或正则。无引号值会在「空白 + #」处截断行内注释。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local parser and format converter for environment-variable configuration. It parses KEY=VALUE text line by line, skips blank lines and # comments, recognizes an optional export prefix, and handles single-quoted, double-quoted (with \\n, \\t, \\", \\\\ escapes), and unquoted values (including inline-comment stripping). Convert bidirectionally between dotenv, JSON, flat YAML, and shell export. Invalid key names, missing separators, unclosed quotes, and nested structures are reported with line numbers instead of throwing, while duplicate keys produce a warning and the later value wins. Parsing and serialization are zero-dependency pure functions.',
+        coreFeatures: [
+          'Four-way conversion: dotenv (.env), JSON, flat YAML, and shell export statements',
+          'Complete parsing: blank lines, comments, export prefix, single/double quotes, escapes, and equals signs inside values',
+          'Error location: invalid key names, missing separators, and unclosed quotes report exact line numbers without throwing',
+          'Duplicate-key detection: line-numbered warnings with the later value winning',
+          'One click to swap input/output formats, with copy-ready results',
+          '100% local: no new dependencies and nothing uploaded',
+        ],
+        howToUse: [
+          'Pick the source format on the left card (.env / JSON / YAML / export) and paste or edit the config',
+          'Pick the target format on the right card; output appears live, or a red message with a line number shows the error',
+          'A yellow warning means a recoverable issue such as a duplicate key—output is still generated using the later value',
+          'Click “Swap input/output formats” to feed the current result back as input for chained conversions',
+          'Click Copy to put the result on your clipboard',
+        ],
+        useCases: [
+          'Deployment migration: turn a .env file into the JSON/YAML key-value structure required by container platforms or CI',
+          'Config cleanup: detect duplicate keys, invalid names, and quote mistakes in legacy .env files',
+          'Scripting: move between dotenv and shell export statements for local sourcing or export',
+        ],
+        privacyNote:
+          'All parsing and conversion run locally in your browser via pure functions. No network requests are made, so secrets and tokens you paste never leave your device.',
+        faqs: [
+          {
+            question: 'Are nested JSON or YAML structures supported?',
+            answer:
+              'No. Environment variables are inherently a flat KEY=VALUE set, so the tool accepts only flat objects and one key: value pair per line. Nested objects, arrays, or indented lines produce a clear error instead of silently flattening a hierarchy.',
+          },
+          {
+            question: 'How are duplicate keys handled?',
+            answer:
+              'A duplicate key does not fail conversion. It produces a yellow warning with a line number, and—following common dotenv behavior—the later occurrence overrides the earlier one, so each key appears once in the output with its final value.',
+          },
+          {
+            question: 'What is the difference between single and double quotes?',
+            answer:
+              'Inside double quotes, escape sequences such as \\n, \\t, \\", and \\\\ are interpreted. Inside single quotes, content is kept verbatim with no escaping—handy for secrets or regexes containing special characters. Unquoted values truncate an inline comment at whitespace followed by #.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

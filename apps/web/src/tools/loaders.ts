@@ -114,4 +114,5 @@ export const toolLoaders: Record<
   'varint-codec': () => import('./varint-codec'),
   'http-status-codes': () => import('./http-status-codes'),
   'rgb-cmyk-converter': () => import('./rgb-cmyk-converter'),
+  'env-converter': () => import('./env-converter'),
 };
