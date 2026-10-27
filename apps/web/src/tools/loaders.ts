@@ -105,4 +105,9 @@ export const toolLoaders: Record<
   'json-merge-patch': () => import('./json-merge-patch'),
   'coordinate-system-converter': () => import('./coordinate-system-converter'),
   'ieee754-float-converter': () => import('./ieee754-float-converter'),
+  'secure-random-picker': () => import('./secure-random-picker'),
+  'bech32-codec': () => import('./bech32-codec'),
+  'ohms-law-calculator': () => import('./ohms-law-calculator'),
+  'cookie-parser': () => import('./cookie-parser'),
+  'ascii-table': () => import('./ascii-table'),
 };

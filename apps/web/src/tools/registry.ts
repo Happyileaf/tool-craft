@@ -8112,6 +8112,504 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'secure-random-picker',
+    name: '密码学安全随机工具（抽签 / 分组 / 洗牌）',
+    nameEn: 'Secure Random Picker (Draw / Group / Shuffle)',
+    description:
+      '基于浏览器 crypto.getRandomValues 的无偏随机：区间随机整数（拒绝采样消除取模偏置）、名单不放回抽签、随机均分分组与 Fisher–Yates 洗牌，适合抽奖、随机分组与随机排序。',
+    descriptionEn:
+      'Unbiased randomness powered by crypto.getRandomValues: ranged integers with rejection sampling (no modulo bias), no-replacement draws, balanced random grouping and Fisher–Yates shuffling for raffles, team assignment and random ordering.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/secure-random-picker',
+    iconName: 'Shuffle',
+    tags: ['随机数', '抽签', '抽奖', '随机分组', '洗牌', 'CSPRNG'],
+    tagsEn: ['Random', 'Raffle', 'Draw', 'Random Group', 'Shuffle', 'CSPRNG'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '张三\n李四\n王五\n赵六\n钱七\n孙八',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具基于浏览器原生 Web Crypto（crypto.getRandomValues，CSPRNG）提供密码学安全的随机选择与排列：区间随机整数采用拒绝采样，避免区间长度不是 2 的幂时的取模偏置；抽签、分组与洗牌均建立在无偏 Fisher–Yates 之上，所有运算在本地完成。',
+        coreFeatures: [
+          '随机整数：闭区间 [min, max] 内生成，支持允许 / 不允许重复，拒绝采样保证每个整数等概率',
+          '抽签：从名单中不放回抽取指定数量，结果无重复',
+          '随机分组：Fisher–Yates 洗牌后均分到指定组数，各组人数相差至多 1',
+          '列表洗牌：完整无偏 Fisher–Yates，返回打乱后的顺序',
+          '使用 crypto.getRandomValues 而非 Math.random()，适合需要公正性的抽奖与分组场景',
+        ],
+        howToUse: [
+          '选择模式（随机整数 / 抽签 / 随机分组 / 洗牌）',
+          '随机整数模式填写最小、最大值与数量；其余模式在文本框中每行填写一个候选项',
+          '点击「生成随机结果」，结果可一键复制',
+        ],
+        useCases: [
+          '抽奖 / 抽签：从参与者名单中公正地抽出中奖者',
+          '随机分组：会议、课堂、比赛中把名单随机均分为若干组',
+          '生成不偏不倚的随机整数序列，或把播放 / 答题列表随机排序',
+        ],
+        privacyNote:
+          '全部随机过程在浏览器本地通过 Web Crypto 完成，候选名单与结果不会上传或离开当前页面。',
+        faqs: [
+          {
+            question: '为什么不用 Math.random()？',
+            answer:
+              'Math.random() 是伪随机数，各浏览器实现不提供密码学安全保证，不适合抽奖等需要防预测、防操纵的场景。crypto.getRandomValues 由操作系统的 CSPRNG 提供熵，可用于安全敏感用途。',
+          },
+          {
+            question: '什么是「取模偏置」？如何消除？',
+            answer:
+              '把 [0,2³²) 的随机数直接对区间长度 n 取模时，只有当 n 整除 2³² 时每个结果才等概率；否则区间头部的结果概率略高。本工具采用拒绝采样：丢弃落在「不完整尾部」的随机数后重新生成，严格保证均匀分布。',
+          },
+          {
+            question: '抽签结果可以重复吗？',
+            answer:
+              '抽签为不放回抽样，同一个候选项最多出现一次，因此抽取数量不能超过候选数量。随机分组后所有组的并集恰好等于原名单，不会遗漏或重复。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool builds cryptographically secure random selection and permutation on the native Web Crypto API (crypto.getRandomValues, a CSPRNG). Ranged integers use rejection sampling to avoid modulo bias when the range is not a power of two; draws, grouping and shuffling all run on top of an unbiased Fisher–Yates shuffle. Everything is computed locally.',
+        coreFeatures: [
+          'Ranged integers: inclusive [min, max], with/without duplicates; rejection sampling gives every integer equal probability',
+          'Draw: pick a given number of entries without replacement, never repeating',
+          'Random grouping: Fisher–Yates shuffle then balanced split into N groups, sizes differ by at most one',
+          'List shuffle: a full unbiased Fisher–Yates shuffle returning the new ordering',
+          'Uses crypto.getRandomValues instead of Math.random(), suitable when fairness matters',
+        ],
+        howToUse: [
+          'Choose a mode (integers / draw / random groups / shuffle)',
+          'For integers set min, max and count; for the other modes enter one candidate per line',
+          'Click "Generate" and copy the results with one click',
+        ],
+        useCases: [
+          'Fair raffles and lucky draws from a list of participants',
+          'Splitting attendees or students randomly into balanced groups',
+          'Producing unbiased integer sequences or randomizing playlists / question orders',
+        ],
+        privacyNote:
+          'All randomness is generated locally in your browser via Web Crypto; candidates and results are never uploaded.',
+        faqs: [
+          {
+            question: 'Why not Math.random()?',
+            answer:
+              'Math.random() is a non-cryptographic PRNG with no security guarantee across browsers, so it is unsuitable for raffles that must resist prediction or manipulation. crypto.getRandomValues is seeded by the operating system CSPRNG and is safe for security-sensitive use.',
+          },
+          {
+            question: 'What is modulo bias and how is it removed?',
+            answer:
+              'Reduction of a [0,2³²) draw modulo n is only uniform when n divides 2³²; otherwise lower results are slightly more likely. This tool uses rejection sampling: draws falling in the incomplete tail are discarded and regenerated, guaranteeing a strictly uniform distribution.',
+          },
+          {
+            question: 'Can a draw contain duplicates?',
+            answer:
+              'No. A draw is sampling without replacement, so each candidate appears at most once and the count cannot exceed the candidate count. After random grouping, the union of all groups equals exactly the original list, with neither omission nor duplication.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'bech32-codec',
+    name: 'Bech32 / Bech32m 编解码',
+    nameEn: 'Bech32 / Bech32m Encoder & Decoder',
+    description:
+      '实现 BIP-173 / BIP-350 的 Bech32 与 Bech32m 编解码：支持任意 HRP 与 hex 数据编码、自动按 witness 版本选择校验常量（v0 用 Bech32，v1+ 用 Bech32m），解码时双常量探测并给出明确错误，自动识别 SegWit 地址（P2WPKH / P2WSH / P2TR）网络、版本与 witness program。',
+    descriptionEn:
+      'BIP-173 / BIP-350 Bech32 and Bech32m encoder/decoder: encode any HRP with hex data, auto-select the checksum constant by witness version (Bech32 for v0, Bech32m for v1+), decode with dual-constant detection and clear errors, and interpret SegWit addresses (P2WPKH / P2WSH / P2TR) including network, version and witness program.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/bech32-codec',
+    iconName: 'KeyRound',
+    tags: ['Bech32', 'Bech32m', 'BIP-173', 'BIP-350', '比特币', 'SegWit', 'Taproot'],
+    tagsEn: ['Bech32', 'Bech32m', 'BIP-173', 'BIP-350', 'Bitcoin', 'SegWit', 'Taproot'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Bech32 / Bech32m 是 BIP-173 与 BIP-350 定义的带 30 位校验和的 base32 编码，广泛用于比特币原生隔离见证地址：v0 的 P2WPKH/P2WSH 使用 Bech32，v1+（含 Taproot P2TR）使用修复了长度篡改弱点的 Bech32m。',
+        coreFeatures: [
+          '任意 HRP + hex 数据编码，自动 / 强制选择 Bech32（常量 1）或 Bech32m（常量 0x2bc830a3）',
+          '解码时校验大小写、字符集、90 字符长度上限，并用两种常量同时探测校验和类型',
+          '自动解读 SegWit 地址：网络（bc/tb/bcrt）、witness 版本、P2WPKH/P2WSH/P2TR 与 witness program hex',
+          '严格 convertbits padding 校验，覆盖 BIP-173 / BIP-350 官方 VALID/INVALID 向量',
+        ],
+        howToUse: [
+          '编码：填写 HRP（如 bc）、选择 witness 版本与校验和类型、粘贴偶数长度 hex program，即时生成地址',
+          '解码：粘贴 bech32 字符串，查看 HRP、校验和类型、SegWit 网络/版本/脚本类型与 program',
+          '报错信息会指出大小写混用、非法字符、长度超限或常量不匹配等具体原因',
+        ],
+        useCases: [
+          '核对比特币主网 / 测试网隔离见证与 Taproot 地址的正确性',
+          '调试自定义 HRP 的 Bech32/Bech32m 数据（如 Lightning、其他链的地址方案）',
+          '教学与协议开发：观察 polymod 校验和与 5/8-bit convertbits 的实际行为',
+        ],
+        privacyNote:
+          '全部为浏览器本地同步运算，地址与数据不会离开设备，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: 'Bech32 和 Bech32m 有什么区别？',
+            answer:
+              '两者编码结构相同，仅末尾异或的校验常量不同：Bech32 为 1，Bech32m 为 0x2bc830a3。Bech32m 修复了 Bech32 在末位为 p 时插入/删除 q 不破坏校验和的弱点；按 BIP-350，witness v0 仍用 Bech32，v1 及以上必须用 Bech32m。',
+          },
+          {
+            question: '为什么解码时要同时尝试两种常量？',
+            answer:
+              '通用 Bech32 数据不带「我用了哪个常量」的标记。解码器分别用常量 1 与 0x2bc830a3 计算 polymod：恰好一个匹配即为对应类型；都不匹配说明字符串被篡改或抄写错误。BIP-350 证明同一字符串不可能同时通过两种校验。',
+          },
+          {
+            question: 'v0 地址用 Bech32m 编码会怎样？',
+            answer:
+              '属于非法地址。工具在 SegWit 解读阶段会明确报错「witness version 0 必须使用 Bech32 校验常量」；反之 v1+ 使用 Bech32 同样会被拒绝，避免向错误编码的地址付款造成资金损失。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Bech32 / Bech32m are checksummed base32 formats defined by BIP-173 and BIP-350, widely used for Bitcoin native SegWit addresses: v0 P2WPKH/P2WSH uses Bech32, while v1+ (including Taproot P2TR) uses Bech32m, which fixes a length-mutation weakness.',
+        coreFeatures: [
+          'Encode any HRP plus hex data with auto or forced Bech32 (constant 1) / Bech32m (constant 0x2bc830a3)',
+          'Decode validates case, charset and the 90-character limit while probing both checksum constants',
+          'Interprets SegWit addresses: network (bc/tb/bcrt), witness version, P2WPKH/P2WSH/P2TR and program hex',
+          'Strict convertbits padding checks, verified against official BIP-173 / BIP-350 VALID/INVALID vectors',
+        ],
+        howToUse: [
+          'Encode: enter the HRP (e.g. bc), pick the witness version and checksum kind, paste even-length hex program, and the address is generated live',
+          'Decode: paste a bech32 string to see HRP, checksum type, SegWit network/version/script type and program',
+          'Errors pinpoint mixed case, invalid characters, over-length input or mismatched checksum constants',
+        ],
+        useCases: [
+          'Verify Bitcoin mainnet/testnet SegWit and Taproot addresses',
+          'Debug Bech32/Bech32m data with custom HRPs (Lightning and other addressing schemes)',
+          'Learning and protocol development: observe polymod checksums and 5/8-bit convertbits in practice',
+        ],
+        privacyNote:
+          'Everything is computed synchronously and locally in your browser; addresses and data never leave your device and no network requests are made.',
+        faqs: [
+          {
+            question: 'What is the difference between Bech32 and Bech32m?',
+            answer:
+              'The structure is identical; only the final XOR checksum constant differs: 1 for Bech32 and 0x2bc830a3 for Bech32m. Bech32m fixes a weakness where inserting/deleting a q before a final p did not invalidate the Bech32 checksum. Per BIP-350, witness v0 keeps Bech32 while v1+ must use Bech32m.',
+          },
+          {
+            question: 'Why does decoding try both constants?',
+            answer:
+              'Generic Bech32 payloads carry no flag saying which constant was used. The decoder computes the polymod against both 1 and 0x2bc830a3: exactly one match identifies the type, while neither match means corruption or a typo. BIP-350 proves a string can never pass both checks simultaneously.',
+          },
+          {
+            question: 'What if a v0 address is encoded with Bech32m?',
+            answer:
+              'It is invalid. The SegWit interpreter explicitly reports that witness version 0 requires the Bech32 constant; likewise v1+ encoded with Bech32 is rejected, preventing payments to incorrectly encoded addresses.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ohms-law-calculator',
+    name: '欧姆定律与功率计算器（V / I / R / P 知二求二）',
+    nameEn: 'Ohm\'s Law & Power Calculator (Solve V / I / R / P)',
+    description:
+      '输入电压 V、电流 I、电阻 R、功率 P 中任意两个量，自动联立求解其余两个量（V=I·R、P=V·I=I²R=V²/R），展示所用公式与自适应单位换算；R、P 组合开方给出正负极性双解，并对零除、负功率/电阻等物理无意义输入给出明确提示。',
+    descriptionEn:
+      'Enter any two of voltage V, current I, resistance R and power P to solve the other two using V=I·R and P=V·I=I²R=V²/R, with formulas and auto unit conversion. The R/P combination shows both positive and negative square-root solutions, while division by zero and negative power/resistance are clearly rejected.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/ohms-law-calculator',
+    iconName: 'Gauge',
+    tags: ['欧姆定律', '功率', '电阻', '电压', '电流', '电子', '硬件'],
+    tagsEn: ['Ohm\'s Law', 'Power', 'Resistance', 'Voltage', 'Current', 'Electronics', 'Hardware'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '5 V,1 kΩ',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具联立求解欧姆定律 V = I·R 与功率方程 P = V·I = I²·R = V²/R：给定电压、电流、电阻、功率中的任意两个已知量，即可求出其余两个量，标注每个结果所用的公式，并在 V/mV、A/mA、Ω/kΩ/MΩ、W/mW/kW 之间自动换算。所有计算在浏览器本地完成。',
+        coreFeatures: [
+          '知二求二：六种已知量组合全部支持，结果标注推导公式',
+          '单位换算：每个量带单位下拉，统一换算到基准单位求解并自适应展示',
+          '双解提示：仅给 R、P 需要开方时，同时给出正、负极性数学解',
+          '严格校验：零除、负电阻/负功率、过定或不足的输入均给出明确错误',
+        ],
+        howToUse: [
+          '在电压、电流、电阻、功率四个输入框中恰好填写两个，可使用右侧下拉切换单位',
+          '其余两个量即时自动求解，表格显示自适应单位值、基准单位值与公式',
+          '需要开方的组合会在结果下方展示负极性解；也可点击示例预设快速体验',
+        ],
+        useCases: [
+          '估算 LED 限流电阻阻值与功耗（如 5V 供电、1kΩ 电阻的电流与功率）',
+          '调试电源与负载：由额定电压 / 功率推算工作电流与等效电阻',
+          '电子教学：直观对照 V、I、R、P 四个量之间的换算关系',
+        ],
+        privacyNote:
+          '全部为浏览器本地同步运算，电路参数不会离开设备，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么有时会出现正、负两个解？',
+            answer:
+              '当只给定电阻 R 与功率 P 时，V = ±√(P·R)、I = ±√(P/R) 在数学上有正负极性两组解，分别代表相反的电压 / 电流方向。常规直流电路取正极性解，工具同时展示负解以保证数学完整性。',
+          },
+          {
+            question: '为什么填三个量反而报错？',
+            answer:
+              '四个量由两条独立方程约束，自由度为 2：恰好两个已知量才能唯一确定其余两个。填三个量构成过定方程组，只有当三者恰好自洽时才有解，因此工具要求只填两个以避免给出与输入矛盾的结果。',
+          },
+          {
+            question: '零电阻（短路）时为什么不能计算？',
+            answer:
+              '理想导体 R = 0 时 I = V/R 的电流无界（除以零），仅在 V 也为 0 的退化情形下功率为 0；给定非零电压或非零功率都会产生物理矛盾，工具会明确指出而非给出虚假数值。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool combines Ohm\'s law V = I·R with the power equations P = V·I = I²·R = V²/R: provide any two of voltage, current, resistance and power and the other two are solved with their derivation formulas, converting automatically among V/mV, A/mA, Ω/kΩ/MΩ and W/mW/kW. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Solve two from two: all six input pairs supported, each result labelled with its formula',
+          'Unit conversion: per-field unit dropdowns normalize to base units and format output adaptively',
+          'Dual solutions: the R/P square-root case shows both positive and negative polarities',
+          'Strict validation: division by zero, negative resistance/power and under/over-determined input are clearly reported',
+        ],
+        howToUse: [
+          'Fill exactly two of the four inputs (voltage, current, resistance, power), switching units in the dropdowns',
+          'The other two quantities are solved instantly; the table shows adapted units, base units and formulas',
+          'Square-root cases additionally show the negative solutions below the table; example presets are available',
+        ],
+        useCases: [
+          'Estimate an LED current-limiting resistor and its dissipation (e.g. 5V across 1kΩ)',
+          'Debug power supplies and loads: derive operating current and equivalent resistance from ratings',
+          'Electronics education: see the V/I/R/P relationships side by side',
+        ],
+        privacyNote:
+          'Everything is computed synchronously and locally in your browser; circuit values never leave your device and no network requests are made.',
+        faqs: [
+          {
+            question: 'Why are there sometimes positive and negative solutions?',
+            answer:
+              'With only R and P given, V = ±√(P·R) and I = ±√(P/R) have two mathematical polarities representing opposite voltage/current directions. Ordinary DC circuits take the positive solution; the negative one is shown for mathematical completeness.',
+          },
+          {
+            question: 'Why does filling three quantities raise an error?',
+            answer:
+              'The four quantities are constrained by two independent equations, leaving two degrees of freedom: exactly two known values uniquely determine the rest. Three values over-determine the system and are only consistent if they happen to agree, so the tool requires exactly two inputs to avoid contradictory output.',
+          },
+          {
+            question: 'Why can\'t a zero-resistance short circuit be calculated?',
+            answer:
+              'With ideal R = 0 the current I = V/R is unbounded (division by zero); only the degenerate V = 0 case yields zero power. A nonzero voltage or power with R = 0 is physically impossible, so the tool reports it instead of returning bogus numbers.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'cookie-parser',
+    name: 'Cookie 字符串解析与生成器',
+    nameEn: 'Cookie Parser & Set-Cookie Builder',
+    description:
+      '在浏览器本地解析 Cookie 请求头为名称 / 值表格（可选 URL 编码解码、重复名提示），并可编辑后重新序列化；同时支持按 RFC 6265 生成与回填 Set-Cookie 字符串，覆盖 Expires、Max-Age、Domain、Path、Secure、HttpOnly、SameSite 等属性，自动校验 SameSite=None 必须配 Secure 等常见问题。',
+    descriptionEn:
+      'Parse a Cookie request header into a name/value table locally (optional URL decoding with duplicate-name warnings), edit rows and re-serialize; also build and back-fill RFC 6265 Set-Cookie strings covering Expires, Max-Age, Domain, Path, Secure, HttpOnly and SameSite, with checks such as SameSite=None requiring Secure.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/cookie-parser',
+    iconName: 'Tags',
+    tags: ['Cookie', 'Set-Cookie', 'HTTP', 'RFC 6265', '请求头', '前端开发'],
+    tagsEn: ['Cookie', 'Set-Cookie', 'HTTP', 'RFC 6265', 'Request Header', 'Frontend'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'sessionId=3f8a9c2e-7b41; theme=dark',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具面向 Web 开发中的 Cookie 调试场景，包含两个相互独立的区域：其一，把 Cookie 请求头（如 a=1; b=2）解析成可编辑的名称 / 值表格，支持按行增删改、可选 URL 编码 / 解码并实时重新序列化；其二，按 RFC 6265 组装或解析 Set-Cookie 响应头，覆盖 Expires、Max-Age、Domain、Path、Secure、HttpOnly、SameSite 等属性。所有处理均在浏览器本地完成。',
+        coreFeatures: [
+          'Cookie 请求头双向转换：字符串解析为表格，表格编辑后即时序列化',
+          '可选 URL 编码 / 解码，畸形编码与重复名称会给出告警',
+          'Set-Cookie 生成器：图形化设置各属性，按标准顺序输出完整字符串',
+          'Set-Cookie 回填解析：粘贴已有字符串即可还原表单，未知属性扩展保留',
+          '合规校验：SameSite=None 缺少 Secure、Expires 与 Max-Age 同时设置等均有提示',
+        ],
+        howToUse: [
+          '在上方区域粘贴 Cookie 请求头，用开关控制是否做 URL 解码，直接在表格中编辑名称和值',
+          '可点击「添加一行」新增键值，或用删除按钮移除某行，序列化结果随编辑实时更新',
+          '在下方区域填写名称、值与各属性开关，右侧即时生成 Set-Cookie 字符串',
+          '也可把已有的 Set-Cookie 粘贴到输入框并点击回填，表单会自动还原其属性',
+        ],
+        useCases: [
+          '调试登录态：解析复杂 Cookie 头，快速定位某个会话标识的值',
+          '构造测试用 Cookie：编辑表格后复制序列化字符串，用于接口调试或浏览器控制台',
+          '编写后端 Set-Cookie：图形化确认属性格式与顺序，避免 SameSite/Secure 配置错误',
+        ],
+        privacyNote:
+          'Cookie 内容可能包含会话标识等敏感信息，本工具所有解析与生成均在浏览器本地完成，不会上传或存储任何数据。',
+        faqs: [
+          {
+            question: 'Cookie 请求头和 Set-Cookie 有什么区别？',
+            answer:
+              'Cookie 请求头由浏览器发往服务器，形如 a=1; b=2，只包含一系列名称 = 值对；Set-Cookie 由服务器在响应中下发，形如 name=value; Path=/; HttpOnly，单个头只描述一个 Cookie 及其属性。两者语法不同，因此本工具用两个独立区域分别处理。',
+          },
+          {
+            question: '为什么 SameSite=None 时提示必须设置 Secure？',
+            answer:
+              '现代浏览器规定 SameSite=None 的 Cookie 必须同时带 Secure 属性，即只能通过 HTTPS 发送，否则该 Cookie 会被直接拒绝。工具检测到这一组合时会给出告警，提醒勾选 Secure。',
+          },
+          {
+            question: 'Expires 和 Max-Age 同时设置会怎样？',
+            answer:
+              '按 RFC 6265，两者同时存在时 Max-Age 优先生效，Expires 仅作为旧浏览器兼容。工具允许同时生成，但会给出提示说明优先级关系。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool supports Cookie debugging in web development with two independent areas: it parses a Cookie request header (e.g. a=1; b=2) into an editable name/value table with optional URL encoding/decoding and live re-serialization, and it builds or parses RFC 6265 Set-Cookie response headers covering Expires, Max-Age, Domain, Path, Secure, HttpOnly and SameSite. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Bidirectional Cookie header conversion: string to table and back as you edit',
+          'Optional URL encoding/decoding with warnings for malformed escapes and duplicate names',
+          'Set-Cookie builder: toggle attributes in a form and get a correctly ordered string',
+          'Set-Cookie back-fill: paste an existing string to restore the form, unknown extensions kept',
+          'Compliance checks: SameSite=None without Secure, and Expires with Max-Age are flagged',
+        ],
+        howToUse: [
+          'Paste a Cookie request header in the top area, toggle URL decoding, and edit names/values in the table',
+          'Add rows with the add button or remove them; the serialized header updates instantly',
+          'Fill the name, value and attribute controls in the bottom area to generate a Set-Cookie string',
+          'Or paste an existing Set-Cookie into its input and back-fill the form to inspect its attributes',
+        ],
+        useCases: [
+          'Debug sessions: parse a long Cookie header to quickly find a specific identifier',
+          'Build test cookies: edit the table and copy the serialized string for API debugging',
+          'Author backend Set-Cookie headers: verify attribute formatting and SameSite/Secure rules visually',
+        ],
+        privacyNote:
+          'Cookies may contain sensitive session identifiers. All parsing and generation happen locally in your browser; no data is uploaded or stored.',
+        faqs: [
+          {
+            question: 'What is the difference between the Cookie header and Set-Cookie?',
+            answer:
+              'The Cookie request header is sent by the browser as a sequence of name=value pairs like a=1; b=2, while a Set-Cookie response header describes one cookie plus attributes, like name=value; Path=/; HttpOnly. Their syntax differs, so the tool handles them in two separate areas.',
+          },
+          {
+            question: 'Why does SameSite=None require Secure?',
+            answer:
+              'Modern browsers require cookies with SameSite=None to also carry Secure, meaning they are only sent over HTTPS; otherwise the cookie is rejected. The tool warns when this combination is detected and suggests enabling Secure.',
+          },
+          {
+            question: 'What if both Expires and Max-Age are set?',
+            answer:
+              'Per RFC 6265, when both are present Max-Age takes precedence and Expires remains only for legacy compatibility. The builder allows both but shows an informational note about the precedence.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ascii-table',
+    name: 'ASCII 码表查询器（字符 / Dec / Hex / Oct / Bin 对照）',
+    nameEn: 'ASCII Table Lookup (Char / Dec / Hex / Oct / Bin)',
+    description:
+      '完整标准 ASCII（US-ASCII，0–127）码表：逐字符展示十进制、十六进制、八进制、二进制、可打印字符、控制字符缩写（NUL / LF / CR / ESC / DEL 等）与说明；支持字符 ↔ 码位双向检索（65、0x41、41h）、按分类与关键字筛选、Ctrl+A…Ctrl+Z 组合键速查，点击行即可复制。',
+    descriptionEn:
+      'A complete standard ASCII (US-ASCII, 0–127) table showing decimal, hex, octal, binary, printable characters, control-code abbreviations (NUL / LF / CR / ESC / DEL) and descriptions, with bidirectional char/code lookup (65, 0x41, 41h), category and keyword filters, Ctrl+A…Ctrl+Z shortcuts, and click-to-copy rows.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/ascii-table',
+    iconName: 'Type',
+    tags: ['ASCII', '码表', '字符编码', '十六进制', '二进制', '控制字符'],
+    tagsEn: ['ASCII', 'Code Table', 'Character Encoding', 'Hex', 'Binary', 'Control Characters'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0x41',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具提供标准 US-ASCII（码位 0–127）的静态对照码表：每一行给出十进制 Dec、十六进制 Hex、八进制 Oct、七位二进制 Bin、可打印字符、控制字符缩写（NUL、LF、CR、ESC、DEL 等）以及中文说明。支持由字符查码位、由码位反查字符，按分类或关键字筛选，并提供 Ctrl 组合键与常用控制键速查。数据为公开标准表，全部在浏览器本地检索与渲染。',
+        coreFeatures: [
+          '完整覆盖 0–127 共 128 个码位，五种进制 / 字符表示一一对应',
+          '双向检索：单字符（含空格）、十进制 65、十六进制 0x41 或 41h 自动识别',
+          '分类筛选（控制字符 / 可打印 / DEL）与缩写、说明、码位关键字搜索',
+          'Ctrl+A…Ctrl+Z 与 ESC、Tab、LF、CR、空格、DEL 常用键速查',
+          '空格以可见占位 ␠ 呈现；点击任意行或标签即可复制码位信息',
+        ],
+        howToUse: [
+          '在顶部检索框输入字符（如 A 或一个空格）或码位（65、0x41、41h）查看完整对照',
+          '在码表上方切换分类按钮或在搜索框输入缩写、说明、字符、码位进行筛选',
+          '点击码表任意行复制该行完整信息，或在速查区点击组合键标签复制',
+        ],
+        useCases: [
+          '调试串口 / 网络协议中的控制符：确认 LF、CR、ESC、DEL 等码位',
+          '终端与嵌入式开发：速查 Ctrl+字母 对应的 0x01–0x1A 码位',
+          '学习字符编码：对照字母、数字、标点与 Dec/Hex/Oct/Bin 表示',
+        ],
+        privacyNote:
+          '码表为内置公开标准数据，所有检索与复制均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么只到 127？扩展 ASCII（如 128–255）呢？',
+            answer:
+              'US-ASCII 标准只定义 0–127 共 128 个码位，单字节最高位为 0；128–255 的含义取决于具体代码页（如 Windows-1252、ISO-8859-1），并无统一标准。工具只覆盖无歧义的 US-ASCII，超出范围的输入会明确提示。',
+          },
+          {
+            question: 'Ctrl+M 为什么等于回车 CR？',
+            answer:
+              '终端中按住 Ctrl 再按字母时，键盘会把该字母码位与 0x1F 按位与，等价于大写字母码位减 64。M 的大写码位是 77，减去 64 得到 13，即回车 CR；同理 Ctrl+J 是 10（LF），Ctrl+[ 是 27（ESC）。',
+          },
+          {
+            question: '空格为什么显示成 ␠？',
+            answer:
+              '空格（码位 32）本身是不可见的可打印字符，直接放在表格里无法与空白区分，因此用可见占位符 ␠（SP）呈现，复制与检索仍按真实空格处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool provides a static reference for standard US-ASCII (codes 0–127): each row lists decimal, hex, octal, 7-bit binary, the printable character, control-code abbreviations (NUL, LF, CR, ESC, DEL, etc.) and a description. It supports character-to-code and code-to-character lookup, category and keyword filtering, and Ctrl/control-key shortcuts. The data is a public standard table and everything is searched and rendered locally in the browser.',
+        coreFeatures: [
+          'All 128 codes 0–127 with five representations per row',
+          'Bidirectional lookup: a single character (including space), decimal 65, hex 0x41 or 41h auto-detected',
+          'Category filters (control / printable / DEL) and keyword search over abbr, description, char and code',
+          'Ctrl+A…Ctrl+Z shortcuts plus ESC, Tab, LF, CR, space and DEL quick chips',
+          'Space shown as the visible ␠ glyph; click any row or chip to copy',
+        ],
+        howToUse: [
+          'Type a character (e.g. A or a space) or a code (65, 0x41, 41h) in the top lookup box',
+          'Switch category buttons or search by abbreviation, description, character or code above the table',
+          'Click a table row to copy its full info, or click a shortcut chip in the quick-reference area',
+        ],
+        useCases: [
+          'Debug control characters in serial or network protocols (LF, CR, ESC, DEL)',
+          'Terminal and embedded work: look up the 0x01–0x1A codes behind Ctrl+letter combos',
+          'Learn character encodings by comparing letters, digits and punctuation across Dec/Hex/Oct/Bin',
+        ],
+        privacyNote:
+          'The table is built-in public standard data; all lookup and copying happen locally in your browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why does it stop at 127? What about extended ASCII (128–255)?',
+            answer:
+              'US-ASCII defines only codes 0–127 with the top bit clear. Codes 128–255 depend on the specific code page (Windows-1252, ISO-8859-1, etc.) and have no single universal meaning, so the tool covers unambiguous US-ASCII and warns on out-of-range input.',
+          },
+          {
+            question: 'Why is Ctrl+M a carriage return?',
+            answer:
+              'In a terminal, Ctrl plus a letter masks the letter code with 0x1F, equivalent to subtracting 64 from the uppercase code. Uppercase M is 77, minus 64 gives 13 (CR); likewise Ctrl+J is 10 (LF) and Ctrl+[ is 27 (ESC).',
+          },
+          {
+            question: 'Why is space displayed as ␠?',
+            answer:
+              'Space (code 32) is a printable but invisible character, indistinguishable from blank space in a table, so it is shown with the visible ␠ (SP) glyph. Copy and lookup still use the real space character.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
