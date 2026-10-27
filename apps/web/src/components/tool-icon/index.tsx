@@ -12,6 +12,7 @@ import {
   Fingerprint,
   Gauge,
   Image,
+  KeyRound,
   Layers,
   LayoutGrid,
   MoonStar,
@@ -58,6 +59,7 @@ const toolIconMap = {
   Type,
   Binary,
   Sigma,
+  KeyRound,
 };
 
 /**

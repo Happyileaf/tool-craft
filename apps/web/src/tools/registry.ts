@@ -7311,6 +7311,106 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'vigenere-cipher',
+    name: '维吉尼亚密码加解密',
+    nameEn: 'Vigenère Cipher',
+    description:
+      '经典 Vigenère 多表替换密码：输入文本与关键词，按字母循环位移完成加解密，保留大小写、非字母字符原样保留。',
+    descriptionEn:
+      'Classic Vigenère polyalphabetic substitution: encrypt or decrypt text with a repeating keyword, preserving case and leaving non-letters untouched.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/vigenere-cipher',
+    iconName: 'KeyRound',
+    tags: ['维吉尼亚', 'Vigenere', '古典密码', '多表替换', '加解密'],
+    tagsEn: ['Vigenere', 'Classical Cipher', 'Polyalphabetic', 'Cryptography'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Hello, World!',
+    doc: {
+      zh: {
+        whatIsIt:
+          '维吉尼亚密码（Vigenère cipher）是一种使用关键词循环位移的多表替换古典密码：明文中每个字母按关键词对应字母在字母表中的位置位移，加密公式 Ci=(Pi+Ki) mod 26，解密则反向减去。本工具在浏览器本地完成加解密，保留原文本大小写，数字、标点、空格与中文等非字母字符原样保留且不消耗密钥位。',
+        coreFeatures: [
+          '双向变换：一键在加密（明文→密文）与解密（密文→明文）间切换',
+          '循环密钥：关键词短于文本时自动循环复用，长度不限',
+          '大小写保持：大写仍为大写、小写仍为小写，密文大小写跟随原文',
+          '非字母透传：数字、标点、空白、中文原样保留，且不推进密钥位置',
+          '严格校验：关键词去除非字母后为空时给出明确错误提示',
+        ],
+        howToUse: [
+          '选择加密或解密方向',
+          '在关键词框输入仅含英文字母的密钥（大小写不敏感，非字母自动忽略）',
+          '在文本框输入明文或密文，结果实时生成，可一键复制',
+        ],
+        useCases: [
+          '古典密码与密码学入门教学，直观理解多表替换与频率分析难点',
+          '解谜游戏、CTF 入门题中的 Vigenère 加解密',
+          '理解 HTTPS / TLS 之前的历史加密手段及其弱点',
+        ],
+        privacyNote:
+          '所有加解密均在本地浏览器完成，文本与密钥不会被上传或记录。维吉尼亚密码不具备现代安全性，切勿用于保护真实敏感信息。',
+        faqs: [
+          {
+            question: '维吉尼亚密码和凯撒密码有什么区别？',
+            answer:
+              '凯撒密码是单表替换，所有字母使用同一个固定位移；维吉尼亚密码是多表替换，每个字母的位移由循环关键词决定（如 LEMON 提供 11/4/12/14/13 的循环位移序列），因此更能抵抗简单的字母频率分析。',
+          },
+          {
+            question: '密钥为什么会循环复用？',
+            answer:
+              '当明文比密钥长时，密钥字母会从头重复使用：例如 KEY 对 7 个字母的位移序列是 K-E-Y-K-E-Y-K。这是经典 Vigenère 的标准规则，也正是其可被 Kasiski / 重合指数分析破解的原因。',
+          },
+          {
+            question: '空格、数字和中文会怎样处理？',
+            answer:
+              '非英文字母字符一律原样输出，并且不会推进密钥位置——即密钥只在遇到 A–Z / a–z 时才消耗一位，这保证加解密对带标点的文本严格往返一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Vigenère cipher is a classical polyalphabetic substitution that shifts each letter by a repeating keyword: encryption is Ci=(Pi+Ki) mod 26 and decryption subtracts the same shifts. This tool runs entirely in the browser, preserves letter case, and passes digits, punctuation, whitespace, and CJK characters through without consuming key positions.',
+        coreFeatures: [
+          'Bidirectional: switch between encryption (plaintext → ciphertext) and decryption',
+          'Repeating key: a keyword shorter than the text is cycled automatically',
+          'Case preserved: uppercase stays uppercase and lowercase stays lowercase',
+          'Non-letters passed through: digits, punctuation, whitespace, and Chinese are untouched and do not advance the key',
+          'Validation: a clear error is shown when the key contains no letters after stripping non-letters',
+        ],
+        howToUse: [
+          'Choose the encrypt or decrypt direction',
+          'Enter a keyword of English letters (case-insensitive; non-letters are ignored)',
+          'Type plaintext or ciphertext; the result updates live and can be copied with one click',
+        ],
+        useCases: [
+          'Teaching classical cryptography and why polyalphabetic ciphers resist simple frequency analysis',
+          'Solving puzzles and introductory CTF challenges involving Vigenère',
+          'Exploring historical encryption and its weaknesses compared with modern TLS',
+        ],
+        privacyNote:
+          'All encryption and decryption run locally in the browser; text and keys are never uploaded or logged. Vigenère is not secure by modern standards and must not protect real sensitive data.',
+        faqs: [
+          {
+            question: 'How is Vigenère different from the Caesar cipher?',
+            answer:
+              'Caesar is monoalphabetic with one fixed shift for every letter. Vigenère is polyalphabetic: each letter is shifted according to a repeating keyword (e.g. LEMON gives the cycle 11/4/12/14/13), which resists simple letter-frequency analysis.',
+          },
+          {
+            question: 'Why is the key repeated?',
+            answer:
+              'When the plaintext is longer than the key, the key cycles from the start: KEY over seven letters gives K-E-Y-K-E-Y-K. This is the standard Vigenère rule and the property exploited by Kasiski / index-of-coincidence attacks.',
+          },
+          {
+            question: 'How are spaces, numbers, and Chinese handled?',
+            answer:
+              'Non-letter characters are emitted unchanged and do not advance the key — a key position is consumed only on A–Z / a–z — so punctuated text round-trips exactly between encryption and decryption.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -97,4 +97,5 @@ export const toolLoaders: Record<
   'iso8601-duration': () => import('./iso8601-duration'),
   'quoted-printable-codec': () => import('./quoted-printable-codec'),
   'text-entropy-calculator': () => import('./text-entropy-calculator'),
+  'vigenere-cipher': () => import('./vigenere-cipher'),
 };

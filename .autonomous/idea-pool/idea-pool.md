@@ -124,7 +124,7 @@
 | 20261026020135 | 统一社会信用代码校验与解析器 | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026020135.md) |
 | 20261026020136 | WGS-84 / GCJ-02 / BD-09 坐标系互转器 | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026020136.md) |
 | 20261026020137 | 密码学安全随机整数 / 抽签 / 分组 / 洗牌工具 | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026020137.md) |
-| 20261026020138 | Vigenère 维吉尼亚密码加解密 | Web Tool | Exploration | Claimed | 2026-10-26 | trae-agent | [详情](./idea-details/20261026020138.md) |
+| 20261026020138 | Vigenère 维吉尼亚密码加解密 | Web Tool | Exploration | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026020138.md) |
 | 20261026020139 | JSON ↔ JSON Lines（NDJSON）互转器 | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026020139.md) |
 | 20261026082024 | Nano ID 字符串标识符生成器 | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026082024.md) |
 | 20261026082025 | Base45（RFC 9285）编解码器 | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026082025.md) |
