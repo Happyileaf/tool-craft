@@ -157,3 +157,4 @@
 | 20261028020202 | Sqids / Hashids 短 ID 编解码器 | Web Tool | External Reference | Pending | 2026-10-28 | | [详情](./idea-details/20261028020202.md) |
 | 20261028020203 | 文本三路合并与冲突解决器（Diff3） | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028020203.md) |
 | 20261028020204 | BIP-39 助记词生成与校验器 | Web Tool | External Reference | Pending | 2026-10-28 | | [详情](./idea-details/20261028020204.md) |
+| 20261028020205 | 公历 ↔ 农历（阴历）日期转换器 | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028020205.md) |
