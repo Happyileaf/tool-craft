@@ -8919,6 +8919,109 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'rgb-cmyk-converter',
+    name: 'RGB / CMYK 色彩转换器',
+    nameEn: 'RGB / CMYK Color Converter',
+    description:
+      '在屏幕色 RGB / HEX 与印刷四色 CMYK 之间双向实时换算，并同步输出 HSL 与大色块预览。拖动 RGB 滑块、输入 HEX（支持 #RGB 简写与原生取色器）或调整 CMYK 四通道百分比，任一改动立即联动；非法 HEX 或越界百分比即时报错，纯浏览器本地计算，适合印刷校色与跨媒介配色。',
+    descriptionEn:
+      'Convert between screen colors (RGB / HEX) and process colors (CMYK) in real time, with synchronized HSL values and a large color swatch preview. Drag RGB sliders, type a HEX code (#RGB shorthand and a native color picker supported), or adjust the four CMYK percentage channels—every change updates all outputs instantly. Invalid HEX or out-of-range percentages are flagged immediately. Everything runs locally in the browser for print color checking and cross-media design.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/rgb-cmyk-converter',
+    iconName: 'Pipette',
+    tags: ['CMYK', 'RGB', '印刷', '色彩转换', '校色', 'HEX'],
+    tagsEn: ['CMYK', 'RGB', 'Print', 'Color Conversion', 'HEX'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的色彩空间转换工具，打通屏幕发光的加色模型 RGB（含 HEX / HSL 表示）与印刷反光的减色模型 CMYK。采用标准 black-generation 公式（K = 1 − max(R,G,B)，纯黑时 C/M/Y 归零；反向 R = 255·(1−C)·(1−K)），左侧调整 RGB 滑块或 HEX，右侧 CMYK 四通道百分比立即更新，反之亦然，底部色块与 HEX / RGB / CMYK / HSL 文本同步输出。',
+        coreFeatures: [
+          'RGB ↔ CMYK 双向实时换算，任一通道改动立即联动全部输出',
+          'HEX 输入支持 6 位与 3 位简写、可省略 #，并提供浏览器原生取色器',
+          '同步输出 HSL（色相 / 饱和度 / 亮度）与大尺寸色块预览',
+          'RGB 滑块 + 数字输入（0–255），CMYK 滑块步进 0.1%（0–100）',
+          '非法 HEX、越界百分比即时红字报错，不产生错误结果',
+          '纯本地计算：换算逻辑为纯函数，无网络请求、零新增依赖',
+        ],
+        howToUse: [
+          '在「屏幕色」卡片拖动 R / G / B 滑块或直接输入数字，也可在 HEX 框输入如 #3B82F6 或 3b8，或点击取色器选色',
+          '在「印刷四色」卡片拖动 C / M / Y / K 滑块（单位 %），屏幕色与预览同步更新',
+          '在底部预览卡片查看色块以及 HEX、RGB、CMYK、HSL 四组数值，直接抄用',
+          '若 HEX 格式非法或数值越界，对应卡片会出现红色提示，修正后结果立即恢复',
+        ],
+        useCases: [
+          '平面设计：把屏幕选定的品牌色换算为印刷 CMYK 四色数值，交付印厂',
+          '跨媒介配色：核对 UI 用色在印刷物料上的大致呈现，提前规避高饱和色偏差',
+          '前端联调：与设计师沟通时在 HEX / RGB / CMYK / HSL 之间快速互查',
+        ],
+        privacyNote:
+          '所有色彩换算均在浏览器本地由纯函数完成，不发起任何网络请求，输入的颜色值不会离开设备。',
+        faqs: [
+          {
+            question: '为什么 CMYK 转回 RGB 再回 CMYK，数值会有少量偏差？',
+            answer:
+              'CMYK 是为印刷定义的减色模型，没有唯一的 RGB 对应；反向换算时黑版 K 由 RGB 最大通道派生，经过 8 位（0–255）通道取整后，黑场可能出现几个百分点的固有漂移。屏幕色方向的严格往返 RGB → CMYK → RGB 保证每通道误差不超过 2，不影响实际选色。',
+          },
+          {
+            question: '换算出的 CMYK 可以直接用于印刷吗？',
+            answer:
+              '本工具使用标准理论公式，适合沟通、预估与轻量物料。正式印刷还受纸张、油墨、ICC 配置文件与印刷标准（如 Japan Color、FOGRA）影响，关键印品应以印厂的色彩管理流程与打样为准。',
+          },
+          {
+            question: '为什么同一个颜色看起来屏幕比印刷品更鲜艳？',
+            answer:
+              'RGB 是发光加色模型，色域通常大于印刷用的 CMYK 减色模型，高饱和的蓝、绿等颜色往往超出 CMYK 可复制范围，落到纸面后会变暗或偏色。预览卡给出的色块是屏幕显示值，印刷呈现需以打样为准。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local color-space converter connecting the additive screen model RGB (with HEX / HSL notations) and the subtractive print model CMYK. It uses the standard black-generation formula (K = 1 − max(R,G,B), with C/M/Y forced to zero for pure black; inverse R = 255·(1−C)·(1−K)). Adjust RGB sliders or a HEX code on the left and the four CMYK percentage channels update instantly on the right, and vice versa, while a swatch plus HEX / RGB / CMYK / HSL text stays in sync at the bottom.',
+        coreFeatures: [
+          'Bidirectional RGB ↔ CMYK conversion; changing any channel updates every output instantly',
+          'HEX input accepts 6-digit and 3-digit shorthand with or without #, plus a native color picker',
+          'Synchronized HSL (hue / saturation / lightness) output with a large color swatch',
+          'RGB sliders with numeric inputs (0–255); CMYK sliders in 0.1% steps (0–100)',
+          'Invalid HEX or out-of-range percentages trigger immediate inline errors instead of wrong results',
+          '100% local: conversion logic is pure functions with no network requests and no new dependencies',
+        ],
+        howToUse: [
+          'In the Screen Color card, drag the R / G / B sliders or type numbers; you can also enter a HEX value like #3B82F6 or 3b8, or use the color picker',
+          'In the Process Color card, drag the C / M / Y / K sliders (%)—screen color and preview update together',
+          'Read the swatch and the four value groups (HEX, RGB, CMYK, HSL) from the preview card at the bottom',
+          'If a HEX value is malformed or a number is out of range, a red message appears on the relevant card and results resume as soon as you fix it',
+        ],
+        useCases: [
+          'Graphic design: convert a brand color chosen on screen into CMYK values for the print shop',
+          'Cross-media work: estimate how a UI color will appear in print and anticipate gamut clipping',
+          'Front-end collaboration: quickly cross-check HEX / RGB / CMYK / HSL when talking with designers',
+        ],
+        privacyNote:
+          'All color math runs locally in your browser via pure functions. No network requests are made and the colors you enter never leave your device.',
+        faqs: [
+          {
+            question: 'Why does CMYK → RGB → CMYK come back slightly different?',
+            answer:
+              'CMYK is a subtractive model for print with no unique RGB counterpart. On the way back, the black channel K is derived from the largest RGB channel, and after 8-bit (0–255) rounding the black generation can drift by a few percentage points—an inherent artifact. The strict screen-side round trip RGB → CMYK → RGB stays within 2 units per channel, which is imperceptible for color picking.',
+          },
+          {
+            question: 'Can the converted CMYK values go straight to print?',
+            answer:
+              'The tool applies standard theoretical formulas suitable for discussion, estimation, and lightweight materials. Production printing also depends on paper, ink, ICC profiles, and print standards such as Japan Color or FOGRA. For critical jobs, follow the print shop’s color-management workflow and rely on hard proofs.',
+          },
+          {
+            question: 'Why does the same color look more vivid on screen than in print?',
+            answer:
+              'RGB is an emissive additive model whose gamut is typically wider than print’s subtractive CMYK gamut; highly saturated blues and greens often exceed what CMYK can reproduce, so they darken or shift on paper. The preview swatch shows the screen-rendered value—judge the printed result from a proof.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

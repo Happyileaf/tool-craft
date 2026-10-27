@@ -1,0 +1,106 @@
+.container {
+  padding: 16px;
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.card {
+  margin-top: 0;
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 860px) {
+  .panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+.channelRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.channelLabel {
+  flex: 0 0 64px;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.channelSlider {
+  flex: 1;
+  margin: 0;
+}
+
+.channelInput {
+  flex: 0 0 88px;
+}
+
+.swatchRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.swatch {
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  flex: 0 0 auto;
+}
+
+.values {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.hexRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hexInput {
+  width: 160px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.picker {
+  width: 48px;
+  height: 32px;
+  padding: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
