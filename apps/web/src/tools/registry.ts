@@ -8408,6 +8408,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'cookie-parser',
+    name: 'Cookie 字符串解析与生成器',
+    nameEn: 'Cookie Parser & Set-Cookie Builder',
+    description:
+      '在浏览器本地解析 Cookie 请求头为名称 / 值表格（可选 URL 编码解码、重复名提示），并可编辑后重新序列化；同时支持按 RFC 6265 生成与回填 Set-Cookie 字符串，覆盖 Expires、Max-Age、Domain、Path、Secure、HttpOnly、SameSite 等属性，自动校验 SameSite=None 必须配 Secure 等常见问题。',
+    descriptionEn:
+      'Parse a Cookie request header into a name/value table locally (optional URL decoding with duplicate-name warnings), edit rows and re-serialize; also build and back-fill RFC 6265 Set-Cookie strings covering Expires, Max-Age, Domain, Path, Secure, HttpOnly and SameSite, with checks such as SameSite=None requiring Secure.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/cookie-parser',
+    iconName: 'Tags',
+    tags: ['Cookie', 'Set-Cookie', 'HTTP', 'RFC 6265', '请求头', '前端开发'],
+    tagsEn: ['Cookie', 'Set-Cookie', 'HTTP', 'RFC 6265', 'Request Header', 'Frontend'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'sessionId=3f8a9c2e-7b41; theme=dark',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具面向 Web 开发中的 Cookie 调试场景，包含两个相互独立的区域：其一，把 Cookie 请求头（如 a=1; b=2）解析成可编辑的名称 / 值表格，支持按行增删改、可选 URL 编码 / 解码并实时重新序列化；其二，按 RFC 6265 组装或解析 Set-Cookie 响应头，覆盖 Expires、Max-Age、Domain、Path、Secure、HttpOnly、SameSite 等属性。所有处理均在浏览器本地完成。',
+        coreFeatures: [
+          'Cookie 请求头双向转换：字符串解析为表格，表格编辑后即时序列化',
+          '可选 URL 编码 / 解码，畸形编码与重复名称会给出告警',
+          'Set-Cookie 生成器：图形化设置各属性，按标准顺序输出完整字符串',
+          'Set-Cookie 回填解析：粘贴已有字符串即可还原表单，未知属性扩展保留',
+          '合规校验：SameSite=None 缺少 Secure、Expires 与 Max-Age 同时设置等均有提示',
+        ],
+        howToUse: [
+          '在上方区域粘贴 Cookie 请求头，用开关控制是否做 URL 解码，直接在表格中编辑名称和值',
+          '可点击「添加一行」新增键值，或用删除按钮移除某行，序列化结果随编辑实时更新',
+          '在下方区域填写名称、值与各属性开关，右侧即时生成 Set-Cookie 字符串',
+          '也可把已有的 Set-Cookie 粘贴到输入框并点击回填，表单会自动还原其属性',
+        ],
+        useCases: [
+          '调试登录态：解析复杂 Cookie 头，快速定位某个会话标识的值',
+          '构造测试用 Cookie：编辑表格后复制序列化字符串，用于接口调试或浏览器控制台',
+          '编写后端 Set-Cookie：图形化确认属性格式与顺序，避免 SameSite/Secure 配置错误',
+        ],
+        privacyNote:
+          'Cookie 内容可能包含会话标识等敏感信息，本工具所有解析与生成均在浏览器本地完成，不会上传或存储任何数据。',
+        faqs: [
+          {
+            question: 'Cookie 请求头和 Set-Cookie 有什么区别？',
+            answer:
+              'Cookie 请求头由浏览器发往服务器，形如 a=1; b=2，只包含一系列名称 = 值对；Set-Cookie 由服务器在响应中下发，形如 name=value; Path=/; HttpOnly，单个头只描述一个 Cookie 及其属性。两者语法不同，因此本工具用两个独立区域分别处理。',
+          },
+          {
+            question: '为什么 SameSite=None 时提示必须设置 Secure？',
+            answer:
+              '现代浏览器规定 SameSite=None 的 Cookie 必须同时带 Secure 属性，即只能通过 HTTPS 发送，否则该 Cookie 会被直接拒绝。工具检测到这一组合时会给出告警，提醒勾选 Secure。',
+          },
+          {
+            question: 'Expires 和 Max-Age 同时设置会怎样？',
+            answer:
+              '按 RFC 6265，两者同时存在时 Max-Age 优先生效，Expires 仅作为旧浏览器兼容。工具允许同时生成，但会给出提示说明优先级关系。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool supports Cookie debugging in web development with two independent areas: it parses a Cookie request header (e.g. a=1; b=2) into an editable name/value table with optional URL encoding/decoding and live re-serialization, and it builds or parses RFC 6265 Set-Cookie response headers covering Expires, Max-Age, Domain, Path, Secure, HttpOnly and SameSite. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Bidirectional Cookie header conversion: string to table and back as you edit',
+          'Optional URL encoding/decoding with warnings for malformed escapes and duplicate names',
+          'Set-Cookie builder: toggle attributes in a form and get a correctly ordered string',
+          'Set-Cookie back-fill: paste an existing string to restore the form, unknown extensions kept',
+          'Compliance checks: SameSite=None without Secure, and Expires with Max-Age are flagged',
+        ],
+        howToUse: [
+          'Paste a Cookie request header in the top area, toggle URL decoding, and edit names/values in the table',
+          'Add rows with the add button or remove them; the serialized header updates instantly',
+          'Fill the name, value and attribute controls in the bottom area to generate a Set-Cookie string',
+          'Or paste an existing Set-Cookie into its input and back-fill the form to inspect its attributes',
+        ],
+        useCases: [
+          'Debug sessions: parse a long Cookie header to quickly find a specific identifier',
+          'Build test cookies: edit the table and copy the serialized string for API debugging',
+          'Author backend Set-Cookie headers: verify attribute formatting and SameSite/Secure rules visually',
+        ],
+        privacyNote:
+          'Cookies may contain sensitive session identifiers. All parsing and generation happen locally in your browser; no data is uploaded or stored.',
+        faqs: [
+          {
+            question: 'What is the difference between the Cookie header and Set-Cookie?',
+            answer:
+              'The Cookie request header is sent by the browser as a sequence of name=value pairs like a=1; b=2, while a Set-Cookie response header describes one cookie plus attributes, like name=value; Path=/; HttpOnly. Their syntax differs, so the tool handles them in two separate areas.',
+          },
+          {
+            question: 'Why does SameSite=None require Secure?',
+            answer:
+              'Modern browsers require cookies with SameSite=None to also carry Secure, meaning they are only sent over HTTPS; otherwise the cookie is rejected. The tool warns when this combination is detected and suggests enabling Secure.',
+          },
+          {
+            question: 'What if both Expires and Max-Age are set?',
+            answer:
+              'Per RFC 6265, when both are present Max-Age takes precedence and Expires remains only for legacy compatibility. The builder allows both but shows an informational note about the precedence.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
