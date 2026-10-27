@@ -20,6 +20,7 @@ import {
   QrCode,
   ShieldCheck,
   Shuffle,
+  Sigma,
   Snowflake,
   Sparkles,
   Tags,
@@ -56,6 +57,7 @@ const toolIconMap = {
   Calculator,
   Type,
   Binary,
+  Sigma,
 };
 
 /**

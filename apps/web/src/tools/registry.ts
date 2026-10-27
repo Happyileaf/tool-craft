@@ -7211,6 +7211,106 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'text-entropy-calculator',
+    name: '文本信息熵计算器',
+    nameEn: 'Text Entropy Calculator',
+    description:
+      '计算文本的 Shannon 信息熵、归一化熵、最小编码位数与字符频率分布，评估密钥与令牌的随机性。',
+    descriptionEn:
+      'Compute Shannon entropy, normalized entropy, minimum encoded bits, and character frequency distribution to assess the randomness of keys and tokens.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/text-entropy-calculator',
+    iconName: 'Sigma',
+    tags: ['信息熵', '香农熵', '随机性', '频率', '密码'],
+    tagsEn: ['Entropy', 'Shannon', 'Randomness', 'Frequency', 'Password'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '8f3Kp2Xv9QmZ7Lt4Rh6Yc1Bw5Ns0De7G',
+    doc: {
+      zh: {
+        whatIsIt:
+          '文本信息熵计算器基于 Claude Shannon 的信息论公式 H = -Σ p·log2(p)，实时计算输入文本中每个字符平均携带的信息量（bit），并给出唯一字符数、归一化熵、理论最小编码位数和完整的字符频率分布表，常用于评估密钥、令牌、口令的随机程度以及文本可压缩性。',
+        coreFeatures: [
+          'Shannon 熵：按字符出现概率计算 bits/字符，熵越高随机性越强',
+          '归一化熵：熵与 log2(唯一字符数) 的比值，0–1 之间，便于跨文本比较均匀程度',
+          '最小编码位数：ceil(熵 × 长度)，估算文本无损压缩或定长编码的理论下界',
+          '频率分布：按次数降序列出每个字符的计数、概率与可视化占比条',
+          'Unicode 正确计数：按 code point 切分，emoji 等代理对字符计为一个字符',
+        ],
+        howToUse: [
+          '在输入框中粘贴或输入待分析文本（密钥、令牌、文章等）',
+          '查看上方六个指标卡：字符总数、唯一字符、信息熵、最大熵、归一化熵、最小编码位数',
+          '在频率分布表中查看各字符计数、概率与占比条，支持分页',
+        ],
+        useCases: [
+          '评估生成的 API Key / 恢复码 / 口令是否足够随机、字符分布是否均匀',
+          '分析日志或数据样本的可压缩性，估算无损编码的理论空间',
+          '信息论教学中直观理解概率分布与熵的关系',
+        ],
+        privacyNote:
+          '所有计算均在本地浏览器内完成，输入文本不会被上传或记录，可安全粘贴敏感令牌。',
+        faqs: [
+          {
+            question: '信息熵多少算「随机」？',
+            answer:
+              '归一化熵越接近 1 表示字符分布越均匀。若令牌取自 64 种字符的字母表，理论最大熵为 log2(64)=6 bits/字符，实际熵接近 6 说明分布均匀；但高熵只代表不可预测性高，并不等于密码学安全，安全的令牌仍应由 CSPRNG 生成。',
+          },
+          {
+            question: '熵和最大熵有什么区别？',
+            answer:
+              '最大熵 log2(唯一字符数) 是这些字符在等概率出现时的熵上界；实际熵会因为字符出现次数不均而小于它，两者之比即归一化熵。',
+          },
+          {
+            question: 'emoji 和中文如何计数？',
+            answer:
+              '工具按 Unicode code point 而非 UTF-16 码元切分文本，因此 😀 等代理对 emoji 计为一个字符，每个汉字也计为一个字符。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Text Entropy Calculator applies Claude Shannon\u2019s formula H = -Σ p·log2(p) to compute the average information per character in bits, along with unique character count, normalized entropy, theoretical minimum encoded bits, and a full character frequency table. It is commonly used to assess the randomness of keys, tokens, and passwords and to estimate compressibility.',
+        coreFeatures: [
+          'Shannon entropy: bits per character from character probabilities; higher means more random',
+          'Normalized entropy: entropy divided by log2(unique characters), 0–1 for cross-text comparison',
+          'Minimum encoded bits: ceil(entropy × length), a theoretical lower bound for lossless coding',
+          'Frequency table: count, probability, and a visual ratio bar per character, sorted by frequency',
+          'Unicode-correct counting: split by code point so surrogate-pair emoji count as one character',
+        ],
+        howToUse: [
+          'Paste or type the text to analyze (key, token, article) in the input area',
+          'Read the six metric cards: length, unique characters, entropy, max entropy, normalized entropy, minimum bits',
+          'Inspect per-character counts, probabilities, and ratio bars in the paginated frequency table',
+        ],
+        useCases: [
+          'Checking whether generated API keys, recovery codes, or passwords are random and uniformly distributed',
+          'Estimating compressibility of logs or data samples via the theoretical coding lower bound',
+          'Teaching information theory with a live view of probability distributions and entropy',
+        ],
+        privacyNote:
+          'All computation runs locally in the browser; entered text is never uploaded or logged, so sensitive tokens are safe to paste.',
+        faqs: [
+          {
+            question: 'What entropy counts as "random"?',
+            answer:
+              'Normalized entropy close to 1 means a near-uniform distribution. A token drawn from a 64-symbol alphabet has a theoretical maximum of log2(64) = 6 bits per character; entropy near 6 indicates uniform use. High entropy only means unpredictability, not cryptographic security — secure tokens still require a CSPRNG.',
+          },
+          {
+            question: 'How is entropy different from max entropy?',
+            answer:
+              'Max entropy log2(unique characters) is the upper bound when every character is equally likely. Real entropy is lower when character frequencies are uneven, and their ratio is the normalized entropy.',
+          },
+          {
+            question: 'How are emoji and Chinese counted?',
+            answer:
+              'Text is split by Unicode code point instead of UTF-16 code units, so a surrogate-pair emoji like 😀 counts as one character and each Han character counts as one character.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

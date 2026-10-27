@@ -96,4 +96,5 @@ export const toolLoaders: Record<
   'nato-phonetic-converter': () => import('./nato-phonetic-converter'),
   'iso8601-duration': () => import('./iso8601-duration'),
   'quoted-printable-codec': () => import('./quoted-printable-codec'),
+  'text-entropy-calculator': () => import('./text-entropy-calculator'),
 };
