@@ -110,4 +110,5 @@ export const toolLoaders: Record<
   'ohms-law-calculator': () => import('./ohms-law-calculator'),
   'cookie-parser': () => import('./cookie-parser'),
   'ascii-table': () => import('./ascii-table'),
+  'base62-codec': () => import('./base62-codec'),
 };

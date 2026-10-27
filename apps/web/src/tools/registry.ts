@@ -8610,6 +8610,109 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'base62-codec',
+    name: 'Base62 编解码（整数 / 字节双模式）',
+    nameEn: 'Base62 Encoder & Decoder (Integer / Byte Modes)',
+    description:
+      '在非负整数、UTF-8 文本与 Base62（0-9、A-Z、a-z 共 62 字符）之间双向编解码，支持 GMP（0-9A-Za-z）与替代（0-9a-zA-Z）两种字母表；整数模式按 62 进制处理任意大整数，字节模式保留前导零字节，非法字符给出具体位置。',
+    descriptionEn:
+      'Encode and decode non-negative integers and UTF-8 text with Base62 (0-9, A-Z, a-z), supporting both the GMP (0-9A-Za-z) and alternate (0-9a-zA-Z) alphabets. Integer mode handles arbitrarily large numbers in base 62; byte mode preserves leading zero bytes, and illegal characters are reported with their exact position.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/base62-codec',
+    iconName: 'Binary',
+    tags: ['Base62', '短链', '短ID', 'URL-safe', '大整数', '编解码'],
+    tagsEn: ['Base62', 'Short Link', 'Short ID', 'URL-safe', 'BigInt', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 Base62 编解码工具。Base62 使用数字 0-9、大写 A-Z、小写 a-z 共 62 个字符，没有 +、/ 等符号与填充符，可直接放进 URL、域名路径或数据库短 ID，是短链 token、分享码最常见的编码方式。工具区分两种语义：整数模式把非负大整数按 62 进制表示；字节模式把任意字节（含 UTF-8 文本）换算为 Base62，并保留前导零字节，保证往返一致。',
+        coreFeatures: [
+          '双模式：非负整数 ↔ Base62（支持十进制与 0x 十六进制输入）、UTF-8 文本 / 字节 ↔ Base62',
+          '两种字母表：GMP 风格 0-9A-Za-z 与替代风格 0-9a-zA-Z，一键切换',
+          '任意精度：基于 BigInt，可处理远超 Number 安全范围的大整数',
+          '前导零保留：字节模式参照 Base58 做法，前导零字节不丢失',
+          '严格校验：字母表外字符报出具体位置；非 UTF-8 解码结果同时显示原始十六进制',
+          '纯本地运行：全部为确定性运算，不发起网络请求、零新增依赖',
+        ],
+        howToUse: [
+          '选择模式：整数互转使用「整数模式」，文本或二进制数据使用「字节 / 文本模式」',
+          '需要与 PHP gmp_strval、多数短链库对齐时保持 GMP 字母表；对接 0-9a-zA-Z 体系（部分短链 / Nano ID 风格）时切换替代字母表',
+          '在输入框粘贴整数或文本并选择编码方向，结果区实时输出；解码方向可直接粘贴 Base62 字符串',
+          '整数解码结果同时给出十进制与 0x 十六进制表示，便于协议调试',
+        ],
+        useCases: [
+          '短链 / 邀请码开发：在数据库自增 ID、雪花 ID 与短码之间互转',
+          '接口调试：核对 Base62 短 ID 对应的原始整数，或验证字母表顺序差异',
+          '数据表示：把任意字节或 UTF-8 文本编码为 URL-safe、无需转义的可打印字符串',
+        ],
+        privacyNote:
+          '所有编解码均在浏览器本地通过 BigInt 完成，输入的整数、文本与 token 不会被上传或记录。',
+        faqs: [
+          {
+            question: 'GMP 字母表和替代字母表有什么区别？',
+            answer:
+              '两者字符集完全相同，只是大小写排列不同：GMP 风格为 0-9A-Za-z（数字后大写在前），替代风格为 0-9a-zA-Z（小写在前）。同一个数字在两种表下编码结果可能不同，例如数字 10 分别是 A 和 a，对接第三方系统时必须确认对方使用的顺序。',
+          },
+          {
+            question: '整数模式和字节模式有什么不同？',
+            answer:
+              '整数模式把输入视为一个非负大整数，按 62 进制直接表示，0 编码为 "0"，适合短 ID、序号；字节模式先把数据视为字节串再整体换算，并显式保留前导零字节（类似 Base58），适合任意二进制与 UTF-8 文本的可逆编码。对字符串内容做编解码时应使用字节模式。',
+          },
+          {
+            question: '为什么解码出来不是正常文本？',
+            answer:
+              'Base62 承载的可能是哈希、压缩数据等任意字节而非 UTF-8 文本。工具在报错的同时会给出解码字节的十六进制表示；若预期是数字，请切换到整数模式查看十进制结果。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local Base62 codec. Base62 uses the 62 characters 0-9, A-Z, and a-z with no +, /, or padding, so encoded data can be placed directly in URLs, paths, or database short IDs — the standard choice for short-link tokens and share codes. Two semantics are supported: integer mode represents non-negative big integers in base 62, while byte mode converts arbitrary bytes (including UTF-8 text) to Base62 while preserving leading zero bytes for exact round trips.',
+        coreFeatures: [
+          'Two modes: non-negative integer <-> Base62 (decimal or 0x hex input) and UTF-8 text / bytes <-> Base62',
+          'Two alphabets: GMP style 0-9A-Za-z and alternate 0-9a-zA-Z, switchable with one click',
+          'Arbitrary precision: built on BigInt, far beyond the Number safe-integer range',
+          'Leading-zero preservation: byte mode follows the Base58 approach, no zero bytes lost',
+          'Strict validation: out-of-alphabet characters report their exact position; non-UTF-8 output also shows raw hex',
+          '100% local: deterministic computation with no network requests and no new dependencies',
+        ],
+        howToUse: [
+          'Pick a mode: use Integer Mode for integer conversion and Byte / Text Mode for text or binary data',
+          'Keep the GMP alphabet for PHP gmp_strval and most short-link libraries; switch to the alternate alphabet for 0-9a-zA-Z schemes (some short-link and Nano ID style systems)',
+          'Paste an integer or text, choose the direction, and read the live result; paste Base62 directly in decode direction',
+          'Integer decode shows both decimal and 0x hexadecimal forms for protocol debugging',
+        ],
+        useCases: [
+          'Short-link / invite-code development: convert auto-increment or snowflake IDs to short codes and back',
+          'API debugging: map a Base62 short ID back to its source integer or spot alphabet-order mismatches',
+          'Data representation: encode arbitrary bytes or UTF-8 text as URL-safe printable strings without escaping',
+        ],
+        privacyNote:
+          'All encoding and decoding runs locally in your browser via BigInt. Integers, text, and tokens you enter are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the difference between the GMP and alternate alphabets?',
+            answer:
+              'Both contain the same 62 characters but in a different order: GMP is 0-9A-Za-z (uppercase first) and the alternate is 0-9a-zA-Z (lowercase first). The same number can encode differently, e.g. 10 is A versus a. Always confirm which order a third-party system expects.',
+          },
+          {
+            question: 'How do integer mode and byte mode differ?',
+            answer:
+              'Integer mode treats the input as one non-negative big integer represented directly in base 62 (0 encodes as "0"), which suits short IDs and sequences. Byte mode treats the input as a byte stream and preserves leading zero bytes (like Base58), suiting arbitrary binary and UTF-8 text with a reversible round trip. Use byte mode when encoding string content.',
+          },
+          {
+            question: 'Why does decoding not produce readable text?',
+            answer:
+              'Base62 may carry arbitrary bytes such as hashes or compressed data rather than UTF-8 text. The tool shows the decoded bytes in hexadecimal alongside the error; if you expected a number, switch to integer mode to see the decimal value.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
