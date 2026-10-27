@@ -101,4 +101,5 @@ export const toolLoaders: Record<
   'midi-note-converter': () => import('./midi-note-converter'),
   'rgb565-converter': () => import('./rgb565-converter'),
   'geohash-codec': () => import('./geohash-codec'),
+  'unicode-normalization': () => import('./unicode-normalization'),
 };

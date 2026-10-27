@@ -7711,6 +7711,106 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'unicode-normalization',
+    name: 'Unicode 规范化转换器（NFC / NFD / NFKC / NFKD）',
+    nameEn: 'Unicode Normalization Converter (NFC / NFD / NFKC / NFKD)',
+    description:
+      '对文本应用四种 Unicode 标准规范化形式，展示转换前后码点数、UTF-16 码元、UTF-8 字节与逐码点 LCS 差异，正确处理组合标记、兼容字符、emoji 与代理对。',
+    descriptionEn:
+      'Apply the four standard Unicode normalization forms to text, showing code-point count, UTF-16 units, UTF-8 bytes, and a per-code-point LCS diff, with proper handling of combining marks, compatibility characters, emoji, and surrogate pairs.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/unicode-normalization',
+    iconName: 'Type',
+    tags: ['Unicode', '规范化', 'NFC', 'NFD', '码点'],
+    tagsEn: ['Unicode', 'Normalization', 'NFC', 'NFD', 'Code Point'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Café é\n①②③ ＡＢＣ',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Unicode 规范化转换器对任意文本应用 Unicode 标准定义的四种规范化形式（NFC / NFD / NFKC / NFKD），用于排查「看起来相同但字节不同」的字符串比较问题：预组合字符（如 é，U+00E9）与分解序列（e U+0065 + 组合重音 U+0301）可互相转换；全角字母、① 序号、连字 ﬁ、半角片假名等兼容字符可在 KC/KD 形式下折叠为普通等价字符。工具同时给出码点数、UTF-16 码元数、UTF-8 字节数与逐码点差异高亮，全部基于浏览器原生 String.prototype.normalize 与 TextEncoder 本地完成。',
+        coreFeatures: [
+          '四种标准形式：NFC 规范合成、NFD 规范分解、NFKC 兼容合成、NFKD 兼容分解',
+          '逐码点差异：LCS 对齐转换前后序列，灰 / 红 / 蓝标记不变、删除、新增',
+          '三项长度指标：码点数、UTF-16 码元数（.length）、UTF-8 字节数实时对比',
+          '正确处理代理对与 emoji ZWJ 序列，增补平面字符不被拆成孤立代理',
+          '零新依赖：直接使用浏览器内置 normalize / TextEncoder，结果可与原生 API 逐项对照',
+        ],
+        howToUse: [
+          '选择规范化形式（默认 NFC），在左侧粘贴或输入文本，右侧实时显示结果',
+          '查看码点 Tag：组合重音、全角折叠等变化以红色删除 / 蓝色新增标注',
+          '一键复制规范化结果，用于服务端比较前的输入归一化或数据清洗',
+        ],
+        useCases: [
+          '排查用户名、文件名、搜索词「看着相同却不相等」的规范化问题',
+          '安全场景下对用户输入做 NFKC 归一化，防止同形字符混淆',
+          '处理含组合标记、半角片假名、连字、全角符号的多语言文本数据',
+        ],
+        privacyNote:
+          '所有转换均在浏览器本地通过 String.prototype.normalize 与 TextEncoder 完成，不发起任何网络请求或文本上传。',
+        faqs: [
+          {
+            question: 'NFC 和 NFD 有什么区别？',
+            answer:
+              '二者只处理「规范等价」的字符：NFC（Canonical Composition）把基字符与组合标记合成为单个预组合码点（如 e + 重音 → U+00E9 é）；NFD（Canonical Decomposition）做反向展开。两者显示外观相同，但字节与码点序列不同，macOS 的 HFS+ 文件名就曾默认使用 NFD，跨系统比较前需先统一形式。',
+          },
+          {
+            question: '为什么 NFKC 会改变字符外观（① 变成 1）？',
+            answer:
+              '带 K 的形式额外执行「兼容性分解」：①、全角 Ａ、上标 ²、连字 ﬁ、半角片假名等字符在 Unicode 中是为兼容旧字符集而保留的，与普通写法仅「兼容等价」。NFKC/NFKD 会把它们折叠成普通字符，利于搜索与比较，但可能丢失排版语义或圈号外观，因此不适合所有场景。',
+          },
+          {
+            question: 'emoji 和 ZWJ 序列会受影响吗？',
+            answer:
+              '普通 emoji（如 😀，U+1F600）位于增补平面，工具按码点迭代而非 UTF-16 码元，不会拆成乱码代理；家庭、职业等 emoji 使用 ZWJ（U+200D）连接多个码点，规范化不会移除 ZWJ，序列保持完整。但 emoji 修饰符（肤色、旗标分组）本身不属于规范化范畴，结果仍以浏览器 Unicode 数据表为准。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Unicode Normalization Converter applies the four standard Unicode normalization forms (NFC / NFD / NFKC / NFKD) to any text, solving "looks identical but bytes differ" comparison issues: precomposed characters (é, U+00E9) convert to and from decomposed sequences (e U+0065 + combining acute U+0301), while compatibility characters such as full-width letters, circled digits ①, the ﬁ ligature, and half-width katakana fold to ordinary equivalents under KC/KD. It reports code-point count, UTF-16 units, UTF-8 bytes, and a per-code-point diff, all locally via the native String.prototype.normalize and TextEncoder APIs.',
+        coreFeatures: [
+          'All four standard forms: NFC canonical composition, NFD canonical decomposition, NFKC/NFKD compatibility forms',
+          'Per-code-point diff: LCS alignment with gray/red/blue tags for unchanged, removed, and added',
+          'Three length metrics: code points, UTF-16 units (.length), and UTF-8 bytes compared live',
+          'Correct surrogate-pair and emoji ZWJ handling; supplementary-plane characters are never split',
+          'Zero dependencies: built on native normalize / TextEncoder, directly cross-checkable against the platform API',
+        ],
+        howToUse: [
+          'Pick a form (NFC by default), paste or type text on the left, and read the live result on the right',
+          'Inspect code-point tags: combining marks and full-width folds show as red removals / blue additions',
+          'Copy the normalized result for input canonicalization before server-side comparison or data cleaning',
+        ],
+        useCases: [
+          'Debugging usernames, filenames, or search terms that look equal but compare unequal',
+          'NFKC canonicalization of user input in security contexts to defeat confusable characters',
+          'Processing multilingual text with combining marks, half-width katakana, ligatures, and full-width symbols',
+        ],
+        privacyNote:
+          'All conversion runs locally in your browser via String.prototype.normalize and TextEncoder, with no network requests or text uploads.',
+        faqs: [
+          {
+            question: 'What is the difference between NFC and NFD?',
+            answer:
+              'Both handle only canonically equivalent characters: NFC composes a base character plus combining marks into a single precomposed code point (e + acute → U+00E9 é), while NFD expands it the other way. They render identically but have different byte and code-point sequences; macOS HFS+ filenames famously defaulted to NFD, so unify the form before cross-system comparison.',
+          },
+          {
+            question: 'Why does NFKC change how characters look (① becomes 1)?',
+            answer:
+              'The K forms additionally perform compatibility decomposition: ①, full-width Ａ, superscript ², the ﬁ ligature, and half-width katakana exist in Unicode only for compatibility with legacy character sets and are merely compatibility-equivalent to plain spellings. NFKC/NFKD fold them into ordinary characters, which helps search and comparison but can lose typographic semantics or the circled appearance, so it is not appropriate everywhere.',
+          },
+          {
+            question: 'Are emoji and ZWJ sequences affected?',
+            answer:
+              'Plain emoji such as 😀 (U+1F600) live on a supplementary plane; the tool iterates by code point rather than UTF-16 unit, so they are never split into broken surrogates. Family and profession emoji join multiple code points with ZWJ (U+200D), which normalization never removes, so the sequence stays intact. Emoji modifiers (skin tones, flag sequences) are outside normalization anyway; results follow the browser Unicode data tables.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
