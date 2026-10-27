@@ -8012,6 +8012,106 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'ieee754-float-converter',
+    name: 'IEEE 754 浮点数转换器（32 / 64 位）',
+    nameEn: 'IEEE 754 Float Converter (32/64-bit)',
+    description:
+      '在十进制数值与 IEEE 754 单精度（32 位）、双精度（64 位）的二进制 / 十六进制表示之间互转，拆解符号位、偏置指数与尾数位域，支持 ±0、±Infinity、NaN，结果一键复制。',
+    descriptionEn:
+      'Convert between decimal numbers and IEEE 754 binary/hex representations in single (32-bit) and double (64-bit) precision, with sign/biased-exponent/mantissa bit-field breakdown and ±0, ±Infinity, NaN support. One-click copy.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ieee754-float-converter',
+    iconName: 'Binary',
+    tags: ['IEEE 754', '浮点数', '二进制', '十六进制', '底层调试'],
+    tagsEn: ['IEEE 754', 'Floating Point', 'Binary', 'Hexadecimal', 'Low-level Debug'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0.1',
+    doc: {
+      zh: {
+        whatIsIt:
+          'IEEE 754 是现代 CPU 与 JavaScript（number 即 64 位双精度）通用的二进制浮点标准。本工具把十进制数值编码为 32 位单精度或 64 位双精度的二进制 / 十六进制位串，并逐位拆解符号位、含偏置的指数位与尾数位；也支持把任意合法位串还原为十进制数值，正确处理 ±0、±Infinity 与 NaN。底层通过 ArrayBuffer / DataView / BigInt 完成确定性位操作，全部在浏览器本地运行。',
+        coreFeatures: [
+          '支持 binary32（1+8+23，偏置 127）与 binary64（1+11+52，偏置 1023）',
+          '十进制 → 位表示：输出十六进制与按位域着色分段的二进制串',
+          '位表示 → 十进制：自动识别二进制 / 十六进制（支持 0b、0x 前缀与空格、下划线分隔）',
+          '位域拆解表：符号、指数原始位、去偏置指数、尾数二进制与十六进制',
+          '完整支持 ±0、±Infinity、NaN 特殊值；非法位宽 / 字符明确报错不静默',
+        ],
+        howToUse: [
+          '选择精度（单精度 32 位 / 双精度 64 位）与转换模式，在输入框中填入十进制数值或位串',
+          '正向模式实时显示十六进制、分段二进制串与位域表；反向模式显示还原的十进制值',
+          '点击「复制结果」复制十六进制与二进制（正向）或十进制值（反向）',
+        ],
+        useCases: [
+          '排查浮点精度问题：直观看到 0.1、金额、累加误差在二进制层面的真实存储',
+          '调试网络协议 / 嵌入式 / 二进制文件中的 float、double 字段，核对字节序与位模式',
+          '教学辅助：理解隐藏位、偏置指数、非规约数、Infinity / NaN 的编码规则',
+        ],
+        privacyNote:
+          '所有位运算均在浏览器本地通过 ArrayBuffer / DataView 完成，输入数值不会上传或离开当前页面。',
+        faqs: [
+          {
+            question: '为什么 0.1 不能被精确表示？',
+            answer:
+              'IEEE 754 用二进制分数逼近十进制小数，0.1 = 1/10 的分母含有因子 5，无法表示为有限个 2 的负幂次之和，只能存为最接近的二进制值。双精度下实际约为 0.10000000000000000555（3FB999999999999A），单精度舍入为 3DCCCCCD，这正是 0.1 + 0.2 不等于 0.3 的根本原因。',
+          },
+          {
+            question: '什么是偏置指数（biased exponent）？',
+            answer:
+              '指数字段是无符号整数，存储的是「真实指数 + 偏置值」：32 位偏置为 127、64 位为 1023。例如 1.0 的真实指数为 0，64 位字段存 1023（01111111111）。这样指数可以直接按无符号整数比较大小，也省掉了指数本身的符号位。指数全 0 表示零或非规约数，全 1 表示 Infinity 或 NaN。',
+          },
+          {
+            question: '32 位单精度与 64 位双精度有什么差异？',
+            answer:
+              '二者位域布局相同（符号 1 位 + 指数 + 尾数），但 32 位为 8 位指数、23 位尾数（约 7 位十进制有效数字、±3.4×10³⁸ 量程），64 位为 11 位指数、52 位尾数（约 15–17 位有效数字、±1.8×10³⁰⁸ 量程）。JavaScript 的 number 统一使用 64 位双精度；本工具单精度结果按 IEEE 754 round-to-nearest 舍入，并会提示实际存储值。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'IEEE 754 is the binary floating-point standard used by CPUs and by JavaScript itself (every number is a 64-bit double). This tool encodes a decimal value into its 32-bit single or 64-bit double binary/hex bit pattern, breaks the bits down into sign, biased exponent and mantissa fields, and decodes any valid bit pattern back to decimal \u2014 correctly handling \u00b10, \u00b1Infinity and NaN. Bit operations use ArrayBuffer / DataView / BigInt and run entirely locally in the browser.',
+        coreFeatures: [
+          'Supports binary32 (1+8+23, bias 127) and binary64 (1+11+52, bias 1023)',
+          'Decimal \u2192 bits: outputs hexadecimal plus a binary string color-segmented by field',
+          'Bits \u2192 decimal: auto-detects binary vs hex (0b/0x prefixes and spaces/underscores accepted)',
+          'Field table: sign, raw exponent bits, unbiased exponent, mantissa in binary and hex',
+          'Full support for \u00b10, \u00b1Infinity and NaN; invalid width/characters raise clear errors',
+        ],
+        howToUse: [
+          'Pick the precision (32-bit single / 64-bit double) and direction, then enter a decimal number or a bit string',
+          'Forward mode shows hex, the segmented binary stream and the field table; reverse mode shows the decoded decimal value',
+          'Click "Copy results" to copy hex+binary (forward) or the decimal value (reverse)',
+        ],
+        useCases: [
+          'Diagnosing floating-point surprises: seeing how 0.1, money values and accumulated errors are really stored',
+          'Inspecting float/double fields in network protocols, firmware dumps or binary files (bit patterns and endianness)',
+          'Teaching the hidden bit, biased exponent, subnormal numbers and Infinity/NaN encodings',
+        ],
+        privacyNote:
+          'All bit manipulation runs locally in your browser via ArrayBuffer / DataView; entered values are never uploaded.',
+        faqs: [
+          {
+            question: 'Why cannot 0.1 be represented exactly?',
+            answer:
+              'IEEE 754 approximates decimal fractions with binary fractions. Since 0.1 = 1/10 has a factor of 5 in the denominator, it cannot be written as a finite sum of negative powers of two; the closest double is about 0.10000000000000000555 (3FB999999999999A), and the nearest float is 3DCCCCCD. This is exactly why 0.1 + 0.2 is not 0.3.',
+          },
+          {
+            question: 'What is a biased exponent?',
+            answer:
+              'The exponent field is unsigned and stores the true exponent plus a bias: 127 for 32-bit, 1023 for 64-bit. For 1.0 the true exponent is 0, so the 64-bit field holds 1023 (01111111111). Bias lets exponents be compared as plain unsigned integers and removes the need for a sign bit on the exponent. All-zero exponent means zero/subnormal; all-ones means Infinity or NaN.',
+          },
+          {
+            question: 'What differs between 32-bit single and 64-bit double?',
+            answer:
+              'The layout is the same (1 sign + exponent + mantissa), but single uses 8 exponent and 23 mantissa bits (\u22487 significant decimal digits, range \u00b13.4\u00d710\u00b3\u2078), while double uses 11 and 52 (\u224815\u201317 digits, range \u00b11.8\u00d710\u00b3\u2070\u2078). JavaScript numbers are always 64-bit doubles; single-precision output here follows round-to-nearest and the tool shows the actually stored value.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
