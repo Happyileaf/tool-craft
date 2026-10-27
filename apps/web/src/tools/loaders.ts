@@ -103,4 +103,5 @@ export const toolLoaders: Record<
   'geohash-codec': () => import('./geohash-codec'),
   'unicode-normalization': () => import('./unicode-normalization'),
   'json-merge-patch': () => import('./json-merge-patch'),
+  'coordinate-system-converter': () => import('./coordinate-system-converter'),
 };

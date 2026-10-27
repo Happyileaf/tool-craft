@@ -7912,6 +7912,106 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'coordinate-system-converter',
+    name: 'WGS-84 / GCJ-02 / BD-09 坐标系互转器',
+    nameEn: 'Coordinate System Converter (WGS-84 / GCJ-02 / BD-09)',
+    description:
+      '批量互转 GPS（WGS-84）、火星坐标（GCJ-02，高德 / 腾讯）与百度坐标（BD-09），每行「经度,纬度」，逐行校验并给出明细，境外坐标不偏移，结果一键复制。',
+    descriptionEn:
+      'Batch-convert between GPS (WGS-84), GCJ-02 (Mars coordinates, AMap/Tencent) and BD-09 (Baidu), one "lng,lat" pair per line, with per-row validation and detail table; out-of-China points are returned unshifted. One-click copy.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/coordinate-system-converter',
+    iconName: 'Code',
+    tags: ['坐标系转换', 'WGS84', 'GCJ02', 'BD09', '地图开发'],
+    tagsEn: ['Coordinate Transform', 'WGS84', 'GCJ02', 'BD09', 'Map Development'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '116.404,39.915\n121.4737,31.2304',
+    doc: {
+      zh: {
+        whatIsIt:
+          '坐标系互转器用于解决国内地图开发中最常见的坐标不一致问题：GPS 设备与国际标准使用 WGS-84，高德、腾讯等国内地图服务使用加入非线性偏移的 GCJ-02（火星坐标系），百度地图在 GCJ-02 基础上再做一次加密得到 BD-09。工具实现通行的偏移算法及其逆运算，支持三种坐标系两两互转、批量处理与逐行错误提示，全部计算在浏览器本地完成。',
+        coreFeatures: [
+          'WGS-84、GCJ-02、BD-09 三种坐标系两两互转（共 9 种方向组合）',
+          '批量转换：每行一对「经度,纬度」，支持英文 / 中文逗号、分号与空白分隔，自动跳过空行',
+          '逐行校验：字段缺失、非数字、经纬度越界等错误只标记对应行，不影响其他行',
+          '明细表格：展示每行转换结果，并对中国境外坐标标注「境外未偏移」',
+          '结果统一保留 6 位小数，可一键复制，纯本地运算零依赖',
+        ],
+        howToUse: [
+          '在顶部选择源坐标系与目标坐标系，在左栏每行输入一对「经度,纬度」（十进制）',
+          '右栏实时显示转换结果；下方表格逐行展示明细，错误行会给出具体原因',
+          '点击「复制结果」复制全部输出（成功行为坐标，失败行为以 # 开头的错误说明）',
+        ],
+        useCases: [
+          '把 GPS 轨迹 / 设备上报的 WGS-84 坐标转换为高德、腾讯地图可用的 GCJ-02 坐标',
+          '将百度地图取点结果（BD-09）转换为 WGS-84 后入库或与国际数据源对齐',
+          '批量清洗 CSV 中的坐标列，快速定位格式错误与境外数据',
+        ],
+        privacyNote:
+          '所有坐标计算均在浏览器本地完成，输入的位置数据不会上传或离开当前页面。',
+        faqs: [
+          {
+            question: 'WGS-84、GCJ-02、BD-09 分别是什么？',
+            answer:
+              'WGS-84 是 GPS 使用的国际标准坐标系；GCJ-02（火星坐标系）是国家规定的加密坐标系，在 WGS-84 上叠加非线性偏移，高德、腾讯等国内地图使用；BD-09 是百度在 GCJ-02 基础上再次加密得到的坐标系，仅用于百度地图。同一真实地点在三套坐标下的经纬度数值不同，直接混用会出现几百米偏差。',
+          },
+          {
+            question: '为什么中国境外的坐标不做偏移？',
+            answer:
+              'GCJ-02 偏移只针对中国境内有效，通行实现（coordtransform 等）会用矩形范围（经度 72.004–137.8347、纬度 0.8293–55.8271）粗略判断，范围外的坐标直接原样返回。工具沿用这一约定并在明细中标注「境外未偏移」。',
+          },
+          {
+            question: 'GCJ-02 转 WGS-84 的结果为什么说是近似的？',
+            answer:
+              'GCJ-02 偏移算法没有官方逆函数，本工具采用业界通行的减法近似（用 WGS→GCJ 的偏移量反减），往返误差通常在 1–2 米量级，对打点、展示等场景足够；对测绘级精度要求的场景请使用官方坐标转换服务。BD-09 与 WGS-84 之间的转换统一经 GCJ-02 中转。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This converter solves the most common coordinate mismatch in China map development: GPS devices and international standards use WGS-84; mainland services such as AMap and Tencent Maps use GCJ-02 (the "Mars" system), which applies a non-linear offset to WGS-84; and Baidu Maps adds another encryption layer on top of GCJ-02 called BD-09. The tool implements the widely used offset algorithm and its inverse, supports all pairwise conversions between the three systems with batch processing and per-row error reporting, and runs entirely in the browser.',
+        coreFeatures: [
+          'All pairwise conversions among WGS-84, GCJ-02 and BD-09 (9 direction combinations)',
+          'Batch mode: one "lng,lat" pair per line; accepts commas (ASCII/full-width), semicolons and whitespace; blank lines skipped',
+          'Per-row validation: missing fields, non-numeric values and out-of-range coordinates only fail that row',
+          'Detail table showing every converted row, with an "out of China, unshifted" tag for points outside the offset rectangle',
+          'Output rounded to 6 decimal places, one-click copy, zero-dependency local computation',
+        ],
+        howToUse: [
+          'Pick the source and target coordinate systems at the top, then enter one decimal "lng,lat" pair per line in the left panel',
+          'The right panel updates with results in real time; the table below shows per-row details and error reasons',
+          'Click "Copy results" to copy all output (successful rows as coordinates, failed rows as #-prefixed error lines)',
+        ],
+        useCases: [
+          'Converting GPS tracks or device-reported WGS-84 points to GCJ-02 for AMap/Tencent display',
+          'Converting Baidu BD-09 points back to WGS-84 for storage or alignment with international data',
+          'Cleaning coordinate columns in CSV files, quickly spotting malformed rows and overseas data',
+        ],
+        privacyNote:
+          'All coordinate calculations run locally in your browser; location data is never uploaded and never leaves this page.',
+        faqs: [
+          {
+            question: 'What are WGS-84, GCJ-02 and BD-09?',
+            answer:
+              'WGS-84 is the international standard used by GPS. GCJ-02 ("Mars coordinates") is the legally required encrypted system in mainland China that adds a non-linear offset to WGS-84, used by AMap and Tencent Maps. BD-09 is Baidu\u2019s further encryption on top of GCJ-02, used only by Baidu Maps. The same real place has different numeric coordinates in the three systems; mixing them causes offsets of hundreds of meters.',
+          },
+          {
+            question: 'Why are points outside China returned without any offset?',
+            answer:
+              'The GCJ-02 offset is only defined inside China. The de-facto implementations (e.g. coordtransform) use a rough bounding rectangle (lng 72.004\u2013137.8347, lat 0.8293\u201355.8271) and return points outside it unchanged. This tool follows that convention and tags such rows as "out of China, unshifted".',
+          },
+          {
+            question: 'Why is GCJ-02 to WGS-84 described as approximate?',
+            answer:
+              'There is no official inverse of the GCJ-02 offset. This tool uses the standard subtraction approximation (subtracting the WGS\u2192GCJ shift), whose round-trip error is typically within 1\u20132 meters \u2014 fine for markers and display, but surveying-grade workloads should use an authorized conversion service. BD-09 to/from WGS-84 always goes through GCJ-02.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
