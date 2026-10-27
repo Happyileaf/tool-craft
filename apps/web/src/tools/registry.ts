@@ -7411,6 +7411,106 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'midi-note-converter',
+    name: 'MIDI 音符与频率互转计算器',
+    nameEn: 'MIDI Note & Frequency Converter',
+    description:
+      '输入 MIDI 编号、音名（C4/A#4/Bb3）或频率任一项实时互转，支持自定义 A4 基准频率（如 432Hz），附八度 12 音频率表。',
+    descriptionEn:
+      'Convert between MIDI numbers, note names (C4/A#4/Bb3), and frequencies in real time with a customizable A4 reference (e.g. 432Hz), plus a 12-tone octave frequency table.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/midi-note-converter',
+    iconName: 'Music',
+    tags: ['MIDI', '音符', '频率', '十二平均律', '调音'],
+    tagsEn: ['MIDI', 'Note', 'Frequency', 'Equal Temperament', 'Tuning'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '69',
+    doc: {
+      zh: {
+        whatIsIt:
+          'MIDI 音符与频率互转计算器基于十二平均律公式 f = A4 × 2^((MIDI − 69) / 12)，输入 MIDI 编号（0–127）、音名（如 C4、A#4、Bb3）或频率（Hz）任一项，即可实时得到其余两项，并显示频率模式下与最近音符的音分偏差；支持自定义 A4 基准频率（国际标准 440Hz，亦可选 432Hz 等），还可展开任意八度（-1–9）的 12 音频率表。全部计算在浏览器本地完成。',
+        coreFeatures: [
+          '三向互转：MIDI 编号、音名、频率任输入一项实时得到其余结果',
+          '升降号兼容：音名支持 A#4 / Bb3 等升号与降号写法，大小写不敏感',
+          '自定义 A4：修改基准频率（如 432Hz）后所有换算与八度表同步更新',
+          '音分偏差：频率模式给出与最近音符的 cents 偏差，便于调音与误差分析',
+          '八度频率表：C 到 B 共 12 个半音的 MIDI 编号与精确频率一览',
+        ],
+        howToUse: [
+          '选择输入方式：MIDI 编号、音名或频率 (Hz)',
+          '在输入框中键入数值，结果卡片实时刷新',
+          '需要非标准定调时修改 A4 基准频率；在八度表中切换八度查看 12 音',
+        ],
+        useCases: [
+          '音乐制作与编曲时查 MIDI 音符编号、核对音名与频率',
+          '乐器 / 合成器调音，分析测量频率与标准音高的音分偏差',
+          '嵌入式音频与 DSP 开发中由 MIDI note 计算振荡器频率',
+        ],
+        privacyNote:
+          '所有换算均在本地浏览器完成，不涉及任何网络请求或数据上传。',
+        faqs: [
+          {
+            question: '为什么 MIDI 69 是 A4？',
+            answer:
+              'MIDI 标准将 88 键钢琴中央 C 上方的 A 定为编号 69，即 A4（440Hz 国际标准音高）；中央 C 为编号 60（C4）。每增加 1 编号升高一个半音，故 70 为 A#4。',
+          },
+          {
+            question: '十二平均律的频率公式是什么？',
+            answer:
+              'f = A4 × 2^((MIDI − 69) / 12)：每 12 个半音频率翻倍（一个八度），相邻半音频率比恒为 2^(1/12) ≈ 1.05946，例如 MIDI 70 ≈ 466.16Hz。',
+          },
+          {
+            question: '自定义 432Hz 基准有什么作用？',
+            answer:
+              '部分乐手偏好以 A4 = 432Hz 而非 440Hz 定调。修改基准后 MIDI 69 即对应 432Hz，所有音符频率与八度表按比例变化；也可用于分析一段 432Hz 音频在标准 440Hz 体系下偏低约 31.77 音分。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The MIDI Note & Frequency Converter uses the equal-temperament formula f = A4 × 2^((MIDI − 69) / 12). Enter any one of a MIDI number (0–127), note name (e.g. C4, A#4, Bb3), or frequency (Hz) to instantly obtain the others, including the cents offset in frequency mode. The A4 reference is customizable (440Hz standard or 432Hz), and any octave (-1–9) can be expanded into a 12-tone frequency table. Everything is computed locally in the browser.',
+        coreFeatures: [
+          'Three-way conversion: enter MIDI number, note name, or frequency and get the rest live',
+          'Accidentals supported: sharp (A#4) and flat (Bb3) spellings, case-insensitive',
+          'Custom A4: changing the reference (e.g. 432Hz) updates all results and the octave table',
+          'Cents offset: frequency mode shows deviation from the nearest note for tuning analysis',
+          'Octave table: MIDI numbers and exact frequencies for all 12 semitones C through B',
+        ],
+        howToUse: [
+          'Choose an input mode: MIDI number, note name, or frequency (Hz)',
+          'Type a value; the result cards update in real time',
+          'Change the A4 reference for alternate pitch standards and switch octaves in the table',
+        ],
+        useCases: [
+          'Looking up MIDI numbers and note frequencies while producing or arranging music',
+          'Tuning instruments and synthesizers by analyzing cents deviation from standard pitch',
+          'Computing oscillator frequencies from MIDI notes in embedded audio and DSP development',
+        ],
+        privacyNote:
+          'All conversions run locally in your browser with no network requests or uploads.',
+        faqs: [
+          {
+            question: 'Why is MIDI 69 A4?',
+            answer:
+              'The MIDI standard assigns number 69 to the A above middle C, A4 (440Hz concert pitch); middle C is number 60 (C4). Each increment raises pitch by one semitone, so 70 is A#4.',
+          },
+          {
+            question: 'What is the equal-temperament frequency formula?',
+            answer:
+              'f = A4 × 2^((MIDI − 69) / 12): every 12 semitones doubles the frequency (one octave), and the semitone ratio is always 2^(1/12) ≈ 1.05946, so MIDI 70 ≈ 466.16Hz.',
+          },
+          {
+            question: 'Why use a 432Hz reference?',
+            answer:
+              'Some musicians tune to A4 = 432Hz instead of 440Hz. With that reference MIDI 69 maps to 432Hz and every frequency scales accordingly; it also shows that a 432Hz tone sits about 31.77 cents flat in the standard 440Hz system.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

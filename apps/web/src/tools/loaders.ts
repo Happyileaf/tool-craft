@@ -98,4 +98,5 @@ export const toolLoaders: Record<
   'quoted-printable-codec': () => import('./quoted-printable-codec'),
   'text-entropy-calculator': () => import('./text-entropy-calculator'),
   'vigenere-cipher': () => import('./vigenere-cipher'),
+  'midi-note-converter': () => import('./midi-note-converter'),
 };

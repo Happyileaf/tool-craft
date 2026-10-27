@@ -112,7 +112,7 @@
 | 20261023081553 | IPv4 / IPv6 地址与整数 / 十六进制互转 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023081553.md) |
 | 20261023081554 | UUID v7 生成器（RFC 9562） | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023081554.md) |
 | 20261023081556 | CHANGELOG.md 生成器（Keep a Changelog） | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023081556.md) |
-| 20261023141141 | MIDI 音符与频率互转计算器 | Web Tool | Exploration | Claimed | 2026-10-23 | trae-agent | [详情](./idea-details/20261023141141.md) |
+| 20261023141141 | MIDI 音符与频率互转计算器 | Web Tool | Exploration | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023141141.md) |
 | 20261023141142 | CSS transform 矩阵计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141142.md) |
 | 20261023141143 | 日出日落与晨昏时刻计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141143.md) |
 | 20261023141144 | 屏幕 PPI / 像素密度计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141144.md) |

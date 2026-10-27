@@ -16,6 +16,7 @@ import {
   Layers,
   LayoutGrid,
   MoonStar,
+  Music,
   Palette,
   Pipette,
   QrCode,
@@ -60,6 +61,7 @@ const toolIconMap = {
   Binary,
   Sigma,
   KeyRound,
+  Music,
 };
 
 /**
