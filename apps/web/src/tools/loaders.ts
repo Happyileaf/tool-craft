@@ -95,4 +95,9 @@ export const toolLoaders: Record<
   'number-locale-formatter': () => import('./number-locale-formatter'),
   'nato-phonetic-converter': () => import('./nato-phonetic-converter'),
   'iso8601-duration': () => import('./iso8601-duration'),
+  'quoted-printable-codec': () => import('./quoted-printable-codec'),
+  'text-entropy-calculator': () => import('./text-entropy-calculator'),
+  'vigenere-cipher': () => import('./vigenere-cipher'),
+  'midi-note-converter': () => import('./midi-note-converter'),
+  'rgb565-converter': () => import('./rgb565-converter'),
 };

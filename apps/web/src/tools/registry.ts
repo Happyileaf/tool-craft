@@ -7112,6 +7112,505 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'quoted-printable-codec',
+    name: 'Quoted-Printable（RFC 2045）编解码',
+    nameEn: 'Quoted-Printable (RFC 2045) Encoder & Decoder',
+    description:
+      '在 UTF-8 文本与 Quoted-Printable 转义串之间双向转换，遵循 RFC 2045：非可打印字节与等号编码为 =XX、76 列软换行（=CRLF）、行尾空白转义；解码严格校验非法转义并报告行列位置。',
+    descriptionEn:
+      'Convert between UTF-8 text and Quoted-Printable strings per RFC 2045: non-printable bytes and "=" are encoded as =XX with 76-column soft line breaks (=CRLF) and escaped trailing whitespace; decoding strictly validates illegal escapes with row/column positions.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/quoted-printable-codec',
+    iconName: 'Binary',
+    tags: ['Quoted-Printable', 'RFC 2045', 'MIME', '邮件编码', '编解码'],
+    tagsEn: ['Quoted-Printable', 'RFC 2045', 'MIME', 'Email Encoding', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Quoted-Printable 编码示例：café = 42€。',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 Quoted-Printable 编解码工具。Quoted-Printable 是 RFC 2045 定义的 MIME 内容传输编码，用可打印 ASCII 表示任意字节：可打印字符（除等号）原样保留，等号与非 ASCII 字节（文本按 UTF-8）编码为 =XX 大写十六进制，每行不超过 76 字符并以“=”加换行作软换行，广泛用于电子邮件正文与 MIME 头。',
+        coreFeatures: [
+          '严格遵循 RFC 2045：可打印 ASCII 原样输出，等号转义为 =3D，非 ASCII 按 UTF-8 编码为 =XX',
+          '76 列软换行：超长行自动以 =CRLF 断开，行尾空格 / 制表符转义为 =20 / =09 防止被传输剥离',
+          '双向转换：文本即时编码，含软换行的转义串严格解码回文本，支持 CRLF / LF 行结束符',
+          '精确报错：不完整或非十六进制的 =XX 转义均报告具体行列位置，非法 UTF-8 字节明确提示',
+          '纯本地运行：所有编解码在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择「编码」或「解码」方向，切换时自动载入对应示例',
+          '编码时可选择 CRLF（RFC 标准）或 LF 行结束符，结果随输入实时更新',
+          '在输入框粘贴文本或 Quoted-Printable 串，点击「复制结果」获取内容，或「清空」重输',
+        ],
+        useCases: [
+          '查看或构造 MIME 邮件（Content-Transfer-Encoding: quoted-printable）正文与头字段',
+          '排查邮件乱码：验证转义串是否合法并定位损坏的 =XX 序列',
+          '调试以 Quoted-Printable 承载 UTF-8 文本的协议数据与签名原文',
+        ],
+        privacyNote: '所有编解码均在浏览器本地完成，输入的文本与转义串不会被上传或记录。',
+        faqs: [
+          {
+            question: 'Quoted-Printable 和 Base64 有什么区别？',
+            answer:
+              '二者都是 MIME 内容传输编码。Base64 把每 3 字节编码为 4 个字符，适合二进制数据（图片、附件）；Quoted-Printable 以 =XX 只转义非可打印字节，大部分 ASCII 文本仍可读，适合以 ASCII 为主、偶有非 ASCII 字符的邮件正文。',
+          },
+          {
+            question: '行尾单独的“=”是什么意思？',
+            answer:
+              '那是 RFC 2045 的软换行标记：当一行内容超过 75/76 字符时，编码器在断行处放一个“=”，解码时该“=”与紧随的换行符会被一并删除、把前后两段重新拼接，不属于原始内容。真正的换行仍以普通 CRLF 表示。',
+          },
+          {
+            question: '为什么行尾空格变成了 =20？',
+            answer:
+              '邮件传输中允许对行尾空白做规整，可能被悄悄删除。RFC 2045 因此要求硬换行前的空格（0x20）与制表符（0x09）必须用 =20 / =09 转义，以保证解码后内容与原文逐字节一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first Quoted-Printable codec. Quoted-Printable is the MIME content-transfer encoding defined by RFC 2045 that represents arbitrary bytes with printable ASCII: printable characters (except "=") stay literal while "=" and non-ASCII bytes (text handled as UTF-8) become uppercase =XX hex, with lines limited to 76 characters and "=" plus a newline as a soft line break. It is widely used in email bodies and MIME headers.',
+        coreFeatures: [
+          'Strict RFC 2045: printable ASCII stays literal, "=" becomes =3D, non-ASCII bytes are encoded as =XX via UTF-8',
+          '76-column soft breaks: long lines split with =CRLF and trailing spaces/tabs become =20/=09 to survive transport',
+          'Bidirectional: instant text encoding and strict decoding of escaped strings with soft breaks, CRLF/LF selectable',
+          'Precise errors: incomplete or non-hex =XX escapes report exact row/column; invalid UTF-8 is clearly reported',
+          'Local-first: all encoding and decoding run in the browser with no network requests',
+        ],
+        howToUse: [
+          'Pick the "Encode" or "Decode" direction; switching loads the matching sample automatically',
+          'When encoding, choose CRLF (RFC standard) or LF line endings; the result updates as you type',
+          'Paste text or a Quoted-Printable string, click "Copy result" to copy it, or "Clear" to start over',
+        ],
+        useCases: [
+          'Inspect or build MIME email bodies and headers using Content-Transfer-Encoding: quoted-printable',
+          'Debug email mojibake: validate an escaped string and locate corrupted =XX sequences',
+          'Work with protocol payloads or canonical signing text that carry UTF-8 via Quoted-Printable',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally in the browser; entered text and escaped strings are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How does Quoted-Printable differ from Base64?',
+            answer:
+              'Both are MIME content-transfer encodings. Base64 encodes every 3 bytes into 4 characters and suits binary data such as images and attachments. Quoted-Printable escapes only non-printable bytes as =XX, leaving most ASCII text readable, which suits mostly-ASCII email bodies with occasional non-ASCII characters.',
+          },
+          {
+            question: 'What does a standalone "=" at the end of a line mean?',
+            answer:
+              'It is the RFC 2045 soft line break: when content exceeds the line limit, the encoder places "=" before the break, and decoding removes that "=" together with the following newline to rejoin the segments. It is not part of the original content; real line breaks remain ordinary CRLF.',
+          },
+          {
+            question: 'Why did a trailing space turn into =20?',
+            answer:
+              'Mail transport may normalize or strip trailing whitespace. RFC 2045 therefore requires a space (0x20) or tab (0x09) before a hard line break to be escaped as =20 / =09 so the decoded output matches the original byte for byte.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'text-entropy-calculator',
+    name: '文本信息熵计算器',
+    nameEn: 'Text Entropy Calculator',
+    description:
+      '计算文本的 Shannon 信息熵、归一化熵、最小编码位数与字符频率分布，评估密钥与令牌的随机性。',
+    descriptionEn:
+      'Compute Shannon entropy, normalized entropy, minimum encoded bits, and character frequency distribution to assess the randomness of keys and tokens.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/text-entropy-calculator',
+    iconName: 'Sigma',
+    tags: ['信息熵', '香农熵', '随机性', '频率', '密码'],
+    tagsEn: ['Entropy', 'Shannon', 'Randomness', 'Frequency', 'Password'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '8f3Kp2Xv9QmZ7Lt4Rh6Yc1Bw5Ns0De7G',
+    doc: {
+      zh: {
+        whatIsIt:
+          '文本信息熵计算器基于 Claude Shannon 的信息论公式 H = -Σ p·log2(p)，实时计算输入文本中每个字符平均携带的信息量（bit），并给出唯一字符数、归一化熵、理论最小编码位数和完整的字符频率分布表，常用于评估密钥、令牌、口令的随机程度以及文本可压缩性。',
+        coreFeatures: [
+          'Shannon 熵：按字符出现概率计算 bits/字符，熵越高随机性越强',
+          '归一化熵：熵与 log2(唯一字符数) 的比值，0–1 之间，便于跨文本比较均匀程度',
+          '最小编码位数：ceil(熵 × 长度)，估算文本无损压缩或定长编码的理论下界',
+          '频率分布：按次数降序列出每个字符的计数、概率与可视化占比条',
+          'Unicode 正确计数：按 code point 切分，emoji 等代理对字符计为一个字符',
+        ],
+        howToUse: [
+          '在输入框中粘贴或输入待分析文本（密钥、令牌、文章等）',
+          '查看上方六个指标卡：字符总数、唯一字符、信息熵、最大熵、归一化熵、最小编码位数',
+          '在频率分布表中查看各字符计数、概率与占比条，支持分页',
+        ],
+        useCases: [
+          '评估生成的 API Key / 恢复码 / 口令是否足够随机、字符分布是否均匀',
+          '分析日志或数据样本的可压缩性，估算无损编码的理论空间',
+          '信息论教学中直观理解概率分布与熵的关系',
+        ],
+        privacyNote:
+          '所有计算均在本地浏览器内完成，输入文本不会被上传或记录，可安全粘贴敏感令牌。',
+        faqs: [
+          {
+            question: '信息熵多少算「随机」？',
+            answer:
+              '归一化熵越接近 1 表示字符分布越均匀。若令牌取自 64 种字符的字母表，理论最大熵为 log2(64)=6 bits/字符，实际熵接近 6 说明分布均匀；但高熵只代表不可预测性高，并不等于密码学安全，安全的令牌仍应由 CSPRNG 生成。',
+          },
+          {
+            question: '熵和最大熵有什么区别？',
+            answer:
+              '最大熵 log2(唯一字符数) 是这些字符在等概率出现时的熵上界；实际熵会因为字符出现次数不均而小于它，两者之比即归一化熵。',
+          },
+          {
+            question: 'emoji 和中文如何计数？',
+            answer:
+              '工具按 Unicode code point 而非 UTF-16 码元切分文本，因此 😀 等代理对 emoji 计为一个字符，每个汉字也计为一个字符。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Text Entropy Calculator applies Claude Shannon\u2019s formula H = -Σ p·log2(p) to compute the average information per character in bits, along with unique character count, normalized entropy, theoretical minimum encoded bits, and a full character frequency table. It is commonly used to assess the randomness of keys, tokens, and passwords and to estimate compressibility.',
+        coreFeatures: [
+          'Shannon entropy: bits per character from character probabilities; higher means more random',
+          'Normalized entropy: entropy divided by log2(unique characters), 0–1 for cross-text comparison',
+          'Minimum encoded bits: ceil(entropy × length), a theoretical lower bound for lossless coding',
+          'Frequency table: count, probability, and a visual ratio bar per character, sorted by frequency',
+          'Unicode-correct counting: split by code point so surrogate-pair emoji count as one character',
+        ],
+        howToUse: [
+          'Paste or type the text to analyze (key, token, article) in the input area',
+          'Read the six metric cards: length, unique characters, entropy, max entropy, normalized entropy, minimum bits',
+          'Inspect per-character counts, probabilities, and ratio bars in the paginated frequency table',
+        ],
+        useCases: [
+          'Checking whether generated API keys, recovery codes, or passwords are random and uniformly distributed',
+          'Estimating compressibility of logs or data samples via the theoretical coding lower bound',
+          'Teaching information theory with a live view of probability distributions and entropy',
+        ],
+        privacyNote:
+          'All computation runs locally in the browser; entered text is never uploaded or logged, so sensitive tokens are safe to paste.',
+        faqs: [
+          {
+            question: 'What entropy counts as "random"?',
+            answer:
+              'Normalized entropy close to 1 means a near-uniform distribution. A token drawn from a 64-symbol alphabet has a theoretical maximum of log2(64) = 6 bits per character; entropy near 6 indicates uniform use. High entropy only means unpredictability, not cryptographic security — secure tokens still require a CSPRNG.',
+          },
+          {
+            question: 'How is entropy different from max entropy?',
+            answer:
+              'Max entropy log2(unique characters) is the upper bound when every character is equally likely. Real entropy is lower when character frequencies are uneven, and their ratio is the normalized entropy.',
+          },
+          {
+            question: 'How are emoji and Chinese counted?',
+            answer:
+              'Text is split by Unicode code point instead of UTF-16 code units, so a surrogate-pair emoji like 😀 counts as one character and each Han character counts as one character.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'vigenere-cipher',
+    name: '维吉尼亚密码加解密',
+    nameEn: 'Vigenère Cipher',
+    description:
+      '经典 Vigenère 多表替换密码：输入文本与关键词，按字母循环位移完成加解密，保留大小写、非字母字符原样保留。',
+    descriptionEn:
+      'Classic Vigenère polyalphabetic substitution: encrypt or decrypt text with a repeating keyword, preserving case and leaving non-letters untouched.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/vigenere-cipher',
+    iconName: 'KeyRound',
+    tags: ['维吉尼亚', 'Vigenere', '古典密码', '多表替换', '加解密'],
+    tagsEn: ['Vigenere', 'Classical Cipher', 'Polyalphabetic', 'Cryptography'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Hello, World!',
+    doc: {
+      zh: {
+        whatIsIt:
+          '维吉尼亚密码（Vigenère cipher）是一种使用关键词循环位移的多表替换古典密码：明文中每个字母按关键词对应字母在字母表中的位置位移，加密公式 Ci=(Pi+Ki) mod 26，解密则反向减去。本工具在浏览器本地完成加解密，保留原文本大小写，数字、标点、空格与中文等非字母字符原样保留且不消耗密钥位。',
+        coreFeatures: [
+          '双向变换：一键在加密（明文→密文）与解密（密文→明文）间切换',
+          '循环密钥：关键词短于文本时自动循环复用，长度不限',
+          '大小写保持：大写仍为大写、小写仍为小写，密文大小写跟随原文',
+          '非字母透传：数字、标点、空白、中文原样保留，且不推进密钥位置',
+          '严格校验：关键词去除非字母后为空时给出明确错误提示',
+        ],
+        howToUse: [
+          '选择加密或解密方向',
+          '在关键词框输入仅含英文字母的密钥（大小写不敏感，非字母自动忽略）',
+          '在文本框输入明文或密文，结果实时生成，可一键复制',
+        ],
+        useCases: [
+          '古典密码与密码学入门教学，直观理解多表替换与频率分析难点',
+          '解谜游戏、CTF 入门题中的 Vigenère 加解密',
+          '理解 HTTPS / TLS 之前的历史加密手段及其弱点',
+        ],
+        privacyNote:
+          '所有加解密均在本地浏览器完成，文本与密钥不会被上传或记录。维吉尼亚密码不具备现代安全性，切勿用于保护真实敏感信息。',
+        faqs: [
+          {
+            question: '维吉尼亚密码和凯撒密码有什么区别？',
+            answer:
+              '凯撒密码是单表替换，所有字母使用同一个固定位移；维吉尼亚密码是多表替换，每个字母的位移由循环关键词决定（如 LEMON 提供 11/4/12/14/13 的循环位移序列），因此更能抵抗简单的字母频率分析。',
+          },
+          {
+            question: '密钥为什么会循环复用？',
+            answer:
+              '当明文比密钥长时，密钥字母会从头重复使用：例如 KEY 对 7 个字母的位移序列是 K-E-Y-K-E-Y-K。这是经典 Vigenère 的标准规则，也正是其可被 Kasiski / 重合指数分析破解的原因。',
+          },
+          {
+            question: '空格、数字和中文会怎样处理？',
+            answer:
+              '非英文字母字符一律原样输出，并且不会推进密钥位置——即密钥只在遇到 A–Z / a–z 时才消耗一位，这保证加解密对带标点的文本严格往返一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Vigenère cipher is a classical polyalphabetic substitution that shifts each letter by a repeating keyword: encryption is Ci=(Pi+Ki) mod 26 and decryption subtracts the same shifts. This tool runs entirely in the browser, preserves letter case, and passes digits, punctuation, whitespace, and CJK characters through without consuming key positions.',
+        coreFeatures: [
+          'Bidirectional: switch between encryption (plaintext → ciphertext) and decryption',
+          'Repeating key: a keyword shorter than the text is cycled automatically',
+          'Case preserved: uppercase stays uppercase and lowercase stays lowercase',
+          'Non-letters passed through: digits, punctuation, whitespace, and Chinese are untouched and do not advance the key',
+          'Validation: a clear error is shown when the key contains no letters after stripping non-letters',
+        ],
+        howToUse: [
+          'Choose the encrypt or decrypt direction',
+          'Enter a keyword of English letters (case-insensitive; non-letters are ignored)',
+          'Type plaintext or ciphertext; the result updates live and can be copied with one click',
+        ],
+        useCases: [
+          'Teaching classical cryptography and why polyalphabetic ciphers resist simple frequency analysis',
+          'Solving puzzles and introductory CTF challenges involving Vigenère',
+          'Exploring historical encryption and its weaknesses compared with modern TLS',
+        ],
+        privacyNote:
+          'All encryption and decryption run locally in the browser; text and keys are never uploaded or logged. Vigenère is not secure by modern standards and must not protect real sensitive data.',
+        faqs: [
+          {
+            question: 'How is Vigenère different from the Caesar cipher?',
+            answer:
+              'Caesar is monoalphabetic with one fixed shift for every letter. Vigenère is polyalphabetic: each letter is shifted according to a repeating keyword (e.g. LEMON gives the cycle 11/4/12/14/13), which resists simple letter-frequency analysis.',
+          },
+          {
+            question: 'Why is the key repeated?',
+            answer:
+              'When the plaintext is longer than the key, the key cycles from the start: KEY over seven letters gives K-E-Y-K-E-Y-K. This is the standard Vigenère rule and the property exploited by Kasiski / index-of-coincidence attacks.',
+          },
+          {
+            question: 'How are spaces, numbers, and Chinese handled?',
+            answer:
+              'Non-letter characters are emitted unchanged and do not advance the key — a key position is consumed only on A–Z / a–z — so punctuated text round-trips exactly between encryption and decryption.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'midi-note-converter',
+    name: 'MIDI 音符与频率互转计算器',
+    nameEn: 'MIDI Note & Frequency Converter',
+    description:
+      '输入 MIDI 编号、音名（C4/A#4/Bb3）或频率任一项实时互转，支持自定义 A4 基准频率（如 432Hz），附八度 12 音频率表。',
+    descriptionEn:
+      'Convert between MIDI numbers, note names (C4/A#4/Bb3), and frequencies in real time with a customizable A4 reference (e.g. 432Hz), plus a 12-tone octave frequency table.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/midi-note-converter',
+    iconName: 'Music',
+    tags: ['MIDI', '音符', '频率', '十二平均律', '调音'],
+    tagsEn: ['MIDI', 'Note', 'Frequency', 'Equal Temperament', 'Tuning'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '69',
+    doc: {
+      zh: {
+        whatIsIt:
+          'MIDI 音符与频率互转计算器基于十二平均律公式 f = A4 × 2^((MIDI − 69) / 12)，输入 MIDI 编号（0–127）、音名（如 C4、A#4、Bb3）或频率（Hz）任一项，即可实时得到其余两项，并显示频率模式下与最近音符的音分偏差；支持自定义 A4 基准频率（国际标准 440Hz，亦可选 432Hz 等），还可展开任意八度（-1–9）的 12 音频率表。全部计算在浏览器本地完成。',
+        coreFeatures: [
+          '三向互转：MIDI 编号、音名、频率任输入一项实时得到其余结果',
+          '升降号兼容：音名支持 A#4 / Bb3 等升号与降号写法，大小写不敏感',
+          '自定义 A4：修改基准频率（如 432Hz）后所有换算与八度表同步更新',
+          '音分偏差：频率模式给出与最近音符的 cents 偏差，便于调音与误差分析',
+          '八度频率表：C 到 B 共 12 个半音的 MIDI 编号与精确频率一览',
+        ],
+        howToUse: [
+          '选择输入方式：MIDI 编号、音名或频率 (Hz)',
+          '在输入框中键入数值，结果卡片实时刷新',
+          '需要非标准定调时修改 A4 基准频率；在八度表中切换八度查看 12 音',
+        ],
+        useCases: [
+          '音乐制作与编曲时查 MIDI 音符编号、核对音名与频率',
+          '乐器 / 合成器调音，分析测量频率与标准音高的音分偏差',
+          '嵌入式音频与 DSP 开发中由 MIDI note 计算振荡器频率',
+        ],
+        privacyNote:
+          '所有换算均在本地浏览器完成，不涉及任何网络请求或数据上传。',
+        faqs: [
+          {
+            question: '为什么 MIDI 69 是 A4？',
+            answer:
+              'MIDI 标准将 88 键钢琴中央 C 上方的 A 定为编号 69，即 A4（440Hz 国际标准音高）；中央 C 为编号 60（C4）。每增加 1 编号升高一个半音，故 70 为 A#4。',
+          },
+          {
+            question: '十二平均律的频率公式是什么？',
+            answer:
+              'f = A4 × 2^((MIDI − 69) / 12)：每 12 个半音频率翻倍（一个八度），相邻半音频率比恒为 2^(1/12) ≈ 1.05946，例如 MIDI 70 ≈ 466.16Hz。',
+          },
+          {
+            question: '自定义 432Hz 基准有什么作用？',
+            answer:
+              '部分乐手偏好以 A4 = 432Hz 而非 440Hz 定调。修改基准后 MIDI 69 即对应 432Hz，所有音符频率与八度表按比例变化；也可用于分析一段 432Hz 音频在标准 440Hz 体系下偏低约 31.77 音分。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The MIDI Note & Frequency Converter uses the equal-temperament formula f = A4 × 2^((MIDI − 69) / 12). Enter any one of a MIDI number (0–127), note name (e.g. C4, A#4, Bb3), or frequency (Hz) to instantly obtain the others, including the cents offset in frequency mode. The A4 reference is customizable (440Hz standard or 432Hz), and any octave (-1–9) can be expanded into a 12-tone frequency table. Everything is computed locally in the browser.',
+        coreFeatures: [
+          'Three-way conversion: enter MIDI number, note name, or frequency and get the rest live',
+          'Accidentals supported: sharp (A#4) and flat (Bb3) spellings, case-insensitive',
+          'Custom A4: changing the reference (e.g. 432Hz) updates all results and the octave table',
+          'Cents offset: frequency mode shows deviation from the nearest note for tuning analysis',
+          'Octave table: MIDI numbers and exact frequencies for all 12 semitones C through B',
+        ],
+        howToUse: [
+          'Choose an input mode: MIDI number, note name, or frequency (Hz)',
+          'Type a value; the result cards update in real time',
+          'Change the A4 reference for alternate pitch standards and switch octaves in the table',
+        ],
+        useCases: [
+          'Looking up MIDI numbers and note frequencies while producing or arranging music',
+          'Tuning instruments and synthesizers by analyzing cents deviation from standard pitch',
+          'Computing oscillator frequencies from MIDI notes in embedded audio and DSP development',
+        ],
+        privacyNote:
+          'All conversions run locally in your browser with no network requests or uploads.',
+        faqs: [
+          {
+            question: 'Why is MIDI 69 A4?',
+            answer:
+              'The MIDI standard assigns number 69 to the A above middle C, A4 (440Hz concert pitch); middle C is number 60 (C4). Each increment raises pitch by one semitone, so 70 is A#4.',
+          },
+          {
+            question: 'What is the equal-temperament frequency formula?',
+            answer:
+              'f = A4 × 2^((MIDI − 69) / 12): every 12 semitones doubles the frequency (one octave), and the semitone ratio is always 2^(1/12) ≈ 1.05946, so MIDI 70 ≈ 466.16Hz.',
+          },
+          {
+            question: 'Why use a 432Hz reference?',
+            answer:
+              'Some musicians tune to A4 = 432Hz instead of 440Hz. With that reference MIDI 69 maps to 432Hz and every frequency scales accordingly; it also shows that a 432Hz tone sits about 31.77 cents flat in the standard 440Hz system.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'rgb565-converter',
+    name: 'RGB565 / RGB555 嵌入式颜色格式转换器',
+    nameEn: 'RGB565 / RGB555 Embedded Color Converter',
+    description:
+      '在 #RRGGBB 与 16 位帧缓冲像素（RGB565 / RGB555）之间批量双向转换，输出大小端字节序、C 字面量与 HIGH/LOW 字节拆分，反向还原量化色差。',
+    descriptionEn:
+      'Batch-convert between #RRGGBB and 16-bit framebuffer pixels (RGB565 / RGB555) with big/little endian bytes, C literals, HIGH/LOW byte split, and reverse RGB888 reconstruction with quantization delta.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/rgb565-converter',
+    iconName: 'Layers',
+    tags: ['RGB565', 'RGB555', '嵌入式', '帧缓冲', '字节序'],
+    tagsEn: ['RGB565', 'RGB555', 'Embedded', 'Framebuffer', 'Endian'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '#3B82F6',
+    doc: {
+      zh: {
+        whatIsIt:
+          'RGB565 / RGB555 嵌入式颜色格式转换器面向单片机、LCD 驱动与帧缓冲开发：把 24 位 RGB888（#RRGGBB）打包为 16 位像素值（ST7735 / ILI9341 等 TFT 屏常用的 RGB565，或各通道 5 位的 RGB555），输出 0x 开头的 C 语言十六进制字面量、HIGH_BYTE / LOW_BYTE 拆分以及大端 / 小端两种字节序；反向可把调试器中的 16 位像素值还原为最接近的 RGB888 并给出量化色差。支持每行一个颜色的批量转换，全部为本地位运算。',
+        coreFeatures: [
+          '两种位布局：RGB565（红 5 / 绿 6 / 蓝 5）与 RGB555（各 5 位、最高位未用）',
+          '字节序可选：大端高位在前、小端低位在前，并拆分 HIGH_BYTE / LOW_BYTE',
+          '批量转换：每行一个值，空行跳过，单行非法仅该行报错不影响其他行',
+          '反向还原：位域低位补 1 扩展（5 位 OR 0x07、6 位 OR 0x03）并显示 RGB 色差 Δ',
+          '输入宽松：颜色可省略 #，像素值可省略 0x，大小写不敏感',
+        ],
+        howToUse: [
+          '选择模式（正向 #RRGGBB→16 位 / 反向 16 位→#RRGGBB）、像素格式与字节序',
+          '在左侧文本框每行粘贴一个颜色或像素值，结果与逐行明细实时刷新',
+          '点击复制结果获取一列字面量或颜色，HIGH/LOW 字节可直接用于取模代码',
+        ],
+        useCases: [
+          '为 ST7735 / ILI9341 等 TFT 屏编写配色表与取模代码',
+          '对着调试器 / 逻辑分析仪中的像素值反查实际颜色',
+          '核对帧缓冲大小端布局与 DMA 字节序，排查花屏问题',
+        ],
+        privacyNote:
+          '所有转换均在浏览器本地完成，仅涉及位运算，不发起任何网络请求或数据上传。',
+        faqs: [
+          {
+            question: 'RGB565 与 RGB555 的位布局有什么区别？',
+            answer:
+              'RGB565 共 16 位全部使用：bit15–11 红 5 位、bit10–5 绿 6 位、bit4–0 蓝 5 位，绿色通道精度更高，是 TFT 屏的主流格式；RGB555 三个通道各占 5 位，最高位 bit15 未使用（有时作为 a 透明位），故白色编码为 0x7FFF 而非 0xFFFF。',
+          },
+          {
+            question: '大端和小端如何选择？',
+            answer:
+              '大端（高位在前）把像素 0xF800 存为字节 F8 00，小端（低位在前）存为 00 F8。大多数 SPI TFT 屏按大端（高位字节先发）配置；若屏幕显示红蓝错位或颜色异常，可切换字节序核对，HIGH_BYTE 与 LOW_BYTE 列给出确定的两个字节。',
+          },
+          {
+            question: '为什么反向还原的颜色与原色不完全一致？',
+            answer:
+              '16 位像素每个通道只有 5–6 位精度，打包时低位被丢弃（量化）。还原时对低位补 1（5 位用 0b111、6 位用 0b11）可使误差最小且纯白恰好还原为 255，但像纯红 0xF800 会还原为 #FF0307，与 #FF0000 存在轻微色差，色差 Δ 列以 RGB 欧氏距离量化该误差。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The RGB565 / RGB555 Embedded Color Converter targets MCU, LCD driver, and framebuffer development: pack 24-bit RGB888 (#RRGGBB) into 16-bit pixels (RGB565 used by ST7735/ILI9341 TFT panels, or 5-bit-per-channel RGB555), producing C hex literals, HIGH_BYTE/LOW_BYTE split, and big/little endian byte order. It also decodes 16-bit values from a debugger back to the nearest RGB888 with a quantization color delta. Batch conversion takes one value per line and everything is local bit math.',
+        coreFeatures: [
+          'Two bit layouts: RGB565 (5/6/5) and RGB555 (5 bits each, top bit unused)',
+          'Selectable endianness: big-endian high byte first or little-endian low byte first, plus HIGH/LOW bytes',
+          'Batch mode: one value per line, blank lines skipped, a bad line is flagged without blocking others',
+          'Reverse decode: bit fields are expanded by filling low bits (5-bit OR 0x07, 6-bit OR 0x03) with RGB delta',
+          'Lenient input: # and 0x prefixes optional, case-insensitive',
+        ],
+        howToUse: [
+          'Pick the mode (#RRGGBB→16-bit or 16-bit→#RRGGBB), pixel format, and endianness',
+          'Paste one color or pixel value per line in the left textarea; the result and per-row table update live',
+          'Use copy result to get a column of literals or colors, and HIGH/LOW bytes directly in pixel-setup code',
+        ],
+        useCases: [
+          'Building color tables and pixel-setup code for ST7735 / ILI9341 TFT displays',
+          'Looking up the real color behind pixel values seen in a debugger or logic analyzer',
+          'Verifying framebuffer endianness and DMA byte order when debugging garbled colors',
+        ],
+        privacyNote:
+          'All conversions run locally in your browser using only bit operations, with no network requests or uploads.',
+        faqs: [
+          {
+            question: 'What is the bit-layout difference between RGB565 and RGB555?',
+            answer:
+              'RGB565 uses all 16 bits: red 5 bits (15–11), green 6 bits (10–5), blue 5 bits (4–0), giving green more precision; it is the mainstream TFT format. RGB555 gives each channel 5 bits and leaves bit15 unused (sometimes an alpha flag), so white encodes as 0x7FFF instead of 0xFFFF.',
+          },
+          {
+            question: 'How do I choose big-endian or little-endian?',
+            answer:
+              'Big-endian stores 0xF800 as bytes F8 00 (high byte first); little-endian stores 00 F8. Most SPI TFT panels expect the high byte first. If colors look swapped or garbled, toggle the endianness; the HIGH_BYTE and LOW_BYTE columns always show the exact two bytes.',
+          },
+          {
+            question: 'Why does decoding not reproduce the original color exactly?',
+            answer:
+              'A 16-bit pixel keeps only 5–6 bits per channel, so low bits are dropped when packing. Decoding fills the low bits with ones (0b111 for 5-bit, 0b11 for 6-bit) to minimize error and make pure white decode to 255, but pure red 0xF800 decodes to #FF0307, slightly off #FF0000. The delta column quantifies that error as RGB Euclidean distance.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -102,9 +102,9 @@
 | 20261023040531 | SVG 源码预览与 PNG 导出 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023040531.md) |
 | 20261023040532 | CSS @keyframes 动画生成器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023040532.md) |
 | 20261023040533 | 排列组合计算器 | Web Tool | Exploration | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023040533.md) |
-| 20261023040534 | Quoted-Printable 编解码器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023040534.md) |
+| 20261023040534 | Quoted-Printable 编解码器 | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023040534.md) |
 | 20261023040535 | nginx server 配置生成器 | Web Tool | External Reference | Pending | 2026-10-23 | | [详情](./idea-details/20261023040535.md) |
-| 20261023040536 | 文本信息熵计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023040536.md) |
+| 20261023040536 | 文本信息熵计算器 | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023040536.md) |
 | 20261023040537 | Geohash 编解码器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023040537.md) |
 | 20261023040539 | ISBN-10 ↔ ISBN-13 校验与互转 | Web Tool | Exploration | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023040539.md) |
 | 20261023081551 | 文本模式批量提取器（邮箱 / URL / IP / UUID 等常用模式） | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023081551.md) |
@@ -112,7 +112,7 @@
 | 20261023081553 | IPv4 / IPv6 地址与整数 / 十六进制互转 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023081553.md) |
 | 20261023081554 | UUID v7 生成器（RFC 9562） | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023081554.md) |
 | 20261023081556 | CHANGELOG.md 生成器（Keep a Changelog） | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023081556.md) |
-| 20261023141141 | MIDI 音符与频率互转计算器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023141141.md) |
+| 20261023141141 | MIDI 音符与频率互转计算器 | Web Tool | Exploration | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023141141.md) |
 | 20261023141142 | CSS transform 矩阵计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141142.md) |
 | 20261023141143 | 日出日落与晨昏时刻计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141143.md) |
 | 20261023141144 | 屏幕 PPI / 像素密度计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141144.md) |
@@ -124,7 +124,7 @@
 | 20261026020135 | 统一社会信用代码校验与解析器 | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026020135.md) |
 | 20261026020136 | WGS-84 / GCJ-02 / BD-09 坐标系互转器 | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026020136.md) |
 | 20261026020137 | 密码学安全随机整数 / 抽签 / 分组 / 洗牌工具 | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026020137.md) |
-| 20261026020138 | Vigenère 维吉尼亚密码加解密 | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026020138.md) |
+| 20261026020138 | Vigenère 维吉尼亚密码加解密 | Web Tool | Exploration | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026020138.md) |
 | 20261026020139 | JSON ↔ JSON Lines（NDJSON）互转器 | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026020139.md) |
 | 20261026082024 | Nano ID 字符串标识符生成器 | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026082024.md) |
 | 20261026082025 | Base45（RFC 9285）编解码器 | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026082025.md) |
@@ -136,7 +136,7 @@
 | 20261026140925 | 日期时间差计算与日期加减计算器 | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026140925.md) |
 | 20261026140926 | 换行符检测与批量转换器（LF / CRLF / CR） | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026140926.md) |
 | 20261026140927 | 知名 TCP/UDP 端口号速查表 | Web Tool | External Reference | Pending | 2026-10-26 | | [详情](./idea-details/20261026140927.md) |
-| 20261026200346 | RGB565 / RGB555 嵌入式颜色格式转换器 | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026200346.md) |
+| 20261026200346 | RGB565 / RGB555 嵌入式颜色格式转换器 | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026200346.md) |
 | 20261026200347 | 电阻器色环计算器（4 / 5 / 6 环双向） | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026200347.md) |
 | 20261026200348 | 化学式摩尔质量计算器 | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026200348.md) |
 | 20261026200349 | 线性代数矩阵计算器（乘法 / 行列式 / 逆 / 秩 / RREF） | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026200349.md) |

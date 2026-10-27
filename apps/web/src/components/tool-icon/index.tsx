@@ -1,4 +1,5 @@
 import {
+  Binary,
   Blend,
   Braces,
   Calculator,
@@ -11,14 +12,17 @@ import {
   Fingerprint,
   Gauge,
   Image,
+  KeyRound,
   Layers,
   LayoutGrid,
   MoonStar,
+  Music,
   Palette,
   Pipette,
   QrCode,
   ShieldCheck,
   Shuffle,
+  Sigma,
   Snowflake,
   Sparkles,
   Tags,
@@ -54,6 +58,10 @@ const toolIconMap = {
   Snowflake,
   Calculator,
   Type,
+  Binary,
+  Sigma,
+  KeyRound,
+  Music,
 };
 
 /**
