@@ -146,7 +146,7 @@
 | 20261027081101 | 文件魔数（Magic Number）签名识别器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027081101.md) |
 | 20261027081102 | 线性回归与相关系数计算器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027081102.md) |
 | 20261027081103 | 个人所得税计算器（工资薪金 / 年终奖） | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027081103.md) |
-| 20261027081104 | JSON Merge Patch（RFC 7386 / 7396）生成与应用器 | Web Tool | Existing Gap | Claimed | 2026-10-27 | trae-agent | [详情](./idea-details/20261027081104.md) |
+| 20261027081104 | JSON Merge Patch（RFC 7386 / 7396）生成与应用器 | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027081104.md) |
 | 20261027081105 | RSS / Atom Feed 生成器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027081105.md) |
 | 20261027081106 | 正则批量查找替换工具 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027081106.md) |
 | 20261027140130 | Unicode 规范化转换器（NFC / NFD / NFKC / NFKD） | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027140130.md) |

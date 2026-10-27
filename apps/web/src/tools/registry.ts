@@ -7811,6 +7811,107 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'json-merge-patch',
+    name: 'JSON Merge Patch 生成与应用器（RFC 7386）',
+    nameEn: 'JSON Merge Patch Generator & Applier (RFC 7386)',
+    description:
+      '按 RFC 7386 / 7396 语义将 merge patch 应用到 JSON 文档，或在两个 JSON 文档之间生成最小补丁（null 表示删除键），错误带行列定位，结果一键复制。',
+    descriptionEn:
+      'Apply a merge patch to a JSON document or generate a minimal patch between two documents per RFC 7386/7396 (null deletes a key), with line/column-aware errors and one-click copy.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-merge-patch',
+    iconName: 'Braces',
+    tags: ['JSON', 'Merge Patch', 'RFC 7386', 'PATCH', 'API 调试'],
+    tagsEn: ['JSON', 'Merge Patch', 'RFC 7386', 'PATCH', 'API Debugging'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '{\n  "title": "Goodbye!",\n  "author": {\n    "givenName": "John",\n    "familyName": "Doe"\n  },\n  "tags": ["example", "sample"],\n  "content": "This will be unchanged"\n}',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON Merge Patch 工具实现 RFC 7386 定义的 merge patch 格式：补丁文档模仿原文档的结构，逐键描述修改——值为 null 表示删除该键，双方都是对象则递归合并，其余情况整体替换，数组按整体替换处理。既可把现成补丁应用到原文档查看结果，也可对比原文档与目标文档自动生成满足 RFC 7396 语义的最小补丁，直接用于 HTTP PATCH 请求。',
+        coreFeatures: [
+          '双模式：应用补丁（apply）与生成补丁（generate）',
+          '严格 RFC 7386 递归语义：null 删除键、对象递归合并、数组 / 标量整体替换',
+          '生成最小补丁：applyPatch(原文, 生成补丁) 与目标文档深度一致',
+          '错误可定位：非法 JSON 报告具体行列号，不产生静默结果',
+          '零依赖本地运算，覆盖 RFC 7386 附录 A 全部官方测试向量',
+        ],
+        howToUse: [
+          '选择模式：应用补丁时左栏填原文档、右栏填 merge patch；生成补丁时右栏填目标文档',
+          '结果栏实时展示应用结果或生成的补丁 JSON（2 空格缩进），可一键复制',
+          '点击「载入示例」查看 RFC 官方示例；删除键时在补丁里把该键值写为 null',
+        ],
+        useCases: [
+          '构造并调试 application/merge-patch+json 类型的 HTTP PATCH 请求体',
+          '对比两份配置 / 接口响应，快速生成只含差异的最小更新文档',
+          '学习 RFC 7386 语义，验证服务端 merge patch 实现是否符合附录 A 向量',
+        ],
+        privacyNote:
+          '所有 JSON 解析与补丁运算均在浏览器本地完成，文档内容不会上传或离开当前页面。',
+        faqs: [
+          {
+            question: '补丁里的 null 是什么含义？如何把一个键更新为 null？',
+            answer:
+              '在 merge patch 中，键值为 null 专门表示「删除目标对象的这个键」。因此 merge patch 无法表达「把值更新为 null」这一操作——这是 RFC 7386 的有意设计，它建议只对不使用显式 null 值的文档采用 merge patch；需要区分两种语义时应改用 JSON Patch（RFC 6902）。',
+          },
+          {
+            question: '为什么数组是整体替换而不是按元素合并？',
+            answer:
+              'RFC 7386 明确规定补丁不是对象时整体替换目标，而数组不是「对象」：合并算法无法判断你是想按下标改元素、插入、删除还是重排，逐元素猜测会造成歧义。因此要把 [1,2] 改成 [1,3]，补丁必须给出完整的 [1,3]。需要路径级数组操作请使用 RFC 6902。',
+          },
+          {
+            question: 'JSON Merge Patch（RFC 7386）和 JSON Patch（RFC 6902）有什么区别？',
+            answer:
+              'Merge patch 是「声明目标样子」的文档：键值即修改、null 即删除，写法简单但表达力有限，无法操作数组元素或把值设为 null。JSON Patch 是一组有序操作（add/remove/replace/move/copy/test），带 JSON Pointer 路径，能精确操作数组但语法更繁琐。本工具仅支持 merge patch。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool implements the merge patch format defined in RFC 7386: the patch mimics the structure of the original document and describes changes key by key — a null value deletes the key, two objects merge recursively, and anything else (including arrays) is replaced wholesale. Apply an existing patch to see the result, or compare an original with a target to generate the minimal RFC 7396 patch ready to send in an HTTP PATCH request.',
+        coreFeatures: [
+          'Two modes: apply a patch and generate a patch',
+          'Strict RFC 7386 recursion: null deletes, plain objects merge, arrays/scalars replace wholesale',
+          'Minimal patch generation so that applying it to the original deep-equals the target',
+          'Actionable errors: invalid JSON reports the exact line and column with no silent output',
+          'Zero-dependency local computation, covering every official Appendix A test vector',
+        ],
+        howToUse: [
+          'Pick a mode: for apply, put the original on the left and the merge patch on the right; for generate, put the target document on the right',
+          'The result panel shows the applied result or generated patch as 2-space-indented JSON, copyable in one click',
+          'Use "Load sample" for the canonical RFC example; to delete a key, set it to null in the patch',
+        ],
+        useCases: [
+          'Building and debugging HTTP PATCH bodies of type application/merge-patch+json',
+          'Diffing two configs or API responses into a minimal update document',
+          'Learning RFC 7386 semantics and validating a server implementation against Appendix A',
+        ],
+        privacyNote:
+          'All JSON parsing and patching runs locally in your browser; document content is never uploaded and never leaves the page.',
+        faqs: [
+          {
+            question: 'What does null in a patch mean? How do I set a key to null?',
+            answer:
+              'In a merge patch, a key whose value is null specifically means "remove this key from the target". A merge patch therefore cannot express "change the value to null" — this is intentional in RFC 7386, which recommends merge patch only for documents without explicit null values. If you need to distinguish the two, use JSON Patch (RFC 6902) instead.',
+          },
+          {
+            question: 'Why are arrays replaced wholesale instead of merged element by element?',
+            answer:
+              'RFC 7386 states that a non-object patch replaces the target entirely, and arrays are not "objects": the algorithm cannot tell whether you meant to edit by index, insert, delete, or reorder, so guessing would be ambiguous. To change [1,2] into [1,3], the patch must supply the full [1,3]. For path-level array operations, use RFC 6902.',
+          },
+          {
+            question: 'How does JSON Merge Patch (RFC 7386) differ from JSON Patch (RFC 6902)?',
+            answer:
+              'A merge patch is a document declaring the desired shape: values are edits and null means delete — simple but limited, with no array-element operations and no way to set a value to null. JSON Patch is an ordered list of operations (add/remove/replace/move/copy/test) with JSON Pointer paths, precise for arrays but more verbose. This tool supports merge patch only.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
