@@ -8310,6 +8310,104 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'ohms-law-calculator',
+    name: '欧姆定律与功率计算器（V / I / R / P 知二求二）',
+    nameEn: 'Ohm\'s Law & Power Calculator (Solve V / I / R / P)',
+    description:
+      '输入电压 V、电流 I、电阻 R、功率 P 中任意两个量，自动联立求解其余两个量（V=I·R、P=V·I=I²R=V²/R），展示所用公式与自适应单位换算；R、P 组合开方给出正负极性双解，并对零除、负功率/电阻等物理无意义输入给出明确提示。',
+    descriptionEn:
+      'Enter any two of voltage V, current I, resistance R and power P to solve the other two using V=I·R and P=V·I=I²R=V²/R, with formulas and auto unit conversion. The R/P combination shows both positive and negative square-root solutions, while division by zero and negative power/resistance are clearly rejected.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/ohms-law-calculator',
+    iconName: 'Gauge',
+    tags: ['欧姆定律', '功率', '电阻', '电压', '电流', '电子', '硬件'],
+    tagsEn: ['Ohm\'s Law', 'Power', 'Resistance', 'Voltage', 'Current', 'Electronics', 'Hardware'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '5 V,1 kΩ',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具联立求解欧姆定律 V = I·R 与功率方程 P = V·I = I²·R = V²/R：给定电压、电流、电阻、功率中的任意两个已知量，即可求出其余两个量，标注每个结果所用的公式，并在 V/mV、A/mA、Ω/kΩ/MΩ、W/mW/kW 之间自动换算。所有计算在浏览器本地完成。',
+        coreFeatures: [
+          '知二求二：六种已知量组合全部支持，结果标注推导公式',
+          '单位换算：每个量带单位下拉，统一换算到基准单位求解并自适应展示',
+          '双解提示：仅给 R、P 需要开方时，同时给出正、负极性数学解',
+          '严格校验：零除、负电阻/负功率、过定或不足的输入均给出明确错误',
+        ],
+        howToUse: [
+          '在电压、电流、电阻、功率四个输入框中恰好填写两个，可使用右侧下拉切换单位',
+          '其余两个量即时自动求解，表格显示自适应单位值、基准单位值与公式',
+          '需要开方的组合会在结果下方展示负极性解；也可点击示例预设快速体验',
+        ],
+        useCases: [
+          '估算 LED 限流电阻阻值与功耗（如 5V 供电、1kΩ 电阻的电流与功率）',
+          '调试电源与负载：由额定电压 / 功率推算工作电流与等效电阻',
+          '电子教学：直观对照 V、I、R、P 四个量之间的换算关系',
+        ],
+        privacyNote:
+          '全部为浏览器本地同步运算，电路参数不会离开设备，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么有时会出现正、负两个解？',
+            answer:
+              '当只给定电阻 R 与功率 P 时，V = ±√(P·R)、I = ±√(P/R) 在数学上有正负极性两组解，分别代表相反的电压 / 电流方向。常规直流电路取正极性解，工具同时展示负解以保证数学完整性。',
+          },
+          {
+            question: '为什么填三个量反而报错？',
+            answer:
+              '四个量由两条独立方程约束，自由度为 2：恰好两个已知量才能唯一确定其余两个。填三个量构成过定方程组，只有当三者恰好自洽时才有解，因此工具要求只填两个以避免给出与输入矛盾的结果。',
+          },
+          {
+            question: '零电阻（短路）时为什么不能计算？',
+            answer:
+              '理想导体 R = 0 时 I = V/R 的电流无界（除以零），仅在 V 也为 0 的退化情形下功率为 0；给定非零电压或非零功率都会产生物理矛盾，工具会明确指出而非给出虚假数值。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool combines Ohm\'s law V = I·R with the power equations P = V·I = I²·R = V²/R: provide any two of voltage, current, resistance and power and the other two are solved with their derivation formulas, converting automatically among V/mV, A/mA, Ω/kΩ/MΩ and W/mW/kW. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Solve two from two: all six input pairs supported, each result labelled with its formula',
+          'Unit conversion: per-field unit dropdowns normalize to base units and format output adaptively',
+          'Dual solutions: the R/P square-root case shows both positive and negative polarities',
+          'Strict validation: division by zero, negative resistance/power and under/over-determined input are clearly reported',
+        ],
+        howToUse: [
+          'Fill exactly two of the four inputs (voltage, current, resistance, power), switching units in the dropdowns',
+          'The other two quantities are solved instantly; the table shows adapted units, base units and formulas',
+          'Square-root cases additionally show the negative solutions below the table; example presets are available',
+        ],
+        useCases: [
+          'Estimate an LED current-limiting resistor and its dissipation (e.g. 5V across 1kΩ)',
+          'Debug power supplies and loads: derive operating current and equivalent resistance from ratings',
+          'Electronics education: see the V/I/R/P relationships side by side',
+        ],
+        privacyNote:
+          'Everything is computed synchronously and locally in your browser; circuit values never leave your device and no network requests are made.',
+        faqs: [
+          {
+            question: 'Why are there sometimes positive and negative solutions?',
+            answer:
+              'With only R and P given, V = ±√(P·R) and I = ±√(P/R) have two mathematical polarities representing opposite voltage/current directions. Ordinary DC circuits take the positive solution; the negative one is shown for mathematical completeness.',
+          },
+          {
+            question: 'Why does filling three quantities raise an error?',
+            answer:
+              'The four quantities are constrained by two independent equations, leaving two degrees of freedom: exactly two known values uniquely determine the rest. Three values over-determine the system and are only consistent if they happen to agree, so the tool requires exactly two inputs to avoid contradictory output.',
+          },
+          {
+            question: 'Why can\'t a zero-resistance short circuit be calculated?',
+            answer:
+              'With ideal R = 0 the current I = V/R is unbounded (division by zero); only the degenerate V = 0 case yields zero power. A nonzero voltage or power with R = 0 is physically impossible, so the tool reports it instead of returning bogus numbers.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -107,4 +107,5 @@ export const toolLoaders: Record<
   'ieee754-float-converter': () => import('./ieee754-float-converter'),
   'secure-random-picker': () => import('./secure-random-picker'),
   'bech32-codec': () => import('./bech32-codec'),
+  'ohms-law-calculator': () => import('./ohms-law-calculator'),
 };
