@@ -14,3 +14,8 @@
 | 20261018000144 | ISO 8601 时长解析与格式化 | Web Tool | Exploration | `iso8601-duration` / [PR #73](https://github.com/Happyileaf/tool-craft/pull/73) | 2026-10-27 | [详情](./idea-details/20261018000144.md) |
 | 20261018000150 | 宽高比计算器 | Web Tool | Exploration | `aspect-ratio-calculator` / [PR #73](https://github.com/Happyileaf/tool-craft/pull/73) | 2026-10-27 | [详情](./idea-details/20261018000150.md) |
 | 20261023040538 | NATO 音标字母转换器 | Web Tool | Exploration | `nato-phonetic-converter` / [PR #73](https://github.com/Happyileaf/tool-craft/pull/73) | 2026-10-27 | [详情](./idea-details/20261023040538.md) |
+| 20261023040534 | Quoted-Printable 编解码器 | Web Tool | Existing Gap | `quoted-printable-codec` / [PR #76](https://github.com/Happyileaf/tool-craft/pull/76) | 2026-10-27 | [详情](./idea-details/20261023040534.md) |
+| 20261023040536 | 文本信息熵计算器 | Web Tool | Existing Gap | `text-entropy-calculator` / [PR #76](https://github.com/Happyileaf/tool-craft/pull/76) | 2026-10-27 | [详情](./idea-details/20261023040536.md) |
+| 20261026020138 | Vigenère 维吉尼亚密码加解密 | Web Tool | Exploration | `vigenere-cipher` / [PR #76](https://github.com/Happyileaf/tool-craft/pull/76) | 2026-10-27 | [详情](./idea-details/20261026020138.md) |
+| 20261023141141 | MIDI 音符与频率互转计算器 | Web Tool | Exploration | `midi-note-converter` / [PR #76](https://github.com/Happyileaf/tool-craft/pull/76) | 2026-10-27 | [详情](./idea-details/20261023141141.md) |
+| 20261026200346 | RGB565 / RGB555 嵌入式颜色格式转换器 | Web Tool | Existing Gap | `rgb565-converter` / [PR #76](https://github.com/Happyileaf/tool-craft/pull/76) | 2026-10-27 | [详情](./idea-details/20261026200346.md) |
