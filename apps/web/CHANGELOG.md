@@ -4,13 +4,18 @@
 
 ## 日志
 
-## 2026-10-28 ：【Agent自主迭代】新增 5 个随机抽签、编码、电学计算、开发调试与字符集工具
+## 2026-10-28 ：【Agent自主迭代】新增 10 个随机抽签、编码、电学、调试、字符集、协议、颜色与配置工具
 
 - **新增**：密码学安全随机工具（secure-random-picker）— 基于 crypto.getRandomValues 拒绝采样的无偏随机整数、抽签、随机分组与列表 Fisher–Yates 洗牌，支持自定义区间、数量、允许重复开关与分组均分
 - **新增**：Bech32 / Bech32m 编解码器（bech32-codec）— 按 BIP-173 / BIP-350 在 HRP 与数据间双向转换，自动校验并区分两种校验和常数，覆盖 SegWit 地址等官方测试向量
 - **新增**：欧姆定律与功率计算器（ohms-law-calculator）— 输入 V / I / R / P 中任意两个联立求解其余两个，标注推导公式、自适应单位换算，R/P 组合给出正负极性双解并拒绝零除等物理矛盾
 - **新增**：Cookie 字符串解析与生成器（cookie-parser）— Cookie 请求头与可编辑名值对表格双向转换（可选 URL 编解码），按 RFC 6265 生成 / 回填 Set-Cookie 全属性并校验 SameSite=None 必须配 Secure
 - **新增**：ASCII 码表查询器（ascii-table）— 完整 0–127 码位的 Dec/Hex/Oct/Bin/Char/缩写/说明对照，字符与码位双向检索、分类与关键字筛选、Ctrl 组合键速查及点击行复制
+- **新增**：Base62 编解码器（base62-codec）— 文本 / 字节与 Base62 间双向编解码，支持默认与 GMP 两种字母表、原始字节与整数模式、分组批量处理及字符级错误定位
+- **新增**：Varint 编解码器（varint-codec）— Protobuf LEB128 无符号 / ZigZag 有符号变长整数与十六进制、字节列表互转，逐字节展示延续位与载荷位拼接，覆盖边界值与非法编码诊断
+- **新增**：HTTP 状态码速查（http-status-codes）— 按 1xx–5xx 分类速查 IANA 常见状态码（100–511）的中英文名称、典型场景、排错建议与重试指引，支持编号前缀与中英文关键词实时检索
+- **新增**：RGB / CMYK 色彩转换器（rgb-cmyk-converter）— 屏幕色 RGB / HEX 与印刷四色 CMYK 按标准 black-generation 公式双向实时换算，同步 HSL 与色块预览，滑块 / 数字 / 原生取色器联动并内联报错
+- **新增**：.env 配置格式转换器（env-converter）— dotenv / JSON / 扁平 YAML / shell export 四格式实时互转，支持引号转义、注释、export 前缀与值内含 =，非法键名等错误带行号、重复键告警
 
 ## 2026-10-27 ：【Agent自主迭代】新增 20 个文本规范化、数值转换、开发计算、编码密码、地理坐标、浮点调试、音乐与嵌入式颜色工具
 
