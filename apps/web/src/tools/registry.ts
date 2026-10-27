@@ -8112,6 +8112,106 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'secure-random-picker',
+    name: '密码学安全随机工具（抽签 / 分组 / 洗牌）',
+    nameEn: 'Secure Random Picker (Draw / Group / Shuffle)',
+    description:
+      '基于浏览器 crypto.getRandomValues 的无偏随机：区间随机整数（拒绝采样消除取模偏置）、名单不放回抽签、随机均分分组与 Fisher–Yates 洗牌，适合抽奖、随机分组与随机排序。',
+    descriptionEn:
+      'Unbiased randomness powered by crypto.getRandomValues: ranged integers with rejection sampling (no modulo bias), no-replacement draws, balanced random grouping and Fisher–Yates shuffling for raffles, team assignment and random ordering.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/secure-random-picker',
+    iconName: 'Shuffle',
+    tags: ['随机数', '抽签', '抽奖', '随机分组', '洗牌', 'CSPRNG'],
+    tagsEn: ['Random', 'Raffle', 'Draw', 'Random Group', 'Shuffle', 'CSPRNG'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '张三\n李四\n王五\n赵六\n钱七\n孙八',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具基于浏览器原生 Web Crypto（crypto.getRandomValues，CSPRNG）提供密码学安全的随机选择与排列：区间随机整数采用拒绝采样，避免区间长度不是 2 的幂时的取模偏置；抽签、分组与洗牌均建立在无偏 Fisher–Yates 之上，所有运算在本地完成。',
+        coreFeatures: [
+          '随机整数：闭区间 [min, max] 内生成，支持允许 / 不允许重复，拒绝采样保证每个整数等概率',
+          '抽签：从名单中不放回抽取指定数量，结果无重复',
+          '随机分组：Fisher–Yates 洗牌后均分到指定组数，各组人数相差至多 1',
+          '列表洗牌：完整无偏 Fisher–Yates，返回打乱后的顺序',
+          '使用 crypto.getRandomValues 而非 Math.random()，适合需要公正性的抽奖与分组场景',
+        ],
+        howToUse: [
+          '选择模式（随机整数 / 抽签 / 随机分组 / 洗牌）',
+          '随机整数模式填写最小、最大值与数量；其余模式在文本框中每行填写一个候选项',
+          '点击「生成随机结果」，结果可一键复制',
+        ],
+        useCases: [
+          '抽奖 / 抽签：从参与者名单中公正地抽出中奖者',
+          '随机分组：会议、课堂、比赛中把名单随机均分为若干组',
+          '生成不偏不倚的随机整数序列，或把播放 / 答题列表随机排序',
+        ],
+        privacyNote:
+          '全部随机过程在浏览器本地通过 Web Crypto 完成，候选名单与结果不会上传或离开当前页面。',
+        faqs: [
+          {
+            question: '为什么不用 Math.random()？',
+            answer:
+              'Math.random() 是伪随机数，各浏览器实现不提供密码学安全保证，不适合抽奖等需要防预测、防操纵的场景。crypto.getRandomValues 由操作系统的 CSPRNG 提供熵，可用于安全敏感用途。',
+          },
+          {
+            question: '什么是「取模偏置」？如何消除？',
+            answer:
+              '把 [0,2³²) 的随机数直接对区间长度 n 取模时，只有当 n 整除 2³² 时每个结果才等概率；否则区间头部的结果概率略高。本工具采用拒绝采样：丢弃落在「不完整尾部」的随机数后重新生成，严格保证均匀分布。',
+          },
+          {
+            question: '抽签结果可以重复吗？',
+            answer:
+              '抽签为不放回抽样，同一个候选项最多出现一次，因此抽取数量不能超过候选数量。随机分组后所有组的并集恰好等于原名单，不会遗漏或重复。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool builds cryptographically secure random selection and permutation on the native Web Crypto API (crypto.getRandomValues, a CSPRNG). Ranged integers use rejection sampling to avoid modulo bias when the range is not a power of two; draws, grouping and shuffling all run on top of an unbiased Fisher–Yates shuffle. Everything is computed locally.',
+        coreFeatures: [
+          'Ranged integers: inclusive [min, max], with/without duplicates; rejection sampling gives every integer equal probability',
+          'Draw: pick a given number of entries without replacement, never repeating',
+          'Random grouping: Fisher–Yates shuffle then balanced split into N groups, sizes differ by at most one',
+          'List shuffle: a full unbiased Fisher–Yates shuffle returning the new ordering',
+          'Uses crypto.getRandomValues instead of Math.random(), suitable when fairness matters',
+        ],
+        howToUse: [
+          'Choose a mode (integers / draw / random groups / shuffle)',
+          'For integers set min, max and count; for the other modes enter one candidate per line',
+          'Click "Generate" and copy the results with one click',
+        ],
+        useCases: [
+          'Fair raffles and lucky draws from a list of participants',
+          'Splitting attendees or students randomly into balanced groups',
+          'Producing unbiased integer sequences or randomizing playlists / question orders',
+        ],
+        privacyNote:
+          'All randomness is generated locally in your browser via Web Crypto; candidates and results are never uploaded.',
+        faqs: [
+          {
+            question: 'Why not Math.random()?',
+            answer:
+              'Math.random() is a non-cryptographic PRNG with no security guarantee across browsers, so it is unsuitable for raffles that must resist prediction or manipulation. crypto.getRandomValues is seeded by the operating system CSPRNG and is safe for security-sensitive use.',
+          },
+          {
+            question: 'What is modulo bias and how is it removed?',
+            answer:
+              'Reduction of a [0,2³²) draw modulo n is only uniform when n divides 2³²; otherwise lower results are slightly more likely. This tool uses rejection sampling: draws falling in the incomplete tail are discarded and regenerated, guaranteeing a strictly uniform distribution.',
+          },
+          {
+            question: 'Can a draw contain duplicates?',
+            answer:
+              'No. A draw is sampling without replacement, so each candidate appears at most once and the count cannot exceed the candidate count. After random grouping, the union of all groups equals exactly the original list, with neither omission nor duplication.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
