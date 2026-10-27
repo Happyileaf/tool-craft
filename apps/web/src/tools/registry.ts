@@ -8510,6 +8510,106 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'ascii-table',
+    name: 'ASCII 码表查询器（字符 / Dec / Hex / Oct / Bin 对照）',
+    nameEn: 'ASCII Table Lookup (Char / Dec / Hex / Oct / Bin)',
+    description:
+      '完整标准 ASCII（US-ASCII，0–127）码表：逐字符展示十进制、十六进制、八进制、二进制、可打印字符、控制字符缩写（NUL / LF / CR / ESC / DEL 等）与说明；支持字符 ↔ 码位双向检索（65、0x41、41h）、按分类与关键字筛选、Ctrl+A…Ctrl+Z 组合键速查，点击行即可复制。',
+    descriptionEn:
+      'A complete standard ASCII (US-ASCII, 0–127) table showing decimal, hex, octal, binary, printable characters, control-code abbreviations (NUL / LF / CR / ESC / DEL) and descriptions, with bidirectional char/code lookup (65, 0x41, 41h), category and keyword filters, Ctrl+A…Ctrl+Z shortcuts, and click-to-copy rows.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/ascii-table',
+    iconName: 'Type',
+    tags: ['ASCII', '码表', '字符编码', '十六进制', '二进制', '控制字符'],
+    tagsEn: ['ASCII', 'Code Table', 'Character Encoding', 'Hex', 'Binary', 'Control Characters'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0x41',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具提供标准 US-ASCII（码位 0–127）的静态对照码表：每一行给出十进制 Dec、十六进制 Hex、八进制 Oct、七位二进制 Bin、可打印字符、控制字符缩写（NUL、LF、CR、ESC、DEL 等）以及中文说明。支持由字符查码位、由码位反查字符，按分类或关键字筛选，并提供 Ctrl 组合键与常用控制键速查。数据为公开标准表，全部在浏览器本地检索与渲染。',
+        coreFeatures: [
+          '完整覆盖 0–127 共 128 个码位，五种进制 / 字符表示一一对应',
+          '双向检索：单字符（含空格）、十进制 65、十六进制 0x41 或 41h 自动识别',
+          '分类筛选（控制字符 / 可打印 / DEL）与缩写、说明、码位关键字搜索',
+          'Ctrl+A…Ctrl+Z 与 ESC、Tab、LF、CR、空格、DEL 常用键速查',
+          '空格以可见占位 ␠ 呈现；点击任意行或标签即可复制码位信息',
+        ],
+        howToUse: [
+          '在顶部检索框输入字符（如 A 或一个空格）或码位（65、0x41、41h）查看完整对照',
+          '在码表上方切换分类按钮或在搜索框输入缩写、说明、字符、码位进行筛选',
+          '点击码表任意行复制该行完整信息，或在速查区点击组合键标签复制',
+        ],
+        useCases: [
+          '调试串口 / 网络协议中的控制符：确认 LF、CR、ESC、DEL 等码位',
+          '终端与嵌入式开发：速查 Ctrl+字母 对应的 0x01–0x1A 码位',
+          '学习字符编码：对照字母、数字、标点与 Dec/Hex/Oct/Bin 表示',
+        ],
+        privacyNote:
+          '码表为内置公开标准数据，所有检索与复制均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么只到 127？扩展 ASCII（如 128–255）呢？',
+            answer:
+              'US-ASCII 标准只定义 0–127 共 128 个码位，单字节最高位为 0；128–255 的含义取决于具体代码页（如 Windows-1252、ISO-8859-1），并无统一标准。工具只覆盖无歧义的 US-ASCII，超出范围的输入会明确提示。',
+          },
+          {
+            question: 'Ctrl+M 为什么等于回车 CR？',
+            answer:
+              '终端中按住 Ctrl 再按字母时，键盘会把该字母码位与 0x1F 按位与，等价于大写字母码位减 64。M 的大写码位是 77，减去 64 得到 13，即回车 CR；同理 Ctrl+J 是 10（LF），Ctrl+[ 是 27（ESC）。',
+          },
+          {
+            question: '空格为什么显示成 ␠？',
+            answer:
+              '空格（码位 32）本身是不可见的可打印字符，直接放在表格里无法与空白区分，因此用可见占位符 ␠（SP）呈现，复制与检索仍按真实空格处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool provides a static reference for standard US-ASCII (codes 0–127): each row lists decimal, hex, octal, 7-bit binary, the printable character, control-code abbreviations (NUL, LF, CR, ESC, DEL, etc.) and a description. It supports character-to-code and code-to-character lookup, category and keyword filtering, and Ctrl/control-key shortcuts. The data is a public standard table and everything is searched and rendered locally in the browser.',
+        coreFeatures: [
+          'All 128 codes 0–127 with five representations per row',
+          'Bidirectional lookup: a single character (including space), decimal 65, hex 0x41 or 41h auto-detected',
+          'Category filters (control / printable / DEL) and keyword search over abbr, description, char and code',
+          'Ctrl+A…Ctrl+Z shortcuts plus ESC, Tab, LF, CR, space and DEL quick chips',
+          'Space shown as the visible ␠ glyph; click any row or chip to copy',
+        ],
+        howToUse: [
+          'Type a character (e.g. A or a space) or a code (65, 0x41, 41h) in the top lookup box',
+          'Switch category buttons or search by abbreviation, description, character or code above the table',
+          'Click a table row to copy its full info, or click a shortcut chip in the quick-reference area',
+        ],
+        useCases: [
+          'Debug control characters in serial or network protocols (LF, CR, ESC, DEL)',
+          'Terminal and embedded work: look up the 0x01–0x1A codes behind Ctrl+letter combos',
+          'Learn character encodings by comparing letters, digits and punctuation across Dec/Hex/Oct/Bin',
+        ],
+        privacyNote:
+          'The table is built-in public standard data; all lookup and copying happen locally in your browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why does it stop at 127? What about extended ASCII (128–255)?',
+            answer:
+              'US-ASCII defines only codes 0–127 with the top bit clear. Codes 128–255 depend on the specific code page (Windows-1252, ISO-8859-1, etc.) and have no single universal meaning, so the tool covers unambiguous US-ASCII and warns on out-of-range input.',
+          },
+          {
+            question: 'Why is Ctrl+M a carriage return?',
+            answer:
+              'In a terminal, Ctrl plus a letter masks the letter code with 0x1F, equivalent to subtracting 64 from the uppercase code. Uppercase M is 77, minus 64 gives 13 (CR); likewise Ctrl+J is 10 (LF) and Ctrl+[ is 27 (ESC).',
+          },
+          {
+            question: 'Why is space displayed as ␠?',
+            answer:
+              'Space (code 32) is a printable but invisible character, indistinguishable from blank space in a table, so it is shown with the visible ␠ (SP) glyph. Copy and lookup still use the real space character.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
