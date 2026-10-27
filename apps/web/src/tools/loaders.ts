@@ -110,4 +110,9 @@ export const toolLoaders: Record<
   'ohms-law-calculator': () => import('./ohms-law-calculator'),
   'cookie-parser': () => import('./cookie-parser'),
   'ascii-table': () => import('./ascii-table'),
+  'base62-codec': () => import('./base62-codec'),
+  'varint-codec': () => import('./varint-codec'),
+  'http-status-codes': () => import('./http-status-codes'),
+  'rgb-cmyk-converter': () => import('./rgb-cmyk-converter'),
+  'env-converter': () => import('./env-converter'),
 };

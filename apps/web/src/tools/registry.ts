@@ -8610,6 +8610,523 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'base62-codec',
+    name: 'Base62 编解码（整数 / 字节双模式）',
+    nameEn: 'Base62 Encoder & Decoder (Integer / Byte Modes)',
+    description:
+      '在非负整数、UTF-8 文本与 Base62（0-9、A-Z、a-z 共 62 字符）之间双向编解码，支持 GMP（0-9A-Za-z）与替代（0-9a-zA-Z）两种字母表；整数模式按 62 进制处理任意大整数，字节模式保留前导零字节，非法字符给出具体位置。',
+    descriptionEn:
+      'Encode and decode non-negative integers and UTF-8 text with Base62 (0-9, A-Z, a-z), supporting both the GMP (0-9A-Za-z) and alternate (0-9a-zA-Z) alphabets. Integer mode handles arbitrarily large numbers in base 62; byte mode preserves leading zero bytes, and illegal characters are reported with their exact position.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/base62-codec',
+    iconName: 'Binary',
+    tags: ['Base62', '短链', '短ID', 'URL-safe', '大整数', '编解码'],
+    tagsEn: ['Base62', 'Short Link', 'Short ID', 'URL-safe', 'BigInt', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 Base62 编解码工具。Base62 使用数字 0-9、大写 A-Z、小写 a-z 共 62 个字符，没有 +、/ 等符号与填充符，可直接放进 URL、域名路径或数据库短 ID，是短链 token、分享码最常见的编码方式。工具区分两种语义：整数模式把非负大整数按 62 进制表示；字节模式把任意字节（含 UTF-8 文本）换算为 Base62，并保留前导零字节，保证往返一致。',
+        coreFeatures: [
+          '双模式：非负整数 ↔ Base62（支持十进制与 0x 十六进制输入）、UTF-8 文本 / 字节 ↔ Base62',
+          '两种字母表：GMP 风格 0-9A-Za-z 与替代风格 0-9a-zA-Z，一键切换',
+          '任意精度：基于 BigInt，可处理远超 Number 安全范围的大整数',
+          '前导零保留：字节模式参照 Base58 做法，前导零字节不丢失',
+          '严格校验：字母表外字符报出具体位置；非 UTF-8 解码结果同时显示原始十六进制',
+          '纯本地运行：全部为确定性运算，不发起网络请求、零新增依赖',
+        ],
+        howToUse: [
+          '选择模式：整数互转使用「整数模式」，文本或二进制数据使用「字节 / 文本模式」',
+          '需要与 PHP gmp_strval、多数短链库对齐时保持 GMP 字母表；对接 0-9a-zA-Z 体系（部分短链 / Nano ID 风格）时切换替代字母表',
+          '在输入框粘贴整数或文本并选择编码方向，结果区实时输出；解码方向可直接粘贴 Base62 字符串',
+          '整数解码结果同时给出十进制与 0x 十六进制表示，便于协议调试',
+        ],
+        useCases: [
+          '短链 / 邀请码开发：在数据库自增 ID、雪花 ID 与短码之间互转',
+          '接口调试：核对 Base62 短 ID 对应的原始整数，或验证字母表顺序差异',
+          '数据表示：把任意字节或 UTF-8 文本编码为 URL-safe、无需转义的可打印字符串',
+        ],
+        privacyNote:
+          '所有编解码均在浏览器本地通过 BigInt 完成，输入的整数、文本与 token 不会被上传或记录。',
+        faqs: [
+          {
+            question: 'GMP 字母表和替代字母表有什么区别？',
+            answer:
+              '两者字符集完全相同，只是大小写排列不同：GMP 风格为 0-9A-Za-z（数字后大写在前），替代风格为 0-9a-zA-Z（小写在前）。同一个数字在两种表下编码结果可能不同，例如数字 10 分别是 A 和 a，对接第三方系统时必须确认对方使用的顺序。',
+          },
+          {
+            question: '整数模式和字节模式有什么不同？',
+            answer:
+              '整数模式把输入视为一个非负大整数，按 62 进制直接表示，0 编码为 "0"，适合短 ID、序号；字节模式先把数据视为字节串再整体换算，并显式保留前导零字节（类似 Base58），适合任意二进制与 UTF-8 文本的可逆编码。对字符串内容做编解码时应使用字节模式。',
+          },
+          {
+            question: '为什么解码出来不是正常文本？',
+            answer:
+              'Base62 承载的可能是哈希、压缩数据等任意字节而非 UTF-8 文本。工具在报错的同时会给出解码字节的十六进制表示；若预期是数字，请切换到整数模式查看十进制结果。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local Base62 codec. Base62 uses the 62 characters 0-9, A-Z, and a-z with no +, /, or padding, so encoded data can be placed directly in URLs, paths, or database short IDs — the standard choice for short-link tokens and share codes. Two semantics are supported: integer mode represents non-negative big integers in base 62, while byte mode converts arbitrary bytes (including UTF-8 text) to Base62 while preserving leading zero bytes for exact round trips.',
+        coreFeatures: [
+          'Two modes: non-negative integer <-> Base62 (decimal or 0x hex input) and UTF-8 text / bytes <-> Base62',
+          'Two alphabets: GMP style 0-9A-Za-z and alternate 0-9a-zA-Z, switchable with one click',
+          'Arbitrary precision: built on BigInt, far beyond the Number safe-integer range',
+          'Leading-zero preservation: byte mode follows the Base58 approach, no zero bytes lost',
+          'Strict validation: out-of-alphabet characters report their exact position; non-UTF-8 output also shows raw hex',
+          '100% local: deterministic computation with no network requests and no new dependencies',
+        ],
+        howToUse: [
+          'Pick a mode: use Integer Mode for integer conversion and Byte / Text Mode for text or binary data',
+          'Keep the GMP alphabet for PHP gmp_strval and most short-link libraries; switch to the alternate alphabet for 0-9a-zA-Z schemes (some short-link and Nano ID style systems)',
+          'Paste an integer or text, choose the direction, and read the live result; paste Base62 directly in decode direction',
+          'Integer decode shows both decimal and 0x hexadecimal forms for protocol debugging',
+        ],
+        useCases: [
+          'Short-link / invite-code development: convert auto-increment or snowflake IDs to short codes and back',
+          'API debugging: map a Base62 short ID back to its source integer or spot alphabet-order mismatches',
+          'Data representation: encode arbitrary bytes or UTF-8 text as URL-safe printable strings without escaping',
+        ],
+        privacyNote:
+          'All encoding and decoding runs locally in your browser via BigInt. Integers, text, and tokens you enter are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the difference between the GMP and alternate alphabets?',
+            answer:
+              'Both contain the same 62 characters but in a different order: GMP is 0-9A-Za-z (uppercase first) and the alternate is 0-9a-zA-Z (lowercase first). The same number can encode differently, e.g. 10 is A versus a. Always confirm which order a third-party system expects.',
+          },
+          {
+            question: 'How do integer mode and byte mode differ?',
+            answer:
+              'Integer mode treats the input as one non-negative big integer represented directly in base 62 (0 encodes as "0"), which suits short IDs and sequences. Byte mode treats the input as a byte stream and preserves leading zero bytes (like Base58), suiting arbitrary binary and UTF-8 text with a reversible round trip. Use byte mode when encoding string content.',
+          },
+          {
+            question: 'Why does decoding not produce readable text?',
+            answer:
+              'Base62 may carry arbitrary bytes such as hashes or compressed data rather than UTF-8 text. The tool shows the decoded bytes in hexadecimal alongside the error; if you expected a number, switch to integer mode to see the decimal value.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'varint-codec',
+    name: 'VarInt / ZigZag / LEB128 编解码（逐字节可视化）',
+    nameEn: 'VarInt / ZigZag / LEB128 Codec with Byte Breakdown',
+    description:
+      '在整数与 Protocol Buffers Base-128 VarInt 字节之间双向转换，支持无符号 VarInt / ULEB128、sint32 / sint64 的 ZigZag 映射与有符号 LEB128；逐字节展示续位标记与 7 位载荷分组，严格识别截断、非规范冗余编码与超范围输入。',
+    descriptionEn:
+      'Convert integers to and from Protocol Buffers Base-128 VarInt bytes, supporting unsigned VarInt / ULEB128, ZigZag-encoded sint32 / sint64, and signed LEB128. Every byte is visualized with its continuation bit and 7-bit payload group, while truncated, non-canonical (overlong), and out-of-range encodings are strictly rejected.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/varint-codec',
+    iconName: 'Sigma',
+    tags: ['VarInt', 'ZigZag', 'LEB128', 'Protobuf', 'Protocol Buffers', '编解码'],
+    tagsEn: ['VarInt', 'ZigZag', 'LEB128', 'Protobuf', 'Protocol Buffers', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的变长整数编解码工具。VarInt（Base-128）把整数编码为若干字节：每字节低 7 位承载数据、最高位（MSB）是续位标记，小整数只需 1 字节，是 Protocol Buffers、SQLite、LEB128（DWARF / WebAssembly）等格式的共同基础。本工具同时覆盖有符号整数的两种主流方案：Protobuf sint32 / sint64 使用的 ZigZag 映射，以及 DWARF / WASM 使用的有符号 LEB128，并把每个字节的续位与载荷逐位拆开可视化。',
+        coreFeatures: [
+          '四种类型：无符号 VarInt / ULEB128、ZigZag sint32、ZigZag sint64、有符号 LEB128',
+          '双向转换：整数（十进制或 0x 十六进制、支持负数）↔ 十六进制字节（支持 0x、空格、逗号分隔）',
+          '逐字节可视化：表格展示十六进制、二进制、续位 MSB 与 7 位载荷分组',
+          '边界完整：基于 BigInt 精确处理 int32 / int64 / uint64 上下限',
+          '严格校验：截断输入、非规范（冗余）编码、第 10 字节越界等均给出明确错误',
+          '纯本地运行：全部为确定性位运算，不发起网络请求、零新增依赖',
+        ],
+        howToUse: [
+          '先选择编码类型：无符号场景选「无符号 VarInt / ULEB128」；Protobuf sint32 / sint64 选对应 ZigZag；调试 DWARF / WASM 选「有符号 LEB128」',
+          '编码方向输入整数（如 300、-1、0x12C），实时得到字节，例如 300 → AC 02',
+          '解码方向粘贴十六进制字节（如 AC 02），实时得到整数；ZigZag 下 -1 → 01、2147483647 → FE FF FF FF 0F',
+          '查看「逐字节拆解」表格：橙色 1 表示后续有字节，绿色 0 表示末字节，可核对 7 位分组拼接过程',
+        ],
+        useCases: [
+          'Protobuf 协议调试：手工核对字段后的 VarInt 数字、sint32 / sint64 的 ZigZag 编码',
+          '二进制格式研究：解析 SQLite record format、自定义 TLV、多码点编码中的变长整数',
+          '编译器 / WASM 学习：理解 DWARF 调试信息与 WebAssembly 中的有符号 LEB128',
+        ],
+        privacyNote:
+          '所有编解码均在浏览器本地通过 BigInt 位运算完成，输入的整数与字节不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么 300 编码后是 AC 02 两个字节？',
+            answer:
+              '300 的二进制是 100101100，按每 7 位分组（从低位起）为 0101100 与 10：低 7 位 0x2C 加上续位 1 得到 0xAC，高 2 位 0x02 作为末字节，即 AC 02。解码时拼接顺序为 0x2C | (0x02 << 7) = 300。',
+          },
+          {
+            question: 'ZigZag 和有符号 LEB128 有什么区别？',
+            answer:
+              '两者都编码有符号整数但布局不同：ZigZag（Protobuf sint32 / sint64）先把 n 映射为 (n<<1)^(n>>31/63)，使 -1 → 1、1 → 2，小绝对值的负数只需很少字节；有符号 LEB128（DWARF / WASM）直接编码补码位流，符号位固定在每字节的第 6 位（0x40），-1 单字节即 0x7F。对接 Protobuf 字段应选 ZigZag，解析 DWARF / WASM 应选有符号 LEB128。',
+          },
+          {
+            question: '什么是「非规范（冗余）编码」？',
+            answer:
+              '同一数值存在更短的合法表示时，较长的序列即为非规范编码，例如 0 本应编码为 00，80 00 也能解出 0 但多了一个冗余字节。严格解析器（包括本工具）会拒绝这类编码，以避免绕过长度 / 等值校验的歧义；合法的 int64 边界（I64_MIN / I64_MAX 恰需 10 字节）不受影响。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local variable-length integer codec. VarInt (Base-128) encodes an integer into bytes where each byte carries 7 payload bits and uses its most significant bit (MSB) as a continuation flag, so small integers need only one byte. It is the common basis of Protocol Buffers, SQLite, and LEB128 (DWARF / WebAssembly). The tool covers both mainstream signed-integer schemes: ZigZag mapping for Protobuf sint32 / sint64, and signed LEB128 for DWARF / WASM, with a bit-by-bit visualization of continuation flags and payload groups.',
+        coreFeatures: [
+          'Four types: unsigned VarInt / ULEB128, ZigZag sint32, ZigZag sint64, and signed LEB128',
+          'Bidirectional: integers (decimal or 0x hex, negatives supported) <-> hex bytes (0x, spaces, and commas accepted)',
+          'Byte-level visualization: a table shows hex, binary, continuation MSB, and the 7-bit payload group of every byte',
+          'Full boundary support: BigInt precisely handles int32 / int64 / uint64 limits',
+          'Strict validation: truncated input, non-canonical (overlong) encodings, and illegal 10th bytes produce clear errors',
+          '100% local: deterministic bit operations with no network requests and no new dependencies',
+        ],
+        howToUse: [
+          'Pick the type first: unsigned VarInt / ULEB128 for unsigned data, ZigZag sint32 / sint64 for Protobuf signed fields, and signed LEB128 for DWARF / WASM',
+          'In encode direction, enter an integer (e.g. 300, -1, 0x12C) to get bytes instantly, e.g. 300 -> AC 02',
+          'In decode direction, paste hex bytes (e.g. AC 02); with ZigZag, -1 -> 01 and 2147483647 -> FE FF FF FF 0F',
+          'Inspect the byte breakdown table: orange 1 means more bytes follow, green 0 marks the final byte, and the 7-bit groups show how the value is assembled',
+        ],
+        useCases: [
+          'Protobuf debugging: manually verify VarInt numbers after field tags and ZigZag encoding of sint32 / sint64 values',
+          'Binary format research: parse variable-length integers in SQLite records, custom TLV schemes, and other encodings',
+          'Compiler / WASM learning: understand signed LEB128 in DWARF debug info and WebAssembly',
+        ],
+        privacyNote:
+          'All encoding and decoding runs locally in your browser via BigInt bit operations. Integers and bytes you enter are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why does 300 encode to the two bytes AC 02?',
+            answer:
+              '300 in binary is 100101100, split into 7-bit groups from the low end: 0101100 and 10. The low group 0x2C gets a continuation bit, yielding 0xAC, and the high group 0x02 is the final byte, giving AC 02. Decoding assembles 0x2C | (0x02 << 7) = 300.',
+          },
+          {
+            question: 'What is the difference between ZigZag and signed LEB128?',
+            answer:
+              'Both encode signed integers but with different layouts. ZigZag (Protobuf sint32 / sint64) first maps n to (n<<1)^(n>>31/63), so -1 -> 1 and 1 -> 2, keeping small-magnitude negatives short. Signed LEB128 (DWARF / WASM) encodes the two\'s-complement bit stream directly, with the sign bit fixed at bit 6 (0x40) of each byte; -1 is the single byte 0x7F. Choose ZigZag for Protobuf fields and signed LEB128 for DWARF / WASM.',
+          },
+          {
+            question: 'What is a "non-canonical (overlong) encoding"?',
+            answer:
+              'When a value has a shorter legal representation, a longer sequence is non-canonical: 0 should be 00, while 80 00 also decodes to 0 with a redundant byte. Strict parsers, including this tool, reject such encodings to avoid ambiguity in length or equality checks. Legitimate int64 boundary values (I64_MIN / I64_MAX, which genuinely need 10 bytes) are still accepted.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'http-status-codes',
+    name: 'HTTP 状态码速查',
+    nameEn: 'HTTP Status Codes Reference',
+    description:
+      '按 1xx–5xx 分类速查 IANA 常见 HTTP 状态码（100–511）的中文含义、英文 Reason-Phrase、典型触发场景、排错建议与是否可重试；支持编号前缀（404、4）与中英文关键词（not found、重定向、网关）实时检索，点击条目展开详情。',
+    descriptionEn:
+      'Look up common IANA HTTP status codes (100–511) grouped by 1xx–5xx, with Chinese meaning, English reason phrase, typical triggers, troubleshooting tips, and retry guidance. Search live by code prefix (404, 4) or Chinese/English keywords (not found, redirect, gateway); click an entry to expand details.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/http-status-codes',
+    iconName: 'FileText',
+    tags: ['HTTP', '状态码', '协议', '联调', '重定向', '排错'],
+    tagsEn: ['HTTP', 'Status Codes', 'Protocol', 'Redirect', 'Debugging'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 HTTP 状态码参考速查工具，内置 IANA 注册的常见标准状态码（100–511）静态数据表，覆盖 1xx 信息、2xx 成功、3xx 重定向、4xx 客户端错误、5xx 服务器错误五个分段。每个条目提供英文 Reason-Phrase、中文含义、典型触发场景、排错建议以及是否可以安全重试，便于前后端联调与线上排障时快速定位语义。',
+        coreFeatures: [
+          '覆盖 100–511 常见标准状态码，含 418 彩蛋码与 306 保留码等特殊条目',
+          '编号检索：纯数字按前缀匹配（404 精确、4 列出全部 4xx、40 列出 400/401/408 等）',
+          '关键词检索：中英文名称、典型场景与排错建议全文模糊匹配（not found、重定向、网关、限流）',
+          '分类筛选：一键切换 1xx / 2xx / 3xx / 4xx / 5xx，并按分段分组展示',
+          '展开详情：点击条目查看典型触发场景、排错建议与重试建议标签',
+          '纯本地运行：静态数据 + 纯函数检索，无网络请求、零新增依赖',
+        ],
+        howToUse: [
+          '在搜索框输入三位编号（如 404）精确定位，或只输首位数字（如 5）浏览整段',
+          '也可输入中英文关键词，如 not found、重定向、网关、限流、超时',
+          '使用顶部按钮按 1xx–5xx 分段过滤，结果自动分组并显示每组数量',
+          '点击任意条目展开，查看典型场景、排错建议与「可安全重试 / 不应直接重试」标签',
+        ],
+        useCases: [
+          '前后端联调：遇到陌生状态码（如 409、412、421）快速确认语义与处理方式',
+          '线上排障：根据 502 / 503 / 504 区分上游崩溃、服务不可用与网关超时',
+          '接口设计：为新建 REST API 选择语义正确的状态码与重试策略',
+        ],
+        privacyNote:
+          '状态码数据内置在工具中，检索逻辑全部在浏览器本地完成，不发起任何网络请求，也不会记录输入内容。',
+        faqs: [
+          {
+            question: '401 和 403 有什么区别？',
+            answer:
+              '401 Unauthorized 语义是“未认证”：缺少或携带了无效的登录凭证（Token 缺失 / 过期），补充有效凭证后可能成功；403 Forbidden 是“已认证但禁止访问”：服务器理解请求但拒绝授权，重新登录通常无效，需要调整账号权限或资源访问策略。',
+          },
+          {
+            question: '301、302、307、308 如何选择？',
+            answer:
+              '按“是否永久”与“是否保持请求方法”两个维度区分：301 永久、302 临时，但历史实现可能把 POST 改写为 GET；308 是方法安全的永久重定向，307 是方法安全的临时重定向，两者明确要求保持原方法与请求体。新系统需要语义严格时优先使用 307 / 308。',
+          },
+          {
+            question: '哪些 5xx 可以安全重试？',
+            answer:
+              '502 Bad Gateway、503 Service Unavailable、504 Gateway Timeout 通常代表临时性故障，可结合 Retry-After 头做指数退避重试；500 Internal Server Error 原因未知，仅对幂等请求重试，非幂等请求应先确认服务端状态；501 表示功能未实现，重试无意义。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local reference for common IANA-registered HTTP status codes (100–511), covering all five classes: 1xx informational, 2xx success, 3xx redirection, 4xx client errors, and 5xx server errors. Every entry provides the English reason phrase, a Chinese explanation, typical trigger scenarios, troubleshooting tips, and safe-retry guidance, making API integration and incident triage faster.',
+        coreFeatures: [
+          'Covers common standard codes from 100 to 511, including special entries such as 418 and the reserved 306',
+          'Code search: digits match by prefix (404 exact, 4 lists all 4xx, 40 lists 400/401/408 and more)',
+          'Keyword search: fuzzy matching across Chinese/English names, scenarios, and tips (not found, redirect, gateway, rate limit)',
+          'Class filter: switch between 1xx / 2xx / 3xx / 4xx / 5xx with grouped results',
+          'Expandable entries: click to see typical scenarios, troubleshooting tips, and a retry-guidance tag',
+          '100% local: static data plus pure-function search with no network requests and no new dependencies',
+        ],
+        howToUse: [
+          'Type a three-digit code (e.g. 404) for an exact match, or just the first digit (e.g. 5) to browse a class',
+          'Or enter Chinese/English keywords such as not found, redirect, gateway, or rate limit',
+          'Use the top buttons to filter by 1xx–5xx; results are grouped with per-group counts',
+          'Click any entry to expand typical scenarios, troubleshooting advice, and the retry tag',
+        ],
+        useCases: [
+          'API integration: quickly confirm the meaning of less common codes like 409, 412, or 421',
+          'Incident triage: distinguish upstream crash (502), unavailable service (503), and gateway timeout (504)',
+          'API design: choose semantically correct status codes and retry policies for new REST endpoints',
+        ],
+        privacyNote:
+          'The status-code dataset is bundled with the tool and all search logic runs locally in your browser; no network requests are made and your input is never logged.',
+        faqs: [
+          {
+            question: 'What is the difference between 401 and 403?',
+            answer:
+              '401 Unauthorized actually means "unauthenticated": credentials are missing or invalid (token absent or expired), so supplying valid credentials may succeed. 403 Forbidden means the server understands the request but refuses it for an authenticated identity; logging in again usually does not help—permissions or resource policy must change.',
+          },
+          {
+            question: 'How do I choose between 301, 302, 307, and 308?',
+            answer:
+              'Use two dimensions—permanent vs temporary and method-preserving vs not. 301 is permanent and 302 temporary, but historical implementations may rewrite POST to GET. 308 is the method-safe permanent redirect and 307 the method-safe temporary one; both explicitly require preserving the original method and body. Prefer 307 / 308 when strict semantics matter.',
+          },
+          {
+            question: 'Which 5xx errors are safe to retry?',
+            answer:
+              '502 Bad Gateway, 503 Service Unavailable, and 504 Gateway Timeout usually indicate transient failures and can be retried with exponential backoff, honoring Retry-After. 500 has an unknown cause—retry only idempotent requests and verify server state for non-idempotent ones. 501 means the feature is not implemented, so retrying is pointless.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'rgb-cmyk-converter',
+    name: 'RGB / CMYK 色彩转换器',
+    nameEn: 'RGB / CMYK Color Converter',
+    description:
+      '在屏幕色 RGB / HEX 与印刷四色 CMYK 之间双向实时换算，并同步输出 HSL 与大色块预览。拖动 RGB 滑块、输入 HEX（支持 #RGB 简写与原生取色器）或调整 CMYK 四通道百分比，任一改动立即联动；非法 HEX 或越界百分比即时报错，纯浏览器本地计算，适合印刷校色与跨媒介配色。',
+    descriptionEn:
+      'Convert between screen colors (RGB / HEX) and process colors (CMYK) in real time, with synchronized HSL values and a large color swatch preview. Drag RGB sliders, type a HEX code (#RGB shorthand and a native color picker supported), or adjust the four CMYK percentage channels—every change updates all outputs instantly. Invalid HEX or out-of-range percentages are flagged immediately. Everything runs locally in the browser for print color checking and cross-media design.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/rgb-cmyk-converter',
+    iconName: 'Pipette',
+    tags: ['CMYK', 'RGB', '印刷', '色彩转换', '校色', 'HEX'],
+    tagsEn: ['CMYK', 'RGB', 'Print', 'Color Conversion', 'HEX'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的色彩空间转换工具，打通屏幕发光的加色模型 RGB（含 HEX / HSL 表示）与印刷反光的减色模型 CMYK。采用标准 black-generation 公式（K = 1 − max(R,G,B)，纯黑时 C/M/Y 归零；反向 R = 255·(1−C)·(1−K)），左侧调整 RGB 滑块或 HEX，右侧 CMYK 四通道百分比立即更新，反之亦然，底部色块与 HEX / RGB / CMYK / HSL 文本同步输出。',
+        coreFeatures: [
+          'RGB ↔ CMYK 双向实时换算，任一通道改动立即联动全部输出',
+          'HEX 输入支持 6 位与 3 位简写、可省略 #，并提供浏览器原生取色器',
+          '同步输出 HSL（色相 / 饱和度 / 亮度）与大尺寸色块预览',
+          'RGB 滑块 + 数字输入（0–255），CMYK 滑块步进 0.1%（0–100）',
+          '非法 HEX、越界百分比即时红字报错，不产生错误结果',
+          '纯本地计算：换算逻辑为纯函数，无网络请求、零新增依赖',
+        ],
+        howToUse: [
+          '在「屏幕色」卡片拖动 R / G / B 滑块或直接输入数字，也可在 HEX 框输入如 #3B82F6 或 3b8，或点击取色器选色',
+          '在「印刷四色」卡片拖动 C / M / Y / K 滑块（单位 %），屏幕色与预览同步更新',
+          '在底部预览卡片查看色块以及 HEX、RGB、CMYK、HSL 四组数值，直接抄用',
+          '若 HEX 格式非法或数值越界，对应卡片会出现红色提示，修正后结果立即恢复',
+        ],
+        useCases: [
+          '平面设计：把屏幕选定的品牌色换算为印刷 CMYK 四色数值，交付印厂',
+          '跨媒介配色：核对 UI 用色在印刷物料上的大致呈现，提前规避高饱和色偏差',
+          '前端联调：与设计师沟通时在 HEX / RGB / CMYK / HSL 之间快速互查',
+        ],
+        privacyNote:
+          '所有色彩换算均在浏览器本地由纯函数完成，不发起任何网络请求，输入的颜色值不会离开设备。',
+        faqs: [
+          {
+            question: '为什么 CMYK 转回 RGB 再回 CMYK，数值会有少量偏差？',
+            answer:
+              'CMYK 是为印刷定义的减色模型，没有唯一的 RGB 对应；反向换算时黑版 K 由 RGB 最大通道派生，经过 8 位（0–255）通道取整后，黑场可能出现几个百分点的固有漂移。屏幕色方向的严格往返 RGB → CMYK → RGB 保证每通道误差不超过 2，不影响实际选色。',
+          },
+          {
+            question: '换算出的 CMYK 可以直接用于印刷吗？',
+            answer:
+              '本工具使用标准理论公式，适合沟通、预估与轻量物料。正式印刷还受纸张、油墨、ICC 配置文件与印刷标准（如 Japan Color、FOGRA）影响，关键印品应以印厂的色彩管理流程与打样为准。',
+          },
+          {
+            question: '为什么同一个颜色看起来屏幕比印刷品更鲜艳？',
+            answer:
+              'RGB 是发光加色模型，色域通常大于印刷用的 CMYK 减色模型，高饱和的蓝、绿等颜色往往超出 CMYK 可复制范围，落到纸面后会变暗或偏色。预览卡给出的色块是屏幕显示值，印刷呈现需以打样为准。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local color-space converter connecting the additive screen model RGB (with HEX / HSL notations) and the subtractive print model CMYK. It uses the standard black-generation formula (K = 1 − max(R,G,B), with C/M/Y forced to zero for pure black; inverse R = 255·(1−C)·(1−K)). Adjust RGB sliders or a HEX code on the left and the four CMYK percentage channels update instantly on the right, and vice versa, while a swatch plus HEX / RGB / CMYK / HSL text stays in sync at the bottom.',
+        coreFeatures: [
+          'Bidirectional RGB ↔ CMYK conversion; changing any channel updates every output instantly',
+          'HEX input accepts 6-digit and 3-digit shorthand with or without #, plus a native color picker',
+          'Synchronized HSL (hue / saturation / lightness) output with a large color swatch',
+          'RGB sliders with numeric inputs (0–255); CMYK sliders in 0.1% steps (0–100)',
+          'Invalid HEX or out-of-range percentages trigger immediate inline errors instead of wrong results',
+          '100% local: conversion logic is pure functions with no network requests and no new dependencies',
+        ],
+        howToUse: [
+          'In the Screen Color card, drag the R / G / B sliders or type numbers; you can also enter a HEX value like #3B82F6 or 3b8, or use the color picker',
+          'In the Process Color card, drag the C / M / Y / K sliders (%)—screen color and preview update together',
+          'Read the swatch and the four value groups (HEX, RGB, CMYK, HSL) from the preview card at the bottom',
+          'If a HEX value is malformed or a number is out of range, a red message appears on the relevant card and results resume as soon as you fix it',
+        ],
+        useCases: [
+          'Graphic design: convert a brand color chosen on screen into CMYK values for the print shop',
+          'Cross-media work: estimate how a UI color will appear in print and anticipate gamut clipping',
+          'Front-end collaboration: quickly cross-check HEX / RGB / CMYK / HSL when talking with designers',
+        ],
+        privacyNote:
+          'All color math runs locally in your browser via pure functions. No network requests are made and the colors you enter never leave your device.',
+        faqs: [
+          {
+            question: 'Why does CMYK → RGB → CMYK come back slightly different?',
+            answer:
+              'CMYK is a subtractive model for print with no unique RGB counterpart. On the way back, the black channel K is derived from the largest RGB channel, and after 8-bit (0–255) rounding the black generation can drift by a few percentage points—an inherent artifact. The strict screen-side round trip RGB → CMYK → RGB stays within 2 units per channel, which is imperceptible for color picking.',
+          },
+          {
+            question: 'Can the converted CMYK values go straight to print?',
+            answer:
+              'The tool applies standard theoretical formulas suitable for discussion, estimation, and lightweight materials. Production printing also depends on paper, ink, ICC profiles, and print standards such as Japan Color or FOGRA. For critical jobs, follow the print shop’s color-management workflow and rely on hard proofs.',
+          },
+          {
+            question: 'Why does the same color look more vivid on screen than in print?',
+            answer:
+              'RGB is an emissive additive model whose gamut is typically wider than print’s subtractive CMYK gamut; highly saturated blues and greens often exceed what CMYK can reproduce, so they darken or shift on paper. The preview swatch shows the screen-rendered value—judge the printed result from a proof.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'env-converter',
+    name: '.env 配置格式转换器',
+    nameEn: '.env Config Converter',
+    description:
+      '解析 .env 配置并在 dotenv、JSON、扁平 YAML 与 shell export 四种格式间实时互转。支持单/双引号与无引号值、双引号转义（\\n、\\t、\\"、\\\\）、# 注释、export 前缀与值内含 =；非法键名、未闭合引号等错误带行号提示，重复键产生警告并以后值为准。纯浏览器本地运行，适合环境变量整理与跨部署格式迁移。',
+    descriptionEn:
+      'Parse .env configuration and convert live between dotenv, JSON, flat YAML, and shell export formats. Supports single/double-quoted and unquoted values, double-quote escapes (\\n, \\t, \\", \\\\), # comments, the export prefix, and equals signs inside values. Invalid key names and unclosed quotes are reported with line numbers; duplicate keys produce a warning and the later value wins. Runs entirely in the browser for tidying environment variables and migrating between deployment formats.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/env-converter',
+    iconName: 'FileCode',
+    tags: ['env', '环境变量', 'dotenv', 'JSON', 'YAML', '配置迁移'],
+    tagsEn: ['env', 'Environment Variables', 'dotenv', 'JSON', 'YAML', 'Config'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的环境变量配置解析与格式转换工具。逐行解析 KEY=VALUE 文本，忽略空行与 # 注释，识别可选的 export 前缀，正确处理单引号、双引号（含 \\n、\\t、\\"、\\\\ 转义）与无引号值（含行内注释剥离），并可在 dotenv、JSON、扁平 YAML、shell export 四种格式之间双向互转。非法键名、缺少等号、未闭合引号、嵌套结构等错误带行号提示，重复键给出警告且以后值为准，解析与序列化全部由零依赖纯函数完成。',
+        coreFeatures: [
+          '四格式互转：.env（dotenv）、JSON、扁平 YAML、shell export 语句',
+          '完整解析：空行 / 注释 / export 前缀 / 单双引号 / 双引号转义 / 值内含 =',
+          '错误定位：非法键名、缺少分隔符、未闭合引号等错误精确到行号，不抛异常',
+          '重复键检测：给出带行号的警告，以后值为准',
+          '一键交换输入/输出格式，转换结果可直接复制',
+          '纯本地计算：零新增依赖，输入内容不上传',
+        ],
+        howToUse: [
+          '在左侧卡片顶部选择源格式（.env / JSON / YAML / export），粘贴或编辑配置文本',
+          '在右侧卡片顶部选择目标格式，结果实时生成；有错时显示带行号的红色提示',
+          '出现黄色警告表示存在重复键等可继续的问题，结果仍会生成（以后值为准）',
+          '点击「交换输入 / 输出格式」可把当前结果作为新输入，快速做下一段转换',
+          '点击「复制」把转换结果复制到剪贴板',
+        ],
+        useCases: [
+          '部署迁移：把 .env 转成容器平台或 CI 系统需要的 JSON / YAML 键值结构',
+          '配置整理：检查历史 .env 中的重复键、非法键名与引号错误',
+          '脚本协作：在 dotenv 与 shell export 语句之间互转，便于本地 source 或导出',
+        ],
+        privacyNote:
+          '配置解析与转换全部在浏览器本地由纯函数完成，不发起任何网络请求；粘贴的密钥、Token 等敏感内容不会离开设备。',
+        faqs: [
+          {
+            question: '支持嵌套 JSON 或 YAML 吗？',
+            answer:
+              '不支持。环境变量本质是扁平的 KEY=VALUE 集合，本工具只接受扁平对象与每行一个的 key: value；遇到嵌套对象、数组或缩进行会明确报错提示，避免把层级结构错误拍平。',
+          },
+          {
+            question: '重复键如何处理？',
+            answer:
+              '重复键不会导致转换失败，而是产生一条带行号的黄色警告，并按 dotenv 常见约定以后出现的值覆盖先出现的值；输出中每个键只保留一个最终值。',
+          },
+          {
+            question: '单引号和双引号有什么区别？',
+            answer:
+              '双引号内会处理 \\n、\\t、\\"、\\\\ 等转义序列；单引号内的内容原样保留，不做转义，适合存放包含特殊字符的密钥或正则。无引号值会在「空白 + #」处截断行内注释。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local parser and format converter for environment-variable configuration. It parses KEY=VALUE text line by line, skips blank lines and # comments, recognizes an optional export prefix, and handles single-quoted, double-quoted (with \\n, \\t, \\", \\\\ escapes), and unquoted values (including inline-comment stripping). Convert bidirectionally between dotenv, JSON, flat YAML, and shell export. Invalid key names, missing separators, unclosed quotes, and nested structures are reported with line numbers instead of throwing, while duplicate keys produce a warning and the later value wins. Parsing and serialization are zero-dependency pure functions.',
+        coreFeatures: [
+          'Four-way conversion: dotenv (.env), JSON, flat YAML, and shell export statements',
+          'Complete parsing: blank lines, comments, export prefix, single/double quotes, escapes, and equals signs inside values',
+          'Error location: invalid key names, missing separators, and unclosed quotes report exact line numbers without throwing',
+          'Duplicate-key detection: line-numbered warnings with the later value winning',
+          'One click to swap input/output formats, with copy-ready results',
+          '100% local: no new dependencies and nothing uploaded',
+        ],
+        howToUse: [
+          'Pick the source format on the left card (.env / JSON / YAML / export) and paste or edit the config',
+          'Pick the target format on the right card; output appears live, or a red message with a line number shows the error',
+          'A yellow warning means a recoverable issue such as a duplicate key—output is still generated using the later value',
+          'Click “Swap input/output formats” to feed the current result back as input for chained conversions',
+          'Click Copy to put the result on your clipboard',
+        ],
+        useCases: [
+          'Deployment migration: turn a .env file into the JSON/YAML key-value structure required by container platforms or CI',
+          'Config cleanup: detect duplicate keys, invalid names, and quote mistakes in legacy .env files',
+          'Scripting: move between dotenv and shell export statements for local sourcing or export',
+        ],
+        privacyNote:
+          'All parsing and conversion run locally in your browser via pure functions. No network requests are made, so secrets and tokens you paste never leave your device.',
+        faqs: [
+          {
+            question: 'Are nested JSON or YAML structures supported?',
+            answer:
+              'No. Environment variables are inherently a flat KEY=VALUE set, so the tool accepts only flat objects and one key: value pair per line. Nested objects, arrays, or indented lines produce a clear error instead of silently flattening a hierarchy.',
+          },
+          {
+            question: 'How are duplicate keys handled?',
+            answer:
+              'A duplicate key does not fail conversion. It produces a yellow warning with a line number, and—following common dotenv behavior—the later occurrence overrides the earlier one, so each key appears once in the output with its final value.',
+          },
+          {
+            question: 'What is the difference between single and double quotes?',
+            answer:
+              'Inside double quotes, escape sequences such as \\n, \\t, \\", and \\\\ are interpreted. Inside single quotes, content is kept verbatim with no escaping—handy for secrets or regexes containing special characters. Unquoted values truncate an inline comment at whitespace followed by #.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
