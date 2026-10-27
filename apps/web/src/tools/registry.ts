@@ -8816,6 +8816,109 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'http-status-codes',
+    name: 'HTTP 状态码速查',
+    nameEn: 'HTTP Status Codes Reference',
+    description:
+      '按 1xx–5xx 分类速查 IANA 常见 HTTP 状态码（100–511）的中文含义、英文 Reason-Phrase、典型触发场景、排错建议与是否可重试；支持编号前缀（404、4）与中英文关键词（not found、重定向、网关）实时检索，点击条目展开详情。',
+    descriptionEn:
+      'Look up common IANA HTTP status codes (100–511) grouped by 1xx–5xx, with Chinese meaning, English reason phrase, typical triggers, troubleshooting tips, and retry guidance. Search live by code prefix (404, 4) or Chinese/English keywords (not found, redirect, gateway); click an entry to expand details.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/http-status-codes',
+    iconName: 'FileText',
+    tags: ['HTTP', '状态码', '协议', '联调', '重定向', '排错'],
+    tagsEn: ['HTTP', 'Status Codes', 'Protocol', 'Redirect', 'Debugging'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 HTTP 状态码参考速查工具，内置 IANA 注册的常见标准状态码（100–511）静态数据表，覆盖 1xx 信息、2xx 成功、3xx 重定向、4xx 客户端错误、5xx 服务器错误五个分段。每个条目提供英文 Reason-Phrase、中文含义、典型触发场景、排错建议以及是否可以安全重试，便于前后端联调与线上排障时快速定位语义。',
+        coreFeatures: [
+          '覆盖 100–511 常见标准状态码，含 418 彩蛋码与 306 保留码等特殊条目',
+          '编号检索：纯数字按前缀匹配（404 精确、4 列出全部 4xx、40 列出 400/401/408 等）',
+          '关键词检索：中英文名称、典型场景与排错建议全文模糊匹配（not found、重定向、网关、限流）',
+          '分类筛选：一键切换 1xx / 2xx / 3xx / 4xx / 5xx，并按分段分组展示',
+          '展开详情：点击条目查看典型触发场景、排错建议与重试建议标签',
+          '纯本地运行：静态数据 + 纯函数检索，无网络请求、零新增依赖',
+        ],
+        howToUse: [
+          '在搜索框输入三位编号（如 404）精确定位，或只输首位数字（如 5）浏览整段',
+          '也可输入中英文关键词，如 not found、重定向、网关、限流、超时',
+          '使用顶部按钮按 1xx–5xx 分段过滤，结果自动分组并显示每组数量',
+          '点击任意条目展开，查看典型场景、排错建议与「可安全重试 / 不应直接重试」标签',
+        ],
+        useCases: [
+          '前后端联调：遇到陌生状态码（如 409、412、421）快速确认语义与处理方式',
+          '线上排障：根据 502 / 503 / 504 区分上游崩溃、服务不可用与网关超时',
+          '接口设计：为新建 REST API 选择语义正确的状态码与重试策略',
+        ],
+        privacyNote:
+          '状态码数据内置在工具中，检索逻辑全部在浏览器本地完成，不发起任何网络请求，也不会记录输入内容。',
+        faqs: [
+          {
+            question: '401 和 403 有什么区别？',
+            answer:
+              '401 Unauthorized 语义是“未认证”：缺少或携带了无效的登录凭证（Token 缺失 / 过期），补充有效凭证后可能成功；403 Forbidden 是“已认证但禁止访问”：服务器理解请求但拒绝授权，重新登录通常无效，需要调整账号权限或资源访问策略。',
+          },
+          {
+            question: '301、302、307、308 如何选择？',
+            answer:
+              '按“是否永久”与“是否保持请求方法”两个维度区分：301 永久、302 临时，但历史实现可能把 POST 改写为 GET；308 是方法安全的永久重定向，307 是方法安全的临时重定向，两者明确要求保持原方法与请求体。新系统需要语义严格时优先使用 307 / 308。',
+          },
+          {
+            question: '哪些 5xx 可以安全重试？',
+            answer:
+              '502 Bad Gateway、503 Service Unavailable、504 Gateway Timeout 通常代表临时性故障，可结合 Retry-After 头做指数退避重试；500 Internal Server Error 原因未知，仅对幂等请求重试，非幂等请求应先确认服务端状态；501 表示功能未实现，重试无意义。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local reference for common IANA-registered HTTP status codes (100–511), covering all five classes: 1xx informational, 2xx success, 3xx redirection, 4xx client errors, and 5xx server errors. Every entry provides the English reason phrase, a Chinese explanation, typical trigger scenarios, troubleshooting tips, and safe-retry guidance, making API integration and incident triage faster.',
+        coreFeatures: [
+          'Covers common standard codes from 100 to 511, including special entries such as 418 and the reserved 306',
+          'Code search: digits match by prefix (404 exact, 4 lists all 4xx, 40 lists 400/401/408 and more)',
+          'Keyword search: fuzzy matching across Chinese/English names, scenarios, and tips (not found, redirect, gateway, rate limit)',
+          'Class filter: switch between 1xx / 2xx / 3xx / 4xx / 5xx with grouped results',
+          'Expandable entries: click to see typical scenarios, troubleshooting tips, and a retry-guidance tag',
+          '100% local: static data plus pure-function search with no network requests and no new dependencies',
+        ],
+        howToUse: [
+          'Type a three-digit code (e.g. 404) for an exact match, or just the first digit (e.g. 5) to browse a class',
+          'Or enter Chinese/English keywords such as not found, redirect, gateway, or rate limit',
+          'Use the top buttons to filter by 1xx–5xx; results are grouped with per-group counts',
+          'Click any entry to expand typical scenarios, troubleshooting advice, and the retry tag',
+        ],
+        useCases: [
+          'API integration: quickly confirm the meaning of less common codes like 409, 412, or 421',
+          'Incident triage: distinguish upstream crash (502), unavailable service (503), and gateway timeout (504)',
+          'API design: choose semantically correct status codes and retry policies for new REST endpoints',
+        ],
+        privacyNote:
+          'The status-code dataset is bundled with the tool and all search logic runs locally in your browser; no network requests are made and your input is never logged.',
+        faqs: [
+          {
+            question: 'What is the difference between 401 and 403?',
+            answer:
+              '401 Unauthorized actually means "unauthenticated": credentials are missing or invalid (token absent or expired), so supplying valid credentials may succeed. 403 Forbidden means the server understands the request but refuses it for an authenticated identity; logging in again usually does not help—permissions or resource policy must change.',
+          },
+          {
+            question: 'How do I choose between 301, 302, 307, and 308?',
+            answer:
+              'Use two dimensions—permanent vs temporary and method-preserving vs not. 301 is permanent and 302 temporary, but historical implementations may rewrite POST to GET. 308 is the method-safe permanent redirect and 307 the method-safe temporary one; both explicitly require preserving the original method and body. Prefer 307 / 308 when strict semantics matter.',
+          },
+          {
+            question: 'Which 5xx errors are safe to retry?',
+            answer:
+              '502 Bad Gateway, 503 Service Unavailable, and 504 Gateway Timeout usually indicate transient failures and can be retried with exponential backoff, honoring Retry-After. 500 has an unknown cause—retry only idempotent requests and verify server state for non-idempotent ones. 501 means the feature is not implemented, so retrying is pointless.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

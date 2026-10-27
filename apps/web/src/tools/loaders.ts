@@ -112,4 +112,5 @@ export const toolLoaders: Record<
   'ascii-table': () => import('./ascii-table'),
   'base62-codec': () => import('./base62-codec'),
   'varint-codec': () => import('./varint-codec'),
+  'http-status-codes': () => import('./http-status-codes'),
 };
