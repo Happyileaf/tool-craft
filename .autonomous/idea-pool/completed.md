@@ -19,3 +19,8 @@
 | 20261026020138 | Vigenère 维吉尼亚密码加解密 | Web Tool | Exploration | `vigenere-cipher` / [PR #76](https://github.com/Happyileaf/tool-craft/pull/76) | 2026-10-27 | [详情](./idea-details/20261026020138.md) |
 | 20261023141141 | MIDI 音符与频率互转计算器 | Web Tool | Exploration | `midi-note-converter` / [PR #76](https://github.com/Happyileaf/tool-craft/pull/76) | 2026-10-27 | [详情](./idea-details/20261023141141.md) |
 | 20261026200346 | RGB565 / RGB555 嵌入式颜色格式转换器 | Web Tool | Existing Gap | `rgb565-converter` / [PR #76](https://github.com/Happyileaf/tool-craft/pull/76) | 2026-10-27 | [详情](./idea-details/20261026200346.md) |
+| 20261023040537 | Geohash 编解码器 | Web Tool | Exploration | `geohash-codec` / [PR #79](https://github.com/Happyileaf/tool-craft/pull/79) | 2026-10-27 | [详情](./idea-details/20261023040537.md) |
+| 20261027140130 | Unicode 规范化转换器（NFC / NFD / NFKC / NFKD） | Web Tool | Existing Gap | `unicode-normalization` / [PR #79](https://github.com/Happyileaf/tool-craft/pull/79) | 2026-10-27 | [详情](./idea-details/20261027140130.md) |
+| 20261027081104 | JSON Merge Patch（RFC 7386 / 7396）生成与应用器 | Web Tool | Existing Gap | `json-merge-patch` / [PR #79](https://github.com/Happyileaf/tool-craft/pull/79) | 2026-10-27 | [详情](./idea-details/20261027081104.md) |
+| 20261026020136 | WGS-84 / GCJ-02 / BD-09 坐标系互转器 | Web Tool | Existing Gap | `coordinate-system-converter` / [PR #79](https://github.com/Happyileaf/tool-craft/pull/79) | 2026-10-27 | [详情](./idea-details/20261026020136.md) |
+| 20261017183439 | IEEE 754 浮点数转换器 | Web Tool | Exploration | `ieee754-float-converter` / [PR #79](https://github.com/Happyileaf/tool-craft/pull/79) | 2026-10-27 | [详情](./idea-details/20261017183439.md) |
