@@ -7611,6 +7611,507 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'geohash-codec',
+    name: 'Geohash 编解码器',
+    nameEn: 'Geohash Encode & Decode',
+    description:
+      '在经纬度与 Geohash base32 字符串之间双向转换：编码支持 1–12 位精度并展示逐字符区间二分过程，解码输出中心点、边界框与误差范围，全部本地计算。',
+    descriptionEn:
+      'Convert between latitude/longitude and Geohash base32 strings: encode with 1–12 character precision and per-character interval bisection steps, or decode to center point, bounding box, and error margin. All local.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/geohash-codec',
+    iconName: 'Binary',
+    tags: ['Geohash', '经纬度', '地理编码', 'Base32', 'LBS'],
+    tagsEn: ['Geohash', 'Coordinates', 'Geocoding', 'Base32', 'LBS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '57.64911,10.40744',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Geohash 编解码器面向地图与 LBS 开发：把经纬度坐标编码为 Geohash 字符串（一种用 base32 字符对地球表面做层次化网格划分的空间索引方案），也可以把 Geohash 解码回中心点坐标、边界框与误差范围。编码时逐字符展示经纬度区间如何被交替二分收窄，便于理解 geohash 的网格结构；全部计算为本地纯函数，不涉及任何网络坐标服务。',
+        coreFeatures: [
+          '双向转换：经纬度 → geohash（1–12 位可选）与 geohash → 中心点 / 边界框',
+          '过程可视化：逐字符给出 5 bit、纬度区间与经度区间的二分收窄过程',
+          '误差量化：解码输出格子边界框与经纬度误差（格子半宽）',
+          '输入宽容：自动 trim、大写自动转小写，非法字符（a/i/l/o 等）明确报错',
+          '零依赖本地运算：固定算法、固定测试向量，结果与 Wikipedia 标准示例一致',
+        ],
+        howToUse: [
+          '选择模式（编码 / 解码）：编码侧填入纬度、经度与精度，结果实时刷新',
+          '复制 geohash 结果用于短链接、附近搜索前缀匹配或空间索引',
+          '解码侧粘贴 geohash 字符串，查看中心点、边界框与误差，可一键复制中心点',
+        ],
+        useCases: [
+          '地图应用中按 geohash 前缀做附近的人 / 地点聚合查询',
+          '把坐标压缩为短字符串用于短链接、二维码或离线数据交换',
+          '学习与验证 geohash 区间二分算法，调试 LBS 服务端编解码逻辑',
+        ],
+        privacyNote:
+          '所有编解码均在浏览器本地完成，仅涉及区间二分与 base32 映射，不发起任何网络请求或位置数据上传。',
+        faqs: [
+          {
+            question: 'geohash 精度与误差是什么关系？',
+            answer:
+              '每个 geohash 字符携带 5 个 bit（偶数位用于经度、奇数位用于纬度），字符越多格子越小。1 位字符的格子误差可达数十度，而 8 位字符的经纬度误差约在 20 米 / 40 米量级，11–12 位已达到厘米级以下。解码结果给出的误差即格子半宽，中心点为区间中点。',
+          },
+          {
+            question: '为什么相邻位置的 geohash 前缀相同？',
+            answer:
+              'Geohash 是层次化网格：同一个父格子内的所有位置共享父格子前缀。因此附近搜索常用前缀匹配快速缩小范围，但需注意网格边界两侧的位置即使物理上很近，前缀也可能完全不同，生产环境通常还需查询周围 8 个邻居格子。',
+          },
+          {
+            question: 'Geohash 和经纬度的度分秒格式转换是一回事吗？',
+            answer:
+              '不是。度分秒（DMS）转换只是同一个点位的不同文本表示（十进制度 ↔ 度分秒），坐标本身没有网格化；geohash 则是用 base32 字符对经纬度区间反复二分得到的空间索引串，字符串代表一块区域而非一个精确点，因此才有边界框与误差概念。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Geohash codec serves map and LBS development: encode latitude/longitude into a Geohash string (a hierarchical grid of the earth indexed by base32 characters), or decode a Geohash back to its center point, bounding box, and error margin. While encoding, it shows how the latitude and longitude intervals are alternately bisected character by character, making the grid structure transparent. Everything runs as local pure functions with no network geocoding service.',
+        coreFeatures: [
+          'Bidirectional: coordinates → geohash (1–12 chars) and geohash → center / bounding box',
+          'Visualized steps: per-character 5 bits plus latitude/longitude interval bisection',
+          'Error quantified: decoded cell bounding box and lat/lng error (half cell width)',
+          'Lenient input: automatic trim and lowercasing, with clear errors for invalid letters (a/i/l/o)',
+          'Zero-dependency local math matching the canonical Wikipedia test vector',
+        ],
+        howToUse: [
+          'Pick encode or decode; for encode enter latitude, longitude, and precision and watch the result update live',
+          'Copy the geohash for short links, nearby-search prefix matching, or spatial indexing',
+          'For decode paste a geohash to inspect the center, bounding box, and error, with one-click center copy',
+        ],
+        useCases: [
+          'Nearby people/place aggregation by geohash prefix in map applications',
+          'Compressing coordinates into short strings for short links, QR codes, or offline exchange',
+          'Learning the geohash bisection algorithm and debugging LBS backend codec logic',
+        ],
+        privacyNote:
+          'All encoding and decoding runs locally in your browser using only interval bisection and base32 mapping, with no network requests or location uploads.',
+        faqs: [
+          {
+            question: 'What is the relationship between geohash precision and error?',
+            answer:
+              'Each geohash character carries 5 bits (even-indexed bits for longitude, odd-indexed for latitude), so more characters mean smaller cells. A 1-character cell can span tens of degrees, an 8-character cell is on the order of 20m/40m error, and 11–12 characters reach sub-centimeter precision. The reported error is the half-width of the cell, with the center at the interval midpoint.',
+          },
+          {
+            question: 'Why do nearby points share a geohash prefix?',
+            answer:
+              'Geohash is a hierarchical grid: every point inside a parent cell shares the parent prefix, which is why prefix matching quickly narrows nearby searches. Note that points on opposite sides of a grid boundary can have completely different prefixes despite being physically close; production systems usually also query the 8 neighboring cells.',
+          },
+          {
+            question: 'Is geohash the same as converting degrees-minutes-seconds?',
+            answer:
+              'No. DMS conversion merely rewrites the same point in another text representation (decimal degrees ↔ degrees/minutes/seconds) without gridding. A geohash is a spatial index produced by repeatedly bisecting lat/lng intervals with base32 characters; the string denotes an area rather than an exact point, which is why it has a bounding box and an error margin.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'unicode-normalization',
+    name: 'Unicode 规范化转换器（NFC / NFD / NFKC / NFKD）',
+    nameEn: 'Unicode Normalization Converter (NFC / NFD / NFKC / NFKD)',
+    description:
+      '对文本应用四种 Unicode 标准规范化形式，展示转换前后码点数、UTF-16 码元、UTF-8 字节与逐码点 LCS 差异，正确处理组合标记、兼容字符、emoji 与代理对。',
+    descriptionEn:
+      'Apply the four standard Unicode normalization forms to text, showing code-point count, UTF-16 units, UTF-8 bytes, and a per-code-point LCS diff, with proper handling of combining marks, compatibility characters, emoji, and surrogate pairs.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/unicode-normalization',
+    iconName: 'Type',
+    tags: ['Unicode', '规范化', 'NFC', 'NFD', '码点'],
+    tagsEn: ['Unicode', 'Normalization', 'NFC', 'NFD', 'Code Point'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Café é\n①②③ ＡＢＣ',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Unicode 规范化转换器对任意文本应用 Unicode 标准定义的四种规范化形式（NFC / NFD / NFKC / NFKD），用于排查「看起来相同但字节不同」的字符串比较问题：预组合字符（如 é，U+00E9）与分解序列（e U+0065 + 组合重音 U+0301）可互相转换；全角字母、① 序号、连字 ﬁ、半角片假名等兼容字符可在 KC/KD 形式下折叠为普通等价字符。工具同时给出码点数、UTF-16 码元数、UTF-8 字节数与逐码点差异高亮，全部基于浏览器原生 String.prototype.normalize 与 TextEncoder 本地完成。',
+        coreFeatures: [
+          '四种标准形式：NFC 规范合成、NFD 规范分解、NFKC 兼容合成、NFKD 兼容分解',
+          '逐码点差异：LCS 对齐转换前后序列，灰 / 红 / 蓝标记不变、删除、新增',
+          '三项长度指标：码点数、UTF-16 码元数（.length）、UTF-8 字节数实时对比',
+          '正确处理代理对与 emoji ZWJ 序列，增补平面字符不被拆成孤立代理',
+          '零新依赖：直接使用浏览器内置 normalize / TextEncoder，结果可与原生 API 逐项对照',
+        ],
+        howToUse: [
+          '选择规范化形式（默认 NFC），在左侧粘贴或输入文本，右侧实时显示结果',
+          '查看码点 Tag：组合重音、全角折叠等变化以红色删除 / 蓝色新增标注',
+          '一键复制规范化结果，用于服务端比较前的输入归一化或数据清洗',
+        ],
+        useCases: [
+          '排查用户名、文件名、搜索词「看着相同却不相等」的规范化问题',
+          '安全场景下对用户输入做 NFKC 归一化，防止同形字符混淆',
+          '处理含组合标记、半角片假名、连字、全角符号的多语言文本数据',
+        ],
+        privacyNote:
+          '所有转换均在浏览器本地通过 String.prototype.normalize 与 TextEncoder 完成，不发起任何网络请求或文本上传。',
+        faqs: [
+          {
+            question: 'NFC 和 NFD 有什么区别？',
+            answer:
+              '二者只处理「规范等价」的字符：NFC（Canonical Composition）把基字符与组合标记合成为单个预组合码点（如 e + 重音 → U+00E9 é）；NFD（Canonical Decomposition）做反向展开。两者显示外观相同，但字节与码点序列不同，macOS 的 HFS+ 文件名就曾默认使用 NFD，跨系统比较前需先统一形式。',
+          },
+          {
+            question: '为什么 NFKC 会改变字符外观（① 变成 1）？',
+            answer:
+              '带 K 的形式额外执行「兼容性分解」：①、全角 Ａ、上标 ²、连字 ﬁ、半角片假名等字符在 Unicode 中是为兼容旧字符集而保留的，与普通写法仅「兼容等价」。NFKC/NFKD 会把它们折叠成普通字符，利于搜索与比较，但可能丢失排版语义或圈号外观，因此不适合所有场景。',
+          },
+          {
+            question: 'emoji 和 ZWJ 序列会受影响吗？',
+            answer:
+              '普通 emoji（如 😀，U+1F600）位于增补平面，工具按码点迭代而非 UTF-16 码元，不会拆成乱码代理；家庭、职业等 emoji 使用 ZWJ（U+200D）连接多个码点，规范化不会移除 ZWJ，序列保持完整。但 emoji 修饰符（肤色、旗标分组）本身不属于规范化范畴，结果仍以浏览器 Unicode 数据表为准。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Unicode Normalization Converter applies the four standard Unicode normalization forms (NFC / NFD / NFKC / NFKD) to any text, solving "looks identical but bytes differ" comparison issues: precomposed characters (é, U+00E9) convert to and from decomposed sequences (e U+0065 + combining acute U+0301), while compatibility characters such as full-width letters, circled digits ①, the ﬁ ligature, and half-width katakana fold to ordinary equivalents under KC/KD. It reports code-point count, UTF-16 units, UTF-8 bytes, and a per-code-point diff, all locally via the native String.prototype.normalize and TextEncoder APIs.',
+        coreFeatures: [
+          'All four standard forms: NFC canonical composition, NFD canonical decomposition, NFKC/NFKD compatibility forms',
+          'Per-code-point diff: LCS alignment with gray/red/blue tags for unchanged, removed, and added',
+          'Three length metrics: code points, UTF-16 units (.length), and UTF-8 bytes compared live',
+          'Correct surrogate-pair and emoji ZWJ handling; supplementary-plane characters are never split',
+          'Zero dependencies: built on native normalize / TextEncoder, directly cross-checkable against the platform API',
+        ],
+        howToUse: [
+          'Pick a form (NFC by default), paste or type text on the left, and read the live result on the right',
+          'Inspect code-point tags: combining marks and full-width folds show as red removals / blue additions',
+          'Copy the normalized result for input canonicalization before server-side comparison or data cleaning',
+        ],
+        useCases: [
+          'Debugging usernames, filenames, or search terms that look equal but compare unequal',
+          'NFKC canonicalization of user input in security contexts to defeat confusable characters',
+          'Processing multilingual text with combining marks, half-width katakana, ligatures, and full-width symbols',
+        ],
+        privacyNote:
+          'All conversion runs locally in your browser via String.prototype.normalize and TextEncoder, with no network requests or text uploads.',
+        faqs: [
+          {
+            question: 'What is the difference between NFC and NFD?',
+            answer:
+              'Both handle only canonically equivalent characters: NFC composes a base character plus combining marks into a single precomposed code point (e + acute → U+00E9 é), while NFD expands it the other way. They render identically but have different byte and code-point sequences; macOS HFS+ filenames famously defaulted to NFD, so unify the form before cross-system comparison.',
+          },
+          {
+            question: 'Why does NFKC change how characters look (① becomes 1)?',
+            answer:
+              'The K forms additionally perform compatibility decomposition: ①, full-width Ａ, superscript ², the ﬁ ligature, and half-width katakana exist in Unicode only for compatibility with legacy character sets and are merely compatibility-equivalent to plain spellings. NFKC/NFKD fold them into ordinary characters, which helps search and comparison but can lose typographic semantics or the circled appearance, so it is not appropriate everywhere.',
+          },
+          {
+            question: 'Are emoji and ZWJ sequences affected?',
+            answer:
+              'Plain emoji such as 😀 (U+1F600) live on a supplementary plane; the tool iterates by code point rather than UTF-16 unit, so they are never split into broken surrogates. Family and profession emoji join multiple code points with ZWJ (U+200D), which normalization never removes, so the sequence stays intact. Emoji modifiers (skin tones, flag sequences) are outside normalization anyway; results follow the browser Unicode data tables.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-merge-patch',
+    name: 'JSON Merge Patch 生成与应用器（RFC 7386）',
+    nameEn: 'JSON Merge Patch Generator & Applier (RFC 7386)',
+    description:
+      '按 RFC 7386 / 7396 语义将 merge patch 应用到 JSON 文档，或在两个 JSON 文档之间生成最小补丁（null 表示删除键），错误带行列定位，结果一键复制。',
+    descriptionEn:
+      'Apply a merge patch to a JSON document or generate a minimal patch between two documents per RFC 7386/7396 (null deletes a key), with line/column-aware errors and one-click copy.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-merge-patch',
+    iconName: 'Braces',
+    tags: ['JSON', 'Merge Patch', 'RFC 7386', 'PATCH', 'API 调试'],
+    tagsEn: ['JSON', 'Merge Patch', 'RFC 7386', 'PATCH', 'API Debugging'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '{\n  "title": "Goodbye!",\n  "author": {\n    "givenName": "John",\n    "familyName": "Doe"\n  },\n  "tags": ["example", "sample"],\n  "content": "This will be unchanged"\n}',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON Merge Patch 工具实现 RFC 7386 定义的 merge patch 格式：补丁文档模仿原文档的结构，逐键描述修改——值为 null 表示删除该键，双方都是对象则递归合并，其余情况整体替换，数组按整体替换处理。既可把现成补丁应用到原文档查看结果，也可对比原文档与目标文档自动生成满足 RFC 7396 语义的最小补丁，直接用于 HTTP PATCH 请求。',
+        coreFeatures: [
+          '双模式：应用补丁（apply）与生成补丁（generate）',
+          '严格 RFC 7386 递归语义：null 删除键、对象递归合并、数组 / 标量整体替换',
+          '生成最小补丁：applyPatch(原文, 生成补丁) 与目标文档深度一致',
+          '错误可定位：非法 JSON 报告具体行列号，不产生静默结果',
+          '零依赖本地运算，覆盖 RFC 7386 附录 A 全部官方测试向量',
+        ],
+        howToUse: [
+          '选择模式：应用补丁时左栏填原文档、右栏填 merge patch；生成补丁时右栏填目标文档',
+          '结果栏实时展示应用结果或生成的补丁 JSON（2 空格缩进），可一键复制',
+          '点击「载入示例」查看 RFC 官方示例；删除键时在补丁里把该键值写为 null',
+        ],
+        useCases: [
+          '构造并调试 application/merge-patch+json 类型的 HTTP PATCH 请求体',
+          '对比两份配置 / 接口响应，快速生成只含差异的最小更新文档',
+          '学习 RFC 7386 语义，验证服务端 merge patch 实现是否符合附录 A 向量',
+        ],
+        privacyNote:
+          '所有 JSON 解析与补丁运算均在浏览器本地完成，文档内容不会上传或离开当前页面。',
+        faqs: [
+          {
+            question: '补丁里的 null 是什么含义？如何把一个键更新为 null？',
+            answer:
+              '在 merge patch 中，键值为 null 专门表示「删除目标对象的这个键」。因此 merge patch 无法表达「把值更新为 null」这一操作——这是 RFC 7386 的有意设计，它建议只对不使用显式 null 值的文档采用 merge patch；需要区分两种语义时应改用 JSON Patch（RFC 6902）。',
+          },
+          {
+            question: '为什么数组是整体替换而不是按元素合并？',
+            answer:
+              'RFC 7386 明确规定补丁不是对象时整体替换目标，而数组不是「对象」：合并算法无法判断你是想按下标改元素、插入、删除还是重排，逐元素猜测会造成歧义。因此要把 [1,2] 改成 [1,3]，补丁必须给出完整的 [1,3]。需要路径级数组操作请使用 RFC 6902。',
+          },
+          {
+            question: 'JSON Merge Patch（RFC 7386）和 JSON Patch（RFC 6902）有什么区别？',
+            answer:
+              'Merge patch 是「声明目标样子」的文档：键值即修改、null 即删除，写法简单但表达力有限，无法操作数组元素或把值设为 null。JSON Patch 是一组有序操作（add/remove/replace/move/copy/test），带 JSON Pointer 路径，能精确操作数组但语法更繁琐。本工具仅支持 merge patch。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool implements the merge patch format defined in RFC 7386: the patch mimics the structure of the original document and describes changes key by key — a null value deletes the key, two objects merge recursively, and anything else (including arrays) is replaced wholesale. Apply an existing patch to see the result, or compare an original with a target to generate the minimal RFC 7396 patch ready to send in an HTTP PATCH request.',
+        coreFeatures: [
+          'Two modes: apply a patch and generate a patch',
+          'Strict RFC 7386 recursion: null deletes, plain objects merge, arrays/scalars replace wholesale',
+          'Minimal patch generation so that applying it to the original deep-equals the target',
+          'Actionable errors: invalid JSON reports the exact line and column with no silent output',
+          'Zero-dependency local computation, covering every official Appendix A test vector',
+        ],
+        howToUse: [
+          'Pick a mode: for apply, put the original on the left and the merge patch on the right; for generate, put the target document on the right',
+          'The result panel shows the applied result or generated patch as 2-space-indented JSON, copyable in one click',
+          'Use "Load sample" for the canonical RFC example; to delete a key, set it to null in the patch',
+        ],
+        useCases: [
+          'Building and debugging HTTP PATCH bodies of type application/merge-patch+json',
+          'Diffing two configs or API responses into a minimal update document',
+          'Learning RFC 7386 semantics and validating a server implementation against Appendix A',
+        ],
+        privacyNote:
+          'All JSON parsing and patching runs locally in your browser; document content is never uploaded and never leaves the page.',
+        faqs: [
+          {
+            question: 'What does null in a patch mean? How do I set a key to null?',
+            answer:
+              'In a merge patch, a key whose value is null specifically means "remove this key from the target". A merge patch therefore cannot express "change the value to null" — this is intentional in RFC 7386, which recommends merge patch only for documents without explicit null values. If you need to distinguish the two, use JSON Patch (RFC 6902) instead.',
+          },
+          {
+            question: 'Why are arrays replaced wholesale instead of merged element by element?',
+            answer:
+              'RFC 7386 states that a non-object patch replaces the target entirely, and arrays are not "objects": the algorithm cannot tell whether you meant to edit by index, insert, delete, or reorder, so guessing would be ambiguous. To change [1,2] into [1,3], the patch must supply the full [1,3]. For path-level array operations, use RFC 6902.',
+          },
+          {
+            question: 'How does JSON Merge Patch (RFC 7386) differ from JSON Patch (RFC 6902)?',
+            answer:
+              'A merge patch is a document declaring the desired shape: values are edits and null means delete — simple but limited, with no array-element operations and no way to set a value to null. JSON Patch is an ordered list of operations (add/remove/replace/move/copy/test) with JSON Pointer paths, precise for arrays but more verbose. This tool supports merge patch only.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'coordinate-system-converter',
+    name: 'WGS-84 / GCJ-02 / BD-09 坐标系互转器',
+    nameEn: 'Coordinate System Converter (WGS-84 / GCJ-02 / BD-09)',
+    description:
+      '批量互转 GPS（WGS-84）、火星坐标（GCJ-02，高德 / 腾讯）与百度坐标（BD-09），每行「经度,纬度」，逐行校验并给出明细，境外坐标不偏移，结果一键复制。',
+    descriptionEn:
+      'Batch-convert between GPS (WGS-84), GCJ-02 (Mars coordinates, AMap/Tencent) and BD-09 (Baidu), one "lng,lat" pair per line, with per-row validation and detail table; out-of-China points are returned unshifted. One-click copy.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/coordinate-system-converter',
+    iconName: 'Code',
+    tags: ['坐标系转换', 'WGS84', 'GCJ02', 'BD09', '地图开发'],
+    tagsEn: ['Coordinate Transform', 'WGS84', 'GCJ02', 'BD09', 'Map Development'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '116.404,39.915\n121.4737,31.2304',
+    doc: {
+      zh: {
+        whatIsIt:
+          '坐标系互转器用于解决国内地图开发中最常见的坐标不一致问题：GPS 设备与国际标准使用 WGS-84，高德、腾讯等国内地图服务使用加入非线性偏移的 GCJ-02（火星坐标系），百度地图在 GCJ-02 基础上再做一次加密得到 BD-09。工具实现通行的偏移算法及其逆运算，支持三种坐标系两两互转、批量处理与逐行错误提示，全部计算在浏览器本地完成。',
+        coreFeatures: [
+          'WGS-84、GCJ-02、BD-09 三种坐标系两两互转（共 9 种方向组合）',
+          '批量转换：每行一对「经度,纬度」，支持英文 / 中文逗号、分号与空白分隔，自动跳过空行',
+          '逐行校验：字段缺失、非数字、经纬度越界等错误只标记对应行，不影响其他行',
+          '明细表格：展示每行转换结果，并对中国境外坐标标注「境外未偏移」',
+          '结果统一保留 6 位小数，可一键复制，纯本地运算零依赖',
+        ],
+        howToUse: [
+          '在顶部选择源坐标系与目标坐标系，在左栏每行输入一对「经度,纬度」（十进制）',
+          '右栏实时显示转换结果；下方表格逐行展示明细，错误行会给出具体原因',
+          '点击「复制结果」复制全部输出（成功行为坐标，失败行为以 # 开头的错误说明）',
+        ],
+        useCases: [
+          '把 GPS 轨迹 / 设备上报的 WGS-84 坐标转换为高德、腾讯地图可用的 GCJ-02 坐标',
+          '将百度地图取点结果（BD-09）转换为 WGS-84 后入库或与国际数据源对齐',
+          '批量清洗 CSV 中的坐标列，快速定位格式错误与境外数据',
+        ],
+        privacyNote:
+          '所有坐标计算均在浏览器本地完成，输入的位置数据不会上传或离开当前页面。',
+        faqs: [
+          {
+            question: 'WGS-84、GCJ-02、BD-09 分别是什么？',
+            answer:
+              'WGS-84 是 GPS 使用的国际标准坐标系；GCJ-02（火星坐标系）是国家规定的加密坐标系，在 WGS-84 上叠加非线性偏移，高德、腾讯等国内地图使用；BD-09 是百度在 GCJ-02 基础上再次加密得到的坐标系，仅用于百度地图。同一真实地点在三套坐标下的经纬度数值不同，直接混用会出现几百米偏差。',
+          },
+          {
+            question: '为什么中国境外的坐标不做偏移？',
+            answer:
+              'GCJ-02 偏移只针对中国境内有效，通行实现（coordtransform 等）会用矩形范围（经度 72.004–137.8347、纬度 0.8293–55.8271）粗略判断，范围外的坐标直接原样返回。工具沿用这一约定并在明细中标注「境外未偏移」。',
+          },
+          {
+            question: 'GCJ-02 转 WGS-84 的结果为什么说是近似的？',
+            answer:
+              'GCJ-02 偏移算法没有官方逆函数，本工具采用业界通行的减法近似（用 WGS→GCJ 的偏移量反减），往返误差通常在 1–2 米量级，对打点、展示等场景足够；对测绘级精度要求的场景请使用官方坐标转换服务。BD-09 与 WGS-84 之间的转换统一经 GCJ-02 中转。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This converter solves the most common coordinate mismatch in China map development: GPS devices and international standards use WGS-84; mainland services such as AMap and Tencent Maps use GCJ-02 (the "Mars" system), which applies a non-linear offset to WGS-84; and Baidu Maps adds another encryption layer on top of GCJ-02 called BD-09. The tool implements the widely used offset algorithm and its inverse, supports all pairwise conversions between the three systems with batch processing and per-row error reporting, and runs entirely in the browser.',
+        coreFeatures: [
+          'All pairwise conversions among WGS-84, GCJ-02 and BD-09 (9 direction combinations)',
+          'Batch mode: one "lng,lat" pair per line; accepts commas (ASCII/full-width), semicolons and whitespace; blank lines skipped',
+          'Per-row validation: missing fields, non-numeric values and out-of-range coordinates only fail that row',
+          'Detail table showing every converted row, with an "out of China, unshifted" tag for points outside the offset rectangle',
+          'Output rounded to 6 decimal places, one-click copy, zero-dependency local computation',
+        ],
+        howToUse: [
+          'Pick the source and target coordinate systems at the top, then enter one decimal "lng,lat" pair per line in the left panel',
+          'The right panel updates with results in real time; the table below shows per-row details and error reasons',
+          'Click "Copy results" to copy all output (successful rows as coordinates, failed rows as #-prefixed error lines)',
+        ],
+        useCases: [
+          'Converting GPS tracks or device-reported WGS-84 points to GCJ-02 for AMap/Tencent display',
+          'Converting Baidu BD-09 points back to WGS-84 for storage or alignment with international data',
+          'Cleaning coordinate columns in CSV files, quickly spotting malformed rows and overseas data',
+        ],
+        privacyNote:
+          'All coordinate calculations run locally in your browser; location data is never uploaded and never leaves this page.',
+        faqs: [
+          {
+            question: 'What are WGS-84, GCJ-02 and BD-09?',
+            answer:
+              'WGS-84 is the international standard used by GPS. GCJ-02 ("Mars coordinates") is the legally required encrypted system in mainland China that adds a non-linear offset to WGS-84, used by AMap and Tencent Maps. BD-09 is Baidu\u2019s further encryption on top of GCJ-02, used only by Baidu Maps. The same real place has different numeric coordinates in the three systems; mixing them causes offsets of hundreds of meters.',
+          },
+          {
+            question: 'Why are points outside China returned without any offset?',
+            answer:
+              'The GCJ-02 offset is only defined inside China. The de-facto implementations (e.g. coordtransform) use a rough bounding rectangle (lng 72.004\u2013137.8347, lat 0.8293\u201355.8271) and return points outside it unchanged. This tool follows that convention and tags such rows as "out of China, unshifted".',
+          },
+          {
+            question: 'Why is GCJ-02 to WGS-84 described as approximate?',
+            answer:
+              'There is no official inverse of the GCJ-02 offset. This tool uses the standard subtraction approximation (subtracting the WGS\u2192GCJ shift), whose round-trip error is typically within 1\u20132 meters \u2014 fine for markers and display, but surveying-grade workloads should use an authorized conversion service. BD-09 to/from WGS-84 always goes through GCJ-02.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ieee754-float-converter',
+    name: 'IEEE 754 浮点数转换器（32 / 64 位）',
+    nameEn: 'IEEE 754 Float Converter (32/64-bit)',
+    description:
+      '在十进制数值与 IEEE 754 单精度（32 位）、双精度（64 位）的二进制 / 十六进制表示之间互转，拆解符号位、偏置指数与尾数位域，支持 ±0、±Infinity、NaN，结果一键复制。',
+    descriptionEn:
+      'Convert between decimal numbers and IEEE 754 binary/hex representations in single (32-bit) and double (64-bit) precision, with sign/biased-exponent/mantissa bit-field breakdown and ±0, ±Infinity, NaN support. One-click copy.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ieee754-float-converter',
+    iconName: 'Binary',
+    tags: ['IEEE 754', '浮点数', '二进制', '十六进制', '底层调试'],
+    tagsEn: ['IEEE 754', 'Floating Point', 'Binary', 'Hexadecimal', 'Low-level Debug'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0.1',
+    doc: {
+      zh: {
+        whatIsIt:
+          'IEEE 754 是现代 CPU 与 JavaScript（number 即 64 位双精度）通用的二进制浮点标准。本工具把十进制数值编码为 32 位单精度或 64 位双精度的二进制 / 十六进制位串，并逐位拆解符号位、含偏置的指数位与尾数位；也支持把任意合法位串还原为十进制数值，正确处理 ±0、±Infinity 与 NaN。底层通过 ArrayBuffer / DataView / BigInt 完成确定性位操作，全部在浏览器本地运行。',
+        coreFeatures: [
+          '支持 binary32（1+8+23，偏置 127）与 binary64（1+11+52，偏置 1023）',
+          '十进制 → 位表示：输出十六进制与按位域着色分段的二进制串',
+          '位表示 → 十进制：自动识别二进制 / 十六进制（支持 0b、0x 前缀与空格、下划线分隔）',
+          '位域拆解表：符号、指数原始位、去偏置指数、尾数二进制与十六进制',
+          '完整支持 ±0、±Infinity、NaN 特殊值；非法位宽 / 字符明确报错不静默',
+        ],
+        howToUse: [
+          '选择精度（单精度 32 位 / 双精度 64 位）与转换模式，在输入框中填入十进制数值或位串',
+          '正向模式实时显示十六进制、分段二进制串与位域表；反向模式显示还原的十进制值',
+          '点击「复制结果」复制十六进制与二进制（正向）或十进制值（反向）',
+        ],
+        useCases: [
+          '排查浮点精度问题：直观看到 0.1、金额、累加误差在二进制层面的真实存储',
+          '调试网络协议 / 嵌入式 / 二进制文件中的 float、double 字段，核对字节序与位模式',
+          '教学辅助：理解隐藏位、偏置指数、非规约数、Infinity / NaN 的编码规则',
+        ],
+        privacyNote:
+          '所有位运算均在浏览器本地通过 ArrayBuffer / DataView 完成，输入数值不会上传或离开当前页面。',
+        faqs: [
+          {
+            question: '为什么 0.1 不能被精确表示？',
+            answer:
+              'IEEE 754 用二进制分数逼近十进制小数，0.1 = 1/10 的分母含有因子 5，无法表示为有限个 2 的负幂次之和，只能存为最接近的二进制值。双精度下实际约为 0.10000000000000000555（3FB999999999999A），单精度舍入为 3DCCCCCD，这正是 0.1 + 0.2 不等于 0.3 的根本原因。',
+          },
+          {
+            question: '什么是偏置指数（biased exponent）？',
+            answer:
+              '指数字段是无符号整数，存储的是「真实指数 + 偏置值」：32 位偏置为 127、64 位为 1023。例如 1.0 的真实指数为 0，64 位字段存 1023（01111111111）。这样指数可以直接按无符号整数比较大小，也省掉了指数本身的符号位。指数全 0 表示零或非规约数，全 1 表示 Infinity 或 NaN。',
+          },
+          {
+            question: '32 位单精度与 64 位双精度有什么差异？',
+            answer:
+              '二者位域布局相同（符号 1 位 + 指数 + 尾数），但 32 位为 8 位指数、23 位尾数（约 7 位十进制有效数字、±3.4×10³⁸ 量程），64 位为 11 位指数、52 位尾数（约 15–17 位有效数字、±1.8×10³⁰⁸ 量程）。JavaScript 的 number 统一使用 64 位双精度；本工具单精度结果按 IEEE 754 round-to-nearest 舍入，并会提示实际存储值。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'IEEE 754 is the binary floating-point standard used by CPUs and by JavaScript itself (every number is a 64-bit double). This tool encodes a decimal value into its 32-bit single or 64-bit double binary/hex bit pattern, breaks the bits down into sign, biased exponent and mantissa fields, and decodes any valid bit pattern back to decimal \u2014 correctly handling \u00b10, \u00b1Infinity and NaN. Bit operations use ArrayBuffer / DataView / BigInt and run entirely locally in the browser.',
+        coreFeatures: [
+          'Supports binary32 (1+8+23, bias 127) and binary64 (1+11+52, bias 1023)',
+          'Decimal \u2192 bits: outputs hexadecimal plus a binary string color-segmented by field',
+          'Bits \u2192 decimal: auto-detects binary vs hex (0b/0x prefixes and spaces/underscores accepted)',
+          'Field table: sign, raw exponent bits, unbiased exponent, mantissa in binary and hex',
+          'Full support for \u00b10, \u00b1Infinity and NaN; invalid width/characters raise clear errors',
+        ],
+        howToUse: [
+          'Pick the precision (32-bit single / 64-bit double) and direction, then enter a decimal number or a bit string',
+          'Forward mode shows hex, the segmented binary stream and the field table; reverse mode shows the decoded decimal value',
+          'Click "Copy results" to copy hex+binary (forward) or the decimal value (reverse)',
+        ],
+        useCases: [
+          'Diagnosing floating-point surprises: seeing how 0.1, money values and accumulated errors are really stored',
+          'Inspecting float/double fields in network protocols, firmware dumps or binary files (bit patterns and endianness)',
+          'Teaching the hidden bit, biased exponent, subnormal numbers and Infinity/NaN encodings',
+        ],
+        privacyNote:
+          'All bit manipulation runs locally in your browser via ArrayBuffer / DataView; entered values are never uploaded.',
+        faqs: [
+          {
+            question: 'Why cannot 0.1 be represented exactly?',
+            answer:
+              'IEEE 754 approximates decimal fractions with binary fractions. Since 0.1 = 1/10 has a factor of 5 in the denominator, it cannot be written as a finite sum of negative powers of two; the closest double is about 0.10000000000000000555 (3FB999999999999A), and the nearest float is 3DCCCCCD. This is exactly why 0.1 + 0.2 is not 0.3.',
+          },
+          {
+            question: 'What is a biased exponent?',
+            answer:
+              'The exponent field is unsigned and stores the true exponent plus a bias: 127 for 32-bit, 1023 for 64-bit. For 1.0 the true exponent is 0, so the 64-bit field holds 1023 (01111111111). Bias lets exponents be compared as plain unsigned integers and removes the need for a sign bit on the exponent. All-zero exponent means zero/subnormal; all-ones means Infinity or NaN.',
+          },
+          {
+            question: 'What differs between 32-bit single and 64-bit double?',
+            answer:
+              'The layout is the same (1 sign + exponent + mantissa), but single uses 8 exponent and 23 mantissa bits (\u22487 significant decimal digits, range \u00b13.4\u00d710\u00b3\u2078), while double uses 11 and 52 (\u224815\u201317 digits, range \u00b11.8\u00d710\u00b3\u2070\u2078). JavaScript numbers are always 64-bit doubles; single-precision output here follows round-to-nearest and the tool shows the actually stored value.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

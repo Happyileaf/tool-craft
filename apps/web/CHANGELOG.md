@@ -4,7 +4,7 @@
 
 ## 日志
 
-## 2026-10-27 ：【Agent自主迭代】新增 15 个文本规范化、数值转换、开发计算、编码密码、音乐与嵌入式颜色工具
+## 2026-10-27 ：【Agent自主迭代】新增 20 个文本规范化、数值转换、开发计算、编码密码、地理坐标、浮点调试、音乐与嵌入式颜色工具
 
 - **新增**：Quoted-Printable 编解码（quoted-printable-codec）— 按 RFC 2045 在文本与 Quoted-Printable 间双向转换，支持 `=XX` 转义、软换行（`=`）与硬换行解码，内置 RFC 经典向量并逐行批量处理
 - **新增**：文本信息熵计算器（text-entropy-calculator）— 基于 Shannon 熵公式统计字符频率、信息熵、归一化熵与理论最短编码位数，按出现频次降序展示字符占比表
@@ -22,6 +22,12 @@
 - **新增**：数字千分位与货币格式化（number-locale-formatter）— 同一数值按多区域设置渲染本地化排版，覆盖千分位、小数位与舍入、货币符号、负数括号、百分比与紧凑记法，基于原生 Intl.NumberFormat
 - **新增**：NATO 音标字母转换器（nato-phonetic-converter）— 普通文本与 NATO/ICAO 标准音标（Alfa / Bravo … Zero–Niner）双向转换，覆盖 A–Z 与 0–9，逐字符给出拼写对照并兼容常见异写
 - **新增**：ISO 8601 时长解析与格式化（iso8601-duration）— 解析 P1Y2M3DT4H5M6S、PT90M、P2W 等时长字符串为七分量明细与折算总秒数，或把秒数反向归一化为标准格式，支持负时长、小数分量与严格语法诊断
+
+- **新增**：Geohash 编解码器（geohash-codec）— 经纬度与 Base32 Geohash 串互转，支持 1–12 位精度选择、邻居格计算与相邻方向（N/S/E/W）编码
+- **新增**：Unicode 规范化与同形字检测器（unicode-normalization）— NFC/NFD/NFKC/NFKD 四种规范化、可视化码点序列、同形字（混淆字符）检测与兼容字符分解对比
+- **新增**：JSON Merge Patch 生成与应用器（json-merge-patch）— 按 RFC 7386 / 7396 应用或生成最小 merge patch（null 删除键），非法 JSON 带行列定位，覆盖 RFC 附录 A 全部官方向量
+- **新增**：WGS-84 / GCJ-02 / BD-09 坐标系互转器（coordinate-system-converter）— GPS、高德 / 腾讯火星坐标与百度坐标两两批量互转，逐行校验、境外坐标不偏移并给出明细表
+- **新增**：IEEE 754 浮点数转换器（ieee754-float-converter）— 十进制与 32 位单精度 / 64 位双精度二进制、十六进制位表示互转，拆解符号位、偏置指数与尾数位域，支持 ±0、±Infinity、NaN
 
 ## 2026-10-26 ：【Agent自主迭代】新增 5 个密码学、标识、数论与数制转换工具
 

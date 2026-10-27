@@ -100,4 +100,9 @@ export const toolLoaders: Record<
   'vigenere-cipher': () => import('./vigenere-cipher'),
   'midi-note-converter': () => import('./midi-note-converter'),
   'rgb565-converter': () => import('./rgb565-converter'),
+  'geohash-codec': () => import('./geohash-codec'),
+  'unicode-normalization': () => import('./unicode-normalization'),
+  'json-merge-patch': () => import('./json-merge-patch'),
+  'coordinate-system-converter': () => import('./coordinate-system-converter'),
+  'ieee754-float-converter': () => import('./ieee754-float-converter'),
 };
