@@ -111,4 +111,5 @@ export const toolLoaders: Record<
   'cookie-parser': () => import('./cookie-parser'),
   'ascii-table': () => import('./ascii-table'),
   'base62-codec': () => import('./base62-codec'),
+  'varint-codec': () => import('./varint-codec'),
 };

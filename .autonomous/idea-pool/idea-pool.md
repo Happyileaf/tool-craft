@@ -152,7 +152,7 @@
 | 20261027201027 | RGB ↔ CMYK 印刷四色双向转换器 | Web Tool | Existing Gap | Claimed | 2026-10-27 | trae-agent | [详情](./idea-details/20261027201027.md) |
 | 20261027201028 | 概率分布计算器（正态 / 二项 / 泊松 PMF、PDF、CDF 与分位） | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027201028.md) |
 | 20261027201029 | 欧姆定律与功率计算器（V / I / R / P 知二求二） | Web Tool | Exploration | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027201029.md) |
-| 20261027201030 | VarInt / ZigZag / LEB128 编解码器（Protocol Buffers 变长整数编码） | Web Tool | External Reference | Claimed | 2026-10-27 | trae-agent | [详情](./idea-details/20261027201030.md) |
+| 20261027201030 | VarInt / ZigZag / LEB128 编解码器（Protocol Buffers 变长整数编码） | Web Tool | External Reference | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027201030.md) |
 | 20261028020201 | Base62 编解码器 | Web Tool | Existing Gap | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028020201.md) |
 | 20261028020202 | Sqids / Hashids 短 ID 编解码器 | Web Tool | External Reference | Pending | 2026-10-28 | | [详情](./idea-details/20261028020202.md) |
 | 20261028020203 | 文本三路合并与冲突解决器（Diff3） | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028020203.md) |

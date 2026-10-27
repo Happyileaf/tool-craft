@@ -8713,6 +8713,109 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'varint-codec',
+    name: 'VarInt / ZigZag / LEB128 编解码（逐字节可视化）',
+    nameEn: 'VarInt / ZigZag / LEB128 Codec with Byte Breakdown',
+    description:
+      '在整数与 Protocol Buffers Base-128 VarInt 字节之间双向转换，支持无符号 VarInt / ULEB128、sint32 / sint64 的 ZigZag 映射与有符号 LEB128；逐字节展示续位标记与 7 位载荷分组，严格识别截断、非规范冗余编码与超范围输入。',
+    descriptionEn:
+      'Convert integers to and from Protocol Buffers Base-128 VarInt bytes, supporting unsigned VarInt / ULEB128, ZigZag-encoded sint32 / sint64, and signed LEB128. Every byte is visualized with its continuation bit and 7-bit payload group, while truncated, non-canonical (overlong), and out-of-range encodings are strictly rejected.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/varint-codec',
+    iconName: 'Sigma',
+    tags: ['VarInt', 'ZigZag', 'LEB128', 'Protobuf', 'Protocol Buffers', '编解码'],
+    tagsEn: ['VarInt', 'ZigZag', 'LEB128', 'Protobuf', 'Protocol Buffers', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的变长整数编解码工具。VarInt（Base-128）把整数编码为若干字节：每字节低 7 位承载数据、最高位（MSB）是续位标记，小整数只需 1 字节，是 Protocol Buffers、SQLite、LEB128（DWARF / WebAssembly）等格式的共同基础。本工具同时覆盖有符号整数的两种主流方案：Protobuf sint32 / sint64 使用的 ZigZag 映射，以及 DWARF / WASM 使用的有符号 LEB128，并把每个字节的续位与载荷逐位拆开可视化。',
+        coreFeatures: [
+          '四种类型：无符号 VarInt / ULEB128、ZigZag sint32、ZigZag sint64、有符号 LEB128',
+          '双向转换：整数（十进制或 0x 十六进制、支持负数）↔ 十六进制字节（支持 0x、空格、逗号分隔）',
+          '逐字节可视化：表格展示十六进制、二进制、续位 MSB 与 7 位载荷分组',
+          '边界完整：基于 BigInt 精确处理 int32 / int64 / uint64 上下限',
+          '严格校验：截断输入、非规范（冗余）编码、第 10 字节越界等均给出明确错误',
+          '纯本地运行：全部为确定性位运算，不发起网络请求、零新增依赖',
+        ],
+        howToUse: [
+          '先选择编码类型：无符号场景选「无符号 VarInt / ULEB128」；Protobuf sint32 / sint64 选对应 ZigZag；调试 DWARF / WASM 选「有符号 LEB128」',
+          '编码方向输入整数（如 300、-1、0x12C），实时得到字节，例如 300 → AC 02',
+          '解码方向粘贴十六进制字节（如 AC 02），实时得到整数；ZigZag 下 -1 → 01、2147483647 → FE FF FF FF 0F',
+          '查看「逐字节拆解」表格：橙色 1 表示后续有字节，绿色 0 表示末字节，可核对 7 位分组拼接过程',
+        ],
+        useCases: [
+          'Protobuf 协议调试：手工核对字段后的 VarInt 数字、sint32 / sint64 的 ZigZag 编码',
+          '二进制格式研究：解析 SQLite record format、自定义 TLV、多码点编码中的变长整数',
+          '编译器 / WASM 学习：理解 DWARF 调试信息与 WebAssembly 中的有符号 LEB128',
+        ],
+        privacyNote:
+          '所有编解码均在浏览器本地通过 BigInt 位运算完成，输入的整数与字节不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么 300 编码后是 AC 02 两个字节？',
+            answer:
+              '300 的二进制是 100101100，按每 7 位分组（从低位起）为 0101100 与 10：低 7 位 0x2C 加上续位 1 得到 0xAC，高 2 位 0x02 作为末字节，即 AC 02。解码时拼接顺序为 0x2C | (0x02 << 7) = 300。',
+          },
+          {
+            question: 'ZigZag 和有符号 LEB128 有什么区别？',
+            answer:
+              '两者都编码有符号整数但布局不同：ZigZag（Protobuf sint32 / sint64）先把 n 映射为 (n<<1)^(n>>31/63)，使 -1 → 1、1 → 2，小绝对值的负数只需很少字节；有符号 LEB128（DWARF / WASM）直接编码补码位流，符号位固定在每字节的第 6 位（0x40），-1 单字节即 0x7F。对接 Protobuf 字段应选 ZigZag，解析 DWARF / WASM 应选有符号 LEB128。',
+          },
+          {
+            question: '什么是「非规范（冗余）编码」？',
+            answer:
+              '同一数值存在更短的合法表示时，较长的序列即为非规范编码，例如 0 本应编码为 00，80 00 也能解出 0 但多了一个冗余字节。严格解析器（包括本工具）会拒绝这类编码，以避免绕过长度 / 等值校验的歧义；合法的 int64 边界（I64_MIN / I64_MAX 恰需 10 字节）不受影响。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local variable-length integer codec. VarInt (Base-128) encodes an integer into bytes where each byte carries 7 payload bits and uses its most significant bit (MSB) as a continuation flag, so small integers need only one byte. It is the common basis of Protocol Buffers, SQLite, and LEB128 (DWARF / WebAssembly). The tool covers both mainstream signed-integer schemes: ZigZag mapping for Protobuf sint32 / sint64, and signed LEB128 for DWARF / WASM, with a bit-by-bit visualization of continuation flags and payload groups.',
+        coreFeatures: [
+          'Four types: unsigned VarInt / ULEB128, ZigZag sint32, ZigZag sint64, and signed LEB128',
+          'Bidirectional: integers (decimal or 0x hex, negatives supported) <-> hex bytes (0x, spaces, and commas accepted)',
+          'Byte-level visualization: a table shows hex, binary, continuation MSB, and the 7-bit payload group of every byte',
+          'Full boundary support: BigInt precisely handles int32 / int64 / uint64 limits',
+          'Strict validation: truncated input, non-canonical (overlong) encodings, and illegal 10th bytes produce clear errors',
+          '100% local: deterministic bit operations with no network requests and no new dependencies',
+        ],
+        howToUse: [
+          'Pick the type first: unsigned VarInt / ULEB128 for unsigned data, ZigZag sint32 / sint64 for Protobuf signed fields, and signed LEB128 for DWARF / WASM',
+          'In encode direction, enter an integer (e.g. 300, -1, 0x12C) to get bytes instantly, e.g. 300 -> AC 02',
+          'In decode direction, paste hex bytes (e.g. AC 02); with ZigZag, -1 -> 01 and 2147483647 -> FE FF FF FF 0F',
+          'Inspect the byte breakdown table: orange 1 means more bytes follow, green 0 marks the final byte, and the 7-bit groups show how the value is assembled',
+        ],
+        useCases: [
+          'Protobuf debugging: manually verify VarInt numbers after field tags and ZigZag encoding of sint32 / sint64 values',
+          'Binary format research: parse variable-length integers in SQLite records, custom TLV schemes, and other encodings',
+          'Compiler / WASM learning: understand signed LEB128 in DWARF debug info and WebAssembly',
+        ],
+        privacyNote:
+          'All encoding and decoding runs locally in your browser via BigInt bit operations. Integers and bytes you enter are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why does 300 encode to the two bytes AC 02?',
+            answer:
+              '300 in binary is 100101100, split into 7-bit groups from the low end: 0101100 and 10. The low group 0x2C gets a continuation bit, yielding 0xAC, and the high group 0x02 is the final byte, giving AC 02. Decoding assembles 0x2C | (0x02 << 7) = 300.',
+          },
+          {
+            question: 'What is the difference between ZigZag and signed LEB128?',
+            answer:
+              'Both encode signed integers but with different layouts. ZigZag (Protobuf sint32 / sint64) first maps n to (n<<1)^(n>>31/63), so -1 -> 1 and 1 -> 2, keeping small-magnitude negatives short. Signed LEB128 (DWARF / WASM) encodes the two\'s-complement bit stream directly, with the sign bit fixed at bit 6 (0x40) of each byte; -1 is the single byte 0x7F. Choose ZigZag for Protobuf fields and signed LEB128 for DWARF / WASM.',
+          },
+          {
+            question: 'What is a "non-canonical (overlong) encoding"?',
+            answer:
+              'When a value has a shorter legal representation, a longer sequence is non-canonical: 0 should be 00, while 80 00 also decodes to 0 with a redundant byte. Strict parsers, including this tool, reject such encodings to avoid ambiguity in length or equality checks. Legitimate int64 boundary values (I64_MIN / I64_MAX, which genuinely need 10 bytes) are still accepted.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
