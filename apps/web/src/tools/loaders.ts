@@ -99,4 +99,5 @@ export const toolLoaders: Record<
   'text-entropy-calculator': () => import('./text-entropy-calculator'),
   'vigenere-cipher': () => import('./vigenere-cipher'),
   'midi-note-converter': () => import('./midi-note-converter'),
+  'rgb565-converter': () => import('./rgb565-converter'),
 };

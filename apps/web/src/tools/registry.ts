@@ -7511,6 +7511,106 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'rgb565-converter',
+    name: 'RGB565 / RGB555 嵌入式颜色格式转换器',
+    nameEn: 'RGB565 / RGB555 Embedded Color Converter',
+    description:
+      '在 #RRGGBB 与 16 位帧缓冲像素（RGB565 / RGB555）之间批量双向转换，输出大小端字节序、C 字面量与 HIGH/LOW 字节拆分，反向还原量化色差。',
+    descriptionEn:
+      'Batch-convert between #RRGGBB and 16-bit framebuffer pixels (RGB565 / RGB555) with big/little endian bytes, C literals, HIGH/LOW byte split, and reverse RGB888 reconstruction with quantization delta.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/rgb565-converter',
+    iconName: 'Layers',
+    tags: ['RGB565', 'RGB555', '嵌入式', '帧缓冲', '字节序'],
+    tagsEn: ['RGB565', 'RGB555', 'Embedded', 'Framebuffer', 'Endian'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '#3B82F6',
+    doc: {
+      zh: {
+        whatIsIt:
+          'RGB565 / RGB555 嵌入式颜色格式转换器面向单片机、LCD 驱动与帧缓冲开发：把 24 位 RGB888（#RRGGBB）打包为 16 位像素值（ST7735 / ILI9341 等 TFT 屏常用的 RGB565，或各通道 5 位的 RGB555），输出 0x 开头的 C 语言十六进制字面量、HIGH_BYTE / LOW_BYTE 拆分以及大端 / 小端两种字节序；反向可把调试器中的 16 位像素值还原为最接近的 RGB888 并给出量化色差。支持每行一个颜色的批量转换，全部为本地位运算。',
+        coreFeatures: [
+          '两种位布局：RGB565（红 5 / 绿 6 / 蓝 5）与 RGB555（各 5 位、最高位未用）',
+          '字节序可选：大端高位在前、小端低位在前，并拆分 HIGH_BYTE / LOW_BYTE',
+          '批量转换：每行一个值，空行跳过，单行非法仅该行报错不影响其他行',
+          '反向还原：位域低位补 1 扩展（5 位 OR 0x07、6 位 OR 0x03）并显示 RGB 色差 Δ',
+          '输入宽松：颜色可省略 #，像素值可省略 0x，大小写不敏感',
+        ],
+        howToUse: [
+          '选择模式（正向 #RRGGBB→16 位 / 反向 16 位→#RRGGBB）、像素格式与字节序',
+          '在左侧文本框每行粘贴一个颜色或像素值，结果与逐行明细实时刷新',
+          '点击复制结果获取一列字面量或颜色，HIGH/LOW 字节可直接用于取模代码',
+        ],
+        useCases: [
+          '为 ST7735 / ILI9341 等 TFT 屏编写配色表与取模代码',
+          '对着调试器 / 逻辑分析仪中的像素值反查实际颜色',
+          '核对帧缓冲大小端布局与 DMA 字节序，排查花屏问题',
+        ],
+        privacyNote:
+          '所有转换均在浏览器本地完成，仅涉及位运算，不发起任何网络请求或数据上传。',
+        faqs: [
+          {
+            question: 'RGB565 与 RGB555 的位布局有什么区别？',
+            answer:
+              'RGB565 共 16 位全部使用：bit15–11 红 5 位、bit10–5 绿 6 位、bit4–0 蓝 5 位，绿色通道精度更高，是 TFT 屏的主流格式；RGB555 三个通道各占 5 位，最高位 bit15 未使用（有时作为 a 透明位），故白色编码为 0x7FFF 而非 0xFFFF。',
+          },
+          {
+            question: '大端和小端如何选择？',
+            answer:
+              '大端（高位在前）把像素 0xF800 存为字节 F8 00，小端（低位在前）存为 00 F8。大多数 SPI TFT 屏按大端（高位字节先发）配置；若屏幕显示红蓝错位或颜色异常，可切换字节序核对，HIGH_BYTE 与 LOW_BYTE 列给出确定的两个字节。',
+          },
+          {
+            question: '为什么反向还原的颜色与原色不完全一致？',
+            answer:
+              '16 位像素每个通道只有 5–6 位精度，打包时低位被丢弃（量化）。还原时对低位补 1（5 位用 0b111、6 位用 0b11）可使误差最小且纯白恰好还原为 255，但像纯红 0xF800 会还原为 #FF0307，与 #FF0000 存在轻微色差，色差 Δ 列以 RGB 欧氏距离量化该误差。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The RGB565 / RGB555 Embedded Color Converter targets MCU, LCD driver, and framebuffer development: pack 24-bit RGB888 (#RRGGBB) into 16-bit pixels (RGB565 used by ST7735/ILI9341 TFT panels, or 5-bit-per-channel RGB555), producing C hex literals, HIGH_BYTE/LOW_BYTE split, and big/little endian byte order. It also decodes 16-bit values from a debugger back to the nearest RGB888 with a quantization color delta. Batch conversion takes one value per line and everything is local bit math.',
+        coreFeatures: [
+          'Two bit layouts: RGB565 (5/6/5) and RGB555 (5 bits each, top bit unused)',
+          'Selectable endianness: big-endian high byte first or little-endian low byte first, plus HIGH/LOW bytes',
+          'Batch mode: one value per line, blank lines skipped, a bad line is flagged without blocking others',
+          'Reverse decode: bit fields are expanded by filling low bits (5-bit OR 0x07, 6-bit OR 0x03) with RGB delta',
+          'Lenient input: # and 0x prefixes optional, case-insensitive',
+        ],
+        howToUse: [
+          'Pick the mode (#RRGGBB→16-bit or 16-bit→#RRGGBB), pixel format, and endianness',
+          'Paste one color or pixel value per line in the left textarea; the result and per-row table update live',
+          'Use copy result to get a column of literals or colors, and HIGH/LOW bytes directly in pixel-setup code',
+        ],
+        useCases: [
+          'Building color tables and pixel-setup code for ST7735 / ILI9341 TFT displays',
+          'Looking up the real color behind pixel values seen in a debugger or logic analyzer',
+          'Verifying framebuffer endianness and DMA byte order when debugging garbled colors',
+        ],
+        privacyNote:
+          'All conversions run locally in your browser using only bit operations, with no network requests or uploads.',
+        faqs: [
+          {
+            question: 'What is the bit-layout difference between RGB565 and RGB555?',
+            answer:
+              'RGB565 uses all 16 bits: red 5 bits (15–11), green 6 bits (10–5), blue 5 bits (4–0), giving green more precision; it is the mainstream TFT format. RGB555 gives each channel 5 bits and leaves bit15 unused (sometimes an alpha flag), so white encodes as 0x7FFF instead of 0xFFFF.',
+          },
+          {
+            question: 'How do I choose big-endian or little-endian?',
+            answer:
+              'Big-endian stores 0xF800 as bytes F8 00 (high byte first); little-endian stores 00 F8. Most SPI TFT panels expect the high byte first. If colors look swapped or garbled, toggle the endianness; the HIGH_BYTE and LOW_BYTE columns always show the exact two bytes.',
+          },
+          {
+            question: 'Why does decoding not reproduce the original color exactly?',
+            answer:
+              'A 16-bit pixel keeps only 5–6 bits per channel, so low bits are dropped when packing. Decoding fills the low bits with ones (0b111 for 5-bit, 0b11 for 6-bit) to minimize error and make pure white decode to 255, but pure red 0xF800 decodes to #FF0307, slightly off #FF0000. The delta column quantifies that error as RGB Euclidean distance.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
