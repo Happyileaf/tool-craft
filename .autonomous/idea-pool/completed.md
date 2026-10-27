@@ -24,3 +24,8 @@
 | 20261027081104 | JSON Merge Patch（RFC 7386 / 7396）生成与应用器 | Web Tool | Existing Gap | `json-merge-patch` / [PR #79](https://github.com/Happyileaf/tool-craft/pull/79) | 2026-10-27 | [详情](./idea-details/20261027081104.md) |
 | 20261026020136 | WGS-84 / GCJ-02 / BD-09 坐标系互转器 | Web Tool | Existing Gap | `coordinate-system-converter` / [PR #79](https://github.com/Happyileaf/tool-craft/pull/79) | 2026-10-27 | [详情](./idea-details/20261026020136.md) |
 | 20261017183439 | IEEE 754 浮点数转换器 | Web Tool | Exploration | `ieee754-float-converter` / [PR #79](https://github.com/Happyileaf/tool-craft/pull/79) | 2026-10-27 | [详情](./idea-details/20261017183439.md) |
+| 20261028020201 | Base62 编解码器 | Web Tool | Existing Gap | `base62-codec` / [PR #84](https://github.com/Happyileaf/tool-craft/pull/84) | 2026-10-28 | [详情](./idea-details/20261028020201.md) |
+| 20261027201030 | VarInt / ZigZag / LEB128 编解码器（Protocol Buffers 变长整数编码） | Web Tool | External Reference | `varint-codec` / [PR #84](https://github.com/Happyileaf/tool-craft/pull/84) | 2026-10-28 | [详情](./idea-details/20261027201030.md) |
+| 20261017183436 | HTTP 状态码速查 | Web Tool | Exploration | `http-status-codes` / [PR #84](https://github.com/Happyileaf/tool-craft/pull/84) | 2026-10-28 | [详情](./idea-details/20261017183436.md) |
+| 20261027201027 | RGB ↔ CMYK 印刷四色双向转换器 | Web Tool | Existing Gap | `rgb-cmyk-converter` / [PR #84](https://github.com/Happyileaf/tool-craft/pull/84) | 2026-10-28 | [详情](./idea-details/20261027201027.md) |
+| 20261017140159 | .env parser & converter | Web Tool | Exploration | `env-converter` / [PR #84](https://github.com/Happyileaf/tool-craft/pull/84) | 2026-10-28 | [详情](./idea-details/20261017140159.md) |
