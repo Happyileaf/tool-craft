@@ -24,3 +24,8 @@
 | 20261027081104 | JSON Merge Patch（RFC 7386 / 7396）生成与应用器 | Web Tool | Existing Gap | `json-merge-patch` / [PR #79](https://github.com/Happyileaf/tool-craft/pull/79) | 2026-10-27 | [详情](./idea-details/20261027081104.md) |
 | 20261026020136 | WGS-84 / GCJ-02 / BD-09 坐标系互转器 | Web Tool | Existing Gap | `coordinate-system-converter` / [PR #79](https://github.com/Happyileaf/tool-craft/pull/79) | 2026-10-27 | [详情](./idea-details/20261026020136.md) |
 | 20261017183439 | IEEE 754 浮点数转换器 | Web Tool | Exploration | `ieee754-float-converter` / [PR #79](https://github.com/Happyileaf/tool-craft/pull/79) | 2026-10-27 | [详情](./idea-details/20261017183439.md) |
+| 20261026020137 | 密码学安全随机整数 / 抽签 / 分组 / 洗牌工具 | Web Tool | Exploration | `secure-random-picker` / [PR #82](https://github.com/Happyileaf/tool-craft/pull/82) | 2026-10-28 | [详情](./idea-details/20261026020137.md) |
+| 20261027140132 | Bech32 / Bech32m 编解码器（BIP-173 / BIP-350） | Web Tool | Existing Gap | `bech32-codec` / [PR #82](https://github.com/Happyileaf/tool-craft/pull/82) | 2026-10-28 | [详情](./idea-details/20261027140132.md) |
+| 20261021180800 | Cookie 字符串解析与生成器 | Web Tool | Exploration | `cookie-parser` / [PR #82](https://github.com/Happyileaf/tool-craft/pull/82) | 2026-10-28 | [详情](./idea-details/20261021180800.md) |
+| 20261027201029 | 欧姆定律与功率计算器（V / I / R / P 知二求二） | Web Tool | Exploration | `ohms-law-calculator` / [PR #82](https://github.com/Happyileaf/tool-craft/pull/82) | 2026-10-28 | [详情](./idea-details/20261027201029.md) |
+| 20261027201026 | ASCII 码表查询器（字符 / 十进制 / 十六进制 / 二进制对照） | Web Tool | External Reference | `ascii-table` / [PR #82](https://github.com/Happyileaf/tool-craft/pull/82) | 2026-10-28 | [详情](./idea-details/20261027201026.md) |
