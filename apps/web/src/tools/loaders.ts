@@ -95,4 +95,5 @@ export const toolLoaders: Record<
   'number-locale-formatter': () => import('./number-locale-formatter'),
   'nato-phonetic-converter': () => import('./nato-phonetic-converter'),
   'iso8601-duration': () => import('./iso8601-duration'),
+  'quoted-printable-codec': () => import('./quoted-printable-codec'),
 };

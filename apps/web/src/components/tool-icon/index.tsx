@@ -1,4 +1,5 @@
 import {
+  Binary,
   Blend,
   Braces,
   Calculator,
@@ -54,6 +55,7 @@ const toolIconMap = {
   Snowflake,
   Calculator,
   Type,
+  Binary,
 };
 
 /**

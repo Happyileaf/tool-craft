@@ -7112,6 +7112,105 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'quoted-printable-codec',
+    name: 'Quoted-Printable（RFC 2045）编解码',
+    nameEn: 'Quoted-Printable (RFC 2045) Encoder & Decoder',
+    description:
+      '在 UTF-8 文本与 Quoted-Printable 转义串之间双向转换，遵循 RFC 2045：非可打印字节与等号编码为 =XX、76 列软换行（=CRLF）、行尾空白转义；解码严格校验非法转义并报告行列位置。',
+    descriptionEn:
+      'Convert between UTF-8 text and Quoted-Printable strings per RFC 2045: non-printable bytes and "=" are encoded as =XX with 76-column soft line breaks (=CRLF) and escaped trailing whitespace; decoding strictly validates illegal escapes with row/column positions.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/quoted-printable-codec',
+    iconName: 'Binary',
+    tags: ['Quoted-Printable', 'RFC 2045', 'MIME', '邮件编码', '编解码'],
+    tagsEn: ['Quoted-Printable', 'RFC 2045', 'MIME', 'Email Encoding', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Quoted-Printable 编码示例：café = 42€。',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 Quoted-Printable 编解码工具。Quoted-Printable 是 RFC 2045 定义的 MIME 内容传输编码，用可打印 ASCII 表示任意字节：可打印字符（除等号）原样保留，等号与非 ASCII 字节（文本按 UTF-8）编码为 =XX 大写十六进制，每行不超过 76 字符并以“=”加换行作软换行，广泛用于电子邮件正文与 MIME 头。',
+        coreFeatures: [
+          '严格遵循 RFC 2045：可打印 ASCII 原样输出，等号转义为 =3D，非 ASCII 按 UTF-8 编码为 =XX',
+          '76 列软换行：超长行自动以 =CRLF 断开，行尾空格 / 制表符转义为 =20 / =09 防止被传输剥离',
+          '双向转换：文本即时编码，含软换行的转义串严格解码回文本，支持 CRLF / LF 行结束符',
+          '精确报错：不完整或非十六进制的 =XX 转义均报告具体行列位置，非法 UTF-8 字节明确提示',
+          '纯本地运行：所有编解码在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择「编码」或「解码」方向，切换时自动载入对应示例',
+          '编码时可选择 CRLF（RFC 标准）或 LF 行结束符，结果随输入实时更新',
+          '在输入框粘贴文本或 Quoted-Printable 串，点击「复制结果」获取内容，或「清空」重输',
+        ],
+        useCases: [
+          '查看或构造 MIME 邮件（Content-Transfer-Encoding: quoted-printable）正文与头字段',
+          '排查邮件乱码：验证转义串是否合法并定位损坏的 =XX 序列',
+          '调试以 Quoted-Printable 承载 UTF-8 文本的协议数据与签名原文',
+        ],
+        privacyNote: '所有编解码均在浏览器本地完成，输入的文本与转义串不会被上传或记录。',
+        faqs: [
+          {
+            question: 'Quoted-Printable 和 Base64 有什么区别？',
+            answer:
+              '二者都是 MIME 内容传输编码。Base64 把每 3 字节编码为 4 个字符，适合二进制数据（图片、附件）；Quoted-Printable 以 =XX 只转义非可打印字节，大部分 ASCII 文本仍可读，适合以 ASCII 为主、偶有非 ASCII 字符的邮件正文。',
+          },
+          {
+            question: '行尾单独的“=”是什么意思？',
+            answer:
+              '那是 RFC 2045 的软换行标记：当一行内容超过 75/76 字符时，编码器在断行处放一个“=”，解码时该“=”与紧随的换行符会被一并删除、把前后两段重新拼接，不属于原始内容。真正的换行仍以普通 CRLF 表示。',
+          },
+          {
+            question: '为什么行尾空格变成了 =20？',
+            answer:
+              '邮件传输中允许对行尾空白做规整，可能被悄悄删除。RFC 2045 因此要求硬换行前的空格（0x20）与制表符（0x09）必须用 =20 / =09 转义，以保证解码后内容与原文逐字节一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first Quoted-Printable codec. Quoted-Printable is the MIME content-transfer encoding defined by RFC 2045 that represents arbitrary bytes with printable ASCII: printable characters (except "=") stay literal while "=" and non-ASCII bytes (text handled as UTF-8) become uppercase =XX hex, with lines limited to 76 characters and "=" plus a newline as a soft line break. It is widely used in email bodies and MIME headers.',
+        coreFeatures: [
+          'Strict RFC 2045: printable ASCII stays literal, "=" becomes =3D, non-ASCII bytes are encoded as =XX via UTF-8',
+          '76-column soft breaks: long lines split with =CRLF and trailing spaces/tabs become =20/=09 to survive transport',
+          'Bidirectional: instant text encoding and strict decoding of escaped strings with soft breaks, CRLF/LF selectable',
+          'Precise errors: incomplete or non-hex =XX escapes report exact row/column; invalid UTF-8 is clearly reported',
+          'Local-first: all encoding and decoding run in the browser with no network requests',
+        ],
+        howToUse: [
+          'Pick the "Encode" or "Decode" direction; switching loads the matching sample automatically',
+          'When encoding, choose CRLF (RFC standard) or LF line endings; the result updates as you type',
+          'Paste text or a Quoted-Printable string, click "Copy result" to copy it, or "Clear" to start over',
+        ],
+        useCases: [
+          'Inspect or build MIME email bodies and headers using Content-Transfer-Encoding: quoted-printable',
+          'Debug email mojibake: validate an escaped string and locate corrupted =XX sequences',
+          'Work with protocol payloads or canonical signing text that carry UTF-8 via Quoted-Printable',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally in the browser; entered text and escaped strings are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How does Quoted-Printable differ from Base64?',
+            answer:
+              'Both are MIME content-transfer encodings. Base64 encodes every 3 bytes into 4 characters and suits binary data such as images and attachments. Quoted-Printable escapes only non-printable bytes as =XX, leaving most ASCII text readable, which suits mostly-ASCII email bodies with occasional non-ASCII characters.',
+          },
+          {
+            question: 'What does a standalone "=" at the end of a line mean?',
+            answer:
+              'It is the RFC 2045 soft line break: when content exceeds the line limit, the encoder places "=" before the break, and decoding removes that "=" together with the following newline to rejoin the segments. It is not part of the original content; real line breaks remain ordinary CRLF.',
+          },
+          {
+            question: 'Why did a trailing space turn into =20?',
+            answer:
+              'Mail transport may normalize or strip trailing whitespace. RFC 2045 therefore requires a space (0x20) or tab (0x09) before a hard line break to be escaped as =20 / =09 so the decoded output matches the original byte for byte.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
