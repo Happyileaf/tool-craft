@@ -1,0 +1,75 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.label {
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.65));
+  white-space: nowrap;
+}
+
+.card {
+  min-width: 0;
+}
+
+.formRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.numberInput {
+  width: 180px;
+}
+
+.selectInput {
+  width: 96px;
+}
+
+.resultBox {
+  padding: 12px 16px;
+  background-color: var(--color-fill-quaternary, rgba(0, 0, 0, 0.04));
+  border: 1px solid var(--color-border-secondary, rgba(0, 0, 0, 0.09));
+  border-radius: 8px;
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  word-break: break-all;
+}
+
+.mono {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+}
+
+.monoArea {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+}
+
+.monoTag {
+  margin-inline-end: 0;
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+}
+
+.hint {
+  margin-top: 8px;
+  color: var(--color-text-tertiary, rgba(0, 0, 0, 0.45));
+  font-size: 12px;
+  line-height: 1.6;
+}

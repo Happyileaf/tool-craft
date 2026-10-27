@@ -7611,6 +7611,106 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'geohash-codec',
+    name: 'Geohash 编解码器',
+    nameEn: 'Geohash Encode & Decode',
+    description:
+      '在经纬度与 Geohash base32 字符串之间双向转换：编码支持 1–12 位精度并展示逐字符区间二分过程，解码输出中心点、边界框与误差范围，全部本地计算。',
+    descriptionEn:
+      'Convert between latitude/longitude and Geohash base32 strings: encode with 1–12 character precision and per-character interval bisection steps, or decode to center point, bounding box, and error margin. All local.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/geohash-codec',
+    iconName: 'Binary',
+    tags: ['Geohash', '经纬度', '地理编码', 'Base32', 'LBS'],
+    tagsEn: ['Geohash', 'Coordinates', 'Geocoding', 'Base32', 'LBS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '57.64911,10.40744',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Geohash 编解码器面向地图与 LBS 开发：把经纬度坐标编码为 Geohash 字符串（一种用 base32 字符对地球表面做层次化网格划分的空间索引方案），也可以把 Geohash 解码回中心点坐标、边界框与误差范围。编码时逐字符展示经纬度区间如何被交替二分收窄，便于理解 geohash 的网格结构；全部计算为本地纯函数，不涉及任何网络坐标服务。',
+        coreFeatures: [
+          '双向转换：经纬度 → geohash（1–12 位可选）与 geohash → 中心点 / 边界框',
+          '过程可视化：逐字符给出 5 bit、纬度区间与经度区间的二分收窄过程',
+          '误差量化：解码输出格子边界框与经纬度误差（格子半宽）',
+          '输入宽容：自动 trim、大写自动转小写，非法字符（a/i/l/o 等）明确报错',
+          '零依赖本地运算：固定算法、固定测试向量，结果与 Wikipedia 标准示例一致',
+        ],
+        howToUse: [
+          '选择模式（编码 / 解码）：编码侧填入纬度、经度与精度，结果实时刷新',
+          '复制 geohash 结果用于短链接、附近搜索前缀匹配或空间索引',
+          '解码侧粘贴 geohash 字符串，查看中心点、边界框与误差，可一键复制中心点',
+        ],
+        useCases: [
+          '地图应用中按 geohash 前缀做附近的人 / 地点聚合查询',
+          '把坐标压缩为短字符串用于短链接、二维码或离线数据交换',
+          '学习与验证 geohash 区间二分算法，调试 LBS 服务端编解码逻辑',
+        ],
+        privacyNote:
+          '所有编解码均在浏览器本地完成，仅涉及区间二分与 base32 映射，不发起任何网络请求或位置数据上传。',
+        faqs: [
+          {
+            question: 'geohash 精度与误差是什么关系？',
+            answer:
+              '每个 geohash 字符携带 5 个 bit（偶数位用于经度、奇数位用于纬度），字符越多格子越小。1 位字符的格子误差可达数十度，而 8 位字符的经纬度误差约在 20 米 / 40 米量级，11–12 位已达到厘米级以下。解码结果给出的误差即格子半宽，中心点为区间中点。',
+          },
+          {
+            question: '为什么相邻位置的 geohash 前缀相同？',
+            answer:
+              'Geohash 是层次化网格：同一个父格子内的所有位置共享父格子前缀。因此附近搜索常用前缀匹配快速缩小范围，但需注意网格边界两侧的位置即使物理上很近，前缀也可能完全不同，生产环境通常还需查询周围 8 个邻居格子。',
+          },
+          {
+            question: 'Geohash 和经纬度的度分秒格式转换是一回事吗？',
+            answer:
+              '不是。度分秒（DMS）转换只是同一个点位的不同文本表示（十进制度 ↔ 度分秒），坐标本身没有网格化；geohash 则是用 base32 字符对经纬度区间反复二分得到的空间索引串，字符串代表一块区域而非一个精确点，因此才有边界框与误差概念。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Geohash codec serves map and LBS development: encode latitude/longitude into a Geohash string (a hierarchical grid of the earth indexed by base32 characters), or decode a Geohash back to its center point, bounding box, and error margin. While encoding, it shows how the latitude and longitude intervals are alternately bisected character by character, making the grid structure transparent. Everything runs as local pure functions with no network geocoding service.',
+        coreFeatures: [
+          'Bidirectional: coordinates → geohash (1–12 chars) and geohash → center / bounding box',
+          'Visualized steps: per-character 5 bits plus latitude/longitude interval bisection',
+          'Error quantified: decoded cell bounding box and lat/lng error (half cell width)',
+          'Lenient input: automatic trim and lowercasing, with clear errors for invalid letters (a/i/l/o)',
+          'Zero-dependency local math matching the canonical Wikipedia test vector',
+        ],
+        howToUse: [
+          'Pick encode or decode; for encode enter latitude, longitude, and precision and watch the result update live',
+          'Copy the geohash for short links, nearby-search prefix matching, or spatial indexing',
+          'For decode paste a geohash to inspect the center, bounding box, and error, with one-click center copy',
+        ],
+        useCases: [
+          'Nearby people/place aggregation by geohash prefix in map applications',
+          'Compressing coordinates into short strings for short links, QR codes, or offline exchange',
+          'Learning the geohash bisection algorithm and debugging LBS backend codec logic',
+        ],
+        privacyNote:
+          'All encoding and decoding runs locally in your browser using only interval bisection and base32 mapping, with no network requests or location uploads.',
+        faqs: [
+          {
+            question: 'What is the relationship between geohash precision and error?',
+            answer:
+              'Each geohash character carries 5 bits (even-indexed bits for longitude, odd-indexed for latitude), so more characters mean smaller cells. A 1-character cell can span tens of degrees, an 8-character cell is on the order of 20m/40m error, and 11–12 characters reach sub-centimeter precision. The reported error is the half-width of the cell, with the center at the interval midpoint.',
+          },
+          {
+            question: 'Why do nearby points share a geohash prefix?',
+            answer:
+              'Geohash is a hierarchical grid: every point inside a parent cell shares the parent prefix, which is why prefix matching quickly narrows nearby searches. Note that points on opposite sides of a grid boundary can have completely different prefixes despite being physically close; production systems usually also query the 8 neighboring cells.',
+          },
+          {
+            question: 'Is geohash the same as converting degrees-minutes-seconds?',
+            answer:
+              'No. DMS conversion merely rewrites the same point in another text representation (decimal degrees ↔ degrees/minutes/seconds) without gridding. A geohash is a spatial index produced by repeatedly bisecting lat/lng intervals with base32 characters; the string denotes an area rather than an exact point, which is why it has a bounding box and an error margin.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

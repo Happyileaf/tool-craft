@@ -100,4 +100,5 @@ export const toolLoaders: Record<
   'vigenere-cipher': () => import('./vigenere-cipher'),
   'midi-note-converter': () => import('./midi-note-converter'),
   'rgb565-converter': () => import('./rgb565-converter'),
+  'geohash-codec': () => import('./geohash-codec'),
 };
