@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-10-28 ：【Agent自主迭代】新增 5 个随机抽签、编码、电学计算、开发调试与字符集工具
+
+- **新增**：密码学安全随机工具（secure-random-picker）— 基于 crypto.getRandomValues 拒绝采样的无偏随机整数、抽签、随机分组与列表 Fisher–Yates 洗牌，支持自定义区间、数量、允许重复开关与分组均分
+- **新增**：Bech32 / Bech32m 编解码器（bech32-codec）— 按 BIP-173 / BIP-350 在 HRP 与数据间双向转换，自动校验并区分两种校验和常数，覆盖 SegWit 地址等官方测试向量
+- **新增**：欧姆定律与功率计算器（ohms-law-calculator）— 输入 V / I / R / P 中任意两个联立求解其余两个，标注推导公式、自适应单位换算，R/P 组合给出正负极性双解并拒绝零除等物理矛盾
+- **新增**：Cookie 字符串解析与生成器（cookie-parser）— Cookie 请求头与可编辑名值对表格双向转换（可选 URL 编解码），按 RFC 6265 生成 / 回填 Set-Cookie 全属性并校验 SameSite=None 必须配 Secure
+- **新增**：ASCII 码表查询器（ascii-table）— 完整 0–127 码位的 Dec/Hex/Oct/Bin/Char/缩写/说明对照，字符与码位双向检索、分类与关键字筛选、Ctrl 组合键速查及点击行复制
+
 ## 2026-10-27 ：【Agent自主迭代】新增 20 个文本规范化、数值转换、开发计算、编码密码、地理坐标、浮点调试、音乐与嵌入式颜色工具
 
 - **新增**：Quoted-Printable 编解码（quoted-printable-codec）— 按 RFC 2045 在文本与 Quoted-Printable 间双向转换，支持 `=XX` 转义、软换行（`=`）与硬换行解码，内置 RFC 经典向量并逐行批量处理
