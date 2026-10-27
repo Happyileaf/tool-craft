@@ -149,3 +149,8 @@
 | 20261027081104 | JSON Merge Patch（RFC 7386 / 7396）生成与应用器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027081104.md) |
 | 20261027081105 | RSS / Atom Feed 生成器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027081105.md) |
 | 20261027081106 | 正则批量查找替换工具 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027081106.md) |
+| 20261027140130 | Unicode 规范化转换器（NFC / NFD / NFKC / NFKD） | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027140130.md) |
+| 20261027140131 | PBKDF2 密钥派生计算器（RFC 8018） | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027140131.md) |
+| 20261027140132 | Bech32 / Bech32m 编解码器（BIP-173 / BIP-350） | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027140132.md) |
+| 20261027140133 | 多纪元时间戳转换器（Unix / Windows FILETIME / .NET Ticks / Chrome 等） | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027140133.md) |
+| 20261027140134 | IP 地址范围 → 最小 CIDR 列表聚合器（IPv4 / IPv6） | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027140134.md) |
