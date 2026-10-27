@@ -106,4 +106,5 @@ export const toolLoaders: Record<
   'coordinate-system-converter': () => import('./coordinate-system-converter'),
   'ieee754-float-converter': () => import('./ieee754-float-converter'),
   'secure-random-picker': () => import('./secure-random-picker'),
+  'bech32-codec': () => import('./bech32-codec'),
 };

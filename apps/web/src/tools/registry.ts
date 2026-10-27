@@ -8212,6 +8212,104 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'bech32-codec',
+    name: 'Bech32 / Bech32m 编解码',
+    nameEn: 'Bech32 / Bech32m Encoder & Decoder',
+    description:
+      '实现 BIP-173 / BIP-350 的 Bech32 与 Bech32m 编解码：支持任意 HRP 与 hex 数据编码、自动按 witness 版本选择校验常量（v0 用 Bech32，v1+ 用 Bech32m），解码时双常量探测并给出明确错误，自动识别 SegWit 地址（P2WPKH / P2WSH / P2TR）网络、版本与 witness program。',
+    descriptionEn:
+      'BIP-173 / BIP-350 Bech32 and Bech32m encoder/decoder: encode any HRP with hex data, auto-select the checksum constant by witness version (Bech32 for v0, Bech32m for v1+), decode with dual-constant detection and clear errors, and interpret SegWit addresses (P2WPKH / P2WSH / P2TR) including network, version and witness program.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/bech32-codec',
+    iconName: 'KeyRound',
+    tags: ['Bech32', 'Bech32m', 'BIP-173', 'BIP-350', '比特币', 'SegWit', 'Taproot'],
+    tagsEn: ['Bech32', 'Bech32m', 'BIP-173', 'BIP-350', 'Bitcoin', 'SegWit', 'Taproot'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Bech32 / Bech32m 是 BIP-173 与 BIP-350 定义的带 30 位校验和的 base32 编码，广泛用于比特币原生隔离见证地址：v0 的 P2WPKH/P2WSH 使用 Bech32，v1+（含 Taproot P2TR）使用修复了长度篡改弱点的 Bech32m。',
+        coreFeatures: [
+          '任意 HRP + hex 数据编码，自动 / 强制选择 Bech32（常量 1）或 Bech32m（常量 0x2bc830a3）',
+          '解码时校验大小写、字符集、90 字符长度上限，并用两种常量同时探测校验和类型',
+          '自动解读 SegWit 地址：网络（bc/tb/bcrt）、witness 版本、P2WPKH/P2WSH/P2TR 与 witness program hex',
+          '严格 convertbits padding 校验，覆盖 BIP-173 / BIP-350 官方 VALID/INVALID 向量',
+        ],
+        howToUse: [
+          '编码：填写 HRP（如 bc）、选择 witness 版本与校验和类型、粘贴偶数长度 hex program，即时生成地址',
+          '解码：粘贴 bech32 字符串，查看 HRP、校验和类型、SegWit 网络/版本/脚本类型与 program',
+          '报错信息会指出大小写混用、非法字符、长度超限或常量不匹配等具体原因',
+        ],
+        useCases: [
+          '核对比特币主网 / 测试网隔离见证与 Taproot 地址的正确性',
+          '调试自定义 HRP 的 Bech32/Bech32m 数据（如 Lightning、其他链的地址方案）',
+          '教学与协议开发：观察 polymod 校验和与 5/8-bit convertbits 的实际行为',
+        ],
+        privacyNote:
+          '全部为浏览器本地同步运算，地址与数据不会离开设备，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: 'Bech32 和 Bech32m 有什么区别？',
+            answer:
+              '两者编码结构相同，仅末尾异或的校验常量不同：Bech32 为 1，Bech32m 为 0x2bc830a3。Bech32m 修复了 Bech32 在末位为 p 时插入/删除 q 不破坏校验和的弱点；按 BIP-350，witness v0 仍用 Bech32，v1 及以上必须用 Bech32m。',
+          },
+          {
+            question: '为什么解码时要同时尝试两种常量？',
+            answer:
+              '通用 Bech32 数据不带「我用了哪个常量」的标记。解码器分别用常量 1 与 0x2bc830a3 计算 polymod：恰好一个匹配即为对应类型；都不匹配说明字符串被篡改或抄写错误。BIP-350 证明同一字符串不可能同时通过两种校验。',
+          },
+          {
+            question: 'v0 地址用 Bech32m 编码会怎样？',
+            answer:
+              '属于非法地址。工具在 SegWit 解读阶段会明确报错「witness version 0 必须使用 Bech32 校验常量」；反之 v1+ 使用 Bech32 同样会被拒绝，避免向错误编码的地址付款造成资金损失。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Bech32 / Bech32m are checksummed base32 formats defined by BIP-173 and BIP-350, widely used for Bitcoin native SegWit addresses: v0 P2WPKH/P2WSH uses Bech32, while v1+ (including Taproot P2TR) uses Bech32m, which fixes a length-mutation weakness.',
+        coreFeatures: [
+          'Encode any HRP plus hex data with auto or forced Bech32 (constant 1) / Bech32m (constant 0x2bc830a3)',
+          'Decode validates case, charset and the 90-character limit while probing both checksum constants',
+          'Interprets SegWit addresses: network (bc/tb/bcrt), witness version, P2WPKH/P2WSH/P2TR and program hex',
+          'Strict convertbits padding checks, verified against official BIP-173 / BIP-350 VALID/INVALID vectors',
+        ],
+        howToUse: [
+          'Encode: enter the HRP (e.g. bc), pick the witness version and checksum kind, paste even-length hex program, and the address is generated live',
+          'Decode: paste a bech32 string to see HRP, checksum type, SegWit network/version/script type and program',
+          'Errors pinpoint mixed case, invalid characters, over-length input or mismatched checksum constants',
+        ],
+        useCases: [
+          'Verify Bitcoin mainnet/testnet SegWit and Taproot addresses',
+          'Debug Bech32/Bech32m data with custom HRPs (Lightning and other addressing schemes)',
+          'Learning and protocol development: observe polymod checksums and 5/8-bit convertbits in practice',
+        ],
+        privacyNote:
+          'Everything is computed synchronously and locally in your browser; addresses and data never leave your device and no network requests are made.',
+        faqs: [
+          {
+            question: 'What is the difference between Bech32 and Bech32m?',
+            answer:
+              'The structure is identical; only the final XOR checksum constant differs: 1 for Bech32 and 0x2bc830a3 for Bech32m. Bech32m fixes a weakness where inserting/deleting a q before a final p did not invalidate the Bech32 checksum. Per BIP-350, witness v0 keeps Bech32 while v1+ must use Bech32m.',
+          },
+          {
+            question: 'Why does decoding try both constants?',
+            answer:
+              'Generic Bech32 payloads carry no flag saying which constant was used. The decoder computes the polymod against both 1 and 0x2bc830a3: exactly one match identifies the type, while neither match means corruption or a typo. BIP-350 proves a string can never pass both checks simultaneously.',
+          },
+          {
+            question: 'What if a v0 address is encoded with Bech32m?',
+            answer:
+              'It is invalid. The SegWit interpreter explicitly reports that witness version 0 requires the Bech32 constant; likewise v1+ encoded with Bech32 is rejected, preventing payments to incorrectly encoded addresses.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
