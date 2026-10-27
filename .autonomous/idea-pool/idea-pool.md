@@ -152,3 +152,4 @@
 | 20261027201026 | ASCII 码表查询器（字符 / 十进制 / 十六进制 / 二进制对照） | Web Tool | External Reference | Pending | 2026-10-27 | | [详情](./idea-details/20261027201026.md) |
 | 20261027201027 | RGB ↔ CMYK 印刷四色双向转换器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027201027.md) |
 | 20261027201028 | 概率分布计算器（正态 / 二项 / 泊松 PMF、PDF、CDF 与分位） | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027201028.md) |
+| 20261027201029 | 欧姆定律与功率计算器（V / I / R / P 知二求二） | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027201029.md) |
