@@ -9973,6 +9973,111 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'jsonc-to-json',
+    name: 'JSONC 转标准 JSON（注释与尾随逗号剥离）',
+    nameEn: 'JSONC to JSON Converter',
+    description:
+      '把带 // 行注释、/* */ 块注释与尾随逗号的 JSONC / 宽松 JSON 文本清洗为严格合法的标准 JSON：词法扫描时正确跳过双引号字符串（含转义引号）内部的注释符号与逗号，仅移除真正的注释与 }/] 前的尾随逗号，再经 JSON.parse 校验后按 2 空格 / 4 空格 / 压缩单行重新序列化。适合清理 tsconfig.json 等带注释配置片段。纯浏览器本地运算、零新增依赖、不发起网络请求。',
+    descriptionEn:
+      'Turn JSONC / lenient JSON text containing // line comments, /* */ block comments and trailing commas into strict, standards-compliant JSON: a lexical scanner skips comment markers and commas inside double-quoted strings (including escaped quotes), removes only real comments and trailing commas before }/], validates with JSON.parse, and re-serializes with 2-space indent, 4-space indent or a single-line minified layout. Useful for cleaning commented config snippets such as tsconfig.json. Runs fully locally in the browser with zero new dependencies and no network requests.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/jsonc-to-json',
+    iconName: 'Braces',
+    tags: ['JSONC', 'JSON', '注释剥离', '尾随逗号', '配置文件', '格式化'],
+    tagsEn: ['JSONC', 'JSON', 'Comment Stripping', 'Trailing Comma', 'Config', 'Formatter'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '{\n  // 编译器配置（示例）\n  "compilerOptions": {\n    "strict": true,\n    "target": "ES2020",\n  },\n  /* 包含的文件 */\n  "include": ["src/**/*.ts",],\n}',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSONC 转标准 JSON 是一款纯浏览器本地运行的文本清洗工具。JSONC（JSON with Comments）允许在 JSON 中书写 // 行注释、/* */ 块注释并容忍对象或数组末尾的尾随逗号，常见于 VS Code 的 settings.json、tsconfig.json 等配置；但标准 JSON.parse 无法直接解析它。本工具通过逐字符词法扫描剥离这些非标准语法，输出严格合法、可直接被任何 JSON 解析器消费的文本。',
+        coreFeatures: [
+          '注释剥离：移除 // 行注释与 /* */ 块注释（含跨行块注释），未闭合块注释会明确报错',
+          '尾随逗号清理：删除对象与数组中 } 或 ] 之前的最后一个逗号，保留正常分隔逗号',
+          '字符串安全：词法扫描正确跳过双引号字符串与 \" 转义，字符串内的 //、/*、逗号原样保留',
+          '严格校验：清洗后经 JSON.parse 验证，非法结构直接展示解析器原始报错与行列信息',
+          '三种排版：输出可选 2 空格缩进、4 空格缩进或压缩为单行',
+          '纯本地处理：零新增依赖，输入内容不上传、不离开设备',
+        ],
+        howToUse: [
+          '在左侧文本框粘贴 JSONC / 宽松 JSON 文本，右侧立即实时显示转换结果',
+          '通过顶部切换按钮选择输出缩进：2 空格、4 空格或压缩单行',
+          '点击「载入示例」可查看一份带注释与尾随逗号的 tsconfig 风格样例',
+          '结果合法时点击「复制」获取标准 JSON；若存在语法错误，右侧会展示错误原因',
+        ],
+        useCases: [
+          '前端工程：清理 tsconfig.json、VS Code settings.json 等带注释配置后交给脚本或接口消费',
+          '接口调试：把文档中带注释说明的 JSON 示例转为可直接粘贴到 Postman / curl 的严格 JSON',
+          '数据处理：作为 ETL 或导入流程的预处理步骤，将人工维护的宽松配置转为机器可读 JSON',
+        ],
+        privacyNote:
+          '所有词法扫描、解析与序列化均在浏览器本地完成，不发起任何网络请求，粘贴的配置与数据不会离开设备。',
+        faqs: [
+          {
+            question: '字符串里的 // 或 /* 会被误删吗？',
+            answer:
+              '不会。工具采用逐字符词法扫描，进入双引号字符串后其中的 //、/*、逗号都按普通字符处理，并正确识别反斜杠转义的 \"，因此类似 "url": "https://example.com" 中的内容会完整保留。',
+          },
+          {
+            question: '它能修复单引号或没加引号的键名吗？',
+            answer:
+              '不能。本工具只负责剥离注释与尾随逗号两类 JSONC 语法，不会把单引号改成双引号，也不会给键名补引号。需要这些字面修复时可配合「JSON 格式化」工具的修复功能使用。',
+          },
+          {
+            question: '剥离注释后报错行列号对不上原文怎么办？',
+            answer:
+              '注释在清洗时会被替换为等长空白（并保留换行），因此清洗后文本的行列位置与原文一致，JSON.parse 报错指向的行列号可直接对照原文定位。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'JSONC to JSON Converter is a fully browser-local text-cleaning tool. JSONC (JSON with Comments) permits // line comments, /* */ block comments and trailing commas in objects and arrays, as seen in VS Code settings.json or tsconfig.json, but strict JSON.parse cannot read it. This tool performs a character-by-character lexical scan to strip those non-standard constructs and emits strict JSON that any conforming parser can consume.',
+        coreFeatures: [
+          'Comment stripping: removes // line comments and /* */ block comments (including multi-line ones); an unclosed block comment is reported explicitly',
+          'Trailing-comma cleanup: deletes the final comma before } or ] in objects and arrays while keeping normal separator commas',
+          'String-safe: the scanner skips double-quoted strings and escaped \" so //, /* and commas inside strings are preserved verbatim',
+          'Strict validation: the cleaned text is checked with JSON.parse; invalid structures surface the parser error with its position',
+          'Three layouts: output with 2-space indent, 4-space indent or a single minified line',
+          '100% local: zero new dependencies; input is never uploaded and never leaves the device',
+        ],
+        howToUse: [
+          'Paste JSONC / lenient JSON into the left textarea; the strict result appears on the right in real time',
+          'Use the top toggle to choose 2-space indent, 4-space indent or minified single-line output',
+          'Click “Load sample” for a tsconfig-style example with comments and trailing commas',
+          'When the result is valid, click Copy; if there is a syntax error, the reason is shown on the right',
+        ],
+        useCases: [
+          'Front-end work: clean commented configs such as tsconfig.json or VS Code settings.json before feeding them to scripts or APIs',
+          'API debugging: turn commented JSON examples from documentation into strict JSON ready for Postman or curl',
+          'Data pipelines: preprocess human-maintained lenient config into machine-readable JSON for ETL or import jobs',
+        ],
+        privacyNote:
+          'All scanning, parsing and serialization happen locally in your browser. No network requests are made, so pasted configs and data never leave your device.',
+        faqs: [
+          {
+            question: 'Will // or /* inside strings be removed by mistake?',
+            answer:
+              'No. The tool scans character by character; inside a double-quoted string the sequences //, /* and commas are treated as ordinary characters, and backslash-escaped quotes are handled correctly, so a value such as "url": "https://example.com" is preserved intact.',
+          },
+          {
+            question: 'Can it fix single quotes or unquoted keys?',
+            answer:
+              'No. It only strips the two JSONC constructs—comments and trailing commas. It does not convert single quotes to double quotes or add quotes around keys; for those literal repairs use the JSON Formatter’s repair feature instead.',
+          },
+          {
+            question: 'Why do error positions still match my original text after comments are removed?',
+            answer:
+              'Each comment is replaced by spaces of the same length while newlines are kept, so line and column positions in the cleaned text are identical to the original; the line/column reported by JSON.parse can therefore be located directly in your input.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
