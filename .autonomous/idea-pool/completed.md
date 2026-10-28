@@ -34,3 +34,8 @@
 | 20261028081032 | Excel 列名 ↔ 序号互转器（A1 ↔ R1C1 列标） | Web Tool | Exploration | `excel-column-converter` / [PR #87](https://github.com/Happyileaf/tool-craft/pull/87) | 2026-10-28 | [详情](./idea-details/20261028081032.md) |
 | 20261028081034 | 文件大小人类可读格式化器（bytes ↔ KB/MB/GB 双向解析） | Web Tool | Exploration | `file-size-converter` / [PR #87](https://github.com/Happyileaf/tool-craft/pull/87) | 2026-10-28 | [详情](./idea-details/20261028081034.md) |
 | 20261028081036 | EAN-13 / GTIN 校验位计算器与合法性校验器 | Web Tool | Existing Gap | `ean13-checksum` / [PR #87](https://github.com/Happyileaf/tool-craft/pull/87) | 2026-10-28 | [详情](./idea-details/20261028081036.md) |
+| 20261023081552 | 身份证号码校验与升位（GB 11643-1999） | Web Tool | Exploration | `id-card-validator` / [PR #93](https://github.com/Happyileaf/tool-craft/pull/93) | 2026-10-29 | [详情](./idea-details/20261023081552.md) |
+| 20261023081553 | IPv4 / IPv6 地址与整数 / 十六进制互转 | Web Tool | Existing Gap | `ip-address-converter` / [PR #93](https://github.com/Happyileaf/tool-craft/pull/93) | 2026-10-29 | [详情](./idea-details/20261023081553.md) |
+| 20261028202204 | 布尔表达式真值表生成器 | Web Tool | Exploration | `boolean-truth-table` / [PR #93](https://github.com/Happyileaf/tool-craft/pull/93) | 2026-10-29 | [详情](./idea-details/20261028202204.md) |
+| 20261028202206 | ISO 8601 周边历（周年号/周数/星期）与公历日期双向转换器 | Web Tool | Existing Gap | `iso-week-date-converter` / [PR #93](https://github.com/Happyileaf/tool-craft/pull/93) | 2026-10-29 | [详情](./idea-details/20261028202206.md) |
+| 20261028202207 | 数值区间批量展开器与压缩器（range expand / collapse） | Web Tool | Exploration | `number-range-expander` / [PR #93](https://github.com/Happyileaf/tool-craft/pull/93) | 2026-10-29 | [详情](./idea-details/20261028202207.md) |
