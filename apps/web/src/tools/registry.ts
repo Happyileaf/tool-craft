@@ -9445,6 +9445,112 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'file-size-converter',
+    name: '文件大小格式化转换器',
+    nameEn: 'File Size Formatter & Parser',
+    description:
+      '在原始字节数与人类可读文件大小之间双向批量转换：正向按二进制 IEC（1024，B/KiB/MiB/GiB）或十进制 SI（1000，B/KB/MB/GB）规则格式化，智能保留至多 2 位小数并去尾零，也可固定小数位；反向解析「1.5 MB」「2048 KiB」「3GB」「1,024 KB」等字符串为精确整数字节，自动区分 KiB=1024 与 KB=1000。容忍空白、大小写与千分位逗号；负数、空单位、未知单位（如 1.5 XB）逐行给出可读错误。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert bidirectionally between raw byte counts and human-readable file sizes: formatting follows either binary IEC (1024, B/KiB/MiB/GiB) or decimal SI (1000, B/KB/MB/GB) rules with smart up-to-2-decimal output (trailing zeros stripped) or fixed decimals; parsing turns strings like "1.5 MB", "2048 KiB", "3GB", and "1,024 KB" into exact integer bytes, distinguishing KiB=1024 from KB=1000. Whitespace, letter case, and thousands separators are tolerated; negative values, missing units, and unknown units (e.g. 1.5 XB) produce readable per-line errors. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/file-size-converter',
+    iconName: 'HardDrive',
+    tags: ['文件大小', '字节', 'KiB', 'KB', '单位换算', '格式化'],
+    tagsEn: ['File Size', 'Bytes', 'KiB', 'KB', 'Unit Conversion', 'Formatting'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0\n512\n1023\n1024\n1536\n1048576\n1073741824',
+    doc: {
+      zh: {
+        whatIsIt:
+          '文件大小格式化转换器是一款纯浏览器本地运行的双向工具，解决开发中最常见的两件事：把字节数显示成人类可读的 KB/MB/KiB/MiB 字符串，以及把这类字符串精确解析回字节数。',
+        coreFeatures: [
+          '两套标准：IEC 二进制（1024，KiB/MiB/GiB/TiB/PiB）与 SI 十进制（1000，KB/MB/GB/TB/PB）',
+          '智能小数：默认至多保留 2 位并去掉尾零（1536→1.5 KiB、1024→1 KiB），也可勾选固定小数位',
+          '精确解析：根据单位自动选择 1024 或 1000 基数，结果四舍五入为整数字节',
+          '宽松输入：容忍首尾空白、数值与单位间空格、任意大小写与千分位逗号',
+          '多行批量：每行一个值逐行转换，空行保留，非法行原样保留并标注行号错误',
+          '纯本地计算：零新增依赖，输入内容不发起任何网络请求',
+        ],
+        howToUse: [
+          '在输入卡片顶部选择方向：字节 → 可读大小或可读大小 → 字节',
+          '格式化方向下，在底部选择 IEC（1024）或 SI（1000）标准，可勾选固定小数位',
+          '每行输入字节数或大小字符串，右侧实时输出，支持一次粘贴多行',
+          '解析方向无需选择标准，单位本身（KiB 与 KB）决定基数；非法行以黄色警告逐行标注',
+          '点击「交换输入 / 输出方向」可把合法结果回填反向转换；点击「复制」获取结果',
+        ],
+        useCases: [
+          '前端开发：把 Content-Length、文件 API 返回的字节数显示为友好文案',
+          '运维排障：把日志、ls/du 输出中的 1.5 GB、2048 MiB 换算成精确字节做比较',
+          '脚本与接口：核对不同系统（1000 进制与 1024 进制）文件大小标注的真实差异',
+        ],
+        privacyNote:
+          '全部换算均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；粘贴的数据不会离开设备。',
+        faqs: [
+          {
+            question: 'KiB 和 KB 有什么区别？',
+            answer:
+              'KiB（kibibyte）按 IEC 二进制标准等于 1024 字节；KB（kilobyte）按 SI 十进制标准等于 1000 字节。本工具在解析时严格按单位拼写选择基数，格式化时由你切换的标准决定使用哪一套单位，因此 1.5 MB = 1500000 字节，而 2048 KiB = 2097152 字节。',
+          },
+          {
+            question: '为什么 1023 字节显示为 1023 B 而不是 1 KiB？',
+            answer:
+              '只有达到基数（IEC 为 1024、SI 为 1000）才会进位到下一单位，不足基数的值保持以字节显示，这与大多数文件管理器和 ls -h 的习惯一致。',
+          },
+          {
+            question: '解析「1.5 XB」为什么报错？',
+            answer:
+              'XB 不是受支持的单位。可识别的单位为 B、KB/MB/GB/TB/PB（1000 进制）与 KiB/MiB/GiB/TiB/PiB（1024 进制），拼写不区分大小写，但必须是上述单位之一；完全不写单位同样会报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The File Size Formatter & Parser is a fully browser-local bidirectional tool for two everyday development tasks: displaying byte counts as human-readable KB/MB/KiB/MiB strings, and parsing such strings back into exact byte counts.',
+        coreFeatures: [
+          'Two standards: IEC binary (1024, KiB/MiB/GiB/TiB/PiB) and SI decimal (1000, KB/MB/GB/TB/PB)',
+          'Smart decimals: at most 2 digits with trailing zeros stripped by default (1536→1.5 KiB, 1024→1 KiB), with optional fixed decimals',
+          'Exact parsing: the unit itself chooses the 1024 or 1000 base, and results round to integer bytes',
+          'Lenient input: tolerates leading/trailing whitespace, spaces between value and unit, any letter case, and thousands separators',
+          'Batch mode: converts one value per line, preserves blank lines, and flags invalid rows in place with line-numbered errors',
+          '100% local computation with zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'Pick the direction on the input card: bytes to readable size or readable size to bytes',
+          'When formatting, choose the IEC (1024) or SI (1000) standard in the bottom toolbar, optionally enabling fixed decimals',
+          'Enter byte counts or size strings one per line; results appear live on the right, including multi-line pastes',
+          'When parsing, no standard selection is needed—the unit itself (KiB vs KB) determines the base; invalid rows get yellow line-numbered warnings',
+          'Click "Swap input/output direction" to feed valid results back for reverse conversion, or click Copy',
+        ],
+        useCases: [
+          'Frontend development: render Content-Length and File API byte counts into friendly labels',
+          'Ops troubleshooting: convert 1.5 GB or 2048 MiB from logs and ls/du output into exact bytes for comparison',
+          'Scripts and APIs: verify the real difference between sizes labeled using the 1000-based and 1024-based systems',
+        ],
+        privacyNote:
+          'All conversions run locally in your browser via zero-dependency pure functions. No network requests are made, so data you paste never leaves your device.',
+        faqs: [
+          {
+            question: 'What is the difference between KiB and KB?',
+            answer:
+              'A KiB (kibibyte) is 1024 bytes under the IEC binary standard; a KB (kilobyte) is 1000 bytes under the SI decimal standard. Parsing picks the base strictly from the unit spelling, while formatting uses whichever standard you select—so 1.5 MB = 1,500,000 bytes and 2048 KiB = 2,097,152 bytes.',
+          },
+          {
+            question: 'Why do 1023 bytes show as 1023 B instead of 1 KiB?',
+            answer:
+              'Values only roll over to the next unit once they reach the base (1024 for IEC, 1000 for SI). Anything below the base stays in bytes, matching the convention used by most file managers and ls -h.',
+          },
+          {
+            question: 'Why does parsing "1.5 XB" fail?',
+            answer:
+              'XB is not a supported unit. Recognized units are B, KB/MB/GB/TB/PB (base 1000) and KiB/MiB/GiB/TiB/PiB (base 1024). Spelling is case-insensitive, but it must be one of these; omitting the unit entirely also raises an error.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

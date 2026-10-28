@@ -118,4 +118,5 @@ export const toolLoaders: Record<
   'punycode-converter': () => import('./punycode-converter'),
   'hex-dump-viewer': () => import('./hex-dump-viewer'),
   'excel-column-converter': () => import('./excel-column-converter'),
+  'file-size-converter': () => import('./file-size-converter'),
 };
