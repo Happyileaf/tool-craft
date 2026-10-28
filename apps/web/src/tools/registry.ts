@@ -9869,6 +9869,110 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'mongodb-objectid',
+    name: 'MongoDB ObjectId 生成与解析器',
+    nameEn: 'MongoDB ObjectId Generator & Parser',
+    description:
+      '解析与生成 MongoDB 的 12 字节（24 位十六进制）ObjectId：解析时拆解为前 4 字节 Unix 秒级时间戳（本地 / UTC 时间）、中间 5 字节随机值（传统驱动为 3 字节机器标识 + 2 字节进程标识）与末 3 字节自增计数器；生成时使用 Web Crypto 密码学安全随机源，支持当前时间或自定义秒级时间戳，可生成单个或连续计数器的批量 ID。纯浏览器本地运算、零新增依赖、不访问任何数据库。',
+    descriptionEn:
+      'Parse and generate MongoDB 12-byte (24 hex characters) ObjectIds: parsing breaks the value into a leading 4-byte Unix timestamp in seconds (shown in local and UTC time), a middle 5-byte random value (traditionally 3 machine bytes + 2 process bytes) and a trailing 3-byte incrementing counter; generation uses the Web Crypto CSPRNG with the current time or a custom seconds timestamp, producing a single ID or a batch with sequential counters. Runs fully locally in the browser with zero new dependencies and never touches a database.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/mongodb-objectid',
+    iconName: 'Tags',
+    tags: ['MongoDB', 'ObjectId', '主键', '标识符', '时间戳', '数据库'],
+    tagsEn: ['MongoDB', 'ObjectId', 'Primary Key', 'Identifier', 'Timestamp', 'Database'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '507f1f77bcf86cd799439011',
+    doc: {
+      zh: {
+        whatIsIt:
+          'MongoDB ObjectId 生成与解析器是一款纯浏览器本地运行的数据库标识工具。ObjectId 是 MongoDB 默认的 _id 类型，长度固定为 12 字节（24 位十六进制），由 4 字节秒级时间戳、5 字节随机值与 3 字节计数器组成，既能保证分布式环境下的近似有序与全局唯一，又能从 ID 本身反推出文档的创建时间。',
+        coreFeatures: [
+          '布局解析：4 字节时间戳 + 5 字节随机值（机器 3 + 进程 2）+ 3 字节计数器逐段拆解',
+          '时间换算：同时展示创建时间的本地时区与 UTC 表示，以及 Unix 秒级时间戳',
+          '安全生成：随机字节取自 Web Crypto（crypto.getRandomValues）密码学安全随机源',
+          '自定义时间：可指定任意 0–2^32-1 的秒级时间戳生成，便于复现与构造边界数据',
+          '批量生成：同批共享时间戳与随机值、计数器连续递增，模拟同一进程连续插入的真实分布',
+          '纯本地计算：零新增依赖，不连接任何 MongoDB 实例或网络服务',
+        ],
+        howToUse: [
+          '在「解析」卡片粘贴 24 位十六进制 ObjectId（大小写与首尾空白均可容忍），下方立即显示各组成段与时间',
+          '在「生成」卡片选择使用当前时间或切换为自定义秒级时间戳',
+          '点击「生成 1 个」获取单个 ObjectId，或填写批量数量后点击「批量生成」（1–1000 个）',
+          '点击「复制 / 复制全部」把结果写入剪贴板；生成结果可直接粘贴回解析区核对',
+        ],
+        useCases: [
+          '后端开发：根据日志或数据中的 _id 快速判断文档创建时间，排查写入时序',
+          '数据构造：单元测试 / Seed 脚本中生成指定时间戳的 ObjectId，构造时间范围查询用例',
+          '协议学习：理解 ObjectId 的字节布局、计数器回绕与分布式唯一性来源',
+        ],
+        privacyNote:
+          '全部解析与生成均在浏览器本地完成，随机数来自平台内置 Web Crypto，不连接数据库、不发起任何网络请求，输入与生成内容不会离开设备。',
+        faqs: [
+          {
+            question: 'ObjectId 的 12 字节是如何布局的？',
+            answer:
+              '前 4 字节是 Unix 秒级时间戳（大端），中间 5 字节在现代驱动中为每次进程初始化生成的随机值（旧版布局为 3 字节机器标识 + 2 字节进程标识），末 3 字节是随机初值的自增计数器。本工具同时按现代与传统两种视角展示这 5 字节。',
+          },
+          {
+            question: '同一秒生成的多个 ObjectId 如何保证唯一？',
+            answer:
+              '同一进程内计数器每生成一个 ID 递增一次（3 字节空间可达 16777216 个 / 秒，溢出后回绕到 0），加上每进程不同的 5 字节随机值，使不同进程、不同主机在同一秒内也几乎不可能碰撞。批量生成模式正是按这一规则让计数器连续递增。',
+          },
+          {
+            question: '为什么解析出的时间只精确到秒？',
+            answer:
+              '因为 ObjectId 时间戳段只有 4 字节且单位是 Unix 秒，不包含毫秒。需要毫秒级创建时间时应在文档中另存 createdAt 字段，无法仅凭 ObjectId 还原秒以下精度。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The MongoDB ObjectId Generator & Parser is a fully browser-local tool for MongoDB identifiers. ObjectId is the default _id type in MongoDB: a fixed 12-byte (24 hex characters) value made of a 4-byte timestamp in seconds, a 5-byte random value and a 3-byte counter, providing approximate ordering and global uniqueness in distributed systems while letting you recover the document creation time from the ID itself.',
+        coreFeatures: [
+          'Layout parsing: splits the value into a 4-byte timestamp, 5-byte random value (3 machine + 2 process bytes in the legacy layout) and a 3-byte counter',
+          'Time conversion: shows creation time in both local timezone and UTC, plus the Unix timestamp in seconds',
+          'Secure generation: random bytes come from the Web Crypto CSPRNG (crypto.getRandomValues)',
+          'Custom timestamps: generate with any 0–2^32-1 seconds value for reproducible fixtures and edge cases',
+          'Batch generation: one timestamp/random prefix with a sequentially increasing counter, matching real same-process inserts',
+          '100% local: zero new dependencies, never connects to a MongoDB instance or any network service',
+        ],
+        howToUse: [
+          'Paste a 24-character hex ObjectId in the Parse card (case and surrounding spaces are tolerated); the segments and times appear immediately',
+          'In the Generate card choose the current time or switch to a custom timestamp in seconds',
+          'Click “Generate one” for a single ObjectId, or set a batch count (1–1000) and click “Generate batch”',
+          'Use Copy / Copy all to grab the results; generated IDs can be pasted back into the parser to verify',
+        ],
+        useCases: [
+          'Backend work: quickly tell when a document was inserted from an _id found in logs or data, debugging write ordering',
+          'Fixtures: generate ObjectIds with specific timestamps for unit tests, seed scripts and time-range query cases',
+          'Learning: understand the byte layout, counter wraparound and uniqueness guarantees of ObjectId',
+        ],
+        privacyNote:
+          'Everything runs locally in your browser; randomness comes from the built-in Web Crypto API. It never connects to a database or makes network requests, so neither input nor generated IDs leave your device.',
+        faqs: [
+          {
+            question: 'How are the 12 bytes of an ObjectId laid out?',
+            answer:
+              'The first 4 bytes are a big-endian Unix timestamp in seconds, the middle 5 bytes are a per-process random value in modern drivers (in the legacy layout: 3 machine-identifier bytes + 2 process-identifier bytes), and the last 3 bytes are an incrementing counter with a random initial value. The tool shows both the modern and the traditional views of those 5 bytes.',
+          },
+          {
+            question: 'How are multiple ObjectIds generated in the same second kept unique?',
+            answer:
+              'Within a process the counter increments on every generation (3 bytes allow up to 16,777,216 IDs per second before wrapping to 0), and each process has a distinct 5-byte random value, so collisions across processes or hosts in the same second are overwhelmingly unlikely. Batch mode mirrors this by incrementing the counter sequentially.',
+          },
+          {
+            question: 'Why is the parsed time only precise to the second?',
+            answer:
+              'The ObjectId timestamp segment is 4 bytes measured in Unix seconds and contains no milliseconds. When sub-second precision is required you should store a separate createdAt field; it cannot be recovered from the ObjectId alone.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

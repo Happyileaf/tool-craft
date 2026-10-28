@@ -122,4 +122,5 @@ export const toolLoaders: Record<
   'ean13-checksum': () => import('./ean13-checksum'),
   'gray-code-converter': () => import('./gray-code-converter'),
   'websocket-accept': () => import('./websocket-accept'),
+  'mongodb-objectid': () => import('./mongodb-objectid'),
 };

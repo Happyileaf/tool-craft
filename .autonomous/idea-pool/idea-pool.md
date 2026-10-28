@@ -157,5 +157,5 @@
 | 20261028140205 | JSONC / 宽松 JSON 转标准 JSON（注释与尾随逗号剥离） | Web Tool | Existing Gap | Claimed | 2026-10-28 | trae-agent | [详情](./idea-details/20261028140205.md) |
 | 20261028140206 | 二进制 ↔ Gray 码（格雷码）双向转换器 | Web Tool | Exploration | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028140206.md) |
 | 20261028140207 | WebSocket Sec-WebSocket-Accept 握手头计算器 | Web Tool | Exploration | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028140207.md) |
-| 20261028140208 | MongoDB ObjectId 生成与解析器（时间戳 / 随机 / 计数器拆解） | Web Tool | Exploration | Claimed | 2026-10-28 | trae-agent | [详情](./idea-details/20261028140208.md) |
+| 20261028140208 | MongoDB ObjectId 生成与解析器（时间戳 / 随机 / 计数器拆解） | Web Tool | Exploration | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028140208.md) |
 | 20261028140209 | 以太坊 RLP（Recursive Length Prefix）递归长度前缀编解码器 | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028140209.md) |
