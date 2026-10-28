@@ -39,3 +39,8 @@
 | 20261028202204 | 布尔表达式真值表生成器 | Web Tool | Exploration | `boolean-truth-table` / [PR #93](https://github.com/Happyileaf/tool-craft/pull/93) | 2026-10-29 | [详情](./idea-details/20261028202204.md) |
 | 20261028202206 | ISO 8601 周边历（周年号/周数/星期）与公历日期双向转换器 | Web Tool | Existing Gap | `iso-week-date-converter` / [PR #93](https://github.com/Happyileaf/tool-craft/pull/93) | 2026-10-29 | [详情](./idea-details/20261028202206.md) |
 | 20261028202207 | 数值区间批量展开器与压缩器（range expand / collapse） | Web Tool | Exploration | `number-range-expander` / [PR #93](https://github.com/Happyileaf/tool-craft/pull/93) | 2026-10-29 | [详情](./idea-details/20261028202207.md) |
+| 20261029020231 | Base91（basE91）文本与字节编解码器 | Web Tool | Existing Gap | `base91-codec` / [PR #96](https://github.com/Happyileaf/tool-craft/pull/96) | 2026-10-29 | [详情](./idea-details/20261029020231.md) |
+| 20261029020232 | 增值税计算器（含税 / 不含税互算与税额拆分） | Web Tool | Exploration | `vat-calculator` / [PR #96](https://github.com/Happyileaf/tool-craft/pull/96) | 2026-10-29 | [详情](./idea-details/20261029020232.md) |
+| 20261029020233 | 跑步配速、完赛时间与速度互算计算器 | Web Tool | Exploration | `running-pace-calculator` / [PR #96](https://github.com/Happyileaf/tool-craft/pull/96) | 2026-10-29 | [详情](./idea-details/20261029020233.md) |
+| 20261029020234 | 分贝 dB 与增益 / 衰减倍数互转器 | Web Tool | Exploration | `db-converter` / [PR #96](https://github.com/Happyileaf/tool-craft/pull/96) | 2026-10-29 | [详情](./idea-details/20261029020234.md) |
+| 20261029020235 | mailto 邮件链接生成器（收件人 / 抄送 / 密送 / 主题 / 正文） | Web Tool | Exploration | `mailto-link-generator` / [PR #96](https://github.com/Happyileaf/tool-craft/pull/96) | 2026-10-29 | [详情](./idea-details/20261029020235.md) |
