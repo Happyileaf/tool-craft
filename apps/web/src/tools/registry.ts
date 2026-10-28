@@ -10386,6 +10386,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'boolean-truth-table',
+    name: '布尔表达式真值表生成器',
+    nameEn: 'Boolean Truth Table Generator',
+    description:
+      '输入 2–8 个变量的布尔表达式，自动完成词法 / 语法分析并按 2^n 枚举生成完整真值表，支持 AND / OR / NOT / XOR、蕴含（->）、等价（<->）及括号，兼容 &&、||、!、^、·、+ 等常见写法与大小写不敏感关键字；多条表达式同表对比，自动判定重言式（永真）/ 矛盾式（永假）/ 可满足式，语法错误带列号提示且不抛异常。适用于数字逻辑、离散数学学习与复杂条件逻辑核对。纯浏览器本地计算，自实现轻量递归下降解析器，零新增依赖、不发起网络请求。',
+    descriptionEn:
+      'Enter boolean expressions with 2–8 variables and get a complete truth table built by lexing, parsing and 2^n assignment enumeration. Supports AND / OR / NOT / XOR, implication (->), equivalence (<->) and parentheses, along with &&, ||, !, ^, ·, + spellings and case-insensitive keywords. Several expressions can share one table for comparison, and each is classified as a tautology, contradiction or contingent formula; syntax errors report a column and never throw. Built for digital logic and discrete-math study and for checking complex conditional logic. Runs fully locally in the browser with a small hand-written recursive-descent parser, zero new dependencies and no network requests.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/boolean-truth-table',
+    iconName: 'Sigma',
+    tags: ['布尔逻辑', '真值表', '离散数学', '表达式解析', '数字逻辑', '教学工具'],
+    tagsEn: ['Boolean Logic', 'Truth Table', 'Discrete Math', 'Expression Parser', 'Digital Logic', 'Learning'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'A AND B\nA OR NOT A\nA XOR B\nA -> B\nA <-> B',
+    doc: {
+      zh: {
+        whatIsIt:
+          '布尔表达式真值表生成器是一款纯浏览器本地运行的逻辑演算工具。给定含若干命题变量（A–Z 命名）的表达式，工具先通过自实现的词法分析器切分出变量、关键字与运算符，再用递归下降解析器构建抽象语法树，最后对全部变量按 2^n 种取值组合逐一求值，输出教科书式排列的真值表（首个变量为最高位，取值按 00、01、10、11 递增），并依据真值列判定表达式是重言式、矛盾式还是可满足式。',
+        coreFeatures: [
+          '完整运算符：AND（&、&&、·、AND）、OR（|、||、+、OR）、NOT（!、~、NOT）、XOR（^、XOR）、蕴含 ->、等价 <-> / <=>，支持括号与大小写不敏感关键字',
+          '确定性优先级：NOT > AND > XOR > OR > 蕴含 > 等价（遵循 C/JS/Python 对 ^ 位于 & 与 | 之间的约定），蕴含右结合、其余二元运算符左结合',
+          '2^n 全枚举：变量 2–8 个，自动生成 4–256 行真值表，多表达式同表逐行对比中间结果',
+          '性质判定：按真值列自动标注重言式（永真）、矛盾式（永假）、可满足式',
+          '友好错误：非法字符、括号未闭合、缺少操作数、多余内容等均带列号以错误提示返回而非抛出异常',
+        ],
+        howToUse: [
+          '每行输入一条布尔表达式，变量为字母或下划线开头的标识符（如 A、x1、enable）',
+          '真值表即时渲染：左侧为各变量取值列（T/F），右侧为每条表达式的结果列，列标题即表达式原文',
+          '表格下方的标签给出每条表达式的性质：重言式 / 矛盾式 / 可满足式',
+          '点击「复制」可把整张表以制表符分隔文本复制到剪贴板，便于粘贴进文档或表格软件',
+        ],
+        useCases: [
+          '离散数学 / 数字逻辑课程练习：验证德摩根律、分配律、蕴含析取式 A -> B 等价于 NOT A OR B 等恒等式',
+          '编程条件核对：把复杂的 if 条件（与、或、异或、取反）枚举成表，确认边界取值下的分支行为',
+          '逻辑电路与化简：对比原表达式与等价改写式在每一行的输出是否一致，再决定是否可化简',
+        ],
+        privacyNote:
+          '所有词法分析、解析与枚举求值均在浏览器本地完成，不发起任何网络请求，输入的表达式不会离开设备。',
+        faqs: [
+          {
+            question: '为什么 A | B ^ C 被解析成 A | (B ^ C) 而不是 (A | B) ^ C？',
+            answer:
+              '运算符优先级遵循 C / JavaScript / Python 的通用约定：AND（&）高于 XOR（^），XOR 又高于 OR（|）。因此异或会先于或运算结合；若需要其他结合方式，请显式加括号。',
+          },
+          {
+            question: '为什么至少要输入 2 个变量？',
+            answer:
+              '真值表的价值在于展示多变量组合下单变量无法体现的逻辑关系。若只输入一个变量（如 A AND NOT A），工具会提示变量不足；常量性质（永真 / 永假）请至少引入一个无关变量或改用多条表达式对比。',
+          },
+          {
+            question: '支持哪些变量名和关键字写法？',
+            answer:
+              '变量名是以字母或下划线开头、后跟字母数字下划线的标识符；AND、OR、NOT、XOR 四个关键字大小写不敏感（and、And 均可）。注意 AND/OR/NOT/XOR 是保留字，不能作为变量名。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Boolean Truth Table Generator is a logic-calculation tool that runs entirely in the browser. Given expressions over propositional variables, it first tokenizes variables, keywords and operators with a hand-written lexer, builds an AST with a recursive-descent parser, and then evaluates every one of the 2^n variable assignments. The result is a textbook-ordered truth table (first variable is the most significant bit: 00, 01, 10, 11, …) plus a verdict for each expression: tautology, contradiction or contingent.',
+        coreFeatures: [
+          'Full operator set: AND (&, &&, ·, AND), OR (|, ||, +, OR), NOT (!, ~, NOT), XOR (^, XOR), implication -> and equivalence <-> / <=>, with parentheses and case-insensitive keywords',
+          'Deterministic precedence: NOT > AND > XOR > OR > implication > equivalence (following the C/JS/Python placement of ^ between & and |); implication is right-associative and the other binary operators are left-associative',
+          'Full 2^n enumeration: 2–8 variables produce 4–256 rows, and several expressions share one table for row-by-row comparison',
+          'Property classification: each column is tagged as tautology (always true), contradiction (always false) or contingent',
+          'Friendly errors: illegal characters, unclosed parentheses, missing operands and trailing content are reported with a column number instead of throwing',
+        ],
+        howToUse: [
+          'Enter one boolean expression per line; variable names are identifiers starting with a letter or underscore (e.g. A, x1, enable)',
+          'The truth table renders instantly: the left columns show variable assignments (T/F) and the right columns show each expression result, titled with the raw expression',
+          'Tags below the table classify every expression as a tautology, contradiction or contingent formula',
+          'Click Copy to copy the whole table as tab-separated text for a document or spreadsheet',
+        ],
+        useCases: [
+          'Discrete-math / digital-logic practice: verify De Morgan’s laws, distributivity and identities such as A -> B being equivalent to NOT A OR B',
+          'Checking program conditions: enumerate complex if-conditions (and/or/xor/not) to confirm branch behavior at boundary values',
+          'Circuit simplification: compare an expression with a rewritten equivalent row by row before simplifying',
+        ],
+        privacyNote:
+          'All lexing, parsing and enumeration happen locally in the browser. No network requests are made and entered expressions never leave your device.',
+        faqs: [
+          {
+            question: 'Why is A | B ^ C parsed as A | (B ^ C) instead of (A | B) ^ C?',
+            answer:
+              'Precedence follows the common C / JavaScript / Python convention: AND (&) binds tighter than XOR (^), which binds tighter than OR (|). XOR therefore groups before OR; add explicit parentheses when you need another grouping.',
+          },
+          {
+            question: 'Why are at least 2 variables required?',
+            answer:
+              'A truth table is meant to show logical relationships over combinations that a single variable cannot express. An expression with one variable (such as A AND NOT A) triggers a not-enough-variables message; use at least two variables or compare several expressions instead.',
+          },
+          {
+            question: 'What variable names and keyword spellings are supported?',
+            answer:
+              'Variables are identifiers starting with a letter or underscore followed by letters, digits or underscores. The keywords AND, OR, NOT and XOR are case-insensitive (and, And both work) and are reserved, so they cannot be used as variable names.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
