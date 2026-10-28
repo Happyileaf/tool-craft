@@ -9763,6 +9763,112 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'websocket-accept',
+    name: 'WebSocket Sec-WebSocket-Accept 握手头计算器',
+    nameEn: 'WebSocket Sec-WebSocket-Accept Handshake Calculator',
+    description:
+      '按 RFC 6455 §1.3/§4.2.2 计算 WebSocket 握手应答头：将客户端 Sec-WebSocket-Key（16 字节随机数的 Base64）拼接固定 GUID「258EAFA5-E914-47DA-95CA-C5AB0DC85B11」，计算 SHA-1 后 Base64 输出服务端 Sec-WebSocket-Accept；同时支持反向校验模式（每行一对 Key 与 Accept，判断是否匹配，不匹配时给出正确值）。内置 RFC 官方示例向量，多行批量处理并逐行标注错误。纯浏览器本地运算，SHA-1 由 Web Crypto 提供、零新增依赖。',
+    descriptionEn:
+      'Computes the WebSocket handshake response header per RFC 6455 §1.3/§4.2.2: concatenate the client Sec-WebSocket-Key (Base64 of 16 random bytes) with the fixed GUID “258EAFA5-E914-47DA-95CA-C5AB0DC85B11”, take the SHA-1 hash and Base64-encode it to produce the server Sec-WebSocket-Accept. A reverse verification mode takes a Key/Accept pair per line and reports whether they match (showing the correct value if not). Ships with the official RFC example vector, processes multiple lines with line-numbered errors, and runs fully locally—SHA-1 via Web Crypto, zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/websocket-accept',
+    iconName: 'KeyRound',
+    tags: ['WebSocket', 'Sec-WebSocket-Accept', 'RFC 6455', '握手', 'SHA-1', 'Base64'],
+    tagsEn: ['WebSocket', 'Sec-WebSocket-Accept', 'RFC 6455', 'Handshake', 'SHA-1', 'Base64'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'dGhlIHNhbXBsZSBub25jZQ==',
+    doc: {
+      zh: {
+        whatIsIt:
+          'WebSocket Sec-WebSocket-Accept 握手头计算器是一款纯浏览器本地运行的协议调试工具，严格按 RFC 6455 规定的握手算法，从客户端请求头 Sec-WebSocket-Key 计算服务端应答头 Sec-WebSocket-Accept，并支持给定 Key/Accept 对的反向匹配校验。',
+        coreFeatures: [
+          'RFC 6455 标准算法：Accept = Base64(SHA-1(Key + 固定 GUID))',
+          '固定 GUID 内置：258EAFA5-E914-47DA-95CA-C5AB0DC85B11，无需手填',
+          '双向能力：计算模式批量产出 Accept；校验模式逐对判断 Key 与 Accept 是否匹配并给出正确值',
+          '输入校验：严格检查 Key 是否为 16 字节随机数的合法 Base64（24 字符）',
+          '官方示例：默认样本即 RFC 6455 文档中的标准握手向量，可直接对照',
+          '纯本地计算：SHA-1 由浏览器 Web Crypto 完成，零新增依赖、不发起网络请求',
+        ],
+        howToUse: [
+          '选择「计算 Accept」模式，每行粘贴一个 Sec-WebSocket-Key 请求头值',
+          '右侧实时显示对应的 Sec-WebSocket-Accept，可直接粘贴到服务端响应头',
+          '选择「反向校验」模式，每行输入「Key 空格 Accept」两个字段做匹配判断',
+          '不匹配或非法的行会原样保留并以黄色警告逐行标注行号与原因',
+          '点击「复制」获取输出；页面下方卡片展示完整 RFC 公式与 GUID',
+        ],
+        useCases: [
+          '手写 WebSocket 服务端：实现 Sec-WebSocket-Accept 应答头时对照验证',
+          '抓包调试：核对浏览器升级请求与服务端 101 响应中的握手头是否匹配',
+          '协议学习：理解 WebSocket 握手机制，复现 RFC 6455 官方示例',
+        ],
+        privacyNote:
+          'Key 与 Accept 仅在浏览器本地经 Web Crypto 计算 SHA-1，不发起任何网络请求，粘贴的握手数据不会离开设备。',
+        faqs: [
+          {
+            question: 'Sec-WebSocket-Accept 是怎么算出来的？',
+            answer:
+              '把客户端请求头里的 Sec-WebSocket-Key（一个 16 字节随机数的 Base64 值）与固定字符串 GUID「258EAFA5-E914-47DA-95CA-C5AB0DC85B11」直接拼接，对拼接结果计算 SHA-1 摘要（20 字节），再做 Base64 编码，即为服务端必须返回的 Sec-WebSocket-Accept。例如 RFC 示例 Key dGhlIHNhbXBsZSBub25jZQ== 对应 Accept s3pPLMBiTxaQ9kYGzzhZRbK+xOo=。',
+          },
+          {
+            question: '为什么握手要设计这个 Accept 值？',
+            answer:
+              '它主要用于让服务端向客户端证明：对方确实理解 WebSocket 协议、确实收到了本次升级请求，而不是一个误接收该请求的普通 HTTP 服务端。由于 GUID 由 RFC 固定且不传输，缓存代理等中间件也无法凭空伪造正确应答。它不是安全认证机制，不提供身份保证。',
+          },
+          {
+            question: 'Sec-WebSocket-Key 的格式有什么要求？',
+            answer:
+              '按 RFC 6455，Key 必须是 16 字节随机数经 Base64 编码后的结果，因此长度恒为 24 个字符（22 个 Base64 字符加两个等号填充）。工具会严格检查字符集与解码后的字节数；不符合时该输入行将被标记为非法。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The WebSocket Sec-WebSocket-Accept Handshake Calculator is a fully browser-local protocol debugging tool. It strictly follows the RFC 6455 handshake algorithm to derive the server Sec-WebSocket-Accept response header from the client Sec-WebSocket-Key request header, and can also verify a given Key/Accept pair in reverse.',
+        coreFeatures: [
+          'RFC 6455 algorithm: Accept = Base64(SHA-1(Key + fixed GUID))',
+          'Built-in fixed GUID: 258EAFA5-E914-47DA-95CA-C5AB0DC85B11, no manual entry needed',
+          'Two directions: compute mode batch-produces Accept values; verify mode checks Key/Accept pairs and shows the correct value on mismatch',
+          'Input validation: strictly checks that a Key is valid Base64 of exactly 16 random bytes (24 chars)',
+          'Official example: the default sample is the standard handshake vector straight from RFC 6455',
+          '100% local: SHA-1 via the browser Web Crypto API, zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'In “Compute Accept” mode, paste one Sec-WebSocket-Key request-header value per line',
+          'The corresponding Sec-WebSocket-Accept appears live on the right, ready for the server response header',
+          'Switch to “Verify” mode and enter a “Key whitespace Accept” pair per line for matching',
+          'Mismatched or invalid rows are kept in place and flagged with line numbers and reasons',
+          'Click Copy to grab the output; the card below shows the full RFC formula and GUID',
+        ],
+        useCases: [
+          'Writing a WebSocket server: cross-checking your Sec-WebSocket-Accept implementation',
+          'Packet debugging: verifying browser upgrade requests against 101 response headers',
+          'Learning the protocol: reproducing the official RFC 6455 worked example',
+        ],
+        privacyNote:
+          'Keys and Accept values only go through the local Web Crypto SHA-1 implementation in your browser. No network requests are made, so handshake data you paste never leaves your device.',
+        faqs: [
+          {
+            question: 'How is Sec-WebSocket-Accept calculated?',
+            answer:
+              'Take the Sec-WebSocket-Key request-header value (Base64 of a 16-byte nonce), concatenate it directly with the fixed GUID string “258EAFA5-E914-47DA-95CA-C5AB0DC85B11”, compute the SHA-1 digest (20 bytes) of the concatenation, and Base64-encode it—that is the Sec-WebSocket-Accept the server must return. For example, the RFC sample key dGhlIHNhbXBsZSBub25jZQ== yields s3pPLMBiTxaQ9kYGzzhZRbK+xOo=.',
+          },
+          {
+            question: 'Why does the handshake use this Accept value?',
+            answer:
+              'It primarily proves to the client that the server genuinely understands the WebSocket protocol and actually received this upgrade request, rather than being an ordinary HTTP server that accepted the request by mistake. Because the GUID is fixed by the RFC and never transmitted, caching proxies and other intermediaries cannot forge a valid response. It is not a security or authentication mechanism.',
+          },
+          {
+            question: 'What are the formatting rules for Sec-WebSocket-Key?',
+            answer:
+              'Per RFC 6455 the key must be the Base64 encoding of 16 cryptographically random bytes, so it is always exactly 24 characters long (22 Base64 characters plus two equals signs). The tool strictly validates the character set and the decoded byte length; non-conforming input rows are marked invalid.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
