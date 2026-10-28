@@ -131,4 +131,5 @@ export const toolLoaders: Record<
   'iso-week-date-converter': () => import('./iso-week-date-converter'),
   'number-range-expander': () => import('./number-range-expander'),
   'base91-codec': () => import('./base91-codec'),
+  'vat-calculator': () => import('./vat-calculator'),
 };

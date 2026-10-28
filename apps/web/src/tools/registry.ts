@@ -10781,6 +10781,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'vat-calculator',
+    name: '增值税计算器（含税 / 不含税互算）',
+    nameEn: 'VAT Calculator (Tax-Inclusive / Exclusive)',
+    description:
+      '输入金额与税率，一键在不含税金额、税额、含税金额之间互算：支持正向加税与含税反算拆分，内置 13% / 9% / 6% / 3% / 1% 中国常用增值税档位与自定义税率，金额按两位小数四舍五入，非法输入有明确提示。',
+    descriptionEn:
+      'Enter an amount and a tax rate to convert between VAT-exclusive amount, tax amount and VAT-inclusive amount in both directions, with 13% / 9% / 6% / 3% / 1% China VAT presets and a custom rate. Amounts round to two decimals and invalid input is clearly flagged.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/vat-calculator',
+    iconName: 'Calculator',
+    tags: ['增值税', '税率', '含税金额', '不含税金额', '发票'],
+    tagsEn: ['VAT', 'Tax Rate', 'Tax-Inclusive', 'Tax-Exclusive', 'Invoice'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1000',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的增值税计算器，覆盖报价与开票中最常见的两个方向：已知不含税金额和税率，计算税额与含税金额；已知含税金额和税率，反向拆分出不含税金额与税额。内置中国现行增值税常用档位 13%、9%、6%、3%、1%，也支持输入自定义税率，所有金额按两位小数四舍五入。',
+        coreFeatures: [
+          '双向互算：不含税金额 → 税额 / 含税金额，或含税金额 → 不含税金额 / 税额',
+          '常用档位：一键选择 13% / 9% / 6% / 3% / 1% 税率，也支持 0–99.999% 自定义税率',
+          '金额按两位小数四舍五入，反向拆分时税额以「含税金额 − 不含税金额」轧差，保证三者合计一致',
+          '实时计算：输入即出结果，负数、非法数字、税率超出范围均有明确错误提示',
+          '纯本地运行：金额与税率不会离开浏览器，不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择计算方向：正向加税（输入不含税金额）或反向拆分（输入含税金额）',
+          '输入金额，并通过档位按钮或输入框指定税率',
+          '结果区即时显示不含税金额、税额与含税合计，可用于报价单或发票核对',
+        ],
+        useCases: [
+          '销售报价：把不含税报价换算为客户实付的含税金额',
+          '发票与报销核对：从价税合计中拆分出不含税金额与可抵扣税额',
+          '采购比价：在不同税率的供应商报价之间统一口径比较',
+        ],
+        privacyNote: '所有金额与税率仅保存在浏览器本地并参与计算，不会被上传、记录或用于其他用途。',
+        faqs: [
+          {
+            question: '反向拆分时税额是怎么计算的？',
+            answer:
+              '先按「不含税金额 = 含税金额 ÷ (1 + 税率)」计算并四舍五入到分，再用「税额 = 含税金额 − 不含税金额」轧差得到，确保三项金额合计严格一致，例如 100 元含税、13% 税率时不含税 88.50 元、税额 11.50 元。',
+          },
+          {
+            question: '计算结果可以直接作为开票或申报依据吗？',
+            answer:
+              '本工具按通用数学口径计算并四舍五入到分，适合报价、预估与核对；实际开票与纳税申报请以开票软件、税务机关规则及合同约定（如差额征税、简易计税等特殊情形）为准。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first value-added tax calculator covering the two most common invoicing workflows: from a tax-exclusive amount and rate to the tax and tax-inclusive total, or back-splitting a tax-inclusive total into the exclusive amount and tax. It ships with common China VAT rates of 13%, 9%, 6%, 3% and 1%, plus a custom rate, rounding every amount to two decimals.',
+        coreFeatures: [
+          'Both directions: exclusive amount → tax / inclusive total, or inclusive total → exclusive amount / tax',
+          'Preset rates of 13% / 9% / 6% / 3% / 1% plus any custom rate from 0–99.999%',
+          'Two-decimal rounding; on reverse splits the tax is derived as inclusive minus exclusive so the three figures always reconcile',
+          'Live results as you type, with explicit errors for negative amounts, invalid numbers and out-of-range rates',
+          'Local-first: amounts and rates never leave the browser and no network request is made',
+        ],
+        howToUse: [
+          'Pick a direction: add tax (enter the exclusive amount) or back-split (enter the inclusive total)',
+          'Enter the amount and choose a preset rate or type a custom rate',
+          'Read the exclusive amount, tax and inclusive total in the result panel for quotes or invoice checks',
+        ],
+        useCases: [
+          'Turn a tax-exclusive quote into the tax-inclusive price a customer actually pays',
+          'Split an invoice total into the exclusive amount and deductible tax for reimbursement checks',
+          'Normalize supplier quotes that carry different VAT rates for comparison',
+        ],
+        privacyNote:
+          'All amounts and rates stay in your browser for local calculation; they are never uploaded, logged or reused.',
+        faqs: [
+          {
+            question: 'How is the tax computed on a reverse split?',
+            answer:
+              'The exclusive amount is calculated as inclusive ÷ (1 + rate) and rounded to cents, then the tax is the balance of inclusive minus exclusive, so the three figures always reconcile. For example, 100 inclusive at 13% gives 88.50 exclusive and 11.50 tax.',
+          },
+          {
+            question: 'Can the results be used directly for official invoicing or tax filing?',
+            answer:
+              'The tool applies standard math with cent-level rounding and is intended for quoting, estimating and cross-checking. For actual invoices and filings, follow your invoicing software, tax-authority rules and contract terms, including special regimes such as simplified or difference taxation.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
