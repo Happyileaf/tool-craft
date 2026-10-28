@@ -10182,6 +10182,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'id-card-validator',
+    name: '身份证号码校验与升位器',
+    nameEn: 'Chinese ID Number Validator & Upgrade',
+    description:
+      '依据 GB 11643-1999 校验 18 位居民身份证号：检查 18 位结构、出生日期真实性（含闰年）与 ISO 7064 MOD 11-2 加权校验码（末位可为 X），并解析出生日期、性别与 6 位行政区划码；支持 15 位旧号码在第 6 位后插入 19 自动升位为 18 位，支持逐条与逐行批量校验，非法行带行号提示。适用于表单校验开发、测试数据构造与数据质量核对。纯浏览器本地确定性计算、零新增依赖、不发起网络请求（仅做格式与算法校验，不内置行政区划名称表）。',
+    descriptionEn:
+      'Validate 18-digit Chinese resident identity card numbers per GB 11643-1999: checks the 18-digit structure, a real date of birth (including leap years) and the ISO 7064 MOD 11-2 weighted check digit (last character may be X), and parses birth date, gender and the 6-digit administrative division code. Legacy 15-digit numbers are upgraded to 18 digits by inserting 19 after the 6th digit, with single-item and line-by-line batch processing and line-numbered warnings. Built for form validation, test data construction and data quality checks. Fully local deterministic computation in the browser with zero new dependencies and no network requests (format/algorithm validation only, no embedded division-name table).',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/id-card-validator',
+    iconName: 'Fingerprint',
+    tags: ['身份证', '校验', 'GB 11643', '升位', '表单校验', '中国'],
+    tagsEn: ['ID Card', 'Validation', 'GB 11643', 'Upgrade', 'Form Validation', 'China'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '110105194912318013\n110105491231801\n11010520210229001X',
+    doc: {
+      zh: {
+        whatIsIt:
+          '身份证号码校验与升位器是一款纯浏览器本地运行的中国居民身份证号工具。18 位身份证号由 6 位行政区划码、8 位出生日期（YYYYMMDD）、3 位顺序码与 1 位校验码构成，校验码依据 GB 11643-1999 的 ISO 7064 MOD 11-2 加权算法计算，取值为数字或 X。本工具据此判定号码是否自洽，并把字段解析为可读信息；对早期 15 位旧证号码，可按规则插入世纪位 19 并补全校验码，升位为 18 位。',
+        coreFeatures: [
+          '18 位校验：结构、出生日期真实性（含闰年 2 月 29 日）与加权校验码逐项检查，校验码错误时给出正确值',
+          '15 位升位：在第 6 位行政区划码后插入 19，再按 17 位本体计算末位校验码',
+          '字段解析：展示出生日期、性别（顺序码末位奇男偶女）与 6 位行政区划码',
+          '批量处理：每行一个号码，合法行输出结构化结果，非法行保留原文并带行号告警',
+          '容错与隐私：容忍空白、末位 x 自动转大写；全部计算本地完成，不收集任何输入',
+        ],
+        howToUse: [
+          '在输入框粘贴一个或每行一个身份证号码',
+          '18 位号码输出「校验通过」与出生日期、性别、行政区划码；校验码错误时同时给出正确号码',
+          '15 位旧证号码自动升位，输出形如「原号 → 18 位新号」',
+          '非法行在下方黄色告警中按行号说明原因（长度、字符、日期或校验码）',
+        ],
+        useCases: [
+          '表单校验开发：在注册、实名等表单中复用该校验逻辑构造测试用例',
+          '测试数据构造：由 15 位测试号码批量生成合法 18 位号码',
+          '数据质量核对：排查存量数据中抄录错误、出生日期非法或校验位错误的号码',
+        ],
+        privacyNote:
+          '校验与升位均为浏览器本地确定性计算，不发起任何网络请求，输入的号码不会离开设备。',
+        faqs: [
+          {
+            question: '校验码是怎么计算的？',
+            answer:
+              '将前 17 位分别乘以固定加权因子 7、9、10、5、8、4、2、1、6、3、7、9、10、5、8、4、2 后求和，对 11 取模，再以字符串 "10X98765432" 的对应位取值——余数 0 对应 1、余数 2 对应 X，依此类推，即为第 18 位校验码。',
+          },
+          {
+            question: '15 位旧号码是如何升位为 18 位的？',
+            answer:
+              '15 位号码为 6 位行政区划码 + 6 位两位年出生日期 + 3 位顺序码，没有校验码。升位时在第 6 位后插入世纪位 "19"（旧证均签发于 1900 年代），得到 17 位本体，再按 18 位算法计算并追加校验码。',
+          },
+          {
+            question: '校验通过能否证明这个人真实存在？',
+            answer:
+              '不能。本工具只验证号码自身的编码规则与校验位是否自洽，不联网查询公安数据库，也不内置行政区划名称表。校验通过仅说明格式合法，个人身份真实性须以官方渠道核验为准。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Chinese ID Number Validator & Upgrade is a fully browser-local tool for Chinese resident identity card numbers. An 18-digit number consists of a 6-digit administrative division code, an 8-digit birth date (YYYYMMDD), a 3-digit sequence code and one check digit computed with the ISO 7064 MOD 11-2 weighted algorithm defined in GB 11643-1999; the check digit is a digit or X. The tool judges whether a number is self-consistent and decodes its fields, and upgrades early 15-digit numbers to 18 digits by inserting the century digits 19 and computing a check digit.',
+        coreFeatures: [
+          '18-digit validation: structure, a real birth date (including February 29 in leap years) and the weighted check digit are checked one by one; the correct check digit is shown on mismatch',
+          '15-digit upgrade: inserts 19 after the 6th digit and computes the final check digit over the resulting 17-digit body',
+          'Field decoding: shows birth date, gender (odd sequence-code ending = male, even = female) and the 6-digit division code',
+          'Batch processing: one number per line; valid lines emit structured output and invalid lines keep their text with line-numbered warnings',
+          'Forgiving and private: tolerates whitespace and uppercases a trailing x; everything runs locally with no collection of input',
+        ],
+        howToUse: [
+          'Paste a single number or one number per line into the input box',
+          '18-digit numbers return “validation passed” with birth date, gender and division code; a wrong check digit also yields the corrected number',
+          '15-digit legacy numbers are upgraded automatically as “original → 18-digit number”',
+          'Invalid lines are explained by line number in the yellow warnings below (length, characters, date or check digit)',
+        ],
+        useCases: [
+          'Form validation: reuse the rules to build test cases for registration and real-name forms',
+          'Test data construction: turn 15-digit test numbers into batches of valid 18-digit numbers',
+          'Data quality checks: find transcription errors, impossible birth dates and bad check digits in stored data',
+        ],
+        privacyNote:
+          'Validation and upgrade are deterministic, fully local browser computations. No network requests are made and entered numbers never leave your device.',
+        faqs: [
+          {
+            question: 'How is the check digit calculated?',
+            answer:
+              'Multiply the first 17 digits by the fixed weights 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2, sum them and take modulo 11. The remainder indexes the string "10X98765432"—remainder 0 maps to 1, remainder 2 maps to X, and so on—giving the 18th check digit.',
+          },
+          {
+            question: 'How is a 15-digit number upgraded to 18 digits?',
+            answer:
+              'A 15-digit number has a 6-digit division code, a 6-digit two-digit-year birth date and a 3-digit sequence code, with no check digit. The upgrade inserts the century digits "19" after the 6th digit (legacy cards were issued in the 1900s), producing a 17-digit body, then computes and appends the 18-digit check digit.',
+          },
+          {
+            question: 'Does passing validation prove the person exists?',
+            answer:
+              'No. The tool only checks that the number is self-consistent under the coding and check-digit rules; it queries no public-security database and embeds no division-name table. A valid result means the format is correct—identity must be verified through official channels.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

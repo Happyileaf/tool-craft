@@ -125,4 +125,5 @@ export const toolLoaders: Record<
   'mongodb-objectid': () => import('./mongodb-objectid'),
   'jsonc-to-json': () => import('./jsonc-to-json'),
   'unified-social-credit-code': () => import('./unified-social-credit-code'),
+  'id-card-validator': () => import('./id-card-validator'),
 };
