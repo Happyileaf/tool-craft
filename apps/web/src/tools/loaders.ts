@@ -117,4 +117,5 @@ export const toolLoaders: Record<
   'env-converter': () => import('./env-converter'),
   'punycode-converter': () => import('./punycode-converter'),
   'hex-dump-viewer': () => import('./hex-dump-viewer'),
+  'excel-column-converter': () => import('./excel-column-converter'),
 };

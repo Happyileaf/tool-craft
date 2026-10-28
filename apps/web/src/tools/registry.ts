@@ -9341,6 +9341,110 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'excel-column-converter',
+    name: 'Excel 列名序号互转器',
+    nameEn: 'Excel Column Name & Number Converter',
+    description:
+      '在 Excel 字母列名（A、Z、AA、XFD）与 1 起始的数字列序号（1、26、27、16384）之间双向批量转换，基于双射二十六进制（bijective base-26）纯函数计算。支持每行一个值的批量处理、大小写不敏感、空白自动裁剪，对 0、负数、A1、超出 XFD 等非法行逐行给出可读错误而不影响其他行。适用于表格公式、R1C1 引用以及 openpyxl / Apache POI 等开发场景的列定位。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert bidirectionally between Excel letter column names (A, Z, AA, XFD) and 1-based numeric column indexes (1, 26, 27, 16384) using pure bijective base-26 functions. It supports batch processing with one value per line, is case-insensitive, trims whitespace automatically, and reports readable per-line errors for invalid rows such as 0, negative numbers, A1, or values beyond XFD without affecting other rows. Useful for spreadsheet formulas, R1C1 references, and column lookup in openpyxl/Apache POI development. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/excel-column-converter',
+    iconName: 'Table2',
+    tags: ['Excel', '列名', 'R1C1', 'bijective base-26', '电子表格', 'openpyxl'],
+    tagsEn: ['Excel', 'Column Letter', 'R1C1', 'Bijective Base-26', 'Spreadsheet', 'openpyxl'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'A\nZ\nAA\nAZ\nZZ\nAAA\nXFD',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Excel 列名序号互转器是一款纯浏览器本地运行的小工具，在电子表格的字母列标（A–XFD）与编程接口常用的 1 起始数字序号（1–16384）之间双向转换，覆盖 Excel 全部 16384 列。',
+        coreFeatures: [
+          '列名 → 序号：A→1、Z→26、AA→27、AZ→52、ZZ→702、AAA→703、XFD→16384',
+          '序号 → 列名：1→A、27→AA、703→AAA、16384→XFD，双射二十六进制严格可逆',
+          '大小写不敏感：aa 与 AA 结果一致；自动忽略值两侧空白',
+          '多行批量：每行一个值逐行转换，空行保留，非法行原样保留并标注行号错误',
+          '范围校验：0、负数、非整数、含非字母字符（如 A1）以及超出 16384 的值均给出明确错误',
+          '纯本地计算：零新增依赖，输入内容不发起任何网络请求',
+        ],
+        howToUse: [
+          '在输入卡片顶部选择方向：列名 → 序号或序号 → 列名',
+          '每行输入一个列名或序号，右侧实时显示逐行结果，支持一次粘贴整列数据',
+          '非法行会原样保留并在输出区以黄色警告标注行号与原因，其余行正常转换',
+          '点击「交换输入 / 输出方向」可把全部合法结果回填反向转换；点击「复制」获取结果',
+        ],
+        useCases: [
+          '公式调试：排查 VLOOKUP、INDEX、R1C1 引用中字母列标与数字列的对应关系',
+          '开发对接：openpyxl、Apache POI、Excel JS 等库在列字母与列索引之间换算',
+          '数据处理：批量把导出的列名清单转成序号，或把脚本生成的序号还原为列名',
+        ],
+        privacyNote:
+          '全部转换均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；粘贴的数据不会离开设备。',
+        faqs: [
+          {
+            question: '为什么 Z 之后是 AA 而不是 BA？',
+            answer:
+              'Excel 列名采用双射二十六进制：没有表示零的数字，A–Z 对应 1–26，因此 Z（26）进位后是 AA（27），与普通 26 进制（含 0）不同。序号转列名时需先做减一处理，这也是本工具内部使用的算法。',
+          },
+          {
+            question: 'Excel 一共有多少列？最大列名是什么？',
+            answer:
+              '现代 Excel（.xlsx）单表有 16384 列、1048576 行，最大列名是 XFD（第 16384 列），下一个 XFE 已超出范围，本工具会报错提示。',
+          },
+          {
+            question: '为什么输入 A1 报错？',
+            answer:
+              'A1 是单元格地址（A 列第 1 行）而不是列名。列名方向只接受纯字母（A–Z），序号方向只接受 1–16384 的整数；请去掉行号部分只保留列字母。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Excel Column Name & Number Converter is a fully browser-local tool that converts between spreadsheet letter column labels (A–XFD) and the 1-based numeric indexes (1–16384) commonly used by programming APIs, covering all 16,384 Excel columns.',
+        coreFeatures: [
+          'Letters to numbers: A→1, Z→26, AA→27, AZ→52, ZZ→702, AAA→703, XFD→16384',
+          'Numbers to letters: 1→A, 27→AA, 703→AAA, 16384→XFD, strictly reversible bijective base-26',
+          'Case-insensitive: aa equals AA; surrounding whitespace is trimmed automatically',
+          'Batch mode: converts one value per line, preserves blank lines, and flags invalid rows in place with line-numbered errors',
+          'Range validation: 0, negatives, non-integers, values with non-letter characters (e.g. A1), and anything beyond 16384 produce clear errors',
+          '100% local computation with zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'Pick the direction on the input card: letters to numbers or numbers to letters',
+          'Enter one column name or index per line; per-line results appear live on the right, including pasted columns',
+          'Invalid rows are kept verbatim and flagged with yellow line-numbered warnings while all other rows convert normally',
+          'Click "Swap input/output direction" to feed all valid results back for reverse conversion, or click Copy',
+        ],
+        useCases: [
+          'Formula debugging: map letter columns to numbers in VLOOKUP, INDEX, and R1C1 references',
+          'Development: translate between column letters and indexes in openpyxl, Apache POI, Excel JS, and similar libraries',
+          'Data processing: batch-convert exported column-name lists into indexes or turn script-generated indexes back into letters',
+        ],
+        privacyNote:
+          'All conversions run locally in your browser via zero-dependency pure functions. No network requests are made, so data you paste never leaves your device.',
+        faqs: [
+          {
+            question: 'Why is AA next after Z instead of a zero-style carry?',
+            answer:
+              'Excel column names use bijective base-26: there is no digit for zero, and A–Z map to 1–26, so Z (26) carries to AA (27), unlike regular base-26 which includes zero. Number-to-letter conversion decrements first, which is exactly the algorithm used internally here.',
+          },
+          {
+            question: 'How many columns does Excel have, and what is the last one?',
+            answer:
+              'Modern Excel (.xlsx) sheets have 16,384 columns and 1,048,576 rows. The last column is XFD (index 16384); the next value XFE is out of range and this tool reports an error.',
+          },
+          {
+            question: 'Why does A1 produce an error?',
+            answer:
+              'A1 is a cell address (column A, row 1), not a column name. Letter mode accepts pure letters (A–Z) only, and number mode accepts integers from 1 to 16384; remove the row part and keep just the column letters.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
