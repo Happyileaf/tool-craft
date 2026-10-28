@@ -9137,7 +9137,7 @@ info: request finished`,
       'A from-scratch RFC 3492 Punycode (Bootstring) encoder/decoder that converts internationalized domain names containing Chinese, Japanese, emoji, and other non-ASCII characters between Unicode and the xn-- ASCII Compatible Encoding form—e.g. 中文.中国 ↔ xn--fiq228c.xn--fiqs8s. It supports multi-label domains, email addresses (converting only the domain after @), full-width dots, multi-line batch conversion, and raw Bootstring encoding. Malformed xn-- labels report readable errors instead of throwing. Everything runs locally in the browser with zero new dependencies.',
     category: ToolCategoryEnum.CRYPTO_ENCODING,
     path: '/tools/punycode-converter',
-    iconName: 'Global',
+    iconName: 'Globe',
     tags: ['Punycode', 'IDN', '国际化域名', 'xn--', 'RFC 3492', '编码'],
     tagsEn: ['Punycode', 'IDN', 'Internationalized Domain', 'xn--', 'RFC 3492', 'Encoding'],
     isPopular: false,
@@ -9230,6 +9230,112 @@ info: request finished`,
             question: 'Why does my pasted xn-- domain report an invalid error?',
             answer:
               'The part after xn-- must be valid Bootstring: only a-z0-9 characters with a fully decodable variable-length integer sequence. Truncation, illegal characters, or decoded code points beyond the Unicode range all raise an error. Check whether the domain was cut off during copying or misspelled.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'hex-dump-viewer',
+    name: 'Hex / Hex Dump 转换器',
+    nameEn: 'Hex & Hex Dump Converter',
+    description:
+      '在文本与十六进制之间双向转换，按 UTF-8 编码生成或还原字节串：支持连续 Hex、空格 / 冒号分隔、0x 前缀以及大小写切换，并可输出经典十六进制转储（8 位偏移量 + 每行 16 字节分区 + ASCII 预览）。解码时自动容忍空白、换行、逗号、连字符与 0x 前缀，奇数位、非法字符或非法 UTF-8 序列给出可读错误。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert text to and from hexadecimal using UTF-8 encoding: continuous hex, space/colon separators, 0x prefixes, and upper/lower case are supported, along with a classic hex dump view (8-digit offset, 16 bytes per row in two groups, and an ASCII preview). Decoding tolerates whitespace, line breaks, commas, hyphens, and 0x prefixes, while odd digit counts, illegal characters, and invalid UTF-8 sequences produce readable errors. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/hex-dump-viewer',
+    iconName: 'Hash',
+    tags: ['Hex', '十六进制', 'Hex Dump', 'UTF-8', '字节', '编码'],
+    tagsEn: ['Hex', 'Hexadecimal', 'Hex Dump', 'UTF-8', 'Bytes', 'Encoding'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Hello, 世界!\nUTF-8 text → hex bytes',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Hex / Hex Dump 转换器是一款纯浏览器本地运行的字节级工具，使用标准 TextEncoder / TextDecoder 按 UTF-8 在文本与原始字节之间互转，并把字节渲染为十六进制串或类似 hexdump(1) 的经典转储视图，便于查看二进制数据的真实字节布局。',
+        coreFeatures: [
+          '文本 → Hex：按 UTF-8 编码，支持无分隔连续串、空格、冒号分隔与每字节 0x 前缀',
+          '大小写一键切换：十六进制数字可在小写 a-f 与大写 A-F 之间切换',
+          'Hex dump 视图：8 位十六进制偏移量、每行 16 字节（8+8 分组）、右侧 ASCII 预览，不可打印字节显示为点',
+          'Hex → 文本：自动剥离 0x 前缀与空格、冒号、换行、逗号、连字符等分隔符，按 UTF-8 严格解码',
+          '错误友好：奇数个十六进制位、非法字符或非法 UTF-8 字节序列均返回中文可读错误',
+          '纯本地计算：零新增依赖，输入内容不发起任何网络请求',
+        ],
+        howToUse: [
+          '在输入卡片顶部选择方向：文本 → Hex 或 Hex → 文本',
+          '编码方向下，底部选择输出模式（Hex 串 / Hex dump）；Hex 串模式还可选择分隔符与大小写',
+          '在左侧输入文本或粘贴十六进制内容，右侧实时显示结果',
+          '解码方向会自动识别常见分隔符与 0x 前缀，无需手动清洗',
+          '点击「交换输入 / 输出方向」可把合法的 Hex 串结果回填反向解码（dump 视图请先切回 Hex 串模式）；点击「复制」获取结果',
+        ],
+        useCases: [
+          '协议调试：查看中文、Emoji 等字符的真实 UTF-8 字节，或把抓包得到的字节串还原为文本',
+          '嵌入式 / 固件分析：按偏移量阅读 hex dump，通过 ASCII 预览快速定位字符串',
+          '开发排错：核对编码结果、拼接带 0x 前缀的 C 风格字节数组、校验剪贴板中的十六进制数据',
+        ],
+        privacyNote:
+          '全部编解码均在浏览器本地完成，使用运行环境内置的 TextEncoder / TextDecoder，不发起任何网络请求；粘贴的内容不会离开设备。',
+        faqs: [
+          {
+            question: '为什么一个中文字符对应 3 个字节？',
+            answer:
+              '本工具按 UTF-8 编码，常见汉字的码点位于 U+0800–U+FFFF 区间，UTF-8 下使用 3 字节表示，例如「中」为 e4 b8 ad。Emoji 等辅助平面字符则通常为 4 字节。',
+          },
+          {
+            question: '解码时报「十六进制位数必须为偶数」是什么意思？',
+            answer:
+              '每个字节由两位十六进制数字表示，因此清洗掉分隔符后的总位数必须是偶数。位数为奇数通常是复制时漏掉了一个字符，补齐后再试即可。',
+          },
+          {
+            question: '为什么 Hex 位数合法却提示非法 UTF-8？',
+            answer:
+              '任意字节序列并不一定是合法的 UTF-8 文本。解码采用严格（fatal）模式，截断的多字节序列或孤立的连续字节都会报错。若只想查看字节布局，可使用 Hex dump 输出而非文本解码。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Hex & Hex Dump Converter is a fully browser-local byte-level tool that uses the standard TextEncoder/TextDecoder to convert between text and raw bytes via UTF-8, rendering bytes as a hexadecimal string or a classic hexdump(1)-style view so you can inspect the real byte layout of binary data.',
+        coreFeatures: [
+          'Text to hex: UTF-8 encoded output as a continuous string, space- or colon-separated bytes, or per-byte 0x prefixes',
+          'One-click case switch between lowercase a-f and uppercase A-F hex digits',
+          'Hex dump view: 8-digit hex offset, 16 bytes per row in two groups of 8, and an ASCII preview with dots for non-printable bytes',
+          'Hex to text: automatically strips 0x prefixes and spaces, colons, line breaks, commas, and hyphens, then strictly decodes UTF-8',
+          'Friendly errors: odd digit counts, illegal characters, and invalid UTF-8 byte sequences return readable messages',
+          '100% local computation with zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'Pick the direction on the input card: Text → Hex or Hex → Text',
+          'When encoding, choose the output mode (hex string or hex dump) in the bottom toolbar; in hex string mode you can also pick the separator and letter case',
+          'Type text or paste hexadecimal content on the left; the result appears live on the right',
+          'When decoding, common separators and 0x prefixes are recognized automatically—no manual cleanup needed',
+          'Click "Swap input/output direction" to feed a valid hex string back for reverse decoding (switch from dump to hex string first), or click Copy',
+        ],
+        useCases: [
+          'Protocol debugging: inspect the real UTF-8 bytes of Chinese characters or emoji, or restore text from captured byte strings',
+          'Embedded/firmware analysis: read hex dumps by offset and quickly locate strings through the ASCII preview',
+          'Development: verify encodings, build C-style 0x-prefixed byte arrays, and validate hex data from the clipboard',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally in your browser using the built-in TextEncoder/TextDecoder. No network requests are made, so content you paste never leaves your device.',
+        faqs: [
+          {
+            question: 'Why does one Chinese character take 3 bytes?',
+            answer:
+              'This tool uses UTF-8. Common Chinese characters sit in the U+0800–U+FFFF range and use 3 bytes in UTF-8—for example 中 is e4 b8 ad. Supplementary-plane characters such as emoji typically take 4 bytes.',
+          },
+          {
+            question: 'What does "hex digit count must be even" mean when decoding?',
+            answer:
+              'Each byte is represented by two hex digits, so the total digit count after stripping separators must be even. An odd count usually means a character was lost while copying; add the missing digit and try again.',
+          },
+          {
+            question: 'Why do I get an invalid UTF-8 error even though the hex digits are legal?',
+            answer:
+              'Not every byte sequence is valid UTF-8 text. Decoding runs in strict (fatal) mode, so truncated multi-byte sequences or orphaned continuation bytes raise an error. If you only need to inspect the byte layout, use the hex dump output instead of text decoding.',
           },
         ],
       },

@@ -116,4 +116,5 @@ export const toolLoaders: Record<
   'rgb-cmyk-converter': () => import('./rgb-cmyk-converter'),
   'env-converter': () => import('./env-converter'),
   'punycode-converter': () => import('./punycode-converter'),
+  'hex-dump-viewer': () => import('./hex-dump-viewer'),
 };
