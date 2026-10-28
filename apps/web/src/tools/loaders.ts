@@ -133,4 +133,5 @@ export const toolLoaders: Record<
   'base91-codec': () => import('./base91-codec'),
   'vat-calculator': () => import('./vat-calculator'),
   'running-pace-calculator': () => import('./running-pace-calculator'),
+  'db-converter': () => import('./db-converter'),
 };

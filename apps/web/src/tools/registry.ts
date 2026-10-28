@@ -10959,6 +10959,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'db-converter',
+    name: '分贝 dB 与增益 / 衰减倍数互转器',
+    nameEn: 'Decibel (dB) & Gain Ratio Converter',
+    description:
+      '在分贝（dB）与线性倍数之间双向换算，区分功率量（dB=10·log₁₀ 倍数）与场量（电压 / 幅值 / 声压，dB=20·log₁₀ 倍数）两种定义，提供 ±3 / ±6 / ±10 / ±20 dB 常用参考值速查与多级增益级联求和，−∞ dB 对应 0 倍。',
+    descriptionEn:
+      'Convert between decibels (dB) and linear ratios in both directions, with separate power (10·log₁₀) and field/amplitude (20·log₁₀) definitions, quick ±3 / ±6 / ±10 / ±20 dB references, and multi-stage cascade summing where dB add and ratios multiply; −∞ dB maps to a zero ratio.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/db-converter',
+    iconName: 'Sigma',
+    tags: ['分贝', 'dB', '增益', '衰减', '音频', '电子'],
+    tagsEn: ['Decibel', 'dB', 'Gain', 'Attenuation', 'Audio', 'Electronics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '3',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的分贝（dB）换算工具，面向音频、电子与射频工程。它严格区分两种分贝定义：功率 / 能量比使用 dB = 10·log₁₀(P/P₀)，电压 / 幅值 / 声压等场量使用 dB = 20·log₁₀(V/V₀)，并在 dB 与线性倍数之间双向实时换算，另支持多级增益级联（dB 相加等价于倍数相乘）。',
+        coreFeatures: [
+          '双定义切换：功率量 ×10 公式与场量（电压 / 幅值 / 声压）×20 公式，切换模式即时重算',
+          '双向换算：输入 dB 得倍数，输入倍数得 dB，−∞ dB 与 0 倍互相对应',
+          '常用参考值一键填入：±3、±6、±10、±20 dB，快速核对倍频程与十倍频程',
+          '多级级联：输入各级 dB（逗号 / 空格 / 换行分隔），自动求总 dB 与等效倍数',
+          '纯本地运行：不发起任何网络请求，零或负倍数等非法输入有明确提示',
+        ],
+        howToUse: [
+          '选择物理量类型：功率 / 能量选「功率量」，电压 / 电流 / 声压 / 幅值选「场量」',
+          '在 dB 或线性倍数任一输入框输入数值，另一侧实时联动换算',
+          '在级联区粘贴各级增益（如 3, 3, -3），查看总增益与等效倍数',
+        ],
+        useCases: [
+          '音频工程：功放增益、衰减器与音量级（如 −3 dB 功率减半、+6 dB 电压加倍）换算',
+          '射频 / 天线：链路预算中级联各级增益与损耗的 dB 求和',
+          '电路调试：把示波器测得的电压比换算为 dB，或把 dB 指标还原为倍数',
+        ],
+        privacyNote: '所有数值仅在浏览器本地参与计算，不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么功率用 ×10 而电压 / 幅值用 ×20？',
+            answer:
+              '功率与场量的平方成正比（如 P = V²/R）。功率比直接取 10·log₁₀；电压比先平方再取对数，log₁₀(V₁/V₀)² = 2·log₁₀(V₁/V₀)，所以是 20·log₁₀。因此 +3 dB 表示功率约 ×2，而电压 ×2 对应约 +6 dB，二者描述的物理量不同，不能混用。',
+          },
+          {
+            question: '级联时为什么直接把 dB 相加？',
+            answer:
+              '对数把乘法变为加法：多级电路的总倍数是各级倍数相乘，取 log 后即各级 dB 相加。例如 +3、+3、−3 dB 级联，总增益为 +3 dB，与倍数 1.995 × 1.995 × 0.501 ≈ 1.995 完全一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first decibel (dB) converter for audio, electronics and RF work. It keeps the two dB definitions strictly separate—power/energy ratios use dB = 10·log₁₀(P/P₀), while field quantities such as voltage, amplitude or sound pressure use dB = 20·log₁₀(V/V₀)—and converts between dB and linear ratios in both directions in real time, with multi-stage cascade support (adding dB equals multiplying ratios).',
+        coreFeatures: [
+          'Two definitions: switch between the ×10 power formula and the ×20 field (voltage/amplitude/pressure) formula with instant recalculation',
+          'Bidirectional: type a dB value for the ratio or a ratio for dB; −∞ dB maps to a zero ratio',
+          'One-tap references: ±3, ±6, ±10 and ±20 dB for octave and decade sanity checks',
+          'Cascade: enter stage gains separated by commas, spaces or newlines to get total dB and the equivalent ratio',
+          'Local-first with no network requests; zero/negative ratios and other invalid input are clearly flagged',
+        ],
+        howToUse: [
+          'Pick the physical quantity: "power" for power/energy, "field" for voltage, current, sound pressure or amplitude',
+          'Type a dB value or a linear ratio in either field—the other converts live',
+          'Paste stage gains (e.g. 3, 3, -3) into the cascade area to see the total gain and equivalent ratio',
+        ],
+        useCases: [
+          'Audio: amplifier gain, pad and level conversions (−3 dB halves power, +6 dB doubles voltage)',
+          'RF/antenna link budgets: summing stage gains and losses in dB',
+          'Bench work: turning measured voltage ratios into dB or dB specs back into ratios',
+        ],
+        privacyNote:
+          'All numbers are computed locally in the browser and are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why ×10 for power but ×20 for voltage/amplitude?',
+            answer:
+              'Power is proportional to the square of a field quantity (P = V²/R). Power ratios take 10·log₁₀ directly; squaring the voltage ratio first gives log₁₀(V₁/V₀)² = 2·log₁₀(V₁/V₀), hence 20·log₁₀. So +3 dB means roughly ×2 power while ×2 voltage is about +6 dB—the two describe different physical quantities and must not be mixed.',
+          },
+          {
+            question: 'Why do cascaded stages simply add their dB?',
+            answer:
+              'Logarithms turn multiplication into addition: the total ratio of cascaded stages is the product of individual ratios, which becomes a sum in dB. For example +3, +3 and −3 dB cascade to +3 dB total, matching 1.995 × 1.995 × 0.501 ≈ 1.995.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
