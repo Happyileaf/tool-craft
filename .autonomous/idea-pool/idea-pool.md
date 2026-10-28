@@ -32,7 +32,6 @@
 | 20261017140152 | .gitignore generator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140152.md) |
 | 20261017140154 | Base32 encoder/decoder | Web Tool | Existing Gap | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017140154.md) |
 | 20261017140155 | Programming string literal escape/unescape | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017140155.md) |
-| 20261017140156 | Barcode generator | Web Tool | External Reference | Pending | 2026-10-17 | | [详情](./idea-details/20261017140156.md) |
 | 20261017140158 | Date & business day calculator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140158.md) |
 | 20261017160149 | CSS unit converter (px / rem / em / pt) | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017160149.md) |
 | 20261017160151 | Semantic version (SemVer) parser & comparator | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017160151.md) |
@@ -137,7 +136,6 @@
 | 20261027081102 | 线性回归与相关系数计算器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027081102.md) |
 | 20261027081103 | 个人所得税计算器（工资薪金 / 年终奖） | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027081103.md) |
 | 20261027081105 | RSS / Atom Feed 生成器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027081105.md) |
-| 20261027081106 | 正则批量查找替换工具 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027081106.md) |
 | 20261027140131 | PBKDF2 密钥派生计算器（RFC 8018） | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027140131.md) |
 | 20261027140132 | Bech32 / Bech32m 编解码器（BIP-173 / BIP-350） | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027140132.md) |
 | 20261027140133 | 多纪元时间戳转换器（Unix / Windows FILETIME / .NET Ticks / Chrome 等） | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027140133.md) |
@@ -159,8 +157,8 @@
 | 20261028140209 | 以太坊 RLP（Recursive Length Prefix）递归长度前缀编解码器 | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028140209.md) |
 | 20261028202203 | JSON 键名命名风格批量递归转换器（camelCase / snake_case / kebab-case 等） | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028202203.md) |
 | 20261028202205 | 三角形求解器（已知三边/两边夹角/两角一边解三角形） | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028202205.md) |
-| 20261029020231 | Base91（basE91）文本与字节编解码器 | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029020231.md) |
-| 20261029020232 | 增值税计算器（含税 / 不含税互算与税额拆分） | Web Tool | Exploration | Pending | 2026-10-29 | | [详情](./idea-details/20261029020232.md) |
-| 20261029020233 | 跑步配速、完赛时间与速度互算计算器 | Web Tool | Exploration | Pending | 2026-10-29 | | [详情](./idea-details/20261029020233.md) |
-| 20261029020234 | 分贝 dB 与增益 / 衰减倍数互转器 | Web Tool | Exploration | Pending | 2026-10-29 | | [详情](./idea-details/20261029020234.md) |
-| 20261029020235 | mailto 邮件链接生成器（收件人 / 抄送 / 密送 / 主题 / 正文） | Web Tool | Exploration | Pending | 2026-10-29 | | [详情](./idea-details/20261029020235.md) |
+| 20261029020231 | Base91（basE91）文本与字节编解码器 | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029020231.md) |
+| 20261029020232 | 增值税计算器（含税 / 不含税互算与税额拆分） | Web Tool | Exploration | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029020232.md) |
+| 20261029020233 | 跑步配速、完赛时间与速度互算计算器 | Web Tool | Exploration | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029020233.md) |
+| 20261029020234 | 分贝 dB 与增益 / 衰减倍数互转器 | Web Tool | Exploration | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029020234.md) |
+| 20261029020235 | mailto 邮件链接生成器（收件人 / 抄送 / 密送 / 主题 / 正文） | Web Tool | Exploration | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029020235.md) |

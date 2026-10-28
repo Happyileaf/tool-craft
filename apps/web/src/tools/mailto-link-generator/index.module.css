@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.formColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.label {
+  color: rgb(107 114 128);
+  white-space: nowrap;
+  min-width: 96px;
+}
+
+.linkOutput {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  word-break: break-all;
+}
+
+.hint {
+  margin-top: 12px;
+  color: rgb(107 114 128);
+  font-size: 13px;
+  line-height: 1.6;
+}

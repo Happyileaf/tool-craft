@@ -130,4 +130,9 @@ export const toolLoaders: Record<
   'boolean-truth-table': () => import('./boolean-truth-table'),
   'iso-week-date-converter': () => import('./iso-week-date-converter'),
   'number-range-expander': () => import('./number-range-expander'),
+  'base91-codec': () => import('./base91-codec'),
+  'vat-calculator': () => import('./vat-calculator'),
+  'running-pace-calculator': () => import('./running-pace-calculator'),
+  'db-converter': () => import('./db-converter'),
+  'mailto-link-generator': () => import('./mailto-link-generator'),
 };

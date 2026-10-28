@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar {
+  margin-bottom: 16px;
+}
+
+.formRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.label {
+  color: rgb(107 114 128);
+  white-space: nowrap;
+}
+
+.resultGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.hint {
+  margin-top: 16px;
+  color: rgb(107 114 128);
+  font-size: 13px;
+  line-height: 1.6;
+}

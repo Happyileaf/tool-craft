@@ -10692,6 +10692,462 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'base91-codec',
+    name: 'basE91 编解码（文本与十六进制字节）',
+    nameEn: 'basE91 Encoder & Decoder (Text & Hex Bytes)',
+    description:
+      '在 UTF-8 文本 / 十六进制字节与 basE91 字符串之间双向转换，使用 Joachim Henke 提出的 91 个可打印 ASCII 字符字母表与可变 13/14 bit 分组，编码体积比 Base64 再小约 8%–10% 且无填充；解码严格校验非字母表字符并报告位置，可配置忽略空白。',
+    descriptionEn:
+      'Convert between UTF-8 text / hex bytes and basE91 strings using Joachim Henke’s 91 printable-ASCII alphabet with variable 13/14-bit grouping, about 8%–10% smaller than Base64 with no padding; decoding strictly rejects non-alphabet characters with exact positions and can optionally ignore whitespace.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/base91-codec',
+    iconName: 'Binary',
+    tags: ['basE91', 'Base91', '编解码', '紧凑编码', 'CTF'],
+    tagsEn: ['basE91', 'Base91', 'Encode', 'Compact Encoding', 'CTF'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'The quick brown fox jumps over the lazy dog',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 basE91 编解码工具。basE91 由 Joachim Henke 提出，使用除 -、\\、\' 外的 91 个可打印 ASCII 字符承载二进制数据，以可变的 13/14 bit 分组（13 bit 值大于 88 时消费 13 bit，否则消费 14 bit）配合除法余数映射到两个字符，没有填充概念，编码体积比 Base64 再小约 8%–10%，常见于紧凑数据传输、配置嵌入与逆向 / CTF 场景。',
+        coreFeatures: [
+          '严格遵循 basE91 原版算法：91 字符字母表、可变 13/14 bit 分组、无填充，与官方参考实现测试向量一致',
+          '双向转换：UTF-8 文本或十六进制字节即时编码，basE91 严格解码回文本或字节',
+          '两种载体：文本模式按 UTF-8 处理并校验合法性，十六进制模式直接处理任意原始字节',
+          '精确报错：非字母表字符报告具体位置，可配置是否忽略空格、制表与换行',
+          '纯本地运行：所有转换在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择「编码」或「解码」方向，并选择输入载体为文本（UTF-8）还是十六进制字节',
+          '在输入框粘贴文本 / 十六进制字节 / basE91 字符串，结果即时更新',
+          '解码时可勾选「忽略空白字符」以处理带换行排版的密文；点击「复制结果」获取转换内容',
+        ],
+        useCases: [
+          '在空间受限的介质（二维码、URL、配置项）中承载比 Base64 更紧凑的二进制数据',
+          '解析逆向分析、CTF 题目中常见的 basE91 载荷并还原原始字节',
+          '在文本与原始字节（十六进制）两种视图间核对编码结果',
+        ],
+        privacyNote: '所有编解码均在浏览器本地完成，输入的文本、字节与 basE91 字符串不会被上传或记录。',
+        faqs: [
+          {
+            question: 'basE91 和 Base64 / Base91 有什么区别？',
+            answer:
+              'Base64 每 3 字节编码为 4 个字符并有填充，体积固定增加约 33%；basE91 使用 91 个字符并以可变 13/14 bit 分组承载数据，无填充，最坏膨胀约 23%、典型场景只增加约 14%，比 Base64 再省 8%–10%。注意它与某些同样自称 Base91 的方案（如 basE91 之外的 RFC 4648 扩展）字母表和算法并不相同，本工具实现的是 Joachim Henke 的原版 basE91。',
+          },
+          {
+            question: '为什么编码结果里会出现 = ？这是填充吗？',
+            answer:
+              '不是填充。basE91 字母表本身包含 = 作为普通数据字符（字母表为除 -、\\、\' 外的全部可打印 ASCII），它不表示长度补齐，解码时按普通字符处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first basE91 codec. Designed by Joachim Henke, basE91 carries binary data with 91 printable ASCII characters (all except -, \\ and \'), using variable 13/14-bit groups (13 bits consumed when the 13-bit value exceeds 88, otherwise 14 bits) mapped through division/remainder onto two characters. It has no padding, is about 8%–10% smaller than Base64, and is commonly used for compact transport, embedded configuration and reverse-engineering/CTF payloads.',
+        coreFeatures: [
+          'Faithful basE91: the 91-character alphabet, variable 13/14-bit grouping, no padding, matching the official reference test vectors',
+          'Bidirectional: UTF-8 text or hex bytes encode instantly and basE91 decodes strictly back to text or bytes',
+          'Two carriers: text mode handles UTF-8 with validation, hex mode processes arbitrary raw bytes',
+          'Precise errors: non-alphabet characters report exact positions; whitespace can be ignored or rejected',
+          'Local-first: all conversion runs in the browser with no network requests',
+        ],
+        howToUse: [
+          'Pick the "Encode" or "Decode" direction and choose the input carrier: UTF-8 text or hex bytes',
+          'Paste text / hex bytes / a basE91 string into the input area and the result updates instantly',
+          'When decoding, toggle "ignore whitespace" for line-wrapped payloads, then click "Copy result"',
+        ],
+        useCases: [
+          'Carry binary data more compactly than Base64 in space-constrained media (QR codes, URLs, config values)',
+          'Decode basE91 payloads encountered in reverse engineering and CTF challenges back to raw bytes',
+          'Cross-check encoding between a text view and a raw-byte (hex) view',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally in the browser; entered text, bytes and basE91 strings are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How does basE91 differ from Base64?',
+            answer:
+              'Base64 encodes 3 bytes into 4 characters with padding, a fixed ~33% overhead. basE91 uses 91 characters with variable 13/14-bit grouping and no padding, at most ~23% overhead and typically around 14%, saving another 8%–10% versus Base64. It also differs from other schemes that happen to be called "Base91"; this tool implements Joachim Henke’s original basE91 alphabet and algorithm.',
+          },
+          {
+            question: 'Why does the output contain "="? Is that padding?',
+            answer:
+              'No. The basE91 alphabet includes "=" as an ordinary data character (it uses every printable ASCII character except -, \\ and \'), so it carries data rather than marking length alignment, and the decoder treats it as a normal character.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'vat-calculator',
+    name: '增值税计算器（含税 / 不含税互算）',
+    nameEn: 'VAT Calculator (Tax-Inclusive / Exclusive)',
+    description:
+      '输入金额与税率，一键在不含税金额、税额、含税金额之间互算：支持正向加税与含税反算拆分，内置 13% / 9% / 6% / 3% / 1% 中国常用增值税档位与自定义税率，金额按两位小数四舍五入，非法输入有明确提示。',
+    descriptionEn:
+      'Enter an amount and a tax rate to convert between VAT-exclusive amount, tax amount and VAT-inclusive amount in both directions, with 13% / 9% / 6% / 3% / 1% China VAT presets and a custom rate. Amounts round to two decimals and invalid input is clearly flagged.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/vat-calculator',
+    iconName: 'Calculator',
+    tags: ['增值税', '税率', '含税金额', '不含税金额', '发票'],
+    tagsEn: ['VAT', 'Tax Rate', 'Tax-Inclusive', 'Tax-Exclusive', 'Invoice'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1000',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的增值税计算器，覆盖报价与开票中最常见的两个方向：已知不含税金额和税率，计算税额与含税金额；已知含税金额和税率，反向拆分出不含税金额与税额。内置中国现行增值税常用档位 13%、9%、6%、3%、1%，也支持输入自定义税率，所有金额按两位小数四舍五入。',
+        coreFeatures: [
+          '双向互算：不含税金额 → 税额 / 含税金额，或含税金额 → 不含税金额 / 税额',
+          '常用档位：一键选择 13% / 9% / 6% / 3% / 1% 税率，也支持 0–99.999% 自定义税率',
+          '金额按两位小数四舍五入，反向拆分时税额以「含税金额 − 不含税金额」轧差，保证三者合计一致',
+          '实时计算：输入即出结果，负数、非法数字、税率超出范围均有明确错误提示',
+          '纯本地运行：金额与税率不会离开浏览器，不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择计算方向：正向加税（输入不含税金额）或反向拆分（输入含税金额）',
+          '输入金额，并通过档位按钮或输入框指定税率',
+          '结果区即时显示不含税金额、税额与含税合计，可用于报价单或发票核对',
+        ],
+        useCases: [
+          '销售报价：把不含税报价换算为客户实付的含税金额',
+          '发票与报销核对：从价税合计中拆分出不含税金额与可抵扣税额',
+          '采购比价：在不同税率的供应商报价之间统一口径比较',
+        ],
+        privacyNote: '所有金额与税率仅保存在浏览器本地并参与计算，不会被上传、记录或用于其他用途。',
+        faqs: [
+          {
+            question: '反向拆分时税额是怎么计算的？',
+            answer:
+              '先按「不含税金额 = 含税金额 ÷ (1 + 税率)」计算并四舍五入到分，再用「税额 = 含税金额 − 不含税金额」轧差得到，确保三项金额合计严格一致，例如 100 元含税、13% 税率时不含税 88.50 元、税额 11.50 元。',
+          },
+          {
+            question: '计算结果可以直接作为开票或申报依据吗？',
+            answer:
+              '本工具按通用数学口径计算并四舍五入到分，适合报价、预估与核对；实际开票与纳税申报请以开票软件、税务机关规则及合同约定（如差额征税、简易计税等特殊情形）为准。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first value-added tax calculator covering the two most common invoicing workflows: from a tax-exclusive amount and rate to the tax and tax-inclusive total, or back-splitting a tax-inclusive total into the exclusive amount and tax. It ships with common China VAT rates of 13%, 9%, 6%, 3% and 1%, plus a custom rate, rounding every amount to two decimals.',
+        coreFeatures: [
+          'Both directions: exclusive amount → tax / inclusive total, or inclusive total → exclusive amount / tax',
+          'Preset rates of 13% / 9% / 6% / 3% / 1% plus any custom rate from 0–99.999%',
+          'Two-decimal rounding; on reverse splits the tax is derived as inclusive minus exclusive so the three figures always reconcile',
+          'Live results as you type, with explicit errors for negative amounts, invalid numbers and out-of-range rates',
+          'Local-first: amounts and rates never leave the browser and no network request is made',
+        ],
+        howToUse: [
+          'Pick a direction: add tax (enter the exclusive amount) or back-split (enter the inclusive total)',
+          'Enter the amount and choose a preset rate or type a custom rate',
+          'Read the exclusive amount, tax and inclusive total in the result panel for quotes or invoice checks',
+        ],
+        useCases: [
+          'Turn a tax-exclusive quote into the tax-inclusive price a customer actually pays',
+          'Split an invoice total into the exclusive amount and deductible tax for reimbursement checks',
+          'Normalize supplier quotes that carry different VAT rates for comparison',
+        ],
+        privacyNote:
+          'All amounts and rates stay in your browser for local calculation; they are never uploaded, logged or reused.',
+        faqs: [
+          {
+            question: 'How is the tax computed on a reverse split?',
+            answer:
+              'The exclusive amount is calculated as inclusive ÷ (1 + rate) and rounded to cents, then the tax is the balance of inclusive minus exclusive, so the three figures always reconcile. For example, 100 inclusive at 13% gives 88.50 exclusive and 11.50 tax.',
+          },
+          {
+            question: 'Can the results be used directly for official invoicing or tax filing?',
+            answer:
+              'The tool applies standard math with cent-level rounding and is intended for quoting, estimating and cross-checking. For actual invoices and filings, follow your invoicing software, tax-authority rules and contract terms, including special regimes such as simplified or difference taxation.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'running-pace-calculator',
+    name: '跑步配速计算器（配速 / 完赛时间 / 距离 / 速度互算）',
+    nameEn: 'Running Pace Calculator (Pace / Finish Time / Distance / Speed)',
+    description:
+      '在配速（mm:ss 每公里）、完赛总时长、距离与速度（km/h）之间知二求余：内置 5K、10K、半程马拉松 21.0975km、全程马拉松 42.195km 距离预设，配速与速度双向联动，时间格式自动校验，适合训练配速规划与目标完赛时间反推。',
+    descriptionEn:
+      'Derive any two of pace (mm:ss per km), total finish time, distance and speed (km/h) from the others, with 5K, 10K, half-marathon 21.0975km and marathon 42.195km presets, bidirectional pace/speed linking and strict time-format validation, for training pacing and target finish-time planning.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/running-pace-calculator',
+    iconName: 'Gauge',
+    tags: ['跑步', '配速', '马拉松', '完赛时间', 'km/h'],
+    tagsEn: ['Running', 'Pace', 'Marathon', 'Finish Time', 'km/h'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '10',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的跑步配速互算工具。围绕配速（每公里 mm:ss）、完赛总时长、距离（公里）与速度（km/h）四个量，给定其中两个即可求出其余量，并内置 5K、10K、半程马拉松（21.0975 公里）、全程马拉松（42.195 公里）标准距离预设，配速与速度输入框双向联动。',
+        coreFeatures: [
+          '三种互算模式：配速 + 距离求完赛时间、完赛时间 + 距离反推配速、配速 + 完赛时间求距离',
+          '配速（mm:ss/km）与速度（km/h）双向联动，修改任一项自动换算另一项',
+          '内置 5K / 10K / 半马 / 全马距离快捷预设，也支持任意自定义公里数',
+          '严格校验时间格式（mm:ss、h:mm:ss）与零 / 负距离，错误提示明确',
+          '纯本地运行：输入的训练数据不会发起任何网络请求',
+        ],
+        howToUse: [
+          '选择互算模式：已知哪两个量就选对应模式',
+          '填入配速（如 5:00）、完赛时间（如 45:00 或 1:30:00）或距离，可点击赛事预设快速填入距离',
+          '结果区即时显示平均配速、完赛时间、距离与速度；也可直接修改速度（km/h）反向设定配速',
+        ],
+        useCases: [
+          '比赛规划：给定目标完赛时间与赛事距离，反推需要维持的平均配速',
+          '训练配速换算：把手表上的 km/h 速度换算为 mm:ss/km 配速',
+          '成绩预估：按当前训练配速预估半马、全马完赛时间',
+        ],
+        privacyNote: '所有配速、时间与距离数据仅在浏览器本地计算，不会被上传或记录。',
+        faqs: [
+          {
+            question: '半马和全马的距离按多少算？',
+            answer:
+              '半程马拉松按 21.0975 公里、全程马拉松按 42.195 公里计。例如全马保持 5:00/km 配速时，完赛时间约为 3:30:59（42.195 × 300 秒 = 12658.5 秒，四舍五入到秒）。',
+          },
+          {
+            question: '配速和速度为什么可以互相修改？',
+            answer:
+              '二者是同一速度的两种表达：配速是每公里所需秒数，速度是每小时公里数，换算关系为速度 = 3600 ÷ 配速秒数。在任一侧输入有效值，另一侧会自动联动更新。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first running pace calculator built around four quantities—pace (mm:ss per km), total finish time, distance in kilometres and speed in km/h—where any two determine the others. It includes 5K, 10K, half-marathon (21.0975km) and marathon (42.195km) distance presets, and the pace and speed fields stay bidirectionally linked.',
+        coreFeatures: [
+          'Three solve modes: pace + distance → finish time, finish time + distance → pace, pace + finish time → distance',
+          'Pace (mm:ss/km) and speed (km/h) are linked—edit either and the other converts automatically',
+          'One-tap 5K / 10K / half / full marathon presets plus any custom distance in kilometres',
+          'Strict validation of time formats (mm:ss, h:mm:ss) and zero/negative distance with clear messages',
+          'Local-first: training data never triggers a network request',
+        ],
+        howToUse: [
+          'Pick the solve mode matching the two quantities you know',
+          'Enter pace (e.g. 5:00), finish time (e.g. 45:00 or 1:30:00) or distance, using the race presets for convenience',
+          'Read average pace, finish time, distance and speed instantly; you can also type a km/h speed to set the pace in reverse',
+        ],
+        useCases: [
+          'Race planning: back-solve the average pace needed for a target finish time and race distance',
+          'Convert a watch readout in km/h into mm:ss/km pace',
+          'Predict half/full marathon finish times from current training pace',
+        ],
+        privacyNote:
+          'All pace, time and distance inputs are computed locally in the browser and are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What distances are used for the half and full marathon?',
+            answer:
+              'The half marathon is 21.0975km and the full marathon 42.195km. For example, holding a 5:00/km pace over the full marathon gives about 3:30:59 (42.195 × 300 seconds = 12658.5 seconds, rounded to the nearest second).',
+          },
+          {
+            question: 'Why can pace and speed both be edited?',
+            answer:
+              'They are two expressions of the same speed: pace is seconds per kilometre and speed is kilometres per hour, related by speed = 3600 ÷ pace seconds. Entering a valid value on either side updates the other automatically.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'db-converter',
+    name: '分贝 dB 与增益 / 衰减倍数互转器',
+    nameEn: 'Decibel (dB) & Gain Ratio Converter',
+    description:
+      '在分贝（dB）与线性倍数之间双向换算，区分功率量（dB=10·log₁₀ 倍数）与场量（电压 / 幅值 / 声压，dB=20·log₁₀ 倍数）两种定义，提供 ±3 / ±6 / ±10 / ±20 dB 常用参考值速查与多级增益级联求和，−∞ dB 对应 0 倍。',
+    descriptionEn:
+      'Convert between decibels (dB) and linear ratios in both directions, with separate power (10·log₁₀) and field/amplitude (20·log₁₀) definitions, quick ±3 / ±6 / ±10 / ±20 dB references, and multi-stage cascade summing where dB add and ratios multiply; −∞ dB maps to a zero ratio.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/db-converter',
+    iconName: 'Sigma',
+    tags: ['分贝', 'dB', '增益', '衰减', '音频', '电子'],
+    tagsEn: ['Decibel', 'dB', 'Gain', 'Attenuation', 'Audio', 'Electronics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '3',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的分贝（dB）换算工具，面向音频、电子与射频工程。它严格区分两种分贝定义：功率 / 能量比使用 dB = 10·log₁₀(P/P₀)，电压 / 幅值 / 声压等场量使用 dB = 20·log₁₀(V/V₀)，并在 dB 与线性倍数之间双向实时换算，另支持多级增益级联（dB 相加等价于倍数相乘）。',
+        coreFeatures: [
+          '双定义切换：功率量 ×10 公式与场量（电压 / 幅值 / 声压）×20 公式，切换模式即时重算',
+          '双向换算：输入 dB 得倍数，输入倍数得 dB，−∞ dB 与 0 倍互相对应',
+          '常用参考值一键填入：±3、±6、±10、±20 dB，快速核对倍频程与十倍频程',
+          '多级级联：输入各级 dB（逗号 / 空格 / 换行分隔），自动求总 dB 与等效倍数',
+          '纯本地运行：不发起任何网络请求，零或负倍数等非法输入有明确提示',
+        ],
+        howToUse: [
+          '选择物理量类型：功率 / 能量选「功率量」，电压 / 电流 / 声压 / 幅值选「场量」',
+          '在 dB 或线性倍数任一输入框输入数值，另一侧实时联动换算',
+          '在级联区粘贴各级增益（如 3, 3, -3），查看总增益与等效倍数',
+        ],
+        useCases: [
+          '音频工程：功放增益、衰减器与音量级（如 −3 dB 功率减半、+6 dB 电压加倍）换算',
+          '射频 / 天线：链路预算中级联各级增益与损耗的 dB 求和',
+          '电路调试：把示波器测得的电压比换算为 dB，或把 dB 指标还原为倍数',
+        ],
+        privacyNote: '所有数值仅在浏览器本地参与计算，不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么功率用 ×10 而电压 / 幅值用 ×20？',
+            answer:
+              '功率与场量的平方成正比（如 P = V²/R）。功率比直接取 10·log₁₀；电压比先平方再取对数，log₁₀(V₁/V₀)² = 2·log₁₀(V₁/V₀)，所以是 20·log₁₀。因此 +3 dB 表示功率约 ×2，而电压 ×2 对应约 +6 dB，二者描述的物理量不同，不能混用。',
+          },
+          {
+            question: '级联时为什么直接把 dB 相加？',
+            answer:
+              '对数把乘法变为加法：多级电路的总倍数是各级倍数相乘，取 log 后即各级 dB 相加。例如 +3、+3、−3 dB 级联，总增益为 +3 dB，与倍数 1.995 × 1.995 × 0.501 ≈ 1.995 完全一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first decibel (dB) converter for audio, electronics and RF work. It keeps the two dB definitions strictly separate—power/energy ratios use dB = 10·log₁₀(P/P₀), while field quantities such as voltage, amplitude or sound pressure use dB = 20·log₁₀(V/V₀)—and converts between dB and linear ratios in both directions in real time, with multi-stage cascade support (adding dB equals multiplying ratios).',
+        coreFeatures: [
+          'Two definitions: switch between the ×10 power formula and the ×20 field (voltage/amplitude/pressure) formula with instant recalculation',
+          'Bidirectional: type a dB value for the ratio or a ratio for dB; −∞ dB maps to a zero ratio',
+          'One-tap references: ±3, ±6, ±10 and ±20 dB for octave and decade sanity checks',
+          'Cascade: enter stage gains separated by commas, spaces or newlines to get total dB and the equivalent ratio',
+          'Local-first with no network requests; zero/negative ratios and other invalid input are clearly flagged',
+        ],
+        howToUse: [
+          'Pick the physical quantity: "power" for power/energy, "field" for voltage, current, sound pressure or amplitude',
+          'Type a dB value or a linear ratio in either field—the other converts live',
+          'Paste stage gains (e.g. 3, 3, -3) into the cascade area to see the total gain and equivalent ratio',
+        ],
+        useCases: [
+          'Audio: amplifier gain, pad and level conversions (−3 dB halves power, +6 dB doubles voltage)',
+          'RF/antenna link budgets: summing stage gains and losses in dB',
+          'Bench work: turning measured voltage ratios into dB or dB specs back into ratios',
+        ],
+        privacyNote:
+          'All numbers are computed locally in the browser and are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why ×10 for power but ×20 for voltage/amplitude?',
+            answer:
+              'Power is proportional to the square of a field quantity (P = V²/R). Power ratios take 10·log₁₀ directly; squaring the voltage ratio first gives log₁₀(V₁/V₀)² = 2·log₁₀(V₁/V₀), hence 20·log₁₀. So +3 dB means roughly ×2 power while ×2 voltage is about +6 dB—the two describe different physical quantities and must not be mixed.',
+          },
+          {
+            question: 'Why do cascaded stages simply add their dB?',
+            answer:
+              'Logarithms turn multiplication into addition: the total ratio of cascaded stages is the product of individual ratios, which becomes a sum in dB. For example +3, +3 and −3 dB cascade to +3 dB total, matching 1.995 × 1.995 × 0.501 ≈ 1.995.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'mailto-link-generator',
+    name: 'mailto 邮件链接生成器（收件人 / 抄送 / 密送 / 主题 / 正文）',
+    nameEn: 'mailto Link Generator (To / Cc / Bcc / Subject / Body)',
+    description:
+      '通过表单生成符合 RFC 6068 的 mailto: 链接，支持多个收件人、抄送、密送、主题与正文，自动百分号编码（空格 %20、换行 %0D%0A、邮件头内 @ 编码为 %40），可一键复制或唤起邮件客户端；反向粘贴已有 mailto 链接即可解析回填各字段。',
+    descriptionEn:
+      'Build RFC 6068-compliant mailto: links from a form with multiple To recipients, Cc, Bcc, subject and body, with automatic percent-encoding (spaces as %20, line breaks as %0D%0A, @ as %40 inside header fields), one-click copy and mail-client launch; paste an existing mailto link to parse and back-fill every field.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/mailto-link-generator',
+    iconName: 'Tags',
+    tags: ['mailto', '邮件链接', 'RFC 6068', '邮件模板', '百分号编码'],
+    tagsEn: ['mailto', 'Email Link', 'RFC 6068', 'Email Template', 'Percent-Encoding'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'a@x.com',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 mailto 链接双向工具。按 RFC 6068 规范，把收件人（to，可多个）、抄送（cc）、密送（bcc）、主题（subject）与正文（body）表单字段序列化为标准 mailto: URI：空格编码为 %20、换行规范化为 CRLF 后编码为 %0D%0A、cc/bcc/subject/body 等邮件头字段中的 @ 编码为 %40，多个收件人用逗号连接；也支持把已有 mailto 链接粘贴解析、解码并回填表单，生成与解析往返一致。',
+        coreFeatures: [
+          '表单生成：多收件人 / 抄送 / 密送（逗号、分号、中文标点或换行分隔均可）、主题、正文',
+          'RFC 6068 编码：空格 %20、换行 %0D%0A、非 ASCII 按 UTF-8 百分号编码，邮件头字段内 @ 编码为 %40',
+          '反向解析：粘贴 mailto 链接自动解码 cc / bcc / subject / body 并回填，支持 UTF-8 与换行还原',
+          '一键复制链接，或直接点击唤起本机默认邮件客户端并预填全部字段',
+          '纯本地运行：联系人与邮件内容不会发起任何网络请求，邮箱格式实时校验',
+        ],
+        howToUse: [
+          '在表单中填写收件人（多个用逗号分隔）、抄送 / 密送、主题与正文，链接实时生成',
+          '点击「复制链接」获取 mailto URI，或点击「打开邮件客户端」直接唤起邮件软件',
+          '把已有 mailto 链接粘贴到反向解析区，点击「解析并回填」即可还原为可编辑表单',
+        ],
+        useCases: [
+          '在文档、网页、工单或 README 中放置「联系我们」预填邮件链接',
+          '为客服 / 销售模板批量生成带固定主题与正文框架的 mailto 链接',
+          '核对他人提供的 mailto 链接实际包含哪些抄送、密送与正文内容',
+        ],
+        privacyNote:
+          '所有邮箱地址与邮件内容仅在浏览器本地参与编码与解析，不会被上传、记录或发送；点击打开邮件客户端后由本机邮件软件处理。',
+        faqs: [
+          {
+            question: '为什么生成结果里收件人的 @ 保留，而抄送里的 @ 变成了 %40？',
+            answer:
+              'RFC 6068 规定 mailto: 后直接跟的 addr-spec 收件人地址中 @ 是合法保留字符，可直接书写；而 cc、bcc、subject、body 都属于查询串中的 hfield（邮件头字段），按 application/x-www-form-urlencoded 风格编码时 @ 需写为 %40。两种形式语义完全等价，邮件客户端都能正确识别。',
+          },
+          {
+            question: '正文里的换行为什么显示成 %0D%0A？',
+            answer:
+              '邮件头字段统一使用 CRLF（回车 + 换行）作为换行，百分号编码后即 %0D%0A。工具会先把各类换行（LF、CR）规范化为 CRLF 再编码，保证 Gmail、Outlook、Apple Mail 等客户端都能正确还原多行正文。',
+          },
+          {
+            question: '可以不填收件人，只生成主题和正文吗？',
+            answer:
+              '可以。RFC 6068 允许 mailto: 后收件人部分为空，生成形如 mailto:?subject=...&body=... 的链接，打开客户端后由发件人自行填入地址；但若填写了地址，工具会按邮箱格式实时校验并提示格式不正确的条目。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first, bidirectional mailto link tool. Following RFC 6068, it serializes To (multiple recipients allowed), Cc, Bcc, subject and body form fields into a standard mailto: URI: spaces become %20, line breaks are normalized to CRLF and encoded as %0D%0A, and @ inside header fields such as cc/bcc/subject/body is encoded as %40, with recipients joined by commas. It also parses an existing mailto link, decodes it and back-fills the form, so generation and parsing round-trip cleanly.',
+        coreFeatures: [
+          'Form-based generation: multiple To / Cc / Bcc recipients (separated by commas, semicolons, Chinese punctuation or newlines), subject and body',
+          'RFC 6068 encoding: spaces as %20, line breaks as %0D%0A, non-ASCII as UTF-8 percent-encoding, @ as %40 inside header fields',
+          'Reverse parsing: paste a mailto link to decode cc / bcc / subject / body and back-fill the form, restoring UTF-8 and line breaks',
+          'One-click copy, or launch the local default mail client with every field pre-filled',
+          'Local-first: contacts and message content never trigger a network request; email formats are validated as you type',
+        ],
+        howToUse: [
+          'Fill in recipients (comma-separated for multiple), Cc / Bcc, subject and body; the link updates live',
+          'Click "Copy link" for the mailto URI, or "Open mail client" to launch your mail software directly',
+          'Paste an existing mailto link into the parsing area and click "Parse & back-fill" to restore an editable form',
+        ],
+        useCases: [
+          'Embed pre-filled "contact us" mail links in docs, web pages, tickets or README files',
+          'Generate support/sales template links with fixed subjects and body outlines',
+          'Inspect which Cc, Bcc and body content a mailto link provided by someone actually contains',
+        ],
+        privacyNote:
+          'All addresses and message content are encoded and parsed locally in the browser; they are never uploaded, logged or sent. Launching the mail client hands the data to your local mail software.',
+        faqs: [
+          {
+            question: 'Why is @ kept in To addresses but written as %40 in Cc?',
+            answer:
+              'RFC 6068 allows @ as a legal reserved character in the addr-spec recipients directly following mailto:. In contrast, cc, bcc, subject and body are hfields inside the query string, where @ is percent-encoded as %40 in form-urlencoded style. The two forms are semantically identical and every mail client recognizes both.',
+          },
+          {
+            question: 'Why do body line breaks appear as %0D%0A?',
+            answer:
+              'Header fields use CRLF (carriage return + line feed) as the line ending, which percent-encodes to %0D%0A. The tool first normalizes LF/CR line breaks to CRLF before encoding, so Gmail, Outlook, Apple Mail and others all restore the multi-line body correctly.',
+          },
+          {
+            question: 'Can I generate a link with no recipients, just subject and body?',
+            answer:
+              'Yes. RFC 6068 permits an empty recipient part, producing links like mailto:?subject=...&body=...; you fill in the address after the client opens. If addresses are entered, however, they are validated against the email format and invalid entries are flagged.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
