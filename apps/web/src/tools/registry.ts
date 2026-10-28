@@ -9127,6 +9127,114 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'punycode-converter',
+    name: 'Punycode / IDN 域名转换器',
+    nameEn: 'Punycode & IDN Domain Converter',
+    description:
+      '基于 RFC 3492 自实现的 Punycode（Bootstring）编解码器，把含中文、日文、Emoji 等非 ASCII 字符的域名在 Unicode 与 xn-- ACE ASCII 形式之间实时互转，例如「中文.中国」与「xn--fiq228c.xn--fiqs8s」。支持多标签域名、邮箱地址（仅转换 @ 后域名）、中文全角点、多行批量转换与裸 Bootstring 编解码；非法 xn-- 标签给出可读错误而不抛异常。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'A from-scratch RFC 3492 Punycode (Bootstring) encoder/decoder that converts internationalized domain names containing Chinese, Japanese, emoji, and other non-ASCII characters between Unicode and the xn-- ASCII Compatible Encoding form—e.g. 中文.中国 ↔ xn--fiq228c.xn--fiqs8s. It supports multi-label domains, email addresses (converting only the domain after @), full-width dots, multi-line batch conversion, and raw Bootstring encoding. Malformed xn-- labels report readable errors instead of throwing. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/punycode-converter',
+    iconName: 'Global',
+    tags: ['Punycode', 'IDN', '国际化域名', 'xn--', 'RFC 3492', '编码'],
+    tagsEn: ['Punycode', 'IDN', 'Internationalized Domain', 'xn--', 'RFC 3492', 'Encoding'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'münchen.de\n中文.中国\n例え.jp\ninfo@bücher.example',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Punycode / IDN 域名转换器是一款纯浏览器本地运行的国际化域名工具，依据 RFC 3492 Bootstring 算法从零实现编解码，在 Unicode 域名（如「münchen.de」「中文.中国」）与 DNS 实际使用的 ASCII ACE 形式（xn-- 前缀）之间双向转换。',
+        coreFeatures: [
+          'RFC 3492 官方向量验证：München、简繁中文、日文、西里尔字母及 Emoji 等代码点编解码正确',
+          '域名模式：按点分标签逐个转换，非 ASCII 标签自动加 / 去 xn-- 前缀，纯 ASCII 标签原样保留',
+          '支持邮箱地址：仅转换 @ 之后的域名部分，本地部分保持不变',
+          '兼容中文全角点（。 ．）输入，输出统一为标准 ASCII 点；支持多行批量转换',
+          '裸 Bootstring 模式：对整段任意文本做 Punycode 编解码，便于学习与调试算法',
+          '错误友好：非法 xn-- 标签、截断的编码段等返回可读错误或带行号警告，不抛异常',
+          '纯本地计算：零新增依赖，输入内容不发起任何网络请求',
+        ],
+        howToUse: [
+          '在输入卡片顶部选择转换方向：Unicode → ASCII 或 ASCII → Unicode',
+          '底部可切换「域名 / 邮箱」与「裸 Punycode」两种模式',
+          '域名模式下每行一个域名或邮箱，右侧实时输出转换结果；支持一次粘贴多行批量处理',
+          '个别行无法转换时该行原样保留并在输出区给出黄色行号警告，不影响其他行',
+          '点击「交换输入 / 输出方向」可把结果回填并反向转换；点击「复制」获取结果',
+        ],
+        useCases: [
+          '运维与开发：在 DNS 记录、证书日志、抓包数据中看到 xn-- 域名时还原为可读的本地语言域名',
+          '国际化业务：把中文、日文、阿拉伯文等营销域名转换为可配置到 DNS / 服务器的 ASCII 形式',
+          '学习调试：对照 RFC 3492 官方向量理解 Bootstring 的偏置自适应与变长整数编码',
+        ],
+        privacyNote:
+          '全部编解码均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；粘贴的域名与邮箱不会离开设备。',
+        faqs: [
+          {
+            question: 'Punycode 与 URL 编码（百分号编码）是一回事吗？',
+            answer:
+              '不是。Punycode 是 RFC 3492 定义的 Bootstring 编码，专用于把国际化域名表示为 DNS 合法的 ASCII 标签（xn-- 前缀）；百分号编码用于 URL 的路径与查询串。本工具只处理域名标签与裸 Bootstring，不做 URL 百分号编解码。',
+          },
+          {
+            question: '为什么「3-2」在裸 Punycode 模式下编码为「3-2-」？',
+            answer:
+              'Punycode 用连字符作为基本码点段与扩展编码段的分隔符；当输入全部是 ASCII 字符时，编码结果就是原字符串末尾追加一个分隔符，因此「3-2」编码为「3-2-」。在域名模式下纯 ASCII 标签不会加 xn-- 前缀，原样返回。',
+          },
+          {
+            question: '为什么粘贴的 xn-- 域名报非法错误？',
+            answer:
+              'xn-- 之后的内容必须是合法的 Bootstring（只含 a-z0-9 且变长整数序列可完整解码）。截断、混入非法字符或解码出超过 Unicode 范围的代码点都会报错。请检查域名是否被复制截断或拼写错误。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Punycode & IDN Domain Converter is a fully browser-local tool that implements the RFC 3492 Bootstring algorithm from scratch, bidirectionally converting internationalized domain names (e.g. münchen.de, 中文.中国) between Unicode and the ASCII Compatible Encoding form (xn-- prefix) used by DNS.',
+        coreFeatures: [
+          'Validated against RFC 3492 official vectors: German, simplified/traditional Chinese, Japanese, Cyrillic, and emoji code points',
+          'Domain mode: converts each dot-separated label, adding/stripping the xn-- prefix only for non-ASCII labels',
+          'Email aware: converts only the domain after @ while leaving the local part untouched',
+          'Accepts full-width dots (。 ．) and normalizes output to standard ASCII dots; supports multi-line batch conversion',
+          'Raw Bootstring mode: Punycode-encodes/decodes arbitrary whole strings for learning and debugging',
+          'Friendly errors: malformed xn-- labels and truncated encodings return readable messages or line-numbered warnings instead of throwing',
+          '100% local computation with zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'Pick the direction on the input card: Unicode → ASCII or ASCII → Unicode',
+          'Switch between "Domain / Email" and "Raw Punycode" modes in the bottom toolbar',
+          'In domain mode, put one domain or email per line; results appear live on the right, including batch pastes',
+          'If a single line fails, it is kept verbatim and flagged with a yellow line-numbered warning without affecting other lines',
+          'Click "Swap input/output direction" to feed the result back for a reverse conversion, or click Copy',
+        ],
+        useCases: [
+          'DevOps: decode xn-- domains seen in DNS records, certificate logs, or packet captures into readable local-language names',
+          'Global business: turn Chinese, Japanese, or Arabic marketing domains into ASCII form for DNS and server configuration',
+          'Learning: compare against RFC 3492 vectors to understand bias adaptation and variable-length integer encoding',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally in your browser via zero-dependency pure functions. No network requests are made, so domains and emails you paste never leave your device.',
+        faqs: [
+          {
+            question: 'Is Punycode the same as URL percent-encoding?',
+            answer:
+              'No. Punycode is the RFC 3492 Bootstring encoding designed specifically to represent internationalized domain names as DNS-legal ASCII labels (xn-- prefix), while percent-encoding applies to URL paths and query strings. This tool handles domain labels and raw Bootstring only.',
+          },
+          {
+            question: 'Why does "3-2" encode as "3-2-" in raw Punycode mode?',
+            answer:
+              'Punycode uses a hyphen to separate the literal basic-code-point section from the extended encoding. When the input is all ASCII, the output is the original string with a trailing delimiter, so "3-2" becomes "3-2-". In domain mode an all-ASCII label gets no xn-- prefix and is returned unchanged.',
+          },
+          {
+            question: 'Why does my pasted xn-- domain report an invalid error?',
+            answer:
+              'The part after xn-- must be valid Bootstring: only a-z0-9 characters with a fully decodable variable-length integer sequence. Truncation, illegal characters, or decoded code points beyond the Unicode range all raise an error. Check whether the domain was cut off during copying or misspelled.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

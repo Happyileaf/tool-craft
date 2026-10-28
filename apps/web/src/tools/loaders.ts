@@ -115,4 +115,5 @@ export const toolLoaders: Record<
   'http-status-codes': () => import('./http-status-codes'),
   'rgb-cmyk-converter': () => import('./rgb-cmyk-converter'),
   'env-converter': () => import('./env-converter'),
+  'punycode-converter': () => import('./punycode-converter'),
 };
