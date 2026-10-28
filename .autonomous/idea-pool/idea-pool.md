@@ -155,3 +155,4 @@
 | 20261028020205 | 公历 ↔ 农历（阴历）日期转换器 | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028020205.md) |
 | 20261028020206 | Java .properties 配置与 JSON 双向转换器 | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028020206.md) |
 | 20261028081032 | Excel 列名 ↔ 序号互转器（A1 ↔ R1C1 列标） | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028081032.md) |
+| 20261028081033 | 以太坊地址 EIP-55 校验和编码与校验器 | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028081033.md) |
