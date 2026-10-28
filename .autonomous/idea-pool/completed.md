@@ -34,3 +34,8 @@
 | 20261028081032 | Excel 列名 ↔ 序号互转器（A1 ↔ R1C1 列标） | Web Tool | Exploration | `excel-column-converter` / [PR #87](https://github.com/Happyileaf/tool-craft/pull/87) | 2026-10-28 | [详情](./idea-details/20261028081032.md) |
 | 20261028081034 | 文件大小人类可读格式化器（bytes ↔ KB/MB/GB 双向解析） | Web Tool | Exploration | `file-size-converter` / [PR #87](https://github.com/Happyileaf/tool-craft/pull/87) | 2026-10-28 | [详情](./idea-details/20261028081034.md) |
 | 20261028081036 | EAN-13 / GTIN 校验位计算器与合法性校验器 | Web Tool | Existing Gap | `ean13-checksum` / [PR #87](https://github.com/Happyileaf/tool-craft/pull/87) | 2026-10-28 | [详情](./idea-details/20261028081036.md) |
+| 20261028140206 | 二进制 ↔ Gray 码（格雷码）双向转换器 | Web Tool | Exploration | `gray-code-converter` / [PR #90](https://github.com/Happyileaf/tool-craft/pull/90) | 2026-10-28 | [详情](./idea-details/20261028140206.md) |
+| 20261028140207 | WebSocket Sec-WebSocket-Accept 握手头计算器 | Web Tool | Exploration | `websocket-accept` / [PR #90](https://github.com/Happyileaf/tool-craft/pull/90) | 2026-10-28 | [详情](./idea-details/20261028140207.md) |
+| 20261028140208 | MongoDB ObjectId 生成与解析器（时间戳 / 随机 / 计数器拆解） | Web Tool | Exploration | `mongodb-objectid` / [PR #90](https://github.com/Happyileaf/tool-craft/pull/90) | 2026-10-28 | [详情](./idea-details/20261028140208.md) |
+| 20261028140205 | JSONC / 宽松 JSON 转标准 JSON（注释与尾随逗号剥离） | Web Tool | Existing Gap | `jsonc-to-json` / [PR #90](https://github.com/Happyileaf/tool-craft/pull/90) | 2026-10-28 | [详情](./idea-details/20261028140205.md) |
+| 20261026020135 | 统一社会信用代码校验与解析器 | Web Tool | Exploration | `unified-social-credit-code` / [PR #90](https://github.com/Happyileaf/tool-craft/pull/90) | 2026-10-28 | [详情](./idea-details/20261026020135.md) |
