@@ -132,4 +132,5 @@ export const toolLoaders: Record<
   'number-range-expander': () => import('./number-range-expander'),
   'base91-codec': () => import('./base91-codec'),
   'vat-calculator': () => import('./vat-calculator'),
+  'running-pace-calculator': () => import('./running-pace-calculator'),
 };

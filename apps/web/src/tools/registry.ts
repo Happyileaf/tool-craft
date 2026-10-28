@@ -10870,6 +10870,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'running-pace-calculator',
+    name: '跑步配速计算器（配速 / 完赛时间 / 距离 / 速度互算）',
+    nameEn: 'Running Pace Calculator (Pace / Finish Time / Distance / Speed)',
+    description:
+      '在配速（mm:ss 每公里）、完赛总时长、距离与速度（km/h）之间知二求余：内置 5K、10K、半程马拉松 21.0975km、全程马拉松 42.195km 距离预设，配速与速度双向联动，时间格式自动校验，适合训练配速规划与目标完赛时间反推。',
+    descriptionEn:
+      'Derive any two of pace (mm:ss per km), total finish time, distance and speed (km/h) from the others, with 5K, 10K, half-marathon 21.0975km and marathon 42.195km presets, bidirectional pace/speed linking and strict time-format validation, for training pacing and target finish-time planning.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/running-pace-calculator',
+    iconName: 'Gauge',
+    tags: ['跑步', '配速', '马拉松', '完赛时间', 'km/h'],
+    tagsEn: ['Running', 'Pace', 'Marathon', 'Finish Time', 'km/h'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '10',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的跑步配速互算工具。围绕配速（每公里 mm:ss）、完赛总时长、距离（公里）与速度（km/h）四个量，给定其中两个即可求出其余量，并内置 5K、10K、半程马拉松（21.0975 公里）、全程马拉松（42.195 公里）标准距离预设，配速与速度输入框双向联动。',
+        coreFeatures: [
+          '三种互算模式：配速 + 距离求完赛时间、完赛时间 + 距离反推配速、配速 + 完赛时间求距离',
+          '配速（mm:ss/km）与速度（km/h）双向联动，修改任一项自动换算另一项',
+          '内置 5K / 10K / 半马 / 全马距离快捷预设，也支持任意自定义公里数',
+          '严格校验时间格式（mm:ss、h:mm:ss）与零 / 负距离，错误提示明确',
+          '纯本地运行：输入的训练数据不会发起任何网络请求',
+        ],
+        howToUse: [
+          '选择互算模式：已知哪两个量就选对应模式',
+          '填入配速（如 5:00）、完赛时间（如 45:00 或 1:30:00）或距离，可点击赛事预设快速填入距离',
+          '结果区即时显示平均配速、完赛时间、距离与速度；也可直接修改速度（km/h）反向设定配速',
+        ],
+        useCases: [
+          '比赛规划：给定目标完赛时间与赛事距离，反推需要维持的平均配速',
+          '训练配速换算：把手表上的 km/h 速度换算为 mm:ss/km 配速',
+          '成绩预估：按当前训练配速预估半马、全马完赛时间',
+        ],
+        privacyNote: '所有配速、时间与距离数据仅在浏览器本地计算，不会被上传或记录。',
+        faqs: [
+          {
+            question: '半马和全马的距离按多少算？',
+            answer:
+              '半程马拉松按 21.0975 公里、全程马拉松按 42.195 公里计。例如全马保持 5:00/km 配速时，完赛时间约为 3:30:59（42.195 × 300 秒 = 12658.5 秒，四舍五入到秒）。',
+          },
+          {
+            question: '配速和速度为什么可以互相修改？',
+            answer:
+              '二者是同一速度的两种表达：配速是每公里所需秒数，速度是每小时公里数，换算关系为速度 = 3600 ÷ 配速秒数。在任一侧输入有效值，另一侧会自动联动更新。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first running pace calculator built around four quantities—pace (mm:ss per km), total finish time, distance in kilometres and speed in km/h—where any two determine the others. It includes 5K, 10K, half-marathon (21.0975km) and marathon (42.195km) distance presets, and the pace and speed fields stay bidirectionally linked.',
+        coreFeatures: [
+          'Three solve modes: pace + distance → finish time, finish time + distance → pace, pace + finish time → distance',
+          'Pace (mm:ss/km) and speed (km/h) are linked—edit either and the other converts automatically',
+          'One-tap 5K / 10K / half / full marathon presets plus any custom distance in kilometres',
+          'Strict validation of time formats (mm:ss, h:mm:ss) and zero/negative distance with clear messages',
+          'Local-first: training data never triggers a network request',
+        ],
+        howToUse: [
+          'Pick the solve mode matching the two quantities you know',
+          'Enter pace (e.g. 5:00), finish time (e.g. 45:00 or 1:30:00) or distance, using the race presets for convenience',
+          'Read average pace, finish time, distance and speed instantly; you can also type a km/h speed to set the pace in reverse',
+        ],
+        useCases: [
+          'Race planning: back-solve the average pace needed for a target finish time and race distance',
+          'Convert a watch readout in km/h into mm:ss/km pace',
+          'Predict half/full marathon finish times from current training pace',
+        ],
+        privacyNote:
+          'All pace, time and distance inputs are computed locally in the browser and are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What distances are used for the half and full marathon?',
+            answer:
+              'The half marathon is 21.0975km and the full marathon 42.195km. For example, holding a 5:00/km pace over the full marathon gives about 3:30:59 (42.195 × 300 seconds = 12658.5 seconds, rounded to the nearest second).',
+          },
+          {
+            question: 'Why can pace and speed both be edited?',
+            answer:
+              'They are two expressions of the same speed: pace is seconds per kilometre and speed is kilometres per hour, related by speed = 3600 ÷ pace seconds. Entering a valid value on either side updates the other automatically.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

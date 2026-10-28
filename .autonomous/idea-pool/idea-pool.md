@@ -159,6 +159,6 @@
 | 20261028202205 | 三角形求解器（已知三边/两边夹角/两角一边解三角形） | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028202205.md) |
 | 20261029020231 | Base91（basE91）文本与字节编解码器 | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029020231.md) |
 | 20261029020232 | 增值税计算器（含税 / 不含税互算与税额拆分） | Web Tool | Exploration | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029020232.md) |
-| 20261029020233 | 跑步配速、完赛时间与速度互算计算器 | Web Tool | Exploration | Claimed | 2026-10-29 | trae-agent | [详情](./idea-details/20261029020233.md) |
+| 20261029020233 | 跑步配速、完赛时间与速度互算计算器 | Web Tool | Exploration | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029020233.md) |
 | 20261029020234 | 分贝 dB 与增益 / 衰减倍数互转器 | Web Tool | Exploration | Claimed | 2026-10-29 | trae-agent | [详情](./idea-details/20261029020234.md) |
 | 20261029020235 | mailto 邮件链接生成器（收件人 / 抄送 / 密送 / 主题 / 正文） | Web Tool | Exploration | Claimed | 2026-10-29 | trae-agent | [详情](./idea-details/20261029020235.md) |
