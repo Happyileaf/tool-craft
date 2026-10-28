@@ -10590,6 +10590,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'number-range-expander',
+    name: '数值区间批量展开器与压缩器',
+    nameEn: 'Number Range Expander & Collapser',
+    description:
+      '在紧凑区间表达式与离散整数列表之间双向批量转换。展开方向把 1-5, 10, 12-14 解析为完整数列（1,2,3,4,5,10,12,13,14），支持可选步长（0-10:2 输出偶数序列）与负数区间（-5--1），逗号、空格、换行均可作为分隔符；压缩方向把乱序、重复的数字列表排序去重后合并为最小区间表示（5,3,1,2,4,4,6,8 → 1-6,8），连续 ≥3 个数才合并、两个连续数保持单列以保证与展开可逆。基于 BigInt 支持超过 2^53 的任意精度整数，可选逗号 / 逗号空格 / 换行 / 空格四种输出分隔符；倒置区间、非正步长、非法 token 均给出明确中文错误，展开结果设 100000 个元素安全上限。适用于端口号清单、ID 段、页码范围等批量数值整理。纯浏览器本地处理、零新增依赖、不发起网络请求。',
+    descriptionEn:
+      'Convert bidirectionally between compact range expressions and explicit integer lists. Expanding turns 1-5, 10, 12-14 into 1,2,3,4,5,10,12,13,14, supports an optional step (0-10:2 yields evens) and negative ranges (-5--1), and accepts commas, spaces or newlines as separators. Collapsing sorts and de-duplicates a messy number list and merges runs into the minimal range notation (5,3,1,2,4,4,6,8 becomes 1-6,8); only runs of at least three consecutive numbers merge, while pairs stay separate so the transform stays reversible. Built on BigInt for arbitrary-precision integers beyond 2^53, with four output separator choices (comma, comma+space, newline, space). Reversed ranges, non-positive steps and invalid tokens produce clear error messages, and expansion is capped at 100000 elements. Useful for port lists, ID segments and page ranges. Fully local processing with zero new dependencies and no network requests.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/number-range-expander',
+    iconName: 'Hash',
+    tags: ['区间展开', '数值列表', 'BigInt', '端口号', '批量处理', '去重'],
+    tagsEn: ['Range Expansion', 'Number List', 'BigInt', 'Port List', 'Batch', 'Deduplicate'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1-5, 10, 12-14\n0-10:2\n-5--1',
+    doc: {
+      zh: {
+        whatIsIt:
+          '数值区间批量展开器与压缩器是一款纯浏览器本地运行的批量数值整理工具，在「紧凑区间表达式」与「完整离散数列」之间双向转换。展开方向识别单值、a-b 闭区间与 a-b:s 带步长区间（如 1-5、0-10:2、-5--1），按书写顺序输出每个整数；压缩方向把可能乱序、重复、跨行的数字排序去重，再把连续 ≥3 个数合并为 a-b，输出最小区间表示。全部运算基于 BigInt，可安全处理超过 JavaScript 安全整数上限（2^53-1）的编号。',
+        coreFeatures: [
+          '区间展开：单值、a-b 闭区间、a-b:s 带步长区间混排，逗号 / 空格 / Tab / 换行分隔均可',
+          '负数支持：起点或终点为负数时正确识别（-3-2、-5--1），倒置区间（5-1）明确报错',
+          '列表压缩：乱序重复数字自动排序去重，连续 ≥3 个合并为 a-b，两个连续数保持单列',
+          'BigInt 任意精度：支持远超 2^53 的大整数，展开与压缩往返一致',
+          '输出可控：四种输出分隔符可选（逗号、逗号空格、换行、空格），一键复制；100000 元素安全上限防卡顿',
+        ],
+        howToUse: [
+          '顶部切换方向：「展开区间 → 数列」或「压缩数列 → 区间」',
+          '展开时在左侧输入如 1-5, 10, 12-14，步长写法 0-10:2，负数区间如 -5--1',
+          '压缩时在左侧输入离散整数（允许乱序、重复、换行），如 5,3,1,2,4,4,6,8',
+          '右侧实时显示结果与元素数量，底部可切换输出分隔符并复制；输入有误时在输出区显示具体错误',
+        ],
+        useCases: [
+          '运维与网络：把端口段 8000-8010、3000-3005 展开为防火墙 / 扫描器所需的端口号清单，或反向归并',
+          '数据与研发：批量整理 ID 段、页码范围、分片编号，去重排序后压缩为最紧凑表达',
+          '测试造数：按步长快速生成等差序列（如 0-10:2 的偶数），复制为参数化测试数据',
+        ],
+        privacyNote:
+          '所有解析与计算均在浏览器本地完成，不发起任何网络请求，输入的数字不会离开设备。',
+        faqs: [
+          {
+            question: '为什么压缩时连续两个数不合并（如 1,2 仍输出 1,2）？',
+            answer:
+              '连续 ≥3 个数合并为 a-b 才能保证「展开 ↔ 压缩」可逆且无歧义；若把 1,2 合并成 1-2，再展开虽然结果相同，但区间记号通常隐含至少跨越一个步长。为让两种方向的输出严格对应、便于核对，本工具仅在连续不少于 3 个数时才合并。',
+          },
+          {
+            question: '如何输入负数区间？-5--1 是什么意思？',
+            answer:
+              '区间连字符是起点之后的第一个 -，因此起点带负号时写 -3-2（从 -3 到 2），终点也为负时两个连字符紧贴，写作 -5--1（从 -5 到 -1）。解析器会跳过起点位置的正负号再寻找区间连字符。',
+          },
+          {
+            question: '为什么用 BigInt？支持多大的数？',
+            answer:
+              'JavaScript 普通数字超过 2^53-1 后无法精确表示每个整数，处理雪花 ID、长编号等场景会丢精度。本工具全程使用 BigInt 按十进制字符串精确运算，没有固定位数上限；同时设置单次展开不超过 100000 个元素，避免超大区间拖慢页面。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Number Range Expander & Collapser is a batch number-formatting tool that runs entirely in the browser, converting in both directions between compact range expressions and explicit integer lists. Expanding recognizes single values, a-b closed ranges and a-b:s stepped ranges (e.g. 1-5, 0-10:2, -5--1) and emits every integer in input order. Collapsing sorts and de-duplicates a messy, possibly multi-line list and merges runs of at least three consecutive numbers into a-b, producing the minimal range notation. Every calculation uses BigInt, so identifiers beyond the JavaScript safe-integer limit (2^53-1) are handled exactly.',
+        coreFeatures: [
+          'Range expansion: single values, a-b closed ranges and a-b:s stepped ranges mixed freely; commas, spaces, tabs and newlines all separate tokens',
+          'Negative numbers: negative start or end is parsed correctly (-3-2, -5--1) and reversed ranges such as 5-1 are rejected with a clear message',
+          'List collapsing: unsorted, duplicated numbers are sorted and de-duplicated; runs of ≥3 merge into a-b while pairs stay listed separately',
+          'Arbitrary precision with BigInt: integers far beyond 2^53 are exact, and expand-then-collapse round-trips consistently',
+          'Configurable output: four separators (comma, comma+space, newline, space), one-click copy, and a 100000-element safety cap',
+        ],
+        howToUse: [
+          'Switch direction at the top: "Expand ranges → list" or "Collapse list → ranges"',
+          'To expand, enter something like 1-5, 10, 12-14; stepped syntax is 0-10:2 and a negative range looks like -5--1',
+          'To collapse, enter discrete integers (unsorted, duplicated and multi-line input is fine), e.g. 5,3,1,2,4,4,6,8',
+          'The right panel shows the result and element count live; pick an output separator at the bottom and copy. Invalid input shows a specific error under the output',
+        ],
+        useCases: [
+          'Ops and networking: expand port segments 8000-8010 or 3000-3005 into the explicit lists firewalls and scanners expect, or merge them back',
+          'Data and engineering: tidy ID segments, page ranges and shard numbers, de-duplicate and sort them into the most compact expression',
+          'Test data: generate arithmetic sequences quickly via steps (e.g. 0-10:2 for evens) and copy them as parameterized test values',
+        ],
+        privacyNote:
+          'All parsing and computation happens locally in the browser with no network requests; the numbers you enter never leave your device.',
+        faqs: [
+          {
+            question: 'Why do two consecutive numbers stay separate when collapsing (1,2 stays 1,2)?',
+            answer:
+              'Merging only runs of three or more into a-b keeps expand and collapse unambiguous and reversible. If 1,2 became 1-2, re-expanding would still match, but a range notation conventionally spans at least one interior step. To keep both directions strictly corresponding and easy to verify, the tool merges only runs of at least three numbers.',
+          },
+          {
+            question: 'How do I enter negative ranges? What does -5--1 mean?',
+            answer:
+              'The range dash is the first hyphen after the start value, so a negative start is written -3-2 (from -3 to 2) and when the end is also negative the two hyphens sit together as -5--1 (from -5 to -1). The parser skips the sign at position 0 and then looks for the range hyphen.',
+          },
+          {
+            question: 'Why BigInt and how large can numbers be?',
+            answer:
+              'Ordinary JavaScript numbers cannot represent every integer beyond 2^53-1, which loses precision with snowflake IDs and long identifiers. This tool computes exactly on BigInt decimal strings with no fixed digit limit, while capping a single expansion at 100000 elements so that huge ranges cannot freeze the page.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

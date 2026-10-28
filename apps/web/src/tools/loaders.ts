@@ -129,4 +129,5 @@ export const toolLoaders: Record<
   'ip-address-converter': () => import('./ip-address-converter'),
   'boolean-truth-table': () => import('./boolean-truth-table'),
   'iso-week-date-converter': () => import('./iso-week-date-converter'),
+  'number-range-expander': () => import('./number-range-expander'),
 };
