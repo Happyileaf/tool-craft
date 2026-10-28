@@ -158,3 +158,4 @@
 | 20261028081033 | 以太坊地址 EIP-55 校验和编码与校验器 | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028081033.md) |
 | 20261028081034 | 文件大小人类可读格式化器（bytes ↔ KB/MB/GB 双向解析） | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028081034.md) |
 | 20261028081035 | BMI 身体质量指数计算器（中国 / WHO 双标准分级） | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028081035.md) |
+| 20261028081036 | EAN-13 / GTIN 校验位计算器与合法性校验器 | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028081036.md) |
