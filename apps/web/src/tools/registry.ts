@@ -9551,6 +9551,112 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'ean13-checksum',
+    name: 'EAN-13 / UPC-A 条码校验位工具',
+    nameEn: 'EAN-13 / UPC-A Check Digit Calculator',
+    description:
+      '按 GS1 模 10 加权算法批量计算与校验商品条码校验位：输入 12 位 EAN-13（或 11 位 UPC-A）数字主体自动补全末位校验位；输入完整 13 位（或 12 位）则校验合法性，校验位错误时给出正确校验位与纠正后的合法编码。支持 EAN-13/GTIN-13 与 UPC-A/GTIN-12 两种模式，容忍空格与连字符，多行批量处理并逐行标注行号错误；非数字、长度不符等输入给出可读提示。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Batch-compute and verify product barcode check digits using the GS1 modulo-10 weighted algorithm: enter a 12-digit EAN-13 (or 11-digit UPC-A) body to append the check digit, or a full 13-digit (or 12-digit) code to validate it—when wrong, the correct digit and the corrected valid code are shown. Supports both EAN-13/GTIN-13 and UPC-A/GTIN-12 modes, tolerates spaces and hyphens, processes multiple lines with line-numbered errors, and reports non-digit or wrong-length input readably. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/ean13-checksum',
+    iconName: 'Barcode',
+    tags: ['EAN-13', 'UPC-A', '条码', '校验位', 'GTIN', '模10'],
+    tagsEn: ['EAN-13', 'UPC-A', 'Barcode', 'Check Digit', 'GTIN', 'Modulo 10'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '590123412345\n400638133393\n5901234123457',
+    doc: {
+      zh: {
+        whatIsIt:
+          'EAN-13 / UPC-A 条码校验位工具是一款纯浏览器本地运行的批量计算器，用于为商品条码数字主体补全末位校验位，或检验完整条码的校验位是否正确，覆盖零售场景最常见的 EAN-13（GTIN-13）与 UPC-A（GTIN-12）两种编码。',
+        coreFeatures: [
+          '双模式：EAN-13（12 位主体 / 13 位完整码）与 UPC-A（11 位主体 / 12 位完整码）',
+          '自动判断：输入主体位数则补全校验位，输入完整位数则校验合法性',
+          'GS1 标准算法：自右向左对数字交替乘以 3 与 1 求和，校验位 = (10 - 总和 mod 10) mod 10',
+          '错误纠正：校验位不匹配时明确给出实际末位、正确校验位与合法编码',
+          '宽松输入：自动忽略空格与连字符，多行批量处理，空行保留，非法行逐行标注行号',
+          '纯本地计算：零新增依赖，输入内容不发起任何网络请求',
+        ],
+        howToUse: [
+          '在输入卡片顶部选择 EAN-13 或 UPC-A 模式',
+          '每行输入一个条码：少一位（主体）自动补全，满位（完整码）自动校验',
+          '右侧实时输出补全或纠正后的编码，支持一次粘贴多行',
+          '含空格或连字符的编号（如 590 1234 12345 7）可直接粘贴，无需手动清理',
+          '非法行会原样保留并在输出区以黄色警告逐行标注原因；点击「复制」获取结果',
+        ],
+        useCases: [
+          '电商与零售：批量核对商品资料中的 EAN-13/UPC-A 条码是否录入正确',
+          '仓储与物流：自制标签或打印编码前快速计算校验位',
+          '开发与测试：构造条码相关功能时生成合法测试数据、验证解析逻辑',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；粘贴的条码数据不会离开设备。',
+        faqs: [
+          {
+            question: 'EAN-13 的校验位是怎么算出来的？',
+            answer:
+              '采用 GS1 模 10 加权算法：从校验位左侧第一位开始自右向左，各位数字依次乘以 3、1、3、1……求和，校验位等于 (10 -（总和对 10 取模）) 对 10 取模。例如主体 590123412345 计算得到校验位 7，完整码为 5901234123457。',
+          },
+          {
+            question: 'UPC-A 和 EAN-13 有什么关系？',
+            answer:
+              'UPC-A 是 12 位（11 位主体 + 1 位校验位），主要用于北美；EAN-13 是 13 位（12 位主体 + 1 位校验位），国际通用。二者校验位算法完全相同，只是主体长度不同；事实上 UPC-A 编码可视为前缀补 0 的 EAN-13（036000291452 等价于 0036000291452）。',
+          },
+          {
+            question: '为什么完整条码被提示校验位不正确？',
+            answer:
+              '说明末位与按前 12 位（UPC-A 为前 11 位）重新计算出的校验位不一致，通常是录入或 OCR 识别时某一位出错。警告会给出正确校验位和纠正后的合法编码，请对照原始条码图像或包装核实是哪一位录错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The EAN-13 / UPC-A Check Digit Calculator is a fully browser-local batch tool for appending check digits to product barcode number bodies and verifying the check digit of complete codes, covering the two most common retail symbologies: EAN-13 (GTIN-13) and UPC-A (GTIN-12).',
+        coreFeatures: [
+          'Two modes: EAN-13 (12-digit body / 13-digit full code) and UPC-A (11-digit body / 12-digit full code)',
+          'Automatic behavior: body length appends the check digit, full length validates it',
+          'GS1 standard algorithm: digits weighted 3 and 1 alternately from right to left, check digit = (10 - sum mod 10) mod 10',
+          'Error correction: a mismatched check digit reports the given digit, the correct digit, and the valid corrected code',
+          'Lenient input: spaces and hyphens are ignored; multi-line batch processing preserves blank lines and flags invalid rows with line numbers',
+          '100% local computation with zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'Choose EAN-13 or UPC-A mode at the top of the input card',
+          'Enter one barcode per line: one digit short (body) is completed, full length is validated',
+          'Completed or corrected codes appear live on the right, including multi-line pastes',
+          'Codes with spaces or hyphens (e.g. 590 1234 12345 7) can be pasted directly',
+          'Invalid rows are kept in place and explained in yellow line-numbered warnings; click Copy to grab results',
+        ],
+        useCases: [
+          'E-commerce and retail: batch-check whether EAN-13/UPC-A codes in product data were entered correctly',
+          'Warehousing and logistics: quickly compute check digits before printing self-made labels',
+          'Development and testing: generate valid barcode fixtures and verify parsing logic',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser via zero-dependency pure functions. No network requests are made, so barcode data you paste never leaves your device.',
+        faqs: [
+          {
+            question: 'How is the EAN-13 check digit calculated?',
+            answer:
+              'With the GS1 modulo-10 weighted algorithm: starting immediately left of the check digit and moving right to left, digits are multiplied alternately by 3 and 1 and summed; the check digit is (10 - (sum mod 10)) mod 10. For example, body 590123412345 yields check digit 7, giving 5901234123457.',
+          },
+          {
+            question: 'How do UPC-A and EAN-13 relate?',
+            answer:
+              'UPC-A has 12 digits (11 body + 1 check digit) and is mainly used in North America; EAN-13 has 13 digits (12 body + 1 check digit) and is used internationally. The check-digit algorithm is identical—only the body length differs. In fact a UPC-A code is equivalent to an EAN-13 code with a leading zero (036000291452 equals 0036000291452).',
+          },
+          {
+            question: 'Why is a complete barcode reported as having a wrong check digit?',
+            answer:
+              'The last digit does not match the one recomputed from the first 12 digits (11 for UPC-A), usually because a digit was mistyped or misread by OCR. The warning shows the correct digit and the corrected code; compare it against the original barcode image or packaging to find which digit was entered incorrectly.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

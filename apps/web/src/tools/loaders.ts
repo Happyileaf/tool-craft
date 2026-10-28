@@ -119,4 +119,5 @@ export const toolLoaders: Record<
   'hex-dump-viewer': () => import('./hex-dump-viewer'),
   'excel-column-converter': () => import('./excel-column-converter'),
   'file-size-converter': () => import('./file-size-converter'),
+  'ean13-checksum': () => import('./ean13-checksum'),
 };
