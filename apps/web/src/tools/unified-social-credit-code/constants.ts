@@ -1,0 +1,1 @@
+export const DEFAULT_USCC = '91110108551385082Q';

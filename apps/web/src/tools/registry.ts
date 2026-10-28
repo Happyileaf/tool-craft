@@ -10078,6 +10078,110 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'unified-social-credit-code',
+    name: '统一社会信用代码校验与解析器',
+    nameEn: 'Unified Social Credit Code Validator',
+    description:
+      '依据 GB 32100-2015 校验 18 位法人和其他组织统一社会信用代码：检查长度与 31 字符字符集（0-9 与 A-Z 去除 I、O、Z、S、V），按固定加权因子以 31 为模验证末位校验码，并逐段解析登记管理部门、机构类别、登记管理机关行政区划（省级）与 9 位主体标识码（组织机构代码）。适用于企业信息录入、表单校验与数据清洗。纯浏览器本地确定性计算、零新增依赖、不发起网络请求。',
+    descriptionEn:
+      'Validate 18-character Unified Social Credit Codes for legal entities per GB 32100-2015: checks length and the 31-character alphabet (0-9 and A-Z excluding I, O, Z, S, V), verifies the final check character with fixed weights modulo 31, and breaks the code into its registration department, organization category, administrative division (province level) and the 9-digit subject identifier (organization code). Built for business data entry, form validation and data cleansing. Fully local deterministic computation in the browser with zero new dependencies and no network requests.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/unified-social-credit-code',
+    iconName: 'ShieldCheck',
+    tags: ['统一社会信用代码', '校验', 'GB 32100', '组织机构代码', '表单校验', '中国'],
+    tagsEn: ['USCC', 'Validation', 'GB 32100', 'Organization Code', 'Form Validation', 'China'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '91110108551385082Q',
+    doc: {
+      zh: {
+        whatIsIt:
+          '统一社会信用代码校验与解析器是一款纯浏览器本地运行的法人身份代码工具。统一社会信用代码是中国境内法人和其他组织的唯一身份标识，依据 GB 32100-2015 由 1 位登记管理部门代码、1 位机构类别代码、6 位登记管理机关行政区划码、9 位主体标识码（组织机构代码）与 1 位校验码共 18 位组成。本工具按官方加权模 31 算法判断合法性，并把各段结构解析为可读信息。',
+        coreFeatures: [
+          '严格校验：长度必须 18 位，字符仅限 31 字符字符集（剔除易混淆的 I、O、Z、S、V）',
+          '校验码验证：前 17 位按 GB 32100-2015 固定加权因子求和、模 31 换算末位，并在错误时给出正确值',
+          '结构解析：拆解登记管理部门（机构编制 / 民政 / 市场监管等）与机构类别（企业 / 事业单位 / 社会团体等）',
+          '行政区划识别：6 位行政区划码按 GB/T 2260 前两位识别省 / 自治区 / 直辖市',
+          '主体标识：单独展示第 9–17 位组织机构代码',
+          '容错与隐私：自动去除首尾空白并转大写；全部计算本地完成，不上传任何信息',
+        ],
+        howToUse: [
+          '在输入框粘贴 18 位统一社会信用代码（小写或带空格会自动规范化）',
+          '合法时显示绿色「校验通过」并列出部门、类别、行政区划、主体标识、校验码',
+          '非法时显示红色提示，说明长度、非法字符位置或正确的校验码',
+          '下方彩色分段标签直观标注五个组成段的边界',
+        ],
+        useCases: [
+          '企业信息录入：在开户、合同、发票等系统中实时校验对方提供的信用代码',
+          '表单开发：前端表单字段校验，避免明显错误的代码进入后端',
+          '数据清洗：批量排查存量企业档案中抄录错误或校验位错误的代码',
+        ],
+        privacyNote:
+          '校验与解析均为浏览器本地确定性计算，不发起任何网络请求，输入的代码不会离开设备。',
+        faqs: [
+          {
+            question: '校验码是怎么计算的？',
+            answer:
+              '将前 17 位字符按 31 进制取值（字符集 0123456789ABCDEFGHJKLMNPQRTUWXY 的下标），分别乘以固定加权因子 1、3、9、27……28 后求和；用 31 减去总和对 31 取模的结果（结果为 31 时取 0），换算回字符集中的字符即为第 18 位校验码。',
+          },
+          {
+            question: '为什么代码里看不到字母 I、O、Z、S、V？',
+            answer:
+              '为避免与数字 1、0、2、5、8（及字母 U）混淆，GB 32100-2015 的字符集从 0-9 加 A-Z 中剔除了 I、O、Z、S、V 共 5 个字母，只保留 31 个字符，与 31 进制运算一一对应。',
+          },
+          {
+            question: '校验通过能否证明这家企业真实存在？',
+            answer:
+              '不能。本工具只验证代码本身的编码规则与校验位是否自洽，不联网查询企业登记数据库。校验通过仅说明代码格式合法，企业是否存续、名称是否匹配需以国家企业信用信息公示系统等官方渠道为准。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Unified Social Credit Code Validator is a fully browser-local tool for the legal-entity identifier used in China. Per GB 32100-2015 the 18-character code consists of a registration department digit, an organization category digit, a 6-digit administrative division code, a 9-digit subject identifier (organization code) and one check character. The tool applies the official weighted modulo-31 algorithm to judge validity and decodes every segment into readable information.',
+        coreFeatures: [
+          'Strict validation: exactly 18 characters using only the 31-character alphabet (confusable I, O, Z, S, V excluded)',
+          'Check character: the first 17 characters are weighted by the fixed GB 32100-2015 factors, summed modulo 31; on mismatch the correct character is shown',
+          'Structural decoding: identifies the registration department (institutional staffing, civil affairs, market regulation, etc.) and category (enterprise, public institution, social organization, etc.)',
+          'Region detection: resolves the first two digits of the 6-digit GB/T 2260 division code to province / region / municipality',
+          'Subject identifier: displays the 9-character organization code (positions 9–17) separately',
+          'Forgiving and private: trims surrounding whitespace and uppercases automatically; everything runs locally with no uploads',
+        ],
+        howToUse: [
+          'Paste an 18-character code into the input (lowercase and surrounding spaces are normalized automatically)',
+          'A valid code shows a green “valid” banner plus department, category, region, subject ID and check character',
+          'An invalid code shows a red message explaining the length issue, the illegal character position, or the correct check character',
+          'The colored segment tags underneath mark the boundaries of the five components',
+        ],
+        useCases: [
+          'Business onboarding: validate codes supplied by counterparties for accounts, contracts or invoicing',
+          'Form development: front-end field validation before obviously wrong codes reach the backend',
+          'Data cleansing: find transcription and check-digit errors in archived company records',
+        ],
+        privacyNote:
+          'Validation and parsing are deterministic, fully local browser computations. No network requests are made and entered codes never leave your device.',
+        faqs: [
+          {
+            question: 'How is the check character calculated?',
+            answer:
+              'Each of the first 17 characters is mapped to its base-31 value (index in 0123456789ABCDEFGHJKLMNPQRTUWXY), multiplied by the fixed weights 1, 3, 9, 27 … 28 and summed; 31 minus the sum modulo 31 (0 when the result would be 31) gives a value mapped back to the alphabet as the 18th character.',
+          },
+          {
+            question: 'Why do the letters I, O, Z, S and V never appear?',
+            answer:
+              'To avoid confusion with the digits 1, 0, 2 and 5 (and the letter U), the GB 32100-2015 alphabet removes I, O, Z, S and V from 0-9 plus A-Z, leaving exactly 31 characters that map one-to-one to base-31 values.',
+          },
+          {
+            question: 'Does passing validation prove the company exists?',
+            answer:
+              'No. The tool only checks that the code is self-consistent under the coding and check-digit rules; it does not query any company registry online. A valid result means the format is correct—existence and name matches must be confirmed through official channels such as the National Enterprise Credit Information Publicity System.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

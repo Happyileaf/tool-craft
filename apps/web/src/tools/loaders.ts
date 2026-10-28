@@ -124,4 +124,5 @@ export const toolLoaders: Record<
   'websocket-accept': () => import('./websocket-accept'),
   'mongodb-objectid': () => import('./mongodb-objectid'),
   'jsonc-to-json': () => import('./jsonc-to-json'),
+  'unified-social-credit-code': () => import('./unified-social-credit-code'),
 };
