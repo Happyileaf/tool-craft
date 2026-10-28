@@ -10182,6 +10182,516 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'id-card-validator',
+    name: '身份证号码校验与升位器',
+    nameEn: 'Chinese ID Number Validator & Upgrade',
+    description:
+      '依据 GB 11643-1999 校验 18 位居民身份证号：检查 18 位结构、出生日期真实性（含闰年）与 ISO 7064 MOD 11-2 加权校验码（末位可为 X），并解析出生日期、性别与 6 位行政区划码；支持 15 位旧号码在第 6 位后插入 19 自动升位为 18 位，支持逐条与逐行批量校验，非法行带行号提示。适用于表单校验开发、测试数据构造与数据质量核对。纯浏览器本地确定性计算、零新增依赖、不发起网络请求（仅做格式与算法校验，不内置行政区划名称表）。',
+    descriptionEn:
+      'Validate 18-digit Chinese resident identity card numbers per GB 11643-1999: checks the 18-digit structure, a real date of birth (including leap years) and the ISO 7064 MOD 11-2 weighted check digit (last character may be X), and parses birth date, gender and the 6-digit administrative division code. Legacy 15-digit numbers are upgraded to 18 digits by inserting 19 after the 6th digit, with single-item and line-by-line batch processing and line-numbered warnings. Built for form validation, test data construction and data quality checks. Fully local deterministic computation in the browser with zero new dependencies and no network requests (format/algorithm validation only, no embedded division-name table).',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/id-card-validator',
+    iconName: 'Fingerprint',
+    tags: ['身份证', '校验', 'GB 11643', '升位', '表单校验', '中国'],
+    tagsEn: ['ID Card', 'Validation', 'GB 11643', 'Upgrade', 'Form Validation', 'China'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '110105194912318013\n110105491231801\n11010520210229001X',
+    doc: {
+      zh: {
+        whatIsIt:
+          '身份证号码校验与升位器是一款纯浏览器本地运行的中国居民身份证号工具。18 位身份证号由 6 位行政区划码、8 位出生日期（YYYYMMDD）、3 位顺序码与 1 位校验码构成，校验码依据 GB 11643-1999 的 ISO 7064 MOD 11-2 加权算法计算，取值为数字或 X。本工具据此判定号码是否自洽，并把字段解析为可读信息；对早期 15 位旧证号码，可按规则插入世纪位 19 并补全校验码，升位为 18 位。',
+        coreFeatures: [
+          '18 位校验：结构、出生日期真实性（含闰年 2 月 29 日）与加权校验码逐项检查，校验码错误时给出正确值',
+          '15 位升位：在第 6 位行政区划码后插入 19，再按 17 位本体计算末位校验码',
+          '字段解析：展示出生日期、性别（顺序码末位奇男偶女）与 6 位行政区划码',
+          '批量处理：每行一个号码，合法行输出结构化结果，非法行保留原文并带行号告警',
+          '容错与隐私：容忍空白、末位 x 自动转大写；全部计算本地完成，不收集任何输入',
+        ],
+        howToUse: [
+          '在输入框粘贴一个或每行一个身份证号码',
+          '18 位号码输出「校验通过」与出生日期、性别、行政区划码；校验码错误时同时给出正确号码',
+          '15 位旧证号码自动升位，输出形如「原号 → 18 位新号」',
+          '非法行在下方黄色告警中按行号说明原因（长度、字符、日期或校验码）',
+        ],
+        useCases: [
+          '表单校验开发：在注册、实名等表单中复用该校验逻辑构造测试用例',
+          '测试数据构造：由 15 位测试号码批量生成合法 18 位号码',
+          '数据质量核对：排查存量数据中抄录错误、出生日期非法或校验位错误的号码',
+        ],
+        privacyNote:
+          '校验与升位均为浏览器本地确定性计算，不发起任何网络请求，输入的号码不会离开设备。',
+        faqs: [
+          {
+            question: '校验码是怎么计算的？',
+            answer:
+              '将前 17 位分别乘以固定加权因子 7、9、10、5、8、4、2、1、6、3、7、9、10、5、8、4、2 后求和，对 11 取模，再以字符串 "10X98765432" 的对应位取值——余数 0 对应 1、余数 2 对应 X，依此类推，即为第 18 位校验码。',
+          },
+          {
+            question: '15 位旧号码是如何升位为 18 位的？',
+            answer:
+              '15 位号码为 6 位行政区划码 + 6 位两位年出生日期 + 3 位顺序码，没有校验码。升位时在第 6 位后插入世纪位 "19"（旧证均签发于 1900 年代），得到 17 位本体，再按 18 位算法计算并追加校验码。',
+          },
+          {
+            question: '校验通过能否证明这个人真实存在？',
+            answer:
+              '不能。本工具只验证号码自身的编码规则与校验位是否自洽，不联网查询公安数据库，也不内置行政区划名称表。校验通过仅说明格式合法，个人身份真实性须以官方渠道核验为准。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Chinese ID Number Validator & Upgrade is a fully browser-local tool for Chinese resident identity card numbers. An 18-digit number consists of a 6-digit administrative division code, an 8-digit birth date (YYYYMMDD), a 3-digit sequence code and one check digit computed with the ISO 7064 MOD 11-2 weighted algorithm defined in GB 11643-1999; the check digit is a digit or X. The tool judges whether a number is self-consistent and decodes its fields, and upgrades early 15-digit numbers to 18 digits by inserting the century digits 19 and computing a check digit.',
+        coreFeatures: [
+          '18-digit validation: structure, a real birth date (including February 29 in leap years) and the weighted check digit are checked one by one; the correct check digit is shown on mismatch',
+          '15-digit upgrade: inserts 19 after the 6th digit and computes the final check digit over the resulting 17-digit body',
+          'Field decoding: shows birth date, gender (odd sequence-code ending = male, even = female) and the 6-digit division code',
+          'Batch processing: one number per line; valid lines emit structured output and invalid lines keep their text with line-numbered warnings',
+          'Forgiving and private: tolerates whitespace and uppercases a trailing x; everything runs locally with no collection of input',
+        ],
+        howToUse: [
+          'Paste a single number or one number per line into the input box',
+          '18-digit numbers return “validation passed” with birth date, gender and division code; a wrong check digit also yields the corrected number',
+          '15-digit legacy numbers are upgraded automatically as “original → 18-digit number”',
+          'Invalid lines are explained by line number in the yellow warnings below (length, characters, date or check digit)',
+        ],
+        useCases: [
+          'Form validation: reuse the rules to build test cases for registration and real-name forms',
+          'Test data construction: turn 15-digit test numbers into batches of valid 18-digit numbers',
+          'Data quality checks: find transcription errors, impossible birth dates and bad check digits in stored data',
+        ],
+        privacyNote:
+          'Validation and upgrade are deterministic, fully local browser computations. No network requests are made and entered numbers never leave your device.',
+        faqs: [
+          {
+            question: 'How is the check digit calculated?',
+            answer:
+              'Multiply the first 17 digits by the fixed weights 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2, sum them and take modulo 11. The remainder indexes the string "10X98765432"—remainder 0 maps to 1, remainder 2 maps to X, and so on—giving the 18th check digit.',
+          },
+          {
+            question: 'How is a 15-digit number upgraded to 18 digits?',
+            answer:
+              'A 15-digit number has a 6-digit division code, a 6-digit two-digit-year birth date and a 3-digit sequence code, with no check digit. The upgrade inserts the century digits "19" after the 6th digit (legacy cards were issued in the 1900s), producing a 17-digit body, then computes and appends the 18-digit check digit.',
+          },
+          {
+            question: 'Does passing validation prove the person exists?',
+            answer:
+              'No. The tool only checks that the number is self-consistent under the coding and check-digit rules; it queries no public-security database and embeds no division-name table. A valid result means the format is correct—identity must be verified through official channels.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ip-address-converter',
+    name: 'IP 地址格式互转器',
+    nameEn: 'IP Address Format Converter',
+    description:
+      '在 IPv4 点分十进制与 32 位无符号整数 / 十六进制 / 二进制之间双向转换，并把 IPv6 压缩形式（::）解析为 128 位大整数后输出完整展开、RFC 5952 压缩形式、十六进制整数与 128 位二进制，支持末尾内嵌 IPv4（如 ::ffff:192.168.0.1）。支持逐条与逐行批量转换，非法行带行号提示。适用于数据库 IP 整型存储（inet_aton 类场景）、日志字段解析与 ACL 配置核对。BigInt 运算无精度损失，纯浏览器本地确定性计算、零新增依赖、不发起网络请求。',
+    descriptionEn:
+      'Convert IPv4 dotted-decimal addresses to and from 32-bit unsigned integers, hexadecimal and binary, and parse compressed IPv6 forms (::) into a 128-bit big integer, emitting the fully expanded form, the RFC 5952 compressed form, hexadecimal integer and 128-bit binary. A trailing embedded IPv4 (e.g. ::ffff:192.168.0.1) is supported. Offers single-item and line-by-line batch conversion with line-numbered warnings for invalid lines. Built for integer-column IP storage (inet_aton-style scenarios), log field parsing and ACL configuration checks. BigInt arithmetic avoids precision loss; fully local deterministic computation in the browser with zero new dependencies and no network requests.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ip-address-converter',
+    iconName: 'Globe',
+    tags: ['IP 地址', 'IPv4', 'IPv6', 'BigInt', '网络', '格式转换'],
+    tagsEn: ['IP Address', 'IPv4', 'IPv6', 'BigInt', 'Network', 'Format Conversion'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '192.168.0.1\n0.0.0.0\n2001:db8::1\n::ffff:192.168.0.1',
+    doc: {
+      zh: {
+        whatIsIt:
+          'IP 地址格式互转器是一款纯浏览器本地运行的网络地址工具。IPv4 地址由四个 0–255 的十进制段组成，唯一对应一个 32 位无符号整数，因此可以表示为点分十进制、十进制整数、十六进制或二进制；IPv6 地址为 128 位，常用连续零组压缩记号 :: 缩短书写。本工具在这些表示之间做确定性互转，IPv6 输出遵循 RFC 5952 规范形式（最长零组压缩、小写十六进制），128 位运算全部基于 BigInt，不存在大整数精度丢失。',
+        coreFeatures: [
+          'IPv4 互转：点分十进制 ↔ uint32 十进制整数 / 0x 十六进制 / 32 位二进制，逐段校验 0–255 并拒绝前导零歧义',
+          'IPv6 解析：支持完整形式、:: 压缩形式（含首尾 :: 与 :: 自身）及末尾内嵌 IPv4',
+          'IPv6 规范化：输出 8 组四位十六进制完整展开与 RFC 5952 压缩形式（最长零组、并列取最前）',
+          '批量处理：每行一个地址，合法行输出全部表示形式，非法行保留原文并带行号告警',
+          '纯本地计算：BigInt 运算无精度损失，不发起任何网络请求，不收集输入',
+        ],
+        howToUse: [
+          '在输入框填入一个 IP 地址或每行一个地址（IPv4 或 IPv6 均可）',
+          '输出区即时展示规范形式、完整展开、十进制整数、十六进制与二进制',
+          'IPv6 压缩地址会自动还原为完整 8 组，再重新压缩以便比对规范形式',
+          '非法行在下方黄色告警中按行号说明原因，不影响其他行的转换',
+        ],
+        useCases: [
+          '数据库整型存储：在点分地址与 INT/UNSIGNED 列整数之间换算（IPv4），核对 inet_aton/inet_ntoa 结果',
+          '日志与抓包分析：把整数或十六进制地址字段还原为可读的点分 / 冒分形式',
+          '网络配置核对：验证 ACL、路由表中的 IPv6 压缩写法是否等价于目标地址',
+        ],
+        privacyNote:
+          '所有解析与换算均为浏览器本地确定性计算，不发起任何网络请求，输入的地址不会离开设备。',
+        faqs: [
+          {
+            question: '为什么输入 01.1.1.1 被判为非法？',
+            answer:
+              '部分系统的 inet_aton 会把前导零的段按八进制解释（如 010 等于 8），这与十进制直觉不一致且容易造成 ACL 绕过。为避免歧义，本工具只接受单段 0 或无前导零的十进制写法。',
+          },
+          {
+            question: 'IPv6 的压缩形式是按什么规则选 :: 位置的？',
+            answer:
+              '遵循 RFC 5952：将最长的连续一个或多个全零 16 位组序列替换为 ::，长度至少为 2 组才压缩；出现等长序列时压缩最靠前的一个，其余单组零保留为 0，十六进制字母使用小写。',
+          },
+          {
+            question: 'IPv6 的十进制整数会不会超出安全整数范围？',
+            answer:
+              '会，IPv6 是 128 位整数，远超 JavaScript Number 的安全整数上限（2^53-1）。本工具内部全程使用 BigInt 运算，输出的十进制与十六进制文本均为精确值，没有精度损失。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The IP Address Format Converter is a fully browser-local networking tool. An IPv4 address consists of four decimal octets from 0 to 255 and maps uniquely to a 32-bit unsigned integer, so it can be written as dotted decimal, a decimal integer, hexadecimal or binary. An IPv6 address is 128 bits wide and is commonly shortened with the :: zero-compression notation. The tool converts deterministically among these representations; IPv6 output follows the RFC 5952 canonical form (longest zero-run compressed, lowercase hexadecimal), and all 128-bit arithmetic uses BigInt, so no precision is lost.',
+        coreFeatures: [
+          'IPv4 conversion: dotted decimal ↔ uint32 decimal integer / 0x hexadecimal / 32-bit binary, with per-octet 0–255 validation and rejection of ambiguous leading zeros',
+          'IPv6 parsing: full form, :: compression (including leading/trailing :: and :: itself) and a trailing embedded IPv4',
+          'IPv6 normalization: emits the 8-group four-digit expansion and the RFC 5952 compressed form (longest zero run, first on tie)',
+          'Batch processing: one address per line; valid lines emit every representation and invalid lines keep their text with line-numbered warnings',
+          'Local computation: BigInt arithmetic with no precision loss, no network requests and no input collection',
+        ],
+        howToUse: [
+          'Enter one IP address or one address per line (IPv4 or IPv6) in the input box',
+          'The output instantly shows the canonical form, full expansion, decimal integer, hexadecimal and binary',
+          'Compressed IPv6 addresses are expanded into the full 8 groups and recompressed for comparison',
+          'Invalid lines are explained by line number in the yellow warnings below without affecting other lines',
+        ],
+        useCases: [
+          'Integer-column storage: convert between dotted addresses and INT/UNSIGNED column values (IPv4), checking inet_aton/inet_ntoa results',
+          'Log and packet analysis: turn integer or hexadecimal address fields back into readable dotted/colon form',
+          'Configuration checks: verify that compressed IPv6 in ACLs or routing tables is equivalent to the intended address',
+        ],
+        privacyNote:
+          'All parsing and conversion are deterministic, fully local browser computations. No network requests are made and entered addresses never leave your device.',
+        faqs: [
+          {
+            question: 'Why is 01.1.1.1 rejected?',
+            answer:
+              'Some inet_aton implementations interpret a leading-zero octet as octal (e.g. 010 equals 8), which disagrees with decimal intuition and can lead to ACL bypasses. To remove that ambiguity the tool accepts only a lone 0 or decimal octets without leading zeros.',
+          },
+          {
+            question: 'How is the position of :: chosen for IPv6?',
+            answer:
+              'Per RFC 5952, the longest sequence of one or more all-zero 16-bit groups is replaced by :: and it must be at least two groups long; ties compress the earliest sequence, isolated zero groups stay as 0, and hexadecimal letters are lowercase.',
+          },
+          {
+            question: 'Can the IPv6 decimal integer exceed the safe-integer range?',
+            answer:
+              'Yes—IPv6 is a 128-bit integer, far beyond the JavaScript Number safe limit (2^53-1). The tool performs all arithmetic with BigInt, so the emitted decimal and hexadecimal text is exact with no precision loss.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'boolean-truth-table',
+    name: '布尔表达式真值表生成器',
+    nameEn: 'Boolean Truth Table Generator',
+    description:
+      '输入 2–8 个变量的布尔表达式，自动完成词法 / 语法分析并按 2^n 枚举生成完整真值表，支持 AND / OR / NOT / XOR、蕴含（->）、等价（<->）及括号，兼容 &&、||、!、^、·、+ 等常见写法与大小写不敏感关键字；多条表达式同表对比，自动判定重言式（永真）/ 矛盾式（永假）/ 可满足式，语法错误带列号提示且不抛异常。适用于数字逻辑、离散数学学习与复杂条件逻辑核对。纯浏览器本地计算，自实现轻量递归下降解析器，零新增依赖、不发起网络请求。',
+    descriptionEn:
+      'Enter boolean expressions with 2–8 variables and get a complete truth table built by lexing, parsing and 2^n assignment enumeration. Supports AND / OR / NOT / XOR, implication (->), equivalence (<->) and parentheses, along with &&, ||, !, ^, ·, + spellings and case-insensitive keywords. Several expressions can share one table for comparison, and each is classified as a tautology, contradiction or contingent formula; syntax errors report a column and never throw. Built for digital logic and discrete-math study and for checking complex conditional logic. Runs fully locally in the browser with a small hand-written recursive-descent parser, zero new dependencies and no network requests.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/boolean-truth-table',
+    iconName: 'Sigma',
+    tags: ['布尔逻辑', '真值表', '离散数学', '表达式解析', '数字逻辑', '教学工具'],
+    tagsEn: ['Boolean Logic', 'Truth Table', 'Discrete Math', 'Expression Parser', 'Digital Logic', 'Learning'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'A AND B\nA OR NOT A\nA XOR B\nA -> B\nA <-> B',
+    doc: {
+      zh: {
+        whatIsIt:
+          '布尔表达式真值表生成器是一款纯浏览器本地运行的逻辑演算工具。给定含若干命题变量（A–Z 命名）的表达式，工具先通过自实现的词法分析器切分出变量、关键字与运算符，再用递归下降解析器构建抽象语法树，最后对全部变量按 2^n 种取值组合逐一求值，输出教科书式排列的真值表（首个变量为最高位，取值按 00、01、10、11 递增），并依据真值列判定表达式是重言式、矛盾式还是可满足式。',
+        coreFeatures: [
+          '完整运算符：AND（&、&&、·、AND）、OR（|、||、+、OR）、NOT（!、~、NOT）、XOR（^、XOR）、蕴含 ->、等价 <-> / <=>，支持括号与大小写不敏感关键字',
+          '确定性优先级：NOT > AND > XOR > OR > 蕴含 > 等价（遵循 C/JS/Python 对 ^ 位于 & 与 | 之间的约定），蕴含右结合、其余二元运算符左结合',
+          '2^n 全枚举：变量 2–8 个，自动生成 4–256 行真值表，多表达式同表逐行对比中间结果',
+          '性质判定：按真值列自动标注重言式（永真）、矛盾式（永假）、可满足式',
+          '友好错误：非法字符、括号未闭合、缺少操作数、多余内容等均带列号以错误提示返回而非抛出异常',
+        ],
+        howToUse: [
+          '每行输入一条布尔表达式，变量为字母或下划线开头的标识符（如 A、x1、enable）',
+          '真值表即时渲染：左侧为各变量取值列（T/F），右侧为每条表达式的结果列，列标题即表达式原文',
+          '表格下方的标签给出每条表达式的性质：重言式 / 矛盾式 / 可满足式',
+          '点击「复制」可把整张表以制表符分隔文本复制到剪贴板，便于粘贴进文档或表格软件',
+        ],
+        useCases: [
+          '离散数学 / 数字逻辑课程练习：验证德摩根律、分配律、蕴含析取式 A -> B 等价于 NOT A OR B 等恒等式',
+          '编程条件核对：把复杂的 if 条件（与、或、异或、取反）枚举成表，确认边界取值下的分支行为',
+          '逻辑电路与化简：对比原表达式与等价改写式在每一行的输出是否一致，再决定是否可化简',
+        ],
+        privacyNote:
+          '所有词法分析、解析与枚举求值均在浏览器本地完成，不发起任何网络请求，输入的表达式不会离开设备。',
+        faqs: [
+          {
+            question: '为什么 A | B ^ C 被解析成 A | (B ^ C) 而不是 (A | B) ^ C？',
+            answer:
+              '运算符优先级遵循 C / JavaScript / Python 的通用约定：AND（&）高于 XOR（^），XOR 又高于 OR（|）。因此异或会先于或运算结合；若需要其他结合方式，请显式加括号。',
+          },
+          {
+            question: '为什么至少要输入 2 个变量？',
+            answer:
+              '真值表的价值在于展示多变量组合下单变量无法体现的逻辑关系。若只输入一个变量（如 A AND NOT A），工具会提示变量不足；常量性质（永真 / 永假）请至少引入一个无关变量或改用多条表达式对比。',
+          },
+          {
+            question: '支持哪些变量名和关键字写法？',
+            answer:
+              '变量名是以字母或下划线开头、后跟字母数字下划线的标识符；AND、OR、NOT、XOR 四个关键字大小写不敏感（and、And 均可）。注意 AND/OR/NOT/XOR 是保留字，不能作为变量名。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Boolean Truth Table Generator is a logic-calculation tool that runs entirely in the browser. Given expressions over propositional variables, it first tokenizes variables, keywords and operators with a hand-written lexer, builds an AST with a recursive-descent parser, and then evaluates every one of the 2^n variable assignments. The result is a textbook-ordered truth table (first variable is the most significant bit: 00, 01, 10, 11, …) plus a verdict for each expression: tautology, contradiction or contingent.',
+        coreFeatures: [
+          'Full operator set: AND (&, &&, ·, AND), OR (|, ||, +, OR), NOT (!, ~, NOT), XOR (^, XOR), implication -> and equivalence <-> / <=>, with parentheses and case-insensitive keywords',
+          'Deterministic precedence: NOT > AND > XOR > OR > implication > equivalence (following the C/JS/Python placement of ^ between & and |); implication is right-associative and the other binary operators are left-associative',
+          'Full 2^n enumeration: 2–8 variables produce 4–256 rows, and several expressions share one table for row-by-row comparison',
+          'Property classification: each column is tagged as tautology (always true), contradiction (always false) or contingent',
+          'Friendly errors: illegal characters, unclosed parentheses, missing operands and trailing content are reported with a column number instead of throwing',
+        ],
+        howToUse: [
+          'Enter one boolean expression per line; variable names are identifiers starting with a letter or underscore (e.g. A, x1, enable)',
+          'The truth table renders instantly: the left columns show variable assignments (T/F) and the right columns show each expression result, titled with the raw expression',
+          'Tags below the table classify every expression as a tautology, contradiction or contingent formula',
+          'Click Copy to copy the whole table as tab-separated text for a document or spreadsheet',
+        ],
+        useCases: [
+          'Discrete-math / digital-logic practice: verify De Morgan’s laws, distributivity and identities such as A -> B being equivalent to NOT A OR B',
+          'Checking program conditions: enumerate complex if-conditions (and/or/xor/not) to confirm branch behavior at boundary values',
+          'Circuit simplification: compare an expression with a rewritten equivalent row by row before simplifying',
+        ],
+        privacyNote:
+          'All lexing, parsing and enumeration happen locally in the browser. No network requests are made and entered expressions never leave your device.',
+        faqs: [
+          {
+            question: 'Why is A | B ^ C parsed as A | (B ^ C) instead of (A | B) ^ C?',
+            answer:
+              'Precedence follows the common C / JavaScript / Python convention: AND (&) binds tighter than XOR (^), which binds tighter than OR (|). XOR therefore groups before OR; add explicit parentheses when you need another grouping.',
+          },
+          {
+            question: 'Why are at least 2 variables required?',
+            answer:
+              'A truth table is meant to show logical relationships over combinations that a single variable cannot express. An expression with one variable (such as A AND NOT A) triggers a not-enough-variables message; use at least two variables or compare several expressions instead.',
+          },
+          {
+            question: 'What variable names and keyword spellings are supported?',
+            answer:
+              'Variables are identifiers starting with a letter or underscore followed by letters, digits or underscores. The keywords AND, OR, NOT and XOR are case-insensitive (and, And both work) and are reserved, so they cannot be used as variable names.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'iso-week-date-converter',
+    name: 'ISO 8601 周边历双向转换器',
+    nameEn: 'ISO 8601 Week Date Converter',
+    description:
+      '在 ISO 8601 周边历（如 2026-W44-4）与公历 YYYY-MM-DD 之间双向转换：输入公历日期自动算出 ISO 周年号、周序号（1–53）、星期几与规范串；输入 YYYY-Www-D 反查公历日期；自动标注该 ISO 年含 52 还是 53 周（长年），并对跨年周边界（如 2021-01-01 属 2020-W53-5、2023-01-01 属 2022-W52-7）给出归属提示。支持逐行批量、自动识别方向，W54、星期 8、2 月 30 日等非法输入带行号报错。适用于财务结算周、教育周次与跨境协作周历核对。纯本地确定性计算（序数日算法、不涉及时区），零新增依赖、不发起网络请求。',
+    descriptionEn:
+      'Convert between ISO 8601 week dates (e.g. 2026-W44-4) and Gregorian YYYY-MM-DD dates in both directions. A Gregorian date yields the ISO week-year, week number (1–53), weekday and canonical string; a YYYY-Www-D value maps back to a Gregorian date. The tool marks whether the ISO year has 52 or 53 weeks (a long year) and explains cross-year boundaries (e.g. 2021-01-01 is 2020-W53-5 and 2023-01-01 is 2022-W52-7). It processes many lines at a time, auto-detects direction, and reports invalid input such as W54, weekday 8 or February 30 with line numbers. Built for fiscal settlement weeks, academic week numbering and cross-border calendar alignment. Fully local deterministic computation on ordinal days (no time zones), with zero new dependencies and no network requests.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/iso-week-date-converter',
+    iconName: 'Clock',
+    tags: ['ISO 8601', '周边历', '日期转换', '周次', '公历', '跨年'],
+    tagsEn: ['ISO 8601', 'Week Date', 'Date Conversion', 'Week Number', 'Gregorian', 'Cross-Year'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '2026-10-29\n2021-01-01\n2023-01-01\n2020-01-01\n2026-W44-4\n2020-W53-5',
+    doc: {
+      zh: {
+        whatIsIt:
+          'ISO 8601 周边历双向转换器是一款纯浏览器本地运行的日期工具。ISO 周边历用「周年号 + 周序号 + 星期」标识日期（形如 2026-W44-4），规则是周一为每周第一天、包含 1 月 4 日的那一周为第 1 周。由于公历年与 ISO 年并不对齐，年初年末的日期可能归属相邻的 ISO 年（例如 2021-01-01 其实是 2020 年第 53 周的周五）。本工具基于公历序数日做确定性换算，不依赖 Date 的时分秒与时区，输出规范串、周总数与跨年归属提示。',
+        coreFeatures: [
+          '公历 → 周边历：YYYY-MM-DD 输出 ISO 周年、周序号、星期（1–7）与规范串 YYYY-Www-D',
+          '周边历 → 公历：YYYY-Www-D 反查公历日期，自动识别输入方向，可逐行批量混排',
+          '长年标注：自动判定 ISO 年含 52 还是 53 周（1 月 1 日为周四、或闰年且为周三即长年）',
+          '跨年提示：年初年末日期归属上一 / 下一 ISO 年（或周边历落入相邻公历年）时给出明确说明',
+          '严格校验：W54、不存在的 W53、星期 0/8、2 月 30 日、格式错误均带原因报错而非抛异常',
+        ],
+        howToUse: [
+          '每行输入一个日期：公历写 YYYY-MM-DD（如 2026-10-29），周边历写 YYYY-Www-D（如 2026-W44-4）',
+          '两种方向可在同一次输入中混排，工具按是否含 -W 自动识别',
+          '输出区展示公历（含星期）、ISO 规范串、周年与周序号、该 ISO 年总周数',
+          '存在跨年周边界时附归属提示；非法行在黄色告警中按行号说明原因',
+        ],
+        useCases: [
+          '财务结算：把发票、对账、工资结算的公历日期换算为财务周 / ISO 周序号，核对年终结算归属年度',
+          '教育与项目排期：教学周、冲刺周编号与日历日期互相定位，避免年初第一周口径分歧',
+          '跨境协作：与采用 ISO 周边历的欧洲团队对齐周次，快速确认某周周一到周日的具体日期',
+        ],
+        privacyNote:
+          '所有换算均为浏览器本地确定性计算，不使用时区、不发起任何网络请求，输入的日期不会离开设备。',
+        faqs: [
+          {
+            question: '为什么 2021 年 1 月 1 日显示成 2020-W53？',
+            answer:
+              'ISO 周边历中一周必须完整包含周一到周日，且第 1 周是含 1 月 4 日的那一周。2021-01-01 是周五，它所在的周大部分日子（周一至周四）还在 2020 年，而 2020 年恰为含 53 周的长年，因此该日记作 2020-W53-5。工具会在提示行说明这一跨年归属。',
+          },
+          {
+            question: '什么是 ISO 长年？哪些年有 53 周？',
+            answer:
+              '若一个 ISO 年的 1 月 1 日是周四，则该年有 53 个完整周；若 1 月 1 日是周三且该年为公历闰年，同样有 53 周。其余年份为 52 周。例如 2020 与 2026 都是 53 周，2021–2023 为 52 周。',
+          },
+          {
+            question: '为什么不用浏览器的 Date 直接取周数？',
+            answer:
+              'Date 没有标准化的 ISO 周年 / 周序号接口，且受运行环境时区影响，跨年边界可能因时区偏移出现偏差。本工具用纯序数日算法（1970-01-01 为第 0 天、该日为周四）直接推导，结果在任何环境与时区下都一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ISO 8601 Week Date Converter is a date tool that runs entirely in the browser. An ISO week date identifies a day by week-year, week number and weekday (for example 2026-W44-4), with Monday as the first weekday and week 1 being the week that contains January 4. Because Gregorian and ISO week-years do not line up, dates near New Year can belong to the neighboring ISO year (for instance 2021-01-01 is Friday of week 53 of 2020). The tool performs deterministic conversion with a Gregorian ordinal-day algorithm, never relying on Date time-of-day or time zones, and emits the canonical string, week count and a cross-year note.',
+        coreFeatures: [
+          'Gregorian → week date: YYYY-MM-DD yields ISO week-year, week number, weekday (1–7) and the canonical YYYY-Www-D string',
+          'Week date → Gregorian: YYYY-Www-D maps back to a calendar date; direction is auto-detected and many lines can be mixed in one batch',
+          'Long-year marking: decides whether the ISO year has 52 or 53 weeks (January 1 is Thursday, or Wednesday in a Gregorian leap year)',
+          'Cross-year notes: dates near year boundaries that belong to the previous/next ISO year (or week dates falling in an adjacent Gregorian year) are explained explicitly',
+          'Strict validation: W54, a nonexistent W53, weekday 0/8, February 30 and malformed text all produce a reasoned error instead of throwing',
+        ],
+        howToUse: [
+          'Enter one date per line: Gregorian as YYYY-MM-DD (e.g. 2026-10-29) or week date as YYYY-Www-D (e.g. 2026-W44-4)',
+          'Both directions may be mixed in the same input; the tool detects direction from the -W marker',
+          'Output shows the Gregorian date with weekday, the canonical ISO string, week-year and week number, and the total weeks in that ISO year',
+          'Cross-year boundaries get an explanatory note; invalid lines are reported by line number in the yellow warnings',
+        ],
+        useCases: [
+          'Fiscal operations: convert invoice, reconciliation and payroll dates to fiscal/ISO week numbers and verify which year a year-end settlement belongs to',
+          'Academic and project scheduling: map teaching weeks and sprint numbers to calendar dates without disagreement over the first week of January',
+          'Cross-border collaboration: align week numbering with European teams using ISO week dates and find the Monday–Friday of any week',
+        ],
+        privacyNote:
+          'All conversion is deterministic local browser computation. It uses no time zone, makes no network requests and entered dates never leave your device.',
+        faqs: [
+          {
+            question: 'Why does January 1, 2021 appear as 2020-W53?',
+            answer:
+              'An ISO week always runs Monday through Sunday, and week 1 is the week containing January 4. January 1, 2021 was a Friday, and most of that week (Monday to Thursday) was still in 2020; 2020 was also a long 53-week ISO year. The day is therefore 2020-W53-5, and the tool explains this cross-year assignment in a note.',
+          },
+          {
+            question: 'What is an ISO long year and which years have 53 weeks?',
+            answer:
+              'An ISO year has 53 complete weeks when January 1 falls on Thursday, or when January 1 is Wednesday and the Gregorian year is a leap year. All other years have 52 weeks. For example, 2020 and 2026 have 53 weeks while 2021–2023 have 52.',
+          },
+          {
+            question: 'Why not read the week number directly from the browser Date?',
+            answer:
+              'Date has no standardized ISO week-year/week API and is affected by the runtime time zone, so cross-year boundaries can shift with zone offsets. The tool instead derives everything from a pure ordinal-day algorithm (1970-01-01 is day 0 and a Thursday), giving identical results in every environment and zone.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'number-range-expander',
+    name: '数值区间批量展开器与压缩器',
+    nameEn: 'Number Range Expander & Collapser',
+    description:
+      '在紧凑区间表达式与离散整数列表之间双向批量转换。展开方向把 1-5, 10, 12-14 解析为完整数列（1,2,3,4,5,10,12,13,14），支持可选步长（0-10:2 输出偶数序列）与负数区间（-5--1），逗号、空格、换行均可作为分隔符；压缩方向把乱序、重复的数字列表排序去重后合并为最小区间表示（5,3,1,2,4,4,6,8 → 1-6,8），连续 ≥3 个数才合并、两个连续数保持单列以保证与展开可逆。基于 BigInt 支持超过 2^53 的任意精度整数，可选逗号 / 逗号空格 / 换行 / 空格四种输出分隔符；倒置区间、非正步长、非法 token 均给出明确中文错误，展开结果设 100000 个元素安全上限。适用于端口号清单、ID 段、页码范围等批量数值整理。纯浏览器本地处理、零新增依赖、不发起网络请求。',
+    descriptionEn:
+      'Convert bidirectionally between compact range expressions and explicit integer lists. Expanding turns 1-5, 10, 12-14 into 1,2,3,4,5,10,12,13,14, supports an optional step (0-10:2 yields evens) and negative ranges (-5--1), and accepts commas, spaces or newlines as separators. Collapsing sorts and de-duplicates a messy number list and merges runs into the minimal range notation (5,3,1,2,4,4,6,8 becomes 1-6,8); only runs of at least three consecutive numbers merge, while pairs stay separate so the transform stays reversible. Built on BigInt for arbitrary-precision integers beyond 2^53, with four output separator choices (comma, comma+space, newline, space). Reversed ranges, non-positive steps and invalid tokens produce clear error messages, and expansion is capped at 100000 elements. Useful for port lists, ID segments and page ranges. Fully local processing with zero new dependencies and no network requests.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/number-range-expander',
+    iconName: 'Hash',
+    tags: ['区间展开', '数值列表', 'BigInt', '端口号', '批量处理', '去重'],
+    tagsEn: ['Range Expansion', 'Number List', 'BigInt', 'Port List', 'Batch', 'Deduplicate'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1-5, 10, 12-14\n0-10:2\n-5--1',
+    doc: {
+      zh: {
+        whatIsIt:
+          '数值区间批量展开器与压缩器是一款纯浏览器本地运行的批量数值整理工具，在「紧凑区间表达式」与「完整离散数列」之间双向转换。展开方向识别单值、a-b 闭区间与 a-b:s 带步长区间（如 1-5、0-10:2、-5--1），按书写顺序输出每个整数；压缩方向把可能乱序、重复、跨行的数字排序去重，再把连续 ≥3 个数合并为 a-b，输出最小区间表示。全部运算基于 BigInt，可安全处理超过 JavaScript 安全整数上限（2^53-1）的编号。',
+        coreFeatures: [
+          '区间展开：单值、a-b 闭区间、a-b:s 带步长区间混排，逗号 / 空格 / Tab / 换行分隔均可',
+          '负数支持：起点或终点为负数时正确识别（-3-2、-5--1），倒置区间（5-1）明确报错',
+          '列表压缩：乱序重复数字自动排序去重，连续 ≥3 个合并为 a-b，两个连续数保持单列',
+          'BigInt 任意精度：支持远超 2^53 的大整数，展开与压缩往返一致',
+          '输出可控：四种输出分隔符可选（逗号、逗号空格、换行、空格），一键复制；100000 元素安全上限防卡顿',
+        ],
+        howToUse: [
+          '顶部切换方向：「展开区间 → 数列」或「压缩数列 → 区间」',
+          '展开时在左侧输入如 1-5, 10, 12-14，步长写法 0-10:2，负数区间如 -5--1',
+          '压缩时在左侧输入离散整数（允许乱序、重复、换行），如 5,3,1,2,4,4,6,8',
+          '右侧实时显示结果与元素数量，底部可切换输出分隔符并复制；输入有误时在输出区显示具体错误',
+        ],
+        useCases: [
+          '运维与网络：把端口段 8000-8010、3000-3005 展开为防火墙 / 扫描器所需的端口号清单，或反向归并',
+          '数据与研发：批量整理 ID 段、页码范围、分片编号，去重排序后压缩为最紧凑表达',
+          '测试造数：按步长快速生成等差序列（如 0-10:2 的偶数），复制为参数化测试数据',
+        ],
+        privacyNote:
+          '所有解析与计算均在浏览器本地完成，不发起任何网络请求，输入的数字不会离开设备。',
+        faqs: [
+          {
+            question: '为什么压缩时连续两个数不合并（如 1,2 仍输出 1,2）？',
+            answer:
+              '连续 ≥3 个数合并为 a-b 才能保证「展开 ↔ 压缩」可逆且无歧义；若把 1,2 合并成 1-2，再展开虽然结果相同，但区间记号通常隐含至少跨越一个步长。为让两种方向的输出严格对应、便于核对，本工具仅在连续不少于 3 个数时才合并。',
+          },
+          {
+            question: '如何输入负数区间？-5--1 是什么意思？',
+            answer:
+              '区间连字符是起点之后的第一个 -，因此起点带负号时写 -3-2（从 -3 到 2），终点也为负时两个连字符紧贴，写作 -5--1（从 -5 到 -1）。解析器会跳过起点位置的正负号再寻找区间连字符。',
+          },
+          {
+            question: '为什么用 BigInt？支持多大的数？',
+            answer:
+              'JavaScript 普通数字超过 2^53-1 后无法精确表示每个整数，处理雪花 ID、长编号等场景会丢精度。本工具全程使用 BigInt 按十进制字符串精确运算，没有固定位数上限；同时设置单次展开不超过 100000 个元素，避免超大区间拖慢页面。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Number Range Expander & Collapser is a batch number-formatting tool that runs entirely in the browser, converting in both directions between compact range expressions and explicit integer lists. Expanding recognizes single values, a-b closed ranges and a-b:s stepped ranges (e.g. 1-5, 0-10:2, -5--1) and emits every integer in input order. Collapsing sorts and de-duplicates a messy, possibly multi-line list and merges runs of at least three consecutive numbers into a-b, producing the minimal range notation. Every calculation uses BigInt, so identifiers beyond the JavaScript safe-integer limit (2^53-1) are handled exactly.',
+        coreFeatures: [
+          'Range expansion: single values, a-b closed ranges and a-b:s stepped ranges mixed freely; commas, spaces, tabs and newlines all separate tokens',
+          'Negative numbers: negative start or end is parsed correctly (-3-2, -5--1) and reversed ranges such as 5-1 are rejected with a clear message',
+          'List collapsing: unsorted, duplicated numbers are sorted and de-duplicated; runs of ≥3 merge into a-b while pairs stay listed separately',
+          'Arbitrary precision with BigInt: integers far beyond 2^53 are exact, and expand-then-collapse round-trips consistently',
+          'Configurable output: four separators (comma, comma+space, newline, space), one-click copy, and a 100000-element safety cap',
+        ],
+        howToUse: [
+          'Switch direction at the top: "Expand ranges → list" or "Collapse list → ranges"',
+          'To expand, enter something like 1-5, 10, 12-14; stepped syntax is 0-10:2 and a negative range looks like -5--1',
+          'To collapse, enter discrete integers (unsorted, duplicated and multi-line input is fine), e.g. 5,3,1,2,4,4,6,8',
+          'The right panel shows the result and element count live; pick an output separator at the bottom and copy. Invalid input shows a specific error under the output',
+        ],
+        useCases: [
+          'Ops and networking: expand port segments 8000-8010 or 3000-3005 into the explicit lists firewalls and scanners expect, or merge them back',
+          'Data and engineering: tidy ID segments, page ranges and shard numbers, de-duplicate and sort them into the most compact expression',
+          'Test data: generate arithmetic sequences quickly via steps (e.g. 0-10:2 for evens) and copy them as parameterized test values',
+        ],
+        privacyNote:
+          'All parsing and computation happens locally in the browser with no network requests; the numbers you enter never leave your device.',
+        faqs: [
+          {
+            question: 'Why do two consecutive numbers stay separate when collapsing (1,2 stays 1,2)?',
+            answer:
+              'Merging only runs of three or more into a-b keeps expand and collapse unambiguous and reversible. If 1,2 became 1-2, re-expanding would still match, but a range notation conventionally spans at least one interior step. To keep both directions strictly corresponding and easy to verify, the tool merges only runs of at least three numbers.',
+          },
+          {
+            question: 'How do I enter negative ranges? What does -5--1 mean?',
+            answer:
+              'The range dash is the first hyphen after the start value, so a negative start is written -3-2 (from -3 to 2) and when the end is also negative the two hyphens sit together as -5--1 (from -5 to -1). The parser skips the sign at position 0 and then looks for the range hyphen.',
+          },
+          {
+            question: 'Why BigInt and how large can numbers be?',
+            answer:
+              'Ordinary JavaScript numbers cannot represent every integer beyond 2^53-1, which loses precision with snowflake IDs and long identifiers. This tool computes exactly on BigInt decimal strings with no fixed digit limit, while capping a single expansion at 100000 elements so that huge ranges cannot freeze the page.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

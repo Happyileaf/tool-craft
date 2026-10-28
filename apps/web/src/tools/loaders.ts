@@ -125,4 +125,9 @@ export const toolLoaders: Record<
   'mongodb-objectid': () => import('./mongodb-objectid'),
   'jsonc-to-json': () => import('./jsonc-to-json'),
   'unified-social-credit-code': () => import('./unified-social-credit-code'),
+  'id-card-validator': () => import('./id-card-validator'),
+  'ip-address-converter': () => import('./ip-address-converter'),
+  'boolean-truth-table': () => import('./boolean-truth-table'),
+  'iso-week-date-converter': () => import('./iso-week-date-converter'),
+  'number-range-expander': () => import('./number-range-expander'),
 };

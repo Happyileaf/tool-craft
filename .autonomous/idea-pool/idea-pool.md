@@ -100,8 +100,8 @@
 | 20261023040535 | nginx server 配置生成器 | Web Tool | External Reference | Pending | 2026-10-23 | | [详情](./idea-details/20261023040535.md) |
 | 20261023040539 | ISBN-10 ↔ ISBN-13 校验与互转 | Web Tool | Exploration | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023040539.md) |
 | 20261023081551 | 文本模式批量提取器（邮箱 / URL / IP / UUID 等常用模式） | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023081551.md) |
-| 20261023081552 | 身份证号码校验与升位（GB 11643-1999） | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023081552.md) |
-| 20261023081553 | IPv4 / IPv6 地址与整数 / 十六进制互转 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023081553.md) |
+| 20261023081552 | 身份证号码校验与升位（GB 11643-1999） | Web Tool | Exploration | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023081552.md) |
+| 20261023081553 | IPv4 / IPv6 地址与整数 / 十六进制互转 | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023081553.md) |
 | 20261023081554 | UUID v7 生成器（RFC 9562） | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023081554.md) |
 | 20261023081556 | CHANGELOG.md 生成器（Keep a Changelog） | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023081556.md) |
 | 20261023141142 | CSS transform 矩阵计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141142.md) |
@@ -160,7 +160,7 @@
 | 20261028140208 | MongoDB ObjectId 生成与解析器（时间戳 / 随机 / 计数器拆解） | Web Tool | Exploration | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028140208.md) |
 | 20261028140209 | 以太坊 RLP（Recursive Length Prefix）递归长度前缀编解码器 | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028140209.md) |
 | 20261028202203 | JSON 键名命名风格批量递归转换器（camelCase / snake_case / kebab-case 等） | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028202203.md) |
-| 20261028202204 | 布尔表达式真值表生成器 | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028202204.md) |
+| 20261028202204 | 布尔表达式真值表生成器 | Web Tool | Exploration | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028202204.md) |
 | 20261028202205 | 三角形求解器（已知三边/两边夹角/两角一边解三角形） | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028202205.md) |
-| 20261028202206 | ISO 8601 周边历（周年号/周数/星期）与公历日期双向转换器 | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028202206.md) |
-| 20261028202207 | 数值区间批量展开器与压缩器（range expand / collapse） | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028202207.md) |
+| 20261028202206 | ISO 8601 周边历（周年号/周数/星期）与公历日期双向转换器 | Web Tool | Existing Gap | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028202206.md) |
+| 20261028202207 | 数值区间批量展开器与压缩器（range expand / collapse） | Web Tool | Exploration | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028202207.md) |
