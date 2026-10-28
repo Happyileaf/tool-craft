@@ -10488,6 +10488,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'iso-week-date-converter',
+    name: 'ISO 8601 周边历双向转换器',
+    nameEn: 'ISO 8601 Week Date Converter',
+    description:
+      '在 ISO 8601 周边历（如 2026-W44-4）与公历 YYYY-MM-DD 之间双向转换：输入公历日期自动算出 ISO 周年号、周序号（1–53）、星期几与规范串；输入 YYYY-Www-D 反查公历日期；自动标注该 ISO 年含 52 还是 53 周（长年），并对跨年周边界（如 2021-01-01 属 2020-W53-5、2023-01-01 属 2022-W52-7）给出归属提示。支持逐行批量、自动识别方向，W54、星期 8、2 月 30 日等非法输入带行号报错。适用于财务结算周、教育周次与跨境协作周历核对。纯本地确定性计算（序数日算法、不涉及时区），零新增依赖、不发起网络请求。',
+    descriptionEn:
+      'Convert between ISO 8601 week dates (e.g. 2026-W44-4) and Gregorian YYYY-MM-DD dates in both directions. A Gregorian date yields the ISO week-year, week number (1–53), weekday and canonical string; a YYYY-Www-D value maps back to a Gregorian date. The tool marks whether the ISO year has 52 or 53 weeks (a long year) and explains cross-year boundaries (e.g. 2021-01-01 is 2020-W53-5 and 2023-01-01 is 2022-W52-7). It processes many lines at a time, auto-detects direction, and reports invalid input such as W54, weekday 8 or February 30 with line numbers. Built for fiscal settlement weeks, academic week numbering and cross-border calendar alignment. Fully local deterministic computation on ordinal days (no time zones), with zero new dependencies and no network requests.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/iso-week-date-converter',
+    iconName: 'Clock',
+    tags: ['ISO 8601', '周边历', '日期转换', '周次', '公历', '跨年'],
+    tagsEn: ['ISO 8601', 'Week Date', 'Date Conversion', 'Week Number', 'Gregorian', 'Cross-Year'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '2026-10-29\n2021-01-01\n2023-01-01\n2020-01-01\n2026-W44-4\n2020-W53-5',
+    doc: {
+      zh: {
+        whatIsIt:
+          'ISO 8601 周边历双向转换器是一款纯浏览器本地运行的日期工具。ISO 周边历用「周年号 + 周序号 + 星期」标识日期（形如 2026-W44-4），规则是周一为每周第一天、包含 1 月 4 日的那一周为第 1 周。由于公历年与 ISO 年并不对齐，年初年末的日期可能归属相邻的 ISO 年（例如 2021-01-01 其实是 2020 年第 53 周的周五）。本工具基于公历序数日做确定性换算，不依赖 Date 的时分秒与时区，输出规范串、周总数与跨年归属提示。',
+        coreFeatures: [
+          '公历 → 周边历：YYYY-MM-DD 输出 ISO 周年、周序号、星期（1–7）与规范串 YYYY-Www-D',
+          '周边历 → 公历：YYYY-Www-D 反查公历日期，自动识别输入方向，可逐行批量混排',
+          '长年标注：自动判定 ISO 年含 52 还是 53 周（1 月 1 日为周四、或闰年且为周三即长年）',
+          '跨年提示：年初年末日期归属上一 / 下一 ISO 年（或周边历落入相邻公历年）时给出明确说明',
+          '严格校验：W54、不存在的 W53、星期 0/8、2 月 30 日、格式错误均带原因报错而非抛异常',
+        ],
+        howToUse: [
+          '每行输入一个日期：公历写 YYYY-MM-DD（如 2026-10-29），周边历写 YYYY-Www-D（如 2026-W44-4）',
+          '两种方向可在同一次输入中混排，工具按是否含 -W 自动识别',
+          '输出区展示公历（含星期）、ISO 规范串、周年与周序号、该 ISO 年总周数',
+          '存在跨年周边界时附归属提示；非法行在黄色告警中按行号说明原因',
+        ],
+        useCases: [
+          '财务结算：把发票、对账、工资结算的公历日期换算为财务周 / ISO 周序号，核对年终结算归属年度',
+          '教育与项目排期：教学周、冲刺周编号与日历日期互相定位，避免年初第一周口径分歧',
+          '跨境协作：与采用 ISO 周边历的欧洲团队对齐周次，快速确认某周周一到周日的具体日期',
+        ],
+        privacyNote:
+          '所有换算均为浏览器本地确定性计算，不使用时区、不发起任何网络请求，输入的日期不会离开设备。',
+        faqs: [
+          {
+            question: '为什么 2021 年 1 月 1 日显示成 2020-W53？',
+            answer:
+              'ISO 周边历中一周必须完整包含周一到周日，且第 1 周是含 1 月 4 日的那一周。2021-01-01 是周五，它所在的周大部分日子（周一至周四）还在 2020 年，而 2020 年恰为含 53 周的长年，因此该日记作 2020-W53-5。工具会在提示行说明这一跨年归属。',
+          },
+          {
+            question: '什么是 ISO 长年？哪些年有 53 周？',
+            answer:
+              '若一个 ISO 年的 1 月 1 日是周四，则该年有 53 个完整周；若 1 月 1 日是周三且该年为公历闰年，同样有 53 周。其余年份为 52 周。例如 2020 与 2026 都是 53 周，2021–2023 为 52 周。',
+          },
+          {
+            question: '为什么不用浏览器的 Date 直接取周数？',
+            answer:
+              'Date 没有标准化的 ISO 周年 / 周序号接口，且受运行环境时区影响，跨年边界可能因时区偏移出现偏差。本工具用纯序数日算法（1970-01-01 为第 0 天、该日为周四）直接推导，结果在任何环境与时区下都一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ISO 8601 Week Date Converter is a date tool that runs entirely in the browser. An ISO week date identifies a day by week-year, week number and weekday (for example 2026-W44-4), with Monday as the first weekday and week 1 being the week that contains January 4. Because Gregorian and ISO week-years do not line up, dates near New Year can belong to the neighboring ISO year (for instance 2021-01-01 is Friday of week 53 of 2020). The tool performs deterministic conversion with a Gregorian ordinal-day algorithm, never relying on Date time-of-day or time zones, and emits the canonical string, week count and a cross-year note.',
+        coreFeatures: [
+          'Gregorian → week date: YYYY-MM-DD yields ISO week-year, week number, weekday (1–7) and the canonical YYYY-Www-D string',
+          'Week date → Gregorian: YYYY-Www-D maps back to a calendar date; direction is auto-detected and many lines can be mixed in one batch',
+          'Long-year marking: decides whether the ISO year has 52 or 53 weeks (January 1 is Thursday, or Wednesday in a Gregorian leap year)',
+          'Cross-year notes: dates near year boundaries that belong to the previous/next ISO year (or week dates falling in an adjacent Gregorian year) are explained explicitly',
+          'Strict validation: W54, a nonexistent W53, weekday 0/8, February 30 and malformed text all produce a reasoned error instead of throwing',
+        ],
+        howToUse: [
+          'Enter one date per line: Gregorian as YYYY-MM-DD (e.g. 2026-10-29) or week date as YYYY-Www-D (e.g. 2026-W44-4)',
+          'Both directions may be mixed in the same input; the tool detects direction from the -W marker',
+          'Output shows the Gregorian date with weekday, the canonical ISO string, week-year and week number, and the total weeks in that ISO year',
+          'Cross-year boundaries get an explanatory note; invalid lines are reported by line number in the yellow warnings',
+        ],
+        useCases: [
+          'Fiscal operations: convert invoice, reconciliation and payroll dates to fiscal/ISO week numbers and verify which year a year-end settlement belongs to',
+          'Academic and project scheduling: map teaching weeks and sprint numbers to calendar dates without disagreement over the first week of January',
+          'Cross-border collaboration: align week numbering with European teams using ISO week dates and find the Monday–Friday of any week',
+        ],
+        privacyNote:
+          'All conversion is deterministic local browser computation. It uses no time zone, makes no network requests and entered dates never leave your device.',
+        faqs: [
+          {
+            question: 'Why does January 1, 2021 appear as 2020-W53?',
+            answer:
+              'An ISO week always runs Monday through Sunday, and week 1 is the week containing January 4. January 1, 2021 was a Friday, and most of that week (Monday to Thursday) was still in 2020; 2020 was also a long 53-week ISO year. The day is therefore 2020-W53-5, and the tool explains this cross-year assignment in a note.',
+          },
+          {
+            question: 'What is an ISO long year and which years have 53 weeks?',
+            answer:
+              'An ISO year has 53 complete weeks when January 1 falls on Thursday, or when January 1 is Wednesday and the Gregorian year is a leap year. All other years have 52 weeks. For example, 2020 and 2026 have 53 weeks while 2021–2023 have 52.',
+          },
+          {
+            question: 'Why not read the week number directly from the browser Date?',
+            answer:
+              'Date has no standardized ISO week-year/week API and is affected by the runtime time zone, so cross-year boundaries can shift with zone offsets. The tool instead derives everything from a pure ordinal-day algorithm (1970-01-01 is day 0 and a Thursday), giving identical results in every environment and zone.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

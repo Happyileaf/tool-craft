@@ -162,5 +162,5 @@
 | 20261028202203 | JSON 键名命名风格批量递归转换器（camelCase / snake_case / kebab-case 等） | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028202203.md) |
 | 20261028202204 | 布尔表达式真值表生成器 | Web Tool | Exploration | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028202204.md) |
 | 20261028202205 | 三角形求解器（已知三边/两边夹角/两角一边解三角形） | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028202205.md) |
-| 20261028202206 | ISO 8601 周边历（周年号/周数/星期）与公历日期双向转换器 | Web Tool | Existing Gap | Claimed | 2026-10-28 | trae-agent | [详情](./idea-details/20261028202206.md) |
+| 20261028202206 | ISO 8601 周边历（周年号/周数/星期）与公历日期双向转换器 | Web Tool | Existing Gap | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028202206.md) |
 | 20261028202207 | 数值区间批量展开器与压缩器（range expand / collapse） | Web Tool | Exploration | Claimed | 2026-10-28 | trae-agent | [详情](./idea-details/20261028202207.md) |

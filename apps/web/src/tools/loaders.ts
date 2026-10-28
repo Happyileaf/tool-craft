@@ -128,4 +128,5 @@ export const toolLoaders: Record<
   'id-card-validator': () => import('./id-card-validator'),
   'ip-address-converter': () => import('./ip-address-converter'),
   'boolean-truth-table': () => import('./boolean-truth-table'),
+  'iso-week-date-converter': () => import('./iso-week-date-converter'),
 };
