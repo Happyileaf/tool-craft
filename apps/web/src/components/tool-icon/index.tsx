@@ -1,4 +1,5 @@
 import {
+  Barcode,
   Binary,
   Blend,
   Braces,
@@ -11,6 +12,9 @@ import {
   FileText,
   Fingerprint,
   Gauge,
+  Globe,
+  HardDrive,
+  Hash,
   Image,
   KeyRound,
   Layers,
@@ -25,6 +29,7 @@ import {
   Sigma,
   Snowflake,
   Sparkles,
+  Table2,
   Tags,
   Type,
   type LucideProps,
@@ -62,6 +67,11 @@ const toolIconMap = {
   Sigma,
   KeyRound,
   Music,
+  Globe,
+  Hash,
+  Table2,
+  HardDrive,
+  Barcode,
 };
 
 /**

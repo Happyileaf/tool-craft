@@ -115,4 +115,9 @@ export const toolLoaders: Record<
   'http-status-codes': () => import('./http-status-codes'),
   'rgb-cmyk-converter': () => import('./rgb-cmyk-converter'),
   'env-converter': () => import('./env-converter'),
+  'punycode-converter': () => import('./punycode-converter'),
+  'hex-dump-viewer': () => import('./hex-dump-viewer'),
+  'excel-column-converter': () => import('./excel-column-converter'),
+  'file-size-converter': () => import('./file-size-converter'),
+  'ean13-checksum': () => import('./ean13-checksum'),
 };

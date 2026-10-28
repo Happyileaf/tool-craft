@@ -9127,6 +9127,536 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'punycode-converter',
+    name: 'Punycode / IDN 域名转换器',
+    nameEn: 'Punycode & IDN Domain Converter',
+    description:
+      '基于 RFC 3492 自实现的 Punycode（Bootstring）编解码器，把含中文、日文、Emoji 等非 ASCII 字符的域名在 Unicode 与 xn-- ACE ASCII 形式之间实时互转，例如「中文.中国」与「xn--fiq228c.xn--fiqs8s」。支持多标签域名、邮箱地址（仅转换 @ 后域名）、中文全角点、多行批量转换与裸 Bootstring 编解码；非法 xn-- 标签给出可读错误而不抛异常。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'A from-scratch RFC 3492 Punycode (Bootstring) encoder/decoder that converts internationalized domain names containing Chinese, Japanese, emoji, and other non-ASCII characters between Unicode and the xn-- ASCII Compatible Encoding form—e.g. 中文.中国 ↔ xn--fiq228c.xn--fiqs8s. It supports multi-label domains, email addresses (converting only the domain after @), full-width dots, multi-line batch conversion, and raw Bootstring encoding. Malformed xn-- labels report readable errors instead of throwing. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/punycode-converter',
+    iconName: 'Globe',
+    tags: ['Punycode', 'IDN', '国际化域名', 'xn--', 'RFC 3492', '编码'],
+    tagsEn: ['Punycode', 'IDN', 'Internationalized Domain', 'xn--', 'RFC 3492', 'Encoding'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'münchen.de\n中文.中国\n例え.jp\ninfo@bücher.example',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Punycode / IDN 域名转换器是一款纯浏览器本地运行的国际化域名工具，依据 RFC 3492 Bootstring 算法从零实现编解码，在 Unicode 域名（如「münchen.de」「中文.中国」）与 DNS 实际使用的 ASCII ACE 形式（xn-- 前缀）之间双向转换。',
+        coreFeatures: [
+          'RFC 3492 官方向量验证：München、简繁中文、日文、西里尔字母及 Emoji 等代码点编解码正确',
+          '域名模式：按点分标签逐个转换，非 ASCII 标签自动加 / 去 xn-- 前缀，纯 ASCII 标签原样保留',
+          '支持邮箱地址：仅转换 @ 之后的域名部分，本地部分保持不变',
+          '兼容中文全角点（。 ．）输入，输出统一为标准 ASCII 点；支持多行批量转换',
+          '裸 Bootstring 模式：对整段任意文本做 Punycode 编解码，便于学习与调试算法',
+          '错误友好：非法 xn-- 标签、截断的编码段等返回可读错误或带行号警告，不抛异常',
+          '纯本地计算：零新增依赖，输入内容不发起任何网络请求',
+        ],
+        howToUse: [
+          '在输入卡片顶部选择转换方向：Unicode → ASCII 或 ASCII → Unicode',
+          '底部可切换「域名 / 邮箱」与「裸 Punycode」两种模式',
+          '域名模式下每行一个域名或邮箱，右侧实时输出转换结果；支持一次粘贴多行批量处理',
+          '个别行无法转换时该行原样保留并在输出区给出黄色行号警告，不影响其他行',
+          '点击「交换输入 / 输出方向」可把结果回填并反向转换；点击「复制」获取结果',
+        ],
+        useCases: [
+          '运维与开发：在 DNS 记录、证书日志、抓包数据中看到 xn-- 域名时还原为可读的本地语言域名',
+          '国际化业务：把中文、日文、阿拉伯文等营销域名转换为可配置到 DNS / 服务器的 ASCII 形式',
+          '学习调试：对照 RFC 3492 官方向量理解 Bootstring 的偏置自适应与变长整数编码',
+        ],
+        privacyNote:
+          '全部编解码均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；粘贴的域名与邮箱不会离开设备。',
+        faqs: [
+          {
+            question: 'Punycode 与 URL 编码（百分号编码）是一回事吗？',
+            answer:
+              '不是。Punycode 是 RFC 3492 定义的 Bootstring 编码，专用于把国际化域名表示为 DNS 合法的 ASCII 标签（xn-- 前缀）；百分号编码用于 URL 的路径与查询串。本工具只处理域名标签与裸 Bootstring，不做 URL 百分号编解码。',
+          },
+          {
+            question: '为什么「3-2」在裸 Punycode 模式下编码为「3-2-」？',
+            answer:
+              'Punycode 用连字符作为基本码点段与扩展编码段的分隔符；当输入全部是 ASCII 字符时，编码结果就是原字符串末尾追加一个分隔符，因此「3-2」编码为「3-2-」。在域名模式下纯 ASCII 标签不会加 xn-- 前缀，原样返回。',
+          },
+          {
+            question: '为什么粘贴的 xn-- 域名报非法错误？',
+            answer:
+              'xn-- 之后的内容必须是合法的 Bootstring（只含 a-z0-9 且变长整数序列可完整解码）。截断、混入非法字符或解码出超过 Unicode 范围的代码点都会报错。请检查域名是否被复制截断或拼写错误。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Punycode & IDN Domain Converter is a fully browser-local tool that implements the RFC 3492 Bootstring algorithm from scratch, bidirectionally converting internationalized domain names (e.g. münchen.de, 中文.中国) between Unicode and the ASCII Compatible Encoding form (xn-- prefix) used by DNS.',
+        coreFeatures: [
+          'Validated against RFC 3492 official vectors: German, simplified/traditional Chinese, Japanese, Cyrillic, and emoji code points',
+          'Domain mode: converts each dot-separated label, adding/stripping the xn-- prefix only for non-ASCII labels',
+          'Email aware: converts only the domain after @ while leaving the local part untouched',
+          'Accepts full-width dots (。 ．) and normalizes output to standard ASCII dots; supports multi-line batch conversion',
+          'Raw Bootstring mode: Punycode-encodes/decodes arbitrary whole strings for learning and debugging',
+          'Friendly errors: malformed xn-- labels and truncated encodings return readable messages or line-numbered warnings instead of throwing',
+          '100% local computation with zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'Pick the direction on the input card: Unicode → ASCII or ASCII → Unicode',
+          'Switch between "Domain / Email" and "Raw Punycode" modes in the bottom toolbar',
+          'In domain mode, put one domain or email per line; results appear live on the right, including batch pastes',
+          'If a single line fails, it is kept verbatim and flagged with a yellow line-numbered warning without affecting other lines',
+          'Click "Swap input/output direction" to feed the result back for a reverse conversion, or click Copy',
+        ],
+        useCases: [
+          'DevOps: decode xn-- domains seen in DNS records, certificate logs, or packet captures into readable local-language names',
+          'Global business: turn Chinese, Japanese, or Arabic marketing domains into ASCII form for DNS and server configuration',
+          'Learning: compare against RFC 3492 vectors to understand bias adaptation and variable-length integer encoding',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally in your browser via zero-dependency pure functions. No network requests are made, so domains and emails you paste never leave your device.',
+        faqs: [
+          {
+            question: 'Is Punycode the same as URL percent-encoding?',
+            answer:
+              'No. Punycode is the RFC 3492 Bootstring encoding designed specifically to represent internationalized domain names as DNS-legal ASCII labels (xn-- prefix), while percent-encoding applies to URL paths and query strings. This tool handles domain labels and raw Bootstring only.',
+          },
+          {
+            question: 'Why does "3-2" encode as "3-2-" in raw Punycode mode?',
+            answer:
+              'Punycode uses a hyphen to separate the literal basic-code-point section from the extended encoding. When the input is all ASCII, the output is the original string with a trailing delimiter, so "3-2" becomes "3-2-". In domain mode an all-ASCII label gets no xn-- prefix and is returned unchanged.',
+          },
+          {
+            question: 'Why does my pasted xn-- domain report an invalid error?',
+            answer:
+              'The part after xn-- must be valid Bootstring: only a-z0-9 characters with a fully decodable variable-length integer sequence. Truncation, illegal characters, or decoded code points beyond the Unicode range all raise an error. Check whether the domain was cut off during copying or misspelled.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'hex-dump-viewer',
+    name: 'Hex / Hex Dump 转换器',
+    nameEn: 'Hex & Hex Dump Converter',
+    description:
+      '在文本与十六进制之间双向转换，按 UTF-8 编码生成或还原字节串：支持连续 Hex、空格 / 冒号分隔、0x 前缀以及大小写切换，并可输出经典十六进制转储（8 位偏移量 + 每行 16 字节分区 + ASCII 预览）。解码时自动容忍空白、换行、逗号、连字符与 0x 前缀，奇数位、非法字符或非法 UTF-8 序列给出可读错误。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert text to and from hexadecimal using UTF-8 encoding: continuous hex, space/colon separators, 0x prefixes, and upper/lower case are supported, along with a classic hex dump view (8-digit offset, 16 bytes per row in two groups, and an ASCII preview). Decoding tolerates whitespace, line breaks, commas, hyphens, and 0x prefixes, while odd digit counts, illegal characters, and invalid UTF-8 sequences produce readable errors. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/hex-dump-viewer',
+    iconName: 'Hash',
+    tags: ['Hex', '十六进制', 'Hex Dump', 'UTF-8', '字节', '编码'],
+    tagsEn: ['Hex', 'Hexadecimal', 'Hex Dump', 'UTF-8', 'Bytes', 'Encoding'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Hello, 世界!\nUTF-8 text → hex bytes',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Hex / Hex Dump 转换器是一款纯浏览器本地运行的字节级工具，使用标准 TextEncoder / TextDecoder 按 UTF-8 在文本与原始字节之间互转，并把字节渲染为十六进制串或类似 hexdump(1) 的经典转储视图，便于查看二进制数据的真实字节布局。',
+        coreFeatures: [
+          '文本 → Hex：按 UTF-8 编码，支持无分隔连续串、空格、冒号分隔与每字节 0x 前缀',
+          '大小写一键切换：十六进制数字可在小写 a-f 与大写 A-F 之间切换',
+          'Hex dump 视图：8 位十六进制偏移量、每行 16 字节（8+8 分组）、右侧 ASCII 预览，不可打印字节显示为点',
+          'Hex → 文本：自动剥离 0x 前缀与空格、冒号、换行、逗号、连字符等分隔符，按 UTF-8 严格解码',
+          '错误友好：奇数个十六进制位、非法字符或非法 UTF-8 字节序列均返回中文可读错误',
+          '纯本地计算：零新增依赖，输入内容不发起任何网络请求',
+        ],
+        howToUse: [
+          '在输入卡片顶部选择方向：文本 → Hex 或 Hex → 文本',
+          '编码方向下，底部选择输出模式（Hex 串 / Hex dump）；Hex 串模式还可选择分隔符与大小写',
+          '在左侧输入文本或粘贴十六进制内容，右侧实时显示结果',
+          '解码方向会自动识别常见分隔符与 0x 前缀，无需手动清洗',
+          '点击「交换输入 / 输出方向」可把合法的 Hex 串结果回填反向解码（dump 视图请先切回 Hex 串模式）；点击「复制」获取结果',
+        ],
+        useCases: [
+          '协议调试：查看中文、Emoji 等字符的真实 UTF-8 字节，或把抓包得到的字节串还原为文本',
+          '嵌入式 / 固件分析：按偏移量阅读 hex dump，通过 ASCII 预览快速定位字符串',
+          '开发排错：核对编码结果、拼接带 0x 前缀的 C 风格字节数组、校验剪贴板中的十六进制数据',
+        ],
+        privacyNote:
+          '全部编解码均在浏览器本地完成，使用运行环境内置的 TextEncoder / TextDecoder，不发起任何网络请求；粘贴的内容不会离开设备。',
+        faqs: [
+          {
+            question: '为什么一个中文字符对应 3 个字节？',
+            answer:
+              '本工具按 UTF-8 编码，常见汉字的码点位于 U+0800–U+FFFF 区间，UTF-8 下使用 3 字节表示，例如「中」为 e4 b8 ad。Emoji 等辅助平面字符则通常为 4 字节。',
+          },
+          {
+            question: '解码时报「十六进制位数必须为偶数」是什么意思？',
+            answer:
+              '每个字节由两位十六进制数字表示，因此清洗掉分隔符后的总位数必须是偶数。位数为奇数通常是复制时漏掉了一个字符，补齐后再试即可。',
+          },
+          {
+            question: '为什么 Hex 位数合法却提示非法 UTF-8？',
+            answer:
+              '任意字节序列并不一定是合法的 UTF-8 文本。解码采用严格（fatal）模式，截断的多字节序列或孤立的连续字节都会报错。若只想查看字节布局，可使用 Hex dump 输出而非文本解码。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Hex & Hex Dump Converter is a fully browser-local byte-level tool that uses the standard TextEncoder/TextDecoder to convert between text and raw bytes via UTF-8, rendering bytes as a hexadecimal string or a classic hexdump(1)-style view so you can inspect the real byte layout of binary data.',
+        coreFeatures: [
+          'Text to hex: UTF-8 encoded output as a continuous string, space- or colon-separated bytes, or per-byte 0x prefixes',
+          'One-click case switch between lowercase a-f and uppercase A-F hex digits',
+          'Hex dump view: 8-digit hex offset, 16 bytes per row in two groups of 8, and an ASCII preview with dots for non-printable bytes',
+          'Hex to text: automatically strips 0x prefixes and spaces, colons, line breaks, commas, and hyphens, then strictly decodes UTF-8',
+          'Friendly errors: odd digit counts, illegal characters, and invalid UTF-8 byte sequences return readable messages',
+          '100% local computation with zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'Pick the direction on the input card: Text → Hex or Hex → Text',
+          'When encoding, choose the output mode (hex string or hex dump) in the bottom toolbar; in hex string mode you can also pick the separator and letter case',
+          'Type text or paste hexadecimal content on the left; the result appears live on the right',
+          'When decoding, common separators and 0x prefixes are recognized automatically—no manual cleanup needed',
+          'Click "Swap input/output direction" to feed a valid hex string back for reverse decoding (switch from dump to hex string first), or click Copy',
+        ],
+        useCases: [
+          'Protocol debugging: inspect the real UTF-8 bytes of Chinese characters or emoji, or restore text from captured byte strings',
+          'Embedded/firmware analysis: read hex dumps by offset and quickly locate strings through the ASCII preview',
+          'Development: verify encodings, build C-style 0x-prefixed byte arrays, and validate hex data from the clipboard',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally in your browser using the built-in TextEncoder/TextDecoder. No network requests are made, so content you paste never leaves your device.',
+        faqs: [
+          {
+            question: 'Why does one Chinese character take 3 bytes?',
+            answer:
+              'This tool uses UTF-8. Common Chinese characters sit in the U+0800–U+FFFF range and use 3 bytes in UTF-8—for example 中 is e4 b8 ad. Supplementary-plane characters such as emoji typically take 4 bytes.',
+          },
+          {
+            question: 'What does "hex digit count must be even" mean when decoding?',
+            answer:
+              'Each byte is represented by two hex digits, so the total digit count after stripping separators must be even. An odd count usually means a character was lost while copying; add the missing digit and try again.',
+          },
+          {
+            question: 'Why do I get an invalid UTF-8 error even though the hex digits are legal?',
+            answer:
+              'Not every byte sequence is valid UTF-8 text. Decoding runs in strict (fatal) mode, so truncated multi-byte sequences or orphaned continuation bytes raise an error. If you only need to inspect the byte layout, use the hex dump output instead of text decoding.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'excel-column-converter',
+    name: 'Excel 列名序号互转器',
+    nameEn: 'Excel Column Name & Number Converter',
+    description:
+      '在 Excel 字母列名（A、Z、AA、XFD）与 1 起始的数字列序号（1、26、27、16384）之间双向批量转换，基于双射二十六进制（bijective base-26）纯函数计算。支持每行一个值的批量处理、大小写不敏感、空白自动裁剪，对 0、负数、A1、超出 XFD 等非法行逐行给出可读错误而不影响其他行。适用于表格公式、R1C1 引用以及 openpyxl / Apache POI 等开发场景的列定位。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert bidirectionally between Excel letter column names (A, Z, AA, XFD) and 1-based numeric column indexes (1, 26, 27, 16384) using pure bijective base-26 functions. It supports batch processing with one value per line, is case-insensitive, trims whitespace automatically, and reports readable per-line errors for invalid rows such as 0, negative numbers, A1, or values beyond XFD without affecting other rows. Useful for spreadsheet formulas, R1C1 references, and column lookup in openpyxl/Apache POI development. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/excel-column-converter',
+    iconName: 'Table2',
+    tags: ['Excel', '列名', 'R1C1', 'bijective base-26', '电子表格', 'openpyxl'],
+    tagsEn: ['Excel', 'Column Letter', 'R1C1', 'Bijective Base-26', 'Spreadsheet', 'openpyxl'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'A\nZ\nAA\nAZ\nZZ\nAAA\nXFD',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Excel 列名序号互转器是一款纯浏览器本地运行的小工具，在电子表格的字母列标（A–XFD）与编程接口常用的 1 起始数字序号（1–16384）之间双向转换，覆盖 Excel 全部 16384 列。',
+        coreFeatures: [
+          '列名 → 序号：A→1、Z→26、AA→27、AZ→52、ZZ→702、AAA→703、XFD→16384',
+          '序号 → 列名：1→A、27→AA、703→AAA、16384→XFD，双射二十六进制严格可逆',
+          '大小写不敏感：aa 与 AA 结果一致；自动忽略值两侧空白',
+          '多行批量：每行一个值逐行转换，空行保留，非法行原样保留并标注行号错误',
+          '范围校验：0、负数、非整数、含非字母字符（如 A1）以及超出 16384 的值均给出明确错误',
+          '纯本地计算：零新增依赖，输入内容不发起任何网络请求',
+        ],
+        howToUse: [
+          '在输入卡片顶部选择方向：列名 → 序号或序号 → 列名',
+          '每行输入一个列名或序号，右侧实时显示逐行结果，支持一次粘贴整列数据',
+          '非法行会原样保留并在输出区以黄色警告标注行号与原因，其余行正常转换',
+          '点击「交换输入 / 输出方向」可把全部合法结果回填反向转换；点击「复制」获取结果',
+        ],
+        useCases: [
+          '公式调试：排查 VLOOKUP、INDEX、R1C1 引用中字母列标与数字列的对应关系',
+          '开发对接：openpyxl、Apache POI、Excel JS 等库在列字母与列索引之间换算',
+          '数据处理：批量把导出的列名清单转成序号，或把脚本生成的序号还原为列名',
+        ],
+        privacyNote:
+          '全部转换均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；粘贴的数据不会离开设备。',
+        faqs: [
+          {
+            question: '为什么 Z 之后是 AA 而不是 BA？',
+            answer:
+              'Excel 列名采用双射二十六进制：没有表示零的数字，A–Z 对应 1–26，因此 Z（26）进位后是 AA（27），与普通 26 进制（含 0）不同。序号转列名时需先做减一处理，这也是本工具内部使用的算法。',
+          },
+          {
+            question: 'Excel 一共有多少列？最大列名是什么？',
+            answer:
+              '现代 Excel（.xlsx）单表有 16384 列、1048576 行，最大列名是 XFD（第 16384 列），下一个 XFE 已超出范围，本工具会报错提示。',
+          },
+          {
+            question: '为什么输入 A1 报错？',
+            answer:
+              'A1 是单元格地址（A 列第 1 行）而不是列名。列名方向只接受纯字母（A–Z），序号方向只接受 1–16384 的整数；请去掉行号部分只保留列字母。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Excel Column Name & Number Converter is a fully browser-local tool that converts between spreadsheet letter column labels (A–XFD) and the 1-based numeric indexes (1–16384) commonly used by programming APIs, covering all 16,384 Excel columns.',
+        coreFeatures: [
+          'Letters to numbers: A→1, Z→26, AA→27, AZ→52, ZZ→702, AAA→703, XFD→16384',
+          'Numbers to letters: 1→A, 27→AA, 703→AAA, 16384→XFD, strictly reversible bijective base-26',
+          'Case-insensitive: aa equals AA; surrounding whitespace is trimmed automatically',
+          'Batch mode: converts one value per line, preserves blank lines, and flags invalid rows in place with line-numbered errors',
+          'Range validation: 0, negatives, non-integers, values with non-letter characters (e.g. A1), and anything beyond 16384 produce clear errors',
+          '100% local computation with zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'Pick the direction on the input card: letters to numbers or numbers to letters',
+          'Enter one column name or index per line; per-line results appear live on the right, including pasted columns',
+          'Invalid rows are kept verbatim and flagged with yellow line-numbered warnings while all other rows convert normally',
+          'Click "Swap input/output direction" to feed all valid results back for reverse conversion, or click Copy',
+        ],
+        useCases: [
+          'Formula debugging: map letter columns to numbers in VLOOKUP, INDEX, and R1C1 references',
+          'Development: translate between column letters and indexes in openpyxl, Apache POI, Excel JS, and similar libraries',
+          'Data processing: batch-convert exported column-name lists into indexes or turn script-generated indexes back into letters',
+        ],
+        privacyNote:
+          'All conversions run locally in your browser via zero-dependency pure functions. No network requests are made, so data you paste never leaves your device.',
+        faqs: [
+          {
+            question: 'Why is AA next after Z instead of a zero-style carry?',
+            answer:
+              'Excel column names use bijective base-26: there is no digit for zero, and A–Z map to 1–26, so Z (26) carries to AA (27), unlike regular base-26 which includes zero. Number-to-letter conversion decrements first, which is exactly the algorithm used internally here.',
+          },
+          {
+            question: 'How many columns does Excel have, and what is the last one?',
+            answer:
+              'Modern Excel (.xlsx) sheets have 16,384 columns and 1,048,576 rows. The last column is XFD (index 16384); the next value XFE is out of range and this tool reports an error.',
+          },
+          {
+            question: 'Why does A1 produce an error?',
+            answer:
+              'A1 is a cell address (column A, row 1), not a column name. Letter mode accepts pure letters (A–Z) only, and number mode accepts integers from 1 to 16384; remove the row part and keep just the column letters.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'file-size-converter',
+    name: '文件大小格式化转换器',
+    nameEn: 'File Size Formatter & Parser',
+    description:
+      '在原始字节数与人类可读文件大小之间双向批量转换：正向按二进制 IEC（1024，B/KiB/MiB/GiB）或十进制 SI（1000，B/KB/MB/GB）规则格式化，智能保留至多 2 位小数并去尾零，也可固定小数位；反向解析「1.5 MB」「2048 KiB」「3GB」「1,024 KB」等字符串为精确整数字节，自动区分 KiB=1024 与 KB=1000。容忍空白、大小写与千分位逗号；负数、空单位、未知单位（如 1.5 XB）逐行给出可读错误。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert bidirectionally between raw byte counts and human-readable file sizes: formatting follows either binary IEC (1024, B/KiB/MiB/GiB) or decimal SI (1000, B/KB/MB/GB) rules with smart up-to-2-decimal output (trailing zeros stripped) or fixed decimals; parsing turns strings like "1.5 MB", "2048 KiB", "3GB", and "1,024 KB" into exact integer bytes, distinguishing KiB=1024 from KB=1000. Whitespace, letter case, and thousands separators are tolerated; negative values, missing units, and unknown units (e.g. 1.5 XB) produce readable per-line errors. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/file-size-converter',
+    iconName: 'HardDrive',
+    tags: ['文件大小', '字节', 'KiB', 'KB', '单位换算', '格式化'],
+    tagsEn: ['File Size', 'Bytes', 'KiB', 'KB', 'Unit Conversion', 'Formatting'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0\n512\n1023\n1024\n1536\n1048576\n1073741824',
+    doc: {
+      zh: {
+        whatIsIt:
+          '文件大小格式化转换器是一款纯浏览器本地运行的双向工具，解决开发中最常见的两件事：把字节数显示成人类可读的 KB/MB/KiB/MiB 字符串，以及把这类字符串精确解析回字节数。',
+        coreFeatures: [
+          '两套标准：IEC 二进制（1024，KiB/MiB/GiB/TiB/PiB）与 SI 十进制（1000，KB/MB/GB/TB/PB）',
+          '智能小数：默认至多保留 2 位并去掉尾零（1536→1.5 KiB、1024→1 KiB），也可勾选固定小数位',
+          '精确解析：根据单位自动选择 1024 或 1000 基数，结果四舍五入为整数字节',
+          '宽松输入：容忍首尾空白、数值与单位间空格、任意大小写与千分位逗号',
+          '多行批量：每行一个值逐行转换，空行保留，非法行原样保留并标注行号错误',
+          '纯本地计算：零新增依赖，输入内容不发起任何网络请求',
+        ],
+        howToUse: [
+          '在输入卡片顶部选择方向：字节 → 可读大小或可读大小 → 字节',
+          '格式化方向下，在底部选择 IEC（1024）或 SI（1000）标准，可勾选固定小数位',
+          '每行输入字节数或大小字符串，右侧实时输出，支持一次粘贴多行',
+          '解析方向无需选择标准，单位本身（KiB 与 KB）决定基数；非法行以黄色警告逐行标注',
+          '点击「交换输入 / 输出方向」可把合法结果回填反向转换；点击「复制」获取结果',
+        ],
+        useCases: [
+          '前端开发：把 Content-Length、文件 API 返回的字节数显示为友好文案',
+          '运维排障：把日志、ls/du 输出中的 1.5 GB、2048 MiB 换算成精确字节做比较',
+          '脚本与接口：核对不同系统（1000 进制与 1024 进制）文件大小标注的真实差异',
+        ],
+        privacyNote:
+          '全部换算均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；粘贴的数据不会离开设备。',
+        faqs: [
+          {
+            question: 'KiB 和 KB 有什么区别？',
+            answer:
+              'KiB（kibibyte）按 IEC 二进制标准等于 1024 字节；KB（kilobyte）按 SI 十进制标准等于 1000 字节。本工具在解析时严格按单位拼写选择基数，格式化时由你切换的标准决定使用哪一套单位，因此 1.5 MB = 1500000 字节，而 2048 KiB = 2097152 字节。',
+          },
+          {
+            question: '为什么 1023 字节显示为 1023 B 而不是 1 KiB？',
+            answer:
+              '只有达到基数（IEC 为 1024、SI 为 1000）才会进位到下一单位，不足基数的值保持以字节显示，这与大多数文件管理器和 ls -h 的习惯一致。',
+          },
+          {
+            question: '解析「1.5 XB」为什么报错？',
+            answer:
+              'XB 不是受支持的单位。可识别的单位为 B、KB/MB/GB/TB/PB（1000 进制）与 KiB/MiB/GiB/TiB/PiB（1024 进制），拼写不区分大小写，但必须是上述单位之一；完全不写单位同样会报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The File Size Formatter & Parser is a fully browser-local bidirectional tool for two everyday development tasks: displaying byte counts as human-readable KB/MB/KiB/MiB strings, and parsing such strings back into exact byte counts.',
+        coreFeatures: [
+          'Two standards: IEC binary (1024, KiB/MiB/GiB/TiB/PiB) and SI decimal (1000, KB/MB/GB/TB/PB)',
+          'Smart decimals: at most 2 digits with trailing zeros stripped by default (1536→1.5 KiB, 1024→1 KiB), with optional fixed decimals',
+          'Exact parsing: the unit itself chooses the 1024 or 1000 base, and results round to integer bytes',
+          'Lenient input: tolerates leading/trailing whitespace, spaces between value and unit, any letter case, and thousands separators',
+          'Batch mode: converts one value per line, preserves blank lines, and flags invalid rows in place with line-numbered errors',
+          '100% local computation with zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'Pick the direction on the input card: bytes to readable size or readable size to bytes',
+          'When formatting, choose the IEC (1024) or SI (1000) standard in the bottom toolbar, optionally enabling fixed decimals',
+          'Enter byte counts or size strings one per line; results appear live on the right, including multi-line pastes',
+          'When parsing, no standard selection is needed—the unit itself (KiB vs KB) determines the base; invalid rows get yellow line-numbered warnings',
+          'Click "Swap input/output direction" to feed valid results back for reverse conversion, or click Copy',
+        ],
+        useCases: [
+          'Frontend development: render Content-Length and File API byte counts into friendly labels',
+          'Ops troubleshooting: convert 1.5 GB or 2048 MiB from logs and ls/du output into exact bytes for comparison',
+          'Scripts and APIs: verify the real difference between sizes labeled using the 1000-based and 1024-based systems',
+        ],
+        privacyNote:
+          'All conversions run locally in your browser via zero-dependency pure functions. No network requests are made, so data you paste never leaves your device.',
+        faqs: [
+          {
+            question: 'What is the difference between KiB and KB?',
+            answer:
+              'A KiB (kibibyte) is 1024 bytes under the IEC binary standard; a KB (kilobyte) is 1000 bytes under the SI decimal standard. Parsing picks the base strictly from the unit spelling, while formatting uses whichever standard you select—so 1.5 MB = 1,500,000 bytes and 2048 KiB = 2,097,152 bytes.',
+          },
+          {
+            question: 'Why do 1023 bytes show as 1023 B instead of 1 KiB?',
+            answer:
+              'Values only roll over to the next unit once they reach the base (1024 for IEC, 1000 for SI). Anything below the base stays in bytes, matching the convention used by most file managers and ls -h.',
+          },
+          {
+            question: 'Why does parsing "1.5 XB" fail?',
+            answer:
+              'XB is not a supported unit. Recognized units are B, KB/MB/GB/TB/PB (base 1000) and KiB/MiB/GiB/TiB/PiB (base 1024). Spelling is case-insensitive, but it must be one of these; omitting the unit entirely also raises an error.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ean13-checksum',
+    name: 'EAN-13 / UPC-A 条码校验位工具',
+    nameEn: 'EAN-13 / UPC-A Check Digit Calculator',
+    description:
+      '按 GS1 模 10 加权算法批量计算与校验商品条码校验位：输入 12 位 EAN-13（或 11 位 UPC-A）数字主体自动补全末位校验位；输入完整 13 位（或 12 位）则校验合法性，校验位错误时给出正确校验位与纠正后的合法编码。支持 EAN-13/GTIN-13 与 UPC-A/GTIN-12 两种模式，容忍空格与连字符，多行批量处理并逐行标注行号错误；非数字、长度不符等输入给出可读提示。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Batch-compute and verify product barcode check digits using the GS1 modulo-10 weighted algorithm: enter a 12-digit EAN-13 (or 11-digit UPC-A) body to append the check digit, or a full 13-digit (or 12-digit) code to validate it—when wrong, the correct digit and the corrected valid code are shown. Supports both EAN-13/GTIN-13 and UPC-A/GTIN-12 modes, tolerates spaces and hyphens, processes multiple lines with line-numbered errors, and reports non-digit or wrong-length input readably. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/ean13-checksum',
+    iconName: 'Barcode',
+    tags: ['EAN-13', 'UPC-A', '条码', '校验位', 'GTIN', '模10'],
+    tagsEn: ['EAN-13', 'UPC-A', 'Barcode', 'Check Digit', 'GTIN', 'Modulo 10'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '590123412345\n400638133393\n5901234123457',
+    doc: {
+      zh: {
+        whatIsIt:
+          'EAN-13 / UPC-A 条码校验位工具是一款纯浏览器本地运行的批量计算器，用于为商品条码数字主体补全末位校验位，或检验完整条码的校验位是否正确，覆盖零售场景最常见的 EAN-13（GTIN-13）与 UPC-A（GTIN-12）两种编码。',
+        coreFeatures: [
+          '双模式：EAN-13（12 位主体 / 13 位完整码）与 UPC-A（11 位主体 / 12 位完整码）',
+          '自动判断：输入主体位数则补全校验位，输入完整位数则校验合法性',
+          'GS1 标准算法：自右向左对数字交替乘以 3 与 1 求和，校验位 = (10 - 总和 mod 10) mod 10',
+          '错误纠正：校验位不匹配时明确给出实际末位、正确校验位与合法编码',
+          '宽松输入：自动忽略空格与连字符，多行批量处理，空行保留，非法行逐行标注行号',
+          '纯本地计算：零新增依赖，输入内容不发起任何网络请求',
+        ],
+        howToUse: [
+          '在输入卡片顶部选择 EAN-13 或 UPC-A 模式',
+          '每行输入一个条码：少一位（主体）自动补全，满位（完整码）自动校验',
+          '右侧实时输出补全或纠正后的编码，支持一次粘贴多行',
+          '含空格或连字符的编号（如 590 1234 12345 7）可直接粘贴，无需手动清理',
+          '非法行会原样保留并在输出区以黄色警告逐行标注原因；点击「复制」获取结果',
+        ],
+        useCases: [
+          '电商与零售：批量核对商品资料中的 EAN-13/UPC-A 条码是否录入正确',
+          '仓储与物流：自制标签或打印编码前快速计算校验位',
+          '开发与测试：构造条码相关功能时生成合法测试数据、验证解析逻辑',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；粘贴的条码数据不会离开设备。',
+        faqs: [
+          {
+            question: 'EAN-13 的校验位是怎么算出来的？',
+            answer:
+              '采用 GS1 模 10 加权算法：从校验位左侧第一位开始自右向左，各位数字依次乘以 3、1、3、1……求和，校验位等于 (10 -（总和对 10 取模）) 对 10 取模。例如主体 590123412345 计算得到校验位 7，完整码为 5901234123457。',
+          },
+          {
+            question: 'UPC-A 和 EAN-13 有什么关系？',
+            answer:
+              'UPC-A 是 12 位（11 位主体 + 1 位校验位），主要用于北美；EAN-13 是 13 位（12 位主体 + 1 位校验位），国际通用。二者校验位算法完全相同，只是主体长度不同；事实上 UPC-A 编码可视为前缀补 0 的 EAN-13（036000291452 等价于 0036000291452）。',
+          },
+          {
+            question: '为什么完整条码被提示校验位不正确？',
+            answer:
+              '说明末位与按前 12 位（UPC-A 为前 11 位）重新计算出的校验位不一致，通常是录入或 OCR 识别时某一位出错。警告会给出正确校验位和纠正后的合法编码，请对照原始条码图像或包装核实是哪一位录错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The EAN-13 / UPC-A Check Digit Calculator is a fully browser-local batch tool for appending check digits to product barcode number bodies and verifying the check digit of complete codes, covering the two most common retail symbologies: EAN-13 (GTIN-13) and UPC-A (GTIN-12).',
+        coreFeatures: [
+          'Two modes: EAN-13 (12-digit body / 13-digit full code) and UPC-A (11-digit body / 12-digit full code)',
+          'Automatic behavior: body length appends the check digit, full length validates it',
+          'GS1 standard algorithm: digits weighted 3 and 1 alternately from right to left, check digit = (10 - sum mod 10) mod 10',
+          'Error correction: a mismatched check digit reports the given digit, the correct digit, and the valid corrected code',
+          'Lenient input: spaces and hyphens are ignored; multi-line batch processing preserves blank lines and flags invalid rows with line numbers',
+          '100% local computation with zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'Choose EAN-13 or UPC-A mode at the top of the input card',
+          'Enter one barcode per line: one digit short (body) is completed, full length is validated',
+          'Completed or corrected codes appear live on the right, including multi-line pastes',
+          'Codes with spaces or hyphens (e.g. 590 1234 12345 7) can be pasted directly',
+          'Invalid rows are kept in place and explained in yellow line-numbered warnings; click Copy to grab results',
+        ],
+        useCases: [
+          'E-commerce and retail: batch-check whether EAN-13/UPC-A codes in product data were entered correctly',
+          'Warehousing and logistics: quickly compute check digits before printing self-made labels',
+          'Development and testing: generate valid barcode fixtures and verify parsing logic',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser via zero-dependency pure functions. No network requests are made, so barcode data you paste never leaves your device.',
+        faqs: [
+          {
+            question: 'How is the EAN-13 check digit calculated?',
+            answer:
+              'With the GS1 modulo-10 weighted algorithm: starting immediately left of the check digit and moving right to left, digits are multiplied alternately by 3 and 1 and summed; the check digit is (10 - (sum mod 10)) mod 10. For example, body 590123412345 yields check digit 7, giving 5901234123457.',
+          },
+          {
+            question: 'How do UPC-A and EAN-13 relate?',
+            answer:
+              'UPC-A has 12 digits (11 body + 1 check digit) and is mainly used in North America; EAN-13 has 13 digits (12 body + 1 check digit) and is used internationally. The check-digit algorithm is identical—only the body length differs. In fact a UPC-A code is equivalent to an EAN-13 code with a leading zero (036000291452 equals 0036000291452).',
+          },
+          {
+            question: 'Why is a complete barcode reported as having a wrong check digit?',
+            answer:
+              'The last digit does not match the one recomputed from the first 12 digits (11 for UPC-A), usually because a digit was mistyped or misread by OCR. The warning shows the correct digit and the corrected code; compare it against the original barcode image or packaging to find which digit was entered incorrectly.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
