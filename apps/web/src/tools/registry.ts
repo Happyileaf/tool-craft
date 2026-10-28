@@ -11048,6 +11048,106 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'mailto-link-generator',
+    name: 'mailto 邮件链接生成器（收件人 / 抄送 / 密送 / 主题 / 正文）',
+    nameEn: 'mailto Link Generator (To / Cc / Bcc / Subject / Body)',
+    description:
+      '通过表单生成符合 RFC 6068 的 mailto: 链接，支持多个收件人、抄送、密送、主题与正文，自动百分号编码（空格 %20、换行 %0D%0A、邮件头内 @ 编码为 %40），可一键复制或唤起邮件客户端；反向粘贴已有 mailto 链接即可解析回填各字段。',
+    descriptionEn:
+      'Build RFC 6068-compliant mailto: links from a form with multiple To recipients, Cc, Bcc, subject and body, with automatic percent-encoding (spaces as %20, line breaks as %0D%0A, @ as %40 inside header fields), one-click copy and mail-client launch; paste an existing mailto link to parse and back-fill every field.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/mailto-link-generator',
+    iconName: 'Tags',
+    tags: ['mailto', '邮件链接', 'RFC 6068', '邮件模板', '百分号编码'],
+    tagsEn: ['mailto', 'Email Link', 'RFC 6068', 'Email Template', 'Percent-Encoding'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'a@x.com',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 mailto 链接双向工具。按 RFC 6068 规范，把收件人（to，可多个）、抄送（cc）、密送（bcc）、主题（subject）与正文（body）表单字段序列化为标准 mailto: URI：空格编码为 %20、换行规范化为 CRLF 后编码为 %0D%0A、cc/bcc/subject/body 等邮件头字段中的 @ 编码为 %40，多个收件人用逗号连接；也支持把已有 mailto 链接粘贴解析、解码并回填表单，生成与解析往返一致。',
+        coreFeatures: [
+          '表单生成：多收件人 / 抄送 / 密送（逗号、分号、中文标点或换行分隔均可）、主题、正文',
+          'RFC 6068 编码：空格 %20、换行 %0D%0A、非 ASCII 按 UTF-8 百分号编码，邮件头字段内 @ 编码为 %40',
+          '反向解析：粘贴 mailto 链接自动解码 cc / bcc / subject / body 并回填，支持 UTF-8 与换行还原',
+          '一键复制链接，或直接点击唤起本机默认邮件客户端并预填全部字段',
+          '纯本地运行：联系人与邮件内容不会发起任何网络请求，邮箱格式实时校验',
+        ],
+        howToUse: [
+          '在表单中填写收件人（多个用逗号分隔）、抄送 / 密送、主题与正文，链接实时生成',
+          '点击「复制链接」获取 mailto URI，或点击「打开邮件客户端」直接唤起邮件软件',
+          '把已有 mailto 链接粘贴到反向解析区，点击「解析并回填」即可还原为可编辑表单',
+        ],
+        useCases: [
+          '在文档、网页、工单或 README 中放置「联系我们」预填邮件链接',
+          '为客服 / 销售模板批量生成带固定主题与正文框架的 mailto 链接',
+          '核对他人提供的 mailto 链接实际包含哪些抄送、密送与正文内容',
+        ],
+        privacyNote:
+          '所有邮箱地址与邮件内容仅在浏览器本地参与编码与解析，不会被上传、记录或发送；点击打开邮件客户端后由本机邮件软件处理。',
+        faqs: [
+          {
+            question: '为什么生成结果里收件人的 @ 保留，而抄送里的 @ 变成了 %40？',
+            answer:
+              'RFC 6068 规定 mailto: 后直接跟的 addr-spec 收件人地址中 @ 是合法保留字符，可直接书写；而 cc、bcc、subject、body 都属于查询串中的 hfield（邮件头字段），按 application/x-www-form-urlencoded 风格编码时 @ 需写为 %40。两种形式语义完全等价，邮件客户端都能正确识别。',
+          },
+          {
+            question: '正文里的换行为什么显示成 %0D%0A？',
+            answer:
+              '邮件头字段统一使用 CRLF（回车 + 换行）作为换行，百分号编码后即 %0D%0A。工具会先把各类换行（LF、CR）规范化为 CRLF 再编码，保证 Gmail、Outlook、Apple Mail 等客户端都能正确还原多行正文。',
+          },
+          {
+            question: '可以不填收件人，只生成主题和正文吗？',
+            answer:
+              '可以。RFC 6068 允许 mailto: 后收件人部分为空，生成形如 mailto:?subject=...&body=... 的链接，打开客户端后由发件人自行填入地址；但若填写了地址，工具会按邮箱格式实时校验并提示格式不正确的条目。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first, bidirectional mailto link tool. Following RFC 6068, it serializes To (multiple recipients allowed), Cc, Bcc, subject and body form fields into a standard mailto: URI: spaces become %20, line breaks are normalized to CRLF and encoded as %0D%0A, and @ inside header fields such as cc/bcc/subject/body is encoded as %40, with recipients joined by commas. It also parses an existing mailto link, decodes it and back-fills the form, so generation and parsing round-trip cleanly.',
+        coreFeatures: [
+          'Form-based generation: multiple To / Cc / Bcc recipients (separated by commas, semicolons, Chinese punctuation or newlines), subject and body',
+          'RFC 6068 encoding: spaces as %20, line breaks as %0D%0A, non-ASCII as UTF-8 percent-encoding, @ as %40 inside header fields',
+          'Reverse parsing: paste a mailto link to decode cc / bcc / subject / body and back-fill the form, restoring UTF-8 and line breaks',
+          'One-click copy, or launch the local default mail client with every field pre-filled',
+          'Local-first: contacts and message content never trigger a network request; email formats are validated as you type',
+        ],
+        howToUse: [
+          'Fill in recipients (comma-separated for multiple), Cc / Bcc, subject and body; the link updates live',
+          'Click "Copy link" for the mailto URI, or "Open mail client" to launch your mail software directly',
+          'Paste an existing mailto link into the parsing area and click "Parse & back-fill" to restore an editable form',
+        ],
+        useCases: [
+          'Embed pre-filled "contact us" mail links in docs, web pages, tickets or README files',
+          'Generate support/sales template links with fixed subjects and body outlines',
+          'Inspect which Cc, Bcc and body content a mailto link provided by someone actually contains',
+        ],
+        privacyNote:
+          'All addresses and message content are encoded and parsed locally in the browser; they are never uploaded, logged or sent. Launching the mail client hands the data to your local mail software.',
+        faqs: [
+          {
+            question: 'Why is @ kept in To addresses but written as %40 in Cc?',
+            answer:
+              'RFC 6068 allows @ as a legal reserved character in the addr-spec recipients directly following mailto:. In contrast, cc, bcc, subject and body are hfields inside the query string, where @ is percent-encoded as %40 in form-urlencoded style. The two forms are semantically identical and every mail client recognizes both.',
+          },
+          {
+            question: 'Why do body line breaks appear as %0D%0A?',
+            answer:
+              'Header fields use CRLF (carriage return + line feed) as the line ending, which percent-encodes to %0D%0A. The tool first normalizes LF/CR line breaks to CRLF before encoding, so Gmail, Outlook, Apple Mail and others all restore the multi-line body correctly.',
+          },
+          {
+            question: 'Can I generate a link with no recipients, just subject and body?',
+            answer:
+              'Yes. RFC 6068 permits an empty recipient part, producing links like mailto:?subject=...&body=...; you fill in the address after the client opens. If addresses are entered, however, they are validated against the email format and invalid entries are flagged.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

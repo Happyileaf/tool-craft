@@ -134,4 +134,5 @@ export const toolLoaders: Record<
   'vat-calculator': () => import('./vat-calculator'),
   'running-pace-calculator': () => import('./running-pace-calculator'),
   'db-converter': () => import('./db-converter'),
+  'mailto-link-generator': () => import('./mailto-link-generator'),
 };
