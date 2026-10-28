@@ -9657,6 +9657,112 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'gray-code-converter',
+    name: '二进制 ↔ Gray 码（格雷码）双向转换器',
+    nameEn: 'Binary ↔ Gray Code Converter',
+    description:
+      '在普通二进制数与反射二进制格雷码（Gray Code）之间双向转换：二进制 → Gray 按 G = B xor (B >> 1) 编码，Gray → 二进制按最高位起逐位异或累加还原。基于 BigInt 运算，支持任意位宽大整数，输出十进制与十六进制对照并展示逐位推导过程；容忍 0b 前缀、空白与下划线，支持多行批量处理并逐行标注错误。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert between plain binary numbers and reflected binary Gray code in both directions: binary → Gray encodes via G = B xor (B >> 1), while Gray → binary reconstructs bits by XOR-accumulating from the most significant bit. Powered by BigInt, it supports arbitrary-width integers, shows decimal and hexadecimal counterparts plus a per-bit derivation, tolerates 0b prefixes, whitespace and underscores, and processes multiple lines with line-numbered errors. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/gray-code-converter',
+    iconName: 'Binary',
+    tags: ['Gray 码', '格雷码', '二进制', '反射二进制', '数字电路', 'BigInt'],
+    tagsEn: ['Gray Code', 'Reflected Binary', 'Binary', 'Digital Circuits', 'BigInt', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '110110',
+    doc: {
+      zh: {
+        whatIsIt:
+          '二进制 ↔ Gray 码转换器是一款纯浏览器本地运行的编码工具，在普通二进制数与反射二进制格雷码（Gray Code）之间双向转换。格雷码的特点是相邻两个码字之间仅有 1 位不同，因此广泛用于旋转编码器、卡诺图化简、异步 FIFO 指针与数字电路状态机等场景。',
+        coreFeatures: [
+          '双向转换：二进制 → Gray（G = B xor (B >> 1)）与 Gray → 二进制（逐位异或累加）',
+          '任意位宽：基于 BigInt，不受 32 位或 Number.MAX_SAFE_INTEGER 限制',
+          '进制对照：同时输出结果的十进制与十六进制形式',
+          '逐位推导：展示每一位的异或依据，便于学习与核对',
+          '宽松输入：容忍 0b 前缀、空格、换行与下划线分隔，多行批量处理并逐行标注行号',
+          '纯本地计算：零新增依赖，输入内容不发起任何网络请求',
+        ],
+        howToUse: [
+          '在输入卡片顶部选择「二进制 → Gray」或「Gray → 二进制」模式',
+          '在左侧输入框粘贴二进制串，可携带 0b 前缀或用空格、下划线分组',
+          '右侧实时显示转换结果（保持输入位宽），下方给出十进制与十六进制对照',
+          '「逐位推导」卡片按位展示异或过程；多行输入时推导展示首个非空行',
+          '非法行会原样保留并在输出区以黄色警告逐行标注原因；点击「复制」获取结果',
+        ],
+        useCases: [
+          '数字电路与组成原理：学习格雷码编码、旋转编码器与卡诺图',
+          'HDL / FPGA 开发：异步 FIFO 读写指针的格雷码跨时钟域设计核对',
+          '调试与笔试：快速在二进制与格雷码之间换算并验证逐位过程',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地由零依赖纯函数（BigInt）完成，不发起任何网络请求；输入内容不会离开设备。',
+        faqs: [
+          {
+            question: 'Gray 码是怎么从二进制算出来的？',
+            answer:
+              '编码公式为 G = B xor (B >> 1)：将二进制数右移一位后与自身按位异或。例如二进制 110110（十进制 54）右移一位为 011011，异或结果为 101101，即其格雷码。最高位始终与原二进制最高位相同。',
+          },
+          {
+            question: '已知 Gray 码如何还原二进制？',
+            answer:
+              '最高位直接保留，其余各位从高到低计算：B[i] = G[i] xor B[i+1]，即每一位 Gray 码与已经还原出的相邻高位二进制异或。本工具的反向模式与逐位推导卡片会完整展示这一前缀异或过程。',
+          },
+          {
+            question: '为什么相邻格雷码只差 1 位？',
+            answer:
+              '反射构造（镜像前缀 0/1）保证了序列中任意相邻两个码字仅 1 个比特不同，包括最后一个码字回到第一个码字（循环格雷码）。这一性质使其特别适合机械编码器——切换位置时只翻转一位，可消除多位同时变化产生的中间错误状态。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Binary ↔ Gray Code Converter is a fully browser-local tool that converts between plain binary numbers and reflected binary Gray code. Gray code is defined so that adjacent codewords differ in exactly one bit, which makes it widely used in rotary encoders, Karnaugh maps, asynchronous FIFO pointers and digital state machines.',
+        coreFeatures: [
+          'Bidirectional: binary → Gray (G = B xor (B >> 1)) and Gray → binary (bitwise XOR accumulation from the top)',
+          'Arbitrary width: powered by BigInt, beyond 32-bit or Number.MAX_SAFE_INTEGER limits',
+          'Base counterparts: decimal and hexadecimal forms of the result are shown together',
+          'Per-bit derivation: the XOR reasoning of every bit is displayed for learning and verification',
+          'Lenient input: 0b prefixes, spaces, newlines and underscores are accepted; multi-line batches report line-numbered errors',
+          '100% local computation with zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'Pick “Binary → Gray” or “Gray → Binary” mode at the top of the input card',
+          'Paste a binary string on the left, optionally with a 0b prefix or space/underscore grouping',
+          'The converted result appears live on the right (same width as input), with decimal and hexadecimal values below',
+          'The derivation card shows the XOR process per bit; for multi-line input it derives the first non-empty line',
+          'Invalid rows are kept in place and explained in yellow line-numbered warnings; click Copy to grab results',
+        ],
+        useCases: [
+          'Digital logic and computer architecture courses: Gray code, rotary encoders and Karnaugh maps',
+          'HDL/FPGA development: checking Gray-coded async FIFO pointers crossing clock domains',
+          'Debugging and interviews: quickly convert between binary and Gray code with a verifiable derivation',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser via zero-dependency BigInt pure functions. No network requests are made, so your input never leaves your device.',
+        faqs: [
+          {
+            question: 'How is Gray code computed from binary?',
+            answer:
+              'The encoding is G = B xor (B >> 1): shift the binary number right by one bit and XOR it with itself. For example, binary 110110 (decimal 54) shifted is 011011, and their XOR is 101101, which is its Gray code. The most significant bit always stays the same.',
+          },
+          {
+            question: 'How do I recover binary from a Gray code?',
+            answer:
+              'Keep the most significant bit, then work from high to low: B[i] = G[i] xor B[i+1]—each Gray bit is XORed with the already-recovered adjacent higher binary bit. The reverse mode and the per-bit derivation card show this prefix-XOR process in full.',
+          },
+          {
+            question: 'Why do adjacent Gray codewords differ by only one bit?',
+            answer:
+              'The reflected construction (mirroring with 0/1 prefixes) guarantees that any two adjacent codewords, including the last wrapping back to the first in the cyclic Gray code, differ in a single bit. This makes Gray code ideal for mechanical encoders, where flipping just one bit eliminates invalid intermediate states when several bits would otherwise change simultaneously.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

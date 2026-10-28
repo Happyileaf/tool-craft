@@ -120,4 +120,5 @@ export const toolLoaders: Record<
   'excel-column-converter': () => import('./excel-column-converter'),
   'file-size-converter': () => import('./file-size-converter'),
   'ean13-checksum': () => import('./ean13-checksum'),
+  'gray-code-converter': () => import('./gray-code-converter'),
 };
