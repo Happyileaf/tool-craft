@@ -130,4 +130,5 @@ export const toolLoaders: Record<
   'boolean-truth-table': () => import('./boolean-truth-table'),
   'iso-week-date-converter': () => import('./iso-week-date-converter'),
   'number-range-expander': () => import('./number-range-expander'),
+  'base91-codec': () => import('./base91-codec'),
 };

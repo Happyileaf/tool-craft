@@ -10692,6 +10692,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'base91-codec',
+    name: 'basE91 编解码（文本与十六进制字节）',
+    nameEn: 'basE91 Encoder & Decoder (Text & Hex Bytes)',
+    description:
+      '在 UTF-8 文本 / 十六进制字节与 basE91 字符串之间双向转换，使用 Joachim Henke 提出的 91 个可打印 ASCII 字符字母表与可变 13/14 bit 分组，编码体积比 Base64 再小约 8%–10% 且无填充；解码严格校验非字母表字符并报告位置，可配置忽略空白。',
+    descriptionEn:
+      'Convert between UTF-8 text / hex bytes and basE91 strings using Joachim Henke’s 91 printable-ASCII alphabet with variable 13/14-bit grouping, about 8%–10% smaller than Base64 with no padding; decoding strictly rejects non-alphabet characters with exact positions and can optionally ignore whitespace.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/base91-codec',
+    iconName: 'Binary',
+    tags: ['basE91', 'Base91', '编解码', '紧凑编码', 'CTF'],
+    tagsEn: ['basE91', 'Base91', 'Encode', 'Compact Encoding', 'CTF'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'The quick brown fox jumps over the lazy dog',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的 basE91 编解码工具。basE91 由 Joachim Henke 提出，使用除 -、\\、\' 外的 91 个可打印 ASCII 字符承载二进制数据，以可变的 13/14 bit 分组（13 bit 值大于 88 时消费 13 bit，否则消费 14 bit）配合除法余数映射到两个字符，没有填充概念，编码体积比 Base64 再小约 8%–10%，常见于紧凑数据传输、配置嵌入与逆向 / CTF 场景。',
+        coreFeatures: [
+          '严格遵循 basE91 原版算法：91 字符字母表、可变 13/14 bit 分组、无填充，与官方参考实现测试向量一致',
+          '双向转换：UTF-8 文本或十六进制字节即时编码，basE91 严格解码回文本或字节',
+          '两种载体：文本模式按 UTF-8 处理并校验合法性，十六进制模式直接处理任意原始字节',
+          '精确报错：非字母表字符报告具体位置，可配置是否忽略空格、制表与换行',
+          '纯本地运行：所有转换在浏览器内完成，绝不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择「编码」或「解码」方向，并选择输入载体为文本（UTF-8）还是十六进制字节',
+          '在输入框粘贴文本 / 十六进制字节 / basE91 字符串，结果即时更新',
+          '解码时可勾选「忽略空白字符」以处理带换行排版的密文；点击「复制结果」获取转换内容',
+        ],
+        useCases: [
+          '在空间受限的介质（二维码、URL、配置项）中承载比 Base64 更紧凑的二进制数据',
+          '解析逆向分析、CTF 题目中常见的 basE91 载荷并还原原始字节',
+          '在文本与原始字节（十六进制）两种视图间核对编码结果',
+        ],
+        privacyNote: '所有编解码均在浏览器本地完成，输入的文本、字节与 basE91 字符串不会被上传或记录。',
+        faqs: [
+          {
+            question: 'basE91 和 Base64 / Base91 有什么区别？',
+            answer:
+              'Base64 每 3 字节编码为 4 个字符并有填充，体积固定增加约 33%；basE91 使用 91 个字符并以可变 13/14 bit 分组承载数据，无填充，最坏膨胀约 23%、典型场景只增加约 14%，比 Base64 再省 8%–10%。注意它与某些同样自称 Base91 的方案（如 basE91 之外的 RFC 4648 扩展）字母表和算法并不相同，本工具实现的是 Joachim Henke 的原版 basE91。',
+          },
+          {
+            question: '为什么编码结果里会出现 = ？这是填充吗？',
+            answer:
+              '不是填充。basE91 字母表本身包含 = 作为普通数据字符（字母表为除 -、\\、\' 外的全部可打印 ASCII），它不表示长度补齐，解码时按普通字符处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first basE91 codec. Designed by Joachim Henke, basE91 carries binary data with 91 printable ASCII characters (all except -, \\ and \'), using variable 13/14-bit groups (13 bits consumed when the 13-bit value exceeds 88, otherwise 14 bits) mapped through division/remainder onto two characters. It has no padding, is about 8%–10% smaller than Base64, and is commonly used for compact transport, embedded configuration and reverse-engineering/CTF payloads.',
+        coreFeatures: [
+          'Faithful basE91: the 91-character alphabet, variable 13/14-bit grouping, no padding, matching the official reference test vectors',
+          'Bidirectional: UTF-8 text or hex bytes encode instantly and basE91 decodes strictly back to text or bytes',
+          'Two carriers: text mode handles UTF-8 with validation, hex mode processes arbitrary raw bytes',
+          'Precise errors: non-alphabet characters report exact positions; whitespace can be ignored or rejected',
+          'Local-first: all conversion runs in the browser with no network requests',
+        ],
+        howToUse: [
+          'Pick the "Encode" or "Decode" direction and choose the input carrier: UTF-8 text or hex bytes',
+          'Paste text / hex bytes / a basE91 string into the input area and the result updates instantly',
+          'When decoding, toggle "ignore whitespace" for line-wrapped payloads, then click "Copy result"',
+        ],
+        useCases: [
+          'Carry binary data more compactly than Base64 in space-constrained media (QR codes, URLs, config values)',
+          'Decode basE91 payloads encountered in reverse engineering and CTF challenges back to raw bytes',
+          'Cross-check encoding between a text view and a raw-byte (hex) view',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally in the browser; entered text, bytes and basE91 strings are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How does basE91 differ from Base64?',
+            answer:
+              'Base64 encodes 3 bytes into 4 characters with padding, a fixed ~33% overhead. basE91 uses 91 characters with variable 13/14-bit grouping and no padding, at most ~23% overhead and typically around 14%, saving another 8%–10% versus Base64. It also differs from other schemes that happen to be called "Base91"; this tool implements Joachim Henke’s original basE91 alphabet and algorithm.',
+          },
+          {
+            question: 'Why does the output contain "="? Is that padding?',
+            answer:
+              'No. The basE91 alphabet includes "=" as an ordinary data character (it uses every printable ASCII character except -, \\ and \'), so it carries data rather than marking length alignment, and the decoder treats it as a normal character.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
