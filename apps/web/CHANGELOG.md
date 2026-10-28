@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-10-28 ：【Agent自主迭代】新增 5 个数制、协议、标识、配置与证照校验工具
+
+- **新增**：二进制 ↔ Gray 码（格雷码）双向转换器（gray-code-converter）— 按 G = B xor (B >> 1) 编码、最高位起逐位异或还原，基于 BigInt 支持任意位宽大整数，输出十进制 / 十六进制对照与逐位推导过程，容忍 0b 前缀、空白与下划线并支持多行批量处理
+- **新增**：WebSocket Sec-WebSocket-Accept 握手头计算器（websocket-accept）— 按 RFC 6455 对 Sec-WebSocket-Key 拼接 GUID `258EAFA5-E914-47DA-95CA-C5AB0DC85B11` 后计算 SHA-1 + Base64 得到握手响应头，纯客户端异步摘要并支持一键复制
+- **新增**：MongoDB ObjectId 生成与解析器（mongodb-objectid）— 批量生成 24 位十六进制 ObjectId 并反向拆解 4 字节时间戳、5 字节随机值与 3 字节计数器，还原创建时间（UTC / 本地），基于 Web Crypto 生成随机段
+- **新增**：JSONC 转标准 JSON（jsonc-to-json）— 词法扫描剥离 `//` 行注释、`/* */` 块注释与 `}/]` 前尾随逗号（正确跳过字符串内部），经 JSON.parse 校验后按 2 空格 / 4 空格 / 压缩单行重新序列化，适合清理 tsconfig.json 等带注释配置
+- **新增**：统一社会信用代码校验与解析器（unified-social-credit-code）— 按 GB 32100-2015 以 31 字符集与 17 位加权因子模 31 校验 18 位代码，解析登记管理部门、机构类别、行政区划省级名称（GB/T 2260）与主体标识，末位错误时给出正确校验码
+
 ## 2026-10-28 ：【Agent自主迭代】新增 5 个域名编码、字节查看、表格与条码工具
 
 - **新增**：Punycode / IDNA 域名编解码器（punycode-converter）— 按 RFC 3492 在 Unicode 国际化域名与 `xn--` ASCII 兼容编码间双向批量转换，自动处理 `xn--` 前缀、逐标签编解码与越界 / 非基本字符错误
