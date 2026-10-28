@@ -126,4 +126,5 @@ export const toolLoaders: Record<
   'jsonc-to-json': () => import('./jsonc-to-json'),
   'unified-social-credit-code': () => import('./unified-social-credit-code'),
   'id-card-validator': () => import('./id-card-validator'),
+  'ip-address-converter': () => import('./ip-address-converter'),
 };

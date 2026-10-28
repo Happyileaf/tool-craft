@@ -10284,6 +10284,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'ip-address-converter',
+    name: 'IP 地址格式互转器',
+    nameEn: 'IP Address Format Converter',
+    description:
+      '在 IPv4 点分十进制与 32 位无符号整数 / 十六进制 / 二进制之间双向转换，并把 IPv6 压缩形式（::）解析为 128 位大整数后输出完整展开、RFC 5952 压缩形式、十六进制整数与 128 位二进制，支持末尾内嵌 IPv4（如 ::ffff:192.168.0.1）。支持逐条与逐行批量转换，非法行带行号提示。适用于数据库 IP 整型存储（inet_aton 类场景）、日志字段解析与 ACL 配置核对。BigInt 运算无精度损失，纯浏览器本地确定性计算、零新增依赖、不发起网络请求。',
+    descriptionEn:
+      'Convert IPv4 dotted-decimal addresses to and from 32-bit unsigned integers, hexadecimal and binary, and parse compressed IPv6 forms (::) into a 128-bit big integer, emitting the fully expanded form, the RFC 5952 compressed form, hexadecimal integer and 128-bit binary. A trailing embedded IPv4 (e.g. ::ffff:192.168.0.1) is supported. Offers single-item and line-by-line batch conversion with line-numbered warnings for invalid lines. Built for integer-column IP storage (inet_aton-style scenarios), log field parsing and ACL configuration checks. BigInt arithmetic avoids precision loss; fully local deterministic computation in the browser with zero new dependencies and no network requests.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ip-address-converter',
+    iconName: 'Globe',
+    tags: ['IP 地址', 'IPv4', 'IPv6', 'BigInt', '网络', '格式转换'],
+    tagsEn: ['IP Address', 'IPv4', 'IPv6', 'BigInt', 'Network', 'Format Conversion'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '192.168.0.1\n0.0.0.0\n2001:db8::1\n::ffff:192.168.0.1',
+    doc: {
+      zh: {
+        whatIsIt:
+          'IP 地址格式互转器是一款纯浏览器本地运行的网络地址工具。IPv4 地址由四个 0–255 的十进制段组成，唯一对应一个 32 位无符号整数，因此可以表示为点分十进制、十进制整数、十六进制或二进制；IPv6 地址为 128 位，常用连续零组压缩记号 :: 缩短书写。本工具在这些表示之间做确定性互转，IPv6 输出遵循 RFC 5952 规范形式（最长零组压缩、小写十六进制），128 位运算全部基于 BigInt，不存在大整数精度丢失。',
+        coreFeatures: [
+          'IPv4 互转：点分十进制 ↔ uint32 十进制整数 / 0x 十六进制 / 32 位二进制，逐段校验 0–255 并拒绝前导零歧义',
+          'IPv6 解析：支持完整形式、:: 压缩形式（含首尾 :: 与 :: 自身）及末尾内嵌 IPv4',
+          'IPv6 规范化：输出 8 组四位十六进制完整展开与 RFC 5952 压缩形式（最长零组、并列取最前）',
+          '批量处理：每行一个地址，合法行输出全部表示形式，非法行保留原文并带行号告警',
+          '纯本地计算：BigInt 运算无精度损失，不发起任何网络请求，不收集输入',
+        ],
+        howToUse: [
+          '在输入框填入一个 IP 地址或每行一个地址（IPv4 或 IPv6 均可）',
+          '输出区即时展示规范形式、完整展开、十进制整数、十六进制与二进制',
+          'IPv6 压缩地址会自动还原为完整 8 组，再重新压缩以便比对规范形式',
+          '非法行在下方黄色告警中按行号说明原因，不影响其他行的转换',
+        ],
+        useCases: [
+          '数据库整型存储：在点分地址与 INT/UNSIGNED 列整数之间换算（IPv4），核对 inet_aton/inet_ntoa 结果',
+          '日志与抓包分析：把整数或十六进制地址字段还原为可读的点分 / 冒分形式',
+          '网络配置核对：验证 ACL、路由表中的 IPv6 压缩写法是否等价于目标地址',
+        ],
+        privacyNote:
+          '所有解析与换算均为浏览器本地确定性计算，不发起任何网络请求，输入的地址不会离开设备。',
+        faqs: [
+          {
+            question: '为什么输入 01.1.1.1 被判为非法？',
+            answer:
+              '部分系统的 inet_aton 会把前导零的段按八进制解释（如 010 等于 8），这与十进制直觉不一致且容易造成 ACL 绕过。为避免歧义，本工具只接受单段 0 或无前导零的十进制写法。',
+          },
+          {
+            question: 'IPv6 的压缩形式是按什么规则选 :: 位置的？',
+            answer:
+              '遵循 RFC 5952：将最长的连续一个或多个全零 16 位组序列替换为 ::，长度至少为 2 组才压缩；出现等长序列时压缩最靠前的一个，其余单组零保留为 0，十六进制字母使用小写。',
+          },
+          {
+            question: 'IPv6 的十进制整数会不会超出安全整数范围？',
+            answer:
+              '会，IPv6 是 128 位整数，远超 JavaScript Number 的安全整数上限（2^53-1）。本工具内部全程使用 BigInt 运算，输出的十进制与十六进制文本均为精确值，没有精度损失。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The IP Address Format Converter is a fully browser-local networking tool. An IPv4 address consists of four decimal octets from 0 to 255 and maps uniquely to a 32-bit unsigned integer, so it can be written as dotted decimal, a decimal integer, hexadecimal or binary. An IPv6 address is 128 bits wide and is commonly shortened with the :: zero-compression notation. The tool converts deterministically among these representations; IPv6 output follows the RFC 5952 canonical form (longest zero-run compressed, lowercase hexadecimal), and all 128-bit arithmetic uses BigInt, so no precision is lost.',
+        coreFeatures: [
+          'IPv4 conversion: dotted decimal ↔ uint32 decimal integer / 0x hexadecimal / 32-bit binary, with per-octet 0–255 validation and rejection of ambiguous leading zeros',
+          'IPv6 parsing: full form, :: compression (including leading/trailing :: and :: itself) and a trailing embedded IPv4',
+          'IPv6 normalization: emits the 8-group four-digit expansion and the RFC 5952 compressed form (longest zero run, first on tie)',
+          'Batch processing: one address per line; valid lines emit every representation and invalid lines keep their text with line-numbered warnings',
+          'Local computation: BigInt arithmetic with no precision loss, no network requests and no input collection',
+        ],
+        howToUse: [
+          'Enter one IP address or one address per line (IPv4 or IPv6) in the input box',
+          'The output instantly shows the canonical form, full expansion, decimal integer, hexadecimal and binary',
+          'Compressed IPv6 addresses are expanded into the full 8 groups and recompressed for comparison',
+          'Invalid lines are explained by line number in the yellow warnings below without affecting other lines',
+        ],
+        useCases: [
+          'Integer-column storage: convert between dotted addresses and INT/UNSIGNED column values (IPv4), checking inet_aton/inet_ntoa results',
+          'Log and packet analysis: turn integer or hexadecimal address fields back into readable dotted/colon form',
+          'Configuration checks: verify that compressed IPv6 in ACLs or routing tables is equivalent to the intended address',
+        ],
+        privacyNote:
+          'All parsing and conversion are deterministic, fully local browser computations. No network requests are made and entered addresses never leave your device.',
+        faqs: [
+          {
+            question: 'Why is 01.1.1.1 rejected?',
+            answer:
+              'Some inet_aton implementations interpret a leading-zero octet as octal (e.g. 010 equals 8), which disagrees with decimal intuition and can lead to ACL bypasses. To remove that ambiguity the tool accepts only a lone 0 or decimal octets without leading zeros.',
+          },
+          {
+            question: 'How is the position of :: chosen for IPv6?',
+            answer:
+              'Per RFC 5952, the longest sequence of one or more all-zero 16-bit groups is replaced by :: and it must be at least two groups long; ties compress the earliest sequence, isolated zero groups stay as 0, and hexadecimal letters are lowercase.',
+          },
+          {
+            question: 'Can the IPv6 decimal integer exceed the safe-integer range?',
+            answer:
+              'Yes—IPv6 is a 128-bit integer, far beyond the JavaScript Number safe limit (2^53-1). The tool performs all arithmetic with BigInt, so the emitted decimal and hexadecimal text is exact with no precision loss.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
