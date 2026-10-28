@@ -112,7 +112,7 @@
 | 20261023141147 | BPM 音符时长与延迟时间计算器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023141147.md) |
 | 20261023200245 | OAuth2 PKCE 生成器（code_verifier / code_challenge） | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023200245.md) |
 | 20261026020134 | Ascii85 / Base85 编解码器 | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026020134.md) |
-| 20261026020135 | 统一社会信用代码校验与解析器 | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026020135.md) |
+| 20261026020135 | 统一社会信用代码校验与解析器 | Web Tool | Exploration | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026020135.md) |
 | 20261026020137 | 密码学安全随机整数 / 抽签 / 分组 / 洗牌工具 | Web Tool | Exploration | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026020137.md) |
 | 20261026020139 | JSON ↔ JSON Lines（NDJSON）互转器 | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026020139.md) |
 | 20261026082024 | Nano ID 字符串标识符生成器 | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026082024.md) |
@@ -154,8 +154,8 @@
 | 20261028020206 | Java .properties 配置与 JSON 双向转换器 | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028020206.md) |
 | 20261028081033 | 以太坊地址 EIP-55 校验和编码与校验器 | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028081033.md) |
 | 20261028081035 | BMI 身体质量指数计算器（中国 / WHO 双标准分级） | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028081035.md) |
-| 20261028140205 | JSONC / 宽松 JSON 转标准 JSON（注释与尾随逗号剥离） | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028140205.md) |
-| 20261028140206 | 二进制 ↔ Gray 码（格雷码）双向转换器 | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028140206.md) |
-| 20261028140207 | WebSocket Sec-WebSocket-Accept 握手头计算器 | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028140207.md) |
-| 20261028140208 | MongoDB ObjectId 生成与解析器（时间戳 / 随机 / 计数器拆解） | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028140208.md) |
+| 20261028140205 | JSONC / 宽松 JSON 转标准 JSON（注释与尾随逗号剥离） | Web Tool | Existing Gap | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028140205.md) |
+| 20261028140206 | 二进制 ↔ Gray 码（格雷码）双向转换器 | Web Tool | Exploration | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028140206.md) |
+| 20261028140207 | WebSocket Sec-WebSocket-Accept 握手头计算器 | Web Tool | Exploration | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028140207.md) |
+| 20261028140208 | MongoDB ObjectId 生成与解析器（时间戳 / 随机 / 计数器拆解） | Web Tool | Exploration | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028140208.md) |
 | 20261028140209 | 以太坊 RLP（Recursive Length Prefix）递归长度前缀编解码器 | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028140209.md) |

@@ -9657,6 +9657,531 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'gray-code-converter',
+    name: '二进制 ↔ Gray 码（格雷码）双向转换器',
+    nameEn: 'Binary ↔ Gray Code Converter',
+    description:
+      '在普通二进制数与反射二进制格雷码（Gray Code）之间双向转换：二进制 → Gray 按 G = B xor (B >> 1) 编码，Gray → 二进制按最高位起逐位异或累加还原。基于 BigInt 运算，支持任意位宽大整数，输出十进制与十六进制对照并展示逐位推导过程；容忍 0b 前缀、空白与下划线，支持多行批量处理并逐行标注错误。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert between plain binary numbers and reflected binary Gray code in both directions: binary → Gray encodes via G = B xor (B >> 1), while Gray → binary reconstructs bits by XOR-accumulating from the most significant bit. Powered by BigInt, it supports arbitrary-width integers, shows decimal and hexadecimal counterparts plus a per-bit derivation, tolerates 0b prefixes, whitespace and underscores, and processes multiple lines with line-numbered errors. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/gray-code-converter',
+    iconName: 'Binary',
+    tags: ['Gray 码', '格雷码', '二进制', '反射二进制', '数字电路', 'BigInt'],
+    tagsEn: ['Gray Code', 'Reflected Binary', 'Binary', 'Digital Circuits', 'BigInt', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '110110',
+    doc: {
+      zh: {
+        whatIsIt:
+          '二进制 ↔ Gray 码转换器是一款纯浏览器本地运行的编码工具，在普通二进制数与反射二进制格雷码（Gray Code）之间双向转换。格雷码的特点是相邻两个码字之间仅有 1 位不同，因此广泛用于旋转编码器、卡诺图化简、异步 FIFO 指针与数字电路状态机等场景。',
+        coreFeatures: [
+          '双向转换：二进制 → Gray（G = B xor (B >> 1)）与 Gray → 二进制（逐位异或累加）',
+          '任意位宽：基于 BigInt，不受 32 位或 Number.MAX_SAFE_INTEGER 限制',
+          '进制对照：同时输出结果的十进制与十六进制形式',
+          '逐位推导：展示每一位的异或依据，便于学习与核对',
+          '宽松输入：容忍 0b 前缀、空格、换行与下划线分隔，多行批量处理并逐行标注行号',
+          '纯本地计算：零新增依赖，输入内容不发起任何网络请求',
+        ],
+        howToUse: [
+          '在输入卡片顶部选择「二进制 → Gray」或「Gray → 二进制」模式',
+          '在左侧输入框粘贴二进制串，可携带 0b 前缀或用空格、下划线分组',
+          '右侧实时显示转换结果（保持输入位宽），下方给出十进制与十六进制对照',
+          '「逐位推导」卡片按位展示异或过程；多行输入时推导展示首个非空行',
+          '非法行会原样保留并在输出区以黄色警告逐行标注原因；点击「复制」获取结果',
+        ],
+        useCases: [
+          '数字电路与组成原理：学习格雷码编码、旋转编码器与卡诺图',
+          'HDL / FPGA 开发：异步 FIFO 读写指针的格雷码跨时钟域设计核对',
+          '调试与笔试：快速在二进制与格雷码之间换算并验证逐位过程',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地由零依赖纯函数（BigInt）完成，不发起任何网络请求；输入内容不会离开设备。',
+        faqs: [
+          {
+            question: 'Gray 码是怎么从二进制算出来的？',
+            answer:
+              '编码公式为 G = B xor (B >> 1)：将二进制数右移一位后与自身按位异或。例如二进制 110110（十进制 54）右移一位为 011011，异或结果为 101101，即其格雷码。最高位始终与原二进制最高位相同。',
+          },
+          {
+            question: '已知 Gray 码如何还原二进制？',
+            answer:
+              '最高位直接保留，其余各位从高到低计算：B[i] = G[i] xor B[i+1]，即每一位 Gray 码与已经还原出的相邻高位二进制异或。本工具的反向模式与逐位推导卡片会完整展示这一前缀异或过程。',
+          },
+          {
+            question: '为什么相邻格雷码只差 1 位？',
+            answer:
+              '反射构造（镜像前缀 0/1）保证了序列中任意相邻两个码字仅 1 个比特不同，包括最后一个码字回到第一个码字（循环格雷码）。这一性质使其特别适合机械编码器——切换位置时只翻转一位，可消除多位同时变化产生的中间错误状态。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Binary ↔ Gray Code Converter is a fully browser-local tool that converts between plain binary numbers and reflected binary Gray code. Gray code is defined so that adjacent codewords differ in exactly one bit, which makes it widely used in rotary encoders, Karnaugh maps, asynchronous FIFO pointers and digital state machines.',
+        coreFeatures: [
+          'Bidirectional: binary → Gray (G = B xor (B >> 1)) and Gray → binary (bitwise XOR accumulation from the top)',
+          'Arbitrary width: powered by BigInt, beyond 32-bit or Number.MAX_SAFE_INTEGER limits',
+          'Base counterparts: decimal and hexadecimal forms of the result are shown together',
+          'Per-bit derivation: the XOR reasoning of every bit is displayed for learning and verification',
+          'Lenient input: 0b prefixes, spaces, newlines and underscores are accepted; multi-line batches report line-numbered errors',
+          '100% local computation with zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'Pick “Binary → Gray” or “Gray → Binary” mode at the top of the input card',
+          'Paste a binary string on the left, optionally with a 0b prefix or space/underscore grouping',
+          'The converted result appears live on the right (same width as input), with decimal and hexadecimal values below',
+          'The derivation card shows the XOR process per bit; for multi-line input it derives the first non-empty line',
+          'Invalid rows are kept in place and explained in yellow line-numbered warnings; click Copy to grab results',
+        ],
+        useCases: [
+          'Digital logic and computer architecture courses: Gray code, rotary encoders and Karnaugh maps',
+          'HDL/FPGA development: checking Gray-coded async FIFO pointers crossing clock domains',
+          'Debugging and interviews: quickly convert between binary and Gray code with a verifiable derivation',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser via zero-dependency BigInt pure functions. No network requests are made, so your input never leaves your device.',
+        faqs: [
+          {
+            question: 'How is Gray code computed from binary?',
+            answer:
+              'The encoding is G = B xor (B >> 1): shift the binary number right by one bit and XOR it with itself. For example, binary 110110 (decimal 54) shifted is 011011, and their XOR is 101101, which is its Gray code. The most significant bit always stays the same.',
+          },
+          {
+            question: 'How do I recover binary from a Gray code?',
+            answer:
+              'Keep the most significant bit, then work from high to low: B[i] = G[i] xor B[i+1]—each Gray bit is XORed with the already-recovered adjacent higher binary bit. The reverse mode and the per-bit derivation card show this prefix-XOR process in full.',
+          },
+          {
+            question: 'Why do adjacent Gray codewords differ by only one bit?',
+            answer:
+              'The reflected construction (mirroring with 0/1 prefixes) guarantees that any two adjacent codewords, including the last wrapping back to the first in the cyclic Gray code, differ in a single bit. This makes Gray code ideal for mechanical encoders, where flipping just one bit eliminates invalid intermediate states when several bits would otherwise change simultaneously.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'websocket-accept',
+    name: 'WebSocket Sec-WebSocket-Accept 握手头计算器',
+    nameEn: 'WebSocket Sec-WebSocket-Accept Handshake Calculator',
+    description:
+      '按 RFC 6455 §1.3/§4.2.2 计算 WebSocket 握手应答头：将客户端 Sec-WebSocket-Key（16 字节随机数的 Base64）拼接固定 GUID「258EAFA5-E914-47DA-95CA-C5AB0DC85B11」，计算 SHA-1 后 Base64 输出服务端 Sec-WebSocket-Accept；同时支持反向校验模式（每行一对 Key 与 Accept，判断是否匹配，不匹配时给出正确值）。内置 RFC 官方示例向量，多行批量处理并逐行标注错误。纯浏览器本地运算，SHA-1 由 Web Crypto 提供、零新增依赖。',
+    descriptionEn:
+      'Computes the WebSocket handshake response header per RFC 6455 §1.3/§4.2.2: concatenate the client Sec-WebSocket-Key (Base64 of 16 random bytes) with the fixed GUID “258EAFA5-E914-47DA-95CA-C5AB0DC85B11”, take the SHA-1 hash and Base64-encode it to produce the server Sec-WebSocket-Accept. A reverse verification mode takes a Key/Accept pair per line and reports whether they match (showing the correct value if not). Ships with the official RFC example vector, processes multiple lines with line-numbered errors, and runs fully locally—SHA-1 via Web Crypto, zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/websocket-accept',
+    iconName: 'KeyRound',
+    tags: ['WebSocket', 'Sec-WebSocket-Accept', 'RFC 6455', '握手', 'SHA-1', 'Base64'],
+    tagsEn: ['WebSocket', 'Sec-WebSocket-Accept', 'RFC 6455', 'Handshake', 'SHA-1', 'Base64'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'dGhlIHNhbXBsZSBub25jZQ==',
+    doc: {
+      zh: {
+        whatIsIt:
+          'WebSocket Sec-WebSocket-Accept 握手头计算器是一款纯浏览器本地运行的协议调试工具，严格按 RFC 6455 规定的握手算法，从客户端请求头 Sec-WebSocket-Key 计算服务端应答头 Sec-WebSocket-Accept，并支持给定 Key/Accept 对的反向匹配校验。',
+        coreFeatures: [
+          'RFC 6455 标准算法：Accept = Base64(SHA-1(Key + 固定 GUID))',
+          '固定 GUID 内置：258EAFA5-E914-47DA-95CA-C5AB0DC85B11，无需手填',
+          '双向能力：计算模式批量产出 Accept；校验模式逐对判断 Key 与 Accept 是否匹配并给出正确值',
+          '输入校验：严格检查 Key 是否为 16 字节随机数的合法 Base64（24 字符）',
+          '官方示例：默认样本即 RFC 6455 文档中的标准握手向量，可直接对照',
+          '纯本地计算：SHA-1 由浏览器 Web Crypto 完成，零新增依赖、不发起网络请求',
+        ],
+        howToUse: [
+          '选择「计算 Accept」模式，每行粘贴一个 Sec-WebSocket-Key 请求头值',
+          '右侧实时显示对应的 Sec-WebSocket-Accept，可直接粘贴到服务端响应头',
+          '选择「反向校验」模式，每行输入「Key 空格 Accept」两个字段做匹配判断',
+          '不匹配或非法的行会原样保留并以黄色警告逐行标注行号与原因',
+          '点击「复制」获取输出；页面下方卡片展示完整 RFC 公式与 GUID',
+        ],
+        useCases: [
+          '手写 WebSocket 服务端：实现 Sec-WebSocket-Accept 应答头时对照验证',
+          '抓包调试：核对浏览器升级请求与服务端 101 响应中的握手头是否匹配',
+          '协议学习：理解 WebSocket 握手机制，复现 RFC 6455 官方示例',
+        ],
+        privacyNote:
+          'Key 与 Accept 仅在浏览器本地经 Web Crypto 计算 SHA-1，不发起任何网络请求，粘贴的握手数据不会离开设备。',
+        faqs: [
+          {
+            question: 'Sec-WebSocket-Accept 是怎么算出来的？',
+            answer:
+              '把客户端请求头里的 Sec-WebSocket-Key（一个 16 字节随机数的 Base64 值）与固定字符串 GUID「258EAFA5-E914-47DA-95CA-C5AB0DC85B11」直接拼接，对拼接结果计算 SHA-1 摘要（20 字节），再做 Base64 编码，即为服务端必须返回的 Sec-WebSocket-Accept。例如 RFC 示例 Key dGhlIHNhbXBsZSBub25jZQ== 对应 Accept s3pPLMBiTxaQ9kYGzzhZRbK+xOo=。',
+          },
+          {
+            question: '为什么握手要设计这个 Accept 值？',
+            answer:
+              '它主要用于让服务端向客户端证明：对方确实理解 WebSocket 协议、确实收到了本次升级请求，而不是一个误接收该请求的普通 HTTP 服务端。由于 GUID 由 RFC 固定且不传输，缓存代理等中间件也无法凭空伪造正确应答。它不是安全认证机制，不提供身份保证。',
+          },
+          {
+            question: 'Sec-WebSocket-Key 的格式有什么要求？',
+            answer:
+              '按 RFC 6455，Key 必须是 16 字节随机数经 Base64 编码后的结果，因此长度恒为 24 个字符（22 个 Base64 字符加两个等号填充）。工具会严格检查字符集与解码后的字节数；不符合时该输入行将被标记为非法。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The WebSocket Sec-WebSocket-Accept Handshake Calculator is a fully browser-local protocol debugging tool. It strictly follows the RFC 6455 handshake algorithm to derive the server Sec-WebSocket-Accept response header from the client Sec-WebSocket-Key request header, and can also verify a given Key/Accept pair in reverse.',
+        coreFeatures: [
+          'RFC 6455 algorithm: Accept = Base64(SHA-1(Key + fixed GUID))',
+          'Built-in fixed GUID: 258EAFA5-E914-47DA-95CA-C5AB0DC85B11, no manual entry needed',
+          'Two directions: compute mode batch-produces Accept values; verify mode checks Key/Accept pairs and shows the correct value on mismatch',
+          'Input validation: strictly checks that a Key is valid Base64 of exactly 16 random bytes (24 chars)',
+          'Official example: the default sample is the standard handshake vector straight from RFC 6455',
+          '100% local: SHA-1 via the browser Web Crypto API, zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'In “Compute Accept” mode, paste one Sec-WebSocket-Key request-header value per line',
+          'The corresponding Sec-WebSocket-Accept appears live on the right, ready for the server response header',
+          'Switch to “Verify” mode and enter a “Key whitespace Accept” pair per line for matching',
+          'Mismatched or invalid rows are kept in place and flagged with line numbers and reasons',
+          'Click Copy to grab the output; the card below shows the full RFC formula and GUID',
+        ],
+        useCases: [
+          'Writing a WebSocket server: cross-checking your Sec-WebSocket-Accept implementation',
+          'Packet debugging: verifying browser upgrade requests against 101 response headers',
+          'Learning the protocol: reproducing the official RFC 6455 worked example',
+        ],
+        privacyNote:
+          'Keys and Accept values only go through the local Web Crypto SHA-1 implementation in your browser. No network requests are made, so handshake data you paste never leaves your device.',
+        faqs: [
+          {
+            question: 'How is Sec-WebSocket-Accept calculated?',
+            answer:
+              'Take the Sec-WebSocket-Key request-header value (Base64 of a 16-byte nonce), concatenate it directly with the fixed GUID string “258EAFA5-E914-47DA-95CA-C5AB0DC85B11”, compute the SHA-1 digest (20 bytes) of the concatenation, and Base64-encode it—that is the Sec-WebSocket-Accept the server must return. For example, the RFC sample key dGhlIHNhbXBsZSBub25jZQ== yields s3pPLMBiTxaQ9kYGzzhZRbK+xOo=.',
+          },
+          {
+            question: 'Why does the handshake use this Accept value?',
+            answer:
+              'It primarily proves to the client that the server genuinely understands the WebSocket protocol and actually received this upgrade request, rather than being an ordinary HTTP server that accepted the request by mistake. Because the GUID is fixed by the RFC and never transmitted, caching proxies and other intermediaries cannot forge a valid response. It is not a security or authentication mechanism.',
+          },
+          {
+            question: 'What are the formatting rules for Sec-WebSocket-Key?',
+            answer:
+              'Per RFC 6455 the key must be the Base64 encoding of 16 cryptographically random bytes, so it is always exactly 24 characters long (22 Base64 characters plus two equals signs). The tool strictly validates the character set and the decoded byte length; non-conforming input rows are marked invalid.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'mongodb-objectid',
+    name: 'MongoDB ObjectId 生成与解析器',
+    nameEn: 'MongoDB ObjectId Generator & Parser',
+    description:
+      '解析与生成 MongoDB 的 12 字节（24 位十六进制）ObjectId：解析时拆解为前 4 字节 Unix 秒级时间戳（本地 / UTC 时间）、中间 5 字节随机值（传统驱动为 3 字节机器标识 + 2 字节进程标识）与末 3 字节自增计数器；生成时使用 Web Crypto 密码学安全随机源，支持当前时间或自定义秒级时间戳，可生成单个或连续计数器的批量 ID。纯浏览器本地运算、零新增依赖、不访问任何数据库。',
+    descriptionEn:
+      'Parse and generate MongoDB 12-byte (24 hex characters) ObjectIds: parsing breaks the value into a leading 4-byte Unix timestamp in seconds (shown in local and UTC time), a middle 5-byte random value (traditionally 3 machine bytes + 2 process bytes) and a trailing 3-byte incrementing counter; generation uses the Web Crypto CSPRNG with the current time or a custom seconds timestamp, producing a single ID or a batch with sequential counters. Runs fully locally in the browser with zero new dependencies and never touches a database.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/mongodb-objectid',
+    iconName: 'Tags',
+    tags: ['MongoDB', 'ObjectId', '主键', '标识符', '时间戳', '数据库'],
+    tagsEn: ['MongoDB', 'ObjectId', 'Primary Key', 'Identifier', 'Timestamp', 'Database'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '507f1f77bcf86cd799439011',
+    doc: {
+      zh: {
+        whatIsIt:
+          'MongoDB ObjectId 生成与解析器是一款纯浏览器本地运行的数据库标识工具。ObjectId 是 MongoDB 默认的 _id 类型，长度固定为 12 字节（24 位十六进制），由 4 字节秒级时间戳、5 字节随机值与 3 字节计数器组成，既能保证分布式环境下的近似有序与全局唯一，又能从 ID 本身反推出文档的创建时间。',
+        coreFeatures: [
+          '布局解析：4 字节时间戳 + 5 字节随机值（机器 3 + 进程 2）+ 3 字节计数器逐段拆解',
+          '时间换算：同时展示创建时间的本地时区与 UTC 表示，以及 Unix 秒级时间戳',
+          '安全生成：随机字节取自 Web Crypto（crypto.getRandomValues）密码学安全随机源',
+          '自定义时间：可指定任意 0–2^32-1 的秒级时间戳生成，便于复现与构造边界数据',
+          '批量生成：同批共享时间戳与随机值、计数器连续递增，模拟同一进程连续插入的真实分布',
+          '纯本地计算：零新增依赖，不连接任何 MongoDB 实例或网络服务',
+        ],
+        howToUse: [
+          '在「解析」卡片粘贴 24 位十六进制 ObjectId（大小写与首尾空白均可容忍），下方立即显示各组成段与时间',
+          '在「生成」卡片选择使用当前时间或切换为自定义秒级时间戳',
+          '点击「生成 1 个」获取单个 ObjectId，或填写批量数量后点击「批量生成」（1–1000 个）',
+          '点击「复制 / 复制全部」把结果写入剪贴板；生成结果可直接粘贴回解析区核对',
+        ],
+        useCases: [
+          '后端开发：根据日志或数据中的 _id 快速判断文档创建时间，排查写入时序',
+          '数据构造：单元测试 / Seed 脚本中生成指定时间戳的 ObjectId，构造时间范围查询用例',
+          '协议学习：理解 ObjectId 的字节布局、计数器回绕与分布式唯一性来源',
+        ],
+        privacyNote:
+          '全部解析与生成均在浏览器本地完成，随机数来自平台内置 Web Crypto，不连接数据库、不发起任何网络请求，输入与生成内容不会离开设备。',
+        faqs: [
+          {
+            question: 'ObjectId 的 12 字节是如何布局的？',
+            answer:
+              '前 4 字节是 Unix 秒级时间戳（大端），中间 5 字节在现代驱动中为每次进程初始化生成的随机值（旧版布局为 3 字节机器标识 + 2 字节进程标识），末 3 字节是随机初值的自增计数器。本工具同时按现代与传统两种视角展示这 5 字节。',
+          },
+          {
+            question: '同一秒生成的多个 ObjectId 如何保证唯一？',
+            answer:
+              '同一进程内计数器每生成一个 ID 递增一次（3 字节空间可达 16777216 个 / 秒，溢出后回绕到 0），加上每进程不同的 5 字节随机值，使不同进程、不同主机在同一秒内也几乎不可能碰撞。批量生成模式正是按这一规则让计数器连续递增。',
+          },
+          {
+            question: '为什么解析出的时间只精确到秒？',
+            answer:
+              '因为 ObjectId 时间戳段只有 4 字节且单位是 Unix 秒，不包含毫秒。需要毫秒级创建时间时应在文档中另存 createdAt 字段，无法仅凭 ObjectId 还原秒以下精度。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The MongoDB ObjectId Generator & Parser is a fully browser-local tool for MongoDB identifiers. ObjectId is the default _id type in MongoDB: a fixed 12-byte (24 hex characters) value made of a 4-byte timestamp in seconds, a 5-byte random value and a 3-byte counter, providing approximate ordering and global uniqueness in distributed systems while letting you recover the document creation time from the ID itself.',
+        coreFeatures: [
+          'Layout parsing: splits the value into a 4-byte timestamp, 5-byte random value (3 machine + 2 process bytes in the legacy layout) and a 3-byte counter',
+          'Time conversion: shows creation time in both local timezone and UTC, plus the Unix timestamp in seconds',
+          'Secure generation: random bytes come from the Web Crypto CSPRNG (crypto.getRandomValues)',
+          'Custom timestamps: generate with any 0–2^32-1 seconds value for reproducible fixtures and edge cases',
+          'Batch generation: one timestamp/random prefix with a sequentially increasing counter, matching real same-process inserts',
+          '100% local: zero new dependencies, never connects to a MongoDB instance or any network service',
+        ],
+        howToUse: [
+          'Paste a 24-character hex ObjectId in the Parse card (case and surrounding spaces are tolerated); the segments and times appear immediately',
+          'In the Generate card choose the current time or switch to a custom timestamp in seconds',
+          'Click “Generate one” for a single ObjectId, or set a batch count (1–1000) and click “Generate batch”',
+          'Use Copy / Copy all to grab the results; generated IDs can be pasted back into the parser to verify',
+        ],
+        useCases: [
+          'Backend work: quickly tell when a document was inserted from an _id found in logs or data, debugging write ordering',
+          'Fixtures: generate ObjectIds with specific timestamps for unit tests, seed scripts and time-range query cases',
+          'Learning: understand the byte layout, counter wraparound and uniqueness guarantees of ObjectId',
+        ],
+        privacyNote:
+          'Everything runs locally in your browser; randomness comes from the built-in Web Crypto API. It never connects to a database or makes network requests, so neither input nor generated IDs leave your device.',
+        faqs: [
+          {
+            question: 'How are the 12 bytes of an ObjectId laid out?',
+            answer:
+              'The first 4 bytes are a big-endian Unix timestamp in seconds, the middle 5 bytes are a per-process random value in modern drivers (in the legacy layout: 3 machine-identifier bytes + 2 process-identifier bytes), and the last 3 bytes are an incrementing counter with a random initial value. The tool shows both the modern and the traditional views of those 5 bytes.',
+          },
+          {
+            question: 'How are multiple ObjectIds generated in the same second kept unique?',
+            answer:
+              'Within a process the counter increments on every generation (3 bytes allow up to 16,777,216 IDs per second before wrapping to 0), and each process has a distinct 5-byte random value, so collisions across processes or hosts in the same second are overwhelmingly unlikely. Batch mode mirrors this by incrementing the counter sequentially.',
+          },
+          {
+            question: 'Why is the parsed time only precise to the second?',
+            answer:
+              'The ObjectId timestamp segment is 4 bytes measured in Unix seconds and contains no milliseconds. When sub-second precision is required you should store a separate createdAt field; it cannot be recovered from the ObjectId alone.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'jsonc-to-json',
+    name: 'JSONC 转标准 JSON（注释与尾随逗号剥离）',
+    nameEn: 'JSONC to JSON Converter',
+    description:
+      '把带 // 行注释、/* */ 块注释与尾随逗号的 JSONC / 宽松 JSON 文本清洗为严格合法的标准 JSON：词法扫描时正确跳过双引号字符串（含转义引号）内部的注释符号与逗号，仅移除真正的注释与 }/] 前的尾随逗号，再经 JSON.parse 校验后按 2 空格 / 4 空格 / 压缩单行重新序列化。适合清理 tsconfig.json 等带注释配置片段。纯浏览器本地运算、零新增依赖、不发起网络请求。',
+    descriptionEn:
+      'Turn JSONC / lenient JSON text containing // line comments, /* */ block comments and trailing commas into strict, standards-compliant JSON: a lexical scanner skips comment markers and commas inside double-quoted strings (including escaped quotes), removes only real comments and trailing commas before }/], validates with JSON.parse, and re-serializes with 2-space indent, 4-space indent or a single-line minified layout. Useful for cleaning commented config snippets such as tsconfig.json. Runs fully locally in the browser with zero new dependencies and no network requests.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/jsonc-to-json',
+    iconName: 'Braces',
+    tags: ['JSONC', 'JSON', '注释剥离', '尾随逗号', '配置文件', '格式化'],
+    tagsEn: ['JSONC', 'JSON', 'Comment Stripping', 'Trailing Comma', 'Config', 'Formatter'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '{\n  // 编译器配置（示例）\n  "compilerOptions": {\n    "strict": true,\n    "target": "ES2020",\n  },\n  /* 包含的文件 */\n  "include": ["src/**/*.ts",],\n}',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSONC 转标准 JSON 是一款纯浏览器本地运行的文本清洗工具。JSONC（JSON with Comments）允许在 JSON 中书写 // 行注释、/* */ 块注释并容忍对象或数组末尾的尾随逗号，常见于 VS Code 的 settings.json、tsconfig.json 等配置；但标准 JSON.parse 无法直接解析它。本工具通过逐字符词法扫描剥离这些非标准语法，输出严格合法、可直接被任何 JSON 解析器消费的文本。',
+        coreFeatures: [
+          '注释剥离：移除 // 行注释与 /* */ 块注释（含跨行块注释），未闭合块注释会明确报错',
+          '尾随逗号清理：删除对象与数组中 } 或 ] 之前的最后一个逗号，保留正常分隔逗号',
+          '字符串安全：词法扫描正确跳过双引号字符串与 \" 转义，字符串内的 //、/*、逗号原样保留',
+          '严格校验：清洗后经 JSON.parse 验证，非法结构直接展示解析器原始报错与行列信息',
+          '三种排版：输出可选 2 空格缩进、4 空格缩进或压缩为单行',
+          '纯本地处理：零新增依赖，输入内容不上传、不离开设备',
+        ],
+        howToUse: [
+          '在左侧文本框粘贴 JSONC / 宽松 JSON 文本，右侧立即实时显示转换结果',
+          '通过顶部切换按钮选择输出缩进：2 空格、4 空格或压缩单行',
+          '点击「载入示例」可查看一份带注释与尾随逗号的 tsconfig 风格样例',
+          '结果合法时点击「复制」获取标准 JSON；若存在语法错误，右侧会展示错误原因',
+        ],
+        useCases: [
+          '前端工程：清理 tsconfig.json、VS Code settings.json 等带注释配置后交给脚本或接口消费',
+          '接口调试：把文档中带注释说明的 JSON 示例转为可直接粘贴到 Postman / curl 的严格 JSON',
+          '数据处理：作为 ETL 或导入流程的预处理步骤，将人工维护的宽松配置转为机器可读 JSON',
+        ],
+        privacyNote:
+          '所有词法扫描、解析与序列化均在浏览器本地完成，不发起任何网络请求，粘贴的配置与数据不会离开设备。',
+        faqs: [
+          {
+            question: '字符串里的 // 或 /* 会被误删吗？',
+            answer:
+              '不会。工具采用逐字符词法扫描，进入双引号字符串后其中的 //、/*、逗号都按普通字符处理，并正确识别反斜杠转义的 \"，因此类似 "url": "https://example.com" 中的内容会完整保留。',
+          },
+          {
+            question: '它能修复单引号或没加引号的键名吗？',
+            answer:
+              '不能。本工具只负责剥离注释与尾随逗号两类 JSONC 语法，不会把单引号改成双引号，也不会给键名补引号。需要这些字面修复时可配合「JSON 格式化」工具的修复功能使用。',
+          },
+          {
+            question: '剥离注释后报错行列号对不上原文怎么办？',
+            answer:
+              '注释在清洗时会被替换为等长空白（并保留换行），因此清洗后文本的行列位置与原文一致，JSON.parse 报错指向的行列号可直接对照原文定位。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'JSONC to JSON Converter is a fully browser-local text-cleaning tool. JSONC (JSON with Comments) permits // line comments, /* */ block comments and trailing commas in objects and arrays, as seen in VS Code settings.json or tsconfig.json, but strict JSON.parse cannot read it. This tool performs a character-by-character lexical scan to strip those non-standard constructs and emits strict JSON that any conforming parser can consume.',
+        coreFeatures: [
+          'Comment stripping: removes // line comments and /* */ block comments (including multi-line ones); an unclosed block comment is reported explicitly',
+          'Trailing-comma cleanup: deletes the final comma before } or ] in objects and arrays while keeping normal separator commas',
+          'String-safe: the scanner skips double-quoted strings and escaped \" so //, /* and commas inside strings are preserved verbatim',
+          'Strict validation: the cleaned text is checked with JSON.parse; invalid structures surface the parser error with its position',
+          'Three layouts: output with 2-space indent, 4-space indent or a single minified line',
+          '100% local: zero new dependencies; input is never uploaded and never leaves the device',
+        ],
+        howToUse: [
+          'Paste JSONC / lenient JSON into the left textarea; the strict result appears on the right in real time',
+          'Use the top toggle to choose 2-space indent, 4-space indent or minified single-line output',
+          'Click “Load sample” for a tsconfig-style example with comments and trailing commas',
+          'When the result is valid, click Copy; if there is a syntax error, the reason is shown on the right',
+        ],
+        useCases: [
+          'Front-end work: clean commented configs such as tsconfig.json or VS Code settings.json before feeding them to scripts or APIs',
+          'API debugging: turn commented JSON examples from documentation into strict JSON ready for Postman or curl',
+          'Data pipelines: preprocess human-maintained lenient config into machine-readable JSON for ETL or import jobs',
+        ],
+        privacyNote:
+          'All scanning, parsing and serialization happen locally in your browser. No network requests are made, so pasted configs and data never leave your device.',
+        faqs: [
+          {
+            question: 'Will // or /* inside strings be removed by mistake?',
+            answer:
+              'No. The tool scans character by character; inside a double-quoted string the sequences //, /* and commas are treated as ordinary characters, and backslash-escaped quotes are handled correctly, so a value such as "url": "https://example.com" is preserved intact.',
+          },
+          {
+            question: 'Can it fix single quotes or unquoted keys?',
+            answer:
+              'No. It only strips the two JSONC constructs—comments and trailing commas. It does not convert single quotes to double quotes or add quotes around keys; for those literal repairs use the JSON Formatter’s repair feature instead.',
+          },
+          {
+            question: 'Why do error positions still match my original text after comments are removed?',
+            answer:
+              'Each comment is replaced by spaces of the same length while newlines are kept, so line and column positions in the cleaned text are identical to the original; the line/column reported by JSON.parse can therefore be located directly in your input.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'unified-social-credit-code',
+    name: '统一社会信用代码校验与解析器',
+    nameEn: 'Unified Social Credit Code Validator',
+    description:
+      '依据 GB 32100-2015 校验 18 位法人和其他组织统一社会信用代码：检查长度与 31 字符字符集（0-9 与 A-Z 去除 I、O、Z、S、V），按固定加权因子以 31 为模验证末位校验码，并逐段解析登记管理部门、机构类别、登记管理机关行政区划（省级）与 9 位主体标识码（组织机构代码）。适用于企业信息录入、表单校验与数据清洗。纯浏览器本地确定性计算、零新增依赖、不发起网络请求。',
+    descriptionEn:
+      'Validate 18-character Unified Social Credit Codes for legal entities per GB 32100-2015: checks length and the 31-character alphabet (0-9 and A-Z excluding I, O, Z, S, V), verifies the final check character with fixed weights modulo 31, and breaks the code into its registration department, organization category, administrative division (province level) and the 9-digit subject identifier (organization code). Built for business data entry, form validation and data cleansing. Fully local deterministic computation in the browser with zero new dependencies and no network requests.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/unified-social-credit-code',
+    iconName: 'ShieldCheck',
+    tags: ['统一社会信用代码', '校验', 'GB 32100', '组织机构代码', '表单校验', '中国'],
+    tagsEn: ['USCC', 'Validation', 'GB 32100', 'Organization Code', 'Form Validation', 'China'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '91110108551385082Q',
+    doc: {
+      zh: {
+        whatIsIt:
+          '统一社会信用代码校验与解析器是一款纯浏览器本地运行的法人身份代码工具。统一社会信用代码是中国境内法人和其他组织的唯一身份标识，依据 GB 32100-2015 由 1 位登记管理部门代码、1 位机构类别代码、6 位登记管理机关行政区划码、9 位主体标识码（组织机构代码）与 1 位校验码共 18 位组成。本工具按官方加权模 31 算法判断合法性，并把各段结构解析为可读信息。',
+        coreFeatures: [
+          '严格校验：长度必须 18 位，字符仅限 31 字符字符集（剔除易混淆的 I、O、Z、S、V）',
+          '校验码验证：前 17 位按 GB 32100-2015 固定加权因子求和、模 31 换算末位，并在错误时给出正确值',
+          '结构解析：拆解登记管理部门（机构编制 / 民政 / 市场监管等）与机构类别（企业 / 事业单位 / 社会团体等）',
+          '行政区划识别：6 位行政区划码按 GB/T 2260 前两位识别省 / 自治区 / 直辖市',
+          '主体标识：单独展示第 9–17 位组织机构代码',
+          '容错与隐私：自动去除首尾空白并转大写；全部计算本地完成，不上传任何信息',
+        ],
+        howToUse: [
+          '在输入框粘贴 18 位统一社会信用代码（小写或带空格会自动规范化）',
+          '合法时显示绿色「校验通过」并列出部门、类别、行政区划、主体标识、校验码',
+          '非法时显示红色提示，说明长度、非法字符位置或正确的校验码',
+          '下方彩色分段标签直观标注五个组成段的边界',
+        ],
+        useCases: [
+          '企业信息录入：在开户、合同、发票等系统中实时校验对方提供的信用代码',
+          '表单开发：前端表单字段校验，避免明显错误的代码进入后端',
+          '数据清洗：批量排查存量企业档案中抄录错误或校验位错误的代码',
+        ],
+        privacyNote:
+          '校验与解析均为浏览器本地确定性计算，不发起任何网络请求，输入的代码不会离开设备。',
+        faqs: [
+          {
+            question: '校验码是怎么计算的？',
+            answer:
+              '将前 17 位字符按 31 进制取值（字符集 0123456789ABCDEFGHJKLMNPQRTUWXY 的下标），分别乘以固定加权因子 1、3、9、27……28 后求和；用 31 减去总和对 31 取模的结果（结果为 31 时取 0），换算回字符集中的字符即为第 18 位校验码。',
+          },
+          {
+            question: '为什么代码里看不到字母 I、O、Z、S、V？',
+            answer:
+              '为避免与数字 1、0、2、5、8（及字母 U）混淆，GB 32100-2015 的字符集从 0-9 加 A-Z 中剔除了 I、O、Z、S、V 共 5 个字母，只保留 31 个字符，与 31 进制运算一一对应。',
+          },
+          {
+            question: '校验通过能否证明这家企业真实存在？',
+            answer:
+              '不能。本工具只验证代码本身的编码规则与校验位是否自洽，不联网查询企业登记数据库。校验通过仅说明代码格式合法，企业是否存续、名称是否匹配需以国家企业信用信息公示系统等官方渠道为准。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Unified Social Credit Code Validator is a fully browser-local tool for the legal-entity identifier used in China. Per GB 32100-2015 the 18-character code consists of a registration department digit, an organization category digit, a 6-digit administrative division code, a 9-digit subject identifier (organization code) and one check character. The tool applies the official weighted modulo-31 algorithm to judge validity and decodes every segment into readable information.',
+        coreFeatures: [
+          'Strict validation: exactly 18 characters using only the 31-character alphabet (confusable I, O, Z, S, V excluded)',
+          'Check character: the first 17 characters are weighted by the fixed GB 32100-2015 factors, summed modulo 31; on mismatch the correct character is shown',
+          'Structural decoding: identifies the registration department (institutional staffing, civil affairs, market regulation, etc.) and category (enterprise, public institution, social organization, etc.)',
+          'Region detection: resolves the first two digits of the 6-digit GB/T 2260 division code to province / region / municipality',
+          'Subject identifier: displays the 9-character organization code (positions 9–17) separately',
+          'Forgiving and private: trims surrounding whitespace and uppercases automatically; everything runs locally with no uploads',
+        ],
+        howToUse: [
+          'Paste an 18-character code into the input (lowercase and surrounding spaces are normalized automatically)',
+          'A valid code shows a green “valid” banner plus department, category, region, subject ID and check character',
+          'An invalid code shows a red message explaining the length issue, the illegal character position, or the correct check character',
+          'The colored segment tags underneath mark the boundaries of the five components',
+        ],
+        useCases: [
+          'Business onboarding: validate codes supplied by counterparties for accounts, contracts or invoicing',
+          'Form development: front-end field validation before obviously wrong codes reach the backend',
+          'Data cleansing: find transcription and check-digit errors in archived company records',
+        ],
+        privacyNote:
+          'Validation and parsing are deterministic, fully local browser computations. No network requests are made and entered codes never leave your device.',
+        faqs: [
+          {
+            question: 'How is the check character calculated?',
+            answer:
+              'Each of the first 17 characters is mapped to its base-31 value (index in 0123456789ABCDEFGHJKLMNPQRTUWXY), multiplied by the fixed weights 1, 3, 9, 27 … 28 and summed; 31 minus the sum modulo 31 (0 when the result would be 31) gives a value mapped back to the alphabet as the 18th character.',
+          },
+          {
+            question: 'Why do the letters I, O, Z, S and V never appear?',
+            answer:
+              'To avoid confusion with the digits 1, 0, 2 and 5 (and the letter U), the GB 32100-2015 alphabet removes I, O, Z, S and V from 0-9 plus A-Z, leaving exactly 31 characters that map one-to-one to base-31 values.',
+          },
+          {
+            question: 'Does passing validation prove the company exists?',
+            answer:
+              'No. The tool only checks that the code is self-consistent under the coding and check-digit rules; it does not query any company registry online. A valid result means the format is correct—existence and name matches must be confirmed through official channels such as the National Enterprise Credit Information Publicity System.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
