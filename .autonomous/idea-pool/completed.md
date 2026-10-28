@@ -29,3 +29,8 @@
 | 20261017183436 | HTTP 状态码速查 | Web Tool | Exploration | `http-status-codes` / [PR #84](https://github.com/Happyileaf/tool-craft/pull/84) | 2026-10-28 | [详情](./idea-details/20261017183436.md) |
 | 20261027201027 | RGB ↔ CMYK 印刷四色双向转换器 | Web Tool | Existing Gap | `rgb-cmyk-converter` / [PR #84](https://github.com/Happyileaf/tool-craft/pull/84) | 2026-10-28 | [详情](./idea-details/20261027201027.md) |
 | 20261017140159 | .env parser & converter | Web Tool | Exploration | `env-converter` / [PR #84](https://github.com/Happyileaf/tool-craft/pull/84) | 2026-10-28 | [详情](./idea-details/20261017140159.md) |
+| 20261017183435 | Punycode / IDN 域名转换器 | Web Tool | Existing Gap | `punycode-converter` / [PR #87](https://github.com/Happyileaf/tool-craft/pull/87) | 2026-10-28 | [详情](./idea-details/20261017183435.md) |
+| 20261021180805 | Hex / 文本互转与十六进制转储视图（Hex dump viewer） | Web Tool | Existing Gap | `hex-dump-viewer` / [PR #87](https://github.com/Happyileaf/tool-craft/pull/87) | 2026-10-28 | [详情](./idea-details/20261021180805.md) |
+| 20261028081032 | Excel 列名 ↔ 序号互转器（A1 ↔ R1C1 列标） | Web Tool | Exploration | `excel-column-converter` / [PR #87](https://github.com/Happyileaf/tool-craft/pull/87) | 2026-10-28 | [详情](./idea-details/20261028081032.md) |
+| 20261028081034 | 文件大小人类可读格式化器（bytes ↔ KB/MB/GB 双向解析） | Web Tool | Exploration | `file-size-converter` / [PR #87](https://github.com/Happyileaf/tool-craft/pull/87) | 2026-10-28 | [详情](./idea-details/20261028081034.md) |
+| 20261028081036 | EAN-13 / GTIN 校验位计算器与合法性校验器 | Web Tool | Existing Gap | `ean13-checksum` / [PR #87](https://github.com/Happyileaf/tool-craft/pull/87) | 2026-10-28 | [详情](./idea-details/20261028081036.md) |
