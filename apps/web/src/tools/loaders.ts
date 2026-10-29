@@ -142,4 +142,5 @@ export const toolLoaders: Record<
   'date-diff-calculator': () => import('./date-diff-calculator'),
   'sri-hash-generator': () => import('./sri-hash-generator'),
   'hkdf-calculator': () => import('./hkdf-calculator'),
+  'pbkdf2-calculator': () => import('./pbkdf2-calculator'),
 };

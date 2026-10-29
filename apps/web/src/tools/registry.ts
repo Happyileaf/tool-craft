@@ -11854,6 +11854,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'pbkdf2-calculator',
+    name: 'PBKDF2 密钥派生计算器',
+    nameEn: 'PBKDF2 Key Derivation Calculator (RFC 8018)',
+    description:
+      '基于 RFC 8018（PKCS#5 v2.1）PBKDF2 从口令派生密钥：输入口令、salt（文本或 Hex）、迭代次数、派生密钥长度与底层哈希（SHA-1 / SHA-256 / SHA-384 / SHA-512），输出派生密钥 DK 的十六进制与 Base64。内置 RFC 8018 官方测试向量可一键载入对照，适合生成测试向量、校验后端口令哈希配置与学习迭代参数。全程浏览器本地计算，口令不上传。',
+    descriptionEn:
+      'Derive keys from passwords with PBKDF2 (RFC 8018/PKCS#5 v2.1): enter a password, salt (text or Hex), iteration count, derived-key length and hash (SHA-1/SHA-256/SHA-384/SHA-512) to get DK in hex and Base64. Official RFC 8018 test vectors load with one click—handy for generating vectors, validating backend password-hash config and studying iteration costs. Everything runs locally in the browser; passwords never leave the device.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/pbkdf2-calculator',
+    iconName: 'Fingerprint',
+    tags: ['PBKDF2', 'RFC 8018', '口令派生', '密码哈希', 'KDF', 'Web Crypto'],
+    tagsEn: ['PBKDF2', 'RFC 8018', 'Password KDF', 'Password Hashing', 'KDF', 'Web Crypto'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'password',
+    doc: {
+      zh: {
+        whatIsIt:
+          'PBKDF2（Password-Based Key Derivation Function 2，RFC 8018 / PKCS#5 v2.1）是从口令派生密钥的标准算法：通过对“口令 + 随机 salt”反复执行 HMAC 数千至数十万次，显著提高离线暴力破解成本，被 NIST SP 800-132、WPA2、iOS 数据保护等广泛采用。本工具暴露 PBKDF2 的全部关键参数——口令 P、salt S、迭代次数 c、派生密钥长度 dkLen 与底层哈希（SHA-1/256/384/512），输出 DK 的十六进制与 Base64，并可一键载入 RFC 8018 §B.1 官方测试向量逐字节对照。与仓库内 symmetric-crypto 不同：其内部 PBKDF2 绑定 AES-GCM、SHA-256 与固定 600000 次迭代且不输出通用 DK，本工具面向任意参数组合。',
+        coreFeatures: [
+          '支持 SHA-1 / SHA-256 / SHA-384 / SHA-512，迭代次数与 dkLen 完全自定义',
+          'DK 同时输出十六进制与 Base64，一键复制对接各语言参数',
+          'salt 支持文本（UTF-8）与十六进制两种载体，Hex 允许 0x 前缀与空白，非法格式明确报错',
+          '内置 RFC 8018 §B.1 / RFC 7914 官方向量一键载入，可反向验证实现正确性',
+          '高迭代次数给出耗时提示；口令以密码框输入，全程经 Web Crypto 本地运算',
+        ],
+        howToUse: [
+          '输入口令 P（按 UTF-8 编码为密钥材料）',
+          '填写 salt 并选择其载体（文本或 Hex）；用于真实系统时 salt 应随机且每用户唯一',
+          '选择哈希算法，设置迭代次数 c 与输出长度 dkLen（字节），结果区即时显示 DK',
+          '点击「RFC 8018 向量示例」载入官方案例（c=4096、SHA-1、dkLen=20）与标准结果对照',
+        ],
+        useCases: [
+          '生成 PBKDF2 测试向量，与后端 Java/Go/Python/Node 实现逐字节对账',
+          '校验数据库中既有口令哈希的算法、迭代次数与长度配置是否与文档一致',
+          '评估不同迭代次数 / 哈希算法在端侧的耗时，选定安全与体验平衡的参数',
+        ],
+        privacyNote:
+          '口令与 salt 仅在浏览器本地通过 Web Crypto 参与计算，不会被上传、记录或发送到任何服务端。',
+        faqs: [
+          {
+            question: 'PBKDF2 和 HKDF 有什么区别？',
+            answer:
+              'PBKDF2 的输入是低熵口令，通过大量迭代故意“变慢”来抵抗离线暴力破解；HKDF（RFC 5869）的输入是高熵密钥材料（如协商出的共享密钥），通过 Extract-then-Expand 快速派生多个子密钥，不做慢哈希。前者面向“人记得住的密码”，后者面向“已经很强的密钥”。',
+          },
+          {
+            question: '迭代次数应该设多少？',
+            answer:
+              '没有固定值，原则是在目标设备可接受的延迟内尽量大。OWASP 2023 建议 PBKDF2-HMAC-SHA-256 至少 600000 次（SHA-512 至少 210000 次）；旧系统常见 10000 / 100000 次。应在自己的服务端与客户端实测后选定，并允许随硬件演进升级。',
+          },
+          {
+            question: '为什么默认参数和 RFC 向量的算法不一样？',
+            answer:
+              '工具默认采用面向现代用途的 SHA-256、600000 次迭代、32 字节输出；RFC 8018 发布于 2017 年，其官方测试向量为历史上的 SHA-1、c=4096、dkLen=20，仅用于验证实现是否符合规范，不代表推荐的生产参数。点击「RFC 8018 向量示例」即切换到规范参数。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'PBKDF2 (Password-Based Key Derivation Function 2, RFC 8018/PKCS#5 v2.1) derives keys from passwords: HMAC is applied thousands to hundreds of thousands of times over the password and a random salt, raising the cost of offline brute-force attacks. It is used by NIST SP 800-132, WPA2 and iOS data protection. This tool exposes every key parameter—password P, salt S, iteration count c, derived-key length dkLen and hash (SHA-1/256/384/512)—and emits DK in hex and Base64. Official RFC 8018 §B.1 vectors load with one click for byte-level comparison. Unlike the built-in symmetric-crypto tool, whose internal PBKDF2 is hardwired to AES-GCM/SHA-256/600000 iterations without exposing a generic DK, this calculator accepts any parameter combination.',
+        coreFeatures: [
+          'SHA-1/SHA-256/SHA-384/SHA-512 with fully custom iteration count and dkLen',
+          'DK output in both hex and Base64 with one-click copy for cross-language integration',
+          'Salt accepts UTF-8 text or hex (0x prefix and whitespace tolerated) with explicit errors for malformed hex',
+          'Built-in RFC 8018 §B.1 / RFC 7914 vectors load instantly to independently verify the implementation',
+          'Timing hint for high iteration counts; password entered in a masked field, computed locally via Web Crypto',
+        ],
+        howToUse: [
+          'Enter the password P (encoded as UTF-8 key material)',
+          'Provide the salt and pick its source format (text or Hex); for real systems the salt must be random and unique per user',
+          'Choose the hash, set the iteration count c and output length dkLen in bytes; DK appears instantly',
+          'Click "RFC 8018 vector sample" to load the official case (c=4096, SHA-1, dkLen=20) and compare against the standard',
+        ],
+        useCases: [
+          'Generating PBKDF2 test vectors to reconcile byte-by-byte with Java/Go/Python/Node backends',
+          'Checking whether algorithm, iteration count and length of existing password hashes match the documented config',
+          'Benchmarking iteration counts and hashes on-device to pick parameters balancing security and UX',
+        ],
+        privacyNote:
+          'Passwords and salts are computed locally in the browser via Web Crypto and are never uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'What is the difference between PBKDF2 and HKDF?',
+            answer:
+              'PBKDF2 takes a low-entropy password and deliberately slows derivation with many iterations to resist offline brute force. HKDF (RFC 5869) takes high-entropy key material (such as an agreed shared secret) and quickly derives multiple subkeys via Extract-then-Expand—no slow hashing. One is for human-memorable passwords, the other for keys that are already strong.',
+          },
+          {
+            question: 'How many iterations should I use?',
+            answer:
+              'There is no fixed number; pick the largest value acceptable on the slowest target device. OWASP 2023 recommends at least 600000 for PBKDF2-HMAC-SHA-256 (210000 for SHA-512); 10000/100000 are common in older systems. Benchmark on your own client and server, and keep the value upgradable as hardware evolves.',
+          },
+          {
+            question: 'Why do the defaults differ from the RFC vector parameters?',
+            answer:
+              'The defaults target modern use (SHA-256, 600000 iterations, 32-byte output). RFC 8018 dates to 2017 and its official vectors use the historical SHA-1, c=4096, dkLen=20 purely to validate spec conformance—not to recommend production parameters. "RFC 8018 vector sample" switches to the spec parameters.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
