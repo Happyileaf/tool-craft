@@ -12760,6 +12760,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'robots-txt-generator',
+    name: 'robots.txt 生成器',
+    nameEn: 'robots.txt Generator',
+    description:
+      '表单配置多组 User-agent、Allow / Disallow、Crawl-delay 与 Sitemap，内置常见爬虫预设并校验路径，生成规范 robots.txt。',
+    descriptionEn:
+      'Build robots.txt from multiple User-agent groups with Allow/Disallow, Crawl-delay and Sitemaps, with crawler presets and path validation.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/robots-txt-generator',
+    iconName: 'Robot',
+    tags: ['robots.txt', 'SEO', '爬虫', '站点配置', '运维'],
+    tagsEn: ['robots.txt', 'SEO', 'Crawler', 'Site Config', 'Ops'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'robots.txt 生成器通过表单编辑多组爬虫抓取规则：每组指定 User-agent（支持 * 通配）、Allow / Disallow 路径与可选 Crawl-delay，全局可配置多条 Sitemap，并内置 Googlebot、Bingbot、百度爬虫等常见预设与全部允许 / 全部禁止模板，实时生成符合 Robots Exclusion Protocol 的 robots.txt 文本。',
+        coreFeatures: [
+          '多规则组：每组独立的 User-agent、Allow、Disallow 与 Crawl-delay，组间空行分隔',
+          '常见爬虫预设：Googlebot、Bingbot、百度、Yandex、GPTBot 一键添加',
+          '实时校验：缺少 User-agent、路径未以 / 开头、Crawl-delay 非数字、Sitemap 非 http(s) 均有提示',
+          'Sitemap 指令统一输出在末尾，非法内容自动跳过且不阻断其余规则',
+        ],
+        howToUse: [
+          '点击预设快速开始，或直接在规则组卡片中填写 User-agent 与路径（每行一条）',
+          '通过下拉框添加常见爬虫为新规则组，按需填写 Crawl-delay（秒）',
+          '在 Sitemap 区每行填写一条站点地图的完整 URL',
+          '查看底部预览与校验提示，确认无误后点击「复制」保存为站点根目录 robots.txt',
+        ],
+        useCases: [
+          '新站点上线前快速编写爬虫抓取规则并提交搜索引擎',
+          '屏蔽管理后台、私有目录或特定 AI 爬虫',
+          '排查现有 robots.txt 路径写法是否规范',
+        ],
+        privacyNote:
+          '所有规则仅在浏览器本地拼装生成，不发起任何网络请求，也不会访问你填写的路径。',
+        faqs: [
+          {
+            question: 'robots.txt 能真正阻止页面被收录吗？',
+            answer:
+              'robots.txt 是君子协议，合规爬虫会遵守，但它不是访问控制；敏感页面应配合鉴权或 noindex 元标签使用。',
+          },
+          {
+            question: 'Allow 和 Disallow 同时匹配时谁优先？',
+            answer:
+              '按 Google 的规则，长度更长（更具体）的路径指令优先；生成器按你填写的顺序原样输出，不调整优先级。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'robots.txt Generator builds multiple crawler rule groups via a form: each group sets User-agent (with * wildcard), Allow/Disallow paths and an optional Crawl-delay, plus global Sitemap lines. It ships with Googlebot, Bingbot, Baiduspider and other presets, allow-all/disallow-all templates, and produces protocol-compliant robots.txt text in real time.',
+        coreFeatures: [
+          'Multiple rule groups, each with User-agent, Allow, Disallow and Crawl-delay, separated by blank lines',
+          'Crawler presets: add Googlebot, Bingbot, Baiduspider, Yandex, GPTBot with one click',
+          'Live validation: missing User-agent, paths not starting with /, non-numeric delays, non-http(s) sitemaps all flagged',
+          'Sitemap directives emitted at the end; invalid entries are skipped without breaking other rules',
+        ],
+        howToUse: [
+          'Start from a preset, or fill User-agent and paths (one per line) directly in a group card',
+          'Add a common crawler as a new group from the dropdown and optionally set Crawl-delay in seconds',
+          'List full Sitemap URLs, one per line, in the Sitemap section',
+          'Review the preview and validation notes, then click "Copy" and save as robots.txt at the site root',
+        ],
+        useCases: [
+          'Authoring crawler rules before launching a new site and submitting it to search engines',
+          'Blocking admin panels, private directories or specific AI crawlers',
+          'Sanity-checking path syntax in an existing robots.txt',
+        ],
+        privacyNote:
+          'All rules are assembled locally in your browser; no network requests are made and the paths you enter are never visited.',
+        faqs: [
+          {
+            question: 'Does robots.txt truly prevent indexing?',
+            answer:
+              'It is a voluntary protocol respected by compliant crawlers, not access control. Protect sensitive pages with authentication or noindex meta tags as well.',
+          },
+          {
+            question: 'When both Allow and Disallow match, which wins?',
+            answer:
+              'Per Google’s rules, the longer (more specific) path wins. The generator outputs directives in your input order without changing precedence.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

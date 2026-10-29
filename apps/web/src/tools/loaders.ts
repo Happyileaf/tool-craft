@@ -151,4 +151,5 @@ export const toolLoaders: Record<
   'pangu-spacing': () => import('./pangu-spacing'),
   'dns-ptr-builder': () => import('./dns-ptr-builder'),
   'gitignore-generator': () => import('./gitignore-generator'),
+  'robots-txt-generator': () => import('./robots-txt-generator'),
 };
