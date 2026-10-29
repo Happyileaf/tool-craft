@@ -39,3 +39,8 @@
 | 20261028202204 | 布尔表达式真值表生成器 | Web Tool | Exploration | `boolean-truth-table` / [PR #93](https://github.com/Happyileaf/tool-craft/pull/93) | 2026-10-29 | [详情](./idea-details/20261028202204.md) |
 | 20261028202206 | ISO 8601 周边历（周年号/周数/星期）与公历日期双向转换器 | Web Tool | Existing Gap | `iso-week-date-converter` / [PR #93](https://github.com/Happyileaf/tool-craft/pull/93) | 2026-10-29 | [详情](./idea-details/20261028202206.md) |
 | 20261028202207 | 数值区间批量展开器与压缩器（range expand / collapse） | Web Tool | Exploration | `number-range-expander` / [PR #93](https://github.com/Happyileaf/tool-craft/pull/93) | 2026-10-29 | [详情](./idea-details/20261028202207.md) |
+| 20261017200234 | 描述性统计计算器 | Web Tool | Exploration | `descriptive-statistics` / [PR #98](https://github.com/Happyileaf/tool-craft/pull/98) | 2026-10-29 | [详情](./idea-details/20261017200234.md) |
+| 20261017220042 | 银行卡号校验与卡种识别 | Web Tool | Existing Gap | `bank-card-validator` / [PR #98](https://github.com/Happyileaf/tool-craft/pull/98) | 2026-10-29 | [详情](./idea-details/20261017220042.md) |
+| 20261023081551 | 文本模式批量提取器（邮箱 / URL / IP / UUID 等常用模式） | Web Tool | Exploration | `pattern-extractor` / [PR #98](https://github.com/Happyileaf/tool-craft/pull/98) | 2026-10-29 | [详情](./idea-details/20261023081551.md) |
+| 20261026140925 | 日期时间差计算与日期加减计算器 | Web Tool | Exploration | `date-diff-calculator` / [PR #98](https://github.com/Happyileaf/tool-craft/pull/98) | 2026-10-29 | [详情](./idea-details/20261026140925.md) |
+| 20261029080307 | 复数四则运算与极坐标形式转换器 | Web Tool | Existing Gap | `complex-number-calculator` / [PR #98](https://github.com/Happyileaf/tool-craft/pull/98) | 2026-10-29 | [详情](./idea-details/20261029080307.md) |
