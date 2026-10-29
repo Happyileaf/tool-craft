@@ -79,7 +79,7 @@
 | 20261022221403 | 全角/半角字符批量转换器 | Web Tool | Existing Gap | In Progress | 2026-10-22 | trae-agent | [详情](./idea-details/20261022221403.md) |
 | 20261022221404 | 文本相似度计算器 | Web Tool | Existing Gap | Pending | 2026-10-22 | | [详情](./idea-details/20261022221404.md) |
 | 20261022221405 | Glob 模式匹配测试器 | Web Tool | Existing Gap | Pending | 2026-10-22 | | [详情](./idea-details/20261022221405.md) |
-| 20261022221406 | Conventional Commits 提交信息生成器 | Web Tool | Exploration | Claimed | 2026-10-22 | trae-agent | [详情](./idea-details/20261022221406.md) |
+| 20261022221406 | Conventional Commits 提交信息生成器 | Web Tool | Exploration | In Progress | 2026-10-22 | trae-agent | [详情](./idea-details/20261022221406.md) |
 | 20261022221407 | Shields.io 徽章生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221407.md) |
 | 20261022221408 | ASCII 文件树生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221408.md) |
 | 20261022221409 | ANSI 终端颜色码生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221409.md) |

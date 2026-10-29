@@ -146,4 +146,5 @@ export const toolLoaders: Record<
   'json-patch': () => import('./json-patch'),
   'json-key-case': () => import('./json-key-case'),
   'pii-mask': () => import('./pii-mask'),
+  'conventional-commit-generator': () => import('./conventional-commit-generator'),
 };

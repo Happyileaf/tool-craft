@@ -12269,6 +12269,110 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'conventional-commit-generator',
+    name: 'Conventional Commits 提交信息生成器',
+    nameEn: 'Conventional Commit Message Generator',
+    description:
+      '通过表单选择类型、作用域、主题、正文与 footer，实时生成符合 Conventional Commits 1.0.0 的提交信息，并校验长度、祈使语气等常见问题。',
+    descriptionEn:
+      'Build Conventional Commits 1.0.0 messages from a form for type, scope, subject, body, and footers, with live checks for length, imperative mood, and footer format.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/conventional-commit-generator',
+    iconName: 'Tags',
+    tags: ['Conventional Commits', 'Git', '提交信息', '规范', 'commit'],
+    tagsEn: ['Conventional Commits', 'Git', 'Commit Message', 'Convention', 'commit'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'add dark mode toggle in settings page',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Conventional Commits 提交信息生成器是一款纯浏览器本地工具：通过结构化表单生成 type(scope)!: subject 形式的规范化提交信息，自动拼接正文与 footer，并实时校验主题长度、祈使语气与 footer 格式。',
+        coreFeatures: [
+          '内置 feat / fix / docs / style / refactor / perf / test / build / ci / chore / revert 共 11 种标准类型',
+          '支持可空作用域与破坏性变更（自动追加 ! 与 BREAKING CHANGE footer）',
+          '实时校验：主题为空或超长、header 超过 72 字符、英文非祈使语气、首字母大写、结尾句号等',
+          'Issue / PR 引用与自定义 footer（Reviewed-by、Co-authored-by 等）逐行管理',
+          '内置「新功能 / 修复缺陷 / 破坏性变更」组合模板，一键填充',
+        ],
+        howToUse: [
+          '选择提交类型，可选填写作用域（如 web、api）',
+          '用祈使语气填写主题，中文主题直接书写即可，不要加结尾句号',
+          '需要时补充正文，说明「做了什么、为什么」',
+          '涉及不兼容变更时勾选破坏性变更并填写说明',
+          '逐行填写关联的 Issue / PR 编号与其他 footer，复制结果到 git commit',
+        ],
+        useCases: [
+          '在协作仓库中快速写出可被 changelog 工具解析的提交信息',
+          '团队新人对照校验规则学习规范化提交格式',
+          '生成带 BREAKING CHANGE 与 Closes #编号的完整发布提交',
+        ],
+        privacyNote:
+          '所有内容仅在浏览器本地拼接与校验，不会上传或记录任何信息。',
+        faqs: [
+          {
+            question: 'header 长度限制是多少？',
+            answer:
+              '工具按社区惯例在 header 超过 72 字符时给出警告，主题超过 120 字符则报错；超长内容应放入正文。',
+          },
+          {
+            question: '为什么会提示「祈使语气」？',
+            answer:
+              'Git 社区约定英文主题使用祈使句，如 "add" 而非 "added / adds"；该检查仅针对英文，中文主题不受影响。',
+          },
+          {
+            question: 'footer 的合法写法是什么？',
+            answer:
+              '每行一个，形如 "token: value"（如 Reviewed-by: Alice）或 "token #value"（如 Closes #42）；BREAKING CHANGE 由勾选框自动生成。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Conventional Commit Message Generator is a fully in-browser tool that builds standardized type(scope)!: subject messages from a structured form, assembles body and footers, and checks subject length, imperative mood, and footer format as you type.',
+        coreFeatures: [
+          'Eleven standard types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, and revert',
+          'Optional scope and breaking-change support (appends ! and a BREAKING CHANGE footer automatically)',
+          'Live checks for empty or oversized subjects, headers longer than 72 characters, non-imperative English, capitalized first letters, and trailing periods',
+          'Per-line issue/PR references and custom footers such as Reviewed-by and Co-authored-by',
+          'Ready-made templates for features, bug fixes, and breaking changes',
+        ],
+        howToUse: [
+          'Pick a commit type and optionally fill in a scope such as web or api',
+          'Write the subject in imperative mood without a trailing period; Chinese subjects work as-is',
+          'Add a body when useful, explaining what changed and why',
+          'Check the breaking-change box and describe it for incompatible changes',
+          'List related issues/PRs and other footers one per line, then copy the message into git commit',
+        ],
+        useCases: [
+          'Writing commit messages that changelog tools can parse in collaborative repositories',
+          'Teaching newcomers the normalized commit format with inline validation',
+          'Composing release commits with BREAKING CHANGE and Closes #id footers',
+        ],
+        privacyNote:
+          'Everything is assembled and checked locally in your browser; nothing is uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the header length limit?',
+            answer:
+              'Following community convention, the tool warns above 72 header characters and errors when the subject exceeds 120 characters; move detail into the body.',
+          },
+          {
+            question: 'Why am I warned about imperative mood?',
+            answer:
+              'Git convention asks for an imperative English subject such as "add" instead of "added / adds". The check applies only to English; Chinese subjects are unaffected.',
+          },
+          {
+            question: 'What is a valid footer line?',
+            answer:
+              'One per line, written as "token: value" (e.g. Reviewed-by: Alice) or "token #value" (e.g. Closes #42). BREAKING CHANGE is generated by the checkbox.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
