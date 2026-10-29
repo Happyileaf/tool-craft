@@ -140,4 +140,5 @@ export const toolLoaders: Record<
   'descriptive-statistics': () => import('./descriptive-statistics'),
   'complex-number-calculator': () => import('./complex-number-calculator'),
   'date-diff-calculator': () => import('./date-diff-calculator'),
+  'sri-hash-generator': () => import('./sri-hash-generator'),
 };

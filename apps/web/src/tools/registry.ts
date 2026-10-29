@@ -11650,6 +11650,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'sri-hash-generator',
+    name: 'SRI 子资源完整性哈希生成器',
+    nameEn: 'SRI Hash Generator (Subresource Integrity)',
+    description:
+      '输入文本或选择本地文件，计算 SHA-256 / SHA-384 / SHA-512 摘要并生成可直接粘贴到 script / link 标签 integrity 属性的哈希串（sha256-<base64> 格式，支持多算法空格组合）；也可粘贴 integrity 串校验内容是否匹配，逐条给出匹配结论。全程浏览器本地计算，文件不上传。',
+    descriptionEn:
+      'Paste text or pick a local file to compute SHA-256/SHA-384/SHA-512 digests formatted as integrity strings (sha256-<base64>, combinable with spaces) ready for script/link integrity attributes; or verify content against an existing integrity string with per-hash match results. Everything runs locally in the browser; files are never uploaded.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/sri-hash-generator',
+    iconName: 'ShieldCheck',
+    tags: ['SRI', 'integrity', '子资源完整性', 'SHA-256', 'CDN', 'CSP'],
+    tagsEn: ['SRI', 'Integrity', 'Subresource Integrity', 'SHA-256', 'CDN', 'CSP'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'console.log("Hello, SRI");',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的子资源完整性（Subresource Integrity，SRI）工具。对文本或本地文件按 SHA-256 / SHA-384 / SHA-512 计算摘要，并以 SRI 规范要求的 base64 编码产出 `<alg>-<digest>` 形式的哈希串，可直接粘贴到 `<script>` / `<link>` 标签的 integrity 属性中；勾选多个算法时以空格连接（浏览器在至少一条强摘要匹配时放行）。校验模式下，给定 integrity 串与当前内容，逐条报告每个算法是否匹配，用于排查 CDN 资源是否被篡改。文件内容只在浏览器内读取，不发起任何网络请求。',
+        coreFeatures: [
+          '生成 sha256 / sha384 / sha512 三种 SRI 哈希，输出标准 base64 摘要与算法前缀',
+          '支持多算法组合（空格分隔），一次产出可直接粘贴的完整 integrity 属性值',
+          '支持文本（UTF-8）与本地文件两种输入载体，100MB 内文件本地读取不上传',
+          '校验模式逐条展示每个哈希是否匹配，并解析 ?option 段与大小写归一化',
+          '非法元数据（未知算法、缺少摘要、格式错误）给出明确中文错误',
+        ],
+        howToUse: [
+          '在「生成 integrity 哈希」模式输入文本或选择本地文件，勾选需要的算法（可多选）',
+          '结果区即时显示每条哈希，点击「复制 integrity 串」获取空格连接的完整属性值',
+          '将其粘贴到 script/link 标签的 integrity 属性，并配合 crossorigin="anonymous"',
+          '切换到「校验 integrity 串」模式，提供内容并粘贴待校验串，查看逐条匹配结论',
+        ],
+        useCases: [
+          '前端接入 CDN 第三方 JS/CSS 时生成 integrity 属性，替代手写 openssl 命令',
+          '核对下载资源与官方文档给出的 SRI 串是否一致，排查供应链篡改',
+          '为自建静态资源生成多算法哈希，兼容不同 CSP 与浏览器策略',
+        ],
+        privacyNote:
+          '文本与文件仅在浏览器本地参与摘要计算，不会被上传、记录或发送到任何服务端。',
+        faqs: [
+          {
+            question: '为什么不用现有的哈希生成器？',
+            answer:
+              '普通哈希工具输出的是十六进制摘要（hex），而 SRI 规范要求 base64 编码的摘要并带 `sha256-` 前缀，最终还要组装成可直接用于 integrity 属性的字符串。本工具产出的就是可直接粘贴的最终格式，并额外提供文件输入与完整性校验模式。',
+          },
+          {
+            question: '多个算法的哈希如何组合？浏览器如何判定？',
+            answer:
+              '多个哈希以空格连接放在同一个 integrity 属性中，例如 `sha256-AAA sha384-BBB`。按 SRI 规范，浏览器忽略无法识别的算法，只要存在至少一条可识别的强摘要与资源实际摘要相等即通过校验；全部不匹配则拒绝加载该资源。',
+          },
+          {
+            question: '为什么校验时文件输入有大小限制？',
+            answer:
+              '文件在浏览器内一次性读入内存并交给 Web Crypto 计算，为避免超大文件导致页面内存压力，工具限制为 100MB。SRI 面向的脚本、样式表等静态资源通常远小于该体积。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first Subresource Integrity (SRI) tool. It digests text or local files with SHA-256/SHA-384/SHA-512 and emits base64-encoded `<alg>-<digest>` strings per the SRI spec, ready to paste into the integrity attribute of <script>/<link> tags; multiple algorithms are joined with spaces (the browser loads the resource when at least one strong hash matches). In verify mode, each hash of a given integrity string is checked against the current content individually—handy for detecting CDN tampering. Files are read only inside the browser with no network requests.',
+        coreFeatures: [
+          'Generates sha256/sha384/sha512 SRI hashes with standard base64 digests and algorithm prefixes',
+          'Multi-algorithm combinations joined by spaces produce a ready-to-paste integrity value',
+          'Two input sources: UTF-8 text and local files (up to 100MB), never uploaded',
+          'Verify mode reports per-hash matches, parses ?option segments and normalizes casing',
+          'Clear Chinese error messages for malformed metadata (unknown algorithm, missing digest, bad format)',
+        ],
+        howToUse: [
+          'In "Generate integrity hash" mode, enter text or pick a file and tick the algorithms (multi-select)',
+          'Each hash appears instantly; click "Copy integrity string" for the space-joined value',
+          'Paste it into a script/link integrity attribute together with crossorigin="anonymous"',
+          'Switch to "Verify integrity string", provide content and the string to check per-hash results',
+        ],
+        useCases: [
+          'Generating integrity attributes for third-party CDN JS/CSS without hand-running openssl',
+          'Checking downloaded resources against SRI strings from official docs to detect supply-chain tampering',
+          'Producing multi-algorithm hashes for self-hosted assets across CSP and browser policies',
+        ],
+        privacyNote:
+          'Text and files are digested locally in the browser and are never uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'Why not just use the existing hash generator?',
+            answer:
+              'A regular hash tool outputs hexadecimal digests, whereas SRI requires base64-encoded digests with a `sha256-` prefix assembled into a final integrity attribute value. This tool emits that final paste-ready format, adds file input, and provides an integrity verification mode.',
+          },
+          {
+            question: 'How are multiple algorithms combined, and how does the browser decide?',
+            answer:
+              'Hashes are joined with spaces in one integrity attribute, e.g. `sha256-AAA sha384-BBB`. Per the SRI spec, the browser ignores unrecognized algorithms and loads the resource if at least one recognized strong digest equals the actual resource digest; if none match, the resource is blocked.',
+          },
+          {
+            question: 'Why is file input size-limited?',
+            answer:
+              'Files are read fully into memory and digested via Web Crypto; to avoid memory pressure on very large files the limit is 100MB. Scripts, stylesheets and other static assets protected by SRI are typically far smaller.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
