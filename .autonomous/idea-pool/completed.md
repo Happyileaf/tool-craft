@@ -44,3 +44,8 @@
 | 20261023081551 | 文本模式批量提取器（邮箱 / URL / IP / UUID 等常用模式） | Web Tool | Exploration | `pattern-extractor` / [PR #98](https://github.com/Happyileaf/tool-craft/pull/98) | 2026-10-29 | [详情](./idea-details/20261023081551.md) |
 | 20261026140925 | 日期时间差计算与日期加减计算器 | Web Tool | Exploration | `date-diff-calculator` / [PR #98](https://github.com/Happyileaf/tool-craft/pull/98) | 2026-10-29 | [详情](./idea-details/20261026140925.md) |
 | 20261029080307 | 复数四则运算与极坐标形式转换器 | Web Tool | Existing Gap | `complex-number-calculator` / [PR #98](https://github.com/Happyileaf/tool-craft/pull/98) | 2026-10-29 | [详情](./idea-details/20261029080307.md) |
+| 20261017220046 | 敏感信息脱敏（PII 掩码） | Web Tool | Existing Gap | `pii-mask` / [PR #104](https://github.com/Happyileaf/tool-craft/pull/104) | 2026-10-30 | [详情](./idea-details/20261017220046.md) |
+| 20261022221406 | Conventional Commits 提交信息生成器 | Web Tool | Exploration | `conventional-commit-generator` / [PR #104](https://github.com/Happyileaf/tool-craft/pull/104) | 2026-10-30 | [详情](./idea-details/20261022221406.md) |
+| 20261027020219 | CRC16 / Adler-32 等多算法校验和计算器 | Web Tool | Existing Gap | `crc16-checksum` / [PR #104](https://github.com/Happyileaf/tool-craft/pull/104) | 2026-10-30 | [详情](./idea-details/20261027020219.md) |
+| 20261029200828 | 中英文混排自动留白（盘古之白）格式化器 | Web Tool | External Reference | `pangu-spacing` / [PR #104](https://github.com/Happyileaf/tool-craft/pull/104) | 2026-10-30 | [详情](./idea-details/20261029200828.md) |
+| 20261029200829 | DNS PTR 反向解析记录名构造器（in-addr.arpa / ip6.arpa） | Web Tool | Existing Gap | `dns-ptr-builder` / [PR #104](https://github.com/Happyileaf/tool-craft/pull/104) | 2026-10-30 | [详情](./idea-details/20261029200829.md) |
