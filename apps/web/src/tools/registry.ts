@@ -12160,6 +12160,517 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'pii-mask',
+    name: 'PII 敏感信息脱敏工具',
+    nameEn: 'PII Masking Tool',
+    description:
+      '纯浏览器本地识别文本中的邮箱、手机号、身份证号、银行卡号、IP 地址与 API Key，一键脱敏并统计命中。',
+    descriptionEn:
+      'Detect emails, phone numbers, ID and bank card numbers, IP addresses, and API keys in text, then mask them instantly with hit counts — entirely in your browser.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/pii-mask',
+    iconName: 'Eye',
+    tags: ['PII', '脱敏', '隐私', '敏感信息', '掩码', '日志'],
+    tagsEn: ['PII', 'Masking', 'Privacy', 'Redaction', 'Sensitive Data', 'Logs'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '联系人：张伟，邮箱 zhangwei@example.com，手机号：13812345678\n身份证号：11010119900307123X\n服务器：192.168.1.100 与 2001:db8::1\nAuthorization: Bearer abcdefghijklmnopqrs',
+    doc: {
+      zh: {
+        whatIsIt:
+          'PII 敏感信息脱敏工具基于一组确定性正则规则，在纯浏览器本地识别文本中的邮箱、中国大陆手机号、身份证号、银行卡号、IPv4 / IPv6 地址以及通用 API Key / Token，并按「保留首尾」或「整体替换」策略输出脱敏文本，同时给出分类命中统计。',
+        coreFeatures: [
+          '七类敏感信息识别：邮箱、手机号、身份证号、银行卡号、IPv4、IPv6、API Key / Token（含 Bearer 与 JWT）',
+          '两种掩码策略：保留首尾的部分掩码，或等长整体替换，掩码字符可自定义',
+          '类别开关：可按类别单独启用或关闭识别，适配不同脱敏场景',
+          '自定义正则：每行一条补充匹配业务专属字段（如订单号），支持 /pattern/flags 写法',
+          '命中明细与统计：实时显示各类别命中数量，规则按优先级占位避免重复掩码',
+          '纯浏览器本地运算：文本不离开设备，适合日志、工单与配置片段脱敏',
+        ],
+        howToUse: [
+          '将需要脱敏的文本粘贴到输入框（首次进入会自动载入示例）',
+          '选择掩码策略：「保留首尾」保留可辨识前缀，「整体替换」隐藏全部字符',
+          '如需修改掩码字符（默认为 *），在掩码字符输入框中填写单个字符',
+          '通过类别复选框调整需要识别的敏感信息类别',
+          '如有业务专属字段，在自定义正则框中每行填写一条正则，格式错误会即时提示',
+          '在结果卡片查看命中统计，点击「复制脱敏结果」获取输出文本',
+        ],
+        useCases: [
+          '提交线上日志、报错堆栈前脱敏其中的用户隐私数据',
+          '客服工单、数据排障截图配文前去除手机号、证件号与密钥',
+          '分享配置文件或接口报文时遮蔽 Token、IP 与银行卡号',
+        ],
+        privacyNote:
+          '所有识别与替换均基于纯浏览器本地运算，输入文本不会被上传、记录或发送到任何服务器。',
+        faqs: [
+          {
+            question: '识别的规则与优先级是什么？',
+            answer:
+              '工具按 邮箱 → 身份证号 → 银行卡号 → 手机号 → API Key / Token → IPv6 → IPv4 的顺序匹配，先命中的片段会被占位，后续规则不再覆盖同一段文本，从而避免同一段数字被重复掩码。',
+          },
+          {
+            question: 'URL 中的内容会被误判吗？',
+            answer:
+              'IPv6 候选要求通过完整的地址合法性校验，且边界排除字母、数字、冒号、斜杠与点号；普通域名（如 example.com）与带端口的 URL（如 example.com:8080）不会被误判为 IP 地址。',
+          },
+          {
+            question: '通用 API Key 的识别范围是什么？',
+            answer:
+              '支持形如 api_key=、token:、Authorization: 等键值赋值中的密钥段（仅掩码密钥本身，不掩码前缀）、Bearer 头中的令牌，以及三段式 JWT（eyJ 开头）。规则偏向保守以减少误报，不符合这些形态的密钥可能不会被识别，必要时可手动处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The PII Masking Tool uses deterministic rules to detect emails, Chinese mainland phone numbers, national ID numbers, bank card numbers, IPv4/IPv6 addresses, and generic API keys/tokens entirely in your browser, then outputs masked text with per-category hit counts using either head/tail-preserving or full replacement strategies.',
+        coreFeatures: [
+          'Seven sensitive categories: email, phone, ID number, bank card, IPv4, IPv6, and API key/token (including Bearer and JWT)',
+          'Two masking strategies: partial masking that keeps head and tail characters, or equal-length full replacement, with a custom mask character',
+          'Category toggles to enable or disable each type independently for different scenarios',
+          'Custom regex rules, one per line, to cover business-specific fields such as order numbers, with /pattern/flags syntax supported',
+          'Live hit statistics per category, with priority-based occupancy so one fragment is never masked twice',
+          '100% in-browser processing that keeps logs, tickets, and config snippets on your device',
+        ],
+        howToUse: [
+          'Paste the text to mask into the input box (a sample is loaded on first visit)',
+          'Pick a strategy: "Keep head/tail" preserves recognizable prefixes, while "Full replace" hides every character',
+          'Optionally set a single custom mask character (defaults to *)',
+          'Use the category checkboxes to choose which built-in sensitive types are detected',
+          'For business-specific fields, add one custom regex per line; invalid patterns trigger an inline error',
+          'Review the hit counts in the result card and click "Copy masked result" to grab the output',
+        ],
+        useCases: [
+          'Masking user privacy data before sharing production logs or error stacks',
+          'Removing phone numbers, ID numbers, and secrets from support tickets or annotated screenshots',
+          'Concealing tokens, IPs, and bank card numbers when sharing config files or API payloads',
+        ],
+        privacyNote:
+          'All detection and replacement happens locally in your browser. Input text is never uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'What are the matching rules and their priority?',
+            answer:
+              'Rules run in the order email → ID number → bank card → phone → API key/token → IPv6 → IPv4. A fragment matched first is occupied, so later rules never cover the same span and the same digits are never masked twice.',
+          },
+          {
+            question: 'Will content inside URLs be misidentified?',
+            answer:
+              'IPv6 candidates must pass full address validation, and boundaries exclude letters, digits, colons, slashes, and dots. Ordinary domains (example.com) and URLs with ports (example.com:8080) are not mistaken for IP addresses.',
+          },
+          {
+            question: 'What counts as a generic API key?',
+            answer:
+              'It detects secret segments in key-value assignments such as api_key=, token:, and Authorization: (masking only the secret, never the prefix), tokens in Bearer headers, and three-part JWTs starting with eyJ. The rules are deliberately conservative to limit false positives, so secrets in other shapes may need manual handling.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'conventional-commit-generator',
+    name: 'Conventional Commits 提交信息生成器',
+    nameEn: 'Conventional Commit Message Generator',
+    description:
+      '通过表单选择类型、作用域、主题、正文与 footer，实时生成符合 Conventional Commits 1.0.0 的提交信息，并校验长度、祈使语气等常见问题。',
+    descriptionEn:
+      'Build Conventional Commits 1.0.0 messages from a form for type, scope, subject, body, and footers, with live checks for length, imperative mood, and footer format.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/conventional-commit-generator',
+    iconName: 'Tags',
+    tags: ['Conventional Commits', 'Git', '提交信息', '规范', 'commit'],
+    tagsEn: ['Conventional Commits', 'Git', 'Commit Message', 'Convention', 'commit'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'add dark mode toggle in settings page',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Conventional Commits 提交信息生成器是一款纯浏览器本地工具：通过结构化表单生成 type(scope)!: subject 形式的规范化提交信息，自动拼接正文与 footer，并实时校验主题长度、祈使语气与 footer 格式。',
+        coreFeatures: [
+          '内置 feat / fix / docs / style / refactor / perf / test / build / ci / chore / revert 共 11 种标准类型',
+          '支持可空作用域与破坏性变更（自动追加 ! 与 BREAKING CHANGE footer）',
+          '实时校验：主题为空或超长、header 超过 72 字符、英文非祈使语气、首字母大写、结尾句号等',
+          'Issue / PR 引用与自定义 footer（Reviewed-by、Co-authored-by 等）逐行管理',
+          '内置「新功能 / 修复缺陷 / 破坏性变更」组合模板，一键填充',
+        ],
+        howToUse: [
+          '选择提交类型，可选填写作用域（如 web、api）',
+          '用祈使语气填写主题，中文主题直接书写即可，不要加结尾句号',
+          '需要时补充正文，说明「做了什么、为什么」',
+          '涉及不兼容变更时勾选破坏性变更并填写说明',
+          '逐行填写关联的 Issue / PR 编号与其他 footer，复制结果到 git commit',
+        ],
+        useCases: [
+          '在协作仓库中快速写出可被 changelog 工具解析的提交信息',
+          '团队新人对照校验规则学习规范化提交格式',
+          '生成带 BREAKING CHANGE 与 Closes #编号的完整发布提交',
+        ],
+        privacyNote:
+          '所有内容仅在浏览器本地拼接与校验，不会上传或记录任何信息。',
+        faqs: [
+          {
+            question: 'header 长度限制是多少？',
+            answer:
+              '工具按社区惯例在 header 超过 72 字符时给出警告，主题超过 120 字符则报错；超长内容应放入正文。',
+          },
+          {
+            question: '为什么会提示「祈使语气」？',
+            answer:
+              'Git 社区约定英文主题使用祈使句，如 "add" 而非 "added / adds"；该检查仅针对英文，中文主题不受影响。',
+          },
+          {
+            question: 'footer 的合法写法是什么？',
+            answer:
+              '每行一个，形如 "token: value"（如 Reviewed-by: Alice）或 "token #value"（如 Closes #42）；BREAKING CHANGE 由勾选框自动生成。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Conventional Commit Message Generator is a fully in-browser tool that builds standardized type(scope)!: subject messages from a structured form, assembles body and footers, and checks subject length, imperative mood, and footer format as you type.',
+        coreFeatures: [
+          'Eleven standard types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, and revert',
+          'Optional scope and breaking-change support (appends ! and a BREAKING CHANGE footer automatically)',
+          'Live checks for empty or oversized subjects, headers longer than 72 characters, non-imperative English, capitalized first letters, and trailing periods',
+          'Per-line issue/PR references and custom footers such as Reviewed-by and Co-authored-by',
+          'Ready-made templates for features, bug fixes, and breaking changes',
+        ],
+        howToUse: [
+          'Pick a commit type and optionally fill in a scope such as web or api',
+          'Write the subject in imperative mood without a trailing period; Chinese subjects work as-is',
+          'Add a body when useful, explaining what changed and why',
+          'Check the breaking-change box and describe it for incompatible changes',
+          'List related issues/PRs and other footers one per line, then copy the message into git commit',
+        ],
+        useCases: [
+          'Writing commit messages that changelog tools can parse in collaborative repositories',
+          'Teaching newcomers the normalized commit format with inline validation',
+          'Composing release commits with BREAKING CHANGE and Closes #id footers',
+        ],
+        privacyNote:
+          'Everything is assembled and checked locally in your browser; nothing is uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the header length limit?',
+            answer:
+              'Following community convention, the tool warns above 72 header characters and errors when the subject exceeds 120 characters; move detail into the body.',
+          },
+          {
+            question: 'Why am I warned about imperative mood?',
+            answer:
+              'Git convention asks for an imperative English subject such as "add" instead of "added / adds". The check applies only to English; Chinese subjects are unaffected.',
+          },
+          {
+            question: 'What is a valid footer line?',
+            answer:
+              'One per line, written as "token: value" (e.g. Reviewed-by: Alice) or "token #value" (e.g. Closes #42). BREAKING CHANGE is generated by the checkbox.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'crc16-checksum',
+    name: 'CRC-16 / Adler-32 校验和计算器',
+    nameEn: 'CRC-16 & Adler-32 Checksum Calculator',
+    description:
+      '对文本（UTF-8）或十六进制字节流计算 CRC-16/CCITT-FALSE、ARC、XMODEM、MODBUS 等六种变体与 Adler-32，输出十六进制与十进制结果。',
+    descriptionEn:
+      'Compute six CRC-16 variants (CCITT-FALSE, ARC, XMODEM, MODBUS, GENIBUS, KERMIT) and Adler-32 over UTF-8 text or hex byte streams, with hex and decimal output.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/crc16-checksum',
+    iconName: 'Barcode',
+    tags: ['CRC16', 'Adler-32', '校验和', 'Modbus', '嵌入式'],
+    tagsEn: ['CRC16', 'Adler-32', 'Checksum', 'Modbus', 'Embedded'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '123456789',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CRC-16 / Adler-32 校验和计算器是一款纯浏览器本地工具：按 RockSoft 参数模型（poly / init / refin / refout / xorout）实现通用 CRC-16，一次覆盖六种工程常用变体，并提供 RFC 1950 Adler-32，结果以定长十六进制与十进制双格式输出。',
+        coreFeatures: [
+          '六种 CRC-16 变体：CCITT-FALSE、ARC、XMODEM、MODBUS、GENIBUS、KERMIT',
+          'RFC 1950 Adler-32，用于 zlib 流校验',
+          '支持 UTF-8 文本与十六进制字节流（空格/逗号分隔、0x 前缀）两种输入',
+          '参数化直驱实现，结果与 CRC RevEng 标准 check 向量一致',
+          '每个结果可单独复制，自动统计输入字节数',
+        ],
+        howToUse: [
+          '选择输入模式：文本或十六进制字节流',
+          '文本模式直接输入内容，内部按 UTF-8 编码；十六进制模式逐字节书写，如 31 32 33',
+          '结果卡片实时展示每种算法的 0x 十六进制与十进制值',
+          '点击对应行的「复制」获取十六进制结果',
+        ],
+        useCases: [
+          '嵌入式串口 / Modbus RTU 通信帧的 CRC 核对',
+          'zlib / gzip 数据流的 Adler-32 校验',
+          '协议调试时与固件侧实现做标准向量对齐',
+        ],
+        privacyNote:
+          '所有字节运算均在浏览器本地完成，输入数据不会上传或离开设备。',
+        faqs: [
+          {
+            question: '为什么标准输入是 "123456789"？',
+            answer:
+              'CRC RevEng 目录用 "123456789" 的 check 值作为各参数模型的验收向量；本工具 CCITT-FALSE=0x29B1、ARC=0xBB3D、XMODEM=0x31C3、MODBUS=0x4B37、Adler-32=0x091E01DE，可据此核对。',
+          },
+          {
+            question: 'MODBUS 用的是哪一种 CRC？',
+            answer:
+              'Modbus RTU 使用 CRC-16/MODBUS（poly=0x8005、init=0xFFFF、输入输出均反转、xorout=0x0000），本工具已直接提供。',
+          },
+          {
+            question: '中文如何参与计算？',
+            answer:
+              '文本模式按 UTF-8 编码为字节后再计算，例如「你好」对应 6 个字节 E4 BD A0 E5 A5 BD；若协议要求 GBK 等其他编码，可先编码为字节再使用十六进制模式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CRC-16 & Adler-32 Checksum Calculator is a fully in-browser tool implementing a generic CRC-16 through the RockSoft parameter model (poly / init / refin / refout / xorout), covering six widely used variants plus RFC 1950 Adler-32, with fixed-width hex and decimal output.',
+        coreFeatures: [
+          'Six CRC-16 variants: CCITT-FALSE, ARC, XMODEM, MODBUS, GENIBUS, and KERMIT',
+          'RFC 1950 Adler-32 for zlib stream verification',
+          'Both UTF-8 text and hex byte-stream input (space/comma separated, 0x prefix)',
+          'Parameterized bitwise implementation matching CRC RevEng check values',
+          'Per-result copy button and live byte-count display',
+        ],
+        howToUse: [
+          'Choose text or hex byte-stream input mode',
+          'In text mode, content is encoded as UTF-8; in hex mode write bytes such as 31 32 33',
+          'The result card shows every algorithm with 0x hex and decimal values',
+          'Click "Copy" on a row to grab its hex result',
+        ],
+        useCases: [
+          'Verifying CRC fields in embedded serial or Modbus RTU frames',
+          'Checking Adler-32 of zlib/gzip data streams',
+          'Aligning a firmware implementation against standard check vectors',
+        ],
+        privacyNote:
+          'All byte arithmetic runs locally in your browser; input never leaves your device.',
+        faqs: [
+          {
+            question: 'Why is the standard input "123456789"?',
+            answer:
+              'The CRC RevEng catalogue defines check values over "123456789". Here CCITT-FALSE=0x29B1, ARC=0xBB3D, XMODEM=0x31C3, MODBUS=0x4B37, and Adler-32=0x091E01DE, so you can cross-check any implementation.',
+          },
+          {
+            question: 'Which CRC does Modbus use?',
+            answer:
+              'Modbus RTU uses CRC-16/MODBUS (poly=0x8005, init=0xFFFF, reflected input/output, xorout=0x0000), which is included directly.',
+          },
+          {
+            question: 'How are non-ASCII characters handled?',
+            answer:
+              'Text mode encodes to UTF-8 bytes first. If your protocol requires GBK or another encoding, encode externally and paste the bytes in hex mode.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'pangu-spacing',
+    name: '中英文混排自动留白（盘古之白）格式化器',
+    nameEn: 'Pangu Spacing Formatter',
+    description:
+      '在中文与英文/数字之间自动插入一个空格（盘古之白），跳过代码块与 URL，支持反向移除多余空格。',
+    descriptionEn:
+      'Automatically insert a space between CJK and Latin letters or digits (pangu spacing), skip code blocks and URLs, and remove extra spaces in reverse.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/pangu-spacing',
+    iconName: 'Type',
+    tags: ['盘古之白', '中英文混排', '排版', '格式化', '文本'],
+    tagsEn: ['Pangu', 'CJK Spacing', 'Typography', 'Format', 'Text'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '中英文混排自动留白（盘古之白）格式化器是一款纯浏览器本地运行的排版工具，在中文（含日文假名、全角标点）与英文、数字的交界处自动插入一个半角空格，让技术文档、README、公众号文章等混排文本更易读；也支持反向移除这些空格。',
+        coreFeatures: [
+          '边界留白：识别汉字（含扩展 A 区）、日文假名、全角标点与半角字母数字的交界，仅插入一个空格',
+          '保护代码与链接：围栏代码块、行内代码（`code`）及 URL 内部原样保留，不破坏 Markdown 语法',
+          '反向移除：可一键移除中英文之间的空格，中文词语之间及代码内空格不受影响',
+          '纯浏览器本地运算：所有文本处理均在本地完成，不上传任何内容',
+        ],
+        howToUse: [
+          '粘贴中英文混排文本到输入框',
+          '选择「自动留白」或「移除留白」模式，结果实时生成',
+          '查看插入或移除的空格数量统计',
+          '点击「复制处理结果」获取文本',
+        ],
+        useCases: [
+          '规范技术文档与 README 的中英文混排',
+          '排版公众号、博客文章前的自动留白',
+          '清理已经手工加过空格但风格不统一的稿件',
+        ],
+        privacyNote:
+          '所有文本处理均基于纯正则与状态机在浏览器本地完成，绝不记录或上传任何内容。',
+        faqs: [
+          {
+            question: '什么是「盘古之白」？',
+            answer:
+              '指中文与英文/数字之间保留一个半角空格的排版惯例，由 pangu.js 推广，能显著提升混排文本的可读性。',
+          },
+          {
+            question: '代码块和链接会被改动吗？',
+            answer:
+              '不会。围栏代码块（```）、行内代码与 URL 内部完全保持原样，工具只在它们与中文正文的交界处补空格。',
+          },
+          {
+            question: '中文句号前为什么不加空格？',
+            answer:
+              '句读标点（如句号 U+3002）前后不补空格；全角逗号、冒号等全角形式（U+FF00–U+FFEF）与英文/数字相邻时才参与留白。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Pangu Spacing Formatter is a fully browser-based typography utility that automatically inserts a space between CJK characters (including kana and full-width punctuation) and Latin letters or digits, and can also remove those spaces in reverse.',
+        coreFeatures: [
+          'Boundary spacing: detect edges between Han ideographs, kana, full-width punctuation and half-width alphanumerics',
+          'Code and URL safe: fenced blocks, inline code and URLs are left untouched without breaking Markdown',
+          'Reverse mode: remove CJK-Latin spaces while keeping spaces inside Chinese text and code intact',
+          '100% in-browser: all processing is local with regex and a small state machine',
+        ],
+        howToUse: [
+          'Paste mixed CJK/Latin text into the input box',
+          'Choose "Add spacing" or "Remove spacing"; output updates in real time',
+          'Check the count of inserted or removed spaces',
+          'Click "Copy result" to grab the processed text',
+        ],
+        useCases: [
+          'Normalizing mixed-language technical docs and README files',
+          'Polishing blog posts and articles before publishing',
+          'Cleaning manuscripts with inconsistent manual spacing',
+        ],
+        privacyNote:
+          'All processing runs locally in your browser using pure regex and state-machine logic; content is never uploaded.',
+        faqs: [
+          {
+            question: 'What is "pangu spacing"?',
+            answer:
+              'The typographic convention of keeping one space between CJK and Latin/digit text, popularized by pangu.js, which improves readability of mixed-language content.',
+          },
+          {
+            question: 'Will code blocks and links be modified?',
+            answer:
+              'No. Fenced code blocks, inline code and URLs are preserved exactly; spaces are only added at the boundary with Chinese prose.',
+          },
+          {
+            question: 'Why no space before the Chinese full stop?',
+            answer:
+              'CJK sentence punctuation such as U+3002 never gets a space, while full-width forms in U+FF00–U+FFEF (e.g. the full-width comma) do participate in spacing next to Latin text.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'dns-ptr-builder',
+    name: 'DNS PTR 反向解析记录名构造器',
+    nameEn: 'DNS PTR Record Name Builder',
+    description:
+      '由 IPv4/IPv6 地址构造 in-addr.arpa / ip6.arpa 反向解析记录名与 zone 名，符合 RFC 1035 与 RFC 3596。',
+    descriptionEn:
+      'Build in-addr.arpa / ip6.arpa reverse-DNS PTR names and zone names from IPv4/IPv6 addresses per RFC 1035 and RFC 3596.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/dns-ptr-builder',
+    iconName: 'Globe',
+    tags: ['DNS', 'PTR', 'rDNS', 'IPv6', '运维'],
+    tagsEn: ['DNS', 'PTR', 'rDNS', 'IPv6', 'Ops'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'DNS PTR 反向解析记录名构造器根据输入的 IPv4 / IPv6 地址生成反向 DNS（PTR 查询）使用的完整域名：IPv4 四段倒序追加 in-addr.arpa，IPv6 展开为 32 个 nibble 全部倒序追加 ip6.arpa，还可按前缀长度生成反向 zone 名。全部在浏览器本地完成。',
+        coreFeatures: [
+          'IPv4 反向名：如 192.0.2.10 → 10.2.0.192.in-addr.arpa',
+          'IPv6 反向名：按 RFC 3596 §2.5 展开并反转 32 个 nibble，支持 :: 压缩与内嵌 IPv4',
+          'zone 构造：IPv4 按 /8、/16、/24，IPv6 按 /4 倍数（如 /32、/48、/64）生成委派 zone 名',
+          '严格校验：非法地址、越界或未对齐的前缀长度明确报错',
+        ],
+        howToUse: [
+          '在输入框填入 IPv4 或 IPv6 地址',
+          '需要配置反向 zone 时填写前缀长度（或点击 /24、/32 等快捷标签）',
+          '查看 PTR 记录名、规范化地址与 zone 名',
+          '点击对应「复制」按钮获取结果',
+        ],
+        useCases: [
+          '配置 BIND / named 反向解析 zone 文件',
+          '编写或核对 dig -x 反向查询与 rDNS 记录',
+          '检查 IPv6 ip6.arpa 长域名手工反转是否正确',
+        ],
+        privacyNote:
+          '地址解析与字符串变换全部在浏览器本地完成，不发起任何 DNS 查询或网络请求。',
+        faqs: [
+          {
+            question: 'IPv6 的反向名为什么这么长？',
+            answer:
+              'RFC 3596 规定先把地址展开为 32 个十六进制 nibble，再逐位反转并用点连接，最后加 ip6.arpa，因此 2001:db8::1 对应 32 个标签级的长域名。',
+          },
+          {
+            question: 'PTR 名和 zone 名有什么区别？',
+            answer:
+              'PTR 名是完整的查询域名（主机粒度）；zone 名是 DNS 委派边界，只保留前缀覆盖的网络段标签，如 /24 对应 2.0.192.in-addr.arpa。',
+          },
+          {
+            question: '会真的发起 DNS 查询吗？',
+            answer: '不会。工具只构造记录名字符串；实际查询可在终端执行 dig -x <地址>。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'DNS PTR Record Name Builder generates reverse-DNS names from IPv4/IPv6 addresses: reversed octets under in-addr.arpa for IPv4 and 32 reversed nibbles under ip6.arpa for IPv6, with optional reverse-zone names based on prefix length. Everything runs locally in the browser.',
+        coreFeatures: [
+          'IPv4 reverse names, e.g. 192.0.2.10 → 10.2.0.192.in-addr.arpa',
+          'IPv6 reverse names per RFC 3596 §2.5 with :: compression and embedded IPv4 support',
+          'Zone names for /8, /16, /24 on IPv4 and nibble-aligned prefixes (/32, /48, /64) on IPv6',
+          'Strict validation with clear errors for bad addresses and invalid or unaligned prefix lengths',
+        ],
+        howToUse: [
+          'Enter an IPv4 or IPv6 address',
+          'Optionally set a prefix length (or use the /24, /32 quick tags) to build a zone name',
+          'Review the PTR name, normalized address and zone name',
+          'Click "Copy" to grab a result',
+        ],
+        useCases: [
+          'Authoring BIND/named reverse-zone files',
+          'Verifying dig -x queries and rDNS records',
+          'Checking long hand-built IPv6 ip6.arpa names',
+        ],
+        privacyNote:
+          'Address parsing and string transforms run entirely in your browser; no DNS lookups or network requests are made.',
+        faqs: [
+          {
+            question: 'Why is the IPv6 reverse name so long?',
+            answer:
+              'RFC 3596 expands the address into 32 hexadecimal nibbles, reverses them, joins with dots, and appends ip6.arpa — producing 32 labels before the suffix.',
+          },
+          {
+            question: 'PTR name vs zone name?',
+            answer:
+              'The PTR name is the full host-granularity query name; the zone name is the delegation boundary and keeps only prefix-covered labels, e.g. 2.0.192.in-addr.arpa for /24.',
+          },
+          {
+            question: 'Does it perform real DNS queries?',
+            answer: 'No. It only builds the name strings; run dig -x <address> in a terminal for an actual lookup.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

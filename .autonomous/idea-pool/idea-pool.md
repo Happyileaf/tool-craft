@@ -51,7 +51,7 @@
 | 20261017200240 | MIME 类型速查与识别 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200240.md) |
 | 20261017220043 | 地理坐标格式转换（十进制 ↔ 度分秒） | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220043.md) |
 | 20261017220045 | vCard（VCF）名片生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220045.md) |
-| 20261017220046 | 敏感信息脱敏（PII 掩码） | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017220046.md) |
+| 20261017220046 | 敏感信息脱敏（PII 掩码） | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017220046.md) |
 | 20261017220047 | 开源许可证生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220047.md) |
 | 20261017220048 | HTTP 安全响应头生成器（CSP / HSTS 等） | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017220048.md) |
 | 20261017220049 | 列表集合运算（交集 / 并集 / 差集） | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017220049.md) |
@@ -79,7 +79,7 @@
 | 20261022221403 | 全角/半角字符批量转换器 | Web Tool | Existing Gap | In Progress | 2026-10-22 | trae-agent | [详情](./idea-details/20261022221403.md) |
 | 20261022221404 | 文本相似度计算器 | Web Tool | Existing Gap | Pending | 2026-10-22 | | [详情](./idea-details/20261022221404.md) |
 | 20261022221405 | Glob 模式匹配测试器 | Web Tool | Existing Gap | Pending | 2026-10-22 | | [详情](./idea-details/20261022221405.md) |
-| 20261022221406 | Conventional Commits 提交信息生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221406.md) |
+| 20261022221406 | Conventional Commits 提交信息生成器 | Web Tool | Exploration | In Progress | 2026-10-22 | trae-agent | [详情](./idea-details/20261022221406.md) |
 | 20261022221407 | Shields.io 徽章生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221407.md) |
 | 20261022221408 | ASCII 文件树生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221408.md) |
 | 20261022221409 | ANSI 终端颜色码生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221409.md) |
@@ -126,7 +126,7 @@
 | 20261027020216 | 多时区会议时间规划器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027020216.md) |
 | 20261027020217 | CSS clip-path 可视化生成器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027020217.md) |
 | 20261027020218 | 盲文（Braille）点阵编解码器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027020218.md) |
-| 20261027020219 | CRC16 / Adler-32 等多算法校验和计算器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027020219.md) |
+| 20261027020219 | CRC16 / Adler-32 等多算法校验和计算器 | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027020219.md) |
 | 20261027040226 | 色温 ↔ RGB/HEX 双向转换器（开尔文色温计算器） | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027040226.md) |
 | 20261027081101 | 文件魔数（Magic Number）签名识别器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027081101.md) |
 | 20261027081102 | 线性回归与相关系数计算器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027081102.md) |
@@ -172,5 +172,5 @@
 | 20261029200825 | UUID v3 / v5 名称型 UUID 生成器（RFC 9562 命名空间哈希） | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029200825.md) |
 | 20261029200826 | JWK Thumbprint 指纹计算器（RFC 7638） | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029200826.md) |
 | 20261029200827 | VIN 车辆识别代号校验位计算器与合法性校验器（ISO 3779 / GB 16735） | Web Tool | External Reference | Pending | 2026-10-29 | | [详情](./idea-details/20261029200827.md) |
-| 20261029200828 | 中英文混排自动留白（盘古之白）格式化器 | Web Tool | External Reference | Pending | 2026-10-29 | | [详情](./idea-details/20261029200828.md) |
-| 20261029200829 | DNS PTR 反向解析记录名构造器（in-addr.arpa / ip6.arpa） | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029200829.md) |
+| 20261029200828 | 中英文混排自动留白（盘古之白）格式化器 | Web Tool | External Reference | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029200828.md) |
+| 20261029200829 | DNS PTR 反向解析记录名构造器（in-addr.arpa / ip6.arpa） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029200829.md) |
