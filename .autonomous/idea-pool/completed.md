@@ -44,3 +44,8 @@
 | 20261023081551 | 文本模式批量提取器（邮箱 / URL / IP / UUID 等常用模式） | Web Tool | Exploration | `pattern-extractor` / [PR #98](https://github.com/Happyileaf/tool-craft/pull/98) | 2026-10-29 | [详情](./idea-details/20261023081551.md) |
 | 20261026140925 | 日期时间差计算与日期加减计算器 | Web Tool | Exploration | `date-diff-calculator` / [PR #98](https://github.com/Happyileaf/tool-craft/pull/98) | 2026-10-29 | [详情](./idea-details/20261026140925.md) |
 | 20261029080307 | 复数四则运算与极坐标形式转换器 | Web Tool | Existing Gap | `complex-number-calculator` / [PR #98](https://github.com/Happyileaf/tool-craft/pull/98) | 2026-10-29 | [详情](./idea-details/20261029080307.md) |
+| 20261029140201 | SRI 子资源完整性哈希生成器（Subresource Integrity） | Web Tool | Existing Gap | `sri-hash-generator` / [PR #101](https://github.com/Happyileaf/tool-craft/pull/101) | 2026-10-29 | [详情](./idea-details/20261029140201.md) |
+| 20261029140202 | HKDF 密钥派生计算器（RFC 5869） | Web Tool | Existing Gap | `hkdf-calculator` / [PR #101](https://github.com/Happyileaf/tool-craft/pull/101) | 2026-10-29 | [详情](./idea-details/20261029140202.md) |
+| 20261027140131 | PBKDF2 密钥派生计算器（RFC 8018） | Web Tool | Existing Gap | `pbkdf2-calculator` / [PR #101](https://github.com/Happyileaf/tool-craft/pull/101) | 2026-10-29 | [详情](./idea-details/20261027140131.md) |
+| 20261029140203 | JSON Patch 应用器（RFC 6902） | Web Tool | Existing Gap | `json-patch` / [PR #101](https://github.com/Happyileaf/tool-craft/pull/101) | 2026-10-29 | [详情](./idea-details/20261029140203.md) |
+| 20261028202203 | JSON 键名命名风格批量递归转换器（camelCase / snake_case / kebab-case 等） | Web Tool | Existing Gap | `json-key-case` / [PR #101](https://github.com/Happyileaf/tool-craft/pull/101) | 2026-10-29 | [详情](./idea-details/20261028202203.md) |
