@@ -12058,6 +12058,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'json-key-case',
+    name: 'JSON 键名命名风格转换',
+    nameEn: 'JSON Key Case Converter',
+    description:
+      '粘贴一段 JSON，递归遍历所有嵌套对象与数组，把全部键名在 camelCase、PascalCase、snake_case、SCREAMING_SNAKE_CASE、kebab-case 之间批量互转，数据值与层级结构原样保留。自动识别连续大写缩写（HTMLElement）与数字边界（v2），并检测同级转换后撞键（如 user_id 与 userId）且给出含路径的错误。实时输出、一键复制，纯函数、零新增运行时依赖、全程离线。',
+    descriptionEn:
+      'Paste JSON and recursively rewrite every object key across nested objects and arrays between camelCase, PascalCase, snake_case, SCREAMING_SNAKE_CASE and kebab-case, while values and structure stay untouched. It recognizes acronym runs (HTMLElement) and digit boundaries (v2), and detects same-level key collisions after conversion (e.g. user_id vs userId) with a path-aware error. Live output, one-click copy, pure functions, zero new runtime dependencies, fully offline.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-key-case',
+    iconName: 'Type',
+    tags: ['JSON', '键名', 'camelCase', 'snake_case', '命名风格', '离线'],
+    tagsEn: ['JSON', 'Keys', 'camelCase', 'snake_case', 'Naming', 'Offline'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '{"user_id":1,"user_name":"alice","is_active":true}',
+    doc: {
+      zh: {
+        whatIsIt:
+          '这是一个“感知 JSON 结构”的键名批量转换器：它先把输入解析为 JSON，再递归遍历每一层对象（数组会逐元素深入），仅重写对象的键名，字符串、数字、布尔、null 等数据值以及嵌套层级原样保留。与「文本命名风格转换」只对整段纯文本做替换不同，本工具不会改动值内部的文字；与 JSON Flatten 类工具不同，它不打平层级；与 JSON to TypeScript 类工具不同，它输出的仍是数据而非类型声明。分词采用通用规则：在大小写边界、连续大写缩写边界（HTMLElement → html element）、字母与数字相邻处（v2 → v、2）以及非字母数字分隔符处切分，再按目标风格重组。若同一对象内两个不同原键转换后变成同一名字，会报告包含 JSON 路径的撞键错误以避免静默丢数据。',
+        coreFeatures: [
+          '五种命名风格互转：camelCase、PascalCase、snake_case、SCREAMING_SNAKE_CASE、kebab-case',
+          '递归处理任意深度的嵌套对象与数组，仅改键名，值与键顺序保持不变',
+          '智能分词：识别大小写边界、连续大写缩写（UserID、HTMLElement）与数字边界（v2 → v_2）',
+          '同级撞键检测：转换后重名时给出含路径的错误（如 /profile 下 user_id 与 userId），杜绝静默覆盖',
+          '实时输出并显示实际变更的键数量，一键复制；纯函数零新增依赖，全程本地离线运算',
+        ],
+        howToUse: [
+          '在左栏粘贴或输入合法 JSON（对象、数组或标量均可），右栏实时显示转换结果',
+          '通过顶部按钮选择目标命名风格，切换后结果立即重新计算',
+          '结果卡片右上角显示「已转换 N 个键」，点击「复制结果」复制输出 JSON',
+          '若出现「键名冲突」错误，根据提示的路径在源数据中先消歧（重命名其中一个键）再转换',
+        ],
+        useCases: [
+          '对接命名规范不同的系统：后端 snake_case 接口与前端 camelCase 模型之间批量转换',
+          '把第三方 JSON 数据统一为团队约定的键名风格后再落库或生成代码',
+          '排查迁移脚本或 ORM 序列化中的键名风格问题，并提前发现转换后撞键风险',
+        ],
+        privacyNote:
+          'JSON 仅在浏览器本地解析与转换，不会被上传、记录或发送到任何服务端。',
+        faqs: [
+          {
+            question: '为什么提示「键名冲突」？应该怎么处理？',
+            answer:
+              '当同一个对象里存在两个不同的原键，转换后恰好得到相同名字时（例如同时有 user_id 和 userId，转成 camelCase 都会变成 userId），继续转换会丢失其中一个键的数据，因此工具直接报错并给出路径。请按提示路径在源 JSON 中先把其中一个键改名消歧，再重新转换。',
+          },
+          {
+            question: '为什么 v2 被转成了 v_2，而不是 v2？',
+            answer:
+              '分词规则在字母与数字相邻处强制切分，因此 v2 会被拆成 v 与 2 两个词：snake_case 下为 v_2、camelCase 下重新拼回为 v2、kebab-case 下为 v-2。这样处理可以保证在任何风格之间来回转换结果都稳定、不产生歧义；连续大写缩写同理（HTMLElement → html element → htmlElement）。',
+          },
+          {
+            question: '它和「文本命名风格转换」工具有什么区别？',
+            answer:
+              '文本工具对整段纯文本做风格替换，不理解 JSON 结构，可能误改字符串值里的内容。本工具先解析 JSON 再只重写对象键名，数组元素、字符串/数字等值内容与嵌套层级完全不动，还能检测转换后的同级撞键并统计变更键数；输出始终是合法 JSON。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This is a JSON-aware batch key converter: it parses the input as JSON, then recursively walks every nested object (descending into arrays element by element) and rewrites only object keys, leaving string, number, boolean and null values as well as the hierarchy untouched. Unlike the plain “Text Case Converter”, which replaces text across an entire blob, it never touches content inside values; unlike flatten tools it does not flatten structure; unlike JSON-to-TypeScript tools its output is still data, not type declarations. Splitting follows common rules: boundaries at case changes, acronym runs (HTMLElement → html element), letter-digit adjacency (v2 → v, 2) and non-alphanumeric separators, then words are recomposed in the target style. If two distinct keys in the same object would become identical after conversion, a path-aware collision error is reported instead of silently dropping data.',
+        coreFeatures: [
+          'Convert between five styles: camelCase, PascalCase, snake_case, SCREAMING_SNAKE_CASE, kebab-case',
+          'Recursively handles objects and arrays at any depth; only keys change, values and key order are preserved',
+          'Smart splitting: case boundaries, acronym runs (UserID, HTMLElement) and digit boundaries (v2 → v_2)',
+          'Same-level collision detection: a path-aware error when keys merge (e.g. user_id vs userId under /profile), preventing silent overwrite',
+          'Live output with a count of changed keys and one-click copy; pure functions, no new dependencies, fully local and offline',
+        ],
+        howToUse: [
+          'Paste valid JSON in the left panel (object, array or scalar); the converted result appears live on the right',
+          'Pick the target naming style with the top buttons; the result is recomputed immediately on switch',
+          'The result card shows “N keys converted”; click “Copy result” to copy the output JSON',
+          'If a “key collision” error appears, follow the path hint to rename one of the clashing keys in the source first',
+        ],
+        useCases: [
+          'Bridge systems with different conventions: convert between snake_case backend APIs and camelCase frontend models',
+          'Normalize third-party JSON to your team’s key style before storing it or generating code',
+          'Investigate key-style issues in migration scripts or ORM serialization and spot collision risks early',
+        ],
+        privacyNote:
+          'JSON is parsed and converted locally in the browser only and is never uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'Why do I get a “key collision” error and how do I fix it?',
+            answer:
+              'When two distinct keys in the same object would become identical after conversion (e.g. both user_id and userId present, and camelCase turns both into userId), continuing would silently lose one key’s data, so the tool errors out with the path. Rename one of the clashing keys in the source JSON at that path to disambiguate, then convert again.',
+          },
+          {
+            question: 'Why does v2 become v_2 instead of v2?',
+            answer:
+              'The splitter forces a boundary wherever a letter and digit meet, so v2 is split into the words v and 2: v_2 in snake_case, v2 when recomposed in camelCase, and v-2 in kebab-case. This guarantees stable, unambiguous round-trips between styles. Acronym runs work the same way (HTMLElement → html element → htmlElement).',
+          },
+          {
+            question: 'How is this different from the “Text Case Converter” tool?',
+            answer:
+              'The text tool rewrites an entire plain-text blob without understanding JSON, so it can also change content inside string values. This tool parses JSON first and rewrites only object keys; array elements, values such as strings and numbers, and the nesting stay completely untouched. It also detects same-level collisions after conversion, counts changed keys, and always emits valid JSON.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

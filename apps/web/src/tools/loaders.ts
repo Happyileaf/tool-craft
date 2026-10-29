@@ -144,4 +144,5 @@ export const toolLoaders: Record<
   'hkdf-calculator': () => import('./hkdf-calculator'),
   'pbkdf2-calculator': () => import('./pbkdf2-calculator'),
   'json-patch': () => import('./json-patch'),
+  'json-key-case': () => import('./json-key-case'),
 };
