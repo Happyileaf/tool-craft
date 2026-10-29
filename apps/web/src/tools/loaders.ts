@@ -135,4 +135,5 @@ export const toolLoaders: Record<
   'running-pace-calculator': () => import('./running-pace-calculator'),
   'db-converter': () => import('./db-converter'),
   'mailto-link-generator': () => import('./mailto-link-generator'),
+  'pattern-extractor': () => import('./pattern-extractor'),
 };

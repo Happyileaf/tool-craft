@@ -11148,6 +11148,107 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'pattern-extractor',
+    name: '文本模式批量提取器（邮箱 / URL / IP / UUID / 日期 / 色值）',
+    nameEn: 'Pattern Extractor (Email / URL / IP / UUID / Date / Hex Color)',
+    description:
+      '粘贴日志、代码或文档文本，勾选邮箱、URL、IPv4、IPv6、UUID、日期时间、十六进制色值等内置模式批量提取，结果按模式分组、组内去重并统计出现次数，支持追加一条自定义正则与一键复制，全部在浏览器本地完成。',
+    descriptionEn:
+      'Paste logs, code or documents and batch-extract emails, URLs, IPv4/IPv6, UUIDs, date-times and hex colors with selectable built-in patterns. Results are grouped by pattern, de-duplicated with occurrence counts, and you can add one custom regex and copy the output—entirely locally in the browser.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/pattern-extractor',
+    iconName: 'Eye',
+    tags: ['正则提取', '邮箱', 'URL', 'IP', 'UUID', '文本清洗'],
+    tagsEn: ['Pattern Extraction', 'Email', 'URL', 'IP', 'UUID', 'Text Cleaning'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '联系 support@example.com 或访问 https://example.com，服务器 192.168.1.10 / 2001:db8::1，追踪 550e8400-e29b-41d4-a716-446655440000。',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的文本模式批量提取器。它内置邮箱、URL、IPv4、IPv6、UUID、日期时间、十六进制色值七类常用正则，勾选后即可对粘贴文本一次性批量提取，输出按模式分组、组内去重并带出现次数的清单，还支持追加一条自定义正则（可命名、可忽略大小写），便于从日志、代码、文档中快速清洗结构化片段。',
+        coreFeatures: [
+          '七类内置模式：邮箱、URL、IPv4、IPv6、UUID、日期时间、十六进制色值，可任意多选组合',
+          '分组去重计数：每个匹配项按首次出现顺序去重并统计出现次数，给出去重项数与总命中数',
+          '自定义正则：可追加一条命名正则，语法错误时仅该项报错，不影响其他模式',
+          '结果一键复制为纯文本，空结果与空输入有明确空状态',
+          '纯本地运行：文本不发起任何网络请求，正则在主线程即时扫描',
+        ],
+        howToUse: [
+          '勾选需要提取的模式（默认已选邮箱 / URL / IPv4 / IPv6 / UUID）',
+          '把待分析文本粘贴到文本框，结果实时按模式分组展示',
+          '需要额外规则时勾选「追加一条自定义正则」，填写名称（可选）与正则源码',
+          '点击「复制结果文本」获取分组清单与计数',
+        ],
+        useCases: [
+          '日志分析：从混排日志中批量提取 IP、URL、UUID、时间戳并统计频次',
+          '数据清洗：从文档或网页文本中抽取全部邮箱、链接或色值',
+          '代码审查：用自定义正则快速定位某类标识符或常量',
+        ],
+        privacyNote: '所有文本仅在浏览器本地参与正则匹配，不会被上传或记录。',
+        faqs: [
+          {
+            question: '和已有的正则测试器（regex-tester）有什么区别？',
+            answer:
+              '正则测试器面向编写与调试单条正则、查看匹配与替换预览；本工具面向「预设模式批量提取」：内置七类常用模式可多选组合，自动分组、去重、计数，解决从大段文本中快速收集某类信息的场景，二者不重叠。',
+          },
+          {
+            question: '提取结果如何去重和计数？',
+            answer:
+              '同一模式下字面值完全相同的匹配只保留一条（按首次出现顺序），但会累计它在原文中出现的次数；每个分组显示「去重项数 / 总命中次数」，顶部还给出所有模式的汇总。',
+          },
+          {
+            question: '自定义正则写错了会怎样？',
+            answer:
+              '自定义正则存在语法错误时，只会在该分组显示错误信息，内置模式与其他结果照常展示，不会导致整体计算失败。自定义源码不需要写两侧斜杠，例如 \\bfoo-\\d+\\b。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first batch pattern extractor. It ships with seven built-in regexes—email, URL, IPv4, IPv6, UUID, date-time and hex color—and extracts them from pasted text in one pass, grouped by pattern, de-duplicated with occurrence counts. You can also add one named custom regex (optionally case-insensitive), making it easy to clean structured fragments out of logs, code and documents.',
+        coreFeatures: [
+          'Seven built-in patterns: email, URL, IPv4, IPv6, UUID, date-time and hex color, freely combinable',
+          'Grouped, de-duplicated counts: identical matches collapse to one entry in first-seen order with an occurrence count',
+          'Custom regex: add one named pattern; a syntax error only flags that group without affecting others',
+          'One-click copy of results as plain text, with explicit empty states',
+          'Local-first: text never triggers a network request; scanning runs instantly on the main thread',
+        ],
+        howToUse: [
+          'Tick the patterns you need (email / URL / IPv4 / IPv6 / UUID selected by default)',
+          'Paste your text into the box; grouped results appear instantly',
+          'Optionally tick "add a custom regex" and provide a name (optional) and the pattern source',
+          'Click "Copy results" to get the grouped list with counts',
+        ],
+        useCases: [
+          'Log analysis: batch-collect IPs, URLs, UUIDs and timestamps with frequencies',
+          'Data cleaning: extract every email, link or color value from docs and pages',
+          'Code review: locate a class of identifiers with a quick custom regex',
+        ],
+        privacyNote: 'All text is matched locally in the browser and is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How is this different from the existing regex tester?',
+            answer:
+              'The regex tester is for writing and debugging a single regex with match/replace previews. This tool is for preset-pattern batch extraction: multiple built-in patterns at once, with automatic grouping, de-duplication and counting—collecting a class of information from large text. The two do not overlap.',
+          },
+          {
+            question: 'How are de-duplication and counting done?',
+            answer:
+              'Within a pattern, identical matches keep a single entry in first-seen order while accumulating the number of occurrences. Each group shows unique items / total hits, and the header summarizes all patterns.',
+          },
+          {
+            question: 'What if my custom regex is invalid?',
+            answer:
+              'A syntax error only shows an error inside that custom group; built-in patterns and other results remain unaffected. Enter the pattern source without the surrounding slashes, e.g. \\bfoo-\\d+\\b.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
