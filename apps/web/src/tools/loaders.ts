@@ -143,4 +143,5 @@ export const toolLoaders: Record<
   'sri-hash-generator': () => import('./sri-hash-generator'),
   'hkdf-calculator': () => import('./hkdf-calculator'),
   'pbkdf2-calculator': () => import('./pbkdf2-calculator'),
+  'json-patch': () => import('./json-patch'),
 };

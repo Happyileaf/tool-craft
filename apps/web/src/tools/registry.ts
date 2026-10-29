@@ -11956,6 +11956,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'json-patch',
+    name: 'JSON Patch 补丁工具',
+    nameEn: 'JSON Patch Tool (RFC 6902)',
+    description:
+      '按 RFC 6902 对 JSON 文档顺序应用补丁数组：支持 add / remove / replace / move / copy / test 六个操作与 RFC 6901 JSON Pointer 路径（含 ~0、~1 转义与数组下标、"-" 追加）。实时展示结果文档，或返回带操作序号的精确错误（op 未知、路径不存在、数组越界、test 断言不匹配等），失败时不产生部分结果。纯函数、零依赖、全程离线。',
+    descriptionEn:
+      'Apply RFC 6902 patch arrays to a JSON document: all six ops (add/remove/replace/move/copy/test) with RFC 6901 JSON Pointer paths (~0/~1 escaping, array indices and "-" append). See the result live, or get a precise error with the operation index—unknown op, missing path, out-of-bounds index, failed test assertion—with no partial result on failure. Pure functions, zero dependencies, fully offline.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-patch',
+    iconName: 'Braces',
+    tags: ['JSON Patch', 'RFC 6902', 'JSON Pointer', 'RFC 6901', '数据转换', '离线'],
+    tagsEn: ['JSON Patch', 'RFC 6902', 'JSON Pointer', 'RFC 6901', 'Data Transform', 'Offline'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '{"title":"Goodbye!","tags":["example"]}',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON Patch（RFC 6902）是一种用“操作数组”描述 JSON 文档变更的标准格式：每个操作声明 op（add/remove/replace/move/copy/test）、path（RFC 6901 JSON Pointer）以及 value 或 from，补丁按数组顺序依次应用，任一操作失败则整个补丁失败。相比 RFC 7386 Merge Patch 的“整体合并、null 删除”，JSON Patch 能精确表达数组插入、键移动、复制与前置断言，是 Kubernetes、JSON API 等生态采用的补丁格式。本工具以零依赖纯函数实现完整规范，并在出错时给出“第 N 个操作失败 + 具体原因”的操作级诊断。',
+        coreFeatures: [
+          '完整支持 RFC 6902 六操作：add / remove / replace / move / copy / test，按顺序应用',
+          '完整 RFC 6901 JSON Pointer 解析：/ 分段、~1 表示 /、~0 表示 ~，数组下标与 "-" 末尾追加',
+          '操作级错误诊断：明确指出失败操作的序号、op 名称与原因（路径不存在、越界、test 不匹配等）',
+          '原子语义：任一操作失败即整体返回错误，不会产生半应用状态；原文档绝不被修改',
+          '纯函数零依赖，所有解析与运算在浏览器本地完成，可离线使用',
+        ],
+        howToUse: [
+          '在左栏粘贴原始 JSON 文档，右栏填写补丁操作数组（每个元素含 op 与 path）',
+          'add/replace/test 需提供 value；move/copy 需提供 from（均为 JSON Pointer 字符串）',
+          '结果区实时显示应用后的文档与已应用操作数；点击「错误示例」可查看操作级错误定位',
+          '点击「复制结果」复制输出 JSON；数组插入用从 0 开始的下标，追加到末尾使用 "-"',
+        ],
+        useCases: [
+          '构造或调试发送给 Kubernetes / JSON API 等服务的 JSON Patch 请求体',
+          '核对多语言 RFC 6902 实现的行为，尤其是 move 数组元素与转义路径等边界情况',
+          '用 test 操作作为变更前置断言，安全地批量编辑大型 JSON 配置',
+        ],
+        privacyNote:
+          '文档与补丁仅在浏览器本地解析与运算，不会被上传、记录或发送到任何服务端。',
+        faqs: [
+          {
+            question: 'JSON Patch 和 JSON Merge Patch（RFC 7386）有什么区别？',
+            answer:
+              'Merge Patch 用一个与原文档同形的补丁做递归合并，补丁中为 null 的键被删除，数组只能整体替换，无法表达数组插入、移动或断言；JSON Patch（RFC 6902）用显式操作数组做路径级修改，支持数组按下标插入/删除、move/copy 与 test 断言，但补丁本身更长。需要简单合并用 Merge Patch，需要精确操作选 JSON Patch。',
+          },
+          {
+            question: '为什么某一步失败后结果整个消失了？',
+            answer:
+              'RFC 6902 规定操作按顺序应用，任一操作失败则整个补丁失败、文档保持原样（原子性）。错误提示会给出失败操作的序号与原因（如“第 2 个操作（remove）失败：数组下标 9 越界”），修正该操作后重新应用即可。',
+          },
+          {
+            question: '路径中的 ~ 和 / 怎么写？',
+            answer:
+              'JSON Pointer 以 / 分段，因此键名里若本身含 / 需写成 ~1，含 ~ 需写成 ~0（先转义 ~ 再转义 /）。例如键 "a/b" 的路径是 /a~1b，键 "m~n" 的路径是 /m~0n。空字符串作为键时路径以结尾的 / 表示，如 "/" 指向根下的空键。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'JSON Patch (RFC 6902) describes changes to a JSON document as an array of operations: each one declares an op (add/remove/replace/move/copy/test), a path (RFC 6901 JSON Pointer) and a value or from; operations apply in order and any failure aborts the whole patch. Compared with RFC 7386 Merge Patch (whole-document merge, null means delete), JSON Patch precisely expresses array insertion, key moves, copies and preconditions, and is used by Kubernetes and JSON API ecosystems. This tool implements the full spec with zero-dependency pure functions and reports operation-level diagnostics—“operation N failed” plus the exact reason.',
+        coreFeatures: [
+          'All six RFC 6902 ops: add/remove/replace/move/copy/test, applied in order',
+          'Full RFC 6901 JSON Pointer: / segments, ~1 for /, ~0 for ~, array indices and "-" append',
+          'Operation-level errors: sequence number, op name and reason (missing path, out of bounds, test mismatch)',
+          'Atomic semantics: any failure aborts the patch with no half-applied state; the input document is never mutated',
+          'Pure functions and zero dependencies; parsing and computation run entirely in the browser, offline-capable',
+        ],
+        howToUse: [
+          'Paste the original JSON document in the left panel and the patch array (objects with op and path) on the right',
+          'add/replace/test require value; move/copy require from (both JSON Pointer strings)',
+          'The result document and applied-op count appear live; click "Error sample" to see operation-level error location',
+          'Use "Copy result" for the output; array indices are zero-based and "-" appends at the end',
+        ],
+        useCases: [
+          'Building or debugging JSON Patch request bodies for Kubernetes, JSON API and similar services',
+          'Cross-checking RFC 6902 implementations across languages, including array move and escaped-path edge cases',
+          'Batch-editing large JSON configs safely by using test ops as preconditions',
+        ],
+        privacyNote:
+          'Documents and patches are parsed and computed locally in the browser and are never uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'How is JSON Patch different from JSON Merge Patch (RFC 7386)?',
+            answer:
+              'Merge Patch recursively merges a document-shaped patch: null deletes a key and arrays can only be replaced wholesale, so array insertion, moves and assertions are impossible. JSON Patch (RFC 6902) uses an explicit operation array for path-level changes—indexed array insert/remove, move/copy and test assertions—at the cost of a longer patch. Use Merge Patch for simple merges and JSON Patch for precise operations.',
+          },
+          {
+            question: 'Why does the result disappear entirely after one failed step?',
+            answer:
+              'RFC 6902 applies operations in order and any failure aborts the entire patch, leaving the document unchanged (atomicity). The error names the failing sequence number and reason—e.g. “operation 2 (remove) failed: array index 9 out of bounds”. Fix that operation and reapply.',
+          },
+          {
+            question: 'How do I write ~ and / inside a path?',
+            answer:
+              'JSON Pointer splits on /, so a literal / in a key is written ~1 and a literal ~ is ~0 (escape ~ before /). The key "a/b" is addressed as /a~1b and "m~n" as /m~0n. An empty-string key is addressed with a trailing slash, e.g. "/" points at the empty key under root.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
