@@ -137,4 +137,5 @@ export const toolLoaders: Record<
   'mailto-link-generator': () => import('./mailto-link-generator'),
   'pattern-extractor': () => import('./pattern-extractor'),
   'bank-card-validator': () => import('./bank-card-validator'),
+  'descriptive-statistics': () => import('./descriptive-statistics'),
 };

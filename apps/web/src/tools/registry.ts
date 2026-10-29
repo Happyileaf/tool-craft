@@ -11350,6 +11350,106 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'descriptive-statistics',
+    name: '描述性统计计算器（均值 / 中位数 / 众数 / 方差 / 分位数）',
+    nameEn: 'Descriptive Statistics Calculator (Mean / Median / Mode / Variance / Quartiles)',
+    description:
+      '粘贴一列数值（支持逗号、空格、换行、分号等任意分隔），实时计算数量、总和、均值、中位数、众数、极差、总体/样本方差与标准差、Q1/Q3 分位数，展示排序后数据分布，非法项自动忽略并计数，全部在浏览器本地完成。',
+    descriptionEn:
+      'Paste a column of numbers separated by commas, spaces, newlines or semicolons and instantly get count, sum, mean, median, mode, range, population/sample variance and standard deviation, Q1/Q3 quartiles, plus a sorted distribution view. Invalid tokens are ignored and counted—entirely locally in the browser.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/descriptive-statistics',
+    iconName: 'Sigma',
+    tags: ['描述统计', '均值', '中位数', '标准差', '分位数', '方差'],
+    tagsEn: ['Descriptive Statistics', 'Mean', 'Median', 'Standard Deviation', 'Quartile', 'Variance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '12.5, 15.2 18.7 21.3; 9.8 14.6 17.1 20.4 16.8 13.9',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的描述性统计计算器。粘贴一列用逗号、空格、换行或分号等任意分隔的数值，即可实时得到数量、总和、均值、中位数、众数（支持多众数）、最小值、最大值、极差、总体/样本方差与标准差，以及采用线性插值法的 Q1/Q2/Q3 分位数，并展示升序排序后的数据分布，便于快速分析日志指标、实验结果或成绩数据。',
+        coreFeatures: [
+          '集中趋势：数量、总和、均值、中位数与众数（多个众数全部列出，全唯一时明确提示）',
+          '离散程度：极差、总体方差/标准差（σ）与样本方差/标准差（s）一键切换',
+          '四分位数：Q1/Q2/Q3 采用线性插值法（等价 Excel PERCENTILE.INC / numpy linear）',
+          '容错解析：支持负数、小数、科学计数法，非法 token 忽略并单独计数提示',
+          '纯本地运行：数据不发起任何网络请求，单元素与空输入均有合理兜底',
+        ],
+        howToUse: [
+          '把一列数值粘贴到文本框，逗号、空格、换行、分号等均可作为分隔符',
+          '结果区实时展示全部统计指标与有效/无效计数',
+          '点击「总体 σ / 样本 s」切换方差与标准差口径（样本口径分母为 n−1）',
+          '需要后续分析时点击「复制结果」获取纯文本指标表',
+        ],
+        useCases: [
+          '快速分析接口耗时、错误率等日志指标的均值、分位数与离散程度',
+          '统计实验测量值或考试成绩的中位数、众数与样本标准差',
+          '清洗混有非法字符的数值数据并核对有效样本量',
+        ],
+        privacyNote: '所有数据仅在浏览器本地参与计算，不会被上传或记录。',
+        faqs: [
+          {
+            question: '总体标准差和样本标准差有什么区别？',
+            answer:
+              '总体标准差（σ）把数据当作全部总体，平方偏差除以 n；样本标准差（s）把数据视为总体的抽样，除以 n−1 以修正偏差（贝塞尔修正）。分析抽样子集一般用 s，只有 1 个数据时 s 不可计算。',
+          },
+          {
+            question: '分位数 Q1/Q3 是怎么算的？',
+            answer:
+              '采用线性插值法：排序后位置 h=(n−1)×p，落在两数之间时按距离线性插值，与 Excel 的 PERCENTILE.INC、numpy 的 linear 方法一致。例如 [1,2,3,4] 的 Q1 为 1.75、Q3 为 3.25。',
+          },
+          {
+            question: '为什么众数显示「无（所有值唯一）」？',
+            answer:
+              '众数是出现次数最多的值；当每个值出现次数相同（都只出现一次）时不存在众数。若有多个值并列最高频，会按它们在输入中首次出现的顺序全部列出。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first descriptive statistics calculator. Paste a column of numbers separated by commas, spaces, newlines or semicolons and instantly get count, sum, mean, median, mode (multi-modal supported), min, max, range, population/sample variance and standard deviation, plus linearly interpolated Q1/Q2/Q3 quartiles and an ascending distribution view—handy for quick analysis of log metrics, experiment results or grades.',
+        coreFeatures: [
+          'Central tendency: count, sum, mean, median and mode (all modes listed; explicit note when all values are unique)',
+          'Dispersion: range plus a one-click toggle between population (σ) and sample (s) variance / standard deviation',
+          'Quartiles: Q1/Q2/Q3 via linear interpolation (equivalent to Excel PERCENTILE.INC / numpy linear)',
+          'Forgiving parsing: negatives, decimals and scientific notation supported; invalid tokens ignored with a separate count',
+          'Local-first: data never leaves the browser; single-element and empty inputs handled gracefully',
+        ],
+        howToUse: [
+          'Paste a column of numbers; commas, spaces, newlines and semicolons all work as separators',
+          'The result area instantly shows every metric plus valid/invalid counts',
+          'Toggle "population σ / sample s" to switch the variance basis (sample uses n−1)',
+          'Click "Copy results" for a plain-text metric table',
+        ],
+        useCases: [
+          'Quick mean/quartile/dispersion analysis of latency, error-rate and other log metrics',
+          'Median, mode and sample standard deviation for experiment measurements or exam scores',
+          'Cleaning numeric data mixed with invalid tokens and checking the valid sample size',
+        ],
+        privacyNote: 'All data is computed locally in the browser and is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Population vs sample standard deviation?',
+            answer:
+              'Population SD (σ) treats the data as the whole population and divides squared deviations by n; sample SD (s) treats it as a sample and divides by n−1 (Bessel correction). Use s for sampled subsets; with a single data point s is undefined.',
+          },
+          {
+            question: 'How are Q1/Q3 quartiles computed?',
+            answer:
+              'With linear interpolation: after sorting, position h=(n−1)×p, interpolating between neighbors—matching Excel PERCENTILE.INC and numpy linear. For [1,2,3,4], Q1 is 1.75 and Q3 is 3.25.',
+          },
+          {
+            question: 'Why does mode say "none (all values unique)"?',
+            answer:
+              'Mode is the most frequent value; when every value appears once there is no mode. If several values tie for the highest frequency, all are listed in first-occurrence order.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
