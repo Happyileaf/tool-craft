@@ -12574,6 +12574,103 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'dns-ptr-builder',
+    name: 'DNS PTR 反向解析记录名构造器',
+    nameEn: 'DNS PTR Record Name Builder',
+    description:
+      '由 IPv4/IPv6 地址构造 in-addr.arpa / ip6.arpa 反向解析记录名与 zone 名，符合 RFC 1035 与 RFC 3596。',
+    descriptionEn:
+      'Build in-addr.arpa / ip6.arpa reverse-DNS PTR names and zone names from IPv4/IPv6 addresses per RFC 1035 and RFC 3596.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/dns-ptr-builder',
+    iconName: 'Globe',
+    tags: ['DNS', 'PTR', 'rDNS', 'IPv6', '运维'],
+    tagsEn: ['DNS', 'PTR', 'rDNS', 'IPv6', 'Ops'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'DNS PTR 反向解析记录名构造器根据输入的 IPv4 / IPv6 地址生成反向 DNS（PTR 查询）使用的完整域名：IPv4 四段倒序追加 in-addr.arpa，IPv6 展开为 32 个 nibble 全部倒序追加 ip6.arpa，还可按前缀长度生成反向 zone 名。全部在浏览器本地完成。',
+        coreFeatures: [
+          'IPv4 反向名：如 192.0.2.10 → 10.2.0.192.in-addr.arpa',
+          'IPv6 反向名：按 RFC 3596 §2.5 展开并反转 32 个 nibble，支持 :: 压缩与内嵌 IPv4',
+          'zone 构造：IPv4 按 /8、/16、/24，IPv6 按 /4 倍数（如 /32、/48、/64）生成委派 zone 名',
+          '严格校验：非法地址、越界或未对齐的前缀长度明确报错',
+        ],
+        howToUse: [
+          '在输入框填入 IPv4 或 IPv6 地址',
+          '需要配置反向 zone 时填写前缀长度（或点击 /24、/32 等快捷标签）',
+          '查看 PTR 记录名、规范化地址与 zone 名',
+          '点击对应「复制」按钮获取结果',
+        ],
+        useCases: [
+          '配置 BIND / named 反向解析 zone 文件',
+          '编写或核对 dig -x 反向查询与 rDNS 记录',
+          '检查 IPv6 ip6.arpa 长域名手工反转是否正确',
+        ],
+        privacyNote:
+          '地址解析与字符串变换全部在浏览器本地完成，不发起任何 DNS 查询或网络请求。',
+        faqs: [
+          {
+            question: 'IPv6 的反向名为什么这么长？',
+            answer:
+              'RFC 3596 规定先把地址展开为 32 个十六进制 nibble，再逐位反转并用点连接，最后加 ip6.arpa，因此 2001:db8::1 对应 32 个标签级的长域名。',
+          },
+          {
+            question: 'PTR 名和 zone 名有什么区别？',
+            answer:
+              'PTR 名是完整的查询域名（主机粒度）；zone 名是 DNS 委派边界，只保留前缀覆盖的网络段标签，如 /24 对应 2.0.192.in-addr.arpa。',
+          },
+          {
+            question: '会真的发起 DNS 查询吗？',
+            answer: '不会。工具只构造记录名字符串；实际查询可在终端执行 dig -x <地址>。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'DNS PTR Record Name Builder generates reverse-DNS names from IPv4/IPv6 addresses: reversed octets under in-addr.arpa for IPv4 and 32 reversed nibbles under ip6.arpa for IPv6, with optional reverse-zone names based on prefix length. Everything runs locally in the browser.',
+        coreFeatures: [
+          'IPv4 reverse names, e.g. 192.0.2.10 → 10.2.0.192.in-addr.arpa',
+          'IPv6 reverse names per RFC 3596 §2.5 with :: compression and embedded IPv4 support',
+          'Zone names for /8, /16, /24 on IPv4 and nibble-aligned prefixes (/32, /48, /64) on IPv6',
+          'Strict validation with clear errors for bad addresses and invalid or unaligned prefix lengths',
+        ],
+        howToUse: [
+          'Enter an IPv4 or IPv6 address',
+          'Optionally set a prefix length (or use the /24, /32 quick tags) to build a zone name',
+          'Review the PTR name, normalized address and zone name',
+          'Click "Copy" to grab a result',
+        ],
+        useCases: [
+          'Authoring BIND/named reverse-zone files',
+          'Verifying dig -x queries and rDNS records',
+          'Checking long hand-built IPv6 ip6.arpa names',
+        ],
+        privacyNote:
+          'Address parsing and string transforms run entirely in your browser; no DNS lookups or network requests are made.',
+        faqs: [
+          {
+            question: 'Why is the IPv6 reverse name so long?',
+            answer:
+              'RFC 3596 expands the address into 32 hexadecimal nibbles, reverses them, joins with dots, and appends ip6.arpa — producing 32 labels before the suffix.',
+          },
+          {
+            question: 'PTR name vs zone name?',
+            answer:
+              'The PTR name is the full host-granularity query name; the zone name is the delegation boundary and keeps only prefix-covered labels, e.g. 2.0.192.in-addr.arpa for /24.',
+          },
+          {
+            question: 'Does it perform real DNS queries?',
+            answer: 'No. It only builds the name strings; run dig -x <address> in a terminal for an actual lookup.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

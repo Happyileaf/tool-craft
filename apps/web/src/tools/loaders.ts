@@ -149,4 +149,5 @@ export const toolLoaders: Record<
   'conventional-commit-generator': () => import('./conventional-commit-generator'),
   'crc16-checksum': () => import('./crc16-checksum'),
   'pangu-spacing': () => import('./pangu-spacing'),
+  'dns-ptr-builder': () => import('./dns-ptr-builder'),
 };
