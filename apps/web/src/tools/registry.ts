@@ -12475,6 +12475,105 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'pangu-spacing',
+    name: '中英文混排自动留白（盘古之白）格式化器',
+    nameEn: 'Pangu Spacing Formatter',
+    description:
+      '在中文与英文/数字之间自动插入一个空格（盘古之白），跳过代码块与 URL，支持反向移除多余空格。',
+    descriptionEn:
+      'Automatically insert a space between CJK and Latin letters or digits (pangu spacing), skip code blocks and URLs, and remove extra spaces in reverse.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/pangu-spacing',
+    iconName: 'Type',
+    tags: ['盘古之白', '中英文混排', '排版', '格式化', '文本'],
+    tagsEn: ['Pangu', 'CJK Spacing', 'Typography', 'Format', 'Text'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '中英文混排自动留白（盘古之白）格式化器是一款纯浏览器本地运行的排版工具，在中文（含日文假名、全角标点）与英文、数字的交界处自动插入一个半角空格，让技术文档、README、公众号文章等混排文本更易读；也支持反向移除这些空格。',
+        coreFeatures: [
+          '边界留白：识别汉字（含扩展 A 区）、日文假名、全角标点与半角字母数字的交界，仅插入一个空格',
+          '保护代码与链接：围栏代码块、行内代码（`code`）及 URL 内部原样保留，不破坏 Markdown 语法',
+          '反向移除：可一键移除中英文之间的空格，中文词语之间及代码内空格不受影响',
+          '纯浏览器本地运算：所有文本处理均在本地完成，不上传任何内容',
+        ],
+        howToUse: [
+          '粘贴中英文混排文本到输入框',
+          '选择「自动留白」或「移除留白」模式，结果实时生成',
+          '查看插入或移除的空格数量统计',
+          '点击「复制处理结果」获取文本',
+        ],
+        useCases: [
+          '规范技术文档与 README 的中英文混排',
+          '排版公众号、博客文章前的自动留白',
+          '清理已经手工加过空格但风格不统一的稿件',
+        ],
+        privacyNote:
+          '所有文本处理均基于纯正则与状态机在浏览器本地完成，绝不记录或上传任何内容。',
+        faqs: [
+          {
+            question: '什么是「盘古之白」？',
+            answer:
+              '指中文与英文/数字之间保留一个半角空格的排版惯例，由 pangu.js 推广，能显著提升混排文本的可读性。',
+          },
+          {
+            question: '代码块和链接会被改动吗？',
+            answer:
+              '不会。围栏代码块（```）、行内代码与 URL 内部完全保持原样，工具只在它们与中文正文的交界处补空格。',
+          },
+          {
+            question: '中文句号前为什么不加空格？',
+            answer:
+              '句读标点（如句号 U+3002）前后不补空格；全角逗号、冒号等全角形式（U+FF00–U+FFEF）与英文/数字相邻时才参与留白。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Pangu Spacing Formatter is a fully browser-based typography utility that automatically inserts a space between CJK characters (including kana and full-width punctuation) and Latin letters or digits, and can also remove those spaces in reverse.',
+        coreFeatures: [
+          'Boundary spacing: detect edges between Han ideographs, kana, full-width punctuation and half-width alphanumerics',
+          'Code and URL safe: fenced blocks, inline code and URLs are left untouched without breaking Markdown',
+          'Reverse mode: remove CJK-Latin spaces while keeping spaces inside Chinese text and code intact',
+          '100% in-browser: all processing is local with regex and a small state machine',
+        ],
+        howToUse: [
+          'Paste mixed CJK/Latin text into the input box',
+          'Choose "Add spacing" or "Remove spacing"; output updates in real time',
+          'Check the count of inserted or removed spaces',
+          'Click "Copy result" to grab the processed text',
+        ],
+        useCases: [
+          'Normalizing mixed-language technical docs and README files',
+          'Polishing blog posts and articles before publishing',
+          'Cleaning manuscripts with inconsistent manual spacing',
+        ],
+        privacyNote:
+          'All processing runs locally in your browser using pure regex and state-machine logic; content is never uploaded.',
+        faqs: [
+          {
+            question: 'What is "pangu spacing"?',
+            answer:
+              'The typographic convention of keeping one space between CJK and Latin/digit text, popularized by pangu.js, which improves readability of mixed-language content.',
+          },
+          {
+            question: 'Will code blocks and links be modified?',
+            answer:
+              'No. Fenced code blocks, inline code and URLs are preserved exactly; spaces are only added at the boundary with Chinese prose.',
+          },
+          {
+            question: 'Why no space before the Chinese full stop?',
+            answer:
+              'CJK sentence punctuation such as U+3002 never gets a space, while full-width forms in U+FF00–U+FFEF (e.g. the full-width comma) do participate in spacing next to Latin text.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
