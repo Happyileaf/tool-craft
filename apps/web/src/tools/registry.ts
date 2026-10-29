@@ -12681,7 +12681,7 @@ info: request finished`,
       'Pick language, framework, editor and OS templates, append custom patterns, and generate a deduplicated, section-commented .gitignore.',
     category: ToolCategoryEnum.DEV_CODE,
     path: '/tools/gitignore-generator',
-    iconName: 'EyeInvisible',
+    iconName: 'EyeOff',
     tags: ['gitignore', 'Git', '脚手架', '模板', '项目初始化'],
     tagsEn: ['gitignore', 'Git', 'Scaffolding', 'Template', 'Project Setup'],
     isPopular: false,
@@ -12770,7 +12770,7 @@ info: request finished`,
       'Build robots.txt from multiple User-agent groups with Allow/Disallow, Crawl-delay and Sitemaps, with crawler presets and path validation.',
     category: ToolCategoryEnum.DEV_CODE,
     path: '/tools/robots-txt-generator',
-    iconName: 'Robot',
+    iconName: 'Bot',
     tags: ['robots.txt', 'SEO', '爬虫', '站点配置', '运维'],
     tagsEn: ['robots.txt', 'SEO', 'Crawler', 'Site Config', 'Ops'],
     isPopular: false,
@@ -12859,7 +12859,7 @@ info: request finished`,
       'Turn a list of URLs into a sitemaps.org-compliant XML sitemap with global lastmod, changefreq and priority, including invalid-URL and 50k-limit warnings.',
     category: ToolCategoryEnum.DEV_CODE,
     path: '/tools/sitemap-generator',
-    iconName: 'Apartment',
+    iconName: 'Map',
     tags: ['Sitemap', 'SEO', 'XML', '搜索引擎', '站点地图'],
     tagsEn: ['Sitemap', 'SEO', 'XML', 'Search Engine', 'sitemaps.org'],
     isPopular: false,
@@ -12933,6 +12933,95 @@ info: request finished`,
             question: 'Are lastmod, changefreq and priority required?',
             answer:
               'No — only loc is required. Search engines rely mostly on an accurate lastmod; changefreq and priority are weak hints and can simply be omitted when unsure.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'markdown-toc-generator',
+    name: 'Markdown 目录（TOC）生成器',
+    nameEn: 'Markdown Table of Contents Generator',
+    description:
+      '粘贴 Markdown 自动提取各级标题，生成带 GitHub 锚点的嵌套目录，支持有序/无序列表、层级过滤与一键插入原文，代码块内的 # 自动忽略。',
+    descriptionEn:
+      'Extract ATX headings from Markdown into a nested table of contents with GitHub anchors, ordered/unordered lists, level filtering and one-click insertion, ignoring # inside code fences.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/markdown-toc-generator',
+    iconName: 'List',
+    tags: ['Markdown', 'TOC', '目录', '锚点', 'README'],
+    tagsEn: ['Markdown', 'TOC', 'Table of Contents', 'Anchor', 'README'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Markdown 目录（TOC）生成器是一款纯浏览器本地运行的文档工具，逐行扫描 Markdown 中的 ATX（#）标题，按层级缩进生成带 GitHub 风格锚点链接的嵌套目录，长文档无需再手工维护。',
+        coreFeatures: [
+          '精确标题提取：识别 1–6 级 ATX 标题，自动跳过 ``` 与 ~~~ 围栏代码块、行首转义 # 以及缺少空格的伪标题',
+          'GitHub 风格锚点：转小写、空格转连字符、去除标点与行内代码反引号，重复标题自动追加 -1、-2 后缀',
+          '灵活输出：有序/无序列表切换、最小/最大层级过滤、可关闭锚点链接，按层级两空格缩进',
+          '一键插入原文：存在 <!-- TOC --> 标记块时替换其内容，否则前置到文首，全部本地运算',
+        ],
+        howToUse: [
+          '在左栏粘贴 Markdown 原文，标题数量会实时显示在卡片标题上',
+          '选择有序或无序列表、最小/最大标题层级，以及是否生成 GitHub 锚点链接',
+          '在右栏核对目录预览，需要时点击「复制全文」得到插入目录后的完整文档',
+          '也可在原文中放置 <!-- TOC -->…<!-- /TOC --> 标记，工具会就地更新标记块内容',
+        ],
+        useCases: [
+          '为 README、规范文档与长文博客生成并持续更新目录',
+          '向开源项目提交文档前快速核对标题层级是否合理',
+          '需要纯文本目录片段贴入 Wiki 或其他渲染器时使用',
+        ],
+        privacyNote:
+          '文档内容仅在浏览器内存中解析，不会上传或存储到任何服务器。',
+        faqs: [
+          {
+            question: '支持 Setext 风格标题（下划线 === / ---）吗？',
+            answer:
+              '本期只识别 ATX 风格的 # 标题，Setext 标题暂不支持；大多数现代文档都使用 ATX 风格。',
+          },
+          {
+            question: '为什么代码块里的注释 # 没有出现在目录中？',
+            answer:
+              '解析器会跟踪 ``` 与 ~~~ 围栏代码块状态，代码块内任何以 # 开头的行都会被忽略，与 GitHub 的渲染规则一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Markdown Table of Contents Generator is a fully in-browser documentation tool that scans ATX (#) headings and builds a nested, indented TOC with GitHub-style anchor links, so long documents no longer need a hand-maintained outline.',
+        coreFeatures: [
+          'Accurate extraction: recognizes levels 1–6 ATX headings while skipping ``` and ~~~ fenced code blocks, escaped \\# lines and fake headings without a space after #',
+          'GitHub anchors: lowercase, spaces to hyphens, punctuation and inline-code backticks removed; duplicate titles get -1, -2 suffixes',
+          'Flexible output: ordered/unordered lists, min/max level filtering, anchor links toggle, and two-space indentation per level',
+          'One-click insertion: replaces an existing <!-- TOC --> block or prepends the TOC to the document; everything runs locally',
+        ],
+        howToUse: [
+          'Paste Markdown into the left editor; the detected heading count updates live in the card title',
+          'Choose ordered or unordered style, minimum/maximum heading levels, and whether to emit GitHub anchor links',
+          'Review the TOC preview on the right and click "Copy full text" when you need the document with TOC inserted',
+          'Alternatively place <!-- TOC -->…<!-- /TOC --> markers in your text and the tool updates that block in place',
+        ],
+        useCases: [
+          'Generating and refreshing a TOC for README files, specs and long-form blog posts',
+          'Checking heading hierarchy before contributing documentation to open-source projects',
+          'Producing a plain-text outline for wikis or other Markdown renderers',
+        ],
+        privacyNote:
+          'Your document is parsed only in browser memory and is never uploaded to or stored on any server.',
+        faqs: [
+          {
+            question: 'Are Setext headings (=== / --- underlines) supported?',
+            answer:
+              'Only ATX-style # headings are recognized in this version; Setext headings are not supported, although most modern documents use ATX style.',
+          },
+          {
+            question: 'Why do # comments inside code blocks not appear in the TOC?',
+            answer:
+              'The parser tracks ``` and ~~~ fenced code blocks, so any line starting with # inside them is ignored, matching how GitHub renders Markdown.',
           },
         ],
       },

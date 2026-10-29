@@ -153,4 +153,5 @@ export const toolLoaders: Record<
   'gitignore-generator': () => import('./gitignore-generator'),
   'robots-txt-generator': () => import('./robots-txt-generator'),
   'sitemap-generator': () => import('./sitemap-generator'),
+  'markdown-toc-generator': () => import('./markdown-toc-generator'),
 };
