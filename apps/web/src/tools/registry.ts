@@ -11550,6 +11550,106 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'date-diff-calculator',
+    name: '日期时间差计算与日期加减计算器',
+    nameEn: 'Date Difference & Date Arithmetic Calculator',
+    description:
+      '计算两个日期时间相差的年/月/日分解与总天/总小时/总分钟，可勾选包含起止日与仅计工作日；或对基准日期按年/月/周/日/时/分施加正负偏移得到目标日期与星期，月末按日历月钳制（如 1 月 31 日 +1 月 → 2 月 28/29 日），全部本地完成。',
+    descriptionEn:
+      'Break down the difference between two dates into years/months/days and total days/hours/minutes, with include-endpoints and weekdays-only (Mon–Fri) options; or add signed year/month/week/day/hour/minute offsets to a base date to get the target date and its weekday. Month-end is clamped (Jan 31 + 1 month → Feb 28/29). Runs entirely locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/date-diff-calculator',
+    iconName: 'Clock',
+    tags: ['日期差', '日期加减', '工作日', '月末钳制', '闰年', '星期'],
+    tagsEn: ['Date Diff', 'Date Add', 'Weekdays', 'Month-End Clamp', 'Leap Year', 'Weekday'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '2024-01-01 → 2024-03-01',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的日期运算工具，提供两类确定性计算：日期差——选择起止日期（可精确到分钟），输出年/月/日分解以及总天数、总小时、总分钟，并可勾选「包含起止两天」与「仅统计工作日」（周一至周五，不含节假日调休）；日期加减——给定基准日期与多段带单位（年/月/周/日/时/分）的正负偏移，依次施加后输出目标日期与星期。全部基于 UTC 毫秒时间戳计算，不受浏览器时区与夏令时影响，年/月偏移遇目标月天数不足时钳制到月末。',
+        coreFeatures: [
+          '两日期差量：年/月/日分解 + 总天/总小时/总分钟，支持精确到日或到分钟',
+          '可勾选包含起止两天（总天数 +1）与仅统计工作日（周一至周五）',
+          '日期加减支持多段年/月/周/日/时/分偏移，正负混合、依次计算',
+          '月末按日历月钳制：2024-01-31 +1 月 → 2024-02-29，2024-02-29 +1 年 → 2025-02-28',
+          '输出目标日期的星期；基于 UTC 毫秒运算，纯本地零网络请求',
+        ],
+        howToUse: [
+          '在「日期差」页选择起止日期时间，用顶部开关切换精确到日 / 到分钟',
+          '按需勾选「包含起止两天」或「仅统计工作日」，结果即时更新',
+          '切换到「日期加减」页，选择基准日期，填写偏移量（可为负数）与单位',
+          '点击「添加一段偏移」可组合多段偏移；点击垃圾桶删除该行，结果区给出目标日期与星期',
+        ],
+        useCases: [
+          '计算合同、签证、证件的剩余天数与项目周期（可只看工作日）',
+          '推算到期日、还款日：给定基准日加若干个月并自动处理月末',
+          '核对年龄、工龄的年月分解，或闰年、跨年日期运算结果',
+        ],
+        privacyNote: '所有日期输入仅在浏览器本地参与计算，不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么 1 月 31 日加 1 个月不是 3 月 2/3 日？',
+            answer:
+              '本工具对年、月偏移采用日历月钳制：先推进月份，再取「原日」与「目标月最后一天」中较小者。因此 2024-01-31 +1 月落在 2 月最后一天 2024-02-29；平年 2023-01-31 +1 月则为 2023-02-28。2024-02-29 +1 年同样钳制为 2025-02-28。',
+          },
+          {
+            question: '日期差的「年/月/日分解」按什么口径计算？',
+            answer:
+              '采用与 Excel DATEDIF 一致的「完整月 + 借位」口径：先按完整月推进，日位不足时借一个自然月。例如 2024-01-01 → 2024-03-01 为 0 年 2 月 0 日，总天数则为 60 天（含闰年 2 月的 29 天）。结束日早于起始日时所有结果为负。',
+          },
+          {
+            question: '工作日统计包含法定节假日吗？',
+            answer:
+              '不包含节假日调休表，仅按周一至周五计数，周六、周日剔除。区间采用半开区间 [起始, 结束)；勾选「包含起止两天」后会额外把结束日计入（若结束日为工作日）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first date arithmetic tool with two deterministic calculators. Date difference: pick a start and end date (down to the minute) and get a years/months/days breakdown plus total days, hours and minutes, with options to include both endpoint days and to count weekdays only (Mon–Fri, no holiday calendar). Date arithmetic: apply one or more signed year/month/week/day/hour/minute offsets to a base date and get the target date and its weekday. Everything is computed from UTC timestamps—immune to browser time zones and DST—and month/year offsets clamp to month-end.',
+        coreFeatures: [
+          'Two-date difference: years/months/days breakdown plus total days/hours/minutes, with day or minute precision',
+          'Options to include both endpoint days (+1) and to count weekdays (Monday–Friday) only',
+          'Date arithmetic supports multiple signed year/month/week/day/hour/minute offsets applied in sequence',
+          'Month-end clamping: 2024-01-31 + 1 month → 2024-02-29; 2024-02-29 + 1 year → 2025-02-28',
+          'Target weekday shown; UTC-millisecond math, fully local with no network requests',
+        ],
+        howToUse: [
+          'On the "Date Difference" tab pick start and end datetimes; toggle day vs minute precision at the top',
+          'Check "include both endpoints" or "weekdays only" as needed; results update instantly',
+          'Switch to "Date Arithmetic", choose a base date and enter an offset (negative allowed) with its unit',
+          'Use "Add another offset" to combine segments and the trash icon to remove one; the result shows target date and weekday',
+        ],
+        useCases: [
+          'Counting days remaining for contracts, visas and certificates, or project duration (weekdays only supported)',
+          'Deriving due dates by adding calendar months with automatic month-end handling',
+          'Verifying age and tenure breakdowns as well as leap-year and cross-year date math',
+        ],
+        privacyNote: 'All date input is computed locally in the browser and is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why does January 31 plus one month not become March 2 or 3?',
+            answer:
+              'Year/month offsets use calendar-month clamping: the month advances first and the day becomes min(original day, last day of the target month). So 2024-01-31 + 1 month lands on the last day of February, 2024-02-29; in a common year 2023-01-31 + 1 month is 2023-02-28. Likewise 2024-02-29 + 1 year clamps to 2025-02-28.',
+          },
+          {
+            question: 'What is the years/months/days breakdown based on?',
+            answer:
+              'It follows the "complete months with borrowing" convention like Excel DATEDIF: advance by whole months first and borrow a calendar month when the day is insufficient. For example 2024-01-01 → 2024-03-01 is 0y 2m 0d, while total days equals 60 (including the 29-day leap February). All results are negative when the end precedes the start.',
+          },
+          {
+            question: 'Does the weekday count include public holidays?',
+            answer:
+              'No—there is no holiday calendar; it counts Monday to Friday and excludes Saturday and Sunday. The range is half-open [start, end); checking "include both endpoints" additionally counts the end date if it is a weekday.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

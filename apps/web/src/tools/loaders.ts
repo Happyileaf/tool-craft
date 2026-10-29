@@ -139,4 +139,5 @@ export const toolLoaders: Record<
   'bank-card-validator': () => import('./bank-card-validator'),
   'descriptive-statistics': () => import('./descriptive-statistics'),
   'complex-number-calculator': () => import('./complex-number-calculator'),
+  'date-diff-calculator': () => import('./date-diff-calculator'),
 };
