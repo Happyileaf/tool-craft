@@ -11650,6 +11650,516 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'sri-hash-generator',
+    name: 'SRI 子资源完整性哈希生成器',
+    nameEn: 'SRI Hash Generator (Subresource Integrity)',
+    description:
+      '输入文本或选择本地文件，计算 SHA-256 / SHA-384 / SHA-512 摘要并生成可直接粘贴到 script / link 标签 integrity 属性的哈希串（sha256-<base64> 格式，支持多算法空格组合）；也可粘贴 integrity 串校验内容是否匹配，逐条给出匹配结论。全程浏览器本地计算，文件不上传。',
+    descriptionEn:
+      'Paste text or pick a local file to compute SHA-256/SHA-384/SHA-512 digests formatted as integrity strings (sha256-<base64>, combinable with spaces) ready for script/link integrity attributes; or verify content against an existing integrity string with per-hash match results. Everything runs locally in the browser; files are never uploaded.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/sri-hash-generator',
+    iconName: 'ShieldCheck',
+    tags: ['SRI', 'integrity', '子资源完整性', 'SHA-256', 'CDN', 'CSP'],
+    tagsEn: ['SRI', 'Integrity', 'Subresource Integrity', 'SHA-256', 'CDN', 'CSP'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'console.log("Hello, SRI");',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的子资源完整性（Subresource Integrity，SRI）工具。对文本或本地文件按 SHA-256 / SHA-384 / SHA-512 计算摘要，并以 SRI 规范要求的 base64 编码产出 `<alg>-<digest>` 形式的哈希串，可直接粘贴到 `<script>` / `<link>` 标签的 integrity 属性中；勾选多个算法时以空格连接（浏览器在至少一条强摘要匹配时放行）。校验模式下，给定 integrity 串与当前内容，逐条报告每个算法是否匹配，用于排查 CDN 资源是否被篡改。文件内容只在浏览器内读取，不发起任何网络请求。',
+        coreFeatures: [
+          '生成 sha256 / sha384 / sha512 三种 SRI 哈希，输出标准 base64 摘要与算法前缀',
+          '支持多算法组合（空格分隔），一次产出可直接粘贴的完整 integrity 属性值',
+          '支持文本（UTF-8）与本地文件两种输入载体，100MB 内文件本地读取不上传',
+          '校验模式逐条展示每个哈希是否匹配，并解析 ?option 段与大小写归一化',
+          '非法元数据（未知算法、缺少摘要、格式错误）给出明确中文错误',
+        ],
+        howToUse: [
+          '在「生成 integrity 哈希」模式输入文本或选择本地文件，勾选需要的算法（可多选）',
+          '结果区即时显示每条哈希，点击「复制 integrity 串」获取空格连接的完整属性值',
+          '将其粘贴到 script/link 标签的 integrity 属性，并配合 crossorigin="anonymous"',
+          '切换到「校验 integrity 串」模式，提供内容并粘贴待校验串，查看逐条匹配结论',
+        ],
+        useCases: [
+          '前端接入 CDN 第三方 JS/CSS 时生成 integrity 属性，替代手写 openssl 命令',
+          '核对下载资源与官方文档给出的 SRI 串是否一致，排查供应链篡改',
+          '为自建静态资源生成多算法哈希，兼容不同 CSP 与浏览器策略',
+        ],
+        privacyNote:
+          '文本与文件仅在浏览器本地参与摘要计算，不会被上传、记录或发送到任何服务端。',
+        faqs: [
+          {
+            question: '为什么不用现有的哈希生成器？',
+            answer:
+              '普通哈希工具输出的是十六进制摘要（hex），而 SRI 规范要求 base64 编码的摘要并带 `sha256-` 前缀，最终还要组装成可直接用于 integrity 属性的字符串。本工具产出的就是可直接粘贴的最终格式，并额外提供文件输入与完整性校验模式。',
+          },
+          {
+            question: '多个算法的哈希如何组合？浏览器如何判定？',
+            answer:
+              '多个哈希以空格连接放在同一个 integrity 属性中，例如 `sha256-AAA sha384-BBB`。按 SRI 规范，浏览器忽略无法识别的算法，只要存在至少一条可识别的强摘要与资源实际摘要相等即通过校验；全部不匹配则拒绝加载该资源。',
+          },
+          {
+            question: '为什么校验时文件输入有大小限制？',
+            answer:
+              '文件在浏览器内一次性读入内存并交给 Web Crypto 计算，为避免超大文件导致页面内存压力，工具限制为 100MB。SRI 面向的脚本、样式表等静态资源通常远小于该体积。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first Subresource Integrity (SRI) tool. It digests text or local files with SHA-256/SHA-384/SHA-512 and emits base64-encoded `<alg>-<digest>` strings per the SRI spec, ready to paste into the integrity attribute of <script>/<link> tags; multiple algorithms are joined with spaces (the browser loads the resource when at least one strong hash matches). In verify mode, each hash of a given integrity string is checked against the current content individually—handy for detecting CDN tampering. Files are read only inside the browser with no network requests.',
+        coreFeatures: [
+          'Generates sha256/sha384/sha512 SRI hashes with standard base64 digests and algorithm prefixes',
+          'Multi-algorithm combinations joined by spaces produce a ready-to-paste integrity value',
+          'Two input sources: UTF-8 text and local files (up to 100MB), never uploaded',
+          'Verify mode reports per-hash matches, parses ?option segments and normalizes casing',
+          'Clear Chinese error messages for malformed metadata (unknown algorithm, missing digest, bad format)',
+        ],
+        howToUse: [
+          'In "Generate integrity hash" mode, enter text or pick a file and tick the algorithms (multi-select)',
+          'Each hash appears instantly; click "Copy integrity string" for the space-joined value',
+          'Paste it into a script/link integrity attribute together with crossorigin="anonymous"',
+          'Switch to "Verify integrity string", provide content and the string to check per-hash results',
+        ],
+        useCases: [
+          'Generating integrity attributes for third-party CDN JS/CSS without hand-running openssl',
+          'Checking downloaded resources against SRI strings from official docs to detect supply-chain tampering',
+          'Producing multi-algorithm hashes for self-hosted assets across CSP and browser policies',
+        ],
+        privacyNote:
+          'Text and files are digested locally in the browser and are never uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'Why not just use the existing hash generator?',
+            answer:
+              'A regular hash tool outputs hexadecimal digests, whereas SRI requires base64-encoded digests with a `sha256-` prefix assembled into a final integrity attribute value. This tool emits that final paste-ready format, adds file input, and provides an integrity verification mode.',
+          },
+          {
+            question: 'How are multiple algorithms combined, and how does the browser decide?',
+            answer:
+              'Hashes are joined with spaces in one integrity attribute, e.g. `sha256-AAA sha384-BBB`. Per the SRI spec, the browser ignores unrecognized algorithms and loads the resource if at least one recognized strong digest equals the actual resource digest; if none match, the resource is blocked.',
+          },
+          {
+            question: 'Why is file input size-limited?',
+            answer:
+              'Files are read fully into memory and digested via Web Crypto; to avoid memory pressure on very large files the limit is 100MB. Scripts, stylesheets and other static assets protected by SRI are typically far smaller.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'hkdf-calculator',
+    name: 'HKDF 密钥派生计算器',
+    nameEn: 'HKDF Key Derivation Calculator (RFC 5869)',
+    description:
+      '基于 RFC 5869 HKDF（Extract-then-Expand）从输入密钥材料 IKM 派生密钥，支持可选 salt 与 info、SHA-256 / SHA-384 / SHA-512，同时展示 Extract 阶段伪随机密钥 PRK 与 Expand 阶段输出 OKM（Hex + Base64）。IKM/salt/info 均可按文本、Hex、Base64 三种载体输入，内置 RFC 5869 官方向量可一键对照。全程浏览器本地计算。',
+    descriptionEn:
+      'Derive keys with RFC 5869 HKDF (Extract-then-Expand): optional salt and info, SHA-256/384/512, showing both the Extract-stage pseudorandom key (PRK) and the Expand-stage output keying material (OKM in Hex and Base64). IKM, salt and info each accept text, Hex or Base64; built-in RFC 5869 test vectors load with one click for verification. Everything runs locally in the browser.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/hkdf-calculator',
+    iconName: 'KeyRound',
+    tags: ['HKDF', 'RFC 5869', '密钥派生', 'KDF', 'PRK', 'Web Crypto'],
+    tagsEn: ['HKDF', 'RFC 5869', 'Key Derivation', 'KDF', 'PRK', 'Web Crypto'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'my-secret-key-material',
+    doc: {
+      zh: {
+        whatIsIt:
+          'HKDF（HMAC-based Key Derivation Function，RFC 5869）是从高熵输入密钥材料（IKM）派生出一个或多个安全密钥的标准 KDF，广泛用于 TLS 1.3、Signal、JWT 与各类加密 SDK。它分为两步：Extract 以 salt 对 IKM 做 HMAC 得到定长伪随机密钥 PRK；Expand 结合 info 上下文将 PRK 扩展为指定长度的输出密钥材料 OKM。本工具基于浏览器 Web Crypto 原语完整执行两步，并把中间 PRK 一并展示，便于协议调试与跨语言实现对账。IKM、salt、info 均支持文本（UTF-8）、Hex、Base64（含 Base64URL）三种载体，一键载入 RFC 5869 官方案例后可逐字节比对。',
+        coreFeatures: [
+          '完整实现 RFC 5869 Extract-then-Expand，同时输出 PRK 与 OKM',
+          'SHA-256 / SHA-384 / SHA-512 三种底层哈希，OKM 长度 1 至 255×HashLen 可调',
+          'IKM、salt、info 各自独立选择文本 / Hex / Base64 载体，Hex 允许 0x 前缀与空白',
+          'OKM 同时给出 Hex 与 Base64，一键复制，方便对接各类语言的密钥参数',
+          '内置 RFC 5869 Test Case 1 官方向量，一键载入即可反向验证实现正确性',
+        ],
+        howToUse: [
+          '在 IKM 区粘贴输入密钥材料，并用右侧切换按钮选择其载体（文本 / Hex / Base64）',
+          '按需填写 salt 与 info（均可留空；salt 留空时按 RFC 使用 HashLen 个全零字节）',
+          '选择哈希算法并设置输出长度（字节），结果区即时显示 PRK 与 OKM',
+          '点击「RFC 5869 向量示例」载入官方案例，可与 RFC 文档中的 PRK/OKM 逐字节对照',
+        ],
+        useCases: [
+          '调试 TLS / E2EE / JWT 等协议中的密钥派生，与后端或其他语言实现对账',
+          '为应用从主密钥派生多个场景子密钥（结合不同 info 做域分离）',
+          '学习 HKDF 原理时观察 Extract 与 Expand 的中间产物 PRK / OKM',
+        ],
+        privacyNote:
+          '所有密钥材料仅在浏览器本地通过 Web Crypto 计算，不会被上传、记录或发送到任何服务端。',
+        faqs: [
+          {
+            question: 'PRK 和 OKM 分别是什么？为什么都要展示？',
+            answer:
+              'PRK（Pseudorandom Key）是 Extract 阶段的输出，即 HMAC-Hash(salt, IKM)，长度固定为 HashLen；OKM（Output Keying Material）是 Expand 阶段结合 info 扩展出的最终密钥，长度由调用方指定。展示 PRK 有助于定位 Extract 与 Expand 哪一步与对端不一致，是协议联调时的关键中间值。',
+          },
+          {
+            question: 'salt 和 info 可以留空吗？',
+            answer:
+              '都可以。salt 留空时 RFC 5869 规定使用 HashLen 个全零字节执行 Extract；info 留空即不带任何上下文参与 Expand。生产环境建议提供随机且各部署独立的 salt 以获得更好的密钥分离效果，并用不同 info 派生不同用途的子密钥。',
+          },
+          {
+            question: '输出长度为什么有上限？',
+            answer:
+              'RFC 5869 规定 Expand 最多迭代 255 次，每次输出 HashLen 字节，因此 OKM 最大长度为 255×HashLen：SHA-256 为 8160 字节、SHA-384 为 12240、SHA-512 为 16320。超出上限在数学上不被 HKDF 允许，工具会直接报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'HKDF (HMAC-based Key Derivation Function, RFC 5869) is the standard KDF for deriving one or more secure keys from high-entropy input keying material (IKM), used in TLS 1.3, Signal, JWT and countless crypto SDKs. It runs in two steps: Extract applies HMAC with a salt to the IKM, producing a fixed-length pseudorandom key (PRK); Expand combines the PRK with context info and expands it to output keying material (OKM) of any requested length. This tool performs both steps with the browser Web Crypto primitives and exposes the intermediate PRK for protocol debugging and cross-language reconciliation. IKM, salt and info each accept text (UTF-8), Hex or Base64 (Base64URL tolerated), and official RFC 5869 test cases load with one click.',
+        coreFeatures: [
+          'Full RFC 5869 Extract-then-Expand, outputting both PRK and OKM',
+          'SHA-256/SHA-384/SHA-512; OKM length adjustable from 1 to 255×HashLen',
+          'Independent text/Hex/Base64 source selection for IKM, salt and info (0x prefix and whitespace tolerated in Hex)',
+          'OKM shown in both Hex and Base64 with one-click copy for cross-language integration',
+          'Built-in RFC 5869 Test Case 1 vector loads instantly to independently verify the implementation',
+        ],
+        howToUse: [
+          'Paste input keying material into the IKM field and pick its source format (text/Hex/Base64) on the right',
+          'Optionally fill salt and info (both may be empty; empty salt means HashLen zero bytes per the RFC)',
+          'Choose the hash and output length in bytes; PRK and OKM update instantly',
+          'Click "RFC 5869 vector sample" to load the official case and compare PRK/OKM byte-by-byte against the RFC',
+        ],
+        useCases: [
+          'Debugging key derivation in TLS/E2EE/JWT protocols and reconciling with backend or other-language implementations',
+          'Deriving multiple purpose-bound subkeys from a master key using distinct info values for domain separation',
+          'Learning how HKDF works by inspecting the Extract and Expand intermediates PRK and OKM',
+        ],
+        privacyNote:
+          'All key material is computed locally in your browser via Web Crypto and is never uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'What are PRK and OKM, and why show both?',
+            answer:
+              'The PRK (Pseudorandom Key) is the fixed-length HashLen output of Extract, HMAC-Hash(salt, IKM). The OKM (Output Keying Material) is the final caller-specified-length key produced by Expand with info. Showing the PRK helps pinpoint whether a mismatch with a peer lies in Extract or Expand—an essential intermediate value in protocol integration.',
+          },
+          {
+            question: 'Can salt and info be empty?',
+            answer:
+              'Yes, both. When salt is omitted, RFC 5869 uses HashLen zero bytes for Extract. Empty info simply means no context participates in Expand. In production a random per-deployment salt improves key separation, and distinct info values should derive keys for different purposes.',
+          },
+          {
+            question: 'Why is there an output length limit?',
+            answer:
+              'RFC 5869 allows at most 255 Expand iterations of HashLen bytes each, so OKM is capped at 255×HashLen: 8160 bytes for SHA-256, 12240 for SHA-384 and 16320 for SHA-512. Longer outputs are mathematically outside HKDF and the tool rejects them.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'pbkdf2-calculator',
+    name: 'PBKDF2 密钥派生计算器',
+    nameEn: 'PBKDF2 Key Derivation Calculator (RFC 8018)',
+    description:
+      '基于 RFC 8018（PKCS#5 v2.1）PBKDF2 从口令派生密钥：输入口令、salt（文本或 Hex）、迭代次数、派生密钥长度与底层哈希（SHA-1 / SHA-256 / SHA-384 / SHA-512），输出派生密钥 DK 的十六进制与 Base64。内置 RFC 8018 官方测试向量可一键载入对照，适合生成测试向量、校验后端口令哈希配置与学习迭代参数。全程浏览器本地计算，口令不上传。',
+    descriptionEn:
+      'Derive keys from passwords with PBKDF2 (RFC 8018/PKCS#5 v2.1): enter a password, salt (text or Hex), iteration count, derived-key length and hash (SHA-1/SHA-256/SHA-384/SHA-512) to get DK in hex and Base64. Official RFC 8018 test vectors load with one click—handy for generating vectors, validating backend password-hash config and studying iteration costs. Everything runs locally in the browser; passwords never leave the device.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/pbkdf2-calculator',
+    iconName: 'Fingerprint',
+    tags: ['PBKDF2', 'RFC 8018', '口令派生', '密码哈希', 'KDF', 'Web Crypto'],
+    tagsEn: ['PBKDF2', 'RFC 8018', 'Password KDF', 'Password Hashing', 'KDF', 'Web Crypto'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'password',
+    doc: {
+      zh: {
+        whatIsIt:
+          'PBKDF2（Password-Based Key Derivation Function 2，RFC 8018 / PKCS#5 v2.1）是从口令派生密钥的标准算法：通过对“口令 + 随机 salt”反复执行 HMAC 数千至数十万次，显著提高离线暴力破解成本，被 NIST SP 800-132、WPA2、iOS 数据保护等广泛采用。本工具暴露 PBKDF2 的全部关键参数——口令 P、salt S、迭代次数 c、派生密钥长度 dkLen 与底层哈希（SHA-1/256/384/512），输出 DK 的十六进制与 Base64，并可一键载入 RFC 8018 §B.1 官方测试向量逐字节对照。与仓库内 symmetric-crypto 不同：其内部 PBKDF2 绑定 AES-GCM、SHA-256 与固定 600000 次迭代且不输出通用 DK，本工具面向任意参数组合。',
+        coreFeatures: [
+          '支持 SHA-1 / SHA-256 / SHA-384 / SHA-512，迭代次数与 dkLen 完全自定义',
+          'DK 同时输出十六进制与 Base64，一键复制对接各语言参数',
+          'salt 支持文本（UTF-8）与十六进制两种载体，Hex 允许 0x 前缀与空白，非法格式明确报错',
+          '内置 RFC 8018 §B.1 / RFC 7914 官方向量一键载入，可反向验证实现正确性',
+          '高迭代次数给出耗时提示；口令以密码框输入，全程经 Web Crypto 本地运算',
+        ],
+        howToUse: [
+          '输入口令 P（按 UTF-8 编码为密钥材料）',
+          '填写 salt 并选择其载体（文本或 Hex）；用于真实系统时 salt 应随机且每用户唯一',
+          '选择哈希算法，设置迭代次数 c 与输出长度 dkLen（字节），结果区即时显示 DK',
+          '点击「RFC 8018 向量示例」载入官方案例（c=4096、SHA-1、dkLen=20）与标准结果对照',
+        ],
+        useCases: [
+          '生成 PBKDF2 测试向量，与后端 Java/Go/Python/Node 实现逐字节对账',
+          '校验数据库中既有口令哈希的算法、迭代次数与长度配置是否与文档一致',
+          '评估不同迭代次数 / 哈希算法在端侧的耗时，选定安全与体验平衡的参数',
+        ],
+        privacyNote:
+          '口令与 salt 仅在浏览器本地通过 Web Crypto 参与计算，不会被上传、记录或发送到任何服务端。',
+        faqs: [
+          {
+            question: 'PBKDF2 和 HKDF 有什么区别？',
+            answer:
+              'PBKDF2 的输入是低熵口令，通过大量迭代故意“变慢”来抵抗离线暴力破解；HKDF（RFC 5869）的输入是高熵密钥材料（如协商出的共享密钥），通过 Extract-then-Expand 快速派生多个子密钥，不做慢哈希。前者面向“人记得住的密码”，后者面向“已经很强的密钥”。',
+          },
+          {
+            question: '迭代次数应该设多少？',
+            answer:
+              '没有固定值，原则是在目标设备可接受的延迟内尽量大。OWASP 2023 建议 PBKDF2-HMAC-SHA-256 至少 600000 次（SHA-512 至少 210000 次）；旧系统常见 10000 / 100000 次。应在自己的服务端与客户端实测后选定，并允许随硬件演进升级。',
+          },
+          {
+            question: '为什么默认参数和 RFC 向量的算法不一样？',
+            answer:
+              '工具默认采用面向现代用途的 SHA-256、600000 次迭代、32 字节输出；RFC 8018 发布于 2017 年，其官方测试向量为历史上的 SHA-1、c=4096、dkLen=20，仅用于验证实现是否符合规范，不代表推荐的生产参数。点击「RFC 8018 向量示例」即切换到规范参数。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'PBKDF2 (Password-Based Key Derivation Function 2, RFC 8018/PKCS#5 v2.1) derives keys from passwords: HMAC is applied thousands to hundreds of thousands of times over the password and a random salt, raising the cost of offline brute-force attacks. It is used by NIST SP 800-132, WPA2 and iOS data protection. This tool exposes every key parameter—password P, salt S, iteration count c, derived-key length dkLen and hash (SHA-1/256/384/512)—and emits DK in hex and Base64. Official RFC 8018 §B.1 vectors load with one click for byte-level comparison. Unlike the built-in symmetric-crypto tool, whose internal PBKDF2 is hardwired to AES-GCM/SHA-256/600000 iterations without exposing a generic DK, this calculator accepts any parameter combination.',
+        coreFeatures: [
+          'SHA-1/SHA-256/SHA-384/SHA-512 with fully custom iteration count and dkLen',
+          'DK output in both hex and Base64 with one-click copy for cross-language integration',
+          'Salt accepts UTF-8 text or hex (0x prefix and whitespace tolerated) with explicit errors for malformed hex',
+          'Built-in RFC 8018 §B.1 / RFC 7914 vectors load instantly to independently verify the implementation',
+          'Timing hint for high iteration counts; password entered in a masked field, computed locally via Web Crypto',
+        ],
+        howToUse: [
+          'Enter the password P (encoded as UTF-8 key material)',
+          'Provide the salt and pick its source format (text or Hex); for real systems the salt must be random and unique per user',
+          'Choose the hash, set the iteration count c and output length dkLen in bytes; DK appears instantly',
+          'Click "RFC 8018 vector sample" to load the official case (c=4096, SHA-1, dkLen=20) and compare against the standard',
+        ],
+        useCases: [
+          'Generating PBKDF2 test vectors to reconcile byte-by-byte with Java/Go/Python/Node backends',
+          'Checking whether algorithm, iteration count and length of existing password hashes match the documented config',
+          'Benchmarking iteration counts and hashes on-device to pick parameters balancing security and UX',
+        ],
+        privacyNote:
+          'Passwords and salts are computed locally in the browser via Web Crypto and are never uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'What is the difference between PBKDF2 and HKDF?',
+            answer:
+              'PBKDF2 takes a low-entropy password and deliberately slows derivation with many iterations to resist offline brute force. HKDF (RFC 5869) takes high-entropy key material (such as an agreed shared secret) and quickly derives multiple subkeys via Extract-then-Expand—no slow hashing. One is for human-memorable passwords, the other for keys that are already strong.',
+          },
+          {
+            question: 'How many iterations should I use?',
+            answer:
+              'There is no fixed number; pick the largest value acceptable on the slowest target device. OWASP 2023 recommends at least 600000 for PBKDF2-HMAC-SHA-256 (210000 for SHA-512); 10000/100000 are common in older systems. Benchmark on your own client and server, and keep the value upgradable as hardware evolves.',
+          },
+          {
+            question: 'Why do the defaults differ from the RFC vector parameters?',
+            answer:
+              'The defaults target modern use (SHA-256, 600000 iterations, 32-byte output). RFC 8018 dates to 2017 and its official vectors use the historical SHA-1, c=4096, dkLen=20 purely to validate spec conformance—not to recommend production parameters. "RFC 8018 vector sample" switches to the spec parameters.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-patch',
+    name: 'JSON Patch 补丁工具',
+    nameEn: 'JSON Patch Tool (RFC 6902)',
+    description:
+      '按 RFC 6902 对 JSON 文档顺序应用补丁数组：支持 add / remove / replace / move / copy / test 六个操作与 RFC 6901 JSON Pointer 路径（含 ~0、~1 转义与数组下标、"-" 追加）。实时展示结果文档，或返回带操作序号的精确错误（op 未知、路径不存在、数组越界、test 断言不匹配等），失败时不产生部分结果。纯函数、零依赖、全程离线。',
+    descriptionEn:
+      'Apply RFC 6902 patch arrays to a JSON document: all six ops (add/remove/replace/move/copy/test) with RFC 6901 JSON Pointer paths (~0/~1 escaping, array indices and "-" append). See the result live, or get a precise error with the operation index—unknown op, missing path, out-of-bounds index, failed test assertion—with no partial result on failure. Pure functions, zero dependencies, fully offline.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-patch',
+    iconName: 'Braces',
+    tags: ['JSON Patch', 'RFC 6902', 'JSON Pointer', 'RFC 6901', '数据转换', '离线'],
+    tagsEn: ['JSON Patch', 'RFC 6902', 'JSON Pointer', 'RFC 6901', 'Data Transform', 'Offline'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '{"title":"Goodbye!","tags":["example"]}',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON Patch（RFC 6902）是一种用“操作数组”描述 JSON 文档变更的标准格式：每个操作声明 op（add/remove/replace/move/copy/test）、path（RFC 6901 JSON Pointer）以及 value 或 from，补丁按数组顺序依次应用，任一操作失败则整个补丁失败。相比 RFC 7386 Merge Patch 的“整体合并、null 删除”，JSON Patch 能精确表达数组插入、键移动、复制与前置断言，是 Kubernetes、JSON API 等生态采用的补丁格式。本工具以零依赖纯函数实现完整规范，并在出错时给出“第 N 个操作失败 + 具体原因”的操作级诊断。',
+        coreFeatures: [
+          '完整支持 RFC 6902 六操作：add / remove / replace / move / copy / test，按顺序应用',
+          '完整 RFC 6901 JSON Pointer 解析：/ 分段、~1 表示 /、~0 表示 ~，数组下标与 "-" 末尾追加',
+          '操作级错误诊断：明确指出失败操作的序号、op 名称与原因（路径不存在、越界、test 不匹配等）',
+          '原子语义：任一操作失败即整体返回错误，不会产生半应用状态；原文档绝不被修改',
+          '纯函数零依赖，所有解析与运算在浏览器本地完成，可离线使用',
+        ],
+        howToUse: [
+          '在左栏粘贴原始 JSON 文档，右栏填写补丁操作数组（每个元素含 op 与 path）',
+          'add/replace/test 需提供 value；move/copy 需提供 from（均为 JSON Pointer 字符串）',
+          '结果区实时显示应用后的文档与已应用操作数；点击「错误示例」可查看操作级错误定位',
+          '点击「复制结果」复制输出 JSON；数组插入用从 0 开始的下标，追加到末尾使用 "-"',
+        ],
+        useCases: [
+          '构造或调试发送给 Kubernetes / JSON API 等服务的 JSON Patch 请求体',
+          '核对多语言 RFC 6902 实现的行为，尤其是 move 数组元素与转义路径等边界情况',
+          '用 test 操作作为变更前置断言，安全地批量编辑大型 JSON 配置',
+        ],
+        privacyNote:
+          '文档与补丁仅在浏览器本地解析与运算，不会被上传、记录或发送到任何服务端。',
+        faqs: [
+          {
+            question: 'JSON Patch 和 JSON Merge Patch（RFC 7386）有什么区别？',
+            answer:
+              'Merge Patch 用一个与原文档同形的补丁做递归合并，补丁中为 null 的键被删除，数组只能整体替换，无法表达数组插入、移动或断言；JSON Patch（RFC 6902）用显式操作数组做路径级修改，支持数组按下标插入/删除、move/copy 与 test 断言，但补丁本身更长。需要简单合并用 Merge Patch，需要精确操作选 JSON Patch。',
+          },
+          {
+            question: '为什么某一步失败后结果整个消失了？',
+            answer:
+              'RFC 6902 规定操作按顺序应用，任一操作失败则整个补丁失败、文档保持原样（原子性）。错误提示会给出失败操作的序号与原因（如“第 2 个操作（remove）失败：数组下标 9 越界”），修正该操作后重新应用即可。',
+          },
+          {
+            question: '路径中的 ~ 和 / 怎么写？',
+            answer:
+              'JSON Pointer 以 / 分段，因此键名里若本身含 / 需写成 ~1，含 ~ 需写成 ~0（先转义 ~ 再转义 /）。例如键 "a/b" 的路径是 /a~1b，键 "m~n" 的路径是 /m~0n。空字符串作为键时路径以结尾的 / 表示，如 "/" 指向根下的空键。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'JSON Patch (RFC 6902) describes changes to a JSON document as an array of operations: each one declares an op (add/remove/replace/move/copy/test), a path (RFC 6901 JSON Pointer) and a value or from; operations apply in order and any failure aborts the whole patch. Compared with RFC 7386 Merge Patch (whole-document merge, null means delete), JSON Patch precisely expresses array insertion, key moves, copies and preconditions, and is used by Kubernetes and JSON API ecosystems. This tool implements the full spec with zero-dependency pure functions and reports operation-level diagnostics—“operation N failed” plus the exact reason.',
+        coreFeatures: [
+          'All six RFC 6902 ops: add/remove/replace/move/copy/test, applied in order',
+          'Full RFC 6901 JSON Pointer: / segments, ~1 for /, ~0 for ~, array indices and "-" append',
+          'Operation-level errors: sequence number, op name and reason (missing path, out of bounds, test mismatch)',
+          'Atomic semantics: any failure aborts the patch with no half-applied state; the input document is never mutated',
+          'Pure functions and zero dependencies; parsing and computation run entirely in the browser, offline-capable',
+        ],
+        howToUse: [
+          'Paste the original JSON document in the left panel and the patch array (objects with op and path) on the right',
+          'add/replace/test require value; move/copy require from (both JSON Pointer strings)',
+          'The result document and applied-op count appear live; click "Error sample" to see operation-level error location',
+          'Use "Copy result" for the output; array indices are zero-based and "-" appends at the end',
+        ],
+        useCases: [
+          'Building or debugging JSON Patch request bodies for Kubernetes, JSON API and similar services',
+          'Cross-checking RFC 6902 implementations across languages, including array move and escaped-path edge cases',
+          'Batch-editing large JSON configs safely by using test ops as preconditions',
+        ],
+        privacyNote:
+          'Documents and patches are parsed and computed locally in the browser and are never uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'How is JSON Patch different from JSON Merge Patch (RFC 7386)?',
+            answer:
+              'Merge Patch recursively merges a document-shaped patch: null deletes a key and arrays can only be replaced wholesale, so array insertion, moves and assertions are impossible. JSON Patch (RFC 6902) uses an explicit operation array for path-level changes—indexed array insert/remove, move/copy and test assertions—at the cost of a longer patch. Use Merge Patch for simple merges and JSON Patch for precise operations.',
+          },
+          {
+            question: 'Why does the result disappear entirely after one failed step?',
+            answer:
+              'RFC 6902 applies operations in order and any failure aborts the entire patch, leaving the document unchanged (atomicity). The error names the failing sequence number and reason—e.g. “operation 2 (remove) failed: array index 9 out of bounds”. Fix that operation and reapply.',
+          },
+          {
+            question: 'How do I write ~ and / inside a path?',
+            answer:
+              'JSON Pointer splits on /, so a literal / in a key is written ~1 and a literal ~ is ~0 (escape ~ before /). The key "a/b" is addressed as /a~1b and "m~n" as /m~0n. An empty-string key is addressed with a trailing slash, e.g. "/" points at the empty key under root.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-key-case',
+    name: 'JSON 键名命名风格转换',
+    nameEn: 'JSON Key Case Converter',
+    description:
+      '粘贴一段 JSON，递归遍历所有嵌套对象与数组，把全部键名在 camelCase、PascalCase、snake_case、SCREAMING_SNAKE_CASE、kebab-case 之间批量互转，数据值与层级结构原样保留。自动识别连续大写缩写（HTMLElement）与数字边界（v2），并检测同级转换后撞键（如 user_id 与 userId）且给出含路径的错误。实时输出、一键复制，纯函数、零新增运行时依赖、全程离线。',
+    descriptionEn:
+      'Paste JSON and recursively rewrite every object key across nested objects and arrays between camelCase, PascalCase, snake_case, SCREAMING_SNAKE_CASE and kebab-case, while values and structure stay untouched. It recognizes acronym runs (HTMLElement) and digit boundaries (v2), and detects same-level key collisions after conversion (e.g. user_id vs userId) with a path-aware error. Live output, one-click copy, pure functions, zero new runtime dependencies, fully offline.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-key-case',
+    iconName: 'Type',
+    tags: ['JSON', '键名', 'camelCase', 'snake_case', '命名风格', '离线'],
+    tagsEn: ['JSON', 'Keys', 'camelCase', 'snake_case', 'Naming', 'Offline'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '{"user_id":1,"user_name":"alice","is_active":true}',
+    doc: {
+      zh: {
+        whatIsIt:
+          '这是一个“感知 JSON 结构”的键名批量转换器：它先把输入解析为 JSON，再递归遍历每一层对象（数组会逐元素深入），仅重写对象的键名，字符串、数字、布尔、null 等数据值以及嵌套层级原样保留。与「文本命名风格转换」只对整段纯文本做替换不同，本工具不会改动值内部的文字；与 JSON Flatten 类工具不同，它不打平层级；与 JSON to TypeScript 类工具不同，它输出的仍是数据而非类型声明。分词采用通用规则：在大小写边界、连续大写缩写边界（HTMLElement → html element）、字母与数字相邻处（v2 → v、2）以及非字母数字分隔符处切分，再按目标风格重组。若同一对象内两个不同原键转换后变成同一名字，会报告包含 JSON 路径的撞键错误以避免静默丢数据。',
+        coreFeatures: [
+          '五种命名风格互转：camelCase、PascalCase、snake_case、SCREAMING_SNAKE_CASE、kebab-case',
+          '递归处理任意深度的嵌套对象与数组，仅改键名，值与键顺序保持不变',
+          '智能分词：识别大小写边界、连续大写缩写（UserID、HTMLElement）与数字边界（v2 → v_2）',
+          '同级撞键检测：转换后重名时给出含路径的错误（如 /profile 下 user_id 与 userId），杜绝静默覆盖',
+          '实时输出并显示实际变更的键数量，一键复制；纯函数零新增依赖，全程本地离线运算',
+        ],
+        howToUse: [
+          '在左栏粘贴或输入合法 JSON（对象、数组或标量均可），右栏实时显示转换结果',
+          '通过顶部按钮选择目标命名风格，切换后结果立即重新计算',
+          '结果卡片右上角显示「已转换 N 个键」，点击「复制结果」复制输出 JSON',
+          '若出现「键名冲突」错误，根据提示的路径在源数据中先消歧（重命名其中一个键）再转换',
+        ],
+        useCases: [
+          '对接命名规范不同的系统：后端 snake_case 接口与前端 camelCase 模型之间批量转换',
+          '把第三方 JSON 数据统一为团队约定的键名风格后再落库或生成代码',
+          '排查迁移脚本或 ORM 序列化中的键名风格问题，并提前发现转换后撞键风险',
+        ],
+        privacyNote:
+          'JSON 仅在浏览器本地解析与转换，不会被上传、记录或发送到任何服务端。',
+        faqs: [
+          {
+            question: '为什么提示「键名冲突」？应该怎么处理？',
+            answer:
+              '当同一个对象里存在两个不同的原键，转换后恰好得到相同名字时（例如同时有 user_id 和 userId，转成 camelCase 都会变成 userId），继续转换会丢失其中一个键的数据，因此工具直接报错并给出路径。请按提示路径在源 JSON 中先把其中一个键改名消歧，再重新转换。',
+          },
+          {
+            question: '为什么 v2 被转成了 v_2，而不是 v2？',
+            answer:
+              '分词规则在字母与数字相邻处强制切分，因此 v2 会被拆成 v 与 2 两个词：snake_case 下为 v_2、camelCase 下重新拼回为 v2、kebab-case 下为 v-2。这样处理可以保证在任何风格之间来回转换结果都稳定、不产生歧义；连续大写缩写同理（HTMLElement → html element → htmlElement）。',
+          },
+          {
+            question: '它和「文本命名风格转换」工具有什么区别？',
+            answer:
+              '文本工具对整段纯文本做风格替换，不理解 JSON 结构，可能误改字符串值里的内容。本工具先解析 JSON 再只重写对象键名，数组元素、字符串/数字等值内容与嵌套层级完全不动，还能检测转换后的同级撞键并统计变更键数；输出始终是合法 JSON。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This is a JSON-aware batch key converter: it parses the input as JSON, then recursively walks every nested object (descending into arrays element by element) and rewrites only object keys, leaving string, number, boolean and null values as well as the hierarchy untouched. Unlike the plain “Text Case Converter”, which replaces text across an entire blob, it never touches content inside values; unlike flatten tools it does not flatten structure; unlike JSON-to-TypeScript tools its output is still data, not type declarations. Splitting follows common rules: boundaries at case changes, acronym runs (HTMLElement → html element), letter-digit adjacency (v2 → v, 2) and non-alphanumeric separators, then words are recomposed in the target style. If two distinct keys in the same object would become identical after conversion, a path-aware collision error is reported instead of silently dropping data.',
+        coreFeatures: [
+          'Convert between five styles: camelCase, PascalCase, snake_case, SCREAMING_SNAKE_CASE, kebab-case',
+          'Recursively handles objects and arrays at any depth; only keys change, values and key order are preserved',
+          'Smart splitting: case boundaries, acronym runs (UserID, HTMLElement) and digit boundaries (v2 → v_2)',
+          'Same-level collision detection: a path-aware error when keys merge (e.g. user_id vs userId under /profile), preventing silent overwrite',
+          'Live output with a count of changed keys and one-click copy; pure functions, no new dependencies, fully local and offline',
+        ],
+        howToUse: [
+          'Paste valid JSON in the left panel (object, array or scalar); the converted result appears live on the right',
+          'Pick the target naming style with the top buttons; the result is recomputed immediately on switch',
+          'The result card shows “N keys converted”; click “Copy result” to copy the output JSON',
+          'If a “key collision” error appears, follow the path hint to rename one of the clashing keys in the source first',
+        ],
+        useCases: [
+          'Bridge systems with different conventions: convert between snake_case backend APIs and camelCase frontend models',
+          'Normalize third-party JSON to your team’s key style before storing it or generating code',
+          'Investigate key-style issues in migration scripts or ORM serialization and spot collision risks early',
+        ],
+        privacyNote:
+          'JSON is parsed and converted locally in the browser only and is never uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'Why do I get a “key collision” error and how do I fix it?',
+            answer:
+              'When two distinct keys in the same object would become identical after conversion (e.g. both user_id and userId present, and camelCase turns both into userId), continuing would silently lose one key’s data, so the tool errors out with the path. Rename one of the clashing keys in the source JSON at that path to disambiguate, then convert again.',
+          },
+          {
+            question: 'Why does v2 become v_2 instead of v2?',
+            answer:
+              'The splitter forces a boundary wherever a letter and digit meet, so v2 is split into the words v and 2: v_2 in snake_case, v2 when recomposed in camelCase, and v-2 in kebab-case. This guarantees stable, unambiguous round-trips between styles. Acronym runs work the same way (HTMLElement → html element → htmlElement).',
+          },
+          {
+            question: 'How is this different from the “Text Case Converter” tool?',
+            answer:
+              'The text tool rewrites an entire plain-text blob without understanding JSON, so it can also change content inside string values. This tool parses JSON first and rewrites only object keys; array elements, values such as strings and numbers, and the nesting stay completely untouched. It also detects same-level collisions after conversion, counts changed keys, and always emits valid JSON.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -140,4 +140,9 @@ export const toolLoaders: Record<
   'descriptive-statistics': () => import('./descriptive-statistics'),
   'complex-number-calculator': () => import('./complex-number-calculator'),
   'date-diff-calculator': () => import('./date-diff-calculator'),
+  'sri-hash-generator': () => import('./sri-hash-generator'),
+  'hkdf-calculator': () => import('./hkdf-calculator'),
+  'pbkdf2-calculator': () => import('./pbkdf2-calculator'),
+  'json-patch': () => import('./json-patch'),
+  'json-key-case': () => import('./json-key-case'),
 };
