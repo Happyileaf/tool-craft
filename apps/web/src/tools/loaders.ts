@@ -136,4 +136,5 @@ export const toolLoaders: Record<
   'db-converter': () => import('./db-converter'),
   'mailto-link-generator': () => import('./mailto-link-generator'),
   'pattern-extractor': () => import('./pattern-extractor'),
+  'bank-card-validator': () => import('./bank-card-validator'),
 };

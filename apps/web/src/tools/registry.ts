@@ -11249,6 +11249,107 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'bank-card-validator',
+    name: '银行卡号校验与卡种识别（Luhn / IIN）',
+    nameEn: 'Bank Card Validator & Brand Detector (Luhn / IIN)',
+    description:
+      '输入银行卡 / 信用卡号（自动忽略空格与连字符），执行 Luhn（模 10）校验，依据 IIN 前缀与长度识别 Visa、Mastercard、American Express、银联、JCB、Discover、Diners Club，展示 4 位分组、逐位计算过程与失败原因，全部在浏览器本地完成。',
+    descriptionEn:
+      'Enter a bank/credit card number (spaces and hyphens ignored) to run the Luhn (mod 10) check and detect Visa, Mastercard, American Express, UnionPay, JCB, Discover or Diners Club from IIN prefixes and length, with 4-digit grouping, a digit-by-digit breakdown and failure reasons—entirely locally in the browser.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/bank-card-validator',
+    iconName: 'ShieldCheck',
+    tags: ['Luhn', '银行卡', '信用卡', 'IIN', '校验位', '卡种识别'],
+    tagsEn: ['Luhn', 'Bank Card', 'Credit Card', 'IIN', 'Check Digit', 'Brand Detection'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '4111 1111 1111 1111',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的银行卡 / 信用卡号校验工具。它先清除空格与连字符，检查长度（12–19 位）与字符合法性，再执行 Luhn（模 10）校验和，并依据 IIN 发卡行识别码前缀与长度规则识别 Visa、Mastercard、American Express、银联 UnionPay、JCB、Discover、Diners Club 等卡组织，同时给出 4 位分组展示与逐位加倍求和的计算明细，便于收单表单前置校验与测试数据准备。',
+        coreFeatures: [
+          'Luhn（模 10）校验：展示逐位加倍、减 9 的贡献明细与总和，快速定位输错的卡号',
+          '卡组织识别：依据 IIN 前缀与长度识别七类常见卡组织，无法匹配时显示未知卡种',
+          '容错输入：自动忽略空格与连字符，非数字字符与越界长度给出明确错误提示',
+          '4 位分组格式化展示与长度统计，内置各渠道公开测试卡号可一键填入',
+          '纯本地运行：卡号不发起任何网络请求，不接触任何服务端',
+        ],
+        howToUse: [
+          '在输入框粘贴或输入卡号，可包含空格或连字符',
+          '结果区实时显示有效 / 无效结论、识别卡种、长度与 Luhn 总和',
+          '查看「Luhn 计算过程」了解各位数字的加倍与求和明细',
+          '可在底部公开测试卡号表中点击任意号码快速填入',
+        ],
+        useCases: [
+          '支付 / 收单表单开发中的前置卡号校验与错误提示实现',
+          '准备通过 Luhn 的测试卡号或验证某段卡号是否被篡改',
+          '依据 IIN 前缀初步判定用户所持卡片所属卡组织',
+        ],
+        privacyNote: '卡号仅在浏览器本地参与校验，不会被上传、记录或发送到任何服务端。',
+        faqs: [
+          {
+            question: '校验通过能说明这张卡真实存在或可以扣款吗？',
+            answer:
+              '不能。Luhn 只能发现抄写 / 输入中的常见错误，校验通过仅代表号码「自洽」，不代表卡片真实发行、账户有效或余额充足；真实有效性必须由发卡行或支付渠道验证。请勿在非可信页面输入真实卡号。',
+          },
+          {
+            question: '为什么显示「未知卡种」？',
+            answer:
+              '卡组织识别依赖公开的 IIN 前缀区间与长度规则，部分新发行卡段、地区性卡组织或 19 位卡号可能未被规则覆盖。未知卡种不影响 Luhn 结论，号码仍会照常完成模 10 校验。',
+          },
+          {
+            question: 'American Express 卡号为什么分组看起来不整齐？',
+            answer:
+              'AmEx 卡号为 15 位，行业惯例是 4-6-5 分组；本工具统一按 4 位分组以便与其他卡组织保持一致（显示为 4-4-4-3），不影响校验结果。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first bank/credit card number validator. It strips spaces and hyphens, checks length (12–19 digits) and character validity, runs the Luhn (mod 10) checksum, and detects card brands—Visa, Mastercard, American Express, UnionPay, JCB, Discover and Diners Club—from IIN prefixes and length rules. It also shows 4-digit grouping and a digit-by-digit doubling breakdown, useful for payment-form pre-validation and test-data preparation.',
+        coreFeatures: [
+          'Luhn (mod 10) check with per-digit doubling/subtract-9 contributions and the total, quickly spotting mistyped numbers',
+          'Brand detection from IIN prefixes and lengths for seven common schemes, with an explicit "unknown" fallback',
+          'Forgiving input: spaces and hyphens ignored; non-digit characters and out-of-range lengths produce clear errors',
+          '4-digit grouped display, length stats, and built-in publicly available test numbers you can fill in one click',
+          'Local-first: the card number never triggers a network request or touches a server',
+        ],
+        howToUse: [
+          'Paste or type a card number; spaces and hyphens are allowed',
+          'The result area instantly shows valid/invalid, detected brand, length and Luhn total',
+          'Open the "Luhn breakdown" to see doubling and summation for every digit',
+          'Click any number in the public test-card table to fill it in quickly',
+        ],
+        useCases: [
+          'Pre-submit card validation and error messaging in payment/acquiring forms',
+          'Generating Luhn-valid test numbers or checking whether a number was altered',
+          'A preliminary brand guess from the IIN prefix',
+        ],
+        privacyNote:
+          'The card number is checked locally in the browser and is never uploaded, logged or sent to any server.',
+        faqs: [
+          {
+            question: 'Does passing the check mean the card exists or can be charged?',
+            answer:
+              'No. Luhn only catches common transcription/typing errors; passing just means the number is self-consistent, not that it was issued, active or funded. Real validity must be confirmed by the issuer or payment network. Never enter a real card number on an untrusted page.',
+          },
+          {
+            question: 'Why does it say "Unknown brand"?',
+            answer:
+              'Brand detection relies on public IIN ranges and length rules; some newly issued ranges, regional schemes or 19-digit numbers may not be covered. An unknown brand does not affect the Luhn result—the mod 10 check still runs normally.',
+          },
+          {
+            question: 'Why does American Express grouping look uneven?',
+            answer:
+              'AmEx numbers are 15 digits and conventionally grouped 4-6-5; this tool groups every card uniformly by 4 digits (shown as 4-4-4-3), which does not affect validation.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
