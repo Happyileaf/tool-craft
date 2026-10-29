@@ -13027,6 +13027,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'web-manifest-generator',
+    name: 'Web App Manifest 生成器',
+    nameEn: 'Web App Manifest Generator',
+    description:
+      '填写应用名、图标、主题色与显示模式等表单，实时生成 PWA manifest.json 与配套 head 引入片段，必填项、颜色与 URL 格式自动校验。',
+    descriptionEn:
+      'Fill app name, icons, theme color and display mode to generate a PWA manifest.json plus head snippet in real time, with required-field, color and URL validation.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/web-manifest-generator',
+    iconName: 'Smartphone',
+    tags: ['PWA', 'Manifest', 'manifest.json', '可安装应用', '前端'],
+    tagsEn: ['PWA', 'Manifest', 'manifest.json', 'Installable', 'Frontend'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Web App Manifest 生成器是一款纯浏览器本地运行的 PWA 配置工具，通过表单填写应用名称、图标、主题色、显示模式与快捷方式，自动产出符合 W3C Web App Manifest 规范的 manifest.json 与 HTML head 引入片段。',
+        coreFeatures: [
+          '全字段覆盖：name、short_name、start_url、scope、display、orientation、主题色/背景色、lang、dir、id、categories',
+          '图标与快捷方式：多行维护 icons（sizes / type / any·maskable·monochrome purpose）与 shortcuts，空行自动过滤',
+          '规范输出：空值字段省略、2 空格缩进 JSON，另生成 manifest link 与 theme-color meta 片段',
+          '实时校验：name / start_url 必填，颜色格式与 http(s)、站内路径 URL 均有明确中文报错',
+        ],
+        howToUse: [
+          '在基础信息卡片填写应用名称（name）与起始页（start_url），其余字段按需填写，留空即不出现在 JSON 中',
+          '在 icons 区逐行填写图标 src、sizes、MIME 与 purpose；空 src 行会被忽略',
+          '需要长按菜单入口时在 shortcuts 区添加快捷方式（至少有 name 与 url）',
+          '核对校验告警后复制 manifest.json 部署到站点，并把 head 片段加入 HTML',
+        ],
+        useCases: [
+          '把现有网站快速接入为可安装的 PWA',
+          '为移动端 Web 应用配置启动画面背景色、状态栏主题色与 standalone 显示模式',
+          '为应用图标补充 maskable 自适应图标声明',
+        ],
+        privacyNote:
+          '所有字段仅在浏览器本地拼装为 JSON，不会上传或请求任何地址，图标 URL 也不会被访问。',
+        faqs: [
+          {
+            question: '为什么有了 manifest 还不能安装？',
+            answer:
+              '可安装性通常还要求站点通过 HTTPS 提供、注册 Service Worker（含 fetch 处理）并配备合格图标（一般至少 192px 与 512px）。本工具只负责生成 manifest 与 head 片段。',
+          },
+          {
+            question: 'purpose 里的 any 与 maskable 有什么区别？',
+            answer:
+              'any 表示完整图标、系统不得裁剪；maskable 表示图标四周预留了安全区，系统可按不同外形遮罩裁剪。建议两种各提供一张。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Web App Manifest Generator is a fully in-browser PWA configuration tool. Fill a form with app name, icons, theme colors, display mode and shortcuts, and it produces a W3C-compliant manifest.json plus the HTML head snippet.',
+        coreFeatures: [
+          'Full field coverage: name, short_name, start_url, scope, display, orientation, theme/background colors, lang, dir, id, categories',
+          'Icons and shortcuts: edit multiple icon rows (sizes / type / any, maskable, monochrome purposes) and shortcuts; empty rows are filtered out',
+          'Spec-ready output: empty fields omitted, 2-space JSON, plus manifest link and theme-color meta snippet',
+          'Live validation: name / start_url required; color formats and http(s) or site-relative URLs checked with clear errors',
+        ],
+        howToUse: [
+          'Fill name and start_url in the basic info card; other fields are optional and omitted from JSON when blank',
+          'Add icons row by row (src, sizes, MIME, purpose); rows with an empty src are ignored',
+          'Add shortcuts when you need long-press or launcher menu entries (each needs at least name and url)',
+          'Resolve validation warnings, copy manifest.json to your site, and insert the head snippet into HTML',
+        ],
+        useCases: [
+          'Turning an existing website into an installable PWA quickly',
+          'Configuring splash background, status-bar theme color and standalone mode for a mobile web app',
+          'Declaring maskable adaptive icons alongside standard icons',
+        ],
+        privacyNote:
+          'All fields are assembled into JSON locally in your browser; nothing is uploaded and icon URLs are never fetched.',
+        faqs: [
+          {
+            question: 'Why is my app still not installable with a manifest?',
+            answer:
+              'Installability generally also requires HTTPS, a registered Service Worker handling fetch, and suitable icons (typically at least 192px and 512px). This tool only generates the manifest and head snippet.',
+          },
+          {
+            question: 'What is the difference between any and maskable icon purposes?',
+            answer:
+              'any icons must be shown uncropped, while maskable icons reserve a safe zone and may be clipped to different platform masks. Providing one of each is recommended.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

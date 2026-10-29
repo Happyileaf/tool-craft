@@ -154,4 +154,5 @@ export const toolLoaders: Record<
   'robots-txt-generator': () => import('./robots-txt-generator'),
   'sitemap-generator': () => import('./sitemap-generator'),
   'markdown-toc-generator': () => import('./markdown-toc-generator'),
+  'web-manifest-generator': () => import('./web-manifest-generator'),
 };
