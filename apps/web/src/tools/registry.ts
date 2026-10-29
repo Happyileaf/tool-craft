@@ -12373,6 +12373,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'crc16-checksum',
+    name: 'CRC-16 / Adler-32 校验和计算器',
+    nameEn: 'CRC-16 & Adler-32 Checksum Calculator',
+    description:
+      '对文本（UTF-8）或十六进制字节流计算 CRC-16/CCITT-FALSE、ARC、XMODEM、MODBUS 等六种变体与 Adler-32，输出十六进制与十进制结果。',
+    descriptionEn:
+      'Compute six CRC-16 variants (CCITT-FALSE, ARC, XMODEM, MODBUS, GENIBUS, KERMIT) and Adler-32 over UTF-8 text or hex byte streams, with hex and decimal output.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/crc16-checksum',
+    iconName: 'Barcode',
+    tags: ['CRC16', 'Adler-32', '校验和', 'Modbus', '嵌入式'],
+    tagsEn: ['CRC16', 'Adler-32', 'Checksum', 'Modbus', 'Embedded'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '123456789',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CRC-16 / Adler-32 校验和计算器是一款纯浏览器本地工具：按 RockSoft 参数模型（poly / init / refin / refout / xorout）实现通用 CRC-16，一次覆盖六种工程常用变体，并提供 RFC 1950 Adler-32，结果以定长十六进制与十进制双格式输出。',
+        coreFeatures: [
+          '六种 CRC-16 变体：CCITT-FALSE、ARC、XMODEM、MODBUS、GENIBUS、KERMIT',
+          'RFC 1950 Adler-32，用于 zlib 流校验',
+          '支持 UTF-8 文本与十六进制字节流（空格/逗号分隔、0x 前缀）两种输入',
+          '参数化直驱实现，结果与 CRC RevEng 标准 check 向量一致',
+          '每个结果可单独复制，自动统计输入字节数',
+        ],
+        howToUse: [
+          '选择输入模式：文本或十六进制字节流',
+          '文本模式直接输入内容，内部按 UTF-8 编码；十六进制模式逐字节书写，如 31 32 33',
+          '结果卡片实时展示每种算法的 0x 十六进制与十进制值',
+          '点击对应行的「复制」获取十六进制结果',
+        ],
+        useCases: [
+          '嵌入式串口 / Modbus RTU 通信帧的 CRC 核对',
+          'zlib / gzip 数据流的 Adler-32 校验',
+          '协议调试时与固件侧实现做标准向量对齐',
+        ],
+        privacyNote:
+          '所有字节运算均在浏览器本地完成，输入数据不会上传或离开设备。',
+        faqs: [
+          {
+            question: '为什么标准输入是 "123456789"？',
+            answer:
+              'CRC RevEng 目录用 "123456789" 的 check 值作为各参数模型的验收向量；本工具 CCITT-FALSE=0x29B1、ARC=0xBB3D、XMODEM=0x31C3、MODBUS=0x4B37、Adler-32=0x091E01DE，可据此核对。',
+          },
+          {
+            question: 'MODBUS 用的是哪一种 CRC？',
+            answer:
+              'Modbus RTU 使用 CRC-16/MODBUS（poly=0x8005、init=0xFFFF、输入输出均反转、xorout=0x0000），本工具已直接提供。',
+          },
+          {
+            question: '中文如何参与计算？',
+            answer:
+              '文本模式按 UTF-8 编码为字节后再计算，例如「你好」对应 6 个字节 E4 BD A0 E5 A5 BD；若协议要求 GBK 等其他编码，可先编码为字节再使用十六进制模式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CRC-16 & Adler-32 Checksum Calculator is a fully in-browser tool implementing a generic CRC-16 through the RockSoft parameter model (poly / init / refin / refout / xorout), covering six widely used variants plus RFC 1950 Adler-32, with fixed-width hex and decimal output.',
+        coreFeatures: [
+          'Six CRC-16 variants: CCITT-FALSE, ARC, XMODEM, MODBUS, GENIBUS, and KERMIT',
+          'RFC 1950 Adler-32 for zlib stream verification',
+          'Both UTF-8 text and hex byte-stream input (space/comma separated, 0x prefix)',
+          'Parameterized bitwise implementation matching CRC RevEng check values',
+          'Per-result copy button and live byte-count display',
+        ],
+        howToUse: [
+          'Choose text or hex byte-stream input mode',
+          'In text mode, content is encoded as UTF-8; in hex mode write bytes such as 31 32 33',
+          'The result card shows every algorithm with 0x hex and decimal values',
+          'Click "Copy" on a row to grab its hex result',
+        ],
+        useCases: [
+          'Verifying CRC fields in embedded serial or Modbus RTU frames',
+          'Checking Adler-32 of zlib/gzip data streams',
+          'Aligning a firmware implementation against standard check vectors',
+        ],
+        privacyNote:
+          'All byte arithmetic runs locally in your browser; input never leaves your device.',
+        faqs: [
+          {
+            question: 'Why is the standard input "123456789"?',
+            answer:
+              'The CRC RevEng catalogue defines check values over "123456789". Here CCITT-FALSE=0x29B1, ARC=0xBB3D, XMODEM=0x31C3, MODBUS=0x4B37, and Adler-32=0x091E01DE, so you can cross-check any implementation.',
+          },
+          {
+            question: 'Which CRC does Modbus use?',
+            answer:
+              'Modbus RTU uses CRC-16/MODBUS (poly=0x8005, init=0xFFFF, reflected input/output, xorout=0x0000), which is included directly.',
+          },
+          {
+            question: 'How are non-ASCII characters handled?',
+            answer:
+              'Text mode encodes to UTF-8 bytes first. If your protocol requires GBK or another encoding, encode externally and paste the bytes in hex mode.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

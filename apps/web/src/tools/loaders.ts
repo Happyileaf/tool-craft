@@ -147,4 +147,5 @@ export const toolLoaders: Record<
   'json-key-case': () => import('./json-key-case'),
   'pii-mask': () => import('./pii-mask'),
   'conventional-commit-generator': () => import('./conventional-commit-generator'),
+  'crc16-checksum': () => import('./crc16-checksum'),
 };
