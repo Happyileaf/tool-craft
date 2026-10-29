@@ -1,0 +1,56 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.statCard {
+  padding: 12px 16px;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 8px;
+}
+
+.statLabel {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.statValue {
+  margin-top: 4px;
+  font-size: 20px;
+  font-weight: 600;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  word-break: break-all;
+}
+
+.sortedPreview {
+  max-height: 160px;
+  overflow: auto;
+  padding: 8px 12px;
+  background: rgb(249 250 251);
+  border-radius: 6px;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 13px;
+  line-height: 1.8;
+  word-break: break-all;
+}
+
+.muted {
+  color: rgb(107 114 128);
+  font-size: 13px;
+  line-height: 1.6;
+}

@@ -11148,6 +11148,508 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'pattern-extractor',
+    name: '文本模式批量提取器（邮箱 / URL / IP / UUID / 日期 / 色值）',
+    nameEn: 'Pattern Extractor (Email / URL / IP / UUID / Date / Hex Color)',
+    description:
+      '粘贴日志、代码或文档文本，勾选邮箱、URL、IPv4、IPv6、UUID、日期时间、十六进制色值等内置模式批量提取，结果按模式分组、组内去重并统计出现次数，支持追加一条自定义正则与一键复制，全部在浏览器本地完成。',
+    descriptionEn:
+      'Paste logs, code or documents and batch-extract emails, URLs, IPv4/IPv6, UUIDs, date-times and hex colors with selectable built-in patterns. Results are grouped by pattern, de-duplicated with occurrence counts, and you can add one custom regex and copy the output—entirely locally in the browser.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/pattern-extractor',
+    iconName: 'Eye',
+    tags: ['正则提取', '邮箱', 'URL', 'IP', 'UUID', '文本清洗'],
+    tagsEn: ['Pattern Extraction', 'Email', 'URL', 'IP', 'UUID', 'Text Cleaning'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '联系 support@example.com 或访问 https://example.com，服务器 192.168.1.10 / 2001:db8::1，追踪 550e8400-e29b-41d4-a716-446655440000。',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的文本模式批量提取器。它内置邮箱、URL、IPv4、IPv6、UUID、日期时间、十六进制色值七类常用正则，勾选后即可对粘贴文本一次性批量提取，输出按模式分组、组内去重并带出现次数的清单，还支持追加一条自定义正则（可命名、可忽略大小写），便于从日志、代码、文档中快速清洗结构化片段。',
+        coreFeatures: [
+          '七类内置模式：邮箱、URL、IPv4、IPv6、UUID、日期时间、十六进制色值，可任意多选组合',
+          '分组去重计数：每个匹配项按首次出现顺序去重并统计出现次数，给出去重项数与总命中数',
+          '自定义正则：可追加一条命名正则，语法错误时仅该项报错，不影响其他模式',
+          '结果一键复制为纯文本，空结果与空输入有明确空状态',
+          '纯本地运行：文本不发起任何网络请求，正则在主线程即时扫描',
+        ],
+        howToUse: [
+          '勾选需要提取的模式（默认已选邮箱 / URL / IPv4 / IPv6 / UUID）',
+          '把待分析文本粘贴到文本框，结果实时按模式分组展示',
+          '需要额外规则时勾选「追加一条自定义正则」，填写名称（可选）与正则源码',
+          '点击「复制结果文本」获取分组清单与计数',
+        ],
+        useCases: [
+          '日志分析：从混排日志中批量提取 IP、URL、UUID、时间戳并统计频次',
+          '数据清洗：从文档或网页文本中抽取全部邮箱、链接或色值',
+          '代码审查：用自定义正则快速定位某类标识符或常量',
+        ],
+        privacyNote: '所有文本仅在浏览器本地参与正则匹配，不会被上传或记录。',
+        faqs: [
+          {
+            question: '和已有的正则测试器（regex-tester）有什么区别？',
+            answer:
+              '正则测试器面向编写与调试单条正则、查看匹配与替换预览；本工具面向「预设模式批量提取」：内置七类常用模式可多选组合，自动分组、去重、计数，解决从大段文本中快速收集某类信息的场景，二者不重叠。',
+          },
+          {
+            question: '提取结果如何去重和计数？',
+            answer:
+              '同一模式下字面值完全相同的匹配只保留一条（按首次出现顺序），但会累计它在原文中出现的次数；每个分组显示「去重项数 / 总命中次数」，顶部还给出所有模式的汇总。',
+          },
+          {
+            question: '自定义正则写错了会怎样？',
+            answer:
+              '自定义正则存在语法错误时，只会在该分组显示错误信息，内置模式与其他结果照常展示，不会导致整体计算失败。自定义源码不需要写两侧斜杠，例如 \\bfoo-\\d+\\b。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first batch pattern extractor. It ships with seven built-in regexes—email, URL, IPv4, IPv6, UUID, date-time and hex color—and extracts them from pasted text in one pass, grouped by pattern, de-duplicated with occurrence counts. You can also add one named custom regex (optionally case-insensitive), making it easy to clean structured fragments out of logs, code and documents.',
+        coreFeatures: [
+          'Seven built-in patterns: email, URL, IPv4, IPv6, UUID, date-time and hex color, freely combinable',
+          'Grouped, de-duplicated counts: identical matches collapse to one entry in first-seen order with an occurrence count',
+          'Custom regex: add one named pattern; a syntax error only flags that group without affecting others',
+          'One-click copy of results as plain text, with explicit empty states',
+          'Local-first: text never triggers a network request; scanning runs instantly on the main thread',
+        ],
+        howToUse: [
+          'Tick the patterns you need (email / URL / IPv4 / IPv6 / UUID selected by default)',
+          'Paste your text into the box; grouped results appear instantly',
+          'Optionally tick "add a custom regex" and provide a name (optional) and the pattern source',
+          'Click "Copy results" to get the grouped list with counts',
+        ],
+        useCases: [
+          'Log analysis: batch-collect IPs, URLs, UUIDs and timestamps with frequencies',
+          'Data cleaning: extract every email, link or color value from docs and pages',
+          'Code review: locate a class of identifiers with a quick custom regex',
+        ],
+        privacyNote: 'All text is matched locally in the browser and is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How is this different from the existing regex tester?',
+            answer:
+              'The regex tester is for writing and debugging a single regex with match/replace previews. This tool is for preset-pattern batch extraction: multiple built-in patterns at once, with automatic grouping, de-duplication and counting—collecting a class of information from large text. The two do not overlap.',
+          },
+          {
+            question: 'How are de-duplication and counting done?',
+            answer:
+              'Within a pattern, identical matches keep a single entry in first-seen order while accumulating the number of occurrences. Each group shows unique items / total hits, and the header summarizes all patterns.',
+          },
+          {
+            question: 'What if my custom regex is invalid?',
+            answer:
+              'A syntax error only shows an error inside that custom group; built-in patterns and other results remain unaffected. Enter the pattern source without the surrounding slashes, e.g. \\bfoo-\\d+\\b.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'bank-card-validator',
+    name: '银行卡号校验与卡种识别（Luhn / IIN）',
+    nameEn: 'Bank Card Validator & Brand Detector (Luhn / IIN)',
+    description:
+      '输入银行卡 / 信用卡号（自动忽略空格与连字符），执行 Luhn（模 10）校验，依据 IIN 前缀与长度识别 Visa、Mastercard、American Express、银联、JCB、Discover、Diners Club，展示 4 位分组、逐位计算过程与失败原因，全部在浏览器本地完成。',
+    descriptionEn:
+      'Enter a bank/credit card number (spaces and hyphens ignored) to run the Luhn (mod 10) check and detect Visa, Mastercard, American Express, UnionPay, JCB, Discover or Diners Club from IIN prefixes and length, with 4-digit grouping, a digit-by-digit breakdown and failure reasons—entirely locally in the browser.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/bank-card-validator',
+    iconName: 'ShieldCheck',
+    tags: ['Luhn', '银行卡', '信用卡', 'IIN', '校验位', '卡种识别'],
+    tagsEn: ['Luhn', 'Bank Card', 'Credit Card', 'IIN', 'Check Digit', 'Brand Detection'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '4111 1111 1111 1111',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的银行卡 / 信用卡号校验工具。它先清除空格与连字符，检查长度（12–19 位）与字符合法性，再执行 Luhn（模 10）校验和，并依据 IIN 发卡行识别码前缀与长度规则识别 Visa、Mastercard、American Express、银联 UnionPay、JCB、Discover、Diners Club 等卡组织，同时给出 4 位分组展示与逐位加倍求和的计算明细，便于收单表单前置校验与测试数据准备。',
+        coreFeatures: [
+          'Luhn（模 10）校验：展示逐位加倍、减 9 的贡献明细与总和，快速定位输错的卡号',
+          '卡组织识别：依据 IIN 前缀与长度识别七类常见卡组织，无法匹配时显示未知卡种',
+          '容错输入：自动忽略空格与连字符，非数字字符与越界长度给出明确错误提示',
+          '4 位分组格式化展示与长度统计，内置各渠道公开测试卡号可一键填入',
+          '纯本地运行：卡号不发起任何网络请求，不接触任何服务端',
+        ],
+        howToUse: [
+          '在输入框粘贴或输入卡号，可包含空格或连字符',
+          '结果区实时显示有效 / 无效结论、识别卡种、长度与 Luhn 总和',
+          '查看「Luhn 计算过程」了解各位数字的加倍与求和明细',
+          '可在底部公开测试卡号表中点击任意号码快速填入',
+        ],
+        useCases: [
+          '支付 / 收单表单开发中的前置卡号校验与错误提示实现',
+          '准备通过 Luhn 的测试卡号或验证某段卡号是否被篡改',
+          '依据 IIN 前缀初步判定用户所持卡片所属卡组织',
+        ],
+        privacyNote: '卡号仅在浏览器本地参与校验，不会被上传、记录或发送到任何服务端。',
+        faqs: [
+          {
+            question: '校验通过能说明这张卡真实存在或可以扣款吗？',
+            answer:
+              '不能。Luhn 只能发现抄写 / 输入中的常见错误，校验通过仅代表号码「自洽」，不代表卡片真实发行、账户有效或余额充足；真实有效性必须由发卡行或支付渠道验证。请勿在非可信页面输入真实卡号。',
+          },
+          {
+            question: '为什么显示「未知卡种」？',
+            answer:
+              '卡组织识别依赖公开的 IIN 前缀区间与长度规则，部分新发行卡段、地区性卡组织或 19 位卡号可能未被规则覆盖。未知卡种不影响 Luhn 结论，号码仍会照常完成模 10 校验。',
+          },
+          {
+            question: 'American Express 卡号为什么分组看起来不整齐？',
+            answer:
+              'AmEx 卡号为 15 位，行业惯例是 4-6-5 分组；本工具统一按 4 位分组以便与其他卡组织保持一致（显示为 4-4-4-3），不影响校验结果。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first bank/credit card number validator. It strips spaces and hyphens, checks length (12–19 digits) and character validity, runs the Luhn (mod 10) checksum, and detects card brands—Visa, Mastercard, American Express, UnionPay, JCB, Discover and Diners Club—from IIN prefixes and length rules. It also shows 4-digit grouping and a digit-by-digit doubling breakdown, useful for payment-form pre-validation and test-data preparation.',
+        coreFeatures: [
+          'Luhn (mod 10) check with per-digit doubling/subtract-9 contributions and the total, quickly spotting mistyped numbers',
+          'Brand detection from IIN prefixes and lengths for seven common schemes, with an explicit "unknown" fallback',
+          'Forgiving input: spaces and hyphens ignored; non-digit characters and out-of-range lengths produce clear errors',
+          '4-digit grouped display, length stats, and built-in publicly available test numbers you can fill in one click',
+          'Local-first: the card number never triggers a network request or touches a server',
+        ],
+        howToUse: [
+          'Paste or type a card number; spaces and hyphens are allowed',
+          'The result area instantly shows valid/invalid, detected brand, length and Luhn total',
+          'Open the "Luhn breakdown" to see doubling and summation for every digit',
+          'Click any number in the public test-card table to fill it in quickly',
+        ],
+        useCases: [
+          'Pre-submit card validation and error messaging in payment/acquiring forms',
+          'Generating Luhn-valid test numbers or checking whether a number was altered',
+          'A preliminary brand guess from the IIN prefix',
+        ],
+        privacyNote:
+          'The card number is checked locally in the browser and is never uploaded, logged or sent to any server.',
+        faqs: [
+          {
+            question: 'Does passing the check mean the card exists or can be charged?',
+            answer:
+              'No. Luhn only catches common transcription/typing errors; passing just means the number is self-consistent, not that it was issued, active or funded. Real validity must be confirmed by the issuer or payment network. Never enter a real card number on an untrusted page.',
+          },
+          {
+            question: 'Why does it say "Unknown brand"?',
+            answer:
+              'Brand detection relies on public IIN ranges and length rules; some newly issued ranges, regional schemes or 19-digit numbers may not be covered. An unknown brand does not affect the Luhn result—the mod 10 check still runs normally.',
+          },
+          {
+            question: 'Why does American Express grouping look uneven?',
+            answer:
+              'AmEx numbers are 15 digits and conventionally grouped 4-6-5; this tool groups every card uniformly by 4 digits (shown as 4-4-4-3), which does not affect validation.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'descriptive-statistics',
+    name: '描述性统计计算器（均值 / 中位数 / 众数 / 方差 / 分位数）',
+    nameEn: 'Descriptive Statistics Calculator (Mean / Median / Mode / Variance / Quartiles)',
+    description:
+      '粘贴一列数值（支持逗号、空格、换行、分号等任意分隔），实时计算数量、总和、均值、中位数、众数、极差、总体/样本方差与标准差、Q1/Q3 分位数，展示排序后数据分布，非法项自动忽略并计数，全部在浏览器本地完成。',
+    descriptionEn:
+      'Paste a column of numbers separated by commas, spaces, newlines or semicolons and instantly get count, sum, mean, median, mode, range, population/sample variance and standard deviation, Q1/Q3 quartiles, plus a sorted distribution view. Invalid tokens are ignored and counted—entirely locally in the browser.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/descriptive-statistics',
+    iconName: 'Sigma',
+    tags: ['描述统计', '均值', '中位数', '标准差', '分位数', '方差'],
+    tagsEn: ['Descriptive Statistics', 'Mean', 'Median', 'Standard Deviation', 'Quartile', 'Variance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '12.5, 15.2 18.7 21.3; 9.8 14.6 17.1 20.4 16.8 13.9',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的描述性统计计算器。粘贴一列用逗号、空格、换行或分号等任意分隔的数值，即可实时得到数量、总和、均值、中位数、众数（支持多众数）、最小值、最大值、极差、总体/样本方差与标准差，以及采用线性插值法的 Q1/Q2/Q3 分位数，并展示升序排序后的数据分布，便于快速分析日志指标、实验结果或成绩数据。',
+        coreFeatures: [
+          '集中趋势：数量、总和、均值、中位数与众数（多个众数全部列出，全唯一时明确提示）',
+          '离散程度：极差、总体方差/标准差（σ）与样本方差/标准差（s）一键切换',
+          '四分位数：Q1/Q2/Q3 采用线性插值法（等价 Excel PERCENTILE.INC / numpy linear）',
+          '容错解析：支持负数、小数、科学计数法，非法 token 忽略并单独计数提示',
+          '纯本地运行：数据不发起任何网络请求，单元素与空输入均有合理兜底',
+        ],
+        howToUse: [
+          '把一列数值粘贴到文本框，逗号、空格、换行、分号等均可作为分隔符',
+          '结果区实时展示全部统计指标与有效/无效计数',
+          '点击「总体 σ / 样本 s」切换方差与标准差口径（样本口径分母为 n−1）',
+          '需要后续分析时点击「复制结果」获取纯文本指标表',
+        ],
+        useCases: [
+          '快速分析接口耗时、错误率等日志指标的均值、分位数与离散程度',
+          '统计实验测量值或考试成绩的中位数、众数与样本标准差',
+          '清洗混有非法字符的数值数据并核对有效样本量',
+        ],
+        privacyNote: '所有数据仅在浏览器本地参与计算，不会被上传或记录。',
+        faqs: [
+          {
+            question: '总体标准差和样本标准差有什么区别？',
+            answer:
+              '总体标准差（σ）把数据当作全部总体，平方偏差除以 n；样本标准差（s）把数据视为总体的抽样，除以 n−1 以修正偏差（贝塞尔修正）。分析抽样子集一般用 s，只有 1 个数据时 s 不可计算。',
+          },
+          {
+            question: '分位数 Q1/Q3 是怎么算的？',
+            answer:
+              '采用线性插值法：排序后位置 h=(n−1)×p，落在两数之间时按距离线性插值，与 Excel 的 PERCENTILE.INC、numpy 的 linear 方法一致。例如 [1,2,3,4] 的 Q1 为 1.75、Q3 为 3.25。',
+          },
+          {
+            question: '为什么众数显示「无（所有值唯一）」？',
+            answer:
+              '众数是出现次数最多的值；当每个值出现次数相同（都只出现一次）时不存在众数。若有多个值并列最高频，会按它们在输入中首次出现的顺序全部列出。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first descriptive statistics calculator. Paste a column of numbers separated by commas, spaces, newlines or semicolons and instantly get count, sum, mean, median, mode (multi-modal supported), min, max, range, population/sample variance and standard deviation, plus linearly interpolated Q1/Q2/Q3 quartiles and an ascending distribution view—handy for quick analysis of log metrics, experiment results or grades.',
+        coreFeatures: [
+          'Central tendency: count, sum, mean, median and mode (all modes listed; explicit note when all values are unique)',
+          'Dispersion: range plus a one-click toggle between population (σ) and sample (s) variance / standard deviation',
+          'Quartiles: Q1/Q2/Q3 via linear interpolation (equivalent to Excel PERCENTILE.INC / numpy linear)',
+          'Forgiving parsing: negatives, decimals and scientific notation supported; invalid tokens ignored with a separate count',
+          'Local-first: data never leaves the browser; single-element and empty inputs handled gracefully',
+        ],
+        howToUse: [
+          'Paste a column of numbers; commas, spaces, newlines and semicolons all work as separators',
+          'The result area instantly shows every metric plus valid/invalid counts',
+          'Toggle "population σ / sample s" to switch the variance basis (sample uses n−1)',
+          'Click "Copy results" for a plain-text metric table',
+        ],
+        useCases: [
+          'Quick mean/quartile/dispersion analysis of latency, error-rate and other log metrics',
+          'Median, mode and sample standard deviation for experiment measurements or exam scores',
+          'Cleaning numeric data mixed with invalid tokens and checking the valid sample size',
+        ],
+        privacyNote: 'All data is computed locally in the browser and is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Population vs sample standard deviation?',
+            answer:
+              'Population SD (σ) treats the data as the whole population and divides squared deviations by n; sample SD (s) treats it as a sample and divides by n−1 (Bessel correction). Use s for sampled subsets; with a single data point s is undefined.',
+          },
+          {
+            question: 'How are Q1/Q3 quartiles computed?',
+            answer:
+              'With linear interpolation: after sorting, position h=(n−1)×p, interpolating between neighbors—matching Excel PERCENTILE.INC and numpy linear. For [1,2,3,4], Q1 is 1.75 and Q3 is 3.25.',
+          },
+          {
+            question: 'Why does mode say "none (all values unique)"?',
+            answer:
+              'Mode is the most frequent value; when every value appears once there is no mode. If several values tie for the highest frequency, all are listed in first-occurrence order.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'complex-number-calculator',
+    name: '复数四则运算与极坐标转换器（a+bi ↔ r·e^iθ）',
+    nameEn: 'Complex Number Calculator & Polar Converter (a+bi ↔ r·e^iθ)',
+    description:
+      '在直角坐标 a+bi 与极坐标/指数形式 r(cosθ+i·sinθ)=r·e^iθ 之间互转，辐角支持角度/弧度切换，并对两个复数执行加、减、乘、除，同时给出模、辐角、共轭与极坐标结果，除零明确报错，全部在浏览器本地完成。',
+    descriptionEn:
+      'Convert between rectangular a+bi and polar/exponential r(cosθ+i·sinθ)=r·e^iθ form with a degree/radian toggle, and add, subtract, multiply or divide two complex numbers with modulus, argument, conjugate and polar output. Division by zero is flagged—entirely locally in the browser.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/complex-number-calculator',
+    iconName: 'Binary',
+    tags: ['复数', '极坐标', '四则运算', '辐角', '共轭', '指数形式'],
+    tagsEn: ['Complex Number', 'Polar Form', 'Arithmetic', 'Argument', 'Conjugate', 'Exponential Form'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '3 + 4i',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的复数计算工具。它在直角坐标形式 a+bi 与极坐标/指数形式 r(cosθ+i·sinθ)=r·e^iθ 之间双向转换，实时给出模、辐角（主值，范围 (−π, π]）与共轭；四则运算页输入两个复数即可同时得到加、减、乘、除的直角坐标与极坐标结果，辐角可在角度与弧度间切换，适用于电路分析、信号处理与数学学习中的复数换算。',
+        coreFeatures: [
+          '形式互转：a+bi ↔ r∠θ ↔ r·e^iθ，角度/弧度一键切换',
+          '四则运算：两个复数的加、减、乘、除一次算全，结果同时给出直角与极坐标形式',
+          '附带模 |z|、主辐角 arg(z) 与共轭 z̄，零复数辐角约定为 0',
+          '除零（除数为 0+0i）明确报错，浮点结果保留 6 位小数并去除尾零、归一负零',
+          '纯本地运行：输入不发起任何网络请求',
+        ],
+        howToUse: [
+          '在「形式转换」页填入实部 a 与虚部 b，立即查看模、辐角、共轭与指数形式',
+          '同页下方填入模 r 与辐角 θ（注意顶部角度/弧度口径），反向得到 a+bi',
+          '切换到「四则运算」页，分别填入 z₁、z₂ 的实部虚部即可查看全部运算结果',
+          '使用卡片右上角开关在角度 ° 与弧度 rad 间切换辐角显示口径',
+        ],
+        useCases: [
+          '交流电路阻抗、导纳的复数加减乘除与极坐标表示',
+          '信号处理中由幅度/相位重建复信号或求复数的模与辐角',
+          '数学、物理学习时核对复数作业的手算结果',
+        ],
+        privacyNote: '所有输入仅在浏览器本地参与计算，不会被上传或记录。',
+        faqs: [
+          {
+            question: '辐角的取值范围和方向是怎样的？',
+            answer:
+              '辐角取主值，范围为 (−π, π]（即 −180° 到 180°），按 atan2(虚部, 实部) 计算：实轴正向为 0，逆时针为正、顺时针为负。零复数 0+0i 没有几何方向，约定辐角为 0。',
+          },
+          {
+            question: '极坐标转回直角坐标怎么算？',
+            answer:
+              '由 a=r·cosθ、b=r·sinθ 还原，θ 会按顶部选择的角度/弧度口径自动换算为弧度。例如 r=2、θ=60° 得到 a=1、b≈1.732，即 1+√3 i。',
+          },
+          {
+            question: '除以 0+0i 会怎样？',
+            answer:
+              '零复数作除数时分母 |z|²=0，运算无定义，结果卡片显示「无法计算」并给出红色错误提示，其他三个运算（加、减、乘）照常展示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first complex-number tool. It converts between rectangular a+bi and polar/exponential form r(cosθ+i·sinθ)=r·e^iθ, showing modulus, principal argument ((−π, π]) and conjugate; the arithmetic tab takes two complex numbers and returns sum, difference, product and quotient in both rectangular and polar form, with a degree/radian toggle. Useful for circuit analysis, signal processing and math study.',
+        coreFeatures: [
+          'Bidirectional a+bi ↔ r∠θ ↔ r·e^iθ conversion with a degree/radian toggle',
+          'Arithmetic: add, subtract, multiply and divide two numbers at once, each result in both rectangular and polar form',
+          'Modulus |z|, principal argument arg(z) and conjugate z̄ included; zero has argument 0 by convention',
+          'Division by 0+0i is flagged clearly; outputs round to 6 decimals, strip trailing zeros and normalize −0',
+          'Local-first: input never triggers a network request',
+        ],
+        howToUse: [
+          'On the "Convert" tab enter real part a and imaginary part b to see modulus, argument, conjugate and exponential form',
+          'Enter r and θ below (matching the degree/radian selector) to convert back to a+bi',
+          'Switch to "Arithmetic" and fill in the real/imaginary parts of z₁ and z₂ for all four operations',
+          'Use the top-right toggle to switch the argument display between degrees and radians',
+        ],
+        useCases: [
+          'Complex arithmetic and polar representation for AC impedance and admittance',
+          'Reconstructing complex signals from magnitude/phase or finding modulus and argument',
+          'Checking hand-computed complex-number homework in math and physics',
+        ],
+        privacyNote: 'All input is computed locally in the browser and is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the argument range and sign convention?',
+            answer:
+              'The principal argument lies in (−π, π] (−180° to 180°), computed with atan2(imaginary, real): 0 along the positive real axis, positive counterclockwise and negative clockwise. The zero complex number has no geometric direction and is assigned argument 0.',
+          },
+          {
+            question: 'How is polar converted back to rectangular?',
+            answer:
+              'Via a=r·cosθ and b=r·sinθ, with θ converted from the selected degree/radian unit automatically. For r=2, θ=60° you get a=1, b≈1.732, i.e. 1+√3 i.',
+          },
+          {
+            question: 'What happens when dividing by 0+0i?',
+            answer:
+              'Dividing by zero makes the denominator |z|²=0, which is undefined; the result card shows "undefined" with a red error message, while add, subtract and multiply are still displayed.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'date-diff-calculator',
+    name: '日期时间差计算与日期加减计算器',
+    nameEn: 'Date Difference & Date Arithmetic Calculator',
+    description:
+      '计算两个日期时间相差的年/月/日分解与总天/总小时/总分钟，可勾选包含起止日与仅计工作日；或对基准日期按年/月/周/日/时/分施加正负偏移得到目标日期与星期，月末按日历月钳制（如 1 月 31 日 +1 月 → 2 月 28/29 日），全部本地完成。',
+    descriptionEn:
+      'Break down the difference between two dates into years/months/days and total days/hours/minutes, with include-endpoints and weekdays-only (Mon–Fri) options; or add signed year/month/week/day/hour/minute offsets to a base date to get the target date and its weekday. Month-end is clamped (Jan 31 + 1 month → Feb 28/29). Runs entirely locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/date-diff-calculator',
+    iconName: 'Clock',
+    tags: ['日期差', '日期加减', '工作日', '月末钳制', '闰年', '星期'],
+    tagsEn: ['Date Diff', 'Date Add', 'Weekdays', 'Month-End Clamp', 'Leap Year', 'Weekday'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '2024-01-01 → 2024-03-01',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的日期运算工具，提供两类确定性计算：日期差——选择起止日期（可精确到分钟），输出年/月/日分解以及总天数、总小时、总分钟，并可勾选「包含起止两天」与「仅统计工作日」（周一至周五，不含节假日调休）；日期加减——给定基准日期与多段带单位（年/月/周/日/时/分）的正负偏移，依次施加后输出目标日期与星期。全部基于 UTC 毫秒时间戳计算，不受浏览器时区与夏令时影响，年/月偏移遇目标月天数不足时钳制到月末。',
+        coreFeatures: [
+          '两日期差量：年/月/日分解 + 总天/总小时/总分钟，支持精确到日或到分钟',
+          '可勾选包含起止两天（总天数 +1）与仅统计工作日（周一至周五）',
+          '日期加减支持多段年/月/周/日/时/分偏移，正负混合、依次计算',
+          '月末按日历月钳制：2024-01-31 +1 月 → 2024-02-29，2024-02-29 +1 年 → 2025-02-28',
+          '输出目标日期的星期；基于 UTC 毫秒运算，纯本地零网络请求',
+        ],
+        howToUse: [
+          '在「日期差」页选择起止日期时间，用顶部开关切换精确到日 / 到分钟',
+          '按需勾选「包含起止两天」或「仅统计工作日」，结果即时更新',
+          '切换到「日期加减」页，选择基准日期，填写偏移量（可为负数）与单位',
+          '点击「添加一段偏移」可组合多段偏移；点击垃圾桶删除该行，结果区给出目标日期与星期',
+        ],
+        useCases: [
+          '计算合同、签证、证件的剩余天数与项目周期（可只看工作日）',
+          '推算到期日、还款日：给定基准日加若干个月并自动处理月末',
+          '核对年龄、工龄的年月分解，或闰年、跨年日期运算结果',
+        ],
+        privacyNote: '所有日期输入仅在浏览器本地参与计算，不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么 1 月 31 日加 1 个月不是 3 月 2/3 日？',
+            answer:
+              '本工具对年、月偏移采用日历月钳制：先推进月份，再取「原日」与「目标月最后一天」中较小者。因此 2024-01-31 +1 月落在 2 月最后一天 2024-02-29；平年 2023-01-31 +1 月则为 2023-02-28。2024-02-29 +1 年同样钳制为 2025-02-28。',
+          },
+          {
+            question: '日期差的「年/月/日分解」按什么口径计算？',
+            answer:
+              '采用与 Excel DATEDIF 一致的「完整月 + 借位」口径：先按完整月推进，日位不足时借一个自然月。例如 2024-01-01 → 2024-03-01 为 0 年 2 月 0 日，总天数则为 60 天（含闰年 2 月的 29 天）。结束日早于起始日时所有结果为负。',
+          },
+          {
+            question: '工作日统计包含法定节假日吗？',
+            answer:
+              '不包含节假日调休表，仅按周一至周五计数，周六、周日剔除。区间采用半开区间 [起始, 结束)；勾选「包含起止两天」后会额外把结束日计入（若结束日为工作日）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first date arithmetic tool with two deterministic calculators. Date difference: pick a start and end date (down to the minute) and get a years/months/days breakdown plus total days, hours and minutes, with options to include both endpoint days and to count weekdays only (Mon–Fri, no holiday calendar). Date arithmetic: apply one or more signed year/month/week/day/hour/minute offsets to a base date and get the target date and its weekday. Everything is computed from UTC timestamps—immune to browser time zones and DST—and month/year offsets clamp to month-end.',
+        coreFeatures: [
+          'Two-date difference: years/months/days breakdown plus total days/hours/minutes, with day or minute precision',
+          'Options to include both endpoint days (+1) and to count weekdays (Monday–Friday) only',
+          'Date arithmetic supports multiple signed year/month/week/day/hour/minute offsets applied in sequence',
+          'Month-end clamping: 2024-01-31 + 1 month → 2024-02-29; 2024-02-29 + 1 year → 2025-02-28',
+          'Target weekday shown; UTC-millisecond math, fully local with no network requests',
+        ],
+        howToUse: [
+          'On the "Date Difference" tab pick start and end datetimes; toggle day vs minute precision at the top',
+          'Check "include both endpoints" or "weekdays only" as needed; results update instantly',
+          'Switch to "Date Arithmetic", choose a base date and enter an offset (negative allowed) with its unit',
+          'Use "Add another offset" to combine segments and the trash icon to remove one; the result shows target date and weekday',
+        ],
+        useCases: [
+          'Counting days remaining for contracts, visas and certificates, or project duration (weekdays only supported)',
+          'Deriving due dates by adding calendar months with automatic month-end handling',
+          'Verifying age and tenure breakdowns as well as leap-year and cross-year date math',
+        ],
+        privacyNote: 'All date input is computed locally in the browser and is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why does January 31 plus one month not become March 2 or 3?',
+            answer:
+              'Year/month offsets use calendar-month clamping: the month advances first and the day becomes min(original day, last day of the target month). So 2024-01-31 + 1 month lands on the last day of February, 2024-02-29; in a common year 2023-01-31 + 1 month is 2023-02-28. Likewise 2024-02-29 + 1 year clamps to 2025-02-28.',
+          },
+          {
+            question: 'What is the years/months/days breakdown based on?',
+            answer:
+              'It follows the "complete months with borrowing" convention like Excel DATEDIF: advance by whole months first and borrow a calendar month when the day is insufficient. For example 2024-01-01 → 2024-03-01 is 0y 2m 0d, while total days equals 60 (including the 29-day leap February). All results are negative when the end precedes the start.',
+          },
+          {
+            question: 'Does the weekday count include public holidays?',
+            answer:
+              'No—there is no holiday calendar; it counts Monday to Friday and excludes Saturday and Sunday. The range is half-open [start, end); checking "include both endpoints" additionally counts the end date if it is a weekday.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

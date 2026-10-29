@@ -135,4 +135,9 @@ export const toolLoaders: Record<
   'running-pace-calculator': () => import('./running-pace-calculator'),
   'db-converter': () => import('./db-converter'),
   'mailto-link-generator': () => import('./mailto-link-generator'),
+  'pattern-extractor': () => import('./pattern-extractor'),
+  'bank-card-validator': () => import('./bank-card-validator'),
+  'descriptive-statistics': () => import('./descriptive-statistics'),
+  'complex-number-calculator': () => import('./complex-number-calculator'),
+  'date-diff-calculator': () => import('./date-diff-calculator'),
 };
