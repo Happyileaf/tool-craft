@@ -164,3 +164,8 @@
 | 20261029080304 | 儒略日（JD / MJD）与公历日期互转器 | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029080304.md) |
 | 20261029080305 | .editorconfig 文件生成器 | Web Tool | Exploration | Pending | 2026-10-29 | | [详情](./idea-details/20261029080305.md) |
 | 20261029080306 | 一元二次 / 三次方程求根计算器 | Web Tool | Exploration | Pending | 2026-10-29 | | [详情](./idea-details/20261029080306.md) |
+| 20261029140201 | SRI 子资源完整性哈希生成器（Subresource Integrity） | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029140201.md) |
+| 20261029140202 | HKDF 密钥派生计算器（RFC 5869） | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029140202.md) |
+| 20261029140203 | JSON Patch 应用器（RFC 6902） | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029140203.md) |
+| 20261029140204 | Plus Codes（Open Location Code）编解码器 | Web Tool | Exploration | Pending | 2026-10-29 | | [详情](./idea-details/20261029140204.md) |
+| 20261029140205 | 中文数字 ↔ 阿拉伯数字双向转换器（含大写金额用字） | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029140205.md) |
