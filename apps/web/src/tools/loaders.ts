@@ -145,4 +145,5 @@ export const toolLoaders: Record<
   'pbkdf2-calculator': () => import('./pbkdf2-calculator'),
   'json-patch': () => import('./json-patch'),
   'json-key-case': () => import('./json-key-case'),
+  'pii-mask': () => import('./pii-mask'),
 };

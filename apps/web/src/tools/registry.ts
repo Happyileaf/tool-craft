@@ -12160,6 +12160,115 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'pii-mask',
+    name: 'PII 敏感信息脱敏工具',
+    nameEn: 'PII Masking Tool',
+    description:
+      '纯浏览器本地识别文本中的邮箱、手机号、身份证号、银行卡号、IP 地址与 API Key，一键脱敏并统计命中。',
+    descriptionEn:
+      'Detect emails, phone numbers, ID and bank card numbers, IP addresses, and API keys in text, then mask them instantly with hit counts — entirely in your browser.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/pii-mask',
+    iconName: 'Eye',
+    tags: ['PII', '脱敏', '隐私', '敏感信息', '掩码', '日志'],
+    tagsEn: ['PII', 'Masking', 'Privacy', 'Redaction', 'Sensitive Data', 'Logs'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '联系人：张伟，邮箱 zhangwei@example.com，手机号：13812345678\n身份证号：11010119900307123X\n服务器：192.168.1.100 与 2001:db8::1\nAuthorization: Bearer abcdefghijklmnopqrs',
+    doc: {
+      zh: {
+        whatIsIt:
+          'PII 敏感信息脱敏工具基于一组确定性正则规则，在纯浏览器本地识别文本中的邮箱、中国大陆手机号、身份证号、银行卡号、IPv4 / IPv6 地址以及通用 API Key / Token，并按「保留首尾」或「整体替换」策略输出脱敏文本，同时给出分类命中统计。',
+        coreFeatures: [
+          '七类敏感信息识别：邮箱、手机号、身份证号、银行卡号、IPv4、IPv6、API Key / Token（含 Bearer 与 JWT）',
+          '两种掩码策略：保留首尾的部分掩码，或等长整体替换，掩码字符可自定义',
+          '类别开关：可按类别单独启用或关闭识别，适配不同脱敏场景',
+          '自定义正则：每行一条补充匹配业务专属字段（如订单号），支持 /pattern/flags 写法',
+          '命中明细与统计：实时显示各类别命中数量，规则按优先级占位避免重复掩码',
+          '纯浏览器本地运算：文本不离开设备，适合日志、工单与配置片段脱敏',
+        ],
+        howToUse: [
+          '将需要脱敏的文本粘贴到输入框（首次进入会自动载入示例）',
+          '选择掩码策略：「保留首尾」保留可辨识前缀，「整体替换」隐藏全部字符',
+          '如需修改掩码字符（默认为 *），在掩码字符输入框中填写单个字符',
+          '通过类别复选框调整需要识别的敏感信息类别',
+          '如有业务专属字段，在自定义正则框中每行填写一条正则，格式错误会即时提示',
+          '在结果卡片查看命中统计，点击「复制脱敏结果」获取输出文本',
+        ],
+        useCases: [
+          '提交线上日志、报错堆栈前脱敏其中的用户隐私数据',
+          '客服工单、数据排障截图配文前去除手机号、证件号与密钥',
+          '分享配置文件或接口报文时遮蔽 Token、IP 与银行卡号',
+        ],
+        privacyNote:
+          '所有识别与替换均基于纯浏览器本地运算，输入文本不会被上传、记录或发送到任何服务器。',
+        faqs: [
+          {
+            question: '识别的规则与优先级是什么？',
+            answer:
+              '工具按 邮箱 → 身份证号 → 银行卡号 → 手机号 → API Key / Token → IPv6 → IPv4 的顺序匹配，先命中的片段会被占位，后续规则不再覆盖同一段文本，从而避免同一段数字被重复掩码。',
+          },
+          {
+            question: 'URL 中的内容会被误判吗？',
+            answer:
+              'IPv6 候选要求通过完整的地址合法性校验，且边界排除字母、数字、冒号、斜杠与点号；普通域名（如 example.com）与带端口的 URL（如 example.com:8080）不会被误判为 IP 地址。',
+          },
+          {
+            question: '通用 API Key 的识别范围是什么？',
+            answer:
+              '支持形如 api_key=、token:、Authorization: 等键值赋值中的密钥段（仅掩码密钥本身，不掩码前缀）、Bearer 头中的令牌，以及三段式 JWT（eyJ 开头）。规则偏向保守以减少误报，不符合这些形态的密钥可能不会被识别，必要时可手动处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The PII Masking Tool uses deterministic rules to detect emails, Chinese mainland phone numbers, national ID numbers, bank card numbers, IPv4/IPv6 addresses, and generic API keys/tokens entirely in your browser, then outputs masked text with per-category hit counts using either head/tail-preserving or full replacement strategies.',
+        coreFeatures: [
+          'Seven sensitive categories: email, phone, ID number, bank card, IPv4, IPv6, and API key/token (including Bearer and JWT)',
+          'Two masking strategies: partial masking that keeps head and tail characters, or equal-length full replacement, with a custom mask character',
+          'Category toggles to enable or disable each type independently for different scenarios',
+          'Custom regex rules, one per line, to cover business-specific fields such as order numbers, with /pattern/flags syntax supported',
+          'Live hit statistics per category, with priority-based occupancy so one fragment is never masked twice',
+          '100% in-browser processing that keeps logs, tickets, and config snippets on your device',
+        ],
+        howToUse: [
+          'Paste the text to mask into the input box (a sample is loaded on first visit)',
+          'Pick a strategy: "Keep head/tail" preserves recognizable prefixes, while "Full replace" hides every character',
+          'Optionally set a single custom mask character (defaults to *)',
+          'Use the category checkboxes to choose which built-in sensitive types are detected',
+          'For business-specific fields, add one custom regex per line; invalid patterns trigger an inline error',
+          'Review the hit counts in the result card and click "Copy masked result" to grab the output',
+        ],
+        useCases: [
+          'Masking user privacy data before sharing production logs or error stacks',
+          'Removing phone numbers, ID numbers, and secrets from support tickets or annotated screenshots',
+          'Concealing tokens, IPs, and bank card numbers when sharing config files or API payloads',
+        ],
+        privacyNote:
+          'All detection and replacement happens locally in your browser. Input text is never uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'What are the matching rules and their priority?',
+            answer:
+              'Rules run in the order email → ID number → bank card → phone → API key/token → IPv6 → IPv4. A fragment matched first is occupied, so later rules never cover the same span and the same digits are never masked twice.',
+          },
+          {
+            question: 'Will content inside URLs be misidentified?',
+            answer:
+              'IPv6 candidates must pass full address validation, and boundaries exclude letters, digits, colons, slashes, and dots. Ordinary domains (example.com) and URLs with ports (example.com:8080) are not mistaken for IP addresses.',
+          },
+          {
+            question: 'What counts as a generic API key?',
+            answer:
+              'It detects secret segments in key-value assignments such as api_key=, token:, and Authorization: (masking only the secret, never the prefix), tokens in Bearer headers, and three-part JWTs starting with eyJ. The rules are deliberately conservative to limit false positives, so secrets in other shapes may need manual handling.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
