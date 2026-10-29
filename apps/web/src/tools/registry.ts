@@ -12671,6 +12671,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'gitignore-generator',
+    name: '.gitignore 文件生成器',
+    nameEn: '.gitignore Generator',
+    description:
+      '勾选语言、框架、编辑器与操作系统模板并追加自定义规则，一键生成跨组去重、带分组注释的 .gitignore。',
+    descriptionEn:
+      'Pick language, framework, editor and OS templates, append custom patterns, and generate a deduplicated, section-commented .gitignore.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/gitignore-generator',
+    iconName: 'EyeInvisible',
+    tags: ['gitignore', 'Git', '脚手架', '模板', '项目初始化'],
+    tagsEn: ['gitignore', 'Git', 'Scaffolding', 'Template', 'Project Setup'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '.gitignore 文件生成器通过勾选内置的语言 / 框架（Node、Python、Java、Go、Rust）、编辑器 / IDE（VS Code、JetBrains、Vim）、操作系统（macOS、Windows、Linux）与环境变量 / 日志模板，再追加自定义规则，实时拼装出带分组注释头的标准 .gitignore 文本，全部在浏览器本地完成。',
+        coreFeatures: [
+          '丰富模板库：覆盖主流语言框架、IDE、操作系统与常见构建产物、密钥文件',
+          '跨组自动去重：同名规则（如 *.log）只在首次出现的分组保留，顺序稳定',
+          '自定义规则：每行一条追加到末尾，自动去除空白行与重复项',
+          '一键复制：输出可直接保存为项目根目录 .gitignore',
+        ],
+        howToUse: [
+          '在模板区勾选项目需要的语言、编辑器与操作系统',
+          '在自定义规则框中按行补充项目特有的忽略模式',
+          '在预览区查看带注释分组的最终 .gitignore 内容',
+          '点击「复制」并粘贴保存为项目根目录的 .gitignore',
+        ],
+        useCases: [
+          '为新仓库快速搭建忽略规则，避免提交 node_modules、.env 等',
+          '多人协作时统一不同操作系统（.DS_Store、Thumbs.db）的忽略项',
+          '为 polyglot 多语言项目合并多套模板规则',
+        ],
+        privacyNote:
+          '模板与自定义规则全部在浏览器本地拼装生成，不发起任何网络请求，也不会读取你的仓库内容。',
+        faqs: [
+          {
+            question: '两个模板里有相同规则怎么办？',
+            answer:
+              '生成时会全局去重，同名规则只保留在模板顺序中最先出现的分组里，自定义区也会跳过已存在的规则。',
+          },
+          {
+            question: '自定义规则支持哪些写法？',
+            answer:
+              '支持标准 gitignore 模式语法，如目录（dist/）、通配（*.log）、取反（!keep.log）等，每行一条；空行和首尾空白会被自动忽略。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          '.gitignore Generator combines built-in templates for languages/frameworks (Node, Python, Java, Go, Rust), editors/IDEs (VS Code, JetBrains, Vim), operating systems (macOS, Windows, Linux), env files and logs with your own custom rules, producing a section-commented .gitignore instantly and entirely in the browser.',
+        coreFeatures: [
+          'Rich template library for mainstream stacks, IDEs, OSes, build artifacts and secret files',
+          'Cross-section deduplication: a pattern such as *.log is kept only where it first appears, with stable ordering',
+          'Custom rules appended one per line with blank lines and duplicates removed automatically',
+          'One-click copy — save the output straight to your project root as .gitignore',
+        ],
+        howToUse: [
+          'Tick the language, editor and OS templates your project needs',
+          'Add project-specific patterns in the custom-rules box, one per line',
+          'Review the final commented .gitignore in the preview panel',
+          'Click "Copy" and paste it into a .gitignore file at your repository root',
+        ],
+        useCases: [
+          'Bootstrapping ignore rules for a new repo so node_modules, .env, etc. are never committed',
+          'Standardizing OS noise (.DS_Store, Thumbs.db) across team members',
+          'Merging several template sets for a polyglot multi-language project',
+        ],
+        privacyNote:
+          'Templates and custom rules are assembled locally in your browser; no network requests are made and your repository contents are never read.',
+        faqs: [
+          {
+            question: 'What if the same pattern exists in two templates?',
+            answer:
+              'The output is globally deduplicated: the pattern is kept only in the earliest section in template order, and the custom section skips patterns already present.',
+          },
+          {
+            question: 'Which pattern syntax is supported in custom rules?',
+            answer:
+              'Standard gitignore syntax works — directories (dist/), globs (*.log), negations (!keep.log), etc., one per line; blank lines and surrounding whitespace are ignored.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

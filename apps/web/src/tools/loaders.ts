@@ -150,4 +150,5 @@ export const toolLoaders: Record<
   'crc16-checksum': () => import('./crc16-checksum'),
   'pangu-spacing': () => import('./pangu-spacing'),
   'dns-ptr-builder': () => import('./dns-ptr-builder'),
+  'gitignore-generator': () => import('./gitignore-generator'),
 };
