@@ -138,4 +138,5 @@ export const toolLoaders: Record<
   'pattern-extractor': () => import('./pattern-extractor'),
   'bank-card-validator': () => import('./bank-card-validator'),
   'descriptive-statistics': () => import('./descriptive-statistics'),
+  'complex-number-calculator': () => import('./complex-number-calculator'),
 };

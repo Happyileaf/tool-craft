@@ -11450,6 +11450,106 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'complex-number-calculator',
+    name: '复数四则运算与极坐标转换器（a+bi ↔ r·e^iθ）',
+    nameEn: 'Complex Number Calculator & Polar Converter (a+bi ↔ r·e^iθ)',
+    description:
+      '在直角坐标 a+bi 与极坐标/指数形式 r(cosθ+i·sinθ)=r·e^iθ 之间互转，辐角支持角度/弧度切换，并对两个复数执行加、减、乘、除，同时给出模、辐角、共轭与极坐标结果，除零明确报错，全部在浏览器本地完成。',
+    descriptionEn:
+      'Convert between rectangular a+bi and polar/exponential r(cosθ+i·sinθ)=r·e^iθ form with a degree/radian toggle, and add, subtract, multiply or divide two complex numbers with modulus, argument, conjugate and polar output. Division by zero is flagged—entirely locally in the browser.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/complex-number-calculator',
+    iconName: 'Binary',
+    tags: ['复数', '极坐标', '四则运算', '辐角', '共轭', '指数形式'],
+    tagsEn: ['Complex Number', 'Polar Form', 'Arithmetic', 'Argument', 'Conjugate', 'Exponential Form'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '3 + 4i',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的复数计算工具。它在直角坐标形式 a+bi 与极坐标/指数形式 r(cosθ+i·sinθ)=r·e^iθ 之间双向转换，实时给出模、辐角（主值，范围 (−π, π]）与共轭；四则运算页输入两个复数即可同时得到加、减、乘、除的直角坐标与极坐标结果，辐角可在角度与弧度间切换，适用于电路分析、信号处理与数学学习中的复数换算。',
+        coreFeatures: [
+          '形式互转：a+bi ↔ r∠θ ↔ r·e^iθ，角度/弧度一键切换',
+          '四则运算：两个复数的加、减、乘、除一次算全，结果同时给出直角与极坐标形式',
+          '附带模 |z|、主辐角 arg(z) 与共轭 z̄，零复数辐角约定为 0',
+          '除零（除数为 0+0i）明确报错，浮点结果保留 6 位小数并去除尾零、归一负零',
+          '纯本地运行：输入不发起任何网络请求',
+        ],
+        howToUse: [
+          '在「形式转换」页填入实部 a 与虚部 b，立即查看模、辐角、共轭与指数形式',
+          '同页下方填入模 r 与辐角 θ（注意顶部角度/弧度口径），反向得到 a+bi',
+          '切换到「四则运算」页，分别填入 z₁、z₂ 的实部虚部即可查看全部运算结果',
+          '使用卡片右上角开关在角度 ° 与弧度 rad 间切换辐角显示口径',
+        ],
+        useCases: [
+          '交流电路阻抗、导纳的复数加减乘除与极坐标表示',
+          '信号处理中由幅度/相位重建复信号或求复数的模与辐角',
+          '数学、物理学习时核对复数作业的手算结果',
+        ],
+        privacyNote: '所有输入仅在浏览器本地参与计算，不会被上传或记录。',
+        faqs: [
+          {
+            question: '辐角的取值范围和方向是怎样的？',
+            answer:
+              '辐角取主值，范围为 (−π, π]（即 −180° 到 180°），按 atan2(虚部, 实部) 计算：实轴正向为 0，逆时针为正、顺时针为负。零复数 0+0i 没有几何方向，约定辐角为 0。',
+          },
+          {
+            question: '极坐标转回直角坐标怎么算？',
+            answer:
+              '由 a=r·cosθ、b=r·sinθ 还原，θ 会按顶部选择的角度/弧度口径自动换算为弧度。例如 r=2、θ=60° 得到 a=1、b≈1.732，即 1+√3 i。',
+          },
+          {
+            question: '除以 0+0i 会怎样？',
+            answer:
+              '零复数作除数时分母 |z|²=0，运算无定义，结果卡片显示「无法计算」并给出红色错误提示，其他三个运算（加、减、乘）照常展示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first complex-number tool. It converts between rectangular a+bi and polar/exponential form r(cosθ+i·sinθ)=r·e^iθ, showing modulus, principal argument ((−π, π]) and conjugate; the arithmetic tab takes two complex numbers and returns sum, difference, product and quotient in both rectangular and polar form, with a degree/radian toggle. Useful for circuit analysis, signal processing and math study.',
+        coreFeatures: [
+          'Bidirectional a+bi ↔ r∠θ ↔ r·e^iθ conversion with a degree/radian toggle',
+          'Arithmetic: add, subtract, multiply and divide two numbers at once, each result in both rectangular and polar form',
+          'Modulus |z|, principal argument arg(z) and conjugate z̄ included; zero has argument 0 by convention',
+          'Division by 0+0i is flagged clearly; outputs round to 6 decimals, strip trailing zeros and normalize −0',
+          'Local-first: input never triggers a network request',
+        ],
+        howToUse: [
+          'On the "Convert" tab enter real part a and imaginary part b to see modulus, argument, conjugate and exponential form',
+          'Enter r and θ below (matching the degree/radian selector) to convert back to a+bi',
+          'Switch to "Arithmetic" and fill in the real/imaginary parts of z₁ and z₂ for all four operations',
+          'Use the top-right toggle to switch the argument display between degrees and radians',
+        ],
+        useCases: [
+          'Complex arithmetic and polar representation for AC impedance and admittance',
+          'Reconstructing complex signals from magnitude/phase or finding modulus and argument',
+          'Checking hand-computed complex-number homework in math and physics',
+        ],
+        privacyNote: 'All input is computed locally in the browser and is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the argument range and sign convention?',
+            answer:
+              'The principal argument lies in (−π, π] (−180° to 180°), computed with atan2(imaginary, real): 0 along the positive real axis, positive counterclockwise and negative clockwise. The zero complex number has no geometric direction and is assigned argument 0.',
+          },
+          {
+            question: 'How is polar converted back to rectangular?',
+            answer:
+              'Via a=r·cosθ and b=r·sinθ, with θ converted from the selected degree/radian unit automatically. For r=2, θ=60° you get a=1, b≈1.732, i.e. 1+√3 i.',
+          },
+          {
+            question: 'What happens when dividing by 0+0i?',
+            answer:
+              'Dividing by zero makes the denominator |z|²=0, which is undefined; the result card shows "undefined" with a red error message, while add, subtract and multiply are still displayed.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -168,4 +168,4 @@
 | 20261029080304 | 儒略日（JD / MJD）与公历日期互转器 | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029080304.md) |
 | 20261029080305 | .editorconfig 文件生成器 | Web Tool | Exploration | Pending | 2026-10-29 | | [详情](./idea-details/20261029080305.md) |
 | 20261029080306 | 一元二次 / 三次方程求根计算器 | Web Tool | Exploration | Pending | 2026-10-29 | | [详情](./idea-details/20261029080306.md) |
-| 20261029080307 | 复数四则运算与极坐标形式转换器 | Web Tool | Existing Gap | Claimed | 2026-10-29 | trae-agent | [详情](./idea-details/20261029080307.md) |
+| 20261029080307 | 复数四则运算与极坐标形式转换器 | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029080307.md) |
