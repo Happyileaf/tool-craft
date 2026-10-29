@@ -12849,6 +12849,95 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'sitemap-generator',
+    name: 'sitemap.xml 生成器',
+    nameEn: 'Sitemap XML Generator',
+    description:
+      '粘贴 URL 清单并设置 lastmod / changefreq / priority，一键生成符合 sitemaps.org 协议的 XML 站点地图，非法 URL 与超量自动提示。',
+    descriptionEn:
+      'Turn a list of URLs into a sitemaps.org-compliant XML sitemap with global lastmod, changefreq and priority, including invalid-URL and 50k-limit warnings.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/sitemap-generator',
+    iconName: 'Apartment',
+    tags: ['Sitemap', 'SEO', 'XML', '搜索引擎', '站点地图'],
+    tagsEn: ['Sitemap', 'SEO', 'XML', 'Search Engine', 'sitemaps.org'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'sitemap.xml 生成器是一款纯浏览器本地运行的站点地图构建工具，把 URL 清单与全局 lastmod / changefreq / priority 选项拼装为符合 sitemaps.org 协议的 urlset XML，帮助搜索引擎高效发现页面。',
+        coreFeatures: [
+          'URL 清单批量录入：每行一条，自动识别并跳过非法或非 http(s) 链接，按行号报错',
+          '全局字段统一设置：lastmod、changefreq（always 至 never 七档）、priority（0.0–1.0），留空即省略对应标签',
+          '协议上限保护：单文件超过 50000 条时自动截断并提示改用 sitemap index 拆分',
+          'XML 安全转义：loc 等文本节点自动转义 &、<、> 等字符，纯本地运算不上传',
+        ],
+        howToUse: [
+          '在 URL 清单框中粘贴需要收录的页面地址，每行一条，必须以 http:// 或 https:// 开头',
+          '设置全局 lastmod（如 2026-10-30）、changefreq 与 priority，不需要的字段留空即可',
+          '查看非法 URL 告警与超量截断提示，修正后实时刷新右侧 XML 预览',
+          '点击「复制」保存为 sitemap.xml 部署到站点根目录，并在 robots.txt 或搜索站长平台中提交',
+        ],
+        useCases: [
+          '新站上线或站点改版后快速生成可提交给 Google / Bing / 百度的站点地图',
+          '为静态站、博客与文档站整理页面清单，检查是否存在拼写错误的 URL',
+          '教学与理解 sitemap 协议字段（changefreq、priority）的输出结构',
+        ],
+        privacyNote:
+          '所有 URL 仅在浏览器本地拼装为 XML，工具不会访问、探测或上传任何地址。',
+        faqs: [
+          {
+            question: '超过 50000 个 URL 怎么办？',
+            answer:
+              'sitemaps.org 规定单个 sitemap 最多 50000 条且不超过 50MB（未压缩）。本工具仅写入前 50000 条，超出部分应拆分为多个 sitemap 文件，再用 sitemap index 文件汇总。',
+          },
+          {
+            question: 'lastmod、changefreq、priority 是必填的吗？',
+            answer:
+              '都不是必填项，只有 loc 必填。搜索引擎主要参考真实的 lastmod；changefreq 与 priority 仅为提示，权重已被弱化，不确定时可以留空。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Sitemap XML Generator is a fully in-browser tool that turns a list of URLs plus global lastmod / changefreq / priority options into a sitemaps.org-compliant urlset XML, helping search engines discover pages efficiently.',
+        coreFeatures: [
+          'Bulk URL input: one per line, with non-http(s) or malformed links detected, skipped and reported by line number',
+          'Global fields: lastmod, changefreq (seven values from always to never) and priority (0.0–1.0); leave blank to omit a tag',
+          'Protocol-limit guard: inputs beyond 50,000 URLs are truncated with a sitemap-index hint',
+          'Safe XML escaping: &, <, > and quotes in loc text are escaped automatically; everything runs locally',
+        ],
+        howToUse: [
+          'Paste the page URLs to be indexed, one per line, each starting with http:// or https://',
+          'Set global lastmod (e.g. 2026-10-30), changefreq and priority; leave a field blank to omit it',
+          'Review invalid-URL warnings and the 50k truncation notice; the XML preview refreshes as you type',
+          'Click "Copy", save the result as sitemap.xml at the site root, and submit it via robots.txt or search-console',
+        ],
+        useCases: [
+          'Generating a sitemap for Google, Bing or Baidu when launching or restructuring a site',
+          'Organizing pages of static sites, blogs and docs while catching mistyped URLs',
+          'Learning how changefreq and priority appear in the sitemap protocol output',
+        ],
+        privacyNote:
+          'URLs are assembled into XML entirely in your browser; the tool never visits, probes or uploads any address.',
+        faqs: [
+          {
+            question: 'What if I have more than 50,000 URLs?',
+            answer:
+              'The protocol caps a single sitemap at 50,000 URLs and 50MB uncompressed. The tool writes only the first 50,000; split the rest into multiple sitemaps and combine them with a sitemap index file.',
+          },
+          {
+            question: 'Are lastmod, changefreq and priority required?',
+            answer:
+              'No — only loc is required. Search engines rely mostly on an accurate lastmod; changefreq and priority are weak hints and can simply be omitted when unsure.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

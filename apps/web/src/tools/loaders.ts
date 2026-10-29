@@ -152,4 +152,5 @@ export const toolLoaders: Record<
   'dns-ptr-builder': () => import('./dns-ptr-builder'),
   'gitignore-generator': () => import('./gitignore-generator'),
   'robots-txt-generator': () => import('./robots-txt-generator'),
+  'sitemap-generator': () => import('./sitemap-generator'),
 };
