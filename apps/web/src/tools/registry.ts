@@ -12671,6 +12671,451 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'gitignore-generator',
+    name: '.gitignore 文件生成器',
+    nameEn: '.gitignore Generator',
+    description:
+      '勾选语言、框架、编辑器与操作系统模板并追加自定义规则，一键生成跨组去重、带分组注释的 .gitignore。',
+    descriptionEn:
+      'Pick language, framework, editor and OS templates, append custom patterns, and generate a deduplicated, section-commented .gitignore.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/gitignore-generator',
+    iconName: 'EyeOff',
+    tags: ['gitignore', 'Git', '脚手架', '模板', '项目初始化'],
+    tagsEn: ['gitignore', 'Git', 'Scaffolding', 'Template', 'Project Setup'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '.gitignore 文件生成器通过勾选内置的语言 / 框架（Node、Python、Java、Go、Rust）、编辑器 / IDE（VS Code、JetBrains、Vim）、操作系统（macOS、Windows、Linux）与环境变量 / 日志模板，再追加自定义规则，实时拼装出带分组注释头的标准 .gitignore 文本，全部在浏览器本地完成。',
+        coreFeatures: [
+          '丰富模板库：覆盖主流语言框架、IDE、操作系统与常见构建产物、密钥文件',
+          '跨组自动去重：同名规则（如 *.log）只在首次出现的分组保留，顺序稳定',
+          '自定义规则：每行一条追加到末尾，自动去除空白行与重复项',
+          '一键复制：输出可直接保存为项目根目录 .gitignore',
+        ],
+        howToUse: [
+          '在模板区勾选项目需要的语言、编辑器与操作系统',
+          '在自定义规则框中按行补充项目特有的忽略模式',
+          '在预览区查看带注释分组的最终 .gitignore 内容',
+          '点击「复制」并粘贴保存为项目根目录的 .gitignore',
+        ],
+        useCases: [
+          '为新仓库快速搭建忽略规则，避免提交 node_modules、.env 等',
+          '多人协作时统一不同操作系统（.DS_Store、Thumbs.db）的忽略项',
+          '为 polyglot 多语言项目合并多套模板规则',
+        ],
+        privacyNote:
+          '模板与自定义规则全部在浏览器本地拼装生成，不发起任何网络请求，也不会读取你的仓库内容。',
+        faqs: [
+          {
+            question: '两个模板里有相同规则怎么办？',
+            answer:
+              '生成时会全局去重，同名规则只保留在模板顺序中最先出现的分组里，自定义区也会跳过已存在的规则。',
+          },
+          {
+            question: '自定义规则支持哪些写法？',
+            answer:
+              '支持标准 gitignore 模式语法，如目录（dist/）、通配（*.log）、取反（!keep.log）等，每行一条；空行和首尾空白会被自动忽略。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          '.gitignore Generator combines built-in templates for languages/frameworks (Node, Python, Java, Go, Rust), editors/IDEs (VS Code, JetBrains, Vim), operating systems (macOS, Windows, Linux), env files and logs with your own custom rules, producing a section-commented .gitignore instantly and entirely in the browser.',
+        coreFeatures: [
+          'Rich template library for mainstream stacks, IDEs, OSes, build artifacts and secret files',
+          'Cross-section deduplication: a pattern such as *.log is kept only where it first appears, with stable ordering',
+          'Custom rules appended one per line with blank lines and duplicates removed automatically',
+          'One-click copy — save the output straight to your project root as .gitignore',
+        ],
+        howToUse: [
+          'Tick the language, editor and OS templates your project needs',
+          'Add project-specific patterns in the custom-rules box, one per line',
+          'Review the final commented .gitignore in the preview panel',
+          'Click "Copy" and paste it into a .gitignore file at your repository root',
+        ],
+        useCases: [
+          'Bootstrapping ignore rules for a new repo so node_modules, .env, etc. are never committed',
+          'Standardizing OS noise (.DS_Store, Thumbs.db) across team members',
+          'Merging several template sets for a polyglot multi-language project',
+        ],
+        privacyNote:
+          'Templates and custom rules are assembled locally in your browser; no network requests are made and your repository contents are never read.',
+        faqs: [
+          {
+            question: 'What if the same pattern exists in two templates?',
+            answer:
+              'The output is globally deduplicated: the pattern is kept only in the earliest section in template order, and the custom section skips patterns already present.',
+          },
+          {
+            question: 'Which pattern syntax is supported in custom rules?',
+            answer:
+              'Standard gitignore syntax works — directories (dist/), globs (*.log), negations (!keep.log), etc., one per line; blank lines and surrounding whitespace are ignored.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'robots-txt-generator',
+    name: 'robots.txt 生成器',
+    nameEn: 'robots.txt Generator',
+    description:
+      '表单配置多组 User-agent、Allow / Disallow、Crawl-delay 与 Sitemap，内置常见爬虫预设并校验路径，生成规范 robots.txt。',
+    descriptionEn:
+      'Build robots.txt from multiple User-agent groups with Allow/Disallow, Crawl-delay and Sitemaps, with crawler presets and path validation.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/robots-txt-generator',
+    iconName: 'Bot',
+    tags: ['robots.txt', 'SEO', '爬虫', '站点配置', '运维'],
+    tagsEn: ['robots.txt', 'SEO', 'Crawler', 'Site Config', 'Ops'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'robots.txt 生成器通过表单编辑多组爬虫抓取规则：每组指定 User-agent（支持 * 通配）、Allow / Disallow 路径与可选 Crawl-delay，全局可配置多条 Sitemap，并内置 Googlebot、Bingbot、百度爬虫等常见预设与全部允许 / 全部禁止模板，实时生成符合 Robots Exclusion Protocol 的 robots.txt 文本。',
+        coreFeatures: [
+          '多规则组：每组独立的 User-agent、Allow、Disallow 与 Crawl-delay，组间空行分隔',
+          '常见爬虫预设：Googlebot、Bingbot、百度、Yandex、GPTBot 一键添加',
+          '实时校验：缺少 User-agent、路径未以 / 开头、Crawl-delay 非数字、Sitemap 非 http(s) 均有提示',
+          'Sitemap 指令统一输出在末尾，非法内容自动跳过且不阻断其余规则',
+        ],
+        howToUse: [
+          '点击预设快速开始，或直接在规则组卡片中填写 User-agent 与路径（每行一条）',
+          '通过下拉框添加常见爬虫为新规则组，按需填写 Crawl-delay（秒）',
+          '在 Sitemap 区每行填写一条站点地图的完整 URL',
+          '查看底部预览与校验提示，确认无误后点击「复制」保存为站点根目录 robots.txt',
+        ],
+        useCases: [
+          '新站点上线前快速编写爬虫抓取规则并提交搜索引擎',
+          '屏蔽管理后台、私有目录或特定 AI 爬虫',
+          '排查现有 robots.txt 路径写法是否规范',
+        ],
+        privacyNote:
+          '所有规则仅在浏览器本地拼装生成，不发起任何网络请求，也不会访问你填写的路径。',
+        faqs: [
+          {
+            question: 'robots.txt 能真正阻止页面被收录吗？',
+            answer:
+              'robots.txt 是君子协议，合规爬虫会遵守，但它不是访问控制；敏感页面应配合鉴权或 noindex 元标签使用。',
+          },
+          {
+            question: 'Allow 和 Disallow 同时匹配时谁优先？',
+            answer:
+              '按 Google 的规则，长度更长（更具体）的路径指令优先；生成器按你填写的顺序原样输出，不调整优先级。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'robots.txt Generator builds multiple crawler rule groups via a form: each group sets User-agent (with * wildcard), Allow/Disallow paths and an optional Crawl-delay, plus global Sitemap lines. It ships with Googlebot, Bingbot, Baiduspider and other presets, allow-all/disallow-all templates, and produces protocol-compliant robots.txt text in real time.',
+        coreFeatures: [
+          'Multiple rule groups, each with User-agent, Allow, Disallow and Crawl-delay, separated by blank lines',
+          'Crawler presets: add Googlebot, Bingbot, Baiduspider, Yandex, GPTBot with one click',
+          'Live validation: missing User-agent, paths not starting with /, non-numeric delays, non-http(s) sitemaps all flagged',
+          'Sitemap directives emitted at the end; invalid entries are skipped without breaking other rules',
+        ],
+        howToUse: [
+          'Start from a preset, or fill User-agent and paths (one per line) directly in a group card',
+          'Add a common crawler as a new group from the dropdown and optionally set Crawl-delay in seconds',
+          'List full Sitemap URLs, one per line, in the Sitemap section',
+          'Review the preview and validation notes, then click "Copy" and save as robots.txt at the site root',
+        ],
+        useCases: [
+          'Authoring crawler rules before launching a new site and submitting it to search engines',
+          'Blocking admin panels, private directories or specific AI crawlers',
+          'Sanity-checking path syntax in an existing robots.txt',
+        ],
+        privacyNote:
+          'All rules are assembled locally in your browser; no network requests are made and the paths you enter are never visited.',
+        faqs: [
+          {
+            question: 'Does robots.txt truly prevent indexing?',
+            answer:
+              'It is a voluntary protocol respected by compliant crawlers, not access control. Protect sensitive pages with authentication or noindex meta tags as well.',
+          },
+          {
+            question: 'When both Allow and Disallow match, which wins?',
+            answer:
+              'Per Google’s rules, the longer (more specific) path wins. The generator outputs directives in your input order without changing precedence.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'sitemap-generator',
+    name: 'sitemap.xml 生成器',
+    nameEn: 'Sitemap XML Generator',
+    description:
+      '粘贴 URL 清单并设置 lastmod / changefreq / priority，一键生成符合 sitemaps.org 协议的 XML 站点地图，非法 URL 与超量自动提示。',
+    descriptionEn:
+      'Turn a list of URLs into a sitemaps.org-compliant XML sitemap with global lastmod, changefreq and priority, including invalid-URL and 50k-limit warnings.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/sitemap-generator',
+    iconName: 'Map',
+    tags: ['Sitemap', 'SEO', 'XML', '搜索引擎', '站点地图'],
+    tagsEn: ['Sitemap', 'SEO', 'XML', 'Search Engine', 'sitemaps.org'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'sitemap.xml 生成器是一款纯浏览器本地运行的站点地图构建工具，把 URL 清单与全局 lastmod / changefreq / priority 选项拼装为符合 sitemaps.org 协议的 urlset XML，帮助搜索引擎高效发现页面。',
+        coreFeatures: [
+          'URL 清单批量录入：每行一条，自动识别并跳过非法或非 http(s) 链接，按行号报错',
+          '全局字段统一设置：lastmod、changefreq（always 至 never 七档）、priority（0.0–1.0），留空即省略对应标签',
+          '协议上限保护：单文件超过 50000 条时自动截断并提示改用 sitemap index 拆分',
+          'XML 安全转义：loc 等文本节点自动转义 &、<、> 等字符，纯本地运算不上传',
+        ],
+        howToUse: [
+          '在 URL 清单框中粘贴需要收录的页面地址，每行一条，必须以 http:// 或 https:// 开头',
+          '设置全局 lastmod（如 2026-10-30）、changefreq 与 priority，不需要的字段留空即可',
+          '查看非法 URL 告警与超量截断提示，修正后实时刷新右侧 XML 预览',
+          '点击「复制」保存为 sitemap.xml 部署到站点根目录，并在 robots.txt 或搜索站长平台中提交',
+        ],
+        useCases: [
+          '新站上线或站点改版后快速生成可提交给 Google / Bing / 百度的站点地图',
+          '为静态站、博客与文档站整理页面清单，检查是否存在拼写错误的 URL',
+          '教学与理解 sitemap 协议字段（changefreq、priority）的输出结构',
+        ],
+        privacyNote:
+          '所有 URL 仅在浏览器本地拼装为 XML，工具不会访问、探测或上传任何地址。',
+        faqs: [
+          {
+            question: '超过 50000 个 URL 怎么办？',
+            answer:
+              'sitemaps.org 规定单个 sitemap 最多 50000 条且不超过 50MB（未压缩）。本工具仅写入前 50000 条，超出部分应拆分为多个 sitemap 文件，再用 sitemap index 文件汇总。',
+          },
+          {
+            question: 'lastmod、changefreq、priority 是必填的吗？',
+            answer:
+              '都不是必填项，只有 loc 必填。搜索引擎主要参考真实的 lastmod；changefreq 与 priority 仅为提示，权重已被弱化，不确定时可以留空。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Sitemap XML Generator is a fully in-browser tool that turns a list of URLs plus global lastmod / changefreq / priority options into a sitemaps.org-compliant urlset XML, helping search engines discover pages efficiently.',
+        coreFeatures: [
+          'Bulk URL input: one per line, with non-http(s) or malformed links detected, skipped and reported by line number',
+          'Global fields: lastmod, changefreq (seven values from always to never) and priority (0.0–1.0); leave blank to omit a tag',
+          'Protocol-limit guard: inputs beyond 50,000 URLs are truncated with a sitemap-index hint',
+          'Safe XML escaping: &, <, > and quotes in loc text are escaped automatically; everything runs locally',
+        ],
+        howToUse: [
+          'Paste the page URLs to be indexed, one per line, each starting with http:// or https://',
+          'Set global lastmod (e.g. 2026-10-30), changefreq and priority; leave a field blank to omit it',
+          'Review invalid-URL warnings and the 50k truncation notice; the XML preview refreshes as you type',
+          'Click "Copy", save the result as sitemap.xml at the site root, and submit it via robots.txt or search-console',
+        ],
+        useCases: [
+          'Generating a sitemap for Google, Bing or Baidu when launching or restructuring a site',
+          'Organizing pages of static sites, blogs and docs while catching mistyped URLs',
+          'Learning how changefreq and priority appear in the sitemap protocol output',
+        ],
+        privacyNote:
+          'URLs are assembled into XML entirely in your browser; the tool never visits, probes or uploads any address.',
+        faqs: [
+          {
+            question: 'What if I have more than 50,000 URLs?',
+            answer:
+              'The protocol caps a single sitemap at 50,000 URLs and 50MB uncompressed. The tool writes only the first 50,000; split the rest into multiple sitemaps and combine them with a sitemap index file.',
+          },
+          {
+            question: 'Are lastmod, changefreq and priority required?',
+            answer:
+              'No — only loc is required. Search engines rely mostly on an accurate lastmod; changefreq and priority are weak hints and can simply be omitted when unsure.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'markdown-toc-generator',
+    name: 'Markdown 目录（TOC）生成器',
+    nameEn: 'Markdown Table of Contents Generator',
+    description:
+      '粘贴 Markdown 自动提取各级标题，生成带 GitHub 锚点的嵌套目录，支持有序/无序列表、层级过滤与一键插入原文，代码块内的 # 自动忽略。',
+    descriptionEn:
+      'Extract ATX headings from Markdown into a nested table of contents with GitHub anchors, ordered/unordered lists, level filtering and one-click insertion, ignoring # inside code fences.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/markdown-toc-generator',
+    iconName: 'List',
+    tags: ['Markdown', 'TOC', '目录', '锚点', 'README'],
+    tagsEn: ['Markdown', 'TOC', 'Table of Contents', 'Anchor', 'README'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Markdown 目录（TOC）生成器是一款纯浏览器本地运行的文档工具，逐行扫描 Markdown 中的 ATX（#）标题，按层级缩进生成带 GitHub 风格锚点链接的嵌套目录，长文档无需再手工维护。',
+        coreFeatures: [
+          '精确标题提取：识别 1–6 级 ATX 标题，自动跳过 ``` 与 ~~~ 围栏代码块、行首转义 # 以及缺少空格的伪标题',
+          'GitHub 风格锚点：转小写、空格转连字符、去除标点与行内代码反引号，重复标题自动追加 -1、-2 后缀',
+          '灵活输出：有序/无序列表切换、最小/最大层级过滤、可关闭锚点链接，按层级两空格缩进',
+          '一键插入原文：存在 <!-- TOC --> 标记块时替换其内容，否则前置到文首，全部本地运算',
+        ],
+        howToUse: [
+          '在左栏粘贴 Markdown 原文，标题数量会实时显示在卡片标题上',
+          '选择有序或无序列表、最小/最大标题层级，以及是否生成 GitHub 锚点链接',
+          '在右栏核对目录预览，需要时点击「复制全文」得到插入目录后的完整文档',
+          '也可在原文中放置 <!-- TOC -->…<!-- /TOC --> 标记，工具会就地更新标记块内容',
+        ],
+        useCases: [
+          '为 README、规范文档与长文博客生成并持续更新目录',
+          '向开源项目提交文档前快速核对标题层级是否合理',
+          '需要纯文本目录片段贴入 Wiki 或其他渲染器时使用',
+        ],
+        privacyNote:
+          '文档内容仅在浏览器内存中解析，不会上传或存储到任何服务器。',
+        faqs: [
+          {
+            question: '支持 Setext 风格标题（下划线 === / ---）吗？',
+            answer:
+              '本期只识别 ATX 风格的 # 标题，Setext 标题暂不支持；大多数现代文档都使用 ATX 风格。',
+          },
+          {
+            question: '为什么代码块里的注释 # 没有出现在目录中？',
+            answer:
+              '解析器会跟踪 ``` 与 ~~~ 围栏代码块状态，代码块内任何以 # 开头的行都会被忽略，与 GitHub 的渲染规则一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Markdown Table of Contents Generator is a fully in-browser documentation tool that scans ATX (#) headings and builds a nested, indented TOC with GitHub-style anchor links, so long documents no longer need a hand-maintained outline.',
+        coreFeatures: [
+          'Accurate extraction: recognizes levels 1–6 ATX headings while skipping ``` and ~~~ fenced code blocks, escaped \\# lines and fake headings without a space after #',
+          'GitHub anchors: lowercase, spaces to hyphens, punctuation and inline-code backticks removed; duplicate titles get -1, -2 suffixes',
+          'Flexible output: ordered/unordered lists, min/max level filtering, anchor links toggle, and two-space indentation per level',
+          'One-click insertion: replaces an existing <!-- TOC --> block or prepends the TOC to the document; everything runs locally',
+        ],
+        howToUse: [
+          'Paste Markdown into the left editor; the detected heading count updates live in the card title',
+          'Choose ordered or unordered style, minimum/maximum heading levels, and whether to emit GitHub anchor links',
+          'Review the TOC preview on the right and click "Copy full text" when you need the document with TOC inserted',
+          'Alternatively place <!-- TOC -->…<!-- /TOC --> markers in your text and the tool updates that block in place',
+        ],
+        useCases: [
+          'Generating and refreshing a TOC for README files, specs and long-form blog posts',
+          'Checking heading hierarchy before contributing documentation to open-source projects',
+          'Producing a plain-text outline for wikis or other Markdown renderers',
+        ],
+        privacyNote:
+          'Your document is parsed only in browser memory and is never uploaded to or stored on any server.',
+        faqs: [
+          {
+            question: 'Are Setext headings (=== / --- underlines) supported?',
+            answer:
+              'Only ATX-style # headings are recognized in this version; Setext headings are not supported, although most modern documents use ATX style.',
+          },
+          {
+            question: 'Why do # comments inside code blocks not appear in the TOC?',
+            answer:
+              'The parser tracks ``` and ~~~ fenced code blocks, so any line starting with # inside them is ignored, matching how GitHub renders Markdown.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'web-manifest-generator',
+    name: 'Web App Manifest 生成器',
+    nameEn: 'Web App Manifest Generator',
+    description:
+      '填写应用名、图标、主题色与显示模式等表单，实时生成 PWA manifest.json 与配套 head 引入片段，必填项、颜色与 URL 格式自动校验。',
+    descriptionEn:
+      'Fill app name, icons, theme color and display mode to generate a PWA manifest.json plus head snippet in real time, with required-field, color and URL validation.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/web-manifest-generator',
+    iconName: 'Smartphone',
+    tags: ['PWA', 'Manifest', 'manifest.json', '可安装应用', '前端'],
+    tagsEn: ['PWA', 'Manifest', 'manifest.json', 'Installable', 'Frontend'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Web App Manifest 生成器是一款纯浏览器本地运行的 PWA 配置工具，通过表单填写应用名称、图标、主题色、显示模式与快捷方式，自动产出符合 W3C Web App Manifest 规范的 manifest.json 与 HTML head 引入片段。',
+        coreFeatures: [
+          '全字段覆盖：name、short_name、start_url、scope、display、orientation、主题色/背景色、lang、dir、id、categories',
+          '图标与快捷方式：多行维护 icons（sizes / type / any·maskable·monochrome purpose）与 shortcuts，空行自动过滤',
+          '规范输出：空值字段省略、2 空格缩进 JSON，另生成 manifest link 与 theme-color meta 片段',
+          '实时校验：name / start_url 必填，颜色格式与 http(s)、站内路径 URL 均有明确中文报错',
+        ],
+        howToUse: [
+          '在基础信息卡片填写应用名称（name）与起始页（start_url），其余字段按需填写，留空即不出现在 JSON 中',
+          '在 icons 区逐行填写图标 src、sizes、MIME 与 purpose；空 src 行会被忽略',
+          '需要长按菜单入口时在 shortcuts 区添加快捷方式（至少有 name 与 url）',
+          '核对校验告警后复制 manifest.json 部署到站点，并把 head 片段加入 HTML',
+        ],
+        useCases: [
+          '把现有网站快速接入为可安装的 PWA',
+          '为移动端 Web 应用配置启动画面背景色、状态栏主题色与 standalone 显示模式',
+          '为应用图标补充 maskable 自适应图标声明',
+        ],
+        privacyNote:
+          '所有字段仅在浏览器本地拼装为 JSON，不会上传或请求任何地址，图标 URL 也不会被访问。',
+        faqs: [
+          {
+            question: '为什么有了 manifest 还不能安装？',
+            answer:
+              '可安装性通常还要求站点通过 HTTPS 提供、注册 Service Worker（含 fetch 处理）并配备合格图标（一般至少 192px 与 512px）。本工具只负责生成 manifest 与 head 片段。',
+          },
+          {
+            question: 'purpose 里的 any 与 maskable 有什么区别？',
+            answer:
+              'any 表示完整图标、系统不得裁剪；maskable 表示图标四周预留了安全区，系统可按不同外形遮罩裁剪。建议两种各提供一张。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Web App Manifest Generator is a fully in-browser PWA configuration tool. Fill a form with app name, icons, theme colors, display mode and shortcuts, and it produces a W3C-compliant manifest.json plus the HTML head snippet.',
+        coreFeatures: [
+          'Full field coverage: name, short_name, start_url, scope, display, orientation, theme/background colors, lang, dir, id, categories',
+          'Icons and shortcuts: edit multiple icon rows (sizes / type / any, maskable, monochrome purposes) and shortcuts; empty rows are filtered out',
+          'Spec-ready output: empty fields omitted, 2-space JSON, plus manifest link and theme-color meta snippet',
+          'Live validation: name / start_url required; color formats and http(s) or site-relative URLs checked with clear errors',
+        ],
+        howToUse: [
+          'Fill name and start_url in the basic info card; other fields are optional and omitted from JSON when blank',
+          'Add icons row by row (src, sizes, MIME, purpose); rows with an empty src are ignored',
+          'Add shortcuts when you need long-press or launcher menu entries (each needs at least name and url)',
+          'Resolve validation warnings, copy manifest.json to your site, and insert the head snippet into HTML',
+        ],
+        useCases: [
+          'Turning an existing website into an installable PWA quickly',
+          'Configuring splash background, status-bar theme color and standalone mode for a mobile web app',
+          'Declaring maskable adaptive icons alongside standard icons',
+        ],
+        privacyNote:
+          'All fields are assembled into JSON locally in your browser; nothing is uploaded and icon URLs are never fetched.',
+        faqs: [
+          {
+            question: 'Why is my app still not installable with a manifest?',
+            answer:
+              'Installability generally also requires HTTPS, a registered Service Worker handling fetch, and suitable icons (typically at least 192px and 512px). This tool only generates the manifest and head snippet.',
+          },
+          {
+            question: 'What is the difference between any and maskable icon purposes?',
+            answer:
+              'any icons must be shown uncropped, while maskable icons reserve a safe zone and may be clipped to different platform masks. Providing one of each is recommended.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -150,4 +150,9 @@ export const toolLoaders: Record<
   'crc16-checksum': () => import('./crc16-checksum'),
   'pangu-spacing': () => import('./pangu-spacing'),
   'dns-ptr-builder': () => import('./dns-ptr-builder'),
+  'gitignore-generator': () => import('./gitignore-generator'),
+  'robots-txt-generator': () => import('./robots-txt-generator'),
+  'sitemap-generator': () => import('./sitemap-generator'),
+  'markdown-toc-generator': () => import('./markdown-toc-generator'),
+  'web-manifest-generator': () => import('./web-manifest-generator'),
 };

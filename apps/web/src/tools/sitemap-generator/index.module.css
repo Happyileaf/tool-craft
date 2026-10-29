@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.optionRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.optionItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.optionLabel {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.output {
+  margin: 0;
+  padding: 12px;
+  max-height: 420px;
+  overflow: auto;
+  background: rgb(249 250 251);
+  border: 1px solid rgb(229 231 235);
+  border-radius: 6px;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.hint {
+  margin-top: 12px;
+  color: rgb(107 114 128);
+  font-size: 13px;
+  line-height: 1.6;
+}

@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px 16px;
+}
+
+.checkboxLine {
+  display: flex;
+  align-items: center;
+}
+
+.output {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.hint {
+  color: rgb(107 114 128);
+  font-size: 13px;
+  line-height: 1.6;
+}

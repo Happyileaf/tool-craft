@@ -4,13 +4,18 @@
 
 ## 日志
 
-## 2026-10-30 ：【Agent自主迭代】新增 5 个文本脱敏、提交规范、校验和、排版留白与 DNS 运维工具
+## 2026-10-30 ：【Agent自主迭代】新增 10 个文本脱敏、提交规范、校验和、排版留白、DNS 运维与开发 / SEO 配置工具
 
 - **新增**：PII 敏感信息脱敏工具（pii-mask）— 按手机号、身份证号、银行卡号、邮箱、IPv4 / IPv6 地址、API Key 等规则识别敏感信息并以 `*` / `#` 掩码或整体替换，支持逐行批量、自定义掩码字符与保留前后位数，纯本地正则识别不上传数据
 - **新增**：Conventional Commits 提交信息生成器（conventional-commit-generator）— 表单选择 type / scope / 破坏性变更并填写描述与正文，实时生成符合 Conventional Commits 1.0.0 规范的提交信息，内置 feat / fix / docs 等全部类型说明与复制、载入示例
 - **新增**：CRC-16 / Adler-32 校验和计算器（crc16-checksum）— 支持 CRC-16/ARC、CCITT-FALSE、XMODEM、MODBUS、GENIBUS、KERMIT 六种 CRC-16 变体与 Adler-32，文本 / Hex 双载体输入，输出十进制与 `0x` 十六进制结果并附各变体多项式、初值、反射参数对照，内置标准校验向量
 - **新增**：中英文混排自动留白（盘古之白）格式化器（pangu-spacing）— 在中文与英文 / 数字边界自动插入或移除空格，围栏代码块、行内代码与 URL 内部保持原样，支持双向处理、变更数统计与逐段保护
 - **新增**：DNS PTR 反向解析记录名构造器（dns-ptr-builder）— 按 RFC 1035 / RFC 3596 §2.5 将 IPv4 / IPv6 地址构造为 `in-addr.arpa` / `ip6.arpa` 反向域名，支持 `::` 压缩与内嵌 IPv4 解析、按前缀长度（/24、/32 等）生成 zone 名、规范化地址展示与非法输入报错
+- **新增**：.gitignore 文件生成器（gitignore-generator）— 勾选语言、框架、编辑器与操作系统模板并追加自定义规则，跨组去重、带分组注释一键生成 .gitignore，内置常见模板与恢复示例
+- **新增**：robots.txt 生成器（robots-txt-generator）— 表单配置多组 User-agent、Allow / Disallow、Crawl-delay 与 Sitemap，内置常见爬虫（Googlebot / GPTBot 等）预设与路径校验，生成规范 robots.txt
+- **新增**：sitemap.xml 生成器（sitemap-generator）— 粘贴 URL 清单并设置全局 lastmod / changefreq / priority，生成符合 sitemaps.org 协议的 XML 站点地图，自动 XML 转义，非法 URL 报错且超过 5 万条提示拆分
+- **新增**：Markdown 目录（TOC）生成器（markdown-toc-generator）— 粘贴 Markdown 自动提取各级标题，生成带 GitHub 风格锚点的嵌套目录，支持有序 / 无序列表、层级范围过滤与一键插回原文，围栏代码块与转义 `#` 自动忽略
+- **新增**：Web App Manifest 生成器（web-manifest-generator）— 填写应用名、图标（sizes / type / purpose）、shortcuts、主题色与显示模式等表单，实时生成 PWA manifest.json 与配套 head 引入片段，必填项、颜色与 URL 格式自动校验，空字段自动省略
 
 ## 2026-10-29 ：【Agent自主迭代】新增 20 个证照校验、地址换算、逻辑运算、周历、区间整理、编码、工程计算、文本抽取、卡校验、统计数学日期与密码学/JSON 工具
 
