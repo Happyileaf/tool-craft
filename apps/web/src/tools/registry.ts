@@ -11752,6 +11752,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'hkdf-calculator',
+    name: 'HKDF 密钥派生计算器',
+    nameEn: 'HKDF Key Derivation Calculator (RFC 5869)',
+    description:
+      '基于 RFC 5869 HKDF（Extract-then-Expand）从输入密钥材料 IKM 派生密钥，支持可选 salt 与 info、SHA-256 / SHA-384 / SHA-512，同时展示 Extract 阶段伪随机密钥 PRK 与 Expand 阶段输出 OKM（Hex + Base64）。IKM/salt/info 均可按文本、Hex、Base64 三种载体输入，内置 RFC 5869 官方向量可一键对照。全程浏览器本地计算。',
+    descriptionEn:
+      'Derive keys with RFC 5869 HKDF (Extract-then-Expand): optional salt and info, SHA-256/384/512, showing both the Extract-stage pseudorandom key (PRK) and the Expand-stage output keying material (OKM in Hex and Base64). IKM, salt and info each accept text, Hex or Base64; built-in RFC 5869 test vectors load with one click for verification. Everything runs locally in the browser.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/hkdf-calculator',
+    iconName: 'KeyRound',
+    tags: ['HKDF', 'RFC 5869', '密钥派生', 'KDF', 'PRK', 'Web Crypto'],
+    tagsEn: ['HKDF', 'RFC 5869', 'Key Derivation', 'KDF', 'PRK', 'Web Crypto'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'my-secret-key-material',
+    doc: {
+      zh: {
+        whatIsIt:
+          'HKDF（HMAC-based Key Derivation Function，RFC 5869）是从高熵输入密钥材料（IKM）派生出一个或多个安全密钥的标准 KDF，广泛用于 TLS 1.3、Signal、JWT 与各类加密 SDK。它分为两步：Extract 以 salt 对 IKM 做 HMAC 得到定长伪随机密钥 PRK；Expand 结合 info 上下文将 PRK 扩展为指定长度的输出密钥材料 OKM。本工具基于浏览器 Web Crypto 原语完整执行两步，并把中间 PRK 一并展示，便于协议调试与跨语言实现对账。IKM、salt、info 均支持文本（UTF-8）、Hex、Base64（含 Base64URL）三种载体，一键载入 RFC 5869 官方案例后可逐字节比对。',
+        coreFeatures: [
+          '完整实现 RFC 5869 Extract-then-Expand，同时输出 PRK 与 OKM',
+          'SHA-256 / SHA-384 / SHA-512 三种底层哈希，OKM 长度 1 至 255×HashLen 可调',
+          'IKM、salt、info 各自独立选择文本 / Hex / Base64 载体，Hex 允许 0x 前缀与空白',
+          'OKM 同时给出 Hex 与 Base64，一键复制，方便对接各类语言的密钥参数',
+          '内置 RFC 5869 Test Case 1 官方向量，一键载入即可反向验证实现正确性',
+        ],
+        howToUse: [
+          '在 IKM 区粘贴输入密钥材料，并用右侧切换按钮选择其载体（文本 / Hex / Base64）',
+          '按需填写 salt 与 info（均可留空；salt 留空时按 RFC 使用 HashLen 个全零字节）',
+          '选择哈希算法并设置输出长度（字节），结果区即时显示 PRK 与 OKM',
+          '点击「RFC 5869 向量示例」载入官方案例，可与 RFC 文档中的 PRK/OKM 逐字节对照',
+        ],
+        useCases: [
+          '调试 TLS / E2EE / JWT 等协议中的密钥派生，与后端或其他语言实现对账',
+          '为应用从主密钥派生多个场景子密钥（结合不同 info 做域分离）',
+          '学习 HKDF 原理时观察 Extract 与 Expand 的中间产物 PRK / OKM',
+        ],
+        privacyNote:
+          '所有密钥材料仅在浏览器本地通过 Web Crypto 计算，不会被上传、记录或发送到任何服务端。',
+        faqs: [
+          {
+            question: 'PRK 和 OKM 分别是什么？为什么都要展示？',
+            answer:
+              'PRK（Pseudorandom Key）是 Extract 阶段的输出，即 HMAC-Hash(salt, IKM)，长度固定为 HashLen；OKM（Output Keying Material）是 Expand 阶段结合 info 扩展出的最终密钥，长度由调用方指定。展示 PRK 有助于定位 Extract 与 Expand 哪一步与对端不一致，是协议联调时的关键中间值。',
+          },
+          {
+            question: 'salt 和 info 可以留空吗？',
+            answer:
+              '都可以。salt 留空时 RFC 5869 规定使用 HashLen 个全零字节执行 Extract；info 留空即不带任何上下文参与 Expand。生产环境建议提供随机且各部署独立的 salt 以获得更好的密钥分离效果，并用不同 info 派生不同用途的子密钥。',
+          },
+          {
+            question: '输出长度为什么有上限？',
+            answer:
+              'RFC 5869 规定 Expand 最多迭代 255 次，每次输出 HashLen 字节，因此 OKM 最大长度为 255×HashLen：SHA-256 为 8160 字节、SHA-384 为 12240、SHA-512 为 16320。超出上限在数学上不被 HKDF 允许，工具会直接报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'HKDF (HMAC-based Key Derivation Function, RFC 5869) is the standard KDF for deriving one or more secure keys from high-entropy input keying material (IKM), used in TLS 1.3, Signal, JWT and countless crypto SDKs. It runs in two steps: Extract applies HMAC with a salt to the IKM, producing a fixed-length pseudorandom key (PRK); Expand combines the PRK with context info and expands it to output keying material (OKM) of any requested length. This tool performs both steps with the browser Web Crypto primitives and exposes the intermediate PRK for protocol debugging and cross-language reconciliation. IKM, salt and info each accept text (UTF-8), Hex or Base64 (Base64URL tolerated), and official RFC 5869 test cases load with one click.',
+        coreFeatures: [
+          'Full RFC 5869 Extract-then-Expand, outputting both PRK and OKM',
+          'SHA-256/SHA-384/SHA-512; OKM length adjustable from 1 to 255×HashLen',
+          'Independent text/Hex/Base64 source selection for IKM, salt and info (0x prefix and whitespace tolerated in Hex)',
+          'OKM shown in both Hex and Base64 with one-click copy for cross-language integration',
+          'Built-in RFC 5869 Test Case 1 vector loads instantly to independently verify the implementation',
+        ],
+        howToUse: [
+          'Paste input keying material into the IKM field and pick its source format (text/Hex/Base64) on the right',
+          'Optionally fill salt and info (both may be empty; empty salt means HashLen zero bytes per the RFC)',
+          'Choose the hash and output length in bytes; PRK and OKM update instantly',
+          'Click "RFC 5869 vector sample" to load the official case and compare PRK/OKM byte-by-byte against the RFC',
+        ],
+        useCases: [
+          'Debugging key derivation in TLS/E2EE/JWT protocols and reconciling with backend or other-language implementations',
+          'Deriving multiple purpose-bound subkeys from a master key using distinct info values for domain separation',
+          'Learning how HKDF works by inspecting the Extract and Expand intermediates PRK and OKM',
+        ],
+        privacyNote:
+          'All key material is computed locally in your browser via Web Crypto and is never uploaded, logged, or sent to any server.',
+        faqs: [
+          {
+            question: 'What are PRK and OKM, and why show both?',
+            answer:
+              'The PRK (Pseudorandom Key) is the fixed-length HashLen output of Extract, HMAC-Hash(salt, IKM). The OKM (Output Keying Material) is the final caller-specified-length key produced by Expand with info. Showing the PRK helps pinpoint whether a mismatch with a peer lies in Extract or Expand—an essential intermediate value in protocol integration.',
+          },
+          {
+            question: 'Can salt and info be empty?',
+            answer:
+              'Yes, both. When salt is omitted, RFC 5869 uses HashLen zero bytes for Extract. Empty info simply means no context participates in Expand. In production a random per-deployment salt improves key separation, and distinct info values should derive keys for different purposes.',
+          },
+          {
+            question: 'Why is there an output length limit?',
+            answer:
+              'RFC 5869 allows at most 255 Expand iterations of HashLen bytes each, so OKM is capped at 255×HashLen: 8160 bytes for SHA-256, 12240 for SHA-384 and 16320 for SHA-512. Longer outputs are mathematically outside HKDF and the tool rejects them.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

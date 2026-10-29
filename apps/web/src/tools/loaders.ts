@@ -141,4 +141,5 @@ export const toolLoaders: Record<
   'complex-number-calculator': () => import('./complex-number-calculator'),
   'date-diff-calculator': () => import('./date-diff-calculator'),
   'sri-hash-generator': () => import('./sri-hash-generator'),
+  'hkdf-calculator': () => import('./hkdf-calculator'),
 };
