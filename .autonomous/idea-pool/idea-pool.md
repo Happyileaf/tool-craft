@@ -29,7 +29,6 @@
 | 20261017125917 | Line operations (sort, dedupe, reverse, filter) | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017125917.md) |
 | 20261017125919 | Random data generator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017125919.md) |
 | 20261017140151 | Unix file permission (chmod) calculator | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017140151.md) |
-| 20261017140152 | .gitignore generator | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017140152.md) |
 | 20261017140154 | Base32 encoder/decoder | Web Tool | Existing Gap | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017140154.md) |
 | 20261017140155 | Programming string literal escape/unescape | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017140155.md) |
 | 20261017140158 | Date & business day calculator | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017140158.md) |
@@ -47,7 +46,6 @@
 | 20261017200233 | 数学表达式求值器 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017200233.md) |
 | 20261017200236 | CSS 缓动函数（cubic-bezier）生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200236.md) |
 | 20261017200238 | Markdown 表格生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200238.md) |
-| 20261017200239 | robots.txt 生成器 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017200239.md) |
 | 20261017200240 | MIME 类型速查与识别 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200240.md) |
 | 20261017220043 | 地理坐标格式转换（十进制 ↔ 度分秒） | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220043.md) |
 | 20261017220045 | vCard（VCF）名片生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220045.md) |
@@ -58,7 +56,6 @@
 | 20261018000142 | Open Graph / SEO 元标签生成器 | Web Tool | Exploration | Pending | 2026-10-18 | | [详情](./idea-details/20261018000142.md) |
 | 20261018000143 | JSON 结构化差异对比 | Web Tool | Existing Gap | Pending | 2026-10-18 | | [详情](./idea-details/20261018000143.md) |
 | 20261018000145 | MAC 地址格式转换与校验 | Web Tool | Exploration | In Progress | 2026-10-18 | trae-agent | [详情](./idea-details/20261018000145.md) |
-| 20261018000146 | Markdown 目录（TOC）生成器 | Web Tool | Exploration | In Progress | 2026-10-18 | trae-agent | [详情](./idea-details/20261018000146.md) |
 | 20261018000147 | CSV 转 SQL INSERT 生成器 | Web Tool | Existing Gap | Pending | 2026-10-18 | | [详情](./idea-details/20261018000147.md) |
 | 20261018000148 | 哈希类型识别器 | Web Tool | Existing Gap | In Progress | 2026-10-18 | trae-agent | [详情](./idea-details/20261018000148.md) |
 | 20261018000149 | CSS clamp() 流式排版生成器 | Web Tool | Exploration | Pending | 2026-10-18 | | [详情](./idea-details/20261018000149.md) |
@@ -83,10 +80,8 @@
 | 20261022221409 | ANSI 终端颜色码生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221409.md) |
 | 20261023020507 | SRT ↔ WebVTT 字幕转换器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023020507.md) |
 | 20261023020508 | iCalendar (.ics) 日历事件文件生成器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023020508.md) |
-| 20261023020509 | Web App Manifest 生成器 | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023020509.md) |
 | 20261023020510 | CSS 形状生成器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023020510.md) |
 | 20261023020512 | SPF 记录生成与校验器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023020512.md) |
-| 20261023020513 | sitemap.xml 生成器 | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023020513.md) |
 | 20261023020514 | 占位图片生成器 | Web Tool | External Reference | Pending | 2026-10-23 | | [详情](./idea-details/20261023020514.md) |
 | 20261023040530 | CSS Grid 布局可视化生成器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023040530.md) |
 | 20261023040531 | SVG 源码预览与 PNG 导出 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023040531.md) |

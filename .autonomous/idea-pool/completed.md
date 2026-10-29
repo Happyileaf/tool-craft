@@ -49,3 +49,8 @@
 | 20261027020219 | CRC16 / Adler-32 等多算法校验和计算器 | Web Tool | Existing Gap | `crc16-checksum` / [PR #104](https://github.com/Happyileaf/tool-craft/pull/104) | 2026-10-30 | [详情](./idea-details/20261027020219.md) |
 | 20261029200828 | 中英文混排自动留白（盘古之白）格式化器 | Web Tool | External Reference | `pangu-spacing` / [PR #104](https://github.com/Happyileaf/tool-craft/pull/104) | 2026-10-30 | [详情](./idea-details/20261029200828.md) |
 | 20261029200829 | DNS PTR 反向解析记录名构造器（in-addr.arpa / ip6.arpa） | Web Tool | Existing Gap | `dns-ptr-builder` / [PR #104](https://github.com/Happyileaf/tool-craft/pull/104) | 2026-10-30 | [详情](./idea-details/20261029200829.md) |
+| 20261017140152 | .gitignore generator | Web Tool | Exploration | `gitignore-generator` / [PR #107](https://github.com/Happyileaf/tool-craft/pull/107) | 2026-10-30 | [详情](./idea-details/20261017140152.md) |
+| 20261017200239 | robots.txt 生成器 | Web Tool | Exploration | `robots-txt-generator` / [PR #107](https://github.com/Happyileaf/tool-craft/pull/107) | 2026-10-30 | [详情](./idea-details/20261017200239.md) |
+| 20261018000146 | Markdown 目录（TOC）生成器 | Web Tool | Exploration | `markdown-toc-generator` / [PR #107](https://github.com/Happyileaf/tool-craft/pull/107) | 2026-10-30 | [详情](./idea-details/20261018000146.md) |
+| 20261023020509 | Web App Manifest 生成器 | Web Tool | Existing Gap | `web-manifest-generator` / [PR #107](https://github.com/Happyileaf/tool-craft/pull/107) | 2026-10-30 | [详情](./idea-details/20261023020509.md) |
+| 20261023020513 | sitemap.xml 生成器 | Web Tool | Existing Gap | `sitemap-generator` / [PR #107](https://github.com/Happyileaf/tool-craft/pull/107) | 2026-10-30 | [详情](./idea-details/20261023020513.md) |
