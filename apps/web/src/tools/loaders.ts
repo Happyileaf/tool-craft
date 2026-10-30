@@ -165,4 +165,9 @@ export const toolLoaders: Record<
   'chinese-number-converter': () => import('./chinese-number-converter'),
   'triangle-solver': () => import('./triangle-solver'),
   'polynomial-root-calculator': () => import('./polynomial-root-calculator'),
+  'tcpip-checksum': () => import('./tcpip-checksum'),
+  'csv-to-sql': () => import('./csv-to-sql'),
+  'glob-tester': () => import('./glob-tester'),
+  'word-frequency': () => import('./word-frequency'),
+  'great-circle': () => import('./great-circle'),
 };

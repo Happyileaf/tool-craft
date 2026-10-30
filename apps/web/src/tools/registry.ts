@@ -14147,6 +14147,515 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'tcpip-checksum',
+    name: 'TCP/IP 互联网校验和计算器',
+    nameEn: 'TCP/IP Internet Checksum Calculator',
+    description:
+      '按 RFC 1071 计算或校验 IPv4 首部、ICMP、TCP、UDP 的 16 位反码校验和，TCP/UDP 自动拼接伪首部，输出校验和与回填后报文。',
+    descriptionEn:
+      'Compute or verify the RFC 1071 16-bit ones-complement checksum for IPv4 headers, ICMP, TCP, and UDP, with automatic pseudo-header for TCP/UDP, outputting the value and filled packet.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/tcpip-checksum',
+    iconName: 'Globe',
+    tags: ['TCP', 'UDP', 'IPv4', 'RFC1071', '校验和'],
+    tagsEn: ['TCP', 'UDP', 'IPv4', 'RFC1071', 'Checksum'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'TCP/IP 互联网校验和计算器是一款纯浏览器本地的网络协议调试工具，按 RFC 1071 定义的 16 位反码求和算法工作：支持裸报文（IPv4 首部、ICMP）以及自动拼接 12 字节伪首部的 TCP（RFC 793）/ UDP（RFC 768）段，输出校验和值与回填后的完整报文。',
+        coreFeatures: [
+          '三种模式：IPv4/ICMP 裸报文、TCP 伪首部、UDP 伪首部',
+          '生成模式：自动将校验和字段清零后计算，并回填到正确偏移（TCP=16、UDP=6）',
+          '校验模式：对回填后的完整报文（含伪首部）求和，结果为 0xFFFF 即通过',
+          '接受空格/逗号分隔、连写与 0x 前缀的十六进制输入，奇数长度按 RFC 补 0 处理',
+          '一键复制校验和与回填报文，全程本地运算',
+        ],
+        howToUse: [
+          '选择报文模式：IPv4/ICMP、TCP 或 UDP',
+          '在十六进制输入框粘贴报文，校验和字段可填任意值，计算时会自动清零',
+          'TCP/UDP 模式填写源 IPv4 与目的 IPv4 地址；raw 模式确认校验和字段偏移（IPv4 首部为 10）',
+          '结果卡片实时展示 0x 校验和、十进制值与回填后报文，并给出校验结论',
+        ],
+        useCases: [
+          '协议栈 / 网卡驱动开发时核对 TCP/UDP 校验和实现',
+          '抓包分析中验证报文校验和字段是否正确',
+          '嵌入式网络课程中手工演算反码求和与伪首部',
+        ],
+        privacyNote:
+          '所有报文解析与校验和运算均在浏览器本地完成，输入的报文内容不会上传或离开设备。',
+        faqs: [
+          {
+            question: 'TCP/UDP 为什么需要伪首部？',
+            answer:
+              '伪首部由源地址、目的地址、协议号与段长度构成，目的是让接收端确认报文确实送达正确的主机与协议，防止路由错误后被错误接收。它只参与校验和计算，不会在线上传输。',
+          },
+          {
+            question: '为什么校验时求和结果是 0xFFFF 而不是 0？',
+            answer:
+              '反码算术下，对「数据 + 正确校验和」求和得到 -0，其二进制为全 1（0xFFFF）。部分实现以进位回卷后取低 16 位为 0 判等，二者等价，本工具统一按 0xFFFF 判定。',
+          },
+          {
+            question: 'UDP 校验和不是可以为 0 吗？',
+            answer:
+              'IPv4 中 UDP 允许把校验和字段传 0 表示发送方未计算校验；本工具始终给出真实计算值，是否在报文中使用 0 由协议实现自行决定。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The TCP/IP Internet Checksum Calculator is a fully local network-protocol debugging tool implementing the RFC 1071 16-bit ones-complement sum. It supports raw packets (IPv4 headers, ICMP) and TCP (RFC 793) / UDP (RFC 768) segments with an automatically built 12-byte pseudo-header, outputting both the checksum value and the packet with the field filled in.',
+        coreFeatures: [
+          'Three modes: raw IPv4/ICMP, TCP with pseudo-header, and UDP with pseudo-header',
+          'Generate: zeroes the checksum field, computes it, and fills it at the right offset (TCP=16, UDP=6)',
+          'Verify: sums the complete filled packet (plus pseudo-header); 0xFFFF means valid',
+          'Accepts hex input with spaces/commas, run-on bytes, and 0x prefix; odd length is zero-padded per the RFC',
+          'One-click copy of the value and the filled packet; everything runs locally',
+        ],
+        howToUse: [
+          'Choose the packet mode: IPv4/ICMP, TCP, or UDP',
+          'Paste the packet as hex; the checksum field may hold any value because it is zeroed during calculation',
+          'For TCP/UDP enter source and destination IPv4 addresses; in raw mode confirm the checksum offset (10 for IPv4 headers)',
+          'The result card shows the 0x checksum, its decimal value, the filled packet, and the verdict in real time',
+        ],
+        useCases: [
+          'Cross-checking TCP/UDP checksum code while developing a stack or NIC driver',
+          'Validating checksum fields during packet capture analysis',
+          'Working through ones-complement sums and pseudo-headers in networking courses',
+        ],
+        privacyNote:
+          'All packet parsing and checksum arithmetic happens locally in your browser; pasted packets are never uploaded.',
+        faqs: [
+          {
+            question: 'Why do TCP/UDP need a pseudo-header?',
+            answer:
+              'The pseudo-header (source/destination address, protocol, segment length) lets the receiver confirm the packet reached the right host and protocol, preventing misdelivered segments from being accepted. It only feeds the checksum and is never transmitted.',
+          },
+          {
+            question: 'Why does verification compare against 0xFFFF instead of 0?',
+            answer:
+              'In ones-complement arithmetic, summing data plus the correct checksum yields -0, represented as all ones (0xFFFF). Equivalent implementations check that the folded sum is 0; this tool uses the 0xFFFF convention.',
+          },
+          {
+            question: "Isn't the UDP checksum allowed to be zero?",
+            answer:
+              'Over IPv4 a sender may transmit 0 to mean "no checksum computed". This tool always shows the real computed value; whether to place 0 in the packet is left to the protocol implementation.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'csv-to-sql',
+    name: 'CSV 转 SQL INSERT 生成器',
+    nameEn: 'CSV to SQL INSERT Generator',
+    description:
+      '将 CSV（首行为列名）转换为 SQL INSERT 语句，支持自定义表名与列名、分批行数、三种标识符引号风格与 NULL 策略，按 RFC 4180 解析引号与转义。',
+    descriptionEn:
+      'Convert CSV (first row as columns) into SQL INSERT statements with custom table/columns, batch size, three identifier quoting styles, and NULL handling, parsing quotes per RFC 4180.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/csv-to-sql',
+    iconName: 'Table2',
+    tags: ['CSV', 'SQL', 'INSERT', '数据库', '转换'],
+    tagsEn: ['CSV', 'SQL', 'INSERT', 'Database', 'Convert'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'id,name,email\n1,Alice,alice@example.com\n2,Bob,bob@example.com',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSV 转 SQL INSERT 生成器是一款纯浏览器本地的数据导入辅助工具：粘贴符合 RFC 4180 约定的 CSV（首行为列名），即可生成可直接执行的 INSERT 语句，支持自定义表名 / 列名、每条语句的批量行数、反引号 / 双引号 / 方括号三种标识符风格，以及空单元格与 NULL 字样的处理策略。',
+        coreFeatures: [
+          'RFC 4180 解析：支持双引号包裹字段、字段内逗号与换行、双引号用 "" 转义、CRLF 与 BOM',
+          '自定义表名与列名（逗号分隔），列名少于 CSV 时自动按序截取',
+          '三种标识符引号：反引号（MySQL）、双引号（ANSI / PostgreSQL）、方括号（SQL Server）',
+          '可配置每条 INSERT 的行数（0 = 合并为一条多行 VALUES），数字保持裸字面量',
+          '空单元格 → NULL 或空字符串，可选择是否把 NULL 字样识别为 SQL NULL',
+        ],
+        howToUse: [
+          '在 CSV 输入框粘贴内容，首行会被当作列名，工具自动探测逗号 / 分号 / Tab / 竖线分隔符',
+          '填写目标表名，需要时用逗号分隔填写自定义列名',
+          '选择标识符引号风格、空值策略，设置每条 INSERT 的行数（0 表示合并为一条）',
+          '在结果卡片中查看生成的 SQL，点击「复制」即可取用',
+        ],
+        useCases: [
+          '把 Excel / 表格软件导出的 CSV 快速转成数据库初始化脚本',
+          '数据迁移时为 MySQL / PostgreSQL / SQL Server 生成对应引号风格的 INSERT',
+          '构造批量导入语句并控制单条语句大小，避免超出参数上限',
+        ],
+        privacyNote:
+          'CSV 解析与 SQL 生成全部在浏览器本地完成，数据不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '字段里包含逗号或换行怎么办？',
+            answer:
+              '用双引号包裹该字段即可，例如 "VIP, founder"；字段内部的双引号写成两个双引号 ""，这是 RFC 4180 的标准转义方式。',
+          },
+          {
+            question: '为什么有些值没有加引号？',
+            answer:
+              '符合整数或小数写法（如 30、-1.5）的字段会作为裸数字字面量输出，其余值按字符串加单引号，内部单引号双写转义。',
+          },
+          {
+            question: '如何让空单元格导入为空字符串而不是 NULL？',
+            answer:
+              '在「空值处理」中选择「空单元格 → 空字符串」；也可以关闭「识别 NULL 字样」，让文本 NULL 按普通字符串导入。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CSV to SQL INSERT Generator is a fully local data-import helper. Paste RFC 4180-style CSV with the first row as column names and get ready-to-run INSERT statements, with custom table/column names, configurable rows per statement, backtick/double-quote/bracket identifier styles, and flexible NULL handling.',
+        coreFeatures: [
+          'RFC 4180 parsing: quoted fields, commas and newlines inside fields, "" escaping, CRLF and BOM support',
+          'Custom table and column names (comma-separated); fewer columns than the CSV are taken in order',
+          'Three identifier styles: backticks (MySQL), double quotes (ANSI / PostgreSQL), brackets (SQL Server)',
+          'Configurable rows per INSERT (0 = one multi-row statement); numbers stay bare literals',
+          'Empty cells become NULL or empty strings; optional recognition of the literal word NULL',
+        ],
+        howToUse: [
+          'Paste CSV with the first row as headers; comma/semicolon/tab/pipe delimiters are auto-detected',
+          'Enter the target table name and, if needed, custom column names separated by commas',
+          'Pick the identifier quote style, the empty-value policy, and the rows per INSERT (0 merges everything)',
+          'Review the generated SQL in the result card and click Copy to use it',
+        ],
+        useCases: [
+          'Turning CSV exported from spreadsheets into database seed scripts',
+          'Generating INSERTs with the right quoting style for MySQL, PostgreSQL, or SQL Server during migration',
+          'Building bulk-import statements while controlling statement size to stay under parameter limits',
+        ],
+        privacyNote:
+          'All CSV parsing and SQL generation happens locally in your browser; data is never uploaded.',
+        faqs: [
+          {
+            question: 'What if a field contains commas or newlines?',
+            answer:
+              'Wrap the field in double quotes, e.g. "VIP, founder"; a double quote inside is written as two double quotes (""), per RFC 4180.',
+          },
+          {
+            question: 'Why are some values unquoted?',
+            answer:
+              'Fields matching an integer or decimal pattern (e.g. 30, -1.5) are emitted as bare numeric literals; everything else is single-quoted, with embedded single quotes doubled.',
+          },
+          {
+            question: 'How do I import empty cells as empty strings instead of NULL?',
+            answer:
+              'Choose "empty cell to empty string" in the NULL handling option. You can also disable NULL-word recognition so the text NULL imports as a plain string.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'glob-tester',
+    name: 'Glob 模式匹配测试器',
+    nameEn: 'Glob Pattern Tester',
+    description:
+      '输入 Glob 模式（*、**、?、{a,b}、[abc] 与路径段规则）与测试路径，实时显示每条路径的匹配结果，并输出等价的 JavaScript RegExp 字面量。',
+    descriptionEn:
+      'Enter a glob pattern (*, **, ?, {a,b}, [abc], path-segment rules) and test paths to see live match results per path, plus the equivalent JavaScript RegExp literal.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/glob-tester',
+    iconName: 'Braces',
+    tags: ['Glob', '正则', '匹配', 'ignore', '路径'],
+    tagsEn: ['Glob', 'RegExp', 'Match', 'ignore', 'Path'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'src/**/*.{ts,tsx}',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Glob 模式匹配测试器是一款纯浏览器本地的开发调试工具：把文件选择、构建工具 include/exclude、CI 忽略规则中常见的 glob 语法确定性翻译为等价的 JavaScript RegExp，并对一组测试路径逐条给出匹配结论，免去在两种语法间手工转换与反复试错。',
+        coreFeatures: [
+          '支持 *（单段内匹配）、**（跨路径段）、?（单字符）、{a,b} 分支组（可嵌套）与 [abc] / [!abc] 字符类',
+          '实时输出等价的 JavaScript RegExp 字面量，可一键复制',
+          '每条测试路径以绿色 / 灰色行展示匹配与否，并汇总匹配数量',
+          '可切换是否区分大小写；正则元字符自动转义，未闭合的括号按字面量处理',
+          '全部翻译与匹配在浏览器本地完成，零新依赖',
+        ],
+        howToUse: [
+          '在「Glob 模式」输入框填写模式，例如 src/**/*.{ts,tsx}',
+          '在「测试路径」中按行粘贴待验证路径，结果随输入实时更新',
+          '需要时关闭「区分大小写」开关',
+          '复制结果区展示的正则字面量，或直接对照每行的匹配结论调整模式',
+        ],
+        useCases: [
+          '编写 .gitignore、eslint/tsconfig include/exclude 时快速验证模式',
+          '把 glob 规则迁移到需要正则的代码或配置中',
+          '排查「为什么这个文件被 / 没被匹配」的构建与 CI 问题',
+        ],
+        privacyNote:
+          '模式翻译与路径匹配全部在浏览器本地完成，输入内容不会上传或离开设备。',
+        faqs: [
+          {
+            question: '* 和 ** 有什么区别？',
+            answer:
+              '* 只在单个路径段内匹配，不会跨越 /；** 可以匹配任意层级的路径段。例如 *.ts 匹配 index.ts 但不匹配 src/index.ts，而 src/**/*.ts 两者都能覆盖。',
+          },
+          {
+            question: '开头的 **/ 为什么能匹配零层目录？',
+            answer:
+              '按 doublestar、minimatch 等常见实现的约定，**/ 前缀表示「任意深度（含零层）目录下」，因此 **/foo 既能匹配 foo，也能匹配 a/foo 与 a/b/foo。',
+          },
+          {
+            question: '输出的正则为什么带 ^ 和 $？',
+            answer:
+              '工具做的是整路径匹配，等价于 glob 的默认语义，因此用 ^(?:...)$ 锚定整串；如果你只需要「包含」语义，可删去首尾锚点后使用。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Glob Pattern Tester is a fully local developer tool that deterministically translates glob syntax used by file selection, build include/exclude lists, and CI ignore rules into an equivalent JavaScript RegExp, then checks a list of test paths against it—removing manual glob-to-regex conversion and trial and error.',
+        coreFeatures: [
+          'Supports * (within a segment), ** (across segments), ? (one char), {a,b} alternatives (nestable), and [abc] / [!abc] character classes',
+          'Shows the equivalent JavaScript RegExp literal in real time with one-click copy',
+          'Each test path is rendered as a matched/unmatched row with a summary count',
+          'Case-sensitivity toggle; regex metacharacters are escaped, unclosed brackets are treated literally',
+          'Everything runs locally in the browser with zero new dependencies',
+        ],
+        howToUse: [
+          'Enter a glob pattern such as src/**/*.{ts,tsx} in the pattern box',
+          'Paste test paths, one per line; results update as you type',
+          'Toggle case sensitivity when needed',
+          'Copy the generated regex literal or refine the pattern against the per-path verdicts',
+        ],
+        useCases: [
+          'Verifying .gitignore, eslint, or tsconfig include/exclude patterns',
+          'Porting glob rules into code or configuration that expects regex',
+          'Debugging why a file is (or is not) matched by build or CI tooling',
+        ],
+        privacyNote:
+          'All translation and matching happens locally in your browser; neither patterns nor paths are uploaded.',
+        faqs: [
+          {
+            question: "What's the difference between * and **?",
+            answer:
+              '* matches within a single path segment and never crosses /; ** spans any number of segments. For example *.ts matches index.ts but not src/index.ts, while src/**/*.ts covers both.',
+          },
+          {
+            question: 'Why does a leading **/ match even with no directories?',
+            answer:
+              'Following the convention of doublestar, minimatch, and similar libraries, a **/ prefix means "at any depth, including zero directories", so **/foo matches foo as well as a/foo and a/b/foo.',
+          },
+          {
+            question: 'Why do the generated regexes include ^ and $?',
+            answer:
+              'The tool performs full-path matching, which is the default glob semantic, so the pattern is anchored with ^(?:...)$. Remove the anchors if you want a "contains" check instead.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'word-frequency',
+    name: '文本词频统计与高频词分析',
+    nameEn: 'Word Frequency Analyzer',
+    description:
+      '统计文本中每个词的出现次数与频率，支持中文逐字 / 二元词模式、停用词过滤、可排序词频表、Top N 与 CSV 导出，用于文案分析与关键词梳理。',
+    descriptionEn:
+      'Count per-word occurrences and frequency in pasted text, with Chinese character/bigram modes, stop-word filtering, a sortable frequency table, Top N, and CSV export for copy and keyword analysis.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/word-frequency',
+    iconName: 'Sigma',
+    tags: ['词频', '文本分析', '关键词', '停用词', 'CSV'],
+    tagsEn: ['Word Frequency', 'Text Analysis', 'Keywords', 'Stop Words', 'CSV'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'The quick brown fox jumps over the lazy dog.\nThe dog barks, and the fox runs quickly.',
+    doc: {
+      zh: {
+        whatIsIt:
+          '文本词频统计与高频词分析是一款纯浏览器本地的文本分析工具：粘贴任意中英文文本，自动切词并统计每个词的出现次数与占比，提供中文逐字 / 相邻汉字二元组两种简单分词模式、内置英文停用词与自定义停用词过滤、可排序的词频表格、Top N 截取以及 CSV 复制 / 导出。',
+        coreFeatures: [
+          'Unicode 感知的拉丁词切分，支持 don\'t、state-of-the-art 等撇号与连字符写法',
+          '中文两种简单模式：逐字统计与相邻汉字二元组（bigram）',
+          '内置 30+ 英文常用停用词，可一键开关；另支持逗号 / 空格分隔的自定义停用词',
+          '次数升降序与字母序排列，Top N 截取（0 = 全部），频率条形可视化',
+          '结果一键复制 CSV 或下载 .csv 文件，全程本地运算',
+        ],
+        howToUse: [
+          '在「待统计文本」中粘贴内容，结果随输入实时更新',
+          '中英文混排时把分词模式切换为「中文按单字」或「中文按二元词」',
+          '按需调整排序、Top N，开关内置停用词或填写自定义停用词',
+          '在结果表格中查看次数与频率占比，点击「复制 CSV」或「导出 CSV」取用',
+        ],
+        useCases: [
+          '分析文案 / 标题的高频用词，辅助 SEO 关键词梳理',
+          '从日志片段中快速排查高频关键字',
+          '统计中文文本中的高频字 / 二字词，做写作风格或主题初判',
+        ],
+        privacyNote:
+          '文本切分与词频统计全部在浏览器本地完成，输入内容不会上传或离开设备。',
+        faqs: [
+          {
+            question: '中文分词为什么只提供逐字和二元词？',
+            answer:
+              '完整中文分词需要词典或模型，体积大且结果依赖词库版本，不符合零依赖本地工具的定位。逐字与相邻汉字二元组（如「我爱北京」→ 我爱 / 爱北 / 北京）足以覆盖大多数高频词初筛场景。',
+          },
+          {
+            question: '频率百分比是怎么计算的？',
+            answer:
+              '频率 = 该词出现次数 ÷ 停用词过滤后的有效词次总数。表格条形图按当前结果中的最高频率归一化展示，仅用于直观比较。',
+          },
+          {
+            question: '为什么数字没有被统计？',
+            answer:
+              '纯数字片段（如 42、2026）默认不作为「词」计入，以避免年份、序号污染高频词结果；包含字母的字母数字组合（如 7zip、abc123）仍会保留。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Word Frequency Analyzer is a fully local text-analysis tool. Paste any Chinese/English text to get per-word counts and percentages, with two lightweight Chinese modes (single characters or adjacent bigrams), built-in English stop words plus custom stop words, a sortable table, Top N limits, and CSV copy/download.',
+        coreFeatures: [
+          'Unicode-aware Latin tokenization supporting contractions and hyphenated words like don\'t and state-of-the-art',
+          'Two simple Chinese modes: per-character counts and adjacent-character bigrams',
+          '30+ built-in English stop words with a toggle, plus custom stop words separated by commas or spaces',
+          'Sort by count ascending/descending or alphabetically; Top N limit (0 = all); frequency bars',
+          'Copy results as CSV or download a .csv file; everything runs locally',
+        ],
+        howToUse: [
+          'Paste text into the input area; results update in real time',
+          'For mixed Chinese text, switch the tokenization mode to per-character or bigram',
+          'Adjust sorting and Top N, toggle built-in stop words, or add custom ones',
+          'Review counts and percentages in the table, then copy or export CSV',
+        ],
+        useCases: [
+          'Finding high-frequency words in copy or titles for SEO keyword work',
+          'Spotting recurring keywords in log excerpts',
+          'Profiling frequent characters/bigrams in Chinese text as a quick topic signal',
+        ],
+        privacyNote:
+          'All tokenization and counting happens locally in your browser; pasted text is never uploaded.',
+        faqs: [
+          {
+            question: 'Why only per-character and bigram modes for Chinese?',
+            answer:
+              'Full Chinese segmentation needs a dictionary or model, which is large and version-dependent. Per-character counting and adjacent bigrams (e.g. 我爱北京 → 我爱 / 爱北 / 北京) cover most high-frequency screening needs with zero dependencies.',
+          },
+          {
+            question: 'How is the percentage computed?',
+            answer:
+              'Frequency equals the word count divided by the total number of effective tokens after stop-word filtering. The bar is normalized against the highest frequency in the current result for visual comparison only.',
+          },
+          {
+            question: 'Why are numbers excluded?',
+            answer:
+              'Pure-number tokens like 42 or 2026 are not counted as words by default, preventing years and serial numbers from dominating the results; alphanumeric tokens containing letters (7zip, abc123) are kept.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'great-circle',
+    name: '大圆距离与方位角计算器',
+    nameEn: 'Great Circle Distance & Bearing Calculator',
+    description:
+      '基于 WGS-84 与 Haversine 公式计算地球表面两点间的大圆距离（公里 / 英里 / 海里）与初始、终点、反方位角，支持城市预设与 16 方位罗盘显示。',
+    descriptionEn:
+      'Compute the great-circle distance (km/mi/nmi) and initial, final, and back bearings between two WGS-84 coordinates using the Haversine formula, with city presets and a 16-point compass readout.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/great-circle',
+    iconName: 'Map',
+    tags: ['大圆距离', 'Haversine', '方位角', '经纬度', '航海航空'],
+    tagsEn: ['Great Circle', 'Haversine', 'Bearing', 'Coordinates', 'Navigation'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '大圆距离与方位角计算器是一款纯浏览器本地的地理计算工具：输入两个 WGS-84 经纬度坐标，即用 Haversine 公式算出球面最短距离（公里 / 英里 / 海里）以及沿大圆航线的初始方位角、终点方位角与反方位角，并给出 16 方位罗盘方位（如 NNW、ESE）。内置伦敦、纽约、北京等城市预设，方便快速试算。',
+        coreFeatures: [
+          'Haversine 公式，WGS-84 平均地球半径 6,371,008.8 m，一次输出 km / mi / nmi 三种距离',
+          '初始方位角（起点航向）、终点方位角（到达航向）与反方位角（返程航向），归一化到 0–360°',
+          '角度自动映射为 16 方位罗盘缩写（N、NNE、NE … NNW）',
+          '纬度 / 经度范围与数字校验，越界输入即时给出错误提示',
+          '六个常用城市坐标预设，一键填入起点或终点，支持起终点互换',
+        ],
+        howToUse: [
+          '在起点、终点两组输入框中填写十进制经纬度（北纬 / 东经为正），结果实时更新',
+          '也可先选择「预设填入起点 / 终点」，再点击城市按钮快速填入坐标',
+          '点击「交换起终点」可反向计算返程距离与方位角',
+          '在结果卡片中查看三种单位的距离与三个方位角及其罗盘方位',
+        ],
+        useCases: [
+          '估算两城市 / 两坐标点之间的航线、航程距离',
+          '航海、航空、户外定向中的初始航向与返程方位角估算',
+          '地图、物流类应用中距离与方位角计算逻辑的本地验证对照',
+        ],
+        privacyNote:
+          '所有坐标输入与大圆计算均在浏览器本地完成，不会上传或存储任何位置数据。',
+        faqs: [
+          {
+            question: '计算结果与精确距离为什么有微小差异？',
+            answer:
+              'Haversine 把地球近似为半径 6,371,008.8 m 的球体，而真实地球是略扁的椭球，因此与 Vincenty 等椭球算法相比通常存在 0.5% 以内的误差，对大多数航程估算场景足够准确。',
+          },
+          {
+            question: '初始方位角和终点方位角为什么不一样？',
+            answer:
+              '沿大圆（球面最短路径）航行时，相对每条经线的航向会持续变化，因此出发时的初始方位角与到达终点时的方位角不同；反方位角则是从终点原路返回起点的初始航向。',
+          },
+          {
+            question: '两点重合时方位角显示多少？',
+            answer:
+              '两点坐标完全相同时距离为 0，方位角没有定义，工具按 0°（N）显示，避免出现无意义的 NaN。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Great Circle Distance & Bearing Calculator is a fully local geo tool. Enter two WGS-84 latitude/longitude points and it applies the Haversine formula to return the shortest sphere distance in km, miles, and nautical miles, plus the initial, final, and back bearings along the great-circle path, each mapped to a 16-point compass direction (NNW, ESE, ...). City presets such as London, New York, and Beijing are built in.',
+        coreFeatures: [
+          'Haversine formula with the WGS-84 mean Earth radius of 6,371,008.8 m; km/mi/nmi at once',
+          'Initial bearing (heading at departure), final bearing (heading on arrival), and back bearing, normalized to 0–360°',
+          'Automatic 16-point compass labels (N, NNE, NE … NNW)',
+          'Validation of latitude/longitude ranges and numeric input with inline error messages',
+          'Six common city presets that fill either endpoint, plus a swap button',
+        ],
+        howToUse: [
+          'Fill in decimal latitude/longitude for the start and end points (north/east positive); results update live',
+          'Or pick "fill start/end from preset" and click a city button',
+          'Use "Swap" to compute the reverse trip distance and bearings',
+          'Read the three distance units and three bearings with compass labels in the result card',
+        ],
+        useCases: [
+          'Estimating air or sea route distances between cities or coordinates',
+          'Initial and return heading estimates for navigation, aviation, and orienteering',
+          'A local reference for distance/bearing logic in mapping or logistics applications',
+        ],
+        privacyNote:
+          'All coordinate input and great-circle math runs locally in your browser; no location data is uploaded or stored.',
+        faqs: [
+          {
+            question: 'Why does the result differ slightly from exact distances?',
+            answer:
+              'Haversine models the Earth as a sphere of radius 6,371,008.8 m, while the real planet is a slightly flattened ellipsoid. Compared with ellipsoidal methods such as Vincenty, the error is typically within 0.5%, which is adequate for most route estimates.',
+          },
+          {
+            question: 'Why do the initial and final bearings differ?',
+            answer:
+              'Along a great circle the heading relative to each meridian changes continuously, so the departure heading and the arrival heading are different; the back bearing is the initial heading of the return trip from the end point.',
+          },
+          {
+            question: 'What bearing is shown for identical points?',
+            answer:
+              'When the two coordinates are identical the distance is 0 and the bearing is undefined, so the tool shows 0° (N) instead of NaN.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
