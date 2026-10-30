@@ -14860,6 +14860,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'ansi-color-generator',
+    name: 'ANSI 终端颜色码生成器',
+    nameEn: 'ANSI Terminal Color Code Generator',
+    description:
+      '可视化选择前景/背景色（标准 16 色、256 色、RGB 真彩）与文字样式，实时预览终端效果，生成 ANSI SGR 转义序列、JS 字符串字面量与 echo -e Shell 命令。',
+    descriptionEn:
+      'Pick foreground/background colors (standard 16, 256-color, truecolor RGB) and text styles, preview the terminal rendering, and generate ANSI SGR escape sequences, JS string literals, and echo -e shell commands.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ansi-color-generator',
+    iconName: 'Code',
+    tags: ['ANSI', '终端', '转义序列', 'SGR', 'CLI'],
+    tagsEn: ['ANSI', 'Terminal', 'Escape Sequence', 'SGR', 'CLI'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Hello, ANSI!',
+    doc: {
+      zh: {
+        whatIsIt:
+          'ANSI 终端颜色码生成器是一款纯浏览器本地的 CLI 辅助工具：通过界面选择前景色、背景色（标准 16 色、256 色调色板、RGB 真彩色三种色彩空间）与加粗、斜体、下划线等样式，工具即时在模拟终端中预览渲染效果，并构造对应的 ANSI SGR 转义序列（如 ESC[38;5;196m），同时给出可直接粘贴的 JS 字符串字面量与 echo -e Shell 命令，免去反复查表拼接转义码。',
+        coreFeatures: [
+          '三种色彩空间：标准 16 色（30–37/40–47、亮色 90–97/100–107）、256 色（38;5;n / 48;5;n）、RGB 真彩（38;2;r;g;b / 48;2;r;g;b）',
+          '八种文字样式：加粗、暗淡、斜体、下划线、闪烁、反色、隐藏、删除线，合并进单次 CSI',
+          '深色模拟终端实时 CSS 预览，含色板色块与闪烁动画',
+          '一键复制真实转义序列（ESC 为 U+001B）、\\x1b JS 字面量与 \\033 echo -e 命令',
+          '编号越界、RGB 分量非法、未知样式等输入逐条明确报错',
+        ],
+        howToUse: [
+          '在「文本」框输入要着色的内容，结果实时更新',
+          '为前景色/背景色选择色彩空间：标准 16 色直接挑选，256 色输入 0–255 编号，真彩输入 RGB 分量',
+          '勾选需要的样式（可多选），在右侧终端预览中查看效果',
+          '点击对应结果行的「复制」按钮，获取转义序列、JS 字面量或 Shell 命令',
+        ],
+        useCases: [
+          '开发 CLI 工具或日志库时快速拼接颜色转义码',
+          '编写 shell 脚本时生成 echo -e 着色命令',
+          '教学演示 ANSI SGR 参数与终端色彩空间区别',
+        ],
+        privacyNote:
+          '所有文本与颜色计算均在浏览器本地完成，不向任何服务器发送数据。',
+        faqs: [
+          {
+            question: '为什么复制出的转义序列在文本框里显示为 ESC？',
+            answer:
+              '真实序列中的 ESC 是不可见控制字符（U+001B），界面用可见的 ESC 字样展示；点击「复制」得到的仍是包含真实 U+001B 字节的原始序列。需要源码中可见的形式时请复制第二行 JS 字面量（\\x1b 转义）。',
+          },
+          {
+            question: '标准 16 色、256 色和真彩色有什么区别？',
+            answer:
+              '标准 16 色使用单个 SGR 编号（前景 30–37/90–97，背景 40–47/100–107），兼容性最好；256 色用 38;5;n / 48;5;n 访问调色板（0–15 为标准色、16–231 为 6×6×6 色立方、232–255 为灰阶）；真彩色用 38;2;r;g;b / 48;2;r;g;b 直接指定任意 RGB，需现代终端支持。',
+          },
+          {
+            question: '多个样式和颜色如何编码进一条序列？',
+            answer:
+              '所有 SGR 参数按「样式 → 前景 → 背景」顺序用分号连接，放在同一次 CSI（ESC[...m）中，例如加粗红字为 ESC[1;31m；文本结束后统一用 ESC[0m 复位，避免多次 CSI 拼接。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ANSI Terminal Color Code Generator is a fully local CLI helper. Choose foreground and background colors across three color spaces (standard 16 colors, 256-color palette, truecolor RGB) and styles such as bold or underline, preview the result in a simulated terminal, and get the assembled ANSI SGR escape sequence (e.g. ESC[38;5;196m) plus a paste-ready JS string literal and an echo -e shell command — no more looking up tables and hand-joining codes.',
+        coreFeatures: [
+          'Three color spaces: standard 16 (30–37/40–47, bright 90–97/100–107), 256-color (38;5;n / 48;5;n), truecolor RGB (38;2;r;g;b / 48;2;r;g;b)',
+          'Eight styles — bold, dim, italic, underline, blink, reverse, hidden, strikethrough — merged into one CSI',
+          'Live CSS preview in a dark simulated terminal with palette swatches and blink animation',
+          'Copy the real escape sequence (ESC is U+001B), the \\x1b JS literal, or the \\033 echo -e command',
+          'Clear errors for out-of-range indices, invalid RGB components, and unknown styles',
+        ],
+        howToUse: [
+          'Type the text to colorize in the text field; results update live',
+          'Pick a color space for foreground/background: a named standard color, a 0–255 palette index, or RGB components',
+          'Toggle any styles (multi-select) and inspect the terminal preview on the right',
+          'Click "Copy" on the result row for the escape sequence, JS literal, or shell command',
+        ],
+        useCases: [
+          'Building color escape codes while developing CLI tools or logging libraries',
+          'Generating echo -e commands for shell scripts',
+          'Teaching ANSI SGR parameters and terminal color spaces',
+        ],
+        privacyNote:
+          'All text and color computation runs locally in your browser; no data is sent anywhere.',
+        faqs: [
+          {
+            question: 'Why does the copied sequence show as ESC in the text area?',
+            answer:
+              'The real ESC is an invisible control character (U+001B); the UI renders it as the visible text ESC. Copying still yields the raw sequence containing the real U+001B byte. For a source-code-visible form, copy the second row — the JS literal with \\x1b escapes.',
+          },
+          {
+            question: 'What is the difference between 16 colors, 256 colors, and truecolor?',
+            answer:
+              'The standard 16 colors use one SGR number each (foreground 30–37/90–97, background 40–47/100–107) and are universally supported; 256-color uses 38;5;n / 48;5;n (0–15 standard, 16–231 a 6×6×6 cube, 232–255 grayscale); truecolor uses 38;2;r;g;b / 48;2;r;g;b for arbitrary RGB and requires a modern terminal.',
+          },
+          {
+            question: 'How are multiple styles and colors encoded in one sequence?',
+            answer:
+              'All SGR parameters are joined with semicolons in the order styles → foreground → background within a single CSI (ESC[...m), e.g. bold red is ESC[1;31m; ESC[0m resets everything after the text, avoiding multiple CSIs.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
