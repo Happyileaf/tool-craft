@@ -178,4 +178,4 @@
 | 20261030080720 | UTM ↔ WGS84 经纬度坐标互转器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030080720.md) |
 | 20261030080721 | ISIN 证券识别码校验器 | Web Tool | External Reference | Pending | 2026-10-30 | | [详情](./idea-details/20261030080721.md) |
 | 20261030080722 | Soundex 英文读音编码计算器 | Web Tool | Exploration | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030080722.md) |
-| 20261030080723 | uuencode/uudecode 编解码器 | Web Tool | Existing Gap | Claimed | 2026-10-30 | trae-agent | [详情](./idea-details/20261030080723.md) |
+| 20261030080723 | uuencode/uudecode 编解码器 | Web Tool | Existing Gap | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030080723.md) |
