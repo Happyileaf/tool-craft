@@ -167,4 +167,5 @@ export const toolLoaders: Record<
   'polynomial-root-calculator': () => import('./polynomial-root-calculator'),
   'tcpip-checksum': () => import('./tcpip-checksum'),
   'csv-to-sql': () => import('./csv-to-sql'),
+  'glob-tester': () => import('./glob-tester'),
 };

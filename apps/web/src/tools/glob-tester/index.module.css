@@ -1,0 +1,90 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.label {
+  color: rgb(107 114 128);
+}
+
+.switchLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgb(75 85 99);
+}
+
+.mono {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+
+.regexOutput {
+  margin: 0 0 12px;
+  padding: 12px;
+  overflow-x: auto;
+  background: rgb(249 250 251);
+  border: 1px solid rgb(229 231 235);
+  border-radius: 8px;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.resultList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.resultRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 13px;
+}
+
+.matched {
+  background: rgb(240 253 244);
+}
+
+.unmatched {
+  background: rgb(249 250 251);
+  color: rgb(107 114 128);
+}
+
+.pathText {
+  flex: 1;
+  word-break: break-all;
+}
+
+.hint {
+  color: rgb(107 114 128);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 12px;
+}

@@ -14350,6 +14350,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'glob-tester',
+    name: 'Glob 模式匹配测试器',
+    nameEn: 'Glob Pattern Tester',
+    description:
+      '输入 Glob 模式（*、**、?、{a,b}、[abc] 与路径段规则）与测试路径，实时显示每条路径的匹配结果，并输出等价的 JavaScript RegExp 字面量。',
+    descriptionEn:
+      'Enter a glob pattern (*, **, ?, {a,b}, [abc], path-segment rules) and test paths to see live match results per path, plus the equivalent JavaScript RegExp literal.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/glob-tester',
+    iconName: 'Braces',
+    tags: ['Glob', '正则', '匹配', 'ignore', '路径'],
+    tagsEn: ['Glob', 'RegExp', 'Match', 'ignore', 'Path'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'src/**/*.{ts,tsx}',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Glob 模式匹配测试器是一款纯浏览器本地的开发调试工具：把文件选择、构建工具 include/exclude、CI 忽略规则中常见的 glob 语法确定性翻译为等价的 JavaScript RegExp，并对一组测试路径逐条给出匹配结论，免去在两种语法间手工转换与反复试错。',
+        coreFeatures: [
+          '支持 *（单段内匹配）、**（跨路径段）、?（单字符）、{a,b} 分支组（可嵌套）与 [abc] / [!abc] 字符类',
+          '实时输出等价的 JavaScript RegExp 字面量，可一键复制',
+          '每条测试路径以绿色 / 灰色行展示匹配与否，并汇总匹配数量',
+          '可切换是否区分大小写；正则元字符自动转义，未闭合的括号按字面量处理',
+          '全部翻译与匹配在浏览器本地完成，零新依赖',
+        ],
+        howToUse: [
+          '在「Glob 模式」输入框填写模式，例如 src/**/*.{ts,tsx}',
+          '在「测试路径」中按行粘贴待验证路径，结果随输入实时更新',
+          '需要时关闭「区分大小写」开关',
+          '复制结果区展示的正则字面量，或直接对照每行的匹配结论调整模式',
+        ],
+        useCases: [
+          '编写 .gitignore、eslint/tsconfig include/exclude 时快速验证模式',
+          '把 glob 规则迁移到需要正则的代码或配置中',
+          '排查「为什么这个文件被 / 没被匹配」的构建与 CI 问题',
+        ],
+        privacyNote:
+          '模式翻译与路径匹配全部在浏览器本地完成，输入内容不会上传或离开设备。',
+        faqs: [
+          {
+            question: '* 和 ** 有什么区别？',
+            answer:
+              '* 只在单个路径段内匹配，不会跨越 /；** 可以匹配任意层级的路径段。例如 *.ts 匹配 index.ts 但不匹配 src/index.ts，而 src/**/*.ts 两者都能覆盖。',
+          },
+          {
+            question: '开头的 **/ 为什么能匹配零层目录？',
+            answer:
+              '按 doublestar、minimatch 等常见实现的约定，**/ 前缀表示「任意深度（含零层）目录下」，因此 **/foo 既能匹配 foo，也能匹配 a/foo 与 a/b/foo。',
+          },
+          {
+            question: '输出的正则为什么带 ^ 和 $？',
+            answer:
+              '工具做的是整路径匹配，等价于 glob 的默认语义，因此用 ^(?:...)$ 锚定整串；如果你只需要「包含」语义，可删去首尾锚点后使用。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Glob Pattern Tester is a fully local developer tool that deterministically translates glob syntax used by file selection, build include/exclude lists, and CI ignore rules into an equivalent JavaScript RegExp, then checks a list of test paths against it—removing manual glob-to-regex conversion and trial and error.',
+        coreFeatures: [
+          'Supports * (within a segment), ** (across segments), ? (one char), {a,b} alternatives (nestable), and [abc] / [!abc] character classes',
+          'Shows the equivalent JavaScript RegExp literal in real time with one-click copy',
+          'Each test path is rendered as a matched/unmatched row with a summary count',
+          'Case-sensitivity toggle; regex metacharacters are escaped, unclosed brackets are treated literally',
+          'Everything runs locally in the browser with zero new dependencies',
+        ],
+        howToUse: [
+          'Enter a glob pattern such as src/**/*.{ts,tsx} in the pattern box',
+          'Paste test paths, one per line; results update as you type',
+          'Toggle case sensitivity when needed',
+          'Copy the generated regex literal or refine the pattern against the per-path verdicts',
+        ],
+        useCases: [
+          'Verifying .gitignore, eslint, or tsconfig include/exclude patterns',
+          'Porting glob rules into code or configuration that expects regex',
+          'Debugging why a file is (or is not) matched by build or CI tooling',
+        ],
+        privacyNote:
+          'All translation and matching happens locally in your browser; neither patterns nor paths are uploaded.',
+        faqs: [
+          {
+            question: "What's the difference between * and **?",
+            answer:
+              '* matches within a single path segment and never crosses /; ** spans any number of segments. For example *.ts matches index.ts but not src/index.ts, while src/**/*.ts covers both.',
+          },
+          {
+            question: 'Why does a leading **/ match even with no directories?',
+            answer:
+              'Following the convention of doublestar, minimatch, and similar libraries, a **/ prefix means "at any depth, including zero directories", so **/foo matches foo as well as a/foo and a/b/foo.',
+          },
+          {
+            question: 'Why do the generated regexes include ^ and $?',
+            answer:
+              'The tool performs full-path matching, which is the default glob semantic, so the pattern is anchored with ^(?:...)$. Remove the anchors if you want a "contains" check instead.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
