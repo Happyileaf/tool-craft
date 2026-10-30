@@ -13740,6 +13740,107 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'bmr-tdee-calculator',
+    name: 'BMR / TDEE 热量计算器',
+    nameEn: 'BMR & TDEE Calorie Calculator',
+    description:
+      '按 Mifflin-St Jeor 与 Harris-Benedict 修订版公式计算基础代谢 BMR 与每日总消耗 TDEE，并给出维持、减脂、增肌的参考热量区间。',
+    descriptionEn:
+      'Calculate BMR with Mifflin-St Jeor or revised Harris-Benedict, derive TDEE from five activity levels, and get maintain/cut/bulk calorie targets.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/bmr-tdee-calculator',
+    iconName: 'Flame',
+    tags: ['BMR', 'TDEE', '基础代谢', '热量', '健身'],
+    tagsEn: ['BMR', 'TDEE', 'Calories', 'Metabolism', 'Fitness'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'BMR / TDEE 热量计算器是一款纯浏览器本地运算的健身饮食规划工具：输入性别、年龄、身高、体重，先按经典公式估算静息状态下的基础代谢率（BMR），再乘以活动水平系数得到每日总能量消耗（TDEE），并据此给出维持体重、减脂与增肌三种目标的参考摄入区间。',
+        coreFeatures: [
+          '双公式对照：默认 Mifflin-St Jeor（1990），可切换 Harris-Benedict 修订版（1984）',
+          '五档活动系数：久坐 1.2、轻度 1.375、中度 1.55、高度 1.725、极重 1.9',
+          '三种热量目标：维持 = TDEE，减脂取 75%–85%，增肌取 105%–115%',
+          '结果一键复制：BMR、TDEE 与各目标区间汇总为文本',
+          '纯浏览器本地运算：体征数据绝不上传，断网可用',
+        ],
+        howToUse: [
+          '选择性别并填写年龄（岁）、身高（cm）、体重（kg）',
+          '选择 BMR 公式，默认推荐 Mifflin-St Jeor',
+          '按每周运动频率选择活动水平，TDEE 与目标区间实时更新',
+          '点击「复制结果」保存数值，用于饮食记录或健身计划',
+        ],
+        useCases: [
+          '减脂期制定每日热量缺口（约 TDEE 的 15%–25%）',
+          '增肌期确定温和热量盈余（约 TDEE 的 5%–15%）',
+          '对比两套公式的估算差异，理解基础代谢的数量级',
+        ],
+        privacyNote:
+          '全部计算由零依赖纯函数在浏览器本地完成，年龄、身高、体重等体征信息不会被记录或上传。',
+        faqs: [
+          {
+            question: 'Mifflin-St Jeor 和 Harris-Benedict 结果为什么不一样？',
+            answer:
+              '两套公式基于不同年代的人群样本回归得到，正常会有几个百分点的差异。Mifflin-St Jeor（1990）对现代人群的验证误差更小，因此作为默认；Harris-Benedict 修订版便于与旧资料对照。',
+          },
+          {
+            question: '算出的 TDEE 准确吗？',
+            answer:
+              '公式只使用性别、年龄、身高、体重，无法反映肌肉量、基因、激素与疾病等个体差异，结果是人群层面的估算。建议以 TDEE 为起点执行 2–3 周，再根据体重变化趋势微调。',
+          },
+          {
+            question: '减脂区间为什么取 TDEE 的 75%–85%？',
+            answer:
+              '这对应每日约 15%–25% 的热量缺口，是多数营养指南认为可持续且尽量保留肌肉的范围；区间而非单值用于配合训练日与休息日的摄入浮动。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The BMR & TDEE Calorie Calculator is a fully in-browser fitness and nutrition planner. Enter sex, age, height and weight to estimate your resting Basal Metabolic Rate, multiply it by an activity factor for Total Daily Energy Expenditure, and see calorie ranges for maintaining, cutting, or bulking.',
+        coreFeatures: [
+          'Two formulas: Mifflin-St Jeor (1990, default) and revised Harris-Benedict (1984)',
+          'Five activity factors: sedentary 1.2, light 1.375, moderate 1.55, very 1.725, extra 1.9',
+          'Three goals: maintain at TDEE, cut at 75%-85%, bulk at 105%-115%',
+          'One-click copy of BMR, TDEE and every target range',
+          '100% in-browser: body metrics are never uploaded',
+        ],
+        howToUse: [
+          'Pick your sex and enter age (years), height (cm) and weight (kg)',
+          'Choose a BMR formula; Mifflin-St Jeor is recommended',
+          'Select the activity level matching your weekly exercise; TDEE and targets update live',
+          'Click "Copy result" to save the numbers for your meal or training plan',
+        ],
+        useCases: [
+          'Setting a fat-loss deficit (roughly 15%-25% below TDEE)',
+          'Setting a modest surplus for muscle gain (roughly 5%-15% above TDEE)',
+          'Comparing the two published formulas to understand the estimate range',
+        ],
+        privacyNote:
+          'All math runs locally via zero-dependency pure functions. Age, height, weight and other body metrics are never logged or uploaded.',
+        faqs: [
+          {
+            question: 'Why do Mifflin-St Jeor and Harris-Benedict differ?',
+            answer:
+              'They were regressed on population samples from different eras, so a difference of a few percent is normal. Mifflin-St Jeor (1990) shows smaller validation error on modern populations and is the default; the revised Harris-Benedict is kept for comparison with older literature.',
+          },
+          {
+            question: 'How accurate is the TDEE figure?',
+            answer:
+              'The formulas use only sex, age, height and weight, so they cannot capture muscle mass, genetics, hormones or medical conditions. Treat TDEE as a starting point for 2-3 weeks and adjust based on measured weight trends.',
+          },
+          {
+            question: 'Why is the cut range 75%-85% of TDEE?',
+            answer:
+              'That is roughly a 15%-25% daily deficit, a range most nutrition guidelines consider sustainable while preserving muscle; using a band rather than one number allows higher intake on training days and lower on rest days.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -161,4 +161,5 @@ export const toolLoaders: Record<
   'editorconfig-generator': () => import('./editorconfig-generator'),
   'uuencode-codec': () => import('./uuencode-codec'),
   'verhoeff-damm-checksum': () => import('./verhoeff-damm-checksum'),
+  'bmr-tdee-calculator': () => import('./bmr-tdee-calculator'),
 };
