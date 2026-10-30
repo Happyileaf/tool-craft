@@ -14962,6 +14962,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'jwk-thumbprint',
+    name: 'JWK Thumbprint 指纹计算器',
+    nameEn: 'JWK Thumbprint Calculator (RFC 7638)',
+    description:
+      '按 RFC 7638 规范化 JWK（RSA/EC/OKP/oct 必需成员白名单、词典序、紧凑 JSON），计算 SHA-256/384/512 摘要并输出 base64url 指纹，展示规范化中间结果。',
+    descriptionEn:
+      'Canonicalize a JWK per RFC 7638 (required-member whitelist for RSA/EC/OKP/oct, lexicographic order, compact JSON), hash with SHA-256/384/512, and emit the base64url thumbprint alongside the canonical intermediate JSON.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/jwk-thumbprint',
+    iconName: 'KeyRound',
+    tags: ['JWK', 'Thumbprint', 'RFC 7638', 'RFC 9278', 'OAuth'],
+    tagsEn: ['JWK', 'Thumbprint', 'RFC 7638', 'RFC 9278', 'OAuth'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '{"kty":"RSA","e":"AQAB","n":"..."}',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JWK Thumbprint 指纹计算器是一款纯浏览器本地的密码学辅助工具：粘贴 JSON Web Key（支持 RSA、EC、OKP 与对称密钥 oct），工具按 RFC 7638 剔除规范要求之外的成员（alg、use、kid、x5c 等），仅保留密钥类型必需成员并按成员名词典序排列、无空白紧凑序列化，再对 UTF-8 字节计算摘要，输出 base64url（无 padding）指纹。默认 SHA-256，可选 SHA-384 / SHA-512（RFC 9278）。同一公钥无论携带什么额外成员，指纹都唯一可复现。',
+        coreFeatures: [
+          'RFC 7638 §3.2 必需成员白名单：RSA=e/kty/n，EC=crv/kty/x/y，OKP=crv/kty/x，oct=k/kty',
+          '成员裁剪 + 词典序排序 + 无空白紧凑 JSON，中间结果完整展示便于核对',
+          'SHA-256（默认）/ SHA-384 / SHA-512（RFC 9278）三种摘要，base64url 无 padding 输出',
+          '固定内置 RFC 7638 §3.1 RSA 样例一键填入，可直接对照官方指纹',
+          '非法 JSON、缺少必需成员、未知 kty 均返回明确中文错误，不抛裸异常',
+        ],
+        howToUse: [
+          '将 JWK JSON 粘贴到左侧输入框（默认已填入 RFC 7638 §3.1 样例），结果实时计算',
+          '需要非标准哈希时在「哈希算法」中切换 SHA-384 或 SHA-512',
+          '对照「规范化 JSON」确认成员裁剪与排序是否符合预期',
+          '点击「复制」获取 thumbprint，可直接用于 DPoP jkt、客户端确认等场景',
+        ],
+        useCases: [
+          'OAuth 2.0 DPoP / mTLS 客户端绑定中计算 jkt（JWK 确认值）',
+          '密钥去重、识别与登记：为同一公钥生成唯一可复现标识',
+          '核对不同来源（PEM 转换、JWKS 端点）的 JWK 是否为同一把密钥',
+        ],
+        privacyNote:
+          'JWK 仅在浏览器本地解析与哈希（Web Crypto），不向任何服务器发送数据。',
+        faqs: [
+          {
+            question: '为什么同一个密钥带了 kid/alg 后指纹不变？',
+            answer:
+              'RFC 7638 规定指纹只纳入各 kty 的必需成员，kid、alg、use、x5c 等全部在规范化阶段剔除，再按成员名词典序紧凑序列化，因此额外成员不影响指纹，保证同一公钥指纹唯一可复现。',
+          },
+          {
+            question: 'thumbprint 为什么是 43 个字符而不是 64 位十六进制？',
+            answer:
+              'RFC 7638 规定对 SHA-256 的 32 字节摘要做 base64url 编码并去掉填充，结果固定 43 个字符（SHA-384 为 64、SHA-512 为 86）；它不是十六进制串，字符集为 A–Z、a–z、0–9、- 与 _。',
+          },
+          {
+            question: 'SHA-384 / SHA-512 指纹也符合 RFC 7638 吗？',
+            answer:
+              'RFC 7638 只定义 SHA-256 指纹；使用其他哈希算法的同名 thumbprint 由 RFC 9278（JSON Web Key Thumbprint URI）扩展定义，规范化方式完全相同，仅摘要算法不同，需与对端明确约定。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JWK Thumbprint Calculator is a fully local cryptography helper. Paste a JSON Web Key (RSA, EC, OKP, or symmetric oct) and the tool applies RFC 7638: strips members outside the required set (alg, use, kid, x5c, etc.), keeps only the members mandatory for the key type, orders them lexicographically, serializes compact JSON without whitespace, hashes the UTF-8 bytes, and emits the base64url (no padding) thumbprint. SHA-256 is the default; SHA-384/SHA-512 (RFC 9278) are optional. The same public key always yields the same reproducible fingerprint regardless of extra members.',
+        coreFeatures: [
+          'RFC 7638 §3.2 required-member whitelists: RSA=e/kty/n, EC=crv/kty/x/y, OKP=crv/kty/x, oct=k/kty',
+          'Member stripping, lexicographic ordering and compact JSON with the canonical intermediate shown for verification',
+          'SHA-256 (default) / SHA-384 / SHA-512 (RFC 9278) digests, base64url output without padding',
+          'Built-in one-click RFC 7638 §3.1 RSA sample matching the official thumbprint',
+          'Clear Chinese/error messages for malformed JSON, missing members, and unknown kty instead of raw exceptions',
+        ],
+        howToUse: [
+          'Paste the JWK JSON into the left editor (the RFC 7638 §3.1 sample is preloaded); the result updates live',
+          'Switch the hash algorithm to SHA-384 or SHA-512 when a non-standard digest is required',
+          'Check the canonical JSON to confirm member stripping and ordering',
+          'Click "Copy" to obtain the thumbprint for DPoP jkt or client confirmation use cases',
+        ],
+        useCases: [
+          'Computing the jkt JWK confirmation in OAuth 2.0 DPoP / mTLS bindings',
+          'Deduplicating, identifying and registering keys with a stable public-key identifier',
+          'Verifying JWKs from different sources (PEM conversion, JWKS endpoints) are the same key',
+        ],
+        privacyNote:
+          'The JWK is parsed and hashed locally in your browser via Web Crypto; no data is sent anywhere.',
+        faqs: [
+          {
+            question: 'Why does adding kid/alg leave the thumbprint unchanged?',
+            answer:
+              'RFC 7638 includes only the members required for the kty: kid, alg, use and x5c are stripped during canonicalization, which then sorts members lexicographically and emits compact JSON. Extra members therefore never affect the fingerprint, keeping it unique and reproducible per public key.',
+          },
+          {
+            question: 'Why is the thumbprint 43 characters instead of a 64-char hex string?',
+            answer:
+              'RFC 7638 base64url-encodes the 32-byte SHA-256 digest without padding, giving 43 characters (64 for SHA-384, 86 for SHA-512). It is not hexadecimal; the alphabet is A–Z, a–z, 0–9, "-" and "_".',
+          },
+          {
+            question: 'Are SHA-384/SHA-512 thumbprints still RFC 7638?',
+            answer:
+              'RFC 7638 defines only SHA-256. Thumbprints with other hash algorithms follow the same canonicalization but are specified by RFC 9278 (JSON Web Key Thumbprint URI); agree on the algorithm with the peer explicitly.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

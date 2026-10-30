@@ -173,4 +173,5 @@ export const toolLoaders: Record<
   'julian-date-converter': () => import('./julian-date-converter'),
   'ipv6-eui64-slaac': () => import('./ipv6-eui64-slaac'),
   'ansi-color-generator': () => import('./ansi-color-generator'),
+  'jwk-thumbprint': () => import('./jwk-thumbprint'),
 };
