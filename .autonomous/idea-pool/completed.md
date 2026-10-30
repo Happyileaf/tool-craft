@@ -59,3 +59,8 @@
 | 20261022221405 | Glob 模式匹配测试器 | Web Tool | Existing Gap | `glob-tester` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261022221405.md) |
 | 20261021180802 | 文本词频统计与高频词分析 | Web Tool | Existing Gap | `word-frequency` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261021180802.md) |
 | 20261029080303 | 两点大圆距离与初始方位角计算器 | Web Tool | Existing Gap | `great-circle` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261029080303.md) |
+| 20261029080304 | 儒略日（JD / MJD）与公历日期互转器 | Web Tool | Existing Gap | `julian-date-converter` / [PR #117](https://github.com/Happyileaf/tool-craft/pull/117) | 2026-10-31 | [详情](./idea-details/20261029080304.md) |
+| 20261030140203 | EUI-64 / SLAAC IPv6 链路本地地址计算器 | Web Tool | Existing Gap | `ipv6-eui64-slaac` / [PR #117](https://github.com/Happyileaf/tool-craft/pull/117) | 2026-10-31 | [详情](./idea-details/20261030140203.md) |
+| 20261022221409 | ANSI 终端颜色码生成器 | Web Tool | Exploration | `ansi-color-generator` / [PR #117](https://github.com/Happyileaf/tool-craft/pull/117) | 2026-10-31 | [详情](./idea-details/20261022221409.md) |
+| 20261029200826 | JWK Thumbprint 指纹计算器（RFC 7638） | Web Tool | Existing Gap | `jwk-thumbprint` / [PR #117](https://github.com/Happyileaf/tool-craft/pull/117) | 2026-10-31 | [详情](./idea-details/20261029200826.md) |
+| 20261017220043 | 地理坐标格式转换（十进制 ↔ 度分秒） | Web Tool | Exploration | `geo-coordinate-converter` / [PR #117](https://github.com/Happyileaf/tool-craft/pull/117) | 2026-10-31 | [详情](./idea-details/20261017220043.md) |

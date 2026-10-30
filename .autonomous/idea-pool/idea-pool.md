@@ -49,7 +49,6 @@
 | 20261017200238 | Markdown 表格生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200238.md) |
 | 20261017200239 | robots.txt 生成器 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017200239.md) |
 | 20261017200240 | MIME 类型速查与识别 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200240.md) |
-| 20261017220043 | 地理坐标格式转换（十进制 ↔ 度分秒） | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261017220043.md) |
 | 20261017220045 | vCard（VCF）名片生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220045.md) |
 | 20261017220047 | 开源许可证生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220047.md) |
 | 20261017220048 | HTTP 安全响应头生成器（CSP / HSTS 等） | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017220048.md) |
@@ -76,7 +75,6 @@
 | 20261022221403 | 全角/半角字符批量转换器 | Web Tool | Existing Gap | In Progress | 2026-10-22 | trae-agent | [详情](./idea-details/20261022221403.md) |
 | 20261022221404 | 文本相似度计算器 | Web Tool | Existing Gap | Pending | 2026-10-22 | | [详情](./idea-details/20261022221404.md) |
 | 20261022221408 | ASCII 文件树生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221408.md) |
-| 20261022221409 | ANSI 终端颜色码生成器 | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261022221409.md) |
 | 20261023020508 | iCalendar (.ics) 日历事件文件生成器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023020508.md) |
 | 20261023020509 | Web App Manifest 生成器 | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023020509.md) |
 | 20261023020510 | CSS 形状生成器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023020510.md) |
@@ -150,7 +148,6 @@
 | 20261029020235 | mailto 邮件链接生成器（收件人 / 抄送 / 密送 / 主题 / 正文） | Web Tool | Exploration | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029020235.md) |
 | 20261029080301 | Magnet 磁力链接解析与生成器 | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029080301.md) |
 | 20261029080302 | Web Mercator 瓦片坐标计算器 | Web Tool | External Reference | Pending | 2026-10-29 | | [详情](./idea-details/20261029080302.md) |
-| 20261029080304 | 儒略日（JD / MJD）与公历日期互转器 | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261029080304.md) |
 | 20261029080306 | 一元二次 / 三次方程求根计算器 | Web Tool | Exploration | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029080306.md) |
 | 20261029140201 | SRI 子资源完整性哈希生成器（Subresource Integrity） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140201.md) |
 | 20261029140202 | HKDF 密钥派生计算器（RFC 5869） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140202.md) |
@@ -158,7 +155,6 @@
 | 20261029140204 | Plus Codes（Open Location Code）编解码器 | Web Tool | Exploration | Pending | 2026-10-29 | | [详情](./idea-details/20261029140204.md) |
 | 20261029140205 | 中文数字 ↔ 阿拉伯数字双向转换器（含大写金额用字） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140205.md) |
 | 20261029200825 | UUID v3 / v5 名称型 UUID 生成器（RFC 9562 命名空间哈希） | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029200825.md) |
-| 20261029200826 | JWK Thumbprint 指纹计算器（RFC 7638） | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261029200826.md) |
 | 20261029200827 | VIN 车辆识别代号校验位计算器与合法性校验器（ISO 3779 / GB 16735） | Web Tool | External Reference | Pending | 2026-10-29 | | [详情](./idea-details/20261029200827.md) |
 | 20261030021004 | AWS SigV4 请求签名生成器 | Web Tool | Exploration | Pending | 2026-10-30 | | [详情](./idea-details/20261030021004.md) |
 | 20261030021005 | OpenSSH 公钥指纹计算器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030021005.md) |
@@ -170,7 +166,6 @@
 | 20261030080721 | ISIN 证券识别码校验器 | Web Tool | External Reference | Pending | 2026-10-30 | | [详情](./idea-details/20261030080721.md) |
 | 20261030140201 | JSON 转 Go struct 生成器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030140201.md) |
 | 20261030140202 | Maidenhead 网格定位（QTH Locator）编解码器 | Web Tool | External Reference | Pending | 2026-10-30 | | [详情](./idea-details/20261030140202.md) |
-| 20261030140203 | EUI-64 / SLAAC IPv6 链路本地地址计算器 | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261030140203.md) |
 | 20261030140204 | Verhoeff / Damm 校验位计算器 | Web Tool | Exploration | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030140204.md) |
 | 20261030140205 | BMR 基础代谢与 TDEE 每日热量消耗计算器 | Web Tool | Exploration | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030140205.md) |
 | 20261030200907 | GZip / Deflate 压缩与解压工具 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030200907.md) |
