@@ -37,6 +37,7 @@ import {
   Sparkles,
   Table2,
   Tags,
+  Triangle,
   Type,
   type LucideProps,
 } from 'lucide-react';
@@ -84,6 +85,7 @@ const toolIconMap = {
   Table2,
   HardDrive,
   Barcode,
+  Triangle,
 };
 
 /**

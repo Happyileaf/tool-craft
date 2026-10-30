@@ -13943,6 +13943,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'triangle-solver',
+    name: '三角形求解器',
+    nameEn: 'Triangle Solver',
+    description:
+      '已知三边（SSS）、两边夹角（SAS）、两角一边（ASA/AAS）或两边对角（SSA），自动求解剩余边角、面积与周长，SSA 歧义时列出全部两解。',
+    descriptionEn:
+      'Solve any triangle from SSS, SAS, ASA, AAS, or SSA givens: all remaining sides and angles, area and perimeter, with both solutions listed for the ambiguous SSA case.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/triangle-solver',
+    iconName: 'Triangle',
+    tags: ['三角形', '解三角形', '余弦定理', '正弦定理', '几何'],
+    tagsEn: ['Triangle', 'SSS SAS ASA', 'Law of Cosines', 'Law of Sines', 'Geometry'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'a=3, b=4, c=5（SSS）',
+    doc: {
+      zh: {
+        whatIsIt:
+          '三角形求解器是一款纯浏览器本地运算的几何计算工具：给定三个独立已知量（边或角），即可通过正弦定理与余弦定理求出三角形剩余的全部边、角、面积与周长，并按结果等比绘制示意图。',
+        coreFeatures: [
+          '五种已知条件：SSS 三边、SAS 两边夹角、ASA 两角夹边、AAS 两角对边、SSA 两边对角',
+          'SSA 歧义处理：当存在两个合法三角形时同时列出两组解并给出歧义说明',
+          '严格合法性校验：三角不等式、内角和 180°、sin 值域等，非法条件给出明确原因',
+          '完整结果输出：三边三角、面积（海伦公式）、周长与等比 SVG 示意图',
+          '纯浏览器本地运算：所有数学计算均在本地完成，不上传任何数据',
+        ],
+        howToUse: [
+          '选择已知条件类型（SSS / SAS / ASA / AAS / SSA）',
+          '在亮起的输入框中填写对应边长与角度（角度以度为单位）',
+          '结果区即时显示求解出的全部边角、面积、周长与示意图',
+          'SSA 模式下若出现两张解卡片，表示该条件存在歧义，请按实际场景选择',
+        ],
+        useCases: [
+          '中学数学解三角形练习与答案核对',
+          '工程测量中间接测距、测角后的现场速算',
+          '需要核对边角关系的手工几何计算复核',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地以纯函数完成，不经过任何服务器，输入的尺寸数据不会离开设备。',
+        faqs: [
+          {
+            question: '为什么 SSA 有时会给出两个解？',
+            answer:
+              '已知两边及其中一边的对角时，满足 sin(B)=b·sin(A)/a 的角 B 可能有锐角与钝角两个取值，对应两个不同的三角形；工具会将两个合法解全部列出。',
+          },
+          {
+            question: '边 a、b、c 与角 A、B、C 如何对应？',
+            answer:
+              '约定边 a 是角 A 的对边（即顶点 A 对面的边 BC），边 b 对 B、边 c 对 C；SAS 的夹角固定为 C（a 与 b 的夹角），ASA 的夹边固定为 c。',
+          },
+          {
+            question: '为什么输入 1、2、3 报错？',
+            answer:
+              '三角形必须严格满足任意两边之和大于第三边；1+2=3 是退化情形（三点共线），不构成合法三角形。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Triangle Solver is a fully in-browser geometry utility: give three independent knowns (sides or angles) and it derives every remaining side and angle, the area and perimeter via the Laws of Sines and Cosines, and draws a to-scale figure.',
+        coreFeatures: [
+          'Five input patterns: SSS, SAS, ASA, AAS, and SSA',
+          'Ambiguous SSA case: when two valid triangles exist, both solutions are listed with an explanation',
+          'Strict validity checks: triangle inequality, 180° angle sum, and sine range, with clear error reasons',
+          'Complete output: all sides and angles, area (Heron\'s formula), perimeter, and a to-scale SVG figure',
+          '100% in-browser: every calculation runs locally and no data is uploaded',
+        ],
+        howToUse: [
+          'Choose the known-pattern type (SSS / SAS / ASA / AAS / SSA)',
+          'Fill the enabled fields with side lengths and angles in degrees',
+          'The result panel instantly shows all derived sides, angles, area, perimeter, and a figure',
+          'In SSA mode, two solution cards mean the givens are ambiguous—pick the one matching your scenario',
+        ],
+        useCases: [
+          'Solving and checking school geometry problems',
+          'Quick indirect distance/angle calculations in surveying and engineering',
+          'Double-checking manual geometry work involving side-angle relations',
+        ],
+        privacyNote:
+          'All calculations run locally as pure functions in the browser. No server is involved and your measurements never leave the device.',
+        faqs: [
+          {
+            question: 'Why does SSA sometimes return two solutions?',
+            answer:
+              'With two sides and a non-included angle, sin(B)=b·sin(A)/a may admit both an acute and an obtuse B, producing two different triangles; the tool lists every valid solution.',
+          },
+          {
+            question: 'How do sides a/b/c map to angles A/B/C?',
+            answer:
+              'Side a is opposite angle A (the edge BC across from vertex A), and likewise for b/B and c/C. In SAS the included angle is C (between a and b); in ASA the included side is c.',
+          },
+          {
+            question: 'Why do sides 1, 2, 3 cause an error?',
+            answer:
+              'A triangle strictly requires any two sides to sum to more than the third; 1+2=3 is a degenerate collinear case, not a valid triangle.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

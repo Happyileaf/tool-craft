@@ -163,4 +163,5 @@ export const toolLoaders: Record<
   'verhoeff-damm-checksum': () => import('./verhoeff-damm-checksum'),
   'bmr-tdee-calculator': () => import('./bmr-tdee-calculator'),
   'chinese-number-converter': () => import('./chinese-number-converter'),
+  'triangle-solver': () => import('./triangle-solver'),
 };
