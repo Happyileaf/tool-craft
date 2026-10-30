@@ -49,3 +49,8 @@
 | 20261027020219 | CRC16 / Adler-32 等多算法校验和计算器 | Web Tool | Existing Gap | `crc16-checksum` / [PR #104](https://github.com/Happyileaf/tool-craft/pull/104) | 2026-10-30 | [详情](./idea-details/20261027020219.md) |
 | 20261029200828 | 中英文混排自动留白（盘古之白）格式化器 | Web Tool | External Reference | `pangu-spacing` / [PR #104](https://github.com/Happyileaf/tool-craft/pull/104) | 2026-10-30 | [详情](./idea-details/20261029200828.md) |
 | 20261029200829 | DNS PTR 反向解析记录名构造器（in-addr.arpa / ip6.arpa） | Web Tool | Existing Gap | `dns-ptr-builder` / [PR #104](https://github.com/Happyileaf/tool-craft/pull/104) | 2026-10-30 | [详情](./idea-details/20261029200829.md) |
+| 20261023020507 | SRT ↔ WebVTT 字幕转换器 | Web Tool | Existing Gap | `srt-vtt-converter` / [PR #109](https://github.com/Happyileaf/tool-craft/pull/109) | 2026-10-30 | [详情](./idea-details/20261023020507.md) |
+| 20261023081554 | UUID v7 生成器（RFC 9562） | Web Tool | Existing Gap | `uuid-v7-generator` / [PR #109](https://github.com/Happyileaf/tool-craft/pull/109) | 2026-10-30 | [详情](./idea-details/20261023081554.md) |
+| 20261029080305 | .editorconfig 文件生成器 | Web Tool | Exploration | `editorconfig-generator` / [PR #109](https://github.com/Happyileaf/tool-craft/pull/109) | 2026-10-30 | [详情](./idea-details/20261029080305.md) |
+| 20261030080722 | Soundex 英文读音编码计算器 | Web Tool | Exploration | `soundex-codec` / [PR #109](https://github.com/Happyileaf/tool-craft/pull/109) | 2026-10-30 | [详情](./idea-details/20261030080722.md) |
+| 20261030080723 | uuencode/uudecode 编解码器 | Web Tool | Existing Gap | `uuencode-codec` / [PR #109](https://github.com/Happyileaf/tool-craft/pull/109) | 2026-10-30 | [详情](./idea-details/20261030080723.md) |
