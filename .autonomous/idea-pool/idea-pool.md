@@ -174,3 +174,8 @@
 | 20261030021006 | JSON 转 Zod schema 生成器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030021006.md) |
 | 20261030021007 | multipart/form-data 请求体构造器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030021007.md) |
 | 20261030021008 | SHA-3 / Keccak 哈希计算器（FIPS 202） | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030021008.md) |
+| 20261030080719 | Intel HEX 解析与校验和工具 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030080719.md) |
+| 20261030080720 | UTM ↔ WGS84 经纬度坐标互转器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030080720.md) |
+| 20261030080721 | ISIN 证券识别码校验器 | Web Tool | External Reference | Pending | 2026-10-30 | | [详情](./idea-details/20261030080721.md) |
+| 20261030080722 | Soundex 英文读音编码计算器 | Web Tool | Exploration | Pending | 2026-10-30 | | [详情](./idea-details/20261030080722.md) |
+| 20261030080723 | uuencode/uudecode 编解码器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030080723.md) |
