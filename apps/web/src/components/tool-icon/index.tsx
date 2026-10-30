@@ -13,6 +13,7 @@ import {
   FileCode,
   FileText,
   Fingerprint,
+  Flame,
   Gauge,
   Globe,
   HardDrive,
@@ -28,6 +29,7 @@ import {
   Palette,
   Pipette,
   QrCode,
+  Radical,
   ShieldCheck,
   Shuffle,
   Sigma,
@@ -36,6 +38,7 @@ import {
   Sparkles,
   Table2,
   Tags,
+  Triangle,
   Type,
   type LucideProps,
 } from 'lucide-react';
@@ -54,6 +57,7 @@ const toolIconMap = {
   LayoutGrid,
   FileCode,
   Fingerprint,
+  Flame,
   QrCode,
   Pipette,
   Blend,
@@ -82,6 +86,8 @@ const toolIconMap = {
   Table2,
   HardDrive,
   Barcode,
+  Triangle,
+  Radical,
 };
 
 /**

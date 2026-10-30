@@ -13638,6 +13638,515 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'verhoeff-damm-checksum',
+    name: 'Verhoeff / Damm 校验位计算器',
+    nameEn: 'Verhoeff / Damm Check Digit Calculator',
+    description:
+      '按 Verhoeff（二面体群 D5 置换表）或 Damm（反对称拟群拉丁方）算法对十进制数字串补全或校验末位校验位，支持逐行批量处理；两种算法均可检出全部单字符错误与相邻换位错误。输入含末位时校验合法性并给出正确校验位，不含末位时自动补全。纯浏览器本地查表运算、零新增依赖。',
+    descriptionEn:
+      'Append or verify a single decimal check digit with either the Verhoeff algorithm (dihedral group D5 permutation tables) or the Damm algorithm (totally antisymmetric quasigroup Latin square), with line-by-line batch processing. Both schemes catch every single-digit error and every adjacent transposition. A trailing digit is validated and the correct digit suggested; otherwise the check digit is appended. Everything runs locally via table lookups with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/verhoeff-damm-checksum',
+    iconName: 'ShieldCheck',
+    tags: ['Verhoeff', 'Damm', '校验位', '校验和', '数字编号', '批量校验'],
+    tagsEn: ['Verhoeff', 'Damm', 'Check Digit', 'Checksum', 'Number Validation', 'Batch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '123\n12345\n572',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Verhoeff / Damm 校验位计算器是一款纯浏览器本地运行的十进制数字校验工具。两种算法都只向原数字串追加一位校验位，却能 100% 检出单字符抄录错误与相邻数字换位错误，因此被广泛用于德国身份证号、Aadhaar 编号、车辆与资产编号等对人工录入容错要求高的编号体系。',
+        coreFeatures: [
+          'Verhoeff 算法：基于二面体群 D5 乘法表、8 行循环置换表与逆元表的标准实现',
+          'Damm 算法：基于 10×10 反对称拟群（弱幂等拉丁方）运算表，状态从 0 出发单行迭代',
+          '双模式逐行处理：带末位则校验并指出正确校验位，不带末位则自动补全',
+          '批量输入：每行一个编号，非法行（含非数字字符等）原样保留并逐行告警',
+          '空白容错：自动忽略空格与连字符，兼容分组排版的编号',
+        ],
+        howToUse: [
+          '在输入区顶部选择 Verhoeff 或 Damm 算法',
+          '每行输入一个数字串：不含校验位时输出补全结果，含校验位时校验合法性',
+          '查看输出区：校验失败的行会给出「正确校验位」与合法编码的告警',
+          '点击「复制」获取全部补全或校验后的编号',
+        ],
+        useCases: [
+          '核对使用 Verhoeff 校验的德国身份证号、Aadhaar 等编号的末位',
+          '为车辆、设备、票据等自有编号体系生成可防换位错误的校验位',
+          '教学演示：理解群论 / 拉丁方在校验码设计中的应用',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地由零依赖纯函数完成，输入的编号不会上传或离开设备。',
+        faqs: [
+          {
+            question: 'Verhoeff 和 Damm 有什么区别？',
+            answer:
+              '二者都是单十进制位、可检出全部单字符错误与相邻换位错误的校验方案。Verhoeff（1969）基于二面体群 D5 的三张查表，校验时数字要先做位置相关置换；Damm（2004）基于反对称拟群的一张 10×10 表，状态逐位更新、实现更简洁。两者不兼容，需按编号体系的规定选择。',
+          },
+          {
+            question: '为什么输入 1 位数字也能处理？',
+            answer:
+              '算法对任意长度（含空前缀）都有定义：空前缀的 Verhoeff/Damm 校验位均为 0，因此单个「0」是合法编码。实际编号体系通常有自己的最小长度，本工具只负责算法层面的校验位计算，不强制业务长度。',
+          },
+          {
+            question: '它和 Luhn（模 10）校验有什么不同？',
+            answer:
+              'Luhn（银行卡、IMEI 使用）无法检出所有相邻换位（如 09↔90），而 Verhoeff 与 Damm 在数学上保证检出全部相邻换位与全部单字符错误，容错能力更强，但查表实现稍复杂。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Verhoeff / Damm Check Digit Calculator is a fully browser-local decimal-number validation tool. Both algorithms append just one check digit yet detect 100% of single-digit transcription errors and adjacent transpositions, which is why they back numbering schemes such as German ID numbers, Aadhaar and various vehicle or asset identifiers that must tolerate manual entry.',
+        coreFeatures: [
+          'Verhoeff algorithm: standard implementation with the D5 multiplication table, the eight-row cyclic permutation table and the inverse table',
+          'Damm algorithm: a 10x10 totally antisymmetric quasigroup (weakly idempotent Latin square), single-row state iteration from zero',
+          'Dual per-line behavior: a trailing digit is validated with the correct one reported, otherwise the check digit is appended',
+          'Batch input: one number per line; invalid lines (non-digits, etc.) are preserved with per-line warnings',
+          'Whitespace tolerant: spaces and hyphens are ignored to accept grouped typography',
+        ],
+        howToUse: [
+          'Pick the Verhoeff or Damm algorithm at the top of the input panel',
+          'Enter one digit string per line: output appends a missing check digit or validates an existing trailing one',
+          'Review the output panel: failed lines show the correct check digit and the valid code as warnings',
+          'Click Copy to take all completed or validated numbers',
+        ],
+        useCases: [
+          'Verifying the last digit of Verhoeff-protected German ID numbers, Aadhaar and similar identifiers',
+          'Generating transposition-proof check digits for in-house vehicle, device or receipt numbering',
+          'Teaching how group theory and Latin squares underpin check-code design',
+        ],
+        privacyNote:
+          'All computation runs in your browser via zero-dependency pure functions. Entered numbers are never uploaded and never leave your device.',
+        faqs: [
+          {
+            question: 'How do Verhoeff and Damm differ?',
+            answer:
+              'Both add one decimal digit and catch every single-digit error and every adjacent transposition. Verhoeff (1969) uses three D5 look-up tables with position-dependent permutation; Damm (2004) uses one 10x10 antisymmetric-quasigroup table updated digit by digit, which is simpler to implement. They are not interchangeable; use whichever the numbering scheme mandates.',
+          },
+          {
+            question: 'Why is a single-digit input accepted?',
+            answer:
+              'The algorithms are defined for any length including the empty prefix, whose check digit is 0 for both, so a lone "0" is valid. Real-world schemes usually impose their own minimum lengths; this tool only computes the algorithmic check digit and enforces no business length.',
+          },
+          {
+            question: 'How does this differ from the Luhn (mod 10) check?',
+            answer:
+              'Luhn (bank cards, IMEI) misses some adjacent transpositions (such as 09 vs 90), whereas Verhoeff and Damm mathematically guarantee detection of all adjacent transpositions and all single-digit errors, offering stronger error tolerance at the cost of slightly more involved table lookups.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'bmr-tdee-calculator',
+    name: 'BMR / TDEE 热量计算器',
+    nameEn: 'BMR & TDEE Calorie Calculator',
+    description:
+      '按 Mifflin-St Jeor 与 Harris-Benedict 修订版公式计算基础代谢 BMR 与每日总消耗 TDEE，并给出维持、减脂、增肌的参考热量区间。',
+    descriptionEn:
+      'Calculate BMR with Mifflin-St Jeor or revised Harris-Benedict, derive TDEE from five activity levels, and get maintain/cut/bulk calorie targets.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/bmr-tdee-calculator',
+    iconName: 'Flame',
+    tags: ['BMR', 'TDEE', '基础代谢', '热量', '健身'],
+    tagsEn: ['BMR', 'TDEE', 'Calories', 'Metabolism', 'Fitness'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'BMR / TDEE 热量计算器是一款纯浏览器本地运算的健身饮食规划工具：输入性别、年龄、身高、体重，先按经典公式估算静息状态下的基础代谢率（BMR），再乘以活动水平系数得到每日总能量消耗（TDEE），并据此给出维持体重、减脂与增肌三种目标的参考摄入区间。',
+        coreFeatures: [
+          '双公式对照：默认 Mifflin-St Jeor（1990），可切换 Harris-Benedict 修订版（1984）',
+          '五档活动系数：久坐 1.2、轻度 1.375、中度 1.55、高度 1.725、极重 1.9',
+          '三种热量目标：维持 = TDEE，减脂取 75%–85%，增肌取 105%–115%',
+          '结果一键复制：BMR、TDEE 与各目标区间汇总为文本',
+          '纯浏览器本地运算：体征数据绝不上传，断网可用',
+        ],
+        howToUse: [
+          '选择性别并填写年龄（岁）、身高（cm）、体重（kg）',
+          '选择 BMR 公式，默认推荐 Mifflin-St Jeor',
+          '按每周运动频率选择活动水平，TDEE 与目标区间实时更新',
+          '点击「复制结果」保存数值，用于饮食记录或健身计划',
+        ],
+        useCases: [
+          '减脂期制定每日热量缺口（约 TDEE 的 15%–25%）',
+          '增肌期确定温和热量盈余（约 TDEE 的 5%–15%）',
+          '对比两套公式的估算差异，理解基础代谢的数量级',
+        ],
+        privacyNote:
+          '全部计算由零依赖纯函数在浏览器本地完成，年龄、身高、体重等体征信息不会被记录或上传。',
+        faqs: [
+          {
+            question: 'Mifflin-St Jeor 和 Harris-Benedict 结果为什么不一样？',
+            answer:
+              '两套公式基于不同年代的人群样本回归得到，正常会有几个百分点的差异。Mifflin-St Jeor（1990）对现代人群的验证误差更小，因此作为默认；Harris-Benedict 修订版便于与旧资料对照。',
+          },
+          {
+            question: '算出的 TDEE 准确吗？',
+            answer:
+              '公式只使用性别、年龄、身高、体重，无法反映肌肉量、基因、激素与疾病等个体差异，结果是人群层面的估算。建议以 TDEE 为起点执行 2–3 周，再根据体重变化趋势微调。',
+          },
+          {
+            question: '减脂区间为什么取 TDEE 的 75%–85%？',
+            answer:
+              '这对应每日约 15%–25% 的热量缺口，是多数营养指南认为可持续且尽量保留肌肉的范围；区间而非单值用于配合训练日与休息日的摄入浮动。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The BMR & TDEE Calorie Calculator is a fully in-browser fitness and nutrition planner. Enter sex, age, height and weight to estimate your resting Basal Metabolic Rate, multiply it by an activity factor for Total Daily Energy Expenditure, and see calorie ranges for maintaining, cutting, or bulking.',
+        coreFeatures: [
+          'Two formulas: Mifflin-St Jeor (1990, default) and revised Harris-Benedict (1984)',
+          'Five activity factors: sedentary 1.2, light 1.375, moderate 1.55, very 1.725, extra 1.9',
+          'Three goals: maintain at TDEE, cut at 75%-85%, bulk at 105%-115%',
+          'One-click copy of BMR, TDEE and every target range',
+          '100% in-browser: body metrics are never uploaded',
+        ],
+        howToUse: [
+          'Pick your sex and enter age (years), height (cm) and weight (kg)',
+          'Choose a BMR formula; Mifflin-St Jeor is recommended',
+          'Select the activity level matching your weekly exercise; TDEE and targets update live',
+          'Click "Copy result" to save the numbers for your meal or training plan',
+        ],
+        useCases: [
+          'Setting a fat-loss deficit (roughly 15%-25% below TDEE)',
+          'Setting a modest surplus for muscle gain (roughly 5%-15% above TDEE)',
+          'Comparing the two published formulas to understand the estimate range',
+        ],
+        privacyNote:
+          'All math runs locally via zero-dependency pure functions. Age, height, weight and other body metrics are never logged or uploaded.',
+        faqs: [
+          {
+            question: 'Why do Mifflin-St Jeor and Harris-Benedict differ?',
+            answer:
+              'They were regressed on population samples from different eras, so a difference of a few percent is normal. Mifflin-St Jeor (1990) shows smaller validation error on modern populations and is the default; the revised Harris-Benedict is kept for comparison with older literature.',
+          },
+          {
+            question: 'How accurate is the TDEE figure?',
+            answer:
+              'The formulas use only sex, age, height and weight, so they cannot capture muscle mass, genetics, hormones or medical conditions. Treat TDEE as a starting point for 2-3 weeks and adjust based on measured weight trends.',
+          },
+          {
+            question: 'Why is the cut range 75%-85% of TDEE?',
+            answer:
+              'That is roughly a 15%-25% daily deficit, a range most nutrition guidelines consider sustainable while preserving muscle; using a band rather than one number allows higher intake on training days and lower on rest days.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'chinese-number-converter',
+    name: '中文数字 ↔ 阿拉伯数字转换器',
+    nameEn: 'Chinese Number Converter',
+    description:
+      '在中文数字与阿拉伯数字之间双向转换，支持小写与财务大写金额用字、万/亿/万亿节、口语简式、负数与角分小数，纯本地解析。',
+    descriptionEn:
+      'Convert between Chinese numerals and Arabic digits both ways: everyday and financial uppercase forms, 万/亿/万亿 sections, colloquial shorthand, negatives, and jiao/fen decimals.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/chinese-number-converter',
+    iconName: 'Sigma',
+    tags: ['中文数字', '大写金额', '数字转换', '财务', '解析'],
+    tagsEn: ['Chinese Numerals', 'Uppercase Amount', 'Converter', 'Finance', 'Parser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '12345.67',
+    doc: {
+      zh: {
+        whatIsIt:
+          '中文数字 ↔ 阿拉伯数字转换器是一款纯浏览器本地运算的双向换算工具：既可把阿拉伯数字转成「一万二千三百四十五」式小写或「壹萬贰仟叁佰肆拾伍元」式财务大写，也能把古籍、合同、票据中的中文数字文本解析回阿拉伯数字，正确处理零的连续占位、万/亿/万亿数位节、口语简式与角分小数。',
+        coreFeatures: [
+          '双向转换：数字 → 中文、中文 → 数字，结果可一键回填反向输入做核对',
+          '两套字形：小写零一二…与财务大写零壹贰…、拾佰仟萬億',
+          '金额用字：自动生成与解析「元 / 角 / 分 / 整」，符合票据填写习惯',
+          '口语简式：「两千三」按主流习惯解释为 2300，并给出明确提示；写「两千零三」则按字面 2003',
+          '纯浏览器本地运算：零依赖纯函数解析，合同金额等敏感内容绝不上传',
+        ],
+        howToUse: [
+          '选择方向：「数字 → 中文」或「中文 → 数字」',
+          '数字方向下再选择「小写中文数字」或「财务大写金额」，输入数字（支持千分位逗号与负号）',
+          '中文方向下直接粘贴中文数字文本，大小写字形与金额用字可自动识别',
+          '出现黄色提示时留意口语简式的解释；点击「结果填入反向」可快速往返校验',
+        ],
+        useCases: [
+          '核对合同、发票、报销单上的人民币大写金额',
+          '阅读古籍、族谱、碑刻时把中文数字换算为阿拉伯数字',
+          '在文案与代码之间统一数字写法，避免「壹拾贰元」与「12 元」不一致',
+        ],
+        privacyNote:
+          '所有转换均由零依赖纯函数在浏览器本地完成，不会记录或上传任何输入文本。',
+        faqs: [
+          {
+            question: '「两千三」到底是 2300 还是 2003？',
+            answer:
+              '普通话主流口语中「两千三」是「两千三百」的省略，工具按 2300 解释并给出提示；如果想表达 2003，请写作「两千零三」。',
+          },
+          {
+            question: '支持多大的数字？',
+            answer:
+              '整数部分最多 16 位，即覆盖到「万亿」节（最大 9999 万亿）；小数最多 2 位，对应角、分。超出范围或数位结构不合法会明确报错。',
+          },
+          {
+            question: '财务大写与已有人民币大写工具什么区别？',
+            answer:
+              '人民币大写工具只做「数字 → 大写金额」单向转换；本工具额外支持反向解析（大写/小写中文 → 数字）与普通小写中文数字、口语简式，适合需要双向核对的场景。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Chinese Number Converter is a fully in-browser, bidirectional tool: turn Arabic digits into everyday Chinese numerals ("一万二千三百四十五") or financial uppercase amounts ("壹萬贰仟叁佰肆拾伍元"), and parse Chinese numerals from classical texts, contracts or receipts back into digits. It handles consecutive zeros, 万/亿/万亿 magnitude sections, colloquial shorthand, and jiao/fen decimals.',
+        coreFeatures: [
+          'Bidirectional: digits to Chinese and Chinese to digits, with one-click round-trip check',
+          'Two glyph sets: everyday 零一二… and financial 零壹贰… with 拾佰仟萬億',
+          'Money wording: generates and parses 元/角/分/整 per Chinese receipt conventions',
+          'Colloquial shorthand: "两千三" is read as 2300 with an explicit note; "两千零三" stays 2003',
+          '100% in-browser: zero-dependency pure functions, contract amounts never leave the device',
+        ],
+        howToUse: [
+          'Pick a direction: digits to Chinese or Chinese to digits',
+          'For digits output, choose everyday or financial style and type a number (commas and minus sign allowed)',
+          'For parsing, paste any Chinese numeral text; mixed glyphs and money wording are auto-detected',
+          'Watch the yellow note for colloquial readings, and use "fill into reverse" to verify round-trips',
+        ],
+        useCases: [
+          'Checking RMB uppercase amounts on contracts, invoices and expense forms',
+          'Converting numerals found in classical books, genealogies and inscriptions',
+          'Keeping number styles consistent between prose and data',
+        ],
+        privacyNote:
+          'All conversion runs locally through zero-dependency pure functions; entered text is never logged or uploaded.',
+        faqs: [
+          {
+            question: 'Does "两千三" mean 2300 or 2003?',
+            answer:
+              'In mainstream spoken Mandarin it is short for "两千三百" (2300), which is how the tool reads it, with a note. Write "两千零三" for 2003.',
+          },
+          {
+            question: 'How large a number is supported?',
+            answer:
+              'Up to 16 integer digits (through the 万亿 section, max 9999 万亿) and 2 decimal places (jiao and fen). Out-of-range or structurally invalid input is rejected with an error.',
+          },
+          {
+            question: 'How is this different from the existing RMB uppercase tool?',
+            answer:
+              'The RMB tool only converts digits into uppercase money text one way. This tool also parses Chinese text back into digits, supports everyday numerals and colloquial shorthand, and enables bidirectional verification.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'triangle-solver',
+    name: '三角形求解器',
+    nameEn: 'Triangle Solver',
+    description:
+      '已知三边（SSS）、两边夹角（SAS）、两角一边（ASA/AAS）或两边对角（SSA），自动求解剩余边角、面积与周长，SSA 歧义时列出全部两解。',
+    descriptionEn:
+      'Solve any triangle from SSS, SAS, ASA, AAS, or SSA givens: all remaining sides and angles, area and perimeter, with both solutions listed for the ambiguous SSA case.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/triangle-solver',
+    iconName: 'Triangle',
+    tags: ['三角形', '解三角形', '余弦定理', '正弦定理', '几何'],
+    tagsEn: ['Triangle', 'SSS SAS ASA', 'Law of Cosines', 'Law of Sines', 'Geometry'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'a=3, b=4, c=5（SSS）',
+    doc: {
+      zh: {
+        whatIsIt:
+          '三角形求解器是一款纯浏览器本地运算的几何计算工具：给定三个独立已知量（边或角），即可通过正弦定理与余弦定理求出三角形剩余的全部边、角、面积与周长，并按结果等比绘制示意图。',
+        coreFeatures: [
+          '五种已知条件：SSS 三边、SAS 两边夹角、ASA 两角夹边、AAS 两角对边、SSA 两边对角',
+          'SSA 歧义处理：当存在两个合法三角形时同时列出两组解并给出歧义说明',
+          '严格合法性校验：三角不等式、内角和 180°、sin 值域等，非法条件给出明确原因',
+          '完整结果输出：三边三角、面积（海伦公式）、周长与等比 SVG 示意图',
+          '纯浏览器本地运算：所有数学计算均在本地完成，不上传任何数据',
+        ],
+        howToUse: [
+          '选择已知条件类型（SSS / SAS / ASA / AAS / SSA）',
+          '在亮起的输入框中填写对应边长与角度（角度以度为单位）',
+          '结果区即时显示求解出的全部边角、面积、周长与示意图',
+          'SSA 模式下若出现两张解卡片，表示该条件存在歧义，请按实际场景选择',
+        ],
+        useCases: [
+          '中学数学解三角形练习与答案核对',
+          '工程测量中间接测距、测角后的现场速算',
+          '需要核对边角关系的手工几何计算复核',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地以纯函数完成，不经过任何服务器，输入的尺寸数据不会离开设备。',
+        faqs: [
+          {
+            question: '为什么 SSA 有时会给出两个解？',
+            answer:
+              '已知两边及其中一边的对角时，满足 sin(B)=b·sin(A)/a 的角 B 可能有锐角与钝角两个取值，对应两个不同的三角形；工具会将两个合法解全部列出。',
+          },
+          {
+            question: '边 a、b、c 与角 A、B、C 如何对应？',
+            answer:
+              '约定边 a 是角 A 的对边（即顶点 A 对面的边 BC），边 b 对 B、边 c 对 C；SAS 的夹角固定为 C（a 与 b 的夹角），ASA 的夹边固定为 c。',
+          },
+          {
+            question: '为什么输入 1、2、3 报错？',
+            answer:
+              '三角形必须严格满足任意两边之和大于第三边；1+2=3 是退化情形（三点共线），不构成合法三角形。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Triangle Solver is a fully in-browser geometry utility: give three independent knowns (sides or angles) and it derives every remaining side and angle, the area and perimeter via the Laws of Sines and Cosines, and draws a to-scale figure.',
+        coreFeatures: [
+          'Five input patterns: SSS, SAS, ASA, AAS, and SSA',
+          'Ambiguous SSA case: when two valid triangles exist, both solutions are listed with an explanation',
+          'Strict validity checks: triangle inequality, 180° angle sum, and sine range, with clear error reasons',
+          'Complete output: all sides and angles, area (Heron\'s formula), perimeter, and a to-scale SVG figure',
+          '100% in-browser: every calculation runs locally and no data is uploaded',
+        ],
+        howToUse: [
+          'Choose the known-pattern type (SSS / SAS / ASA / AAS / SSA)',
+          'Fill the enabled fields with side lengths and angles in degrees',
+          'The result panel instantly shows all derived sides, angles, area, perimeter, and a figure',
+          'In SSA mode, two solution cards mean the givens are ambiguous—pick the one matching your scenario',
+        ],
+        useCases: [
+          'Solving and checking school geometry problems',
+          'Quick indirect distance/angle calculations in surveying and engineering',
+          'Double-checking manual geometry work involving side-angle relations',
+        ],
+        privacyNote:
+          'All calculations run locally as pure functions in the browser. No server is involved and your measurements never leave the device.',
+        faqs: [
+          {
+            question: 'Why does SSA sometimes return two solutions?',
+            answer:
+              'With two sides and a non-included angle, sin(B)=b·sin(A)/a may admit both an acute and an obtuse B, producing two different triangles; the tool lists every valid solution.',
+          },
+          {
+            question: 'How do sides a/b/c map to angles A/B/C?',
+            answer:
+              'Side a is opposite angle A (the edge BC across from vertex A), and likewise for b/B and c/C. In SAS the included angle is C (between a and b); in ASA the included side is c.',
+          },
+          {
+            question: 'Why do sides 1, 2, 3 cause an error?',
+            answer:
+              'A triangle strictly requires any two sides to sum to more than the third; 1+2=3 is a degenerate collinear case, not a valid triangle.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'polynomial-root-calculator',
+    name: '一元二次/三次方程求根计算器',
+    nameEn: 'Polynomial Root Calculator',
+    description:
+      '输入系数求解 ax²+bx+c=0 与 ax³+bx²+cx+d=0 的全部实根与复根，展示判别式、求根公式/Cardano 代入步骤与根的重数，首项为 0 自动降次。',
+    descriptionEn:
+      'Find every real and complex root of quadratic and cubic equations from their coefficients, with the discriminant, formula/Cardano steps, root multiplicity, and automatic degree reduction.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/polynomial-root-calculator',
+    iconName: 'Radical',
+    tags: ['求根', '二次方程', '三次方程', 'Cardano', '复数'],
+    tagsEn: ['Polynomial Roots', 'Quadratic', 'Cubic', 'Cardano', 'Complex Numbers'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'x² − 5x + 6 = 0',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一元二次/三次方程求根计算器是一款纯浏览器本地运算的代数工具：按高次项到常数项输入系数，即可求出二次或三次方程的全部实根与共轭复根，并展示判别式、求根公式（二次）或 Cardano 法（三次）的逐步代入过程与每个根的重数。',
+        coreFeatures: [
+          '二次方程求根公式：按判别式 Δ=b²−4ac 给出两实根、二重根或共轭复根',
+          '三次方程 Cardano 法：归一化、降阶替换，覆盖三实根（casus irreducibilis）与一实根一对复根',
+          '自动降次：首项系数为 0 时自动按二次或一次方程求解，并给出矛盾常数方程等错误提示',
+          '重根识别：明确标出二重根、三重根及其重数',
+          '复平面分布图与求解步骤：所有根标注在 SVG 复平面上，便于核对',
+        ],
+        howToUse: [
+          '选择方程类型：二次 ax²+bx+c=0 或三次 ax³+bx²+cx+d=0',
+          '按系数 a、b、c（、d）顺序填入数字，缺少的项填 0，允许负数与小数',
+          '结果区即时显示实际次数、判别式、全部根（含重数）、求解步骤与复平面分布',
+          '可点击示例预设快速查看复根、三实根、重根与自动降次等典型情形',
+        ],
+        useCases: [
+          '中学/大学代数作业的求根与判别式核对',
+          '工程与物理问题中特征方程、平衡解的快速计算',
+          '理解 Cardano 法与复数解、重根概念的教学辅助',
+        ],
+        privacyNote:
+          '全部求根计算均为浏览器本地确定性数值/解析运算，零依赖、不联网，输入的系数不会离开设备。',
+        faqs: [
+          {
+            question: '三次方程为什么有时给出复根？',
+            answer:
+              '实系数三次方程必有一个实根；当 Cardano 判别式 Δ>0 时另外两个根是一对共轭复根，Δ<0（casus irreducibilis）时三个根全为实数，Δ=0 时出现重根。',
+          },
+          {
+            question: '系数填 0 会怎样？',
+            answer:
+              '三次方程的 a 填 0 会自动降为二次方程，a、b 都为 0 则降为一次方程；若所有系数都为 0，等式恒成立无法求根；若仅常数项非零则是矛盾方程（无解），工具会明确提示。',
+          },
+          {
+            question: '重数是什么意思？',
+            answer:
+              '重数表示根在多项式因式分解中重复出现的次数，例如 (x−1)²(x+2) 中 x=1 是二重根、x=−2 是单根；重根处函数图像与横轴相切。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Polynomial Root Calculator is a fully in-browser algebra utility: enter coefficients from the highest term to the constant and it finds every real root and conjugate complex pair of a quadratic or cubic equation, showing the discriminant, formula/Cardano derivation steps, and root multiplicity.',
+        coreFeatures: [
+          'Quadratic formula: two real roots, a double root, or a conjugate pair according to Δ=b²−4ac',
+          'Cardano for cubics: normalization and depressed-cubic substitution, covering three real roots (casus irreducibilis) and one real root plus a complex pair',
+          'Automatic degree reduction when leading coefficients are zero, with clear errors for inconsistent constant equations',
+          'Repeated-root detection: double and triple roots are labeled with their multiplicity',
+          'SVG complex-plane plot and step-by-step derivation for easy verification',
+        ],
+        howToUse: [
+          'Choose the equation type: quadratic ax²+bx+c=0 or cubic ax³+bx²+cx+d=0',
+          'Fill coefficients a, b, c (and d) in order; enter 0 for missing terms; negatives and decimals are allowed',
+          'The result panel instantly shows the effective degree, discriminant, all roots (with multiplicity), derivation steps, and a complex-plane plot',
+          'Click a sample preset to explore complex roots, three real roots, repeated roots, and auto degree reduction',
+        ],
+        useCases: [
+          'Checking roots and discriminants in school or university algebra homework',
+          'Quickly solving characteristic or equilibrium equations in engineering and physics',
+          'Teaching aid for the Cardano method, complex solutions, and repeated roots',
+        ],
+        privacyNote:
+          'All root finding is deterministic local numerical/analytical computation in the browser with zero dependencies and no network access; coefficients never leave the device.',
+        faqs: [
+          {
+            question: 'Why does a cubic sometimes return complex roots?',
+            answer:
+              'A real-coefficient cubic always has one real root. With Cardano discriminant Δ>0 the other two roots are a conjugate complex pair; Δ<0 (casus irreducibilis) gives three real roots; Δ=0 yields repeated roots.',
+          },
+          {
+            question: 'What if a coefficient is zero?',
+            answer:
+              'A zero leading coefficient automatically reduces a cubic to a quadratic (or linear) equation. All-zero coefficients mean an identity with no roots; a lone nonzero constant is an inconsistent equation with no solution—the tool explains each case.',
+          },
+          {
+            question: 'What does multiplicity mean?',
+            answer:
+              'Multiplicity is how many times a root repeats in the factorization; in (x−1)²(x+2), x=1 is a double root and x=−2 is simple. The graph is tangent to the axis at a repeated root.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -160,4 +160,9 @@ export const toolLoaders: Record<
   'uuid-v7-generator': () => import('./uuid-v7-generator'),
   'editorconfig-generator': () => import('./editorconfig-generator'),
   'uuencode-codec': () => import('./uuencode-codec'),
+  'verhoeff-damm-checksum': () => import('./verhoeff-damm-checksum'),
+  'bmr-tdee-calculator': () => import('./bmr-tdee-calculator'),
+  'chinese-number-converter': () => import('./chinese-number-converter'),
+  'triangle-solver': () => import('./triangle-solver'),
+  'polynomial-root-calculator': () => import('./polynomial-root-calculator'),
 };
