@@ -170,7 +170,7 @@
 | 20261030080721 | ISIN 证券识别码校验器 | Web Tool | External Reference | Pending | 2026-10-30 | | [详情](./idea-details/20261030080721.md) |
 | 20261030140201 | JSON 转 Go struct 生成器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030140201.md) |
 | 20261030140202 | Maidenhead 网格定位（QTH Locator）编解码器 | Web Tool | External Reference | Pending | 2026-10-30 | | [详情](./idea-details/20261030140202.md) |
-| 20261030140203 | EUI-64 / SLAAC IPv6 链路本地地址计算器 | Web Tool | Existing Gap | Claimed | 2026-10-31 | trae-agent | [详情](./idea-details/20261030140203.md) |
+| 20261030140203 | EUI-64 / SLAAC IPv6 链路本地地址计算器 | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261030140203.md) |
 | 20261030140204 | Verhoeff / Damm 校验位计算器 | Web Tool | Exploration | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030140204.md) |
 | 20261030140205 | BMR 基础代谢与 TDEE 每日热量消耗计算器 | Web Tool | Exploration | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030140205.md) |
 | 20261030200907 | GZip / Deflate 压缩与解压工具 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030200907.md) |

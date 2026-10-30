@@ -14758,6 +14758,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'ipv6-eui64-slaac',
+    name: 'EUI-64 / SLAAC IPv6 地址计算器',
+    nameEn: 'EUI-64 / SLAAC IPv6 Address Calculator',
+    description:
+      '由 48 位 MAC 地址插入 ff:fe 并翻转 U/L 位派生 EUI-64 接口标识符，生成 fe80::/64 链路本地地址，并可与任意 /64 前缀组合 SLAAC 地址。',
+    descriptionEn:
+      'Derive the EUI-64 interface identifier from a 48-bit MAC address (insert ff:fe, flip the U/L bit), build the fe80::/64 link-local address, and combine it with any /64 prefix for a SLAAC address.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ipv6-eui64-slaac',
+    iconName: 'Globe',
+    tags: ['IPv6', 'EUI-64', 'SLAAC', 'MAC', '链路本地'],
+    tagsEn: ['IPv6', 'EUI-64', 'SLAAC', 'MAC', 'Link-Local'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '00:1c:c0:ff:fe:80',
+    doc: {
+      zh: {
+        whatIsIt:
+          'EUI-64 / SLAAC IPv6 地址计算器是一款纯浏览器本地的网络工具：输入 48 位 MAC 地址，按照 RFC 4291 规则在 OUI 与设备标识之间插入 ff:fe、翻转首字节第 7 位（U/L 位），得到 64 位 EUI-64 接口标识符，并自动拼出 fe80::/64 链路本地地址；还可填入任意 /64 网络前缀组合出 SLAAC 全球单播地址。工具逐步展示插入字节与位翻转前后的对比，适合网络配置与 IPv6 教学排障。',
+        coreFeatures: [
+          '兼容 aa:bb:cc:dd:ee:ff、aa-bb-cc-dd-ee-ff、Cisco aabb.ccdd.eeff 及无分隔符写法',
+          '分步可视化：规范化 MAC → 插入 ff:fe → 翻转 U/L 位 → 接口标识符',
+          '生成符合 RFC 5952 零压缩规范的 fe80::/64 链路本地地址',
+          '支持任意可路由 /64 前缀（可省略掩码长度），组合 SLAAC 地址',
+          '非法 MAC、非 /64 掩码、畸形前缀逐条明确报错',
+        ],
+        howToUse: [
+          '在「MAC 地址」输入框填入网卡 MAC，结果实时更新',
+          '需要 SLAAC 全球地址时在「自定义 /64 前缀」填入如 2001:db8:abcd:0012::/64',
+          '点击示例按钮可快速填入 RFC 4291 经典向量与 Cisco 写法',
+          '点击接口标识符或地址旁的「复制」按钮获取结果',
+        ],
+        useCases: [
+          '配置路由器、服务器 IPv6 静态地址时核对 EUI-64 接口标识',
+          'IPv6 教学中讲解 SLAAC 无状态自动配置与 U/L 位含义',
+          '网络排障时对照设备 MAC 推算其链路本地地址',
+        ],
+        privacyNote:
+          '所有 MAC 与地址运算均在浏览器本地完成，不向任何服务器发送数据。',
+        faqs: [
+          {
+            question: '为什么要翻转首字节的第 7 位？',
+            answer:
+              '第 7 位是 U/L（Universal/Local）位：MAC 中为 0 表示厂商烧录的全局唯一地址，派生 IPv6 接口标识时按 RFC 4291 翻转为 1，表示由 EUI-64 映射而来；例如首字节 0x00 变为 0x02。',
+          },
+          {
+            question: '链路本地地址为什么以 fe80:: 开头？',
+            answer:
+              'RFC 4291 规定链路本地单播地址前缀为 fe80::/10，配合 /64 子网前缀与 EUI-64 接口标识，标准形式即 fe80::接口标识符，仅在本地链路有效、不可路由。',
+          },
+          {
+            question: 'SLAAC 生成的地址为什么和设备实际地址可能不同？',
+            answer:
+              '现代系统默认启用 RFC 4941 隐私扩展（临时地址）或稳定隐私地址（RFC 8981），实际使用的地址不一定是 EUI-64 形式。本工具计算的是经典 EUI-64/SLAAC 确定性结果，常用于服务器、路由器等关闭隐私扩展的场景。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The EUI-64 / SLAAC IPv6 Address Calculator is a fully local networking tool. Given a 48-bit MAC address, it follows RFC 4291: inserts ff:fe between the OUI and the device identifier, flips bit 7 (the U/L bit) of the first byte to produce the 64-bit EUI-64 interface identifier, and builds the fe80::/64 link-local address. A routable /64 prefix can be combined with the identifier to form a SLAAC global unicast address. Each step (byte insertion, bit flip) is shown explicitly.',
+        coreFeatures: [
+          'Accepts aa:bb:cc:dd:ee:ff, aa-bb-cc-dd-ee-ff, Cisco aabb.ccdd.eeff, and unseparated forms',
+          'Step-by-step view: normalize MAC → insert ff:fe → flip U/L bit → interface identifier',
+          'Emits the fe80::/64 link-local address in RFC 5952 compressed notation',
+          'Combines any routable /64 prefix (length optional) into a SLAAC address',
+          'Clear error messages for malformed MACs, non-/64 masks, and invalid prefixes',
+        ],
+        howToUse: [
+          'Enter the NIC MAC in the "MAC address" field; results update live',
+          'For a global SLAAC address, provide a /64 prefix such as 2001:db8:abcd:0012::/64',
+          'Use the sample buttons for the RFC 4291 vector and Cisco notation',
+          'Click "Copy" next to the interface identifier or addresses',
+        ],
+        useCases: [
+          'Verifying EUI-64 interface IDs when configuring static IPv6 on routers and servers',
+          'Teaching SLAAC stateless autoconfiguration and the meaning of the U/L bit',
+          'Inferring a device link-local address from its MAC during troubleshooting',
+        ],
+        privacyNote:
+          'All MAC and address math runs locally in your browser; no data is sent anywhere.',
+        faqs: [
+          {
+            question: 'Why flip bit 7 of the first byte?',
+            answer:
+              'Bit 7 is the U/L (Universal/Local) bit. In a burned-in MAC it is 0; RFC 4291 flips it to 1 when mapping to an IPv6 interface identifier, so the first byte 0x00 becomes 0x02.',
+          },
+          {
+            question: 'Why does the link-local address start with fe80::?',
+            answer:
+              'RFC 4291 reserves fe80::/10 for link-local unicast. With a /64 subnet prefix and the EUI-64 identifier the canonical address is fe80::interface-id, valid only on the local link and not routable.',
+          },
+          {
+            question: 'Why might the real device address differ?',
+            answer:
+              'Modern systems enable RFC 4941 privacy extensions (temporary addresses) or RFC 8981 stable private addresses by default, so live addresses are often not in EUI-64 form. This tool computes the deterministic EUI-64 result typically used on servers and routers with privacy extensions disabled.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

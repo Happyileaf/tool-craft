@@ -171,4 +171,5 @@ export const toolLoaders: Record<
   'word-frequency': () => import('./word-frequency'),
   'great-circle': () => import('./great-circle'),
   'julian-date-converter': () => import('./julian-date-converter'),
+  'ipv6-eui64-slaac': () => import('./ipv6-eui64-slaac'),
 };
