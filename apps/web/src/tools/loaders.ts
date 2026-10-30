@@ -168,4 +168,5 @@ export const toolLoaders: Record<
   'tcpip-checksum': () => import('./tcpip-checksum'),
   'csv-to-sql': () => import('./csv-to-sql'),
   'glob-tester': () => import('./glob-tester'),
+  'word-frequency': () => import('./word-frequency'),
 };

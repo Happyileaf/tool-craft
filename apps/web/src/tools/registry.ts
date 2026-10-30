@@ -14452,6 +14452,109 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'word-frequency',
+    name: '文本词频统计与高频词分析',
+    nameEn: 'Word Frequency Analyzer',
+    description:
+      '统计文本中每个词的出现次数与频率，支持中文逐字 / 二元词模式、停用词过滤、可排序词频表、Top N 与 CSV 导出，用于文案分析与关键词梳理。',
+    descriptionEn:
+      'Count per-word occurrences and frequency in pasted text, with Chinese character/bigram modes, stop-word filtering, a sortable frequency table, Top N, and CSV export for copy and keyword analysis.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/word-frequency',
+    iconName: 'Sigma',
+    tags: ['词频', '文本分析', '关键词', '停用词', 'CSV'],
+    tagsEn: ['Word Frequency', 'Text Analysis', 'Keywords', 'Stop Words', 'CSV'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'The quick brown fox jumps over the lazy dog.\nThe dog barks, and the fox runs quickly.',
+    doc: {
+      zh: {
+        whatIsIt:
+          '文本词频统计与高频词分析是一款纯浏览器本地的文本分析工具：粘贴任意中英文文本，自动切词并统计每个词的出现次数与占比，提供中文逐字 / 相邻汉字二元组两种简单分词模式、内置英文停用词与自定义停用词过滤、可排序的词频表格、Top N 截取以及 CSV 复制 / 导出。',
+        coreFeatures: [
+          'Unicode 感知的拉丁词切分，支持 don\'t、state-of-the-art 等撇号与连字符写法',
+          '中文两种简单模式：逐字统计与相邻汉字二元组（bigram）',
+          '内置 30+ 英文常用停用词，可一键开关；另支持逗号 / 空格分隔的自定义停用词',
+          '次数升降序与字母序排列，Top N 截取（0 = 全部），频率条形可视化',
+          '结果一键复制 CSV 或下载 .csv 文件，全程本地运算',
+        ],
+        howToUse: [
+          '在「待统计文本」中粘贴内容，结果随输入实时更新',
+          '中英文混排时把分词模式切换为「中文按单字」或「中文按二元词」',
+          '按需调整排序、Top N，开关内置停用词或填写自定义停用词',
+          '在结果表格中查看次数与频率占比，点击「复制 CSV」或「导出 CSV」取用',
+        ],
+        useCases: [
+          '分析文案 / 标题的高频用词，辅助 SEO 关键词梳理',
+          '从日志片段中快速排查高频关键字',
+          '统计中文文本中的高频字 / 二字词，做写作风格或主题初判',
+        ],
+        privacyNote:
+          '文本切分与词频统计全部在浏览器本地完成，输入内容不会上传或离开设备。',
+        faqs: [
+          {
+            question: '中文分词为什么只提供逐字和二元词？',
+            answer:
+              '完整中文分词需要词典或模型，体积大且结果依赖词库版本，不符合零依赖本地工具的定位。逐字与相邻汉字二元组（如「我爱北京」→ 我爱 / 爱北 / 北京）足以覆盖大多数高频词初筛场景。',
+          },
+          {
+            question: '频率百分比是怎么计算的？',
+            answer:
+              '频率 = 该词出现次数 ÷ 停用词过滤后的有效词次总数。表格条形图按当前结果中的最高频率归一化展示，仅用于直观比较。',
+          },
+          {
+            question: '为什么数字没有被统计？',
+            answer:
+              '纯数字片段（如 42、2026）默认不作为「词」计入，以避免年份、序号污染高频词结果；包含字母的字母数字组合（如 7zip、abc123）仍会保留。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Word Frequency Analyzer is a fully local text-analysis tool. Paste any Chinese/English text to get per-word counts and percentages, with two lightweight Chinese modes (single characters or adjacent bigrams), built-in English stop words plus custom stop words, a sortable table, Top N limits, and CSV copy/download.',
+        coreFeatures: [
+          'Unicode-aware Latin tokenization supporting contractions and hyphenated words like don\'t and state-of-the-art',
+          'Two simple Chinese modes: per-character counts and adjacent-character bigrams',
+          '30+ built-in English stop words with a toggle, plus custom stop words separated by commas or spaces',
+          'Sort by count ascending/descending or alphabetically; Top N limit (0 = all); frequency bars',
+          'Copy results as CSV or download a .csv file; everything runs locally',
+        ],
+        howToUse: [
+          'Paste text into the input area; results update in real time',
+          'For mixed Chinese text, switch the tokenization mode to per-character or bigram',
+          'Adjust sorting and Top N, toggle built-in stop words, or add custom ones',
+          'Review counts and percentages in the table, then copy or export CSV',
+        ],
+        useCases: [
+          'Finding high-frequency words in copy or titles for SEO keyword work',
+          'Spotting recurring keywords in log excerpts',
+          'Profiling frequent characters/bigrams in Chinese text as a quick topic signal',
+        ],
+        privacyNote:
+          'All tokenization and counting happens locally in your browser; pasted text is never uploaded.',
+        faqs: [
+          {
+            question: 'Why only per-character and bigram modes for Chinese?',
+            answer:
+              'Full Chinese segmentation needs a dictionary or model, which is large and version-dependent. Per-character counting and adjacent bigrams (e.g. 我爱北京 → 我爱 / 爱北 / 北京) cover most high-frequency screening needs with zero dependencies.',
+          },
+          {
+            question: 'How is the percentage computed?',
+            answer:
+              'Frequency equals the word count divided by the total number of effective tokens after stop-word filtering. The bar is normalized against the highest frequency in the current result for visual comparison only.',
+          },
+          {
+            question: 'Why are numbers excluded?',
+            answer:
+              'Pure-number tokens like 42 or 2026 are not counted as words by default, preventing years and serial numbers from dominating the results; alphanumeric tokens containing letters (7zip, abc123) are kept.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
