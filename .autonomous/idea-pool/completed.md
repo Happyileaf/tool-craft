@@ -54,3 +54,8 @@
 | 20261029080305 | .editorconfig 文件生成器 | Web Tool | Exploration | `editorconfig-generator` / [PR #109](https://github.com/Happyileaf/tool-craft/pull/109) | 2026-10-30 | [详情](./idea-details/20261029080305.md) |
 | 20261030080722 | Soundex 英文读音编码计算器 | Web Tool | Exploration | `soundex-codec` / [PR #109](https://github.com/Happyileaf/tool-craft/pull/109) | 2026-10-30 | [详情](./idea-details/20261030080722.md) |
 | 20261030080723 | uuencode/uudecode 编解码器 | Web Tool | Existing Gap | `uuencode-codec` / [PR #109](https://github.com/Happyileaf/tool-craft/pull/109) | 2026-10-30 | [详情](./idea-details/20261030080723.md) |
+| 20261028202205 | 三角形求解器（已知三边/两边夹角/两角一边解三角形） | Web Tool | Exploration | `triangle-solver` / [PR #112](https://github.com/Happyileaf/tool-craft/pull/112) | 2026-10-30 | [详情](./idea-details/20261028202205.md) |
+| 20261029080306 | 一元二次 / 三次方程求根计算器 | Web Tool | Exploration | `polynomial-root-calculator` / [PR #112](https://github.com/Happyileaf/tool-craft/pull/112) | 2026-10-30 | [详情](./idea-details/20261029080306.md) |
+| 20261029140205 | 中文数字 ↔ 阿拉伯数字双向转换器（含大写金额用字） | Web Tool | Existing Gap | `chinese-number-converter` / [PR #112](https://github.com/Happyileaf/tool-craft/pull/112) | 2026-10-30 | [详情](./idea-details/20261029140205.md) |
+| 20261030140204 | Verhoeff / Damm 校验位计算器 | Web Tool | Exploration | `verhoeff-damm-checksum` / [PR #112](https://github.com/Happyileaf/tool-craft/pull/112) | 2026-10-30 | [详情](./idea-details/20261030140204.md) |
+| 20261030140205 | BMR 基础代谢与 TDEE 每日热量消耗计算器 | Web Tool | Exploration | `bmr-tdee-calculator` / [PR #112](https://github.com/Happyileaf/tool-craft/pull/112) | 2026-10-30 | [详情](./idea-details/20261030140205.md) |
