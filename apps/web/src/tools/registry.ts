@@ -14656,6 +14656,516 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'julian-date-converter',
+    name: '儒略日转换器',
+    nameEn: 'Julian Date Converter',
+    description:
+      '在公历 UTC 日期时间与儒略日 JD / 约化儒略日 MJD / Unix 时间戳之间双向换算，基于 Meeus 公式，支持 J2000.0 等天文历元。',
+    descriptionEn:
+      'Convert between UTC calendar date/time and Julian Date (JD), Modified Julian Date (MJD), and Unix timestamps in both directions, using the Meeus formula with support for astronomical epochs such as J2000.0.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/julian-date-converter',
+    iconName: 'Clock',
+    tags: ['儒略日', 'JD', 'MJD', '天文', 'J2000'],
+    tagsEn: ['Julian Date', 'JD', 'MJD', 'Astronomy', 'J2000'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '2451545.0',
+    doc: {
+      zh: {
+        whatIsIt:
+          '儒略日转换器是一款纯浏览器本地的天文时间换算工具：儒略日（Julian Date, JD）是以公元前 4713 年 1 月 1 日正午为起点、以连续天数（含小数）记录的时间系统，广泛用于天文学、卫星轨道计算与科学数据。本工具在 UTC 公历日期时间与 JD / MJD / Unix 时间戳之间双向换算，正向采用 Meeus《Astronomical Algorithms》第 7 章格里高利历公式，反向为其逐级反解。',
+        coreFeatures: [
+          '公历 UTC 日期时间 → JD / MJD / Unix 时间戳，秒可带三位小数',
+          'JD 数字 → UTC 公历日期时间 / MJD / Unix 时间戳，双向往返一致',
+          'Meeus 标准公式含世纪闰年修正（如 2100 年为非闰年），支持 1582-10-15 至 2100-12-31 格里高利历区间',
+          '内置 J2000.0（JD 2451545.0）与 Unix 历元（JD 2440587.5）基准，一键核对',
+          '严格的年月日时分秒校验（大小月、闰年、24 时制），非法输入即时报错',
+        ],
+        howToUse: [
+          '在左侧「公历 → 儒略日」卡片填写年、月、日、时、分、秒（UTC），结果实时更新',
+          '在右侧「儒略日 → 公历」卡片输入 JD 数字（如 2451545.0），即时显示对应 UTC 时间',
+          '点击 JD / MJD 旁的「复制」按钮获取结果值',
+          '底部提示说明了 JD 正午起算与 MJD 日界差异，换算跨日时可参考',
+        ],
+        useCases: [
+          '天文观测、星历表与轨道计算中的时间格式换算',
+          '科学数据（FITS、卫星日志）中 JD / MJD 字段的人工核对',
+          '校验程序中历法转换函数的标准向量（J2000.0、Unix 历元）',
+        ],
+        privacyNote:
+          '所有日期与儒略日计算均在浏览器本地完成，不向任何服务器发送输入数据。',
+        faqs: [
+          {
+            question: '为什么 JD 从正午 12 点开始而不是午夜？',
+            answer:
+              '这是儒略日的历史约定：一天从世界时正午起算，使天文学家夜间连续观测时日期不会在观测中途跳变。因此 J2000.0 = JD 2451545.0 对应 2000-01-01 12:00 UTC。',
+          },
+          {
+            question: 'JD 和 MJD 有什么区别？',
+            answer:
+              'MJD（约化儒略日）= JD − 2400000.5，日界在 UTC 0 时（午夜），数字更短，常用于工程与卫星领域。例如 J2000.0 正午的 JD 为 2451545.0，而 MJD 为 51544.5。',
+          },
+          {
+            question: '为什么最早只支持 1582 年？',
+            answer:
+              '1582-10-15 是格里高利历的颁行起始日，此前为儒略历（置闰规则不同）。本工具按格里高利历公式计算，超出区间会提示错误以避免给出看似精确实则错误的结果。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Julian Date Converter is a fully local astronomical time tool. The Julian Date (JD) is a continuous count of days (including fractions) beginning at noon on January 1, 4713 BC, widely used in astronomy, satellite orbit work, and scientific data. This tool converts bidirectionally between UTC calendar date/time and JD / MJD / Unix timestamps. The forward formula follows chapter 7 of Meeus, Astronomical Algorithms, for the Gregorian calendar, and the reverse direction inverts it step by step.',
+        coreFeatures: [
+          'UTC calendar date/time → JD / MJD / Unix timestamp, with sub-second precision',
+          'JD number → UTC calendar date/time / MJD / Unix timestamp, consistent round trips',
+          'Standard Meeus formula with the century leap-year correction (e.g. 2100 is not a leap year); supports the Gregorian range 1582-10-15 through 2100-12-31',
+          'Built-in J2000.0 (JD 2451545.0) and Unix epoch (JD 2440587.5) reference points',
+          'Strict validation of year/month/day/hour/minute/second (month lengths, leap years, 24-hour clock) with inline error messages',
+        ],
+        howToUse: [
+          'Fill year, month, day, hour, minute, second (UTC) in the left "Calendar → Julian Date" card; results update live',
+          'Enter a JD number (such as 2451545.0) in the right "Julian Date → Calendar" card to see the corresponding UTC time',
+          'Use the "Copy" button next to JD / MJD to grab the value',
+          'The footer note explains the JD noon origin and the MJD midnight boundary for cross-day conversions',
+        ],
+        useCases: [
+          'Converting time formats in astronomical observation, ephemerides, and orbit calculations',
+          'Manually checking JD / MJD fields in scientific data such as FITS files or satellite logs',
+          'Verifying standard test vectors (J2000.0, Unix epoch) for calendar-conversion code',
+        ],
+        privacyNote:
+          'All date and Julian Date math runs locally in your browser; no input is ever sent to a server.',
+        faqs: [
+          {
+            question: 'Why does the JD day start at noon instead of midnight?',
+            answer:
+              'It is a historical convention: the Julian day begins at 12:00 UT so astronomers observing through the night do not see the date change mid-observation. Hence J2000.0 = JD 2451545.0 corresponds to 2000-01-01 12:00 UTC.',
+          },
+          {
+            question: 'What is the difference between JD and MJD?',
+            answer:
+              'MJD (Modified Julian Date) = JD − 2400000.5 with the day boundary at UTC midnight, producing shorter numbers commonly used in engineering and satellite work. For example, at J2000.0 noon JD is 2451545.0 while MJD is 51544.5.',
+          },
+          {
+            question: 'Why does support only go back to 1582?',
+            answer:
+              '1582-10-15 is the first day of the Gregorian calendar; before it the Julian calendar used different leap-year rules. The tool applies the Gregorian formula and rejects out-of-range input rather than returning precise-looking but incorrect values.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ipv6-eui64-slaac',
+    name: 'EUI-64 / SLAAC IPv6 地址计算器',
+    nameEn: 'EUI-64 / SLAAC IPv6 Address Calculator',
+    description:
+      '由 48 位 MAC 地址插入 ff:fe 并翻转 U/L 位派生 EUI-64 接口标识符，生成 fe80::/64 链路本地地址，并可与任意 /64 前缀组合 SLAAC 地址。',
+    descriptionEn:
+      'Derive the EUI-64 interface identifier from a 48-bit MAC address (insert ff:fe, flip the U/L bit), build the fe80::/64 link-local address, and combine it with any /64 prefix for a SLAAC address.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ipv6-eui64-slaac',
+    iconName: 'Globe',
+    tags: ['IPv6', 'EUI-64', 'SLAAC', 'MAC', '链路本地'],
+    tagsEn: ['IPv6', 'EUI-64', 'SLAAC', 'MAC', 'Link-Local'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '00:1c:c0:ff:fe:80',
+    doc: {
+      zh: {
+        whatIsIt:
+          'EUI-64 / SLAAC IPv6 地址计算器是一款纯浏览器本地的网络工具：输入 48 位 MAC 地址，按照 RFC 4291 规则在 OUI 与设备标识之间插入 ff:fe、翻转首字节第 7 位（U/L 位），得到 64 位 EUI-64 接口标识符，并自动拼出 fe80::/64 链路本地地址；还可填入任意 /64 网络前缀组合出 SLAAC 全球单播地址。工具逐步展示插入字节与位翻转前后的对比，适合网络配置与 IPv6 教学排障。',
+        coreFeatures: [
+          '兼容 aa:bb:cc:dd:ee:ff、aa-bb-cc-dd-ee-ff、Cisco aabb.ccdd.eeff 及无分隔符写法',
+          '分步可视化：规范化 MAC → 插入 ff:fe → 翻转 U/L 位 → 接口标识符',
+          '生成符合 RFC 5952 零压缩规范的 fe80::/64 链路本地地址',
+          '支持任意可路由 /64 前缀（可省略掩码长度），组合 SLAAC 地址',
+          '非法 MAC、非 /64 掩码、畸形前缀逐条明确报错',
+        ],
+        howToUse: [
+          '在「MAC 地址」输入框填入网卡 MAC，结果实时更新',
+          '需要 SLAAC 全球地址时在「自定义 /64 前缀」填入如 2001:db8:abcd:0012::/64',
+          '点击示例按钮可快速填入 RFC 4291 经典向量与 Cisco 写法',
+          '点击接口标识符或地址旁的「复制」按钮获取结果',
+        ],
+        useCases: [
+          '配置路由器、服务器 IPv6 静态地址时核对 EUI-64 接口标识',
+          'IPv6 教学中讲解 SLAAC 无状态自动配置与 U/L 位含义',
+          '网络排障时对照设备 MAC 推算其链路本地地址',
+        ],
+        privacyNote:
+          '所有 MAC 与地址运算均在浏览器本地完成，不向任何服务器发送数据。',
+        faqs: [
+          {
+            question: '为什么要翻转首字节的第 7 位？',
+            answer:
+              '第 7 位是 U/L（Universal/Local）位：MAC 中为 0 表示厂商烧录的全局唯一地址，派生 IPv6 接口标识时按 RFC 4291 翻转为 1，表示由 EUI-64 映射而来；例如首字节 0x00 变为 0x02。',
+          },
+          {
+            question: '链路本地地址为什么以 fe80:: 开头？',
+            answer:
+              'RFC 4291 规定链路本地单播地址前缀为 fe80::/10，配合 /64 子网前缀与 EUI-64 接口标识，标准形式即 fe80::接口标识符，仅在本地链路有效、不可路由。',
+          },
+          {
+            question: 'SLAAC 生成的地址为什么和设备实际地址可能不同？',
+            answer:
+              '现代系统默认启用 RFC 4941 隐私扩展（临时地址）或稳定隐私地址（RFC 8981），实际使用的地址不一定是 EUI-64 形式。本工具计算的是经典 EUI-64/SLAAC 确定性结果，常用于服务器、路由器等关闭隐私扩展的场景。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The EUI-64 / SLAAC IPv6 Address Calculator is a fully local networking tool. Given a 48-bit MAC address, it follows RFC 4291: inserts ff:fe between the OUI and the device identifier, flips bit 7 (the U/L bit) of the first byte to produce the 64-bit EUI-64 interface identifier, and builds the fe80::/64 link-local address. A routable /64 prefix can be combined with the identifier to form a SLAAC global unicast address. Each step (byte insertion, bit flip) is shown explicitly.',
+        coreFeatures: [
+          'Accepts aa:bb:cc:dd:ee:ff, aa-bb-cc-dd-ee-ff, Cisco aabb.ccdd.eeff, and unseparated forms',
+          'Step-by-step view: normalize MAC → insert ff:fe → flip U/L bit → interface identifier',
+          'Emits the fe80::/64 link-local address in RFC 5952 compressed notation',
+          'Combines any routable /64 prefix (length optional) into a SLAAC address',
+          'Clear error messages for malformed MACs, non-/64 masks, and invalid prefixes',
+        ],
+        howToUse: [
+          'Enter the NIC MAC in the "MAC address" field; results update live',
+          'For a global SLAAC address, provide a /64 prefix such as 2001:db8:abcd:0012::/64',
+          'Use the sample buttons for the RFC 4291 vector and Cisco notation',
+          'Click "Copy" next to the interface identifier or addresses',
+        ],
+        useCases: [
+          'Verifying EUI-64 interface IDs when configuring static IPv6 on routers and servers',
+          'Teaching SLAAC stateless autoconfiguration and the meaning of the U/L bit',
+          'Inferring a device link-local address from its MAC during troubleshooting',
+        ],
+        privacyNote:
+          'All MAC and address math runs locally in your browser; no data is sent anywhere.',
+        faqs: [
+          {
+            question: 'Why flip bit 7 of the first byte?',
+            answer:
+              'Bit 7 is the U/L (Universal/Local) bit. In a burned-in MAC it is 0; RFC 4291 flips it to 1 when mapping to an IPv6 interface identifier, so the first byte 0x00 becomes 0x02.',
+          },
+          {
+            question: 'Why does the link-local address start with fe80::?',
+            answer:
+              'RFC 4291 reserves fe80::/10 for link-local unicast. With a /64 subnet prefix and the EUI-64 identifier the canonical address is fe80::interface-id, valid only on the local link and not routable.',
+          },
+          {
+            question: 'Why might the real device address differ?',
+            answer:
+              'Modern systems enable RFC 4941 privacy extensions (temporary addresses) or RFC 8981 stable private addresses by default, so live addresses are often not in EUI-64 form. This tool computes the deterministic EUI-64 result typically used on servers and routers with privacy extensions disabled.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ansi-color-generator',
+    name: 'ANSI 终端颜色码生成器',
+    nameEn: 'ANSI Terminal Color Code Generator',
+    description:
+      '可视化选择前景/背景色（标准 16 色、256 色、RGB 真彩）与文字样式，实时预览终端效果，生成 ANSI SGR 转义序列、JS 字符串字面量与 echo -e Shell 命令。',
+    descriptionEn:
+      'Pick foreground/background colors (standard 16, 256-color, truecolor RGB) and text styles, preview the terminal rendering, and generate ANSI SGR escape sequences, JS string literals, and echo -e shell commands.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ansi-color-generator',
+    iconName: 'Code',
+    tags: ['ANSI', '终端', '转义序列', 'SGR', 'CLI'],
+    tagsEn: ['ANSI', 'Terminal', 'Escape Sequence', 'SGR', 'CLI'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Hello, ANSI!',
+    doc: {
+      zh: {
+        whatIsIt:
+          'ANSI 终端颜色码生成器是一款纯浏览器本地的 CLI 辅助工具：通过界面选择前景色、背景色（标准 16 色、256 色调色板、RGB 真彩色三种色彩空间）与加粗、斜体、下划线等样式，工具即时在模拟终端中预览渲染效果，并构造对应的 ANSI SGR 转义序列（如 ESC[38;5;196m），同时给出可直接粘贴的 JS 字符串字面量与 echo -e Shell 命令，免去反复查表拼接转义码。',
+        coreFeatures: [
+          '三种色彩空间：标准 16 色（30–37/40–47、亮色 90–97/100–107）、256 色（38;5;n / 48;5;n）、RGB 真彩（38;2;r;g;b / 48;2;r;g;b）',
+          '八种文字样式：加粗、暗淡、斜体、下划线、闪烁、反色、隐藏、删除线，合并进单次 CSI',
+          '深色模拟终端实时 CSS 预览，含色板色块与闪烁动画',
+          '一键复制真实转义序列（ESC 为 U+001B）、\\x1b JS 字面量与 \\033 echo -e 命令',
+          '编号越界、RGB 分量非法、未知样式等输入逐条明确报错',
+        ],
+        howToUse: [
+          '在「文本」框输入要着色的内容，结果实时更新',
+          '为前景色/背景色选择色彩空间：标准 16 色直接挑选，256 色输入 0–255 编号，真彩输入 RGB 分量',
+          '勾选需要的样式（可多选），在右侧终端预览中查看效果',
+          '点击对应结果行的「复制」按钮，获取转义序列、JS 字面量或 Shell 命令',
+        ],
+        useCases: [
+          '开发 CLI 工具或日志库时快速拼接颜色转义码',
+          '编写 shell 脚本时生成 echo -e 着色命令',
+          '教学演示 ANSI SGR 参数与终端色彩空间区别',
+        ],
+        privacyNote:
+          '所有文本与颜色计算均在浏览器本地完成，不向任何服务器发送数据。',
+        faqs: [
+          {
+            question: '为什么复制出的转义序列在文本框里显示为 ESC？',
+            answer:
+              '真实序列中的 ESC 是不可见控制字符（U+001B），界面用可见的 ESC 字样展示；点击「复制」得到的仍是包含真实 U+001B 字节的原始序列。需要源码中可见的形式时请复制第二行 JS 字面量（\\x1b 转义）。',
+          },
+          {
+            question: '标准 16 色、256 色和真彩色有什么区别？',
+            answer:
+              '标准 16 色使用单个 SGR 编号（前景 30–37/90–97，背景 40–47/100–107），兼容性最好；256 色用 38;5;n / 48;5;n 访问调色板（0–15 为标准色、16–231 为 6×6×6 色立方、232–255 为灰阶）；真彩色用 38;2;r;g;b / 48;2;r;g;b 直接指定任意 RGB，需现代终端支持。',
+          },
+          {
+            question: '多个样式和颜色如何编码进一条序列？',
+            answer:
+              '所有 SGR 参数按「样式 → 前景 → 背景」顺序用分号连接，放在同一次 CSI（ESC[...m）中，例如加粗红字为 ESC[1;31m；文本结束后统一用 ESC[0m 复位，避免多次 CSI 拼接。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ANSI Terminal Color Code Generator is a fully local CLI helper. Choose foreground and background colors across three color spaces (standard 16 colors, 256-color palette, truecolor RGB) and styles such as bold or underline, preview the result in a simulated terminal, and get the assembled ANSI SGR escape sequence (e.g. ESC[38;5;196m) plus a paste-ready JS string literal and an echo -e shell command — no more looking up tables and hand-joining codes.',
+        coreFeatures: [
+          'Three color spaces: standard 16 (30–37/40–47, bright 90–97/100–107), 256-color (38;5;n / 48;5;n), truecolor RGB (38;2;r;g;b / 48;2;r;g;b)',
+          'Eight styles — bold, dim, italic, underline, blink, reverse, hidden, strikethrough — merged into one CSI',
+          'Live CSS preview in a dark simulated terminal with palette swatches and blink animation',
+          'Copy the real escape sequence (ESC is U+001B), the \\x1b JS literal, or the \\033 echo -e command',
+          'Clear errors for out-of-range indices, invalid RGB components, and unknown styles',
+        ],
+        howToUse: [
+          'Type the text to colorize in the text field; results update live',
+          'Pick a color space for foreground/background: a named standard color, a 0–255 palette index, or RGB components',
+          'Toggle any styles (multi-select) and inspect the terminal preview on the right',
+          'Click "Copy" on the result row for the escape sequence, JS literal, or shell command',
+        ],
+        useCases: [
+          'Building color escape codes while developing CLI tools or logging libraries',
+          'Generating echo -e commands for shell scripts',
+          'Teaching ANSI SGR parameters and terminal color spaces',
+        ],
+        privacyNote:
+          'All text and color computation runs locally in your browser; no data is sent anywhere.',
+        faqs: [
+          {
+            question: 'Why does the copied sequence show as ESC in the text area?',
+            answer:
+              'The real ESC is an invisible control character (U+001B); the UI renders it as the visible text ESC. Copying still yields the raw sequence containing the real U+001B byte. For a source-code-visible form, copy the second row — the JS literal with \\x1b escapes.',
+          },
+          {
+            question: 'What is the difference between 16 colors, 256 colors, and truecolor?',
+            answer:
+              'The standard 16 colors use one SGR number each (foreground 30–37/90–97, background 40–47/100–107) and are universally supported; 256-color uses 38;5;n / 48;5;n (0–15 standard, 16–231 a 6×6×6 cube, 232–255 grayscale); truecolor uses 38;2;r;g;b / 48;2;r;g;b for arbitrary RGB and requires a modern terminal.',
+          },
+          {
+            question: 'How are multiple styles and colors encoded in one sequence?',
+            answer:
+              'All SGR parameters are joined with semicolons in the order styles → foreground → background within a single CSI (ESC[...m), e.g. bold red is ESC[1;31m; ESC[0m resets everything after the text, avoiding multiple CSIs.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'jwk-thumbprint',
+    name: 'JWK Thumbprint 指纹计算器',
+    nameEn: 'JWK Thumbprint Calculator (RFC 7638)',
+    description:
+      '按 RFC 7638 规范化 JWK（RSA/EC/OKP/oct 必需成员白名单、词典序、紧凑 JSON），计算 SHA-256/384/512 摘要并输出 base64url 指纹，展示规范化中间结果。',
+    descriptionEn:
+      'Canonicalize a JWK per RFC 7638 (required-member whitelist for RSA/EC/OKP/oct, lexicographic order, compact JSON), hash with SHA-256/384/512, and emit the base64url thumbprint alongside the canonical intermediate JSON.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/jwk-thumbprint',
+    iconName: 'KeyRound',
+    tags: ['JWK', 'Thumbprint', 'RFC 7638', 'RFC 9278', 'OAuth'],
+    tagsEn: ['JWK', 'Thumbprint', 'RFC 7638', 'RFC 9278', 'OAuth'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '{"kty":"RSA","e":"AQAB","n":"..."}',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JWK Thumbprint 指纹计算器是一款纯浏览器本地的密码学辅助工具：粘贴 JSON Web Key（支持 RSA、EC、OKP 与对称密钥 oct），工具按 RFC 7638 剔除规范要求之外的成员（alg、use、kid、x5c 等），仅保留密钥类型必需成员并按成员名词典序排列、无空白紧凑序列化，再对 UTF-8 字节计算摘要，输出 base64url（无 padding）指纹。默认 SHA-256，可选 SHA-384 / SHA-512（RFC 9278）。同一公钥无论携带什么额外成员，指纹都唯一可复现。',
+        coreFeatures: [
+          'RFC 7638 §3.2 必需成员白名单：RSA=e/kty/n，EC=crv/kty/x/y，OKP=crv/kty/x，oct=k/kty',
+          '成员裁剪 + 词典序排序 + 无空白紧凑 JSON，中间结果完整展示便于核对',
+          'SHA-256（默认）/ SHA-384 / SHA-512（RFC 9278）三种摘要，base64url 无 padding 输出',
+          '固定内置 RFC 7638 §3.1 RSA 样例一键填入，可直接对照官方指纹',
+          '非法 JSON、缺少必需成员、未知 kty 均返回明确中文错误，不抛裸异常',
+        ],
+        howToUse: [
+          '将 JWK JSON 粘贴到左侧输入框（默认已填入 RFC 7638 §3.1 样例），结果实时计算',
+          '需要非标准哈希时在「哈希算法」中切换 SHA-384 或 SHA-512',
+          '对照「规范化 JSON」确认成员裁剪与排序是否符合预期',
+          '点击「复制」获取 thumbprint，可直接用于 DPoP jkt、客户端确认等场景',
+        ],
+        useCases: [
+          'OAuth 2.0 DPoP / mTLS 客户端绑定中计算 jkt（JWK 确认值）',
+          '密钥去重、识别与登记：为同一公钥生成唯一可复现标识',
+          '核对不同来源（PEM 转换、JWKS 端点）的 JWK 是否为同一把密钥',
+        ],
+        privacyNote:
+          'JWK 仅在浏览器本地解析与哈希（Web Crypto），不向任何服务器发送数据。',
+        faqs: [
+          {
+            question: '为什么同一个密钥带了 kid/alg 后指纹不变？',
+            answer:
+              'RFC 7638 规定指纹只纳入各 kty 的必需成员，kid、alg、use、x5c 等全部在规范化阶段剔除，再按成员名词典序紧凑序列化，因此额外成员不影响指纹，保证同一公钥指纹唯一可复现。',
+          },
+          {
+            question: 'thumbprint 为什么是 43 个字符而不是 64 位十六进制？',
+            answer:
+              'RFC 7638 规定对 SHA-256 的 32 字节摘要做 base64url 编码并去掉填充，结果固定 43 个字符（SHA-384 为 64、SHA-512 为 86）；它不是十六进制串，字符集为 A–Z、a–z、0–9、- 与 _。',
+          },
+          {
+            question: 'SHA-384 / SHA-512 指纹也符合 RFC 7638 吗？',
+            answer:
+              'RFC 7638 只定义 SHA-256 指纹；使用其他哈希算法的同名 thumbprint 由 RFC 9278（JSON Web Key Thumbprint URI）扩展定义，规范化方式完全相同，仅摘要算法不同，需与对端明确约定。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JWK Thumbprint Calculator is a fully local cryptography helper. Paste a JSON Web Key (RSA, EC, OKP, or symmetric oct) and the tool applies RFC 7638: strips members outside the required set (alg, use, kid, x5c, etc.), keeps only the members mandatory for the key type, orders them lexicographically, serializes compact JSON without whitespace, hashes the UTF-8 bytes, and emits the base64url (no padding) thumbprint. SHA-256 is the default; SHA-384/SHA-512 (RFC 9278) are optional. The same public key always yields the same reproducible fingerprint regardless of extra members.',
+        coreFeatures: [
+          'RFC 7638 §3.2 required-member whitelists: RSA=e/kty/n, EC=crv/kty/x/y, OKP=crv/kty/x, oct=k/kty',
+          'Member stripping, lexicographic ordering and compact JSON with the canonical intermediate shown for verification',
+          'SHA-256 (default) / SHA-384 / SHA-512 (RFC 9278) digests, base64url output without padding',
+          'Built-in one-click RFC 7638 §3.1 RSA sample matching the official thumbprint',
+          'Clear Chinese/error messages for malformed JSON, missing members, and unknown kty instead of raw exceptions',
+        ],
+        howToUse: [
+          'Paste the JWK JSON into the left editor (the RFC 7638 §3.1 sample is preloaded); the result updates live',
+          'Switch the hash algorithm to SHA-384 or SHA-512 when a non-standard digest is required',
+          'Check the canonical JSON to confirm member stripping and ordering',
+          'Click "Copy" to obtain the thumbprint for DPoP jkt or client confirmation use cases',
+        ],
+        useCases: [
+          'Computing the jkt JWK confirmation in OAuth 2.0 DPoP / mTLS bindings',
+          'Deduplicating, identifying and registering keys with a stable public-key identifier',
+          'Verifying JWKs from different sources (PEM conversion, JWKS endpoints) are the same key',
+        ],
+        privacyNote:
+          'The JWK is parsed and hashed locally in your browser via Web Crypto; no data is sent anywhere.',
+        faqs: [
+          {
+            question: 'Why does adding kid/alg leave the thumbprint unchanged?',
+            answer:
+              'RFC 7638 includes only the members required for the kty: kid, alg, use and x5c are stripped during canonicalization, which then sorts members lexicographically and emits compact JSON. Extra members therefore never affect the fingerprint, keeping it unique and reproducible per public key.',
+          },
+          {
+            question: 'Why is the thumbprint 43 characters instead of a 64-char hex string?',
+            answer:
+              'RFC 7638 base64url-encodes the 32-byte SHA-256 digest without padding, giving 43 characters (64 for SHA-384, 86 for SHA-512). It is not hexadecimal; the alphabet is A–Z, a–z, 0–9, "-" and "_".',
+          },
+          {
+            question: 'Are SHA-384/SHA-512 thumbprints still RFC 7638?',
+            answer:
+              'RFC 7638 defines only SHA-256. Thumbprints with other hash algorithms follow the same canonicalization but are specified by RFC 9278 (JSON Web Key Thumbprint URI); agree on the algorithm with the peer explicitly.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'geo-coordinate-converter',
+    name: '地理坐标格式转换器（DD / DDM / DMS）',
+    nameEn: 'Geo Coordinate Format Converter (DD / DDM / DMS)',
+    description:
+      '在十进制度（DD）、度分（DDM）与度分秒（DMS）之间互转地理坐标，兼容 N/S/E/W 半球字母与正负号写法，支持单点实时转换与批量逐行解析，并校验纬度/经度取值范围。',
+    descriptionEn:
+      'Convert geographic coordinates between decimal degrees (DD), degrees-decimal-minutes (DDM) and degrees-minutes-seconds (DMS), accepting N/S/E/W hemisphere letters or signed notation, with live single-point conversion, line-by-line batch parsing, and range validation.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/geo-coordinate-converter',
+    iconName: 'Radical',
+    tags: ['地理坐标', '经纬度', '度分秒', 'DMS', 'GIS'],
+    tagsEn: ['Geo Coordinate', 'Lat/Lon', 'DMS', 'DDM', 'GIS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '31.2304, 121.4737',
+    doc: {
+      zh: {
+        whatIsIt:
+          '地理坐标格式转换器是一款纯浏览器本地的角度换算工具：在十进制度（DD，如 31.2304）、度分（DDM，如 31°13.8240′N）与度分秒（DMS，如 31°13′49.440″N）三种常见经纬度表示法之间互转，兼容半球字母（N/S/E/W）写在前缀或后缀、以及正负号两种写法，并校验纬度 -90~90、经度 -180~180 的取值范围。支持单点实时转换与批量逐行（每行「纬度, 经度」）解析，错误行与空行逐行标注。',
+        coreFeatures: [
+          'DD / DDM / DMS 三种表示法互转：DMS 秒保留 3 位小数、DDM 分保留 4 位小数，自动处理 60 进位',
+          '兼容 N31°13′49″、31 13 49 N、-31.2304、121°28′2.4″E 等常见写法与 °\'″ 各类分隔符',
+          '单点模式纬度/经度双输入，同时展示三种格式结果并高亮目标格式，逐行一键复制',
+          '批量模式按逗号/中文逗号/分号拆分「纬度, 经度」，带行号表格展示，空行保留并标注，错误行给出具体原因',
+          '严格范围与分量校验：纬度 |lat| ≤ 90、经度 |lon| ≤ 180，分/秒必须小于 60，半球字母与轴不匹配时报错',
+        ],
+        howToUse: [
+          '单点模式：在纬度、经度输入框填入任意一种写法的坐标，下方实时给出 DD/DDM/DMS 三种结果',
+          '用顶部格式切换按钮选择目标格式（高亮显示），点击对应结果行的「复制」获取文本',
+          '批量模式：每行输入「纬度, 经度」，表格逐行显示转换结果与状态（正常/空行/错误原因）',
+          '点击「复制全部成功行」可一次性导出目标格式的全部有效坐标',
+        ],
+        useCases: [
+          '地图 / GIS / 物流场景中对齐不同来源坐标的表示格式',
+          '将设备、测绘数据中的度分秒坐标换算为 API 需要的十进制度',
+          '批量清洗坐标清单时快速定位越界与格式错误行',
+        ],
+        privacyNote:
+          '所有解析与角度换算均在浏览器本地完成，不向任何服务器发送坐标数据。',
+        faqs: [
+          {
+            question: '为什么不提供两点距离和方位角计算？',
+            answer:
+              '工具集中的「大圆距离与方位角计算器」已基于 Haversine 公式覆盖距离与方位角计算，本工具专注 DD/DDM/DMS 表示法互转与范围校验，避免功能重叠。坐标系统（WGS84/GCJ02/BD09）偏移则由「坐标系转换器」处理。',
+          },
+          {
+            question: 'S31°14′ 和 -31°14′ 等价吗？',
+            answer:
+              '等价。前缀或后缀的 S/W 半球字母与开头负号都表示取负：S31°14′、31°14′S 与 -31°14′ 解析为同一纬度值；N/E 与正号同理。若同时给出半球字母和负号，以负值为准。',
+          },
+          {
+            question: '秒保留 3 位小数会引入误差吗？',
+            answer:
+              'DMS 输出的秒分量保留 3 位小数（约 3 厘米级别的角度精度），DDM 的分保留 4 位，DD 保留 6 位；格式化时若四舍五入造成秒或分达到 60，会自动向上进位。对一般地图与 API 场景精度足够，双向往返在显示精度内一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Geo Coordinate Format Converter is a fully local angle-conversion tool: it converts between the three common latitude/longitude notations — decimal degrees (DD, e.g. 31.2304), degrees-decimal-minutes (DDM, e.g. 31°13.8240′N) and degrees-minutes-seconds (DMS, e.g. 31°13′49.440″N). It accepts hemisphere letters (N/S/E/W) as prefix or suffix or signed notation, validates latitude within -90..90 and longitude within -180..180, and offers live single-point conversion plus line-by-line batch parsing ("latitude, longitude" per line) with per-line error and blank-line annotations.',
+        coreFeatures: [
+          'Bidirectional DD / DDM / DMS conversion: seconds kept to 3 decimals, minutes to 4, with automatic 60-carry handling',
+          'Accepts N31°13′49″, 31 13 49 N, -31.2304, 121°28′2.4″E and other common forms with °\'″ or space separators',
+          'Single-point mode shows all three notations at once for lat/lon, highlights the selected target format, with per-row copy',
+          'Batch mode splits on comma / Chinese comma / semicolon, renders a line-numbered table, keeps blank lines annotated, and states the exact error per failed line',
+          'Strict validation: |lat| ≤ 90, |lon| ≤ 180, minutes/seconds below 60, and hemisphere-axis mismatch errors',
+        ],
+        howToUse: [
+          'In single-point mode, enter latitude and longitude in any supported notation; all three DD/DDM/DMS results update live',
+          'Use the top format toggle to choose the target format (highlighted), then click "Copy" on a result row',
+          'In batch mode, put "latitude, longitude" on each line; the table shows converted results and per-line status',
+          'Click "Copy all successful rows" to export every valid coordinate in the target format at once',
+        ],
+        useCases: [
+          'Aligning coordinate notations from different sources in map / GIS / logistics workflows',
+          'Converting DMS coordinates from survey or device data into decimal degrees required by APIs',
+          'Cleaning coordinate lists in bulk while pinpointing out-of-range and malformed rows',
+        ],
+        privacyNote:
+          'All parsing and angle math runs locally in your browser; coordinate data is never sent to a server.',
+        faqs: [
+          {
+            question: 'Why is there no distance or bearing calculation?',
+            answer:
+              'The "Great Circle Distance & Bearing Calculator" already covers distance and bearing via the Haversine formula, so this tool focuses on DD/DDM/DMS notation conversion and range validation to avoid overlap. Coordinate-system shifts (WGS84/GCJ02/BD09) are handled by the coordinate-system converter.',
+          },
+          {
+            question: 'Are S31°14′ and -31°14′ equivalent?',
+            answer:
+              'Yes. A leading or trailing S/W hemisphere letter and a leading minus sign both negate the value: S31°14′, 31°14′S and -31°14′ parse to the same latitude; N/E and the plus sign work the same way. If both a hemisphere letter and a minus sign are given, the value is treated as negative.',
+          },
+          {
+            question: 'Does 3-decimal rounding of seconds introduce error?',
+            answer:
+              'DMS seconds are shown to 3 decimals (angle precision around 3 centimeters on the ground), DDM minutes to 4, and DD to 6. If rounding pushes seconds or minutes to 60, the carry is applied automatically. This is ample for typical map and API use, and round trips stay consistent within the displayed precision.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
