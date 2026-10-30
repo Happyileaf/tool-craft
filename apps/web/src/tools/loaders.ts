@@ -165,4 +165,5 @@ export const toolLoaders: Record<
   'chinese-number-converter': () => import('./chinese-number-converter'),
   'triangle-solver': () => import('./triangle-solver'),
   'polynomial-root-calculator': () => import('./polynomial-root-calculator'),
+  'tcpip-checksum': () => import('./tcpip-checksum'),
 };

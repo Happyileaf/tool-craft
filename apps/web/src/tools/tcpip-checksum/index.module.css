@@ -1,0 +1,89 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.addressRow {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.addressItem {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  color: rgb(107 114 128);
+}
+
+.inputArea {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+
+.resultRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgb(229 231 235);
+}
+
+.resultName {
+  flex: 0 0 120px;
+  font-weight: 600;
+}
+
+.resultHex {
+  flex: 0 0 140px;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  color: rgb(37 99 235);
+}
+
+.resultHexLong {
+  flex: 1;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  word-break: break-all;
+  color: rgb(37 99 235);
+}
+
+.resultDec {
+  flex: 0 0 100px;
+  text-align: right;
+  color: rgb(107 114 128);
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+
+.hint {
+  color: rgb(107 114 128);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 12px;
+}

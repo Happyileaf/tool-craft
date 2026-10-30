@@ -14147,6 +14147,107 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'tcpip-checksum',
+    name: 'TCP/IP 互联网校验和计算器',
+    nameEn: 'TCP/IP Internet Checksum Calculator',
+    description:
+      '按 RFC 1071 计算或校验 IPv4 首部、ICMP、TCP、UDP 的 16 位反码校验和，TCP/UDP 自动拼接伪首部，输出校验和与回填后报文。',
+    descriptionEn:
+      'Compute or verify the RFC 1071 16-bit ones-complement checksum for IPv4 headers, ICMP, TCP, and UDP, with automatic pseudo-header for TCP/UDP, outputting the value and filled packet.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/tcpip-checksum',
+    iconName: 'Globe',
+    tags: ['TCP', 'UDP', 'IPv4', 'RFC1071', '校验和'],
+    tagsEn: ['TCP', 'UDP', 'IPv4', 'RFC1071', 'Checksum'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'TCP/IP 互联网校验和计算器是一款纯浏览器本地的网络协议调试工具，按 RFC 1071 定义的 16 位反码求和算法工作：支持裸报文（IPv4 首部、ICMP）以及自动拼接 12 字节伪首部的 TCP（RFC 793）/ UDP（RFC 768）段，输出校验和值与回填后的完整报文。',
+        coreFeatures: [
+          '三种模式：IPv4/ICMP 裸报文、TCP 伪首部、UDP 伪首部',
+          '生成模式：自动将校验和字段清零后计算，并回填到正确偏移（TCP=16、UDP=6）',
+          '校验模式：对回填后的完整报文（含伪首部）求和，结果为 0xFFFF 即通过',
+          '接受空格/逗号分隔、连写与 0x 前缀的十六进制输入，奇数长度按 RFC 补 0 处理',
+          '一键复制校验和与回填报文，全程本地运算',
+        ],
+        howToUse: [
+          '选择报文模式：IPv4/ICMP、TCP 或 UDP',
+          '在十六进制输入框粘贴报文，校验和字段可填任意值，计算时会自动清零',
+          'TCP/UDP 模式填写源 IPv4 与目的 IPv4 地址；raw 模式确认校验和字段偏移（IPv4 首部为 10）',
+          '结果卡片实时展示 0x 校验和、十进制值与回填后报文，并给出校验结论',
+        ],
+        useCases: [
+          '协议栈 / 网卡驱动开发时核对 TCP/UDP 校验和实现',
+          '抓包分析中验证报文校验和字段是否正确',
+          '嵌入式网络课程中手工演算反码求和与伪首部',
+        ],
+        privacyNote:
+          '所有报文解析与校验和运算均在浏览器本地完成，输入的报文内容不会上传或离开设备。',
+        faqs: [
+          {
+            question: 'TCP/UDP 为什么需要伪首部？',
+            answer:
+              '伪首部由源地址、目的地址、协议号与段长度构成，目的是让接收端确认报文确实送达正确的主机与协议，防止路由错误后被错误接收。它只参与校验和计算，不会在线上传输。',
+          },
+          {
+            question: '为什么校验时求和结果是 0xFFFF 而不是 0？',
+            answer:
+              '反码算术下，对「数据 + 正确校验和」求和得到 -0，其二进制为全 1（0xFFFF）。部分实现以进位回卷后取低 16 位为 0 判等，二者等价，本工具统一按 0xFFFF 判定。',
+          },
+          {
+            question: 'UDP 校验和不是可以为 0 吗？',
+            answer:
+              'IPv4 中 UDP 允许把校验和字段传 0 表示发送方未计算校验；本工具始终给出真实计算值，是否在报文中使用 0 由协议实现自行决定。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The TCP/IP Internet Checksum Calculator is a fully local network-protocol debugging tool implementing the RFC 1071 16-bit ones-complement sum. It supports raw packets (IPv4 headers, ICMP) and TCP (RFC 793) / UDP (RFC 768) segments with an automatically built 12-byte pseudo-header, outputting both the checksum value and the packet with the field filled in.',
+        coreFeatures: [
+          'Three modes: raw IPv4/ICMP, TCP with pseudo-header, and UDP with pseudo-header',
+          'Generate: zeroes the checksum field, computes it, and fills it at the right offset (TCP=16, UDP=6)',
+          'Verify: sums the complete filled packet (plus pseudo-header); 0xFFFF means valid',
+          'Accepts hex input with spaces/commas, run-on bytes, and 0x prefix; odd length is zero-padded per the RFC',
+          'One-click copy of the value and the filled packet; everything runs locally',
+        ],
+        howToUse: [
+          'Choose the packet mode: IPv4/ICMP, TCP, or UDP',
+          'Paste the packet as hex; the checksum field may hold any value because it is zeroed during calculation',
+          'For TCP/UDP enter source and destination IPv4 addresses; in raw mode confirm the checksum offset (10 for IPv4 headers)',
+          'The result card shows the 0x checksum, its decimal value, the filled packet, and the verdict in real time',
+        ],
+        useCases: [
+          'Cross-checking TCP/UDP checksum code while developing a stack or NIC driver',
+          'Validating checksum fields during packet capture analysis',
+          'Working through ones-complement sums and pseudo-headers in networking courses',
+        ],
+        privacyNote:
+          'All packet parsing and checksum arithmetic happens locally in your browser; pasted packets are never uploaded.',
+        faqs: [
+          {
+            question: 'Why do TCP/UDP need a pseudo-header?',
+            answer:
+              'The pseudo-header (source/destination address, protocol, segment length) lets the receiver confirm the packet reached the right host and protocol, preventing misdelivered segments from being accepted. It only feeds the checksum and is never transmitted.',
+          },
+          {
+            question: 'Why does verification compare against 0xFFFF instead of 0?',
+            answer:
+              'In ones-complement arithmetic, summing data plus the correct checksum yields -0, represented as all ones (0xFFFF). Equivalent implementations check that the folded sum is 0; this tool uses the 0xFFFF convention.',
+          },
+          {
+            question: "Isn't the UDP checksum allowed to be zero?",
+            answer:
+              'Over IPv4 a sender may transmit 0 to mean "no checksum computed". This tool always shows the real computed value; whether to place 0 in the packet is left to the protocol implementation.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
