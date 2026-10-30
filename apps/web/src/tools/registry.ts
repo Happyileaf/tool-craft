@@ -13116,6 +13116,110 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'soundex-codec',
+    name: 'Soundex 英语读音编码器',
+    nameEn: 'Soundex Phonetic Code Generator',
+    description:
+      '按经典 US Census / NARA American Soundex 规则把英文姓氏编码为「首字母 + 3 位数字」的 4 位读音码：B/F/P/V→1、C/G/J/K/Q/S/X/Z→2、D/T→3、L→4、M/N→5、R→6，相邻同音辅音只编码一次，元音（含 Y）起分隔作用，H/W 不隔断同音合并，不足补 0、超出截断。支持逐字符推导、多行批量编码与同音分组，用于族谱检索与记录链接（record linkage）。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Encode English surnames into the 4-character American Soundex code (first letter plus 3 digits) using the classic US Census / NARA rules: B/F/P/V→1, C/G/J/K/Q/S/X/Z→2, D/T→3, L→4, M/N→5, R→6; adjacent same-sounding consonants collapse into one, vowels (including Y) separate, H/W do not, and the result is zero-padded and truncated. Offers a per-character derivation, multi-line batch encoding and homophone grouping for genealogical lookup and record linkage. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/soundex-codec',
+    iconName: 'Type',
+    tags: ['Soundex', '读音编码', '语音算法', '姓氏匹配', '族谱', '模糊检索'],
+    tagsEn: ['Soundex', 'Phonetic Code', 'Surname Matching', 'Genealogy', 'Fuzzy Search', 'Record Linkage'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Robert\nRupert\nAshcraft\nTymczak\nHoneyman',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Soundex 英语读音编码器是一款纯浏览器本地运行的语音编码工具，按 20 世纪初美国人口普查确立的 American Soundex 规则，把英文姓氏压缩为「首字母 + 3 位数字」的 4 位编码，使拼写不同但读音相近的姓氏（如 Robert 与 Rupert）得到相同编码，广泛用于族谱检索、人口记录链接与去重。',
+        coreFeatures: [
+          '经典规则：首字母保留，辅音按读音映射 1–6，结果固定 4 位，不足补 0、超出截断',
+          '逐字符推导：展示首个单词每个字母的合并、分隔或追加依据，便于学习核对',
+          '批量处理：每行可放一个或多个单词，无字母的非法 token 原样保留并逐行告警',
+          '同音分组：自动把编码相同的单词聚合到一起，直观查看读音近似的姓氏',
+          '纯本地计算：零新增依赖，输入内容不发起任何网络请求',
+        ],
+        howToUse: [
+          '在左侧输入框粘贴英文单词，每行一个或用空格分隔多个单词',
+          '右侧实时输出对应的 4 位 Soundex 编码',
+          '「逐字符推导」卡片展示首个单词的完整编码过程',
+          '「同音分组」卡片按编码聚合读音相近的单词（绿色标签表示组内多于一个）',
+          '点击「复制」获取批量编码结果',
+        ],
+        useCases: [
+          '族谱与人口普查检索：按读音找到拼写不同的同一姓氏变体',
+          '记录链接与去重：在历史档案、医院或客户数据中合并疑似同一人的记录',
+          '学习语音算法：理解 Soundex 同音合并、元音分隔与 H/W 规则',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；输入的姓名等内容不会离开设备。',
+        faqs: [
+          {
+            question: '为什么 Tymczak 编码是 T522 而不是 T520？',
+            answer:
+              '按 NARA 规则，Y 与 A/E/I/O/U 一样作为元音分隔符：T 保留，Y 不编码但重置同音合并，M 记 5；C 记 2，Z 与 C 相邻同音被合并，A 再次分隔，K 记 2，故为 T522。本工具内置该标准向量自测。',
+          },
+          {
+            question: 'Soundex 能处理名字或非英语词汇吗？',
+            answer:
+              '算法本身只看字母的读音分组，对任何拉丁字母串都能输出编码，但它为英语姓氏设计，对非英语发音（如汉语拼音、法语小舌音）近似效果有限，可作为模糊线索而非唯一判据。',
+          },
+          {
+            question: '两个单词编码相同就一定是同一个姓氏吗？',
+            answer:
+              '不一定。4 位编码只有 26×6³ 种组合，碰撞并不少见（如 Lee 与 Lew 都是 L000）。Soundex 用于缩小候选范围，实际记录链接还应结合名字、日期、地点等字段综合判断。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Soundex Phonetic Code Generator is a fully browser-local tool that compresses English surnames into a 4-character code (first letter plus 3 digits) using the American Soundex rules established for the early-20th-century US Census. Differently spelled but similar-sounding surnames—such as Robert and Rupert—share the same code, making Soundex a staple of genealogical lookup, census record linkage and deduplication.',
+        coreFeatures: [
+          'Classic rules: first letter retained, consonants mapped to digits 1–6, fixed 4-character output with zero padding and truncation',
+          'Per-character derivation: every letter of the first word is shown as merged, separated or appended, for learning and verification',
+          'Batch processing: one or many words per line; tokens without letters are kept as-is with line-numbered warnings',
+          'Homophone grouping: words sharing a code are clustered together, surfacing similar-sounding surnames',
+          '100% local computation with zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'Paste English words into the left editor, one per line or several separated by spaces',
+          'The right side shows the 4-character Soundex codes live',
+          'The derivation card walks through the encoding of the first word character by character',
+          'The grouping card clusters words by code (a green tag means the group has more than one word)',
+          'Click Copy to grab the batch results',
+        ],
+        useCases: [
+          'Genealogy and census research: finding spelling variants of a surname by pronunciation',
+          'Record linkage and deduplication: merging records that likely refer to the same person in archives, hospitals or customer data',
+          'Learning phonetic algorithms: same-sound collapsing, vowel separation and the H/W rules',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser via zero-dependency pure functions. No network requests are made, so names and other input never leave your device.',
+        faqs: [
+          {
+            question: 'Why is Tymczak encoded as T522 instead of T520?',
+            answer:
+              'Under the NARA rules Y acts as a vowel separator like A/E/I/O/U: T is retained, Y is skipped but resets same-sound merging, M gives 5, C gives 2, adjacent Z collapses with C, A separates again, and K gives 2—hence T522. This standard vector is covered by the built-in tests.',
+          },
+          {
+            question: 'Does Soundex work for given names or non-English words?',
+            answer:
+              'The algorithm emits a code for any Latin-letter string because it only inspects letter groups, but it was designed for English surnames. Approximation quality is limited for other phonetics (such as Hanyu Pinyin or French uvular sounds), so treat its output as a fuzzy hint rather than a verdict.',
+          },
+          {
+            question: 'Does the same code mean two words are the same surname?',
+            answer:
+              'No. With only 26×6³ possible codes, collisions are common (Lee and Lew are both L000). Soundex narrows candidates; real record linkage should also weigh given names, dates, locations and other fields.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

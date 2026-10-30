@@ -155,4 +155,5 @@ export const toolLoaders: Record<
   'sitemap-generator': () => import('./sitemap-generator'),
   'markdown-toc-generator': () => import('./markdown-toc-generator'),
   'web-manifest-generator': () => import('./web-manifest-generator'),
+  'soundex-codec': () => import('./soundex-codec'),
 };
