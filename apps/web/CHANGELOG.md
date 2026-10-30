@@ -4,7 +4,7 @@
 
 ## 日志
 
-## 2026-10-30 ：【Agent自主迭代】新增 10 个文本脱敏、提交规范、校验和、排版留白、DNS 运维与开发 / SEO 配置工具
+## 2026-10-30 ：【Agent自主迭代】新增 15 个文本脱敏、提交规范、校验和、排版留白、DNS 运维、开发 / SEO 配置、字幕转换、读音编码与 ID / 遗留编码工具
 
 - **新增**：PII 敏感信息脱敏工具（pii-mask）— 按手机号、身份证号、银行卡号、邮箱、IPv4 / IPv6 地址、API Key 等规则识别敏感信息并以 `*` / `#` 掩码或整体替换，支持逐行批量、自定义掩码字符与保留前后位数，纯本地正则识别不上传数据
 - **新增**：Conventional Commits 提交信息生成器（conventional-commit-generator）— 表单选择 type / scope / 破坏性变更并填写描述与正文，实时生成符合 Conventional Commits 1.0.0 规范的提交信息，内置 feat / fix / docs 等全部类型说明与复制、载入示例
@@ -16,6 +16,11 @@
 - **新增**：sitemap.xml 生成器（sitemap-generator）— 粘贴 URL 清单并设置全局 lastmod / changefreq / priority，生成符合 sitemaps.org 协议的 XML 站点地图，自动 XML 转义，非法 URL 报错且超过 5 万条提示拆分
 - **新增**：Markdown 目录（TOC）生成器（markdown-toc-generator）— 粘贴 Markdown 自动提取各级标题，生成带 GitHub 风格锚点的嵌套目录，支持有序 / 无序列表、层级范围过滤与一键插回原文，围栏代码块与转义 `#` 自动忽略
 - **新增**：Web App Manifest 生成器（web-manifest-generator）— 填写应用名、图标（sizes / type / purpose）、shortcuts、主题色与显示模式等表单，实时生成 PWA manifest.json 与配套 head 引入片段，必填项、颜色与 URL 格式自动校验，空字段自动省略
+- **新增**：SRT ↔ WebVTT 字幕转换器（srt-vtt-converter）— 在 SRT 与 WebVTT 之间双向转换，处理逗号 / 点时间戳分隔符、WEBVTT 文件头、NOTE / REGION / STYLE 块、Cue 编号与定位设置，支持整体毫秒级时间轴平移，非法时间戳与负偏移报错
+- **新增**：UUID v7 生成器（uuid-v7-generator）— 按 RFC 9562 批量生成 48 位毫秒时间戳前缀的时间有序 UUID v7，批内严格单调递增（rand_b / rand_a 进位），支持反解时间戳与随机段、宽容花括号 / urn:uuid: 输入，基于 crypto.getRandomValues 纯本地生成
+- **新增**：.editorconfig 文件生成器（editorconfig-generator）— 表单配置 root 标记、缩进风格与大小、行尾符、字符集、末尾换行与行尾去空格，勾选 JS / TS、JSON / YAML、Markdown、Makefile、HTML / CSS 预设生成覆盖段，实时预览并支持反向解析既有 .editorconfig 回填表单
+- **新增**：Soundex 英文读音编码计算器（soundex-codec）— 按 American Soundex（NARA）规则把英文姓名编码为「首字母 + 3 位数字」，实现相邻同音合并、元音分隔与 H / W 不隔断规则，支持逐词批量、同音分组与逐字符推导，内置 Robert / Ashcraft / Tymczak 标准向量
+- **新增**：uuencode / uudecode 编解码器（uuencode-codec）— 在文本与经典 Unix uuencode 格式（`begin <mode> <name>` / 6 位分组 / 45 字节分行 / `` ` `` 结束行）间双向转换，解析文件名与权限、长度字节校验截断坏行，兼容空格替代反引号，经典 `Cat`→`#0V%T` 向量可验
 
 ## 2026-10-29 ：【Agent自主迭代】新增 20 个证照校验、地址换算、逻辑运算、周历、区间整理、编码、工程计算、文本抽取、卡校验、统计数学日期与密码学/JSON 工具
 
