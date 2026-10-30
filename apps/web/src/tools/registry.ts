@@ -14656,6 +14656,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'julian-date-converter',
+    name: '儒略日转换器',
+    nameEn: 'Julian Date Converter',
+    description:
+      '在公历 UTC 日期时间与儒略日 JD / 约化儒略日 MJD / Unix 时间戳之间双向换算，基于 Meeus 公式，支持 J2000.0 等天文历元。',
+    descriptionEn:
+      'Convert between UTC calendar date/time and Julian Date (JD), Modified Julian Date (MJD), and Unix timestamps in both directions, using the Meeus formula with support for astronomical epochs such as J2000.0.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/julian-date-converter',
+    iconName: 'Clock',
+    tags: ['儒略日', 'JD', 'MJD', '天文', 'J2000'],
+    tagsEn: ['Julian Date', 'JD', 'MJD', 'Astronomy', 'J2000'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '2451545.0',
+    doc: {
+      zh: {
+        whatIsIt:
+          '儒略日转换器是一款纯浏览器本地的天文时间换算工具：儒略日（Julian Date, JD）是以公元前 4713 年 1 月 1 日正午为起点、以连续天数（含小数）记录的时间系统，广泛用于天文学、卫星轨道计算与科学数据。本工具在 UTC 公历日期时间与 JD / MJD / Unix 时间戳之间双向换算，正向采用 Meeus《Astronomical Algorithms》第 7 章格里高利历公式，反向为其逐级反解。',
+        coreFeatures: [
+          '公历 UTC 日期时间 → JD / MJD / Unix 时间戳，秒可带三位小数',
+          'JD 数字 → UTC 公历日期时间 / MJD / Unix 时间戳，双向往返一致',
+          'Meeus 标准公式含世纪闰年修正（如 2100 年为非闰年），支持 1582-10-15 至 2100-12-31 格里高利历区间',
+          '内置 J2000.0（JD 2451545.0）与 Unix 历元（JD 2440587.5）基准，一键核对',
+          '严格的年月日时分秒校验（大小月、闰年、24 时制），非法输入即时报错',
+        ],
+        howToUse: [
+          '在左侧「公历 → 儒略日」卡片填写年、月、日、时、分、秒（UTC），结果实时更新',
+          '在右侧「儒略日 → 公历」卡片输入 JD 数字（如 2451545.0），即时显示对应 UTC 时间',
+          '点击 JD / MJD 旁的「复制」按钮获取结果值',
+          '底部提示说明了 JD 正午起算与 MJD 日界差异，换算跨日时可参考',
+        ],
+        useCases: [
+          '天文观测、星历表与轨道计算中的时间格式换算',
+          '科学数据（FITS、卫星日志）中 JD / MJD 字段的人工核对',
+          '校验程序中历法转换函数的标准向量（J2000.0、Unix 历元）',
+        ],
+        privacyNote:
+          '所有日期与儒略日计算均在浏览器本地完成，不向任何服务器发送输入数据。',
+        faqs: [
+          {
+            question: '为什么 JD 从正午 12 点开始而不是午夜？',
+            answer:
+              '这是儒略日的历史约定：一天从世界时正午起算，使天文学家夜间连续观测时日期不会在观测中途跳变。因此 J2000.0 = JD 2451545.0 对应 2000-01-01 12:00 UTC。',
+          },
+          {
+            question: 'JD 和 MJD 有什么区别？',
+            answer:
+              'MJD（约化儒略日）= JD − 2400000.5，日界在 UTC 0 时（午夜），数字更短，常用于工程与卫星领域。例如 J2000.0 正午的 JD 为 2451545.0，而 MJD 为 51544.5。',
+          },
+          {
+            question: '为什么最早只支持 1582 年？',
+            answer:
+              '1582-10-15 是格里高利历的颁行起始日，此前为儒略历（置闰规则不同）。本工具按格里高利历公式计算，超出区间会提示错误以避免给出看似精确实则错误的结果。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Julian Date Converter is a fully local astronomical time tool. The Julian Date (JD) is a continuous count of days (including fractions) beginning at noon on January 1, 4713 BC, widely used in astronomy, satellite orbit work, and scientific data. This tool converts bidirectionally between UTC calendar date/time and JD / MJD / Unix timestamps. The forward formula follows chapter 7 of Meeus, Astronomical Algorithms, for the Gregorian calendar, and the reverse direction inverts it step by step.',
+        coreFeatures: [
+          'UTC calendar date/time → JD / MJD / Unix timestamp, with sub-second precision',
+          'JD number → UTC calendar date/time / MJD / Unix timestamp, consistent round trips',
+          'Standard Meeus formula with the century leap-year correction (e.g. 2100 is not a leap year); supports the Gregorian range 1582-10-15 through 2100-12-31',
+          'Built-in J2000.0 (JD 2451545.0) and Unix epoch (JD 2440587.5) reference points',
+          'Strict validation of year/month/day/hour/minute/second (month lengths, leap years, 24-hour clock) with inline error messages',
+        ],
+        howToUse: [
+          'Fill year, month, day, hour, minute, second (UTC) in the left "Calendar → Julian Date" card; results update live',
+          'Enter a JD number (such as 2451545.0) in the right "Julian Date → Calendar" card to see the corresponding UTC time',
+          'Use the "Copy" button next to JD / MJD to grab the value',
+          'The footer note explains the JD noon origin and the MJD midnight boundary for cross-day conversions',
+        ],
+        useCases: [
+          'Converting time formats in astronomical observation, ephemerides, and orbit calculations',
+          'Manually checking JD / MJD fields in scientific data such as FITS files or satellite logs',
+          'Verifying standard test vectors (J2000.0, Unix epoch) for calendar-conversion code',
+        ],
+        privacyNote:
+          'All date and Julian Date math runs locally in your browser; no input is ever sent to a server.',
+        faqs: [
+          {
+            question: 'Why does the JD day start at noon instead of midnight?',
+            answer:
+              'It is a historical convention: the Julian day begins at 12:00 UT so astronomers observing through the night do not see the date change mid-observation. Hence J2000.0 = JD 2451545.0 corresponds to 2000-01-01 12:00 UTC.',
+          },
+          {
+            question: 'What is the difference between JD and MJD?',
+            answer:
+              'MJD (Modified Julian Date) = JD − 2400000.5 with the day boundary at UTC midnight, producing shorter numbers commonly used in engineering and satellite work. For example, at J2000.0 noon JD is 2451545.0 while MJD is 51544.5.',
+          },
+          {
+            question: 'Why does support only go back to 1582?',
+            answer:
+              '1582-10-15 is the first day of the Gregorian calendar; before it the Julian calendar used different leap-year rules. The tool applies the Gregorian formula and rejects out-of-range input rather than returning precise-looking but incorrect values.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

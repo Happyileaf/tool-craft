@@ -170,4 +170,5 @@ export const toolLoaders: Record<
   'glob-tester': () => import('./glob-tester'),
   'word-frequency': () => import('./word-frequency'),
   'great-circle': () => import('./great-circle'),
+  'julian-date-converter': () => import('./julian-date-converter'),
 };
