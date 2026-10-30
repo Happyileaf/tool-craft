@@ -13841,6 +13841,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'chinese-number-converter',
+    name: '中文数字 ↔ 阿拉伯数字转换器',
+    nameEn: 'Chinese Number Converter',
+    description:
+      '在中文数字与阿拉伯数字之间双向转换，支持小写与财务大写金额用字、万/亿/万亿节、口语简式、负数与角分小数，纯本地解析。',
+    descriptionEn:
+      'Convert between Chinese numerals and Arabic digits both ways: everyday and financial uppercase forms, 万/亿/万亿 sections, colloquial shorthand, negatives, and jiao/fen decimals.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/chinese-number-converter',
+    iconName: 'Sigma',
+    tags: ['中文数字', '大写金额', '数字转换', '财务', '解析'],
+    tagsEn: ['Chinese Numerals', 'Uppercase Amount', 'Converter', 'Finance', 'Parser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '12345.67',
+    doc: {
+      zh: {
+        whatIsIt:
+          '中文数字 ↔ 阿拉伯数字转换器是一款纯浏览器本地运算的双向换算工具：既可把阿拉伯数字转成「一万二千三百四十五」式小写或「壹萬贰仟叁佰肆拾伍元」式财务大写，也能把古籍、合同、票据中的中文数字文本解析回阿拉伯数字，正确处理零的连续占位、万/亿/万亿数位节、口语简式与角分小数。',
+        coreFeatures: [
+          '双向转换：数字 → 中文、中文 → 数字，结果可一键回填反向输入做核对',
+          '两套字形：小写零一二…与财务大写零壹贰…、拾佰仟萬億',
+          '金额用字：自动生成与解析「元 / 角 / 分 / 整」，符合票据填写习惯',
+          '口语简式：「两千三」按主流习惯解释为 2300，并给出明确提示；写「两千零三」则按字面 2003',
+          '纯浏览器本地运算：零依赖纯函数解析，合同金额等敏感内容绝不上传',
+        ],
+        howToUse: [
+          '选择方向：「数字 → 中文」或「中文 → 数字」',
+          '数字方向下再选择「小写中文数字」或「财务大写金额」，输入数字（支持千分位逗号与负号）',
+          '中文方向下直接粘贴中文数字文本，大小写字形与金额用字可自动识别',
+          '出现黄色提示时留意口语简式的解释；点击「结果填入反向」可快速往返校验',
+        ],
+        useCases: [
+          '核对合同、发票、报销单上的人民币大写金额',
+          '阅读古籍、族谱、碑刻时把中文数字换算为阿拉伯数字',
+          '在文案与代码之间统一数字写法，避免「壹拾贰元」与「12 元」不一致',
+        ],
+        privacyNote:
+          '所有转换均由零依赖纯函数在浏览器本地完成，不会记录或上传任何输入文本。',
+        faqs: [
+          {
+            question: '「两千三」到底是 2300 还是 2003？',
+            answer:
+              '普通话主流口语中「两千三」是「两千三百」的省略，工具按 2300 解释并给出提示；如果想表达 2003，请写作「两千零三」。',
+          },
+          {
+            question: '支持多大的数字？',
+            answer:
+              '整数部分最多 16 位，即覆盖到「万亿」节（最大 9999 万亿）；小数最多 2 位，对应角、分。超出范围或数位结构不合法会明确报错。',
+          },
+          {
+            question: '财务大写与已有人民币大写工具什么区别？',
+            answer:
+              '人民币大写工具只做「数字 → 大写金额」单向转换；本工具额外支持反向解析（大写/小写中文 → 数字）与普通小写中文数字、口语简式，适合需要双向核对的场景。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Chinese Number Converter is a fully in-browser, bidirectional tool: turn Arabic digits into everyday Chinese numerals ("一万二千三百四十五") or financial uppercase amounts ("壹萬贰仟叁佰肆拾伍元"), and parse Chinese numerals from classical texts, contracts or receipts back into digits. It handles consecutive zeros, 万/亿/万亿 magnitude sections, colloquial shorthand, and jiao/fen decimals.',
+        coreFeatures: [
+          'Bidirectional: digits to Chinese and Chinese to digits, with one-click round-trip check',
+          'Two glyph sets: everyday 零一二… and financial 零壹贰… with 拾佰仟萬億',
+          'Money wording: generates and parses 元/角/分/整 per Chinese receipt conventions',
+          'Colloquial shorthand: "两千三" is read as 2300 with an explicit note; "两千零三" stays 2003',
+          '100% in-browser: zero-dependency pure functions, contract amounts never leave the device',
+        ],
+        howToUse: [
+          'Pick a direction: digits to Chinese or Chinese to digits',
+          'For digits output, choose everyday or financial style and type a number (commas and minus sign allowed)',
+          'For parsing, paste any Chinese numeral text; mixed glyphs and money wording are auto-detected',
+          'Watch the yellow note for colloquial readings, and use "fill into reverse" to verify round-trips',
+        ],
+        useCases: [
+          'Checking RMB uppercase amounts on contracts, invoices and expense forms',
+          'Converting numerals found in classical books, genealogies and inscriptions',
+          'Keeping number styles consistent between prose and data',
+        ],
+        privacyNote:
+          'All conversion runs locally through zero-dependency pure functions; entered text is never logged or uploaded.',
+        faqs: [
+          {
+            question: 'Does "两千三" mean 2300 or 2003?',
+            answer:
+              'In mainstream spoken Mandarin it is short for "两千三百" (2300), which is how the tool reads it, with a note. Write "两千零三" for 2003.',
+          },
+          {
+            question: 'How large a number is supported?',
+            answer:
+              'Up to 16 integer digits (through the 万亿 section, max 9999 万亿) and 2 decimal places (jiao and fen). Out-of-range or structurally invalid input is rejected with an error.',
+          },
+          {
+            question: 'How is this different from the existing RMB uppercase tool?',
+            answer:
+              'The RMB tool only converts digits into uppercase money text one way. This tool also parses Chinese text back into digits, supports everyday numerals and colloquial shorthand, and enables bidirectional verification.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
