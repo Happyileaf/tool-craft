@@ -174,4 +174,5 @@ export const toolLoaders: Record<
   'ipv6-eui64-slaac': () => import('./ipv6-eui64-slaac'),
   'ansi-color-generator': () => import('./ansi-color-generator'),
   'jwk-thumbprint': () => import('./jwk-thumbprint'),
+  'geo-coordinate-converter': () => import('./geo-coordinate-converter'),
 };

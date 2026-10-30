@@ -15064,6 +15064,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'geo-coordinate-converter',
+    name: '地理坐标格式转换器（DD / DDM / DMS）',
+    nameEn: 'Geo Coordinate Format Converter (DD / DDM / DMS)',
+    description:
+      '在十进制度（DD）、度分（DDM）与度分秒（DMS）之间互转地理坐标，兼容 N/S/E/W 半球字母与正负号写法，支持单点实时转换与批量逐行解析，并校验纬度/经度取值范围。',
+    descriptionEn:
+      'Convert geographic coordinates between decimal degrees (DD), degrees-decimal-minutes (DDM) and degrees-minutes-seconds (DMS), accepting N/S/E/W hemisphere letters or signed notation, with live single-point conversion, line-by-line batch parsing, and range validation.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/geo-coordinate-converter',
+    iconName: 'Radical',
+    tags: ['地理坐标', '经纬度', '度分秒', 'DMS', 'GIS'],
+    tagsEn: ['Geo Coordinate', 'Lat/Lon', 'DMS', 'DDM', 'GIS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '31.2304, 121.4737',
+    doc: {
+      zh: {
+        whatIsIt:
+          '地理坐标格式转换器是一款纯浏览器本地的角度换算工具：在十进制度（DD，如 31.2304）、度分（DDM，如 31°13.8240′N）与度分秒（DMS，如 31°13′49.440″N）三种常见经纬度表示法之间互转，兼容半球字母（N/S/E/W）写在前缀或后缀、以及正负号两种写法，并校验纬度 -90~90、经度 -180~180 的取值范围。支持单点实时转换与批量逐行（每行「纬度, 经度」）解析，错误行与空行逐行标注。',
+        coreFeatures: [
+          'DD / DDM / DMS 三种表示法互转：DMS 秒保留 3 位小数、DDM 分保留 4 位小数，自动处理 60 进位',
+          '兼容 N31°13′49″、31 13 49 N、-31.2304、121°28′2.4″E 等常见写法与 °\'″ 各类分隔符',
+          '单点模式纬度/经度双输入，同时展示三种格式结果并高亮目标格式，逐行一键复制',
+          '批量模式按逗号/中文逗号/分号拆分「纬度, 经度」，带行号表格展示，空行保留并标注，错误行给出具体原因',
+          '严格范围与分量校验：纬度 |lat| ≤ 90、经度 |lon| ≤ 180，分/秒必须小于 60，半球字母与轴不匹配时报错',
+        ],
+        howToUse: [
+          '单点模式：在纬度、经度输入框填入任意一种写法的坐标，下方实时给出 DD/DDM/DMS 三种结果',
+          '用顶部格式切换按钮选择目标格式（高亮显示），点击对应结果行的「复制」获取文本',
+          '批量模式：每行输入「纬度, 经度」，表格逐行显示转换结果与状态（正常/空行/错误原因）',
+          '点击「复制全部成功行」可一次性导出目标格式的全部有效坐标',
+        ],
+        useCases: [
+          '地图 / GIS / 物流场景中对齐不同来源坐标的表示格式',
+          '将设备、测绘数据中的度分秒坐标换算为 API 需要的十进制度',
+          '批量清洗坐标清单时快速定位越界与格式错误行',
+        ],
+        privacyNote:
+          '所有解析与角度换算均在浏览器本地完成，不向任何服务器发送坐标数据。',
+        faqs: [
+          {
+            question: '为什么不提供两点距离和方位角计算？',
+            answer:
+              '工具集中的「大圆距离与方位角计算器」已基于 Haversine 公式覆盖距离与方位角计算，本工具专注 DD/DDM/DMS 表示法互转与范围校验，避免功能重叠。坐标系统（WGS84/GCJ02/BD09）偏移则由「坐标系转换器」处理。',
+          },
+          {
+            question: 'S31°14′ 和 -31°14′ 等价吗？',
+            answer:
+              '等价。前缀或后缀的 S/W 半球字母与开头负号都表示取负：S31°14′、31°14′S 与 -31°14′ 解析为同一纬度值；N/E 与正号同理。若同时给出半球字母和负号，以负值为准。',
+          },
+          {
+            question: '秒保留 3 位小数会引入误差吗？',
+            answer:
+              'DMS 输出的秒分量保留 3 位小数（约 3 厘米级别的角度精度），DDM 的分保留 4 位，DD 保留 6 位；格式化时若四舍五入造成秒或分达到 60，会自动向上进位。对一般地图与 API 场景精度足够，双向往返在显示精度内一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Geo Coordinate Format Converter is a fully local angle-conversion tool: it converts between the three common latitude/longitude notations — decimal degrees (DD, e.g. 31.2304), degrees-decimal-minutes (DDM, e.g. 31°13.8240′N) and degrees-minutes-seconds (DMS, e.g. 31°13′49.440″N). It accepts hemisphere letters (N/S/E/W) as prefix or suffix or signed notation, validates latitude within -90..90 and longitude within -180..180, and offers live single-point conversion plus line-by-line batch parsing ("latitude, longitude" per line) with per-line error and blank-line annotations.',
+        coreFeatures: [
+          'Bidirectional DD / DDM / DMS conversion: seconds kept to 3 decimals, minutes to 4, with automatic 60-carry handling',
+          'Accepts N31°13′49″, 31 13 49 N, -31.2304, 121°28′2.4″E and other common forms with °\'″ or space separators',
+          'Single-point mode shows all three notations at once for lat/lon, highlights the selected target format, with per-row copy',
+          'Batch mode splits on comma / Chinese comma / semicolon, renders a line-numbered table, keeps blank lines annotated, and states the exact error per failed line',
+          'Strict validation: |lat| ≤ 90, |lon| ≤ 180, minutes/seconds below 60, and hemisphere-axis mismatch errors',
+        ],
+        howToUse: [
+          'In single-point mode, enter latitude and longitude in any supported notation; all three DD/DDM/DMS results update live',
+          'Use the top format toggle to choose the target format (highlighted), then click "Copy" on a result row',
+          'In batch mode, put "latitude, longitude" on each line; the table shows converted results and per-line status',
+          'Click "Copy all successful rows" to export every valid coordinate in the target format at once',
+        ],
+        useCases: [
+          'Aligning coordinate notations from different sources in map / GIS / logistics workflows',
+          'Converting DMS coordinates from survey or device data into decimal degrees required by APIs',
+          'Cleaning coordinate lists in bulk while pinpointing out-of-range and malformed rows',
+        ],
+        privacyNote:
+          'All parsing and angle math runs locally in your browser; coordinate data is never sent to a server.',
+        faqs: [
+          {
+            question: 'Why is there no distance or bearing calculation?',
+            answer:
+              'The "Great Circle Distance & Bearing Calculator" already covers distance and bearing via the Haversine formula, so this tool focuses on DD/DDM/DMS notation conversion and range validation to avoid overlap. Coordinate-system shifts (WGS84/GCJ02/BD09) are handled by the coordinate-system converter.',
+          },
+          {
+            question: 'Are S31°14′ and -31°14′ equivalent?',
+            answer:
+              'Yes. A leading or trailing S/W hemisphere letter and a leading minus sign both negate the value: S31°14′, 31°14′S and -31°14′ parse to the same latitude; N/E and the plus sign work the same way. If both a hemisphere letter and a minus sign are given, the value is treated as negative.',
+          },
+          {
+            question: 'Does 3-decimal rounding of seconds introduce error?',
+            answer:
+              'DMS seconds are shown to 3 decimals (angle precision around 3 centimeters on the ground), DDM minutes to 4, and DD to 6. If rounding pushes seconds or minutes to 60, the carry is applied automatically. This is ample for typical map and API use, and round trips stay consistent within the displayed precision.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

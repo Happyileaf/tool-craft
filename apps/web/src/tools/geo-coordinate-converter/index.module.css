@@ -1,0 +1,93 @@
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  min-width: 0;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.axisGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.axisBlock {
+  min-width: 0;
+}
+
+.axisHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.axisTitle {
+  font-weight: 600;
+}
+
+.formatRows {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formatRow,
+.formatRowActive {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color, #e5e7eb);
+}
+
+.formatRowActive {
+  border-color: var(--ant-color-primary, #1677ff);
+  background: var(--ant-color-primary-bg, #e6f4ff);
+}
+
+.formatLabel {
+  flex: 0 0 108px;
+  color: var(--text-secondary, #6b7280);
+  font-size: 13px;
+}
+
+.alert {
+  margin-top: 12px;
+}
+
+.batchArea {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.batchToolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mono {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+}
+
+@media (max-width: 860px) {
+  .axisGrid {
+    grid-template-columns: 1fr;
+  }
+}
