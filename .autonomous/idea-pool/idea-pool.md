@@ -159,7 +159,7 @@
 | 20261029080302 | Web Mercator 瓦片坐标计算器 | Web Tool | External Reference | Pending | 2026-10-29 | | [详情](./idea-details/20261029080302.md) |
 | 20261029080303 | 两点大圆距离与初始方位角计算器 | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029080303.md) |
 | 20261029080304 | 儒略日（JD / MJD）与公历日期互转器 | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029080304.md) |
-| 20261029080305 | .editorconfig 文件生成器 | Web Tool | Exploration | Claimed | 2026-10-29 | trae-agent | [详情](./idea-details/20261029080305.md) |
+| 20261029080305 | .editorconfig 文件生成器 | Web Tool | Exploration | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029080305.md) |
 | 20261029080306 | 一元二次 / 三次方程求根计算器 | Web Tool | Exploration | Pending | 2026-10-29 | | [详情](./idea-details/20261029080306.md) |
 | 20261029140201 | SRI 子资源完整性哈希生成器（Subresource Integrity） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140201.md) |
 | 20261029140202 | HKDF 密钥派生计算器（RFC 5869） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140202.md) |
