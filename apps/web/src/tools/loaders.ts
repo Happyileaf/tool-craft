@@ -169,4 +169,5 @@ export const toolLoaders: Record<
   'csv-to-sql': () => import('./csv-to-sql'),
   'glob-tester': () => import('./glob-tester'),
   'word-frequency': () => import('./word-frequency'),
+  'great-circle': () => import('./great-circle'),
 };

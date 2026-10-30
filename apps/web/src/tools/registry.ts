@@ -14555,6 +14555,107 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'great-circle',
+    name: '大圆距离与方位角计算器',
+    nameEn: 'Great Circle Distance & Bearing Calculator',
+    description:
+      '基于 WGS-84 与 Haversine 公式计算地球表面两点间的大圆距离（公里 / 英里 / 海里）与初始、终点、反方位角，支持城市预设与 16 方位罗盘显示。',
+    descriptionEn:
+      'Compute the great-circle distance (km/mi/nmi) and initial, final, and back bearings between two WGS-84 coordinates using the Haversine formula, with city presets and a 16-point compass readout.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/great-circle',
+    iconName: 'Map',
+    tags: ['大圆距离', 'Haversine', '方位角', '经纬度', '航海航空'],
+    tagsEn: ['Great Circle', 'Haversine', 'Bearing', 'Coordinates', 'Navigation'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '大圆距离与方位角计算器是一款纯浏览器本地的地理计算工具：输入两个 WGS-84 经纬度坐标，即用 Haversine 公式算出球面最短距离（公里 / 英里 / 海里）以及沿大圆航线的初始方位角、终点方位角与反方位角，并给出 16 方位罗盘方位（如 NNW、ESE）。内置伦敦、纽约、北京等城市预设，方便快速试算。',
+        coreFeatures: [
+          'Haversine 公式，WGS-84 平均地球半径 6,371,008.8 m，一次输出 km / mi / nmi 三种距离',
+          '初始方位角（起点航向）、终点方位角（到达航向）与反方位角（返程航向），归一化到 0–360°',
+          '角度自动映射为 16 方位罗盘缩写（N、NNE、NE … NNW）',
+          '纬度 / 经度范围与数字校验，越界输入即时给出错误提示',
+          '六个常用城市坐标预设，一键填入起点或终点，支持起终点互换',
+        ],
+        howToUse: [
+          '在起点、终点两组输入框中填写十进制经纬度（北纬 / 东经为正），结果实时更新',
+          '也可先选择「预设填入起点 / 终点」，再点击城市按钮快速填入坐标',
+          '点击「交换起终点」可反向计算返程距离与方位角',
+          '在结果卡片中查看三种单位的距离与三个方位角及其罗盘方位',
+        ],
+        useCases: [
+          '估算两城市 / 两坐标点之间的航线、航程距离',
+          '航海、航空、户外定向中的初始航向与返程方位角估算',
+          '地图、物流类应用中距离与方位角计算逻辑的本地验证对照',
+        ],
+        privacyNote:
+          '所有坐标输入与大圆计算均在浏览器本地完成，不会上传或存储任何位置数据。',
+        faqs: [
+          {
+            question: '计算结果与精确距离为什么有微小差异？',
+            answer:
+              'Haversine 把地球近似为半径 6,371,008.8 m 的球体，而真实地球是略扁的椭球，因此与 Vincenty 等椭球算法相比通常存在 0.5% 以内的误差，对大多数航程估算场景足够准确。',
+          },
+          {
+            question: '初始方位角和终点方位角为什么不一样？',
+            answer:
+              '沿大圆（球面最短路径）航行时，相对每条经线的航向会持续变化，因此出发时的初始方位角与到达终点时的方位角不同；反方位角则是从终点原路返回起点的初始航向。',
+          },
+          {
+            question: '两点重合时方位角显示多少？',
+            answer:
+              '两点坐标完全相同时距离为 0，方位角没有定义，工具按 0°（N）显示，避免出现无意义的 NaN。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Great Circle Distance & Bearing Calculator is a fully local geo tool. Enter two WGS-84 latitude/longitude points and it applies the Haversine formula to return the shortest sphere distance in km, miles, and nautical miles, plus the initial, final, and back bearings along the great-circle path, each mapped to a 16-point compass direction (NNW, ESE, ...). City presets such as London, New York, and Beijing are built in.',
+        coreFeatures: [
+          'Haversine formula with the WGS-84 mean Earth radius of 6,371,008.8 m; km/mi/nmi at once',
+          'Initial bearing (heading at departure), final bearing (heading on arrival), and back bearing, normalized to 0–360°',
+          'Automatic 16-point compass labels (N, NNE, NE … NNW)',
+          'Validation of latitude/longitude ranges and numeric input with inline error messages',
+          'Six common city presets that fill either endpoint, plus a swap button',
+        ],
+        howToUse: [
+          'Fill in decimal latitude/longitude for the start and end points (north/east positive); results update live',
+          'Or pick "fill start/end from preset" and click a city button',
+          'Use "Swap" to compute the reverse trip distance and bearings',
+          'Read the three distance units and three bearings with compass labels in the result card',
+        ],
+        useCases: [
+          'Estimating air or sea route distances between cities or coordinates',
+          'Initial and return heading estimates for navigation, aviation, and orienteering',
+          'A local reference for distance/bearing logic in mapping or logistics applications',
+        ],
+        privacyNote:
+          'All coordinate input and great-circle math runs locally in your browser; no location data is uploaded or stored.',
+        faqs: [
+          {
+            question: 'Why does the result differ slightly from exact distances?',
+            answer:
+              'Haversine models the Earth as a sphere of radius 6,371,008.8 m, while the real planet is a slightly flattened ellipsoid. Compared with ellipsoidal methods such as Vincenty, the error is typically within 0.5%, which is adequate for most route estimates.',
+          },
+          {
+            question: 'Why do the initial and final bearings differ?',
+            answer:
+              'Along a great circle the heading relative to each meridian changes continuously, so the departure heading and the arrival heading are different; the back bearing is the initial heading of the return trip from the end point.',
+          },
+          {
+            question: 'What bearing is shown for identical points?',
+            answer:
+              'When the two coordinates are identical the distance is 0 and the bearing is undefined, so the tool shows 0° (N) instead of NaN.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
