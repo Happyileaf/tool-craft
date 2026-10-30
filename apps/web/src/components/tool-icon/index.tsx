@@ -29,6 +29,7 @@ import {
   Palette,
   Pipette,
   QrCode,
+  Radical,
   ShieldCheck,
   Shuffle,
   Sigma,
@@ -86,6 +87,7 @@ const toolIconMap = {
   HardDrive,
   Barcode,
   Triangle,
+  Radical,
 };
 
 /**

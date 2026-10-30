@@ -164,4 +164,5 @@ export const toolLoaders: Record<
   'bmr-tdee-calculator': () => import('./bmr-tdee-calculator'),
   'chinese-number-converter': () => import('./chinese-number-converter'),
   'triangle-solver': () => import('./triangle-solver'),
+  'polynomial-root-calculator': () => import('./polynomial-root-calculator'),
 };

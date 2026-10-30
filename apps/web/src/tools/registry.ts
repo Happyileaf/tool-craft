@@ -14045,6 +14045,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'polynomial-root-calculator',
+    name: '一元二次/三次方程求根计算器',
+    nameEn: 'Polynomial Root Calculator',
+    description:
+      '输入系数求解 ax²+bx+c=0 与 ax³+bx²+cx+d=0 的全部实根与复根，展示判别式、求根公式/Cardano 代入步骤与根的重数，首项为 0 自动降次。',
+    descriptionEn:
+      'Find every real and complex root of quadratic and cubic equations from their coefficients, with the discriminant, formula/Cardano steps, root multiplicity, and automatic degree reduction.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/polynomial-root-calculator',
+    iconName: 'Radical',
+    tags: ['求根', '二次方程', '三次方程', 'Cardano', '复数'],
+    tagsEn: ['Polynomial Roots', 'Quadratic', 'Cubic', 'Cardano', 'Complex Numbers'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'x² − 5x + 6 = 0',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一元二次/三次方程求根计算器是一款纯浏览器本地运算的代数工具：按高次项到常数项输入系数，即可求出二次或三次方程的全部实根与共轭复根，并展示判别式、求根公式（二次）或 Cardano 法（三次）的逐步代入过程与每个根的重数。',
+        coreFeatures: [
+          '二次方程求根公式：按判别式 Δ=b²−4ac 给出两实根、二重根或共轭复根',
+          '三次方程 Cardano 法：归一化、降阶替换，覆盖三实根（casus irreducibilis）与一实根一对复根',
+          '自动降次：首项系数为 0 时自动按二次或一次方程求解，并给出矛盾常数方程等错误提示',
+          '重根识别：明确标出二重根、三重根及其重数',
+          '复平面分布图与求解步骤：所有根标注在 SVG 复平面上，便于核对',
+        ],
+        howToUse: [
+          '选择方程类型：二次 ax²+bx+c=0 或三次 ax³+bx²+cx+d=0',
+          '按系数 a、b、c（、d）顺序填入数字，缺少的项填 0，允许负数与小数',
+          '结果区即时显示实际次数、判别式、全部根（含重数）、求解步骤与复平面分布',
+          '可点击示例预设快速查看复根、三实根、重根与自动降次等典型情形',
+        ],
+        useCases: [
+          '中学/大学代数作业的求根与判别式核对',
+          '工程与物理问题中特征方程、平衡解的快速计算',
+          '理解 Cardano 法与复数解、重根概念的教学辅助',
+        ],
+        privacyNote:
+          '全部求根计算均为浏览器本地确定性数值/解析运算，零依赖、不联网，输入的系数不会离开设备。',
+        faqs: [
+          {
+            question: '三次方程为什么有时给出复根？',
+            answer:
+              '实系数三次方程必有一个实根；当 Cardano 判别式 Δ>0 时另外两个根是一对共轭复根，Δ<0（casus irreducibilis）时三个根全为实数，Δ=0 时出现重根。',
+          },
+          {
+            question: '系数填 0 会怎样？',
+            answer:
+              '三次方程的 a 填 0 会自动降为二次方程，a、b 都为 0 则降为一次方程；若所有系数都为 0，等式恒成立无法求根；若仅常数项非零则是矛盾方程（无解），工具会明确提示。',
+          },
+          {
+            question: '重数是什么意思？',
+            answer:
+              '重数表示根在多项式因式分解中重复出现的次数，例如 (x−1)²(x+2) 中 x=1 是二重根、x=−2 是单根；重根处函数图像与横轴相切。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Polynomial Root Calculator is a fully in-browser algebra utility: enter coefficients from the highest term to the constant and it finds every real root and conjugate complex pair of a quadratic or cubic equation, showing the discriminant, formula/Cardano derivation steps, and root multiplicity.',
+        coreFeatures: [
+          'Quadratic formula: two real roots, a double root, or a conjugate pair according to Δ=b²−4ac',
+          'Cardano for cubics: normalization and depressed-cubic substitution, covering three real roots (casus irreducibilis) and one real root plus a complex pair',
+          'Automatic degree reduction when leading coefficients are zero, with clear errors for inconsistent constant equations',
+          'Repeated-root detection: double and triple roots are labeled with their multiplicity',
+          'SVG complex-plane plot and step-by-step derivation for easy verification',
+        ],
+        howToUse: [
+          'Choose the equation type: quadratic ax²+bx+c=0 or cubic ax³+bx²+cx+d=0',
+          'Fill coefficients a, b, c (and d) in order; enter 0 for missing terms; negatives and decimals are allowed',
+          'The result panel instantly shows the effective degree, discriminant, all roots (with multiplicity), derivation steps, and a complex-plane plot',
+          'Click a sample preset to explore complex roots, three real roots, repeated roots, and auto degree reduction',
+        ],
+        useCases: [
+          'Checking roots and discriminants in school or university algebra homework',
+          'Quickly solving characteristic or equilibrium equations in engineering and physics',
+          'Teaching aid for the Cardano method, complex solutions, and repeated roots',
+        ],
+        privacyNote:
+          'All root finding is deterministic local numerical/analytical computation in the browser with zero dependencies and no network access; coefficients never leave the device.',
+        faqs: [
+          {
+            question: 'Why does a cubic sometimes return complex roots?',
+            answer:
+              'A real-coefficient cubic always has one real root. With Cardano discriminant Δ>0 the other two roots are a conjugate complex pair; Δ<0 (casus irreducibilis) gives three real roots; Δ=0 yields repeated roots.',
+          },
+          {
+            question: 'What if a coefficient is zero?',
+            answer:
+              'A zero leading coefficient automatically reduces a cubic to a quadratic (or linear) equation. All-zero coefficients mean an identity with no roots; a lone nonzero constant is an inconsistent equation with no solution—the tool explains each case.',
+          },
+          {
+            question: 'What does multiplicity mean?',
+            answer:
+              'Multiplicity is how many times a root repeats in the factorization; in (x−1)²(x+2), x=1 is a double root and x=−2 is simple. The graph is tangent to the axis at a repeated root.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
