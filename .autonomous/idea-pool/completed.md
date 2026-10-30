@@ -54,3 +54,8 @@
 | 20261029080305 | .editorconfig 文件生成器 | Web Tool | Exploration | `editorconfig-generator` / [PR #109](https://github.com/Happyileaf/tool-craft/pull/109) | 2026-10-30 | [详情](./idea-details/20261029080305.md) |
 | 20261030080722 | Soundex 英文读音编码计算器 | Web Tool | Exploration | `soundex-codec` / [PR #109](https://github.com/Happyileaf/tool-craft/pull/109) | 2026-10-30 | [详情](./idea-details/20261030080722.md) |
 | 20261030080723 | uuencode/uudecode 编解码器 | Web Tool | Existing Gap | `uuencode-codec` / [PR #109](https://github.com/Happyileaf/tool-craft/pull/109) | 2026-10-30 | [详情](./idea-details/20261030080723.md) |
+| 20261030200908 | TCP/IP 校验和计算器（IPv4 / TCP / UDP / ICMP 反码求和） | Web Tool | Exploration | `tcpip-checksum` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261030200908.md) |
+| 20261018000147 | CSV 转 SQL INSERT 生成器 | Web Tool | Existing Gap | `csv-to-sql` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261018000147.md) |
+| 20261022221405 | Glob 模式匹配测试器 | Web Tool | Existing Gap | `glob-tester` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261022221405.md) |
+| 20261021180802 | 文本词频统计与高频词分析 | Web Tool | Existing Gap | `word-frequency` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261021180802.md) |
+| 20261029080303 | 两点大圆距离与初始方位角计算器 | Web Tool | Existing Gap | `great-circle` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261029080303.md) |
