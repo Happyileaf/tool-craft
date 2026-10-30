@@ -13116,6 +13116,528 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'soundex-codec',
+    name: 'Soundex 英语读音编码器',
+    nameEn: 'Soundex Phonetic Code Generator',
+    description:
+      '按经典 US Census / NARA American Soundex 规则把英文姓氏编码为「首字母 + 3 位数字」的 4 位读音码：B/F/P/V→1、C/G/J/K/Q/S/X/Z→2、D/T→3、L→4、M/N→5、R→6，相邻同音辅音只编码一次，元音（含 Y）起分隔作用，H/W 不隔断同音合并，不足补 0、超出截断。支持逐字符推导、多行批量编码与同音分组，用于族谱检索与记录链接（record linkage）。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Encode English surnames into the 4-character American Soundex code (first letter plus 3 digits) using the classic US Census / NARA rules: B/F/P/V→1, C/G/J/K/Q/S/X/Z→2, D/T→3, L→4, M/N→5, R→6; adjacent same-sounding consonants collapse into one, vowels (including Y) separate, H/W do not, and the result is zero-padded and truncated. Offers a per-character derivation, multi-line batch encoding and homophone grouping for genealogical lookup and record linkage. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/soundex-codec',
+    iconName: 'Type',
+    tags: ['Soundex', '读音编码', '语音算法', '姓氏匹配', '族谱', '模糊检索'],
+    tagsEn: ['Soundex', 'Phonetic Code', 'Surname Matching', 'Genealogy', 'Fuzzy Search', 'Record Linkage'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Robert\nRupert\nAshcraft\nTymczak\nHoneyman',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Soundex 英语读音编码器是一款纯浏览器本地运行的语音编码工具，按 20 世纪初美国人口普查确立的 American Soundex 规则，把英文姓氏压缩为「首字母 + 3 位数字」的 4 位编码，使拼写不同但读音相近的姓氏（如 Robert 与 Rupert）得到相同编码，广泛用于族谱检索、人口记录链接与去重。',
+        coreFeatures: [
+          '经典规则：首字母保留，辅音按读音映射 1–6，结果固定 4 位，不足补 0、超出截断',
+          '逐字符推导：展示首个单词每个字母的合并、分隔或追加依据，便于学习核对',
+          '批量处理：每行可放一个或多个单词，无字母的非法 token 原样保留并逐行告警',
+          '同音分组：自动把编码相同的单词聚合到一起，直观查看读音近似的姓氏',
+          '纯本地计算：零新增依赖，输入内容不发起任何网络请求',
+        ],
+        howToUse: [
+          '在左侧输入框粘贴英文单词，每行一个或用空格分隔多个单词',
+          '右侧实时输出对应的 4 位 Soundex 编码',
+          '「逐字符推导」卡片展示首个单词的完整编码过程',
+          '「同音分组」卡片按编码聚合读音相近的单词（绿色标签表示组内多于一个）',
+          '点击「复制」获取批量编码结果',
+        ],
+        useCases: [
+          '族谱与人口普查检索：按读音找到拼写不同的同一姓氏变体',
+          '记录链接与去重：在历史档案、医院或客户数据中合并疑似同一人的记录',
+          '学习语音算法：理解 Soundex 同音合并、元音分隔与 H/W 规则',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；输入的姓名等内容不会离开设备。',
+        faqs: [
+          {
+            question: '为什么 Tymczak 编码是 T522 而不是 T520？',
+            answer:
+              '按 NARA 规则，Y 与 A/E/I/O/U 一样作为元音分隔符：T 保留，Y 不编码但重置同音合并，M 记 5；C 记 2，Z 与 C 相邻同音被合并，A 再次分隔，K 记 2，故为 T522。本工具内置该标准向量自测。',
+          },
+          {
+            question: 'Soundex 能处理名字或非英语词汇吗？',
+            answer:
+              '算法本身只看字母的读音分组，对任何拉丁字母串都能输出编码，但它为英语姓氏设计，对非英语发音（如汉语拼音、法语小舌音）近似效果有限，可作为模糊线索而非唯一判据。',
+          },
+          {
+            question: '两个单词编码相同就一定是同一个姓氏吗？',
+            answer:
+              '不一定。4 位编码只有 26×6³ 种组合，碰撞并不少见（如 Lee 与 Lew 都是 L000）。Soundex 用于缩小候选范围，实际记录链接还应结合名字、日期、地点等字段综合判断。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Soundex Phonetic Code Generator is a fully browser-local tool that compresses English surnames into a 4-character code (first letter plus 3 digits) using the American Soundex rules established for the early-20th-century US Census. Differently spelled but similar-sounding surnames—such as Robert and Rupert—share the same code, making Soundex a staple of genealogical lookup, census record linkage and deduplication.',
+        coreFeatures: [
+          'Classic rules: first letter retained, consonants mapped to digits 1–6, fixed 4-character output with zero padding and truncation',
+          'Per-character derivation: every letter of the first word is shown as merged, separated or appended, for learning and verification',
+          'Batch processing: one or many words per line; tokens without letters are kept as-is with line-numbered warnings',
+          'Homophone grouping: words sharing a code are clustered together, surfacing similar-sounding surnames',
+          '100% local computation with zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'Paste English words into the left editor, one per line or several separated by spaces',
+          'The right side shows the 4-character Soundex codes live',
+          'The derivation card walks through the encoding of the first word character by character',
+          'The grouping card clusters words by code (a green tag means the group has more than one word)',
+          'Click Copy to grab the batch results',
+        ],
+        useCases: [
+          'Genealogy and census research: finding spelling variants of a surname by pronunciation',
+          'Record linkage and deduplication: merging records that likely refer to the same person in archives, hospitals or customer data',
+          'Learning phonetic algorithms: same-sound collapsing, vowel separation and the H/W rules',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser via zero-dependency pure functions. No network requests are made, so names and other input never leave your device.',
+        faqs: [
+          {
+            question: 'Why is Tymczak encoded as T522 instead of T520?',
+            answer:
+              'Under the NARA rules Y acts as a vowel separator like A/E/I/O/U: T is retained, Y is skipped but resets same-sound merging, M gives 5, C gives 2, adjacent Z collapses with C, A separates again, and K gives 2—hence T522. This standard vector is covered by the built-in tests.',
+          },
+          {
+            question: 'Does Soundex work for given names or non-English words?',
+            answer:
+              'The algorithm emits a code for any Latin-letter string because it only inspects letter groups, but it was designed for English surnames. Approximation quality is limited for other phonetics (such as Hanyu Pinyin or French uvular sounds), so treat its output as a fuzzy hint rather than a verdict.',
+          },
+          {
+            question: 'Does the same code mean two words are the same surname?',
+            answer:
+              'No. With only 26×6³ possible codes, collisions are common (Lee and Lew are both L000). Soundex narrows candidates; real record linkage should also weigh given names, dates, locations and other fields.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'srt-vtt-converter',
+    name: 'SRT / WebVTT 字幕双向转换器',
+    nameEn: 'SRT / WebVTT Subtitle Converter',
+    description:
+      '在 SRT 与 WebVTT 两种常见字幕格式之间双向转换：SRT → VTT 时自动补 WEBVTT 文件头、时间戳逗号改点号并保留序号、多行正文与定位设置；VTT → SRT 时剥离 WEBVTT 头与 NOTE/REGION/STYLE 块、丢弃 cue 定位设置、时间戳点号改逗号并从 1 重新连续编号。兼容短时间戳（MM:SS.mmm）、CRLF 与 UTF-8 BOM，支持对全部字幕条目整体进行毫秒级时间偏移，偏移后出现负时间戳会明确报错。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert between the two most common subtitle formats, SRT and WebVTT. SRT to VTT adds the WEBVTT header, switches timestamp commas to dots and preserves sequence numbers, multi-line text and positioning settings. VTT to SRT strips the WEBVTT header and NOTE/REGION/STYLE blocks, drops cue settings, turns dots back into commas and renumbers cues from 1. Short timestamps (MM:SS.mmm), CRLF and UTF-8 BOM are supported, and every cue can be shifted by a configurable millisecond offset, with a clear error if the shift would produce a negative timestamp. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/srt-vtt-converter',
+    iconName: 'FileText',
+    tags: ['SRT', 'WebVTT', '字幕转换', '视频字幕', '时间偏移', '字幕'],
+    tagsEn: ['SRT', 'WebVTT', 'Subtitle Converter', 'Captions', 'Time Shift', 'Subtitles'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '1\n00:00:01,000 --> 00:00:04,000\n第一行字幕\n第二行字幕\n\n2\n00:00:05,500 --> 00:00:09,000\nSubtitle line one\nSubtitle line two',
+    doc: {
+      zh: {
+        whatIsIt:
+          'SRT / WebVTT 字幕双向转换器是一款纯浏览器本地运行的字幕格式工具。SRT 与 WebVTT 是视频播放、剪辑与流媒体场景中最常见的两种文本字幕格式，二者结构相近但在文件头、时间戳符号、cue 设置与编号上互不兼容，本工具按规范在两者之间无损互转，并支持统一时间偏移。',
+        coreFeatures: [
+          '双向转换：SRT → WebVTT 自动补头、逗号改点号；WebVTT → SRT 剥离头部与 NOTE/REGION/STYLE 块并重编号',
+          '规范兼容：支持 MM:SS.mmm 短时间戳、HH:MM:SS.mmm 长时间戳、CRLF 换行与 UTF-8 BOM',
+          '设置处理：保留 VTT 定位设置（如 align/position），转 SRT 时自动剥离无法表达的设置',
+          '时间偏移：所有 cue 整体加减毫秒，偏移导致负时间戳时按条目序号报错而非输出非法字幕',
+          '容错解析：缺少时间戳行的块、多余头部块会被忽略并逐条告警，不中断整体转换',
+        ],
+        howToUse: [
+          '在右上角切换转换方向：SRT → WebVTT 或 WebVTT → SRT',
+          '将字幕文本粘贴到左侧输入框，右侧实时输出转换结果',
+          '需要整体移动字幕时间轴时，在底部「时间偏移」中填写毫秒数（可正可负）',
+          '转换结果区展示成功解析的字幕条目数，遇到警告或错误会有对应提示',
+          '点击「复制」获取转换后的字幕文本',
+        ],
+        useCases: [
+          '把播放器/剪辑软件导出的 SRT 字幕用于只接受 WebVTT 的 HTML5 video 或流媒体管线',
+          '将下载的 WebVTT 字幕导入仅支持 SRT 的剪辑软件、刻录工具或老款播放器',
+          '多段字幕拼接或音轨裁剪后，用毫秒级整体偏移快速对齐时间轴',
+        ],
+        privacyNote:
+          '全部解析、转换与时间偏移均在浏览器本地由零依赖纯函数完成，字幕内容不会上传或离开设备。',
+        faqs: [
+          {
+            question: 'WebVTT 里的 NOTE、REGION、STYLE 块转成 SRT 后去哪了？',
+            answer:
+              'SRT 规范没有这些概念，转换时会被识别并剥离；普通 cue 之外的块不会污染输出。同样，cue 时间戳后的 align:start、position:0% 等定位设置在转 SRT 时也会被丢弃，而 SRT → VTT 时这些设置会原样保留。',
+          },
+          {
+            question: '为什么负向偏移时报错而不是输出 00:00:00,000？',
+            answer:
+              '把负时间钳制为 0 会悄悄改变字幕时长与节奏，导致音画不同步。工具在偏移后任一 cue 起点或终点小于 0 时，按字幕条目序号报错并指出问题位置，便于调整偏移量。',
+          },
+          {
+            question: '会保留 SRT 的序号行吗？',
+            answer:
+              'SRT → WebVTT 时序号行会作为 cue 标识保留；WebVTT → SRT 时 SRT 规范要求连续编号，因此无论原 VTT 是否带 cue id，输出都会从 1 开始重新编号，确保严格合法。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The SRT / WebVTT Subtitle Converter is a fully browser-local tool for the two most common text subtitle formats. SRT and WebVTT share a similar structure but are incompatible in their file headers, timestamp separators, cue settings and numbering. This tool converts losslessly between them according to the specs and can apply a uniform time shift.',
+        coreFeatures: [
+          'Bidirectional: SRT to VTT adds the header and swaps commas for dots; VTT to SRT strips the header and NOTE/REGION/STYLE blocks and renumbers cues',
+          'Spec-friendly: accepts short MM:SS.mmm timestamps, long HH:MM:SS.mmm timestamps, CRLF and UTF-8 BOM',
+          'Settings-aware: keeps VTT positioning settings (align/position) and drops them when targeting SRT, which cannot express them',
+          'Time shifting: offset every cue by a configurable number of milliseconds; a shift producing a negative timestamp raises an indexed error instead of emitting invalid subtitles',
+          'Resilient parsing: blocks without timing lines and stray header blocks are skipped with per-item warnings instead of aborting the conversion',
+        ],
+        howToUse: [
+          'Pick the direction in the top-right toggle: SRT to WebVTT or WebVTT to SRT',
+          'Paste subtitle text into the left editor; the converted result appears live on the right',
+          'To move the whole timeline, enter a millisecond offset (positive or negative) in the time-shift control at the bottom',
+          'The result panel shows how many cues were parsed, with warnings or errors when applicable',
+          'Click Copy to grab the converted subtitle text',
+        ],
+        useCases: [
+          'Feeding SRT subtitles exported by players or editors into HTML5 video or streaming pipelines that only accept WebVTT',
+          'Importing downloaded WebVTT subtitles into editors, burn-in tools or legacy players that only support SRT',
+          'Re-aligning timelines after concatenating subtitles or trimming an audio track, using a single millisecond offset',
+        ],
+        privacyNote:
+          'All parsing, conversion and shifting run locally in your browser via zero-dependency pure functions. Subtitle content is never uploaded and never leaves your device.',
+        faqs: [
+          {
+            question: 'What happens to NOTE, REGION and STYLE blocks when converting WebVTT to SRT?',
+            answer:
+              'SRT has no equivalents, so these blocks are detected and stripped; non-cue blocks never leak into the output. Positioning settings after a VTT timestamp (such as align:start or position:0%) are also dropped for SRT, while they are preserved as-is when converting SRT to VTT.',
+          },
+          {
+            question: 'Why does a negative shift error instead of clamping to 00:00:00,000?',
+            answer:
+              'Silently clamping negative timestamps to zero would change cue durations and timing, causing audio/video desync. If any cue start or end would become negative after the shift, the tool reports an error with the cue index and location so you can adjust the offset.',
+          },
+          {
+            question: 'Are SRT sequence numbers preserved?',
+            answer:
+              'SRT to WebVTT keeps the number line as a cue identifier. For WebVTT to SRT the SRT spec requires consecutive numbering, so output cues are always renumbered from 1 regardless of the original cue ids, guaranteeing strictly valid output.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'uuid-v7-generator',
+    name: 'UUID v7 生成器与解析器',
+    nameEn: 'UUID v7 Generator & Inspector',
+    description:
+      '按 RFC 9562 生成时间有序的 UUID v7：48 位 Unix 毫秒时间戳 + 版本位 7 + 12 位 rand_a + 变体位 10 + 62 位 rand_b。支持一次批量生成最多 1000 个，随机位来自 Web Crypto getRandomValues，同一毫秒内连续生成时随机段自动加一，保证批内结果严格按字典序递增，可直接用作数据库聚簇主键。同时可反解任意 UUID v7，展示嵌入的毫秒时间戳、UTC 时间、版本、变体与随机段。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Generate time-ordered UUID v7 values per RFC 9562: a 48-bit Unix millisecond timestamp, version digit 7, 12 bits of rand_a, the 10 variant bits and 62 bits of rand_b. Generate up to 1000 UUIDs per batch with randomness from Web Crypto getRandomValues; within the same millisecond the random portion is incremented automatically so batch output is strictly lexicographically increasing and can serve directly as a clustered database primary key. Any UUID v7 can also be inspected to reveal its embedded millisecond timestamp, UTC time, version, variant and random fields. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/uuid-v7-generator',
+    iconName: 'Fingerprint',
+    tags: ['UUID v7', 'RFC 9562', '时间有序 UUID', '唯一标识', '主键', 'Web Crypto'],
+    tagsEn: ['UUID v7', 'RFC 9562', 'Time-ordered UUID', 'Unique Identifier', 'Primary Key', 'Web Crypto'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'UUID v7 生成器与解析器是一款纯浏览器本地运行的标识符工具。UUID v7（RFC 9562）把毫秒级 Unix 时间戳放在 128 位的最高位，使新生成的 UUID 天然按时间排序，既保留 UUID 的去中心化、无需协调即可生成的优点，又解决了 UUID v4 随机主键导致数据库索引页频繁分裂、缓存不友好的问题。',
+        coreFeatures: [
+          'RFC 9562 布局：48 位毫秒时间戳、版本 7、变体 10、74 位随机段，严格校验位字段',
+          '批量生成：一次最多 1000 个，同毫秒随机段单调加一，批内严格字典序递增且全部唯一',
+          '密码学随机：随机位来自 crypto.getRandomValues，非 Math.random 伪随机',
+          '结构反解：输入任意 UUID v7，展示毫秒时间戳、UTC ISO 时间、版本、变体、rand_a 与 rand_b',
+          '输入宽容：解析时容忍首尾空白、花括号、urn:uuid: 前缀与大写，版本/变体/长度错误均有明确中文报错',
+        ],
+        howToUse: [
+          '在顶部输入生成数量（1–1000），点击「生成」得到一批 UUID v7',
+          '左栏展示整批结果，点击「复制全部」可直接粘贴到代码或数据文件',
+          '右栏自动反解列表中首个 UUID 的时间戳与位字段',
+          '同一毫秒内批量生成时随机段自动递增，字符串顺序即生成顺序',
+          '所有运算在浏览器本地完成，可安全在离线或内网环境使用',
+        ],
+        useCases: [
+          '数据库主键：替代自增 ID 与 UUID v4，获得去中心化生成与聚簇索引友好的双重优势',
+          '分布式系统：多节点无需号段协调即可生成全局大致有序、碰撞可忽略的订单号/事件 ID',
+          '调试排障：从已有 UUID v7 反解生成时间，排查日志、消息与数据记录的先后顺序',
+        ],
+        privacyNote:
+          'UUID 的生成与解析全部在浏览器本地完成，随机数来自浏览器内置 Web Crypto，不发起任何网络请求。',
+        faqs: [
+          {
+            question: 'UUID v7 相比 UUID v4 有什么好处？',
+            answer:
+              'UUID v4 的 122 位全部随机，作为数据库主键时新行随机插入 B+Tree 的不同位置，导致页分裂与缓存失效。UUID v7 最高位是毫秒时间戳，同一毫秒内本工具还会让随机段单调递增，因此新值大致连续追加，索引局部性显著更好，同时仍可在各节点独立生成。',
+          },
+          {
+            question: '同一毫秒批量生成会不会重复？',
+            answer:
+              '不会。每生成一个 UUID，62 位 rand_b 先加一；rand_b 占满则重新随机并让 12 位 rand_a 进位，相当于在 74 位随机空间内单调递增。即便固定时间戳连续生成 1000 个，结果也严格唯一且字典序升序（内置测试覆盖）。',
+          },
+          {
+            question: '能解析任意 UUID 吗？',
+            answer:
+              '本工具的解析面向 UUID v7：会先校验 36 位格式、第三段首字符必须为 7、第四段首字符必须在 8/9/a/b。传入 v4 等其他版本会得到明确的版本位错误；时间戳字段也只对 v7 有意义。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The UUID v7 Generator & Inspector is a fully browser-local identifier tool. UUID v7 (RFC 9562) places a millisecond Unix timestamp in the most significant bits of the 128-bit value, making freshly generated UUIDs naturally time-ordered. It keeps the decentralized, coordination-free generation of UUIDs while fixing the index-page splits and poor cache locality that random UUID v4 primary keys cause in databases.',
+        coreFeatures: [
+          'RFC 9562 layout: 48-bit millisecond timestamp, version 7, variant 10 and 74 random bits, with strict field checks',
+          'Batched generation: up to 1000 per call; within the same millisecond the random portion is monotonically incremented, so results are unique and strictly lexicographically ordered',
+          'Cryptographic randomness from crypto.getRandomValues rather than the Math.random PRNG',
+          'Structural inspection: any UUID v7 reveals its millisecond timestamp, UTC ISO time, version, variant, rand_a and rand_b',
+          'Lenient input: parsing tolerates surrounding whitespace, braces, the urn:uuid: prefix and uppercase; length, version and variant errors produce clear messages',
+        ],
+        howToUse: [
+          'Enter a quantity (1–1000) at the top and click Generate to produce a batch of UUID v7 values',
+          'The left column lists the whole batch; click Copy All to paste them straight into code or data files',
+          'The right column automatically inspects the first UUID, showing its timestamp and bit fields',
+          'UUIDs produced within the same millisecond are auto-incremented, so string order equals creation order',
+          'Everything runs locally in the browser, safe for offline or intranet use',
+        ],
+        useCases: [
+          'Database primary keys: replacing auto-increment IDs and UUID v4 with decentralized yet index-friendly values',
+          'Distributed systems: nodes independently generate roughly ordered, collision-negligible order/event IDs without coordinating ID ranges',
+          'Debugging: decoding the embedded generation time from existing UUID v7 values to order logs, messages and records',
+        ],
+        privacyNote:
+          'UUID generation and inspection run entirely in your browser using the built-in Web Crypto randomness; no network requests are made.',
+        faqs: [
+          {
+            question: 'How is UUID v7 better than UUID v4?',
+            answer:
+              'All 122 variable bits of UUID v4 are random, so using it as a primary key inserts new rows at random B+Tree positions, causing page splits and cache misses. UUID v7 leads with a millisecond timestamp—and within a millisecond this tool also increments the random portion—so new values are appended roughly sequentially with much better index locality while remaining independently generatable on every node.',
+          },
+          {
+            question: 'Can batch generation within one millisecond produce duplicates?',
+            answer:
+              'No. Each UUID first increments the 62-bit rand_b; when that fills up it is re-randomized and the 12-bit rand_a carries over, effectively monotonic increment over 74 random bits. Even 1000 UUIDs generated with a fixed timestamp are unique and strictly ascending (covered by the built-in tests).',
+          },
+          {
+            question: 'Can it inspect any UUID?',
+            answer:
+              'Inspection targets UUID v7: it validates the 36-character shape, requires the third group to start with 7 and the fourth group to start with 8/9/a/b. Other versions such as v4 produce an explicit version error, and the timestamp field is meaningful only for v7.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'editorconfig-generator',
+    name: '.editorconfig 生成器与解析器',
+    nameEn: '.editorconfig Generator & Parser',
+    description:
+      '通过表单可视化生成符合 editorconfig.org 规范的 .editorconfig：配置 root 标记、通用 [*] 段的 charset、end_of_line、indent_style、indent_size、tab_width、insert_final_newline、trim_trailing_whitespace、max_line_length，并可一键勾选 JavaScript/TypeScript、JSON/YAML、Markdown、Makefile、HTML/CSS 等常用文件类型预设段，右侧实时预览规范文本。折叠区还支持把已有 .editorconfig 反向解析为 root 与各 section 概览，未知属性与畸形行只告警不中断。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Visually build spec-compliant .editorconfig files (editorconfig.org) through a form: set the root marker and a generic [*] section covering charset, end_of_line, indent_style, indent_size, tab_width, insert_final_newline, trim_trailing_whitespace and max_line_length, then toggle ready-made sections for JavaScript/TypeScript, JSON/YAML, Markdown, Makefile and HTML/CSS, with a live spec-text preview. A collapsible panel also reverse-parses an existing .editorconfig into an overview of root and each section; unknown properties and malformed lines only raise warnings. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/editorconfig-generator',
+    iconName: 'FileCode',
+    tags: ['EditorConfig', '配置生成器', '代码风格', '缩进', '编辑器配置', '团队规范'],
+    tagsEn: ['EditorConfig', 'Config Generator', 'Code Style', 'Indentation', 'Editor Settings', 'Team Standards'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '.editorconfig 生成器与解析器是一款纯浏览器本地运行的开发配置工具。EditorConfig 是被 VS Code、JetBrains IDE、Vim 等主流编辑器广泛支持的开放规范，用一个简单的 INI 风格文件统一多人项目的缩进、换行、编码与尾随空白策略。本工具让不熟悉属性名与取值的开发者通过勾选表单即可得到规范配置，并能反向解析已有文件核对内容。',
+        coreFeatures: [
+          '全属性覆盖：charset、end_of_line、indent_style/size、tab_width、结尾换行、尾随空白、行宽八项官方属性',
+          '文件类型预设：一键勾选 JS/TS、JSON/YAML、Markdown（保留尾随空格）、Makefile（强制 Tab）等专用段',
+          '实时预览：表单任意修改即时生成规范文本，属性按固定顺序输出，root 标记置于首行',
+          '反向解析：粘贴已有 .editorconfig 即可得到 root 与每个 section 的属性数量概览',
+          '严格校验与友好容错：indent_size/tab_width 限 1–24、重复 glob 与未知属性只告警，非法行不中断解析',
+        ],
+        howToUse: [
+          '在左栏设置通用 [*] 段的字符集、换行符、缩进风格与宽度等属性',
+          '通过开关决定是否输出 root = true 以及 max_line_length（限长或 off）',
+          '在「附加段」勾选需要的文件类型预设，glob 更精确的段会覆盖通用段',
+          '右栏实时预览 .editorconfig 文本，点击「复制」保存到项目根目录',
+          '展开底部折叠区，可粘贴已有配置进行反向解析与核对',
+        ],
+        useCases: [
+          '新项目初始化：在多人协作仓库根目录快速产出统一缩进与换行的 .editorconfig',
+          '跨编辑器团队：让 VS Code、WebStorm、Vim 等不同编辑器的成员共享同一份风格约束',
+          '配置审查：反向解析接手项目中的 .editorconfig，快速了解 root 与各 section 覆盖情况',
+        ],
+        privacyNote:
+          '配置的生成与解析全部在浏览器本地由零依赖纯函数完成，不读取项目中的其他文件，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '多个 section 匹配同一文件时以谁为准？',
+            answer:
+              'EditorConfig 自顶向下读取，后出现且 glob 匹配的 section 会覆盖先出现 section 中的同名属性。本工具总是先生成通用 [*] 段，再输出勾选的专用段，因此 [*.md] 等更精确的 glob 可以覆盖 [*] 的设置（如 Markdown 保留尾随空格）。',
+          },
+          {
+            question: 'root = true 应该写在哪里？',
+            answer:
+              '应写在文件首行、任何 section 之前，它告诉编辑器无需继续向父目录查找 .editorconfig。放在 section 之后会被视为无效，反向解析时工具会对此给出告警。',
+          },
+          {
+            question: 'indent_size 为什么限制在 1–24？',
+            answer:
+              '规范要求 indent_size 为正整数，实际项目中缩进宽度几乎不会超过 24。为尽早拦截手滑输入，表单与生成器把取值限制在 1–24（indent_size 还支持特殊值 tab），越界会直接返回中文校验错误而不生成配置。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The .editorconfig Generator & Parser is a fully browser-local development configuration tool. EditorConfig is an open specification supported by VS Code, JetBrains IDEs, Vim and most other editors, using a simple INI-style file to unify indentation, line endings, encoding and trailing-whitespace policy across a multi-developer project. The form-based interface lets developers produce a spec file without memorizing property names, and can reverse-parse an existing file for review.',
+        coreFeatures: [
+          'All eight official properties: charset, end_of_line, indent_style/size, tab_width, final newline, trailing whitespace and line length',
+          'File-type presets: one click for JS/TS, JSON/YAML, Markdown (keep trailing spaces), Makefile (tabs required) and more',
+          'Live preview: any form change instantly regenerates the spec text, properties in a fixed order and root on the first line',
+          'Reverse parsing: paste an existing .editorconfig to get an overview of root and the property count of each section',
+          'Strict validation with friendly tolerance: indent_size/tab_width are bounded to 1–24, duplicate globs and unknown properties only warn, malformed lines never abort parsing',
+        ],
+        howToUse: [
+          'Configure charset, line endings, indentation style and width for the generic [*] section in the left column',
+          'Use the switches to control root = true and max_line_length (a limit or off)',
+          'Tick the file-type presets under Additional sections; more specific globs override the generic section',
+          'The right column previews the .editorconfig text live; click Copy and save it at the project root',
+          'Expand the bottom panel to paste and reverse-parse an existing configuration',
+        ],
+        useCases: [
+          'Bootstrapping a new project: quickly produce unified indentation and line-ending rules at the repository root',
+          'Cross-editor teams: sharing one style contract across VS Code, WebStorm, Vim and other editors',
+          'Config audits: reverse-parsing an inherited .editorconfig to understand root and section coverage at a glance',
+        ],
+        privacyNote:
+          'Generation and parsing run entirely in your browser via zero-dependency pure functions; no other project files are read and no network requests are made.',
+        faqs: [
+          {
+            question: 'When multiple sections match a file, which one wins?',
+            answer:
+              'EditorConfig reads top to bottom, and a later section whose glob matches overrides same-named properties from earlier sections. The tool always emits the generic [*] section first and then the ticked presets, so a more specific glob such as [*.md] can override [*] (for example keeping trailing spaces in Markdown).',
+          },
+          {
+            question: 'Where should root = true go?',
+            answer:
+              'On the first line, before any section. It tells editors not to keep searching parent directories for more .editorconfig files. Placing it after a section has no effect, and the reverse parser warns when it sees that.',
+          },
+          {
+            question: 'Why is indent_size limited to 1–24?',
+            answer:
+              'The spec requires a positive integer and real-world indentation virtually never exceeds 24. To catch slips early, the form and generator bound values to 1–24 (indent_size also accepts the special value tab); out-of-range input yields a clear validation error and no file is generated.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'uuencode-codec',
+    name: 'Uuencode 编解码器',
+    nameEn: 'Uuencode / Uudecode Codec',
+    description:
+      '对经典 Unix uuencode 格式进行编码与解码：每 3 个字节拆成 4 个 6 位值映射到可打印 ASCII（0 值用反引号），每行最多 45 个输入字节（60 个编码字符），行首为长度字符，并以 begin <权限> <文件名> … end 包裹，与 Python binascii.b2a_uu / a2b_uu 及 BSD uuencode 兼容。编码时可自定义文件名与八进制权限；解码时提取文件名与权限，兼容反引号与空格两种零值写法，按 UTF-8 还原文本，缺 begin/end、长度不符等错误均有明确提示。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Encode to and decode from the classic Unix uuencode format: every 3 bytes become four 6-bit values mapped to printable ASCII (zero rendered as a backtick), each line holds at most 45 input bytes (60 encoded characters) with a length character first, wrapped as begin <mode> <filename> … end. Output is compatible with Python binascii.b2a_uu / a2b_uu and BSD uuencode. Encoding accepts a custom filename and octal permission mode; decoding extracts the filename and mode, accepts both backtick and space zero representations, restores UTF-8 text, and reports missing begin/end or length mismatches clearly. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/uuencode-codec',
+    iconName: 'Binary',
+    tags: ['uuencode', 'uudecode', '二进制编码', 'Unix', 'binascii', '遗留格式'],
+    tagsEn: ['uuencode', 'uudecode', 'Binary Encoding', 'Unix', 'binascii', 'Legacy Format'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'The quick brown fox jumps over the lazy dog.\nThe quick brown fox jumps over the lazy dog.',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Uuencode 编解码器是一款纯浏览器本地运行的经典格式转换工具。uuencode 诞生于 1980 年代，用于在只能传输文本的邮件与 Usenet 链路上发送任意二进制数据；尽管如今多被 Base64/MIME 取代，大量历史归档、邮件池与遗留 Unix 系统中仍存在 uuencode 数据，需要在现代环境中解读或生成。',
+        coreFeatures: [
+          '规范实现：3 字节→4 字符的 6 位分组，0 值用反引号，每行 45 字节自动折行',
+          '包裹格式：生成 begin <mode> <filename> … end，文件名与三位八进制权限可自定义并校验',
+          '兼容解码：反引号与空格两种零值写法都接受，CRLF 与空白差异自动归一',
+          '元数据提取：解码时展示原始文件名、权限模式与字节数，end 之后的残留内容只告警',
+          'UTF-8 还原：解码字节按 UTF-8 解码，非法字节以替换字符还原并告警而非崩溃',
+        ],
+        howToUse: [
+          '默认进入编码模式：在左栏输入文本，右栏得到 begin/end 包裹的 uuencode 文本',
+          '可在左栏顶部修改 begin 行的文件名与三位八进制权限（如 644、755）',
+          '切换到解码模式后粘贴 begin … end 形式的文本，右栏还原原始 UTF-8 文本',
+          '结果区展示参与处理的字节数；解码时额外显示提取到的文件名与权限',
+          '点击「复制」获取编码或解码结果',
+        ],
+        useCases: [
+          '解读历史邮件、Usenet 归档或老系统导出文件中的 uuencode 数据',
+          '在没有 shell 的环境里快速生成与 Python binascii、BSD uuencode 兼容的包裹文本',
+          '学习与教学：理解 Base64 之前的 6 位二进制到可打印 ASCII 编码思想',
+        ],
+        privacyNote:
+          '编解码全部在浏览器本地由零依赖纯函数完成，输入的文本或包裹数据不会上传或离开设备。',
+        faqs: [
+          {
+            question: 'uuencode 和 Base64 是什么关系？',
+            answer:
+              '二者都是把 3 个字节编码为 4 个可打印字符的 6 位分组编码，思想一致但字符表不同。uuencode 字符为 (值+32) 对应的 ASCII（0 值用反引号），Base64 使用 A–Z/a–z/0–9/+/=。uuencode 更早，主要用于 Unix 邮件链路；Base64 是 MIME 与现代系统的主流选择。',
+          },
+          {
+            question: '为什么有的 uuencode 数据零值是空格而不是反引号？',
+            answer:
+              '历史上不同实现对 6 位零值有反引号 `（0x60）与空格（0x20）两种写法，Python 的 b2a_uu 输出空格、BSD 标准描述为反引号。本工具编码按规范使用反引号，解码则两者都按零值接受，因此可以互通。',
+          },
+          {
+            question: '解码非 UTF-8 的二进制会怎样？',
+            answer:
+              '本工具面向文本演示，按 UTF-8 还原解码字节。若内容不是合法 UTF-8（例如压缩包、图片等原始二进制），非法字节会以 Unicode 替换字符显示并给出告警，字节级数据本身在算法层仍被正确解析，不会中断。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Uuencode / Uudecode Codec is a fully browser-local converter for a classic encoding format. Born in the 1980s, uuencode carried arbitrary binary data over text-only email and Usenet links. Although Base64/MIME has largely replaced it, huge amounts of uuencode data survive in historical archives, mail spools and legacy Unix systems and still need to be read or produced in modern environments.',
+        coreFeatures: [
+          'Spec implementation: 3 bytes to four 6-bit characters, zero rendered as a backtick, automatic 45-byte line wrapping',
+          'Wrapper format: emits begin <mode> <filename> … end with a customizable, validated filename and three-digit octal mode',
+          'Compatible decoding: both backtick and space zero representations accepted, with CRLF and whitespace normalized',
+          'Metadata extraction: decoding shows the original filename, permission mode and byte count; trailing content after end only warns',
+          'UTF-8 restoration: decoded bytes are interpreted as UTF-8; invalid bytes fall back to replacement characters with a warning instead of crashing',
+        ],
+        howToUse: [
+          'Encoding is the default mode: enter text on the left and get the begin/end-wrapped uuencode text on the right',
+          'Optionally change the filename and three-digit octal mode (such as 644 or 755) at the top of the input card',
+          'Switch to decode mode, paste begin … end text, and recover the original UTF-8 text on the right',
+          'The result panel shows processed bytes; decoding additionally shows the extracted filename and mode',
+          'Click Copy to take the encoded or decoded output',
+        ],
+        useCases: [
+          'Reading uuencode data in historical emails, Usenet archives or exports from legacy systems',
+          'Producing wrapper text compatible with Python binascii and BSD uuencode without a shell',
+          'Education: understanding the pre-Base64 idea of mapping 6-bit groups to printable ASCII',
+        ],
+        privacyNote:
+          'Encoding and decoding run entirely in your browser via zero-dependency pure functions. Input text and wrapped data are never uploaded and never leave your device.',
+        faqs: [
+          {
+            question: 'How does uuencode relate to Base64?',
+            answer:
+            'Both encode 3 bytes into 4 printable characters using 6-bit groups; the idea is identical but the alphabets differ. Uuencode uses ASCII(value + 32) with a backtick for zero, while Base64 uses A–Z/a–z/0–9/+/=. Uuencode is older and was tied to Unix email links; Base64 is the mainstream choice for MIME and modern systems.',
+          },
+          {
+            question: 'Why do some uuencode payloads use spaces instead of backticks for zero?',
+            answer:
+            'Historically implementations rendered a 6-bit zero either as a backtick ` (0x60) or a space (0x20): Python b2a_uu emits spaces while the BSD standard describes the backtick. This tool encodes with the standard backtick but accepts both on decode, so the two flavors interoperate.',
+          },
+          {
+            question: 'What happens when decoding non-UTF-8 binary?',
+            answer:
+            'The tool is oriented toward text demos and restores decoded bytes as UTF-8. If the content is not valid UTF-8 (raw binary such as an archive or image), invalid bytes appear as Unicode replacement characters with a warning; the byte-level payload is still parsed correctly by the algorithm and decoding does not abort.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

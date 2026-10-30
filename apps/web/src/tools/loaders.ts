@@ -155,4 +155,9 @@ export const toolLoaders: Record<
   'sitemap-generator': () => import('./sitemap-generator'),
   'markdown-toc-generator': () => import('./markdown-toc-generator'),
   'web-manifest-generator': () => import('./web-manifest-generator'),
+  'soundex-codec': () => import('./soundex-codec'),
+  'srt-vtt-converter': () => import('./srt-vtt-converter'),
+  'uuid-v7-generator': () => import('./uuid-v7-generator'),
+  'editorconfig-generator': () => import('./editorconfig-generator'),
+  'uuencode-codec': () => import('./uuencode-codec'),
 };
