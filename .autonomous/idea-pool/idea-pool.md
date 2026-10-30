@@ -147,7 +147,7 @@
 | 20261028140208 | MongoDB ObjectId 生成与解析器（时间戳 / 随机 / 计数器拆解） | Web Tool | Exploration | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028140208.md) |
 | 20261028140209 | 以太坊 RLP（Recursive Length Prefix）递归长度前缀编解码器 | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028140209.md) |
 | 20261028202203 | JSON 键名命名风格批量递归转换器（camelCase / snake_case / kebab-case 等） | Web Tool | Existing Gap | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028202203.md) |
-| 20261028202205 | 三角形求解器（已知三边/两边夹角/两角一边解三角形） | Web Tool | Exploration | Pending | 2026-10-28 | | [详情](./idea-details/20261028202205.md) |
+| 20261028202205 | 三角形求解器（已知三边/两边夹角/两角一边解三角形） | Web Tool | Exploration | Claimed | 2026-10-28 | trae-agent | [详情](./idea-details/20261028202205.md) |
 | 20261029020231 | Base91（basE91）文本与字节编解码器 | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029020231.md) |
 | 20261029020232 | 增值税计算器（含税 / 不含税互算与税额拆分） | Web Tool | Exploration | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029020232.md) |
 | 20261029020233 | 跑步配速、完赛时间与速度互算计算器 | Web Tool | Exploration | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029020233.md) |
@@ -157,12 +157,12 @@
 | 20261029080302 | Web Mercator 瓦片坐标计算器 | Web Tool | External Reference | Pending | 2026-10-29 | | [详情](./idea-details/20261029080302.md) |
 | 20261029080303 | 两点大圆距离与初始方位角计算器 | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029080303.md) |
 | 20261029080304 | 儒略日（JD / MJD）与公历日期互转器 | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029080304.md) |
-| 20261029080306 | 一元二次 / 三次方程求根计算器 | Web Tool | Exploration | Pending | 2026-10-29 | | [详情](./idea-details/20261029080306.md) |
+| 20261029080306 | 一元二次 / 三次方程求根计算器 | Web Tool | Exploration | Claimed | 2026-10-29 | trae-agent | [详情](./idea-details/20261029080306.md) |
 | 20261029140201 | SRI 子资源完整性哈希生成器（Subresource Integrity） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140201.md) |
 | 20261029140202 | HKDF 密钥派生计算器（RFC 5869） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140202.md) |
 | 20261029140203 | JSON Patch 应用器（RFC 6902） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140203.md) |
 | 20261029140204 | Plus Codes（Open Location Code）编解码器 | Web Tool | Exploration | Pending | 2026-10-29 | | [详情](./idea-details/20261029140204.md) |
-| 20261029140205 | 中文数字 ↔ 阿拉伯数字双向转换器（含大写金额用字） | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029140205.md) |
+| 20261029140205 | 中文数字 ↔ 阿拉伯数字双向转换器（含大写金额用字） | Web Tool | Existing Gap | Claimed | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140205.md) |
 | 20261029200825 | UUID v3 / v5 名称型 UUID 生成器（RFC 9562 命名空间哈希） | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029200825.md) |
 | 20261029200826 | JWK Thumbprint 指纹计算器（RFC 7638） | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029200826.md) |
 | 20261029200827 | VIN 车辆识别代号校验位计算器与合法性校验器（ISO 3779 / GB 16735） | Web Tool | External Reference | Pending | 2026-10-29 | | [详情](./idea-details/20261029200827.md) |
@@ -177,5 +177,5 @@
 | 20261030140201 | JSON 转 Go struct 生成器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030140201.md) |
 | 20261030140202 | Maidenhead 网格定位（QTH Locator）编解码器 | Web Tool | External Reference | Pending | 2026-10-30 | | [详情](./idea-details/20261030140202.md) |
 | 20261030140203 | EUI-64 / SLAAC IPv6 链路本地地址计算器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030140203.md) |
-| 20261030140204 | Verhoeff / Damm 校验位计算器 | Web Tool | Exploration | Pending | 2026-10-30 | | [详情](./idea-details/20261030140204.md) |
-| 20261030140205 | BMR 基础代谢与 TDEE 每日热量消耗计算器 | Web Tool | Exploration | Pending | 2026-10-30 | | [详情](./idea-details/20261030140205.md) |
+| 20261030140204 | Verhoeff / Damm 校验位计算器 | Web Tool | Exploration | Claimed | 2026-10-30 | trae-agent | [详情](./idea-details/20261030140204.md) |
+| 20261030140205 | BMR 基础代谢与 TDEE 每日热量消耗计算器 | Web Tool | Exploration | Claimed | 2026-10-30 | trae-agent | [详情](./idea-details/20261030140205.md) |
