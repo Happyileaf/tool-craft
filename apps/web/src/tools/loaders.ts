@@ -160,4 +160,5 @@ export const toolLoaders: Record<
   'uuid-v7-generator': () => import('./uuid-v7-generator'),
   'editorconfig-generator': () => import('./editorconfig-generator'),
   'uuencode-codec': () => import('./uuencode-codec'),
+  'verhoeff-damm-checksum': () => import('./verhoeff-damm-checksum'),
 };

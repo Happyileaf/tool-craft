@@ -13638,6 +13638,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'verhoeff-damm-checksum',
+    name: 'Verhoeff / Damm 校验位计算器',
+    nameEn: 'Verhoeff / Damm Check Digit Calculator',
+    description:
+      '按 Verhoeff（二面体群 D5 置换表）或 Damm（反对称拟群拉丁方）算法对十进制数字串补全或校验末位校验位，支持逐行批量处理；两种算法均可检出全部单字符错误与相邻换位错误。输入含末位时校验合法性并给出正确校验位，不含末位时自动补全。纯浏览器本地查表运算、零新增依赖。',
+    descriptionEn:
+      'Append or verify a single decimal check digit with either the Verhoeff algorithm (dihedral group D5 permutation tables) or the Damm algorithm (totally antisymmetric quasigroup Latin square), with line-by-line batch processing. Both schemes catch every single-digit error and every adjacent transposition. A trailing digit is validated and the correct digit suggested; otherwise the check digit is appended. Everything runs locally via table lookups with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/verhoeff-damm-checksum',
+    iconName: 'ShieldCheck',
+    tags: ['Verhoeff', 'Damm', '校验位', '校验和', '数字编号', '批量校验'],
+    tagsEn: ['Verhoeff', 'Damm', 'Check Digit', 'Checksum', 'Number Validation', 'Batch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '123\n12345\n572',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Verhoeff / Damm 校验位计算器是一款纯浏览器本地运行的十进制数字校验工具。两种算法都只向原数字串追加一位校验位，却能 100% 检出单字符抄录错误与相邻数字换位错误，因此被广泛用于德国身份证号、Aadhaar 编号、车辆与资产编号等对人工录入容错要求高的编号体系。',
+        coreFeatures: [
+          'Verhoeff 算法：基于二面体群 D5 乘法表、8 行循环置换表与逆元表的标准实现',
+          'Damm 算法：基于 10×10 反对称拟群（弱幂等拉丁方）运算表，状态从 0 出发单行迭代',
+          '双模式逐行处理：带末位则校验并指出正确校验位，不带末位则自动补全',
+          '批量输入：每行一个编号，非法行（含非数字字符等）原样保留并逐行告警',
+          '空白容错：自动忽略空格与连字符，兼容分组排版的编号',
+        ],
+        howToUse: [
+          '在输入区顶部选择 Verhoeff 或 Damm 算法',
+          '每行输入一个数字串：不含校验位时输出补全结果，含校验位时校验合法性',
+          '查看输出区：校验失败的行会给出「正确校验位」与合法编码的告警',
+          '点击「复制」获取全部补全或校验后的编号',
+        ],
+        useCases: [
+          '核对使用 Verhoeff 校验的德国身份证号、Aadhaar 等编号的末位',
+          '为车辆、设备、票据等自有编号体系生成可防换位错误的校验位',
+          '教学演示：理解群论 / 拉丁方在校验码设计中的应用',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地由零依赖纯函数完成，输入的编号不会上传或离开设备。',
+        faqs: [
+          {
+            question: 'Verhoeff 和 Damm 有什么区别？',
+            answer:
+              '二者都是单十进制位、可检出全部单字符错误与相邻换位错误的校验方案。Verhoeff（1969）基于二面体群 D5 的三张查表，校验时数字要先做位置相关置换；Damm（2004）基于反对称拟群的一张 10×10 表，状态逐位更新、实现更简洁。两者不兼容，需按编号体系的规定选择。',
+          },
+          {
+            question: '为什么输入 1 位数字也能处理？',
+            answer:
+              '算法对任意长度（含空前缀）都有定义：空前缀的 Verhoeff/Damm 校验位均为 0，因此单个「0」是合法编码。实际编号体系通常有自己的最小长度，本工具只负责算法层面的校验位计算，不强制业务长度。',
+          },
+          {
+            question: '它和 Luhn（模 10）校验有什么不同？',
+            answer:
+              'Luhn（银行卡、IMEI 使用）无法检出所有相邻换位（如 09↔90），而 Verhoeff 与 Damm 在数学上保证检出全部相邻换位与全部单字符错误，容错能力更强，但查表实现稍复杂。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Verhoeff / Damm Check Digit Calculator is a fully browser-local decimal-number validation tool. Both algorithms append just one check digit yet detect 100% of single-digit transcription errors and adjacent transpositions, which is why they back numbering schemes such as German ID numbers, Aadhaar and various vehicle or asset identifiers that must tolerate manual entry.',
+        coreFeatures: [
+          'Verhoeff algorithm: standard implementation with the D5 multiplication table, the eight-row cyclic permutation table and the inverse table',
+          'Damm algorithm: a 10x10 totally antisymmetric quasigroup (weakly idempotent Latin square), single-row state iteration from zero',
+          'Dual per-line behavior: a trailing digit is validated with the correct one reported, otherwise the check digit is appended',
+          'Batch input: one number per line; invalid lines (non-digits, etc.) are preserved with per-line warnings',
+          'Whitespace tolerant: spaces and hyphens are ignored to accept grouped typography',
+        ],
+        howToUse: [
+          'Pick the Verhoeff or Damm algorithm at the top of the input panel',
+          'Enter one digit string per line: output appends a missing check digit or validates an existing trailing one',
+          'Review the output panel: failed lines show the correct check digit and the valid code as warnings',
+          'Click Copy to take all completed or validated numbers',
+        ],
+        useCases: [
+          'Verifying the last digit of Verhoeff-protected German ID numbers, Aadhaar and similar identifiers',
+          'Generating transposition-proof check digits for in-house vehicle, device or receipt numbering',
+          'Teaching how group theory and Latin squares underpin check-code design',
+        ],
+        privacyNote:
+          'All computation runs in your browser via zero-dependency pure functions. Entered numbers are never uploaded and never leave your device.',
+        faqs: [
+          {
+            question: 'How do Verhoeff and Damm differ?',
+            answer:
+              'Both add one decimal digit and catch every single-digit error and every adjacent transposition. Verhoeff (1969) uses three D5 look-up tables with position-dependent permutation; Damm (2004) uses one 10x10 antisymmetric-quasigroup table updated digit by digit, which is simpler to implement. They are not interchangeable; use whichever the numbering scheme mandates.',
+          },
+          {
+            question: 'Why is a single-digit input accepted?',
+            answer:
+              'The algorithms are defined for any length including the empty prefix, whose check digit is 0 for both, so a lone "0" is valid. Real-world schemes usually impose their own minimum lengths; this tool only computes the algorithmic check digit and enforces no business length.',
+          },
+          {
+            question: 'How does this differ from the Luhn (mod 10) check?',
+            answer:
+              'Luhn (bank cards, IMEI) misses some adjacent transpositions (such as 09 vs 90), whereas Verhoeff and Damm mathematically guarantee detection of all adjacent transpositions and all single-digit errors, offering stronger error tolerance at the cost of slightly more involved table lookups.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
