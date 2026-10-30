@@ -14248,6 +14248,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'csv-to-sql',
+    name: 'CSV 转 SQL INSERT 生成器',
+    nameEn: 'CSV to SQL INSERT Generator',
+    description:
+      '将 CSV（首行为列名）转换为 SQL INSERT 语句，支持自定义表名与列名、分批行数、三种标识符引号风格与 NULL 策略，按 RFC 4180 解析引号与转义。',
+    descriptionEn:
+      'Convert CSV (first row as columns) into SQL INSERT statements with custom table/columns, batch size, three identifier quoting styles, and NULL handling, parsing quotes per RFC 4180.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/csv-to-sql',
+    iconName: 'Table2',
+    tags: ['CSV', 'SQL', 'INSERT', '数据库', '转换'],
+    tagsEn: ['CSV', 'SQL', 'INSERT', 'Database', 'Convert'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'id,name,email\n1,Alice,alice@example.com\n2,Bob,bob@example.com',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSV 转 SQL INSERT 生成器是一款纯浏览器本地的数据导入辅助工具：粘贴符合 RFC 4180 约定的 CSV（首行为列名），即可生成可直接执行的 INSERT 语句，支持自定义表名 / 列名、每条语句的批量行数、反引号 / 双引号 / 方括号三种标识符风格，以及空单元格与 NULL 字样的处理策略。',
+        coreFeatures: [
+          'RFC 4180 解析：支持双引号包裹字段、字段内逗号与换行、双引号用 "" 转义、CRLF 与 BOM',
+          '自定义表名与列名（逗号分隔），列名少于 CSV 时自动按序截取',
+          '三种标识符引号：反引号（MySQL）、双引号（ANSI / PostgreSQL）、方括号（SQL Server）',
+          '可配置每条 INSERT 的行数（0 = 合并为一条多行 VALUES），数字保持裸字面量',
+          '空单元格 → NULL 或空字符串，可选择是否把 NULL 字样识别为 SQL NULL',
+        ],
+        howToUse: [
+          '在 CSV 输入框粘贴内容，首行会被当作列名，工具自动探测逗号 / 分号 / Tab / 竖线分隔符',
+          '填写目标表名，需要时用逗号分隔填写自定义列名',
+          '选择标识符引号风格、空值策略，设置每条 INSERT 的行数（0 表示合并为一条）',
+          '在结果卡片中查看生成的 SQL，点击「复制」即可取用',
+        ],
+        useCases: [
+          '把 Excel / 表格软件导出的 CSV 快速转成数据库初始化脚本',
+          '数据迁移时为 MySQL / PostgreSQL / SQL Server 生成对应引号风格的 INSERT',
+          '构造批量导入语句并控制单条语句大小，避免超出参数上限',
+        ],
+        privacyNote:
+          'CSV 解析与 SQL 生成全部在浏览器本地完成，数据不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '字段里包含逗号或换行怎么办？',
+            answer:
+              '用双引号包裹该字段即可，例如 "VIP, founder"；字段内部的双引号写成两个双引号 ""，这是 RFC 4180 的标准转义方式。',
+          },
+          {
+            question: '为什么有些值没有加引号？',
+            answer:
+              '符合整数或小数写法（如 30、-1.5）的字段会作为裸数字字面量输出，其余值按字符串加单引号，内部单引号双写转义。',
+          },
+          {
+            question: '如何让空单元格导入为空字符串而不是 NULL？',
+            answer:
+              '在「空值处理」中选择「空单元格 → 空字符串」；也可以关闭「识别 NULL 字样」，让文本 NULL 按普通字符串导入。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CSV to SQL INSERT Generator is a fully local data-import helper. Paste RFC 4180-style CSV with the first row as column names and get ready-to-run INSERT statements, with custom table/column names, configurable rows per statement, backtick/double-quote/bracket identifier styles, and flexible NULL handling.',
+        coreFeatures: [
+          'RFC 4180 parsing: quoted fields, commas and newlines inside fields, "" escaping, CRLF and BOM support',
+          'Custom table and column names (comma-separated); fewer columns than the CSV are taken in order',
+          'Three identifier styles: backticks (MySQL), double quotes (ANSI / PostgreSQL), brackets (SQL Server)',
+          'Configurable rows per INSERT (0 = one multi-row statement); numbers stay bare literals',
+          'Empty cells become NULL or empty strings; optional recognition of the literal word NULL',
+        ],
+        howToUse: [
+          'Paste CSV with the first row as headers; comma/semicolon/tab/pipe delimiters are auto-detected',
+          'Enter the target table name and, if needed, custom column names separated by commas',
+          'Pick the identifier quote style, the empty-value policy, and the rows per INSERT (0 merges everything)',
+          'Review the generated SQL in the result card and click Copy to use it',
+        ],
+        useCases: [
+          'Turning CSV exported from spreadsheets into database seed scripts',
+          'Generating INSERTs with the right quoting style for MySQL, PostgreSQL, or SQL Server during migration',
+          'Building bulk-import statements while controlling statement size to stay under parameter limits',
+        ],
+        privacyNote:
+          'All CSV parsing and SQL generation happens locally in your browser; data is never uploaded.',
+        faqs: [
+          {
+            question: 'What if a field contains commas or newlines?',
+            answer:
+              'Wrap the field in double quotes, e.g. "VIP, founder"; a double quote inside is written as two double quotes (""), per RFC 4180.',
+          },
+          {
+            question: 'Why are some values unquoted?',
+            answer:
+              'Fields matching an integer or decimal pattern (e.g. 30, -1.5) are emitted as bare numeric literals; everything else is single-quoted, with embedded single quotes doubled.',
+          },
+          {
+            question: 'How do I import empty cells as empty strings instead of NULL?',
+            answer:
+              'Choose "empty cell to empty string" in the NULL handling option. You can also disable NULL-word recognition so the text NULL imports as a plain string.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

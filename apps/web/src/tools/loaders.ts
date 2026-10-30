@@ -166,4 +166,5 @@ export const toolLoaders: Record<
   'triangle-solver': () => import('./triangle-solver'),
   'polynomial-root-calculator': () => import('./polynomial-root-calculator'),
   'tcpip-checksum': () => import('./tcpip-checksum'),
+  'csv-to-sql': () => import('./csv-to-sql'),
 };
