@@ -119,7 +119,7 @@ const WellKnownPorts: React.FC<ToolComponentProps> = () => {
   const tokens = tokenizeInput(keyword);
 
   const filteredEntries = React.useMemo(() => {
-    const matched = tokens.length === 1 ? searchPorts(tokens[0]) : PORT_ENTRIES;
+    const matched = tokens.length === 1 ? searchPorts(tokens[0]!) : PORT_ENTRIES;
     return protocol === 'all'
       ? matched
       : matched.filter((entry) => entry.protocols.includes(protocol));
@@ -250,8 +250,8 @@ const WellKnownPorts: React.FC<ToolComponentProps> = () => {
 
       {tokens.length > 1 ? (
         renderBatch()
-      ) : tokens.length === 1 && /^\d+$/.test(tokens[0].trim()) ? (
-        renderSingleNumber(tokens[0])
+      ) : tokens.length === 1 && /^\d+$/.test(tokens[0]!.trim()) ? (
+        renderSingleNumber(tokens[0]!)
       ) : filteredEntries.length === 0 ? (
         <Card className={styles.card}>
           <Empty description="没有匹配的端口或服务，换个关键词试试" />

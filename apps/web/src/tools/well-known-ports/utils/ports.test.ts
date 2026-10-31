@@ -83,7 +83,7 @@ describe('searchPorts', () => {
   it('空关键词返回全部且按端口号升序', () => {
     const all = searchPorts('');
     expect(all).toHaveLength(PORT_ENTRIES.length);
-    expect(all.every((entry, index) => index === 0 || entry.port >= all[index - 1].port)).toBe(true);
+    expect(all.every((entry, index) => index === 0 || entry.port >= all[index - 1]!.port)).toBe(true);
   });
 
   it('大小写不敏感', () => {

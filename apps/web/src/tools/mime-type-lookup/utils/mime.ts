@@ -583,7 +583,7 @@ export function lookupByExtension(input: string): MimeEntry | null {
  * @returns 匹配的 MIME 条目；未知返回 null
  */
 export function lookupByType(type: string): MimeEntry | null {
-  const normalized = type.trim().split(';')[0].trim().toLowerCase();
+  const normalized = (type.trim().split(';')[0] ?? '').trim().toLowerCase();
   if (!normalized) {
     return null;
   }

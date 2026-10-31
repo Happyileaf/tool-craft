@@ -79,17 +79,17 @@ export function countSyllables(input: string): number {
   }
 
   // 辅音 + le 自成音节，词尾 e 不静默；其余词尾静默 e 减 1
-  if (word.endsWith('e') && !(word.endsWith('le') && word.length > 2 && !VOWELS.includes(word[word.length - 3]))) {
+  if (word.endsWith('e') && !(word.endsWith('le') && word.length > 2 && !VOWELS.includes(word[word.length - 3]!))) {
     groups -= 1;
   }
 
   // 静默屈折后缀 -ed（started / needed 等 t、d 前保留）
-  if (word.endsWith('ed') && word.length > 2 && !'td'.includes(word[word.length - 3])) {
+  if (word.endsWith('ed') && word.length > 2 && !'td'.includes(word[word.length - 3]!)) {
     groups -= 1;
   }
 
   // 静默屈折后缀 -es（buses / cases 等 s、x、z 前保留）
-  if (word.endsWith('es') && word.length > 2 && !'sxz'.includes(word[word.length - 3])) {
+  if (word.endsWith('es') && word.length > 2 && !'sxz'.includes(word[word.length - 3]!)) {
     groups -= 1;
   }
 

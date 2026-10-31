@@ -33,19 +33,19 @@ describe('buildTree', () => {
   it('中间缺失目录自动补全、重复路径去重', () => {
     const root = buildTree(['a/b/c.ts', 'a/b/c.ts', 'a/b/d.ts']);
     expect(root.children).toHaveLength(1);
-    const a = root.children[0];
+    const a = root.children[0]!;
     expect(a.name).toBe('a');
     expect(a.isDirectory).toBe(true);
-    const b = a.children[0];
+    const b = a.children[0]!;
     expect(b.name).toBe('b');
     expect(b.children.map((node) => node.name)).toEqual(['c.ts', 'd.ts']);
   });
 
   it('同名冲突时含子节点的节点保持为目录', () => {
     const root = buildTree(['x', 'x/y.ts']);
-    const x = root.children[0];
+    const x = root.children[0]!;
     expect(x.isDirectory).toBe(true);
-    expect(x.children[0].name).toBe('y.ts');
+    expect(x.children[0]!.name).toBe('y.ts');
   });
 });
 

@@ -83,7 +83,7 @@ describe('searchMime', () => {
 
   it('扩展名形式的搜索词等价于精确反查', () => {
     expect(searchMime('.jpg')).toHaveLength(1);
-    expect(searchMime('.jpg')[0].type).toBe('image/jpeg');
+    expect(searchMime('.jpg')[0]!.type).toBe('image/jpeg');
   });
 
   it('无结果时返回空数组', () => {
