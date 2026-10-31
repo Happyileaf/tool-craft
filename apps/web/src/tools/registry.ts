@@ -15370,6 +15370,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'ppi-calculator',
+    name: '屏幕 PPI / 像素密度计算器',
+    nameEn: 'Screen PPI / Pixel Density Calculator',
+    description:
+      '输入屏幕分辨率（横向 / 纵向像素）与对角线英寸数，计算 PPI、PPCM、像素点距、物理宽高与面积，自动识别标准宽高比（含竖屏），内置显示器与手机预设及常见设备密度参考。',
+    descriptionEn:
+      'Enter screen resolution (width/height in pixels) and diagonal in inches to get PPI, PPCM, pixel pitch, physical dimensions and area, with automatic aspect-ratio detection (including portrait), built-in monitor/phone presets and a common-device density reference table.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/ppi-calculator',
+    iconName: 'Smartphone',
+    tags: ['PPI', '像素密度', '屏幕分辨率', '点距', 'Retina'],
+    tagsEn: ['PPI', 'Pixel Density', 'Screen Resolution', 'Pixel Pitch', 'Retina'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1920 1080 24',
+    doc: {
+      zh: {
+        whatIsIt:
+          '屏幕 PPI / 像素密度计算器根据分辨率与对角线物理长度推导屏幕精细度：对角线像素数 = √(横向像素² + 纵向像素²)，PPI = 对角线像素 ÷ 对角线英寸；再由 1 英寸 = 25.4 毫米换算出 PPCM（每厘米像素）、像素点距（mm/像素）以及屏幕物理宽、高、面积，并自动识别 4:3、16:9、21:9 等标准宽高比与竖屏方向。工具内置 24" 1080p、27" 1440p/4K、iPhone、MacBook 等预设和常见设备 PPI 参考，适合选购显示器、判断 HiDPI/Retina 缩放与评估手机屏幕细腻度。',
+        coreFeatures: [
+          '由分辨率与对角线英寸计算 PPI / PPCM / 像素点距，基于正方形像素假设',
+          '推导物理宽、高、对角线（mm）与面积（m²）、总像素数',
+          '宽高比自动识别 4:3、3:2、16:10、16:9、19.5:9、20:9、21:9，支持横屏 / 竖屏翻转写法',
+          '5 个一键预设：24" 1080p、27" 1440p、27" 4K、iPhone 15、13" MacBook Air',
+          '密度档位解读 + 6 行常见设备 PPI 参考表，纯本地计算零上报',
+        ],
+        howToUse: [
+          '输入屏幕横向、纵向物理像素（非缩放后的逻辑分辨率）与对角线英寸数',
+          '或点击预设按钮一键填充常见设备参数',
+          '查看 PPI、PPCM、点距等结果卡片及密度档位说明',
+          '对照底部常见设备 PPI 参考表判断屏幕属于标准密度还是 HiDPI / Retina',
+        ],
+        useCases: [
+          '选购显示器时比较相同尺寸下不同分辨率的精细度',
+          '判断某屏幕是否适合开启 macOS / Windows 的 HiDPI、Retina 缩放',
+          '评估手机、平板屏幕细腻度，或计算印刷 / 喷绘所需像素精度',
+        ],
+        privacyNote:
+          '所有输入与计算均在浏览器本地完成，不涉及任何设备标识或个人数据上传。',
+        faqs: [
+          {
+            question: 'PPI 和 DPI 有什么区别？',
+            answer:
+              'PPI（Pixels Per Inch）描述屏幕上每英寸的物理像素数，用于显示器；DPI（Dots Per Inch）原指打印设备每英寸可输出的墨点数，也常被系统缩放设置借用。屏幕精细度比较时应使用 PPI。',
+          },
+          {
+            question: '为什么算出来和官网参数略有出入？',
+            answer:
+              '厂商有时对屏幕尺寸取整（如 27 英寸实为约 26.9–27.2），或公布的是逻辑分辨率（缩放分辨率）而非物理像素。使用物理像素与实际对角线英寸数可得到精确 PPI；本工具结果通常与标称值相差 ±2 PPI 以内。',
+          },
+          {
+            question: 'Retina 屏幕的 PPI 一定更高吗？',
+            answer:
+              'Retina 是苹果对「正常视距下像素无法被肉眼分辨」的营销标准，与观看距离有关：手机约 300+ PPI、桌面显示器约 218 PPI（如 27" 5K iMac）即可称为 Retina，因此并非单一 PPI 阈值。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Screen PPI / Pixel Density Calculator derives display sharpness from resolution and physical diagonal: diagonal pixels = \u221a(width\u00b2 + height\u00b2), PPI = diagonal pixels \u00f7 diagonal inches; using 1 inch = 25.4 mm it then derives PPCM, pixel pitch (mm per pixel), physical width/height and area, and recognizes standard aspect ratios (4:3, 16:9, 21:9 and more) including portrait orientation. Built-in presets cover 24" 1080p, 27" 1440p/4K, iPhone and MacBook, with a common-device PPI reference table \u2014 handy when choosing a monitor, evaluating HiDPI/Retina scaling, or comparing phone screen sharpness.',
+        coreFeatures: [
+          'PPI / PPCM / pixel pitch from resolution and diagonal inches under the square-pixel assumption',
+          'Physical width, height, diagonal (mm), area (m\u00b2) and total pixel count',
+          'Aspect-ratio detection for 4:3, 3:2, 16:10, 16:9, 19.5:9, 20:9, 21:9 with landscape/portrait labeling',
+          'Five one-click presets: 24" 1080p, 27" 1440p, 27" 4K, iPhone 15, 13" MacBook Air',
+          'Density-tier explanation plus a 6-row device reference table; fully local, no tracking',
+        ],
+        howToUse: [
+          'Enter physical pixel width/height (not scaled logical resolution) and diagonal in inches',
+          'Or click a preset to fill a common device instantly',
+          'Read the PPI, PPCM, pitch result card and density-tier description',
+          'Compare against the device reference table to see whether a screen is standard density or HiDPI/Retina',
+        ],
+        useCases: [
+          'Comparing sharpness of monitors of the same size at different resolutions',
+          'Deciding whether a display suits HiDPI / Retina-style scaling on macOS or Windows',
+          'Judging phone/tablet screen sharpness or estimating pixels needed for print',
+        ],
+        privacyNote:
+          'All input and math stay in your browser; no device identifiers or personal data are uploaded.',
+        faqs: [
+          {
+            question: 'What is the difference between PPI and DPI?',
+            answer:
+              'PPI (Pixels Per Inch) counts physical pixels per inch on a display. DPI (Dots Per Inch) originally describes ink dots a printer places per inch and is also borrowed by OS scaling settings. When comparing screen sharpness, PPI is the correct metric.',
+          },
+          {
+            question: 'Why does my result differ slightly from the official spec?',
+            answer:
+              'Vendors round screen sizes (a "27-inch" panel may be 26.9\u201327.2 inches) or publish scaled logical resolution instead of physical pixels. Using physical pixels and the true diagonal gives exact PPI; results are typically within \u00b12 PPI of the advertised figure.',
+          },
+          {
+            question: 'Does a Retina screen always need a higher PPI?',
+            answer:
+              'Retina is Apple\'s marketing term for pixels indistinguishable at normal viewing distance, so it depends on distance: roughly 300+ PPI on phones and about 218 PPI on desktop displays (e.g. the 27" 5K iMac) can qualify \u2014 there is no single PPI threshold.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

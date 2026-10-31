@@ -177,4 +177,5 @@ export const toolLoaders: Record<
   'geo-coordinate-converter': () => import('./geo-coordinate-converter'),
   'expense-splitter': () => import('./expense-splitter'),
   'bpm-calculator': () => import('./bpm-calculator'),
+  'ppi-calculator': () => import('./ppi-calculator'),
 };
