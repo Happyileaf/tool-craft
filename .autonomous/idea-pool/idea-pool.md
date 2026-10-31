@@ -188,5 +188,4 @@
 | 20261031080658 | NPV / IRR 投资现金流计算器（净现值 / 内部收益率） | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031080658.md) |
 | 20261031080659 | CBOR (RFC 8949) ↔ JSON 编解码器（含诊断记法与十六进制互转） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031080659.md) |
 | 20261031080660 | 数独（Sudoku）求解器与题目生成器（9×9，含多解/无解检测） | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031080660.md) |
-| 20261031080661 | HAR 文件解析与 cURL / fetch 代码导出器（请求列表浏览与重放片段生成） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031080661.md) |
 | 20261031080662 | JSON → Java class / record 生成器（含嵌套类型推断） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031080662.md) |
