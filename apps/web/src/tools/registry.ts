@@ -16082,6 +16082,107 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'vcard-generator',
+    name: 'vCard 名片生成器',
+    nameEn: 'vCard (VCF) Generator',
+    description:
+      '表单填写联系人信息，生成符合 vCard 3.0 / 4.0 规范的 .vcf 文本，自动转义与折行，支持复制与下载。',
+    descriptionEn:
+      'Fill in a contact form to generate standards-compliant vCard 3.0 / 4.0 (.vcf) text with automatic escaping and folding, ready to copy or download.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/vcard-generator',
+    iconName: 'Tags',
+    tags: ['vCard', 'VCF', '名片', '通讯录', 'RFC 6350'],
+    tagsEn: ['vCard', 'VCF', 'Contact', 'Address Book', 'RFC 6350'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'vCard 名片生成器把结构化表单（姓名、职务、组织、多个电话 / 邮箱、网址、分段地址、生日、备注）转换为符合 vCard 3.0（RFC 2426）或 4.0（RFC 6350）规范的联系人文本，可一键复制或下载为 .vcf 文件，供通讯录导入、邮件签名与名片二维码使用。',
+        coreFeatures: [
+          '规范转义：文本中的反斜杠、逗号、分号与换行自动转义为 \\、\\,、\\;、\\n',
+          '结构化字段：N 按「姓;名;中间名;前缀;后缀」、ADR 按 7 段地址顺序拼接',
+          '版本切换：3.0 使用 TEL;TYPE=HOME,VOICE，4.0 使用小写 TYPE 与 tel: URI',
+          '多值支持：动态增删多个电话与邮箱，各自独立标记类型并输出多行',
+          '75 字符折行 + CRLF 行尾，FN 必填校验与生日格式校验',
+        ],
+        howToUse: [
+          '填写必填的全名 FN（可点击「填入样例名片」快速预览效果）',
+          '按需补充分段姓名、职务、组织 / 部门、生日、电话、邮箱、网址、地址与备注',
+          '在右上角切换 vCard 3.0 / 4.0，预览区实时更新语法差异',
+          '点击「复制 vCard」粘贴到通讯录，或「下载 .vcf」保存为文件后导入',
+        ],
+        useCases: [
+          '为手机 / 邮件通讯录导入准备标准 .vcf 联系人文件',
+          '生成个人或公司联系信息嵌入邮件签名、名片二维码',
+          '排查手写 vCard 文本的转义、分段与版本兼容问题',
+        ],
+        privacyNote:
+          '所有联系信息仅在浏览器本地组装为文本并通过 Blob 下载，不发送任何网络请求，也不经过服务器存储。',
+        faqs: [
+          {
+            question: 'vCard 3.0 和 4.0 该选哪个？',
+            answer:
+              '兼容性优先选 3.0，老旧设备与通讯录导入支持最广；需要严格遵循最新规范（如 tel: URI、小写参数）时选 4.0。多数现代通讯录两者都能导入。',
+          },
+          {
+            question: '为什么预览里长行被拆成多行还带空格？',
+            answer:
+              '这是 RFC 6350 规定的行折叠：逻辑行超过 75 个字符时必须折行，续行以单个空格开头，导入时会自动还原，不影响内容。',
+          },
+          {
+            question: '备注里的逗号和换行为什么显示成反斜杠形式？',
+            answer:
+              '逗号、分号、反斜杠与换行在 vCard 中有特殊含义，必须分别转义为 \\,、\\;、\\\\、\\n，通讯录解析时会还原为原始字符。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The vCard (VCF) Generator turns a structured form (name, title, organization, multiple phones/emails, URL, segmented address, birthday, note) into contact text compliant with vCard 3.0 (RFC 2426) or 4.0 (RFC 6350), ready to copy or download as a .vcf file for address-book import, email signatures, and contact QR codes.',
+        coreFeatures: [
+          'Spec escaping: backslashes, commas, semicolons and newlines are escaped per RFC 6350',
+          'Structured fields: N as "family;given;additional;prefix;suffix" and ADR as the seven address components',
+          'Version switch: 3.0 emits TEL;TYPE=HOME,VOICE while 4.0 uses lowercase TYPE and a tel: URI',
+          'Multi-value support: add or remove multiple phones and emails, each with its own type on its own line',
+          '75-character line folding with CRLF endings, plus required-FN and birthday format validation',
+        ],
+        howToUse: [
+          'Fill in the required full name FN (or click "Load sample card" for a quick preview)',
+          'Optionally add name parts, title, organization/department, birthday, phones, emails, URL, address and note',
+          'Switch between vCard 3.0 and 4.0 in the top right; the preview updates instantly',
+          'Click "Copy vCard" to paste into contacts, or "Download .vcf" to save and import a file',
+        ],
+        useCases: [
+          'Preparing standard .vcf contacts for phone or email address-book import',
+          'Embedding personal or company contact details in email signatures and contact QR codes',
+          'Debugging escaping, component order and version compatibility of hand-written vCards',
+        ],
+        privacyNote:
+          'All contact information is assembled into text locally in the browser and downloaded via Blob. No network requests are made and nothing is stored on a server.',
+        faqs: [
+          {
+            question: 'Should I choose vCard 3.0 or 4.0?',
+            answer:
+              'Choose 3.0 for maximum compatibility with older devices and importers; choose 4.0 when you need the latest spec (e.g. tel: URIs, lowercase parameters). Most modern address books import both.',
+          },
+          {
+            question: 'Why are long lines split with a leading space in the preview?',
+            answer:
+              'RFC 6350 requires folding logical lines longer than 75 characters; continuation lines start with a single space and are reassembled on import, so the content is unchanged.',
+          },
+          {
+            question: 'Why do commas and newlines in notes show backslashes?',
+            answer:
+              'Commas, semicolons, backslashes and newlines have special meaning in vCard and are escaped per spec; contact apps restore the original characters when parsing.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

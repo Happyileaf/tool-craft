@@ -184,4 +184,5 @@ export const toolLoaders: Record<
   'well-known-ports': () => import('./well-known-ports'),
   'ascii-tree-generator': () => import('./ascii-tree-generator'),
   'readability-score': () => import('./readability-score'),
+  'vcard-generator': () => import('./vcard-generator'),
 };
