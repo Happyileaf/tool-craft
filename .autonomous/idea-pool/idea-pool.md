@@ -183,3 +183,4 @@
 | 20261031020753 | C 结构体位域打包 / 解包器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031020753.md) |
 | 20261031020754 | JSON → Rust struct 生成器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031020754.md) |
 | 20261031080655 | ZIP 归档结构解析器（只读列目录与元数据展示） | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031080655.md) |
+| 20261031080656 | MRZ 机读旅行证件校验器（TD1 / TD2 / TD3 护照机读码校验） | Web Tool | External Reference | Pending | 2026-10-31 | | [详情](./idea-details/20261031080656.md) |
