@@ -59,3 +59,8 @@
 | 20261022221405 | Glob 模式匹配测试器 | Web Tool | Existing Gap | `glob-tester` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261022221405.md) |
 | 20261021180802 | 文本词频统计与高频词分析 | Web Tool | Existing Gap | `word-frequency` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261021180802.md) |
 | 20261029080303 | 两点大圆距离与初始方位角计算器 | Web Tool | Existing Gap | `great-circle` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261029080303.md) |
+| 20261017160153 | Unicode character inspector & invisible character detector | Web Tool | Exploration | `unicode-character-inspector` / [PR #125](https://github.com/Happyileaf/tool-craft/pull/125) | 2026-11-01 | [详情](./idea-details/20261017160153.md) |
+| 20261017183430 | RSA / 非对称密钥对生成器与加解密 | Web Tool | Existing Gap | `rsa-keypair-tool` / [PR #125](https://github.com/Happyileaf/tool-craft/pull/125) | 2026-11-01 | [详情](./idea-details/20261017183430.md) |
+| 20261021221306 | IBAN 银行账号校验与格式化（校验位算法） | Web Tool | External Reference | `iban-validator` / [PR #125](https://github.com/Happyileaf/tool-craft/pull/125) | 2026-11-01 | [详情](./idea-details/20261021221306.md) |
+| 20261030140201 | JSON 转 Go struct 生成器 | Web Tool | Existing Gap | `json-to-go` / [PR #125](https://github.com/Happyileaf/tool-craft/pull/125) | 2026-11-01 | [详情](./idea-details/20261030140201.md) |
+| 20261031140458 | 四元数 ↔ 欧拉角 ↔ 旋转矩阵互转器 | Web Tool | Exploration | `quaternion-converter` / [PR #125](https://github.com/Happyileaf/tool-craft/pull/125) | 2026-11-01 | [详情](./idea-details/20261031140458.md) |
