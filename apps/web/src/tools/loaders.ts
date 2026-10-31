@@ -175,4 +175,9 @@ export const toolLoaders: Record<
   'ansi-color-generator': () => import('./ansi-color-generator'),
   'jwk-thumbprint': () => import('./jwk-thumbprint'),
   'geo-coordinate-converter': () => import('./geo-coordinate-converter'),
+  'expense-splitter': () => import('./expense-splitter'),
+  'bpm-calculator': () => import('./bpm-calculator'),
+  'ppi-calculator': () => import('./ppi-calculator'),
+  'bmi-calculator': () => import('./bmi-calculator'),
+  'linear-regression': () => import('./linear-regression'),
 };

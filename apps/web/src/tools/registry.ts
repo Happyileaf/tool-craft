@@ -15166,6 +15166,518 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'expense-splitter',
+    name: 'AA 分账计算器（多人费用分摊与最小转账结算）',
+    nameEn: 'Expense Splitter (Shared Bill Settlement)',
+    description:
+      '录入成员与多笔共同消费（付款人、金额、参与分摊成员），自动计算每人净余额（已付 − 应付），并用贪心对冲生成笔数最少的转账方案；金额按整数分运算保证合计守恒，支持一键复制结算清单。',
+    descriptionEn:
+      'Enter members and shared expenses (payer, amount, participants) to compute each person\u2019s net balance (paid \u2212 owed) and a minimum-count transfer plan via greedy netting. Amounts use integer cents so totals always balance, with one-click copy of the settlement summary.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/expense-splitter',
+    iconName: 'Calculator',
+    tags: ['AA分账', '费用分摊', '结算', '转账方案', '记账'],
+    tagsEn: ['Expense Split', 'Bill Share', 'Settlement', 'Transfers', 'Money'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '聚餐 300 元，小明垫付，三人等分',
+    doc: {
+      zh: {
+        whatIsIt:
+          'AA 分账计算器是一款纯浏览器本地的多人费用结算工具：录入成员与每笔共同消费（谁垫付、多少钱、哪些人参与分摊），自动汇总每人累计垫付与应付，得出净余额（正为应收、负为应付），并用贪心对冲算法生成笔数最少的转账方案。所有金额以整数「分」参与运算，通过最大余数法处理无法整除的分摊，保证全员净余额之和恒为 0、账目不丢分。',
+        coreFeatures: [
+          '成员自由增删：成员名回车添加、标签一键移除；仍有垫付费用的成员会被阻止删除，避免账目悬空',
+          '多笔费用管理：每笔费用可编辑说明、付款人、金额（元）与参与分摊成员，参与人点按切换，等分分摊',
+          '定点整数运算：金额元 / 分互转四舍五入，分摊取整余出的分逐分补给缺口最大者，合计严格守恒',
+          '最小转账方案：按净余额对债权 / 债务排序贪心对冲，每步抵消较小一方，转账笔数最少，执行后全部余额归零',
+          '结算结果总览：总支出、每人垫付 / 应付 / 净余额（红绿标识）、建议转账表，账目已平时明确提示，支持一键复制清单',
+        ],
+        howToUse: [
+          '在「成员」区输入成员名后回车或点「添加」，至少保留 1 位成员',
+          '在「共同消费」区点「添加费用」，逐行填写费用说明、选择付款人、输入金额（元），点按姓名按钮切换参与分摊成员',
+          '下方「结算结果」实时更新：查看每人净余额与建议转账；账目已平会显示无需转账',
+          '点「复制结算清单」把总支出、净余额与转账明细复制为文本，发到群里即可照单转账',
+        ],
+        useCases: [
+          '聚餐、团建、旅行多人 AA 后快速算出谁该给谁转多少钱',
+          '合租水电、日用品等共同开支周期性对账',
+          '任何「一人垫付、多人分摊」场景下替代手工记账与来回转账',
+        ],
+        privacyNote:
+          '所有成员与账目数据只保存在当前页面内存中，全部计算在浏览器本地完成，不向任何服务器发送。',
+        faqs: [
+          {
+            question: '除不尽的零头怎么处理？',
+            answer:
+              '例如 100 元三人等分，理论每人 33.333… 元。工具以分为单位先各分 3333 分，再把余下的 1 分补给缺口最大的成员，得到 33.34 / 33.33 / 33.33，三份之和严格等于 100 元。',
+          },
+          {
+            question: '为什么说转账笔数最少？',
+            answer:
+              '把净余额为正的人（债权人）和为负的人（债务人）排序后，每一步都让当前最小债权与最小债务全额抵消，至少有一方当场结清。相比「每人直接找每个垫付人」的网状转账，可显著减少转账笔数。',
+          },
+          {
+            question: '支持不等比例（按权重）分摊吗？',
+            answer:
+              '当前界面按参与人等分，核心分摊函数已支持权重参数（缺省等权），同样以整数分守恒分配。后续可在费用行扩展比例输入；不等分权重不会影响转账最小化逻辑。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Expense Splitter is a fully local multi-person bill settlement tool: enter members and each shared expense (who paid, how much, who shares it) and it totals each person\u2019s paid and owed amounts into a net balance (positive = owed money, negative = owes money), then builds a minimum-count transfer plan with greedy netting. All amounts are integer cents; the largest-remainder method handles amounts that do not divide evenly, so the sum of net balances is always exactly zero.',
+        coreFeatures: [
+          'Flexible member list: add with Enter, remove via tag close; deleting a member who still paid an expense is blocked to prevent orphaned records',
+          'Multiple expense rows: edit title, payer, amount (yuan) and participants per row; toggle participants by clicking name chips; equal split',
+          'Fixed-point integer math: yuan/cents conversion rounds to whole cents, and leftover cents from floor division go to the largest-gap shares so totals always balance exactly',
+          'Minimum transfers: creditors and debtors sorted by net balance are greedily netted, fully clearing the smaller side each step; executing the plan zeroes every balance',
+          'Settlement overview: total spend, per-person paid/owed/net (color coded), suggested transfer table, explicit "all settled" state, and one-click copy of the summary',
+        ],
+        howToUse: [
+          'In the Members section, type a name and press Enter or click Add; keep at least one member',
+          'Click Add Expense, then fill each row\u2019s title, payer and amount (yuan), and click name buttons to toggle who shares the expense',
+          'The Settlement section updates live: review each net balance and the suggested transfers; an all-settled state is shown when nothing is owed',
+          'Click Copy Settlement to export totals, balances and transfers as text for sharing',
+        ],
+        useCases: [
+          'Splitting dinners, team events and trips without manual bookkeeping',
+          'Periodic reconciliation of shared rent, utilities and household purchases',
+          'Any "one person paid, everyone shares" scenario that replaces messy peer-to-peer transfers',
+        ],
+        privacyNote:
+          'Members and expenses live only in the current page memory; all calculations run locally in your browser and nothing is sent to a server.',
+        faqs: [
+          {
+            question: 'How are amounts that do not divide evenly handled?',
+            answer:
+              'For 100 yuan split three ways (33.333\u2026 each), the tool assigns 3333 cents per person first, then gives the leftover cent to the largest-gap share, producing 33.34 / 33.33 / 33.33 that sum to exactly 100 yuan.',
+          },
+          {
+            question: 'Why is the number of transfers minimal?',
+            answer:
+              'Creditors (positive net) and debtors (negative net) are sorted and netted greedily: each step fully offsets the smaller side, settling at least one person immediately. This yields far fewer transfers than a web of "everyone pays every payer back" transactions.',
+          },
+          {
+            question: 'Are weighted (unequal) splits supported?',
+            answer:
+              'The UI splits equally among participants, while the core split function already accepts optional weights (equal by default) with the same integer-cent conservation. Weight inputs per expense can be added later without changing the transfer minimization.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'bpm-calculator',
+    name: 'BPM 音符时长与延迟时间计算器',
+    nameEn: 'BPM Note Duration & Delay Time Calculator',
+    description:
+      '输入 BPM 即得全音符到三十二分音符（含附点、三连音）的毫秒时长表，并给出 Delay / Reverb 常用节拍同步时间（1/4、1/8D、1/8T、1/16 等）与对应频率，支持由四分音符时长反算 BPM。',
+    descriptionEn:
+      'Enter BPM to get millisecond durations from whole to thirty-second notes (including dotted and triplet), common delay/reverb sync times (1/4, 1/8 dotted, 1/8 triplet, 1/16 and more) with matching frequencies, plus reverse BPM calculation from a quarter-note duration.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/bpm-calculator',
+    iconName: 'Music',
+    tags: ['BPM', '音符时长', 'Delay', '节拍同步', '音乐制作'],
+    tagsEn: ['BPM', 'Note Duration', 'Delay Time', 'Tempo Sync', 'Music'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '120',
+    doc: {
+      zh: {
+        whatIsIt:
+          'BPM 音符时长与延迟时间计算器是一款面向音乐制作的纯本地小工具：以四分音符为一拍，输入速度 BPM（每分钟拍数）后，一拍时长 = 60000 / BPM 毫秒，据此算出全音符、二分、四分、八分、十六分、三十二分音符的常规、附点（×1.5）与三连音（×2/3）时长，并给出延迟 / 混响效果器常用的节拍同步档位（如八分附点 1/8D）与等效 LFO 频率，也支持敲表或测速后由四分音符毫秒数反算 BPM。',
+        coreFeatures: [
+          '6 种音符 × 常规 / 附点 / 三连音共 18 行时长表，毫秒与拍数并列展示',
+          '效果器同步档位：1 小节、1/2、1/4、1/4D、1/4T、1/8、1/8D、1/8T、1/16、1/16D、1/32，附毫秒与赫兹',
+          '一键曲风速度预设：Ballad 70、Hip-Hop 90、House 120、Techno 130、Drum & Bass 170',
+          '双向计算：BPM → 各档时长，也可输入四分音符毫秒时长反算 BPM',
+          '纯函数确定性运算，毫秒与频率（1000 / ms）实时刷新，零依赖零上报',
+        ],
+        howToUse: [
+          '在顶部输入歌曲 BPM（或点曲风预设），一拍时长即时显示',
+          '在「效果器节拍同步时间」卡片查 Delay / Reverb 需要的毫秒值，如把延迟时间设为 1/8D 对应数值',
+          '需要给 LFO / 颤音速率时参考同档赫兹数',
+          '若通过打拍测得四分音符毫秒数，在底部输入即可反算 BPM',
+        ],
+        useCases: [
+          '为 DAW 中 tempo-sync 的 delay、reverb、LFO 设置精确毫秒 / 赫兹参数',
+          '现场演出或 remix 时快速换算不同速度下的音符时长',
+          '根据采样或打拍测得的毫秒间隔反推歌曲 BPM',
+        ],
+        privacyNote:
+          '所有计算都在浏览器本地完成，不读取、不上传任何音频或工程数据。',
+        faqs: [
+          {
+            question: '附点（D）和三连音（T）怎么算？',
+            answer:
+              '附点音符时长为原音符的 1.5 倍（如 120 BPM 下四分音符 500ms，四分附点为 750ms）；三连音把原本两个音符的时长平均分给三个音符，单个音符为原时长的 2/3（如四分三连音约 333.33ms）。',
+          },
+          {
+            question: '为什么电音常用「1/8D 延迟」？',
+            answer:
+              '八分附点延迟会形成富有推动力的摇曳律动，是 House / Techno 等曲风的经典效果。120 BPM 下 1/8D = 375ms（约 2.667 Hz），把延迟时间设为该值即可与节拍同步。',
+          },
+          {
+            question: '拍号不是 4/4 时结果还有效吗？',
+            answer:
+              '有效。BPM 定义的是每分钟四分音符数，与拍号无关；表中「1 小节（4/4）」一档按 4 拍计算，其他拍号下小节时长需自行乘以每小节拍数，单个音符时长不受影响。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The BPM Note Duration & Delay Time Calculator is a fully local tool for music production: taking the quarter note as one beat, a beat lasts 60000 / BPM milliseconds. From that it derives whole, half, quarter, eighth, sixteenth and thirty-second note durations \u2014 normal, dotted (\u00d71.5) and triplet (\u00d72/3) \u2014 plus common delay/reverb tempo-sync positions (such as the eighth-note dotted 1/8D) with equivalent LFO frequencies. You can also reverse the math and recover BPM from a quarter-note duration in milliseconds.',
+        coreFeatures: [
+          '18-row duration table: 6 note values \u00d7 normal / dotted / triplet, with beats and milliseconds',
+          'Effect sync positions: 1 bar, 1/2, 1/4, 1/4D, 1/4T, 1/8, 1/8D, 1/8T, 1/16, 1/16D, 1/32 in ms and Hz',
+          'Genre tempo presets: Ballad 70, Hip-Hop 90, House 120, Techno 130, Drum & Bass 170',
+          'Bidirectional: BPM \u2192 durations, or enter a quarter-note duration in ms to recover BPM',
+          'Deterministic pure-function math with live ms/Hz (1000 / ms) output; zero dependencies, no tracking',
+        ],
+        howToUse: [
+          'Enter the song BPM at the top (or click a genre preset); the beat duration appears instantly',
+          'Look up the milliseconds needed by your delay/reverb in the tempo-sync card, e.g. set delay time to the 1/8D value',
+          'Use the Hz figure when setting an LFO or tremolo rate',
+          'If you measured a quarter-note interval in milliseconds by tapping, enter it at the bottom to get BPM back',
+        ],
+        useCases: [
+          'Setting exact ms/Hz parameters for tempo-synced delay, reverb and LFO in a DAW',
+          'Quick note-duration conversion at different tempos for live sets or remixes',
+          'Recovering song BPM from a sample or tap-timed millisecond interval',
+        ],
+        privacyNote:
+          'All math runs locally in your browser; no audio or project data is read or uploaded.',
+        faqs: [
+          {
+            question: 'How are dotted (D) and triplet (T) values calculated?',
+            answer:
+              'A dotted note lasts 1.5\u00d7 the base note (at 120 BPM a quarter note is 500 ms, so a dotted quarter is 750 ms). A triplet fits three notes into the space of two, so each note is 2/3 of the base duration (a quarter triplet is about 333.33 ms).',
+          },
+          {
+            question: 'Why is the "1/8 dotted delay" so common in electronic music?',
+            answer:
+              'The dotted-eighth delay creates a driving, syncopated groove and is a classic effect in House and Techno. At 120 BPM, 1/8D = 375 ms (about 2.667 Hz); set the delay time there to stay in sync.',
+          },
+          {
+            question: 'Do the results hold outside 4/4 time?',
+            answer:
+              'Yes. BPM defines quarter notes per minute regardless of time signature; only the "1 bar (4/4)" row assumes four beats. For other meters, multiply the beat duration by beats per bar yourself \u2014 individual note values are unaffected.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ppi-calculator',
+    name: '屏幕 PPI / 像素密度计算器',
+    nameEn: 'Screen PPI / Pixel Density Calculator',
+    description:
+      '输入屏幕分辨率（横向 / 纵向像素）与对角线英寸数，计算 PPI、PPCM、像素点距、物理宽高与面积，自动识别标准宽高比（含竖屏），内置显示器与手机预设及常见设备密度参考。',
+    descriptionEn:
+      'Enter screen resolution (width/height in pixels) and diagonal in inches to get PPI, PPCM, pixel pitch, physical dimensions and area, with automatic aspect-ratio detection (including portrait), built-in monitor/phone presets and a common-device density reference table.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/ppi-calculator',
+    iconName: 'Smartphone',
+    tags: ['PPI', '像素密度', '屏幕分辨率', '点距', 'Retina'],
+    tagsEn: ['PPI', 'Pixel Density', 'Screen Resolution', 'Pixel Pitch', 'Retina'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1920 1080 24',
+    doc: {
+      zh: {
+        whatIsIt:
+          '屏幕 PPI / 像素密度计算器根据分辨率与对角线物理长度推导屏幕精细度：对角线像素数 = √(横向像素² + 纵向像素²)，PPI = 对角线像素 ÷ 对角线英寸；再由 1 英寸 = 25.4 毫米换算出 PPCM（每厘米像素）、像素点距（mm/像素）以及屏幕物理宽、高、面积，并自动识别 4:3、16:9、21:9 等标准宽高比与竖屏方向。工具内置 24" 1080p、27" 1440p/4K、iPhone、MacBook 等预设和常见设备 PPI 参考，适合选购显示器、判断 HiDPI/Retina 缩放与评估手机屏幕细腻度。',
+        coreFeatures: [
+          '由分辨率与对角线英寸计算 PPI / PPCM / 像素点距，基于正方形像素假设',
+          '推导物理宽、高、对角线（mm）与面积（m²）、总像素数',
+          '宽高比自动识别 4:3、3:2、16:10、16:9、19.5:9、20:9、21:9，支持横屏 / 竖屏翻转写法',
+          '5 个一键预设：24" 1080p、27" 1440p、27" 4K、iPhone 15、13" MacBook Air',
+          '密度档位解读 + 6 行常见设备 PPI 参考表，纯本地计算零上报',
+        ],
+        howToUse: [
+          '输入屏幕横向、纵向物理像素（非缩放后的逻辑分辨率）与对角线英寸数',
+          '或点击预设按钮一键填充常见设备参数',
+          '查看 PPI、PPCM、点距等结果卡片及密度档位说明',
+          '对照底部常见设备 PPI 参考表判断屏幕属于标准密度还是 HiDPI / Retina',
+        ],
+        useCases: [
+          '选购显示器时比较相同尺寸下不同分辨率的精细度',
+          '判断某屏幕是否适合开启 macOS / Windows 的 HiDPI、Retina 缩放',
+          '评估手机、平板屏幕细腻度，或计算印刷 / 喷绘所需像素精度',
+        ],
+        privacyNote:
+          '所有输入与计算均在浏览器本地完成，不涉及任何设备标识或个人数据上传。',
+        faqs: [
+          {
+            question: 'PPI 和 DPI 有什么区别？',
+            answer:
+              'PPI（Pixels Per Inch）描述屏幕上每英寸的物理像素数，用于显示器；DPI（Dots Per Inch）原指打印设备每英寸可输出的墨点数，也常被系统缩放设置借用。屏幕精细度比较时应使用 PPI。',
+          },
+          {
+            question: '为什么算出来和官网参数略有出入？',
+            answer:
+              '厂商有时对屏幕尺寸取整（如 27 英寸实为约 26.9–27.2），或公布的是逻辑分辨率（缩放分辨率）而非物理像素。使用物理像素与实际对角线英寸数可得到精确 PPI；本工具结果通常与标称值相差 ±2 PPI 以内。',
+          },
+          {
+            question: 'Retina 屏幕的 PPI 一定更高吗？',
+            answer:
+              'Retina 是苹果对「正常视距下像素无法被肉眼分辨」的营销标准，与观看距离有关：手机约 300+ PPI、桌面显示器约 218 PPI（如 27" 5K iMac）即可称为 Retina，因此并非单一 PPI 阈值。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Screen PPI / Pixel Density Calculator derives display sharpness from resolution and physical diagonal: diagonal pixels = \u221a(width\u00b2 + height\u00b2), PPI = diagonal pixels \u00f7 diagonal inches; using 1 inch = 25.4 mm it then derives PPCM, pixel pitch (mm per pixel), physical width/height and area, and recognizes standard aspect ratios (4:3, 16:9, 21:9 and more) including portrait orientation. Built-in presets cover 24" 1080p, 27" 1440p/4K, iPhone and MacBook, with a common-device PPI reference table \u2014 handy when choosing a monitor, evaluating HiDPI/Retina scaling, or comparing phone screen sharpness.',
+        coreFeatures: [
+          'PPI / PPCM / pixel pitch from resolution and diagonal inches under the square-pixel assumption',
+          'Physical width, height, diagonal (mm), area (m\u00b2) and total pixel count',
+          'Aspect-ratio detection for 4:3, 3:2, 16:10, 16:9, 19.5:9, 20:9, 21:9 with landscape/portrait labeling',
+          'Five one-click presets: 24" 1080p, 27" 1440p, 27" 4K, iPhone 15, 13" MacBook Air',
+          'Density-tier explanation plus a 6-row device reference table; fully local, no tracking',
+        ],
+        howToUse: [
+          'Enter physical pixel width/height (not scaled logical resolution) and diagonal in inches',
+          'Or click a preset to fill a common device instantly',
+          'Read the PPI, PPCM, pitch result card and density-tier description',
+          'Compare against the device reference table to see whether a screen is standard density or HiDPI/Retina',
+        ],
+        useCases: [
+          'Comparing sharpness of monitors of the same size at different resolutions',
+          'Deciding whether a display suits HiDPI / Retina-style scaling on macOS or Windows',
+          'Judging phone/tablet screen sharpness or estimating pixels needed for print',
+        ],
+        privacyNote:
+          'All input and math stay in your browser; no device identifiers or personal data are uploaded.',
+        faqs: [
+          {
+            question: 'What is the difference between PPI and DPI?',
+            answer:
+              'PPI (Pixels Per Inch) counts physical pixels per inch on a display. DPI (Dots Per Inch) originally describes ink dots a printer places per inch and is also borrowed by OS scaling settings. When comparing screen sharpness, PPI is the correct metric.',
+          },
+          {
+            question: 'Why does my result differ slightly from the official spec?',
+            answer:
+              'Vendors round screen sizes (a "27-inch" panel may be 26.9\u201327.2 inches) or publish scaled logical resolution instead of physical pixels. Using physical pixels and the true diagonal gives exact PPI; results are typically within \u00b12 PPI of the advertised figure.',
+          },
+          {
+            question: 'Does a Retina screen always need a higher PPI?',
+            answer:
+              'Retina is Apple\'s marketing term for pixels indistinguishable at normal viewing distance, so it depends on distance: roughly 300+ PPI on phones and about 218 PPI on desktop displays (e.g. the 27" 5K iMac) can qualify \u2014 there is no single PPI threshold.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'bmi-calculator',
+    name: 'BMI 身体质量指数计算器（中国 / WHO 双标准）',
+    nameEn: 'BMI Calculator with Chinese & WHO Standards',
+    description:
+      '输入身高体重（公制 cm/kg 或英制 ft/lb）计算 BMI，同时按中国卫生行业标准（偏瘦 <18.5、正常 18.5–23.9、超重 24–27.9、肥胖 ≥28）与 WHO 国际标准分级，给出正常体重区间与增重 / 减重建议。',
+    descriptionEn:
+      'Enter height and weight in metric (cm/kg) or imperial (ft/lb) units to get BMI, graded simultaneously against the Chinese health standard (underweight <18.5, normal 18.5–23.9, overweight 24–27.9, obese ≥28) and WHO standard (overweight ≥25, obese ≥30), with a healthy weight range and gain/loss suggestion.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/bmi-calculator',
+    iconName: 'Gauge',
+    tags: ['BMI', '身体质量指数', '健康体重', '中国标准', 'WHO'],
+    tagsEn: ['BMI', 'Body Mass Index', 'Healthy Weight', 'Chinese Standard', 'WHO'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '170 65',
+    doc: {
+      zh: {
+        whatIsIt:
+          'BMI（Body Mass Index，身体质量指数）= 体重(kg) ÷ 身高(m)²，是国际通用的成人体型筛查指标。本工具支持公制（厘米 / 千克）与英制（英尺 / 英寸 / 磅）输入，即时给出 BMI 值，并同时按中国卫生行业标准 WS/T 428（偏瘦 <18.5、正常 18.5–23.9、超重 24–27.9、肥胖 ≥28）与 WHO 国际标准（超重 ≥25、肥胖 ≥30）给出双分级，再由身高反解正常体重区间（18.5–24 对应体重）与距区间中点的增重 / 减重建议。',
+        coreFeatures: [
+          '公制 cm/kg 与英制 ft+in/lb 一键切换，英制内部精确换算（1 in = 2.54 cm，1 lb = 0.45359237 kg）',
+          '中国标准与 WHO 标准同时分级，突出 24–25、28–30 两段两套标准结论不同的区间',
+          '由身高反解中国标准正常体重区间（千克）与距中点差距，给出增重 / 减重提示',
+          '6 行阈值对照表覆盖全部 BMI 区间，4 个一键示例（偏瘦 / 正常 / 超重 / 肥胖）',
+          '纯函数计算 + 22 项单元测试，零依赖、纯本地，不收集任何个人数据',
+        ],
+        howToUse: [
+          '选择单位制式（默认公制），输入身高与体重，BMI 与双标准分级即时刷新',
+          '查看「中国标准正常体重区间」与「与正常区间中点差距」获取调整建议',
+          '在底部阈值对照表查看当前 BMI 在两套标准下的结论差异',
+          '英制用户切换到 ft/lb 后输入英尺、英寸与磅数即可',
+        ],
+        useCases: [
+          '体检后快速判断 BMI 所处档位与目标体重区间',
+          '健身 / 减重计划中设定目标体重与差距',
+          '了解中国与 WHO 两套标准对同一 BMI 的不同判定（如 BMI 24.5）',
+        ],
+        privacyNote:
+          '身高体重仅在浏览器本地参与计算，不存储、不上传任何个人健康数据；本工具不构成医疗诊断。',
+        faqs: [
+          {
+            question: '中国标准和 WHO 标准为什么不一样？',
+            answer:
+              '不同人群在相同 BMI 下的体脂分布与疾病风险不同。WHO 标准以超重 ≥25、肥胖 ≥30 为界；中国专家依据流行病学研究把界值下调为超重 ≥24、肥胖 ≥28，因此 BMI 24–25 在中国判为超重而 WHO 仍属正常，28–30 段在中国判为肥胖而 WHO 判为超重。',
+          },
+          {
+            question: '为什么健身人士 BMI 超标但体脂不高？',
+            answer:
+              'BMI 只使用身高与体重，无法区分肌肉、骨骼与脂肪。肌肉密度大于脂肪，力量训练者可能 BMI 达到超重甚至肥胖但体脂率正常；这类人群应结合体脂率、腰围与腰臀比综合判断。',
+          },
+          {
+            question: '未成年人和老年人适用吗？',
+            answer:
+              '不建议直接套用。本工具阈值针对 18 岁及以上成人；儿童青少年应使用同年龄、同性别的 BMI 百分位生长曲线，老年人适宜体重区间也略宽于普通成人。孕妇、哺乳期女性及患者请遵医嘱。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'BMI (Body Mass Index) = weight(kg) \u00f7 height(m)\u00b2, a widely used adult weight screening metric. This tool accepts metric (cm/kg) or imperial (ft+in/lb) input, returns the BMI instantly, and grades it against both the Chinese health standard WS/T 428 (underweight <18.5, normal 18.5\u201323.9, overweight 24\u201327.9, obese \u226528) and the WHO standard (overweight \u226525, obese \u226530). It also derives the healthy weight range from height and the gain/loss gap toward the midpoint of the normal range.',
+        coreFeatures: [
+          'Metric cm/kg and imperial ft+in/lb modes with exact conversion (1 in = 2.54 cm, 1 lb = 0.45359237 kg)',
+          'Parallel Chinese and WHO grading, highlighting the 24\u201325 and 28\u201330 bands where the standards disagree',
+          'Healthy weight range in kg (BMI 18.5\u201324) and midpoint gap with gain/loss hint',
+          'Six-row threshold table covering every BMI band, plus four presets (underweight / normal / overweight / obese)',
+          'Pure-function core with 22 unit tests, zero dependencies, fully local, no personal data collected',
+        ],
+        howToUse: [
+          'Pick a unit system (metric by default), enter height and weight; BMI and both grades update instantly',
+          'Read the Chinese-standard healthy weight range and midpoint gap for an adjustment target',
+          'Check the threshold table to see how the two standards judge your BMI differently',
+          'Imperial users switch to ft/lb and enter feet, inches and pounds',
+        ],
+        useCases: [
+          'Quickly grading BMI after a health check-up and finding a target weight range',
+          'Setting target weight and gap in a fitness or weight-loss plan',
+          'Understanding where Chinese and WHO standards disagree (e.g. BMI 24.5)',
+        ],
+        privacyNote:
+          'Height and weight are processed only in your browser; no personal health data is stored or uploaded. This tool is not a medical diagnosis.',
+        faqs: [
+          {
+            question: 'Why do the Chinese and WHO standards differ?',
+            answer:
+              'Body-fat distribution and disease risk at the same BMI vary across populations. WHO sets overweight at \u226525 and obesity at \u226530; Chinese epidemiological guidance lowers them to \u226524 and \u226528. Hence BMI 24\u201325 is overweight in China but normal under WHO, and 28\u201330 is obese in China but overweight under WHO.',
+          },
+          {
+            question: 'Why can a muscular athlete be "overweight" by BMI yet lean?',
+            answer:
+              'BMI uses only height and weight and cannot distinguish muscle from fat. Muscle is denser than fat, so strength athletes may reach overweight or even obese BMI with normal body-fat percentage; combine BMI with body-fat percentage, waist circumference and waist-to-hip ratio.',
+          },
+          {
+            question: 'Does it apply to children and older adults?',
+            answer:
+              'Not directly. The thresholds target adults aged 18+. Children and adolescents should use age- and sex-specific BMI percentile growth charts; healthy ranges for older adults are somewhat wider, and pregnant or breastfeeding women and patients should follow medical advice.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'linear-regression',
+    name: '一元线性回归与相关系数计算器',
+    nameEn: 'Linear Regression & Correlation Calculator',
+    description:
+      '粘贴每行 "x,y" 的数据（支持 CSV / Excel 两列），用最小二乘法拟合直线 y = a + bx，给出斜率、截距、Pearson 相关系数 r、决定系数 R²、SSE/SSR/SST 与逐点残差表，附 Anscombe 经典示例。',
+    descriptionEn:
+      'Paste per-line "x,y" data (CSV or two Excel columns) to fit a straight line y = a + bx by ordinary least squares, with slope, intercept, Pearson r, R-squared, SSE/SSR/SST decomposition and a per-point residual table. Includes the classic Anscombe example.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/linear-regression',
+    iconName: 'Sigma',
+    tags: ['线性回归', '最小二乘法', '相关系数', 'R²', '残差'],
+    tagsEn: ['Linear Regression', 'Least Squares', 'Correlation', 'R-Squared', 'Residuals'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1,1.8\n2,3.9\n3,6.1\n4,8.2\n5,9.8\n6,12.1',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一元线性回归计算器对 n 个观测点 (xᵢ, yᵢ) 用普通最小二乘法（OLS）拟合直线 y = a + bx：斜率 b = Σ(xᵢ−x̄)(yᵢ−ȳ) ÷ Σ(xᵢ−x̄)²，截距 a = ȳ − b·x̄。同时计算 Pearson 相关系数 r、决定系数 R²（一元回归中 R² = r²）、SSE/SSR/SST 平方和分解以及每个点的拟合值与残差。所有运算均在浏览器本地完成，可直接粘贴 Excel、Google 表格或 CSV 的两列数据。',
+        coreFeatures: [
+          '最小二乘直线拟合：输出方程 y = a + bx、斜率、截距与 x/y 均值',
+          'Pearson 相关系数 r 与决定系数 R²，并给出强 / 中 / 弱相关文字解读',
+          'SSE、SSR、SST 平方和分解，校验 SST = SSR + SSE',
+          '逐点拟合值 ŷ 与残差 y − ŷ 明细表，便于发现异常点',
+          '支持逗号 / 制表符 / 空格 / 分号分隔，可直接粘贴表格两列；# 开头为注释',
+          '内置 Anscombe 第一组经典教学数据与强线性示例，纯函数 + 21 项单测',
+        ],
+        howToUse: [
+          '在文本框中按每行一对 "x,y" 输入数据，或从 Excel / CSV 粘贴两列',
+          '拟合结果、相关系数与平方和即时刷新；点击「Anscombe 示例」体验经典数据',
+          '在残差表中查看每个点的拟合值与残差，残差越大表示该点偏离直线越远',
+          '数据点少于 2 个或所有 x 相同时会给出明确错误提示',
+        ],
+        useCases: [
+          '统计学入门：验证最小二乘公式与 Anscombe 四重奏（同样的统计量、不同的点分布）',
+          '实验数据处理：根据观测点拟合标定直线并评估线性相关程度',
+          '业务分析：广告投入与销量、学习时长与成绩等两个连续变量的趋势分析',
+        ],
+        privacyNote:
+          '全部数据仅在浏览器内存中解析与计算，刷新即消失，不会上传或存储到任何服务器。',
+        faqs: [
+          {
+            question: 'R² 和相关系数 r 有什么关系？',
+            answer:
+              '在一元线性回归（只有一个自变量 x）中，决定系数 R² 恰好等于 Pearson 相关系数 r 的平方，取值 0 到 1；r 则带正负号，表示正相关或负相关。多元回归时这一关系不再成立。',
+          },
+          {
+            question: '为什么点明显弯曲却得到很高的 R²？',
+            answer:
+              'R² 只衡量线性拟合解释的方差比例，不能检测非线性。Anscombe 四重奏正是经典反例：四组分布完全不同的数据拥有几乎相同的均值、方差、回归线和 R²。请结合残差表与散点图判断线性是否合适。',
+          },
+          {
+            question: '所有 x 都相同为什么不能拟合？',
+            answer:
+              '此时 x 的方差 Σ(xᵢ−x̄)² = 0，斜率公式分母为零，直线无法确定。请提供至少两个不同的 x 值；仅需 2 个点即可计算（两点确定一条直线），但点越多结论越可靠。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This simple linear regression tool fits a straight line y = a + bx to n observations (xᵢ, yᵢ) using ordinary least squares: slope b = Σ(xᵢ−x̄)(yᵢ−ȳ) ÷ Σ(xᵢ−x̄)² and intercept a = ȳ − b·x̄. It also reports the Pearson correlation r, the coefficient of determination R² (which equals r² in simple regression), the SSE/SSR/SST sum-of-squares decomposition, and fitted values plus residuals for every point. Everything runs locally; you can paste two columns straight from Excel, Google Sheets or a CSV file.',
+        coreFeatures: [
+          'OLS line fit with equation y = a + bx, slope, intercept and x/y means',
+          'Pearson r and R² with a strong / moderate / weak correlation label',
+          'SSE, SSR and SST decomposition verifying SST = SSR + SSE',
+          'Per-point fitted value ŷ and residual y − ŷ table for spotting outliers',
+          'Comma, tab, space or semicolon delimiters - paste two spreadsheet columns directly; # starts a comment',
+          'Built-in Anscombe quartet set I and a clean linear example; pure functions with 21 unit tests',
+        ],
+        howToUse: [
+          'Enter one "x,y" pair per line, or paste two columns from Excel / CSV',
+          'The fit, correlation and sums of squares update instantly; try the Anscombe example',
+          'Inspect fitted values and residuals in the table - a large residual means the point departs far from the line',
+          'Fewer than 2 points or identical x values produce a clear error message',
+        ],
+        useCases: [
+          'Learning statistics: verifying the OLS formulas and the Anscombe quartet (identical summaries, wildly different shapes)',
+          'Lab work: fitting calibration lines to measurements and grading linearity',
+          'Business analysis: exploring trends between two continuous variables such as ad spend vs. sales',
+        ],
+        privacyNote:
+          'All data is parsed and computed in browser memory only and disappears on refresh; nothing is uploaded or stored.',
+        faqs: [
+          {
+            question: 'What is the relationship between R² and the correlation r?',
+            answer:
+              'In simple linear regression (one independent variable), the coefficient of determination R² equals the square of the Pearson correlation r, ranging from 0 to 1, while r carries a sign for positive or negative correlation. This identity does not hold in multiple regression.',
+          },
+          {
+            question: 'Why can a curved relationship still show a high R²?',
+            answer:
+              'R² measures only the share of variance explained by a straight line and cannot detect nonlinearity. The Anscombe quartet is the classic counterexample: four datasets with utterly different shapes share almost identical means, variances, regression lines and R². Always inspect residuals and a scatter plot before trusting the fit.',
+          },
+          {
+            question: 'Why is fitting impossible when every x is the same?',
+            answer:
+              'Then the x variance Σ(xᵢ−x̄)² is zero, making the slope denominator zero and the line undefined. Provide at least two distinct x values; two points suffice for a line mathematically, but more points make the result far more reliable.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
