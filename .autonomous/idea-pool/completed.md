@@ -59,3 +59,8 @@
 | 20261022221405 | Glob 模式匹配测试器 | Web Tool | Existing Gap | `glob-tester` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261022221405.md) |
 | 20261021180802 | 文本词频统计与高频词分析 | Web Tool | Existing Gap | `word-frequency` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261021180802.md) |
 | 20261029080303 | 两点大圆距离与初始方位角计算器 | Web Tool | Existing Gap | `great-circle` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261029080303.md) |
+| 20261101020828 | ISO 6346 集装箱箱号校验位计算器与合法性校验器 | Web Tool | External Reference | `container-code-checksum` / [PR #127](https://github.com/Happyileaf/tool-craft/pull/127) | 2026-11-01 | [详情](./idea-details/20261101020828.md) |
+| 20261027140133 | 多纪元时间戳转换器（Unix / Windows FILETIME / .NET Ticks / Chrome 等） | Web Tool | Existing Gap | `multi-epoch-timestamp` / [PR #127](https://github.com/Happyileaf/tool-craft/pull/127) | 2026-11-01 | [详情](./idea-details/20261027140133.md) |
+| 20261031201035 | NMEA 0183 语句解析与校验和验证器 | Web Tool | External Reference | `nmea-parser` / [PR #127](https://github.com/Happyileaf/tool-craft/pull/127) | 2026-11-01 | [详情](./idea-details/20261031201035.md) |
+| 20261026200347 | 电阻器色环计算器（4 / 5 / 6 环双向） | Web Tool | Exploration | `resistor-color-calculator` / [PR #127](https://github.com/Happyileaf/tool-craft/pull/127) | 2026-11-01 | [详情](./idea-details/20261026200347.md) |
+| 20261101020829 | JSON ↔ application/x-www-form-urlencoded 请求体双向转换器 | Web Tool | Existing Gap | `json-form-urlencoded` / [PR #127](https://github.com/Happyileaf/tool-craft/pull/127) | 2026-11-01 | [详情](./idea-details/20261101020829.md) |
