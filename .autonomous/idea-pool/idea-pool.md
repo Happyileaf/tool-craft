@@ -48,9 +48,9 @@
 | 20261017200236 | CSS 缓动函数（cubic-bezier）生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200236.md) |
 | 20261017200238 | Markdown 表格生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200238.md) |
 | 20261017200239 | robots.txt 生成器 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017200239.md) |
-| 20261017200240 | MIME 类型速查与识别 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200240.md) |
+| 20261017200240 | MIME 类型速查与识别 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017200240.md) |
 | 20261017220043 | 地理坐标格式转换（十进制 ↔ 度分秒） | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261017220043.md) |
-| 20261017220045 | vCard（VCF）名片生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220045.md) |
+| 20261017220045 | vCard（VCF）名片生成器 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017220045.md) |
 | 20261017220047 | 开源许可证生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220047.md) |
 | 20261017220048 | HTTP 安全响应头生成器（CSP / HSTS 等） | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017220048.md) |
 | 20261017220049 | 列表集合运算（交集 / 并集 / 差集） | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017220049.md) |
@@ -75,7 +75,7 @@
 | 20261021221308 | docker run 命令转 docker-compose.yml | Web Tool | External Reference | Pending | 2026-10-21 | | [详情](./idea-details/20261021221308.md) |
 | 20261022221403 | 全角/半角字符批量转换器 | Web Tool | Existing Gap | In Progress | 2026-10-22 | trae-agent | [详情](./idea-details/20261022221403.md) |
 | 20261022221404 | 文本相似度计算器 | Web Tool | Existing Gap | Pending | 2026-10-22 | | [详情](./idea-details/20261022221404.md) |
-| 20261022221408 | ASCII 文件树生成器 | Web Tool | Exploration | Pending | 2026-10-22 | | [详情](./idea-details/20261022221408.md) |
+| 20261022221408 | ASCII 文件树生成器 | Web Tool | Exploration | In Progress | 2026-10-22 | trae-agent | [详情](./idea-details/20261022221408.md) |
 | 20261022221409 | ANSI 终端颜色码生成器 | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261022221409.md) |
 | 20261023020508 | iCalendar (.ics) 日历事件文件生成器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023020508.md) |
 | 20261023020509 | Web App Manifest 生成器 | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023020509.md) |
@@ -109,7 +109,7 @@
 | 20261026140923 | 数字英文读法转换器（Number to English Words） | Web Tool | Exploration | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026140923.md) |
 | 20261026140924 | MessagePack ↔ JSON 双向编解码器 | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026140924.md) |
 | 20261026140926 | 换行符检测与批量转换器（LF / CRLF / CR） | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026140926.md) |
-| 20261026140927 | 知名 TCP/UDP 端口号速查表 | Web Tool | External Reference | Pending | 2026-10-26 | | [详情](./idea-details/20261026140927.md) |
+| 20261026140927 | 知名 TCP/UDP 端口号速查表 | Web Tool | External Reference | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026140927.md) |
 | 20261026200347 | 电阻器色环计算器（4 / 5 / 6 环双向） | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026200347.md) |
 | 20261026200348 | 化学式摩尔质量计算器 | Web Tool | Exploration | Pending | 2026-10-26 | | [详情](./idea-details/20261026200348.md) |
 | 20261026200349 | 线性代数矩阵计算器（乘法 / 行列式 / 逆 / 秩 / RREF） | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026200349.md) |
@@ -131,7 +131,6 @@
 | 20261027201028 | 概率分布计算器（正态 / 二项 / 泊松 PMF、PDF、CDF 与分位） | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027201028.md) |
 | 20261027201029 | 欧姆定律与功率计算器（V / I / R / P 知二求二） | Web Tool | Exploration | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027201029.md) |
 | 20261028020202 | Sqids / Hashids 短 ID 编解码器 | Web Tool | External Reference | Pending | 2026-10-28 | | [详情](./idea-details/20261028020202.md) |
-| 20261028020203 | 文本三路合并与冲突解决器（Diff3） | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028020203.md) |
 | 20261028020204 | BIP-39 助记词生成与校验器 | Web Tool | External Reference | Pending | 2026-10-28 | | [详情](./idea-details/20261028020204.md) |
 | 20261028020206 | Java .properties 配置与 JSON 双向转换器 | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028020206.md) |
 | 20261028081033 | 以太坊地址 EIP-55 校验和编码与校验器 | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028081033.md) |
@@ -178,7 +177,6 @@
 | 20261030200910 | JSON 转 Python dataclass 生成器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030200910.md) |
 | 20261030200911 | systemd .service 单元文件生成器 | Web Tool | Exploration | Pending | 2026-10-30 | | [详情](./idea-details/20261030200911.md) |
 | 20261031020750 | Unified Diff / Patch 解析与统计查看器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031020750.md) |
-| 20261031020751 | SVG 优化与压缩器 | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031020751.md) |
 | 20261031020752 | ELF 文件头解析器 | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031020752.md) |
 | 20261031020753 | C 结构体位域打包 / 解包器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031020753.md) |
 | 20261031020754 | JSON → Rust struct 生成器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031020754.md) |
@@ -192,6 +190,6 @@
 | 20261031140456 | PNG 文件 chunk 结构解析器（IHDR / IDAT / IEND 等） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031140456.md) |
 | 20261031140457 | TAR 归档结构解析器（512 字节头与文件目录树展示） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031140457.md) |
 | 20261031140458 | 四元数 ↔ 欧拉角 ↔ 旋转矩阵互转器 | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031140458.md) |
-| 20261031140459 | 英文文本可读性评分器（Flesch Reading Ease / Grade Level） | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031140459.md) |
+| 20261031140459 | 英文文本可读性评分器（Flesch Reading Ease / Grade Level） | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031140459.md) |
 | 20261031140460 | 二进制数据转多语言字节数组代码生成器（C / Java / Python / Go） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031140460.md) |
 

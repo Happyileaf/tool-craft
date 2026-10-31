@@ -180,4 +180,9 @@ export const toolLoaders: Record<
   'ppi-calculator': () => import('./ppi-calculator'),
   'bmi-calculator': () => import('./bmi-calculator'),
   'linear-regression': () => import('./linear-regression'),
+  'mime-type-lookup': () => import('./mime-type-lookup'),
+  'well-known-ports': () => import('./well-known-ports'),
+  'ascii-tree-generator': () => import('./ascii-tree-generator'),
+  'readability-score': () => import('./readability-score'),
+  'vcard-generator': () => import('./vcard-generator'),
 };

@@ -15678,6 +15678,511 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'mime-type-lookup',
+    name: 'MIME 类型速查与识别',
+    nameEn: 'MIME Type Lookup',
+    description:
+      '扩展名 ↔ MIME 双向互查（.jpg、json、image/webp），按 text/image/audio/video/application 等主类型分组浏览，展示推荐扩展名、别名、charset 示例与是否可安全内联，支持中英文关键词模糊检索。',
+    descriptionEn:
+      'Look up MIME types from file extensions and vice versa (.jpg, json, image/webp), grouped by text/image/audio/video/application primary types, with recommended extensions, aliases, charset examples, inline-safety tags, and bilingual keyword search.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/mime-type-lookup',
+    iconName: 'FileText',
+    tags: ['MIME', 'Content-Type', '扩展名', '速查', 'HTTP', '联调'],
+    tagsEn: ['MIME', 'Content-Type', 'Extension', 'Reference', 'HTTP'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'MIME 类型速查与识别是一款纯浏览器本地运行的参考工具，内置约 50 个长期稳定的常用 MIME 映射，覆盖文本、图像、音频、视频、字体、三维模型、应用数据与 multipart 八大主类型。每个条目提供标准 MIME 字符串、推荐扩展名与别名、charset 参数示例以及该类型能否被浏览器安全内联展示。',
+        coreFeatures: [
+          '扩展名 ↔ MIME 双向互查：输入 .jpg、json、JSON 均可精确反查，输入完整 MIME 也能找回扩展名',
+          '八大主类型分组浏览：text、image、audio、video、font、model、application、multipart',
+          'charset 参数示例：文本类给出 charset=UTF-8 的完整 Content-Type 写法',
+          '内联安全标记：标注 image/png、application/pdf 等可安全内联与 octet-stream 等默认下载类型',
+          '中英文关键词模糊检索，全部数据内置、离线可用、无网络请求',
+        ],
+        howToUse: [
+          '在搜索框输入文件扩展名（可带或不带前导点）精确反查 MIME',
+          '或输入 MIME 片段、中文名、英文名关键词（如 image、图片、pdf、字体）模糊检索',
+          '使用主类型按钮按 text/image/application 等分类过滤',
+          '点击任意条目展开推荐扩展名、其他扩展名、charset 示例与内联安全说明',
+        ],
+        useCases: [
+          '配置服务端 Content-Type 响应头或 Nginx mime.types 时核对标准值',
+          '排查文件上传下载、multipart/form-data 与浏览器预览行为',
+          '写代码处理扩展名与 MIME 映射（如上传校验、下载文件名）时快速查阅',
+        ],
+        privacyNote:
+          '全部查询基于内置静态映射表在浏览器本地完成，不会发送任何网络请求，也不记录输入内容。',
+        faqs: [
+          {
+            question: '为什么 jpg 的推荐扩展名是 jpeg？',
+            answer:
+              'image/jpeg 的标准主扩展名是 jpeg，jpg 只是历史上 Windows 三字母限制留下的常见别名，二者指向同一 MIME 类型，工具中两者均可反查到 image/jpeg。',
+          },
+          {
+            question: '哪些类型可以被浏览器安全内联展示？',
+            answer:
+              '工具按保守口径标注：PNG/JPEG/GIF/WebP/SVG/AVIF 等图像、text/plain、text/html、text/css 与 application/pdf 可直接内联；application/octet-stream 等二进制可执行数据默认触发下载。SVG 因可承载脚本，实际是否内联还应结合 Content-Security-Policy 判断。',
+          },
+          {
+            question: '数据来源与更新策略是什么？',
+            answer:
+              '条目取自 IANA 注册表与各平台长期稳定的常用映射（如 Office Open XML 厂商类型），一经分配极少变动；仅收录高频条目，不追求穷举，未知扩展名会明确提示未收录。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'MIME Type Lookup is a fully offline reference tool with around 50 stable, commonly used MIME mappings built in, spanning text, image, audio, video, font, model, application, and multipart primary types. Each entry shows the canonical MIME string, recommended extension and aliases, a charset parameter example, and whether the type is safe to inline in a browser.',
+        coreFeatures: [
+          'Bidirectional lookup: .jpg, json, JSON all resolve to a MIME type, and a full MIME string resolves back to extensions',
+          'Browse by eight primary types: text, image, audio, video, font, model, application, multipart',
+          'charset examples: text types show the full Content-Type with charset=UTF-8',
+          'Inline-safety tags for image/png, application/pdf and similar, versus download defaults like octet-stream',
+          'Chinese and English keyword search; fully bundled data, works offline with no network requests',
+        ],
+        howToUse: [
+          'Type a file extension (with or without a leading dot) to resolve its MIME type',
+          'Or type a MIME fragment or Chinese/English keyword such as image, pdf, or font for fuzzy search',
+          'Use the primary-type buttons to filter by text/image/application and so on',
+          'Click any entry to expand recommended extensions, aliases, charset example, and inline-safety notes',
+        ],
+        useCases: [
+          'Checking canonical values when configuring Content-Type headers or Nginx mime.types',
+          'Debugging file upload/download, multipart/form-data, and browser preview behavior',
+          'Looking up extension-to-MIME mappings while writing upload validation or download code',
+        ],
+        privacyNote:
+          'Every query runs locally against the bundled static table. No network requests are made and no input is recorded.',
+        faqs: [
+          {
+            question: 'Why is the recommended extension jpeg instead of jpg?',
+            answer:
+              'The canonical primary extension for image/jpeg is jpeg; jpg is a historical alias from the Windows three-letter limit. Both resolve to the same MIME type in this tool.',
+          },
+          {
+            question: 'Which types are safe to inline?',
+            answer:
+              'A conservative set is tagged: PNG/JPEG/GIF/WebP/SVG/AVIF images, text/plain, text/html, text/css, and application/pdf inline directly; binary data such as application/octet-stream downloads by default. Because SVG can carry scripts, real inlining should also consider your Content-Security-Policy.',
+          },
+          {
+            question: 'Where does the data come from and how is it updated?',
+            answer:
+              'Entries come from the IANA registry and long-lived platform mappings (e.g. Office Open XML vendor types) that rarely change once assigned. Only high-frequency entries are included rather than an exhaustive list, and unknown extensions are reported clearly as not covered.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'well-known-ports',
+    name: '知名 TCP/UDP 端口速查',
+    nameEn: 'Well-Known TCP/UDP Ports Lookup',
+    description:
+      '按端口号（443）或服务名 / 关键词（ssh、https、数据库）查询 IANA 长期稳定端口，展示 TCP/UDP 协议、官方服务名与用途，支持多端口粘贴批量解析与 well-known / registered / dynamic 区间判定。',
+    descriptionEn:
+      'Look up IANA stable ports by number (443) or service/keyword (ssh, https, database), with TCP/UDP protocols, official service names and usage, multi-port batch parsing, and well-known / registered / dynamic range classification.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/well-known-ports',
+    iconName: 'HardDrive',
+    tags: ['端口', 'TCP', 'UDP', 'IANA', '防火墙', '速查'],
+    tagsEn: ['Port', 'TCP', 'UDP', 'IANA', 'Firewall', 'Reference'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '知名 TCP/UDP 端口速查是一款纯浏览器本地运行的参考工具，内置 30 条 IANA 长期稳定端口条目（SSH、DNS、HTTP/HTTPS、SMTP、MySQL、PostgreSQL、Redis、MongoDB 等），标注传输协议、官方服务名、中文用途说明与所属端口区间，并对 5601/9200 等生态事实默认端口单独标注。',
+        coreFeatures: [
+          '按端口号精确查询：22、53、80、443、3306、5432、6379 等一条命中',
+          '服务名 / 中文用途关键词模糊搜索，大小写不敏感（https、postgresql、数据库）',
+          '区间判定：well-known 0–1023、registered 1024–49151、dynamic 49152–65535，未收录端口也能判定区间',
+          '批量解析：一次粘贴多个端口（空格 / 逗号 / 换行分隔），逐条展示协议、服务与区间',
+          '非法输入（70000、-1、非数字）给出明确行内错误，不抛异常；全部数据内置、无网络请求',
+        ],
+        howToUse: [
+          '输入单个端口号（如 443）查看对应服务、TCP/UDP 协议与端口区间',
+          '输入服务名或中文关键词（如 dns、数据库）模糊检索相关条目',
+          '粘贴多个词条（如 22 80 443 或换行列表）进入批量解析模式',
+          '使用 TCP / UDP 按钮按传输协议过滤浏览列表，点击条目展开官方名与关键词详情',
+        ],
+        useCases: [
+          '阅读 Nginx、防火墙或云安全组配置时快速确认端口归属',
+          '排查端口占用、启动服务选端口时判断是否冲突系统知名端口',
+          '网络与运维面试、写文档时核对服务名与协议（TCP/UDP）',
+        ],
+        privacyNote:
+          '全部查询基于内置静态表在浏览器本地完成，不会发送任何网络请求，也不记录输入内容。',
+        faqs: [
+          {
+            question: '数据来源是什么？会过期吗？',
+            answer:
+              '数据基于 IANA Service Name and Port Number Registry 的长期稳定条目，知名端口一经正式分配极少回收。仅收录高频稳定条目并标注截至 2026-10；5601（Kibana）、9200（Elasticsearch）并非 IANA 正式分配，工具中标注为生态事实默认端口。',
+          },
+          {
+            question: '为什么输入 65000 查不到服务？',
+            answer:
+              '65000 位于 49152–65535 dynamic（动态 / 私有）区间，IANA 不分配固定服务，应用可自行使用，因此内置表没有收录，但工具仍会正确判定其区间。',
+          },
+          {
+            question: '为什么 DNS 的 53 同时有 TCP 和 UDP？',
+            answer:
+              'DNS 常规查询走 UDP 53；当响应超过报文大小限制或进行区域传送（AXFR）时使用 TCP 53，因此条目标注 TCP+UDP 两种协议。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Well-Known TCP/UDP Ports Lookup is a fully offline reference tool with 30 long-stable IANA port entries (SSH, DNS, HTTP/HTTPS, SMTP, MySQL, PostgreSQL, Redis, MongoDB, and more), showing transport protocols, official service names, usage notes, and port ranges; ecosystem-default ports such as 5601/9200 are tagged separately.',
+        coreFeatures: [
+          'Exact lookup by port number: 22, 53, 80, 443, 3306, 5432, 6379 and more',
+          'Case-insensitive fuzzy search by service name or Chinese usage keyword (https, postgresql, database)',
+          'Range classification: well-known 0–1023, registered 1024–49151, dynamic 49152–65535, even for ports not in the table',
+          'Batch parsing: paste many ports separated by spaces, commas, or newlines and inspect each one',
+          'Invalid input (70000, -1, non-numeric) yields clear inline errors without throwing; fully bundled data with no network requests',
+        ],
+        howToUse: [
+          'Type a single port (e.g. 443) to see its service, TCP/UDP protocols, and range',
+          'Type a service name or keyword (e.g. dns, database) for fuzzy search',
+          'Paste multiple tokens (e.g. 22 80 443 or a newline list) for batch parsing',
+          'Use the TCP/UDP buttons to filter the browse list; click an entry for official name and keywords',
+        ],
+        useCases: [
+          'Confirming port ownership while reading Nginx, firewall, or cloud security-group rules',
+          'Checking conflicts with system well-known ports when choosing a port for a new service',
+          'Reviewing service names and TCP/UDP protocols for networking interviews or documentation',
+        ],
+        privacyNote:
+          'Every query runs locally against the bundled static table. No network requests are made and no input is recorded.',
+        faqs: [
+          {
+            question: 'Where does the data come from? Can it go stale?',
+            answer:
+              'Data is based on long-stable entries from the IANA Service Name and Port Number Registry; well-known assignments are rarely reclaimed. Only common stable entries are included, dated 2026-10. Ports 5601 (Kibana) and 9200 (Elasticsearch) are not IANA assignments and are tagged as ecosystem defaults.',
+          },
+          {
+            question: 'Why does 65000 return no service?',
+            answer:
+              '65000 lies in the 49152–65535 dynamic/private range where IANA assigns no fixed services and applications choose ports freely, so it is not in the table — but the tool still classifies its range.',
+          },
+          {
+            question: 'Why does DNS port 53 use both TCP and UDP?',
+            answer:
+              'Ordinary DNS queries use UDP 53; TCP 53 is used when responses exceed the datagram size limit or for zone transfers (AXFR), so the entry is tagged with both protocols.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ascii-tree-generator',
+    name: 'ASCII 文件树生成器',
+    nameEn: 'ASCII Tree Generator',
+    description:
+      '把换行分隔的路径列表（src/a.ts、支持 \\ 路径）渲染成 tree 命令风格的 ├── └── │ 目录树，支持字典序 / 输入顺序、深度限制、仅目录与隐藏条目过滤、根名标题，一键复制用于 README。',
+    descriptionEn:
+      'Turn newline-separated paths (src/a.ts, backslash paths supported) into a tree-command-style ASCII diagram with ├── └── │ connectors, with alphabetical/input ordering, depth limit, directories-only and hidden-entry filters, optional root title, and one-click copy for READMEs.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ascii-tree-generator',
+    iconName: 'List',
+    tags: ['ASCII', '目录树', 'tree', 'README', '文档'],
+    tagsEn: ['ASCII', 'Tree', 'Directory', 'README', 'Docs'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'ASCII 文件树生成器是一款纯浏览器本地运行的文本工具：把每行一个路径的列表解析为嵌套目录树，自动补全中间目录、兼容 / 与 \\ 分隔符并去重，再渲染为 tree 命令风格的 ├──、└──、│ 连接文本，可直接粘贴进 README 或技术文档。',
+        coreFeatures: [
+          '路径列表解析：换行拆分、兼容正反斜杠、自动去首尾分隔符、空行跳过、重复路径去重',
+          '自动补全中间目录：只给 a/b/c.ts 也能补出完整 a/、b/ 层级',
+          '两种排序：名称字典序（目录优先）或保持输入顺序',
+          '展示控制：最大深度（超出显示 …）、仅目录、过滤 . 开头隐藏条目、自定义根名标题行',
+          '目录 / 文件计数与一键复制；全部纯字符串处理，零依赖、无网络请求',
+        ],
+        howToUse: [
+          '在左侧每行输入一个路径（如 src/index.ts），右侧实时生成树',
+          '用排序按钮切换字典序或输入顺序，用深度按钮限制展示层级',
+          '勾选「仅目录」或「隐藏 . 开头条目」过滤内容，可开关并填写根名',
+          '点击「复制」把结果粘贴到 README，或点「恢复样例」重置输入',
+        ],
+        useCases: [
+          '在 README / 设计文档中展示项目目录结构',
+          '把 find、git 输出或手动罗列的路径整理成对齐的树状图',
+          'Code Review 或技术分享时快速可视化模块分层',
+        ],
+        privacyNote:
+          '全部路径解析与渲染均在浏览器本地完成，不会发送任何网络请求，也不记录输入内容。',
+        faqs: [
+          {
+            question: '同名既当文件又当目录会怎样？',
+            answer:
+              '若某名称下还有更深路径（如先写 x 又写 x/y.ts），它会被提升为目录；仅当同名条目没有任何子节点时才作为文件展示，避免树中出现文件下嵌套内容。',
+          },
+          {
+            question: '深度限制后的「…」是什么？',
+            answer:
+              '当目录层级超过设定的最大深度时，工具在被截断的目录下输出一个 … 节点，表示此处仍有更深内容未展开；把深度切回「不限」即可查看完整树。',
+          },
+          {
+            question: '隐藏条目过滤会过滤哪些内容？',
+            answer:
+              '所有以点（.）开头的文件或目录都会被隐藏，例如 .env、.gitignore、.github/；过滤后变空的目录也不会出现在结果中（仅目录模式下保留空目录骨架）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'ASCII Tree Generator is a fully local text tool: it parses a list of one-path-per-line entries into a nested tree, auto-fills missing intermediate directories, accepts both / and \\ separators and deduplicates paths, then renders tree-command-style output with ├──, └── and │ connectors ready to paste into a README.',
+        coreFeatures: [
+          'Path parsing: newline split, slash and backslash support, leading/trailing separators trimmed, blank lines skipped, duplicates removed',
+          'Intermediate directories are auto-created: a/b/c.ts alone produces full a/ and b/ levels',
+          'Two ordering modes: alphabetical (directories first) or input order',
+          'Display controls: max depth (deeper nodes shown as …), directories-only, hide dotfiles, custom root title line',
+          'Directory/file counts and one-click copy; pure string processing, zero dependencies, no network requests',
+        ],
+        howToUse: [
+          'Enter one path per line on the left (e.g. src/index.ts); the tree renders live on the right',
+          'Switch between alphabetical and input ordering; use the depth buttons to limit levels',
+          'Toggle directories-only or hidden-entry filtering, and optionally enable and edit the root name',
+          'Click Copy to paste the result into a README, or Restore sample to reset the input',
+        ],
+        useCases: [
+          'Showing project structure in READMEs or design documents',
+          'Turning find/git output or hand-written path lists into an aligned tree diagram',
+          'Visualizing module layers during code review or technical talks',
+        ],
+        privacyNote:
+          'All parsing and rendering happen locally in the browser. No network requests are made and no input is recorded.',
+        faqs: [
+          {
+            question: 'What if the same name is used as both a file and a directory?',
+            answer:
+              'When deeper paths exist under a name (e.g. both x and x/y.ts), it is promoted to a directory; it is rendered as a file only when it has no children, so nothing nests under a file.',
+          },
+          {
+            question: 'What does the … node mean after a depth limit?',
+            answer:
+              'When a directory has content beyond the chosen maximum depth, a … child is shown to indicate more levels exist. Switch depth back to unlimited to see the full tree.',
+          },
+          {
+            question: 'What does the hidden-entry filter remove?',
+            answer:
+              'Every file or directory starting with a dot, such as .env, .gitignore or .github/. Directories left empty by filtering are also hidden (directories-only mode keeps empty directory skeletons).',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'readability-score',
+    name: '英文可读性评分（Flesch / Grade Level）',
+    nameEn: 'Readability Score (Flesch / F-K Grade)',
+    description:
+      '粘贴英文文本，本地按确定性公式计算 Flesch Reading Ease、Flesch–Kincaid Grade Level、句 / 词 / 音节计数与 ASL / ASY，并给出 7 档分级与学龄解读；音节计数为无词典启发式，零依赖。',
+    descriptionEn:
+      'Paste English text to get Flesch Reading Ease, Flesch–Kincaid Grade Level, sentence/word/syllable counts and ASL/ASY with 7-band grade and school-level interpretation. Dictionary-free heuristic syllable counting, zero dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/readability-score',
+    iconName: 'Sigma',
+    tags: ['可读性', 'Flesch', '英文写作', '文案', '评分'],
+    tagsEn: ['Readability', 'Flesch', 'Writing', 'Copywriting', 'Score'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '英文可读性评分器是一款纯浏览器本地运行的文本分析工具，按确定性公式计算 Flesch Reading Ease（越高越易读）与 Flesch–Kincaid Grade Level（对应美国年级），同时给出句子数、单词数、启发式音节数、平均句长 ASL 与平均每词音节 ASY，并映射 7 档难度等级和学龄说明。仅支持英文。',
+        coreFeatures: [
+          '两大经典指标：Flesch Reading Ease 与 Flesch–Kincaid Grade Level，含完整计算式',
+          '基础计数：句子（. ! ? 后接空白切分，小数不误切）、单词（撇号 / 连字符词算 1 个）、启发式音节',
+          '音节启发式：连续元音组、词尾静默 e、静默 -ed/-es、辅音 + le 规则，每词至少 1 音节，不依赖词典',
+          '7 档分级：Very Easy → Very Confusing，配学龄说明与彩色进度条',
+          '文本过短（无单词）时明确提示，不输出 NaN；零依赖、无网络请求',
+        ],
+        howToUse: [
+          '在文本框粘贴一段英文（句子以句号、问号或感叹号加空格结束）',
+          '查看句 / 词 / 音节计数与 ASL、ASY 是否符合预期',
+          '对照 Reading Ease 分值与等级（60–70 为 Plain English）判断大众可读性',
+          '参考 Grade Level 调整目标读者门槛；改写后分数实时更新',
+        ],
+        useCases: [
+          '技术文档、博客与营销文案发布前核对阅读门槛',
+          '英文教学中演示句长、音节与可读性的关系',
+          '产品文案面向大众时把 Grade 控制在 8–9 年级附近',
+        ],
+        privacyNote:
+          '全部文本分析均在浏览器本地完成，不会发送任何网络请求，也不记录或保存输入文本。',
+        faqs: [
+          {
+            question: '音节数为什么可能和词典不一致？',
+            answer:
+              '工具采用固定启发式规则（连续元音组、静默 e/-ed/-es、辅音+le），不内置发音词典，因此对不规则发音的单词（如 machine、people）可能有 ±1 偏差；长文本上指标仍稳定可比。',
+          },
+          {
+            question: '为什么只支持英文？',
+            answer:
+              'Flesch 与 Flesch–Kincaid 公式建立在英文按空格分词、按元音估计音节的前提上，不适用于中文等不分词语言；中文可读性需要不同指标体系。',
+          },
+          {
+            question: 'Reading Ease 超过 100 或 Grade 为负数正常吗？',
+            answer:
+              '正常。极短句子与单音节词（如 The cat sat on the mat.）会得到 100 以上的 Reading Ease 和负的年级值，表示比最低学龄读物还简单，不是计算错误。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Readability Score is a fully local text analysis tool. It computes Flesch Reading Ease (higher is easier) and Flesch–Kincaid Grade Level (US school grade), along with sentence, word and heuristic syllable counts and the ASL/ASY ratios, mapped to a seven-band difficulty scale with school-level notes. English only.',
+        coreFeatures: [
+          'Two classic metrics: Flesch Reading Ease and Flesch–Kincaid Grade Level, with formulas shown',
+          'Base counts: sentences (split on . ! ? plus whitespace, so decimals stay intact), words (apostrophes/hyphens count as one word), heuristic syllables',
+          'Dictionary-free syllable heuristic: consecutive vowel groups, silent final e, silent -ed/-es, consonant+le; at least one syllable per word',
+          'Seven bands from Very Easy to Very Confusing with school-level labels and a colored progress bar',
+          'Clear short-text message instead of NaN; zero dependencies and no network requests',
+        ],
+        howToUse: [
+          'Paste English text (end sentences with a period, question or exclamation mark followed by a space)',
+          'Check sentence/word/syllable counts and ASL/ASY',
+          'Use Reading Ease and its band (60–70 is Plain English) to judge general-audience readability',
+          'Use Grade Level to target a reader age; scores update live as you rewrite',
+        ],
+        useCases: [
+          'Checking the reading level of docs, blog posts, and marketing copy before publishing',
+          'Demonstrating how sentence length and syllables drive readability in English teaching',
+          'Keeping general-audience product copy around grade 8–9',
+        ],
+        privacyNote:
+          'All analysis runs locally in the browser. No network requests are made and input text is never recorded or stored.',
+        faqs: [
+          {
+            question: 'Why can the syllable count differ from a dictionary?',
+            answer:
+              'A fixed heuristic (vowel groups, silent e/-ed/-es, consonant+le) is used instead of a pronunciation dictionary, so irregular words such as machine or people may be off by one; aggregate scores remain stable on longer texts.',
+          },
+          {
+            question: 'Why English only?',
+            answer:
+              'The Flesch formulas assume whitespace-delimited words and vowel-based syllable estimation, which do not apply to languages such as Chinese; those need a different readability model.',
+          },
+          {
+            question: 'Is Reading Ease above 100 or a negative Grade Level normal?',
+            answer:
+              'Yes. Very short sentences of one-syllable words (e.g. The cat sat on the mat.) yield scores above 100 and negative grades, meaning easier than the earliest school readers — not a calculation error.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'vcard-generator',
+    name: 'vCard 名片生成器',
+    nameEn: 'vCard (VCF) Generator',
+    description:
+      '表单填写联系人信息，生成符合 vCard 3.0 / 4.0 规范的 .vcf 文本，自动转义与折行，支持复制与下载。',
+    descriptionEn:
+      'Fill in a contact form to generate standards-compliant vCard 3.0 / 4.0 (.vcf) text with automatic escaping and folding, ready to copy or download.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/vcard-generator',
+    iconName: 'Tags',
+    tags: ['vCard', 'VCF', '名片', '通讯录', 'RFC 6350'],
+    tagsEn: ['vCard', 'VCF', 'Contact', 'Address Book', 'RFC 6350'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'vCard 名片生成器把结构化表单（姓名、职务、组织、多个电话 / 邮箱、网址、分段地址、生日、备注）转换为符合 vCard 3.0（RFC 2426）或 4.0（RFC 6350）规范的联系人文本，可一键复制或下载为 .vcf 文件，供通讯录导入、邮件签名与名片二维码使用。',
+        coreFeatures: [
+          '规范转义：文本中的反斜杠、逗号、分号与换行自动转义为 \\、\\,、\\;、\\n',
+          '结构化字段：N 按「姓;名;中间名;前缀;后缀」、ADR 按 7 段地址顺序拼接',
+          '版本切换：3.0 使用 TEL;TYPE=HOME,VOICE，4.0 使用小写 TYPE 与 tel: URI',
+          '多值支持：动态增删多个电话与邮箱，各自独立标记类型并输出多行',
+          '75 字符折行 + CRLF 行尾，FN 必填校验与生日格式校验',
+        ],
+        howToUse: [
+          '填写必填的全名 FN（可点击「填入样例名片」快速预览效果）',
+          '按需补充分段姓名、职务、组织 / 部门、生日、电话、邮箱、网址、地址与备注',
+          '在右上角切换 vCard 3.0 / 4.0，预览区实时更新语法差异',
+          '点击「复制 vCard」粘贴到通讯录，或「下载 .vcf」保存为文件后导入',
+        ],
+        useCases: [
+          '为手机 / 邮件通讯录导入准备标准 .vcf 联系人文件',
+          '生成个人或公司联系信息嵌入邮件签名、名片二维码',
+          '排查手写 vCard 文本的转义、分段与版本兼容问题',
+        ],
+        privacyNote:
+          '所有联系信息仅在浏览器本地组装为文本并通过 Blob 下载，不发送任何网络请求，也不经过服务器存储。',
+        faqs: [
+          {
+            question: 'vCard 3.0 和 4.0 该选哪个？',
+            answer:
+              '兼容性优先选 3.0，老旧设备与通讯录导入支持最广；需要严格遵循最新规范（如 tel: URI、小写参数）时选 4.0。多数现代通讯录两者都能导入。',
+          },
+          {
+            question: '为什么预览里长行被拆成多行还带空格？',
+            answer:
+              '这是 RFC 6350 规定的行折叠：逻辑行超过 75 个字符时必须折行，续行以单个空格开头，导入时会自动还原，不影响内容。',
+          },
+          {
+            question: '备注里的逗号和换行为什么显示成反斜杠形式？',
+            answer:
+              '逗号、分号、反斜杠与换行在 vCard 中有特殊含义，必须分别转义为 \\,、\\;、\\\\、\\n，通讯录解析时会还原为原始字符。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The vCard (VCF) Generator turns a structured form (name, title, organization, multiple phones/emails, URL, segmented address, birthday, note) into contact text compliant with vCard 3.0 (RFC 2426) or 4.0 (RFC 6350), ready to copy or download as a .vcf file for address-book import, email signatures, and contact QR codes.',
+        coreFeatures: [
+          'Spec escaping: backslashes, commas, semicolons and newlines are escaped per RFC 6350',
+          'Structured fields: N as "family;given;additional;prefix;suffix" and ADR as the seven address components',
+          'Version switch: 3.0 emits TEL;TYPE=HOME,VOICE while 4.0 uses lowercase TYPE and a tel: URI',
+          'Multi-value support: add or remove multiple phones and emails, each with its own type on its own line',
+          '75-character line folding with CRLF endings, plus required-FN and birthday format validation',
+        ],
+        howToUse: [
+          'Fill in the required full name FN (or click "Load sample card" for a quick preview)',
+          'Optionally add name parts, title, organization/department, birthday, phones, emails, URL, address and note',
+          'Switch between vCard 3.0 and 4.0 in the top right; the preview updates instantly',
+          'Click "Copy vCard" to paste into contacts, or "Download .vcf" to save and import a file',
+        ],
+        useCases: [
+          'Preparing standard .vcf contacts for phone or email address-book import',
+          'Embedding personal or company contact details in email signatures and contact QR codes',
+          'Debugging escaping, component order and version compatibility of hand-written vCards',
+        ],
+        privacyNote:
+          'All contact information is assembled into text locally in the browser and downloaded via Blob. No network requests are made and nothing is stored on a server.',
+        faqs: [
+          {
+            question: 'Should I choose vCard 3.0 or 4.0?',
+            answer:
+              'Choose 3.0 for maximum compatibility with older devices and importers; choose 4.0 when you need the latest spec (e.g. tel: URIs, lowercase parameters). Most modern address books import both.',
+          },
+          {
+            question: 'Why are long lines split with a leading space in the preview?',
+            answer:
+              'RFC 6350 requires folding logical lines longer than 75 characters; continuation lines start with a single space and are reassembled on import, so the content is unchanged.',
+          },
+          {
+            question: 'Why do commas and newlines in notes show backslashes?',
+            answer:
+              'Commas, semicolons, backslashes and newlines have special meaning in vCard and are escaped per spec; contact apps restore the original characters when parsing.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

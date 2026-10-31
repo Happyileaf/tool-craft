@@ -1,0 +1,117 @@
+.container {
+  padding: 16px;
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.searchInput {
+  flex: 1 1 260px;
+  min-width: 220px;
+}
+
+.searchArea {
+  width: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.card {
+  margin-top: 0;
+}
+
+.groupTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.groupCount {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.portNumber {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 18px;
+  font-weight: 700;
+  min-width: 64px;
+  display: inline-block;
+}
+
+.portName {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.portNameZh {
+  font-weight: 600;
+}
+
+.detailBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+
+.detailRow {
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.detailLabel {
+  flex: 0 0 88px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.detailText {
+  flex: 1;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.protoTag {
+  margin-inline-end: 4px;
+}
+
+.batchItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
+  font-size: 13px;
+}
+
+.batchToken {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 700;
+  min-width: 64px;
+}
+
+.batchText {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.batchError {
+  color: #cf1322;
+}
