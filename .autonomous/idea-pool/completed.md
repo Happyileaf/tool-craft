@@ -59,3 +59,8 @@
 | 20261022221405 | Glob 模式匹配测试器 | Web Tool | Existing Gap | `glob-tester` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261022221405.md) |
 | 20261021180802 | 文本词频统计与高频词分析 | Web Tool | Existing Gap | `word-frequency` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261021180802.md) |
 | 20261029080303 | 两点大圆距离与初始方位角计算器 | Web Tool | Existing Gap | `great-circle` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261029080303.md) |
+| 20261031080657 | AA 分账计算器（多人费用分摊与最小转账结算） | Web Tool | Exploration | `expense-splitter` / [PR #120](https://github.com/Happyileaf/tool-craft/pull/120) | 2026-10-31 | [详情](./idea-details/20261031080657.md) |
+| 20261023141147 | BPM 音符时长与延迟时间计算器 | Web Tool | Exploration | `bpm-calculator` / [PR #120](https://github.com/Happyileaf/tool-craft/pull/120) | 2026-10-31 | [详情](./idea-details/20261023141147.md) |
+| 20261023141144 | 屏幕 PPI / 像素密度计算器 | Web Tool | Existing Gap | `ppi-calculator` / [PR #120](https://github.com/Happyileaf/tool-craft/pull/120) | 2026-10-31 | [详情](./idea-details/20261023141144.md) |
+| 20261028081035 | BMI 身体质量指数计算器（中国 / WHO 双标准分级） | Web Tool | Exploration | `bmi-calculator` / [PR #120](https://github.com/Happyileaf/tool-craft/pull/120) | 2026-10-31 | [详情](./idea-details/20261028081035.md) |
+| 20261027081102 | 线性回归与相关系数计算器 | Web Tool | Existing Gap | `linear-regression` / [PR #120](https://github.com/Happyileaf/tool-craft/pull/120) | 2026-10-31 | [详情](./idea-details/20261027081102.md) |
