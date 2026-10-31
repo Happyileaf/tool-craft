@@ -36,8 +36,8 @@
 | 20261017160149 | CSS unit converter (px / rem / em / pt) | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017160149.md) |
 | 20261017160151 | Semantic version (SemVer) parser & comparator | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017160151.md) |
 | 20261017160152 | Unit & measurement converter | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017160152.md) |
-| 20261017160153 | Unicode character inspector & invisible character detector | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017160153.md) |
-| 20261017183430 | RSA / 非对称密钥对生成器与加解密 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017183430.md) |
+| 20261017160153 | Unicode character inspector & invisible character detector | Web Tool | Exploration | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017160153.md) |
+| 20261017183430 | RSA / 非对称密钥对生成器与加解密 | Web Tool | Existing Gap | Claimed | 2026-10-17 | trae-agent | [详情](./idea-details/20261017183430.md) |
 | 20261017183431 | Base58 & Base58Check 编解码器 | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017183431.md) |
 | 20261017183432 | 摩尔斯电码编解码器 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017183432.md) |
 | 20261017183434 | 数字转中文大写金额 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017183434.md) |
@@ -70,7 +70,7 @@
 | 20261021221303 | Favicon 生成器（图片导出多尺寸 PNG 与 .ico） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021221303.md) |
 | 20261021221304 | Flexbox 布局可视化生成器（输出 CSS） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021221304.md) |
 | 20261021221305 | 键盘事件 / 按键码查看器（keyCode、code、修饰键速查与监听） | Web Tool | External Reference | Pending | 2026-10-21 | | [详情](./idea-details/20261021221305.md) |
-| 20261021221306 | IBAN 银行账号校验与格式化（校验位算法） | Web Tool | External Reference | Pending | 2026-10-21 | | [详情](./idea-details/20261021221306.md) |
+| 20261021221306 | IBAN 银行账号校验与格式化（校验位算法） | Web Tool | External Reference | Claimed | 2026-10-21 | trae-agent | [详情](./idea-details/20261021221306.md) |
 | 20261021221307 | INI 配置解析与 JSON 双向转换 | Web Tool | Existing Gap | Pending | 2026-10-21 | | [详情](./idea-details/20261021221307.md) |
 | 20261021221308 | docker run 命令转 docker-compose.yml | Web Tool | External Reference | Pending | 2026-10-21 | | [详情](./idea-details/20261021221308.md) |
 | 20261022221403 | 全角/半角字符批量转换器 | Web Tool | Existing Gap | In Progress | 2026-10-22 | trae-agent | [详情](./idea-details/20261022221403.md) |
@@ -167,7 +167,7 @@
 | 20261030080719 | Intel HEX 解析与校验和工具 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030080719.md) |
 | 20261030080720 | UTM ↔ WGS84 经纬度坐标互转器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030080720.md) |
 | 20261030080721 | ISIN 证券识别码校验器 | Web Tool | External Reference | Pending | 2026-10-30 | | [详情](./idea-details/20261030080721.md) |
-| 20261030140201 | JSON 转 Go struct 生成器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030140201.md) |
+| 20261030140201 | JSON 转 Go struct 生成器 | Web Tool | Existing Gap | Claimed | 2026-10-30 | trae-agent | [详情](./idea-details/20261030140201.md) |
 | 20261030140202 | Maidenhead 网格定位（QTH Locator）编解码器 | Web Tool | External Reference | Pending | 2026-10-30 | | [详情](./idea-details/20261030140202.md) |
 | 20261030140203 | EUI-64 / SLAAC IPv6 链路本地地址计算器 | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261030140203.md) |
 | 20261030140204 | Verhoeff / Damm 校验位计算器 | Web Tool | Exploration | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030140204.md) |
@@ -189,7 +189,7 @@
 | 20261031080662 | JSON → Java class / record 生成器（含嵌套类型推断） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031080662.md) |
 | 20261031140456 | PNG 文件 chunk 结构解析器（IHDR / IDAT / IEND 等） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031140456.md) |
 | 20261031140457 | TAR 归档结构解析器（512 字节头与文件目录树展示） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031140457.md) |
-| 20261031140458 | 四元数 ↔ 欧拉角 ↔ 旋转矩阵互转器 | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031140458.md) |
+| 20261031140458 | 四元数 ↔ 欧拉角 ↔ 旋转矩阵互转器 | Web Tool | Exploration | Claimed | 2026-10-31 | trae-agent | [详情](./idea-details/20261031140458.md) |
 | 20261031140459 | 英文文本可读性评分器（Flesch Reading Ease / Grade Level） | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031140459.md) |
 | 20261031140460 | 二进制数据转多语言字节数组代码生成器（C / Java / Python / Go） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031140460.md) |
 | 20261031201034 | JSON → C# record/class 生成器（含嵌套类型推断） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201034.md) |
