@@ -15166,6 +15166,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'expense-splitter',
+    name: 'AA 分账计算器（多人费用分摊与最小转账结算）',
+    nameEn: 'Expense Splitter (Shared Bill Settlement)',
+    description:
+      '录入成员与多笔共同消费（付款人、金额、参与分摊成员），自动计算每人净余额（已付 − 应付），并用贪心对冲生成笔数最少的转账方案；金额按整数分运算保证合计守恒，支持一键复制结算清单。',
+    descriptionEn:
+      'Enter members and shared expenses (payer, amount, participants) to compute each person\u2019s net balance (paid \u2212 owed) and a minimum-count transfer plan via greedy netting. Amounts use integer cents so totals always balance, with one-click copy of the settlement summary.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/expense-splitter',
+    iconName: 'Calculator',
+    tags: ['AA分账', '费用分摊', '结算', '转账方案', '记账'],
+    tagsEn: ['Expense Split', 'Bill Share', 'Settlement', 'Transfers', 'Money'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '聚餐 300 元，小明垫付，三人等分',
+    doc: {
+      zh: {
+        whatIsIt:
+          'AA 分账计算器是一款纯浏览器本地的多人费用结算工具：录入成员与每笔共同消费（谁垫付、多少钱、哪些人参与分摊），自动汇总每人累计垫付与应付，得出净余额（正为应收、负为应付），并用贪心对冲算法生成笔数最少的转账方案。所有金额以整数「分」参与运算，通过最大余数法处理无法整除的分摊，保证全员净余额之和恒为 0、账目不丢分。',
+        coreFeatures: [
+          '成员自由增删：成员名回车添加、标签一键移除；仍有垫付费用的成员会被阻止删除，避免账目悬空',
+          '多笔费用管理：每笔费用可编辑说明、付款人、金额（元）与参与分摊成员，参与人点按切换，等分分摊',
+          '定点整数运算：金额元 / 分互转四舍五入，分摊取整余出的分逐分补给缺口最大者，合计严格守恒',
+          '最小转账方案：按净余额对债权 / 债务排序贪心对冲，每步抵消较小一方，转账笔数最少，执行后全部余额归零',
+          '结算结果总览：总支出、每人垫付 / 应付 / 净余额（红绿标识）、建议转账表，账目已平时明确提示，支持一键复制清单',
+        ],
+        howToUse: [
+          '在「成员」区输入成员名后回车或点「添加」，至少保留 1 位成员',
+          '在「共同消费」区点「添加费用」，逐行填写费用说明、选择付款人、输入金额（元），点按姓名按钮切换参与分摊成员',
+          '下方「结算结果」实时更新：查看每人净余额与建议转账；账目已平会显示无需转账',
+          '点「复制结算清单」把总支出、净余额与转账明细复制为文本，发到群里即可照单转账',
+        ],
+        useCases: [
+          '聚餐、团建、旅行多人 AA 后快速算出谁该给谁转多少钱',
+          '合租水电、日用品等共同开支周期性对账',
+          '任何「一人垫付、多人分摊」场景下替代手工记账与来回转账',
+        ],
+        privacyNote:
+          '所有成员与账目数据只保存在当前页面内存中，全部计算在浏览器本地完成，不向任何服务器发送。',
+        faqs: [
+          {
+            question: '除不尽的零头怎么处理？',
+            answer:
+              '例如 100 元三人等分，理论每人 33.333… 元。工具以分为单位先各分 3333 分，再把余下的 1 分补给缺口最大的成员，得到 33.34 / 33.33 / 33.33，三份之和严格等于 100 元。',
+          },
+          {
+            question: '为什么说转账笔数最少？',
+            answer:
+              '把净余额为正的人（债权人）和为负的人（债务人）排序后，每一步都让当前最小债权与最小债务全额抵消，至少有一方当场结清。相比「每人直接找每个垫付人」的网状转账，可显著减少转账笔数。',
+          },
+          {
+            question: '支持不等比例（按权重）分摊吗？',
+            answer:
+              '当前界面按参与人等分，核心分摊函数已支持权重参数（缺省等权），同样以整数分守恒分配。后续可在费用行扩展比例输入；不等分权重不会影响转账最小化逻辑。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Expense Splitter is a fully local multi-person bill settlement tool: enter members and each shared expense (who paid, how much, who shares it) and it totals each person\u2019s paid and owed amounts into a net balance (positive = owed money, negative = owes money), then builds a minimum-count transfer plan with greedy netting. All amounts are integer cents; the largest-remainder method handles amounts that do not divide evenly, so the sum of net balances is always exactly zero.',
+        coreFeatures: [
+          'Flexible member list: add with Enter, remove via tag close; deleting a member who still paid an expense is blocked to prevent orphaned records',
+          'Multiple expense rows: edit title, payer, amount (yuan) and participants per row; toggle participants by clicking name chips; equal split',
+          'Fixed-point integer math: yuan/cents conversion rounds to whole cents, and leftover cents from floor division go to the largest-gap shares so totals always balance exactly',
+          'Minimum transfers: creditors and debtors sorted by net balance are greedily netted, fully clearing the smaller side each step; executing the plan zeroes every balance',
+          'Settlement overview: total spend, per-person paid/owed/net (color coded), suggested transfer table, explicit "all settled" state, and one-click copy of the summary',
+        ],
+        howToUse: [
+          'In the Members section, type a name and press Enter or click Add; keep at least one member',
+          'Click Add Expense, then fill each row\u2019s title, payer and amount (yuan), and click name buttons to toggle who shares the expense',
+          'The Settlement section updates live: review each net balance and the suggested transfers; an all-settled state is shown when nothing is owed',
+          'Click Copy Settlement to export totals, balances and transfers as text for sharing',
+        ],
+        useCases: [
+          'Splitting dinners, team events and trips without manual bookkeeping',
+          'Periodic reconciliation of shared rent, utilities and household purchases',
+          'Any "one person paid, everyone shares" scenario that replaces messy peer-to-peer transfers',
+        ],
+        privacyNote:
+          'Members and expenses live only in the current page memory; all calculations run locally in your browser and nothing is sent to a server.',
+        faqs: [
+          {
+            question: 'How are amounts that do not divide evenly handled?',
+            answer:
+              'For 100 yuan split three ways (33.333\u2026 each), the tool assigns 3333 cents per person first, then gives the leftover cent to the largest-gap share, producing 33.34 / 33.33 / 33.33 that sum to exactly 100 yuan.',
+          },
+          {
+            question: 'Why is the number of transfers minimal?',
+            answer:
+              'Creditors (positive net) and debtors (negative net) are sorted and netted greedily: each step fully offsets the smaller side, settling at least one person immediately. This yields far fewer transfers than a web of "everyone pays every payer back" transactions.',
+          },
+          {
+            question: 'Are weighted (unequal) splits supported?',
+            answer:
+              'The UI splits equally among participants, while the core split function already accepts optional weights (equal by default) with the same integer-cent conservation. Weight inputs per expense can be added later without changing the transfer minimization.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -175,4 +175,5 @@ export const toolLoaders: Record<
   'ansi-color-generator': () => import('./ansi-color-generator'),
   'jwk-thumbprint': () => import('./jwk-thumbprint'),
   'geo-coordinate-converter': () => import('./geo-coordinate-converter'),
+  'expense-splitter': () => import('./expense-splitter'),
 };
