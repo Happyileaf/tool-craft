@@ -59,3 +59,8 @@
 | 20261022221405 | Glob 模式匹配测试器 | Web Tool | Existing Gap | `glob-tester` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261022221405.md) |
 | 20261021180802 | 文本词频统计与高频词分析 | Web Tool | Existing Gap | `word-frequency` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261021180802.md) |
 | 20261029080303 | 两点大圆距离与初始方位角计算器 | Web Tool | Existing Gap | `great-circle` / [PR #114](https://github.com/Happyileaf/tool-craft/pull/114) | 2026-10-31 | [详情](./idea-details/20261029080303.md) |
+| 20261017200240 | MIME 类型速查与识别 | Web Tool | Exploration | `mime-type-lookup` / [PR #123](https://github.com/Happyileaf/tool-craft/pull/123) | 2026-10-31 | [详情](./idea-details/20261017200240.md) |
+| 20261026140927 | 知名 TCP/UDP 端口号速查表 | Web Tool | External Reference | `well-known-ports` / [PR #123](https://github.com/Happyileaf/tool-craft/pull/123) | 2026-10-31 | [详情](./idea-details/20261026140927.md) |
+| 20261022221408 | ASCII 文件树生成器 | Web Tool | Exploration | `ascii-tree-generator` / [PR #123](https://github.com/Happyileaf/tool-craft/pull/123) | 2026-10-31 | [详情](./idea-details/20261022221408.md) |
+| 20261031140459 | 英文文本可读性评分器（Flesch Reading Ease / Grade Level） | Web Tool | Exploration | `readability-score` / [PR #123](https://github.com/Happyileaf/tool-craft/pull/123) | 2026-10-31 | [详情](./idea-details/20261031140459.md) |
+| 20261017220045 | vCard（VCF）名片生成器 | Web Tool | Exploration | `vcard-generator` / [PR #123](https://github.com/Happyileaf/tool-craft/pull/123) | 2026-10-31 | [详情](./idea-details/20261017220045.md) |
