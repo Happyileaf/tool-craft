@@ -192,4 +192,11 @@
 | 20261031140458 | 四元数 ↔ 欧拉角 ↔ 旋转矩阵互转器 | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031140458.md) |
 | 20261031140459 | 英文文本可读性评分器（Flesch Reading Ease / Grade Level） | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031140459.md) |
 | 20261031140460 | 二进制数据转多语言字节数组代码生成器（C / Java / Python / Go） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031140460.md) |
+| 20261031201034 | JSON → C# record/class 生成器（含嵌套类型推断） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201034.md) |
+| 20261031201035 | NMEA 0183 语句解析与校验和验证器 | Web Tool | External Reference | Pending | 2026-10-31 | | [详情](./idea-details/20261031201035.md) |
+| 20261031201036 | WAV（RIFF）音频文件头与 chunk 解析器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201036.md) |
+| 20261031201037 | SQLite 数据库文件头解析器（前 100 字节只读） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201037.md) |
+| 20261031201038 | 无 schema 的 Protobuf 线格式原始解码器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201038.md) |
+| 20261031201039 | 定点数 Qm.n / Q 格式转换与运算可视化器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201039.md) |
+| 20261031201040 | HTTP Digest 认证响应计算器（RFC 2617 / RFC 7616） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201040.md) |
 
