@@ -182,3 +182,4 @@
 | 20261031020752 | ELF 文件头解析器 | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031020752.md) |
 | 20261031020753 | C 结构体位域打包 / 解包器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031020753.md) |
 | 20261031020754 | JSON → Rust struct 生成器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031020754.md) |
+| 20261031080655 | ZIP 归档结构解析器（只读列目录与元数据展示） | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031080655.md) |
