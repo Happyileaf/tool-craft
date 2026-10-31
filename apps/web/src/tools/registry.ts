@@ -15981,6 +15981,107 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'readability-score',
+    name: '英文可读性评分（Flesch / Grade Level）',
+    nameEn: 'Readability Score (Flesch / F-K Grade)',
+    description:
+      '粘贴英文文本，本地按确定性公式计算 Flesch Reading Ease、Flesch–Kincaid Grade Level、句 / 词 / 音节计数与 ASL / ASY，并给出 7 档分级与学龄解读；音节计数为无词典启发式，零依赖。',
+    descriptionEn:
+      'Paste English text to get Flesch Reading Ease, Flesch–Kincaid Grade Level, sentence/word/syllable counts and ASL/ASY with 7-band grade and school-level interpretation. Dictionary-free heuristic syllable counting, zero dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/readability-score',
+    iconName: 'Sigma',
+    tags: ['可读性', 'Flesch', '英文写作', '文案', '评分'],
+    tagsEn: ['Readability', 'Flesch', 'Writing', 'Copywriting', 'Score'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '英文可读性评分器是一款纯浏览器本地运行的文本分析工具，按确定性公式计算 Flesch Reading Ease（越高越易读）与 Flesch–Kincaid Grade Level（对应美国年级），同时给出句子数、单词数、启发式音节数、平均句长 ASL 与平均每词音节 ASY，并映射 7 档难度等级和学龄说明。仅支持英文。',
+        coreFeatures: [
+          '两大经典指标：Flesch Reading Ease 与 Flesch–Kincaid Grade Level，含完整计算式',
+          '基础计数：句子（. ! ? 后接空白切分，小数不误切）、单词（撇号 / 连字符词算 1 个）、启发式音节',
+          '音节启发式：连续元音组、词尾静默 e、静默 -ed/-es、辅音 + le 规则，每词至少 1 音节，不依赖词典',
+          '7 档分级：Very Easy → Very Confusing，配学龄说明与彩色进度条',
+          '文本过短（无单词）时明确提示，不输出 NaN；零依赖、无网络请求',
+        ],
+        howToUse: [
+          '在文本框粘贴一段英文（句子以句号、问号或感叹号加空格结束）',
+          '查看句 / 词 / 音节计数与 ASL、ASY 是否符合预期',
+          '对照 Reading Ease 分值与等级（60–70 为 Plain English）判断大众可读性',
+          '参考 Grade Level 调整目标读者门槛；改写后分数实时更新',
+        ],
+        useCases: [
+          '技术文档、博客与营销文案发布前核对阅读门槛',
+          '英文教学中演示句长、音节与可读性的关系',
+          '产品文案面向大众时把 Grade 控制在 8–9 年级附近',
+        ],
+        privacyNote:
+          '全部文本分析均在浏览器本地完成，不会发送任何网络请求，也不记录或保存输入文本。',
+        faqs: [
+          {
+            question: '音节数为什么可能和词典不一致？',
+            answer:
+              '工具采用固定启发式规则（连续元音组、静默 e/-ed/-es、辅音+le），不内置发音词典，因此对不规则发音的单词（如 machine、people）可能有 ±1 偏差；长文本上指标仍稳定可比。',
+          },
+          {
+            question: '为什么只支持英文？',
+            answer:
+              'Flesch 与 Flesch–Kincaid 公式建立在英文按空格分词、按元音估计音节的前提上，不适用于中文等不分词语言；中文可读性需要不同指标体系。',
+          },
+          {
+            question: 'Reading Ease 超过 100 或 Grade 为负数正常吗？',
+            answer:
+              '正常。极短句子与单音节词（如 The cat sat on the mat.）会得到 100 以上的 Reading Ease 和负的年级值，表示比最低学龄读物还简单，不是计算错误。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Readability Score is a fully local text analysis tool. It computes Flesch Reading Ease (higher is easier) and Flesch–Kincaid Grade Level (US school grade), along with sentence, word and heuristic syllable counts and the ASL/ASY ratios, mapped to a seven-band difficulty scale with school-level notes. English only.',
+        coreFeatures: [
+          'Two classic metrics: Flesch Reading Ease and Flesch–Kincaid Grade Level, with formulas shown',
+          'Base counts: sentences (split on . ! ? plus whitespace, so decimals stay intact), words (apostrophes/hyphens count as one word), heuristic syllables',
+          'Dictionary-free syllable heuristic: consecutive vowel groups, silent final e, silent -ed/-es, consonant+le; at least one syllable per word',
+          'Seven bands from Very Easy to Very Confusing with school-level labels and a colored progress bar',
+          'Clear short-text message instead of NaN; zero dependencies and no network requests',
+        ],
+        howToUse: [
+          'Paste English text (end sentences with a period, question or exclamation mark followed by a space)',
+          'Check sentence/word/syllable counts and ASL/ASY',
+          'Use Reading Ease and its band (60–70 is Plain English) to judge general-audience readability',
+          'Use Grade Level to target a reader age; scores update live as you rewrite',
+        ],
+        useCases: [
+          'Checking the reading level of docs, blog posts, and marketing copy before publishing',
+          'Demonstrating how sentence length and syllables drive readability in English teaching',
+          'Keeping general-audience product copy around grade 8–9',
+        ],
+        privacyNote:
+          'All analysis runs locally in the browser. No network requests are made and input text is never recorded or stored.',
+        faqs: [
+          {
+            question: 'Why can the syllable count differ from a dictionary?',
+            answer:
+              'A fixed heuristic (vowel groups, silent e/-ed/-es, consonant+le) is used instead of a pronunciation dictionary, so irregular words such as machine or people may be off by one; aggregate scores remain stable on longer texts.',
+          },
+          {
+            question: 'Why English only?',
+            answer:
+              'The Flesch formulas assume whitespace-delimited words and vowel-based syllable estimation, which do not apply to languages such as Chinese; those need a different readability model.',
+          },
+          {
+            question: 'Is Reading Ease above 100 or a negative Grade Level normal?',
+            answer:
+              'Yes. Very short sentences of one-syllable words (e.g. The cat sat on the mat.) yield scores above 100 and negative grades, meaning easier than the earliest school readers — not a calculation error.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

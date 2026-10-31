@@ -183,4 +183,5 @@ export const toolLoaders: Record<
   'mime-type-lookup': () => import('./mime-type-lookup'),
   'well-known-ports': () => import('./well-known-ports'),
   'ascii-tree-generator': () => import('./ascii-tree-generator'),
+  'readability-score': () => import('./readability-score'),
 };
