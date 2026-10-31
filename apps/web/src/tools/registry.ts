@@ -15880,6 +15880,107 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'ascii-tree-generator',
+    name: 'ASCII 文件树生成器',
+    nameEn: 'ASCII Tree Generator',
+    description:
+      '把换行分隔的路径列表（src/a.ts、支持 \\ 路径）渲染成 tree 命令风格的 ├── └── │ 目录树，支持字典序 / 输入顺序、深度限制、仅目录与隐藏条目过滤、根名标题，一键复制用于 README。',
+    descriptionEn:
+      'Turn newline-separated paths (src/a.ts, backslash paths supported) into a tree-command-style ASCII diagram with ├── └── │ connectors, with alphabetical/input ordering, depth limit, directories-only and hidden-entry filters, optional root title, and one-click copy for READMEs.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ascii-tree-generator',
+    iconName: 'List',
+    tags: ['ASCII', '目录树', 'tree', 'README', '文档'],
+    tagsEn: ['ASCII', 'Tree', 'Directory', 'README', 'Docs'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'ASCII 文件树生成器是一款纯浏览器本地运行的文本工具：把每行一个路径的列表解析为嵌套目录树，自动补全中间目录、兼容 / 与 \\ 分隔符并去重，再渲染为 tree 命令风格的 ├──、└──、│ 连接文本，可直接粘贴进 README 或技术文档。',
+        coreFeatures: [
+          '路径列表解析：换行拆分、兼容正反斜杠、自动去首尾分隔符、空行跳过、重复路径去重',
+          '自动补全中间目录：只给 a/b/c.ts 也能补出完整 a/、b/ 层级',
+          '两种排序：名称字典序（目录优先）或保持输入顺序',
+          '展示控制：最大深度（超出显示 …）、仅目录、过滤 . 开头隐藏条目、自定义根名标题行',
+          '目录 / 文件计数与一键复制；全部纯字符串处理，零依赖、无网络请求',
+        ],
+        howToUse: [
+          '在左侧每行输入一个路径（如 src/index.ts），右侧实时生成树',
+          '用排序按钮切换字典序或输入顺序，用深度按钮限制展示层级',
+          '勾选「仅目录」或「隐藏 . 开头条目」过滤内容，可开关并填写根名',
+          '点击「复制」把结果粘贴到 README，或点「恢复样例」重置输入',
+        ],
+        useCases: [
+          '在 README / 设计文档中展示项目目录结构',
+          '把 find、git 输出或手动罗列的路径整理成对齐的树状图',
+          'Code Review 或技术分享时快速可视化模块分层',
+        ],
+        privacyNote:
+          '全部路径解析与渲染均在浏览器本地完成，不会发送任何网络请求，也不记录输入内容。',
+        faqs: [
+          {
+            question: '同名既当文件又当目录会怎样？',
+            answer:
+              '若某名称下还有更深路径（如先写 x 又写 x/y.ts），它会被提升为目录；仅当同名条目没有任何子节点时才作为文件展示，避免树中出现文件下嵌套内容。',
+          },
+          {
+            question: '深度限制后的「…」是什么？',
+            answer:
+              '当目录层级超过设定的最大深度时，工具在被截断的目录下输出一个 … 节点，表示此处仍有更深内容未展开；把深度切回「不限」即可查看完整树。',
+          },
+          {
+            question: '隐藏条目过滤会过滤哪些内容？',
+            answer:
+              '所有以点（.）开头的文件或目录都会被隐藏，例如 .env、.gitignore、.github/；过滤后变空的目录也不会出现在结果中（仅目录模式下保留空目录骨架）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'ASCII Tree Generator is a fully local text tool: it parses a list of one-path-per-line entries into a nested tree, auto-fills missing intermediate directories, accepts both / and \\ separators and deduplicates paths, then renders tree-command-style output with ├──, └── and │ connectors ready to paste into a README.',
+        coreFeatures: [
+          'Path parsing: newline split, slash and backslash support, leading/trailing separators trimmed, blank lines skipped, duplicates removed',
+          'Intermediate directories are auto-created: a/b/c.ts alone produces full a/ and b/ levels',
+          'Two ordering modes: alphabetical (directories first) or input order',
+          'Display controls: max depth (deeper nodes shown as …), directories-only, hide dotfiles, custom root title line',
+          'Directory/file counts and one-click copy; pure string processing, zero dependencies, no network requests',
+        ],
+        howToUse: [
+          'Enter one path per line on the left (e.g. src/index.ts); the tree renders live on the right',
+          'Switch between alphabetical and input ordering; use the depth buttons to limit levels',
+          'Toggle directories-only or hidden-entry filtering, and optionally enable and edit the root name',
+          'Click Copy to paste the result into a README, or Restore sample to reset the input',
+        ],
+        useCases: [
+          'Showing project structure in READMEs or design documents',
+          'Turning find/git output or hand-written path lists into an aligned tree diagram',
+          'Visualizing module layers during code review or technical talks',
+        ],
+        privacyNote:
+          'All parsing and rendering happen locally in the browser. No network requests are made and no input is recorded.',
+        faqs: [
+          {
+            question: 'What if the same name is used as both a file and a directory?',
+            answer:
+              'When deeper paths exist under a name (e.g. both x and x/y.ts), it is promoted to a directory; it is rendered as a file only when it has no children, so nothing nests under a file.',
+          },
+          {
+            question: 'What does the … node mean after a depth limit?',
+            answer:
+              'When a directory has content beyond the chosen maximum depth, a … child is shown to indicate more levels exist. Switch depth back to unlimited to see the full tree.',
+          },
+          {
+            question: 'What does the hidden-entry filter remove?',
+            answer:
+              'Every file or directory starting with a dot, such as .env, .gitignore or .github/. Directories left empty by filtering are also hidden (directories-only mode keeps empty directory skeletons).',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
