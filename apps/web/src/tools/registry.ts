@@ -16647,6 +16647,112 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'container-code-checksum',
+    name: 'ISO 6346 集装箱箱号校验位工具',
+    nameEn: 'ISO 6346 Container Number Check Digit Calculator',
+    description:
+      '按 ISO 6346（BIC Code）标准计算与校验海运集装箱箱号：输入 4 个字母（箱主代码 + 设备类别 U/J/Z）与 6 位流水号组成的 10 位主体自动算出第 11 位校验位；输入完整 11 位箱号则校验合法性，校验位错误时给出正确值与纠正后的合法箱号，并逐位展示字母映射值、2⁰…2⁹ 权重与求和过程。容忍小写、空格与连字符，支持多行批量处理并逐行标注行号错误；非法字符、长度不符等输入给出可读提示。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Compute and verify maritime shipping container numbers per ISO 6346 (BIC Code): enter the 10-character body—4 letters (owner code plus U/J/Z equipment category) and 6 serial digits—to derive the 11th check digit, or paste a full 11-character number to validate it, with the correct digit and corrected number shown on mismatch. Every position’s mapped letter value, 2^0…2^9 weight and contribution is listed step by step. Lowercase, spaces and hyphens are tolerated, multiple lines are processed with line-numbered errors, and bad characters or lengths produce readable messages. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/container-code-checksum',
+    iconName: 'Tags',
+    tags: ['ISO 6346', '集装箱', '箱号', 'BIC', '校验位', '物流'],
+    tagsEn: ['ISO 6346', 'Container', 'BIC Code', 'Check Digit', 'Shipping', 'Logistics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'CSQU305438\nMSKU1234565\nCSQU3054380',
+    doc: {
+      zh: {
+        whatIsIt:
+          'ISO 6346 集装箱箱号校验位工具是一款纯浏览器本地运行的计算器，用于为海运集装箱箱号（BIC Code）的前 10 位主体补全校验位，或检验完整 11 位箱号是否合法，覆盖国际航运、港口、铁路与公路集装箱运输场景中最常用的编号标准。',
+        coreFeatures: [
+          '双向处理：10 位主体（4 字母 + 6 数字）补全第 11 位校验位，完整 11 位箱号校验合法性',
+          'ISO 6346 标准算法：字母从 A=10 起映射并跳过 11 的倍数（如 L=23、V=34），前 10 位依次乘以 2⁰…2⁹ 求和后对 11 取模',
+          '逐位明细：表格展示每一位的字符、映射值、权重与乘积，以及加权总和与取模结果',
+          '设备类别提示：识别第 4 位 U（集装箱）/ J（可拆卸设备）/ Z（挂车底盘），非常规字符给出提醒',
+          '错误纠正：校验位不匹配时明确给出给定值、正确校验位与合法箱号',
+          '宽松输入：自动忽略空格与连字符、兼容小写，多行批量处理并逐行标注行号',
+        ],
+        howToUse: [
+          '在输入框每行粘贴一个箱号：10 位自动补全校验位，11 位自动校验合法性',
+          '右侧实时输出补全或纠正后的箱号，非法行原样保留并以黄色警告逐行说明原因',
+          '下方「加权计算过程」卡片按位展示字母映射、权重、乘积与总和，便于核对算法',
+          '含空格或连字符的编号（如 CSQU 305438-3）可直接粘贴，无需手动清理',
+          '点击「复制」获取处理结果',
+        ],
+        useCases: [
+          '货代、船公司与港口单证：批量核对提单、舱单中的集装箱号是否录入正确',
+          '堆场与铁路场站：自制箱封标签或录入 TOS 系统前快速计算校验位',
+          '开发与测试：构造物流跟踪、关务申报功能时生成合法箱号测试数据、验证解析逻辑',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；粘贴的箱号数据不会离开设备。',
+        faqs: [
+          {
+            question: 'ISO 6346 的校验位是怎么算出来的？',
+            answer:
+              '先把字母映射为数值：A=10、B=12……依次递增但跳过 11 的倍数（11、22、33），因此 L=23、V=34；数字保持原值。随后前 10 位从左到右依次乘以 2⁰、2¹…2⁹ 求和，总和对 11 取模即校验位；余数为 10 时按标准记作 0。例如 CSQU305438 加权总和为 6185，6185 mod 11 = 3，完整箱号为 CSQU3054383。',
+          },
+          {
+            question: '箱号第 4 位的 U / J / Z 分别代表什么？',
+            answer:
+              '第 4 位是设备类别标识符：U 表示货运集装箱（Freight Container），J 表示可拆卸的货运设备（如可拆卸挂衣设备），Z 表示挂车或底盘车（Trailer/Chassis）。前 3 位则是在 BIC 登记的箱主（承运人）代码。',
+          },
+          {
+            question: '为什么完整箱号被提示校验位不正确？',
+            answer:
+              '说明末位与按前 10 位重新加权计算出的校验位不一致，通常是单证录入、OCR 识别或口口相传时某一位出错。警告会给出正确校验位和纠正后的合法箱号，请对照箱体铭牌或原始单证核实是哪一位录错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ISO 6346 Container Number Check Digit Calculator is a fully browser-local tool for appending the check digit to the 10-character body of a maritime shipping container number (BIC Code) or verifying a complete 11-character number, covering the most widely used numbering standard in ocean freight, ports, rail and road container transport.',
+        coreFeatures: [
+          'Two-way handling: complete a 10-character body (4 letters + 6 digits) with its 11th check digit, or validate a full 11-character number',
+          'ISO 6346 algorithm: letters map from A=10 upward while skipping multiples of 11 (e.g. L=23, V=34); the first 10 positions are weighted 2^0…2^9 and summed modulo 11',
+          'Position-by-position breakdown: a table shows each character, mapped value, weight, contribution, the weighted sum and the modulo result',
+          'Equipment-category hints: recognizes the 4th character U (container), J (detachable equipment) or Z (trailer/chassis), with a notice for unusual letters',
+          'Error correction: a mismatched check digit reports the given value, the correct digit and the valid corrected number',
+          'Lenient input: spaces and hyphens are ignored, lowercase is accepted, and multiple lines are processed in batch with line-numbered errors',
+        ],
+        howToUse: [
+          'Paste one container number per line: 10 characters are completed automatically, 11 characters are validated',
+          'Completed or corrected numbers appear live on the right; invalid lines are kept in place and explained in yellow line-numbered warnings',
+          'The weighted-calculation card below shows letter mappings, weights, products and the sum for verifying the algorithm',
+          'Numbers containing spaces or hyphens (e.g. CSQU 305438-3) can be pasted directly without manual cleanup',
+          'Click Copy to grab the result',
+        ],
+        useCases: [
+          'Forwarders, carriers and port documentation: batch-check container numbers on bills of lading and manifests',
+          'Container yards and rail terminals: quickly compute check digits before producing seals or entering data into a TOS',
+          'Development and testing: generate valid container-number fixtures and verify parsing in tracking or customs-declaration features',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser via zero-dependency pure functions. No network requests are made, so container numbers you paste never leave your device.',
+        faqs: [
+          {
+            question: 'How is the ISO 6346 check digit calculated?',
+            answer:
+              'Letters are mapped to values starting at A=10, B=12 and so on, skipping multiples of 11 (11, 22, 33), so L=23 and V=34; digits keep their face value. The first 10 positions are multiplied left to right by 2^0, 2^1 … 2^9 and summed, then the sum is taken modulo 11; a remainder of 10 is written as 0. For example CSQU305438 has a weighted sum of 6185, 6185 mod 11 = 3, giving CSQU3054383.',
+          },
+          {
+            question: 'What do U / J / Z in the fourth position mean?',
+            answer:
+              'The fourth character is the equipment-category identifier: U stands for a freight container, J for detachable freight equipment, and Z for a trailer or chassis. The first three characters are the BIC-registered owner (carrier) code.',
+          },
+          {
+            question: 'Why is a complete container number reported as invalid?',
+            answer:
+              'The last digit does not match the one recomputed by weighting the first 10 positions—usually because a digit was mistyped in documentation, misread by OCR, or miscommunicated verbally. The warning shows the correct check digit and the corrected valid number; compare them against the container nameplate or original paperwork to find the erroneous position.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
