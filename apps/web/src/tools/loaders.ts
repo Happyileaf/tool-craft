@@ -185,4 +185,9 @@ export const toolLoaders: Record<
   'ascii-tree-generator': () => import('./ascii-tree-generator'),
   'readability-score': () => import('./readability-score'),
   'vcard-generator': () => import('./vcard-generator'),
+  'iban-validator': () => import('./iban-validator'),
+  'quaternion-converter': () => import('./quaternion-converter'),
+  'json-to-go': () => import('./json-to-go'),
+  'unicode-character-inspector': () => import('./unicode-character-inspector'),
+  'rsa-keypair-tool': () => import('./rsa-keypair-tool'),
 };
