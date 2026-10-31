@@ -15779,6 +15779,107 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'well-known-ports',
+    name: '知名 TCP/UDP 端口速查',
+    nameEn: 'Well-Known TCP/UDP Ports Lookup',
+    description:
+      '按端口号（443）或服务名 / 关键词（ssh、https、数据库）查询 IANA 长期稳定端口，展示 TCP/UDP 协议、官方服务名与用途，支持多端口粘贴批量解析与 well-known / registered / dynamic 区间判定。',
+    descriptionEn:
+      'Look up IANA stable ports by number (443) or service/keyword (ssh, https, database), with TCP/UDP protocols, official service names and usage, multi-port batch parsing, and well-known / registered / dynamic range classification.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/well-known-ports',
+    iconName: 'HardDrive',
+    tags: ['端口', 'TCP', 'UDP', 'IANA', '防火墙', '速查'],
+    tagsEn: ['Port', 'TCP', 'UDP', 'IANA', 'Firewall', 'Reference'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '知名 TCP/UDP 端口速查是一款纯浏览器本地运行的参考工具，内置 30 条 IANA 长期稳定端口条目（SSH、DNS、HTTP/HTTPS、SMTP、MySQL、PostgreSQL、Redis、MongoDB 等），标注传输协议、官方服务名、中文用途说明与所属端口区间，并对 5601/9200 等生态事实默认端口单独标注。',
+        coreFeatures: [
+          '按端口号精确查询：22、53、80、443、3306、5432、6379 等一条命中',
+          '服务名 / 中文用途关键词模糊搜索，大小写不敏感（https、postgresql、数据库）',
+          '区间判定：well-known 0–1023、registered 1024–49151、dynamic 49152–65535，未收录端口也能判定区间',
+          '批量解析：一次粘贴多个端口（空格 / 逗号 / 换行分隔），逐条展示协议、服务与区间',
+          '非法输入（70000、-1、非数字）给出明确行内错误，不抛异常；全部数据内置、无网络请求',
+        ],
+        howToUse: [
+          '输入单个端口号（如 443）查看对应服务、TCP/UDP 协议与端口区间',
+          '输入服务名或中文关键词（如 dns、数据库）模糊检索相关条目',
+          '粘贴多个词条（如 22 80 443 或换行列表）进入批量解析模式',
+          '使用 TCP / UDP 按钮按传输协议过滤浏览列表，点击条目展开官方名与关键词详情',
+        ],
+        useCases: [
+          '阅读 Nginx、防火墙或云安全组配置时快速确认端口归属',
+          '排查端口占用、启动服务选端口时判断是否冲突系统知名端口',
+          '网络与运维面试、写文档时核对服务名与协议（TCP/UDP）',
+        ],
+        privacyNote:
+          '全部查询基于内置静态表在浏览器本地完成，不会发送任何网络请求，也不记录输入内容。',
+        faqs: [
+          {
+            question: '数据来源是什么？会过期吗？',
+            answer:
+              '数据基于 IANA Service Name and Port Number Registry 的长期稳定条目，知名端口一经正式分配极少回收。仅收录高频稳定条目并标注截至 2026-10；5601（Kibana）、9200（Elasticsearch）并非 IANA 正式分配，工具中标注为生态事实默认端口。',
+          },
+          {
+            question: '为什么输入 65000 查不到服务？',
+            answer:
+              '65000 位于 49152–65535 dynamic（动态 / 私有）区间，IANA 不分配固定服务，应用可自行使用，因此内置表没有收录，但工具仍会正确判定其区间。',
+          },
+          {
+            question: '为什么 DNS 的 53 同时有 TCP 和 UDP？',
+            answer:
+              'DNS 常规查询走 UDP 53；当响应超过报文大小限制或进行区域传送（AXFR）时使用 TCP 53，因此条目标注 TCP+UDP 两种协议。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Well-Known TCP/UDP Ports Lookup is a fully offline reference tool with 30 long-stable IANA port entries (SSH, DNS, HTTP/HTTPS, SMTP, MySQL, PostgreSQL, Redis, MongoDB, and more), showing transport protocols, official service names, usage notes, and port ranges; ecosystem-default ports such as 5601/9200 are tagged separately.',
+        coreFeatures: [
+          'Exact lookup by port number: 22, 53, 80, 443, 3306, 5432, 6379 and more',
+          'Case-insensitive fuzzy search by service name or Chinese usage keyword (https, postgresql, database)',
+          'Range classification: well-known 0–1023, registered 1024–49151, dynamic 49152–65535, even for ports not in the table',
+          'Batch parsing: paste many ports separated by spaces, commas, or newlines and inspect each one',
+          'Invalid input (70000, -1, non-numeric) yields clear inline errors without throwing; fully bundled data with no network requests',
+        ],
+        howToUse: [
+          'Type a single port (e.g. 443) to see its service, TCP/UDP protocols, and range',
+          'Type a service name or keyword (e.g. dns, database) for fuzzy search',
+          'Paste multiple tokens (e.g. 22 80 443 or a newline list) for batch parsing',
+          'Use the TCP/UDP buttons to filter the browse list; click an entry for official name and keywords',
+        ],
+        useCases: [
+          'Confirming port ownership while reading Nginx, firewall, or cloud security-group rules',
+          'Checking conflicts with system well-known ports when choosing a port for a new service',
+          'Reviewing service names and TCP/UDP protocols for networking interviews or documentation',
+        ],
+        privacyNote:
+          'Every query runs locally against the bundled static table. No network requests are made and no input is recorded.',
+        faqs: [
+          {
+            question: 'Where does the data come from? Can it go stale?',
+            answer:
+              'Data is based on long-stable entries from the IANA Service Name and Port Number Registry; well-known assignments are rarely reclaimed. Only common stable entries are included, dated 2026-10. Ports 5601 (Kibana) and 9200 (Elasticsearch) are not IANA assignments and are tagged as ecosystem defaults.',
+          },
+          {
+            question: 'Why does 65000 return no service?',
+            answer:
+              '65000 lies in the 49152–65535 dynamic/private range where IANA assigns no fixed services and applications choose ports freely, so it is not in the table — but the tool still classifies its range.',
+          },
+          {
+            question: 'Why does DNS port 53 use both TCP and UDP?',
+            answer:
+              'Ordinary DNS queries use UDP 53; TCP 53 is used when responses exceed the datagram size limit or for zone transfers (AXFR), so the entry is tagged with both protocols.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

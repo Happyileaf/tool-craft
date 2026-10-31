@@ -181,4 +181,5 @@ export const toolLoaders: Record<
   'bmi-calculator': () => import('./bmi-calculator'),
   'linear-regression': () => import('./linear-regression'),
   'mime-type-lookup': () => import('./mime-type-lookup'),
+  'well-known-ports': () => import('./well-known-ports'),
 };
