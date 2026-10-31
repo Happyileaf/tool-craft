@@ -1,0 +1,56 @@
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  width: 100%;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.hint {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 13px;
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+.editor {
+  font-family: var(--font-family-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-size: 13px;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.pairs {
+  margin-top: 12px;
+}

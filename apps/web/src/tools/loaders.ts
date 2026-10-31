@@ -194,4 +194,5 @@ export const toolLoaders: Record<
   'multi-epoch-timestamp': () => import('./multi-epoch-timestamp'),
   'nmea-parser': () => import('./nmea-parser'),
   'resistor-color-calculator': () => import('./resistor-color-calculator'),
+  'json-form-urlencoded': () => import('./json-form-urlencoded'),
 };

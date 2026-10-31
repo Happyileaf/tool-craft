@@ -17072,6 +17072,115 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'json-form-urlencoded',
+    name: 'JSON ↔ 表单请求体转换器',
+    nameEn: 'JSON ↔ x-www-form-urlencoded Converter',
+    description:
+      '在 JSON 对象与 application/x-www-form-urlencoded 请求体之间双向转换，支持 RFC 3986 百分号编码、重复键数组与括号/PHP/点路径嵌套风格。',
+    descriptionEn:
+      'Convert bidirectionally between JSON objects and application/x-www-form-urlencoded bodies, with RFC 3986 percent-encoding, repeated-key arrays, and bracket/PHP/dot nesting styles.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-form-urlencoded',
+    iconName: 'FileCode',
+    tags: ['JSON', '表单', 'urlencoded', '请求体', '编码'],
+    tagsEn: ['JSON', 'Form', 'urlencoded', 'Request Body', 'Encoding'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `{
+  "name": "张三",
+  "role": "admin",
+  "tags": ["dev", "ops"],
+  "active": true,
+  "page": 2,
+  "remark": "hello world"
+}`,
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON ↔ 表单请求体转换器是一款纯浏览器本地运行的接口调试工具，可在 JSON 对象与 application/x-www-form-urlencoded 请求体之间做确定性双向转换，编码严格遵循 RFC 3986，数组与嵌套对象支持多种业界常见展开风格。',
+        coreFeatures: [
+          'JSON → 表单：按 RFC 3986 百分号编码键值，布尔 / 数字 / null 有明确序列化策略，空格可选 + 或 %20',
+          '表单 → JSON：百分号解码（含 + → 空格），重复键自动聚合为数组，输出缩进合法 JSON',
+          '三种嵌套风格：括号 a[0]=1 / a[b]=2、PHP a[]=1、点路径 a.b=1，解析另支持平铺模式',
+          '实时错误提示：JSON 语法错误、畸形百分号编码、键值类型冲突均给出明确中文报错',
+          '键值对预览表与「结果反向载入」，可一键把输出作为反向输入验证往返一致性',
+        ],
+        howToUse: [
+          '顶部选择转换方向：JSON → x-www-form-urlencoded 或反向',
+          '在选项卡中选择嵌套风格（括号 / PHP / 点路径）与空格编码方式（+ 或 %20）',
+          '在左侧编辑框粘贴 JSON 对象或 urlencoded 请求体，右侧实时生成结果',
+          '出现错误时根据红色告警修正输入；点击「结果反向载入」可快速做往返验证，点击「复制」取用结果',
+        ],
+        useCases: [
+          '前后端联调时把 JSON 请求体改写成表单格式，或把抓包到的表单请求体重建成 JSON',
+          '调试仅接受 application/x-www-form-urlencoded 的老旧接口与 OAuth / 登录端点',
+          '核对不同后端框架（PHP、Rails、Express qs 等）对嵌套键名的解析差异',
+        ],
+        privacyNote:
+          '全部解析、编码与字符串拼接均在浏览器本地完成，请求体内容不会被上传或记录，可安全处理含敏感字段的报文。',
+        faqs: [
+          {
+            question: '为什么 !、\'、(、)、* 这些字符也会被百分号编码？',
+            answer:
+              "encodeURIComponent 按 RFC 2396 保留这些字符不转义，但 RFC 3986 仅将字母数字与 - _ . ~ 列为非保留字符；表单提交的事实标准要求补编码为 %21 %27 %28 %29 %2A，本工具严格按 RFC 3986 处理。",
+          },
+          {
+            question: '括号、PHP、点路径三种嵌套风格有什么区别？',
+            answer:
+              '括号风格对数组元素使用显式数字索引（a[0]=1&a[1]=2）；PHP 风格对叶子标量数组使用空括号追加（a[]=1&a[]=2），数组内对象仍用显式索引；点路径用 a.0=1、a.b=2 表达层级。解析时还提供平铺模式，将重复键直接聚合为数组。',
+          },
+          {
+            question: '为什么同一个键既给了标量又写了嵌套下标会报错？',
+            answer:
+              '例如 a=1&a[b]=2 在同一路径上同时要求 a 是字符串又是对象，类型互相冲突，没有唯一合理的 JSON 表示，工具会明确提示「键值组合存在类型冲突」，而不是静默丢弃数据。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'JSON ↔ x-www-form-urlencoded Converter is a fully browser-based API debugging tool that converts deterministically between JSON objects and application/x-www-form-urlencoded bodies. Encoding strictly follows RFC 3986, with multiple industry-standard styles for arrays and nested objects.',
+        coreFeatures: [
+          'JSON → form: RFC 3986 percent-encoding with explicit rules for booleans/numbers/null; spaces as + or %20',
+          'Form → JSON: percent-decoding (including + → space), repeated keys aggregated into arrays, indented valid JSON output',
+          'Three nesting styles: bracket a[0]=1 / a[b]=2, PHP a[]=1, and dot path a.b=1, plus a flat parse mode',
+          'Live error messages for invalid JSON, malformed percent-encoding, and key/value type conflicts',
+          'Key-value preview table and "load result in reverse" for quick round-trip verification',
+        ],
+        howToUse: [
+          'Pick the conversion direction at the top: JSON → x-www-form-urlencoded or the reverse',
+          'Choose the nesting style (bracket / PHP / dot) and space encoding (+ or %20) in the options card',
+          'Paste a JSON object or urlencoded body into the left editor; the right panel updates live',
+          'Fix input based on the red alert when errors occur; use "load result in reverse" for round-trip checks, then copy the output',
+        ],
+        useCases: [
+          'Rewriting JSON payloads into form bodies during integration, or rebuilding JSON from captured form requests',
+          'Working with legacy endpoints and OAuth/login endpoints that only accept application/x-www-form-urlencoded',
+          'Comparing how PHP, Rails, Express qs and other frameworks interpret nested key names',
+        ],
+        privacyNote:
+          'All parsing, encoding, and string building happens locally in your browser; payload contents are never uploaded or logged, so sensitive fields are safe.',
+        faqs: [
+          {
+            question: "Why are !, ', (, ), and * percent-encoded?",
+            answer:
+              'encodeURIComponent follows RFC 2396 and leaves them unescaped, but RFC 3986 only treats alphanumerics and - _ . ~ as unreserved. De-facto form-encoding standards require encoding them as %21 %27 %28 %29 %2A, which this tool applies strictly.',
+          },
+          {
+            question: 'What is the difference between bracket, PHP, and dot nesting styles?',
+            answer:
+              'Bracket style uses explicit numeric indices (a[0]=1&a[1]=2); PHP style appends leaf scalar arrays with empty brackets (a[]=1&a[]=2) while objects inside arrays keep explicit indices; dot style expresses levels with a.0=1 and a.b=2. A flat parse mode is also provided to aggregate repeated keys directly.',
+          },
+          {
+            question: 'Why does a scalar and a nested subscript on the same key raise an error?',
+            answer:
+              'For example a=1&a[b]=2 requires a to be both a string and an object at the same path — an unresolvable type conflict with no unique JSON representation. The tool reports a clear "type conflict" error instead of silently dropping data.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
