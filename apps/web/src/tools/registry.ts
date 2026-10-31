@@ -15268,6 +15268,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'bpm-calculator',
+    name: 'BPM 音符时长与延迟时间计算器',
+    nameEn: 'BPM Note Duration & Delay Time Calculator',
+    description:
+      '输入 BPM 即得全音符到三十二分音符（含附点、三连音）的毫秒时长表，并给出 Delay / Reverb 常用节拍同步时间（1/4、1/8D、1/8T、1/16 等）与对应频率，支持由四分音符时长反算 BPM。',
+    descriptionEn:
+      'Enter BPM to get millisecond durations from whole to thirty-second notes (including dotted and triplet), common delay/reverb sync times (1/4, 1/8 dotted, 1/8 triplet, 1/16 and more) with matching frequencies, plus reverse BPM calculation from a quarter-note duration.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/bpm-calculator',
+    iconName: 'Music',
+    tags: ['BPM', '音符时长', 'Delay', '节拍同步', '音乐制作'],
+    tagsEn: ['BPM', 'Note Duration', 'Delay Time', 'Tempo Sync', 'Music'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '120',
+    doc: {
+      zh: {
+        whatIsIt:
+          'BPM 音符时长与延迟时间计算器是一款面向音乐制作的纯本地小工具：以四分音符为一拍，输入速度 BPM（每分钟拍数）后，一拍时长 = 60000 / BPM 毫秒，据此算出全音符、二分、四分、八分、十六分、三十二分音符的常规、附点（×1.5）与三连音（×2/3）时长，并给出延迟 / 混响效果器常用的节拍同步档位（如八分附点 1/8D）与等效 LFO 频率，也支持敲表或测速后由四分音符毫秒数反算 BPM。',
+        coreFeatures: [
+          '6 种音符 × 常规 / 附点 / 三连音共 18 行时长表，毫秒与拍数并列展示',
+          '效果器同步档位：1 小节、1/2、1/4、1/4D、1/4T、1/8、1/8D、1/8T、1/16、1/16D、1/32，附毫秒与赫兹',
+          '一键曲风速度预设：Ballad 70、Hip-Hop 90、House 120、Techno 130、Drum & Bass 170',
+          '双向计算：BPM → 各档时长，也可输入四分音符毫秒时长反算 BPM',
+          '纯函数确定性运算，毫秒与频率（1000 / ms）实时刷新，零依赖零上报',
+        ],
+        howToUse: [
+          '在顶部输入歌曲 BPM（或点曲风预设），一拍时长即时显示',
+          '在「效果器节拍同步时间」卡片查 Delay / Reverb 需要的毫秒值，如把延迟时间设为 1/8D 对应数值',
+          '需要给 LFO / 颤音速率时参考同档赫兹数',
+          '若通过打拍测得四分音符毫秒数，在底部输入即可反算 BPM',
+        ],
+        useCases: [
+          '为 DAW 中 tempo-sync 的 delay、reverb、LFO 设置精确毫秒 / 赫兹参数',
+          '现场演出或 remix 时快速换算不同速度下的音符时长',
+          '根据采样或打拍测得的毫秒间隔反推歌曲 BPM',
+        ],
+        privacyNote:
+          '所有计算都在浏览器本地完成，不读取、不上传任何音频或工程数据。',
+        faqs: [
+          {
+            question: '附点（D）和三连音（T）怎么算？',
+            answer:
+              '附点音符时长为原音符的 1.5 倍（如 120 BPM 下四分音符 500ms，四分附点为 750ms）；三连音把原本两个音符的时长平均分给三个音符，单个音符为原时长的 2/3（如四分三连音约 333.33ms）。',
+          },
+          {
+            question: '为什么电音常用「1/8D 延迟」？',
+            answer:
+              '八分附点延迟会形成富有推动力的摇曳律动，是 House / Techno 等曲风的经典效果。120 BPM 下 1/8D = 375ms（约 2.667 Hz），把延迟时间设为该值即可与节拍同步。',
+          },
+          {
+            question: '拍号不是 4/4 时结果还有效吗？',
+            answer:
+              '有效。BPM 定义的是每分钟四分音符数，与拍号无关；表中「1 小节（4/4）」一档按 4 拍计算，其他拍号下小节时长需自行乘以每小节拍数，单个音符时长不受影响。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The BPM Note Duration & Delay Time Calculator is a fully local tool for music production: taking the quarter note as one beat, a beat lasts 60000 / BPM milliseconds. From that it derives whole, half, quarter, eighth, sixteenth and thirty-second note durations \u2014 normal, dotted (\u00d71.5) and triplet (\u00d72/3) \u2014 plus common delay/reverb tempo-sync positions (such as the eighth-note dotted 1/8D) with equivalent LFO frequencies. You can also reverse the math and recover BPM from a quarter-note duration in milliseconds.',
+        coreFeatures: [
+          '18-row duration table: 6 note values \u00d7 normal / dotted / triplet, with beats and milliseconds',
+          'Effect sync positions: 1 bar, 1/2, 1/4, 1/4D, 1/4T, 1/8, 1/8D, 1/8T, 1/16, 1/16D, 1/32 in ms and Hz',
+          'Genre tempo presets: Ballad 70, Hip-Hop 90, House 120, Techno 130, Drum & Bass 170',
+          'Bidirectional: BPM \u2192 durations, or enter a quarter-note duration in ms to recover BPM',
+          'Deterministic pure-function math with live ms/Hz (1000 / ms) output; zero dependencies, no tracking',
+        ],
+        howToUse: [
+          'Enter the song BPM at the top (or click a genre preset); the beat duration appears instantly',
+          'Look up the milliseconds needed by your delay/reverb in the tempo-sync card, e.g. set delay time to the 1/8D value',
+          'Use the Hz figure when setting an LFO or tremolo rate',
+          'If you measured a quarter-note interval in milliseconds by tapping, enter it at the bottom to get BPM back',
+        ],
+        useCases: [
+          'Setting exact ms/Hz parameters for tempo-synced delay, reverb and LFO in a DAW',
+          'Quick note-duration conversion at different tempos for live sets or remixes',
+          'Recovering song BPM from a sample or tap-timed millisecond interval',
+        ],
+        privacyNote:
+          'All math runs locally in your browser; no audio or project data is read or uploaded.',
+        faqs: [
+          {
+            question: 'How are dotted (D) and triplet (T) values calculated?',
+            answer:
+              'A dotted note lasts 1.5\u00d7 the base note (at 120 BPM a quarter note is 500 ms, so a dotted quarter is 750 ms). A triplet fits three notes into the space of two, so each note is 2/3 of the base duration (a quarter triplet is about 333.33 ms).',
+          },
+          {
+            question: 'Why is the "1/8 dotted delay" so common in electronic music?',
+            answer:
+              'The dotted-eighth delay creates a driving, syncopated groove and is a classic effect in House and Techno. At 120 BPM, 1/8D = 375 ms (about 2.667 Hz); set the delay time there to stay in sync.',
+          },
+          {
+            question: 'Do the results hold outside 4/4 time?',
+            answer:
+              'Yes. BPM defines quarter notes per minute regardless of time signature; only the "1 bar (4/4)" row assumes four beats. For other meters, multiply the beat duration by beats per bar yourself \u2014 individual note values are unaffected.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

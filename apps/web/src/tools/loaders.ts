@@ -176,4 +176,5 @@ export const toolLoaders: Record<
   'jwk-thumbprint': () => import('./jwk-thumbprint'),
   'geo-coordinate-converter': () => import('./geo-coordinate-converter'),
   'expense-splitter': () => import('./expense-splitter'),
+  'bpm-calculator': () => import('./bpm-calculator'),
 };
