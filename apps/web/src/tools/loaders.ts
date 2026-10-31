@@ -180,4 +180,5 @@ export const toolLoaders: Record<
   'ppi-calculator': () => import('./ppi-calculator'),
   'bmi-calculator': () => import('./bmi-calculator'),
   'linear-regression': () => import('./linear-regression'),
+  'mime-type-lookup': () => import('./mime-type-lookup'),
 };

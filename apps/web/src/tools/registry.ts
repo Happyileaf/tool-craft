@@ -15678,6 +15678,107 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'mime-type-lookup',
+    name: 'MIME 类型速查与识别',
+    nameEn: 'MIME Type Lookup',
+    description:
+      '扩展名 ↔ MIME 双向互查（.jpg、json、image/webp），按 text/image/audio/video/application 等主类型分组浏览，展示推荐扩展名、别名、charset 示例与是否可安全内联，支持中英文关键词模糊检索。',
+    descriptionEn:
+      'Look up MIME types from file extensions and vice versa (.jpg, json, image/webp), grouped by text/image/audio/video/application primary types, with recommended extensions, aliases, charset examples, inline-safety tags, and bilingual keyword search.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/mime-type-lookup',
+    iconName: 'FileText',
+    tags: ['MIME', 'Content-Type', '扩展名', '速查', 'HTTP', '联调'],
+    tagsEn: ['MIME', 'Content-Type', 'Extension', 'Reference', 'HTTP'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'MIME 类型速查与识别是一款纯浏览器本地运行的参考工具，内置约 50 个长期稳定的常用 MIME 映射，覆盖文本、图像、音频、视频、字体、三维模型、应用数据与 multipart 八大主类型。每个条目提供标准 MIME 字符串、推荐扩展名与别名、charset 参数示例以及该类型能否被浏览器安全内联展示。',
+        coreFeatures: [
+          '扩展名 ↔ MIME 双向互查：输入 .jpg、json、JSON 均可精确反查，输入完整 MIME 也能找回扩展名',
+          '八大主类型分组浏览：text、image、audio、video、font、model、application、multipart',
+          'charset 参数示例：文本类给出 charset=UTF-8 的完整 Content-Type 写法',
+          '内联安全标记：标注 image/png、application/pdf 等可安全内联与 octet-stream 等默认下载类型',
+          '中英文关键词模糊检索，全部数据内置、离线可用、无网络请求',
+        ],
+        howToUse: [
+          '在搜索框输入文件扩展名（可带或不带前导点）精确反查 MIME',
+          '或输入 MIME 片段、中文名、英文名关键词（如 image、图片、pdf、字体）模糊检索',
+          '使用主类型按钮按 text/image/application 等分类过滤',
+          '点击任意条目展开推荐扩展名、其他扩展名、charset 示例与内联安全说明',
+        ],
+        useCases: [
+          '配置服务端 Content-Type 响应头或 Nginx mime.types 时核对标准值',
+          '排查文件上传下载、multipart/form-data 与浏览器预览行为',
+          '写代码处理扩展名与 MIME 映射（如上传校验、下载文件名）时快速查阅',
+        ],
+        privacyNote:
+          '全部查询基于内置静态映射表在浏览器本地完成，不会发送任何网络请求，也不记录输入内容。',
+        faqs: [
+          {
+            question: '为什么 jpg 的推荐扩展名是 jpeg？',
+            answer:
+              'image/jpeg 的标准主扩展名是 jpeg，jpg 只是历史上 Windows 三字母限制留下的常见别名，二者指向同一 MIME 类型，工具中两者均可反查到 image/jpeg。',
+          },
+          {
+            question: '哪些类型可以被浏览器安全内联展示？',
+            answer:
+              '工具按保守口径标注：PNG/JPEG/GIF/WebP/SVG/AVIF 等图像、text/plain、text/html、text/css 与 application/pdf 可直接内联；application/octet-stream 等二进制可执行数据默认触发下载。SVG 因可承载脚本，实际是否内联还应结合 Content-Security-Policy 判断。',
+          },
+          {
+            question: '数据来源与更新策略是什么？',
+            answer:
+              '条目取自 IANA 注册表与各平台长期稳定的常用映射（如 Office Open XML 厂商类型），一经分配极少变动；仅收录高频条目，不追求穷举，未知扩展名会明确提示未收录。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'MIME Type Lookup is a fully offline reference tool with around 50 stable, commonly used MIME mappings built in, spanning text, image, audio, video, font, model, application, and multipart primary types. Each entry shows the canonical MIME string, recommended extension and aliases, a charset parameter example, and whether the type is safe to inline in a browser.',
+        coreFeatures: [
+          'Bidirectional lookup: .jpg, json, JSON all resolve to a MIME type, and a full MIME string resolves back to extensions',
+          'Browse by eight primary types: text, image, audio, video, font, model, application, multipart',
+          'charset examples: text types show the full Content-Type with charset=UTF-8',
+          'Inline-safety tags for image/png, application/pdf and similar, versus download defaults like octet-stream',
+          'Chinese and English keyword search; fully bundled data, works offline with no network requests',
+        ],
+        howToUse: [
+          'Type a file extension (with or without a leading dot) to resolve its MIME type',
+          'Or type a MIME fragment or Chinese/English keyword such as image, pdf, or font for fuzzy search',
+          'Use the primary-type buttons to filter by text/image/application and so on',
+          'Click any entry to expand recommended extensions, aliases, charset example, and inline-safety notes',
+        ],
+        useCases: [
+          'Checking canonical values when configuring Content-Type headers or Nginx mime.types',
+          'Debugging file upload/download, multipart/form-data, and browser preview behavior',
+          'Looking up extension-to-MIME mappings while writing upload validation or download code',
+        ],
+        privacyNote:
+          'Every query runs locally against the bundled static table. No network requests are made and no input is recorded.',
+        faqs: [
+          {
+            question: 'Why is the recommended extension jpeg instead of jpg?',
+            answer:
+              'The canonical primary extension for image/jpeg is jpeg; jpg is a historical alias from the Windows three-letter limit. Both resolve to the same MIME type in this tool.',
+          },
+          {
+            question: 'Which types are safe to inline?',
+            answer:
+              'A conservative set is tagged: PNG/JPEG/GIF/WebP/SVG/AVIF images, text/plain, text/html, text/css, and application/pdf inline directly; binary data such as application/octet-stream downloads by default. Because SVG can carry scripts, real inlining should also consider your Content-Security-Policy.',
+          },
+          {
+            question: 'Where does the data come from and how is it updated?',
+            answer:
+              'Entries come from the IANA registry and long-lived platform mappings (e.g. Office Open XML vendor types) that rarely change once assigned. Only high-frequency entries are included rather than an exhaustive list, and unknown extensions are reported clearly as not covered.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
