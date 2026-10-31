@@ -16753,6 +16753,112 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'multi-epoch-timestamp',
+    name: '多纪元时间戳转换器',
+    nameEn: 'Multi-Epoch Timestamp Converter',
+    description:
+      '在 Unix epoch（秒 / 毫秒 / 微秒 / 纳秒）、Windows FILETIME（1601 起 100ns）、.NET DateTimeOffset Ticks（0001 起 100ns）、Chrome / WebKit 微秒（1601 起）与 Apple Cocoa / Core Data 秒（2001 起）之间双向换算：输入任一纪元的整数时间戳即同时给出其余纪元等价值与 UTC 时间，也可输入 UTC 日期时间反推全部纪元值。全程 BigInt 整数运算，19 位纳秒时间戳也不丢精度；越界、负数（仅要求非负的纪元）、非整数输入给出明确错误。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert between Unix epoch (seconds / milliseconds / microseconds / nanoseconds), Windows FILETIME (100ns since 1601), .NET DateTimeOffset Ticks (100ns since year 1), Chrome/WebKit microseconds (since 1601) and Apple Cocoa/Core Data seconds (since 2001): paste an integer timestamp in any epoch to get every other epoch’s equivalent plus UTC time, or enter a UTC date-time to derive all epoch values. All arithmetic uses BigInt integers so even 19-digit nanosecond timestamps stay exact; out-of-range, negative (where non-negative is required) and non-integer input gets a clear error. Runs entirely locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/multi-epoch-timestamp',
+    iconName: 'Clock',
+    tags: ['时间戳', 'FILETIME', '.NET Ticks', 'Chrome', 'Cocoa', 'BigInt'],
+    tagsEn: ['Timestamp', 'FILETIME', '.NET Ticks', 'Chrome', 'Cocoa', 'BigInt'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '125911584000000000',
+    doc: {
+      zh: {
+        whatIsIt:
+          '多纪元时间戳转换器是一款纯浏览器本地运行的跨系统纪元换算工具，把不同操作系统、框架与浏览器内部使用的时间戳统一到同一时刻：Unix epoch 的秒 / 毫秒 / 微秒 / 纳秒、Windows FILETIME、.NET Ticks、Chrome / WebKit 微秒以及 Apple Cocoa / Core Data 秒，并可在时间戳与 UTC 日期时间之间双向转换。',
+        coreFeatures: [
+          '8 种时间表示一把换算：Unix 秒 / 毫秒 / 微秒 / 纳秒、FILETIME、.NET Ticks、Chrome 微秒、Cocoa 秒',
+          '双向转换：时间戳 → UTC 日期时间；UTC 日期时间 → 全部纪元值',
+          'BigInt 整数内核：以纳秒为统一内部单位，19 位纳秒时间戳不丢任何精度',
+          '固定标准偏移：1601 / 0001 / 2001 等纪元零点偏移按常量精确换算',
+          '严格校验：非整数、科学计数法、非法日期（含闰年判断）与不允许负数的纪元均给出可读错误',
+          '一键填入当前时刻；每行结果可单独复制，也可整体复制；零新增依赖、无网络请求',
+        ],
+        howToUse: [
+          '选择「时间戳 → 日期时间」模式，指定输入值属于哪个纪元（如 Windows FILETIME），粘贴整数时间戳',
+          '表格实时列出其余全部纪元的等价值，顶部绿色标签显示对应 UTC 时间',
+          '选择「日期时间 → 时间戳」模式，按 YYYY-MM-DD HH:mm:ss（可加 .fff 毫秒）输入 UTC 时间，即可反推全部纪元',
+          '点击「填入当前时刻」获取浏览器当前时间的各纪元值；点击复制图标复制单个值或「复制全部」',
+        ],
+        useCases: [
+          '排查 Windows 日志、Active Directory / 文件属性中的 FILETIME 与 .NET Ticks',
+          '解析 Chrome 历史记录、WebKit 内部时间戳或 Core Data 持久化时间',
+          '核对秒 / 毫秒 / 微秒 / 纳秒级 Unix 时间戳，避免 13 位、16 位、19 位互相误读',
+          '跨语言、跨平台联调时为同一时刻生成各平台测试数据',
+        ],
+        privacyNote:
+          '全部换算均在浏览器本地由零依赖纯函数与 BigInt 完成，不发起任何网络请求；输入的时间戳不会离开设备。',
+        faqs: [
+          {
+            question: 'FILETIME、.NET Ticks、Chrome 时间戳有什么区别？',
+            answer:
+              'Windows FILETIME 与 Chrome/WebKit 内部时间都以 1601-01-01 为零点，但 FILETIME 的单位是 100 纳秒（ticks），Chrome 时间戳的单位是微秒，因此同一时刻 Chrome 值恰好是 FILETIME 值的 1/10。.NET DateTimeOffset Ticks 同样以 100 纳秒为单位，但零点是公历 0001-01-01，比 1601 早 1600 年。例如 2000-01-01T00:00:00Z 对应 FILETIME 125911584000000000、.NET Ticks 630822816000000000、Chrome 12591158400000000。',
+          },
+          {
+            question: '为什么要用 BigInt，普通 Number 不行吗？',
+            answer:
+              'JavaScript Number 只能安全表示到 2^53−1（约 9×10^15），而当前时刻的纳秒时间戳约为 1.7×10^18、.NET Ticks 约 6.4×10^17，用 Number 解析会丢失低位精度。本工具内部全部使用 BigInt 整数并以纳秒为统一单位，因此 19 位输入也能逐位精确换算。',
+          },
+          {
+            question: '输入时间为什么强调按 UTC 解释？',
+            answer:
+              '各类纪元时间戳本身都是绝对时刻，不带时区。为避免浏览器本地时区造成歧义，日期时间输入统一按 UTC（零时区）解释，输出标签也标注 UTC（Z）。如需本地时间，可先把本地时间换算成 UTC 再输入。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Multi-Epoch Timestamp Converter is a fully browser-local tool that reconciles timestamps used by different operating systems, frameworks and browsers into a single instant: Unix epoch seconds/milliseconds/microseconds/nanoseconds, Windows FILETIME, .NET Ticks, Chrome/WebKit microseconds and Apple Cocoa/Core Data seconds, with two-way conversion between timestamps and UTC date-time.',
+        coreFeatures: [
+          'Eight time representations converted together: Unix s/ms/us/ns, FILETIME, .NET Ticks, Chrome microseconds, Cocoa seconds',
+          'Two-way: timestamp → UTC date-time, and UTC date-time → every epoch value',
+          'BigInt integer core: nanoseconds are the unified internal unit, so 19-digit nanosecond timestamps stay exact',
+          'Standard epoch offsets for 1601 / year-1 / 2001 applied as precise constants',
+          'Strict validation: readable errors for non-integers, scientific notation, invalid calendar dates (leap-year aware) and negative values where an epoch forbids them',
+          'One click fills the current time; each row or the whole table can be copied; zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'In "timestamp → date-time" mode, pick the epoch of the input (e.g. Windows FILETIME) and paste the integer timestamp',
+          'The table instantly lists the equivalent value in every other epoch, and the green tag shows the corresponding UTC time',
+          'In "date-time → timestamp" mode, enter a UTC time as YYYY-MM-DD HH:mm:ss (optional .fff milliseconds) to derive all epochs',
+          'Click "fill current time" for the browser’s current instant; use the copy icon per row or "copy all" for the table',
+        ],
+        useCases: [
+          'Investigating FILETIME and .NET Ticks in Windows logs, Active Directory or file metadata',
+          'Decoding Chrome history, WebKit internal timestamps or Core Data persisted dates',
+          'Telling second/millisecond/microsecond/nanosecond Unix timestamps apart (10/13/16/19 digits)',
+          'Generating cross-platform test fixtures for the same instant during polyglot integration',
+        ],
+        privacyNote:
+          'Every conversion runs locally in your browser with zero-dependency BigInt pure functions. No network requests are made, so timestamps you enter never leave your device.',
+        faqs: [
+          {
+            question: 'What is the difference between FILETIME, .NET Ticks and Chrome timestamps?',
+            answer:
+              'Windows FILETIME and Chrome/WebKit internal time both start at 1601-01-01, but FILETIME counts 100-nanosecond intervals (ticks) whereas Chrome counts microseconds, so the Chrome value is exactly 1/10 of FILETIME at the same instant. .NET DateTimeOffset Ticks also use 100-nanosecond units but start at year-0001-01-01, 1600 years earlier. For example 2000-01-01T00:00:00Z is FILETIME 125911584000000000, .NET Ticks 630822816000000000 and Chrome 12591158400000000.',
+          },
+          {
+            question: 'Why BigInt—won’t a plain Number work?',
+            answer:
+              'JavaScript Number can only safely represent integers up to 2^53−1 (about 9×10^15), while today’s nanosecond Unix timestamp is about 1.7×10^18 and .NET Ticks about 6.4×10^17; parsing them as Number silently drops low digits. This tool uses BigInt throughout with a nanosecond internal unit, so even 19-digit inputs convert exactly.',
+          },
+          {
+            question: 'Why is date-time input interpreted as UTC?',
+            answer:
+              'Epoch timestamps represent absolute instants and carry no time zone. To avoid ambiguity from the browser’s local zone, date-time input is always interpreted as UTC (zero offset) and the output tag is marked UTC (Z). To use local time, convert it to UTC first.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
