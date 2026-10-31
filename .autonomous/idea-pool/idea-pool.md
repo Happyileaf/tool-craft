@@ -193,4 +193,5 @@
 | 20261031140457 | TAR 归档结构解析器（512 字节头与文件目录树展示） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031140457.md) |
 | 20261031140458 | 四元数 ↔ 欧拉角 ↔ 旋转矩阵互转器 | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031140458.md) |
 | 20261031140459 | 英文文本可读性评分器（Flesch Reading Ease / Grade Level） | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031140459.md) |
+| 20261031140460 | 二进制数据转多语言字节数组代码生成器（C / Java / Python / Go） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031140460.md) |
 
