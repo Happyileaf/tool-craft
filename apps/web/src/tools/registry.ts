@@ -16183,6 +16183,470 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'iban-validator',
+    name: 'IBAN 校验器',
+    nameEn: 'IBAN Validator',
+    description:
+      '输入 IBAN（自动去除空格与连字符并转大写），依据 ISO 13616 的 111 个国家 / 地区长度表与 ISO 7064 mod 97-10 算法核验校验位，识别国家、展示具体失败原因，并在机器格式与 4 位分组易读格式间互转，全部在浏览器本地完成。',
+    descriptionEn:
+      'Enter an IBAN (spaces and hyphens stripped, uppercased automatically) to validate the check digits with the ISO 7064 mod 97-10 algorithm against the ISO 13616 length table for 111 countries/regions, with country detection, explicit failure reasons, and machine vs 4-digit grouped formats—entirely locally in the browser.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/iban-validator',
+    iconName: 'ShieldCheck',
+    tags: ['IBAN', 'ISO 13616', '银行账号', 'mod97-10', '校验位'],
+    tagsEn: ['IBAN', 'ISO 13616', 'Bank Account', 'mod97-10', 'Check Digit'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'DE89370400440532013000',
+    doc: {
+      zh: {
+        whatIsIt:
+          'IBAN 校验器依据 ISO 13616 规范对国际银行账号（IBAN）做完整合法性校验：自动去除空格与连字符并转大写，先核验两位国家码及其官方长度（内置 111 个启用 IBAN 的国家 / 地区长度表，中国大陆不使用 IBAN），再按 ISO 7064 MOD 97-10 算法验证两位校验位，同时识别账号所属国家，输出机器格式与每 4 位分组的易读格式，适用于表单前置校验与转账信息核对。',
+        coreFeatures: [
+          '111 国 / 地区长度表：按国家码比对 IBAN 总长度，并给出国家中文名',
+          'mod 97-10 校验：前 4 位移至末尾、字母映射为 10-35 后对 97 取模，余数必须为 1',
+          '自动归一化：去除空白与连字符并转大写，兼容常见的分组粘贴格式',
+          '双格式展示：机器格式（无空格大写）与 4 位分组易读格式均可一键复制',
+          '明确失败原因：区分空输入、未知国家码、长度不符、非法字符、校验位错误等情况',
+        ],
+        howToUse: [
+          '在输入框粘贴或输入 IBAN，可包含空格、连字符或小写字母',
+          '查看通过 / 失败提示、识别国家与总长度，失败时按给出的原因逐项核对',
+          '也可点击示例按钮快速填入德国、英国、法国合法账号或校验位错误示例',
+          '在结果区复制机器格式或 4 位分组格式用于转账或表单填写',
+        ],
+        useCases: [
+          '在支付、开户表单提交前前置校验 IBAN，拦截输错的账号',
+          '核对从邮件、文档中复制来的账号是否因空格、连字符或 OCR 误差损坏',
+          '学习与验证 IBAN 结构、国家码长度规则及 mod 97-10 校验位计算',
+        ],
+        privacyNote:
+          '账号仅在浏览器本地完成归一化与校验，不发送任何网络请求，也不经过服务器存储。',
+        faqs: [
+          {
+            question: '为什么输入中国大陆的银行账号会提示未知国家码？',
+            answer:
+              'IBAN 主要在欧洲及部分中东、非洲国家 / 地区使用，中国大陆（CN）并未启用 IBAN 体系，因此长度表不收录 CN，账号会被判定为未知国家码；国内联行转账请使用卡号、开户行与联行号等信息。',
+          },
+          {
+            question: '长度对了但提示 mod 97-10 校验位错误是什么意思？',
+            answer:
+              'IBAN 第 3-4 位是由发行方按 ISO 7064 MOD 97-10 计算的校验位，长度正确只能说明国家与位数匹配，校验位错误通常意味着账号中间某位被输错或抄错，请对照原始凭证重新核对。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The IBAN Validator fully checks International Bank Account Numbers against ISO 13616: it strips spaces and hyphens, uppercases the input, verifies the two-letter country code and its official length using a built-in table for 111 IBAN countries/regions (mainland China does not use IBAN), then validates the two check digits with the ISO 7064 MOD 97-10 algorithm, detects the country, and offers machine and 4-digit grouped formats—ideal for form pre-validation and payment-detail checks.',
+        coreFeatures: [
+          'Length table for 111 countries/regions: compares total length by country code and shows the country name',
+          'mod 97-10 check: move the first four characters to the end, map letters to 10-35, and require remainder 1 modulo 97',
+          'Automatic normalization: removes whitespace and hyphens and uppercases grouped pasted input',
+          'Dual formats: copy the compact machine format or the human-readable 4-digit grouped format',
+          'Precise failure reasons: empty input, unknown country code, bad length, illegal characters, or check-digit mismatch',
+        ],
+        howToUse: [
+          'Paste or type an IBAN; spaces, hyphens, and lowercase letters are accepted',
+          'Read the pass/fail alert, detected country and length; on failure, follow the stated reason',
+          'Use the sample buttons for valid German, British and French IBANs or a bad-check-digit example',
+          'Copy the machine format or the 4-digit grouped format from the result panel',
+        ],
+        useCases: [
+          'Pre-validating IBANs in payment or onboarding forms before submission',
+          'Checking account numbers copied from emails or documents for spaces, hyphens or OCR damage',
+          'Learning IBAN structure, per-country length rules and the mod 97-10 check digits',
+        ],
+        privacyNote:
+          'Account numbers are normalized and validated locally in the browser. No network requests are made and nothing is stored on a server.',
+        faqs: [
+          {
+            question: 'Why does a mainland China bank account show an unknown country code?',
+            answer:
+              'IBAN is used mainly in Europe and parts of the Middle East and Africa; mainland China (CN) has not adopted IBAN, so CN is not in the length table. Domestic transfers in China rely on card numbers, branch names and CNAPS codes instead.',
+          },
+          {
+            question: 'The length is right, so why does it report a mod 97-10 check-digit error?',
+            answer:
+              'Positions 3-4 of an IBAN are check digits computed by the issuer with ISO 7064 MOD 97-10. A correct length only confirms country and size; a check-digit failure usually means one or more middle digits were typed or copied incorrectly, so re-check against the original document.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'quaternion-converter',
+    name: '四元数欧拉角转换器',
+    nameEn: 'Quaternion Euler Converter',
+    description:
+      '在四元数 (x, y, z, w)、欧拉角 (roll / pitch / yaw) 与 3×3 旋转矩阵之间实时互转，支持六种 Tait-Bryan 内旋顺序与角度 / 弧度切换，自动归一化非单位四元数，并提示万向锁与矩阵正交性问题，全部在浏览器本地完成。',
+    descriptionEn:
+      'Convert in real time between quaternions (x, y, z, w), Euler angles (roll/pitch/yaw) and 3×3 rotation matrices, with all six intrinsic Tait-Bryan orders, degree/radian switching, automatic normalization of non-unit quaternions, plus gimbal-lock and orthogonality warnings—entirely locally in the browser.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/quaternion-converter',
+    iconName: 'Radical',
+    tags: ['四元数', '欧拉角', '旋转矩阵', '万向锁', '3D 旋转'],
+    tagsEn: ['Quaternion', 'Euler Angles', 'Rotation Matrix', 'Gimbal Lock', '3D Rotation'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '四元数欧拉角转换器在三种常见三维旋转表示之间实时互转：四元数 (x, y, z, w)、欧拉角（roll 绕 X、pitch 绕 Y、yaw 绕 Z）与行优先 3×3 旋转矩阵。任选一种表示作为输入源，其余两种即时给出结果，欧拉角采用 Tait-Bryan 内旋约定，覆盖 XYZ、YXZ、ZYX、ZXY、YZX、XZY 六种顺序，适用于游戏、机器人与图形学中的姿态换算与排错。',
+        coreFeatures: [
+          '三向互转：四元数 ↔ 欧拉角 ↔ 3×3 旋转矩阵，切换输入源时自动回填当前结果',
+          '六种内旋顺序：XYZ / YXZ / ZYX / ZXY / YZX / XZY，R = R_first · R_middle · R_last',
+          '角度 / 弧度一键切换，输入值同步换算，内部统一以弧度计算',
+          '非单位四元数自动归一化并显示范数；全零或含 NaN / Infinity 时报错',
+          '万向锁与正交校验：中间轴接近 ±90° 给出提示，矩阵需满足 det ≈ 1 且 RᵀR ≈ I',
+        ],
+        howToUse: [
+          '通过顶部切换选择四元数、欧拉角或旋转矩阵作为输入源',
+          '在对应面板填入分量值；欧拉角面板可选择旋转顺序与度 / 弧度单位',
+          '查看另外两个面板的实时结果，以及范数、万向锁或非正交等提示',
+          '点击示例预设快速载入单位四元数、绕轴旋转、万向锁或单位矩阵，或一键复制全部结果',
+        ],
+        useCases: [
+          '在 IMU / 航姿输出的四元数与动画、建模软件使用的欧拉角之间换算',
+          '核对 3D 引擎、机器人运动学中旋转矩阵与四元数的转换结果',
+          '排查欧拉角顺序约定不一致、万向锁与非正交矩阵导致的姿态异常',
+        ],
+        privacyNote:
+          '所有换算均在浏览器本地完成，不发起任何网络请求，输入的数值不离开设备。',
+        faqs: [
+          {
+            question: 'roll / pitch / yaw 和 XYZ 顺序分别指什么？',
+            answer:
+              '固定约定 roll 绕 X 轴、pitch 绕 Y 轴、yaw 绕 Z 轴；顺序标签表示 Tait-Bryan 内旋的施加次序，XYZ 即先绕机体 X、再绕机体 Y、最后绕机体 Z，合成矩阵为 R = R_x · R_y · R_z，使用前请与目标引擎的约定保持一致。',
+          },
+          {
+            question: '提示万向锁时结果还能用吗？',
+            answer:
+              '可以。万向锁表示当前顺序的中间轴角接近 ±90°，首末两个转角退化为绕同一轴的组合，欧拉角分解不再唯一；四元数与旋转矩阵仍然唯一且有效，建议在该姿态附近直接使用四元数或矩阵，避免以欧拉角存储关键姿态。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Quaternion Euler Converter converts live between three common 3D rotation representations: quaternions (x, y, z, w), Euler angles (roll about X, pitch about Y, yaw about Z) and row-major 3×3 rotation matrices. Pick any representation as the input and the other two update instantly. Euler angles use the intrinsic Tait-Bryan convention with all six orders (XYZ, YXZ, ZYX, ZXY, YZX, XZY), making it useful for pose conversion and debugging in games, robotics and computer graphics.',
+        coreFeatures: [
+          'Three-way conversion: quaternion ↔ Euler angles ↔ 3×3 matrix, with results carried over when switching the input source',
+          'Six intrinsic orders: XYZ / YXZ / ZYX / ZXY / YZX / XZY, R = R_first · R_middle · R_last',
+          'Degree/radian toggle that rescales the inputs; all math is performed internally in radians',
+          'Non-unit quaternions are normalized automatically with the norm shown; zero or NaN/Infinity input is rejected',
+          'Gimbal-lock and orthogonality checks: warns near ±90° on the middle axis and requires det ≈ 1 with RᵀR ≈ I for matrices',
+        ],
+        howToUse: [
+          'Choose quaternion, Euler angles or rotation matrix as the input source',
+          'Fill the corresponding panel; pick the rotation order and degree/radian unit for Euler angles',
+          'Read the live results in the other two panels plus norm, gimbal-lock and non-orthogonality notices',
+          'Load a preset (identity quaternion, axis rotation, gimbal lock, identity matrix) or copy all results at once',
+        ],
+        useCases: [
+          'Converting IMU/attitude quaternions to Euler angles used by animation and modeling tools',
+          'Cross-checking rotation-matrix/quaternion math in 3D engines and robotics kinematics',
+          'Debugging pose issues caused by mismatched Euler orders, gimbal lock or non-orthogonal matrices',
+        ],
+        privacyNote:
+          'All conversion runs locally in the browser. No network requests are made and the values never leave your device.',
+        faqs: [
+          {
+            question: 'What do roll/pitch/yaw and the XYZ order mean?',
+            answer:
+              'By convention roll is about X, pitch about Y and yaw about Z. The order label gives the intrinsic Tait-Bryan sequence: XYZ rotates first about the body X, then the body Y, then the body Z, with combined matrix R = R_x · R_y · R_z. Always match the convention of the target engine.',
+          },
+          {
+            question: 'Are the results still valid when gimbal lock is reported?',
+            answer:
+              'Yes. Gimbal lock means the middle angle of the chosen order is near ±90°, so the first and last rotations collapse onto the same axis and the Euler decomposition is no longer unique. The quaternion and matrix remain unique and valid; near such poses, prefer storing key orientations as quaternions or matrices.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-to-go',
+    name: 'JSON 转 Go Struct',
+    nameEn: 'JSON to Go Struct Converter',
+    description:
+      '粘贴 JSON 样例即可生成带 json tag 的 Go struct 定义：整数推断为 int64、浮点为 float64、null 与无法统一的冲突类型推断为 interface{}，嵌套对象提升为具名 struct，数组元素按键并集合并，支持自定义根结构名与 omitempty 开关，解析错误给出中文提示。',
+    descriptionEn:
+      'Paste sample JSON to generate Go struct definitions with json tags: integers become int64, floats float64, null and unresolvable type conflicts interface{}, nested objects are hoisted into named structs, array elements are merged by key union, and a custom root name plus omitempty toggle are supported, with Chinese error messages for invalid input.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-go',
+    iconName: 'FileCode',
+    tags: ['JSON', 'Go', 'Golang', 'struct', '类型推断'],
+    tagsEn: ['JSON', 'Go', 'Golang', 'Struct', 'Type Inference'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `{
+  "name": "Ada Lovelace",
+  "age": 36,
+  "is_active": true,
+  "score": 98.5,
+  "tags": ["math", "science"]
+}`,
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON 转 Go Struct 是一款纯浏览器本地运行的代码生成器：解析 JSON 样例并递归推断结构，输出带 json tag、可直接粘贴进 Go 工程的 struct 定义。整数统一推断为 int64、浮点数为 float64、null 为 interface{}，嵌套对象提升为顶层具名 struct，数组成员按键并集合并，遵循 json-to-go.org 的常见惯例。',
+        coreFeatures: [
+          '标量类型推断：string / bool / int64 / float64，null 推断为 interface{}，空数组为 []interface{}',
+          '嵌套对象提升：生成顶层具名 struct，对象字段以指针 *T 表达可空语义，数组中的对象使用 []T',
+          '数组并集合并：多个对象元素按键的并集合并为同一 struct，int64 与 float64 共存提升为 float64，类型完全冲突时回退 interface{}',
+          '命名与 tag：JSON 键自动转换为 PascalCase 大驼峰导出字段名（snake_case / kebab-case / camelCase 均可），原样写入 json tag，重名类型与字段自动加数字后缀',
+          '根结构名可自定义（默认 Autogenerated，首字母自动大写），omitempty 一键全局开关；非法 JSON 或非法标识符给出中文错误',
+        ],
+        howToUse: [
+          '在输入区粘贴 JSON 样例，根值可以是对象、数组或标量',
+          '按需修改根结构名，并决定是否为所有 json tag 统一追加 ,omitempty',
+          '查看输出的 Go 源码：根 struct 在前，随后是递归提升出的全部具名 struct',
+          '复制生成结果到 Go 工程，再按业务需要把 int64、指针等调整为更贴切的类型',
+        ],
+        useCases: [
+          '根据后端 API 返回的 JSON 样例快速生成 Go 响应结构体',
+          '为原型、脚本或 mock 数据补齐 Go 类型定义',
+          '观察异构数组、null 与嵌套对象在 Go 中对应的 interface{} 与指针写法',
+        ],
+        privacyNote:
+          'JSON 解析与类型推断全部在浏览器本地完成，输入的数据不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '为什么 JSON 整数生成的是 int64 而不是 int？',
+            answer:
+              '这是沿用 json-to-go.org 的惯例：所有 JSON 整数统一推断为 int64，避免在 32 位平台上溢出；若业务确定范围更小，可在生成后自行替换为 int。',
+          },
+          {
+            question: 'null 和混合类型数组会生成什么？',
+            answer:
+              '单个 null 推断为 interface{}，空数组推断为 []interface{}；数组元素类型无法用单一 Go 类型表达（如数字与字符串混排）时同样回退为 interface{}，而多个对象元素则按键的并集合并为同一个具名 struct。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'JSON to Go Struct is a fully browser-local code generator: it parses sample JSON and recursively infers its shape, emitting struct definitions with json tags that you can paste straight into a Go project. Integers become int64, floats float64, null becomes interface{}, nested objects are hoisted into top-level named structs, and array elements are merged by key union, following json-to-go.org conventions.',
+        coreFeatures: [
+          'Scalar inference: string / bool / int64 / float64; null becomes interface{} and empty arrays []interface{}',
+          'Nested object hoisting: nested objects become top-level named structs, referenced via *T pointer fields for nullability while object array elements use []T',
+          'Array union merging: multiple object elements merge into one struct by key union, int64 plus float64 widens to float64, and incompatible types fall back to interface{}',
+          'Naming and tags: JSON keys become exported PascalCase field names (snake_case, kebab-case and camelCase supported), the original key is kept in the json tag, and duplicate type/field names get numeric suffixes',
+          'Customizable root name (default Autogenerated, first letter capitalized), a global omitempty toggle, and Chinese error messages for invalid JSON or illegal identifiers',
+        ],
+        howToUse: [
+          'Paste sample JSON; the root value may be an object, array or scalar',
+          'Change the root struct name if needed and choose whether every json tag gets ,omitempty',
+          'Read the generated Go source: the root struct first, followed by every hoisted named struct',
+          'Copy the result into your Go project, then fine-tune int64, pointers and other types to fit the domain',
+        ],
+        useCases: [
+          'Scaffolding Go response structs from sample backend API JSON',
+          'Adding Go types to prototypes, scripts and mock data',
+          'Seeing how heterogeneous arrays, null and nested objects map to interface{} and pointer fields',
+        ],
+        privacyNote:
+          'JSON parsing and type inference run entirely locally in the browser; the input data is never uploaded to any server.',
+        faqs: [
+          {
+            question: 'Why are JSON integers emitted as int64 instead of int?',
+            answer:
+              'Following the json-to-go.org convention, every JSON integer is inferred as int64 to avoid overflow on 32-bit platforms. Replace it with int after generation when the value range is known to be smaller.',
+          },
+          {
+            question: 'What happens with null and mixed-type arrays?',
+            answer:
+              'A standalone null becomes interface{} and an empty array becomes []interface{}; when elements cannot share one Go type (such as numbers mixed with strings) the result also falls back to interface{}, while multiple object elements are merged into one named struct by the union of their keys.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'unicode-character-inspector',
+    name: 'Unicode 字符检视器',
+    nameEn: 'Unicode Character Inspector',
+    description:
+      '逐码点检视文本：展示 U+XXXX 码点、字符名、UTF-8 / UTF-16 字节与 Unicode 类别，高亮零宽空格、bidi 双向控制符、BOM、变体选择符等不可见字符，并提供 NFC / NFD / NFKC / NFKD 归一化对比，全部在浏览器本地完成。',
+    descriptionEn:
+      'Inspect text code point by code point: see U+XXXX values, character names, UTF-8/UTF-16 bytes and Unicode categories, with invisible characters such as zero-width spaces, bidi controls, BOM and variation selectors highlighted, plus NFC/NFD/NFKC/NFKD normalization comparison—entirely locally in the browser.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/unicode-character-inspector',
+    iconName: 'Type',
+    tags: ['Unicode', '码点', 'UTF-8', '零宽字符', '不可见字符'],
+    tagsEn: ['Unicode', 'Code Point', 'UTF-8', 'Zero-Width', 'Invisible Characters'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'café\u00a0你好',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Unicode 字符检视器把任意文本按码点（而非 UTF-16 码元）逐个拆开，展示每个字符的 U+XXXX 码点、字符名、Unicode General_Category 类别、手写计算的 UTF-8 字节与 UTF-16 码元，并自动标记零宽空格、ZWJ / ZWNJ、bidi 双向控制符（含可造成视觉欺骗的 RLO）、BOM、变体选择符等不可见 / 特殊字符，同时给出 NFC / NFD / NFKC / NFKD 四种归一化结果对比，适合排查「看起来正常却匹配不到」的文本问题。',
+        coreFeatures: [
+          '逐码点表格：U+XXXX 码点、字符名、Unicode 类别（L/M/N/P/S/Z 与 Cc/Cf/Cs/Co/Cn）及中文说明',
+          '编码可视化：逐字符给出 UTF-8 字节与 UTF-16 码元的十六进制序列，正确处理 emoji 等增补平面代理对',
+          '隐形字符高亮：内置 20 余条常见不可见 / 特殊字符码点表（零宽字符、bidi 控制、BOM、变体选择符、标签字符等），C0 / C1 控制符以 ␀␉␊ 等控制图形符占位',
+          '归一化对比：NFC / NFD / NFKC / NFKD 四种结果标注与原文差异，并显示码点数与 UTF-8 字节数',
+          '支持「仅显示可疑字符」过滤、行内 JSON 转义展开，超长文本最多渲染 2000 行以防卡顿',
+        ],
+        howToUse: [
+          '在文本框粘贴需要排查的内容，或点击示例按钮载入零宽字符、emoji 代理对、组合音标样例',
+          '查看上方告警条与统计指标，确认可疑字符数量与编码规模',
+          '在逐字符表格中按红色高亮定位问题码点，可勾选「仅显示可疑字符」缩小范围',
+          '在下方对比 NFC / NFD / NFKC / NFKD 结果，判断文本是否需要先做归一化',
+        ],
+        useCases: [
+          '排查从网页、文档复制来的文本中导致搜索失败、接口报错或长度异常的零宽空格与 BOM',
+          '识别 bidi 双向控制符（如 RLO 字符反向）与其他不可见字符带来的视觉欺骗',
+          '分析 emoji、组合音标与全角字符的码点、代理对、UTF-8 字节及归一化形态',
+        ],
+        privacyNote:
+          '文本仅在浏览器本地完成解析与统计，不发起任何网络请求，也不会被保存。',
+        faqs: [
+          {
+            question: '字符名列为什么有时显示的是类别而不是名字？',
+            answer:
+              '字符名通过运行环境的 Intl.DisplayNames 获取，当环境无法提供该码点的名称时会回退显示 Unicode 类别描述；码点、UTF-8 / UTF-16 编码与可疑标记均由本地计算，不受影响。',
+          },
+          {
+            question: 'NFC 和 NFD 有什么区别，什么时候需要 NFKC？',
+            answer:
+              'NFC 为规范合成（如组合重音合并为单个码点 é），NFD 为规范分解（e 加组合重音 U+0301）；NFKC / NFKD 在规范等价之外额外做兼容折叠，例如全角 Ａ 转为 A、连字与兼容数字归一。对比卡片会标出与原文存在差异的形态，数据入库前通常统一为 NFC，搜索 / 匹配场景可考虑 NFKC。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Unicode Character Inspector splits any text by code point (rather than UTF-16 code units) and shows each character’s U+XXXX value, name, Unicode General_Category, hand-computed UTF-8 bytes and UTF-16 code units, while flagging invisible or special characters such as zero-width spaces, ZWJ/ZWNJ, bidi controls (including the spoof-friendly RLO), BOM and variation selectors. It also compares the text under NFC, NFD, NFKC and NFKD, making it ideal for debugging text that looks normal but fails to match.',
+        coreFeatures: [
+          'Per-code-point table: U+XXXX value, character name, Unicode category (L/M/N/P/S/Z plus Cc/Cf/Cs/Co/Cn) with descriptions',
+          'Encoding breakdown: hex UTF-8 bytes and UTF-16 code units per character, correctly handling supplementary-plane pairs such as emoji',
+          'Invisible-character highlighting: a built-in table of 20+ common code points (zero-width chars, bidi controls, BOM, variation selectors, tag characters), with C0/C1 controls shown as control pictures like ␀␉␊',
+          'Normalization comparison: NFC / NFD / NFKC / NFKD results marked when they differ from the input, with code-point and UTF-8 byte counts',
+          'Filter to flagged characters only, inline JSON escape expansion, and rendering capped at 2000 rows for very long text',
+        ],
+        howToUse: [
+          'Paste the text to investigate, or load the zero-width, emoji surrogate-pair or combining-mark samples',
+          'Check the alert banner and summary metrics for the flagged-character count and encoding size',
+          'Locate red-highlighted problem code points in the table; tick "flagged only" to narrow the view',
+          'Compare NFC / NFD / NFKC / NFKD below to decide whether the text needs normalization',
+        ],
+        useCases: [
+          'Hunting zero-width spaces and BOM in text copied from web pages or documents that break search, APIs or length checks',
+          'Spotting bidi controls such as RLO character reversal and other invisible-character spoofing',
+          'Analyzing code points, surrogate pairs, UTF-8 bytes and normalization of emoji, combining marks and full-width characters',
+        ],
+        privacyNote:
+          'Text is parsed and counted locally in the browser only; no network requests are made and nothing is stored.',
+        faqs: [
+          {
+            question: 'Why does the name column sometimes show a category instead of a name?',
+            answer:
+              'Character names come from the runtime Intl.DisplayNames; when an environment cannot provide a name for a code point, the Unicode category label is shown instead. The code point, UTF-8/UTF-16 encodings and flags are all computed locally and remain accurate.',
+          },
+          {
+            question: 'How do NFC and NFD differ, and when is NFKC useful?',
+            answer:
+              'NFC is canonical composition (an accented letter becomes one code point such as é) while NFD is canonical decomposition (e plus combining accent U+0301). NFKC/NFKD additionally apply compatibility folding, e.g. full-width Ａ to A and normalizing ligatures or compatibility digits. The cards mark which forms differ; data at rest is usually normalized to NFC, while search and matching may benefit from NFKC.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'rsa-keypair-tool',
+    name: 'RSA 密钥对生成器',
+    nameEn: 'RSA Key Pair Generator',
+    description:
+      '基于浏览器原生 Web Crypto 在本地生成 RSA 密钥对（RSA-OAEP / RSA-PSS，SHA-256，e=65537，2048 / 3072 / 4096 位），导出导入 SPKI / PKCS8 PEM，支持 OAEP 加解密（含 190 字节明文上限预检）与 PSS 签名验签；密钥仅存内存、无网络请求。',
+    descriptionEn:
+      'Generate RSA key pairs locally with the browser-native Web Crypto API (RSA-OAEP / RSA-PSS, SHA-256, e=65537, 2048/3072/4096 bits), export and import SPKI/PKCS8 PEM, and run OAEP encryption (with the 190-byte limit pre-check) plus PSS signing and verification. Keys stay in memory and no network requests are made.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/rsa-keypair-tool',
+    iconName: 'KeyRound',
+    tags: ['RSA', '密钥对', 'RSA-OAEP', 'RSA-PSS', 'PEM'],
+    tagsEn: ['RSA', 'Key Pair', 'RSA-OAEP', 'RSA-PSS', 'PEM'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'RSA 密钥对生成器基于浏览器原生 Web Crypto（SubtleCrypto）在本地完成非对称密码全流程：生成 RSA-OAEP 或 RSA-PSS 密钥对（固定 SHA-256、公钥指数 65537，模长 2048 / 3072 / 4096 可选），把公钥 / 私钥导出为 SPKI / PKCS8 标准 PEM，也可把 PEM 粘贴导回工作台，并提供 OAEP 公钥加密 / 私钥解密与 PSS 私钥签名 / 公钥验签的联调环境。',
+        coreFeatures: [
+          '原生 Web Crypto：RSA-OAEP 加解密与 RSA-PSS 签名验签，固定 SHA-256、公钥指数 e = 65537',
+          '模长可选 2048 / 3072 / 4096 位，兼顾安全等级与生成速度',
+          'PEM 导出导入：公钥 SPKI（PUBLIC KEY）、私钥 PKCS8（PRIVATE KEY），按 RFC 7468 每行 64 列折行；粘贴时自动识别公私钥并校验算法与模长一致',
+          'OAEP 明文上限预检：按 k − 2·hLen − 2 实时计算上限（2048 位密钥为 190 字节），超长提前给出中文错误',
+          '密文与签名以 Base64 输出便于传输，PSS 盐值长度固定 32 字节；密钥只保存在页面内存 state，刷新即失效',
+        ],
+        howToUse: [
+          '选择算法（RSA-OAEP 加解密或 RSA-PSS 签名验签）与模长，点击生成密钥对',
+          '复制并妥善保存导出的公钥 / 私钥 PEM，或把已有 PEM 粘贴到导入区导回工作台',
+          'OAEP 模式：用公钥加密明文得到 Base64 密文，再用私钥解密还原',
+          'PSS 模式：用私钥对消息签名，再用公钥配合原文与 Base64 签名完成验签',
+        ],
+        useCases: [
+          '开发联调时快速生成 RSA 密钥对与 SPKI / PKCS8 PEM 测试材料',
+          '在没有 OpenSSL 命令行的环境下体验 OAEP 加解密与 PSS 签名验签全流程',
+          '验证前后端或跨语言的 Web Crypto 互操作：PEM 导入、密文与签名的互相校验',
+        ],
+        privacyNote:
+          '密钥生成、加解密与签名全部在浏览器本地由 Web Crypto 完成，私钥仅保存在内存中、刷新页面即失效，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '2048 位密钥为什么最多只能加密 190 字节？',
+            answer:
+              'RSAES-OAEP 单次明文上限为 k − 2·hLen − 2，其中 k 为模数字节数、hLen 为哈希摘要字节数；SHA-256 时 hLen = 32，2048 位密钥即 256 − 64 − 2 = 190 字节。更长的数据应改用混合加密，例如随机 AES 密钥加密数据、再用 RSA 加密 AES 密钥。',
+          },
+          {
+            question: 'RSA-OAEP 密钥和 RSA-PSS 密钥能混用吗？',
+            answer:
+              '不能。RSA-OAEP 密钥仅允许加密 / 解密，RSA-PSS 密钥仅允许签名 / 验签，导入与操作时都会校验算法用途是否匹配；如果同时需要加密与签名两套能力，请分别生成两个密钥对。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The RSA Key Pair Generator runs the whole asymmetric-crypto workflow locally on top of the browser-native Web Crypto API (SubtleCrypto): generate an RSA-OAEP or RSA-PSS key pair (fixed SHA-256 hash, public exponent 65537, modulus 2048/3072/4096 bits), export the public/private keys as standard SPKI/PKCS8 PEM, paste PEM back into the workspace, and exercise OAEP public-key encryption with private-key decryption as well as PSS private-key signing with public-key verification.',
+        coreFeatures: [
+          'Native Web Crypto: RSA-OAEP encrypt/decrypt and RSA-PSS sign/verify with SHA-256 and public exponent e = 65537',
+          'Modulus length selectable from 2048, 3072 and 4096 bits to balance security and generation time',
+          'PEM export/import: SPKI public keys (PUBLIC KEY) and PKCS8 private keys (PRIVATE KEY) wrapped at 64 columns per RFC 7468; pasted PEM is auto-detected and checked for matching algorithm and modulus',
+          'OAEP length pre-check: the limit k − 2·hLen − 2 is computed live (190 bytes for a 2048-bit key) with an early, readable error on overflow',
+          'Ciphertexts and signatures are Base64 for easy transport; PSS salt length is fixed at 32 bytes; keys live only in in-memory state and vanish on refresh',
+        ],
+        howToUse: [
+          'Pick the algorithm (RSA-OAEP for encryption or RSA-PSS for signing) and modulus, then generate the key pair',
+          'Copy and safely store the exported public/private PEM, or paste an existing PEM into the import area',
+          'In OAEP mode, encrypt plaintext with the public key to get Base64 ciphertext, then decrypt with the private key',
+          'In PSS mode, sign a message with the private key and verify it with the public key, the original message and the Base64 signature',
+        ],
+        useCases: [
+          'Generating RSA key pairs and SPKI/PKCS8 PEM test material during development and integration',
+          'Walking through OAEP encryption and PSS signing without an OpenSSL command line',
+          'Checking Web Crypto interoperability across frontend, backend and other languages via PEM import and ciphertext/signature exchange',
+        ],
+        privacyNote:
+          'Key generation, encryption and signing are all performed locally by Web Crypto in the browser. Private keys stay in memory, disappear when the page refreshes, and are never sent over the network.',
+        faqs: [
+          {
+            question: 'Why can a 2048-bit key encrypt at most 190 bytes?',
+            answer:
+              'The RSAES-OAEP single-operation limit is k − 2·hLen − 2, where k is the modulus in bytes and hLen the hash digest length. With SHA-256 hLen is 32, giving 256 − 64 − 2 = 190 bytes for 2048 bits. For larger payloads use hybrid encryption, e.g. a random AES key for the data wrapped by RSA.',
+          },
+          {
+            question: 'Can RSA-OAEP and RSA-PSS keys be used interchangeably?',
+            answer:
+              'No. RSA-OAEP keys only permit encrypt/decrypt and RSA-PSS keys only permit sign/verify; both import and operations enforce the intended algorithm usage. Generate two separate key pairs if you need both encryption and signing capabilities.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-01 ：【Agent自主迭代】新增 5 个 IBAN 校验、三维姿态转换、Go 结构生成、Unicode 检视与 RSA 非对称密码工具
+
+- **新增**：IBAN 校验器（iban-validator）— 依据 ISO 13616 内置 111 个国家 / 地区长度表，按 ISO 7064 mod 97-10 算法核验校验位，自动归一化空格连字符、识别国家并给出具体失败原因，机器格式与 4 位分组易读格式互转，纯本地运算
+- **新增**：四元数欧拉角转换器（quaternion-converter）— 在四元数 (x, y, z, w)、欧拉角（roll / pitch / yaw）与 3×3 旋转矩阵间三向互转，支持六种 Tait-Bryan 内旋顺序与角度 / 弧度切换，自动归一化并提示万向锁与矩阵正交性问题
+- **新增**：JSON 转 Go Struct（json-to-go）— 粘贴 JSON 实时生成带 json tag 的 Go struct，整数推断 int64、null 推断 interface{}，嵌套对象提升为具名类型、异构数组并集合并，支持根结构名自定义与 omitempty 开关
+- **新增**：Unicode 字符检视器（unicode-character-inspector）— 逐码点展示 U+ 码点、字符名、UTF-8 / UTF-16 字节与 Unicode 类别，识别零宽字符、双向控制符、不间断空格等 27 种不可见字符并高亮，支持 NFC / NFD 归一化对比
+- **新增**：RSA 密钥对生成器（rsa-keypair-tool）— 基于浏览器原生 Web Crypto 生成 RSA-OAEP（加解密）/ RSA-PSS（签名验签）密钥对，模长 2048 / 3072 / 4096，SPKI / PKCS8 PEM 导出导入，提供公钥加密私钥解密与签名验签工作台，密钥仅存内存
+
 ## 2026-10-31 ：【Agent自主迭代】新增 20 个协议校验和、数据转换、通配符测试、文本统计、地理计算、天文历法、网络地址、终端颜色、密码学指纹、生活计算、统计回归、MIME 与端口速查、目录树、英文可读性及 vCard 名片工具
 
 - **新增**：儒略日转换器（julian-date-converter）— 按 Meeus 公式在 UTC 日期时间与儒略日 JD / 约化儒略日 MJD / Unix 时间戳之间双向转换，含 J2000.0 与 Unix 纪元参考点，严格校验闰年与日期范围，纯本地运算
