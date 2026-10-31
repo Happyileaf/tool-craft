@@ -192,4 +192,5 @@ export const toolLoaders: Record<
   'rsa-keypair-tool': () => import('./rsa-keypair-tool'),
   'container-code-checksum': () => import('./container-code-checksum'),
   'multi-epoch-timestamp': () => import('./multi-epoch-timestamp'),
+  'nmea-parser': () => import('./nmea-parser'),
 };

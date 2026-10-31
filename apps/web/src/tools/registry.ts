@@ -16859,6 +16859,113 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'nmea-parser',
+    name: 'NMEA 0183 语句解析与校验和验证器',
+    nameEn: 'NMEA 0183 Sentence Parser & Checksum Verifier',
+    description:
+      '粘贴 GPS / GNSS 接收机输出的 NMEA 0183 语句（$…*HH），自动完成 XOR 校验和验证、talker 与语句类型识别（GGA / RMC / GLL / GSA / GSV / VTG），把 ddmm.mmmm 度分坐标换算为十进制度，并解码 UTC 时间日期、定位质量、航向、航速（节与 km/h）、卫星列表与精度因子；支持一次粘贴多行逐条标记有效 / 无效。纯字符串与数值计算，浏览器本地完成、零新增依赖。',
+    descriptionEn:
+      'Paste NMEA 0183 sentences ($…*HH) from a GPS/GNSS receiver to verify the XOR checksum, identify talker and sentence type (GGA / RMC / GLL / GSA / GSV / VTG), convert ddmm.mmmm coordinates to decimal degrees, and decode UTC time/date, fix quality, course, speed (knots and km/h), satellite lists and DOP values. Multiple lines are parsed and flagged valid/invalid in one pass. Pure string and numeric processing, fully local in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/nmea-parser',
+    iconName: 'Map',
+    tags: ['NMEA', 'GPS', 'GNSS', '经纬度', '校验和', '协议解析'],
+    tagsEn: ['NMEA', 'GPS', 'GNSS', 'Coordinates', 'Checksum', 'Protocol'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '$GPGGA,092750.000,5321.6802,N,00630.3372,W,1,8,1.03,61.7,M,55.2,M,,*76',
+    doc: {
+      zh: {
+        whatIsIt:
+          'NMEA 0183 语句解析与校验和验证器是一款面向 GPS / GNSS 串口数据的纯浏览器工具：按 $…*HH 结构逐字符计算 XOR 校验和并与报文尾部的两位十六进制比对，识别 talker（GP/GN/GL/GA 等）与语句类型，展开 GGA、RMC、GLL、GSA、GSV、VTG 六类常见语句的全部字段，并把度分格式坐标、时间日期、航速航向等换算成直观可读的值。',
+        coreFeatures: [
+          'XOR 校验和验证：按 $ 与 * 之间的 payload 逐字节异或，错误时给出「报文值 / 应为值」',
+          '六类语句解码：GGA、RMC、GLL、GSA、GSV、VTG 的关键字段全部中文标注',
+          '坐标换算：ddmm.mmmm 度分格式自动转十进制度，按 N/S、E/W 处理正负号',
+          '航速航向：节（knot）自动换算 km/h，航向以真北 / 磁北度数展示，RMC 日期还原为 YYYY-MM-DD',
+          '多行批量：一次粘贴多条语句逐条给出有效 / 无效标记与汇总计数，可一键复制 JSON 结果',
+          '纯本地运算：零依赖字符串与数值算法，不发起任何网络请求',
+        ],
+        howToUse: [
+          '把接收机日志、串口调试助手或仿真器中的 NMEA 语句粘贴到输入框，每行一条',
+          '输入后即时解析：绿色「有效」表示结构与校验和均通过，红色「无效」会显示具体原因',
+          '展开每条语句卡片查看 talker、类型、校验和与逐字段解码表（缺测字段标注「缺测」）',
+          '点击「复制解析结果（JSON）」把结构化结果复制到剪贴板，便于接入其他工具',
+        ],
+        useCases: [
+          '嵌入式 / 车载 / 无人机开发中核对 GPS 模块输出与定位质量',
+          '判断采集到的语句是否因串口丢字节导致校验和失败',
+          '把 GGA / RMC 的度分坐标快速换算成地图软件可用的十进制度',
+          '教学演示 NMEA 0183 报文结构、校验和算法与各字段含义',
+        ],
+        privacyNote:
+          '所有语句仅在浏览器本地解析，坐标与日志数据不会上传或写入任何远端服务。',
+        faqs: [
+          {
+            question: '校验和是怎么算的？',
+            answer:
+              '取 $ 与 * 之间的全部字符（含地址与逗号），逐个 ASCII 字节做异或（XOR），结果格式化为两位大写十六进制，再与 * 后面的两位比较。例如 $GPGGA,…*76 的计算结果应为 76；不一致通常意味着传输过程中丢字节或被修改。',
+          },
+          {
+            question: 'GP、GN、GL 这些前缀是什么意思？',
+            answer:
+              '前两位是 talker ID：GP 表示 GPS 星座，GL 表示 GLONASS，GA 表示 Galileo，BD/GB 常见于北斗，GN 表示多星座联合输出。后三位才是语句类型（如 GGA、RMC），工具会分别显示两者。',
+          },
+          {
+            question: '为什么坐标 5321.6802 解析后不是 53.216802？',
+            answer:
+              'NMEA 坐标是「度分」格式 dddmm.mmmm：5321.6802 = 53 度 21.6802 分，需要把分除以 60，即 53 + 21.6802/60 ≈ 53.3613367。工具自动完成这一换算，并按 N/S、E/W 决定正负号。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The NMEA 0183 Sentence Parser & Checksum Verifier is a browser-local tool for GPS/GNSS serial data: it computes the XOR checksum over the payload between $ and * and compares it with the two hex digits at the end, identifies the talker (GP/GN/GL/GA…) and sentence type, and decodes the common GGA, RMC, GLL, GSA, GSV and VTG sentences—converting ddmm.mmmm coordinates to decimal degrees plus readable UTC time/date, speed and course.',
+        coreFeatures: [
+          'XOR checksum verification: XOR every byte of the payload between $ and *; on mismatch shows "given / expected"',
+          'Six sentence types decoded: GGA, RMC, GLL, GSA, GSV, VTG with Chinese/English-friendly labeled fields',
+          'Coordinate conversion: ddmm.mmmm degrees-minutes to decimal degrees, sign from N/S and E/W',
+          'Speed and course: knots converted to km/h, course shown against true/magnetic north, RMC date restored to YYYY-MM-DD',
+          'Batch processing: paste many lines, each flagged valid/invalid with summary counts; copy structured JSON with one click',
+          'Fully local: zero-dependency string and numeric algorithms with no network requests',
+        ],
+        howToUse: [
+          'Paste NMEA sentences from a receiver log, serial console or simulator into the input, one sentence per line',
+          'Parsing happens instantly: green "valid" means structure and checksum pass; red "invalid" shows the exact reason',
+          'Open each sentence card for talker, type, checksum and a field-by-field decode table (missing fields are marked)',
+          'Click "copy result (JSON)" to put the structured parse result on the clipboard for use elsewhere',
+        ],
+        useCases: [
+          'Verifying GPS module output and fix quality during embedded / automotive / drone development',
+          'Telling whether captured sentences lost serial bytes by checking the checksum',
+          'Converting GGA/RMC degree-minute coordinates to decimal degrees usable in mapping software',
+          'Teaching the NMEA 0183 frame layout, checksum algorithm and field semantics',
+        ],
+        privacyNote:
+          'Sentences are parsed only in your local browser; coordinates and logs are never uploaded or sent to any remote service.',
+        faqs: [
+          {
+            question: 'How is the checksum calculated?',
+            answer:
+              'Take every character between $ and * (address and commas included), XOR the ASCII bytes together, render the result as two uppercase hex digits, and compare with the two digits after *. For example $GPGGA,…*76 must compute to 76; a mismatch usually means bytes were dropped or altered in transit.',
+          },
+          {
+            question: 'What do the GP / GN / GL prefixes mean?',
+            answer:
+              'The first two letters are the talker ID: GP for GPS, GL for GLONASS, GA for Galileo, BD/GB commonly for BeiDou, and GN for combined multi-constellation output. The following three letters are the sentence type (e.g. GGA, RMC); the tool shows both separately.',
+          },
+          {
+            question: 'Why does 5321.6802 become 53.3613367 instead of 53.216802?',
+            answer:
+              'NMEA coordinates use degrees-minutes format dddmm.mmmm: 5321.6802 is 53 degrees and 21.6802 minutes, so divide the minutes by 60: 53 + 21.6802/60 ≈ 53.3613367. The tool performs this automatically and applies the sign from N/S and E/W.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
