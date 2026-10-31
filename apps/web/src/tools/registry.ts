@@ -16647,6 +16647,540 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'container-code-checksum',
+    name: 'ISO 6346 集装箱箱号校验位工具',
+    nameEn: 'ISO 6346 Container Number Check Digit Calculator',
+    description:
+      '按 ISO 6346（BIC Code）标准计算与校验海运集装箱箱号：输入 4 个字母（箱主代码 + 设备类别 U/J/Z）与 6 位流水号组成的 10 位主体自动算出第 11 位校验位；输入完整 11 位箱号则校验合法性，校验位错误时给出正确值与纠正后的合法箱号，并逐位展示字母映射值、2⁰…2⁹ 权重与求和过程。容忍小写、空格与连字符，支持多行批量处理并逐行标注行号错误；非法字符、长度不符等输入给出可读提示。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Compute and verify maritime shipping container numbers per ISO 6346 (BIC Code): enter the 10-character body—4 letters (owner code plus U/J/Z equipment category) and 6 serial digits—to derive the 11th check digit, or paste a full 11-character number to validate it, with the correct digit and corrected number shown on mismatch. Every position’s mapped letter value, 2^0…2^9 weight and contribution is listed step by step. Lowercase, spaces and hyphens are tolerated, multiple lines are processed with line-numbered errors, and bad characters or lengths produce readable messages. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/container-code-checksum',
+    iconName: 'Tags',
+    tags: ['ISO 6346', '集装箱', '箱号', 'BIC', '校验位', '物流'],
+    tagsEn: ['ISO 6346', 'Container', 'BIC Code', 'Check Digit', 'Shipping', 'Logistics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'CSQU305438\nMSKU1234565\nCSQU3054380',
+    doc: {
+      zh: {
+        whatIsIt:
+          'ISO 6346 集装箱箱号校验位工具是一款纯浏览器本地运行的计算器，用于为海运集装箱箱号（BIC Code）的前 10 位主体补全校验位，或检验完整 11 位箱号是否合法，覆盖国际航运、港口、铁路与公路集装箱运输场景中最常用的编号标准。',
+        coreFeatures: [
+          '双向处理：10 位主体（4 字母 + 6 数字）补全第 11 位校验位，完整 11 位箱号校验合法性',
+          'ISO 6346 标准算法：字母从 A=10 起映射并跳过 11 的倍数（如 L=23、V=34），前 10 位依次乘以 2⁰…2⁹ 求和后对 11 取模',
+          '逐位明细：表格展示每一位的字符、映射值、权重与乘积，以及加权总和与取模结果',
+          '设备类别提示：识别第 4 位 U（集装箱）/ J（可拆卸设备）/ Z（挂车底盘），非常规字符给出提醒',
+          '错误纠正：校验位不匹配时明确给出给定值、正确校验位与合法箱号',
+          '宽松输入：自动忽略空格与连字符、兼容小写，多行批量处理并逐行标注行号',
+        ],
+        howToUse: [
+          '在输入框每行粘贴一个箱号：10 位自动补全校验位，11 位自动校验合法性',
+          '右侧实时输出补全或纠正后的箱号，非法行原样保留并以黄色警告逐行说明原因',
+          '下方「加权计算过程」卡片按位展示字母映射、权重、乘积与总和，便于核对算法',
+          '含空格或连字符的编号（如 CSQU 305438-3）可直接粘贴，无需手动清理',
+          '点击「复制」获取处理结果',
+        ],
+        useCases: [
+          '货代、船公司与港口单证：批量核对提单、舱单中的集装箱号是否录入正确',
+          '堆场与铁路场站：自制箱封标签或录入 TOS 系统前快速计算校验位',
+          '开发与测试：构造物流跟踪、关务申报功能时生成合法箱号测试数据、验证解析逻辑',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；粘贴的箱号数据不会离开设备。',
+        faqs: [
+          {
+            question: 'ISO 6346 的校验位是怎么算出来的？',
+            answer:
+              '先把字母映射为数值：A=10、B=12……依次递增但跳过 11 的倍数（11、22、33），因此 L=23、V=34；数字保持原值。随后前 10 位从左到右依次乘以 2⁰、2¹…2⁹ 求和，总和对 11 取模即校验位；余数为 10 时按标准记作 0。例如 CSQU305438 加权总和为 6185，6185 mod 11 = 3，完整箱号为 CSQU3054383。',
+          },
+          {
+            question: '箱号第 4 位的 U / J / Z 分别代表什么？',
+            answer:
+              '第 4 位是设备类别标识符：U 表示货运集装箱（Freight Container），J 表示可拆卸的货运设备（如可拆卸挂衣设备），Z 表示挂车或底盘车（Trailer/Chassis）。前 3 位则是在 BIC 登记的箱主（承运人）代码。',
+          },
+          {
+            question: '为什么完整箱号被提示校验位不正确？',
+            answer:
+              '说明末位与按前 10 位重新加权计算出的校验位不一致，通常是单证录入、OCR 识别或口口相传时某一位出错。警告会给出正确校验位和纠正后的合法箱号，请对照箱体铭牌或原始单证核实是哪一位录错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ISO 6346 Container Number Check Digit Calculator is a fully browser-local tool for appending the check digit to the 10-character body of a maritime shipping container number (BIC Code) or verifying a complete 11-character number, covering the most widely used numbering standard in ocean freight, ports, rail and road container transport.',
+        coreFeatures: [
+          'Two-way handling: complete a 10-character body (4 letters + 6 digits) with its 11th check digit, or validate a full 11-character number',
+          'ISO 6346 algorithm: letters map from A=10 upward while skipping multiples of 11 (e.g. L=23, V=34); the first 10 positions are weighted 2^0…2^9 and summed modulo 11',
+          'Position-by-position breakdown: a table shows each character, mapped value, weight, contribution, the weighted sum and the modulo result',
+          'Equipment-category hints: recognizes the 4th character U (container), J (detachable equipment) or Z (trailer/chassis), with a notice for unusual letters',
+          'Error correction: a mismatched check digit reports the given value, the correct digit and the valid corrected number',
+          'Lenient input: spaces and hyphens are ignored, lowercase is accepted, and multiple lines are processed in batch with line-numbered errors',
+        ],
+        howToUse: [
+          'Paste one container number per line: 10 characters are completed automatically, 11 characters are validated',
+          'Completed or corrected numbers appear live on the right; invalid lines are kept in place and explained in yellow line-numbered warnings',
+          'The weighted-calculation card below shows letter mappings, weights, products and the sum for verifying the algorithm',
+          'Numbers containing spaces or hyphens (e.g. CSQU 305438-3) can be pasted directly without manual cleanup',
+          'Click Copy to grab the result',
+        ],
+        useCases: [
+          'Forwarders, carriers and port documentation: batch-check container numbers on bills of lading and manifests',
+          'Container yards and rail terminals: quickly compute check digits before producing seals or entering data into a TOS',
+          'Development and testing: generate valid container-number fixtures and verify parsing in tracking or customs-declaration features',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser via zero-dependency pure functions. No network requests are made, so container numbers you paste never leave your device.',
+        faqs: [
+          {
+            question: 'How is the ISO 6346 check digit calculated?',
+            answer:
+              'Letters are mapped to values starting at A=10, B=12 and so on, skipping multiples of 11 (11, 22, 33), so L=23 and V=34; digits keep their face value. The first 10 positions are multiplied left to right by 2^0, 2^1 … 2^9 and summed, then the sum is taken modulo 11; a remainder of 10 is written as 0. For example CSQU305438 has a weighted sum of 6185, 6185 mod 11 = 3, giving CSQU3054383.',
+          },
+          {
+            question: 'What do U / J / Z in the fourth position mean?',
+            answer:
+              'The fourth character is the equipment-category identifier: U stands for a freight container, J for detachable freight equipment, and Z for a trailer or chassis. The first three characters are the BIC-registered owner (carrier) code.',
+          },
+          {
+            question: 'Why is a complete container number reported as invalid?',
+            answer:
+              'The last digit does not match the one recomputed by weighting the first 10 positions—usually because a digit was mistyped in documentation, misread by OCR, or miscommunicated verbally. The warning shows the correct check digit and the corrected valid number; compare them against the container nameplate or original paperwork to find the erroneous position.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'multi-epoch-timestamp',
+    name: '多纪元时间戳转换器',
+    nameEn: 'Multi-Epoch Timestamp Converter',
+    description:
+      '在 Unix epoch（秒 / 毫秒 / 微秒 / 纳秒）、Windows FILETIME（1601 起 100ns）、.NET DateTimeOffset Ticks（0001 起 100ns）、Chrome / WebKit 微秒（1601 起）与 Apple Cocoa / Core Data 秒（2001 起）之间双向换算：输入任一纪元的整数时间戳即同时给出其余纪元等价值与 UTC 时间，也可输入 UTC 日期时间反推全部纪元值。全程 BigInt 整数运算，19 位纳秒时间戳也不丢精度；越界、负数（仅要求非负的纪元）、非整数输入给出明确错误。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert between Unix epoch (seconds / milliseconds / microseconds / nanoseconds), Windows FILETIME (100ns since 1601), .NET DateTimeOffset Ticks (100ns since year 1), Chrome/WebKit microseconds (since 1601) and Apple Cocoa/Core Data seconds (since 2001): paste an integer timestamp in any epoch to get every other epoch’s equivalent plus UTC time, or enter a UTC date-time to derive all epoch values. All arithmetic uses BigInt integers so even 19-digit nanosecond timestamps stay exact; out-of-range, negative (where non-negative is required) and non-integer input gets a clear error. Runs entirely locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/multi-epoch-timestamp',
+    iconName: 'Clock',
+    tags: ['时间戳', 'FILETIME', '.NET Ticks', 'Chrome', 'Cocoa', 'BigInt'],
+    tagsEn: ['Timestamp', 'FILETIME', '.NET Ticks', 'Chrome', 'Cocoa', 'BigInt'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '125911584000000000',
+    doc: {
+      zh: {
+        whatIsIt:
+          '多纪元时间戳转换器是一款纯浏览器本地运行的跨系统纪元换算工具，把不同操作系统、框架与浏览器内部使用的时间戳统一到同一时刻：Unix epoch 的秒 / 毫秒 / 微秒 / 纳秒、Windows FILETIME、.NET Ticks、Chrome / WebKit 微秒以及 Apple Cocoa / Core Data 秒，并可在时间戳与 UTC 日期时间之间双向转换。',
+        coreFeatures: [
+          '8 种时间表示一把换算：Unix 秒 / 毫秒 / 微秒 / 纳秒、FILETIME、.NET Ticks、Chrome 微秒、Cocoa 秒',
+          '双向转换：时间戳 → UTC 日期时间；UTC 日期时间 → 全部纪元值',
+          'BigInt 整数内核：以纳秒为统一内部单位，19 位纳秒时间戳不丢任何精度',
+          '固定标准偏移：1601 / 0001 / 2001 等纪元零点偏移按常量精确换算',
+          '严格校验：非整数、科学计数法、非法日期（含闰年判断）与不允许负数的纪元均给出可读错误',
+          '一键填入当前时刻；每行结果可单独复制，也可整体复制；零新增依赖、无网络请求',
+        ],
+        howToUse: [
+          '选择「时间戳 → 日期时间」模式，指定输入值属于哪个纪元（如 Windows FILETIME），粘贴整数时间戳',
+          '表格实时列出其余全部纪元的等价值，顶部绿色标签显示对应 UTC 时间',
+          '选择「日期时间 → 时间戳」模式，按 YYYY-MM-DD HH:mm:ss（可加 .fff 毫秒）输入 UTC 时间，即可反推全部纪元',
+          '点击「填入当前时刻」获取浏览器当前时间的各纪元值；点击复制图标复制单个值或「复制全部」',
+        ],
+        useCases: [
+          '排查 Windows 日志、Active Directory / 文件属性中的 FILETIME 与 .NET Ticks',
+          '解析 Chrome 历史记录、WebKit 内部时间戳或 Core Data 持久化时间',
+          '核对秒 / 毫秒 / 微秒 / 纳秒级 Unix 时间戳，避免 13 位、16 位、19 位互相误读',
+          '跨语言、跨平台联调时为同一时刻生成各平台测试数据',
+        ],
+        privacyNote:
+          '全部换算均在浏览器本地由零依赖纯函数与 BigInt 完成，不发起任何网络请求；输入的时间戳不会离开设备。',
+        faqs: [
+          {
+            question: 'FILETIME、.NET Ticks、Chrome 时间戳有什么区别？',
+            answer:
+              'Windows FILETIME 与 Chrome/WebKit 内部时间都以 1601-01-01 为零点，但 FILETIME 的单位是 100 纳秒（ticks），Chrome 时间戳的单位是微秒，因此同一时刻 Chrome 值恰好是 FILETIME 值的 1/10。.NET DateTimeOffset Ticks 同样以 100 纳秒为单位，但零点是公历 0001-01-01，比 1601 早 1600 年。例如 2000-01-01T00:00:00Z 对应 FILETIME 125911584000000000、.NET Ticks 630822816000000000、Chrome 12591158400000000。',
+          },
+          {
+            question: '为什么要用 BigInt，普通 Number 不行吗？',
+            answer:
+              'JavaScript Number 只能安全表示到 2^53−1（约 9×10^15），而当前时刻的纳秒时间戳约为 1.7×10^18、.NET Ticks 约 6.4×10^17，用 Number 解析会丢失低位精度。本工具内部全部使用 BigInt 整数并以纳秒为统一单位，因此 19 位输入也能逐位精确换算。',
+          },
+          {
+            question: '输入时间为什么强调按 UTC 解释？',
+            answer:
+              '各类纪元时间戳本身都是绝对时刻，不带时区。为避免浏览器本地时区造成歧义，日期时间输入统一按 UTC（零时区）解释，输出标签也标注 UTC（Z）。如需本地时间，可先把本地时间换算成 UTC 再输入。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Multi-Epoch Timestamp Converter is a fully browser-local tool that reconciles timestamps used by different operating systems, frameworks and browsers into a single instant: Unix epoch seconds/milliseconds/microseconds/nanoseconds, Windows FILETIME, .NET Ticks, Chrome/WebKit microseconds and Apple Cocoa/Core Data seconds, with two-way conversion between timestamps and UTC date-time.',
+        coreFeatures: [
+          'Eight time representations converted together: Unix s/ms/us/ns, FILETIME, .NET Ticks, Chrome microseconds, Cocoa seconds',
+          'Two-way: timestamp → UTC date-time, and UTC date-time → every epoch value',
+          'BigInt integer core: nanoseconds are the unified internal unit, so 19-digit nanosecond timestamps stay exact',
+          'Standard epoch offsets for 1601 / year-1 / 2001 applied as precise constants',
+          'Strict validation: readable errors for non-integers, scientific notation, invalid calendar dates (leap-year aware) and negative values where an epoch forbids them',
+          'One click fills the current time; each row or the whole table can be copied; zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'In "timestamp → date-time" mode, pick the epoch of the input (e.g. Windows FILETIME) and paste the integer timestamp',
+          'The table instantly lists the equivalent value in every other epoch, and the green tag shows the corresponding UTC time',
+          'In "date-time → timestamp" mode, enter a UTC time as YYYY-MM-DD HH:mm:ss (optional .fff milliseconds) to derive all epochs',
+          'Click "fill current time" for the browser’s current instant; use the copy icon per row or "copy all" for the table',
+        ],
+        useCases: [
+          'Investigating FILETIME and .NET Ticks in Windows logs, Active Directory or file metadata',
+          'Decoding Chrome history, WebKit internal timestamps or Core Data persisted dates',
+          'Telling second/millisecond/microsecond/nanosecond Unix timestamps apart (10/13/16/19 digits)',
+          'Generating cross-platform test fixtures for the same instant during polyglot integration',
+        ],
+        privacyNote:
+          'Every conversion runs locally in your browser with zero-dependency BigInt pure functions. No network requests are made, so timestamps you enter never leave your device.',
+        faqs: [
+          {
+            question: 'What is the difference between FILETIME, .NET Ticks and Chrome timestamps?',
+            answer:
+              'Windows FILETIME and Chrome/WebKit internal time both start at 1601-01-01, but FILETIME counts 100-nanosecond intervals (ticks) whereas Chrome counts microseconds, so the Chrome value is exactly 1/10 of FILETIME at the same instant. .NET DateTimeOffset Ticks also use 100-nanosecond units but start at year-0001-01-01, 1600 years earlier. For example 2000-01-01T00:00:00Z is FILETIME 125911584000000000, .NET Ticks 630822816000000000 and Chrome 12591158400000000.',
+          },
+          {
+            question: 'Why BigInt—won’t a plain Number work?',
+            answer:
+              'JavaScript Number can only safely represent integers up to 2^53−1 (about 9×10^15), while today’s nanosecond Unix timestamp is about 1.7×10^18 and .NET Ticks about 6.4×10^17; parsing them as Number silently drops low digits. This tool uses BigInt throughout with a nanosecond internal unit, so even 19-digit inputs convert exactly.',
+          },
+          {
+            question: 'Why is date-time input interpreted as UTC?',
+            answer:
+              'Epoch timestamps represent absolute instants and carry no time zone. To avoid ambiguity from the browser’s local zone, date-time input is always interpreted as UTC (zero offset) and the output tag is marked UTC (Z). To use local time, convert it to UTC first.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'nmea-parser',
+    name: 'NMEA 0183 语句解析与校验和验证器',
+    nameEn: 'NMEA 0183 Sentence Parser & Checksum Verifier',
+    description:
+      '粘贴 GPS / GNSS 接收机输出的 NMEA 0183 语句（$…*HH），自动完成 XOR 校验和验证、talker 与语句类型识别（GGA / RMC / GLL / GSA / GSV / VTG），把 ddmm.mmmm 度分坐标换算为十进制度，并解码 UTC 时间日期、定位质量、航向、航速（节与 km/h）、卫星列表与精度因子；支持一次粘贴多行逐条标记有效 / 无效。纯字符串与数值计算，浏览器本地完成、零新增依赖。',
+    descriptionEn:
+      'Paste NMEA 0183 sentences ($…*HH) from a GPS/GNSS receiver to verify the XOR checksum, identify talker and sentence type (GGA / RMC / GLL / GSA / GSV / VTG), convert ddmm.mmmm coordinates to decimal degrees, and decode UTC time/date, fix quality, course, speed (knots and km/h), satellite lists and DOP values. Multiple lines are parsed and flagged valid/invalid in one pass. Pure string and numeric processing, fully local in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/nmea-parser',
+    iconName: 'Map',
+    tags: ['NMEA', 'GPS', 'GNSS', '经纬度', '校验和', '协议解析'],
+    tagsEn: ['NMEA', 'GPS', 'GNSS', 'Coordinates', 'Checksum', 'Protocol'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '$GPGGA,092750.000,5321.6802,N,00630.3372,W,1,8,1.03,61.7,M,55.2,M,,*76',
+    doc: {
+      zh: {
+        whatIsIt:
+          'NMEA 0183 语句解析与校验和验证器是一款面向 GPS / GNSS 串口数据的纯浏览器工具：按 $…*HH 结构逐字符计算 XOR 校验和并与报文尾部的两位十六进制比对，识别 talker（GP/GN/GL/GA 等）与语句类型，展开 GGA、RMC、GLL、GSA、GSV、VTG 六类常见语句的全部字段，并把度分格式坐标、时间日期、航速航向等换算成直观可读的值。',
+        coreFeatures: [
+          'XOR 校验和验证：按 $ 与 * 之间的 payload 逐字节异或，错误时给出「报文值 / 应为值」',
+          '六类语句解码：GGA、RMC、GLL、GSA、GSV、VTG 的关键字段全部中文标注',
+          '坐标换算：ddmm.mmmm 度分格式自动转十进制度，按 N/S、E/W 处理正负号',
+          '航速航向：节（knot）自动换算 km/h，航向以真北 / 磁北度数展示，RMC 日期还原为 YYYY-MM-DD',
+          '多行批量：一次粘贴多条语句逐条给出有效 / 无效标记与汇总计数，可一键复制 JSON 结果',
+          '纯本地运算：零依赖字符串与数值算法，不发起任何网络请求',
+        ],
+        howToUse: [
+          '把接收机日志、串口调试助手或仿真器中的 NMEA 语句粘贴到输入框，每行一条',
+          '输入后即时解析：绿色「有效」表示结构与校验和均通过，红色「无效」会显示具体原因',
+          '展开每条语句卡片查看 talker、类型、校验和与逐字段解码表（缺测字段标注「缺测」）',
+          '点击「复制解析结果（JSON）」把结构化结果复制到剪贴板，便于接入其他工具',
+        ],
+        useCases: [
+          '嵌入式 / 车载 / 无人机开发中核对 GPS 模块输出与定位质量',
+          '判断采集到的语句是否因串口丢字节导致校验和失败',
+          '把 GGA / RMC 的度分坐标快速换算成地图软件可用的十进制度',
+          '教学演示 NMEA 0183 报文结构、校验和算法与各字段含义',
+        ],
+        privacyNote:
+          '所有语句仅在浏览器本地解析，坐标与日志数据不会上传或写入任何远端服务。',
+        faqs: [
+          {
+            question: '校验和是怎么算的？',
+            answer:
+              '取 $ 与 * 之间的全部字符（含地址与逗号），逐个 ASCII 字节做异或（XOR），结果格式化为两位大写十六进制，再与 * 后面的两位比较。例如 $GPGGA,…*76 的计算结果应为 76；不一致通常意味着传输过程中丢字节或被修改。',
+          },
+          {
+            question: 'GP、GN、GL 这些前缀是什么意思？',
+            answer:
+              '前两位是 talker ID：GP 表示 GPS 星座，GL 表示 GLONASS，GA 表示 Galileo，BD/GB 常见于北斗，GN 表示多星座联合输出。后三位才是语句类型（如 GGA、RMC），工具会分别显示两者。',
+          },
+          {
+            question: '为什么坐标 5321.6802 解析后不是 53.216802？',
+            answer:
+              'NMEA 坐标是「度分」格式 dddmm.mmmm：5321.6802 = 53 度 21.6802 分，需要把分除以 60，即 53 + 21.6802/60 ≈ 53.3613367。工具自动完成这一换算，并按 N/S、E/W 决定正负号。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The NMEA 0183 Sentence Parser & Checksum Verifier is a browser-local tool for GPS/GNSS serial data: it computes the XOR checksum over the payload between $ and * and compares it with the two hex digits at the end, identifies the talker (GP/GN/GL/GA…) and sentence type, and decodes the common GGA, RMC, GLL, GSA, GSV and VTG sentences—converting ddmm.mmmm coordinates to decimal degrees plus readable UTC time/date, speed and course.',
+        coreFeatures: [
+          'XOR checksum verification: XOR every byte of the payload between $ and *; on mismatch shows "given / expected"',
+          'Six sentence types decoded: GGA, RMC, GLL, GSA, GSV, VTG with Chinese/English-friendly labeled fields',
+          'Coordinate conversion: ddmm.mmmm degrees-minutes to decimal degrees, sign from N/S and E/W',
+          'Speed and course: knots converted to km/h, course shown against true/magnetic north, RMC date restored to YYYY-MM-DD',
+          'Batch processing: paste many lines, each flagged valid/invalid with summary counts; copy structured JSON with one click',
+          'Fully local: zero-dependency string and numeric algorithms with no network requests',
+        ],
+        howToUse: [
+          'Paste NMEA sentences from a receiver log, serial console or simulator into the input, one sentence per line',
+          'Parsing happens instantly: green "valid" means structure and checksum pass; red "invalid" shows the exact reason',
+          'Open each sentence card for talker, type, checksum and a field-by-field decode table (missing fields are marked)',
+          'Click "copy result (JSON)" to put the structured parse result on the clipboard for use elsewhere',
+        ],
+        useCases: [
+          'Verifying GPS module output and fix quality during embedded / automotive / drone development',
+          'Telling whether captured sentences lost serial bytes by checking the checksum',
+          'Converting GGA/RMC degree-minute coordinates to decimal degrees usable in mapping software',
+          'Teaching the NMEA 0183 frame layout, checksum algorithm and field semantics',
+        ],
+        privacyNote:
+          'Sentences are parsed only in your local browser; coordinates and logs are never uploaded or sent to any remote service.',
+        faqs: [
+          {
+            question: 'How is the checksum calculated?',
+            answer:
+              'Take every character between $ and * (address and commas included), XOR the ASCII bytes together, render the result as two uppercase hex digits, and compare with the two digits after *. For example $GPGGA,…*76 must compute to 76; a mismatch usually means bytes were dropped or altered in transit.',
+          },
+          {
+            question: 'What do the GP / GN / GL prefixes mean?',
+            answer:
+              'The first two letters are the talker ID: GP for GPS, GL for GLONASS, GA for Galileo, BD/GB commonly for BeiDou, and GN for combined multi-constellation output. The following three letters are the sentence type (e.g. GGA, RMC); the tool shows both separately.',
+          },
+          {
+            question: 'Why does 5321.6802 become 53.3613367 instead of 53.216802?',
+            answer:
+              'NMEA coordinates use degrees-minutes format dddmm.mmmm: 5321.6802 is 53 degrees and 21.6802 minutes, so divide the minutes by 60: 53 + 21.6802/60 ≈ 53.3613367. The tool performs this automatically and applies the sign from N/S and E/W.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'resistor-color-calculator',
+    name: '电阻器色环计算器（4 / 5 / 6 环双向）',
+    nameEn: 'Resistor Color Band Calculator (4/5/6-Band)',
+    description:
+      '按 IEC 60062 标准识读直插电阻色环：选择 4 环（两位有效数字 + 倍率 + 误差）、5 环精密电阻或 6 环（再加温度系数），实时得到标称阻值（自动 Ω / kΩ / MΩ 量级）、倍率、误差百分比与阻值区间，并附 SVG 色环示意与 E12 / E24 / E96 标准阻值校验；反向输入阻值与公差即可匹配色环组合。纯查表与数值计算，浏览器本地完成、零新增依赖。',
+    descriptionEn:
+      'Decode through-hole resistor color bands per IEC 60062: pick 4-band (two significant digits + multiplier + tolerance), 5-band precision or 6-band (plus temperature coefficient) colors to instantly get the nominal resistance (auto Ω / kΩ / MΩ), multiplier, tolerance and value range, with an SVG band diagram and E12/E24/E96 standard-value check; enter a resistance and tolerance to find the matching bands in reverse. Pure table lookup and numeric processing, fully local with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/resistor-color-calculator',
+    iconName: 'Calculator',
+    tags: ['电阻', '色环', '电子工程', '硬件', 'E系列', '误差'],
+    tagsEn: ['Resistor', 'Color Band', 'Electronics', 'Hardware', 'E-series', 'Tolerance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1000',
+    doc: {
+      zh: {
+        whatIsIt:
+          '电阻器色环计算器是一款面向硬件维修、电路实验与 BOM 选型的纯浏览器工具：依据 IEC 60062 色环标准，把 4 / 5 / 6 个色环翻译为标称阻值、倍率、误差与（6 环）温度系数，并给出考虑公差后的阻值上下限；也可以反向把目标阻值与精度编码成对应色环，同时按 E12 / E24 / E96 系列校验是否为标准阻值、提示最接近的标准值。',
+        coreFeatures: [
+          '4 / 5 / 6 环正向识读：2 位或 3 位有效数字、倍率（含金 ×0.1、银 ×0.01）、误差与温度系数',
+          '阻值区间：按误差百分比实时计算最小 / 最大阻值，量级自动在 Ω / kΩ / MΩ / GΩ 间切换',
+          '反向编码：输入阻值与公差（如 4700 Ω ±1%），自动匹配 4 环或 5 环颜色组合并反算校验',
+          'E 系列校验：按公差建议 E12 / E24 / E96，非标准值给出最接近标准阻值及偏差百分比',
+          'SVG 色环示意：按所选颜色等距绘制电阻本体与色环，顺序与实物一致',
+          '纯本地运算：零依赖查表与数值格式化，不发起任何网络请求',
+        ],
+        howToUse: [
+          '「色环 → 阻值」模式下先选择 4 / 5 / 6 环，再逐环从下拉框选择颜色（每个选项标注数字 / 倍率 / 误差含义）',
+          '查看识读结果中的标称阻值、误差与阻值区间，以及该阻值在对应 E 系列中是否标准',
+          '「阻值 → 色环」模式下输入欧姆值、有效数字位数（2 位对应 4 环、3 位对应 5 环）与公差',
+          '复制匹配出的色环顺序，或对照 SVG 示意图在实物电阻上逐一核对',
+        ],
+        useCases: [
+          '维修电路板时识读褪色或密集的直插电阻阻值',
+          '面包板 / 洞洞板实验前快速确认手头上的电阻是否满足设计值',
+          'BOM 选型时把目标阻值换算为可采购的 E 系列标准阻值与色环',
+          '电子教学中讲解有效数字、倍率与公差的色环编码规则',
+        ],
+        privacyNote:
+          '所有查表与数值计算均在浏览器本地完成，不会上传任何数据。',
+        faqs: [
+          {
+            question: '棕黑红金为什么是 1 kΩ ±5%？',
+            answer:
+              '前两环棕、黑表示有效数字 1 和 0，即 10；第三环红表示倍率 ×100，10×100 = 1000 Ω = 1 kΩ；末环金表示 ±5%，因此阻值区间为 950 Ω ~ 1050 Ω。',
+          },
+          {
+            question: '4 环和 5 环电阻有什么区别？',
+            answer:
+              '4 环用两位有效数字（如 22 ×1k = 22 kΩ），常见于 ±5% 的 E12/E24 普通电阻；5 环用三位有效数字（如 100 ×10 = 1 kΩ），可表达更密的 E96 标称值，常见于 ±1% 精密电阻。6 环则在 5 环末尾再加一个温度系数环（如红 = 50 ppm/K）。',
+          },
+          {
+            question: '为什么输入 0 Ω 提示是跨接电阻？',
+            answer:
+              '0 Ω 电阻（跳线 / 跨接电阻）在实物上通常只用一个黑色宽环或整体黑色表示，没有标准的多色环编码，工具因此不做多环反查，避免给出错误色序。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Resistor Color Band Calculator is a browser-local tool for hardware repair, lab work and BOM selection: following the IEC 60062 standard it turns 4/5/6 color bands into nominal resistance, multiplier, tolerance and (6-band) temperature coefficient, with the tolerance-derived min/max range; it can also encode a target resistance and precision back into bands and check the value against the E12/E24/E96 preferred series, suggesting the nearest standard value.',
+        coreFeatures: [
+          '4/5/6-band decoding: two or three significant digits, multiplier (incl. gold ×0.1, silver ×0.01), tolerance and temperature coefficient',
+          'Value range: live min/max resistance from tolerance, units auto-switching between Ω / kΩ / MΩ / GΩ',
+          'Reverse encoding: enter ohms and tolerance (e.g. 4700 Ω ±1%) to get the 4- or 5-band combination with a verification pass',
+          'E-series check: suggests E12/E24/E96 from tolerance and reports the nearest preferred value plus deviation for non-standard inputs',
+          'SVG band diagram: resistor body and bands drawn to scale in the same left-to-right order as a real part',
+          'Fully local: zero-dependency lookup and formatting with no network requests',
+        ],
+        howToUse: [
+          'In "bands → resistance" mode choose 4/5/6 bands, then pick each band color from the dropdowns (options show digit/multiplier/tolerance meaning)',
+          'Read the nominal value, tolerance and range, plus whether the value is standard in the matching E series',
+          'In "resistance → bands" mode enter the ohmic value, significant digits (2 → 4-band, 3 → 5-band) and tolerance',
+          'Copy the matched band order or compare the SVG diagram against the physical resistor',
+        ],
+        useCases: [
+          'Reading faded or tightly packed through-hole resistors while repairing PCBs',
+          'Checking whether a resistor on hand matches the design value before breadboard experiments',
+          'Converting a target value into a purchasable E-series preferred value and bands during BOM selection',
+          'Teaching significant-digit, multiplier and tolerance encoding rules in electronics courses',
+        ],
+        privacyNote:
+          'All lookups and numeric calculations run locally in your browser; no data is uploaded.',
+        faqs: [
+          {
+            question: 'Why is brown-black-red-gold equal to 1 kΩ ±5%?',
+            answer:
+              'The first two bands brown and black are significant digits 1 and 0 (10); the third band red is the multiplier ×100, so 10×100 = 1000 Ω = 1 kΩ; the final gold band is ±5%, giving a range of 950 Ω to 1050 Ω.',
+          },
+          {
+            question: 'What is the difference between 4-band and 5-band resistors?',
+            answer:
+              '4-band parts use two significant digits (e.g. 22 ×1k = 22 kΩ) and are common for ±5% E12/E24 resistors; 5-band parts use three digits (e.g. 100 ×10 = 1 kΩ), covering the denser E96 values typical of ±1% precision parts. A 6-band part adds a temperature coefficient band (e.g. red = 50 ppm/K).',
+          },
+          {
+            question: 'Why does 0 Ω show a jumper warning?',
+            answer:
+              'A 0 Ω (link/jumper) resistor is physically marked with a single wide black band or an all-black body; there is no standard multi-band encoding, so the tool refuses to invent a misleading band sequence.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-form-urlencoded',
+    name: 'JSON ↔ 表单请求体转换器',
+    nameEn: 'JSON ↔ x-www-form-urlencoded Converter',
+    description:
+      '在 JSON 对象与 application/x-www-form-urlencoded 请求体之间双向转换，支持 RFC 3986 百分号编码、重复键数组与括号/PHP/点路径嵌套风格。',
+    descriptionEn:
+      'Convert bidirectionally between JSON objects and application/x-www-form-urlencoded bodies, with RFC 3986 percent-encoding, repeated-key arrays, and bracket/PHP/dot nesting styles.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-form-urlencoded',
+    iconName: 'FileCode',
+    tags: ['JSON', '表单', 'urlencoded', '请求体', '编码'],
+    tagsEn: ['JSON', 'Form', 'urlencoded', 'Request Body', 'Encoding'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `{
+  "name": "张三",
+  "role": "admin",
+  "tags": ["dev", "ops"],
+  "active": true,
+  "page": 2,
+  "remark": "hello world"
+}`,
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON ↔ 表单请求体转换器是一款纯浏览器本地运行的接口调试工具，可在 JSON 对象与 application/x-www-form-urlencoded 请求体之间做确定性双向转换，编码严格遵循 RFC 3986，数组与嵌套对象支持多种业界常见展开风格。',
+        coreFeatures: [
+          'JSON → 表单：按 RFC 3986 百分号编码键值，布尔 / 数字 / null 有明确序列化策略，空格可选 + 或 %20',
+          '表单 → JSON：百分号解码（含 + → 空格），重复键自动聚合为数组，输出缩进合法 JSON',
+          '三种嵌套风格：括号 a[0]=1 / a[b]=2、PHP a[]=1、点路径 a.b=1，解析另支持平铺模式',
+          '实时错误提示：JSON 语法错误、畸形百分号编码、键值类型冲突均给出明确中文报错',
+          '键值对预览表与「结果反向载入」，可一键把输出作为反向输入验证往返一致性',
+        ],
+        howToUse: [
+          '顶部选择转换方向：JSON → x-www-form-urlencoded 或反向',
+          '在选项卡中选择嵌套风格（括号 / PHP / 点路径）与空格编码方式（+ 或 %20）',
+          '在左侧编辑框粘贴 JSON 对象或 urlencoded 请求体，右侧实时生成结果',
+          '出现错误时根据红色告警修正输入；点击「结果反向载入」可快速做往返验证，点击「复制」取用结果',
+        ],
+        useCases: [
+          '前后端联调时把 JSON 请求体改写成表单格式，或把抓包到的表单请求体重建成 JSON',
+          '调试仅接受 application/x-www-form-urlencoded 的老旧接口与 OAuth / 登录端点',
+          '核对不同后端框架（PHP、Rails、Express qs 等）对嵌套键名的解析差异',
+        ],
+        privacyNote:
+          '全部解析、编码与字符串拼接均在浏览器本地完成，请求体内容不会被上传或记录，可安全处理含敏感字段的报文。',
+        faqs: [
+          {
+            question: '为什么 !、\'、(、)、* 这些字符也会被百分号编码？',
+            answer:
+              "encodeURIComponent 按 RFC 2396 保留这些字符不转义，但 RFC 3986 仅将字母数字与 - _ . ~ 列为非保留字符；表单提交的事实标准要求补编码为 %21 %27 %28 %29 %2A，本工具严格按 RFC 3986 处理。",
+          },
+          {
+            question: '括号、PHP、点路径三种嵌套风格有什么区别？',
+            answer:
+              '括号风格对数组元素使用显式数字索引（a[0]=1&a[1]=2）；PHP 风格对叶子标量数组使用空括号追加（a[]=1&a[]=2），数组内对象仍用显式索引；点路径用 a.0=1、a.b=2 表达层级。解析时还提供平铺模式，将重复键直接聚合为数组。',
+          },
+          {
+            question: '为什么同一个键既给了标量又写了嵌套下标会报错？',
+            answer:
+              '例如 a=1&a[b]=2 在同一路径上同时要求 a 是字符串又是对象，类型互相冲突，没有唯一合理的 JSON 表示，工具会明确提示「键值组合存在类型冲突」，而不是静默丢弃数据。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'JSON ↔ x-www-form-urlencoded Converter is a fully browser-based API debugging tool that converts deterministically between JSON objects and application/x-www-form-urlencoded bodies. Encoding strictly follows RFC 3986, with multiple industry-standard styles for arrays and nested objects.',
+        coreFeatures: [
+          'JSON → form: RFC 3986 percent-encoding with explicit rules for booleans/numbers/null; spaces as + or %20',
+          'Form → JSON: percent-decoding (including + → space), repeated keys aggregated into arrays, indented valid JSON output',
+          'Three nesting styles: bracket a[0]=1 / a[b]=2, PHP a[]=1, and dot path a.b=1, plus a flat parse mode',
+          'Live error messages for invalid JSON, malformed percent-encoding, and key/value type conflicts',
+          'Key-value preview table and "load result in reverse" for quick round-trip verification',
+        ],
+        howToUse: [
+          'Pick the conversion direction at the top: JSON → x-www-form-urlencoded or the reverse',
+          'Choose the nesting style (bracket / PHP / dot) and space encoding (+ or %20) in the options card',
+          'Paste a JSON object or urlencoded body into the left editor; the right panel updates live',
+          'Fix input based on the red alert when errors occur; use "load result in reverse" for round-trip checks, then copy the output',
+        ],
+        useCases: [
+          'Rewriting JSON payloads into form bodies during integration, or rebuilding JSON from captured form requests',
+          'Working with legacy endpoints and OAuth/login endpoints that only accept application/x-www-form-urlencoded',
+          'Comparing how PHP, Rails, Express qs and other frameworks interpret nested key names',
+        ],
+        privacyNote:
+          'All parsing, encoding, and string building happens locally in your browser; payload contents are never uploaded or logged, so sensitive fields are safe.',
+        faqs: [
+          {
+            question: "Why are !, ', (, ), and * percent-encoded?",
+            answer:
+              'encodeURIComponent follows RFC 2396 and leaves them unescaped, but RFC 3986 only treats alphanumerics and - _ . ~ as unreserved. De-facto form-encoding standards require encoding them as %21 %27 %28 %29 %2A, which this tool applies strictly.',
+          },
+          {
+            question: 'What is the difference between bracket, PHP, and dot nesting styles?',
+            answer:
+              'Bracket style uses explicit numeric indices (a[0]=1&a[1]=2); PHP style appends leaf scalar arrays with empty brackets (a[]=1&a[]=2) while objects inside arrays keep explicit indices; dot style expresses levels with a.0=1 and a.b=2. A flat parse mode is also provided to aggregate repeated keys directly.',
+          },
+          {
+            question: 'Why does a scalar and a nested subscript on the same key raise an error?',
+            answer:
+              'For example a=1&a[b]=2 requires a to be both a string and an object at the same path — an unresolvable type conflict with no unique JSON representation. The tool reports a clear "type conflict" error instead of silently dropping data.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

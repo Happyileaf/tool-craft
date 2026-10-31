@@ -4,13 +4,18 @@
 
 ## 日志
 
-## 2026-11-01 ：【Agent自主迭代】新增 5 个 IBAN 校验、三维姿态转换、Go 结构生成、Unicode 检视与 RSA 非对称密码工具
+## 2026-11-01 ：【Agent自主迭代】新增 10 个 IBAN 校验、三维姿态转换、Go 结构生成、Unicode 检视、RSA 非对称密码、集装箱校验位、多纪元时间戳、NMEA 解析、电阻色环与 JSON 表单互转工具
 
 - **新增**：IBAN 校验器（iban-validator）— 依据 ISO 13616 内置 111 个国家 / 地区长度表，按 ISO 7064 mod 97-10 算法核验校验位，自动归一化空格连字符、识别国家并给出具体失败原因，机器格式与 4 位分组易读格式互转，纯本地运算
 - **新增**：四元数欧拉角转换器（quaternion-converter）— 在四元数 (x, y, z, w)、欧拉角（roll / pitch / yaw）与 3×3 旋转矩阵间三向互转，支持六种 Tait-Bryan 内旋顺序与角度 / 弧度切换，自动归一化并提示万向锁与矩阵正交性问题
 - **新增**：JSON 转 Go Struct（json-to-go）— 粘贴 JSON 实时生成带 json tag 的 Go struct，整数推断 int64、null 推断 interface{}，嵌套对象提升为具名类型、异构数组并集合并，支持根结构名自定义与 omitempty 开关
 - **新增**：Unicode 字符检视器（unicode-character-inspector）— 逐码点展示 U+ 码点、字符名、UTF-8 / UTF-16 字节与 Unicode 类别，识别零宽字符、双向控制符、不间断空格等 27 种不可见字符并高亮，支持 NFC / NFD 归一化对比
 - **新增**：RSA 密钥对生成器（rsa-keypair-tool）— 基于浏览器原生 Web Crypto 生成 RSA-OAEP（加解密）/ RSA-PSS（签名验签）密钥对，模长 2048 / 3072 / 4096，SPKI / PKCS8 PEM 导出导入，提供公钥加密私钥解密与签名验签工作台，密钥仅存内存
+- **新增**：集装箱校验码计算器（container-code-checksum）— 按 ISO 6346 对 4 位属主代码 + 类别码 + 6 位流水号计算第 11 位校验码，数值 10/20/30 映射 0 并给出逐字符映射、加权乘积与取模明细，支持校验位核验与大写 / 空格自动归一化，纯本地查表运算
+- **新增**：多纪元时间戳转换器（multi-epoch-timestamp）— 支持 Unix、Windows FILETIME、.NET DateTime.Ticks、COBOL、Chrome、NTFS、Mac HFS+、Java Instant 等 8 种纪元的秒 / 毫秒 / 微秒 / 纳秒时间戳与 UTC / 北京时间双向互转，BigInt 任意精度内核避免纳秒溢出，纯本地运算
+- **新增**：NMEA 0183 语句解析器（nmea-parser）— 解析 GGA / RMC / GLL / GSA / GSV / VTG 六类定位语句，校验 `$` 起始、星号异或校验和与字段结构，输出定位坐标、卫星、精度、航迹等结构化结果与逐字段中文释义，支持多语句批量与错误定位，纯字符串解析零依赖
+- **新增**：电阻色环计算器（resistor-color-calculator）— 4 / 5 / 6 环双向计算：正向按色环查表输出标称阻值、误差区间与温度系数并绘制色环 SVG，反向由阻值与精度匹配环序，附 E12 / E24 / E96 标准阻值最近邻提示，0Ω 跨接与非法环序明确报错，纯本地查表运算
+- **新增**：JSON ↔ 表单请求体转换器（json-form-urlencoded）— 在 JSON 对象与 application/x-www-form-urlencoded 请求体间双向转换，严格 RFC 3986 百分号编码（补编码 !'()*、~ 不转义），空格 + / %20 可切换，数组与嵌套对象支持括号 / PHP a[] / 点路径三种风格，重复键聚合数组，畸形编码与键值类型冲突明确报错，纯本地运算
 
 ## 2026-10-31 ：【Agent自主迭代】新增 20 个协议校验和、数据转换、通配符测试、文本统计、地理计算、天文历法、网络地址、终端颜色、密码学指纹、生活计算、统计回归、MIME 与端口速查、目录树、英文可读性及 vCard 名片工具
 

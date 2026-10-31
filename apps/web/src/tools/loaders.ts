@@ -190,4 +190,9 @@ export const toolLoaders: Record<
   'json-to-go': () => import('./json-to-go'),
   'unicode-character-inspector': () => import('./unicode-character-inspector'),
   'rsa-keypair-tool': () => import('./rsa-keypair-tool'),
+  'container-code-checksum': () => import('./container-code-checksum'),
+  'multi-epoch-timestamp': () => import('./multi-epoch-timestamp'),
+  'nmea-parser': () => import('./nmea-parser'),
+  'resistor-color-calculator': () => import('./resistor-color-calculator'),
+  'json-form-urlencoded': () => import('./json-form-urlencoded'),
 };
