@@ -16966,6 +16966,112 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'resistor-color-calculator',
+    name: '电阻器色环计算器（4 / 5 / 6 环双向）',
+    nameEn: 'Resistor Color Band Calculator (4/5/6-Band)',
+    description:
+      '按 IEC 60062 标准识读直插电阻色环：选择 4 环（两位有效数字 + 倍率 + 误差）、5 环精密电阻或 6 环（再加温度系数），实时得到标称阻值（自动 Ω / kΩ / MΩ 量级）、倍率、误差百分比与阻值区间，并附 SVG 色环示意与 E12 / E24 / E96 标准阻值校验；反向输入阻值与公差即可匹配色环组合。纯查表与数值计算，浏览器本地完成、零新增依赖。',
+    descriptionEn:
+      'Decode through-hole resistor color bands per IEC 60062: pick 4-band (two significant digits + multiplier + tolerance), 5-band precision or 6-band (plus temperature coefficient) colors to instantly get the nominal resistance (auto Ω / kΩ / MΩ), multiplier, tolerance and value range, with an SVG band diagram and E12/E24/E96 standard-value check; enter a resistance and tolerance to find the matching bands in reverse. Pure table lookup and numeric processing, fully local with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/resistor-color-calculator',
+    iconName: 'Calculator',
+    tags: ['电阻', '色环', '电子工程', '硬件', 'E系列', '误差'],
+    tagsEn: ['Resistor', 'Color Band', 'Electronics', 'Hardware', 'E-series', 'Tolerance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1000',
+    doc: {
+      zh: {
+        whatIsIt:
+          '电阻器色环计算器是一款面向硬件维修、电路实验与 BOM 选型的纯浏览器工具：依据 IEC 60062 色环标准，把 4 / 5 / 6 个色环翻译为标称阻值、倍率、误差与（6 环）温度系数，并给出考虑公差后的阻值上下限；也可以反向把目标阻值与精度编码成对应色环，同时按 E12 / E24 / E96 系列校验是否为标准阻值、提示最接近的标准值。',
+        coreFeatures: [
+          '4 / 5 / 6 环正向识读：2 位或 3 位有效数字、倍率（含金 ×0.1、银 ×0.01）、误差与温度系数',
+          '阻值区间：按误差百分比实时计算最小 / 最大阻值，量级自动在 Ω / kΩ / MΩ / GΩ 间切换',
+          '反向编码：输入阻值与公差（如 4700 Ω ±1%），自动匹配 4 环或 5 环颜色组合并反算校验',
+          'E 系列校验：按公差建议 E12 / E24 / E96，非标准值给出最接近标准阻值及偏差百分比',
+          'SVG 色环示意：按所选颜色等距绘制电阻本体与色环，顺序与实物一致',
+          '纯本地运算：零依赖查表与数值格式化，不发起任何网络请求',
+        ],
+        howToUse: [
+          '「色环 → 阻值」模式下先选择 4 / 5 / 6 环，再逐环从下拉框选择颜色（每个选项标注数字 / 倍率 / 误差含义）',
+          '查看识读结果中的标称阻值、误差与阻值区间，以及该阻值在对应 E 系列中是否标准',
+          '「阻值 → 色环」模式下输入欧姆值、有效数字位数（2 位对应 4 环、3 位对应 5 环）与公差',
+          '复制匹配出的色环顺序，或对照 SVG 示意图在实物电阻上逐一核对',
+        ],
+        useCases: [
+          '维修电路板时识读褪色或密集的直插电阻阻值',
+          '面包板 / 洞洞板实验前快速确认手头上的电阻是否满足设计值',
+          'BOM 选型时把目标阻值换算为可采购的 E 系列标准阻值与色环',
+          '电子教学中讲解有效数字、倍率与公差的色环编码规则',
+        ],
+        privacyNote:
+          '所有查表与数值计算均在浏览器本地完成，不会上传任何数据。',
+        faqs: [
+          {
+            question: '棕黑红金为什么是 1 kΩ ±5%？',
+            answer:
+              '前两环棕、黑表示有效数字 1 和 0，即 10；第三环红表示倍率 ×100，10×100 = 1000 Ω = 1 kΩ；末环金表示 ±5%，因此阻值区间为 950 Ω ~ 1050 Ω。',
+          },
+          {
+            question: '4 环和 5 环电阻有什么区别？',
+            answer:
+              '4 环用两位有效数字（如 22 ×1k = 22 kΩ），常见于 ±5% 的 E12/E24 普通电阻；5 环用三位有效数字（如 100 ×10 = 1 kΩ），可表达更密的 E96 标称值，常见于 ±1% 精密电阻。6 环则在 5 环末尾再加一个温度系数环（如红 = 50 ppm/K）。',
+          },
+          {
+            question: '为什么输入 0 Ω 提示是跨接电阻？',
+            answer:
+              '0 Ω 电阻（跳线 / 跨接电阻）在实物上通常只用一个黑色宽环或整体黑色表示，没有标准的多色环编码，工具因此不做多环反查，避免给出错误色序。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Resistor Color Band Calculator is a browser-local tool for hardware repair, lab work and BOM selection: following the IEC 60062 standard it turns 4/5/6 color bands into nominal resistance, multiplier, tolerance and (6-band) temperature coefficient, with the tolerance-derived min/max range; it can also encode a target resistance and precision back into bands and check the value against the E12/E24/E96 preferred series, suggesting the nearest standard value.',
+        coreFeatures: [
+          '4/5/6-band decoding: two or three significant digits, multiplier (incl. gold ×0.1, silver ×0.01), tolerance and temperature coefficient',
+          'Value range: live min/max resistance from tolerance, units auto-switching between Ω / kΩ / MΩ / GΩ',
+          'Reverse encoding: enter ohms and tolerance (e.g. 4700 Ω ±1%) to get the 4- or 5-band combination with a verification pass',
+          'E-series check: suggests E12/E24/E96 from tolerance and reports the nearest preferred value plus deviation for non-standard inputs',
+          'SVG band diagram: resistor body and bands drawn to scale in the same left-to-right order as a real part',
+          'Fully local: zero-dependency lookup and formatting with no network requests',
+        ],
+        howToUse: [
+          'In "bands → resistance" mode choose 4/5/6 bands, then pick each band color from the dropdowns (options show digit/multiplier/tolerance meaning)',
+          'Read the nominal value, tolerance and range, plus whether the value is standard in the matching E series',
+          'In "resistance → bands" mode enter the ohmic value, significant digits (2 → 4-band, 3 → 5-band) and tolerance',
+          'Copy the matched band order or compare the SVG diagram against the physical resistor',
+        ],
+        useCases: [
+          'Reading faded or tightly packed through-hole resistors while repairing PCBs',
+          'Checking whether a resistor on hand matches the design value before breadboard experiments',
+          'Converting a target value into a purchasable E-series preferred value and bands during BOM selection',
+          'Teaching significant-digit, multiplier and tolerance encoding rules in electronics courses',
+        ],
+        privacyNote:
+          'All lookups and numeric calculations run locally in your browser; no data is uploaded.',
+        faqs: [
+          {
+            question: 'Why is brown-black-red-gold equal to 1 kΩ ±5%?',
+            answer:
+              'The first two bands brown and black are significant digits 1 and 0 (10); the third band red is the multiplier ×100, so 10×100 = 1000 Ω = 1 kΩ; the final gold band is ±5%, giving a range of 950 Ω to 1050 Ω.',
+          },
+          {
+            question: 'What is the difference between 4-band and 5-band resistors?',
+            answer:
+              '4-band parts use two significant digits (e.g. 22 ×1k = 22 kΩ) and are common for ±5% E12/E24 resistors; 5-band parts use three digits (e.g. 100 ×10 = 1 kΩ), covering the denser E96 values typical of ±1% precision parts. A 6-band part adds a temperature coefficient band (e.g. red = 50 ppm/K).',
+          },
+          {
+            question: 'Why does 0 Ω show a jumper warning?',
+            answer:
+              'A 0 Ω (link/jumper) resistor is physically marked with a single wide black band or an all-black body; there is no standard multi-band encoding, so the tool refuses to invent a misleading band sequence.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

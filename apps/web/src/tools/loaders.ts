@@ -193,4 +193,5 @@ export const toolLoaders: Record<
   'container-code-checksum': () => import('./container-code-checksum'),
   'multi-epoch-timestamp': () => import('./multi-epoch-timestamp'),
   'nmea-parser': () => import('./nmea-parser'),
+  'resistor-color-calculator': () => import('./resistor-color-calculator'),
 };
