@@ -15574,6 +15574,110 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'linear-regression',
+    name: '一元线性回归与相关系数计算器',
+    nameEn: 'Linear Regression & Correlation Calculator',
+    description:
+      '粘贴每行 "x,y" 的数据（支持 CSV / Excel 两列），用最小二乘法拟合直线 y = a + bx，给出斜率、截距、Pearson 相关系数 r、决定系数 R²、SSE/SSR/SST 与逐点残差表，附 Anscombe 经典示例。',
+    descriptionEn:
+      'Paste per-line "x,y" data (CSV or two Excel columns) to fit a straight line y = a + bx by ordinary least squares, with slope, intercept, Pearson r, R-squared, SSE/SSR/SST decomposition and a per-point residual table. Includes the classic Anscombe example.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/linear-regression',
+    iconName: 'Sigma',
+    tags: ['线性回归', '最小二乘法', '相关系数', 'R²', '残差'],
+    tagsEn: ['Linear Regression', 'Least Squares', 'Correlation', 'R-Squared', 'Residuals'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1,1.8\n2,3.9\n3,6.1\n4,8.2\n5,9.8\n6,12.1',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一元线性回归计算器对 n 个观测点 (xᵢ, yᵢ) 用普通最小二乘法（OLS）拟合直线 y = a + bx：斜率 b = Σ(xᵢ−x̄)(yᵢ−ȳ) ÷ Σ(xᵢ−x̄)²，截距 a = ȳ − b·x̄。同时计算 Pearson 相关系数 r、决定系数 R²（一元回归中 R² = r²）、SSE/SSR/SST 平方和分解以及每个点的拟合值与残差。所有运算均在浏览器本地完成，可直接粘贴 Excel、Google 表格或 CSV 的两列数据。',
+        coreFeatures: [
+          '最小二乘直线拟合：输出方程 y = a + bx、斜率、截距与 x/y 均值',
+          'Pearson 相关系数 r 与决定系数 R²，并给出强 / 中 / 弱相关文字解读',
+          'SSE、SSR、SST 平方和分解，校验 SST = SSR + SSE',
+          '逐点拟合值 ŷ 与残差 y − ŷ 明细表，便于发现异常点',
+          '支持逗号 / 制表符 / 空格 / 分号分隔，可直接粘贴表格两列；# 开头为注释',
+          '内置 Anscombe 第一组经典教学数据与强线性示例，纯函数 + 21 项单测',
+        ],
+        howToUse: [
+          '在文本框中按每行一对 "x,y" 输入数据，或从 Excel / CSV 粘贴两列',
+          '拟合结果、相关系数与平方和即时刷新；点击「Anscombe 示例」体验经典数据',
+          '在残差表中查看每个点的拟合值与残差，残差越大表示该点偏离直线越远',
+          '数据点少于 2 个或所有 x 相同时会给出明确错误提示',
+        ],
+        useCases: [
+          '统计学入门：验证最小二乘公式与 Anscombe 四重奏（同样的统计量、不同的点分布）',
+          '实验数据处理：根据观测点拟合标定直线并评估线性相关程度',
+          '业务分析：广告投入与销量、学习时长与成绩等两个连续变量的趋势分析',
+        ],
+        privacyNote:
+          '全部数据仅在浏览器内存中解析与计算，刷新即消失，不会上传或存储到任何服务器。',
+        faqs: [
+          {
+            question: 'R² 和相关系数 r 有什么关系？',
+            answer:
+              '在一元线性回归（只有一个自变量 x）中，决定系数 R² 恰好等于 Pearson 相关系数 r 的平方，取值 0 到 1；r 则带正负号，表示正相关或负相关。多元回归时这一关系不再成立。',
+          },
+          {
+            question: '为什么点明显弯曲却得到很高的 R²？',
+            answer:
+              'R² 只衡量线性拟合解释的方差比例，不能检测非线性。Anscombe 四重奏正是经典反例：四组分布完全不同的数据拥有几乎相同的均值、方差、回归线和 R²。请结合残差表与散点图判断线性是否合适。',
+          },
+          {
+            question: '所有 x 都相同为什么不能拟合？',
+            answer:
+              '此时 x 的方差 Σ(xᵢ−x̄)² = 0，斜率公式分母为零，直线无法确定。请提供至少两个不同的 x 值；仅需 2 个点即可计算（两点确定一条直线），但点越多结论越可靠。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This simple linear regression tool fits a straight line y = a + bx to n observations (xᵢ, yᵢ) using ordinary least squares: slope b = Σ(xᵢ−x̄)(yᵢ−ȳ) ÷ Σ(xᵢ−x̄)² and intercept a = ȳ − b·x̄. It also reports the Pearson correlation r, the coefficient of determination R² (which equals r² in simple regression), the SSE/SSR/SST sum-of-squares decomposition, and fitted values plus residuals for every point. Everything runs locally; you can paste two columns straight from Excel, Google Sheets or a CSV file.',
+        coreFeatures: [
+          'OLS line fit with equation y = a + bx, slope, intercept and x/y means',
+          'Pearson r and R² with a strong / moderate / weak correlation label',
+          'SSE, SSR and SST decomposition verifying SST = SSR + SSE',
+          'Per-point fitted value ŷ and residual y − ŷ table for spotting outliers',
+          'Comma, tab, space or semicolon delimiters - paste two spreadsheet columns directly; # starts a comment',
+          'Built-in Anscombe quartet set I and a clean linear example; pure functions with 21 unit tests',
+        ],
+        howToUse: [
+          'Enter one "x,y" pair per line, or paste two columns from Excel / CSV',
+          'The fit, correlation and sums of squares update instantly; try the Anscombe example',
+          'Inspect fitted values and residuals in the table - a large residual means the point departs far from the line',
+          'Fewer than 2 points or identical x values produce a clear error message',
+        ],
+        useCases: [
+          'Learning statistics: verifying the OLS formulas and the Anscombe quartet (identical summaries, wildly different shapes)',
+          'Lab work: fitting calibration lines to measurements and grading linearity',
+          'Business analysis: exploring trends between two continuous variables such as ad spend vs. sales',
+        ],
+        privacyNote:
+          'All data is parsed and computed in browser memory only and disappears on refresh; nothing is uploaded or stored.',
+        faqs: [
+          {
+            question: 'What is the relationship between R² and the correlation r?',
+            answer:
+              'In simple linear regression (one independent variable), the coefficient of determination R² equals the square of the Pearson correlation r, ranging from 0 to 1, while r carries a sign for positive or negative correlation. This identity does not hold in multiple regression.',
+          },
+          {
+            question: 'Why can a curved relationship still show a high R²?',
+            answer:
+              'R² measures only the share of variance explained by a straight line and cannot detect nonlinearity. The Anscombe quartet is the classic counterexample: four datasets with utterly different shapes share almost identical means, variances, regression lines and R². Always inspect residuals and a scatter plot before trusting the fit.',
+          },
+          {
+            question: 'Why is fitting impossible when every x is the same?',
+            answer:
+              'Then the x variance Σ(xᵢ−x̄)² is zero, making the slope denominator zero and the line undefined. Provide at least two distinct x values; two points suffice for a line mathematically, but more points make the result far more reliable.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

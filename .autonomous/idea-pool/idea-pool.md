@@ -120,7 +120,7 @@
 | 20261027020218 | 盲文（Braille）点阵编解码器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027020218.md) |
 | 20261027040226 | 色温 ↔ RGB/HEX 双向转换器（开尔文色温计算器） | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027040226.md) |
 | 20261027081101 | 文件魔数（Magic Number）签名识别器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027081101.md) |
-| 20261027081102 | 线性回归与相关系数计算器 | Web Tool | Existing Gap | Claimed | 2026-10-27 | trae-agent | [详情](./idea-details/20261027081102.md) |
+| 20261027081102 | 线性回归与相关系数计算器 | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027081102.md) |
 | 20261027081103 | 个人所得税计算器（工资薪金 / 年终奖） | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027081103.md) |
 | 20261027081105 | RSS / Atom Feed 生成器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027081105.md) |
 | 20261027140131 | PBKDF2 密钥派生计算器（RFC 8018） | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027140131.md) |

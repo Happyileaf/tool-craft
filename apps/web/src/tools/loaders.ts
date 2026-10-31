@@ -179,4 +179,5 @@ export const toolLoaders: Record<
   'bpm-calculator': () => import('./bpm-calculator'),
   'ppi-calculator': () => import('./ppi-calculator'),
   'bmi-calculator': () => import('./bmi-calculator'),
+  'linear-regression': () => import('./linear-regression'),
 };
