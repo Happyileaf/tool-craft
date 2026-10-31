@@ -189,3 +189,5 @@
 | 20261031080659 | CBOR (RFC 8949) ↔ JSON 编解码器（含诊断记法与十六进制互转） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031080659.md) |
 | 20261031080660 | 数独（Sudoku）求解器与题目生成器（9×9，含多解/无解检测） | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031080660.md) |
 | 20261031080662 | JSON → Java class / record 生成器（含嵌套类型推断） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031080662.md) |
+| 20261031140456 | PNG 文件 chunk 结构解析器（IHDR / IDAT / IEND 等） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031140456.md) |
+
