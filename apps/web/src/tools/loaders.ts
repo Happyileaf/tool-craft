@@ -178,4 +178,5 @@ export const toolLoaders: Record<
   'expense-splitter': () => import('./expense-splitter'),
   'bpm-calculator': () => import('./bpm-calculator'),
   'ppi-calculator': () => import('./ppi-calculator'),
+  'bmi-calculator': () => import('./bmi-calculator'),
 };

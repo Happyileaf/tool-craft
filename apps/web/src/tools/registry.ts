@@ -15472,6 +15472,108 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'bmi-calculator',
+    name: 'BMI 身体质量指数计算器（中国 / WHO 双标准）',
+    nameEn: 'BMI Calculator with Chinese & WHO Standards',
+    description:
+      '输入身高体重（公制 cm/kg 或英制 ft/lb）计算 BMI，同时按中国卫生行业标准（偏瘦 <18.5、正常 18.5–23.9、超重 24–27.9、肥胖 ≥28）与 WHO 国际标准分级，给出正常体重区间与增重 / 减重建议。',
+    descriptionEn:
+      'Enter height and weight in metric (cm/kg) or imperial (ft/lb) units to get BMI, graded simultaneously against the Chinese health standard (underweight <18.5, normal 18.5–23.9, overweight 24–27.9, obese ≥28) and WHO standard (overweight ≥25, obese ≥30), with a healthy weight range and gain/loss suggestion.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/bmi-calculator',
+    iconName: 'Gauge',
+    tags: ['BMI', '身体质量指数', '健康体重', '中国标准', 'WHO'],
+    tagsEn: ['BMI', 'Body Mass Index', 'Healthy Weight', 'Chinese Standard', 'WHO'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '170 65',
+    doc: {
+      zh: {
+        whatIsIt:
+          'BMI（Body Mass Index，身体质量指数）= 体重(kg) ÷ 身高(m)²，是国际通用的成人体型筛查指标。本工具支持公制（厘米 / 千克）与英制（英尺 / 英寸 / 磅）输入，即时给出 BMI 值，并同时按中国卫生行业标准 WS/T 428（偏瘦 <18.5、正常 18.5–23.9、超重 24–27.9、肥胖 ≥28）与 WHO 国际标准（超重 ≥25、肥胖 ≥30）给出双分级，再由身高反解正常体重区间（18.5–24 对应体重）与距区间中点的增重 / 减重建议。',
+        coreFeatures: [
+          '公制 cm/kg 与英制 ft+in/lb 一键切换，英制内部精确换算（1 in = 2.54 cm，1 lb = 0.45359237 kg）',
+          '中国标准与 WHO 标准同时分级，突出 24–25、28–30 两段两套标准结论不同的区间',
+          '由身高反解中国标准正常体重区间（千克）与距中点差距，给出增重 / 减重提示',
+          '6 行阈值对照表覆盖全部 BMI 区间，4 个一键示例（偏瘦 / 正常 / 超重 / 肥胖）',
+          '纯函数计算 + 22 项单元测试，零依赖、纯本地，不收集任何个人数据',
+        ],
+        howToUse: [
+          '选择单位制式（默认公制），输入身高与体重，BMI 与双标准分级即时刷新',
+          '查看「中国标准正常体重区间」与「与正常区间中点差距」获取调整建议',
+          '在底部阈值对照表查看当前 BMI 在两套标准下的结论差异',
+          '英制用户切换到 ft/lb 后输入英尺、英寸与磅数即可',
+        ],
+        useCases: [
+          '体检后快速判断 BMI 所处档位与目标体重区间',
+          '健身 / 减重计划中设定目标体重与差距',
+          '了解中国与 WHO 两套标准对同一 BMI 的不同判定（如 BMI 24.5）',
+        ],
+        privacyNote:
+          '身高体重仅在浏览器本地参与计算，不存储、不上传任何个人健康数据；本工具不构成医疗诊断。',
+        faqs: [
+          {
+            question: '中国标准和 WHO 标准为什么不一样？',
+            answer:
+              '不同人群在相同 BMI 下的体脂分布与疾病风险不同。WHO 标准以超重 ≥25、肥胖 ≥30 为界；中国专家依据流行病学研究把界值下调为超重 ≥24、肥胖 ≥28，因此 BMI 24–25 在中国判为超重而 WHO 仍属正常，28–30 段在中国判为肥胖而 WHO 判为超重。',
+          },
+          {
+            question: '为什么健身人士 BMI 超标但体脂不高？',
+            answer:
+              'BMI 只使用身高与体重，无法区分肌肉、骨骼与脂肪。肌肉密度大于脂肪，力量训练者可能 BMI 达到超重甚至肥胖但体脂率正常；这类人群应结合体脂率、腰围与腰臀比综合判断。',
+          },
+          {
+            question: '未成年人和老年人适用吗？',
+            answer:
+              '不建议直接套用。本工具阈值针对 18 岁及以上成人；儿童青少年应使用同年龄、同性别的 BMI 百分位生长曲线，老年人适宜体重区间也略宽于普通成人。孕妇、哺乳期女性及患者请遵医嘱。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'BMI (Body Mass Index) = weight(kg) \u00f7 height(m)\u00b2, a widely used adult weight screening metric. This tool accepts metric (cm/kg) or imperial (ft+in/lb) input, returns the BMI instantly, and grades it against both the Chinese health standard WS/T 428 (underweight <18.5, normal 18.5\u201323.9, overweight 24\u201327.9, obese \u226528) and the WHO standard (overweight \u226525, obese \u226530). It also derives the healthy weight range from height and the gain/loss gap toward the midpoint of the normal range.',
+        coreFeatures: [
+          'Metric cm/kg and imperial ft+in/lb modes with exact conversion (1 in = 2.54 cm, 1 lb = 0.45359237 kg)',
+          'Parallel Chinese and WHO grading, highlighting the 24\u201325 and 28\u201330 bands where the standards disagree',
+          'Healthy weight range in kg (BMI 18.5\u201324) and midpoint gap with gain/loss hint',
+          'Six-row threshold table covering every BMI band, plus four presets (underweight / normal / overweight / obese)',
+          'Pure-function core with 22 unit tests, zero dependencies, fully local, no personal data collected',
+        ],
+        howToUse: [
+          'Pick a unit system (metric by default), enter height and weight; BMI and both grades update instantly',
+          'Read the Chinese-standard healthy weight range and midpoint gap for an adjustment target',
+          'Check the threshold table to see how the two standards judge your BMI differently',
+          'Imperial users switch to ft/lb and enter feet, inches and pounds',
+        ],
+        useCases: [
+          'Quickly grading BMI after a health check-up and finding a target weight range',
+          'Setting target weight and gap in a fitness or weight-loss plan',
+          'Understanding where Chinese and WHO standards disagree (e.g. BMI 24.5)',
+        ],
+        privacyNote:
+          'Height and weight are processed only in your browser; no personal health data is stored or uploaded. This tool is not a medical diagnosis.',
+        faqs: [
+          {
+            question: 'Why do the Chinese and WHO standards differ?',
+            answer:
+              'Body-fat distribution and disease risk at the same BMI vary across populations. WHO sets overweight at \u226525 and obesity at \u226530; Chinese epidemiological guidance lowers them to \u226524 and \u226528. Hence BMI 24\u201325 is overweight in China but normal under WHO, and 28\u201330 is obese in China but overweight under WHO.',
+          },
+          {
+            question: 'Why can a muscular athlete be "overweight" by BMI yet lean?',
+            answer:
+              'BMI uses only height and weight and cannot distinguish muscle from fat. Muscle is denser than fat, so strength athletes may reach overweight or even obese BMI with normal body-fat percentage; combine BMI with body-fat percentage, waist circumference and waist-to-hip ratio.',
+          },
+          {
+            question: 'Does it apply to children and older adults?',
+            answer:
+              'Not directly. The thresholds target adults aged 18+. Children and adolescents should use age- and sex-specific BMI percentile growth charts; healthy ranges for older adults are somewhat wider, and pregnant or breastfeeding women and patients should follow medical advice.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
