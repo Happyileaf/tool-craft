@@ -195,4 +195,9 @@ export const toolLoaders: Record<
   'nmea-parser': () => import('./nmea-parser'),
   'resistor-color-calculator': () => import('./resistor-color-calculator'),
   'json-form-urlencoded': () => import('./json-form-urlencoded'),
+  'content-negotiation-parser': () => import('./content-negotiation-parser'),
+  'ksuid-generator': () => import('./ksuid-generator'),
+  'security-txt-generator': () => import('./security-txt-generator'),
+  'fwf-csv-converter': () => import('./fwf-csv-converter'),
+  'npv-irr-calculator': () => import('./npv-irr-calculator'),
 };

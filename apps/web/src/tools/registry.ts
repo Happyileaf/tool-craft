@@ -17181,6 +17181,462 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'content-negotiation-parser',
+    name: 'HTTP 内容协商头解析排序器',
+    nameEn: 'HTTP Content Negotiation Parser',
+    description:
+      '解析 Accept / Accept-Language / Accept-Encoding / Accept-Charset 请求头条目，按 RFC 9110 的 q 值权重与具体度排序，输出首选表示与完整排序列表。',
+    descriptionEn:
+      'Parse Accept / Accept-Language / Accept-Encoding / Accept-Charset header fields and sort entries by RFC 9110 q-value weights and specificity, showing the preferred representation and the full ranking.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/content-negotiation-parser',
+    iconName: 'Code',
+    tags: ['HTTP', '内容协商', 'Accept', 'q因子', 'RFC 9110'],
+    tagsEn: ['HTTP', 'Content Negotiation', 'Accept', 'q-factor', 'RFC 9110'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'text/html,application/xhtml+xml,application/xml;q=0.9,text/*;q=0.8,*/*;q=0.7',
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP 内容协商头解析排序器是一款纯浏览器本地运行的接口调试工具，针对 RFC 9110 §12.5 定义的 Accept、Accept-Language、Accept-Encoding、Accept-Charset 四类请求头，解析其中的媒体范围 / 语言标签 / 编码 / 字符集条目与 q 权重，并严格按服务端内容协商规则给出首选表示与排序列表。',
+        coreFeatures: [
+          '支持四类协商头：Accept、Accept-Language、Accept-Encoding、Accept-Charset，一键切换并各自附带默认样例',
+          '按 RFC 9110 §12.5 排序：先按 q 值降序，再按具体度（具体类型 > 子类型通配 > */*；语言标签段数；具名值 > 通配）降序，最后保持原始顺序的稳定排序',
+          '正确处理 q=0 的明确拒绝语义：拒绝条目仍在列表中标红展示，但不会成为首选表示',
+          '非法条目（token 为空、*/xml 等形状非法、q=2 或 q=abc 等越界值）自动忽略并给出明确中文提示，纯函数解析不抛异常',
+        ],
+        howToUse: [
+          '顶部按钮选择要解析的头类型（Accept / Accept-Language / Accept-Encoding / Accept-Charset），输入框会自动载入对应默认样例',
+          '把抓包或代码中的头值原样粘贴到输入框，工具实时解析，无需点击运行',
+          '查看「首选表示」卡片确认服务端应优先返回的 token 与 q 值，下方表格查看全部条目的排名、具体度与接受 / 拒绝状态',
+          '点击「复制摘要」可把排序后的纯文本结果复制到剪贴板，用于接口文档或沟通记录',
+        ],
+        useCases: [
+          '调试内容协商接口时，核对服务端为何在多个媒体类型 / 语言 / 压缩编码中选中某一表示',
+          '构造请求头时验证 q 值写法与通配回退链（如 text/html → text/* → */*）是否符合预期',
+          '教学与文档撰写中演示 RFC 9110 q 因子权重、具体度排序与 q=0 拒绝语义',
+        ],
+        privacyNote:
+          '全部解析与排序均在浏览器本地由零依赖纯函数完成，头字段内容不会被上传、记录或发送到任何服务器。',
+        faqs: [
+          {
+            question: 'q 值是如何影响排序的？q=0 又代表什么？',
+            answer:
+              '每个条目可带 ;q= 权重（0–1，缺省为 1），排序时先按 q 降序，q 相同时再比具体度。q=0 表示客户端明确声明该表示「不可接受」，因此它不会被选为首选，但仍会在列表中以「拒绝」标记展示，便于排查。',
+          },
+          {
+            question: '具体度（specificity）是怎么判定的？',
+            answer:
+              'Accept 中具体类型 text/html 最具体，type/* 次之，*/* 最末，同具体度时 q 之外的额外参数（如 level）多者优先；Accept-Language 按 - 分段，zh-CN 这类多段标签比 zh 更具体，* 最末；Accept-Encoding 与 Accept-Charset 中具名值优先，通配 * 最末。所有层级都相同时保持输入中的原始顺序（稳定排序）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'HTTP Content Negotiation Parser is a fully browser-based API debugging tool for the Accept, Accept-Language, Accept-Encoding, and Accept-Charset header fields defined in RFC 9110 §12.5. It parses media ranges / language tags / codings / charsets together with their q weights and applies the server-side content negotiation ordering rules to produce the preferred representation and a full ranking.',
+        coreFeatures: [
+          'All four negotiation headers supported — Accept, Accept-Language, Accept-Encoding, Accept-Charset — with one-click switching and a built-in sample for each',
+          'RFC 9110 §12.5 ordering: q-value descending first, then specificity (exact type > subtype wildcard > */*; language tag segment count; named value > wildcard), with a stable tie-break on input order',
+          'Correct q=0 semantics: explicitly rejected entries stay in the list marked red but never become the preferred representation',
+          'Invalid entries (empty token, malformed shapes like */xml, out-of-range weights like q=2 or q=abc) are skipped with clear messages; pure-function parsing never throws',
+        ],
+        howToUse: [
+          'Pick the header kind at the top (Accept / Accept-Language / Accept-Encoding / Accept-Charset); the editor loads a matching sample automatically',
+          'Paste the raw header value captured from traffic or code into the editor; parsing runs live with no run button',
+          'Check the "preferred representation" card for the winning token and q-value, then scan the table for rank, specificity, and accepted/rejected status of every entry',
+          'Click "copy summary" to copy the ranked plain-text result for API docs or chat threads',
+        ],
+        useCases: [
+          'Debugging content-negotiating endpoints to see why the server picked one media type, language, or compression coding over others',
+          'Validating q-value authoring and wildcard fallback chains (text/html → text/* → */*) before sending requests',
+          'Teaching and documenting RFC 9110 q-factor weights, specificity ordering, and the q=0 rejection semantics',
+        ],
+        privacyNote:
+          'All parsing and sorting runs locally in your browser via zero-dependency pure functions; header contents are never uploaded, logged, or sent anywhere.',
+        faqs: [
+          {
+            question: 'How does the q-value affect ordering, and what does q=0 mean?',
+            answer:
+              'Each entry may carry a ;q= weight (0–1, default 1). Entries are first sorted by q descending, then by specificity within the same q. q=0 means the client explicitly declares that representation "not acceptable", so it can never be preferred — but it is still shown in the list with a rejected marker for troubleshooting.',
+          },
+          {
+            question: 'How is specificity determined?',
+            answer:
+              'For Accept, an exact type such as text/html is most specific, then type/*, with */* last; entries with more parameters besides q (e.g. level) win ties. For Accept-Language the tag is split on "-", so a multi-segment tag like zh-CN is more specific than zh, with * last. For Accept-Encoding and Accept-Charset named values beat the * wildcard. When everything ties, the original input order is preserved (stable sort).',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ksuid-generator',
+    name: 'KSUID 生成与解析器',
+    nameEn: 'KSUID Generator & Parser',
+    description:
+      '生成 Segment KSUID：20 字节（4 字节大端秒级调整时间戳 + 16 字节随机 payload）编码为 27 字符 Base62，支持 1–500 条批量生成、逐条查看 UTC 时间与 payload，并可实时反解任意 KSUID。',
+    descriptionEn:
+      'Generate Segment KSUIDs: 20 bytes (a 4-byte big-endian adjusted second timestamp plus a 16-byte random payload) encoded as a 27-char Base62 string, with bulk generation of 1–500 IDs, per-ID UTC time and payload inspection, and live parsing of any KSUID.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ksuid-generator',
+    iconName: 'Fingerprint',
+    tags: ['KSUID', '分布式ID', 'Base62', '唯一标识', '有序主键'],
+    tagsEn: ['KSUID', 'Distributed ID', 'Base62', 'Unique Identifier', 'Sortable ID'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0ujsswThIGTUYm2K8FjOOfXtY1K',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 Segment KSUID（K-Sortable Unique IDentifier）生成与解析工具。KSUID 底层为 20 字节：前 4 字节是大端 uint32 调整时间戳（Unix 秒减去纪元偏移 1400000000，覆盖约 2014–2150 年），后 16 字节是随机 payload；整体按 Base62 字母表（0–9、A–Z、a–z）编码为恰好 27 个字符，天然按字符串字典序近似按创建时间排序。随机字节取自 Web Crypto getRandomValues，碰撞概率可忽略。',
+        coreFeatures: [
+          '符合 Segment KSUID 规范：20 字节二进制结构、纪元偏移 1400000000、27 字符 Base62（0-9A-Za-z）',
+          '一次批量生成 1–500 条，每条都重新调用 Web Crypto 抽取 16 字节随机 payload，一键复制全部',
+          '分页表格逐条展示 KSUID、UTC 创建时间与 16 字节 payload 十六进制',
+          '实时解析任意 KSUID：Unix 秒级时间戳、UTC 时间、调整时间戳与 payload hex，长度 / 非法字符 / 超界即时报错',
+          'Base62 编解码基于 BigInt，错误一律以结果对象返回，纯函数实现不触碰 DOM',
+        ],
+        howToUse: [
+          '顶部切换「生成」或「解析」模式；生成模式下设置数量（1–500）后点击「生成」',
+          '在只读文本框查看每行一个 KSUID，点击「复制全部」复制换行分隔的全部结果，下方表格核对每条的 UTC 时间与 payload',
+          '切换到「解析」模式，把单个 27 字符 KSUID 粘贴到输入框，无需点击即可实时查看分段信息',
+          '输入长度不为 27、含非 Base62 字符（如 -、_、=）或数值超出 20 字节上限时，会显示明确的错误提示',
+        ],
+        useCases: [
+          '分布式系统、微服务与数据库中需要时间有序的全局唯一主键（事件、日志、订单号）',
+          '替代 UUID v4 作为 URL 友好的外部标识，同时保留字典序即时间序的索引友好特性',
+          '排查问题时把他人给出的 KSUID 反解为可读的生成时间与随机段',
+        ],
+        privacyNote:
+          '时间戳与随机 payload 全部在浏览器本地生成和解析，随机源为浏览器内置 Web Crypto，不发起任何网络请求。',
+        faqs: [
+          {
+            question: 'KSUID 和 UUID、ULID 有什么区别？',
+            answer:
+              'UUID v4 是 36 字符纯随机标识，字符串顺序与时间无关；ULID 是 26 字符 Crockford Base32，精度到毫秒；KSUID 是 Segment 提出的 27 字符 Base62 标识，底层为 4 字节秒级调整时间戳（纪元 1400000000）加 16 字节随机 payload，按字符串字典序排序即近似按秒级创建时间排序，随机空间为 128 位，碰撞概率可忽略，且不依赖单调计数器即可在分布式环境中使用。',
+          },
+          {
+            question: '为什么 KSUID 的时间戳要减去 1400000000？',
+            answer:
+              'KSUID 只用 4 字节（uint32）存时间，直接存 Unix 秒会在 2106 年溢出。减去自定义纪元 1400000000（约 2014-05-13）后，可表示的时间范围约为 2014–2150 年，覆盖工具生命周期内的全部需求。解析时把调整值加回 1400000000 即得到标准 Unix 时间戳。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local generator and parser for Segment KSUIDs (K-Sortable Unique IDentifier). A KSUID is 20 bytes: the first 4 bytes are a big-endian uint32 adjusted timestamp (Unix seconds minus the epoch offset 1400000000, covering roughly 2014–2150), followed by a 16-byte random payload; the whole value is encoded in Base62 (0–9, A–Z, a–z) as exactly 27 characters, so plain lexicographic order approximately matches creation time. Random bytes come from Web Crypto getRandomValues, making collisions negligible.',
+        coreFeatures: [
+          'Segment KSUID spec: 20-byte binary layout, epoch offset 1400000000, 27-char Base62 (0-9A-Za-z)',
+          'Bulk generation of 1–500 IDs, each drawing fresh 16 random bytes via Web Crypto, with copy-all',
+          'Paginated table showing each KSUID, its UTC creation time, and the 16-byte payload hex',
+          'Live parsing of any KSUID into Unix seconds, UTC time, adjusted timestamp, and payload hex, with instant errors for bad length, characters, or overflow',
+          'BigInt-based Base62 codec; all errors are returned as result objects; pure functions touch no DOM',
+        ],
+        howToUse: [
+          'Switch between "Generate" and "Parse" at the top; in generate mode pick a count (1–500) and click "Generate"',
+          'Read one KSUID per line in the read-only box, click "Copy all" for newline-separated results, and verify each UTC time and payload in the table below',
+          'Switch to parse mode and paste a single 27-char KSUID; its components appear live with no run button',
+          'Inputs whose length is not 27, that contain non-Base62 characters (e.g. -, _, =), or whose value exceeds the 20-byte maximum produce a clear error',
+        ],
+        useCases: [
+          'Time-ordered globally unique keys in distributed systems, microservices, and databases (events, logs, orders)',
+          'A URL-friendly external identifier replacing UUID v4 while keeping the index-friendly property that lexical order is time order',
+          'Decoding a KSUID from elsewhere into a readable creation time and random payload during debugging',
+        ],
+        privacyNote:
+          'Timestamps and random payloads are generated and parsed entirely in the browser using the built-in Web Crypto source; no network requests are made.',
+        faqs: [
+          {
+            question: 'How is a KSUID different from UUID and ULID?',
+            answer:
+              'A UUID v4 is a 36-character fully random identifier with no time ordering; ULID is a 26-char Crockford Base32 ID with millisecond precision; KSUID is Segment’s 27-char Base62 identifier built from a 4-byte second-precision adjusted timestamp (epoch 1400000000) and a 16-byte random payload. Lexicographic sorting approximately equals creation time at second granularity, 128 random bits keep collisions negligible, and no monotonic counter is needed in distributed deployments.',
+          },
+          {
+            question: 'Why is 1400000000 subtracted from the timestamp?',
+            answer:
+              'KSUID stores time in only 4 bytes (uint32), and raw Unix seconds would overflow in 2106. Subtracting the custom epoch 1400000000 (around 2014-05-13) gives a representable range of roughly 2014–2150, which covers the tool’s lifetime. Parsing adds 1400000000 back to recover the standard Unix timestamp.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'security-txt-generator',
+    name: 'security.txt 生成器',
+    nameEn: 'security.txt Generator',
+    description:
+      '按 RFC 9116 表单生成 /.well-known/security.txt：Contact、Expires、Encryption、Canonical 等字段顺序输出、CRLF 行尾，并可粘贴现有文件实时解析校验必填项、过期时间与 PGP 签名。',
+    descriptionEn:
+      'Generate /.well-known/security.txt per RFC 9116 with Contact, Expires, Encryption, Canonical and more in canonical order with CRLF endings, or paste an existing file to validate required fields, expiry and PGP signatures.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/security-txt-generator',
+    iconName: 'ShieldCheck',
+    tags: ['security.txt', 'RFC 9116', '安全联系人', 'well-known', '漏洞披露'],
+    tagsEn: ['security.txt', 'RFC 9116', 'Security Contact', 'well-known', 'Vulnerability Disclosure'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'Contact: mailto:security@example.com\r\nContact: https://example.com/security\r\nExpires: 2027-12-31T23:59:59.000Z\r\nPreferred-Languages: en, zh-CN\r\nCanonical: https://example.com/.well-known/security.txt',
+    doc: {
+      zh: {
+        whatIsIt:
+          'security.txt 生成器依据 RFC 9116（安全漏洞披露辅助文件格式）工作：通过表单维护 Contact（安全联系人，必填，可多条 mailto: / https: / tel: URI）、Expires（策略过期时间，必填，RFC 3339 日期时间）以及 Encryption、Acknowledgments、Preferred-Languages、Canonical、Policy、CSAF 等可选字段，按规范顺序生成 CRLF 行尾的 security.txt；也支持粘贴现有文件实时解析，检查必填缺失、过期 / 临期、未知字段与 PGP clearsign 签名。',
+        coreFeatures: [
+          '严格按 RFC 9116 字段顺序输出 Contact、Expires、Encryption、Acknowledgments、Preferred-Languages、Canonical、Policy、CSAF，多值字段每行一条，行尾统一 CRLF',
+          '实时校验：缺 Contact / Expires、Expires 无法解析直接阻止生成；已过期、30 天内临期、Contact 非 URI 形态给出警告',
+          '解析模式兼容 CRLF 与 LF，识别 PGP clearsign 签名块与 dash-escaped 明文，未知字段、重复 Expires、格式错误均有明确提示',
+          '全部逻辑为浏览器本地纯函数运算，不发起网络请求，结果一键复制，附 /.well-known/security.txt 部署路径提示',
+        ],
+        howToUse: [
+          '在生成模式填写 Contact（每行一条 URI）与 Expires（如 2027-12-31T23:59:59.000Z），按需补充 Encryption、Policy、Canonical 等可选字段',
+          '可点击「填充示例」快速参考一份完整策略，查看警告并修正过期时间或不规范的 Contact',
+          '确认无误后点击「复制」，保存为站点 HTTPS 根目录下的 /.well-known/security.txt，Content-Type 设为 text/plain',
+          '切换到解析校验模式粘贴现有 security.txt，查看错误 / 警告、字段表格与 PGP 签名状态标签',
+        ],
+        useCases: [
+          '为新上线的网站或 API 服务编写标准化安全联系人与漏洞披露策略',
+          '安全团队定期审查既有 security.txt：是否临期 / 过期、Canonical 是否一致、是否缺少必填字段',
+          '对接 CSAF 等安全公告体系时维护 CSAF、Policy、Acknowledgments 等扩展字段',
+        ],
+        privacyNote:
+          '所有字段仅在浏览器本地拼装与解析，不会访问你填写的链接，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: 'security.txt 必须放在哪个路径？',
+            answer:
+              'RFC 9116 规定文件必须可通过 HTTPS 从 /.well-known/security.txt 获取（也兼容 http 重定向），Content-Type 为 text/plain，换行必须是 CRLF；放在其他路径不会被安全研究人员的标准工具发现。',
+          },
+          {
+            question: 'Expires 过期了会怎样？',
+            answer:
+              'Expires 用于告诉研究者该策略在指定时间后可能失效。文件过期后自动化工具通常会忽略联系人信息，因此建议在到期前更新；生成器会对已过期与 30 天内临期的 Expires 给出警告，但不会阻止你导出文件。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The security.txt Generator implements RFC 9116 (A File Format to Aid in Security Vulnerability Disclosure): build the policy via a form with Contact (required, multiple mailto: / https: / tel: URIs), Expires (required, RFC 3339 timestamp) and optional Encryption, Acknowledgments, Preferred-Languages, Canonical, Policy and CSAF fields, emitted in canonical order with CRLF endings. You can also paste an existing file for live validation of required fields, expiry, unknown fields and PGP clearsign signatures.',
+        coreFeatures: [
+          'Canonical RFC 9116 field order — Contact, Expires, Encryption, Acknowledgments, Preferred-Languages, Canonical, Policy, CSAF — with one value per line and CRLF endings throughout',
+          'Live validation: missing Contact/Expires or an unparseable Expires blocks generation; expired, expiring-within-30-days and non-URI Contact values raise warnings',
+          'Parser accepts both CRLF and LF, recognizes PGP clearsign blocks and dash-escaped content, and flags unknown fields, repeated Expires and malformed lines',
+          'Everything runs locally as pure functions with no network requests; one-click copy plus a /.well-known/security.txt deployment hint',
+        ],
+        howToUse: [
+          'In generate mode fill Contact (one URI per line) and Expires (e.g. 2027-12-31T23:59:59.000Z), then add optional fields such as Encryption, Policy and Canonical',
+          'Use "Fill sample" for a complete reference policy, review warnings, and fix expiry or non-URI contact values',
+          'Click "Copy", then publish the file at /.well-known/security.txt under the site HTTPS root with Content-Type text/plain',
+          'Switch to parse mode, paste an existing security.txt, and inspect errors/warnings, the field table and the PGP signature status tag',
+        ],
+        useCases: [
+          'Authoring a standardized security contact and vulnerability disclosure policy for a new website or API',
+          'Periodic review of an existing security.txt — expiry, canonical URLs and missing required fields',
+          'Maintaining CSAF, Policy and Acknowledgments fields when integrating with security advisory ecosystems',
+        ],
+        privacyNote:
+          'All fields are assembled and parsed entirely in your local browser; the URLs you enter are never visited and no network requests are made.',
+        faqs: [
+          {
+            question: 'Where must security.txt be hosted?',
+            answer:
+              'RFC 9116 requires the file to be available over HTTPS at /.well-known/security.txt (HTTP redirects are accepted) with Content-Type text/plain and CRLF line endings; files at other paths will not be found by standard security-research tooling.',
+          },
+          {
+            question: 'What happens when Expires passes?',
+            answer:
+              'Expires tells researchers the policy may no longer be valid after that timestamp; automated tools typically ignore expired files, so renew it before the date. The generator warns on expired and soon-to-expire (30 days) values but still lets you export the file.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'fwf-csv-converter',
+    name: '定宽文本 FWF ↔ CSV 转换器',
+    nameEn: 'Fixed-width FWF ↔ CSV Converter',
+    description:
+      '在固定列宽文本（FWF）与 CSV 之间双向转换：按列名、宽度与左 / 右对齐切片或空格填充，支持表头、LF/CRLF 换行与超长截断或报错。',
+    descriptionEn:
+      'Convert between fixed-width format text (FWF) and CSV in both directions: slice or space-pad by column name, width and left/right alignment, with header, LF/CRLF and truncate-or-error options.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/fwf-csv-converter',
+    iconName: 'Table2',
+    tags: ['定宽文本', 'FWF', 'CSV', '主机报表', '列对齐'],
+    tagsEn: ['Fixed-width', 'FWF', 'CSV', 'Mainframe Report', 'Column Alignment'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `name,age,city
+"Smith, John",30,New York
+Jane,25,London`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的固定列宽文本（Fixed-width Format，FWF）与 CSV 双向转换器。FWF 常见于主机报表、银行账单与遗留系统导出：每个字段按固定字符位置摆放，不足宽度以空格补齐，列与列之间没有分隔符。工具按你提供的列名、宽度与对齐方式，在 CSV 与定宽文本之间互相转换，并完整处理引号、字段内逗号与换行。',
+        coreFeatures: [
+          '双向转换：CSV → FWF 按列宽空格填充，FWF → CSV 按累计位置切片',
+          '左 / 右对齐：left 列右补空格并只去除尾部空格，right 列左补空格并只去除前导空格，内容一侧的空格完整保留',
+          'RFC 4180 风格 CSV：自行实现零依赖解析与生成，支持引号包裹、字段内逗号 / 换行与 "" 转义，换行可在 LF 与 CRLF 间切换',
+          '可控的超长策略与表头开关：超长字段可截断并统计数量或直接报错，首行可标记为表头跳过 / 取回',
+        ],
+        howToUse: [
+          '在顶部选择转换方向（CSV → FWF 或 FWF → CSV），左侧粘贴原始文本，右侧实时显示结果',
+          '在列定义区逐列填写列名、宽度（正整数）与对齐方式，可用「添加列」「删除」调整，或一键填充示例列',
+          '按需设置超长策略（仅 CSV → FWF）、换行符（LF / CRLF）以及「首行作为表头」开关',
+          '出现错误时输出区会显示具体行号与列名；截断发生时会提示被截断字段数，确认无误后点击复制取用结果',
+        ],
+        useCases: [
+          '把主机 / 银行系统导出的定宽报表解析为 CSV，再用表格软件或脚本处理',
+          '把 CSV 数据按遗留系统要求的固定列宽排版，生成可直接提交的定宽文件',
+          '核对列宽、对齐与填充是否正确，排查定宽接口或账单文件的字段错位问题',
+        ],
+        privacyNote:
+          '所有解析、切片与填充均在浏览器本地完成，数据不会上传到任何服务器，适合处理敏感账单与报表。',
+        faqs: [
+          {
+            question: '字段内容超出列宽会怎样？',
+            answer:
+              'CSV → FWF 时可选择「截断」或「报错」：截断模式会按列宽切短内容并提示被截断字段的总数；报错模式会停止转换，并指出具体的数据行号（从 1 开始）与列名，避免静默丢数据。',
+          },
+          {
+            question: 'FWF 某一行比定义的总宽度短会报错吗？',
+            answer:
+              '不会。解析时按 [start, start+width) 切片，行长度不足时只取可用字符得到短字段；left 列只去掉尾部填充空格、right 列只去掉前导填充空格，因此内容本身带有的前导 / 尾随空格不会被误删。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based bidirectional converter between Fixed-width Format text (FWF) and CSV. FWF is common in mainframe reports, bank statements and legacy-system exports: every field occupies fixed character positions, short values are padded with spaces, and there is no delimiter between columns. Given column names, widths and alignment, the tool converts between CSV and fixed-width text, fully handling quotes, in-field commas and newlines.',
+        coreFeatures: [
+          'Bidirectional: CSV → FWF pads with spaces by width; FWF → CSV slices by cumulative positions',
+          'Left/right alignment: left columns are right-padded and only trailing padding is stripped; right columns are left-padded and only leading padding is stripped, preserving spaces on the content side',
+          'RFC 4180-style CSV: a zero-dependency hand-written parser/serializer supporting quoted fields, in-field commas/newlines and "" escaping, with selectable LF or CRLF endings',
+          'Overflow policy and header toggle: overflowing fields are either truncated (with a count) or reported with an error; the first row can be treated as a header to skip or reuse',
+        ],
+        howToUse: [
+          'Pick the direction (CSV → FWF or FWF → CSV) at the top, paste source text on the left, and read the live result on the right',
+          'Define each column (name, positive-integer width, alignment) in the column editor; add/remove columns or fill the sample columns in one click',
+          'Choose the overflow policy (CSV → FWF only), line ending (LF / CRLF) and whether the first row is a header',
+          'Errors show the exact data row number and column name; truncation reports the number of shortened fields. Copy the result once it looks right',
+        ],
+        useCases: [
+          'Parsing fixed-width reports exported from mainframe or banking systems into CSV for spreadsheets or scripts',
+          'Laying CSV data out at the exact column widths required by legacy systems to produce submittable fixed-width files',
+          'Verifying widths, alignment and padding when debugging misaligned fields in fixed-width interfaces or statement files',
+        ],
+        privacyNote:
+          'All parsing, slicing and padding run locally in your browser; data is never uploaded to any server, which makes the tool safe for sensitive statements and reports.',
+        faqs: [
+          {
+            question: 'What happens when a field is longer than its column width?',
+            answer:
+              'For CSV → FWF you can choose "truncate" or "error". Truncate mode shortens the value to the column width and reports the total number of truncated fields; error mode stops and names the exact data row (numbered from 1) and column, so no data is silently lost.',
+          },
+          {
+            question: 'Is an FWF row shorter than the total defined widths an error?',
+            answer:
+              'No. Rows are sliced with [start, start+width); when a line is too short only the available characters are taken, yielding short fields. Left columns lose only trailing padding spaces and right columns only leading padding spaces, so genuine leading or trailing spaces in the content are preserved.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'npv-irr-calculator',
+    name: 'NPV / IRR 投资现金流计算器',
+    nameEn: 'NPV & IRR Cash Flow Calculator',
+    description:
+      '按期次输入现金流（t=0 首期不折现）计算净现值 NPV 与内部收益率 IRR，给出逐期折现因子 / 折现值明细，并按「NPV 为正且 IRR 高于门槛率」规则给出值得投资 / 不建议投资判定；全同号现金流提示 IRR 不存在。',
+    descriptionEn:
+      'Enter cash flows by period (t=0 is not discounted) to compute net present value (NPV) and internal rate of return (IRR), with a per-period discount factor / present value table and an invest-or-reject verdict based on positive NPV plus IRR above the hurdle rate; same-sign cash flows report that no IRR exists.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/npv-irr-calculator',
+    iconName: 'Calculator',
+    tags: ['NPV', 'IRR', '净现值', '内部收益率', '现金流', 'DCF'],
+    tagsEn: ['NPV', 'IRR', 'Net Present Value', 'Internal Rate of Return', 'Cash Flow', 'DCF'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '-1000,600,600',
+    doc: {
+      zh: {
+        whatIsIt:
+          'NPV / IRR 投资现金流计算器是一款纯浏览器本地运行的折现现金流（DCF）分析工具：按期次输入现金流（索引即期次 t，t 从 0 开始，第 0 期通常为初始投资且不折现），按 NPV = Σ CF_t / (1 + r)^t 计算净现值，并用有界二分法求解使 NPV 恰好为 0 的内部收益率 IRR。工具同时输出逐期折现因子与折现值明细，并依据「NPV 为正且 IRR 高于门槛收益率」给出可投 / 不可投判定。全同号现金流（如只有投入没有回收）在利率区间内 NPV 不变号，IRR 不存在，工具会明确提示。',
+        coreFeatures: [
+          '净现值 NPV 实时计算：t=0 首期不折现，支持任意期数与负数现金流，金额以人民币货币格式展示并按正负着色',
+          '内部收益率 IRR 数值求解：固定区间 [-99.99%, 1000%] 有界二分，端点严格异号才认定有根，容差 1e-10、最多 200 次迭代，收敛稳健',
+          '逐期折现明细表：展示每期现金流、折现因子 1/(1+r)^t（4 位小数）与折现值，便于核对每一步折现过程',
+          '投资判定：NPV 大于 0 且（设置门槛率时）IRR 严格高于门槛收益率才判定值得投资，并逐条列出 NPV 正负与 IRR 对比理由',
+        ],
+        howToUse: [
+          '在现金流编辑器按期次填写金额：t=0 一般填初始投资（负数），之后各期填回收或追加投入（负数），用「添加一期」「删除」调整期数',
+          '在参数区设置贴现率（百分数，如 10 表示 10%）；如需考核资金成本，打开门槛收益率开关并填写门槛率（默认 8%）',
+          '结果卡片实时展示 NPV（货币格式）、IRR（百分比保留 2 位小数，无解时显示「不存在」）以及投资判定 Tag 与理由',
+          '在各期折现明细表中核对折现因子与折现值；现金流为空、含非法数字或贴现率不大于 -100% 时会显示明确错误提示',
+        ],
+        useCases: [
+          '项目投资决策：比较初始投入与未来各期净现金流入，判断项目在给定贴现率下是否创造价值',
+          '资本预算与门槛率考核：用 IRR 对比资金成本 / 必要报酬率（hurdle rate），在多个备选项目间排序',
+          '教学与自学：验证 NPV 公式、首期不折现约定、IRR 与 NPV 的关系，以及全同号现金流为何没有内部收益率',
+        ],
+        privacyNote:
+          '所有现金流数据仅在浏览器内存中参与计算，刷新即消失，不会上传或存储到任何服务器，可放心输入敏感财务数据。',
+        faqs: [
+          {
+            question: 'IRR 显示「不存在」是什么意思？',
+            answer:
+              'IRR 是使 NPV 恰好为 0 的贴现率。如果所有现金流同号（例如只有投资支出没有任何回收，或只有收入没有投入），那么在任意利率下 NPV 都不会穿过 0，数学上不存在内部收益率。本工具在固定区间 [-99.99%, 1000%] 两端 NPV 不严格异号时即判定 IRR 不存在；此外，若理论根极其极端（超出该区间）也会给出同样提示。',
+          },
+          {
+            question: 'NPV 为正为什么仍可能不建议投资？',
+            answer:
+              '启用门槛收益率后，判定标准是「NPV 为正且 IRR 严格高于门槛率」。NPV 为正只说明项目按贴现率折现后增值，但若 IRR 低于你的资金成本或必要报酬率，承担同样风险可以拿到更高回报，因此工具会判定不建议投资；IRR 等于门槛率（打平）时按严格大于规则同样不通过。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The NPV & IRR Cash Flow Calculator is a fully browser-local discounted cash flow (DCF) tool: enter cash flows by period (the array index is the period t starting at 0; period 0 is typically the initial outlay and is never discounted), compute net present value with NPV = Σ CF_t / (1 + r)^t, and solve for the internal rate of return that drives NPV to exactly zero using bounded bisection. It also prints a per-period table of discount factors and present values, and renders an invest-or-reject verdict from the rule "positive NPV and IRR above the hurdle rate". When all cash flows share the same sign (for example outlays with no payoffs), NPV never changes sign over rates, so no IRR exists and the tool says so explicitly.',
+        coreFeatures: [
+          'Live net present value: period 0 is not discounted, any number of periods and negative amounts are allowed, and money is shown in CNY currency format with positive/negative coloring',
+          'Robust IRR solver: bounded bisection on the fixed interval [-99.99%, 1000%], a root is accepted only when endpoint NPVs have strictly opposite signs, with 1e-10 tolerance and at most 200 iterations',
+          'Per-period discounting table: each cash flow, its discount factor 1/(1+r)^t (4 decimals) and its present value, so every step is auditable',
+          'Investment verdict: invest only when NPV is greater than zero and, when a hurdle rate is set, IRR is strictly above it, with itemized reasons covering the NPV sign and IRR comparison',
+        ],
+        howToUse: [
+          'Fill in amounts period by period: t=0 is usually the initial investment (negative), later periods are payoffs or additional outlays (negative); add or remove periods with the buttons',
+          'Set the discount rate in percent (e.g. 10 means 10%); enable the hurdle rate switch and enter your required return (default 8%) if capital cost matters',
+          'The result card shows NPV in currency format, IRR as a percentage with 2 decimals ("not exist" when unsolvable), and the invest / reject tag with reasons, all updating live',
+          'Audit discount factors and present values in the detail table; empty input, non-finite numbers or a discount rate at or below -100% produce clear error messages',
+        ],
+        useCases: [
+          'Project decisions: comparing an initial outlay with future net inflows to see whether a venture adds value at the chosen discount rate',
+          'Capital budgeting against a hurdle rate: comparing IRR with the cost of capital or required return to rank competing projects',
+          'Teaching and self-study: verifying the NPV formula, the undiscounted first period, the link between IRR and NPV, and why same-sign cash flows have no IRR',
+        ],
+        privacyNote:
+          'Cash flows are computed only in browser memory and vanish on refresh; nothing is uploaded or stored on any server, so sensitive financial figures stay on your device.',
+        faqs: [
+          {
+            question: 'What does it mean when IRR shows that it does not exist?',
+            answer:
+              'The IRR is the discount rate at which NPV equals zero. If every cash flow has the same sign (only outlays with no payoff, or only income with no investment), NPV never crosses zero at any rate, so no internal rate of return exists mathematically. The tool reports a missing IRR whenever the NPVs at the two ends of the fixed interval [-99.99%, 1000%] do not have strictly opposite signs; an extreme theoretical root outside that interval is reported the same way.',
+          },
+          {
+            question: 'Why might a project with positive NPV still be rejected?',
+            answer:
+              'With a hurdle rate enabled, the rule is "positive NPV and IRR strictly above the hurdle rate". A positive NPV only means the project adds value at the chosen discount rate; if its IRR is below your cost of capital or required return, the same risk could earn more elsewhere, so the tool rejects it. IRR exactly equal to the hurdle rate (break-even) also fails the strictly-greater test.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
