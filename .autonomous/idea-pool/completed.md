@@ -69,3 +69,8 @@
 | 20261101080348 | security.txt 安全联系人文件生成器（RFC 9116） | Web Tool | Existing Gap | `security-txt-generator` / [PR #130](https://github.com/Happyileaf/tool-craft/pull/130) | 2026-11-01 | [详情](./idea-details/20261101080348.md) |
 | 20261101080349 | 定宽文本（Fixed-width / FWF）↔ CSV 互转器（列位置切片与对齐） | Web Tool | Existing Gap | `fwf-csv-converter` / [PR #130](https://github.com/Happyileaf/tool-craft/pull/130) | 2026-11-01 | [详情](./idea-details/20261101080349.md) |
 | 20261031080658 | NPV / IRR 投资现金流计算器（净现值 / 内部收益率） | Web Tool | Exploration | `npv-irr-calculator` / [PR #130](https://github.com/Happyileaf/tool-craft/pull/130) | 2026-11-01 | [详情](./idea-details/20261031080658.md) |
+| 20261021180803 | 贷款 / 月供计算器（等额本息与等额本金） | Web Tool | Exploration | `loan-calculator` / [PR #133](https://github.com/Happyileaf/tool-craft/pull/133) | 2026-11-01 | [详情](./idea-details/20261021180803.md) |
+| 20261026082028 | 复利与定投收益计算器 | Web Tool | Exploration | `compound-interest-calculator` / [PR #133](https://github.com/Happyileaf/tool-craft/pull/133) | 2026-11-01 | [详情](./idea-details/20261026082028.md) |
+| 20261101140214 | RFC 2047 邮件头编码字解码器（=?…?= encoded-word） | Web Tool | Existing Gap | `rfc2047-decoder` / [PR #133](https://github.com/Happyileaf/tool-craft/pull/133) | 2026-11-01 | [详情](./idea-details/20261101140214.md) |
+| 20261028020206 | Java .properties 配置与 JSON 双向转换器 | Web Tool | Existing Gap | `properties-json-converter` / [PR #133](https://github.com/Happyileaf/tool-craft/pull/133) | 2026-11-01 | [详情](./idea-details/20261028020206.md) |
+| 20261029080301 | Magnet 磁力链接解析与生成器 | Web Tool | Existing Gap | `magnet-link-parser` / [PR #133](https://github.com/Happyileaf/tool-craft/pull/133) | 2026-11-01 | [详情](./idea-details/20261029080301.md) |
