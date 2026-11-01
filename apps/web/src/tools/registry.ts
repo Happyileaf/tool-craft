@@ -18628,6 +18628,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'cas-number-validator',
+    name: 'CAS 登记号校验器',
+    nameEn: 'CAS Number Validator',
+    description:
+      '按 CAS RN 模 10 加权规则批量校验化学物质登记号，自动纠错并支持两段主体补全校验位，纯浏览器本地运算。',
+    descriptionEn:
+      'Validate CAS Registry Numbers in batch with the official mod-10 weighted checksum, auto-correct bad digits, or generate the check digit from a two-segment body — fully local.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/cas-number-validator',
+    iconName: 'Pipette',
+    tags: ['CAS', '化学', '校验位', '登记号', '批量'],
+    tagsEn: ['CAS', 'Chemistry', 'Checksum', 'Registry Number', 'Batch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: ['7732-18-5', '64-17-5', '58-08-2', '50-78-2', '7647-14-5'].join('\n'),
+    doc: {
+      zh: {
+        whatIsIt:
+          'CAS 登记号校验器是一款纯浏览器本地运算的小工具，用于校验化学物质对应的 CAS Registry Number（CAS RN，形如 7732-18-5 的水）。它依据 CAS 官方模 10 加权规则逐行检查编号，能识别誊写错误并给出正确编号，也可仅输入两段主体自动补全末位校验位。',
+        coreFeatures: [
+          '官方模 10 加权校验：主体数字自右向左乘以 1,2,3,… 求和取模，精确核对末位',
+          '批量逐行处理：一次粘贴多条编号，输出合法 / 非法计数与逐行行号告警',
+          '自动纠错：末位错误时直接给出正确校验位与完整合法编号',
+          '补全模式：输入两段主体（如 7732-18）自动追加校验位',
+          '宽容排版：自动忽略空格、全角空格，兼容全角数字与全角连字符',
+          '零依赖纯本地：所有计算在浏览器内完成，不发起任何网络请求',
+        ],
+        howToUse: [
+          '在输入框中每行粘贴一个 CAS RN（默认提供 5 个常见物质样例）',
+          '保持「批量校验」模式即可逐行核对，非法编号会在输出中替换为正确写法并在下方告警',
+          '切换到「补全校验位」模式后，可只输入两段主体（如 7732-18）',
+          '点击「复制」获取处理结果，底部标签展示合法 / 非法 / 总条数统计',
+        ],
+        useCases: [
+          '核对论文、SDS 安全数据表或试剂清单中誊写的 CAS 编号',
+          '录入化学品台账前批量清洗编号数据',
+          '只知道登记号主体时快速补全末位校验位',
+        ],
+        privacyNote:
+          '所有编号校验与生成均基于纯浏览器本地运算，不记录、不上传任何数据，离线可用。',
+        faqs: [
+          {
+            question: 'CAS RN 的校验规则是什么？',
+            answer:
+              '去掉连字符后，取末位校验位之前的数字，从右向左依次乘以权重 1、2、3…… 求和后对 10 取模，结果必须等于末位数字。例如水 7732-18-5：8×1+1×2+2×3+3×4+7×5+7×6=105，105 mod 10 = 5。',
+          },
+          {
+            question: '为什么首段以 0 开头会被判为非法？',
+            answer:
+              'CAS 登记号首段首位为 0 的号段从未分配，因此 0 开头的编号必然是伪造或誊写错误，工具会直接拒绝。',
+          },
+          {
+            question: '校验通过能保证这个物质真实存在吗？',
+            answer:
+              '不能。校验位只保证编号在数学上自洽，可检出誊写错误，但无法确认号段是否已被 CAS 分配。确认物质是否存在仍需查询 CAS REGISTRY 官方数据库。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CAS Number Validator is a fully in-browser utility for checking CAS Registry Numbers (such as 7732-18-5 for water). It applies the official CAS mod-10 weighted checksum line by line, catches transcription errors and suggests the correct number, or generates the missing check digit from just a two-segment body.',
+        coreFeatures: [
+          'Official mod-10 weighted checksum: body digits weighted 1,2,3,… from the right, summed modulo 10',
+          'Batch processing: paste many numbers at once, with valid/invalid counts and per-line warnings',
+          'Auto-correction: a wrong final digit is replaced by the correct check digit in the output',
+          'Generate mode: append the check digit to a two-segment body such as 7732-18',
+          'Forgiving input: ignores spaces (including full-width), accepts full-width digits and hyphens',
+          'Zero dependencies, fully local computation with no network requests',
+        ],
+        howToUse: [
+          'Paste one CAS RN per line into the input box (five common substances are preloaded)',
+          'Keep "Batch validate" mode to check every line; bad numbers are corrected in the output and warned below',
+          'Switch to "Generate check digit" mode to work with two-segment bodies such as 7732-18',
+          'Click "Copy" to grab the result; the footer tags show valid / invalid / total counts',
+        ],
+        useCases: [
+          'Checking CAS numbers copied from papers, SDS sheets, or reagent lists',
+          'Cleaning numbering data in bulk before entering a chemical inventory',
+          'Completing a registry number when only the body segments are known',
+        ],
+        privacyNote:
+          'All validation and generation runs locally in your browser. Nothing is logged or uploaded, and the tool works offline.',
+        faqs: [
+          {
+            question: 'What is the CAS RN checksum rule?',
+            answer:
+              'Drop the hyphens, take the digits before the final check digit, and weight them 1, 2, 3, … from right to left. The sum modulo 10 must equal the last digit. For water (7732-18-5): 8×1+1×2+2×3+3×4+7×5+7×6 = 105, and 105 mod 10 = 5.',
+          },
+          {
+            question: 'Why is a leading 0 in the first segment rejected?',
+            answer:
+              'CAS has never assigned a registry number whose first segment starts with 0, so such a number is necessarily fabricated or mistyped and is rejected outright.',
+          },
+          {
+            question: 'Does passing validation prove the substance exists?',
+            answer:
+              'No. The check digit only proves mathematical consistency, which catches transcription errors — it does not confirm that CAS has assigned the number. Verify real substances against the official CAS REGISTRY database.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

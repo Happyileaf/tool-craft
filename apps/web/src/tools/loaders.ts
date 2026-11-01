@@ -210,4 +210,5 @@ export const toolLoaders: Record<
   'matrix-calculator': () => import('./matrix-calculator'),
   'text-similarity': () => import('./text-similarity'),
   'json-to-python-dataclass': () => import('./json-to-python-dataclass'),
+  'cas-number-validator': () => import('./cas-number-validator'),
 };
