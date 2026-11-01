@@ -18935,6 +18935,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'markdown-table-generator',
+    name: 'Markdown 表格生成器',
+    nameEn: 'Markdown Table Generator',
+    description:
+      '把 CSV / TSV / Excel 粘贴内容一键转换为语法正确的 GFM 管道表格，支持逐列对齐、表头开关、空格补齐与竖线转义。',
+    descriptionEn:
+      'Turn CSV / TSV / Excel-pasted data into a valid GFM pipe table with per-column alignment, header toggle, padding, and pipe escaping.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/markdown-table-generator',
+    iconName: 'Table2',
+    tags: ['Markdown', '表格', 'CSV', 'TSV', '文档'],
+    tagsEn: ['Markdown', 'Table', 'CSV', 'TSV', 'Docs'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '名称\t分类\t评分 → GFM Markdown 表格',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Markdown 表格生成器把 CSV、TSV 或从 Excel / Google Sheets 复制的表格文本，即时转换为 GitHub Flavored Markdown 管道表格。可配置首行是否为表头、每列左 / 中 / 右对齐、是否补齐对齐空格，以及是否转义内容中的竖线，全部运算在浏览器本地完成。',
+        coreFeatures: [
+          '自动识别逗号与制表符分隔，支持引号包裹与 "" 转义、引号内逗号 / 换行',
+          '逐列设置左 / 中 / 右对齐，或一键统一样式',
+          '表头开关：关闭时自动生成 A、B、C 列名',
+          '可选空格补齐（美观等宽）或紧凑输出，竖线自动转义为 \\|',
+          '列数不齐的行自动补空列并给出提示',
+        ],
+        howToUse: [
+          '把 CSV / TSV 内容或 Excel 单元格区域粘贴到左侧输入框',
+          '选择分隔格式（默认自动识别），确认「首行作为表头」开关',
+          '在每列对齐下拉中选择左 / 中 / 右，或使用批量对齐',
+          '点击右上角复制，粘贴到 README、文档或工单中',
+        ],
+        useCases: [
+          '快速把 Excel 数据整理成 README 中的参数 / 对比表格',
+          '将 CSV 导出内容贴入 Issue、PR 描述或知识库文档',
+          '为技术文档与周报构造对齐规范的 Markdown 表格',
+        ],
+        privacyNote:
+          '所有解析与生成均在浏览器本地完成，输入内容不会上传或离开当前页面。',
+        faqs: [
+          {
+            question: '和直接在 Markdown 里手敲表格有什么区别？',
+            answer:
+              '手动维护管道表格需要逐列数竖线、补分隔行并手工对齐；本工具从粘贴数据自动完成这些步骤，列宽变化或新增列时实时重排，且自动转义内容中的竖线避免破坏表格结构。',
+          },
+          {
+            question: '支持从 Excel / WPS / Google Sheets 直接复制吗？',
+            answer:
+              '支持。电子表格软件复制到剪贴板的内容默认是制表符分隔（TSV），本工具自动识别制表符并按列拆分；含换行的单元格以引号包裹的形式也能正确解析。',
+          },
+          {
+            question: '「补齐对齐空格」开关有什么用？',
+            answer:
+              '开启后输出的表格按各列最大宽度补空格，在等宽字体的纯文本环境中也整齐可读；关闭时输出紧凑表格，渲染结果完全相同但源码更短。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Markdown Table Generator converts CSV, TSV, or data copied from Excel / Google Sheets into a GitHub Flavored Markdown pipe table on the fly. Configure whether the first row is a header, set left/center/right alignment per column, toggle padding and pipe escaping — everything runs locally in the browser.',
+        coreFeatures: [
+          'Auto-detects comma and tab delimiters; supports quoted fields, "" escapes, and commas/newlines inside quotes',
+          'Per-column left / center / right alignment, or apply one style to all columns',
+          'Header toggle: auto-generates A, B, C column names when the first row is data',
+          'Optional width-aligned padding or compact output, with automatic | escaping to \\|',
+          'Short rows are padded with empty cells and reported',
+        ],
+        howToUse: [
+          'Paste CSV / TSV text or an Excel cell range into the left input area',
+          'Pick the delimiter format (auto-detect by default) and confirm the header switch',
+          'Choose left / center / right alignment per column or use the bulk control',
+          'Click copy and paste the table into READMEs, docs, or tickets',
+        ],
+        useCases: [
+          'Turning spreadsheet data into README parameter or comparison tables',
+          'Pasting CSV exports into issues, PR descriptions, or knowledge-base articles',
+          'Writing neatly aligned Markdown tables for docs and weekly reports',
+        ],
+        privacyNote:
+          'All parsing and generation happen locally in the browser; pasted data is never uploaded.',
+        faqs: [
+          {
+            question: 'Why not just type the Markdown table by hand?',
+            answer:
+              'Hand-maintained pipe tables require counting pipes, writing the separator row, and aligning columns manually. This tool does all of that from pasted data, re-flows instantly when columns change, and escapes pipes inside cell content.',
+          },
+          {
+            question: 'Does it work with data copied from Excel or Google Sheets?',
+            answer:
+              'Yes. Spreadsheet copy is tab-separated (TSV) by default, and the tool auto-detects tabs. Cells containing line breaks are quoted and parsed correctly as a single field.',
+          },
+          {
+            question: 'What does the padding switch do?',
+            answer:
+              'With padding on, columns are space-aligned to equal width so the source stays tidy in monospace editors; with it off the table is compact — the rendered result is identical.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

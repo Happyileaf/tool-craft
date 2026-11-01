@@ -213,4 +213,5 @@ export const toolLoaders: Record<
   'cas-number-validator': () => import('./cas-number-validator'),
   'rc-filter-calculator': () => import('./rc-filter-calculator'),
   'download-time-calculator': () => import('./download-time-calculator'),
+  'markdown-table-generator': () => import('./markdown-table-generator'),
 };
