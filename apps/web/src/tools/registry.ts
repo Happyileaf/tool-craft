@@ -19037,6 +19037,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'strings-json-converter',
+    name: 'Apple .strings ↔ JSON 双向转换',
+    nameEn: 'Apple .strings ↔ JSON Converter',
+    description:
+      '在 iOS / macOS Localizable.strings 与 JSON 之间双向转换，支持 C 注释、\\U 转义、代理对 emoji、重复键检测与行号错误定位。',
+    descriptionEn:
+      'Convert between iOS / macOS Localizable.strings and JSON, with C comments, \\U escapes, surrogate-pair emoji, duplicate-key detection, and line-precise errors.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/strings-json-converter',
+    iconName: 'FileCode',
+    tags: ['.strings', 'iOS', '本地化', 'JSON', 'macOS'],
+    tagsEn: ['.strings', 'iOS', 'Localization', 'JSON', 'macOS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '"login.title" = "登录"; → JSON',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Apple .strings ↔ JSON 转换器在 iOS / macOS 旧式文本本地化资源 Localizable.strings（NextStep 文本 plist，语法 "key" = "value";）与 JSON 键值对象之间双向转换。解析侧支持单行 / 块注释、完整 C 风格转义与 \\Uxxxx / \\Uxxxxxxxx 编码，错误定位到具体行号；生成侧输出标准 .strings 语法并可按键排序，全部运算在浏览器本地完成。',
+        coreFeatures: [
+          '双向转换：.strings 解析为 JSON 对象，或把 JSON 文案对象生成为 .strings',
+          '注释处理：正确剥离 // 与 /* */ 注释（含跨行）并统计条数',
+          '转义完整：支持 \\n \\t \\r \\" \\\\ \\0 与 \\Uxxxx 四位、\\Uxxxxxxxx 八位码点（emoji 代理对）',
+          '严格诊断：未闭合引号 / 注释、缺等号或分号、重复键均报出具体行号，重复键可选报错 / 保留首 / 尾',
+          '生成选项：键排序开关、标准缩进输出，特殊字符自动转义，中文等普通 Unicode 原样保留',
+        ],
+        howToUse: [
+          '选择转换方向（.strings → JSON 或 JSON → .strings）',
+          '把文件内容或 JSON 对象粘贴到左侧输入框，结果实时出现在右侧',
+          '解析侧按需配置重复键策略；生成侧可开启按键排序',
+          '点击复制按钮取走结果，错误时按提示行号回源文件修正',
+        ],
+        useCases: [
+          'iOS / macOS 应用多语言交付时与只收 JSON / XLIFF 的翻译平台互转',
+          '批量审查各语言 Localizable.strings 的键值与缺失项',
+          '把服务端下发的 JSON 文案配置直接生成为 .strings 资源',
+        ],
+        privacyNote:
+          '所有解析与生成均在浏览器本地完成，本地化文案不会被上传或离开当前页面。',
+        faqs: [
+          {
+            question: '和 INI / Java .properties 转换器有什么区别？',
+            answer:
+              '三者语法不同：.strings 的键和值都用双引号包裹、条目以分号结尾，使用 C 风格转义与 \\U 编码、支持 // 与块注释；INI 有 section 概念；.properties 键无引号、用反斜杠续行且无 C 注释。因此需要独立的解析器。',
+          },
+          {
+            question: '为什么 emoji 显示成 \\Uxxxxxxxx？',
+            answer:
+              'Apple .strings 语法中超出 BMP 的字符可用 8 位十六进制 \\U 码点表示（代理对合并后的码点），例如 😀 为 \\U0001F600；解析时会还原为 emoji，生成时也会重新编码，双向转换无损。普通中文等 BMP 字符原样保留，不强制转义。',
+          },
+          {
+            question: '支持 .stringsdict、.xcstrings 或二进制 plist 吗？',
+            answer:
+              '不支持。复数规则文件 .stringsdict、Xcode 15 的字符串目录 .xcstrings 以及二进制 .bplist 都是结构完全不同的独立格式，超出本工具范围；本工具只处理旧式文本 Localizable.strings。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Apple .strings ↔ JSON converter transforms between the legacy iOS / macOS text localization resource Localizable.strings (NextStep text plist with "key" = "value"; syntax) and JSON key-value objects. Parsing handles line and block comments, the full C escape set, and \\Uxxxx / \\Uxxxxxxxx codes with line-precise errors; generation emits standard .strings syntax with optional key sorting. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Bidirectional: parse .strings into a JSON object, or generate .strings from a JSON message object',
+          'Comments: strips // and /* */ comments (including multi-line) and counts them',
+          'Full escapes: \\n \\t \\r \\" \\\\ \\0 plus 4-digit \\Uxxxx and 8-digit \\Uxxxxxxxx code points (emoji pairs)',
+          'Strict diagnostics: unclosed quotes/comments, missing = or ;, and duplicate keys report the exact line; duplicate keys may error, keep first, or keep last',
+          'Generation options: optional key sorting, standard indentation, automatic escaping, with BMP characters such as Chinese kept as-is',
+        ],
+        howToUse: [
+          'Pick the direction (.strings → JSON or JSON → .strings)',
+          'Paste the file content or JSON object on the left; the result appears live on the right',
+          'Configure the duplicate-key policy when parsing, or enable key sorting when generating',
+          'Click copy to take the result; on error, use the reported line number to fix the source',
+        ],
+        useCases: [
+          'Exchanging iOS / macOS localizations with translation platforms that accept JSON / XLIFF',
+          'Auditing keys and missing translations across language Localizable.strings files',
+          'Generating .strings resources from server-delivered JSON copy',
+        ],
+        privacyNote:
+          'All parsing and generation happen locally in the browser; localization copy is never uploaded.',
+        faqs: [
+          {
+            question: 'How is this different from the INI / .properties converters?',
+            answer:
+              'The syntaxes differ: .strings wraps both keys and values in double quotes, ends entries with a semicolon, uses C-style escapes and \\U codes, and supports // and block comments; INI has sections; .properties has unquoted keys, backslash line continuation, and no C comments. A dedicated parser is required.',
+          },
+          {
+            question: 'Why does emoji appear as \\Uxxxxxxxx?',
+            answer:
+              'In Apple .strings syntax, characters outside the BMP may be written as an 8-digit hex \\U code point (the combined surrogate-pair scalar) — e.g. 😀 is \\U0001F600. Parsing restores the emoji and generation re-encodes it, so round trips are lossless. BMP characters such as Chinese are kept literally.',
+          },
+          {
+            question: 'Does it support .stringsdict, .xcstrings, or binary plist?',
+            answer:
+              'No. Plural-rules .stringsdict, Xcode 15 string catalogs (.xcstrings), and binary .bplist are structurally different formats and are out of scope; this tool handles only legacy text Localizable.strings.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

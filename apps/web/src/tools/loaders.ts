@@ -214,4 +214,5 @@ export const toolLoaders: Record<
   'rc-filter-calculator': () => import('./rc-filter-calculator'),
   'download-time-calculator': () => import('./download-time-calculator'),
   'markdown-table-generator': () => import('./markdown-table-generator'),
+  'strings-json-converter': () => import('./strings-json-converter'),
 };
