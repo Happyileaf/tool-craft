@@ -18628,6 +18628,517 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'cas-number-validator',
+    name: 'CAS 登记号校验器',
+    nameEn: 'CAS Number Validator',
+    description:
+      '按 CAS RN 模 10 加权规则批量校验化学物质登记号，自动纠错并支持两段主体补全校验位，纯浏览器本地运算。',
+    descriptionEn:
+      'Validate CAS Registry Numbers in batch with the official mod-10 weighted checksum, auto-correct bad digits, or generate the check digit from a two-segment body — fully local.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/cas-number-validator',
+    iconName: 'Pipette',
+    tags: ['CAS', '化学', '校验位', '登记号', '批量'],
+    tagsEn: ['CAS', 'Chemistry', 'Checksum', 'Registry Number', 'Batch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: ['7732-18-5', '64-17-5', '58-08-2', '50-78-2', '7647-14-5'].join('\n'),
+    doc: {
+      zh: {
+        whatIsIt:
+          'CAS 登记号校验器是一款纯浏览器本地运算的小工具，用于校验化学物质对应的 CAS Registry Number（CAS RN，形如 7732-18-5 的水）。它依据 CAS 官方模 10 加权规则逐行检查编号，能识别誊写错误并给出正确编号，也可仅输入两段主体自动补全末位校验位。',
+        coreFeatures: [
+          '官方模 10 加权校验：主体数字自右向左乘以 1,2,3,… 求和取模，精确核对末位',
+          '批量逐行处理：一次粘贴多条编号，输出合法 / 非法计数与逐行行号告警',
+          '自动纠错：末位错误时直接给出正确校验位与完整合法编号',
+          '补全模式：输入两段主体（如 7732-18）自动追加校验位',
+          '宽容排版：自动忽略空格、全角空格，兼容全角数字与全角连字符',
+          '零依赖纯本地：所有计算在浏览器内完成，不发起任何网络请求',
+        ],
+        howToUse: [
+          '在输入框中每行粘贴一个 CAS RN（默认提供 5 个常见物质样例）',
+          '保持「批量校验」模式即可逐行核对，非法编号会在输出中替换为正确写法并在下方告警',
+          '切换到「补全校验位」模式后，可只输入两段主体（如 7732-18）',
+          '点击「复制」获取处理结果，底部标签展示合法 / 非法 / 总条数统计',
+        ],
+        useCases: [
+          '核对论文、SDS 安全数据表或试剂清单中誊写的 CAS 编号',
+          '录入化学品台账前批量清洗编号数据',
+          '只知道登记号主体时快速补全末位校验位',
+        ],
+        privacyNote:
+          '所有编号校验与生成均基于纯浏览器本地运算，不记录、不上传任何数据，离线可用。',
+        faqs: [
+          {
+            question: 'CAS RN 的校验规则是什么？',
+            answer:
+              '去掉连字符后，取末位校验位之前的数字，从右向左依次乘以权重 1、2、3…… 求和后对 10 取模，结果必须等于末位数字。例如水 7732-18-5：8×1+1×2+2×3+3×4+7×5+7×6=105，105 mod 10 = 5。',
+          },
+          {
+            question: '为什么首段以 0 开头会被判为非法？',
+            answer:
+              'CAS 登记号首段首位为 0 的号段从未分配，因此 0 开头的编号必然是伪造或誊写错误，工具会直接拒绝。',
+          },
+          {
+            question: '校验通过能保证这个物质真实存在吗？',
+            answer:
+              '不能。校验位只保证编号在数学上自洽，可检出誊写错误，但无法确认号段是否已被 CAS 分配。确认物质是否存在仍需查询 CAS REGISTRY 官方数据库。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CAS Number Validator is a fully in-browser utility for checking CAS Registry Numbers (such as 7732-18-5 for water). It applies the official CAS mod-10 weighted checksum line by line, catches transcription errors and suggests the correct number, or generates the missing check digit from just a two-segment body.',
+        coreFeatures: [
+          'Official mod-10 weighted checksum: body digits weighted 1,2,3,… from the right, summed modulo 10',
+          'Batch processing: paste many numbers at once, with valid/invalid counts and per-line warnings',
+          'Auto-correction: a wrong final digit is replaced by the correct check digit in the output',
+          'Generate mode: append the check digit to a two-segment body such as 7732-18',
+          'Forgiving input: ignores spaces (including full-width), accepts full-width digits and hyphens',
+          'Zero dependencies, fully local computation with no network requests',
+        ],
+        howToUse: [
+          'Paste one CAS RN per line into the input box (five common substances are preloaded)',
+          'Keep "Batch validate" mode to check every line; bad numbers are corrected in the output and warned below',
+          'Switch to "Generate check digit" mode to work with two-segment bodies such as 7732-18',
+          'Click "Copy" to grab the result; the footer tags show valid / invalid / total counts',
+        ],
+        useCases: [
+          'Checking CAS numbers copied from papers, SDS sheets, or reagent lists',
+          'Cleaning numbering data in bulk before entering a chemical inventory',
+          'Completing a registry number when only the body segments are known',
+        ],
+        privacyNote:
+          'All validation and generation runs locally in your browser. Nothing is logged or uploaded, and the tool works offline.',
+        faqs: [
+          {
+            question: 'What is the CAS RN checksum rule?',
+            answer:
+              'Drop the hyphens, take the digits before the final check digit, and weight them 1, 2, 3, … from right to left. The sum modulo 10 must equal the last digit. For water (7732-18-5): 8×1+1×2+2×3+3×4+7×5+7×6 = 105, and 105 mod 10 = 5.',
+          },
+          {
+            question: 'Why is a leading 0 in the first segment rejected?',
+            answer:
+              'CAS has never assigned a registry number whose first segment starts with 0, so such a number is necessarily fabricated or mistyped and is rejected outright.',
+          },
+          {
+            question: 'Does passing validation prove the substance exists?',
+            answer:
+              'No. The check digit only proves mathematical consistency, which catches transcription errors — it does not confirm that CAS has assigned the number. Verify real substances against the official CAS REGISTRY database.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'rc-filter-calculator',
+    name: 'RC 滤波器计算器',
+    nameEn: 'RC Filter Calculator',
+    description:
+      '一阶 RC 低通 / 高通滤波器知二求三：fc = 1/(2πRC)、τ = RC，Ω/kΩ/MΩ 与 pF/nF/µF 单位自适应。',
+    descriptionEn:
+      'Solve first-order RC low-pass/high-pass filters from any two of R, C, and fc: fc = 1/(2πRC), τ = RC, with adaptive Ω/F/Hz prefixes.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/rc-filter-calculator',
+    iconName: 'Gauge',
+    tags: ['RC 滤波', '截止频率', '电子工程', '时间常数', '硬件'],
+    tagsEn: ['RC Filter', 'Cutoff Frequency', 'Electronics', 'Time Constant', 'Hardware'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'RC 滤波器计算器是一款面向硬件与嵌入式开发的纯浏览器本地工具，围绕一阶 RC 低通 / 高通网络计算截止（-3 dB）频率 fc = 1/(2πRC) 与时间常数 τ = RC。支持「知二求三」：给定 R 与 C 求 fc、给定 R 与 fc 求 C、给定 C 与 fc 求 R，并同步给出角频率 ω 与截止点的幅度、相位响应。',
+        coreFeatures: [
+          '知二求三：R+C→fc、R+fc→C、C+fc→R 三种模式一键切换',
+          '单位自适应：电阻 Ω/kΩ/MΩ，电容 pF/nF/µF/F，频率 Hz/kHz/MHz 自动换算与选前缀输出',
+          '附带时间常数 τ = RC 与角频率 ω = 2πfc',
+          '截止点频响参考：幅度 1/√2 ≈ -3.01 dB，低通相移 -45°、高通 +45°',
+          '示例预设与一键复制结果，零依赖纯本地实时计算',
+        ],
+        howToUse: [
+          '选择求解模式（已知哪两个量）',
+          '在对应输入框填入数值并选择单位，结果实时更新',
+          '结果表格查看求解值、τ 与 ω，底部给出 fc 处增益与相移',
+          '可点击示例预设快速填入典型取值（如 1kΩ × 1µF → 159.15 Hz）',
+        ],
+        useCases: [
+          '音频 RC 耦合 / 低通网络的阻容取值核算',
+          'ADC 前端一阶抗混叠、去抖与上拉时间常数估算',
+          '面包板选型时快速核对截止频率是否落在目标频段',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地完成，不发起任何网络请求，输入的参数不会离开设备。',
+        faqs: [
+          {
+            question: '低通和高通的截止频率公式一样吗？',
+            answer:
+              '一样。一阶 RC 无论电阻与电容如何摆放构成低通或高通，-3 dB 截止频率都是 fc = 1/(2πRC)，区别只在截止点处相移的符号（低通滞后 -45°，高通超前 +45°）。',
+          },
+          {
+            question: '为什么结果与仿真器略有差异？',
+            answer:
+              '本工具按理想电阻、电容计算，忽略元件容差、寄生参数与信号源内阻 / 负载效应。实际电路可用 E96/E24 标准值选件后再以本工具复核数量级。',
+          },
+          {
+            question: '支持二阶或有源滤波器吗？',
+            answer:
+              '不支持。本工具只覆盖一阶无源 RC；Sallen-Key、RLC 二阶、有源滤波器需要求解二阶传递函数与 Q 值，不在本工具范围内。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The RC Filter Calculator is a fully local tool for hardware and embedded work. It computes the cutoff (-3 dB) frequency fc = 1/(2πRC) and time constant τ = RC of a first-order RC low-pass/high-pass network, solving from any two of R, C, and fc, and additionally reports the angular frequency and the cutoff-point response.',
+        coreFeatures: [
+          'Solve from any two quantities: R+C→fc, R+fc→C, or C+fc→R',
+          'Adaptive units: Ω/kΩ/MΩ, pF/nF/µF/F, and Hz/kHz/MHz with automatic prefix selection',
+          'Reports the time constant τ = RC and angular frequency ω = 2πfc',
+          'Cutoff response reference: magnitude 1/√2 ≈ -3.01 dB, phase -45° low-pass / +45° high-pass',
+          'Example presets and one-click copy; zero dependencies, fully local and real-time',
+        ],
+        howToUse: [
+          'Pick the solve mode based on which two quantities you know',
+          'Enter values with their units; results update instantly',
+          'Read the solved value, τ, and ω from the table, with gain and phase at fc below',
+          'Use a preset such as 1kΩ × 1µF → 159.15 Hz to get started',
+        ],
+        useCases: [
+          'Choosing R and C for audio coupling or low-pass networks',
+          'Estimating first-order anti-aliasing, debounce, and pull-up time constants at ADC inputs',
+          'Quickly checking on a breadboard whether the cutoff lands in the target band',
+        ],
+        privacyNote:
+          'All computation runs locally in your browser with no network requests; your inputs never leave the device.',
+        faqs: [
+          {
+            question: 'Is the cutoff formula the same for low-pass and high-pass?',
+            answer:
+              'Yes. A first-order RC network has fc = 1/(2πRC) in either arrangement; only the sign of the phase shift at cutoff differs (-45° lag for low-pass, +45° lead for high-pass).',
+          },
+          {
+            question: 'Why do results differ slightly from a simulator?',
+            answer:
+              'The tool assumes ideal resistors and capacitors, ignoring tolerances, parasitics, source impedance, and loading. Pick standard E96/E24 values, then re-check the order of magnitude here.',
+          },
+          {
+            question: 'Does it support second-order or active filters?',
+            answer:
+              'No. It covers only first-order passive RC; Sallen-Key, RLC, and active filters require a second-order transfer function and Q factor and are out of scope.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'download-time-calculator',
+    name: '文件下载时间估算器',
+    nameEn: 'Download Time Calculator',
+    description:
+      '按文件大小与带宽估算下载耗时，输出 hh:mm:ss 与可读时长，支持效率折减系数与常见宽带 / 移动档位对照表。',
+    descriptionEn:
+      'Estimate file download time from size and bandwidth with hh:mm:ss and readable durations, an efficiency factor, and a broadband/mobile tier comparison table.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/download-time-calculator',
+    iconName: 'HardDrive',
+    tags: ['下载耗时', '带宽', '网络', '文件大小', '估算'],
+    tagsEn: ['Download Time', 'Bandwidth', 'Network', 'File Size', 'Estimation'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1 GB @ 100 Mbps ≈ 00:01:20',
+    doc: {
+      zh: {
+        whatIsIt:
+          '文件下载时间估算器是一款纯浏览器本地工具：输入文件大小与可用带宽，立即得到理论下载耗时，输出 hh:mm:ss 时钟格式与中文可读时长，并按常见网络档位（拨号、ADSL、宽带、4G、千兆）给出完整对照表。支持自定义传输效率折减系数以模拟协议开销与拥塞。',
+        coreFeatures: [
+          '公式直算：耗时 = 文件大小 × 8 /（带宽 × 效率），网络口径十进制单位',
+          '双格式输出：hh:mm:ss 时钟格式（跨天显示 N 天）与「X 天 X 小时 X 分 X 秒」可读时长',
+          '效率折减：10%–100% 滑块，模拟 TCP 开销、共享带宽与实际限速',
+          '八档带宽预设与一键套用，全档位对照表同步重算',
+          '零依赖纯本地：不发起任何测速请求，结果即时呈现',
+        ],
+        howToUse: [
+          '填写文件大小并选择 KB / MB / GB / TB',
+          '填写实际可用带宽并选择 Kbps / Mbps / Gbps，或直接点击档位标签',
+          '拖动效率系数（如运营商带宽打八折选 80%）',
+          '查看估算结果与下方各网络档位对照表',
+        ],
+        useCases: [
+          '评估大文件、游戏、镜像在当前带宽下的分发与同步时间',
+          '向用户解释「百兆宽带下载 10GB 文件需要多久」',
+          '选型异地备份 / 数据上云策略时估算传输窗口',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地完成，不进行真实测速或上传下载，不产生任何网络请求。',
+        faqs: [
+          {
+            question: '为什么运营商说的 100M 下载只有约 11 MB/s？',
+            answer:
+              '运营商带宽单位是兆比特每秒（Mbps），而文件大小用字节（byte），1 byte = 8 bit；100 Mbps ÷ 8 = 12.5 MB/s 的理论上限，再扣除协议开销与拥塞即为实际速度。本工具的效率系数正是用于这一折减。',
+          },
+          {
+            question: '单位为什么按 1000 而不是 1024 换算？',
+            answer:
+              '网络速率口径（bps 的 k/M/G）固定为十进制 1000；文件大小为与速率口径一致、保证「1GB @ 100Mbps = 80 秒」这类整数关系直观，本工具同样采用十进制（1 GB = 10⁹ B）。',
+          },
+          {
+            question: '估算结果为什么和实际差不少？',
+            answer:
+              '本工具只做理想线速估算，未计入服务器限速、跨网 peering、Wi-Fi 损耗、并发抢占与磁盘写入瓶颈。把效率系数调到实测占比（常见 60%–90%）可得到更贴近实际的区间。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Download Time Calculator is a fully local browser tool: enter a file size and the available bandwidth to instantly get the theoretical transfer time in both hh:mm:ss and readable forms, with a comparison table across common network tiers (dial-up, ADSL, broadband, 4G, gigabit). A configurable efficiency factor models protocol overhead and congestion.',
+        coreFeatures: [
+          'Direct formula: time = size × 8 / (bandwidth × efficiency), with decimal networking units',
+          'Dual output: hh:mm:ss clock format (with days) and a readable "Xd Xh Xm Xs" duration',
+          'Efficiency slider from 10%–100% to model TCP overhead, shared links, and throttling',
+          'Eight bandwidth presets with one-click fill and a synchronized full-tier table',
+          'Zero dependencies, fully local: no speed tests or network requests',
+        ],
+        howToUse: [
+          'Enter the file size and pick KB / MB / GB / TB',
+          'Enter the available bandwidth in Kbps / Mbps / Gbps, or click a tier tag',
+          'Adjust the efficiency factor (e.g. 80% for a typical real-world discount)',
+          'Read the headline result and the per-tier comparison table',
+        ],
+        useCases: [
+          'Estimating distribution and sync time for large files, games, and images',
+          'Explaining how long 10 GB takes on a 100 Mbps plan',
+          'Sizing transfer windows for off-site backup and cloud migration',
+        ],
+        privacyNote:
+          'Everything is computed locally in the browser with no real speed test, transfers, or network requests.',
+        faqs: [
+          {
+            question: 'Why does a 100M plan only deliver about 11 MB/s?',
+            answer:
+              'ISP bandwidth is measured in megabits per second (Mbps), while file sizes use bytes; 1 byte = 8 bits, so 100 Mbps ÷ 8 = 12.5 MB/s theoretical, before protocol overhead and congestion. The efficiency factor models exactly this discount.',
+          },
+          {
+            question: 'Why use 1000 instead of 1024?',
+            answer:
+              'Networking prefixes (k/M/G in bps) are decimal by definition. To keep the size and rate on the same footing — so 1 GB at 100 Mbps = 80 s — file sizes here also use 1 GB = 10⁹ bytes.',
+          },
+          {
+            question: 'Why does reality differ from the estimate?',
+            answer:
+              'The tool assumes ideal wire speed and ignores server throttling, peering, Wi-Fi loss, contention, and disk bottlenecks. Set the efficiency factor to the measured utilization (typically 60%–90%) for a more realistic range.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'markdown-table-generator',
+    name: 'Markdown 表格生成器',
+    nameEn: 'Markdown Table Generator',
+    description:
+      '把 CSV / TSV / Excel 粘贴内容一键转换为语法正确的 GFM 管道表格，支持逐列对齐、表头开关、空格补齐与竖线转义。',
+    descriptionEn:
+      'Turn CSV / TSV / Excel-pasted data into a valid GFM pipe table with per-column alignment, header toggle, padding, and pipe escaping.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/markdown-table-generator',
+    iconName: 'Table2',
+    tags: ['Markdown', '表格', 'CSV', 'TSV', '文档'],
+    tagsEn: ['Markdown', 'Table', 'CSV', 'TSV', 'Docs'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '名称\t分类\t评分 → GFM Markdown 表格',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Markdown 表格生成器把 CSV、TSV 或从 Excel / Google Sheets 复制的表格文本，即时转换为 GitHub Flavored Markdown 管道表格。可配置首行是否为表头、每列左 / 中 / 右对齐、是否补齐对齐空格，以及是否转义内容中的竖线，全部运算在浏览器本地完成。',
+        coreFeatures: [
+          '自动识别逗号与制表符分隔，支持引号包裹与 "" 转义、引号内逗号 / 换行',
+          '逐列设置左 / 中 / 右对齐，或一键统一样式',
+          '表头开关：关闭时自动生成 A、B、C 列名',
+          '可选空格补齐（美观等宽）或紧凑输出，竖线自动转义为 \\|',
+          '列数不齐的行自动补空列并给出提示',
+        ],
+        howToUse: [
+          '把 CSV / TSV 内容或 Excel 单元格区域粘贴到左侧输入框',
+          '选择分隔格式（默认自动识别），确认「首行作为表头」开关',
+          '在每列对齐下拉中选择左 / 中 / 右，或使用批量对齐',
+          '点击右上角复制，粘贴到 README、文档或工单中',
+        ],
+        useCases: [
+          '快速把 Excel 数据整理成 README 中的参数 / 对比表格',
+          '将 CSV 导出内容贴入 Issue、PR 描述或知识库文档',
+          '为技术文档与周报构造对齐规范的 Markdown 表格',
+        ],
+        privacyNote:
+          '所有解析与生成均在浏览器本地完成，输入内容不会上传或离开当前页面。',
+        faqs: [
+          {
+            question: '和直接在 Markdown 里手敲表格有什么区别？',
+            answer:
+              '手动维护管道表格需要逐列数竖线、补分隔行并手工对齐；本工具从粘贴数据自动完成这些步骤，列宽变化或新增列时实时重排，且自动转义内容中的竖线避免破坏表格结构。',
+          },
+          {
+            question: '支持从 Excel / WPS / Google Sheets 直接复制吗？',
+            answer:
+              '支持。电子表格软件复制到剪贴板的内容默认是制表符分隔（TSV），本工具自动识别制表符并按列拆分；含换行的单元格以引号包裹的形式也能正确解析。',
+          },
+          {
+            question: '「补齐对齐空格」开关有什么用？',
+            answer:
+              '开启后输出的表格按各列最大宽度补空格，在等宽字体的纯文本环境中也整齐可读；关闭时输出紧凑表格，渲染结果完全相同但源码更短。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Markdown Table Generator converts CSV, TSV, or data copied from Excel / Google Sheets into a GitHub Flavored Markdown pipe table on the fly. Configure whether the first row is a header, set left/center/right alignment per column, toggle padding and pipe escaping — everything runs locally in the browser.',
+        coreFeatures: [
+          'Auto-detects comma and tab delimiters; supports quoted fields, "" escapes, and commas/newlines inside quotes',
+          'Per-column left / center / right alignment, or apply one style to all columns',
+          'Header toggle: auto-generates A, B, C column names when the first row is data',
+          'Optional width-aligned padding or compact output, with automatic | escaping to \\|',
+          'Short rows are padded with empty cells and reported',
+        ],
+        howToUse: [
+          'Paste CSV / TSV text or an Excel cell range into the left input area',
+          'Pick the delimiter format (auto-detect by default) and confirm the header switch',
+          'Choose left / center / right alignment per column or use the bulk control',
+          'Click copy and paste the table into READMEs, docs, or tickets',
+        ],
+        useCases: [
+          'Turning spreadsheet data into README parameter or comparison tables',
+          'Pasting CSV exports into issues, PR descriptions, or knowledge-base articles',
+          'Writing neatly aligned Markdown tables for docs and weekly reports',
+        ],
+        privacyNote:
+          'All parsing and generation happen locally in the browser; pasted data is never uploaded.',
+        faqs: [
+          {
+            question: 'Why not just type the Markdown table by hand?',
+            answer:
+              'Hand-maintained pipe tables require counting pipes, writing the separator row, and aligning columns manually. This tool does all of that from pasted data, re-flows instantly when columns change, and escapes pipes inside cell content.',
+          },
+          {
+            question: 'Does it work with data copied from Excel or Google Sheets?',
+            answer:
+              'Yes. Spreadsheet copy is tab-separated (TSV) by default, and the tool auto-detects tabs. Cells containing line breaks are quoted and parsed correctly as a single field.',
+          },
+          {
+            question: 'What does the padding switch do?',
+            answer:
+              'With padding on, columns are space-aligned to equal width so the source stays tidy in monospace editors; with it off the table is compact — the rendered result is identical.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'strings-json-converter',
+    name: 'Apple .strings ↔ JSON 双向转换',
+    nameEn: 'Apple .strings ↔ JSON Converter',
+    description:
+      '在 iOS / macOS Localizable.strings 与 JSON 之间双向转换，支持 C 注释、\\U 转义、代理对 emoji、重复键检测与行号错误定位。',
+    descriptionEn:
+      'Convert between iOS / macOS Localizable.strings and JSON, with C comments, \\U escapes, surrogate-pair emoji, duplicate-key detection, and line-precise errors.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/strings-json-converter',
+    iconName: 'FileCode',
+    tags: ['.strings', 'iOS', '本地化', 'JSON', 'macOS'],
+    tagsEn: ['.strings', 'iOS', 'Localization', 'JSON', 'macOS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '"login.title" = "登录"; → JSON',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Apple .strings ↔ JSON 转换器在 iOS / macOS 旧式文本本地化资源 Localizable.strings（NextStep 文本 plist，语法 "key" = "value";）与 JSON 键值对象之间双向转换。解析侧支持单行 / 块注释、完整 C 风格转义与 \\Uxxxx / \\Uxxxxxxxx 编码，错误定位到具体行号；生成侧输出标准 .strings 语法并可按键排序，全部运算在浏览器本地完成。',
+        coreFeatures: [
+          '双向转换：.strings 解析为 JSON 对象，或把 JSON 文案对象生成为 .strings',
+          '注释处理：正确剥离 // 与 /* */ 注释（含跨行）并统计条数',
+          '转义完整：支持 \\n \\t \\r \\" \\\\ \\0 与 \\Uxxxx 四位、\\Uxxxxxxxx 八位码点（emoji 代理对）',
+          '严格诊断：未闭合引号 / 注释、缺等号或分号、重复键均报出具体行号，重复键可选报错 / 保留首 / 尾',
+          '生成选项：键排序开关、标准缩进输出，特殊字符自动转义，中文等普通 Unicode 原样保留',
+        ],
+        howToUse: [
+          '选择转换方向（.strings → JSON 或 JSON → .strings）',
+          '把文件内容或 JSON 对象粘贴到左侧输入框，结果实时出现在右侧',
+          '解析侧按需配置重复键策略；生成侧可开启按键排序',
+          '点击复制按钮取走结果，错误时按提示行号回源文件修正',
+        ],
+        useCases: [
+          'iOS / macOS 应用多语言交付时与只收 JSON / XLIFF 的翻译平台互转',
+          '批量审查各语言 Localizable.strings 的键值与缺失项',
+          '把服务端下发的 JSON 文案配置直接生成为 .strings 资源',
+        ],
+        privacyNote:
+          '所有解析与生成均在浏览器本地完成，本地化文案不会被上传或离开当前页面。',
+        faqs: [
+          {
+            question: '和 INI / Java .properties 转换器有什么区别？',
+            answer:
+              '三者语法不同：.strings 的键和值都用双引号包裹、条目以分号结尾，使用 C 风格转义与 \\U 编码、支持 // 与块注释；INI 有 section 概念；.properties 键无引号、用反斜杠续行且无 C 注释。因此需要独立的解析器。',
+          },
+          {
+            question: '为什么 emoji 显示成 \\Uxxxxxxxx？',
+            answer:
+              'Apple .strings 语法中超出 BMP 的字符可用 8 位十六进制 \\U 码点表示（代理对合并后的码点），例如 😀 为 \\U0001F600；解析时会还原为 emoji，生成时也会重新编码，双向转换无损。普通中文等 BMP 字符原样保留，不强制转义。',
+          },
+          {
+            question: '支持 .stringsdict、.xcstrings 或二进制 plist 吗？',
+            answer:
+              '不支持。复数规则文件 .stringsdict、Xcode 15 的字符串目录 .xcstrings 以及二进制 .bplist 都是结构完全不同的独立格式，超出本工具范围；本工具只处理旧式文本 Localizable.strings。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Apple .strings ↔ JSON converter transforms between the legacy iOS / macOS text localization resource Localizable.strings (NextStep text plist with "key" = "value"; syntax) and JSON key-value objects. Parsing handles line and block comments, the full C escape set, and \\Uxxxx / \\Uxxxxxxxx codes with line-precise errors; generation emits standard .strings syntax with optional key sorting. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Bidirectional: parse .strings into a JSON object, or generate .strings from a JSON message object',
+          'Comments: strips // and /* */ comments (including multi-line) and counts them',
+          'Full escapes: \\n \\t \\r \\" \\\\ \\0 plus 4-digit \\Uxxxx and 8-digit \\Uxxxxxxxx code points (emoji pairs)',
+          'Strict diagnostics: unclosed quotes/comments, missing = or ;, and duplicate keys report the exact line; duplicate keys may error, keep first, or keep last',
+          'Generation options: optional key sorting, standard indentation, automatic escaping, with BMP characters such as Chinese kept as-is',
+        ],
+        howToUse: [
+          'Pick the direction (.strings → JSON or JSON → .strings)',
+          'Paste the file content or JSON object on the left; the result appears live on the right',
+          'Configure the duplicate-key policy when parsing, or enable key sorting when generating',
+          'Click copy to take the result; on error, use the reported line number to fix the source',
+        ],
+        useCases: [
+          'Exchanging iOS / macOS localizations with translation platforms that accept JSON / XLIFF',
+          'Auditing keys and missing translations across language Localizable.strings files',
+          'Generating .strings resources from server-delivered JSON copy',
+        ],
+        privacyNote:
+          'All parsing and generation happen locally in the browser; localization copy is never uploaded.',
+        faqs: [
+          {
+            question: 'How is this different from the INI / .properties converters?',
+            answer:
+              'The syntaxes differ: .strings wraps both keys and values in double quotes, ends entries with a semicolon, uses C-style escapes and \\U codes, and supports // and block comments; INI has sections; .properties has unquoted keys, backslash line continuation, and no C comments. A dedicated parser is required.',
+          },
+          {
+            question: 'Why does emoji appear as \\Uxxxxxxxx?',
+            answer:
+              'In Apple .strings syntax, characters outside the BMP may be written as an 8-digit hex \\U code point (the combined surrogate-pair scalar) — e.g. 😀 is \\U0001F600. Parsing restores the emoji and generation re-encodes it, so round trips are lossless. BMP characters such as Chinese are kept literally.',
+          },
+          {
+            question: 'Does it support .stringsdict, .xcstrings, or binary plist?',
+            answer:
+              'No. Plural-rules .stringsdict, Xcode 15 string catalogs (.xcstrings), and binary .bplist are structurally different formats and are out of scope; this tool handles only legacy text Localizable.strings.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
