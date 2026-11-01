@@ -17272,6 +17272,98 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'ksuid-generator',
+    name: 'KSUID 生成与解析器',
+    nameEn: 'KSUID Generator & Parser',
+    description:
+      '生成 Segment KSUID：20 字节（4 字节大端秒级调整时间戳 + 16 字节随机 payload）编码为 27 字符 Base62，支持 1–500 条批量生成、逐条查看 UTC 时间与 payload，并可实时反解任意 KSUID。',
+    descriptionEn:
+      'Generate Segment KSUIDs: 20 bytes (a 4-byte big-endian adjusted second timestamp plus a 16-byte random payload) encoded as a 27-char Base62 string, with bulk generation of 1–500 IDs, per-ID UTC time and payload inspection, and live parsing of any KSUID.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ksuid-generator',
+    iconName: 'Fingerprint',
+    tags: ['KSUID', '分布式ID', 'Base62', '唯一标识', '有序主键'],
+    tagsEn: ['KSUID', 'Distributed ID', 'Base62', 'Unique Identifier', 'Sortable ID'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0ujsswThIGTUYm2K8FjOOfXtY1K',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 Segment KSUID（K-Sortable Unique IDentifier）生成与解析工具。KSUID 底层为 20 字节：前 4 字节是大端 uint32 调整时间戳（Unix 秒减去纪元偏移 1400000000，覆盖约 2014–2150 年），后 16 字节是随机 payload；整体按 Base62 字母表（0–9、A–Z、a–z）编码为恰好 27 个字符，天然按字符串字典序近似按创建时间排序。随机字节取自 Web Crypto getRandomValues，碰撞概率可忽略。',
+        coreFeatures: [
+          '符合 Segment KSUID 规范：20 字节二进制结构、纪元偏移 1400000000、27 字符 Base62（0-9A-Za-z）',
+          '一次批量生成 1–500 条，每条都重新调用 Web Crypto 抽取 16 字节随机 payload，一键复制全部',
+          '分页表格逐条展示 KSUID、UTC 创建时间与 16 字节 payload 十六进制',
+          '实时解析任意 KSUID：Unix 秒级时间戳、UTC 时间、调整时间戳与 payload hex，长度 / 非法字符 / 超界即时报错',
+          'Base62 编解码基于 BigInt，错误一律以结果对象返回，纯函数实现不触碰 DOM',
+        ],
+        howToUse: [
+          '顶部切换「生成」或「解析」模式；生成模式下设置数量（1–500）后点击「生成」',
+          '在只读文本框查看每行一个 KSUID，点击「复制全部」复制换行分隔的全部结果，下方表格核对每条的 UTC 时间与 payload',
+          '切换到「解析」模式，把单个 27 字符 KSUID 粘贴到输入框，无需点击即可实时查看分段信息',
+          '输入长度不为 27、含非 Base62 字符（如 -、_、=）或数值超出 20 字节上限时，会显示明确的错误提示',
+        ],
+        useCases: [
+          '分布式系统、微服务与数据库中需要时间有序的全局唯一主键（事件、日志、订单号）',
+          '替代 UUID v4 作为 URL 友好的外部标识，同时保留字典序即时间序的索引友好特性',
+          '排查问题时把他人给出的 KSUID 反解为可读的生成时间与随机段',
+        ],
+        privacyNote:
+          '时间戳与随机 payload 全部在浏览器本地生成和解析，随机源为浏览器内置 Web Crypto，不发起任何网络请求。',
+        faqs: [
+          {
+            question: 'KSUID 和 UUID、ULID 有什么区别？',
+            answer:
+              'UUID v4 是 36 字符纯随机标识，字符串顺序与时间无关；ULID 是 26 字符 Crockford Base32，精度到毫秒；KSUID 是 Segment 提出的 27 字符 Base62 标识，底层为 4 字节秒级调整时间戳（纪元 1400000000）加 16 字节随机 payload，按字符串字典序排序即近似按秒级创建时间排序，随机空间为 128 位，碰撞概率可忽略，且不依赖单调计数器即可在分布式环境中使用。',
+          },
+          {
+            question: '为什么 KSUID 的时间戳要减去 1400000000？',
+            answer:
+              'KSUID 只用 4 字节（uint32）存时间，直接存 Unix 秒会在 2106 年溢出。减去自定义纪元 1400000000（约 2014-05-13）后，可表示的时间范围约为 2014–2150 年，覆盖工具生命周期内的全部需求。解析时把调整值加回 1400000000 即得到标准 Unix 时间戳。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local generator and parser for Segment KSUIDs (K-Sortable Unique IDentifier). A KSUID is 20 bytes: the first 4 bytes are a big-endian uint32 adjusted timestamp (Unix seconds minus the epoch offset 1400000000, covering roughly 2014–2150), followed by a 16-byte random payload; the whole value is encoded in Base62 (0–9, A–Z, a–z) as exactly 27 characters, so plain lexicographic order approximately matches creation time. Random bytes come from Web Crypto getRandomValues, making collisions negligible.',
+        coreFeatures: [
+          'Segment KSUID spec: 20-byte binary layout, epoch offset 1400000000, 27-char Base62 (0-9A-Za-z)',
+          'Bulk generation of 1–500 IDs, each drawing fresh 16 random bytes via Web Crypto, with copy-all',
+          'Paginated table showing each KSUID, its UTC creation time, and the 16-byte payload hex',
+          'Live parsing of any KSUID into Unix seconds, UTC time, adjusted timestamp, and payload hex, with instant errors for bad length, characters, or overflow',
+          'BigInt-based Base62 codec; all errors are returned as result objects; pure functions touch no DOM',
+        ],
+        howToUse: [
+          'Switch between "Generate" and "Parse" at the top; in generate mode pick a count (1–500) and click "Generate"',
+          'Read one KSUID per line in the read-only box, click "Copy all" for newline-separated results, and verify each UTC time and payload in the table below',
+          'Switch to parse mode and paste a single 27-char KSUID; its components appear live with no run button',
+          'Inputs whose length is not 27, that contain non-Base62 characters (e.g. -, _, =), or whose value exceeds the 20-byte maximum produce a clear error',
+        ],
+        useCases: [
+          'Time-ordered globally unique keys in distributed systems, microservices, and databases (events, logs, orders)',
+          'A URL-friendly external identifier replacing UUID v4 while keeping the index-friendly property that lexical order is time order',
+          'Decoding a KSUID from elsewhere into a readable creation time and random payload during debugging',
+        ],
+        privacyNote:
+          'Timestamps and random payloads are generated and parsed entirely in the browser using the built-in Web Crypto source; no network requests are made.',
+        faqs: [
+          {
+            question: 'How is a KSUID different from UUID and ULID?',
+            answer:
+              'A UUID v4 is a 36-character fully random identifier with no time ordering; ULID is a 26-char Crockford Base32 ID with millisecond precision; KSUID is Segment’s 27-char Base62 identifier built from a 4-byte second-precision adjusted timestamp (epoch 1400000000) and a 16-byte random payload. Lexicographic sorting approximately equals creation time at second granularity, 128 random bits keep collisions negligible, and no monotonic counter is needed in distributed deployments.',
+          },
+          {
+            question: 'Why is 1400000000 subtracted from the timestamp?',
+            answer:
+              'KSUID stores time in only 4 bytes (uint32), and raw Unix seconds would overflow in 2106. Subtracting the custom epoch 1400000000 (around 2014-05-13) gives a representable range of roughly 2014–2150, which covers the tool’s lifetime. Parsing adds 1400000000 back to recover the standard Unix timestamp.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
