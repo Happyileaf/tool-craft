@@ -201,4 +201,5 @@ export const toolLoaders: Record<
   'fwf-csv-converter': () => import('./fwf-csv-converter'),
   'npv-irr-calculator': () => import('./npv-irr-calculator'),
   'loan-calculator': () => import('./loan-calculator'),
+  'compound-interest-calculator': () => import('./compound-interest-calculator'),
 };

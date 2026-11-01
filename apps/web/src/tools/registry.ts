@@ -17727,6 +17727,96 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'compound-interest-calculator',
+    name: '复利与定投收益计算器',
+    nameEn: 'Compound Interest & DCA Calculator',
+    description:
+      '按本金、年化收益率、期限与复利频率（年 / 季 / 月 / 日）测算复利终值，支持每期定投与期初 / 期末投入，给出逐期明细及单利对比。',
+    descriptionEn:
+      'Project compound-growth future value with principal, annual rate, term, and compounding frequency, including periodic contributions (begin/end), a per-period schedule, and a simple-interest comparison.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/compound-interest-calculator',
+    iconName: 'TrendingUp',
+    tags: ['复利', '定投', '理财', '终值', '单利对比'],
+    tagsEn: ['Compound Interest', 'DCA', 'Investment', 'Future Value', 'Annuity'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '复利与定投收益计算器是一款纯浏览器本地运算的投资测算工具，输入初始本金、年化收益率、投资期限与复利频率，并可设置每期定投金额与投入时点，即可得到期末本息总额、累计投入与累计收益的逐期明细，并与同等条件的单利结果对比。',
+        coreFeatures: [
+          '四种复利频率：年复利、季复利、月复利、日复利，期利率 = 年利率 / 每年期数',
+          '定期定额：支持每期定投与期初 / 期末投入（即付 / 普通年金），逐期滚动计息',
+          '完整汇总：期末本息、累计投入本金、累计收益与总期数',
+          '单利对比：同期限单利终值与复利优势一目了然；零利率与负利率场景同样正确',
+        ],
+        howToUse: [
+          '输入初始本金、年化收益率百分数（如 8 表示 8%）与投资年数',
+          '选择复利频率；如需定投，填写每期投入金额并选择期初或期末投入',
+          '查看期末本息总额、累计投入与累计收益',
+          '在逐期明细表中查看每期余额、定投与收益，并对照单利终值',
+        ],
+        useCases: [
+          '估算长期持有指数基金 / 存款的复利终值',
+          '测算工资定投（月投）在不同收益率下的退休 / 购房储备',
+          '向他人演示复利相对单利的长期优势',
+        ],
+        privacyNote:
+          '所有数字仅在浏览器内存中进行确定性计算，刷新即消失，不向任何服务器上传财务数据。',
+        faqs: [
+          {
+            question: '期初投入和期末投入有什么区别？',
+            answer:
+              '期初投入（即付年金）在每期开始时入账，当期即可产生收益；期末投入（普通年金）在每期结束时入账，少计一期利息。长期、高频定投下二者终值差异会被复利放大。',
+          },
+          {
+            question: '月复利时定投金额是按月投入吗？',
+            answer:
+              '是的。定投金额按所选复利频率的「每期」理解：月复利即每月投入，季复利即每季投入，日复利即每日投入。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Compound Interest & DCA Calculator is a fully browser-based investment planner. Enter principal, annual rate, term, and compounding frequency, optionally add periodic contributions at the begin or end of each period, and get the future value, total contributions, total gain, a per-period schedule, and a simple-interest comparison.',
+        coreFeatures: [
+          'Four compounding frequencies: yearly, quarterly, monthly, daily; period rate = annual rate / periods per year',
+          'Periodic investments: annuity-due (begin) or ordinary annuity (end), rolled forward period by period',
+          'Full summary: future value, total contributed, total gain, and number of periods',
+          'Simple-interest comparison showing the compounding advantage; zero and negative rates handled correctly',
+        ],
+        howToUse: [
+          'Enter the initial principal, annual rate as a percent (e.g. 8 for 8%), and the term in years',
+          'Choose a compounding frequency; optionally set a per-period contribution and its timing (begin/end)',
+          'Read the future value, total contributions, and total gain',
+          'Inspect the per-period schedule and compare against the simple-interest result',
+        ],
+        useCases: [
+          'Estimating the compounded future value of long-term index fund holdings',
+          'Planning monthly salary contributions for retirement or housing savings',
+          'Demonstrating the long-run advantage of compound over simple interest',
+        ],
+        privacyNote:
+          'Every figure is computed deterministically in browser memory and vanishes on refresh; no financial data is uploaded.',
+        faqs: [
+          {
+            question: 'What is the difference between begin and end contributions?',
+            answer:
+              'Begin (annuity due) deposits at the start of each period, so the contribution earns interest in that same period; end (ordinary annuity) deposits at the period’s end and misses one period of interest. The gap compounds over long horizons.',
+          },
+          {
+            question: 'With monthly compounding, is the contribution paid every month?',
+            answer:
+              'Yes. The contribution applies once per compounding period: monthly with monthly compounding, quarterly with quarterly, daily with daily.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
