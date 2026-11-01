@@ -18112,6 +18112,522 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'math-expression-evaluator',
+    name: '数学表达式求值器',
+    nameEn: 'Math Expression Evaluator',
+    description:
+      '输入带运算符优先级、括号嵌套与数学函数的表达式即可求值：支持 + - * / % ^、阶乘、sin/cos/tan/asin/acos/atan/atan2/sinh/cosh/tanh、log/ln/log10/log2、sqrt/cbrt/abs/floor/ceil/round/exp/pow/min/max 与 pi/e/tau 常量，支持多行变量赋值复用、弧度/角度切换，并给出逐步计算过程与行列定位的语法错误。',
+    descriptionEn:
+      'Evaluate expressions with operator precedence, nested parentheses and math functions: + - * / % ^, factorial, sin/cos/tan/asin/acos/atan/atan2/sinh/cosh/tanh, log/ln/log10/log2, sqrt/cbrt/abs/floor/ceil/round/exp/pow/min/max plus pi/e/tau constants, with multi-line variable assignment and reuse, a radian/degree switch, step-by-step traces and line/column syntax errors.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/math-expression-evaluator',
+    iconName: 'Calculator',
+    tags: ['表达式', '科学计算器', '数学函数', '变量', '求值'],
+    tagsEn: ['Expression', 'Scientific Calculator', 'Math Functions', 'Variables', 'Evaluator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `# 以 # 或 // 开头的是注释，空行会被忽略
+r = 5
+area = pi * r^2
+sqrt(area) + 2 * r`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '数学表达式求值器是一款纯浏览器本地运行的科学计算器：采用自研递归下降解析器，正确处理运算符优先级、结合性与括号嵌套，内置常用数学函数与 pi / e / tau 常量，支持多行语句中的变量赋值与复用，并把每一步二元运算与函数调用展开为可读的计算过程，语法错误按行号、列号定位。',
+        coreFeatures: [
+          '完整运算体系：+、-、*、/、%、右结合的幂运算 ^、后缀阶乘 !，一元正负号与任意深度括号嵌套',
+          '常用函数：sin/cos/tan/asin/acos/atan/atan2、双曲函数、sqrt/cbrt/abs/floor/ceil/round/exp、log/ln/log10/log2、pow/min/max，函数名大小写不敏感',
+          '常量与变量：内置 pi、e、tau；每行可用 name = 表达式 定义变量并在后续语句复用，变量表实时展示',
+          '弧度 / 角度模式一键切换，三角函数与反三角函数同步换算；除零、负数开方、asin 越界、阶乘非法等均给出明确中文错误',
+          '逐步计算过程按行分组展示，错误信息带行号与列号，纯本地运算零依赖',
+        ],
+        howToUse: [
+          '在左侧输入表达式，每行一条语句；以 # 或 // 开头的行与空行会被忽略',
+          '使用 name = 表达式 的形式定义变量，后续行可直接引用该变量',
+          '需要角度时打开「角度模式」开关，默认按弧度计算',
+          '在右侧查看最终结果、当前变量表与逐步计算过程，可一键复制最终结果',
+        ],
+        useCases: [
+          '快速验证带括号、幂与函数的复杂算式，替代普通科学计算器',
+          '分步推导几何 / 物理公式，通过变量赋值复用中间量并检查每步结果',
+          '学习运算符优先级、幂的结合性与三角函数弧度 / 角度差异',
+        ],
+        privacyNote:
+          '表达式解析与求值全部在浏览器本地完成，输入内容不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '幂运算 ^ 的结合性是怎样的？',
+            answer:
+              '幂运算按数学惯例采用右结合，即 2^3^2 等价于 2^(3^2) = 512；若想先算底数请显式加括号 (2^3)^2 = 64。一元负号优先级低于幂，-2^2 = -4，而 (-2)^2 = 4。',
+          },
+          {
+            question: '角度模式会影响哪些函数？',
+            answer:
+              '角度模式下 sin/cos/tan 的入参按角度先换算为弧度，asin/acos/atan/atan2 的返回值从弧度换算为角度；sqrt、log 等其他函数不受影响。',
+          },
+          {
+            question: '支持哪些写法与限制？',
+            answer:
+              '支持小数与科学计数法（1.5e-1）、pi / e / tau 常量、变量赋值与注释行；不支持隐式乘法（请显式写 2*pi 而非 2pi），阶乘仅支持 0–170 的非负整数，除零与结果溢出会报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Math Expression Evaluator is a fully browser-local scientific calculator: a hand-written recursive-descent parser correctly handles operator precedence, associativity and nested parentheses, with built-in math functions and pi/e/tau constants, multi-line variable assignment and reuse, a readable step-by-step trace of every binary operation and function call, and syntax errors located by line and column.',
+        coreFeatures: [
+          'Complete operators: +, -, *, /, %, right-associative power ^, postfix factorial !, unary signs and arbitrarily nested parentheses',
+          'Common functions: sin/cos/tan/asin/acos/atan/atan2, hyperbolic functions, sqrt/cbrt/abs/floor/ceil/round/exp, log/ln/log10/log2, pow/min/max; function names are case-insensitive',
+          'Constants and variables: built-in pi, e and tau; define variables per line with name = expression and reuse them in later statements, with a live variable table',
+          'One-click radian/degree mode converting trig and inverse trig arguments; clear errors for division by zero, sqrt of negatives, out-of-range asin and invalid factorials',
+          'Step-by-step trace grouped by input line, line/column error locations, and fully local zero-dependency computation',
+        ],
+        howToUse: [
+          'Enter expressions on the left, one statement per line; lines starting with # or // and blank lines are ignored',
+          'Define variables with name = expression and reference them in later lines',
+          'Turn on degree mode when working with angles; radians are used by default',
+          'Read the final value, current variable table and step-by-step trace on the right, and copy the result with one click',
+        ],
+        useCases: [
+          'Quickly verifying complex formulas with parentheses, powers and functions instead of a physical scientific calculator',
+          'Breaking down geometry or physics formulas with variables that reuse intermediate values and expose each step',
+          'Learning operator precedence, power associativity and the radian/degree difference of trig functions',
+        ],
+        privacyNote:
+          'Expression parsing and evaluation run entirely locally in the browser; your input is never uploaded to any server.',
+        faqs: [
+          {
+            question: 'What is the associativity of the power operator ^?',
+            answer:
+              'Power is right-associative by mathematical convention, so 2^3^2 equals 2^(3^2) = 512; add parentheses for (2^3)^2 = 64. Unary minus binds looser than power, so -2^2 = -4 while (-2)^2 = 4.',
+          },
+          {
+            question: 'Which functions does degree mode affect?',
+            answer:
+              'In degree mode the arguments of sin/cos/tan are converted from degrees to radians and the results of asin/acos/atan/atan2 are converted back to degrees; other functions such as sqrt and log are unaffected.',
+          },
+          {
+            question: 'What syntax is supported and what are the limits?',
+            answer:
+              'Decimals and scientific notation (1.5e-1), pi/e/tau constants, variable assignment and comment lines are supported. Implicit multiplication is not (write 2*pi, not 2pi); factorials accept only non-negative integers from 0 to 170, and division by zero or overflowing results raise an error.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ini-json-converter',
+    name: 'INI 配置 ↔ JSON 双向转换',
+    nameEn: 'INI Config ↔ JSON Converter',
+    description:
+      '在 INI 配置文本与 JSON 之间双向转换：支持 [section] 分节、= / : 分隔符、; / # 注释、引号转义、布尔/数字类型推断、同名分节合并与可选点号嵌套键。',
+    descriptionEn:
+      'Convert bidirectionally between INI configuration text and JSON, with [section] headers, = / : separators, ; / # comments, quoted escapes, boolean/number inference, duplicate-section merging, and optional dotted nested keys.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ini-json-converter',
+    iconName: 'Braces',
+    tags: ['INI', '配置', 'JSON', '双向转换', 'Config'],
+    tagsEn: ['INI', 'Config', 'JSON', 'Bidirectional', 'Converter'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '; 应用配置\napp.name = Demo\napp.port = 8080\n\n[server]\nhost = 127.0.0.1\nport = 3000',
+    doc: {
+      zh: {
+        whatIsIt:
+          'INI ↔ JSON 双向转换器是一款纯浏览器本地运行的配置格式工具，可将 [section]、key = value 形式的 INI 文本解析为结构化 JSON，也可把一层嵌套的 JSON 对象序列化为规范 INI，全程不经过服务器。',
+        coreFeatures: [
+          '双向转换：INI → JSON 与 JSON → INI 一键切换，结果实时预览',
+          '完整 INI 语法：支持分节、= 与 : 分隔符、; / # 整行注释、单双引号及 \\n \\t 等转义',
+          '智能类型推断：true/false、整数、浮点、科学计数法与 null 自动识别，引号包裹则强制保留字符串',
+          '同名分节自动合并、同名键后者覆盖，冲突场景给出带行号的中文报错',
+          '可选点号嵌套键：将 server.host 或 [server.tls] 展开为嵌套对象',
+        ],
+        howToUse: [
+          '选择转换方向：INI → JSON 或 JSON → INI',
+          '在左侧粘贴配置文本，或点击示例按钮载入样例',
+          'INI → JSON 时可按需开关「类型推断」与「点号嵌套键」',
+          '右侧实时显示结果，点击「复制结果」获取转换文本',
+        ],
+        useCases: [
+          '阅读或迁移 Nginx、PHP、MySQL、Windows desktop.ini 等传统配置文件',
+          '把手工维护的 INI 配置接入只接受 JSON 的现代工具链',
+          '为部署脚本生成结构清晰、注释友好的 INI 配置',
+        ],
+        privacyNote:
+          '所有解析与序列化均在浏览器本地完成，配置内容不会被上传或记录，可安全处理含内网地址、密钥片段的敏感配置。',
+        faqs: [
+          {
+            question: '点号嵌套键默认为什么关闭？',
+            answer:
+              '许多 INI 文件（如带版本号的键 1.0.enabled）本就包含点号，默认展开会臆造不存在的嵌套结构。仅当确认键路径语义时再手动开启。',
+          },
+          {
+            question: 'JSON 中的数组如何处理？',
+            answer:
+              'JSON → INI 时标量数组会序列化为逗号分隔文本（tags = a, b, c）；由于 INI 标准没有数组语法，再转回 JSON 时该值会成为字符串，属于预期的有损转换。',
+          },
+          {
+            question: '支持多行值或行尾注释吗？',
+            answer:
+              '不支持。INI 方言差异较大，本工具聚焦通用核心语法：一行一键、整行注释；二层以上嵌套对象与对象数组在 JSON → INI 时会明确报错提示先展平数据。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The INI ↔ JSON converter is a fully in-browser configuration tool: it parses [section] / key = value INI text into structured JSON and serializes single-level JSON objects back into canonical INI, with no server involved.',
+        coreFeatures: [
+          'Bidirectional: switch instantly between INI → JSON and JSON → INI with live preview',
+          'Complete INI syntax: sections, = and : separators, ; / # full-line comments, single/double quotes and \\n \\t escapes',
+          'Smart type inference for booleans, integers, floats, scientific notation and null; quoted values stay strings',
+          'Duplicate sections merge and duplicate keys override, while conflicts raise Chinese error messages with line numbers',
+          'Optional dotted keys: expand server.host or [server.tls] into nested objects',
+        ],
+        howToUse: [
+          'Pick a direction: INI → JSON or JSON → INI',
+          'Paste your config on the left, or load a sample with the example buttons',
+          'For INI → JSON, toggle "Type inference" and "Dotted keys" as needed',
+          'The result appears live on the right; click "Copy" to grab it',
+        ],
+        useCases: [
+          'Reading or migrating legacy configs such as Nginx, PHP, MySQL, and Windows desktop.ini',
+          'Feeding hand-maintained INI files into JSON-only modern toolchains',
+          'Generating clean, comment-friendly INI configs for deployment scripts',
+        ],
+        privacyNote:
+          'All parsing and serialization happens locally in your browser. Config content is never uploaded or logged, so internal hosts and secret fragments stay on your device.',
+        faqs: [
+          {
+            question: 'Why are dotted keys disabled by default?',
+            answer:
+              'Many INI files legitimately contain dots in key names (e.g. version keys like 1.0.enabled), so auto-expansion would invent fake nesting. Enable it only when you know the paths are intentional.',
+          },
+          {
+            question: 'How are JSON arrays handled?',
+            answer:
+              'Scalar arrays are serialized as comma-separated text (tags = a, b, c). Because INI has no native array syntax, converting back yields a string; this is intentional lossy conversion.',
+          },
+          {
+            question: 'Are multiline values or inline comments supported?',
+            answer:
+              'No. INI dialects vary widely, so this tool focuses on the common core: one key per line and full-line comments. Nested objects deeper than one level and arrays of objects raise an explicit flatten-first error during JSON → INI.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'matrix-calculator',
+    name: '线性代数矩阵计算器（乘法 / 行列式 / 逆 / 秩 / RREF）',
+    nameEn: 'Matrix Calculator (Multiply / Determinant / Inverse / Rank / RREF)',
+    description:
+      '基于 BigInt 精确分数的矩阵运算：加减、标量乘、矩阵乘法、转置、行列式、逆矩阵、秩、RREF 逐步消元，并可求解 Ax = b（唯一解 / 无解 / 无穷多解判定），支持粘贴空格逗号换行分隔的数字。',
+    descriptionEn:
+      'Exact BigInt-fraction matrix math: addition, subtraction, scalar and matrix multiplication, transpose, determinant, inverse, rank, step-by-step RREF, and solving Ax = b with unique / none / infinite-solution classification. Paste numbers separated by spaces, commas, or newlines.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/matrix-calculator',
+    iconName: 'Calculator',
+    tags: ['矩阵', '线性代数', '行列式', '逆矩阵', 'RREF', '方程组'],
+    tagsEn: ['Matrix', 'Linear Algebra', 'Determinant', 'Inverse', 'RREF', 'Equations'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1 2 3\n0 1 4\n5 6 0',
+    doc: {
+      zh: {
+        whatIsIt:
+          '线性代数矩阵计算器是一款纯浏览器本地运行的精确矩阵运算工具，采用部分主元 Gauss-Jordan 消元与 BigInt 分数表示，避免浮点误差，提供矩阵四则、转置、行列式、逆矩阵、秩、RREF 逐步消元与 Ax = b 方程组求解，适合课堂验算与工程推导。',
+        coreFeatures: [
+          '矩阵加减、标量乘法、矩阵乘法与转置，维度不匹配时给出明确中文报错',
+          '方阵行列式与逆矩阵，奇异矩阵（行列式为 0）明确提示不存在逆矩阵',
+          '矩阵的秩与简化行阶梯形（RREF），逐步展示每一次换行、归一与消元操作',
+          '解线性方程组 Ax = b，自动判定唯一解、无解、无穷多解并标出自由变量',
+          '全程 BigInt 精确分数（支持 3/4、0.5 等输入），可切换小数近似显示',
+        ],
+        howToUse: [
+          '在下拉框中选择要执行的运算',
+          '在矩阵 A 框中输入数字：空格或逗号分列，换行或分号分行；支持整数、小数与 a/b 分数',
+          '二元运算时在矩阵 B 框输入第二个矩阵；标量乘法填写 k；解方程组填写右端向量 b',
+          '右侧实时显示结果，RREF 与方程组可展开查看消元步骤，点击「复制结果」获取文本',
+        ],
+        useCases: [
+          '线性代数作业验算：行列式经典值、已知逆矩阵互乘为单位阵、消元过程核对',
+          '图形学 / 机器人学中坐标变换矩阵的乘法与求逆核算',
+          '最小二乘、网络流等问题的前置方程组相容性判定',
+        ],
+        privacyNote:
+          '所有矩阵解析与分数运算均在浏览器本地完成，不发起任何网络请求，输入的矩阵数据不会离开设备。',
+        faqs: [
+          {
+            question: '为什么结果显示成分数而不是小数？',
+            answer:
+              '内部采用 BigInt 分数与部分主元 Gauss-Jordan 消元，保证课堂场景的精确结果（例如行列式恰为 -306 而非 -306.00000001）。需要小数时打开「小数显示」开关即可查看浮点近似值。',
+          },
+          {
+            question: '矩阵很大时能用吗？',
+            answer:
+              '工具定位为学习与小规模工程核算，分数消元的数值会随矩阵增大而快速膨胀，建议矩阵阶数在 12 以内；超大矩阵的数值计算应使用专门的数值代数库。',
+          },
+          {
+            question: '逆矩阵结果为空或报错是怎么回事？',
+            answer:
+              '当行列式为 0（奇异矩阵）时逆矩阵不存在，工具会直接提示；秩与 RREF 运算仍可正常执行，可据此观察矩阵的行空间结构。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Matrix Calculator is a fully in-browser linear-algebra tool built on partial-pivoting Gauss-Jordan elimination with exact BigInt fractions (no floating-point drift). It covers matrix arithmetic, transpose, determinant, inverse, rank, step-by-step RREF, and solving Ax = b — ideal for homework checks and engineering derivations.',
+        coreFeatures: [
+          'Addition, subtraction, scalar and matrix multiplication, and transpose, with clear dimension-mismatch errors',
+          'Determinant and inverse of square matrices; singular matrices (det = 0) get an explicit "no inverse" message',
+          'Rank and reduced row echelon form (RREF) with every swap, normalization, and elimination shown as a step',
+          'Solve Ax = b with automatic classification: unique solution, no solution, or infinitely many with free variables listed',
+          'Exact BigInt fractions throughout (accepts 3/4, 0.5, etc.), with a toggle for decimal approximations',
+        ],
+        howToUse: [
+          'Pick an operation from the dropdown',
+          'Enter matrix A with numbers separated by spaces or commas per row and newlines or semicolons between rows; integers, decimals, and a/b fractions are supported',
+          'Fill matrix B for binary operations, k for scalar multiplication, or the right-hand vector b for equation solving',
+          'The result updates live on the right; expand elimination steps for RREF and equations, and click "Copy" to export text',
+        ],
+        useCases: [
+          'Checking linear-algebra homework: classic determinant values, A·A⁻¹ = I verification, elimination walkthroughs',
+          'Verifying transform matrices in computer graphics and robotics (multiplication and inversion)',
+          'Consistency checks for equation systems before least-squares or network-flow work',
+        ],
+        privacyNote:
+          'All parsing and fraction arithmetic runs locally in your browser with no network requests; your matrices never leave your device.',
+        faqs: [
+          {
+            question: 'Why are results shown as fractions instead of decimals?',
+            answer:
+              'Exact BigInt fractions with partial pivoting guarantee classroom-grade precision (e.g. determinant -306, not -306.00000001). Enable the "Decimal" toggle whenever you prefer floating-point approximations.',
+          },
+          {
+            question: 'Does it handle very large matrices?',
+            answer:
+              'It targets study and small-scale engineering use: exact fraction numerators grow quickly, so matrices up to roughly order 12 are practical. For large numerical matrices, use a dedicated numerical linear-algebra library.',
+          },
+          {
+            question: 'Why is the inverse empty or rejected?',
+            answer:
+              'A singular matrix (determinant 0) has no inverse, and the tool says so explicitly. Rank and RREF still work, so you can inspect the row structure of the matrix regardless.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'text-similarity',
+    name: '文本相似度计算器（Levenshtein / LCS / Jaro-Winkler / Dice）',
+    nameEn: 'Text Similarity Calculator (Levenshtein / LCS / Jaro-Winkler / Dice)',
+    description:
+      '输入两段文本同时计算四种常用相似度指标：Levenshtein 编辑距离与归一化相似度、最长公共子序列 LCS、Jaro-Winkler 与 Sørensen–Dice 双字组系数，并展示字符级编辑对齐视图，支持忽略大小写。',
+    descriptionEn:
+      'Enter two texts to get four similarity metrics at once: Levenshtein distance with normalized ratio, longest common subsequence, Jaro-Winkler, and Sørensen–Dice bigram coefficient, plus a character-level edit alignment view and optional case-insensitive comparison.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/text-similarity',
+    iconName: 'FileText',
+    tags: ['文本相似度', '编辑距离', 'Levenshtein', 'LCS', 'Jaro-Winkler', 'Dice'],
+    tagsEn: ['Text Similarity', 'Edit Distance', 'Levenshtein', 'LCS', 'Jaro-Winkler', 'Dice'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'kitten',
+    doc: {
+      zh: {
+        whatIsIt:
+          '文本相似度计算器是一款纯浏览器本地运行的文本量化比较工具，对两段文本同时给出 Levenshtein 编辑距离、最长公共子序列（LCS）、Jaro-Winkler 与 Sørensen–Dice 双字组系数四种经典指标，并以字符级对齐视图展示从 A 变换到 B 的插入、删除、替换过程，适合模糊去重、输入纠错与日志聚类前的相似度估算。',
+        coreFeatures: [
+          '四种指标一次给出：Levenshtein 距离与归一化相似度、LCS 长度与比率、Jaro-Winkler、Dice 系数',
+          '字符级编辑对齐视图：相同 / 替换 / 删除 / 插入四色标注，空格以 ␣ 可见化',
+          '可选忽略大小写；实时计算，输入即出结果',
+          '经典动态规划与匹配窗口算法，零新增依赖、纯本地运行',
+          '正确处理中文（按 JavaScript 字符码元计数）与空串边界',
+        ],
+        howToUse: [
+          '在两个文本框分别粘贴或输入待比较的文本 A 与 B',
+          '按需打开「忽略大小写」开关，指标即时重新计算',
+          '查看四种相似度百分比与编辑距离等原始数值',
+          '在「编辑对齐」区域查看字符级变换过程，可用开关隐藏',
+        ],
+        useCases: [
+          '模糊去重：判断两条用户评论、搜索词或日志是否实质相同',
+          '输入纠错 / 拼写建议：用编辑距离与 Jaro-Winkler 排序候选词',
+          '日志与告警聚类：合并前快速估算文本接近程度',
+        ],
+        privacyNote:
+          '所有文本均在浏览器本地完成计算，不发起任何网络请求，业务文本不会离开设备。',
+        faqs: [
+          {
+            question: '四个指标应该看哪个？',
+            answer:
+              '拼写纠错与短词匹配常用 Jaro-Winkler；需要“最少改多少次”时看 Levenshtein 编辑距离；子串顺序保持场景用 LCS；中文或按词块重复的短文本可用 Dice 双字组系数。本工具一次全部给出，便于交叉判断。',
+          },
+          {
+            question: '中文是按字还是按词计算？',
+            answer:
+              '统一按字符（JavaScript 码元）计数，每个汉字视为一个字符，Dice 的双字组即相邻两个汉字。需要分词级比较时可先在文本中自行插入空格再比较。',
+          },
+          {
+            question: '与 text-diff 工具有什么区别？',
+            answer:
+              'text-diff 输出行级增删视图用于审阅差异，本工具输出量化相似度数值与字符级对齐，面向去重、纠错、聚类等需要数值排序的场景。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Text Similarity Calculator is a fully in-browser tool that compares two texts with four classic metrics — Levenshtein distance, longest common subsequence (LCS), Jaro-Winkler, and Sørensen–Dice bigram coefficient — and visualizes the character-level insert/delete/replace alignment that transforms A into B. It supports fuzzy deduplication, typo correction, and log-clustering estimates.',
+        coreFeatures: [
+          'Four metrics at once: Levenshtein distance and normalized ratio, LCS length and ratio, Jaro-Winkler, and Dice coefficient',
+          'Character-level alignment view with color-coded equal / replace / delete / insert chips; spaces shown as ␣',
+          'Optional case-insensitive mode with instant recomputation',
+          'Classic dynamic-programming and matching-window algorithms with zero new dependencies',
+          'Correct handling of Chinese text (counted by JavaScript code units) and empty-string edge cases',
+        ],
+        howToUse: [
+          'Paste or type text A and text B into the two boxes',
+          'Toggle "Ignore case" as needed; metrics update immediately',
+          'Read the four similarity percentages and raw values such as edit distance',
+          'Inspect the character-level edit alignment, which can be hidden via the toggle',
+        ],
+        useCases: [
+          'Fuzzy deduplication of comments, search queries, or log lines',
+          'Typo correction and spell suggestions ranked by edit distance or Jaro-Winkler',
+          'Quick similarity estimates before clustering logs and alerts',
+        ],
+        privacyNote:
+          'All computation happens locally in your browser with no network requests; your text never leaves your device.',
+        faqs: [
+          {
+            question: 'Which of the four metrics should I use?',
+            answer:
+              'Jaro-Winkler is popular for spell correction and short strings; Levenshtein answers "how many edits are needed"; LCS suits order-preserving subsequence comparisons; Dice bigrams work well for Chinese or block-repetitive short text. The tool shows all four so you can cross-check.',
+          },
+          {
+            question: 'Is Chinese counted by character or by word?',
+            answer:
+            'All metrics count code-unit characters, so each Han character is one unit and Dice bigrams are adjacent character pairs. For word-level comparison, insert spaces between words before comparing.',
+          },
+          {
+            question: 'How is this different from the text-diff tool?',
+            answer:
+              'text-diff renders line-level add/remove views for reviewing changes, while this tool produces quantitative similarity scores and character alignment for scenarios such as deduplication, correction, and clustering.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-to-python-dataclass',
+    name: 'JSON 转 Python dataclass 生成器（@dataclass / TypedDict）',
+    nameEn: 'JSON to Python dataclass Generator (@dataclass / TypedDict)',
+    description:
+      '粘贴 JSON 自动递归推断结构，生成 Python @dataclass 或 TypedDict 定义：嵌套类、str/int/float/bool/None/list/Optional 类型推断、异构对象数组合并、空数组退化为 list、snake_case 字段与 PascalCase 类名规范化，可选生成 from_dict / to_dict 辅助方法。',
+    descriptionEn:
+      'Paste JSON to recursively infer its structure and generate Python @dataclass or TypedDict definitions: nested classes, str/int/float/bool/None/list/Optional inference, heterogeneous object-array merging, bare list for empty arrays, snake_case fields with PascalCase class names, and optional from_dict / to_dict helpers.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-python-dataclass',
+    iconName: 'FileCode',
+    tags: ['JSON', 'Python', 'dataclass', 'TypedDict', '代码生成'],
+    tagsEn: ['JSON', 'Python', 'dataclass', 'TypedDict', 'Code Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '{\n  "user_name": "Ada",\n  "age": 36\n}',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON 转 Python dataclass 生成器是一款纯浏览器本地运行的代码生成工具：粘贴一段 JSON（对象或数组），它会递归推断结构并生成可直接使用的 Python 数据模型，支持 @dataclass 与 typing.TypedDict 两种输出风格，解决后端与脚本开发中根据接口样例手写数据模型的重复劳动。',
+        coreFeatures: [
+          '递归生成嵌套类，字段类型覆盖 str / int / float / bool / None / list[...] / Optional[...] 及嵌套 dataclass',
+          '数组合并：异构对象数组按键并集合并为同一个类，部分对象缺失的字段标为可选',
+          '空数组退化为裸 list；null 与标量共存推断为 Optional[T]；无法统一的异构值推断为 Any',
+          '命名规范化：键名转 snake_case 字段（保留字追加下划线），类名转 PascalCase，冲突自动追加数字后缀',
+          '@dataclass 风格可选生成 from_dict 类方法与 to_dict 方法；TypedDict 风格对缺失键标 NotRequired',
+          '零新增依赖、纯本地运算，生成结果对同一输入确定不变',
+        ],
+        howToUse: [
+          '在左侧文本框粘贴 JSON 对象或数组',
+          '按需修改根类名，并选择 @dataclass 或 TypedDict 输出风格',
+          '@dataclass 风格下可用开关决定是否生成 from_dict / to_dict 辅助方法',
+          '点击右上角「复制结果」把生成代码粘贴到 Python 工程中',
+        ],
+        useCases: [
+          '根据 HTTP API 响应样例快速生成接口数据模型',
+          '把 JSON 配置 / 数据文件转成带类型提示的 Python 数据结构',
+          '脚本开发中为 dict 数据补充静态类型，方便 IDE 补全与 mypy 检查',
+        ],
+        privacyNote:
+          '所有 JSON 均在浏览器本地完成解析与代码生成，不发起任何网络请求，业务数据不会离开设备。',
+        faqs: [
+          {
+            question: '@dataclass 和 TypedDict 应该选哪个？',
+            answer:
+              '需要真实类、默认值、方法或运行期校验时选 @dataclass（缺失字段给 Optional + None 默认值）；只想描述 dict 的键类型、保持与普通 dict 完全一致的运行时行为时选 TypedDict（缺失键标 NotRequired，需 Python 3.11+）。',
+          },
+          {
+            question: '为什么有的字段是 Optional、有的是 Any？',
+            answer:
+              '同一字段出现 null 与某一种具体类型（如 "a" 与 null）时推断为 Optional[str]；对象数组中部分对象缺少该键时，@dataclass 模式同样给 Optional + None 默认值；而同一位置出现互不兼容的多种类型（如 1 与 "two"）无法用单一类型表达，只能推断为 Any。',
+          },
+          {
+            question: '空数组为什么生成裸 list？',
+            answer:
+              '空数组没有任何元素可供推断，无法确定元素类型，因此生成未参数化的 list。补充至少一个带类型的元素后重新生成即可得到 list[T]。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON to Python dataclass generator is a fully in-browser code generator: paste JSON (an object or array) and it recursively infers the structure to produce ready-to-use Python data models in either @dataclass or typing.TypedDict style, removing the repetitive work of hand-writing models from API samples.',
+        coreFeatures: [
+          'Recursive nested classes with str / int / float / bool / None / list[...] / Optional[...] and nested dataclass types',
+          'Array merging: heterogeneous object arrays merge into one class by key union, and keys missing in some objects become optional',
+          'Empty arrays degrade to a bare list; null alongside a scalar becomes Optional[T]; unresolvable mixed values become Any',
+          'Name normalization: keys become snake_case fields (keywords get a trailing underscore), classes become PascalCase, collisions get numeric suffixes',
+          'Optional from_dict class method and to_dict method for @dataclass; NotRequired keys for TypedDict output',
+          'Zero new dependencies, fully local, and deterministic output for the same input',
+        ],
+        howToUse: [
+          'Paste a JSON object or array into the left editor',
+          'Change the root class name if needed and pick @dataclass or TypedDict output',
+          'In @dataclass mode, toggle from_dict / to_dict helper generation',
+          'Click "Copy result" to paste the generated code into your Python project',
+        ],
+        useCases: [
+          'Quickly model HTTP API responses from sample payloads',
+          'Convert JSON config or data files into typed Python structures',
+          'Add static typing to dict data in scripts for IDE completion and mypy checks',
+        ],
+        privacyNote:
+          'All JSON is parsed and rendered locally in your browser with no network requests; your data never leaves your device.',
+        faqs: [
+          {
+            question: 'Should I pick @dataclass or TypedDict?',
+            answer:
+              'Pick @dataclass when you want a real class with defaults, methods, or runtime validation (missing keys become Optional with a None default). Pick TypedDict when you only describe dict key types while keeping plain-dict runtime behavior (missing keys are NotRequired, requiring Python 3.11+).',
+          },
+          {
+            question: 'Why are some fields Optional and others Any?',
+            answer:
+              'Null alongside one concrete type (e.g. "a" and null) becomes Optional[str]; a key missing in some array objects also becomes Optional with a None default in @dataclass mode. But mutually incompatible types at the same position (e.g. 1 and "two") cannot be expressed as one type, so they become Any.',
+          },
+          {
+            question: 'Why does an empty array become a bare list?',
+            answer:
+              'An empty array offers no elements to infer from, so the element type is unknown and the result is an unparameterized list. Add at least one typed element and regenerate to get list[T].',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

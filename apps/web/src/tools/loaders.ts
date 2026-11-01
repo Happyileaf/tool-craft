@@ -205,4 +205,9 @@ export const toolLoaders: Record<
   'rfc2047-decoder': () => import('./rfc2047-decoder'),
   'properties-json-converter': () => import('./properties-json-converter'),
   'magnet-link-parser': () => import('./magnet-link-parser'),
+  'math-expression-evaluator': () => import('./math-expression-evaluator'),
+  'ini-json-converter': () => import('./ini-json-converter'),
+  'matrix-calculator': () => import('./matrix-calculator'),
+  'text-similarity': () => import('./text-similarity'),
+  'json-to-python-dataclass': () => import('./json-to-python-dataclass'),
 };

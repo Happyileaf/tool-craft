@@ -1,0 +1,118 @@
+.container {
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.options {
+  row-gap: 8px;
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  min-width: 0;
+}
+
+.meta {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.code textarea {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: pre;
+  font-size: 13px;
+}
+
+.subInput {
+  margin-top: 12px;
+}
+
+.subLabel {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.65);
+  margin-bottom: 4px;
+}
+
+.output {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.matrixWrap {
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.matrix {
+  border-collapse: collapse;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 14px;
+  border-left: 2px solid rgba(0, 0, 0, 0.65);
+  border-right: 2px solid rgba(0, 0, 0, 0.65);
+}
+
+.matrix td {
+  padding: 4px 12px;
+  text-align: center;
+  min-width: 48px;
+  white-space: nowrap;
+}
+
+.cell {
+  display: inline-block;
+}
+
+.vector {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 16px;
+  padding: 4px 0;
+}
+
+.result {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 30px;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.steps {
+  margin-top: 4px;
+}
+
+.stepHeading {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.stepLabel {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+}
