@@ -4,13 +4,18 @@
 
 ## 日志
 
-## 2026-11-02 ：【Agent自主迭代】新增 5 个数学表达式求值、INI/JSON 互转、线性代数矩阵、文本相似度与 JSON 转 Python dataclass 工具
+## 2026-11-02 ：【Agent自主迭代】新增 10 个数学表达式求值、INI/JSON 互转、线性代数矩阵、文本相似度、JSON 转 Python dataclass、CAS 登记号校验、RC 滤波器参数、文件下载时间估算、Markdown 表格生成与 Apple .strings 转换工具
 
 - **新增**：数学表达式求值器（math-expression-evaluator）— 支持运算符优先级、括号嵌套、阶乘、三角函数与对数等常用数学函数及 pi/e/tau 常量，多行变量赋值复用、弧度 / 角度切换，输出逐步计算过程与行列定位的语法错误，纯本地词法 / 语法分析
 - **新增**：INI 配置 ↔ JSON 双向转换（ini-json-converter）— 支持 [section] 分节、= / : 分隔符、; / # 注释、引号转义、布尔 / 数字类型推断、同名分节合并与可选点号嵌套键，双向实时转换并对格式错误给出中文提示
 - **新增**：线性代数矩阵计算器（matrix-calculator）— 基于 BigInt 精确分数的矩阵加减、标量乘、矩阵乘法、转置、行列式、逆矩阵、秩与 RREF 逐步消元，并求解 Ax = b（唯一解 / 无解 / 无穷多解判定），支持空格逗号换行分隔粘贴
 - **新增**：文本相似度计算器（text-similarity）— 同时计算 Levenshtein 编辑距离与归一化相似度、最长公共子序列 LCS、Jaro-Winkler 与 Sørensen–Dice 双字组系数四种指标，展示字符级编辑对齐视图，支持忽略大小写
 - **新增**：JSON 转 Python dataclass 生成器（json-to-python-dataclass）— 粘贴 JSON 递归推断结构并生成 @dataclass 或 TypedDict 定义，支持嵌套类、Optional 缺失字段、异构对象数组合并、空数组退化裸 list、snake_case / PascalCase 命名规范化与可选 from_dict / to_dict 辅助方法
+- **新增**：CAS 化学物质登记号校验器（cas-number-validator）— 按模 10 加权算法核验校验位，支持批量逐行校验、全角连字符归一与结构规则检查，逐条标注合法 / 非法并给出实算校验位，纯本地运算
+- **新增**：RC 滤波器参数计算器（rc-filter-calculator）— 依据 fc = 1 /（2πRC）与 τ = RC 在截止频率、电阻、电容、时间常数间知二求三，SI 词头自适应换算并输出角频率 ω、-3.01dB 衰减点与 ±45° 相移参考，纯本地数值计算
+- **新增**：文件下载时间估算器（download-time-calculator）— 按文件大小、带宽与有效传输效率估算耗时，输出秒数、hh:mm:ss 与可读时长，并给出 8 档宽带 / 移动网络常见带宽对照表，纯本地计算
+- **新增**：Markdown 表格生成器（markdown-table-generator）— 将 CSV / TSV / Excel 粘贴内容转换为 GFM 管道表格，支持首行表头开关、逐列对齐、紧凑 / 补齐空格、竖线转义与列数不足自动补空列，一键复制
+- **新增**：Apple .strings ↔ JSON 双向转换（strings-json-converter）— 解析 Localizable.strings 的引号键值与分号语法，剥离 // 与块注释、处理 \U 四位 / 八位转义及 emoji 代理对、检测重复键并按行号定位错误；反向生成支持按键排序，纯本地转换零依赖
 
 ## 2026-11-01 ：【Agent自主迭代】新增 20 个 IBAN 校验、三维姿态转换、Go 结构生成、Unicode 检视、RSA 非对称密码、集装箱校验位、多纪元时间戳、NMEA 解析、电阻色环、JSON 表单互转、内容协商头解析、KSUID、security.txt、定宽文本转换、NPV/IRR 计算、贷款月供、复利定投、RFC 2047 解码、.properties 转换与磁力链接工具
 
