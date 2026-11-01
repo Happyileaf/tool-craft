@@ -204,4 +204,9 @@
 | 20261101140216 | TypeID 标识符生成与解析器（typeid 规范） | Web Tool | External Reference | Pending | 2026-11-01 | | [详情](./idea-details/20261101140216.md) |
 | 20261101140217 | PHP serialize ↔ JSON 双向转换器 | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101140217.md) |
 | 20261101140218 | HTTP Cache-Control 指令解析与缓存新鲜度计算器（RFC 9111） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101140218.md) |
+| 20261101201001 | SMS 短信长度与分片（UDH concat）计算器（GSM 7-bit / UCS-2） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201001.md) |
+| 20261101201002 | Encoded Polyline Algorithm Format 折线编解码器（Google 精度 5 / 精度 6） | Web Tool | External Reference | Pending | 2026-11-01 | | [详情](./idea-details/20261101201002.md) |
+| 20261101201003 | Redis RESP2/RESP3 协议编解码器（含 inline 与 RESP3 类型） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201003.md) |
+| 20261101201004 | HAR 1.2 / 1.3 归档文件解析与请求摘要查看器（JSON 安全解析） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201004.md) |
+| 20261101201005 | JSON 转 PHP array 代码生成器（含嵌套类型推断与短数组语法） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201005.md) |
 
