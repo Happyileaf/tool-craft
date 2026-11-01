@@ -17915,6 +17915,104 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'properties-json-converter',
+    name: 'Java .properties ↔ JSON 双向转换',
+    nameEn: 'Java .properties ↔ JSON Converter',
+    description:
+      'Java .properties 配置文本与扁平 JSON 对象双向转换：解析 = / : / 空白分隔符、行尾反斜杠续行、\\n \\t \\r \\\\ \\uXXXX 转义、# / ! 注释与重复键覆盖；序列化时自动转义特殊字符并对超长逻辑行续行，键保持扁平不臆造嵌套。',
+    descriptionEn:
+      'Convert between Java .properties text and a flat JSON object: parsing handles = / : / whitespace separators, backslash line continuations, \\n \\t \\r \\\\ \\uXXXX escapes, # / ! comments and duplicate-key override; serialization escapes special characters, wraps long logical lines, and keeps keys flat without inventing nesting.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/properties-json-converter',
+    iconName: 'FileTextOutlined',
+    tags: ['.properties', 'Java 配置', 'JSON', '双向转换', 'Unicode 转义'],
+    tagsEn: ['.properties', 'Java Config', 'JSON', 'Bidirectional', 'Unicode Escape'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'app.name = Demo 应用\nport: 8080\ntitle=\\u4f60\\u597d',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Java .properties ↔ JSON 转换器是一款纯浏览器本地运算的配置格式互转工具。.properties 是 java.util.Properties 使用的无段落、扁平键值格式：支持 = / : / 空白三类分隔符、行尾反斜杠续行、\\n \\t \\r \\\\ \\uXXXX 转义以及 # / ! 注释。本工具把它解析为扁平 JSON 对象，也能把扁平对象序列化回规范的 .properties 文本。',
+        coreFeatures: [
+          '完整语法：= / : / 空白三种分隔符，键值首尾空白规则与 Java 实现一致',
+          '续行与转义：行尾反斜杠拼接物理行并折叠起首空白，\\n \\t \\r \\\\ \\uXXXX 正确解码',
+          '注释与重复键：# / ! 注释行与空白行忽略，重复键以后出现者为准',
+          '双向转换：JSON 序列化自动转义键中的分隔符与值中的控制字符，逻辑行超 72 字符自动续行',
+          '严格报错：畸形 \\uXXXX、缺键、嵌套对象 / 数组值均给出明确中文错误，全部纯本地完成',
+        ],
+        howToUse: [
+          '选择转换方向：.properties → JSON 或 JSON → .properties',
+          '在左侧粘贴配置文本或扁平 JSON 对象，结果在右侧实时更新',
+          '可点击「输出送入对侧并换向」做往返一致性校验，或直接复制结果',
+        ],
+        useCases: [
+          '阅读 / 编辑 Spring、Log4j、Maven 等 Java 生态的 .properties 配置',
+          '把多语言资源（含 \\uXXXX 转义）快速还原为可读 Unicode 文本',
+          '在配置中心 / JSON 工作流与 .properties 文件之间迁移键值',
+        ],
+        privacyNote: '所有文本均在浏览器本地解析，不上传、不记录任何配置内容。',
+        faqs: [
+          {
+            question: '为什么解析结果是扁平对象，没有按点号生成嵌套？',
+            answer:
+              '点号在 .properties 键名里只是普通字符（如 app.name 本身就是键），java.util.Properties 也不做层级拆分；Spring 等框架的嵌套绑定属于上层约定。为避免臆造结构，本工具保留原始扁平键，嵌套转换请先自行展平。',
+          },
+          {
+            question: '续行规则具体是怎样的？',
+            answer:
+              '逻辑行以奇数个行尾反斜杠结尾时，会与下一物理行拼接，且下一物理行起首的空格 / 制表符被折叠丢弃。序列化方向则在逻辑行超过 72 个自然字符处插入反斜杠 + 换行 + 单空格，与 java.util.Properties.store 的输出风格一致。',
+          },
+          {
+            question: '它和 INI 转 JSON 工具有什么区别？',
+            answer:
+              'INI 有 [section] 段落与显式层级；.properties 没有段落、全部为扁平键值，语法难点集中在转义序列（\\uXXXX）与行续接上。两者词法规则不同，不能互相替代。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first bidirectional converter between Java .properties text and flat JSON objects. .properties is the section-less, flat key/value format used by java.util.Properties: it supports = / : / whitespace separators, backslash line continuations, \\n \\t \\r \\\\ \\uXXXX escapes, and # / ! comments. Parse it into flat JSON or serialize a flat object back into canonical .properties text.',
+        coreFeatures: [
+          'Full syntax: = / : / whitespace separators with Java-compatible leading/trailing whitespace rules',
+          'Continuations and escapes: trailing backslashes join physical lines and fold leading whitespace; \\n \\t \\r \\\\ \\uXXXX decode correctly',
+          'Comments and duplicate keys: # / ! comment lines and blank lines ignored; later duplicates win',
+          'Bidirectional: serialization escapes key separators and control characters in values, wrapping logical lines beyond 72 characters',
+          'Strict errors: malformed \\uXXXX, missing keys, nested object/array values get clear messages; everything runs locally',
+        ],
+        howToUse: [
+          'Choose a direction: .properties → JSON or JSON → .properties',
+          'Paste configuration text or a flat JSON object on the left; the result updates live on the right',
+          'Use "send output to the other side and switch" for a round-trip check, or copy the result directly',
+        ],
+        useCases: [
+          'Reading or editing Spring, Log4j, Maven and other Java ecosystem .properties files',
+          'Turning i18n resources with \\uXXXX escapes into readable Unicode text',
+          'Migrating key/value configuration between JSON-based pipelines and .properties files',
+        ],
+        privacyNote: 'All text is parsed locally in the browser; no configuration content is uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why is the result flat instead of nested on dots?',
+            answer:
+              'A dot is just an ordinary character in a .properties key (app.name is the key itself); java.util.Properties never splits hierarchy, and nested binding is a higher-level convention of frameworks like Spring. To avoid inventing structure, original flat keys are preserved — flatten JSON yourself before conversion.',
+          },
+          {
+            question: 'How exactly do line continuations work?',
+            answer:
+              'A logical line ending with an odd number of trailing backslashes joins the next physical line, and leading spaces/tabs of that next line are discarded. Serialization inserts a backslash + newline + single space when a logical line exceeds 72 natural characters, matching the style of java.util.Properties.store.',
+          },
+          {
+            question: 'How is this different from the INI-to-JSON tool?',
+            answer:
+              'INI has [section] blocks and explicit hierarchy; .properties is section-less and entirely flat, with escapes (\\uXXXX) and line continuations as its tricky parts. The two lexical grammars differ and are not interchangeable.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

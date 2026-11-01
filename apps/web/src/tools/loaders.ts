@@ -203,4 +203,5 @@ export const toolLoaders: Record<
   'loan-calculator': () => import('./loan-calculator'),
   'compound-interest-calculator': () => import('./compound-interest-calculator'),
   'rfc2047-decoder': () => import('./rfc2047-decoder'),
+  'properties-json-converter': () => import('./properties-json-converter'),
 };
