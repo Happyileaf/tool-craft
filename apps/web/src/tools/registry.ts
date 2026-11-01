@@ -18524,6 +18524,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'json-to-python-dataclass',
+    name: 'JSON 转 Python dataclass 生成器（@dataclass / TypedDict）',
+    nameEn: 'JSON to Python dataclass Generator (@dataclass / TypedDict)',
+    description:
+      '粘贴 JSON 自动递归推断结构，生成 Python @dataclass 或 TypedDict 定义：嵌套类、str/int/float/bool/None/list/Optional 类型推断、异构对象数组合并、空数组退化为 list、snake_case 字段与 PascalCase 类名规范化，可选生成 from_dict / to_dict 辅助方法。',
+    descriptionEn:
+      'Paste JSON to recursively infer its structure and generate Python @dataclass or TypedDict definitions: nested classes, str/int/float/bool/None/list/Optional inference, heterogeneous object-array merging, bare list for empty arrays, snake_case fields with PascalCase class names, and optional from_dict / to_dict helpers.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-python-dataclass',
+    iconName: 'FileCode',
+    tags: ['JSON', 'Python', 'dataclass', 'TypedDict', '代码生成'],
+    tagsEn: ['JSON', 'Python', 'dataclass', 'TypedDict', 'Code Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '{\n  "user_name": "Ada",\n  "age": 36\n}',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON 转 Python dataclass 生成器是一款纯浏览器本地运行的代码生成工具：粘贴一段 JSON（对象或数组），它会递归推断结构并生成可直接使用的 Python 数据模型，支持 @dataclass 与 typing.TypedDict 两种输出风格，解决后端与脚本开发中根据接口样例手写数据模型的重复劳动。',
+        coreFeatures: [
+          '递归生成嵌套类，字段类型覆盖 str / int / float / bool / None / list[...] / Optional[...] 及嵌套 dataclass',
+          '数组合并：异构对象数组按键并集合并为同一个类，部分对象缺失的字段标为可选',
+          '空数组退化为裸 list；null 与标量共存推断为 Optional[T]；无法统一的异构值推断为 Any',
+          '命名规范化：键名转 snake_case 字段（保留字追加下划线），类名转 PascalCase，冲突自动追加数字后缀',
+          '@dataclass 风格可选生成 from_dict 类方法与 to_dict 方法；TypedDict 风格对缺失键标 NotRequired',
+          '零新增依赖、纯本地运算，生成结果对同一输入确定不变',
+        ],
+        howToUse: [
+          '在左侧文本框粘贴 JSON 对象或数组',
+          '按需修改根类名，并选择 @dataclass 或 TypedDict 输出风格',
+          '@dataclass 风格下可用开关决定是否生成 from_dict / to_dict 辅助方法',
+          '点击右上角「复制结果」把生成代码粘贴到 Python 工程中',
+        ],
+        useCases: [
+          '根据 HTTP API 响应样例快速生成接口数据模型',
+          '把 JSON 配置 / 数据文件转成带类型提示的 Python 数据结构',
+          '脚本开发中为 dict 数据补充静态类型，方便 IDE 补全与 mypy 检查',
+        ],
+        privacyNote:
+          '所有 JSON 均在浏览器本地完成解析与代码生成，不发起任何网络请求，业务数据不会离开设备。',
+        faqs: [
+          {
+            question: '@dataclass 和 TypedDict 应该选哪个？',
+            answer:
+              '需要真实类、默认值、方法或运行期校验时选 @dataclass（缺失字段给 Optional + None 默认值）；只想描述 dict 的键类型、保持与普通 dict 完全一致的运行时行为时选 TypedDict（缺失键标 NotRequired，需 Python 3.11+）。',
+          },
+          {
+            question: '为什么有的字段是 Optional、有的是 Any？',
+            answer:
+              '同一字段出现 null 与某一种具体类型（如 "a" 与 null）时推断为 Optional[str]；对象数组中部分对象缺少该键时，@dataclass 模式同样给 Optional + None 默认值；而同一位置出现互不兼容的多种类型（如 1 与 "two"）无法用单一类型表达，只能推断为 Any。',
+          },
+          {
+            question: '空数组为什么生成裸 list？',
+            answer:
+              '空数组没有任何元素可供推断，无法确定元素类型，因此生成未参数化的 list。补充至少一个带类型的元素后重新生成即可得到 list[T]。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON to Python dataclass generator is a fully in-browser code generator: paste JSON (an object or array) and it recursively infers the structure to produce ready-to-use Python data models in either @dataclass or typing.TypedDict style, removing the repetitive work of hand-writing models from API samples.',
+        coreFeatures: [
+          'Recursive nested classes with str / int / float / bool / None / list[...] / Optional[...] and nested dataclass types',
+          'Array merging: heterogeneous object arrays merge into one class by key union, and keys missing in some objects become optional',
+          'Empty arrays degrade to a bare list; null alongside a scalar becomes Optional[T]; unresolvable mixed values become Any',
+          'Name normalization: keys become snake_case fields (keywords get a trailing underscore), classes become PascalCase, collisions get numeric suffixes',
+          'Optional from_dict class method and to_dict method for @dataclass; NotRequired keys for TypedDict output',
+          'Zero new dependencies, fully local, and deterministic output for the same input',
+        ],
+        howToUse: [
+          'Paste a JSON object or array into the left editor',
+          'Change the root class name if needed and pick @dataclass or TypedDict output',
+          'In @dataclass mode, toggle from_dict / to_dict helper generation',
+          'Click "Copy result" to paste the generated code into your Python project',
+        ],
+        useCases: [
+          'Quickly model HTTP API responses from sample payloads',
+          'Convert JSON config or data files into typed Python structures',
+          'Add static typing to dict data in scripts for IDE completion and mypy checks',
+        ],
+        privacyNote:
+          'All JSON is parsed and rendered locally in your browser with no network requests; your data never leaves your device.',
+        faqs: [
+          {
+            question: 'Should I pick @dataclass or TypedDict?',
+            answer:
+              'Pick @dataclass when you want a real class with defaults, methods, or runtime validation (missing keys become Optional with a None default). Pick TypedDict when you only describe dict key types while keeping plain-dict runtime behavior (missing keys are NotRequired, requiring Python 3.11+).',
+          },
+          {
+            question: 'Why are some fields Optional and others Any?',
+            answer:
+              'Null alongside one concrete type (e.g. "a" and null) becomes Optional[str]; a key missing in some array objects also becomes Optional with a None default in @dataclass mode. But mutually incompatible types at the same position (e.g. 1 and "two") cannot be expressed as one type, so they become Any.',
+          },
+          {
+            question: 'Why does an empty array become a bare list?',
+            answer:
+              'An empty array offers no elements to infer from, so the element type is unknown and the result is an unparameterized list. Add at least one typed element and regenerate to get list[T].',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

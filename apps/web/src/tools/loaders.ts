@@ -209,4 +209,5 @@ export const toolLoaders: Record<
   'ini-json-converter': () => import('./ini-json-converter'),
   'matrix-calculator': () => import('./matrix-calculator'),
   'text-similarity': () => import('./text-similarity'),
+  'json-to-python-dataclass': () => import('./json-to-python-dataclass'),
 };
