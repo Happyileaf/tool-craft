@@ -4,7 +4,7 @@
 
 ## 日志
 
-## 2026-11-01 ：【Agent自主迭代】新增 10 个 IBAN 校验、三维姿态转换、Go 结构生成、Unicode 检视、RSA 非对称密码、集装箱校验位、多纪元时间戳、NMEA 解析、电阻色环与 JSON 表单互转工具
+## 2026-11-01 ：【Agent自主迭代】新增 15 个 IBAN 校验、三维姿态转换、Go 结构生成、Unicode 检视、RSA 非对称密码、集装箱校验位、多纪元时间戳、NMEA 解析、电阻色环、JSON 表单互转、内容协商头解析、KSUID、security.txt、定宽文本转换与 NPV/IRR 计算工具
 
 - **新增**：IBAN 校验器（iban-validator）— 依据 ISO 13616 内置 111 个国家 / 地区长度表，按 ISO 7064 mod 97-10 算法核验校验位，自动归一化空格连字符、识别国家并给出具体失败原因，机器格式与 4 位分组易读格式互转，纯本地运算
 - **新增**：四元数欧拉角转换器（quaternion-converter）— 在四元数 (x, y, z, w)、欧拉角（roll / pitch / yaw）与 3×3 旋转矩阵间三向互转，支持六种 Tait-Bryan 内旋顺序与角度 / 弧度切换，自动归一化并提示万向锁与矩阵正交性问题
@@ -16,6 +16,11 @@
 - **新增**：NMEA 0183 语句解析器（nmea-parser）— 解析 GGA / RMC / GLL / GSA / GSV / VTG 六类定位语句，校验 `$` 起始、星号异或校验和与字段结构，输出定位坐标、卫星、精度、航迹等结构化结果与逐字段中文释义，支持多语句批量与错误定位，纯字符串解析零依赖
 - **新增**：电阻色环计算器（resistor-color-calculator）— 4 / 5 / 6 环双向计算：正向按色环查表输出标称阻值、误差区间与温度系数并绘制色环 SVG，反向由阻值与精度匹配环序，附 E12 / E24 / E96 标准阻值最近邻提示，0Ω 跨接与非法环序明确报错，纯本地查表运算
 - **新增**：JSON ↔ 表单请求体转换器（json-form-urlencoded）— 在 JSON 对象与 application/x-www-form-urlencoded 请求体间双向转换，严格 RFC 3986 百分号编码（补编码 !'()*、~ 不转义），空格 + / %20 可切换，数组与嵌套对象支持括号 / PHP a[] / 点路径三种风格，重复键聚合数组，畸形编码与键值类型冲突明确报错，纯本地运算
+- **新增**：HTTP 内容协商头解析与排序器（content-negotiation-parser）— 按 RFC 9110 §12.5 解析 Accept / Accept-Language / Accept-Encoding / Accept-Charset，展开通配匹配与 q 质量因子（缺省 1、非法 q 忽略、q=0 标记拒绝），按质量因子降序、同质量具体度优先输出服务端选择排序，纯本地解析零依赖
+- **新增**：KSUID 标识符生成与解析器（ksuid-generator）— 实现 Segment KSUID：4 字节自定义纪元（1400000000）秒时间戳 + 16 字节随机 payload 的 20 字节结构，BigInt Base62（0-9A-Za-z）定长 27 字符编码，crypto.getRandomValues 生成，解析反解 UTC 时间与 payload 十六进制，非法字符 / 长度 / 越界明确报错，随机源可注入便于向量验证
+- **新增**：security.txt 安全联系人文件生成器（security-txt-generator）— 按 RFC 9116 表单化生成 /.well-known/security.txt，Contact / Expires 必填，Encryption / Acknowledgments / Preferred-Languages / Canonical / Policy / CSAF 可选且按规范字段顺序输出 CRLF 文本；解析模式校验必填缺失、未知字段、Expires 过期 / 30 天临期并检测 PGP 签名块
+- **新增**：定宽文本 FWF ↔ CSV 转换器（fwf-csv-converter）— 在固定列宽文本与 CSV 间双向转换：零依赖 RFC 4180 CSV 解析生成（引号、字段内逗号换行、"" 转义），按列宽与左 / 右对齐做空格填充或累计位置切片，单侧 trim 保留内容侧空格，超长字段可截断计数或带行号列名报错，支持表头与 LF/CRLF 切换
+- **新增**：NPV / IRR 投资现金流计算器（npv-irr-calculator）— 按期录入现金流（t=0 首期不折现）与贴现率计算净现值及逐期折现明细，IRR 在 [-99.99%, 1000%] 区间有界二分求解（容差 1e-10），全同号现金流提示 IRR 不存在，可选门槛率按 NPV>0 且 IRR 严格高于门槛给出投资判定，纯本地数值计算零依赖
 
 ## 2026-10-31 ：【Agent自主迭代】新增 20 个协议校验和、数据转换、通配符测试、文本统计、地理计算、天文历法、网络地址、终端颜色、密码学指纹、生活计算、统计回归、MIME 与端口速查、目录树、英文可读性及 vCard 名片工具
 
