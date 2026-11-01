@@ -69,3 +69,8 @@
 | 20261101080348 | security.txt 安全联系人文件生成器（RFC 9116） | Web Tool | Existing Gap | `security-txt-generator` / [PR #130](https://github.com/Happyileaf/tool-craft/pull/130) | 2026-11-01 | [详情](./idea-details/20261101080348.md) |
 | 20261101080349 | 定宽文本（Fixed-width / FWF）↔ CSV 互转器（列位置切片与对齐） | Web Tool | Existing Gap | `fwf-csv-converter` / [PR #130](https://github.com/Happyileaf/tool-craft/pull/130) | 2026-11-01 | [详情](./idea-details/20261101080349.md) |
 | 20261031080658 | NPV / IRR 投资现金流计算器（净现值 / 内部收益率） | Web Tool | Exploration | `npv-irr-calculator` / [PR #130](https://github.com/Happyileaf/tool-craft/pull/130) | 2026-11-01 | [详情](./idea-details/20261031080658.md) |
+| 20261017200233 | 数学表达式求值器 | Web Tool | Existing Gap | `math-expression-evaluator` / [PR #136](https://github.com/Happyileaf/tool-craft/pull/136) | 2026-11-02 | [详情](./idea-details/20261017200233.md) |
+| 20261021221307 | INI 配置解析与 JSON 双向转换 | Web Tool | Existing Gap | `ini-json-converter` / [PR #136](https://github.com/Happyileaf/tool-craft/pull/136) | 2026-11-02 | [详情](./idea-details/20261021221307.md) |
+| 20261022221404 | 文本相似度计算器 | Web Tool | Existing Gap | `text-similarity` / [PR #136](https://github.com/Happyileaf/tool-craft/pull/136) | 2026-11-02 | [详情](./idea-details/20261022221404.md) |
+| 20261026200349 | 线性代数矩阵计算器（乘法 / 行列式 / 逆 / 秩 / RREF） | Web Tool | Existing Gap | `matrix-calculator` / [PR #136](https://github.com/Happyileaf/tool-craft/pull/136) | 2026-11-02 | [详情](./idea-details/20261026200349.md) |
+| 20261030200910 | JSON 转 Python dataclass 生成器 | Web Tool | Existing Gap | `json-to-python-dataclass` / [PR #136](https://github.com/Happyileaf/tool-craft/pull/136) | 2026-11-02 | [详情](./idea-details/20261030200910.md) |
