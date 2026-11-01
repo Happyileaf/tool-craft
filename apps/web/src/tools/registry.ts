@@ -18112,6 +18112,111 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'math-expression-evaluator',
+    name: '数学表达式求值器',
+    nameEn: 'Math Expression Evaluator',
+    description:
+      '输入带运算符优先级、括号嵌套与数学函数的表达式即可求值：支持 + - * / % ^、阶乘、sin/cos/tan/asin/acos/atan/atan2/sinh/cosh/tanh、log/ln/log10/log2、sqrt/cbrt/abs/floor/ceil/round/exp/pow/min/max 与 pi/e/tau 常量，支持多行变量赋值复用、弧度/角度切换，并给出逐步计算过程与行列定位的语法错误。',
+    descriptionEn:
+      'Evaluate expressions with operator precedence, nested parentheses and math functions: + - * / % ^, factorial, sin/cos/tan/asin/acos/atan/atan2/sinh/cosh/tanh, log/ln/log10/log2, sqrt/cbrt/abs/floor/ceil/round/exp/pow/min/max plus pi/e/tau constants, with multi-line variable assignment and reuse, a radian/degree switch, step-by-step traces and line/column syntax errors.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/math-expression-evaluator',
+    iconName: 'Calculator',
+    tags: ['表达式', '科学计算器', '数学函数', '变量', '求值'],
+    tagsEn: ['Expression', 'Scientific Calculator', 'Math Functions', 'Variables', 'Evaluator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `# 以 # 或 // 开头的是注释，空行会被忽略
+r = 5
+area = pi * r^2
+sqrt(area) + 2 * r`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '数学表达式求值器是一款纯浏览器本地运行的科学计算器：采用自研递归下降解析器，正确处理运算符优先级、结合性与括号嵌套，内置常用数学函数与 pi / e / tau 常量，支持多行语句中的变量赋值与复用，并把每一步二元运算与函数调用展开为可读的计算过程，语法错误按行号、列号定位。',
+        coreFeatures: [
+          '完整运算体系：+、-、*、/、%、右结合的幂运算 ^、后缀阶乘 !，一元正负号与任意深度括号嵌套',
+          '常用函数：sin/cos/tan/asin/acos/atan/atan2、双曲函数、sqrt/cbrt/abs/floor/ceil/round/exp、log/ln/log10/log2、pow/min/max，函数名大小写不敏感',
+          '常量与变量：内置 pi、e、tau；每行可用 name = 表达式 定义变量并在后续语句复用，变量表实时展示',
+          '弧度 / 角度模式一键切换，三角函数与反三角函数同步换算；除零、负数开方、asin 越界、阶乘非法等均给出明确中文错误',
+          '逐步计算过程按行分组展示，错误信息带行号与列号，纯本地运算零依赖',
+        ],
+        howToUse: [
+          '在左侧输入表达式，每行一条语句；以 # 或 // 开头的行与空行会被忽略',
+          '使用 name = 表达式 的形式定义变量，后续行可直接引用该变量',
+          '需要角度时打开「角度模式」开关，默认按弧度计算',
+          '在右侧查看最终结果、当前变量表与逐步计算过程，可一键复制最终结果',
+        ],
+        useCases: [
+          '快速验证带括号、幂与函数的复杂算式，替代普通科学计算器',
+          '分步推导几何 / 物理公式，通过变量赋值复用中间量并检查每步结果',
+          '学习运算符优先级、幂的结合性与三角函数弧度 / 角度差异',
+        ],
+        privacyNote:
+          '表达式解析与求值全部在浏览器本地完成，输入内容不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '幂运算 ^ 的结合性是怎样的？',
+            answer:
+              '幂运算按数学惯例采用右结合，即 2^3^2 等价于 2^(3^2) = 512；若想先算底数请显式加括号 (2^3)^2 = 64。一元负号优先级低于幂，-2^2 = -4，而 (-2)^2 = 4。',
+          },
+          {
+            question: '角度模式会影响哪些函数？',
+            answer:
+              '角度模式下 sin/cos/tan 的入参按角度先换算为弧度，asin/acos/atan/atan2 的返回值从弧度换算为角度；sqrt、log 等其他函数不受影响。',
+          },
+          {
+            question: '支持哪些写法与限制？',
+            answer:
+              '支持小数与科学计数法（1.5e-1）、pi / e / tau 常量、变量赋值与注释行；不支持隐式乘法（请显式写 2*pi 而非 2pi），阶乘仅支持 0–170 的非负整数，除零与结果溢出会报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Math Expression Evaluator is a fully browser-local scientific calculator: a hand-written recursive-descent parser correctly handles operator precedence, associativity and nested parentheses, with built-in math functions and pi/e/tau constants, multi-line variable assignment and reuse, a readable step-by-step trace of every binary operation and function call, and syntax errors located by line and column.',
+        coreFeatures: [
+          'Complete operators: +, -, *, /, %, right-associative power ^, postfix factorial !, unary signs and arbitrarily nested parentheses',
+          'Common functions: sin/cos/tan/asin/acos/atan/atan2, hyperbolic functions, sqrt/cbrt/abs/floor/ceil/round/exp, log/ln/log10/log2, pow/min/max; function names are case-insensitive',
+          'Constants and variables: built-in pi, e and tau; define variables per line with name = expression and reuse them in later statements, with a live variable table',
+          'One-click radian/degree mode converting trig and inverse trig arguments; clear errors for division by zero, sqrt of negatives, out-of-range asin and invalid factorials',
+          'Step-by-step trace grouped by input line, line/column error locations, and fully local zero-dependency computation',
+        ],
+        howToUse: [
+          'Enter expressions on the left, one statement per line; lines starting with # or // and blank lines are ignored',
+          'Define variables with name = expression and reference them in later lines',
+          'Turn on degree mode when working with angles; radians are used by default',
+          'Read the final value, current variable table and step-by-step trace on the right, and copy the result with one click',
+        ],
+        useCases: [
+          'Quickly verifying complex formulas with parentheses, powers and functions instead of a physical scientific calculator',
+          'Breaking down geometry or physics formulas with variables that reuse intermediate values and expose each step',
+          'Learning operator precedence, power associativity and the radian/degree difference of trig functions',
+        ],
+        privacyNote:
+          'Expression parsing and evaluation run entirely locally in the browser; your input is never uploaded to any server.',
+        faqs: [
+          {
+            question: 'What is the associativity of the power operator ^?',
+            answer:
+              'Power is right-associative by mathematical convention, so 2^3^2 equals 2^(3^2) = 512; add parentheses for (2^3)^2 = 64. Unary minus binds looser than power, so -2^2 = -4 while (-2)^2 = 4.',
+          },
+          {
+            question: 'Which functions does degree mode affect?',
+            answer:
+              'In degree mode the arguments of sin/cos/tan are converted from degrees to radians and the results of asin/acos/atan/atan2 are converted back to degrees; other functions such as sqrt and log are unaffected.',
+          },
+          {
+            question: 'What syntax is supported and what are the limits?',
+            answer:
+              'Decimals and scientific notation (1.5e-1), pi/e/tau constants, variable assignment and comment lines are supported. Implicit multiplication is not (write 2*pi, not 2pi); factorials accept only non-negative integers from 0 to 170, and division by zero or overflowing results raise an error.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
