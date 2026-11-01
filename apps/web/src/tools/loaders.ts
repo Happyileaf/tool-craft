@@ -197,4 +197,5 @@ export const toolLoaders: Record<
   'json-form-urlencoded': () => import('./json-form-urlencoded'),
   'content-negotiation-parser': () => import('./content-negotiation-parser'),
   'ksuid-generator': () => import('./ksuid-generator'),
+  'security-txt-generator': () => import('./security-txt-generator'),
 };

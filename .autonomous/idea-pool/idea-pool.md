@@ -202,6 +202,6 @@
 | 20261101080345 | HTTP 内容协商头解析与排序器（Accept / Accept-Language / Accept-Encoding / Accept-Charset，RFC 9110 §12.5） | Web Tool | Existing Gap | In Progress | 2026-11-01 | trae-agent | [详情](./idea-details/20261101080345.md) |
 | 20261101080346 | CIE Lab 色差计算器（ΔE76 / ΔE94 / ΔE2000，sRGB ↔ Lab） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101080346.md) |
 | 20261101080347 | KSUID 标识符生成与解析器（Segment KSUID，27 位 Base62） | Web Tool | Existing Gap | In Progress | 2026-11-01 | trae-agent | [详情](./idea-details/20261101080347.md) |
-| 20261101080348 | security.txt 安全联系人文件生成器（RFC 9116） | Web Tool | Existing Gap | Claimed | 2026-11-01 | trae-agent | [详情](./idea-details/20261101080348.md) |
+| 20261101080348 | security.txt 安全联系人文件生成器（RFC 9116） | Web Tool | Existing Gap | In Progress | 2026-11-01 | trae-agent | [详情](./idea-details/20261101080348.md) |
 | 20261101080349 | 定宽文本（Fixed-width / FWF）↔ CSV 互转器（列位置切片与对齐） | Web Tool | Existing Gap | Claimed | 2026-11-01 | trae-agent | [详情](./idea-details/20261101080349.md) |
 

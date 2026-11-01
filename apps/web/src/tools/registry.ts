@@ -17364,6 +17364,97 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'security-txt-generator',
+    name: 'security.txt 生成器',
+    nameEn: 'security.txt Generator',
+    description:
+      '按 RFC 9116 表单生成 /.well-known/security.txt：Contact、Expires、Encryption、Canonical 等字段顺序输出、CRLF 行尾，并可粘贴现有文件实时解析校验必填项、过期时间与 PGP 签名。',
+    descriptionEn:
+      'Generate /.well-known/security.txt per RFC 9116 with Contact, Expires, Encryption, Canonical and more in canonical order with CRLF endings, or paste an existing file to validate required fields, expiry and PGP signatures.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/security-txt-generator',
+    iconName: 'ShieldCheck',
+    tags: ['security.txt', 'RFC 9116', '安全联系人', 'well-known', '漏洞披露'],
+    tagsEn: ['security.txt', 'RFC 9116', 'Security Contact', 'well-known', 'Vulnerability Disclosure'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'Contact: mailto:security@example.com\r\nContact: https://example.com/security\r\nExpires: 2027-12-31T23:59:59.000Z\r\nPreferred-Languages: en, zh-CN\r\nCanonical: https://example.com/.well-known/security.txt',
+    doc: {
+      zh: {
+        whatIsIt:
+          'security.txt 生成器依据 RFC 9116（安全漏洞披露辅助文件格式）工作：通过表单维护 Contact（安全联系人，必填，可多条 mailto: / https: / tel: URI）、Expires（策略过期时间，必填，RFC 3339 日期时间）以及 Encryption、Acknowledgments、Preferred-Languages、Canonical、Policy、CSAF 等可选字段，按规范顺序生成 CRLF 行尾的 security.txt；也支持粘贴现有文件实时解析，检查必填缺失、过期 / 临期、未知字段与 PGP clearsign 签名。',
+        coreFeatures: [
+          '严格按 RFC 9116 字段顺序输出 Contact、Expires、Encryption、Acknowledgments、Preferred-Languages、Canonical、Policy、CSAF，多值字段每行一条，行尾统一 CRLF',
+          '实时校验：缺 Contact / Expires、Expires 无法解析直接阻止生成；已过期、30 天内临期、Contact 非 URI 形态给出警告',
+          '解析模式兼容 CRLF 与 LF，识别 PGP clearsign 签名块与 dash-escaped 明文，未知字段、重复 Expires、格式错误均有明确提示',
+          '全部逻辑为浏览器本地纯函数运算，不发起网络请求，结果一键复制，附 /.well-known/security.txt 部署路径提示',
+        ],
+        howToUse: [
+          '在生成模式填写 Contact（每行一条 URI）与 Expires（如 2027-12-31T23:59:59.000Z），按需补充 Encryption、Policy、Canonical 等可选字段',
+          '可点击「填充示例」快速参考一份完整策略，查看警告并修正过期时间或不规范的 Contact',
+          '确认无误后点击「复制」，保存为站点 HTTPS 根目录下的 /.well-known/security.txt，Content-Type 设为 text/plain',
+          '切换到解析校验模式粘贴现有 security.txt，查看错误 / 警告、字段表格与 PGP 签名状态标签',
+        ],
+        useCases: [
+          '为新上线的网站或 API 服务编写标准化安全联系人与漏洞披露策略',
+          '安全团队定期审查既有 security.txt：是否临期 / 过期、Canonical 是否一致、是否缺少必填字段',
+          '对接 CSAF 等安全公告体系时维护 CSAF、Policy、Acknowledgments 等扩展字段',
+        ],
+        privacyNote:
+          '所有字段仅在浏览器本地拼装与解析，不会访问你填写的链接，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: 'security.txt 必须放在哪个路径？',
+            answer:
+              'RFC 9116 规定文件必须可通过 HTTPS 从 /.well-known/security.txt 获取（也兼容 http 重定向），Content-Type 为 text/plain，换行必须是 CRLF；放在其他路径不会被安全研究人员的标准工具发现。',
+          },
+          {
+            question: 'Expires 过期了会怎样？',
+            answer:
+              'Expires 用于告诉研究者该策略在指定时间后可能失效。文件过期后自动化工具通常会忽略联系人信息，因此建议在到期前更新；生成器会对已过期与 30 天内临期的 Expires 给出警告，但不会阻止你导出文件。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The security.txt Generator implements RFC 9116 (A File Format to Aid in Security Vulnerability Disclosure): build the policy via a form with Contact (required, multiple mailto: / https: / tel: URIs), Expires (required, RFC 3339 timestamp) and optional Encryption, Acknowledgments, Preferred-Languages, Canonical, Policy and CSAF fields, emitted in canonical order with CRLF endings. You can also paste an existing file for live validation of required fields, expiry, unknown fields and PGP clearsign signatures.',
+        coreFeatures: [
+          'Canonical RFC 9116 field order — Contact, Expires, Encryption, Acknowledgments, Preferred-Languages, Canonical, Policy, CSAF — with one value per line and CRLF endings throughout',
+          'Live validation: missing Contact/Expires or an unparseable Expires blocks generation; expired, expiring-within-30-days and non-URI Contact values raise warnings',
+          'Parser accepts both CRLF and LF, recognizes PGP clearsign blocks and dash-escaped content, and flags unknown fields, repeated Expires and malformed lines',
+          'Everything runs locally as pure functions with no network requests; one-click copy plus a /.well-known/security.txt deployment hint',
+        ],
+        howToUse: [
+          'In generate mode fill Contact (one URI per line) and Expires (e.g. 2027-12-31T23:59:59.000Z), then add optional fields such as Encryption, Policy and Canonical',
+          'Use "Fill sample" for a complete reference policy, review warnings, and fix expiry or non-URI contact values',
+          'Click "Copy", then publish the file at /.well-known/security.txt under the site HTTPS root with Content-Type text/plain',
+          'Switch to parse mode, paste an existing security.txt, and inspect errors/warnings, the field table and the PGP signature status tag',
+        ],
+        useCases: [
+          'Authoring a standardized security contact and vulnerability disclosure policy for a new website or API',
+          'Periodic review of an existing security.txt — expiry, canonical URLs and missing required fields',
+          'Maintaining CSAF, Policy and Acknowledgments fields when integrating with security advisory ecosystems',
+        ],
+        privacyNote:
+          'All fields are assembled and parsed entirely in your local browser; the URLs you enter are never visited and no network requests are made.',
+        faqs: [
+          {
+            question: 'Where must security.txt be hosted?',
+            answer:
+              'RFC 9116 requires the file to be available over HTTPS at /.well-known/security.txt (HTTP redirects are accepted) with Content-Type text/plain and CRLF line endings; files at other paths will not be found by standard security-research tooling.',
+          },
+          {
+            question: 'What happens when Expires passes?',
+            answer:
+              'Expires tells researchers the policy may no longer be valid after that timestamp; automated tools typically ignore expired files, so renew it before the date. The generator warns on expired and soon-to-expire (30 days) values but still lets you export the file.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
