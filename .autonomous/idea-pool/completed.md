@@ -74,3 +74,8 @@
 | 20261022221404 | 文本相似度计算器 | Web Tool | Existing Gap | `text-similarity` / [PR #136](https://github.com/Happyileaf/tool-craft/pull/136) | 2026-11-02 | [详情](./idea-details/20261022221404.md) |
 | 20261026200349 | 线性代数矩阵计算器（乘法 / 行列式 / 逆 / 秩 / RREF） | Web Tool | Existing Gap | `matrix-calculator` / [PR #136](https://github.com/Happyileaf/tool-craft/pull/136) | 2026-11-02 | [详情](./idea-details/20261026200349.md) |
 | 20261030200910 | JSON 转 Python dataclass 生成器 | Web Tool | Existing Gap | `json-to-python-dataclass` / [PR #136](https://github.com/Happyileaf/tool-craft/pull/136) | 2026-11-02 | [详情](./idea-details/20261030200910.md) |
+| 20261102020126 | CAS 化学物质登记号校验器（CAS Registry Number 模 10 校验位） | Web Tool | Exploration | `cas-number-validator` / [PR #139](https://github.com/Happyileaf/tool-craft/pull/139) | 2026-11-02 | [详情](./idea-details/20261102020126.md) |
+| 20261102020127 | RC 滤波器参数计算器（一阶低通 / 高通截止频率、时间常数与电阻电容互求） | Web Tool | Exploration | `rc-filter-calculator` / [PR #139](https://github.com/Happyileaf/tool-craft/pull/139) | 2026-11-02 | [详情](./idea-details/20261102020127.md) |
+| 20261023141145 | 文件下载时间估算器 | Web Tool | Exploration | `download-time-calculator` / [PR #139](https://github.com/Happyileaf/tool-craft/pull/139) | 2026-11-02 | [详情](./idea-details/20261023141145.md) |
+| 20261017200238 | Markdown 表格生成器 | Web Tool | Exploration | `markdown-table-generator` / [PR #139](https://github.com/Happyileaf/tool-craft/pull/139) | 2026-11-02 | [详情](./idea-details/20261017200238.md) |
+| 20261102020128 | Apple .strings 本地化文件 ↔ JSON 双向转换器（iOS / macOS Localizable.strings） | Web Tool | Existing Gap | `strings-json-converter` / [PR #139](https://github.com/Happyileaf/tool-craft/pull/139) | 2026-11-02 | [详情](./idea-details/20261102020128.md) |

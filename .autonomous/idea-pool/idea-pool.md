@@ -45,7 +45,6 @@
 | 20261017183438 | 图片与 Base64 Data URI 互转 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017183438.md) |
 | 20261017200232 | 字符集解码与乱码修复 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017200232.md) |
 | 20261017200236 | CSS 缓动函数（cubic-bezier）生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200236.md) |
-| 20261017200238 | Markdown 表格生成器 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017200238.md) |
 | 20261017200239 | robots.txt 生成器 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017200239.md) |
 | 20261017200240 | MIME 类型速查与识别 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017200240.md) |
 | 20261017220043 | 地理坐标格式转换（十进制 ↔ 度分秒） | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261017220043.md) |
@@ -90,7 +89,6 @@
 | 20261023141142 | CSS transform 矩阵计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141142.md) |
 | 20261023141143 | 日出日落与晨昏时刻计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141143.md) |
 | 20261023141144 | 屏幕 PPI / 像素密度计算器 | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023141144.md) |
-| 20261023141145 | 文件下载时间估算器 | Web Tool | Exploration | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023141145.md) |
 | 20261023141146 | JSON-LD 结构化数据生成器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141146.md) |
 | 20261023141147 | BPM 音符时长与延迟时间计算器 | Web Tool | Exploration | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023141147.md) |
 | 20261023200245 | OAuth2 PKCE 生成器（code_verifier / code_challenge） | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023200245.md) |
@@ -206,7 +204,4 @@
 | 20261101201005 | JSON 转 PHP array 代码生成器（含嵌套类型推断与短数组语法） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201005.md) |
 | 20261102020124 | Git 底层对象哈希计算器（blob / tree / commit / tag，git hash-object 等价） | Web Tool | Exploration | Pending | 2026-11-02 | | [详情](./idea-details/20261102020124.md) |
 | 20261102020125 | Java .class 字节码文件头解析器（魔数 / 版本 / 常量池计数与条目只读树） | Web Tool | Exploration | Pending | 2026-11-02 | | [详情](./idea-details/20261102020125.md) |
-| 20261102020126 | CAS 化学物质登记号校验器（CAS Registry Number 模 10 校验位） | Web Tool | Exploration | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102020126.md) |
-| 20261102020127 | RC 滤波器参数计算器（一阶低通 / 高通截止频率、时间常数与电阻电容互求） | Web Tool | Exploration | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102020127.md) |
-| 20261102020128 | Apple .strings 本地化文件 ↔ JSON 双向转换器（iOS / macOS Localizable.strings） | Web Tool | Existing Gap | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102020128.md) |
 
