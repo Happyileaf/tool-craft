@@ -1,0 +1,124 @@
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  width: 100%;
+  min-width: 0;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.hint {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 13px;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cashRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.period {
+  width: 96px;
+  flex: 0 0 96px;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 13px;
+}
+
+.amount {
+  flex: 1 1 200px;
+  min-width: 160px;
+}
+
+.rowActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.rateField {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rateInput {
+  width: 120px;
+}
+
+.unit {
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 13px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+.positive {
+  color: #3f8600;
+}
+
+.negative {
+  color: #cf1322;
+}
+
+.decision {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.reasons {
+  margin-top: 12px;
+  padding-left: 20px;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: rgba(0, 0, 0, 0.75);
+  font-size: 13px;
+}
+
+.notice {
+  margin-bottom: 8px;
+}
+
+.mono {
+  font-family: var(--font-family-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-variant-numeric: tabular-nums;
+}

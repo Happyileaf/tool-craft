@@ -17547,6 +17547,96 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'npv-irr-calculator',
+    name: 'NPV / IRR 投资现金流计算器',
+    nameEn: 'NPV & IRR Cash Flow Calculator',
+    description:
+      '按期次输入现金流（t=0 首期不折现）计算净现值 NPV 与内部收益率 IRR，给出逐期折现因子 / 折现值明细，并按「NPV 为正且 IRR 高于门槛率」规则给出值得投资 / 不建议投资判定；全同号现金流提示 IRR 不存在。',
+    descriptionEn:
+      'Enter cash flows by period (t=0 is not discounted) to compute net present value (NPV) and internal rate of return (IRR), with a per-period discount factor / present value table and an invest-or-reject verdict based on positive NPV plus IRR above the hurdle rate; same-sign cash flows report that no IRR exists.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/npv-irr-calculator',
+    iconName: 'Calculator',
+    tags: ['NPV', 'IRR', '净现值', '内部收益率', '现金流', 'DCF'],
+    tagsEn: ['NPV', 'IRR', 'Net Present Value', 'Internal Rate of Return', 'Cash Flow', 'DCF'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '-1000,600,600',
+    doc: {
+      zh: {
+        whatIsIt:
+          'NPV / IRR 投资现金流计算器是一款纯浏览器本地运行的折现现金流（DCF）分析工具：按期次输入现金流（索引即期次 t，t 从 0 开始，第 0 期通常为初始投资且不折现），按 NPV = Σ CF_t / (1 + r)^t 计算净现值，并用有界二分法求解使 NPV 恰好为 0 的内部收益率 IRR。工具同时输出逐期折现因子与折现值明细，并依据「NPV 为正且 IRR 高于门槛收益率」给出可投 / 不可投判定。全同号现金流（如只有投入没有回收）在利率区间内 NPV 不变号，IRR 不存在，工具会明确提示。',
+        coreFeatures: [
+          '净现值 NPV 实时计算：t=0 首期不折现，支持任意期数与负数现金流，金额以人民币货币格式展示并按正负着色',
+          '内部收益率 IRR 数值求解：固定区间 [-99.99%, 1000%] 有界二分，端点严格异号才认定有根，容差 1e-10、最多 200 次迭代，收敛稳健',
+          '逐期折现明细表：展示每期现金流、折现因子 1/(1+r)^t（4 位小数）与折现值，便于核对每一步折现过程',
+          '投资判定：NPV 大于 0 且（设置门槛率时）IRR 严格高于门槛收益率才判定值得投资，并逐条列出 NPV 正负与 IRR 对比理由',
+        ],
+        howToUse: [
+          '在现金流编辑器按期次填写金额：t=0 一般填初始投资（负数），之后各期填回收或追加投入（负数），用「添加一期」「删除」调整期数',
+          '在参数区设置贴现率（百分数，如 10 表示 10%）；如需考核资金成本，打开门槛收益率开关并填写门槛率（默认 8%）',
+          '结果卡片实时展示 NPV（货币格式）、IRR（百分比保留 2 位小数，无解时显示「不存在」）以及投资判定 Tag 与理由',
+          '在各期折现明细表中核对折现因子与折现值；现金流为空、含非法数字或贴现率不大于 -100% 时会显示明确错误提示',
+        ],
+        useCases: [
+          '项目投资决策：比较初始投入与未来各期净现金流入，判断项目在给定贴现率下是否创造价值',
+          '资本预算与门槛率考核：用 IRR 对比资金成本 / 必要报酬率（hurdle rate），在多个备选项目间排序',
+          '教学与自学：验证 NPV 公式、首期不折现约定、IRR 与 NPV 的关系，以及全同号现金流为何没有内部收益率',
+        ],
+        privacyNote:
+          '所有现金流数据仅在浏览器内存中参与计算，刷新即消失，不会上传或存储到任何服务器，可放心输入敏感财务数据。',
+        faqs: [
+          {
+            question: 'IRR 显示「不存在」是什么意思？',
+            answer:
+              'IRR 是使 NPV 恰好为 0 的贴现率。如果所有现金流同号（例如只有投资支出没有任何回收，或只有收入没有投入），那么在任意利率下 NPV 都不会穿过 0，数学上不存在内部收益率。本工具在固定区间 [-99.99%, 1000%] 两端 NPV 不严格异号时即判定 IRR 不存在；此外，若理论根极其极端（超出该区间）也会给出同样提示。',
+          },
+          {
+            question: 'NPV 为正为什么仍可能不建议投资？',
+            answer:
+              '启用门槛收益率后，判定标准是「NPV 为正且 IRR 严格高于门槛率」。NPV 为正只说明项目按贴现率折现后增值，但若 IRR 低于你的资金成本或必要报酬率，承担同样风险可以拿到更高回报，因此工具会判定不建议投资；IRR 等于门槛率（打平）时按严格大于规则同样不通过。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The NPV & IRR Cash Flow Calculator is a fully browser-local discounted cash flow (DCF) tool: enter cash flows by period (the array index is the period t starting at 0; period 0 is typically the initial outlay and is never discounted), compute net present value with NPV = Σ CF_t / (1 + r)^t, and solve for the internal rate of return that drives NPV to exactly zero using bounded bisection. It also prints a per-period table of discount factors and present values, and renders an invest-or-reject verdict from the rule "positive NPV and IRR above the hurdle rate". When all cash flows share the same sign (for example outlays with no payoffs), NPV never changes sign over rates, so no IRR exists and the tool says so explicitly.',
+        coreFeatures: [
+          'Live net present value: period 0 is not discounted, any number of periods and negative amounts are allowed, and money is shown in CNY currency format with positive/negative coloring',
+          'Robust IRR solver: bounded bisection on the fixed interval [-99.99%, 1000%], a root is accepted only when endpoint NPVs have strictly opposite signs, with 1e-10 tolerance and at most 200 iterations',
+          'Per-period discounting table: each cash flow, its discount factor 1/(1+r)^t (4 decimals) and its present value, so every step is auditable',
+          'Investment verdict: invest only when NPV is greater than zero and, when a hurdle rate is set, IRR is strictly above it, with itemized reasons covering the NPV sign and IRR comparison',
+        ],
+        howToUse: [
+          'Fill in amounts period by period: t=0 is usually the initial investment (negative), later periods are payoffs or additional outlays (negative); add or remove periods with the buttons',
+          'Set the discount rate in percent (e.g. 10 means 10%); enable the hurdle rate switch and enter your required return (default 8%) if capital cost matters',
+          'The result card shows NPV in currency format, IRR as a percentage with 2 decimals ("not exist" when unsolvable), and the invest / reject tag with reasons, all updating live',
+          'Audit discount factors and present values in the detail table; empty input, non-finite numbers or a discount rate at or below -100% produce clear error messages',
+        ],
+        useCases: [
+          'Project decisions: comparing an initial outlay with future net inflows to see whether a venture adds value at the chosen discount rate',
+          'Capital budgeting against a hurdle rate: comparing IRR with the cost of capital or required return to rank competing projects',
+          'Teaching and self-study: verifying the NPV formula, the undiscounted first period, the link between IRR and NPV, and why same-sign cash flows have no IRR',
+        ],
+        privacyNote:
+          'Cash flows are computed only in browser memory and vanish on refresh; nothing is uploaded or stored on any server, so sensitive financial figures stay on your device.',
+        faqs: [
+          {
+            question: 'What does it mean when IRR shows that it does not exist?',
+            answer:
+              'The IRR is the discount rate at which NPV equals zero. If every cash flow has the same sign (only outlays with no payoff, or only income with no investment), NPV never crosses zero at any rate, so no internal rate of return exists mathematically. The tool reports a missing IRR whenever the NPVs at the two ends of the fixed interval [-99.99%, 1000%] do not have strictly opposite signs; an extreme theoretical root outside that interval is reported the same way.',
+          },
+          {
+            question: 'Why might a project with positive NPV still be rejected?',
+            answer:
+              'With a hurdle rate enabled, the rule is "positive NPV and IRR strictly above the hurdle rate". A positive NPV only means the project adds value at the chosen discount rate; if its IRR is below your cost of capital or required return, the same risk could earn more elsewhere, so the tool rejects it. IRR exactly equal to the hurdle rate (break-even) also fails the strictly-greater test.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

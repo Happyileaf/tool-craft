@@ -199,4 +199,5 @@ export const toolLoaders: Record<
   'ksuid-generator': () => import('./ksuid-generator'),
   'security-txt-generator': () => import('./security-txt-generator'),
   'fwf-csv-converter': () => import('./fwf-csv-converter'),
+  'npv-irr-calculator': () => import('./npv-irr-calculator'),
 };
