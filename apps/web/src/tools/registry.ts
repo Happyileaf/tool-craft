@@ -18320,6 +18320,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'matrix-calculator',
+    name: '线性代数矩阵计算器（乘法 / 行列式 / 逆 / 秩 / RREF）',
+    nameEn: 'Matrix Calculator (Multiply / Determinant / Inverse / Rank / RREF)',
+    description:
+      '基于 BigInt 精确分数的矩阵运算：加减、标量乘、矩阵乘法、转置、行列式、逆矩阵、秩、RREF 逐步消元，并可求解 Ax = b（唯一解 / 无解 / 无穷多解判定），支持粘贴空格逗号换行分隔的数字。',
+    descriptionEn:
+      'Exact BigInt-fraction matrix math: addition, subtraction, scalar and matrix multiplication, transpose, determinant, inverse, rank, step-by-step RREF, and solving Ax = b with unique / none / infinite-solution classification. Paste numbers separated by spaces, commas, or newlines.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/matrix-calculator',
+    iconName: 'Calculator',
+    tags: ['矩阵', '线性代数', '行列式', '逆矩阵', 'RREF', '方程组'],
+    tagsEn: ['Matrix', 'Linear Algebra', 'Determinant', 'Inverse', 'RREF', 'Equations'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1 2 3\n0 1 4\n5 6 0',
+    doc: {
+      zh: {
+        whatIsIt:
+          '线性代数矩阵计算器是一款纯浏览器本地运行的精确矩阵运算工具，采用部分主元 Gauss-Jordan 消元与 BigInt 分数表示，避免浮点误差，提供矩阵四则、转置、行列式、逆矩阵、秩、RREF 逐步消元与 Ax = b 方程组求解，适合课堂验算与工程推导。',
+        coreFeatures: [
+          '矩阵加减、标量乘法、矩阵乘法与转置，维度不匹配时给出明确中文报错',
+          '方阵行列式与逆矩阵，奇异矩阵（行列式为 0）明确提示不存在逆矩阵',
+          '矩阵的秩与简化行阶梯形（RREF），逐步展示每一次换行、归一与消元操作',
+          '解线性方程组 Ax = b，自动判定唯一解、无解、无穷多解并标出自由变量',
+          '全程 BigInt 精确分数（支持 3/4、0.5 等输入），可切换小数近似显示',
+        ],
+        howToUse: [
+          '在下拉框中选择要执行的运算',
+          '在矩阵 A 框中输入数字：空格或逗号分列，换行或分号分行；支持整数、小数与 a/b 分数',
+          '二元运算时在矩阵 B 框输入第二个矩阵；标量乘法填写 k；解方程组填写右端向量 b',
+          '右侧实时显示结果，RREF 与方程组可展开查看消元步骤，点击「复制结果」获取文本',
+        ],
+        useCases: [
+          '线性代数作业验算：行列式经典值、已知逆矩阵互乘为单位阵、消元过程核对',
+          '图形学 / 机器人学中坐标变换矩阵的乘法与求逆核算',
+          '最小二乘、网络流等问题的前置方程组相容性判定',
+        ],
+        privacyNote:
+          '所有矩阵解析与分数运算均在浏览器本地完成，不发起任何网络请求，输入的矩阵数据不会离开设备。',
+        faqs: [
+          {
+            question: '为什么结果显示成分数而不是小数？',
+            answer:
+              '内部采用 BigInt 分数与部分主元 Gauss-Jordan 消元，保证课堂场景的精确结果（例如行列式恰为 -306 而非 -306.00000001）。需要小数时打开「小数显示」开关即可查看浮点近似值。',
+          },
+          {
+            question: '矩阵很大时能用吗？',
+            answer:
+              '工具定位为学习与小规模工程核算，分数消元的数值会随矩阵增大而快速膨胀，建议矩阵阶数在 12 以内；超大矩阵的数值计算应使用专门的数值代数库。',
+          },
+          {
+            question: '逆矩阵结果为空或报错是怎么回事？',
+            answer:
+              '当行列式为 0（奇异矩阵）时逆矩阵不存在，工具会直接提示；秩与 RREF 运算仍可正常执行，可据此观察矩阵的行空间结构。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Matrix Calculator is a fully in-browser linear-algebra tool built on partial-pivoting Gauss-Jordan elimination with exact BigInt fractions (no floating-point drift). It covers matrix arithmetic, transpose, determinant, inverse, rank, step-by-step RREF, and solving Ax = b — ideal for homework checks and engineering derivations.',
+        coreFeatures: [
+          'Addition, subtraction, scalar and matrix multiplication, and transpose, with clear dimension-mismatch errors',
+          'Determinant and inverse of square matrices; singular matrices (det = 0) get an explicit "no inverse" message',
+          'Rank and reduced row echelon form (RREF) with every swap, normalization, and elimination shown as a step',
+          'Solve Ax = b with automatic classification: unique solution, no solution, or infinitely many with free variables listed',
+          'Exact BigInt fractions throughout (accepts 3/4, 0.5, etc.), with a toggle for decimal approximations',
+        ],
+        howToUse: [
+          'Pick an operation from the dropdown',
+          'Enter matrix A with numbers separated by spaces or commas per row and newlines or semicolons between rows; integers, decimals, and a/b fractions are supported',
+          'Fill matrix B for binary operations, k for scalar multiplication, or the right-hand vector b for equation solving',
+          'The result updates live on the right; expand elimination steps for RREF and equations, and click "Copy" to export text',
+        ],
+        useCases: [
+          'Checking linear-algebra homework: classic determinant values, A·A⁻¹ = I verification, elimination walkthroughs',
+          'Verifying transform matrices in computer graphics and robotics (multiplication and inversion)',
+          'Consistency checks for equation systems before least-squares or network-flow work',
+        ],
+        privacyNote:
+          'All parsing and fraction arithmetic runs locally in your browser with no network requests; your matrices never leave your device.',
+        faqs: [
+          {
+            question: 'Why are results shown as fractions instead of decimals?',
+            answer:
+              'Exact BigInt fractions with partial pivoting guarantee classroom-grade precision (e.g. determinant -306, not -306.00000001). Enable the "Decimal" toggle whenever you prefer floating-point approximations.',
+          },
+          {
+            question: 'Does it handle very large matrices?',
+            answer:
+              'It targets study and small-scale engineering use: exact fraction numerators grow quickly, so matrices up to roughly order 12 are practical. For large numerical matrices, use a dedicated numerical linear-algebra library.',
+          },
+          {
+            question: 'Why is the inverse empty or rejected?',
+            answer:
+              'A singular matrix (determinant 0) has no inverse, and the tool says so explicitly. Rank and RREF still work, so you can inspect the row structure of the matrix regardless.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

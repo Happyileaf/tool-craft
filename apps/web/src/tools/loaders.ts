@@ -207,4 +207,5 @@ export const toolLoaders: Record<
   'magnet-link-parser': () => import('./magnet-link-parser'),
   'math-expression-evaluator': () => import('./math-expression-evaluator'),
   'ini-json-converter': () => import('./ini-json-converter'),
+  'matrix-calculator': () => import('./matrix-calculator'),
 };
