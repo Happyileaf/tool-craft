@@ -200,4 +200,5 @@ export const toolLoaders: Record<
   'security-txt-generator': () => import('./security-txt-generator'),
   'fwf-csv-converter': () => import('./fwf-csv-converter'),
   'npv-irr-calculator': () => import('./npv-irr-calculator'),
+  'loan-calculator': () => import('./loan-calculator'),
 };

@@ -17637,6 +17637,96 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'loan-calculator',
+    name: '贷款 / 月供计算器（等额本息与等额本金）',
+    nameEn: 'Loan & Mortgage Calculator',
+    description:
+      '输入本金、年利率与期限，按等额本息或等额本金计算月供、利息总额、还款总额，并给出逐月本金 / 利息 / 剩余本金计划。',
+    descriptionEn:
+      'Compute monthly payment, total interest, and total repayment for equal-installment or equal-principal loans, with a month-by-month amortization schedule.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/loan-calculator',
+    iconName: 'Calculator',
+    tags: ['贷款', '月供', '房贷', '等额本息', '等额本金'],
+    tagsEn: ['Loan', 'Mortgage', 'Monthly Payment', 'Amortization', 'Finance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '贷款 / 月供计算器是一款纯浏览器本地运算的个人财务工具，输入贷款本金、年利率与期限，即可按等额本息、等额本金两种方式计算月供、利息总额与还款总额，并提供逐月还款计划。',
+        coreFeatures: [
+          '等额本息：按 M = P·r·(1+r)^n / ((1+r)^n−1) 计算固定月供，前期利息占比高',
+          '等额本金：每月偿还固定本金 P/n，月供逐月递减、总利息更少',
+          '逐月明细：逐期列出还款额、本金、利息与期末剩余本金，末期自动结清',
+          '免息支持：年利率为 0 时两种方式均退化为平均还本，纯本地运算',
+        ],
+        howToUse: [
+          '输入贷款本金（元）、年利率百分数（如 3.1 表示 3.1%）与期限（月）',
+          '选择等额本息或等额本金，结果实时刷新',
+          '查看月供、利息总额与还款总额三项汇总',
+          '在逐月还款计划表中核对每期本金、利息与剩余本金',
+        ],
+        useCases: [
+          '购房按揭前比较等额本息与等额本金的总利息差异',
+          '评估车贷、消费贷提前还款前后的资金安排',
+          '验证银行还款计划表中的月供与剩余本金',
+        ],
+        privacyNote:
+          '所有金额仅在浏览器内存中进行确定性算术运算，刷新即消失，不上传或存储任何财务数据。',
+        faqs: [
+          {
+            question: '等额本息和等额本金哪个更划算？',
+            answer:
+              '等额本息每月还款固定、便于规划现金流，但总利息更多；等额本金前期还款压力大、月供逐月递减，总利息更少。可在两种方式间切换直接对比利息总额。',
+          },
+          {
+            question: '年利率如何填写？',
+            answer:
+              '填写百分数形式的年利率，如年利率 4.9% 填 4.9；工具内部按月利率 = 年利率 / 12 计算。免息贷款填 0 即可。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Loan & Mortgage Calculator is a fully browser-based personal finance tool. Enter the principal, annual interest rate, and term to compare equal-installment and equal-principal repayment methods, including the monthly payment, total interest, and a full amortization schedule.',
+        coreFeatures: [
+          'Equal installments: fixed monthly payment via M = P·r·(1+r)^n / ((1+r)^n−1)',
+          'Equal principal: fixed principal P/n per month with a decreasing payment and less total interest',
+          'Month-by-month schedule: payment, principal, interest, and remaining balance; the final period closes the loan exactly',
+          'Zero-rate support: a 0% annual rate degrades to straight principal averaging, all computed locally',
+        ],
+        howToUse: [
+          'Enter the loan principal, the annual rate as a percent (e.g. 3.1 for 3.1%), and the term in months',
+          'Switch between equal-installment and equal-principal methods; results update live',
+          'Read the monthly payment, total interest, and total repayment summary',
+          'Inspect each period’s principal, interest, and remaining balance in the schedule table',
+        ],
+        useCases: [
+          'Comparing total interest between repayment methods before taking a mortgage',
+          'Planning cash flow for car loans or consumer credit',
+          'Verifying the payment schedule provided by a bank',
+        ],
+        privacyNote:
+          'Every figure is computed deterministically in browser memory and vanishes on refresh; no financial data is uploaded or stored.',
+        faqs: [
+          {
+            question: 'Which repayment method is better?',
+            answer:
+              'Equal installments keep the monthly payment flat and easy to budget but accrue more total interest. Equal principal has higher early payments that decrease over time and costs less interest overall. Switch between the two to compare totals directly.',
+          },
+          {
+            question: 'How should I enter the annual rate?',
+            answer:
+              'Enter the annual rate as a percentage number, e.g. 4.9 for 4.9%; the tool divides it by 12 for the monthly rate. Enter 0 for an interest-free loan.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
