@@ -212,4 +212,5 @@ export const toolLoaders: Record<
   'json-to-python-dataclass': () => import('./json-to-python-dataclass'),
   'cas-number-validator': () => import('./cas-number-validator'),
   'rc-filter-calculator': () => import('./rc-filter-calculator'),
+  'download-time-calculator': () => import('./download-time-calculator'),
 };

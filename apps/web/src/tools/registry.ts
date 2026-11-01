@@ -18833,6 +18833,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'download-time-calculator',
+    name: '文件下载时间估算器',
+    nameEn: 'Download Time Calculator',
+    description:
+      '按文件大小与带宽估算下载耗时，输出 hh:mm:ss 与可读时长，支持效率折减系数与常见宽带 / 移动档位对照表。',
+    descriptionEn:
+      'Estimate file download time from size and bandwidth with hh:mm:ss and readable durations, an efficiency factor, and a broadband/mobile tier comparison table.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/download-time-calculator',
+    iconName: 'HardDrive',
+    tags: ['下载耗时', '带宽', '网络', '文件大小', '估算'],
+    tagsEn: ['Download Time', 'Bandwidth', 'Network', 'File Size', 'Estimation'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1 GB @ 100 Mbps ≈ 00:01:20',
+    doc: {
+      zh: {
+        whatIsIt:
+          '文件下载时间估算器是一款纯浏览器本地工具：输入文件大小与可用带宽，立即得到理论下载耗时，输出 hh:mm:ss 时钟格式与中文可读时长，并按常见网络档位（拨号、ADSL、宽带、4G、千兆）给出完整对照表。支持自定义传输效率折减系数以模拟协议开销与拥塞。',
+        coreFeatures: [
+          '公式直算：耗时 = 文件大小 × 8 /（带宽 × 效率），网络口径十进制单位',
+          '双格式输出：hh:mm:ss 时钟格式（跨天显示 N 天）与「X 天 X 小时 X 分 X 秒」可读时长',
+          '效率折减：10%–100% 滑块，模拟 TCP 开销、共享带宽与实际限速',
+          '八档带宽预设与一键套用，全档位对照表同步重算',
+          '零依赖纯本地：不发起任何测速请求，结果即时呈现',
+        ],
+        howToUse: [
+          '填写文件大小并选择 KB / MB / GB / TB',
+          '填写实际可用带宽并选择 Kbps / Mbps / Gbps，或直接点击档位标签',
+          '拖动效率系数（如运营商带宽打八折选 80%）',
+          '查看估算结果与下方各网络档位对照表',
+        ],
+        useCases: [
+          '评估大文件、游戏、镜像在当前带宽下的分发与同步时间',
+          '向用户解释「百兆宽带下载 10GB 文件需要多久」',
+          '选型异地备份 / 数据上云策略时估算传输窗口',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地完成，不进行真实测速或上传下载，不产生任何网络请求。',
+        faqs: [
+          {
+            question: '为什么运营商说的 100M 下载只有约 11 MB/s？',
+            answer:
+              '运营商带宽单位是兆比特每秒（Mbps），而文件大小用字节（byte），1 byte = 8 bit；100 Mbps ÷ 8 = 12.5 MB/s 的理论上限，再扣除协议开销与拥塞即为实际速度。本工具的效率系数正是用于这一折减。',
+          },
+          {
+            question: '单位为什么按 1000 而不是 1024 换算？',
+            answer:
+              '网络速率口径（bps 的 k/M/G）固定为十进制 1000；文件大小为与速率口径一致、保证「1GB @ 100Mbps = 80 秒」这类整数关系直观，本工具同样采用十进制（1 GB = 10⁹ B）。',
+          },
+          {
+            question: '估算结果为什么和实际差不少？',
+            answer:
+              '本工具只做理想线速估算，未计入服务器限速、跨网 peering、Wi-Fi 损耗、并发抢占与磁盘写入瓶颈。把效率系数调到实测占比（常见 60%–90%）可得到更贴近实际的区间。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Download Time Calculator is a fully local browser tool: enter a file size and the available bandwidth to instantly get the theoretical transfer time in both hh:mm:ss and readable forms, with a comparison table across common network tiers (dial-up, ADSL, broadband, 4G, gigabit). A configurable efficiency factor models protocol overhead and congestion.',
+        coreFeatures: [
+          'Direct formula: time = size × 8 / (bandwidth × efficiency), with decimal networking units',
+          'Dual output: hh:mm:ss clock format (with days) and a readable "Xd Xh Xm Xs" duration',
+          'Efficiency slider from 10%–100% to model TCP overhead, shared links, and throttling',
+          'Eight bandwidth presets with one-click fill and a synchronized full-tier table',
+          'Zero dependencies, fully local: no speed tests or network requests',
+        ],
+        howToUse: [
+          'Enter the file size and pick KB / MB / GB / TB',
+          'Enter the available bandwidth in Kbps / Mbps / Gbps, or click a tier tag',
+          'Adjust the efficiency factor (e.g. 80% for a typical real-world discount)',
+          'Read the headline result and the per-tier comparison table',
+        ],
+        useCases: [
+          'Estimating distribution and sync time for large files, games, and images',
+          'Explaining how long 10 GB takes on a 100 Mbps plan',
+          'Sizing transfer windows for off-site backup and cloud migration',
+        ],
+        privacyNote:
+          'Everything is computed locally in the browser with no real speed test, transfers, or network requests.',
+        faqs: [
+          {
+            question: 'Why does a 100M plan only deliver about 11 MB/s?',
+            answer:
+              'ISP bandwidth is measured in megabits per second (Mbps), while file sizes use bytes; 1 byte = 8 bits, so 100 Mbps ÷ 8 = 12.5 MB/s theoretical, before protocol overhead and congestion. The efficiency factor models exactly this discount.',
+          },
+          {
+            question: 'Why use 1000 instead of 1024?',
+            answer:
+              'Networking prefixes (k/M/G in bps) are decimal by definition. To keep the size and rate on the same footing — so 1 GB at 100 Mbps = 80 s — file sizes here also use 1 GB = 10⁹ bytes.',
+          },
+          {
+            question: 'Why does reality differ from the estimate?',
+            answer:
+              'The tool assumes ideal wire speed and ignores server throttling, peering, Wi-Fi loss, contention, and disk bottlenecks. Set the efficiency factor to the measured utilization (typically 60%–90%) for a more realistic range.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
