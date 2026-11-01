@@ -17181,6 +17181,97 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'content-negotiation-parser',
+    name: 'HTTP 内容协商头解析排序器',
+    nameEn: 'HTTP Content Negotiation Parser',
+    description:
+      '解析 Accept / Accept-Language / Accept-Encoding / Accept-Charset 请求头条目，按 RFC 9110 的 q 值权重与具体度排序，输出首选表示与完整排序列表。',
+    descriptionEn:
+      'Parse Accept / Accept-Language / Accept-Encoding / Accept-Charset header fields and sort entries by RFC 9110 q-value weights and specificity, showing the preferred representation and the full ranking.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/content-negotiation-parser',
+    iconName: 'Code',
+    tags: ['HTTP', '内容协商', 'Accept', 'q因子', 'RFC 9110'],
+    tagsEn: ['HTTP', 'Content Negotiation', 'Accept', 'q-factor', 'RFC 9110'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'text/html,application/xhtml+xml,application/xml;q=0.9,text/*;q=0.8,*/*;q=0.7',
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP 内容协商头解析排序器是一款纯浏览器本地运行的接口调试工具，针对 RFC 9110 §12.5 定义的 Accept、Accept-Language、Accept-Encoding、Accept-Charset 四类请求头，解析其中的媒体范围 / 语言标签 / 编码 / 字符集条目与 q 权重，并严格按服务端内容协商规则给出首选表示与排序列表。',
+        coreFeatures: [
+          '支持四类协商头：Accept、Accept-Language、Accept-Encoding、Accept-Charset，一键切换并各自附带默认样例',
+          '按 RFC 9110 §12.5 排序：先按 q 值降序，再按具体度（具体类型 > 子类型通配 > */*；语言标签段数；具名值 > 通配）降序，最后保持原始顺序的稳定排序',
+          '正确处理 q=0 的明确拒绝语义：拒绝条目仍在列表中标红展示，但不会成为首选表示',
+          '非法条目（token 为空、*/xml 等形状非法、q=2 或 q=abc 等越界值）自动忽略并给出明确中文提示，纯函数解析不抛异常',
+        ],
+        howToUse: [
+          '顶部按钮选择要解析的头类型（Accept / Accept-Language / Accept-Encoding / Accept-Charset），输入框会自动载入对应默认样例',
+          '把抓包或代码中的头值原样粘贴到输入框，工具实时解析，无需点击运行',
+          '查看「首选表示」卡片确认服务端应优先返回的 token 与 q 值，下方表格查看全部条目的排名、具体度与接受 / 拒绝状态',
+          '点击「复制摘要」可把排序后的纯文本结果复制到剪贴板，用于接口文档或沟通记录',
+        ],
+        useCases: [
+          '调试内容协商接口时，核对服务端为何在多个媒体类型 / 语言 / 压缩编码中选中某一表示',
+          '构造请求头时验证 q 值写法与通配回退链（如 text/html → text/* → */*）是否符合预期',
+          '教学与文档撰写中演示 RFC 9110 q 因子权重、具体度排序与 q=0 拒绝语义',
+        ],
+        privacyNote:
+          '全部解析与排序均在浏览器本地由零依赖纯函数完成，头字段内容不会被上传、记录或发送到任何服务器。',
+        faqs: [
+          {
+            question: 'q 值是如何影响排序的？q=0 又代表什么？',
+            answer:
+              '每个条目可带 ;q= 权重（0–1，缺省为 1），排序时先按 q 降序，q 相同时再比具体度。q=0 表示客户端明确声明该表示「不可接受」，因此它不会被选为首选，但仍会在列表中以「拒绝」标记展示，便于排查。',
+          },
+          {
+            question: '具体度（specificity）是怎么判定的？',
+            answer:
+              'Accept 中具体类型 text/html 最具体，type/* 次之，*/* 最末，同具体度时 q 之外的额外参数（如 level）多者优先；Accept-Language 按 - 分段，zh-CN 这类多段标签比 zh 更具体，* 最末；Accept-Encoding 与 Accept-Charset 中具名值优先，通配 * 最末。所有层级都相同时保持输入中的原始顺序（稳定排序）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'HTTP Content Negotiation Parser is a fully browser-based API debugging tool for the Accept, Accept-Language, Accept-Encoding, and Accept-Charset header fields defined in RFC 9110 §12.5. It parses media ranges / language tags / codings / charsets together with their q weights and applies the server-side content negotiation ordering rules to produce the preferred representation and a full ranking.',
+        coreFeatures: [
+          'All four negotiation headers supported — Accept, Accept-Language, Accept-Encoding, Accept-Charset — with one-click switching and a built-in sample for each',
+          'RFC 9110 §12.5 ordering: q-value descending first, then specificity (exact type > subtype wildcard > */*; language tag segment count; named value > wildcard), with a stable tie-break on input order',
+          'Correct q=0 semantics: explicitly rejected entries stay in the list marked red but never become the preferred representation',
+          'Invalid entries (empty token, malformed shapes like */xml, out-of-range weights like q=2 or q=abc) are skipped with clear messages; pure-function parsing never throws',
+        ],
+        howToUse: [
+          'Pick the header kind at the top (Accept / Accept-Language / Accept-Encoding / Accept-Charset); the editor loads a matching sample automatically',
+          'Paste the raw header value captured from traffic or code into the editor; parsing runs live with no run button',
+          'Check the "preferred representation" card for the winning token and q-value, then scan the table for rank, specificity, and accepted/rejected status of every entry',
+          'Click "copy summary" to copy the ranked plain-text result for API docs or chat threads',
+        ],
+        useCases: [
+          'Debugging content-negotiating endpoints to see why the server picked one media type, language, or compression coding over others',
+          'Validating q-value authoring and wildcard fallback chains (text/html → text/* → */*) before sending requests',
+          'Teaching and documenting RFC 9110 q-factor weights, specificity ordering, and the q=0 rejection semantics',
+        ],
+        privacyNote:
+          'All parsing and sorting runs locally in your browser via zero-dependency pure functions; header contents are never uploaded, logged, or sent anywhere.',
+        faqs: [
+          {
+            question: 'How does the q-value affect ordering, and what does q=0 mean?',
+            answer:
+              'Each entry may carry a ;q= weight (0–1, default 1). Entries are first sorted by q descending, then by specificity within the same q. q=0 means the client explicitly declares that representation "not acceptable", so it can never be preferred — but it is still shown in the list with a rejected marker for troubleshooting.',
+          },
+          {
+            question: 'How is specificity determined?',
+            answer:
+              'For Accept, an exact type such as text/html is most specific, then type/*, with */* last; entries with more parameters besides q (e.g. level) win ties. For Accept-Language the tag is split on "-", so a multi-segment tag like zh-CN is more specific than zh, with * last. For Accept-Encoding and Accept-Charset named values beat the * wildcard. When everything ties, the original input order is preserved (stable sort).',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

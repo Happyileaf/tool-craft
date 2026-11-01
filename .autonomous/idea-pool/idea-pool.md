@@ -199,7 +199,7 @@
 | 20261101020825 | MP4 / ISO-BMFF atom（box）结构解析器（只读树） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101020825.md) |
 | 20261101020826 | MP3 ID3v2 标签解析器与剥离器 | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101020826.md) |
 | 20261101020827 | Shamir 秘密分片与恢复工具（GF(2⁸)，Shamir's Secret Sharing） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101020827.md) |
-| 20261101080345 | HTTP 内容协商头解析与排序器（Accept / Accept-Language / Accept-Encoding / Accept-Charset，RFC 9110 §12.5） | Web Tool | Existing Gap | Claimed | 2026-11-01 | trae-agent | [详情](./idea-details/20261101080345.md) |
+| 20261101080345 | HTTP 内容协商头解析与排序器（Accept / Accept-Language / Accept-Encoding / Accept-Charset，RFC 9110 §12.5） | Web Tool | Existing Gap | In Progress | 2026-11-01 | trae-agent | [详情](./idea-details/20261101080345.md) |
 | 20261101080346 | CIE Lab 色差计算器（ΔE76 / ΔE94 / ΔE2000，sRGB ↔ Lab） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101080346.md) |
 | 20261101080347 | KSUID 标识符生成与解析器（Segment KSUID，27 位 Base62） | Web Tool | Existing Gap | Claimed | 2026-11-01 | trae-agent | [详情](./idea-details/20261101080347.md) |
 | 20261101080348 | security.txt 安全联系人文件生成器（RFC 9116） | Web Tool | Existing Gap | Claimed | 2026-11-01 | trae-agent | [详情](./idea-details/20261101080348.md) |

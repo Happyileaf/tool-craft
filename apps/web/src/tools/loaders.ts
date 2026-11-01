@@ -195,4 +195,5 @@ export const toolLoaders: Record<
   'nmea-parser': () => import('./nmea-parser'),
   'resistor-color-calculator': () => import('./resistor-color-calculator'),
   'json-form-urlencoded': () => import('./json-form-urlencoded'),
+  'content-negotiation-parser': () => import('./content-negotiation-parser'),
 };
