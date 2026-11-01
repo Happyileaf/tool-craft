@@ -18217,6 +18217,109 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'ini-json-converter',
+    name: 'INI 配置 ↔ JSON 双向转换',
+    nameEn: 'INI Config ↔ JSON Converter',
+    description:
+      '在 INI 配置文本与 JSON 之间双向转换：支持 [section] 分节、= / : 分隔符、; / # 注释、引号转义、布尔/数字类型推断、同名分节合并与可选点号嵌套键。',
+    descriptionEn:
+      'Convert bidirectionally between INI configuration text and JSON, with [section] headers, = / : separators, ; / # comments, quoted escapes, boolean/number inference, duplicate-section merging, and optional dotted nested keys.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ini-json-converter',
+    iconName: 'Braces',
+    tags: ['INI', '配置', 'JSON', '双向转换', 'Config'],
+    tagsEn: ['INI', 'Config', 'JSON', 'Bidirectional', 'Converter'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '; 应用配置\napp.name = Demo\napp.port = 8080\n\n[server]\nhost = 127.0.0.1\nport = 3000',
+    doc: {
+      zh: {
+        whatIsIt:
+          'INI ↔ JSON 双向转换器是一款纯浏览器本地运行的配置格式工具，可将 [section]、key = value 形式的 INI 文本解析为结构化 JSON，也可把一层嵌套的 JSON 对象序列化为规范 INI，全程不经过服务器。',
+        coreFeatures: [
+          '双向转换：INI → JSON 与 JSON → INI 一键切换，结果实时预览',
+          '完整 INI 语法：支持分节、= 与 : 分隔符、; / # 整行注释、单双引号及 \\n \\t 等转义',
+          '智能类型推断：true/false、整数、浮点、科学计数法与 null 自动识别，引号包裹则强制保留字符串',
+          '同名分节自动合并、同名键后者覆盖，冲突场景给出带行号的中文报错',
+          '可选点号嵌套键：将 server.host 或 [server.tls] 展开为嵌套对象',
+        ],
+        howToUse: [
+          '选择转换方向：INI → JSON 或 JSON → INI',
+          '在左侧粘贴配置文本，或点击示例按钮载入样例',
+          'INI → JSON 时可按需开关「类型推断」与「点号嵌套键」',
+          '右侧实时显示结果，点击「复制结果」获取转换文本',
+        ],
+        useCases: [
+          '阅读或迁移 Nginx、PHP、MySQL、Windows desktop.ini 等传统配置文件',
+          '把手工维护的 INI 配置接入只接受 JSON 的现代工具链',
+          '为部署脚本生成结构清晰、注释友好的 INI 配置',
+        ],
+        privacyNote:
+          '所有解析与序列化均在浏览器本地完成，配置内容不会被上传或记录，可安全处理含内网地址、密钥片段的敏感配置。',
+        faqs: [
+          {
+            question: '点号嵌套键默认为什么关闭？',
+            answer:
+              '许多 INI 文件（如带版本号的键 1.0.enabled）本就包含点号，默认展开会臆造不存在的嵌套结构。仅当确认键路径语义时再手动开启。',
+          },
+          {
+            question: 'JSON 中的数组如何处理？',
+            answer:
+              'JSON → INI 时标量数组会序列化为逗号分隔文本（tags = a, b, c）；由于 INI 标准没有数组语法，再转回 JSON 时该值会成为字符串，属于预期的有损转换。',
+          },
+          {
+            question: '支持多行值或行尾注释吗？',
+            answer:
+              '不支持。INI 方言差异较大，本工具聚焦通用核心语法：一行一键、整行注释；二层以上嵌套对象与对象数组在 JSON → INI 时会明确报错提示先展平数据。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The INI ↔ JSON converter is a fully in-browser configuration tool: it parses [section] / key = value INI text into structured JSON and serializes single-level JSON objects back into canonical INI, with no server involved.',
+        coreFeatures: [
+          'Bidirectional: switch instantly between INI → JSON and JSON → INI with live preview',
+          'Complete INI syntax: sections, = and : separators, ; / # full-line comments, single/double quotes and \\n \\t escapes',
+          'Smart type inference for booleans, integers, floats, scientific notation and null; quoted values stay strings',
+          'Duplicate sections merge and duplicate keys override, while conflicts raise Chinese error messages with line numbers',
+          'Optional dotted keys: expand server.host or [server.tls] into nested objects',
+        ],
+        howToUse: [
+          'Pick a direction: INI → JSON or JSON → INI',
+          'Paste your config on the left, or load a sample with the example buttons',
+          'For INI → JSON, toggle "Type inference" and "Dotted keys" as needed',
+          'The result appears live on the right; click "Copy" to grab it',
+        ],
+        useCases: [
+          'Reading or migrating legacy configs such as Nginx, PHP, MySQL, and Windows desktop.ini',
+          'Feeding hand-maintained INI files into JSON-only modern toolchains',
+          'Generating clean, comment-friendly INI configs for deployment scripts',
+        ],
+        privacyNote:
+          'All parsing and serialization happens locally in your browser. Config content is never uploaded or logged, so internal hosts and secret fragments stay on your device.',
+        faqs: [
+          {
+            question: 'Why are dotted keys disabled by default?',
+            answer:
+              'Many INI files legitimately contain dots in key names (e.g. version keys like 1.0.enabled), so auto-expansion would invent fake nesting. Enable it only when you know the paths are intentional.',
+          },
+          {
+            question: 'How are JSON arrays handled?',
+            answer:
+              'Scalar arrays are serialized as comma-separated text (tags = a, b, c). Because INI has no native array syntax, converting back yields a string; this is intentional lossy conversion.',
+          },
+          {
+            question: 'Are multiline values or inline comments supported?',
+            answer:
+              'No. INI dialects vary widely, so this tool focuses on the common core: one key per line and full-line comments. Nested objects deeper than one level and arrays of objects raise an explicit flatten-first error during JSON → INI.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

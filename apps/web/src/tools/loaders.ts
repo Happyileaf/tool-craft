@@ -206,4 +206,5 @@ export const toolLoaders: Record<
   'properties-json-converter': () => import('./properties-json-converter'),
   'magnet-link-parser': () => import('./magnet-link-parser'),
   'math-expression-evaluator': () => import('./math-expression-evaluator'),
+  'ini-json-converter': () => import('./ini-json-converter'),
 };
