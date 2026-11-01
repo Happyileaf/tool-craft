@@ -17817,6 +17817,104 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'rfc2047-decoder',
+    name: 'RFC 2047 邮件头编码字解码',
+    nameEn: 'RFC 2047 Encoded-Word Decoder',
+    description:
+      '解析邮件头中的 =?charset?B/Q?…?= 编码字并还原可读文本：支持 B（Base64）与 Q（下划线表示空格、=XX 十六进制）两种编码、UTF-8/GBK/GB2312 等字符集、多段编码字与明文混排（相邻编码字间折行空白自动折叠），非法结构与不支持字符集给出明确错误。',
+    descriptionEn:
+      'Decode RFC 2047 encoded-words (=?charset?B/Q?…?=) in mail headers: supports B (Base64) and Q (underscore for space, =XX hex) encodings, UTF-8/GBK/GB2312 charsets, multiple words mixed with plain text (folding whitespace between adjacent encoded-words), with clear errors for malformed input or unsupported charsets.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/rfc2047-decoder',
+    iconName: 'MailOutlined',
+    tags: ['RFC 2047', '邮件头', 'encoded-word', '乱码解码', 'MIME'],
+    tagsEn: ['RFC 2047', 'Mail Header', 'Encoded-Word', 'Mojibake Decoder', 'MIME'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '=?UTF-8?B?5rWL6K+V5oql5ZGK?= (=?GB2312?Q?=B2=E2=CA=D4?=)',
+    doc: {
+      zh: {
+        whatIsIt:
+          'RFC 2047 编码字解码器是一款纯浏览器本地运算的邮件头还原工具。它识别形如 =?字符集?编码?内容?= 的结构：B 编码为标准 Base64，Q 编码中下划线表示空格、=XX 表示字节，并按编码字声明的字符集（UTF-8、GBK、GB2312、ISO-8859-1 等）把字节还原为文本，常用于修复邮件主题、发件人显示名中的乱码。',
+        coreFeatures: [
+          '双编码支持：B（Base64）与 Q（_ 为空格、=XX 十六进制字节），标识大小写不敏感',
+          '多字符集：UTF-8、GBK、GB2312、ISO-8859-1 等运行环境 TextDecoder 支持的字符集，非法字节序列明确报错',
+          '混排解析：同一标头内多段编码字与明文混合，相邻编码字之间的折行空白按 RFC 2047 §6.2 折叠',
+          '严格校验：未闭合编码字、非法 Base64 / 十六进制转义、不支持的字符集均返回中文错误提示',
+          '纯本地运行：不发起任何网络请求，邮件头内容不离开浏览器',
+        ],
+        howToUse: [
+          '把含 =?…?= 结构的邮件头（如 Subject、From 显示名）粘贴到输入框',
+          '解码随输入实时进行，识别到的编码字数量以标签显示',
+          '点击「复制结果」获取还原文本；若结构非法，错误提示会说明具体原因',
+        ],
+        useCases: [
+          '排查邮件 / 邮件列表归档 / 工单导出中的主题与显示名乱码',
+          '开发调试邮件收发程序时验证 MIME 头编码是否正确',
+          '分析取证邮件原文中标头的实际字符集与编码方式',
+        ],
+        privacyNote: '所有解析均在浏览器本地完成，粘贴的邮件头不会被上传或记录。',
+        faqs: [
+          {
+            question: 'B 编码和 Q 编码有什么区别？',
+            answer:
+              '二者都用可打印 ASCII 承载字节。B 编码就是标准 Base64（每 3 字节变 4 字符）；Q 编码中下划线表示空格、=XX 表示十六进制字节，其余可打印 ASCII 原样保留，适合大部分仍是 ASCII 的标头。',
+          },
+          {
+            question: '为什么两个编码字之间的空格不见了？',
+            answer:
+              '这是 RFC 2047 §6.2 的规定：长标头折行时会把一个词拆成多个相邻编码字，它们之间用于折行的空白只服务于传输、显示时必须删除；而编码字与普通明文之间的空格会原样保留。',
+          },
+          {
+            question: '它和 base64-codec、quoted-printable-codec 有何不同？',
+            answer:
+              '后两者只处理裸 Base64 串或邮件正文的 Quoted-Printable 内容，不识别 =?字符集?编码?…?= 外层结构，也不按声明字符集解码字节；本工具专门解析带字符集声明的邮件头编码字。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first RFC 2047 encoded-word decoder for mail headers. It recognizes =?charset?encoding?text?= tokens: B is standard Base64, Q uses underscore for space and =XX for bytes, and converts the bytes back to text using the declared charset (UTF-8, GBK, GB2312, ISO-8859-1, etc.) — handy for fixing mojibake in subjects and display names.',
+        coreFeatures: [
+          'B (Base64) and Q (_ for space, =XX hex bytes) encodings; encoding letter is case-insensitive',
+          'Charsets supported by the runtime TextDecoder: UTF-8, GBK, GB2312, ISO-8859-1, etc.; invalid byte sequences reported clearly',
+          'Mixed content: several encoded-words and plain text in one header; folding whitespace between adjacent encoded-words is removed per RFC 2047 §6.2',
+          'Strict validation: unclosed words, bad Base64/hex escapes, and unsupported charsets produce explicit error messages',
+          'Everything runs locally; no network requests and the header never leaves the browser',
+        ],
+        howToUse: [
+          'Paste a mail header containing =?…?= tokens (e.g. Subject, From display name) into the input box',
+          'Decoding updates live and the number of detected encoded-words is shown as a tag',
+          'Click "Copy" to take the restored text; malformed input yields an error explaining the cause',
+        ],
+        useCases: [
+          'Diagnosing mojibake in subjects and display names from mail archives or ticket exports',
+          'Verifying MIME header encoding while developing mail-sending or receiving software',
+          'Inspecting the actual charset and encoding of header values during mail forensics',
+        ],
+        privacyNote: 'All parsing happens locally in the browser; pasted headers are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the difference between B and Q encoding?',
+            answer:
+              'Both carry bytes in printable ASCII. B is standard Base64 (3 bytes to 4 characters); Q uses underscore for space, =XX for hex bytes, and leaves other printable ASCII literal — suited to headers that are mostly ASCII.',
+          },
+          {
+            question: 'Why did the space between two encoded-words disappear?',
+            answer:
+              'RFC 2047 §6.2 mandates it: a long header can be folded into adjacent encoded-words, and the whitespace used for line folding exists only for transport and is removed on display. Spaces between an encoded-word and plain text are preserved.',
+          },
+          {
+            question: 'How is this different from the base64 and quoted-printable codecs?',
+            answer:
+              'Those handle a bare Base64 string or message-body Quoted-Printable data; they do not understand the =?charset?encoding?…?= wrapper and do not decode bytes according to a declared charset. This tool targets charset-annotated mail-header encoded-words.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
