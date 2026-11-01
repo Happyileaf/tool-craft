@@ -200,4 +200,9 @@ export const toolLoaders: Record<
   'security-txt-generator': () => import('./security-txt-generator'),
   'fwf-csv-converter': () => import('./fwf-csv-converter'),
   'npv-irr-calculator': () => import('./npv-irr-calculator'),
+  'loan-calculator': () => import('./loan-calculator'),
+  'compound-interest-calculator': () => import('./compound-interest-calculator'),
+  'rfc2047-decoder': () => import('./rfc2047-decoder'),
+  'properties-json-converter': () => import('./properties-json-converter'),
+  'magnet-link-parser': () => import('./magnet-link-parser'),
 };

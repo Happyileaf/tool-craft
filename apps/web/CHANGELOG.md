@@ -4,7 +4,7 @@
 
 ## 日志
 
-## 2026-11-01 ：【Agent自主迭代】新增 15 个 IBAN 校验、三维姿态转换、Go 结构生成、Unicode 检视、RSA 非对称密码、集装箱校验位、多纪元时间戳、NMEA 解析、电阻色环、JSON 表单互转、内容协商头解析、KSUID、security.txt、定宽文本转换与 NPV/IRR 计算工具
+## 2026-11-01 ：【Agent自主迭代】新增 20 个 IBAN 校验、三维姿态转换、Go 结构生成、Unicode 检视、RSA 非对称密码、集装箱校验位、多纪元时间戳、NMEA 解析、电阻色环、JSON 表单互转、内容协商头解析、KSUID、security.txt、定宽文本转换、NPV/IRR 计算、贷款月供、复利定投、RFC 2047 解码、.properties 转换与磁力链接工具
 
 - **新增**：IBAN 校验器（iban-validator）— 依据 ISO 13616 内置 111 个国家 / 地区长度表，按 ISO 7064 mod 97-10 算法核验校验位，自动归一化空格连字符、识别国家并给出具体失败原因，机器格式与 4 位分组易读格式互转，纯本地运算
 - **新增**：四元数欧拉角转换器（quaternion-converter）— 在四元数 (x, y, z, w)、欧拉角（roll / pitch / yaw）与 3×3 旋转矩阵间三向互转，支持六种 Tait-Bryan 内旋顺序与角度 / 弧度切换，自动归一化并提示万向锁与矩阵正交性问题
@@ -21,6 +21,11 @@
 - **新增**：security.txt 安全联系人文件生成器（security-txt-generator）— 按 RFC 9116 表单化生成 /.well-known/security.txt，Contact / Expires 必填，Encryption / Acknowledgments / Preferred-Languages / Canonical / Policy / CSAF 可选且按规范字段顺序输出 CRLF 文本；解析模式校验必填缺失、未知字段、Expires 过期 / 30 天临期并检测 PGP 签名块
 - **新增**：定宽文本 FWF ↔ CSV 转换器（fwf-csv-converter）— 在固定列宽文本与 CSV 间双向转换：零依赖 RFC 4180 CSV 解析生成（引号、字段内逗号换行、"" 转义），按列宽与左 / 右对齐做空格填充或累计位置切片，单侧 trim 保留内容侧空格，超长字段可截断计数或带行号列名报错，支持表头与 LF/CRLF 切换
 - **新增**：NPV / IRR 投资现金流计算器（npv-irr-calculator）— 按期录入现金流（t=0 首期不折现）与贴现率计算净现值及逐期折现明细，IRR 在 [-99.99%, 1000%] 区间有界二分求解（容差 1e-10），全同号现金流提示 IRR 不存在，可选门槛率按 NPV>0 且 IRR 严格高于门槛给出投资判定，纯本地数值计算零依赖
+- **新增**：贷款 / 月供计算器（loan-calculator）— 输入本金、年利率与期限，按等额本息或等额本金计算月供、利息总额、还款总额，输出逐月本金 / 利息 / 剩余本金还款计划，支持提前还款场景参考，纯本地数值计算
+- **新增**：复利与定投收益计算器（compound-interest-calculator）— 按本金、年化收益率、期限与年 / 季 / 月 / 日复利频率测算复利终值，支持每期定投与期初 / 期末投入，给出逐期资产增长明细及单利对比
+- **新增**：RFC 2047 邮件头编码字解码（rfc2047-decoder）— 解析邮件头 =?charset?B/Q?…?= 编码字并还原可读文本，支持 B（Base64）与 Q（下划线表空格、=XX 十六进制）编码、UTF-8 / GBK / GB2312 等字符集、多段编码字与明文混排（相邻编码字间折行空白按 RFC 折叠），非法结构与不支持字符集明确报错，纯本地运算
+- **新增**：Java .properties ↔ JSON 双向转换（properties-json-converter）— .properties 解析支持 = / : / 空白分隔符、行尾反斜杠续行、\n \t \r \\ \uXXXX 转义、# / ! 注释与重复键覆盖，输出扁平 JSON；反向序列化自动转义特殊字符、逻辑行超 72 字符续行，键保持扁平不臆造嵌套
+- **新增**：Magnet 磁力链接解析与生成器（magnet-link-parser）— 按 BEP 9 / BEP 12 解析 magnet:? 链接并结构化展示 urn:btih 40 位 v1 info hash（大写归一）、dn、可重复 tr、xl、ws、kt、as 与未知参数，表单可反向拼装合法 magnet URI，百分号自动编解码，非法编码 / 缺 xt / xl 非整数明确报错，纯本地运算
 
 ## 2026-10-31 ：【Agent自主迭代】新增 20 个协议校验和、数据转换、通配符测试、文本统计、地理计算、天文历法、网络地址、终端颜色、密码学指纹、生活计算、统计回归、MIME 与端口速查、目录树、英文可读性及 vCard 名片工具
 

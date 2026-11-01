@@ -17637,6 +17637,481 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'loan-calculator',
+    name: '贷款 / 月供计算器（等额本息与等额本金）',
+    nameEn: 'Loan & Mortgage Calculator',
+    description:
+      '输入本金、年利率与期限，按等额本息或等额本金计算月供、利息总额、还款总额，并给出逐月本金 / 利息 / 剩余本金计划。',
+    descriptionEn:
+      'Compute monthly payment, total interest, and total repayment for equal-installment or equal-principal loans, with a month-by-month amortization schedule.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/loan-calculator',
+    iconName: 'Calculator',
+    tags: ['贷款', '月供', '房贷', '等额本息', '等额本金'],
+    tagsEn: ['Loan', 'Mortgage', 'Monthly Payment', 'Amortization', 'Finance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '贷款 / 月供计算器是一款纯浏览器本地运算的个人财务工具，输入贷款本金、年利率与期限，即可按等额本息、等额本金两种方式计算月供、利息总额与还款总额，并提供逐月还款计划。',
+        coreFeatures: [
+          '等额本息：按 M = P·r·(1+r)^n / ((1+r)^n−1) 计算固定月供，前期利息占比高',
+          '等额本金：每月偿还固定本金 P/n，月供逐月递减、总利息更少',
+          '逐月明细：逐期列出还款额、本金、利息与期末剩余本金，末期自动结清',
+          '免息支持：年利率为 0 时两种方式均退化为平均还本，纯本地运算',
+        ],
+        howToUse: [
+          '输入贷款本金（元）、年利率百分数（如 3.1 表示 3.1%）与期限（月）',
+          '选择等额本息或等额本金，结果实时刷新',
+          '查看月供、利息总额与还款总额三项汇总',
+          '在逐月还款计划表中核对每期本金、利息与剩余本金',
+        ],
+        useCases: [
+          '购房按揭前比较等额本息与等额本金的总利息差异',
+          '评估车贷、消费贷提前还款前后的资金安排',
+          '验证银行还款计划表中的月供与剩余本金',
+        ],
+        privacyNote:
+          '所有金额仅在浏览器内存中进行确定性算术运算，刷新即消失，不上传或存储任何财务数据。',
+        faqs: [
+          {
+            question: '等额本息和等额本金哪个更划算？',
+            answer:
+              '等额本息每月还款固定、便于规划现金流，但总利息更多；等额本金前期还款压力大、月供逐月递减，总利息更少。可在两种方式间切换直接对比利息总额。',
+          },
+          {
+            question: '年利率如何填写？',
+            answer:
+              '填写百分数形式的年利率，如年利率 4.9% 填 4.9；工具内部按月利率 = 年利率 / 12 计算。免息贷款填 0 即可。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Loan & Mortgage Calculator is a fully browser-based personal finance tool. Enter the principal, annual interest rate, and term to compare equal-installment and equal-principal repayment methods, including the monthly payment, total interest, and a full amortization schedule.',
+        coreFeatures: [
+          'Equal installments: fixed monthly payment via M = P·r·(1+r)^n / ((1+r)^n−1)',
+          'Equal principal: fixed principal P/n per month with a decreasing payment and less total interest',
+          'Month-by-month schedule: payment, principal, interest, and remaining balance; the final period closes the loan exactly',
+          'Zero-rate support: a 0% annual rate degrades to straight principal averaging, all computed locally',
+        ],
+        howToUse: [
+          'Enter the loan principal, the annual rate as a percent (e.g. 3.1 for 3.1%), and the term in months',
+          'Switch between equal-installment and equal-principal methods; results update live',
+          'Read the monthly payment, total interest, and total repayment summary',
+          'Inspect each period’s principal, interest, and remaining balance in the schedule table',
+        ],
+        useCases: [
+          'Comparing total interest between repayment methods before taking a mortgage',
+          'Planning cash flow for car loans or consumer credit',
+          'Verifying the payment schedule provided by a bank',
+        ],
+        privacyNote:
+          'Every figure is computed deterministically in browser memory and vanishes on refresh; no financial data is uploaded or stored.',
+        faqs: [
+          {
+            question: 'Which repayment method is better?',
+            answer:
+              'Equal installments keep the monthly payment flat and easy to budget but accrue more total interest. Equal principal has higher early payments that decrease over time and costs less interest overall. Switch between the two to compare totals directly.',
+          },
+          {
+            question: 'How should I enter the annual rate?',
+            answer:
+              'Enter the annual rate as a percentage number, e.g. 4.9 for 4.9%; the tool divides it by 12 for the monthly rate. Enter 0 for an interest-free loan.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'compound-interest-calculator',
+    name: '复利与定投收益计算器',
+    nameEn: 'Compound Interest & DCA Calculator',
+    description:
+      '按本金、年化收益率、期限与复利频率（年 / 季 / 月 / 日）测算复利终值，支持每期定投与期初 / 期末投入，给出逐期明细及单利对比。',
+    descriptionEn:
+      'Project compound-growth future value with principal, annual rate, term, and compounding frequency, including periodic contributions (begin/end), a per-period schedule, and a simple-interest comparison.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/compound-interest-calculator',
+    iconName: 'TrendingUp',
+    tags: ['复利', '定投', '理财', '终值', '单利对比'],
+    tagsEn: ['Compound Interest', 'DCA', 'Investment', 'Future Value', 'Annuity'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '复利与定投收益计算器是一款纯浏览器本地运算的投资测算工具，输入初始本金、年化收益率、投资期限与复利频率，并可设置每期定投金额与投入时点，即可得到期末本息总额、累计投入与累计收益的逐期明细，并与同等条件的单利结果对比。',
+        coreFeatures: [
+          '四种复利频率：年复利、季复利、月复利、日复利，期利率 = 年利率 / 每年期数',
+          '定期定额：支持每期定投与期初 / 期末投入（即付 / 普通年金），逐期滚动计息',
+          '完整汇总：期末本息、累计投入本金、累计收益与总期数',
+          '单利对比：同期限单利终值与复利优势一目了然；零利率与负利率场景同样正确',
+        ],
+        howToUse: [
+          '输入初始本金、年化收益率百分数（如 8 表示 8%）与投资年数',
+          '选择复利频率；如需定投，填写每期投入金额并选择期初或期末投入',
+          '查看期末本息总额、累计投入与累计收益',
+          '在逐期明细表中查看每期余额、定投与收益，并对照单利终值',
+        ],
+        useCases: [
+          '估算长期持有指数基金 / 存款的复利终值',
+          '测算工资定投（月投）在不同收益率下的退休 / 购房储备',
+          '向他人演示复利相对单利的长期优势',
+        ],
+        privacyNote:
+          '所有数字仅在浏览器内存中进行确定性计算，刷新即消失，不向任何服务器上传财务数据。',
+        faqs: [
+          {
+            question: '期初投入和期末投入有什么区别？',
+            answer:
+              '期初投入（即付年金）在每期开始时入账，当期即可产生收益；期末投入（普通年金）在每期结束时入账，少计一期利息。长期、高频定投下二者终值差异会被复利放大。',
+          },
+          {
+            question: '月复利时定投金额是按月投入吗？',
+            answer:
+              '是的。定投金额按所选复利频率的「每期」理解：月复利即每月投入，季复利即每季投入，日复利即每日投入。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Compound Interest & DCA Calculator is a fully browser-based investment planner. Enter principal, annual rate, term, and compounding frequency, optionally add periodic contributions at the begin or end of each period, and get the future value, total contributions, total gain, a per-period schedule, and a simple-interest comparison.',
+        coreFeatures: [
+          'Four compounding frequencies: yearly, quarterly, monthly, daily; period rate = annual rate / periods per year',
+          'Periodic investments: annuity-due (begin) or ordinary annuity (end), rolled forward period by period',
+          'Full summary: future value, total contributed, total gain, and number of periods',
+          'Simple-interest comparison showing the compounding advantage; zero and negative rates handled correctly',
+        ],
+        howToUse: [
+          'Enter the initial principal, annual rate as a percent (e.g. 8 for 8%), and the term in years',
+          'Choose a compounding frequency; optionally set a per-period contribution and its timing (begin/end)',
+          'Read the future value, total contributions, and total gain',
+          'Inspect the per-period schedule and compare against the simple-interest result',
+        ],
+        useCases: [
+          'Estimating the compounded future value of long-term index fund holdings',
+          'Planning monthly salary contributions for retirement or housing savings',
+          'Demonstrating the long-run advantage of compound over simple interest',
+        ],
+        privacyNote:
+          'Every figure is computed deterministically in browser memory and vanishes on refresh; no financial data is uploaded.',
+        faqs: [
+          {
+            question: 'What is the difference between begin and end contributions?',
+            answer:
+              'Begin (annuity due) deposits at the start of each period, so the contribution earns interest in that same period; end (ordinary annuity) deposits at the period’s end and misses one period of interest. The gap compounds over long horizons.',
+          },
+          {
+            question: 'With monthly compounding, is the contribution paid every month?',
+            answer:
+              'Yes. The contribution applies once per compounding period: monthly with monthly compounding, quarterly with quarterly, daily with daily.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'rfc2047-decoder',
+    name: 'RFC 2047 邮件头编码字解码',
+    nameEn: 'RFC 2047 Encoded-Word Decoder',
+    description:
+      '解析邮件头中的 =?charset?B/Q?…?= 编码字并还原可读文本：支持 B（Base64）与 Q（下划线表示空格、=XX 十六进制）两种编码、UTF-8/GBK/GB2312 等字符集、多段编码字与明文混排（相邻编码字间折行空白自动折叠），非法结构与不支持字符集给出明确错误。',
+    descriptionEn:
+      'Decode RFC 2047 encoded-words (=?charset?B/Q?…?=) in mail headers: supports B (Base64) and Q (underscore for space, =XX hex) encodings, UTF-8/GBK/GB2312 charsets, multiple words mixed with plain text (folding whitespace between adjacent encoded-words), with clear errors for malformed input or unsupported charsets.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/rfc2047-decoder',
+    iconName: 'MailOutlined',
+    tags: ['RFC 2047', '邮件头', 'encoded-word', '乱码解码', 'MIME'],
+    tagsEn: ['RFC 2047', 'Mail Header', 'Encoded-Word', 'Mojibake Decoder', 'MIME'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '=?UTF-8?B?5rWL6K+V5oql5ZGK?= (=?GB2312?Q?=B2=E2=CA=D4?=)',
+    doc: {
+      zh: {
+        whatIsIt:
+          'RFC 2047 编码字解码器是一款纯浏览器本地运算的邮件头还原工具。它识别形如 =?字符集?编码?内容?= 的结构：B 编码为标准 Base64，Q 编码中下划线表示空格、=XX 表示字节，并按编码字声明的字符集（UTF-8、GBK、GB2312、ISO-8859-1 等）把字节还原为文本，常用于修复邮件主题、发件人显示名中的乱码。',
+        coreFeatures: [
+          '双编码支持：B（Base64）与 Q（_ 为空格、=XX 十六进制字节），标识大小写不敏感',
+          '多字符集：UTF-8、GBK、GB2312、ISO-8859-1 等运行环境 TextDecoder 支持的字符集，非法字节序列明确报错',
+          '混排解析：同一标头内多段编码字与明文混合，相邻编码字之间的折行空白按 RFC 2047 §6.2 折叠',
+          '严格校验：未闭合编码字、非法 Base64 / 十六进制转义、不支持的字符集均返回中文错误提示',
+          '纯本地运行：不发起任何网络请求，邮件头内容不离开浏览器',
+        ],
+        howToUse: [
+          '把含 =?…?= 结构的邮件头（如 Subject、From 显示名）粘贴到输入框',
+          '解码随输入实时进行，识别到的编码字数量以标签显示',
+          '点击「复制结果」获取还原文本；若结构非法，错误提示会说明具体原因',
+        ],
+        useCases: [
+          '排查邮件 / 邮件列表归档 / 工单导出中的主题与显示名乱码',
+          '开发调试邮件收发程序时验证 MIME 头编码是否正确',
+          '分析取证邮件原文中标头的实际字符集与编码方式',
+        ],
+        privacyNote: '所有解析均在浏览器本地完成，粘贴的邮件头不会被上传或记录。',
+        faqs: [
+          {
+            question: 'B 编码和 Q 编码有什么区别？',
+            answer:
+              '二者都用可打印 ASCII 承载字节。B 编码就是标准 Base64（每 3 字节变 4 字符）；Q 编码中下划线表示空格、=XX 表示十六进制字节，其余可打印 ASCII 原样保留，适合大部分仍是 ASCII 的标头。',
+          },
+          {
+            question: '为什么两个编码字之间的空格不见了？',
+            answer:
+              '这是 RFC 2047 §6.2 的规定：长标头折行时会把一个词拆成多个相邻编码字，它们之间用于折行的空白只服务于传输、显示时必须删除；而编码字与普通明文之间的空格会原样保留。',
+          },
+          {
+            question: '它和 base64-codec、quoted-printable-codec 有何不同？',
+            answer:
+              '后两者只处理裸 Base64 串或邮件正文的 Quoted-Printable 内容，不识别 =?字符集?编码?…?= 外层结构，也不按声明字符集解码字节；本工具专门解析带字符集声明的邮件头编码字。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first RFC 2047 encoded-word decoder for mail headers. It recognizes =?charset?encoding?text?= tokens: B is standard Base64, Q uses underscore for space and =XX for bytes, and converts the bytes back to text using the declared charset (UTF-8, GBK, GB2312, ISO-8859-1, etc.) — handy for fixing mojibake in subjects and display names.',
+        coreFeatures: [
+          'B (Base64) and Q (_ for space, =XX hex bytes) encodings; encoding letter is case-insensitive',
+          'Charsets supported by the runtime TextDecoder: UTF-8, GBK, GB2312, ISO-8859-1, etc.; invalid byte sequences reported clearly',
+          'Mixed content: several encoded-words and plain text in one header; folding whitespace between adjacent encoded-words is removed per RFC 2047 §6.2',
+          'Strict validation: unclosed words, bad Base64/hex escapes, and unsupported charsets produce explicit error messages',
+          'Everything runs locally; no network requests and the header never leaves the browser',
+        ],
+        howToUse: [
+          'Paste a mail header containing =?…?= tokens (e.g. Subject, From display name) into the input box',
+          'Decoding updates live and the number of detected encoded-words is shown as a tag',
+          'Click "Copy" to take the restored text; malformed input yields an error explaining the cause',
+        ],
+        useCases: [
+          'Diagnosing mojibake in subjects and display names from mail archives or ticket exports',
+          'Verifying MIME header encoding while developing mail-sending or receiving software',
+          'Inspecting the actual charset and encoding of header values during mail forensics',
+        ],
+        privacyNote: 'All parsing happens locally in the browser; pasted headers are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the difference between B and Q encoding?',
+            answer:
+              'Both carry bytes in printable ASCII. B is standard Base64 (3 bytes to 4 characters); Q uses underscore for space, =XX for hex bytes, and leaves other printable ASCII literal — suited to headers that are mostly ASCII.',
+          },
+          {
+            question: 'Why did the space between two encoded-words disappear?',
+            answer:
+              'RFC 2047 §6.2 mandates it: a long header can be folded into adjacent encoded-words, and the whitespace used for line folding exists only for transport and is removed on display. Spaces between an encoded-word and plain text are preserved.',
+          },
+          {
+            question: 'How is this different from the base64 and quoted-printable codecs?',
+            answer:
+              'Those handle a bare Base64 string or message-body Quoted-Printable data; they do not understand the =?charset?encoding?…?= wrapper and do not decode bytes according to a declared charset. This tool targets charset-annotated mail-header encoded-words.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'properties-json-converter',
+    name: 'Java .properties ↔ JSON 双向转换',
+    nameEn: 'Java .properties ↔ JSON Converter',
+    description:
+      'Java .properties 配置文本与扁平 JSON 对象双向转换：解析 = / : / 空白分隔符、行尾反斜杠续行、\\n \\t \\r \\\\ \\uXXXX 转义、# / ! 注释与重复键覆盖；序列化时自动转义特殊字符并对超长逻辑行续行，键保持扁平不臆造嵌套。',
+    descriptionEn:
+      'Convert between Java .properties text and a flat JSON object: parsing handles = / : / whitespace separators, backslash line continuations, \\n \\t \\r \\\\ \\uXXXX escapes, # / ! comments and duplicate-key override; serialization escapes special characters, wraps long logical lines, and keeps keys flat without inventing nesting.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/properties-json-converter',
+    iconName: 'FileTextOutlined',
+    tags: ['.properties', 'Java 配置', 'JSON', '双向转换', 'Unicode 转义'],
+    tagsEn: ['.properties', 'Java Config', 'JSON', 'Bidirectional', 'Unicode Escape'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'app.name = Demo 应用\nport: 8080\ntitle=\\u4f60\\u597d',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Java .properties ↔ JSON 转换器是一款纯浏览器本地运算的配置格式互转工具。.properties 是 java.util.Properties 使用的无段落、扁平键值格式：支持 = / : / 空白三类分隔符、行尾反斜杠续行、\\n \\t \\r \\\\ \\uXXXX 转义以及 # / ! 注释。本工具把它解析为扁平 JSON 对象，也能把扁平对象序列化回规范的 .properties 文本。',
+        coreFeatures: [
+          '完整语法：= / : / 空白三种分隔符，键值首尾空白规则与 Java 实现一致',
+          '续行与转义：行尾反斜杠拼接物理行并折叠起首空白，\\n \\t \\r \\\\ \\uXXXX 正确解码',
+          '注释与重复键：# / ! 注释行与空白行忽略，重复键以后出现者为准',
+          '双向转换：JSON 序列化自动转义键中的分隔符与值中的控制字符，逻辑行超 72 字符自动续行',
+          '严格报错：畸形 \\uXXXX、缺键、嵌套对象 / 数组值均给出明确中文错误，全部纯本地完成',
+        ],
+        howToUse: [
+          '选择转换方向：.properties → JSON 或 JSON → .properties',
+          '在左侧粘贴配置文本或扁平 JSON 对象，结果在右侧实时更新',
+          '可点击「输出送入对侧并换向」做往返一致性校验，或直接复制结果',
+        ],
+        useCases: [
+          '阅读 / 编辑 Spring、Log4j、Maven 等 Java 生态的 .properties 配置',
+          '把多语言资源（含 \\uXXXX 转义）快速还原为可读 Unicode 文本',
+          '在配置中心 / JSON 工作流与 .properties 文件之间迁移键值',
+        ],
+        privacyNote: '所有文本均在浏览器本地解析，不上传、不记录任何配置内容。',
+        faqs: [
+          {
+            question: '为什么解析结果是扁平对象，没有按点号生成嵌套？',
+            answer:
+              '点号在 .properties 键名里只是普通字符（如 app.name 本身就是键），java.util.Properties 也不做层级拆分；Spring 等框架的嵌套绑定属于上层约定。为避免臆造结构，本工具保留原始扁平键，嵌套转换请先自行展平。',
+          },
+          {
+            question: '续行规则具体是怎样的？',
+            answer:
+              '逻辑行以奇数个行尾反斜杠结尾时，会与下一物理行拼接，且下一物理行起首的空格 / 制表符被折叠丢弃。序列化方向则在逻辑行超过 72 个自然字符处插入反斜杠 + 换行 + 单空格，与 java.util.Properties.store 的输出风格一致。',
+          },
+          {
+            question: '它和 INI 转 JSON 工具有什么区别？',
+            answer:
+              'INI 有 [section] 段落与显式层级；.properties 没有段落、全部为扁平键值，语法难点集中在转义序列（\\uXXXX）与行续接上。两者词法规则不同，不能互相替代。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local-first bidirectional converter between Java .properties text and flat JSON objects. .properties is the section-less, flat key/value format used by java.util.Properties: it supports = / : / whitespace separators, backslash line continuations, \\n \\t \\r \\\\ \\uXXXX escapes, and # / ! comments. Parse it into flat JSON or serialize a flat object back into canonical .properties text.',
+        coreFeatures: [
+          'Full syntax: = / : / whitespace separators with Java-compatible leading/trailing whitespace rules',
+          'Continuations and escapes: trailing backslashes join physical lines and fold leading whitespace; \\n \\t \\r \\\\ \\uXXXX decode correctly',
+          'Comments and duplicate keys: # / ! comment lines and blank lines ignored; later duplicates win',
+          'Bidirectional: serialization escapes key separators and control characters in values, wrapping logical lines beyond 72 characters',
+          'Strict errors: malformed \\uXXXX, missing keys, nested object/array values get clear messages; everything runs locally',
+        ],
+        howToUse: [
+          'Choose a direction: .properties → JSON or JSON → .properties',
+          'Paste configuration text or a flat JSON object on the left; the result updates live on the right',
+          'Use "send output to the other side and switch" for a round-trip check, or copy the result directly',
+        ],
+        useCases: [
+          'Reading or editing Spring, Log4j, Maven and other Java ecosystem .properties files',
+          'Turning i18n resources with \\uXXXX escapes into readable Unicode text',
+          'Migrating key/value configuration between JSON-based pipelines and .properties files',
+        ],
+        privacyNote: 'All text is parsed locally in the browser; no configuration content is uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why is the result flat instead of nested on dots?',
+            answer:
+              'A dot is just an ordinary character in a .properties key (app.name is the key itself); java.util.Properties never splits hierarchy, and nested binding is a higher-level convention of frameworks like Spring. To avoid inventing structure, original flat keys are preserved — flatten JSON yourself before conversion.',
+          },
+          {
+            question: 'How exactly do line continuations work?',
+            answer:
+              'A logical line ending with an odd number of trailing backslashes joins the next physical line, and leading spaces/tabs of that next line are discarded. Serialization inserts a backslash + newline + single space when a logical line exceeds 72 natural characters, matching the style of java.util.Properties.store.',
+          },
+          {
+            question: 'How is this different from the INI-to-JSON tool?',
+            answer:
+              'INI has [section] blocks and explicit hierarchy; .properties is section-less and entirely flat, with escapes (\\uXXXX) and line continuations as its tricky parts. The two lexical grammars differ and are not interchangeable.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'magnet-link-parser',
+    name: 'Magnet 磁力链接解析与生成器',
+    nameEn: 'Magnet Link Parser & Builder',
+    description:
+      '解析 magnet:? 链接并结构化展示 v1 info hash（urn:btih 40 位十六进制）、显示名 dn、可重复的 tracker tr、文件大小 xl、Web 种子 ws、关键词 kt 与来源 as；也可从表单字段反向拼装合法 magnet URI，百分号编码自动处理。',
+    descriptionEn:
+      'Parse magnet:? links into readable fields — v1 info hash (urn:btih, 40-hex), display name dn, repeated trackers tr, length xl, web seeds ws, keywords kt and acceptable source as — or build a valid magnet URI from form fields, with percent-encoding handled automatically.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/magnet-link-parser',
+    iconName: 'LinkOutlined',
+    tags: ['Magnet', '磁力链接', 'BitTorrent', 'Tracker', 'Info Hash'],
+    tagsEn: ['Magnet', 'BitTorrent', 'Tracker', 'Info Hash', 'URI'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Magnet 磁力链接解析与生成器是一款纯浏览器本地运算的工具，遵循 Magnet URI 规范（BEP 9 / BEP 12）。它把一长串百分号编码、参数重复的 magnet:? 链接解析为人类可读的结构化字段，也支持从表单反向拼装并复制合法的 magnet URI，全程不访问网络、不上传任何内容。',
+        coreFeatures: [
+          '完整解析：xt 精确主题（识别 urn:btih: 40 位 v1 info hash 并统一大写，兼容 v2 / 其他 URN）、dn 显示名、可重复的 tr tracker、xl 文件大小、ws Web 种子、kt 关键词、as 来源',
+          '百分号编解码：参数值自动 decodeURIComponent / encodeURIComponent，非法 %XX 编码明确报错',
+          '反向拼装：按行填写多个 xt / tr / ws，关键词以空格或逗号分隔，自动跳过空值并按规范排序输出',
+          '严格校验：缺 xt、非 magnet:? 开头、xl 非非负整数等输入给出中文错误提示',
+          '一键回填：解析结果可直接填入拼装表单做编辑与往返校验，全部纯本地完成',
+        ],
+        howToUse: [
+          '在左侧粘贴 magnet:? 链接，字段实时解析展示，无需点击按钮',
+          '查看 v1 info hash、显示名、tracker 列表、文件大小等信息；未识别参数也会原样列出',
+          '在右侧表单填写字段拼装新链接，或点击「填入拼装表单」基于解析结果修改后复制',
+        ],
+        useCases: [
+          '快速判断一条磁力链接指向什么资源、使用哪些 tracker',
+          '给资源手工补充 tracker / Web 种子后重新生成 magnet 链接',
+          '校验从各处复制的 magnet 链接是否合法、info hash 是否完整',
+        ],
+        privacyNote: '所有解析与拼装均在浏览器本地完成，链接内容不会被上传或发送到任何服务器。',
+        faqs: [
+          {
+            question: '为什么有的链接解析不出 v1 info hash？',
+            answer:
+              'v1 info hash 必须是 xt=urn:btih: 之后的 40 位十六进制字符。v2 种子使用 urn:btmh: 多哈希格式，旧链接也可能使用 32 位 Base32 hash，这些会原样展示在 xt 列表中，但不识别为 v1 hash。',
+          },
+          {
+            question: 'tracker 为什么可以出现很多次？',
+            answer:
+              'Magnet 规范允许 tr 参数重复出现，每个值是一个独立的 tracker 地址，客户端会按顺序尝试。本工具严格保留出现顺序，拼装时每行一个 tracker 即生成一个 tr 参数。',
+          },
+          {
+            question: '它和通用 URL 解析器有什么区别？',
+            answer:
+              '通用 URL 解析器只拆分 scheme / host / query 组件；magnet:? 没有 host，其语义全部在 query 参数中（xt / dn / tr / xl 等），且 + 不按空格解码、tr 可重复。本工具理解这些 BitTorrent 专属语义并做结构化展示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local tool for Magnet URIs (BEP 9 / BEP 12). It turns a long, percent-encoded magnet:? link with repeated parameters into readable structured fields, and can also build and copy a valid magnet URI from form fields — no network access and nothing uploaded.',
+        coreFeatures: [
+          'Complete parsing: xt exact topics (recognizing urn:btih: 40-hex v1 info hashes, normalized to uppercase; v2/other URNs tolerated), dn display name, repeated tr trackers, xl length, ws web seeds, kt keywords, as acceptable source',
+          'Percent codec: values are automatically decoded/encoded with decodeURIComponent/encodeURIComponent; malformed %XX sequences are reported clearly',
+          'Reverse building: multiple xt / tr / ws values one per line, keywords separated by spaces or commas; empty values skipped and parameters emitted in canonical order',
+          'Strict validation: missing xt, non-magnet:? input, non-integer xl and other problems get clear error messages',
+          'One-click fill: parsed fields can populate the builder form for editing and round-trip checks; everything runs locally',
+        ],
+        howToUse: [
+          'Paste a magnet:? link on the left; all fields parse live with no button click',
+          'Inspect the v1 info hash, display name, tracker list, file size and more; unknown parameters are shown as-is',
+          'Fill the form on the right to build a new link, or click "fill builder" to modify a parsed one, then copy it',
+        ],
+        useCases: [
+          'Quickly understanding what resource a magnet link points to and which trackers it uses',
+          'Adding trackers or web seeds to a resource and regenerating its magnet link by hand',
+          'Validating magnet links copied from various sources and checking hash completeness',
+        ],
+        privacyNote:
+          'All parsing and building happens locally in your browser; link content is never uploaded or sent anywhere.',
+        faqs: [
+          {
+            question: 'Why do some links show no v1 info hash?',
+            answer:
+              'A v1 info hash must be exactly 40 hexadecimal characters after xt=urn:btih:. v2 torrents use urn:btmh: multi-hash format, and older links may use a 32-character Base32 hash; those are shown verbatim in the xt list but not recognized as v1 hashes.',
+          },
+          {
+            question: 'Why can the tracker appear many times?',
+            answer:
+              'The Magnet spec allows the tr parameter to repeat, each value being an independent tracker address that clients try in order. This tool preserves the order exactly, and when building, one tracker per line becomes one tr parameter.',
+          },
+          {
+            question: 'How is this different from a generic URL parser?',
+            answer:
+              'A generic URL parser only splits scheme/host/query components; magnet:? has no host, and all semantics live in query parameters (xt/dn/tr/xl etc.), with "+" not decoded as space and tr repeatable. This tool understands those BitTorrent-specific semantics and presents them structurally.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
