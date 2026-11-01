@@ -18422,6 +18422,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'text-similarity',
+    name: '文本相似度计算器（Levenshtein / LCS / Jaro-Winkler / Dice）',
+    nameEn: 'Text Similarity Calculator (Levenshtein / LCS / Jaro-Winkler / Dice)',
+    description:
+      '输入两段文本同时计算四种常用相似度指标：Levenshtein 编辑距离与归一化相似度、最长公共子序列 LCS、Jaro-Winkler 与 Sørensen–Dice 双字组系数，并展示字符级编辑对齐视图，支持忽略大小写。',
+    descriptionEn:
+      'Enter two texts to get four similarity metrics at once: Levenshtein distance with normalized ratio, longest common subsequence, Jaro-Winkler, and Sørensen–Dice bigram coefficient, plus a character-level edit alignment view and optional case-insensitive comparison.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/text-similarity',
+    iconName: 'FileText',
+    tags: ['文本相似度', '编辑距离', 'Levenshtein', 'LCS', 'Jaro-Winkler', 'Dice'],
+    tagsEn: ['Text Similarity', 'Edit Distance', 'Levenshtein', 'LCS', 'Jaro-Winkler', 'Dice'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'kitten',
+    doc: {
+      zh: {
+        whatIsIt:
+          '文本相似度计算器是一款纯浏览器本地运行的文本量化比较工具，对两段文本同时给出 Levenshtein 编辑距离、最长公共子序列（LCS）、Jaro-Winkler 与 Sørensen–Dice 双字组系数四种经典指标，并以字符级对齐视图展示从 A 变换到 B 的插入、删除、替换过程，适合模糊去重、输入纠错与日志聚类前的相似度估算。',
+        coreFeatures: [
+          '四种指标一次给出：Levenshtein 距离与归一化相似度、LCS 长度与比率、Jaro-Winkler、Dice 系数',
+          '字符级编辑对齐视图：相同 / 替换 / 删除 / 插入四色标注，空格以 ␣ 可见化',
+          '可选忽略大小写；实时计算，输入即出结果',
+          '经典动态规划与匹配窗口算法，零新增依赖、纯本地运行',
+          '正确处理中文（按 JavaScript 字符码元计数）与空串边界',
+        ],
+        howToUse: [
+          '在两个文本框分别粘贴或输入待比较的文本 A 与 B',
+          '按需打开「忽略大小写」开关，指标即时重新计算',
+          '查看四种相似度百分比与编辑距离等原始数值',
+          '在「编辑对齐」区域查看字符级变换过程，可用开关隐藏',
+        ],
+        useCases: [
+          '模糊去重：判断两条用户评论、搜索词或日志是否实质相同',
+          '输入纠错 / 拼写建议：用编辑距离与 Jaro-Winkler 排序候选词',
+          '日志与告警聚类：合并前快速估算文本接近程度',
+        ],
+        privacyNote:
+          '所有文本均在浏览器本地完成计算，不发起任何网络请求，业务文本不会离开设备。',
+        faqs: [
+          {
+            question: '四个指标应该看哪个？',
+            answer:
+              '拼写纠错与短词匹配常用 Jaro-Winkler；需要“最少改多少次”时看 Levenshtein 编辑距离；子串顺序保持场景用 LCS；中文或按词块重复的短文本可用 Dice 双字组系数。本工具一次全部给出，便于交叉判断。',
+          },
+          {
+            question: '中文是按字还是按词计算？',
+            answer:
+              '统一按字符（JavaScript 码元）计数，每个汉字视为一个字符，Dice 的双字组即相邻两个汉字。需要分词级比较时可先在文本中自行插入空格再比较。',
+          },
+          {
+            question: '与 text-diff 工具有什么区别？',
+            answer:
+              'text-diff 输出行级增删视图用于审阅差异，本工具输出量化相似度数值与字符级对齐，面向去重、纠错、聚类等需要数值排序的场景。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Text Similarity Calculator is a fully in-browser tool that compares two texts with four classic metrics — Levenshtein distance, longest common subsequence (LCS), Jaro-Winkler, and Sørensen–Dice bigram coefficient — and visualizes the character-level insert/delete/replace alignment that transforms A into B. It supports fuzzy deduplication, typo correction, and log-clustering estimates.',
+        coreFeatures: [
+          'Four metrics at once: Levenshtein distance and normalized ratio, LCS length and ratio, Jaro-Winkler, and Dice coefficient',
+          'Character-level alignment view with color-coded equal / replace / delete / insert chips; spaces shown as ␣',
+          'Optional case-insensitive mode with instant recomputation',
+          'Classic dynamic-programming and matching-window algorithms with zero new dependencies',
+          'Correct handling of Chinese text (counted by JavaScript code units) and empty-string edge cases',
+        ],
+        howToUse: [
+          'Paste or type text A and text B into the two boxes',
+          'Toggle "Ignore case" as needed; metrics update immediately',
+          'Read the four similarity percentages and raw values such as edit distance',
+          'Inspect the character-level edit alignment, which can be hidden via the toggle',
+        ],
+        useCases: [
+          'Fuzzy deduplication of comments, search queries, or log lines',
+          'Typo correction and spell suggestions ranked by edit distance or Jaro-Winkler',
+          'Quick similarity estimates before clustering logs and alerts',
+        ],
+        privacyNote:
+          'All computation happens locally in your browser with no network requests; your text never leaves your device.',
+        faqs: [
+          {
+            question: 'Which of the four metrics should I use?',
+            answer:
+              'Jaro-Winkler is popular for spell correction and short strings; Levenshtein answers "how many edits are needed"; LCS suits order-preserving subsequence comparisons; Dice bigrams work well for Chinese or block-repetitive short text. The tool shows all four so you can cross-check.',
+          },
+          {
+            question: 'Is Chinese counted by character or by word?',
+            answer:
+            'All metrics count code-unit characters, so each Han character is one unit and Dice bigrams are adjacent character pairs. For word-level comparison, insert spaces between words before comparing.',
+          },
+          {
+            question: 'How is this different from the text-diff tool?',
+            answer:
+              'text-diff renders line-level add/remove views for reviewing changes, while this tool produces quantitative similarity scores and character alignment for scenarios such as deduplication, correction, and clustering.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

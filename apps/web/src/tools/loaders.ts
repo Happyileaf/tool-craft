@@ -208,4 +208,5 @@ export const toolLoaders: Record<
   'math-expression-evaluator': () => import('./math-expression-evaluator'),
   'ini-json-converter': () => import('./ini-json-converter'),
   'matrix-calculator': () => import('./matrix-calculator'),
+  'text-similarity': () => import('./text-similarity'),
 };
