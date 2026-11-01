@@ -17455,6 +17455,98 @@ info: request finished`,
       },
     },
   },
+  {
+    slug: 'fwf-csv-converter',
+    name: '定宽文本 FWF ↔ CSV 转换器',
+    nameEn: 'Fixed-width FWF ↔ CSV Converter',
+    description:
+      '在固定列宽文本（FWF）与 CSV 之间双向转换：按列名、宽度与左 / 右对齐切片或空格填充，支持表头、LF/CRLF 换行与超长截断或报错。',
+    descriptionEn:
+      'Convert between fixed-width format text (FWF) and CSV in both directions: slice or space-pad by column name, width and left/right alignment, with header, LF/CRLF and truncate-or-error options.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/fwf-csv-converter',
+    iconName: 'Table2',
+    tags: ['定宽文本', 'FWF', 'CSV', '主机报表', '列对齐'],
+    tagsEn: ['Fixed-width', 'FWF', 'CSV', 'Mainframe Report', 'Column Alignment'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `name,age,city
+"Smith, John",30,New York
+Jane,25,London`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运算的固定列宽文本（Fixed-width Format，FWF）与 CSV 双向转换器。FWF 常见于主机报表、银行账单与遗留系统导出：每个字段按固定字符位置摆放，不足宽度以空格补齐，列与列之间没有分隔符。工具按你提供的列名、宽度与对齐方式，在 CSV 与定宽文本之间互相转换，并完整处理引号、字段内逗号与换行。',
+        coreFeatures: [
+          '双向转换：CSV → FWF 按列宽空格填充，FWF → CSV 按累计位置切片',
+          '左 / 右对齐：left 列右补空格并只去除尾部空格，right 列左补空格并只去除前导空格，内容一侧的空格完整保留',
+          'RFC 4180 风格 CSV：自行实现零依赖解析与生成，支持引号包裹、字段内逗号 / 换行与 "" 转义，换行可在 LF 与 CRLF 间切换',
+          '可控的超长策略与表头开关：超长字段可截断并统计数量或直接报错，首行可标记为表头跳过 / 取回',
+        ],
+        howToUse: [
+          '在顶部选择转换方向（CSV → FWF 或 FWF → CSV），左侧粘贴原始文本，右侧实时显示结果',
+          '在列定义区逐列填写列名、宽度（正整数）与对齐方式，可用「添加列」「删除」调整，或一键填充示例列',
+          '按需设置超长策略（仅 CSV → FWF）、换行符（LF / CRLF）以及「首行作为表头」开关',
+          '出现错误时输出区会显示具体行号与列名；截断发生时会提示被截断字段数，确认无误后点击复制取用结果',
+        ],
+        useCases: [
+          '把主机 / 银行系统导出的定宽报表解析为 CSV，再用表格软件或脚本处理',
+          '把 CSV 数据按遗留系统要求的固定列宽排版，生成可直接提交的定宽文件',
+          '核对列宽、对齐与填充是否正确，排查定宽接口或账单文件的字段错位问题',
+        ],
+        privacyNote:
+          '所有解析、切片与填充均在浏览器本地完成，数据不会上传到任何服务器，适合处理敏感账单与报表。',
+        faqs: [
+          {
+            question: '字段内容超出列宽会怎样？',
+            answer:
+              'CSV → FWF 时可选择「截断」或「报错」：截断模式会按列宽切短内容并提示被截断字段的总数；报错模式会停止转换，并指出具体的数据行号（从 1 开始）与列名，避免静默丢数据。',
+          },
+          {
+            question: 'FWF 某一行比定义的总宽度短会报错吗？',
+            answer:
+              '不会。解析时按 [start, start+width) 切片，行长度不足时只取可用字符得到短字段；left 列只去掉尾部填充空格、right 列只去掉前导填充空格，因此内容本身带有的前导 / 尾随空格不会被误删。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based bidirectional converter between Fixed-width Format text (FWF) and CSV. FWF is common in mainframe reports, bank statements and legacy-system exports: every field occupies fixed character positions, short values are padded with spaces, and there is no delimiter between columns. Given column names, widths and alignment, the tool converts between CSV and fixed-width text, fully handling quotes, in-field commas and newlines.',
+        coreFeatures: [
+          'Bidirectional: CSV → FWF pads with spaces by width; FWF → CSV slices by cumulative positions',
+          'Left/right alignment: left columns are right-padded and only trailing padding is stripped; right columns are left-padded and only leading padding is stripped, preserving spaces on the content side',
+          'RFC 4180-style CSV: a zero-dependency hand-written parser/serializer supporting quoted fields, in-field commas/newlines and "" escaping, with selectable LF or CRLF endings',
+          'Overflow policy and header toggle: overflowing fields are either truncated (with a count) or reported with an error; the first row can be treated as a header to skip or reuse',
+        ],
+        howToUse: [
+          'Pick the direction (CSV → FWF or FWF → CSV) at the top, paste source text on the left, and read the live result on the right',
+          'Define each column (name, positive-integer width, alignment) in the column editor; add/remove columns or fill the sample columns in one click',
+          'Choose the overflow policy (CSV → FWF only), line ending (LF / CRLF) and whether the first row is a header',
+          'Errors show the exact data row number and column name; truncation reports the number of shortened fields. Copy the result once it looks right',
+        ],
+        useCases: [
+          'Parsing fixed-width reports exported from mainframe or banking systems into CSV for spreadsheets or scripts',
+          'Laying CSV data out at the exact column widths required by legacy systems to produce submittable fixed-width files',
+          'Verifying widths, alignment and padding when debugging misaligned fields in fixed-width interfaces or statement files',
+        ],
+        privacyNote:
+          'All parsing, slicing and padding run locally in your browser; data is never uploaded to any server, which makes the tool safe for sensitive statements and reports.',
+        faqs: [
+          {
+            question: 'What happens when a field is longer than its column width?',
+            answer:
+              'For CSV → FWF you can choose "truncate" or "error". Truncate mode shortens the value to the column width and reports the total number of truncated fields; error mode stops and names the exact data row (numbered from 1) and column, so no data is silently lost.',
+          },
+          {
+            question: 'Is an FWF row shorter than the total defined widths an error?',
+            answer:
+              'No. Rows are sliced with [start, start+width); when a line is too short only the available characters are taken, yielding short fields. Left columns lose only trailing padding spaces and right columns only leading padding spaces, so genuine leading or trailing spaces in the content are preserved.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -198,4 +198,5 @@ export const toolLoaders: Record<
   'content-negotiation-parser': () => import('./content-negotiation-parser'),
   'ksuid-generator': () => import('./ksuid-generator'),
   'security-txt-generator': () => import('./security-txt-generator'),
+  'fwf-csv-converter': () => import('./fwf-csv-converter'),
 };
