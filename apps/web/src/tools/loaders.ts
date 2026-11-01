@@ -204,4 +204,5 @@ export const toolLoaders: Record<
   'compound-interest-calculator': () => import('./compound-interest-calculator'),
   'rfc2047-decoder': () => import('./rfc2047-decoder'),
   'properties-json-converter': () => import('./properties-json-converter'),
+  'magnet-link-parser': () => import('./magnet-link-parser'),
 };

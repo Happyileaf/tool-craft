@@ -18013,6 +18013,105 @@ Jane,25,London`,
       },
     },
   },
+  {
+    slug: 'magnet-link-parser',
+    name: 'Magnet 磁力链接解析与生成器',
+    nameEn: 'Magnet Link Parser & Builder',
+    description:
+      '解析 magnet:? 链接并结构化展示 v1 info hash（urn:btih 40 位十六进制）、显示名 dn、可重复的 tracker tr、文件大小 xl、Web 种子 ws、关键词 kt 与来源 as；也可从表单字段反向拼装合法 magnet URI，百分号编码自动处理。',
+    descriptionEn:
+      'Parse magnet:? links into readable fields — v1 info hash (urn:btih, 40-hex), display name dn, repeated trackers tr, length xl, web seeds ws, keywords kt and acceptable source as — or build a valid magnet URI from form fields, with percent-encoding handled automatically.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/magnet-link-parser',
+    iconName: 'LinkOutlined',
+    tags: ['Magnet', '磁力链接', 'BitTorrent', 'Tracker', 'Info Hash'],
+    tagsEn: ['Magnet', 'BitTorrent', 'Tracker', 'Info Hash', 'URI'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Magnet 磁力链接解析与生成器是一款纯浏览器本地运算的工具，遵循 Magnet URI 规范（BEP 9 / BEP 12）。它把一长串百分号编码、参数重复的 magnet:? 链接解析为人类可读的结构化字段，也支持从表单反向拼装并复制合法的 magnet URI，全程不访问网络、不上传任何内容。',
+        coreFeatures: [
+          '完整解析：xt 精确主题（识别 urn:btih: 40 位 v1 info hash 并统一大写，兼容 v2 / 其他 URN）、dn 显示名、可重复的 tr tracker、xl 文件大小、ws Web 种子、kt 关键词、as 来源',
+          '百分号编解码：参数值自动 decodeURIComponent / encodeURIComponent，非法 %XX 编码明确报错',
+          '反向拼装：按行填写多个 xt / tr / ws，关键词以空格或逗号分隔，自动跳过空值并按规范排序输出',
+          '严格校验：缺 xt、非 magnet:? 开头、xl 非非负整数等输入给出中文错误提示',
+          '一键回填：解析结果可直接填入拼装表单做编辑与往返校验，全部纯本地完成',
+        ],
+        howToUse: [
+          '在左侧粘贴 magnet:? 链接，字段实时解析展示，无需点击按钮',
+          '查看 v1 info hash、显示名、tracker 列表、文件大小等信息；未识别参数也会原样列出',
+          '在右侧表单填写字段拼装新链接，或点击「填入拼装表单」基于解析结果修改后复制',
+        ],
+        useCases: [
+          '快速判断一条磁力链接指向什么资源、使用哪些 tracker',
+          '给资源手工补充 tracker / Web 种子后重新生成 magnet 链接',
+          '校验从各处复制的 magnet 链接是否合法、info hash 是否完整',
+        ],
+        privacyNote: '所有解析与拼装均在浏览器本地完成，链接内容不会被上传或发送到任何服务器。',
+        faqs: [
+          {
+            question: '为什么有的链接解析不出 v1 info hash？',
+            answer:
+              'v1 info hash 必须是 xt=urn:btih: 之后的 40 位十六进制字符。v2 种子使用 urn:btmh: 多哈希格式，旧链接也可能使用 32 位 Base32 hash，这些会原样展示在 xt 列表中，但不识别为 v1 hash。',
+          },
+          {
+            question: 'tracker 为什么可以出现很多次？',
+            answer:
+              'Magnet 规范允许 tr 参数重复出现，每个值是一个独立的 tracker 地址，客户端会按顺序尝试。本工具严格保留出现顺序，拼装时每行一个 tracker 即生成一个 tr 参数。',
+          },
+          {
+            question: '它和通用 URL 解析器有什么区别？',
+            answer:
+              '通用 URL 解析器只拆分 scheme / host / query 组件；magnet:? 没有 host，其语义全部在 query 参数中（xt / dn / tr / xl 等），且 + 不按空格解码、tr 可重复。本工具理解这些 BitTorrent 专属语义并做结构化展示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local tool for Magnet URIs (BEP 9 / BEP 12). It turns a long, percent-encoded magnet:? link with repeated parameters into readable structured fields, and can also build and copy a valid magnet URI from form fields — no network access and nothing uploaded.',
+        coreFeatures: [
+          'Complete parsing: xt exact topics (recognizing urn:btih: 40-hex v1 info hashes, normalized to uppercase; v2/other URNs tolerated), dn display name, repeated tr trackers, xl length, ws web seeds, kt keywords, as acceptable source',
+          'Percent codec: values are automatically decoded/encoded with decodeURIComponent/encodeURIComponent; malformed %XX sequences are reported clearly',
+          'Reverse building: multiple xt / tr / ws values one per line, keywords separated by spaces or commas; empty values skipped and parameters emitted in canonical order',
+          'Strict validation: missing xt, non-magnet:? input, non-integer xl and other problems get clear error messages',
+          'One-click fill: parsed fields can populate the builder form for editing and round-trip checks; everything runs locally',
+        ],
+        howToUse: [
+          'Paste a magnet:? link on the left; all fields parse live with no button click',
+          'Inspect the v1 info hash, display name, tracker list, file size and more; unknown parameters are shown as-is',
+          'Fill the form on the right to build a new link, or click "fill builder" to modify a parsed one, then copy it',
+        ],
+        useCases: [
+          'Quickly understanding what resource a magnet link points to and which trackers it uses',
+          'Adding trackers or web seeds to a resource and regenerating its magnet link by hand',
+          'Validating magnet links copied from various sources and checking hash completeness',
+        ],
+        privacyNote:
+          'All parsing and building happens locally in your browser; link content is never uploaded or sent anywhere.',
+        faqs: [
+          {
+            question: 'Why do some links show no v1 info hash?',
+            answer:
+              'A v1 info hash must be exactly 40 hexadecimal characters after xt=urn:btih:. v2 torrents use urn:btmh: multi-hash format, and older links may use a 32-character Base32 hash; those are shown verbatim in the xt list but not recognized as v1 hashes.',
+          },
+          {
+            question: 'Why can the tracker appear many times?',
+            answer:
+              'The Magnet spec allows the tr parameter to repeat, each value being an independent tracker address that clients try in order. This tool preserves the order exactly, and when building, one tracker per line becomes one tr parameter.',
+          },
+          {
+            question: 'How is this different from a generic URL parser?',
+            answer:
+              'A generic URL parser only splits scheme/host/query components; magnet:? has no host, and all semantics live in query parameters (xt/dn/tr/xl etc.), with "+" not decoded as space and tr repeatable. This tool understands those BitTorrent-specific semantics and presents them structurally.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
