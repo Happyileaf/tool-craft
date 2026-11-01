@@ -18732,6 +18732,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'rc-filter-calculator',
+    name: 'RC 滤波器计算器',
+    nameEn: 'RC Filter Calculator',
+    description:
+      '一阶 RC 低通 / 高通滤波器知二求三：fc = 1/(2πRC)、τ = RC，Ω/kΩ/MΩ 与 pF/nF/µF 单位自适应。',
+    descriptionEn:
+      'Solve first-order RC low-pass/high-pass filters from any two of R, C, and fc: fc = 1/(2πRC), τ = RC, with adaptive Ω/F/Hz prefixes.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/rc-filter-calculator',
+    iconName: 'Gauge',
+    tags: ['RC 滤波', '截止频率', '电子工程', '时间常数', '硬件'],
+    tagsEn: ['RC Filter', 'Cutoff Frequency', 'Electronics', 'Time Constant', 'Hardware'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'RC 滤波器计算器是一款面向硬件与嵌入式开发的纯浏览器本地工具，围绕一阶 RC 低通 / 高通网络计算截止（-3 dB）频率 fc = 1/(2πRC) 与时间常数 τ = RC。支持「知二求三」：给定 R 与 C 求 fc、给定 R 与 fc 求 C、给定 C 与 fc 求 R，并同步给出角频率 ω 与截止点的幅度、相位响应。',
+        coreFeatures: [
+          '知二求三：R+C→fc、R+fc→C、C+fc→R 三种模式一键切换',
+          '单位自适应：电阻 Ω/kΩ/MΩ，电容 pF/nF/µF/F，频率 Hz/kHz/MHz 自动换算与选前缀输出',
+          '附带时间常数 τ = RC 与角频率 ω = 2πfc',
+          '截止点频响参考：幅度 1/√2 ≈ -3.01 dB，低通相移 -45°、高通 +45°',
+          '示例预设与一键复制结果，零依赖纯本地实时计算',
+        ],
+        howToUse: [
+          '选择求解模式（已知哪两个量）',
+          '在对应输入框填入数值并选择单位，结果实时更新',
+          '结果表格查看求解值、τ 与 ω，底部给出 fc 处增益与相移',
+          '可点击示例预设快速填入典型取值（如 1kΩ × 1µF → 159.15 Hz）',
+        ],
+        useCases: [
+          '音频 RC 耦合 / 低通网络的阻容取值核算',
+          'ADC 前端一阶抗混叠、去抖与上拉时间常数估算',
+          '面包板选型时快速核对截止频率是否落在目标频段',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地完成，不发起任何网络请求，输入的参数不会离开设备。',
+        faqs: [
+          {
+            question: '低通和高通的截止频率公式一样吗？',
+            answer:
+              '一样。一阶 RC 无论电阻与电容如何摆放构成低通或高通，-3 dB 截止频率都是 fc = 1/(2πRC)，区别只在截止点处相移的符号（低通滞后 -45°，高通超前 +45°）。',
+          },
+          {
+            question: '为什么结果与仿真器略有差异？',
+            answer:
+              '本工具按理想电阻、电容计算，忽略元件容差、寄生参数与信号源内阻 / 负载效应。实际电路可用 E96/E24 标准值选件后再以本工具复核数量级。',
+          },
+          {
+            question: '支持二阶或有源滤波器吗？',
+            answer:
+              '不支持。本工具只覆盖一阶无源 RC；Sallen-Key、RLC 二阶、有源滤波器需要求解二阶传递函数与 Q 值，不在本工具范围内。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The RC Filter Calculator is a fully local tool for hardware and embedded work. It computes the cutoff (-3 dB) frequency fc = 1/(2πRC) and time constant τ = RC of a first-order RC low-pass/high-pass network, solving from any two of R, C, and fc, and additionally reports the angular frequency and the cutoff-point response.',
+        coreFeatures: [
+          'Solve from any two quantities: R+C→fc, R+fc→C, or C+fc→R',
+          'Adaptive units: Ω/kΩ/MΩ, pF/nF/µF/F, and Hz/kHz/MHz with automatic prefix selection',
+          'Reports the time constant τ = RC and angular frequency ω = 2πfc',
+          'Cutoff response reference: magnitude 1/√2 ≈ -3.01 dB, phase -45° low-pass / +45° high-pass',
+          'Example presets and one-click copy; zero dependencies, fully local and real-time',
+        ],
+        howToUse: [
+          'Pick the solve mode based on which two quantities you know',
+          'Enter values with their units; results update instantly',
+          'Read the solved value, τ, and ω from the table, with gain and phase at fc below',
+          'Use a preset such as 1kΩ × 1µF → 159.15 Hz to get started',
+        ],
+        useCases: [
+          'Choosing R and C for audio coupling or low-pass networks',
+          'Estimating first-order anti-aliasing, debounce, and pull-up time constants at ADC inputs',
+          'Quickly checking on a breadboard whether the cutoff lands in the target band',
+        ],
+        privacyNote:
+          'All computation runs locally in your browser with no network requests; your inputs never leave the device.',
+        faqs: [
+          {
+            question: 'Is the cutoff formula the same for low-pass and high-pass?',
+            answer:
+              'Yes. A first-order RC network has fc = 1/(2πRC) in either arrangement; only the sign of the phase shift at cutoff differs (-45° lag for low-pass, +45° lead for high-pass).',
+          },
+          {
+            question: 'Why do results differ slightly from a simulator?',
+            answer:
+              'The tool assumes ideal resistors and capacitors, ignoring tolerances, parasitics, source impedance, and loading. Pick standard E96/E24 values, then re-check the order of magnitude here.',
+          },
+          {
+            question: 'Does it support second-order or active filters?',
+            answer:
+              'No. It covers only first-order passive RC; Sallen-Key, RLC, and active filters require a second-order transfer function and Q factor and are out of scope.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

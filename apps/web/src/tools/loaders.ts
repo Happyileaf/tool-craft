@@ -211,4 +211,5 @@ export const toolLoaders: Record<
   'text-similarity': () => import('./text-similarity'),
   'json-to-python-dataclass': () => import('./json-to-python-dataclass'),
   'cas-number-validator': () => import('./cas-number-validator'),
+  'rc-filter-calculator': () => import('./rc-filter-calculator'),
 };
