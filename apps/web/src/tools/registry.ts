@@ -19859,6 +19859,109 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'openssh-randomart',
+    name: 'OpenSSH randomart 指纹图生成器',
+    nameEn: 'OpenSSH Randomart Visualizer',
+    description:
+      '粘贴 OpenSSH 公钥，按 drunken bishop 算法在本地生成与 ssh-keygen -lv 逐字节一致的 randomart 指纹图，支持 SHA-256（现代）与 MD5（旧版）两种摘要，自动识别 RSA/ED25519/ECDSA/DSA 算法与位长并展示指纹。',
+    descriptionEn:
+      'Paste an OpenSSH public key and render the drunken-bishop randomart locally, byte-for-byte identical to ssh-keygen -lv, with both SHA-256 (modern) and MD5 (legacy) digests, automatic RSA/ED25519/ECDSA/DSA and bit-length detection, and the matching fingerprint.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/openssh-randomart',
+    iconName: 'Fingerprint',
+    tags: ['SSH', 'randomart', '指纹', 'drunken bishop', '公钥'],
+    tagsEn: ['SSH', 'Randomart', 'Fingerprint', 'Drunken Bishop', 'Public Key'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF2d+G0hRw+2gHpUzsYJLiT+BmA1nEU4IPIR+BP6NSmT demo@example.com',
+    doc: {
+      zh: {
+        whatIsIt:
+          'OpenSSH randomart 指纹图生成器复刻了 OpenSSH 的 "drunken bishop"（醉酒主教）随机游走算法：把公钥摘要的每个字节拆成四步斜向移动，在 17×9 棋盘上累计访问次数并映射为字符，最终生成一张比十六进制哈希更便于人眼比对的指纹图，输出与系统自带 ssh-keygen -lv 完全一致。',
+        coreFeatures: [
+          '逐字节对齐 ssh-keygen -lv：以真实 ssh-keygen 输出为黄金向量，RSA/ED25519/ECDSA 各算法的 SHA-256 与 MD5 图像均一致',
+          '双摘要模式：默认 SHA-256（OpenSSH ≥ 7.2 底框 [SHA256]），一键切换旧版 MD5（底框 [MD5]，内置零依赖 RFC 1321 实现）',
+          '自动解析公钥：识别 RSA（位长取自模数）、ED25519、ED448、ECDSA（nistp 曲线）与 DSA',
+          '宽松输入：支持 authorized_keys 单行（注释可保留）、折行 base64 与纯 base64 主体',
+          '纯浏览器本地运算：私钥从不参与，公钥也不会离开本机',
+        ],
+        howToUse: [
+          '把 ~/.ssh/id_*.pub 或服务器 known_hosts 中的公钥文本粘贴到输入框',
+          '点击「生成 randomart」，下方展示算法、位长、标准格式指纹与随机图',
+          '需要与旧版系统（ssh-keygen -E md5）核对时，切换到 MD5',
+          '点「复制 randomart」即可把带边框的完整图像粘贴到工单或文档',
+        ],
+        useCases: [
+          '首次 SSH 登录主机时用人眼可识别的图形核对主机指纹，防范中间人攻击',
+          '批量核对服务器上多把 authorized_keys 与指纹的对应关系',
+          '在安全交付物中附上公钥 randomart 作为可读性更强的指纹凭证',
+        ],
+        privacyNote:
+          '公钥解析、SHA-256/MD5 摘要与随机游走全部在浏览器内完成，不发起任何网络请求；工具只需要公钥，切勿粘贴私钥。',
+        faqs: [
+          {
+            question: 'randomart 和普通哈希指纹是什么关系？',
+            answer:
+              '二者基于同一份公钥摘要：现代 OpenSSH 用 SHA-256、旧版用 MD5。randomart 只是把摘要经 drunken bishop 算法可视化为图形，使人类肉眼比对更快；本工具同时给出标准 SHA256:/MD5: 指纹文本。',
+          },
+          {
+            question: '为什么我的 ssh-keygen 显示底框是 [MD5] 而不是 [SHA256]？',
+            answer:
+              'OpenSSH 6.8 引入 SHA-256 指纹并在 7.2 起作为默认。旧系统默认 MD5；在新系统上可用 ssh-keygen -lv -E md5 复现。本工具的 MD5 模式即与此对齐。',
+          },
+          {
+            question: '可以粘贴私钥生成图吗？',
+            answer:
+              '不可以也不需要。randomart 是公钥指纹，本工具只解析 OpenSSH 公钥 wire blob（ssh-rsa / ssh-ed25519 / ecdsa-sha2-* 等）。请始终使用 .pub 文件内容。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool reproduces the OpenSSH "drunken bishop" algorithm: each byte of the public-key digest becomes four diagonal moves on a 17x9 board, visit counts map to characters, and the result is a fingerprint image far easier to compare by eye than a hex hash. Output is byte-for-byte identical to the system ssh-keygen -lv.',
+        coreFeatures: [
+          'Byte-identical to ssh-keygen -lv: real ssh-keygen output is used as golden vectors for RSA/ED25519/ECDSA, both SHA-256 and MD5',
+          'Two digest modes: SHA-256 (OpenSSH >= 7.2, [SHA256] footer) and legacy MD5 ([MD5], via a built-in zero-dependency RFC 1321 implementation)',
+          'Automatic key parsing: RSA (bits from the modulus), ED25519, ED448, ECDSA (nistp curves), and DSA',
+          'Flexible input: single-line authorized_keys (comment allowed), wrapped base64, or a raw base64 blob',
+          '100% in-browser: only public keys are used and nothing leaves the machine',
+        ],
+        howToUse: [
+          'Paste a public key from ~/.ssh/id_*.pub or a known_hosts line',
+          'Click "Generate randomart" to see the algorithm, bit length, standard fingerprint, and the image',
+          'Switch to MD5 when comparing against legacy systems (ssh-keygen -E md5)',
+          'Click "Copy randomart" to paste the fully framed image into a ticket or document',
+        ],
+        useCases: [
+          'Verifying a host key on first SSH login with a human-friendly visual check against MITM attacks',
+          'Matching many authorized_keys entries to their fingerprints on a server',
+          'Attaching a readable randomart fingerprint to security deliverables',
+        ],
+        privacyNote:
+          'Key parsing, SHA-256/MD5 digesting, and the bishop walk all run locally in the browser with no network requests. Only public keys are needed — never paste a private key.',
+        faqs: [
+          {
+            question: 'How does randomart relate to the hash fingerprint?',
+            answer:
+              'Both derive from the same public-key digest — SHA-256 on modern OpenSSH, MD5 on legacy versions. Randomart merely visualizes the digest through the drunken-bishop walk so humans can compare it faster; the canonical SHA256:/MD5: fingerprint text is shown alongside.',
+          },
+          {
+            question: 'Why does my ssh-keygen show [MD5] instead of [SHA256]?',
+            answer:
+              'SHA-256 fingerprints were introduced in OpenSSH 6.8 and became the default in 7.2. Older systems default to MD5; on newer ones run ssh-keygen -lv -E md5. The MD5 mode of this tool matches that output.',
+          },
+          {
+            question: 'Can I paste a private key?',
+            answer:
+              'No, and it is unnecessary. Randomart is a public-key fingerprint; this tool only parses OpenSSH public-key wire blobs (ssh-rsa / ssh-ed25519 / ecdsa-sha2-*, etc.). Always use the contents of a .pub file.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

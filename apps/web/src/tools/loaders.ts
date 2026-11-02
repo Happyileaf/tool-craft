@@ -222,4 +222,5 @@ export const toolLoaders: Record<
   'git-object-hash': () => import('./git-object-hash'),
   'wifi-qr-payload': () => import('./wifi-qr-payload'),
   'cvss-calculator': () => import('./cvss-calculator'),
+  'openssh-randomart': () => import('./openssh-randomart'),
 };
