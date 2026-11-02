@@ -20174,7 +20174,7 @@ sqrt(area) + 2 * r`,
       '在坐标点序列与 Google Encoded Polyline Algorithm Format 字符串之间双向转换：实现坐标乘 10^precision 取整、相邻点差量 ZigZag 编码与 5 位分块 ASCII 输出，支持精度 5（传统 Directions API）与精度 6（新版 Routes API），内置 Google 官方向量，非法字符与不完整编码明确报错。',
     descriptionEn:
       'Convert between coordinate sequences and Google Encoded Polyline Algorithm Format strings: coordinates are rounded at 10^precision, delta-encoded with ZigZag, and emitted as 5-bit-chunked ASCII. Supports precision 5 (classic Directions API) and 6 (new Routes API), ships with the official Google test vector, and reports invalid characters or truncated encoding clearly.',
-    category: ToolCategoryEnum.GEO_SPATIAL,
+    category: ToolCategoryEnum.DEV_CODE,
     path: '/tools/polyline-codec',
     iconName: 'Map',
     tags: ['Polyline', 'Google Maps', '路径压缩', '坐标编码', 'Routes API'],
@@ -20259,6 +20259,104 @@ sqrt(area) + 2 * r`,
             question: 'How is this different from geo URI or WKT?',
             answer:
               'geo URIs and WKT are plain text that spell out every coordinate, growing linearly with point count and applying no compression. Polyline is a lossy, transport-oriented compressed format (rounding at the chosen precision) that typically shrinks a path by over 80%, but it only fits the Google-ecosystem algorithm.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'sms-segment-calculator',
+    name: 'SMS 短信长度与分段计算器',
+    nameEn: 'SMS Length & Segment Calculator',
+    description:
+      '按 3GPP TS 23.038 / TS 23.040 计算短信计费长度与分条数量：自动判定 GSM 7-bit（扩展表字符计 2 septet，单条 160 / 拼接 153）与 UCS-2（按 UTF-16 码元，单条 70 / 拼接 67），支持中文与 BMP 外 emoji（代理对计 2 码元），实时显示分条数、总用量与末条剩余容量，并列出触发 UCS-2 的非 GSM 字符。',
+    descriptionEn:
+      'Count SMS billing length and segments per 3GPP TS 23.038 / TS 23.040: auto-detects GSM 7-bit (extension-table chars cost 2 septets; 160 per single message, 153 per concatenated part) vs UCS-2 (UTF-16 code units; 70 single, 67 per concatenated part), supports Chinese and astral emoji (surrogate pairs count as 2), shows segment count, total usage and remaining capacity live, and lists the non-GSM characters that trigger UCS-2.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/sms-segment-calculator',
+    iconName: 'Smartphone',
+    tags: ['SMS', 'GSM 7-bit', 'UCS-2', '短信分片', '3GPP'],
+    tagsEn: ['SMS', 'GSM 7-bit', 'UCS-2', 'Concatenated SMS', '3GPP'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '您有一条验证码：123456，5 分钟内有效。',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一条标准短信的计费单位不是「个字符」，而是由编码方式决定的固定容量段：当全部字符都在 GSM 03.38 定义的 7-bit 字母表内时，单条最多 160 个 septet（7 位单元）；一旦出现中文、emoji 等 GSM 表外字符，整条短信切换为 UCS-2（每字符 2 字节），单条最多 70 个字符。超过单条容量时使用带 UDH（User Data Header）的拼接短信，头部占用使每条有效容量降为 GSM 153 septet / UCS-2 67 码元。本工具严格按 3GPP TS 23.038 与 TS 23.040 在本地完成这些计算。',
+        coreFeatures: [
+          '自动判定编码：纯 GSM 7-bit 文本走 7-bit；出现任意表外字符（含中文、emoji、全角标点）整条切 UCS-2',
+          '精确计量：GSM 基本表字符 1 septet，扩展表字符（^{}\\[~]|€）2 septet；UCS-2 按 UTF-16 码元，BMP 外 emoji 代理对计 2',
+          '分段边界正确：GSM 160/153、UCS-2 70/67，末条剩余容量实时可见',
+          '定位非 GSM 字符：列出触发 UCS-2 的具体字符与其位置（前 20 个），便于改写省钱',
+          '纯本地运算：短信内容不离开浏览器',
+        ],
+        howToUse: [
+          '在输入框粘贴或输入短信正文',
+          '查看「编码方式」标签与分条数量、septet / 码元用量、末条剩余容量',
+          '若被切到 UCS-2，按提示定位表外字符（常见元凶：全角标点、弯引号、€ 以外的货币符号、emoji）',
+        ],
+        useCases: [
+          '短信网关 / 验证码服务上线前预估计费条数，避免中文签名悄悄把单条变多条',
+          '营销短信文案改写：把全角标点、特殊符号替换为 GSM 字符以回到 7-bit 计费',
+          '排查带 emoji 的通知短信为何一条变两条',
+        ],
+        privacyNote: '所有计算均在浏览器本地完成，短信正文不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么含一个中文字整条就按 UCS-2 计费？',
+            answer:
+              'SMS 的用户数据段（TP-UD）只能整体使用一种字符编码，无法逐字符混用；GSM 7-bit 字母表不包含汉字，所以只要出现一个表外字符，整条都必须用 UCS-2（16-bit）编码，容量直接从 160 降到 70。',
+          },
+          {
+            question: '长短信是怎么被切分的？',
+            answer:
+              '超过单条容量时，手机和网关发送多条普通 SMS，并在每条开头放 6 字节 UDH（含拼接引用号、总条数与当前序号），接收端据此重组。UDH 占用用户数据空间，因此 GSM 每条从 160 septet 降到 153，UCS-2 从 70 码元降到 67。',
+          },
+          {
+            question: '为什么一个 emoji 有时算 2 个字符？',
+            answer:
+              'UCS-2/SMS 使用 UTF-16 码元计数：BMP 内字符（绝大多数常用汉字）是 1 个码元；U+10000 以上的字符（如 😀、𝕏）需要高低代理两个码元表示，占 2。组合 emoji（如带肤色的 👋🏽、旗帜）还可能由更多码元组成，计费更长。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'SMS billing units are not "characters" but fixed-capacity segments determined by the encoding: when every character is in the GSM 03.38 7-bit alphabet, one message holds up to 160 septets; a single character outside that alphabet (Chinese, emoji…) forces the whole message to UCS-2 (2 bytes per character, 70 characters max). Messages longer than one segment use concatenated SMS with a UDH (User Data Header), whose overhead lowers the per-part payload to 153 septets for GSM and 67 code units for UCS-2. This tool performs all calculations locally, strictly following 3GPP TS 23.038 and TS 23.040.',
+        coreFeatures: [
+          'Automatic encoding detection: plain GSM 7-bit text stays 7-bit; any out-of-alphabet character (Chinese, emoji, full-width punctuation) switches the whole message to UCS-2',
+          'Precise metering: 1 septet for GSM base characters, 2 for extension-table characters (^{}\\[~]|€); UCS-2 counted in UTF-16 code units, with astral emoji surrogate pairs costing 2',
+          'Correct segment boundaries: GSM 160/153 and UCS-2 70/67, with remaining capacity of the last segment shown live',
+          'Non-GSM character locator: lists the exact characters (and positions, first 20) that force UCS-2 so they can be rewritten to reduce cost',
+          'Fully local: message content never leaves the browser',
+        ],
+        howToUse: [
+          'Paste or type the message body into the input box',
+          'Read the encoding tag, segment count, septet/code-unit usage and remaining capacity of the last segment',
+          'If it switches to UCS-2, use the warning to locate offending characters (common culprits: full-width punctuation, curly quotes, non-€ currency symbols, emoji)',
+        ],
+        useCases: [
+          'Estimating billing segments for SMS gateways and OTP services before launch, preventing Chinese signatures from silently doubling cost',
+          'Rewriting marketing copy back to the GSM alphabet to restore 7-bit pricing',
+          'Understanding why an emoji notification splits into multiple segments',
+        ],
+        privacyNote: 'All calculations happen locally in the browser; message bodies are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why does one Chinese character force the entire message to UCS-2?',
+            answer:
+              'The SMS user-data field (TP-UD) uses a single encoding for the whole message and cannot mix encodings per character. The GSM 7-bit alphabet contains no Han characters, so any one out-of-alphabet character forces UCS-2 (16-bit) for the entire message, dropping capacity from 160 to 70.',
+          },
+          {
+            question: 'How are long messages split?',
+            answer:
+              'Beyond one segment, the handset and gateway send multiple ordinary SMS messages, each prefixed with a 6-byte UDH carrying a concatenation reference, total count and current index; the receiver reassembles them. The UDH consumes payload space, lowering per-part capacity from 160 to 153 septets (GSM) and from 70 to 67 code units (UCS-2).',
+          },
+          {
+            question: 'Why does one emoji sometimes count as 2 characters?',
+            answer:
+              'UCS-2/SMS counts UTF-16 code units: BMP characters (including most common Han characters) are 1 code unit; characters above U+FFFF such as 😀 or 𝕏 need a high/low surrogate pair and cost 2. Combining emoji (skin-tone 👋🏽, flags) can consist of even more code units.',
           },
         ],
       },
