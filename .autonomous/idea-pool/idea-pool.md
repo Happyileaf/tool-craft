@@ -51,7 +51,6 @@
 | 20261017220043 | 地理坐标格式转换（十进制 ↔ 度分秒） | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261017220043.md) |
 | 20261017220045 | vCard（VCF）名片生成器 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017220045.md) |
 | 20261017220047 | 开源许可证生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220047.md) |
-| 20261017220048 | HTTP 安全响应头生成器（CSP / HSTS 等） | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017220048.md) |
 | 20261017220049 | 列表集合运算（交集 / 并集 / 差集） | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017220049.md) |
 | 20261017220050 | 小数与分数互转 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017220050.md) |
 | 20261018000142 | Open Graph / SEO 元标签生成器 | Web Tool | Exploration | Pending | 2026-10-18 | | [详情](./idea-details/20261018000142.md) |
@@ -120,7 +119,6 @@
 | 20261027081105 | RSS / Atom Feed 生成器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027081105.md) |
 | 20261027140131 | PBKDF2 密钥派生计算器（RFC 8018） | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027140131.md) |
 | 20261027140132 | Bech32 / Bech32m 编解码器（BIP-173 / BIP-350） | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027140132.md) |
-| 20261027140134 | IP 地址范围 → 最小 CIDR 列表聚合器（IPv4 / IPv6） | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027140134.md) |
 | 20261027201026 | ASCII 码表查询器（字符 / 十进制 / 十六进制 / 二进制对照） | Web Tool | External Reference | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027201026.md) |
 | 20261027201028 | 概率分布计算器（正态 / 二项 / 泊松 PMF、PDF、CDF 与分位） | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027201028.md) |
 | 20261027201029 | 欧姆定律与功率计算器（V / I / R / P 知二求二） | Web Tool | Exploration | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027201029.md) |
@@ -198,9 +196,6 @@
 | 20261101140215 | JSON → Kotlin data class 生成器（含嵌套类型推断） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101140215.md) |
 | 20261101140216 | TypeID 标识符生成与解析器（typeid 规范） | Web Tool | External Reference | Pending | 2026-11-01 | | [详情](./idea-details/20261101140216.md) |
 | 20261101140217 | PHP serialize ↔ JSON 双向转换器 | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101140217.md) |
-| 20261101140218 | HTTP Cache-Control 指令解析与缓存新鲜度计算器（RFC 9111） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101140218.md) |
-| 20261101201001 | SMS 短信长度与分片（UDH concat）计算器（GSM 7-bit / UCS-2） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201001.md) |
-| 20261101201002 | Encoded Polyline Algorithm Format 折线编解码器（Google 精度 5 / 精度 6） | Web Tool | External Reference | Pending | 2026-11-01 | | [详情](./idea-details/20261101201002.md) |
 | 20261101201003 | Redis RESP2/RESP3 协议编解码器（含 inline 与 RESP3 类型） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201003.md) |
 | 20261101201004 | HAR 1.2 / 1.3 归档文件解析与请求摘要查看器（JSON 安全解析） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201004.md) |
 | 20261101201005 | JSON 转 PHP array 代码生成器（含嵌套类型推断与短数组语法） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201005.md) |

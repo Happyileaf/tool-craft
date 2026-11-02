@@ -20166,6 +20166,501 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'polyline-codec',
+    name: 'Encoded Polyline 折线编解码',
+    nameEn: 'Encoded Polyline Codec',
+    description:
+      '在坐标点序列与 Google Encoded Polyline Algorithm Format 字符串之间双向转换：实现坐标乘 10^precision 取整、相邻点差量 ZigZag 编码与 5 位分块 ASCII 输出，支持精度 5（传统 Directions API）与精度 6（新版 Routes API），内置 Google 官方向量，非法字符与不完整编码明确报错。',
+    descriptionEn:
+      'Convert between coordinate sequences and Google Encoded Polyline Algorithm Format strings: coordinates are rounded at 10^precision, delta-encoded with ZigZag, and emitted as 5-bit-chunked ASCII. Supports precision 5 (classic Directions API) and 6 (new Routes API), ships with the official Google test vector, and reports invalid characters or truncated encoding clearly.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/polyline-codec',
+    iconName: 'Map',
+    tags: ['Polyline', 'Google Maps', '路径压缩', '坐标编码', 'Routes API'],
+    tagsEn: ['Polyline', 'Google Maps', 'Path Compression', 'Coordinate Encoding', 'Routes API'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '38.5,-120.2\n40.7,-120.95\n43.252,-126.453',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Encoded Polyline Algorithm Format 是 Google 地图系列 API 用来压缩经纬度路径的字符串格式：它把每个坐标四舍五入到指定小数位（通常 5 位，新版 Routes API 使用 6 位），与前一个坐标做差后进行 ZigZag 无符号编码，再按每 5 位一组切成可打印 ASCII 字符，使一条很长的驾车路径也能放进一个 URL 参数。本工具在浏览器本地完成该格式的编码与解码。',
+        coreFeatures: [
+          '双向转换：坐标点（纬度,经度，逐行）实时编码为 Polyline 字符串，粘贴字符串实时还原坐标',
+          '双精度支持：精度 5（传统 Google Maps / Directions API）与精度 6（新版 Routes API v1），解码时按所选精度还原',
+          '差量 + ZigZag + 5 位分块完整实现，仅使用可打印 ASCII 63~126 字符，与官方算法逐位一致',
+          '严格校验：经纬度范围、字段数量、非法字符、续位中途截断均给出定位明确的中文错误',
+          '纯本地运算：不加载地图、不发起网络请求，路径数据不离开浏览器',
+        ],
+        howToUse: [
+          '选择编码精度（Google 经典 API 为 5，Routes v1 为 6）',
+          '在「坐标点」框逐行输入「纬度,经度」，编码结果实时出现在下方卡片，可一键复制',
+          '或在「Polyline 字符串解码」框粘贴编码字符串，坐标列表实时还原并可复制',
+        ],
+        useCases: [
+          '调试 Directions / Routes / Static Maps API 的 path 与 encodedPolyline 参数',
+          '把 GPS 轨迹、地理围栏点位压缩进 URL 或数据库字段',
+          '排查第三方系统中 Polyline 串解码后坐标错位（常见原因是精度 5 / 6 混用）',
+        ],
+        privacyNote: '所有编解码均在浏览器本地完成，坐标与路径不会被上传或记录。',
+        faqs: [
+          {
+            question: '精度 5 和精度 6 有什么区别？解码时选错会怎样？',
+            answer:
+              '精度决定坐标乘 10 的多少次方后取整：精度 5 约 1 米分辨率，是 Google 经典 Directions API 的默认值；2023 年后的 Routes API v1 默认精度 6（约 10 厘米）。同一字符串用错误精度解码会得到 10 倍偏差的坐标，通常直接超出经纬度范围，工具会提示你确认精度。',
+          },
+          {
+            question: '为什么要用差量和 ZigZag？',
+            answer:
+              '相邻坐标通常只差零点零几度，对差值编码可以让数值更小、分块更少；而差值有正有负，ZigZag 把符号位折叠到最低位（0→0、-1→1、1→2……），使小的负数同样得到短编码。',
+          },
+          {
+            question: '它和 geo URI、WKT 等格式有何不同？',
+            answer:
+              'geo URI 与 WKT 都是明文文本，坐标逐字书写、长度随点数线性增长且没有压缩；Polyline 是专为传输设计的有损压缩格式（按精度取整），典型路径可压缩 80% 以上，但只适用于 Google 生态约定的这一套算法。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Encoded Polyline Algorithm Format is the string encoding used by Google Maps APIs to compress latitude/longitude paths: each coordinate is rounded to a chosen number of decimal places (traditionally 5; the newer Routes API uses 6), delta-encoded against the previous coordinate, ZigZag-mapped to an unsigned integer, and chunked into 5-bit printable ASCII groups — so a long driving route fits inside a single URL parameter. This tool performs both encoding and decoding locally in your browser.',
+        coreFeatures: [
+          'Bidirectional: line-separated (lat,lng) points encode live to a polyline string; pasting a string decodes back to coordinates live',
+          'Precision 5 (classic Google Maps / Directions API) and precision 6 (new Routes API v1); decoding uses the selected precision',
+          'Full delta + ZigZag + 5-bit chunk implementation using only printable ASCII 63–126, bit-for-bit compatible with the official algorithm',
+          'Strict validation: coordinate ranges, field counts, illegal characters and truncated continuation bits all produce clearly located error messages',
+          'Fully local: no map tiles, no network requests, and path data never leaves the browser',
+        ],
+        howToUse: [
+          'Choose the precision (5 for classic Google APIs, 6 for Routes v1)',
+          'Enter points line by line as "lat,lng"; the encoded result appears live below and can be copied with one click',
+          'Or paste an encoded string into the decode card to recover the coordinate list instantly',
+        ],
+        useCases: [
+          'Debugging path / encodedPolyline parameters of Directions, Routes and Static Maps APIs',
+          'Compressing GPS tracks and geofence points into a URL parameter or database column',
+          'Diagnosing misplaced coordinates from third-party polylines (usually a precision-5 vs precision-6 mismatch)',
+        ],
+        privacyNote: 'All encoding and decoding happens locally in the browser; coordinates and paths are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the difference between precision 5 and 6? What if I decode with the wrong one?',
+            answer:
+              'Precision is the power of ten used when rounding coordinates: precision 5 is about 1-meter resolution and the classic Directions API default; Routes API v1 (2023+) defaults to precision 6 (~10 cm). Decoding the same string with the wrong precision yields coordinates off by a factor of 10, usually outside the valid lat/lng range — the tool then warns you to check the precision.',
+          },
+          {
+            question: 'Why deltas and ZigZag?',
+            answer:
+              'Adjacent coordinates typically differ by only a few hundredths of a degree, so deltas are smaller and need fewer chunks; since deltas can be negative, ZigZag folds the sign into the lowest bit (0→0, -1→1, 1→2…) so small negatives also encode short.',
+          },
+          {
+            question: 'How is this different from geo URI or WKT?',
+            answer:
+              'geo URIs and WKT are plain text that spell out every coordinate, growing linearly with point count and applying no compression. Polyline is a lossy, transport-oriented compressed format (rounding at the chosen precision) that typically shrinks a path by over 80%, but it only fits the Google-ecosystem algorithm.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'sms-segment-calculator',
+    name: 'SMS 短信长度与分段计算器',
+    nameEn: 'SMS Length & Segment Calculator',
+    description:
+      '按 3GPP TS 23.038 / TS 23.040 计算短信计费长度与分条数量：自动判定 GSM 7-bit（扩展表字符计 2 septet，单条 160 / 拼接 153）与 UCS-2（按 UTF-16 码元，单条 70 / 拼接 67），支持中文与 BMP 外 emoji（代理对计 2 码元），实时显示分条数、总用量与末条剩余容量，并列出触发 UCS-2 的非 GSM 字符。',
+    descriptionEn:
+      'Count SMS billing length and segments per 3GPP TS 23.038 / TS 23.040: auto-detects GSM 7-bit (extension-table chars cost 2 septets; 160 per single message, 153 per concatenated part) vs UCS-2 (UTF-16 code units; 70 single, 67 per concatenated part), supports Chinese and astral emoji (surrogate pairs count as 2), shows segment count, total usage and remaining capacity live, and lists the non-GSM characters that trigger UCS-2.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/sms-segment-calculator',
+    iconName: 'Smartphone',
+    tags: ['SMS', 'GSM 7-bit', 'UCS-2', '短信分片', '3GPP'],
+    tagsEn: ['SMS', 'GSM 7-bit', 'UCS-2', 'Concatenated SMS', '3GPP'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '您有一条验证码：123456，5 分钟内有效。',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一条标准短信的计费单位不是「个字符」，而是由编码方式决定的固定容量段：当全部字符都在 GSM 03.38 定义的 7-bit 字母表内时，单条最多 160 个 septet（7 位单元）；一旦出现中文、emoji 等 GSM 表外字符，整条短信切换为 UCS-2（每字符 2 字节），单条最多 70 个字符。超过单条容量时使用带 UDH（User Data Header）的拼接短信，头部占用使每条有效容量降为 GSM 153 septet / UCS-2 67 码元。本工具严格按 3GPP TS 23.038 与 TS 23.040 在本地完成这些计算。',
+        coreFeatures: [
+          '自动判定编码：纯 GSM 7-bit 文本走 7-bit；出现任意表外字符（含中文、emoji、全角标点）整条切 UCS-2',
+          '精确计量：GSM 基本表字符 1 septet，扩展表字符（^{}\\[~]|€）2 septet；UCS-2 按 UTF-16 码元，BMP 外 emoji 代理对计 2',
+          '分段边界正确：GSM 160/153、UCS-2 70/67，末条剩余容量实时可见',
+          '定位非 GSM 字符：列出触发 UCS-2 的具体字符与其位置（前 20 个），便于改写省钱',
+          '纯本地运算：短信内容不离开浏览器',
+        ],
+        howToUse: [
+          '在输入框粘贴或输入短信正文',
+          '查看「编码方式」标签与分条数量、septet / 码元用量、末条剩余容量',
+          '若被切到 UCS-2，按提示定位表外字符（常见元凶：全角标点、弯引号、€ 以外的货币符号、emoji）',
+        ],
+        useCases: [
+          '短信网关 / 验证码服务上线前预估计费条数，避免中文签名悄悄把单条变多条',
+          '营销短信文案改写：把全角标点、特殊符号替换为 GSM 字符以回到 7-bit 计费',
+          '排查带 emoji 的通知短信为何一条变两条',
+        ],
+        privacyNote: '所有计算均在浏览器本地完成，短信正文不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么含一个中文字整条就按 UCS-2 计费？',
+            answer:
+              'SMS 的用户数据段（TP-UD）只能整体使用一种字符编码，无法逐字符混用；GSM 7-bit 字母表不包含汉字，所以只要出现一个表外字符，整条都必须用 UCS-2（16-bit）编码，容量直接从 160 降到 70。',
+          },
+          {
+            question: '长短信是怎么被切分的？',
+            answer:
+              '超过单条容量时，手机和网关发送多条普通 SMS，并在每条开头放 6 字节 UDH（含拼接引用号、总条数与当前序号），接收端据此重组。UDH 占用用户数据空间，因此 GSM 每条从 160 septet 降到 153，UCS-2 从 70 码元降到 67。',
+          },
+          {
+            question: '为什么一个 emoji 有时算 2 个字符？',
+            answer:
+              'UCS-2/SMS 使用 UTF-16 码元计数：BMP 内字符（绝大多数常用汉字）是 1 个码元；U+10000 以上的字符（如 😀、𝕏）需要高低代理两个码元表示，占 2。组合 emoji（如带肤色的 👋🏽、旗帜）还可能由更多码元组成，计费更长。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'SMS billing units are not "characters" but fixed-capacity segments determined by the encoding: when every character is in the GSM 03.38 7-bit alphabet, one message holds up to 160 septets; a single character outside that alphabet (Chinese, emoji…) forces the whole message to UCS-2 (2 bytes per character, 70 characters max). Messages longer than one segment use concatenated SMS with a UDH (User Data Header), whose overhead lowers the per-part payload to 153 septets for GSM and 67 code units for UCS-2. This tool performs all calculations locally, strictly following 3GPP TS 23.038 and TS 23.040.',
+        coreFeatures: [
+          'Automatic encoding detection: plain GSM 7-bit text stays 7-bit; any out-of-alphabet character (Chinese, emoji, full-width punctuation) switches the whole message to UCS-2',
+          'Precise metering: 1 septet for GSM base characters, 2 for extension-table characters (^{}\\[~]|€); UCS-2 counted in UTF-16 code units, with astral emoji surrogate pairs costing 2',
+          'Correct segment boundaries: GSM 160/153 and UCS-2 70/67, with remaining capacity of the last segment shown live',
+          'Non-GSM character locator: lists the exact characters (and positions, first 20) that force UCS-2 so they can be rewritten to reduce cost',
+          'Fully local: message content never leaves the browser',
+        ],
+        howToUse: [
+          'Paste or type the message body into the input box',
+          'Read the encoding tag, segment count, septet/code-unit usage and remaining capacity of the last segment',
+          'If it switches to UCS-2, use the warning to locate offending characters (common culprits: full-width punctuation, curly quotes, non-€ currency symbols, emoji)',
+        ],
+        useCases: [
+          'Estimating billing segments for SMS gateways and OTP services before launch, preventing Chinese signatures from silently doubling cost',
+          'Rewriting marketing copy back to the GSM alphabet to restore 7-bit pricing',
+          'Understanding why an emoji notification splits into multiple segments',
+        ],
+        privacyNote: 'All calculations happen locally in the browser; message bodies are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why does one Chinese character force the entire message to UCS-2?',
+            answer:
+              'The SMS user-data field (TP-UD) uses a single encoding for the whole message and cannot mix encodings per character. The GSM 7-bit alphabet contains no Han characters, so any one out-of-alphabet character forces UCS-2 (16-bit) for the entire message, dropping capacity from 160 to 70.',
+          },
+          {
+            question: 'How are long messages split?',
+            answer:
+              'Beyond one segment, the handset and gateway send multiple ordinary SMS messages, each prefixed with a 6-byte UDH carrying a concatenation reference, total count and current index; the receiver reassembles them. The UDH consumes payload space, lowering per-part capacity from 160 to 153 septets (GSM) and from 70 to 67 code units (UCS-2).',
+          },
+          {
+            question: 'Why does one emoji sometimes count as 2 characters?',
+            answer:
+              'UCS-2/SMS counts UTF-16 code units: BMP characters (including most common Han characters) are 1 code unit; characters above U+FFFF such as 😀 or 𝕏 need a high/low surrogate pair and cost 2. Combining emoji (skin-tone 👋🏽, flags) can consist of even more code units.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'security-headers-generator',
+    name: 'HTTP 安全响应头生成器',
+    nameEn: 'HTTP Security Headers Generator',
+    description:
+      '表单化生成 Strict-Transport-Security、X-Frame-Options、X-Content-Type-Options、Referrer-Policy、Cross-Origin-Opener-Policy、Permissions-Policy 与 Content-Security-Policy 七类安全响应头：HSTS 提供 max-age 档位与 preload 校验，CSP 支持逐指令源选择与 Report-Only，Permissions-Policy 按特性控制授权范围，并实时输出原始头、Nginx add_header 与 Apache Header set 三种形态；preload 不达标、unsafe-inline、过宽 script-src 等危险组合即时告警。',
+    descriptionEn:
+      'Generate seven families of security response headers through a form: Strict-Transport-Security, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Cross-Origin-Opener-Policy, Permissions-Policy and Content-Security-Policy. HSTS offers max-age presets with preload validation, CSP supports per-directive source selection and Report-Only, Permissions-Policy controls each powerful feature, and output is rendered live as raw headers, Nginx add_header or Apache Header set. Risky combinations such as sub-spec preload, unsafe-inline and overly broad script-src produce instant warnings.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/security-headers-generator',
+    iconName: 'ShieldCheck',
+    tags: ['安全响应头', 'HSTS', 'CSP', 'Permissions-Policy', 'Nginx'],
+    tagsEn: ['Security Headers', 'HSTS', 'CSP', 'Permissions-Policy', 'Nginx'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '安全响应头是 Web 服务器在 HTTP 响应中下发的一组声明式指令，浏览器据此强制实施传输安全（HSTS）、点击劫持防护（X-Frame-Options / CSP frame-ancestors）、MIME 嗅探禁止（nosniff）、来源信息裁剪（Referrer-Policy）、跨源进程隔离（COOP）、强大 API 访问控制（Permissions-Policy）与内容安全策略（CSP）。它们不需要改业务 JS，是性价比最高的 Web 纵深防御手段。本工具把这些头的语法、档位与互斥关系做成表单，实时输出可直接粘贴到 Nginx / Apache 的配置，并对常见误用给出告警。',
+        coreFeatures: [
+          '七类安全头：HSTS、X-Frame-Options、X-Content-Type-Options、Referrer-Policy、COOP、Permissions-Policy、CSP',
+          'HSTS 档位化：300 秒测试到 2 年长期策略，勾选 preload 时校验 max-age≥31536000 与 includeSubDomains',
+          'CSP 逐指令配置：default-src / script-src / object-src / frame-ancestors 等 11 条常用指令，内置 self、none、https:、strict-dynamic 等源快捷项，支持自定义域名，可切换 Report-Only',
+          'Permissions-Policy 按摄像头、麦克风、地理位置、支付、USB、FLoC 六个特性分别设置 () / (self) / *',
+          '三种输出：原始 HTTP 头、Nginx add_header ... always、Apache Header always set，一键复制',
+          '风险告警：preload 不达标、max-age=0、unsafe-inline / unsafe-eval、script-src https:* 通配、缺少 default-src / object-src、Referrer unsafe-url 等即时提示',
+        ],
+        howToUse: [
+          '从推荐基线开始（工具载入时即为较保守的默认配置），按业务需要调整',
+          '配置 CSP 时建议先以 Report-Only 观察控制台违规报告，确认无误点报告后再切回强制',
+          '在右侧选择 Nginx 或 Apache 输出，复制到服务器配置后 reload，并通过浏览器 DevTools 响应头或 securityheaders.com 复核',
+        ],
+        useCases: [
+          '新站点上线前补齐安全响应头，争取安全评分站 A/A+',
+          '为 CSP 上线做准备：先用 Report-Only 收集违规，再逐步收紧 script-src',
+          '审计现有配置：检查 HSTS preload 条件、XFO 与 frame-ancestors 是否冲突',
+        ],
+        privacyNote: '所有配置与生成均在浏览器本地完成，不涉及任何网络请求。',
+        faqs: [
+          {
+            question: 'CSP 上线为什么推荐先用 Report-Only？',
+            answer:
+              'Content-Security-Policy 是强制头，策略过严会直接拦截线上脚本、样式或图片，导致白屏。改用 Content-Security-Policy-Report-Only 时浏览器只上报违规不拦截，可在 report-uri / report-to 端点观察一个发布周期，确认业务资源都被覆盖后再切成强制。',
+          },
+          {
+            question: 'HSTS preload 为什么要求 max-age 至少一年？',
+            answer:
+              'preload 列表会被硬编码进 Chrome、Firefox 等浏览器，一旦提交即使用户从未访问过站点也强制 HTTPS，回滚成本极高（需要从列表移除并等待浏览器发版）。因此 hstspreload.org 要求 max-age≥31536000（1 年）且包含 includeSubDomains，以证明站点已长期稳定支持全站 HTTPS。',
+          },
+          {
+            question: 'X-Frame-Options 和 CSP frame-ancestors 该用哪个？',
+            answer:
+              'frame-ancestors 是 CSP Level 2 的现代替代，支持指定多个允许来源，而 XFO 只有 DENY / SAMEORIGIN 两种粗粒度策略。现代浏览器在两者同时存在时以 frame-ancestors 为准，旧浏览器只识别 XFO，因此过渡期建议两者一起下发且意图一致；确认目标浏览器后可只保留 CSP。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Security response headers are declarative instructions sent by a web server that let browsers enforce transport security (HSTS), clickjacking protection (X-Frame-Options / CSP frame-ancestors), MIME-sniffing prevention (nosniff), referrer trimming (Referrer-Policy), cross-origin process isolation (COOP), powerful-feature access control (Permissions-Policy) and a Content Security Policy — high-leverage defense-in-depth that requires no application JavaScript changes. This tool turns their syntax, presets and interactions into a form, emits ready-to-paste Nginx/Apache configuration live, and warns about common misuses.',
+        coreFeatures: [
+          'Seven header families: HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, COOP, Permissions-Policy and CSP',
+          'Preset HSTS ages from 300 seconds (testing) to 2 years, with preload validating max-age ≥ 31536000 and includeSubDomains',
+          'Per-directive CSP editing across 11 common directives (default-src, script-src, object-src, frame-ancestors…), quick-pick sources such as self, none, https: and strict-dynamic, custom origins, plus a Report-Only switch',
+          'Permissions-Policy control for camera, microphone, geolocation, payment, USB and FLoC, each set to (), (self) or *',
+          'Three output modes: raw HTTP headers, Nginx add_header ... always, Apache Header always set — one click to copy',
+          'Risk warnings: sub-spec preload, max-age=0, unsafe-inline / unsafe-eval, wildcard script-src, missing default-src / object-src, Referrer unsafe-url, and more',
+        ],
+        howToUse: [
+          'Start from the conservative recommended baseline loaded by default, then adjust for your application',
+          'For CSP, run Report-Only first to collect violation reports from the console, then switch to enforcing once reports are clean',
+          'Choose Nginx or Apache output on the right, paste into server configuration, reload, and verify via DevTools response headers or securityheaders.com',
+        ],
+        useCases: [
+          'Adding security headers before launch to reach an A/A+ on security scanners',
+          'Preparing a CSP rollout: gather Report-Only violations before tightening script-src',
+          'Auditing an existing deployment for preload readiness and XFO/frame-ancestors conflicts',
+        ],
+        privacyNote: 'All configuration and generation happens locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why deploy CSP with Report-Only first?',
+            answer:
+              'Content-Security-Policy is enforcing — an overly strict policy blocks production scripts, styles or images and can blank the page. Content-Security-Policy-Report-Only only reports violations to a report-uri / report-to endpoint, so you can observe a release cycle, confirm all business resources are covered, and then switch to enforcement.',
+          },
+          {
+            question: 'Why does HSTS preload require max-age of at least a year?',
+            answer:
+              'The preload list is hard-coded into Chrome, Firefox and others, forcing HTTPS even for users who have never visited the site; rollback is costly (removal plus a browser release cycle). hstspreload.org therefore requires max-age ≥ 31536000 (1 year) plus includeSubDomains as evidence the whole site supports HTTPS reliably.',
+          },
+          {
+            question: 'X-Frame-Options or CSP frame-ancestors?',
+            answer:
+              'frame-ancestors is the modern CSP Level 2 replacement and supports multiple allowed origins, while XFO offers only coarse DENY / SAMEORIGIN. Modern browsers honor frame-ancestors when both are present; older browsers only understand XFO. During transition, send both with matching intent, then drop XFO once your browser support allows.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'http-cache-control-parser',
+    name: 'Cache-Control 解析与新鲜度计算器',
+    nameEn: 'Cache-Control Parser & Freshness Calculator',
+    description:
+      '按 RFC 9111 逐 token 解析 Cache-Control，结合 Date、Age、Expires、ETag 计算当前年龄、剩余新鲜时间与新鲜/过期/重验结论，反向生成推荐缓存头。',
+    descriptionEn:
+      'Parse Cache-Control token by token per RFC 9111 and compute corrected current age, remaining freshness, and fresh/stale/revalidate status with Date, Age, Expires, and ETag; generate recommended headers in reverse.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/http-cache-control-parser',
+    iconName: 'Gauge',
+    tags: ['HTTP', 'Cache-Control', '缓存', 'CDN', 'RFC 9111'],
+    tagsEn: ['HTTP', 'Cache-Control', 'Cache', 'CDN', 'RFC 9111'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'public, max-age=3600, stale-while-revalidate=600',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Cache-Control 解析与新鲜度计算器是一款面向前端、后端与 CDN 运维的 HTTP 缓存语义调试工具，严格依据 RFC 9111 在浏览器本地完成指令解析与新鲜度数值计算，不上报任何报文数据。',
+        coreFeatures: [
+          '逐 token 解析响应与请求 Cache-Control，区分标准指令与未知扩展，重复与冲突指令即时告警',
+          '结合 Date、Age、Expires、Last-Modified 计算 corrected current age、新鲜度寿命与剩余新鲜秒数',
+          '完整模拟 no-store、no-cache、s-maxage、must-revalidate、stale-while-revalidate 及请求端 max-age/min-fresh/max-stale 的状态判定',
+          '反向模式：按浏览器与 CDN 目标 TTL、immutable、宽限期等一键生成推荐响应头组合',
+        ],
+        howToUse: [
+          '粘贴响应的 Cache-Control 值，并按需填写 Date、Age、Expires、Last-Modified、ETag',
+          '选择缓存侧（浏览器或 CDN/共享缓存）并设置「距响应到达经过」的秒数，查看新鲜/过期结论',
+          '需要模拟刷新行为时，在请求 Cache-Control 中填入 no-cache、max-age=0、max-stale 等',
+          '切换到「响应头生成器」，设置目标时长与场景后复制推荐的 Cache-Control 头',
+        ],
+        useCases: [
+          '排查 CDN 缓存命中率异常与资源「为何总是回源」',
+          '设计 API、HTML 与内容哈希静态资源的分层缓存策略',
+          '教学与面试中演示 RFC 9111 的年龄计算与重验流程',
+        ],
+        privacyNote:
+          '所有报文仅在浏览器本地解析，计算过程不依赖任何网络请求，头字段内容不会被上传或保存。',
+        faqs: [
+          {
+            question: 'no-cache 和 no-store 有什么区别？',
+            answer:
+              'no-cache 表示响应可以被存储，但每次使用前必须向源站重新验证（命中验证器时返回 304）；no-store 则完全禁止缓存存储任何内容，适用于敏感数据。',
+          },
+          {
+            question: 'max-age 与 s-maxage 同时存在时谁生效？',
+            answer:
+              's-maxage 只对 CDN 等共享缓存生效，并覆盖 max-age 与 Expires；浏览器等私有缓存忽略 s-maxage，仍按 max-age 计算。',
+          },
+          {
+            question: '没有 max-age 也没有 Expires 时怎么办？',
+            answer:
+              '缓存会回退到启发式新鲜度，常见做法是取 Date 与 Last-Modified 差值的 10%。该比例并非标准强制值，生产环境应显式给出 max-age。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Cache-Control Parser & Freshness Calculator is an HTTP cache-semantics workbench for frontend, backend, and CDN engineers. It parses directives and computes freshness numbers locally in your browser, strictly following RFC 9111 without sending headers anywhere.',
+        coreFeatures: [
+          'Token-by-token parsing for response and request Cache-Control, flagging unknown extensions, duplicates, and conflicting directives',
+          'Computes corrected current age, freshness lifetime, and remaining freshness from Date, Age, Expires, and Last-Modified',
+          'Models no-store, no-cache, s-maxage, must-revalidate, stale-while-revalidate, plus request max-age/min-fresh/max-stale',
+          'Reverse mode generates recommended response headers from browser/CDN TTLs, immutable, and grace-window settings',
+        ],
+        howToUse: [
+          'Paste the response Cache-Control value and fill in Date, Age, Expires, Last-Modified, or ETag as needed',
+          'Pick the cache side (browser or CDN/shared cache) and set elapsed seconds to see fresh/stale status',
+          'Add request Cache-Control such as no-cache, max-age=0, or max-stale to simulate reload behavior',
+          'Switch to the generator tab and copy the recommended Cache-Control header for your target TTL',
+        ],
+        useCases: [
+          'Debugging unexpected CDN cache misses and constant origin revalidation',
+          'Designing layered caching for APIs, HTML, and hash-fingerprinted assets',
+          'Teaching RFC 9111 age calculations and revalidation flows',
+        ],
+        privacyNote:
+          'Every header is parsed locally in your browser. No network request is made and header values are never uploaded or retained.',
+        faqs: [
+          {
+            question: 'What is the difference between no-cache and no-store?',
+            answer:
+              'no-cache allows the response to be stored but forces revalidation before every reuse (a 304 is returned when validators match). no-store forbids storing anything at all and is meant for sensitive data.',
+          },
+          {
+            question: 'When both max-age and s-maxage exist, which wins?',
+            answer:
+              's-maxage applies only to shared caches such as CDNs, overriding both max-age and Expires. Browser/private caches ignore s-maxage and use max-age.',
+          },
+          {
+            question: 'What if neither max-age nor Expires is present?',
+            answer:
+              'Caches fall back to heuristic freshness, commonly 10% of the gap between Date and Last-Modified. Because the fraction is not mandated, production responses should always state an explicit max-age.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ip-range-to-cidr',
+    name: 'IP 区间转 CIDR 聚合器',
+    nameEn: 'IP Range to Minimal CIDR Calculator',
+    description:
+      '将 IPv4/IPv6 起止地址区间聚合为数量最少的 CIDR 块列表，支持批量 CIDR 合并超网，基于 BigInt 纯本地计算。',
+    descriptionEn:
+      'Aggregate an IPv4/IPv6 start-end range into the minimal number of CIDR blocks, and summarize a batch of CIDRs into supernets, computed locally with BigInt.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ip-range-to-cidr',
+    iconName: 'Globe',
+    tags: ['IP', 'CIDR', 'IPv6', '子网', '网络'],
+    tagsEn: ['IP', 'CIDR', 'IPv6', 'Subnet', 'Network'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '192.168.1.5 - 192.168.1.19',
+    doc: {
+      zh: {
+        whatIsIt:
+          'IP 区间转 CIDR 聚合器用于把「起始 IP - 结束 IP」形式的连续地址段转换成数量最少、互不重叠的 CIDR 表示，IPv4 与 IPv6 均支持，也可将一批零散 CIDR 合并为最小超网集合，常用于防火墙规则、安全组白名单与路由表压缩。',
+        coreFeatures: [
+          'IPv4/IPv6 双栈：自动识别协议版本，IPv6 输出符合 RFC 5952 压缩格式',
+          '数学最优：贪心取对齐且不越过区间的最大 CIDR 块，块数最少并严格覆盖整个区间',
+          'CIDR 合并：批量输入可自动去重、合并重叠与相邻网段并输出最小超网',
+          '纯 BigInt 本地运算：无任何依赖，数据不离开浏览器',
+        ],
+        howToUse: [
+          '在「区间 → CIDR 列表」中输入同协议版本的起始与结束 IP，右侧实时给出 CIDR 块',
+          '查看 CIDR 块数、覆盖地址总数与每块容量，可一键复制全部结果',
+          '切换到「CIDR 合并」粘贴多行网段（每行一个，也支持空格或逗号分隔）',
+          '合并结果可直接粘贴到云厂商安全组、Nginx allow/deny 或路由配置中',
+        ],
+        useCases: [
+          '把供应商给的 IP 地址段压缩为最少的安全组/防火墙规则',
+          '合并多份网段资产清单，消除重叠与相邻碎片',
+          'IPv6 寻址规划与前缀委派校验',
+        ],
+        privacyNote:
+          '所有地址解析与位运算均基于浏览器本地 BigInt 完成，不发起任何网络请求，也不记录输入的 IP 数据。',
+        faqs: [
+          {
+            question: '为什么同样 7 个地址有时输出 3 个 CIDR、有时只有 1 个？',
+            answer:
+              'CIDR 块必须按 2 的幂大小对齐到网络边界。区间起点是否对齐决定了能否用大块覆盖，因此工具采用贪心算法，每一步取「起点对齐且不越过终点」的最大块，保证总块数最少。',
+          },
+          {
+            question: '和现有的 CIDR 子网计算器有什么区别？',
+            answer:
+              'CIDR 子网计算器解决「一个 CIDR 包含哪些地址、如何拆分」的问题；本工具解决反方向问题：给定任意起止区间，求能恰好覆盖它的最少 CIDR 集合，并额外支持批量网段合并。',
+          },
+          {
+            question: '支持 IPv6 内嵌 IPv4 写法吗？',
+            answer:
+              '支持解析 ::ffff:192.0.2.1 这类末段内嵌 IPv4 的地址；输出统一采用 RFC 5952 压缩形式（如 ::ffff:c000:201）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The IP Range to Minimal CIDR Calculator converts a contiguous start-end IP range into the fewest non-overlapping CIDR blocks for both IPv4 and IPv6, and summarizes a batch of CIDRs into minimal supernets. It is ideal for firewall rules, security-group allowlists, and route-table compression.',
+        coreFeatures: [
+          'Dual-stack: auto-detects IPv4/IPv6 and prints IPv6 in RFC 5952 compressed notation',
+          'Mathematically minimal: a greedy algorithm picks the largest aligned block that never crosses the end, so blocks are few and cover the range exactly',
+          'CIDR summarization: deduplicates and merges overlapping or adjacent prefixes in bulk',
+          'Zero-dependency local computation using native BigInt',
+        ],
+        howToUse: [
+          'Enter same-family start and end addresses in "Range to CIDR" to see blocks on the right',
+          'Review block count, total covered addresses, and per-block size, then copy the results',
+          'Switch to "CIDR summarize" and paste multiple prefixes (one per line or separated by spaces/commas)',
+          'Paste the merged output straight into cloud security groups, Nginx allow/deny, or route configs',
+        ],
+        useCases: [
+          'Compressing vendor IP ranges into the minimum set of firewall or security-group rules',
+          'Consolidating network inventories and removing overlapping fragments',
+          'IPv6 addressing plans and prefix-delegation verification',
+        ],
+        privacyNote:
+          'All parsing and bitwise math runs locally on native BigInt in your browser. No network request is made and no entered IP data is retained.',
+        faqs: [
+          {
+            question: 'Why does a 7-address range sometimes produce 3 CIDRs and sometimes 1?',
+            answer:
+              'A CIDR block must be a power-of-two sized range aligned to a network boundary. Alignment of the start address determines how large a block can be, so the greedy algorithm takes the largest aligned block that never crosses the end, guaranteeing the minimum total block count.',
+          },
+          {
+            question: 'How is this different from the CIDR subnet calculator?',
+            answer:
+              'A subnet calculator answers "which addresses are inside this CIDR and how can I split it". This tool solves the inverse problem — finding the minimum CIDR set that exactly covers an arbitrary start-end range — plus bulk prefix summarization.',
+          },
+          {
+            question: 'Does it support IPv4-mapped IPv6 notation?',
+            answer:
+              'Yes, forms like ::ffff:192.0.2.1 are parsed; output is normalized to RFC 5952 compressed notation such as ::ffff:c000:201.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

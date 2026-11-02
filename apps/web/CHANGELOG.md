@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-03 ：【Agent自主迭代】新增 5 个 Encoded Polyline 折线编解码、SMS 短信分段计算、HTTP 安全响应头生成、Cache-Control 新鲜度计算与 IP 区间转 CIDR 工具
+
+- **新增**：Encoded Polyline 折线编解码（polyline-codec）— 在坐标点序列与 Google Encoded Polyline Algorithm Format 字符串间双向转换，支持精度 5 / 精度 6 与 ZigZag 5 位分块编码，内置官方向量，纯本地运算
+- **新增**：SMS 短信长度与分段计算器（sms-segment-calculator）— 按 3GPP TS 23.038 / 23.040 自动判定 GSM 7-bit（160/153）与 UCS-2（70/67），支持中文与 emoji 代理对，实时显示分条数、用量与触发字符
+- **新增**：HTTP 安全响应头生成器（security-headers-generator）— 表单化生成 HSTS / XFO / nosniff / Referrer-Policy / COOP / Permissions-Policy / CSP 七类安全头，输出原始头、Nginx 与 Apache 三种形态，危险组合即时告警
+- **新增**：Cache-Control 解析与新鲜度计算器（http-cache-control-parser）— 按 RFC 9111 解析 Cache-Control 并结合 Date / Age / Expires / ETag 计算当前年龄与新鲜 / 过期 / 重验结论，反向生成推荐缓存头
+- **新增**：IP 区间转 CIDR 聚合器（ip-range-to-cidr）— 将 IPv4 / IPv6 起止地址区间贪心聚合为数量最少的 CIDR 块，支持批量 CIDR 合并超网与 RFC 5952 输出，BigInt 纯本地计算
+
 ## 2026-11-02 ：【Agent自主迭代】新增 20 个数学表达式求值、INI/JSON 互转、线性代数矩阵、文本相似度、JSON 转 Python dataclass、CAS 登记号校验、RC 滤波器参数、文件下载时间估算、Markdown 表格生成、Apple .strings 转换、色温颜色转换、体感温度、ISIN 校验、名称型 UUID、Git 对象哈希、WIFI 二维码、CVSS 评分、OpenSSH randomart、Excel 序列号日期与以太坊单位换算工具
 
 - **新增**：WIFI 二维码连接字符串生成器（wifi-qr-payload）— 按 WIFI: 标准拼装 SSID / 密码 / 加密类型（WPA/WEP/nopass）/ 隐藏网络，转义 `\\ ; , " :` 特殊字符，支持明文与二维码双展示，纯本地运算
