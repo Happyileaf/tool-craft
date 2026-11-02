@@ -20166,6 +20166,104 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'polyline-codec',
+    name: 'Encoded Polyline 折线编解码',
+    nameEn: 'Encoded Polyline Codec',
+    description:
+      '在坐标点序列与 Google Encoded Polyline Algorithm Format 字符串之间双向转换：实现坐标乘 10^precision 取整、相邻点差量 ZigZag 编码与 5 位分块 ASCII 输出，支持精度 5（传统 Directions API）与精度 6（新版 Routes API），内置 Google 官方向量，非法字符与不完整编码明确报错。',
+    descriptionEn:
+      'Convert between coordinate sequences and Google Encoded Polyline Algorithm Format strings: coordinates are rounded at 10^precision, delta-encoded with ZigZag, and emitted as 5-bit-chunked ASCII. Supports precision 5 (classic Directions API) and 6 (new Routes API), ships with the official Google test vector, and reports invalid characters or truncated encoding clearly.',
+    category: ToolCategoryEnum.GEO_SPATIAL,
+    path: '/tools/polyline-codec',
+    iconName: 'Map',
+    tags: ['Polyline', 'Google Maps', '路径压缩', '坐标编码', 'Routes API'],
+    tagsEn: ['Polyline', 'Google Maps', 'Path Compression', 'Coordinate Encoding', 'Routes API'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '38.5,-120.2\n40.7,-120.95\n43.252,-126.453',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Encoded Polyline Algorithm Format 是 Google 地图系列 API 用来压缩经纬度路径的字符串格式：它把每个坐标四舍五入到指定小数位（通常 5 位，新版 Routes API 使用 6 位），与前一个坐标做差后进行 ZigZag 无符号编码，再按每 5 位一组切成可打印 ASCII 字符，使一条很长的驾车路径也能放进一个 URL 参数。本工具在浏览器本地完成该格式的编码与解码。',
+        coreFeatures: [
+          '双向转换：坐标点（纬度,经度，逐行）实时编码为 Polyline 字符串，粘贴字符串实时还原坐标',
+          '双精度支持：精度 5（传统 Google Maps / Directions API）与精度 6（新版 Routes API v1），解码时按所选精度还原',
+          '差量 + ZigZag + 5 位分块完整实现，仅使用可打印 ASCII 63~126 字符，与官方算法逐位一致',
+          '严格校验：经纬度范围、字段数量、非法字符、续位中途截断均给出定位明确的中文错误',
+          '纯本地运算：不加载地图、不发起网络请求，路径数据不离开浏览器',
+        ],
+        howToUse: [
+          '选择编码精度（Google 经典 API 为 5，Routes v1 为 6）',
+          '在「坐标点」框逐行输入「纬度,经度」，编码结果实时出现在下方卡片，可一键复制',
+          '或在「Polyline 字符串解码」框粘贴编码字符串，坐标列表实时还原并可复制',
+        ],
+        useCases: [
+          '调试 Directions / Routes / Static Maps API 的 path 与 encodedPolyline 参数',
+          '把 GPS 轨迹、地理围栏点位压缩进 URL 或数据库字段',
+          '排查第三方系统中 Polyline 串解码后坐标错位（常见原因是精度 5 / 6 混用）',
+        ],
+        privacyNote: '所有编解码均在浏览器本地完成，坐标与路径不会被上传或记录。',
+        faqs: [
+          {
+            question: '精度 5 和精度 6 有什么区别？解码时选错会怎样？',
+            answer:
+              '精度决定坐标乘 10 的多少次方后取整：精度 5 约 1 米分辨率，是 Google 经典 Directions API 的默认值；2023 年后的 Routes API v1 默认精度 6（约 10 厘米）。同一字符串用错误精度解码会得到 10 倍偏差的坐标，通常直接超出经纬度范围，工具会提示你确认精度。',
+          },
+          {
+            question: '为什么要用差量和 ZigZag？',
+            answer:
+              '相邻坐标通常只差零点零几度，对差值编码可以让数值更小、分块更少；而差值有正有负，ZigZag 把符号位折叠到最低位（0→0、-1→1、1→2……），使小的负数同样得到短编码。',
+          },
+          {
+            question: '它和 geo URI、WKT 等格式有何不同？',
+            answer:
+              'geo URI 与 WKT 都是明文文本，坐标逐字书写、长度随点数线性增长且没有压缩；Polyline 是专为传输设计的有损压缩格式（按精度取整），典型路径可压缩 80% 以上，但只适用于 Google 生态约定的这一套算法。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Encoded Polyline Algorithm Format is the string encoding used by Google Maps APIs to compress latitude/longitude paths: each coordinate is rounded to a chosen number of decimal places (traditionally 5; the newer Routes API uses 6), delta-encoded against the previous coordinate, ZigZag-mapped to an unsigned integer, and chunked into 5-bit printable ASCII groups — so a long driving route fits inside a single URL parameter. This tool performs both encoding and decoding locally in your browser.',
+        coreFeatures: [
+          'Bidirectional: line-separated (lat,lng) points encode live to a polyline string; pasting a string decodes back to coordinates live',
+          'Precision 5 (classic Google Maps / Directions API) and precision 6 (new Routes API v1); decoding uses the selected precision',
+          'Full delta + ZigZag + 5-bit chunk implementation using only printable ASCII 63–126, bit-for-bit compatible with the official algorithm',
+          'Strict validation: coordinate ranges, field counts, illegal characters and truncated continuation bits all produce clearly located error messages',
+          'Fully local: no map tiles, no network requests, and path data never leaves the browser',
+        ],
+        howToUse: [
+          'Choose the precision (5 for classic Google APIs, 6 for Routes v1)',
+          'Enter points line by line as "lat,lng"; the encoded result appears live below and can be copied with one click',
+          'Or paste an encoded string into the decode card to recover the coordinate list instantly',
+        ],
+        useCases: [
+          'Debugging path / encodedPolyline parameters of Directions, Routes and Static Maps APIs',
+          'Compressing GPS tracks and geofence points into a URL parameter or database column',
+          'Diagnosing misplaced coordinates from third-party polylines (usually a precision-5 vs precision-6 mismatch)',
+        ],
+        privacyNote: 'All encoding and decoding happens locally in the browser; coordinates and paths are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the difference between precision 5 and 6? What if I decode with the wrong one?',
+            answer:
+              'Precision is the power of ten used when rounding coordinates: precision 5 is about 1-meter resolution and the classic Directions API default; Routes API v1 (2023+) defaults to precision 6 (~10 cm). Decoding the same string with the wrong precision yields coordinates off by a factor of 10, usually outside the valid lat/lng range — the tool then warns you to check the precision.',
+          },
+          {
+            question: 'Why deltas and ZigZag?',
+            answer:
+              'Adjacent coordinates typically differ by only a few hundredths of a degree, so deltas are smaller and need fewer chunks; since deltas can be negative, ZigZag folds the sign into the lowest bit (0→0, -1→1, 1→2…) so small negatives also encode short.',
+          },
+          {
+            question: 'How is this different from geo URI or WKT?',
+            answer:
+              'geo URIs and WKT are plain text that spell out every coordinate, growing linearly with point count and applying no compression. Polyline is a lossy, transport-oriented compressed format (rounding at the chosen precision) that typically shrinks a path by over 80%, but it only fits the Google-ecosystem algorithm.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
