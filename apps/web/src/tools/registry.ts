@@ -19962,6 +19962,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'excel-date-converter',
+    name: 'Excel 序列号日期互转器',
+    nameEn: 'Excel Serial Date Converter',
+    description:
+      '在 Excel 日期序列号与公历日期时间之间双向转换，同时支持 Windows 默认的 1900 日期系统（含历史遗留的 1900 闰年 bug：序列号 60 是不存在的 1900-02-29）与 Mac 的 1904 日期系统，序列号小数部分自动换算为时:分:秒。',
+    descriptionEn:
+      'Convert between Excel date serial numbers and Gregorian date-time in both directions, supporting the Windows 1900 date system (including the legacy 1900 leap-year bug where serial 60 is the phantom 1900-02-29) and the Mac 1904 date system, with the serial fraction decoded into hours/minutes/seconds.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/excel-date-converter',
+    iconName: 'Table2',
+    tags: ['Excel', '日期序列号', '1900日期系统', '1904日期系统', 'CSV'],
+    tagsEn: ['Excel', 'Serial Date', '1900 System', '1904 System', 'CSV'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '44927',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Excel 把日期存储为浮点数序列号：整数部分是自日期系统零点起的天数，小数部分是自午夜起的一天占比。本工具在序列号与公历日期时间之间双向转换，完整复刻两套系统的规则差异——Windows 的 1900 系统序列号 1 = 1900-01-01，并因兼容 Lotus 1-2-3 保留了一个现实不存在的序列号 60（1900-02-29）；Mac 的 1904 系统序列号 0 = 1904-01-01，连续计数且允许负值，两套系统对同一日期恒相差 1462。',
+        coreFeatures: [
+          '双向转换：序列号（可带小数）→ 公历日期 + 时分秒；公历日期时间 → 两套系统序列号',
+          '1900 系统边界精确还原：1–59 为 1900-01-01～02-28，60 标记为 phantom 1900-02-29，61 起为 1900-03-01 连续段',
+          '1904 系统完整支持：序列号 0 = 1904-01-01，负序列号可表示 1904 年之前，并给出另一系统等价值（差 1462）',
+          '小数部分精确到毫秒：0.25 = 06:00、0.5 = 12:00，反向输入支持 HH:mm 或 HH:mm:ss.fff',
+          '纯日历算法（proleptic Gregorian 日序）内核，不依赖浏览器时区，零新增依赖',
+        ],
+        howToUse: [
+          '「序列号 → 公历日期」模式下先选择日期系统（Windows Excel 默认 1900，Mac Excel 为 1904），粘贴如 44927 或 44927.5',
+          '结果区显示公历日期、小数部分对应的时刻，以及另一套日期系统的等价序列号',
+          '「公历日期 → 序列号」模式下按 YYYY-MM-DD 输入日期，时间可留空（视为 00:00），表格同时给出两套系统序列号',
+          '点「填入当前时刻」可快速取浏览器当前日期时间进行反查；各结果支持一键复制',
+        ],
+        useCases: [
+          '排查 CSV/表格导出后日期变成 4 万多数字的问题，快速还原真实日期',
+          '跨 Mac/Windows 或跨工作簿（1900/1904 系统混用）核对日期为何相差约 4 年（1462 天）',
+          '为数据脚本、SQL 导入或测试数据准备 Excel 序列号值（含时分秒小数）',
+        ],
+        privacyNote:
+          '全部换算均在浏览器本地由零依赖纯函数完成，不使用 Date 时区逻辑，也不发起任何网络请求；输入内容不会离开设备。',
+        faqs: [
+          {
+            question: '为什么序列号 60 对应 1900-02-29？这一天不是不存在吗？',
+            answer:
+              '1900 年不是闰年（整百年须被 400 整除），现实中没有 1900-02-29。Excel 为兼容早年 Lotus 1-2-3 的同样错误，故意保留了这个 phantom 日期：序列号 1–59 正常对应 1900-01-01～02-28，60 显示为 1900-02-29，61 才是 1900-03-01。本工具在序列号→日期方向会对 60 给出醒目警告，且真实公历日期无法反推出 60。',
+          },
+          {
+            question: '1900 和 1904 日期系统有什么区别？',
+            answer:
+              '零点不同：1900 系统从 1900-01-01（序列号 1）起算且不允许负值；1904 系统从 1904-01-01（序列号 0）起算，允许负序列号表示更早日期。同一日期在 1904 系统中的序列号恰好比 1900 系统小 1462（约 4 年零 1 天，差值中含 phantom 一天）。例如 2023-01-01 在 1900 系统是 44927、在 1904 系统是 43465。',
+          },
+          {
+            question: '序列号的小数部分代表什么？',
+            answer:
+              '代表一天内已经过去的时间比例：0.25 = 06:00:00，0.5 = 12:00:00，0.75 = 18:00:00。Excel 中「设置单元格格式」可以在日期与数字间切换；本工具直接把小数换算到毫秒，并支持反向把时分秒编码回序列号小数。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Excel stores dates as floating-point serial numbers: the integer part counts days from the date-system epoch and the fraction is the portion of the day elapsed since midnight. This tool converts both ways and faithfully reproduces both systems — the Windows 1900 system where serial 1 is 1900-01-01 and a phantom serial 60 (1900-02-29) survives from Lotus 1-2-3 compatibility, and the Mac 1904 system where serial 0 is 1904-01-01 with continuous (and negative) counting; the two systems always differ by exactly 1462 for the same date.',
+        coreFeatures: [
+          'Both directions: serial (with optional fraction) to Gregorian date plus HH:mm:ss, and date-time to serials in both systems',
+          'Exact 1900-system boundaries: 1-59 map to 1900-01-01..02-28, serial 60 is flagged as the phantom 1900-02-29, serial 61 resumes at 1900-03-01',
+          'Full 1904 support: serial 0 = 1904-01-01, negatives reach pre-1904 dates, and the equivalent in the other system (offset 1462) is shown',
+          'Fraction decoded to the millisecond: 0.25 = 06:00, 0.5 = 12:00; reverse input accepts HH:mm or HH:mm:ss.fff',
+          'Pure proleptic-Gregorian day-count core with no browser-timezone dependency and zero new dependencies',
+        ],
+        howToUse: [
+          'In "serial to date" mode pick the date system (1900 for Windows Excel, 1904 for Mac Excel) and paste a value like 44927 or 44927.5',
+          'The result shows the Gregorian date, the time encoded by the fraction, and the equivalent serial in the other system',
+          'In "date to serial" mode enter YYYY-MM-DD (time optional, defaults to 00:00) to get serials for both systems',
+          'Use "fill current time" for the browser clock; every result can be copied with one click',
+        ],
+        useCases: [
+          'Recovering real dates when a CSV/spreadsheet export shows dates as 40,000-something numbers',
+          'Investigating dates off by about four years (1462 days) when mixing Mac/Windows workbooks or 1900/1904 systems',
+          'Preparing Excel serial values (including time fractions) for data scripts, SQL imports, and test fixtures',
+        ],
+        privacyNote:
+          'All conversion runs locally in the browser via zero-dependency pure functions. Date timezones are not used and no network requests are made, so nothing you enter leaves your device.',
+        faqs: [
+          {
+            question: 'Why does serial 60 map to 1900-02-29 if that date never existed?',
+            answer:
+              '1900 was not a leap year (century years must be divisible by 400), so 1900-02-29 never happened. For compatibility with an old Lotus 1-2-3 bug, Excel keeps the phantom date: serials 1-59 cover 1900-01-01..02-28, serial 60 displays as 1900-02-29, and serial 61 is 1900-03-01. This tool warns prominently on serial 60, and no real calendar date converts back to 60.',
+          },
+          {
+            question: 'What is the difference between the 1900 and 1904 systems?',
+            answer:
+              'Their epochs differ: the 1900 system starts at 1900-01-01 (serial 1) with no negatives, while the 1904 system starts at 1904-01-01 (serial 0) and allows negatives. The same date is exactly 1462 smaller in the 1904 system (roughly four years and one day, including the phantom day). For example 2023-01-01 is 44927 in 1900 and 43465 in 1904.',
+          },
+          {
+            question: 'What does the fractional part of a serial mean?',
+            answer:
+              'It is the fraction of a day elapsed since midnight: 0.25 = 06:00:00, 0.5 = 12:00:00, 0.75 = 18:00:00. Toggling the cell format in Excel switches between date and number. This tool decodes the fraction to the millisecond and can also encode HH:mm:ss back into a serial fraction.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -223,4 +223,5 @@ export const toolLoaders: Record<
   'wifi-qr-payload': () => import('./wifi-qr-payload'),
   'cvss-calculator': () => import('./cvss-calculator'),
   'openssh-randomart': () => import('./openssh-randomart'),
+  'excel-date-converter': () => import('./excel-date-converter'),
 };
