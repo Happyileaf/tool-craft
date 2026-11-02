@@ -19757,6 +19757,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'cvss-calculator',
+    name: 'CVSS v3.1 向量与基础分计算器',
+    nameEn: 'CVSS v3.1 Vector & Base Score Calculator',
+    description:
+      '逐项选择攻击向量、攻击复杂度、权限要求、用户交互、作用域与 CIA 影响，按 FIRST 官方规范实时计算 0.0–10.0 基础分与严重等级（None/Low/Medium/High/Critical），并生成合规向量字符串；也可粘贴已有向量反向解析回填。全程浏览器本地计算。',
+    descriptionEn:
+      'Pick the eight CVSS v3.1 base metrics (AV/AC/PR/UI/S plus C/I/A) and get the 0.0-10.0 base score, qualitative severity and canonical vector string following the FIRST specification, with reverse parsing of pasted vectors. All computation stays in your browser.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/cvss-calculator',
+    iconName: 'ShieldCheck',
+    tags: ['CVSS', '漏洞评分', '安全', 'FIRST', 'CVE'],
+    tagsEn: ['CVSS', 'Vulnerability', 'Security', 'FIRST', 'CVE'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CVSS v3.1 基础分计算器是一款遵循 FIRST 官方《CVSS v3.1 Specification》的纯浏览器工具，用于把漏洞的八项基础指标转成标准向量字符串与 0.0–10.0 评分，结果可直接写入漏洞报告、SRC 工单或 CVE 记录。',
+        coreFeatures: [
+          '官方公式实现：完整覆盖 ISCBase、作用域改变（Scope Changed）公式与 Appendix B Roundup 取整',
+          '双向编辑：逐项点选指标实时生成分数，也可粘贴 CVSS:3.1/... 向量反向回填',
+          '严格向量校验：前缀版本、八项指标完整性、取值合法性、重复键均逐一带中文错误提示',
+          '子分数展示：同时给出可利用性（Exploitability）与影响分（Impact）便于报告引用',
+          '纯浏览器本地运算：漏洞信息不出本机，无网络请求与服务端存储',
+        ],
+        howToUse: [
+          '在左侧按漏洞实际情况选择攻击向量（AV）、攻击复杂度（AC）、权限要求（PR）、用户交互（UI）、作用域（S）与机密性/完整性/可用性影响（C/I/A）',
+          '右侧实时显示基础分、None–Critical 等级、子分数与规范顺序的向量字符串',
+          '点击「复制向量字符串」即可粘贴到漏洞报告或 NVD/SRC 平台',
+          '也可在底部粘贴已有向量，点击「解析向量」回填到表单进行修改复算',
+        ],
+        useCases: [
+          '安全研究人员编写漏洞分析报告时给出标准化评分',
+          '企业 SRC / 应急响应团队定级漏洞修复优先级',
+          '代码评审与渗透测试交付物中补充 CVSS 向量佐证',
+        ],
+        privacyNote:
+          '所有评分均由浏览器本地 TypeScript 纯函数计算，向量与漏洞信息不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么有的分数和 NVD 显示的不一致？',
+            answer:
+              '本工具严格按 CVSS v3.1 规范计算基础分。NVD 对同一漏洞的最终评分基于分析师确认的指标向量；将 NVD 页面上的完整向量粘贴到本工具反向解析，结果应与其基础分一致。',
+          },
+          {
+            question: '支持时间分（Temporal）与环境分（Environmental）吗？',
+            answer:
+              '当前仅计算基础分（Base Metrics）。解析时出现 E、RL、RC、CR 等时间/环境指标会明确报错，避免把非基础指标误算进基础分。',
+          },
+          {
+            question: '作用域（Scope）改变为什么会显著影响分数？',
+            answer:
+              'Scope 改变意味着漏洞影响越过了脆弱组件的授权边界（如提权、跨虚拟机/沙箱）。规范为此使用独立的影响公式与 1.08 放大系数，并对 PR 指标采用不同权重表，因此分数可能明显升高。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A pure-browser CVSS v3.1 base score calculator implementing the FIRST CVSS v3.1 Specification. Turn the eight base metrics into a canonical vector string and a 0.0-10.0 score ready for vulnerability reports, SRC tickets, or CVE records.',
+        coreFeatures: [
+          'Official formulas: ISCBase, the Scope-Changed impact formula, and Appendix B Roundup',
+          'Bidirectional editing: pick metrics to build a score, or paste a CVSS:3.1/... vector to refill the form',
+          'Strict vector validation: version prefix, all eight metrics, legal values, and duplicate keys each produce clear errors',
+          'Subscores shown: Exploitability and Impact are displayed alongside the base score',
+          '100% in-browser: vulnerability details never leave the machine',
+        ],
+        howToUse: [
+          'Choose Attack Vector (AV), Attack Complexity (AC), Privileges Required (PR), User Interaction (UI), Scope (S), and the C/I/A impacts on the left',
+          'The right side shows the live base score, None-Critical severity, subscores, and canonical vector',
+          'Click "Copy vector" to paste it into a report or an NVD/SRC platform',
+          'Or paste an existing vector at the bottom and click "Parse" to refill and adjust the metrics',
+        ],
+        useCases: [
+          'Assigning standardized scores in vulnerability research reports',
+          'Prioritizing remediation in enterprise SRC / incident-response workflows',
+          'Adding CVSS evidence to penetration-test deliverables and code reviews',
+        ],
+        privacyNote:
+          'Every score is computed locally by pure TypeScript functions. Vectors and vulnerability details are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why does a score differ from what NVD shows?',
+            answer:
+              'This tool strictly follows the CVSS v3.1 base-score specification. NVD scores reflect analyst-confirmed metric vectors; paste the full vector from the NVD page into this tool and the base score will match.',
+          },
+          {
+            question: 'Are Temporal and Environmental scores supported?',
+            answer:
+              'Only Base Metrics are calculated. Vectors carrying temporal/environmental codes such as E, RL, RC, or CR are explicitly rejected so they cannot distort the base score.',
+          },
+          {
+            question: 'Why does a changed Scope raise the score so much?',
+            answer:
+              'A changed Scope means impact crosses the vulnerable component\u2019s authority boundary (privilege escalation, VM/sandbox escape). The specification then applies a separate impact formula, a 1.08 multiplier, and a different PR weight table, which can raise the score substantially.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

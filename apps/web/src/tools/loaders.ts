@@ -221,4 +221,5 @@ export const toolLoaders: Record<
   'uuid-name-generator': () => import('./uuid-name-generator'),
   'git-object-hash': () => import('./git-object-hash'),
   'wifi-qr-payload': () => import('./wifi-qr-payload'),
+  'cvss-calculator': () => import('./cvss-calculator'),
 };
