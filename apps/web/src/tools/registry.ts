@@ -20167,6 +20167,96 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'cubic-bezier-generator',
+    name: 'CSS cubic-bezier 缓动函数生成器',
+    nameEn: 'CSS cubic-bezier Easing Function Generator',
+    description:
+      '在可缩放矢量曲线上拖拽控制点或直接填写四个数值，实时生成 CSS cubic-bezier() 缓动函数并预览位移动画；内置 linear、ease、ease-in/out/in-out 与 easeInBack/easeOutBack 过冲预设，x 越界即时报错。全部计算（牛顿迭代 + 二分回退求 y(x)）在浏览器本地完成。',
+    descriptionEn:
+      'Drag control points on an SVG curve or enter four numbers to generate a CSS cubic-bezier() easing function live, with a displacement animation preview. Ships linear/ease/ease-in/ease-out/ease-in-out and overshoot back presets and flags out-of-range x. All math (Newton iteration with bisection fallback for y(x)) runs locally in the browser.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/cubic-bezier-generator',
+    iconName: 'Spline',
+    tags: ['cubic-bezier', '缓动', 'CSS动画', 'transition', '贝塞尔'],
+    tagsEn: ['cubic-bezier', 'Easing', 'CSS Animation', 'Transition', 'Bézier'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS cubic-bezier 缓动函数生成器帮助前端开发者可视化调整动画时序曲线：拖拽曲线上的两个控制点或编辑四个数值，实时得到 cubic-bezier() 代码并观察方块位移动画，内置常用预设与过冲曲线，参数非法时即时提示。',
+        coreFeatures: [
+          'SVG 曲线图拖拽 P1/P2 控制点，x 轴限制 0–1，y 轴可越界展示过冲/回弹',
+          '四个数值输入框与曲线双向联动，实时生成 cubic-bezier(x1, y1, x2, y2)',
+          '内置 linear、ease、ease-in、ease-out、ease-in-out、easeInBack、easeOutBack 预设',
+          'requestAnimationFrame 驱动的方块位移动画演示，可调时长并显示实时 t → 输出值',
+          'x1/x2 越界或非有限数即时错误提示并禁用复制；纯本地计算，零依赖、无网络请求',
+        ],
+        howToUse: [
+          '在左侧曲线图直接拖拽橙色/绿色控制点，或在右侧修改 x1/y1/x2/y2 数值',
+          '点击预设按钮快速套用规范关键字曲线；参数自动联动到曲线与代码',
+          '点击「复制」取走 cubic-bezier()，或点「播放动画」用该曲线预览位移效果',
+        ],
+        useCases: [
+          '为 CSS transition / animation 设计自定义缓动节奏',
+          '教学演示：直观理解控制点、过冲曲线与 y(x) 求解',
+          '快速取得与 ease 等关键字等价的 cubic-bezier 数值',
+        ],
+        privacyNote:
+          '曲线求值、数值校验与动画演示全部在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么 x1、x2 必须在 0 到 1 之间，y 却可以超出？',
+            answer:
+              'CSS 规范要求缓动曲线在时间轴（x）上从 0 单调推进到 1，因此 x1、x2 限制在 [0,1]；输出进度（y）允许越界，从而产生 easeInBack（先反向）、easeOutBack（过冲后回落）等效果。',
+          },
+          {
+            question: '生成的代码如何使用？',
+            answer:
+              '复制得到的 cubic-bezier(...) 可直接用于 transition-timing-function 或 animation-timing-function，例如 transition: transform 1s cubic-bezier(0.25, 0.1, 0.25, 1);。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CSS cubic-bezier Easing Function Generator lets frontend developers shape animation timing visually: drag two control points on an SVG curve or edit four numbers, instantly obtaining cubic-bezier() code and watching a box animate with it. Common and overshoot presets are built in, with immediate validation errors.',
+        coreFeatures: [
+          'Drag P1/P2 handles on an SVG curve; x is constrained to 0-1 while y may overshoot for back/bounce-like motion',
+          'Four numeric inputs stay in two-way sync with the curve and produce cubic-bezier(x1, y1, x2, y2) live',
+          'Built-in linear, ease, ease-in, ease-out, ease-in-out, easeInBack and easeOutBack presets',
+          'requestAnimationFrame displacement demo with adjustable duration and live t-to-output readout',
+          'Immediate errors for out-of-range or non-finite x; fully local, zero-dependency, no network requests',
+        ],
+        howToUse: [
+          'Drag the orange/green handles on the curve, or edit the x1/y1/x2/y2 inputs on the right',
+          'Click a preset to apply spec-keyword curves; curve and code update together',
+          'Click Copy to take the cubic-bezier() value, or Play to preview motion using it',
+        ],
+        useCases: [
+          'Designing custom easing for CSS transitions and animations',
+          'Teaching control points, overshoot curves and y(x) solving visually',
+          'Obtaining numeric cubic-bezier equivalents of ease-family keywords',
+        ],
+        privacyNote:
+          'Curve evaluation, validation and the animation demo all run locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why must x1/x2 be within 0-1 while y may exceed it?',
+            answer:
+              'The CSS spec requires the easing curve to progress monotonically along the time axis (x) from 0 to 1, so x1/x2 are clamped to [0,1]. The output progress (y) may overshoot, enabling effects such as easeInBack (initial pullback) and easeOutBack (overshoot then settle).',
+          },
+          {
+            question: 'How do I use the generated code?',
+            answer:
+              'Paste the copied cubic-bezier(...) into transition-timing-function or animation-timing-function, e.g. transition: transform 1s cubic-bezier(0.25, 0.1, 0.25, 1);.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'braille-codec',
     name: '盲文 Braille 点阵编解码器',
     nameEn: 'Braille Dot Pattern Codec',
