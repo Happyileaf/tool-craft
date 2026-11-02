@@ -74,3 +74,8 @@
 | 20261022221404 | 文本相似度计算器 | Web Tool | Existing Gap | `text-similarity` / [PR #136](https://github.com/Happyileaf/tool-craft/pull/136) | 2026-11-02 | [详情](./idea-details/20261022221404.md) |
 | 20261026200349 | 线性代数矩阵计算器（乘法 / 行列式 / 逆 / 秩 / RREF） | Web Tool | Existing Gap | `matrix-calculator` / [PR #136](https://github.com/Happyileaf/tool-craft/pull/136) | 2026-11-02 | [详情](./idea-details/20261026200349.md) |
 | 20261030200910 | JSON 转 Python dataclass 生成器 | Web Tool | Existing Gap | `json-to-python-dataclass` / [PR #136](https://github.com/Happyileaf/tool-craft/pull/136) | 2026-11-02 | [详情](./idea-details/20261030200910.md) |
+| 20261027040226 | 色温 ↔ RGB/HEX 双向转换器（开尔文色温计算器） | Web Tool | Existing Gap | `color-temperature-converter` / [PR #142](https://github.com/Happyileaf/tool-craft/pull/142) | 2026-11-02 | [详情](./idea-details/20261027040226.md) |
+| 20261102080704 | 体感温度计算器（热指数 Heat Index / 风寒 Wind Chill） | Web Tool | Exploration | `apparent-temperature` / [PR #142](https://github.com/Happyileaf/tool-craft/pull/142) | 2026-11-02 | [详情](./idea-details/20261102080704.md) |
+| 20261030080721 | ISIN 证券识别码校验器 | Web Tool | External Reference | `isin-validator` / [PR #142](https://github.com/Happyileaf/tool-craft/pull/142) | 2026-11-02 | [详情](./idea-details/20261030080721.md) |
+| 20261029200825 | UUID v3 / v5 名称型 UUID 生成器（RFC 9562 命名空间哈希） | Web Tool | Existing Gap | `uuid-name-generator` / [PR #142](https://github.com/Happyileaf/tool-craft/pull/142) | 2026-11-02 | [详情](./idea-details/20261029200825.md) |
+| 20261102020124 | Git 底层对象哈希计算器（blob / tree / commit / tag，git hash-object 等价） | Web Tool | Exploration | `git-object-hash` / [PR #142](https://github.com/Happyileaf/tool-craft/pull/142) | 2026-11-02 | [详情](./idea-details/20261102020124.md) |
