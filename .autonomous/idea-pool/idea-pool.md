@@ -214,4 +214,9 @@
 | 20261102080703 | GPS 周数与周内秒（TOW）↔ UTC 时间互转器 | Web Tool | External Reference | Pending | 2026-11-02 | | [详情](./idea-details/20261102080703.md) |
 | 20261102080704 | 体感温度计算器（热指数 Heat Index / 风寒 Wind Chill） | Web Tool | Exploration | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102080704.md) |
 | 20261102080705 | ECDH 密钥协商与 Ed25519 签名 / 验签工具 | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102080705.md) |
+| 20261102200311 | WebAssembly 二进制模块（.wasm）section 结构只读解析器 | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102200311.md) |
+| 20261102200312 | 原始 EML / MIME 邮件只读解析器（multipart 树与邮件头展示） | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102200312.md) |
+| 20261102200313 | PE 文件头只读解析器（DOS header / COFF header / Optional header / Section table） | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102200313.md) |
+| 20261102200314 | Source Map（.map）查看器与 VLQ mappings 解码器 | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102200314.md) |
+| 20261102200315 | 露点 / 湿球温度与气压海拔计算器 | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102200315.md) |
 
