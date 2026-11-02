@@ -217,4 +217,5 @@ export const toolLoaders: Record<
   'strings-json-converter': () => import('./strings-json-converter'),
   'color-temperature-converter': () => import('./color-temperature-converter'),
   'apparent-temperature': () => import('./apparent-temperature'),
+  'isin-validator': () => import('./isin-validator'),
 };

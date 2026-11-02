@@ -19345,6 +19345,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'isin-validator',
+    name: 'ISIN 证券识别码校验器',
+    nameEn: 'ISIN Validator (ISO 6166 Securities Identifier)',
+    description:
+      '按 ISO 6166 校验 12 位 ISIN 证券识别码：字母 A=10…Z=35 展开后执行 Luhn mod 10，支持批量校验、逐位展开加权过程展示与 11 位主体补全校验位。',
+    descriptionEn:
+      'Validate 12-character ISINs per ISO 6166: letters expand A=10…Z=35 before the Luhn mod-10 check. Batch verification, a digit-by-digit weighted breakdown, and check-digit completion from an 11-character body are included.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/isin-validator',
+    iconName: 'Barcode',
+    tags: ['ISIN', 'ISO 6166', '证券', '校验位', 'Luhn', '金融数据', '批量校验'],
+    tagsEn: ['ISIN', 'ISO 6166', 'Securities', 'Check Digit', 'Luhn', 'Fintech', 'Batch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'ISIN 证券识别码校验器是一款纯浏览器本地运算的金融数据工具，实现 ISO 6166 国际证券识别码的校验位算法。ISIN 为 12 位字母数字（2 位国家/地区码 + 9 位字母数字主体 + 1 位校验位），校验时先把字母按 A=10…Z=35 展开为两位数字，再对展开串执行 Luhn（mod 10）。支持批量校验、逐位展开与加权过程展示，以及为 11 位主体补全校验位。',
+        coreFeatures: [
+          '严格实现 ISO 6166：字母 A=10…Z=35 展开 + Luhn mod 10 校验位',
+          '批量模式：每行一个 ISIN，逐行报告长度、结构或校验位错误',
+          '过程可视化：逐字符展开数字、加权求和、补数计算完整展示',
+          '补全模式：11 位主体一键补位，完整 ISIN 自动纠正错误校验位',
+          '容忍空格、连字符、全角字符并自动转大写',
+          '纯浏览器本地确定性计算，无任何网络请求',
+        ],
+        howToUse: [
+          '在「批量校验」模式下每行粘贴一个 ISIN，右侧得到合法编码列表与逐行告警',
+          '在「补全校验位」模式输入 11 位主体（或带错误校验位的完整码）即可得到正确编码',
+          '在底部「展开与加权过程」卡片输入单个 ISIN，查看每位字符的数字展开',
+        ],
+        useCases: [
+          '证券主数据清洗：批量核对行情、持仓与结算文件中的 ISIN',
+          '金融系统开发：接口入参前置校验，拒绝错误识别码',
+          '学习 ISO 6166 / Luhn 变体：直观看到字母展开与交替加权',
+        ],
+        privacyNote:
+          '所有编码均在浏览器本地处理，不发起任何网络请求，不记录输入内容。',
+        faqs: [
+          {
+            question: 'ISIN 的 Luhn 和银行卡的 Luhn 有什么区别？',
+            answer:
+              '银行卡只有数字，直接从右向左交替乘 2 求和；ISIN 主体含字母，必须先把每个字母按 A=10…Z=35 展开成两位数字（数字字符保持一位），拼接后再对展开串执行 Luhn，因此展开结果可能是 21–23 位数字。',
+          },
+          {
+            question: '前两位国家码会被单独验证吗？',
+            answer:
+              '本工具校验其必须为两个字母（ISO 6166 结构要求），但不维护 ISO 3166 国家码白名单：部分 ISIN 使用 XS 等特殊前缀（如 Euroclear/Clearstream 的国际债券），XS 并非国家码，强行限定国家集合会误判。校验位本身可保证主体未被抄写错误。',
+          },
+          {
+            question: '为什么 XS9135527440 被判定非法？',
+            answer:
+              '该码末位为 0，而对前 11 位主体展开后做 Luhn 加权求和，正确补数为 8，合法编码应为 XS9135527448。可用补全模式或底部过程卡片核对每一步加权。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ISIN Validator is a fully local browser tool implementing the ISO 6166 check-digit algorithm for International Securities Identification Numbers. An ISIN is 12 alphanumeric characters (a 2-letter country/prefix code, a 9-character alphanumeric body, and one check digit): letters are first expanded A=10…Z=35 into two digits, then Luhn mod 10 is applied to the expanded string. It supports batch verification, a digit-by-digit weighted breakdown, and check-digit completion from an 11-character body.',
+        coreFeatures: [
+          'Strict ISO 6166: A=10…Z=35 letter expansion followed by Luhn mod 10',
+          'Batch mode: one ISIN per line with per-line length, structure, and checksum errors',
+          'Visual walkthrough: per-character expansion, weighted sum, and 10s complement',
+          'Generate mode: complete an 11-character body or auto-correct a bad check digit',
+          'Tolerates spaces, hyphens, and full-width characters; auto-uppercases input',
+          '100% local deterministic computation with no network requests',
+        ],
+        howToUse: [
+          'In batch-validation mode paste one ISIN per line; the right panel lists valid codes with per-line warnings',
+          'In generate mode enter an 11-character body (or a full ISIN with a wrong check digit) to obtain the correct code',
+          'Use the breakdown card at the bottom to inspect each character’s numeric expansion for a single ISIN',
+        ],
+        useCases: [
+          'Securities master-data cleansing: bulk-checking ISINs in market-data, holdings, and settlement files',
+          'Fintech development: pre-validating identifiers at API boundaries',
+          'Learning ISO 6166 / Luhn variants: seeing letter expansion and alternating weights directly',
+        ],
+        privacyNote:
+          'All identifiers are processed locally in your browser. No network requests are made and no input is logged.',
+        faqs: [
+          {
+            question: 'How is the ISIN Luhn different from the bank-card Luhn?',
+            answer:
+              'Bank cards are numeric and are weighted straight from the right. An ISIN body contains letters, so every letter must first be expanded to two digits (A=10…Z=35) while digit characters stay one digit; Luhn then runs on the concatenated expansion, which may be 21–23 digits long.',
+          },
+          {
+            question: 'Are the first two country letters validated against a country list?',
+            answer:
+              'They are checked to be two letters as ISO 6166 requires, but no ISO 3166 whitelist is enforced: some ISINs use special prefixes such as XS (international bonds via Euroclear/Clearstream), which is not a country code. Enforcing a country set would cause false rejections, while the check digit still guards transcription errors.',
+          },
+          {
+            question: 'Why is XS9135527440 rejected?',
+            answer:
+              'Its last digit is 0, but Luhn weighting over the expanded 11-character body gives a 10s complement of 8 — the valid identifier is XS9135527448. You can verify every weighted step in the breakdown card or via generate mode.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
