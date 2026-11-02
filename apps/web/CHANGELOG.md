@@ -4,7 +4,7 @@
 
 ## 日志
 
-## 2026-11-02 ：【Agent自主迭代】新增 10 个数学表达式求值、INI/JSON 互转、线性代数矩阵、文本相似度、JSON 转 Python dataclass、CAS 登记号校验、RC 滤波器参数、文件下载时间估算、Markdown 表格生成与 Apple .strings 转换工具
+## 2026-11-02 ：【Agent自主迭代】新增 15 个数学表达式求值、INI/JSON 互转、线性代数矩阵、文本相似度、JSON 转 Python dataclass、CAS 登记号校验、RC 滤波器参数、文件下载时间估算、Markdown 表格生成、Apple .strings 转换、色温颜色转换、体感温度、ISIN 校验、名称型 UUID 与 Git 对象哈希工具
 
 - **新增**：数学表达式求值器（math-expression-evaluator）— 支持运算符优先级、括号嵌套、阶乘、三角函数与对数等常用数学函数及 pi/e/tau 常量，多行变量赋值复用、弧度 / 角度切换，输出逐步计算过程与行列定位的语法错误，纯本地词法 / 语法分析
 - **新增**：INI 配置 ↔ JSON 双向转换（ini-json-converter）— 支持 [section] 分节、= / : 分隔符、; / # 注释、引号转义、布尔 / 数字类型推断、同名分节合并与可选点号嵌套键，双向实时转换并对格式错误给出中文提示
@@ -16,6 +16,11 @@
 - **新增**：文件下载时间估算器（download-time-calculator）— 按文件大小、带宽与有效传输效率估算耗时，输出秒数、hh:mm:ss 与可读时长，并给出 8 档宽带 / 移动网络常见带宽对照表，纯本地计算
 - **新增**：Markdown 表格生成器（markdown-table-generator）— 将 CSV / TSV / Excel 粘贴内容转换为 GFM 管道表格，支持首行表头开关、逐列对齐、紧凑 / 补齐空格、竖线转义与列数不足自动补空列，一键复制
 - **新增**：Apple .strings ↔ JSON 双向转换（strings-json-converter）— 解析 Localizable.strings 的引号键值与分号语法，剥离 // 与块注释、处理 \U 四位 / 八位转义及 emoji 代理对、检测重复键并按行号定位错误；反向生成支持按键排序，纯本地转换零依赖
+- **新增**：色温与颜色双向转换器（color-temperature-converter）— 按黑体辐射近似公式在开尔文色温与 sRGB 颜色间双向转换，支持 HEX / RGB 输出与 McCamy 公式由颜色反向估算相关色温（CCT），内置常用光源色温预设，纯本地计算
+- **新增**：体感温度计算器（热指数 / 风寒）（apparent-temperature）— 按 NWS 官方公式计算体感温度：炎热侧 Rothfusz 热指数多项式（含干湿调整项与四级危险等级），寒冷侧 2001 版风寒公式，支持摄氏度 / 华氏度切换，纯本地计算
+- **新增**：ISIN 证券识别码校验器（isin-validator）— 按 ISO 6166 校验 12 位 ISIN：字母按 A=10…Z=35 展开后执行 Luhn mod 10，支持批量逐行校验、逐位展开加权过程展示与由 11 位主体补全 / 纠正末位校验位，纯本地运算
+- **新增**：UUID v3 / v5 名称型生成器（uuid-name-generator）— 按 RFC 9562 对「命名空间 UUID + 名称」确定性派生 v3（MD5）/ v5（SHA-1）UUID，内置 DNS / URL / OID / X.500 命名空间或使用自定义命名空间，相同输入永远得到相同 UUID，结果展示版本位与变体位，纯本地运算
+- **新增**：Git 底层对象哈希计算器（git-object-hash）— 在浏览器本地计算 blob / tree / commit / annotated tag 的 SHA-1 / SHA-256 对象 ID，自动拼接「类型 长度 NUL」头；tree 输入按 Git 规范二进制规范化（40000 目录模式、按名排序、目录隐含 / 比较），等价 git hash-object / git mktree 的只读计算侧，固定向量经 git 2.43 交叉验证，纯本地运算
 
 ## 2026-11-01 ：【Agent自主迭代】新增 20 个 IBAN 校验、三维姿态转换、Go 结构生成、Unicode 检视、RSA 非对称密码、集装箱校验位、多纪元时间戳、NMEA 解析、电阻色环、JSON 表单互转、内容协商头解析、KSUID、security.txt、定宽文本转换、NPV/IRR 计算、贷款月供、复利定投、RFC 2047 解码、.properties 转换与磁力链接工具
 
