@@ -20064,6 +20064,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'ethereum-unit-converter',
+    name: '以太坊单位与 Gas 费用计算器',
+    nameEn: 'Ethereum Unit & Gas Fee Converter',
+    description:
+      '在 Wei、Kwei、Mwei、Gwei、Szabo、Finney、ETH、Kether 等 11 种以太坊单位间高精度互转（BigInt 整数内核，不丢精度），并提供 Legacy 与 EIP-1559 两种 Gas 费用估算。',
+    descriptionEn:
+      'High-precision conversion between 11 Ethereum units (Wei, Kwei, Mwei, Gwei, Szabo, Finney, ETH, Kether and more) powered by a BigInt integer core, plus Legacy and EIP-1559 gas fee estimation.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/ethereum-unit-converter',
+    iconName: 'Coins',
+    tags: ['以太坊', 'Ethereum', 'Wei', 'Gwei', 'Gas'],
+    tagsEn: ['Ethereum', 'Wei', 'Gwei', 'Gas Fee', 'EIP-1559'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1',
+    doc: {
+      zh: {
+        whatIsIt:
+          '以太坊上所有面额都是最小原子单位 Wei 的 10 的幂：1 ETH = 10¹⁸ Wei，1 Gwei = 10⁹ Wei。JavaScript 普通数字只有 53 位安全整数，直接换算 Wei 级金额会丢精度，本工具内部一律使用 BigInt 整数与十进制字符串运算，支持 Wei、Kwei、Mwei、Gwei、Szabo、Finney、ETH、Kether、Mether、Gether、Tether 共 11 个单位的精确互转，并内置 Legacy（gasUsed × gasPrice）与 EIP-1559（base fee 燃烧 + priority fee tip、max fee 授权上限）两种 Gas 费用模型。',
+        coreFeatures: [
+          '11 个以太坊单位一次输入全部列出：输入任意金额与源单位，表格给出所有单位的精确折合值与 Wei 原子值',
+          'BigInt 整数内核：十进制字符串解析，全程不经过浮点；超出 Wei 精度的小数位直接报错而非静默截断',
+          'Legacy Gas 费用：gasUsed × gasPrice（Gwei），同时输出 Wei、Gwei、ETH',
+          'EIP-1559 估算：分别计算优先费 tip（归矿工）、基础费 base（被燃烧）、按已用量的实际总费与 Limit × Max Fee 授权上限',
+          '配置合理性告警：max fee 低于 base + priority、或 gas 已用量超过上限时给出醒目警告',
+        ],
+        howToUse: [
+          '在「单位换算」卡片输入金额（支持下划线分隔如 1_000）并选择源单位，下方表格实时给出全部单位折合值',
+          '在「Legacy Gas 费用」卡片填入 Gas 用量与 Gas Price（Gwei），标准转账可对照 21000 × 20 = 0.00042 ETH',
+          '在「EIP-1559」卡片填入 Base Fee、Priority Fee、Max Fee（均为 Gwei）以及 Gas 已用量与上限',
+          'Wei 原子值可一键复制，便于粘贴进交易调试数据或测试用例',
+        ],
+        useCases: [
+          'Web3 开发调试：核对交易 input/value 中的 Wei 数量与 ETH/Gwei 显示值是否一致',
+          '转账前估算手续费：根据当前 Gas Price 或 EIP-1559 参数预估实际支出与钱包授权上限',
+          '教学与文档：解释 Wei/Gwei/Szabo/Finney 等单位命名及 10 的幂次关系',
+        ],
+        privacyNote:
+          '全部换算均在浏览器本地由零依赖纯函数与 BigInt 完成，不连接任何节点或价格服务，输入内容不会离开设备。',
+        faqs: [
+          {
+            question: '为什么不用普通数字直接换算？',
+            answer:
+              'JavaScript Number 采用双精度浮点，安全整数上限为 2^53−1（约 9×10^15），而 1 ETH = 10^18 Wei，普通数字无法精确表示。本工具以 BigInt 保存 Wei 整数，小数按十进制字符串展开为整数再运算，并在输入小数位超过目标单位精度（如给 Wei 输入 1.5）时直接报错，杜绝静默丢精度。',
+          },
+          {
+            question: 'EIP-1559 的费用是怎么算的？',
+            answer:
+              '实际每单位 gas 支付 base fee + priority fee（tip），其中 base fee 被协议燃烧、tip 归矿工。按 Gas 已用量计算：实际总费 = gasUsed ×（baseFee + priorityFee）；钱包授权上限 = gasLimit × maxFeePerGas，未用完部分退回。本工具分别展示 tip、燃烧的 base、实际总费与授权上限；当 maxFee < base + priority 时会警告该交易在当前 base fee 下可能无法打包。',
+          },
+          {
+            question: 'Szabo、Finney 这些单位现在还在用吗？',
+            answer:
+              '它们是以太坊早期以密码学家命名的面额：1 Szabo = 10¹² Wei = 10⁻⁶ ETH，1 Finney = 10¹⁵ Wei = 10⁻³ ETH。日常交易与钱包 UI 主要使用 Wei、Gwei 与 ETH，但这些单位仍常见于历史文档、源码常量与测试向量中，因此工具一并收录。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Every Ethereum denomination is a power-of-ten multiple of the smallest atomic unit Wei: 1 ETH = 10^18 Wei and 1 Gwei = 10^9 Wei. Plain JavaScript numbers only have 53 bits of integer precision and lose accuracy at Wei scale, so this tool keeps all math on BigInt integers and decimal strings. It converts precisely across 11 units — Wei, Kwei, Mwei, Gwei, Szabo, Finney, ETH, Kether, Mether, Gether and Tether — and includes both the Legacy fee model (gasUsed × gasPrice) and the EIP-1559 model (base fee burned plus priority fee tip, with a max-fee authorization cap).',
+        coreFeatures: [
+          'One input, all 11 units: enter any amount and source unit to get exact equivalents and the atomic Wei value',
+          'BigInt integer core: decimal strings are expanded without floating point; inputs finer than Wei precision are rejected instead of silently truncated',
+          'Legacy gas fee: gasUsed × gasPrice (Gwei) reported in Wei, Gwei and ETH',
+          'EIP-1559 estimation: priority tip (to miners), burned base fee, actual total on gas used, and the Limit × Max Fee authorization cap',
+          'Sanity warnings: alerts when max fee is below base + priority, or when gas used exceeds the limit',
+        ],
+        howToUse: [
+          'In the unit converter, enter an amount (underscores such as 1_000 are allowed) and pick the source unit; the table lists every unit live',
+          'In the Legacy card, fill gas used and gas price in Gwei — a plain transfer is 21000 × 20 = 0.00042 ETH',
+          'In the EIP-1559 card, enter base fee, priority fee and max fee in Gwei plus gas used and gas limit',
+          'Copy the atomic Wei value with one click for transaction debugging or test fixtures',
+        ],
+        useCases: [
+          'Web3 debugging: reconciling Wei values in transaction input/value fields with ETH/Gwei displays',
+          'Estimating fees before sending: actual spend and wallet authorization under current gas price or EIP-1559 params',
+          'Education and docs: explaining the Wei/Gwei/Szabo/Finney naming and power-of-ten relationships',
+        ],
+        privacyNote:
+          'All conversion runs locally in the browser with zero-dependency BigInt pure functions. No node or price service is contacted, and nothing you enter leaves your device.',
+        faqs: [
+          {
+            question: 'Why not just use regular numbers?',
+            answer:
+              'JavaScript Number is double-precision float with a safe integer limit of 2^53−1 (about 9×10^15), while 1 ETH is 10^18 Wei — too large to represent exactly. This tool stores Wei as a BigInt, expands decimals from strings into integers, and rejects inputs with more decimal places than the unit allows (e.g. 1.5 Wei) so precision is never silently lost.',
+          },
+          {
+            question: 'How is the EIP-1559 fee calculated?',
+            answer:
+              'Each unit of gas actually costs base fee + priority fee (tip); the base fee is burned by the protocol and the tip goes to miners. Based on gas used: actual total = gasUsed × (baseFee + priorityFee); the wallet authorization cap is gasLimit × maxFeePerGas, with unused gas refunded. The tool shows tip, burned base, actual total and cap separately, and warns when maxFee < base + priority because the transaction may not be included at the current base fee.',
+          },
+          {
+            question: 'Are Szabo and Finney still used?',
+            answer:
+              'They are early Ethereum denominations named after cryptographers: 1 Szabo = 10^12 Wei = 10^-6 ETH and 1 Finney = 10^15 Wei = 10^-3 ETH. Everyday wallets mainly use Wei, Gwei and ETH, but these names still appear in historical docs, source constants and test vectors, so they are included.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
