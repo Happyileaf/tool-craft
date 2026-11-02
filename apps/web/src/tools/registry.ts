@@ -19241,6 +19241,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'apparent-temperature',
+    name: '体感温度计算器（热指数 / 风寒）',
+    nameEn: 'Apparent Temperature Calculator (Heat Index / Wind Chill)',
+    description:
+      '按 NWS 官方公式计算体感温度：炎热侧 Rothfusz 热指数多项式（含干湿调整项与危险等级），寒冷侧 2001 版风寒公式，支持摄氏度/华氏度切换。',
+    descriptionEn:
+      'Compute apparent temperature with official NWS formulas: the Rothfusz heat-index regression (with dry/humid adjustments and danger levels) for heat, and the 2001 wind-chill formula for cold, with Celsius/Fahrenheit support.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/apparent-temperature',
+    iconName: 'Flame',
+    tags: ['体感温度', '热指数', '风寒', 'Heat Index', 'Wind Chill', '湿度', '气象'],
+    tagsEn: ['Apparent Temperature', 'Heat Index', 'Wind Chill', 'Humidity', 'Weather', 'NWS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '体感温度计算器是一款纯浏览器本地运算的气象计算工具：炎热环境下输入气温与相对湿度，按美国国家气象局（NWS）Rothfusz 回归多项式计算热指数，并在低湿/高湿边界自动应用官方调整项；寒冷环境下输入气温与风速，按 2001 年美加联合风寒公式计算风寒温度。结果同时给出 NWS 危险等级，支持摄氏度与华氏度。',
+        coreFeatures: [
+          '热指数：9 项 Rothfusz 多项式，内置 ADJ1 低湿与 ADJ2 高湿调整项',
+          '低温低湿时自动回退到 NWS 简单公式（与气温平均，< 80°F 情形）',
+          '风寒：2001 版美加联合公式（V^0.16 幂次），自动判断适用区间',
+          '危险等级：注意 / 极小心 / 危险 / 极度危险，附中文防护说明',
+          '摄氏度/华氏度一键切换，风速对应 km/h 与 mph',
+          '纯浏览器本地确定性计算，无任何网络请求',
+        ],
+        howToUse: [
+          '选择「炎热侧：热指数」或「寒冷侧：风寒」模式',
+          '选择单位制（摄氏度配套 km/h，华氏度配套 mph）',
+          '热指数模式输入气温与相对湿度；风寒模式输入气温与风速',
+          '也可点击典型场景预设快速填充，在右侧查看体感温度与危险等级',
+        ],
+        useCases: [
+          '户外作业、运动与赛事：评估高温高湿环境的中暑风险',
+          '冬季出行与登山：结合风速判断冻伤时间窗口',
+          '气象科普：理解“桑拿天”与“干冷/湿冷”的量化差异',
+        ],
+        privacyNote:
+          '所有计算均在浏览器本地完成，不发起任何网络请求，不记录输入内容。',
+        faqs: [
+          {
+            question: '热指数是怎么算出来的？',
+            answer:
+              '热指数采用 NWS 的 Rothfusz 回归多项式（9 个常数项，以华氏度 T 与相对湿度 RH 为变量）。当相对湿度低于 13% 且气温在 80–111°F 时减去 ADJ1 调整项；高于 85% 且气温在 80–87°F 时加上 ADJ2 调整项。在较凉爽条件下（简单公式与气温平均低于 80°F）则使用更简单的经验公式。',
+          },
+          {
+            question: '为什么输入 30°C 却提示风寒不适用？',
+            answer:
+              '2001 版风寒公式只在气温不高于 50°F（10°C）且风速大于 3 mph（约 4.8 km/h）时有物理意义；温暖天气下风冷效应微弱，强行套公式会给出误导结果，此时应使用热指数模式。',
+          },
+          {
+            question: '为什么结果和手机天气 App 略有差异？',
+            answer:
+              '不同 App 可能使用澳式 Apparent Temperature（Steadman 模型）、湿度风温综合指数等不同公式。本工具严格使用美国 NWS 官方热指数与风寒公式；此外风速应为开阔地面 10 米高度的实测风速，输入口径不同也会带来差异。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Apparent Temperature Calculator is a fully local browser utility. In hot conditions it computes the NWS Rothfusz heat index from air temperature and relative humidity, automatically applying the official dry-air and humid adjustments; in cold conditions it applies the 2001 U.S./Canada joint wind-chill formula. Each result includes the NWS danger level, and both Celsius and Fahrenheit are supported.',
+        coreFeatures: [
+          'Heat index: 9-term Rothfusz regression with ADJ1 (dry) and ADJ2 (humid) adjustments',
+          'Automatic fallback to the simple NWS estimate averaged with temperature below 80°F',
+          'Wind chill: the 2001 joint formula (V^0.16) with automatic applicability checks',
+          'Danger bands: Caution / Extreme Caution / Danger / Extreme Danger with guidance',
+          'One-click Celsius/km·h⁻¹ ↔ Fahrenheit/mph switching',
+          '100% local deterministic computation with no network requests',
+        ],
+        howToUse: [
+          'Choose the heat-index (hot) or wind-chill (cold) mode',
+          'Pick a unit system (Celsius pairs with km/h, Fahrenheit with mph)',
+          'Enter temperature and humidity for heat index, or temperature and wind speed for wind chill',
+          'Or click a scenario preset; read the apparent temperature and danger band on the right',
+        ],
+        useCases: [
+          'Outdoor work, sports, and events: assessing heatstroke risk in hot, humid weather',
+          'Winter travel and mountaineering: estimating frostbite exposure from wind speed',
+          'Weather education: quantifying the difference between humid heat and dry cold',
+        ],
+        privacyNote:
+          'All computation happens locally in your browser. No network requests are made and no input is logged.',
+        faqs: [
+          {
+            question: 'How is the heat index calculated?',
+            answer:
+              'It uses the NWS Rothfusz regression polynomial (nine constants, with temperature T in °F and relative humidity RH). Below 13% RH with 80–111°F the ADJ1 dry correction is subtracted; above 85% RH with 80–87°F the ADJ2 humid correction is added. In cooler conditions (simple estimate averaged with T below 80°F) a simpler empirical formula is used instead.',
+          },
+          {
+            question: 'Why does 30°C say wind chill is not applicable?',
+            answer:
+              'The 2001 wind-chill formula is only meaningful at or below 50°F (10°C) with wind above 3 mph (~4.8 km/h). In warm weather the cooling effect is negligible and the formula would be misleading — use the heat-index mode instead.',
+          },
+          {
+            question: 'Why do results differ slightly from my weather app?',
+            answer:
+              'Apps may use other models such as the Australian Apparent Temperature (Steadman) or combined indices. This tool strictly implements the official U.S. NWS heat-index and wind-chill formulas; wind speed should also be measured over open ground at 10 m height, so differing input conventions cause discrepancies too.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

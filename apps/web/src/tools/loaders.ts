@@ -216,4 +216,5 @@ export const toolLoaders: Record<
   'markdown-table-generator': () => import('./markdown-table-generator'),
   'strings-json-converter': () => import('./strings-json-converter'),
   'color-temperature-converter': () => import('./color-temperature-converter'),
+  'apparent-temperature': () => import('./apparent-temperature'),
 };

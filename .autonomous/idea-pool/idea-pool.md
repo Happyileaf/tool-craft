@@ -212,6 +212,6 @@
 | 20261102080701 | Enigma 转子密码机加解密模拟器 | Web Tool | External Reference | Pending | 2026-11-02 | | [详情](./idea-details/20261102080701.md) |
 | 20261102080702 | DNS 报文（message）线格式编码与解析器 | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102080702.md) |
 | 20261102080703 | GPS 周数与周内秒（TOW）↔ UTC 时间互转器 | Web Tool | External Reference | Pending | 2026-11-02 | | [详情](./idea-details/20261102080703.md) |
-| 20261102080704 | 体感温度计算器（热指数 Heat Index / 风寒 Wind Chill） | Web Tool | Exploration | Claimed | 2026-11-02 | trae-agent | [详情](./idea-details/20261102080704.md) |
+| 20261102080704 | 体感温度计算器（热指数 Heat Index / 风寒 Wind Chill） | Web Tool | Exploration | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102080704.md) |
 | 20261102080705 | ECDH 密钥协商与 Ed25519 签名 / 验签工具 | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102080705.md) |
 
