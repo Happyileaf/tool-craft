@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-03 ：【Agent自主迭代】新增 5 个盲文编码、CSS 缓动曲线、键盘事件查看、GZip 压缩与 JSON 转 Rust 结构工具
+
+- **新增**：盲文编码 / 解码器（braille-codec）— 基于 Unicode U+2800 八点位掩码实现英文 Grade 1 盲文双向转换（数字号 ⠼ 后 a–j 表示 1–9、0），含八点格可视化、码点 / 点位描述与非法字符告警，纯本地查表运算
+- **新增**：CSS 缓动函数 cubic-bezier 生成器（cubic-bezier-generator）— SVG 拖拽编辑两个控制点（x 限制 0–1、y 可过冲），牛顿迭代 + 二分回退数值反解曲线，内置 linear/ease/ease-in/ease-out/ease-in-out/easeInBack 等预设，实时输出 cubic-bezier(...) 代码并附 RAF 动画演示（遵循 prefers-reduced-motion），纯本地计算
+- **新增**：键盘事件 / 按键码查看器（keyboard-event-viewer）— 聚焦捕获区域实时展示 KeyboardEvent 的 key/code/keyCode/which/location/repeat 与 ctrl/alt/shift/meta 修饰键，组合键按 Ctrl+Alt+Shift+Meta+主键 固定顺序渲染，保留最近 20 条事件历史与可选 preventDefault，内置 A–Z/0–9/F1–F12/方向键/控制键可过滤速查表
+- **新增**：GZip / Deflate 压缩解压工具（gzip-codec）— 基于浏览器原生 CompressionStream/DecompressionStream 本地完成 gzip 与 raw deflate 双向转换，产物支持 Hex / Base64，展示字节数、压缩率与往返校验，魔数 1f 8b 预校验，损坏 / 截断载荷给出中文错误，零依赖无网络请求
+- **新增**：JSON → Rust struct 生成器（json-to-rust）— 粘贴 JSON 推断生成 derive(Debug, Clone, Serialize, Deserialize) 结构体：整数 i64、浮点 f64、bool、String、null 退化为 Option，嵌套对象具名 struct，同型对象数组合并为 Vec<T>，空 / 异型数组回退 serde_json::Value 并告警，字段 snake_case 化并自动补 #[serde(rename)]，规避 Rust 关键字与重名
+
 ## 2026-11-02 ：【Agent自主迭代】新增 20 个数学表达式求值、INI/JSON 互转、线性代数矩阵、文本相似度、JSON 转 Python dataclass、CAS 登记号校验、RC 滤波器参数、文件下载时间估算、Markdown 表格生成、Apple .strings 转换、色温颜色转换、体感温度、ISIN 校验、名称型 UUID、Git 对象哈希、WIFI 二维码、CVSS 评分、OpenSSH randomart、Excel 序列号日期与以太坊单位换算工具
 
 - **新增**：WIFI 二维码连接字符串生成器（wifi-qr-payload）— 按 WIFI: 标准拼装 SSID / 密码 / 加密类型（WPA/WEP/nopass）/ 隐藏网络，转义 `\\ ; , " :` 特殊字符，支持明文与二维码双展示，纯本地运算
