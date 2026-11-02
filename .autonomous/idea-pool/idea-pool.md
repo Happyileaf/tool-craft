@@ -113,7 +113,7 @@
 | 20261027020216 | 多时区会议时间规划器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027020216.md) |
 | 20261027020217 | CSS clip-path 可视化生成器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027020217.md) |
 | 20261027020218 | 盲文（Braille）点阵编解码器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027020218.md) |
-| 20261027040226 | 色温 ↔ RGB/HEX 双向转换器（开尔文色温计算器） | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027040226.md) |
+| 20261027040226 | 色温 ↔ RGB/HEX 双向转换器（开尔文色温计算器） | Web Tool | Existing Gap | Claimed | 2026-10-27 | trae-agent | [详情](./idea-details/20261027040226.md) |
 | 20261027081101 | 文件魔数（Magic Number）签名识别器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027081101.md) |
 | 20261027081102 | 线性回归与相关系数计算器 | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027081102.md) |
 | 20261027081103 | 个人所得税计算器（工资薪金 / 年终奖） | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027081103.md) |
@@ -150,7 +150,7 @@
 | 20261029140203 | JSON Patch 应用器（RFC 6902） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140203.md) |
 | 20261029140204 | Plus Codes（Open Location Code）编解码器 | Web Tool | Exploration | Pending | 2026-10-29 | | [详情](./idea-details/20261029140204.md) |
 | 20261029140205 | 中文数字 ↔ 阿拉伯数字双向转换器（含大写金额用字） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140205.md) |
-| 20261029200825 | UUID v3 / v5 名称型 UUID 生成器（RFC 9562 命名空间哈希） | Web Tool | Existing Gap | Pending | 2026-10-29 | | [详情](./idea-details/20261029200825.md) |
+| 20261029200825 | UUID v3 / v5 名称型 UUID 生成器（RFC 9562 命名空间哈希） | Web Tool | Existing Gap | Claimed | 2026-10-29 | trae-agent | [详情](./idea-details/20261029200825.md) |
 | 20261029200826 | JWK Thumbprint 指纹计算器（RFC 7638） | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261029200826.md) |
 | 20261029200827 | VIN 车辆识别代号校验位计算器与合法性校验器（ISO 3779 / GB 16735） | Web Tool | External Reference | Pending | 2026-10-29 | | [详情](./idea-details/20261029200827.md) |
 | 20261030021004 | AWS SigV4 请求签名生成器 | Web Tool | Exploration | Pending | 2026-10-30 | | [详情](./idea-details/20261030021004.md) |
@@ -160,7 +160,7 @@
 | 20261030021008 | SHA-3 / Keccak 哈希计算器（FIPS 202） | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030021008.md) |
 | 20261030080719 | Intel HEX 解析与校验和工具 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030080719.md) |
 | 20261030080720 | UTM ↔ WGS84 经纬度坐标互转器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030080720.md) |
-| 20261030080721 | ISIN 证券识别码校验器 | Web Tool | External Reference | Pending | 2026-10-30 | | [详情](./idea-details/20261030080721.md) |
+| 20261030080721 | ISIN 证券识别码校验器 | Web Tool | External Reference | Claimed | 2026-10-30 | trae-agent | [详情](./idea-details/20261030080721.md) |
 | 20261030140201 | JSON 转 Go struct 生成器 | Web Tool | Existing Gap | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030140201.md) |
 | 20261030140202 | Maidenhead 网格定位（QTH Locator）编解码器 | Web Tool | External Reference | Pending | 2026-10-30 | | [详情](./idea-details/20261030140202.md) |
 | 20261030140203 | EUI-64 / SLAAC IPv6 链路本地地址计算器 | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261030140203.md) |
@@ -204,7 +204,7 @@
 | 20261101201003 | Redis RESP2/RESP3 协议编解码器（含 inline 与 RESP3 类型） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201003.md) |
 | 20261101201004 | HAR 1.2 / 1.3 归档文件解析与请求摘要查看器（JSON 安全解析） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201004.md) |
 | 20261101201005 | JSON 转 PHP array 代码生成器（含嵌套类型推断与短数组语法） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201005.md) |
-| 20261102020124 | Git 底层对象哈希计算器（blob / tree / commit / tag，git hash-object 等价） | Web Tool | Exploration | Pending | 2026-11-02 | | [详情](./idea-details/20261102020124.md) |
+| 20261102020124 | Git 底层对象哈希计算器（blob / tree / commit / tag，git hash-object 等价） | Web Tool | Exploration | Claimed | 2026-11-02 | trae-agent | [详情](./idea-details/20261102020124.md) |
 | 20261102020125 | Java .class 字节码文件头解析器（魔数 / 版本 / 常量池计数与条目只读树） | Web Tool | Exploration | Pending | 2026-11-02 | | [详情](./idea-details/20261102020125.md) |
 | 20261102020126 | CAS 化学物质登记号校验器（CAS Registry Number 模 10 校验位） | Web Tool | Exploration | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102020126.md) |
 | 20261102020127 | RC 滤波器参数计算器（一阶低通 / 高通截止频率、时间常数与电阻电容互求） | Web Tool | Exploration | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102020127.md) |
@@ -212,6 +212,6 @@
 | 20261102080701 | Enigma 转子密码机加解密模拟器 | Web Tool | External Reference | Pending | 2026-11-02 | | [详情](./idea-details/20261102080701.md) |
 | 20261102080702 | DNS 报文（message）线格式编码与解析器 | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102080702.md) |
 | 20261102080703 | GPS 周数与周内秒（TOW）↔ UTC 时间互转器 | Web Tool | External Reference | Pending | 2026-11-02 | | [详情](./idea-details/20261102080703.md) |
-| 20261102080704 | 体感温度计算器（热指数 Heat Index / 风寒 Wind Chill） | Web Tool | Exploration | Pending | 2026-11-02 | | [详情](./idea-details/20261102080704.md) |
+| 20261102080704 | 体感温度计算器（热指数 Heat Index / 风寒 Wind Chill） | Web Tool | Exploration | Claimed | 2026-11-02 | trae-agent | [详情](./idea-details/20261102080704.md) |
 | 20261102080705 | ECDH 密钥协商与 Ed25519 签名 / 验签工具 | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102080705.md) |
 
