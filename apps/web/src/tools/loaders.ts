@@ -227,4 +227,5 @@ export const toolLoaders: Record<
   'ethereum-unit-converter': () => import('./ethereum-unit-converter'),
   'braille-codec': () => import('./braille-codec'),
   'cubic-bezier-generator': () => import('./cubic-bezier-generator'),
+  'keyboard-event-viewer': () => import('./keyboard-event-viewer'),
 };

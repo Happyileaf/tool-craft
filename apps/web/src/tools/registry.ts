@@ -20354,6 +20354,96 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'keyboard-event-viewer',
+    name: '键盘事件 / 按键码查看器',
+    nameEn: 'Keyboard Event & KeyCode Viewer',
+    description:
+      '聚焦捕获区域后按下任意键或组合键，实时查看 KeyboardEvent 的 key、code、keyCode/which、location 与 ctrl/alt/shift/meta 修饰键状态，并以固定顺序展示可读组合键（如 Ctrl+Shift+A）；内置 A–Z、0–9、F1–F12、方向键与常用控制键速查表，支持按键名/code/键码过滤与最近事件历史，可选 preventDefault 拦截。',
+    descriptionEn:
+      'Focus the capture area and press any key or chord to inspect a live KeyboardEvent: key, code, legacy keyCode/which, location and ctrl/alt/shift/meta states, plus a fixed-order combo label (e.g. Ctrl+Shift+A). Includes a searchable reference table for A-Z, 0-9, F1-F12, arrows and control keys, recent-event history and an optional preventDefault switch.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/keyboard-event-viewer',
+    iconName: 'KeyRound',
+    tags: ['键盘事件', 'keyCode', 'KeyboardEvent', '快捷键', '前端调试'],
+    tagsEn: ['Keyboard Event', 'keyCode', 'KeyboardEvent', 'Shortcuts', 'Frontend Debug'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '键盘事件 / 按键码查看器是一款纯浏览器本地运行的前端调试工具：在捕获区域获得焦点后按下任意键，即可实时查看完整 KeyboardEvent 字段、修饰键状态与可读组合键表示，并通过静态速查表快速取得常用按键的 keyCode、code 与 key 值，常用于快捷键与游戏按键开发。',
+        coreFeatures: [
+          '实时捕获 keydown 事件：展示 key、code、keyCode/which（legacy）、location（标准/左/右/小键盘）与 repeat',
+          '修饰键状态面板：ctrlKey、altKey、shiftKey、metaKey 独立布尔标签，组合键按 Ctrl+Alt+Shift+Meta+主键 固定顺序渲染',
+          '最近 20 条事件历史（含时间戳），可一键清空；可选 preventDefault 开关拦截 Tab/F1 等默认行为',
+          '速查表覆盖 A–Z（65–90）、0–9（48–57）、F1–F12（112–123）、方向键（37–40）及 Enter/Esc/Space/Tab 等控制键，支持按键名、code、keyCode 子串过滤',
+        ],
+        howToUse: [
+          '点击「开始捕获」或直接点击虚线区域使其获得焦点',
+          '按下任意键或组合键，上方即时显示最新事件的全部字段与组合键',
+          '需要拦截 Tab、F1 等默认行为时，打开右上角「拦截默认行为」开关',
+          '在速查表搜索框输入按键名、code 或键码（如 Enter、KeyA、27）快速定位',
+        ],
+        useCases: [
+          '开发键盘快捷键功能时确认各按键的 key / code / keyCode',
+          '区分左右修饰键与数字小键盘事件（KeyboardEvent.location）',
+          '排查浏览器对空格、Tab、功能键的默认行为与组合键顺序',
+        ],
+        privacyNote:
+          '所有事件仅在当前页面内存中捕获与展示，不发起任何网络请求，离开页面后历史即消失。',
+        faqs: [
+          {
+            question: 'keyCode 和 which 为什么标注为已废弃？',
+            answer:
+              'keyCode / which 已从 Web 标准移除，不同布局键盘下取值不可靠，新代码应使用 event.key（逻辑值）与 event.code（物理位置）。工具保留二者仅用于兼容老代码速查。',
+          },
+          {
+            question: '为什么在捕获区域外按键没有反应？',
+            answer:
+              '监听绑定在捕获区域上，需要先点击区域获得焦点；这样设计可以避免工具页面劫持全局快捷键。失焦后面板显示「已失焦」，重新点击即可恢复。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Keyboard Event & KeyCode Viewer is a fully browser-local frontend debugging tool: focus the capture area and press any key to inspect every KeyboardEvent field, modifier states and a readable combo label, while a static reference table provides keyCode/code/key for common keys. It is handy when building keyboard shortcuts or game controls.',
+        coreFeatures: [
+          'Live keydown capture: key, code, legacy keyCode/which, location (standard/left/right/numpad) and repeat',
+          'Modifier panel with independent boolean tags for ctrlKey, altKey, shiftKey and metaKey; combos render in the fixed order Ctrl+Alt+Shift+Meta+main key',
+          'History of the latest 20 events with timestamps and a clear button; an optional preventDefault switch blocks default actions such as Tab/F1',
+          'Reference table covering A-Z (65-90), 0-9 (48-57), F1-F12 (112-123), arrows (37-40) and control keys like Enter/Esc/Space/Tab, filterable by name, code or keyCode substring',
+        ],
+        howToUse: [
+          'Click "Start capture" or click the dashed area to give it focus',
+          'Press any key or chord; the panel above instantly shows every field of the latest event and its combo',
+          'Turn on the preventDefault switch when you need to suppress default actions such as Tab or F1',
+          'Type a key name, code or code number (e.g. Enter, KeyA, 27) in the reference table search box to locate a key',
+        ],
+        useCases: [
+          'Looking up key / code / keyCode while implementing keyboard shortcuts',
+          'Distinguishing left/right modifiers and numpad keys via KeyboardEvent.location',
+          'Investigating browser default actions and combo ordering for Space, Tab and function keys',
+        ],
+        privacyNote:
+          'Events are captured and displayed in page memory only. No network request is made, and the history disappears when you leave the page.',
+        faqs: [
+          {
+            question: 'Why are keyCode and which marked deprecated?',
+            answer:
+              'keyCode and which have been removed from the Web standards and are unreliable across keyboard layouts. New code should use event.key (logical value) and event.code (physical position). They are kept here only for looking up legacy code.',
+          },
+          {
+            question: 'Why are key presses outside the capture area ignored?',
+            answer:
+              'The listener is attached to the capture area, which must first be focused by clicking it. This prevents the tool page from hijacking global shortcuts. Click again after the area loses focus to resume capture.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
