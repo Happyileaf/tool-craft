@@ -79,3 +79,8 @@
 | 20261102141209 | Excel 序列号日期（1900 / 1904 日期系统）与公历日期互转器 | Web Tool | Existing Gap | `excel-date-converter` / [PR #144](https://github.com/Happyileaf/tool-craft/pull/144) | 2026-11-02 | [详情](./idea-details/20261102141209.md) |
 | 20261102141210 | 以太坊单位与 Gas 费用计算器（Wei / Gwei / ETH 等） | Web Tool | Existing Gap | `ethereum-unit-converter` / [PR #144](https://github.com/Happyileaf/tool-craft/pull/144) | 2026-11-02 | [详情](./idea-details/20261102141210.md) |
 | 20261102141211 | WIFI 二维码连接字符串（WIFI: payload）生成器 | Web Tool | Existing Gap | `wifi-qr-payload` / [PR #144](https://github.com/Happyileaf/tool-craft/pull/144) | 2026-11-02 | [详情](./idea-details/20261102141211.md) |
+| 20261027020218 | 盲文（Braille）点阵编解码器 | Web Tool | Exploration | `braille-codec` / [PR #148](https://github.com/Happyileaf/tool-craft/pull/148) | 2026-11-03 | [详情](./idea-details/20261027020218.md) |
+| 20261017200236 | CSS 缓动函数（cubic-bezier）生成器 | Web Tool | Exploration | `cubic-bezier-generator` / [PR #148](https://github.com/Happyileaf/tool-craft/pull/148) | 2026-11-03 | [详情](./idea-details/20261017200236.md) |
+| 20261021221305 | 键盘事件 / 按键码查看器（keyCode、code、修饰键速查与监听） | Web Tool | External Reference | `keyboard-event-viewer` / [PR #148](https://github.com/Happyileaf/tool-craft/pull/148) | 2026-11-03 | [详情](./idea-details/20261021221305.md) |
+| 20261030200907 | GZip / Deflate 压缩与解压工具 | Web Tool | Existing Gap | `gzip-codec` / [PR #148](https://github.com/Happyileaf/tool-craft/pull/148) | 2026-11-03 | [详情](./idea-details/20261030200907.md) |
+| 20261031020754 | JSON → Rust struct 生成器 | Web Tool | Existing Gap | `json-to-rust` / [PR #148](https://github.com/Happyileaf/tool-craft/pull/148) | 2026-11-03 | [详情](./idea-details/20261031020754.md) |
