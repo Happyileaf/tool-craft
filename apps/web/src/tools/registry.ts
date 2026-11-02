@@ -20461,6 +20461,106 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'http-cache-control-parser',
+    name: 'Cache-Control 解析与新鲜度计算器',
+    nameEn: 'Cache-Control Parser & Freshness Calculator',
+    description:
+      '按 RFC 9111 逐 token 解析 Cache-Control，结合 Date、Age、Expires、ETag 计算当前年龄、剩余新鲜时间与新鲜/过期/重验结论，反向生成推荐缓存头。',
+    descriptionEn:
+      'Parse Cache-Control token by token per RFC 9111 and compute corrected current age, remaining freshness, and fresh/stale/revalidate status with Date, Age, Expires, and ETag; generate recommended headers in reverse.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/http-cache-control-parser',
+    iconName: 'Gauge',
+    tags: ['HTTP', 'Cache-Control', '缓存', 'CDN', 'RFC 9111'],
+    tagsEn: ['HTTP', 'Cache-Control', 'Cache', 'CDN', 'RFC 9111'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'public, max-age=3600, stale-while-revalidate=600',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Cache-Control 解析与新鲜度计算器是一款面向前端、后端与 CDN 运维的 HTTP 缓存语义调试工具，严格依据 RFC 9111 在浏览器本地完成指令解析与新鲜度数值计算，不上报任何报文数据。',
+        coreFeatures: [
+          '逐 token 解析响应与请求 Cache-Control，区分标准指令与未知扩展，重复与冲突指令即时告警',
+          '结合 Date、Age、Expires、Last-Modified 计算 corrected current age、新鲜度寿命与剩余新鲜秒数',
+          '完整模拟 no-store、no-cache、s-maxage、must-revalidate、stale-while-revalidate 及请求端 max-age/min-fresh/max-stale 的状态判定',
+          '反向模式：按浏览器与 CDN 目标 TTL、immutable、宽限期等一键生成推荐响应头组合',
+        ],
+        howToUse: [
+          '粘贴响应的 Cache-Control 值，并按需填写 Date、Age、Expires、Last-Modified、ETag',
+          '选择缓存侧（浏览器或 CDN/共享缓存）并设置「距响应到达经过」的秒数，查看新鲜/过期结论',
+          '需要模拟刷新行为时，在请求 Cache-Control 中填入 no-cache、max-age=0、max-stale 等',
+          '切换到「响应头生成器」，设置目标时长与场景后复制推荐的 Cache-Control 头',
+        ],
+        useCases: [
+          '排查 CDN 缓存命中率异常与资源「为何总是回源」',
+          '设计 API、HTML 与内容哈希静态资源的分层缓存策略',
+          '教学与面试中演示 RFC 9111 的年龄计算与重验流程',
+        ],
+        privacyNote:
+          '所有报文仅在浏览器本地解析，计算过程不依赖任何网络请求，头字段内容不会被上传或保存。',
+        faqs: [
+          {
+            question: 'no-cache 和 no-store 有什么区别？',
+            answer:
+              'no-cache 表示响应可以被存储，但每次使用前必须向源站重新验证（命中验证器时返回 304）；no-store 则完全禁止缓存存储任何内容，适用于敏感数据。',
+          },
+          {
+            question: 'max-age 与 s-maxage 同时存在时谁生效？',
+            answer:
+              's-maxage 只对 CDN 等共享缓存生效，并覆盖 max-age 与 Expires；浏览器等私有缓存忽略 s-maxage，仍按 max-age 计算。',
+          },
+          {
+            question: '没有 max-age 也没有 Expires 时怎么办？',
+            answer:
+              '缓存会回退到启发式新鲜度，常见做法是取 Date 与 Last-Modified 差值的 10%。该比例并非标准强制值，生产环境应显式给出 max-age。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Cache-Control Parser & Freshness Calculator is an HTTP cache-semantics workbench for frontend, backend, and CDN engineers. It parses directives and computes freshness numbers locally in your browser, strictly following RFC 9111 without sending headers anywhere.',
+        coreFeatures: [
+          'Token-by-token parsing for response and request Cache-Control, flagging unknown extensions, duplicates, and conflicting directives',
+          'Computes corrected current age, freshness lifetime, and remaining freshness from Date, Age, Expires, and Last-Modified',
+          'Models no-store, no-cache, s-maxage, must-revalidate, stale-while-revalidate, plus request max-age/min-fresh/max-stale',
+          'Reverse mode generates recommended response headers from browser/CDN TTLs, immutable, and grace-window settings',
+        ],
+        howToUse: [
+          'Paste the response Cache-Control value and fill in Date, Age, Expires, Last-Modified, or ETag as needed',
+          'Pick the cache side (browser or CDN/shared cache) and set elapsed seconds to see fresh/stale status',
+          'Add request Cache-Control such as no-cache, max-age=0, or max-stale to simulate reload behavior',
+          'Switch to the generator tab and copy the recommended Cache-Control header for your target TTL',
+        ],
+        useCases: [
+          'Debugging unexpected CDN cache misses and constant origin revalidation',
+          'Designing layered caching for APIs, HTML, and hash-fingerprinted assets',
+          'Teaching RFC 9111 age calculations and revalidation flows',
+        ],
+        privacyNote:
+          'Every header is parsed locally in your browser. No network request is made and header values are never uploaded or retained.',
+        faqs: [
+          {
+            question: 'What is the difference between no-cache and no-store?',
+            answer:
+              'no-cache allows the response to be stored but forces revalidation before every reuse (a 304 is returned when validators match). no-store forbids storing anything at all and is meant for sensitive data.',
+          },
+          {
+            question: 'When both max-age and s-maxage exist, which wins?',
+            answer:
+              's-maxage applies only to shared caches such as CDNs, overriding both max-age and Expires. Browser/private caches ignore s-maxage and use max-age.',
+          },
+          {
+            question: 'What if neither max-age nor Expires is present?',
+            answer:
+              'Caches fall back to heuristic freshness, commonly 10% of the gap between Date and Last-Modified. Because the fraction is not mandated, production responses should always state an explicit max-age.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
