@@ -225,4 +225,5 @@ export const toolLoaders: Record<
   'openssh-randomart': () => import('./openssh-randomart'),
   'excel-date-converter': () => import('./excel-date-converter'),
   'ethereum-unit-converter': () => import('./ethereum-unit-converter'),
+  'braille-codec': () => import('./braille-codec'),
 };

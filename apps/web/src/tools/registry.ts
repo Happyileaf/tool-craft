@@ -20166,6 +20166,104 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'braille-codec',
+    name: '盲文 Braille 点阵编解码器',
+    nameEn: 'Braille Dot Pattern Codec',
+    description:
+      '英文一级盲文（Grade 1）与 Unicode 盲文字符（U+2800–U+28FF）双向转换，自动处理数字号 ⠼；逐字符可视化六点格凸点（含 7、8 点扩展位）、点号集合与十六进制码位。纯浏览器本地零依赖运算，不支持字符给出警告并跳过。',
+    descriptionEn:
+      'Convert English Grade-1 text to Unicode Braille (U+2800-U+28FF) and back with automatic number-sign handling, and visualize each six-dot cell (including dots 7-8), active dot numbers and hex code points. Fully local, zero-dependency computation; unsupported characters are skipped with warnings.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/braille-codec',
+    iconName: 'Type',
+    tags: ['盲文', 'Braille', '点阵', 'Unicode', '无障碍'],
+    tagsEn: ['Braille', 'Dot Pattern', 'Unicode', 'Accessibility', 'A11y'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'hello 2026',
+    doc: {
+      zh: {
+        whatIsIt:
+          '盲文 Braille 点阵编解码器是一款纯浏览器本地运行的盲文转换与学习工具，实现英文一级盲文（Grade 1）与 Unicode Braille Patterns 码位之间的双向转换，并逐字符展示六点格凸点、点号与码位，可用于无障碍开发校验与盲文学习。',
+        coreFeatures: [
+          '文本→盲文：字母 a–z、数字 0–9、空格与常用标点编码为 U+2800–U+28FF，数字序列自动插入数字号 ⠼',
+          '盲文→文本：识别数字号上下文还原数字，未映射点位给出警告并跳过',
+          '六点格可视化：逐字符显示点 1–6（及扩展点 7、8）的点亮状态与 U+28xx 码位',
+          '大小写不敏感、空输入安全；不支持字符（如中文）以警告形式列出，绝不抛异常',
+        ],
+        howToUse: [
+          '选择「文本 → 盲文」或「盲文 → 文本」方向，在左侧输入内容',
+          '右侧即时显示盲文或还原文本，编码模式下方展示逐字符点阵与码位',
+          '查看黄色警告框了解被跳过的字符，点击「复制」取得结果',
+        ],
+        useCases: [
+          '无障碍开发：校验点显器/盲文显示使用的 Unicode Braille 单元编码',
+          '盲文学习：记忆字母数字点位与数字号规则',
+          '排版与 Unicode 分析：查看 U+2800–U+28FF 码位与点掩码',
+        ],
+        privacyNote:
+          '全部编解码由零依赖纯函数在浏览器本地完成，不发起任何网络请求，输入内容不会离开设备。',
+        faqs: [
+          {
+            question: '支持哪种盲文标准？',
+            answer:
+              '支持英文一级（不缩写）盲文：字母 a–z、数字（数字号 ⠼ 后借用 a–j 点位，j 表示 0）、空格与常用标点。二级缩写、汉语盲文及其他语种不在范围内，相关字符会被跳过并给出警告。',
+          },
+          {
+            question: 'Unicode 盲文码位如何计算？',
+            answer:
+              '码位 = 0x2800 + 凸点位掩码：点 1=0x01、点 2=0x02、点 3=0x04、点 4=0x08、点 5=0x10、点 6=0x20、点 7=0x40、点 8=0x80。例如点 1（字母 a）是 U+2801，点 1,2（字母 b）是 U+2803。',
+          },
+          {
+            question: '数字是怎么表示的？',
+            answer:
+              '数字复用字母 a–j 的点位并以数字号 ⠼（点 3,4,5,6）引导：a→1 … i→9，j→0。工具会在数字序列前自动插入数字号，遇到空格或字母时退出数字模式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Braille Dot Pattern Codec is a fully browser-local tool that converts English Grade-1 text to Unicode Braille Patterns and back, visualizing each six-dot cell, its dot numbers and code point. It supports accessibility-development verification and Braille learning.',
+        coreFeatures: [
+          'Text to Braille: encodes letters a-z, digits 0-9, spaces and common punctuation into U+2800-U+28FF, inserting the number sign before digit runs',
+          'Braille to text: restores digits from number-sign context; unmapped cells are skipped with warnings',
+          'Six-dot visualization: per-cell dots 1-6 (plus extension dots 7-8), active dot numbers and U+28xx code points',
+          'Case-insensitive and empty-input safe; unsupported characters (e.g. Chinese) are listed as warnings, never thrown',
+        ],
+        howToUse: [
+          'Choose the Text-to-Braille or Braille-to-Text direction and enter content on the left',
+          'The right panel instantly shows Braille or restored text; in encode mode a per-cell dot grid appears below',
+          'Review amber warnings for skipped characters and click Copy to take the result',
+        ],
+        useCases: [
+          'Accessibility development: validating Unicode Braille cell encoding for refreshable displays',
+          'Learning Grade-1 Braille: memorizing letter/number dot patterns and the number-sign rule',
+          'Typography and Unicode analysis: inspecting U+2800-U+28FF code points and dot masks',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally via zero-dependency pure functions. No network request is made and no input ever leaves your device.',
+        faqs: [
+          {
+            question: 'Which Braille standard is supported?',
+            answer:
+              'English Grade-1 (uncontracted) Braille: letters a-z, digits via letters a-j after the number sign (j is 0), spaces and common punctuation. Grade-2 contractions, Chinese Braille and other languages are out of scope and are skipped with a warning.',
+          },
+          {
+            question: 'How are Unicode Braille code points computed?',
+            answer:
+              'Code point = 0x2800 + dot mask: dot 1 = 0x01, dot 2 = 0x02, dot 3 = 0x04, dot 4 = 0x08, dot 5 = 0x10, dot 6 = 0x20, dot 7 = 0x40, dot 8 = 0x80. Dot 1 (letter a) is U+2801; dots 1-2 (letter b) are U+2803.',
+          },
+          {
+            question: 'How are digits represented?',
+            answer:
+              'Digits reuse the patterns of letters a-j introduced by the number sign (dots 3-4-5-6): a maps to 1 through i to 9, j maps to 0. The sign is inserted before a digit run and number mode ends at a space or letter.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
