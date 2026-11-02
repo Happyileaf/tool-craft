@@ -7,6 +7,7 @@ import {
   Calculator,
   Clock,
   Code,
+  Coins,
   Droplets,
   Eye,
   EyeOff,
@@ -40,6 +41,7 @@ import {
   Tags,
   Triangle,
   Type,
+  Wifi,
   type LucideProps,
 } from 'lucide-react';
 
@@ -51,6 +53,7 @@ const toolIconMap = {
   Image,
   FileText,
   Code,
+  Coins,
   ShieldCheck,
   Palette,
   Clock,
@@ -88,6 +91,7 @@ const toolIconMap = {
   Barcode,
   Triangle,
   Radical,
+  Wifi,
 };
 
 /**

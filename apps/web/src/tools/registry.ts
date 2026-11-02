@@ -19655,6 +19655,517 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'wifi-qr-payload',
+    name: 'WIFI 二维码连接串生成器',
+    nameEn: 'Wi-Fi QR Payload Generator & Parser',
+    description:
+      '按 zxing/WPA 规范从网络名称、密码、加密类型与隐藏标记生成并反向解析 WIFI: 二维码字符串，特殊字符自动转义，结果可直接用于任意二维码生成器扫码连网。',
+    descriptionEn:
+      'Build and parse zxing/WPA WIFI: QR payloads from SSID, password, encryption and hidden flags with correct escaping — paste the result into any QR generator to join a network by scanning.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/wifi-qr-payload',
+    iconName: 'Wifi',
+    tags: ['WIFI', '二维码', 'WPA', 'zxing', '配网'],
+    tagsEn: ['Wi-Fi', 'QR Code', 'WPA', 'zxing', 'Payload'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'WIFI 二维码连接串生成器在浏览器本地生成手机相机与扫码工具可识别的 Wi-Fi 配网字符串。语法由 zxing 注册并被 Android / iOS 相机广泛支持：WIFI:T:<WPA|WEP|nopass>;S:<SSID>;P:<密码>;H:<true>;;。本工具提供表单式正向生成与 payload 反向解析，严格按规范对 \\、;、,、"、: 五个特殊字符做反斜杠转义，避免 SSID 或密码中的分号导致解析截断。',
+        coreFeatures: [
+          '支持 WPA/WPA2/WPA3、WEP 与开放网络（nopass）三种加密类型',
+          '字段顺序固定 T/S/P/H，开放网络自动省略密码字段，仅隐藏网络输出 H:true',
+          '五个特殊字符 \\ ; , " : 自动转义，中文与普通文本原样保留',
+          '反向解析：粘贴已有 WIFI 字符串自动回填表单，缺省 T 时按 zxing 默认 WPA 处理',
+          '严格校验：SSID 为空、加密网络缺密码、未知字段、错误前后缀与孤立反斜杠均给出明确中文错误',
+        ],
+        howToUse: [
+          '在左侧选择加密类型、填写网络名称（SSID）与密码，开放网络无需密码',
+          '如路由器关闭了 SSID 广播，勾选「隐藏网络」',
+          '右侧即时生成 WIFI: 字符串，点击「复制」后粘贴到任意二维码生成器制作二维码',
+          '需要核对或修改已有配网串时，粘贴到反向解析框并点击「解析并回填」',
+        ],
+        useCases: [
+          '访客网络分享、民宿 / 会议室免口述密码扫码连网',
+          '路由器配置、IoT 设备配网卡与说明书二维码制作',
+          '排查手机扫码连不上：核对转义、加密类型与隐藏标记是否正确',
+        ],
+        privacyNote:
+          'SSID 与密码全程只在浏览器本地处理，不发起任何网络请求，不记录输入内容。',
+        faqs: [
+          {
+            question: '生成后怎么变成二维码？',
+            answer:
+              '复制本工具输出的 WIFI: 字符串，粘贴到站内的二维码生成器（或任意支持文本的 QR 工具）即可。本工具专注 payload 文本的正确构造与转义，不直接渲染图像。',
+          },
+          {
+            question: '为什么 SSID 或密码里的分号要加反斜杠？',
+            answer:
+              '分号是字段分隔符，未转义的 ; 会让扫描器把后面的内容截断或误判为新字段。zxing 规范要求 \\、;、,、"、: 五个字符必须写成 \\\\; 等转义形式，本工具自动处理，解析时再还原。',
+          },
+          {
+            question: 'WPA2 / WPA3 应该选哪个？',
+            answer:
+              'WIFI 字符串的 T 字段只有 WPA / WEP / nopass 三种取值，WPA2 与 WPA3 在扫码语法中统一记为 WPA，手机会在握手阶段自动协商具体版本。仅老旧 WEP 网络选择 WEP，免密热点选择开放网络。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Wi-Fi QR Payload Generator builds the Wi-Fi provisioning string recognized by phone cameras and scanners, entirely locally. The syntax is registered by zxing and widely supported by Android/iOS cameras: WIFI:T:<WPA|WEP|nopass>;S:<SSID>;P:<password>;H:<true>;;. The tool offers form-based generation and reverse parsing, strictly backslash-escaping the five reserved characters (\\, ;, ,, ", :) so a semicolon inside an SSID or password cannot truncate parsing.',
+        coreFeatures: [
+          'WPA/WPA2/WPA3, WEP, and open networks (nopass)',
+          'Fixed T/S/P/H field order: password omitted for open networks, H:true only for hidden SSIDs',
+          'Automatic escaping of \\ ; , " : with Chinese and normal text preserved verbatim',
+          'Reverse parser refills the form from any pasted WIFI string; missing T defaults to WPA per zxing',
+          'Clear Chinese errors for empty SSID, missing password, unknown fields, bad prefixes and dangling backslashes',
+        ],
+        howToUse: [
+          'Pick the encryption type and enter the SSID and password on the left (no password for open networks)',
+          'Check "Hidden network" if the router does not broadcast its SSID',
+          'Copy the WIFI: string on the right and paste it into any QR code generator',
+          'To inspect an existing payload, paste it into the reverse-parse box and click the parse button',
+        ],
+        useCases: [
+          'Sharing guest Wi-Fi in cafes, hotels and meeting rooms without dictating passwords',
+          'Provisioning QR codes for router setup, IoT onboarding cards and manuals',
+          'Debugging scan-to-connect failures: check escaping, encryption type and hidden flag',
+        ],
+        privacyNote:
+          'The SSID and password are processed only in your browser. No network requests are made and no input is logged.',
+        faqs: [
+          {
+            question: 'How do I turn the result into a QR code?',
+            answer:
+              'Copy the WIFI: string and paste it into the site QR generator or any text-capable QR tool. This tool focuses on constructing and escaping the payload text and does not render an image itself.',
+          },
+          {
+            question: 'Why are semicolons in the SSID or password escaped?',
+            answer:
+              'Semicolon is the field separator; an unescaped ; would make scanners truncate the value or read a new field. The zxing spec requires \\, ;, ,, " and : to be written as \\; etc. This tool escapes on build and unescapes on parse automatically.',
+          },
+          {
+            question: 'Which option for WPA2 / WPA3?',
+            answer:
+              'The T field only has WPA / WEP / nopass. WPA2 and WPA3 are both encoded as WPA; the phone negotiates the exact version during handshake. Use WEP only for legacy networks and nopass for open hotspots.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'cvss-calculator',
+    name: 'CVSS v3.1 向量与基础分计算器',
+    nameEn: 'CVSS v3.1 Vector & Base Score Calculator',
+    description:
+      '逐项选择攻击向量、攻击复杂度、权限要求、用户交互、作用域与 CIA 影响，按 FIRST 官方规范实时计算 0.0–10.0 基础分与严重等级（None/Low/Medium/High/Critical），并生成合规向量字符串；也可粘贴已有向量反向解析回填。全程浏览器本地计算。',
+    descriptionEn:
+      'Pick the eight CVSS v3.1 base metrics (AV/AC/PR/UI/S plus C/I/A) and get the 0.0-10.0 base score, qualitative severity and canonical vector string following the FIRST specification, with reverse parsing of pasted vectors. All computation stays in your browser.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/cvss-calculator',
+    iconName: 'ShieldCheck',
+    tags: ['CVSS', '漏洞评分', '安全', 'FIRST', 'CVE'],
+    tagsEn: ['CVSS', 'Vulnerability', 'Security', 'FIRST', 'CVE'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CVSS v3.1 基础分计算器是一款遵循 FIRST 官方《CVSS v3.1 Specification》的纯浏览器工具，用于把漏洞的八项基础指标转成标准向量字符串与 0.0–10.0 评分，结果可直接写入漏洞报告、SRC 工单或 CVE 记录。',
+        coreFeatures: [
+          '官方公式实现：完整覆盖 ISCBase、作用域改变（Scope Changed）公式与 Appendix B Roundup 取整',
+          '双向编辑：逐项点选指标实时生成分数，也可粘贴 CVSS:3.1/... 向量反向回填',
+          '严格向量校验：前缀版本、八项指标完整性、取值合法性、重复键均逐一带中文错误提示',
+          '子分数展示：同时给出可利用性（Exploitability）与影响分（Impact）便于报告引用',
+          '纯浏览器本地运算：漏洞信息不出本机，无网络请求与服务端存储',
+        ],
+        howToUse: [
+          '在左侧按漏洞实际情况选择攻击向量（AV）、攻击复杂度（AC）、权限要求（PR）、用户交互（UI）、作用域（S）与机密性/完整性/可用性影响（C/I/A）',
+          '右侧实时显示基础分、None–Critical 等级、子分数与规范顺序的向量字符串',
+          '点击「复制向量字符串」即可粘贴到漏洞报告或 NVD/SRC 平台',
+          '也可在底部粘贴已有向量，点击「解析向量」回填到表单进行修改复算',
+        ],
+        useCases: [
+          '安全研究人员编写漏洞分析报告时给出标准化评分',
+          '企业 SRC / 应急响应团队定级漏洞修复优先级',
+          '代码评审与渗透测试交付物中补充 CVSS 向量佐证',
+        ],
+        privacyNote:
+          '所有评分均由浏览器本地 TypeScript 纯函数计算，向量与漏洞信息不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么有的分数和 NVD 显示的不一致？',
+            answer:
+              '本工具严格按 CVSS v3.1 规范计算基础分。NVD 对同一漏洞的最终评分基于分析师确认的指标向量；将 NVD 页面上的完整向量粘贴到本工具反向解析，结果应与其基础分一致。',
+          },
+          {
+            question: '支持时间分（Temporal）与环境分（Environmental）吗？',
+            answer:
+              '当前仅计算基础分（Base Metrics）。解析时出现 E、RL、RC、CR 等时间/环境指标会明确报错，避免把非基础指标误算进基础分。',
+          },
+          {
+            question: '作用域（Scope）改变为什么会显著影响分数？',
+            answer:
+              'Scope 改变意味着漏洞影响越过了脆弱组件的授权边界（如提权、跨虚拟机/沙箱）。规范为此使用独立的影响公式与 1.08 放大系数，并对 PR 指标采用不同权重表，因此分数可能明显升高。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A pure-browser CVSS v3.1 base score calculator implementing the FIRST CVSS v3.1 Specification. Turn the eight base metrics into a canonical vector string and a 0.0-10.0 score ready for vulnerability reports, SRC tickets, or CVE records.',
+        coreFeatures: [
+          'Official formulas: ISCBase, the Scope-Changed impact formula, and Appendix B Roundup',
+          'Bidirectional editing: pick metrics to build a score, or paste a CVSS:3.1/... vector to refill the form',
+          'Strict vector validation: version prefix, all eight metrics, legal values, and duplicate keys each produce clear errors',
+          'Subscores shown: Exploitability and Impact are displayed alongside the base score',
+          '100% in-browser: vulnerability details never leave the machine',
+        ],
+        howToUse: [
+          'Choose Attack Vector (AV), Attack Complexity (AC), Privileges Required (PR), User Interaction (UI), Scope (S), and the C/I/A impacts on the left',
+          'The right side shows the live base score, None-Critical severity, subscores, and canonical vector',
+          'Click "Copy vector" to paste it into a report or an NVD/SRC platform',
+          'Or paste an existing vector at the bottom and click "Parse" to refill and adjust the metrics',
+        ],
+        useCases: [
+          'Assigning standardized scores in vulnerability research reports',
+          'Prioritizing remediation in enterprise SRC / incident-response workflows',
+          'Adding CVSS evidence to penetration-test deliverables and code reviews',
+        ],
+        privacyNote:
+          'Every score is computed locally by pure TypeScript functions. Vectors and vulnerability details are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why does a score differ from what NVD shows?',
+            answer:
+              'This tool strictly follows the CVSS v3.1 base-score specification. NVD scores reflect analyst-confirmed metric vectors; paste the full vector from the NVD page into this tool and the base score will match.',
+          },
+          {
+            question: 'Are Temporal and Environmental scores supported?',
+            answer:
+              'Only Base Metrics are calculated. Vectors carrying temporal/environmental codes such as E, RL, RC, or CR are explicitly rejected so they cannot distort the base score.',
+          },
+          {
+            question: 'Why does a changed Scope raise the score so much?',
+            answer:
+              'A changed Scope means impact crosses the vulnerable component\u2019s authority boundary (privilege escalation, VM/sandbox escape). The specification then applies a separate impact formula, a 1.08 multiplier, and a different PR weight table, which can raise the score substantially.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'openssh-randomart',
+    name: 'OpenSSH randomart 指纹图生成器',
+    nameEn: 'OpenSSH Randomart Visualizer',
+    description:
+      '粘贴 OpenSSH 公钥，按 drunken bishop 算法在本地生成与 ssh-keygen -lv 逐字节一致的 randomart 指纹图，支持 SHA-256（现代）与 MD5（旧版）两种摘要，自动识别 RSA/ED25519/ECDSA/DSA 算法与位长并展示指纹。',
+    descriptionEn:
+      'Paste an OpenSSH public key and render the drunken-bishop randomart locally, byte-for-byte identical to ssh-keygen -lv, with both SHA-256 (modern) and MD5 (legacy) digests, automatic RSA/ED25519/ECDSA/DSA and bit-length detection, and the matching fingerprint.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/openssh-randomart',
+    iconName: 'Fingerprint',
+    tags: ['SSH', 'randomart', '指纹', 'drunken bishop', '公钥'],
+    tagsEn: ['SSH', 'Randomart', 'Fingerprint', 'Drunken Bishop', 'Public Key'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF2d+G0hRw+2gHpUzsYJLiT+BmA1nEU4IPIR+BP6NSmT demo@example.com',
+    doc: {
+      zh: {
+        whatIsIt:
+          'OpenSSH randomart 指纹图生成器复刻了 OpenSSH 的 "drunken bishop"（醉酒主教）随机游走算法：把公钥摘要的每个字节拆成四步斜向移动，在 17×9 棋盘上累计访问次数并映射为字符，最终生成一张比十六进制哈希更便于人眼比对的指纹图，输出与系统自带 ssh-keygen -lv 完全一致。',
+        coreFeatures: [
+          '逐字节对齐 ssh-keygen -lv：以真实 ssh-keygen 输出为黄金向量，RSA/ED25519/ECDSA 各算法的 SHA-256 与 MD5 图像均一致',
+          '双摘要模式：默认 SHA-256（OpenSSH ≥ 7.2 底框 [SHA256]），一键切换旧版 MD5（底框 [MD5]，内置零依赖 RFC 1321 实现）',
+          '自动解析公钥：识别 RSA（位长取自模数）、ED25519、ED448、ECDSA（nistp 曲线）与 DSA',
+          '宽松输入：支持 authorized_keys 单行（注释可保留）、折行 base64 与纯 base64 主体',
+          '纯浏览器本地运算：私钥从不参与，公钥也不会离开本机',
+        ],
+        howToUse: [
+          '把 ~/.ssh/id_*.pub 或服务器 known_hosts 中的公钥文本粘贴到输入框',
+          '点击「生成 randomart」，下方展示算法、位长、标准格式指纹与随机图',
+          '需要与旧版系统（ssh-keygen -E md5）核对时，切换到 MD5',
+          '点「复制 randomart」即可把带边框的完整图像粘贴到工单或文档',
+        ],
+        useCases: [
+          '首次 SSH 登录主机时用人眼可识别的图形核对主机指纹，防范中间人攻击',
+          '批量核对服务器上多把 authorized_keys 与指纹的对应关系',
+          '在安全交付物中附上公钥 randomart 作为可读性更强的指纹凭证',
+        ],
+        privacyNote:
+          '公钥解析、SHA-256/MD5 摘要与随机游走全部在浏览器内完成，不发起任何网络请求；工具只需要公钥，切勿粘贴私钥。',
+        faqs: [
+          {
+            question: 'randomart 和普通哈希指纹是什么关系？',
+            answer:
+              '二者基于同一份公钥摘要：现代 OpenSSH 用 SHA-256、旧版用 MD5。randomart 只是把摘要经 drunken bishop 算法可视化为图形，使人类肉眼比对更快；本工具同时给出标准 SHA256:/MD5: 指纹文本。',
+          },
+          {
+            question: '为什么我的 ssh-keygen 显示底框是 [MD5] 而不是 [SHA256]？',
+            answer:
+              'OpenSSH 6.8 引入 SHA-256 指纹并在 7.2 起作为默认。旧系统默认 MD5；在新系统上可用 ssh-keygen -lv -E md5 复现。本工具的 MD5 模式即与此对齐。',
+          },
+          {
+            question: '可以粘贴私钥生成图吗？',
+            answer:
+              '不可以也不需要。randomart 是公钥指纹，本工具只解析 OpenSSH 公钥 wire blob（ssh-rsa / ssh-ed25519 / ecdsa-sha2-* 等）。请始终使用 .pub 文件内容。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool reproduces the OpenSSH "drunken bishop" algorithm: each byte of the public-key digest becomes four diagonal moves on a 17x9 board, visit counts map to characters, and the result is a fingerprint image far easier to compare by eye than a hex hash. Output is byte-for-byte identical to the system ssh-keygen -lv.',
+        coreFeatures: [
+          'Byte-identical to ssh-keygen -lv: real ssh-keygen output is used as golden vectors for RSA/ED25519/ECDSA, both SHA-256 and MD5',
+          'Two digest modes: SHA-256 (OpenSSH >= 7.2, [SHA256] footer) and legacy MD5 ([MD5], via a built-in zero-dependency RFC 1321 implementation)',
+          'Automatic key parsing: RSA (bits from the modulus), ED25519, ED448, ECDSA (nistp curves), and DSA',
+          'Flexible input: single-line authorized_keys (comment allowed), wrapped base64, or a raw base64 blob',
+          '100% in-browser: only public keys are used and nothing leaves the machine',
+        ],
+        howToUse: [
+          'Paste a public key from ~/.ssh/id_*.pub or a known_hosts line',
+          'Click "Generate randomart" to see the algorithm, bit length, standard fingerprint, and the image',
+          'Switch to MD5 when comparing against legacy systems (ssh-keygen -E md5)',
+          'Click "Copy randomart" to paste the fully framed image into a ticket or document',
+        ],
+        useCases: [
+          'Verifying a host key on first SSH login with a human-friendly visual check against MITM attacks',
+          'Matching many authorized_keys entries to their fingerprints on a server',
+          'Attaching a readable randomart fingerprint to security deliverables',
+        ],
+        privacyNote:
+          'Key parsing, SHA-256/MD5 digesting, and the bishop walk all run locally in the browser with no network requests. Only public keys are needed — never paste a private key.',
+        faqs: [
+          {
+            question: 'How does randomart relate to the hash fingerprint?',
+            answer:
+              'Both derive from the same public-key digest — SHA-256 on modern OpenSSH, MD5 on legacy versions. Randomart merely visualizes the digest through the drunken-bishop walk so humans can compare it faster; the canonical SHA256:/MD5: fingerprint text is shown alongside.',
+          },
+          {
+            question: 'Why does my ssh-keygen show [MD5] instead of [SHA256]?',
+            answer:
+              'SHA-256 fingerprints were introduced in OpenSSH 6.8 and became the default in 7.2. Older systems default to MD5; on newer ones run ssh-keygen -lv -E md5. The MD5 mode of this tool matches that output.',
+          },
+          {
+            question: 'Can I paste a private key?',
+            answer:
+              'No, and it is unnecessary. Randomart is a public-key fingerprint; this tool only parses OpenSSH public-key wire blobs (ssh-rsa / ssh-ed25519 / ecdsa-sha2-*, etc.). Always use the contents of a .pub file.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'excel-date-converter',
+    name: 'Excel 序列号日期互转器',
+    nameEn: 'Excel Serial Date Converter',
+    description:
+      '在 Excel 日期序列号与公历日期时间之间双向转换，同时支持 Windows 默认的 1900 日期系统（含历史遗留的 1900 闰年 bug：序列号 60 是不存在的 1900-02-29）与 Mac 的 1904 日期系统，序列号小数部分自动换算为时:分:秒。',
+    descriptionEn:
+      'Convert between Excel date serial numbers and Gregorian date-time in both directions, supporting the Windows 1900 date system (including the legacy 1900 leap-year bug where serial 60 is the phantom 1900-02-29) and the Mac 1904 date system, with the serial fraction decoded into hours/minutes/seconds.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/excel-date-converter',
+    iconName: 'Table2',
+    tags: ['Excel', '日期序列号', '1900日期系统', '1904日期系统', 'CSV'],
+    tagsEn: ['Excel', 'Serial Date', '1900 System', '1904 System', 'CSV'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '44927',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Excel 把日期存储为浮点数序列号：整数部分是自日期系统零点起的天数，小数部分是自午夜起的一天占比。本工具在序列号与公历日期时间之间双向转换，完整复刻两套系统的规则差异——Windows 的 1900 系统序列号 1 = 1900-01-01，并因兼容 Lotus 1-2-3 保留了一个现实不存在的序列号 60（1900-02-29）；Mac 的 1904 系统序列号 0 = 1904-01-01，连续计数且允许负值，两套系统对同一日期恒相差 1462。',
+        coreFeatures: [
+          '双向转换：序列号（可带小数）→ 公历日期 + 时分秒；公历日期时间 → 两套系统序列号',
+          '1900 系统边界精确还原：1–59 为 1900-01-01～02-28，60 标记为 phantom 1900-02-29，61 起为 1900-03-01 连续段',
+          '1904 系统完整支持：序列号 0 = 1904-01-01，负序列号可表示 1904 年之前，并给出另一系统等价值（差 1462）',
+          '小数部分精确到毫秒：0.25 = 06:00、0.5 = 12:00，反向输入支持 HH:mm 或 HH:mm:ss.fff',
+          '纯日历算法（proleptic Gregorian 日序）内核，不依赖浏览器时区，零新增依赖',
+        ],
+        howToUse: [
+          '「序列号 → 公历日期」模式下先选择日期系统（Windows Excel 默认 1900，Mac Excel 为 1904），粘贴如 44927 或 44927.5',
+          '结果区显示公历日期、小数部分对应的时刻，以及另一套日期系统的等价序列号',
+          '「公历日期 → 序列号」模式下按 YYYY-MM-DD 输入日期，时间可留空（视为 00:00），表格同时给出两套系统序列号',
+          '点「填入当前时刻」可快速取浏览器当前日期时间进行反查；各结果支持一键复制',
+        ],
+        useCases: [
+          '排查 CSV/表格导出后日期变成 4 万多数字的问题，快速还原真实日期',
+          '跨 Mac/Windows 或跨工作簿（1900/1904 系统混用）核对日期为何相差约 4 年（1462 天）',
+          '为数据脚本、SQL 导入或测试数据准备 Excel 序列号值（含时分秒小数）',
+        ],
+        privacyNote:
+          '全部换算均在浏览器本地由零依赖纯函数完成，不使用 Date 时区逻辑，也不发起任何网络请求；输入内容不会离开设备。',
+        faqs: [
+          {
+            question: '为什么序列号 60 对应 1900-02-29？这一天不是不存在吗？',
+            answer:
+              '1900 年不是闰年（整百年须被 400 整除），现实中没有 1900-02-29。Excel 为兼容早年 Lotus 1-2-3 的同样错误，故意保留了这个 phantom 日期：序列号 1–59 正常对应 1900-01-01～02-28，60 显示为 1900-02-29，61 才是 1900-03-01。本工具在序列号→日期方向会对 60 给出醒目警告，且真实公历日期无法反推出 60。',
+          },
+          {
+            question: '1900 和 1904 日期系统有什么区别？',
+            answer:
+              '零点不同：1900 系统从 1900-01-01（序列号 1）起算且不允许负值；1904 系统从 1904-01-01（序列号 0）起算，允许负序列号表示更早日期。同一日期在 1904 系统中的序列号恰好比 1900 系统小 1462（约 4 年零 1 天，差值中含 phantom 一天）。例如 2023-01-01 在 1900 系统是 44927、在 1904 系统是 43465。',
+          },
+          {
+            question: '序列号的小数部分代表什么？',
+            answer:
+              '代表一天内已经过去的时间比例：0.25 = 06:00:00，0.5 = 12:00:00，0.75 = 18:00:00。Excel 中「设置单元格格式」可以在日期与数字间切换；本工具直接把小数换算到毫秒，并支持反向把时分秒编码回序列号小数。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Excel stores dates as floating-point serial numbers: the integer part counts days from the date-system epoch and the fraction is the portion of the day elapsed since midnight. This tool converts both ways and faithfully reproduces both systems — the Windows 1900 system where serial 1 is 1900-01-01 and a phantom serial 60 (1900-02-29) survives from Lotus 1-2-3 compatibility, and the Mac 1904 system where serial 0 is 1904-01-01 with continuous (and negative) counting; the two systems always differ by exactly 1462 for the same date.',
+        coreFeatures: [
+          'Both directions: serial (with optional fraction) to Gregorian date plus HH:mm:ss, and date-time to serials in both systems',
+          'Exact 1900-system boundaries: 1-59 map to 1900-01-01..02-28, serial 60 is flagged as the phantom 1900-02-29, serial 61 resumes at 1900-03-01',
+          'Full 1904 support: serial 0 = 1904-01-01, negatives reach pre-1904 dates, and the equivalent in the other system (offset 1462) is shown',
+          'Fraction decoded to the millisecond: 0.25 = 06:00, 0.5 = 12:00; reverse input accepts HH:mm or HH:mm:ss.fff',
+          'Pure proleptic-Gregorian day-count core with no browser-timezone dependency and zero new dependencies',
+        ],
+        howToUse: [
+          'In "serial to date" mode pick the date system (1900 for Windows Excel, 1904 for Mac Excel) and paste a value like 44927 or 44927.5',
+          'The result shows the Gregorian date, the time encoded by the fraction, and the equivalent serial in the other system',
+          'In "date to serial" mode enter YYYY-MM-DD (time optional, defaults to 00:00) to get serials for both systems',
+          'Use "fill current time" for the browser clock; every result can be copied with one click',
+        ],
+        useCases: [
+          'Recovering real dates when a CSV/spreadsheet export shows dates as 40,000-something numbers',
+          'Investigating dates off by about four years (1462 days) when mixing Mac/Windows workbooks or 1900/1904 systems',
+          'Preparing Excel serial values (including time fractions) for data scripts, SQL imports, and test fixtures',
+        ],
+        privacyNote:
+          'All conversion runs locally in the browser via zero-dependency pure functions. Date timezones are not used and no network requests are made, so nothing you enter leaves your device.',
+        faqs: [
+          {
+            question: 'Why does serial 60 map to 1900-02-29 if that date never existed?',
+            answer:
+              '1900 was not a leap year (century years must be divisible by 400), so 1900-02-29 never happened. For compatibility with an old Lotus 1-2-3 bug, Excel keeps the phantom date: serials 1-59 cover 1900-01-01..02-28, serial 60 displays as 1900-02-29, and serial 61 is 1900-03-01. This tool warns prominently on serial 60, and no real calendar date converts back to 60.',
+          },
+          {
+            question: 'What is the difference between the 1900 and 1904 systems?',
+            answer:
+              'Their epochs differ: the 1900 system starts at 1900-01-01 (serial 1) with no negatives, while the 1904 system starts at 1904-01-01 (serial 0) and allows negatives. The same date is exactly 1462 smaller in the 1904 system (roughly four years and one day, including the phantom day). For example 2023-01-01 is 44927 in 1900 and 43465 in 1904.',
+          },
+          {
+            question: 'What does the fractional part of a serial mean?',
+            answer:
+              'It is the fraction of a day elapsed since midnight: 0.25 = 06:00:00, 0.5 = 12:00:00, 0.75 = 18:00:00. Toggling the cell format in Excel switches between date and number. This tool decodes the fraction to the millisecond and can also encode HH:mm:ss back into a serial fraction.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ethereum-unit-converter',
+    name: '以太坊单位与 Gas 费用计算器',
+    nameEn: 'Ethereum Unit & Gas Fee Converter',
+    description:
+      '在 Wei、Kwei、Mwei、Gwei、Szabo、Finney、ETH、Kether 等 11 种以太坊单位间高精度互转（BigInt 整数内核，不丢精度），并提供 Legacy 与 EIP-1559 两种 Gas 费用估算。',
+    descriptionEn:
+      'High-precision conversion between 11 Ethereum units (Wei, Kwei, Mwei, Gwei, Szabo, Finney, ETH, Kether and more) powered by a BigInt integer core, plus Legacy and EIP-1559 gas fee estimation.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/ethereum-unit-converter',
+    iconName: 'Coins',
+    tags: ['以太坊', 'Ethereum', 'Wei', 'Gwei', 'Gas'],
+    tagsEn: ['Ethereum', 'Wei', 'Gwei', 'Gas Fee', 'EIP-1559'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1',
+    doc: {
+      zh: {
+        whatIsIt:
+          '以太坊上所有面额都是最小原子单位 Wei 的 10 的幂：1 ETH = 10¹⁸ Wei，1 Gwei = 10⁹ Wei。JavaScript 普通数字只有 53 位安全整数，直接换算 Wei 级金额会丢精度，本工具内部一律使用 BigInt 整数与十进制字符串运算，支持 Wei、Kwei、Mwei、Gwei、Szabo、Finney、ETH、Kether、Mether、Gether、Tether 共 11 个单位的精确互转，并内置 Legacy（gasUsed × gasPrice）与 EIP-1559（base fee 燃烧 + priority fee tip、max fee 授权上限）两种 Gas 费用模型。',
+        coreFeatures: [
+          '11 个以太坊单位一次输入全部列出：输入任意金额与源单位，表格给出所有单位的精确折合值与 Wei 原子值',
+          'BigInt 整数内核：十进制字符串解析，全程不经过浮点；超出 Wei 精度的小数位直接报错而非静默截断',
+          'Legacy Gas 费用：gasUsed × gasPrice（Gwei），同时输出 Wei、Gwei、ETH',
+          'EIP-1559 估算：分别计算优先费 tip（归矿工）、基础费 base（被燃烧）、按已用量的实际总费与 Limit × Max Fee 授权上限',
+          '配置合理性告警：max fee 低于 base + priority、或 gas 已用量超过上限时给出醒目警告',
+        ],
+        howToUse: [
+          '在「单位换算」卡片输入金额（支持下划线分隔如 1_000）并选择源单位，下方表格实时给出全部单位折合值',
+          '在「Legacy Gas 费用」卡片填入 Gas 用量与 Gas Price（Gwei），标准转账可对照 21000 × 20 = 0.00042 ETH',
+          '在「EIP-1559」卡片填入 Base Fee、Priority Fee、Max Fee（均为 Gwei）以及 Gas 已用量与上限',
+          'Wei 原子值可一键复制，便于粘贴进交易调试数据或测试用例',
+        ],
+        useCases: [
+          'Web3 开发调试：核对交易 input/value 中的 Wei 数量与 ETH/Gwei 显示值是否一致',
+          '转账前估算手续费：根据当前 Gas Price 或 EIP-1559 参数预估实际支出与钱包授权上限',
+          '教学与文档：解释 Wei/Gwei/Szabo/Finney 等单位命名及 10 的幂次关系',
+        ],
+        privacyNote:
+          '全部换算均在浏览器本地由零依赖纯函数与 BigInt 完成，不连接任何节点或价格服务，输入内容不会离开设备。',
+        faqs: [
+          {
+            question: '为什么不用普通数字直接换算？',
+            answer:
+              'JavaScript Number 采用双精度浮点，安全整数上限为 2^53−1（约 9×10^15），而 1 ETH = 10^18 Wei，普通数字无法精确表示。本工具以 BigInt 保存 Wei 整数，小数按十进制字符串展开为整数再运算，并在输入小数位超过目标单位精度（如给 Wei 输入 1.5）时直接报错，杜绝静默丢精度。',
+          },
+          {
+            question: 'EIP-1559 的费用是怎么算的？',
+            answer:
+              '实际每单位 gas 支付 base fee + priority fee（tip），其中 base fee 被协议燃烧、tip 归矿工。按 Gas 已用量计算：实际总费 = gasUsed ×（baseFee + priorityFee）；钱包授权上限 = gasLimit × maxFeePerGas，未用完部分退回。本工具分别展示 tip、燃烧的 base、实际总费与授权上限；当 maxFee < base + priority 时会警告该交易在当前 base fee 下可能无法打包。',
+          },
+          {
+            question: 'Szabo、Finney 这些单位现在还在用吗？',
+            answer:
+              '它们是以太坊早期以密码学家命名的面额：1 Szabo = 10¹² Wei = 10⁻⁶ ETH，1 Finney = 10¹⁵ Wei = 10⁻³ ETH。日常交易与钱包 UI 主要使用 Wei、Gwei 与 ETH，但这些单位仍常见于历史文档、源码常量与测试向量中，因此工具一并收录。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Every Ethereum denomination is a power-of-ten multiple of the smallest atomic unit Wei: 1 ETH = 10^18 Wei and 1 Gwei = 10^9 Wei. Plain JavaScript numbers only have 53 bits of integer precision and lose accuracy at Wei scale, so this tool keeps all math on BigInt integers and decimal strings. It converts precisely across 11 units — Wei, Kwei, Mwei, Gwei, Szabo, Finney, ETH, Kether, Mether, Gether and Tether — and includes both the Legacy fee model (gasUsed × gasPrice) and the EIP-1559 model (base fee burned plus priority fee tip, with a max-fee authorization cap).',
+        coreFeatures: [
+          'One input, all 11 units: enter any amount and source unit to get exact equivalents and the atomic Wei value',
+          'BigInt integer core: decimal strings are expanded without floating point; inputs finer than Wei precision are rejected instead of silently truncated',
+          'Legacy gas fee: gasUsed × gasPrice (Gwei) reported in Wei, Gwei and ETH',
+          'EIP-1559 estimation: priority tip (to miners), burned base fee, actual total on gas used, and the Limit × Max Fee authorization cap',
+          'Sanity warnings: alerts when max fee is below base + priority, or when gas used exceeds the limit',
+        ],
+        howToUse: [
+          'In the unit converter, enter an amount (underscores such as 1_000 are allowed) and pick the source unit; the table lists every unit live',
+          'In the Legacy card, fill gas used and gas price in Gwei — a plain transfer is 21000 × 20 = 0.00042 ETH',
+          'In the EIP-1559 card, enter base fee, priority fee and max fee in Gwei plus gas used and gas limit',
+          'Copy the atomic Wei value with one click for transaction debugging or test fixtures',
+        ],
+        useCases: [
+          'Web3 debugging: reconciling Wei values in transaction input/value fields with ETH/Gwei displays',
+          'Estimating fees before sending: actual spend and wallet authorization under current gas price or EIP-1559 params',
+          'Education and docs: explaining the Wei/Gwei/Szabo/Finney naming and power-of-ten relationships',
+        ],
+        privacyNote:
+          'All conversion runs locally in the browser with zero-dependency BigInt pure functions. No node or price service is contacted, and nothing you enter leaves your device.',
+        faqs: [
+          {
+            question: 'Why not just use regular numbers?',
+            answer:
+              'JavaScript Number is double-precision float with a safe integer limit of 2^53−1 (about 9×10^15), while 1 ETH is 10^18 Wei — too large to represent exactly. This tool stores Wei as a BigInt, expands decimals from strings into integers, and rejects inputs with more decimal places than the unit allows (e.g. 1.5 Wei) so precision is never silently lost.',
+          },
+          {
+            question: 'How is the EIP-1559 fee calculated?',
+            answer:
+              'Each unit of gas actually costs base fee + priority fee (tip); the base fee is burned by the protocol and the tip goes to miners. Based on gas used: actual total = gasUsed × (baseFee + priorityFee); the wallet authorization cap is gasLimit × maxFeePerGas, with unused gas refunded. The tool shows tip, burned base, actual total and cap separately, and warns when maxFee < base + priority because the transaction may not be included at the current base fee.',
+          },
+          {
+            question: 'Are Szabo and Finney still used?',
+            answer:
+              'They are early Ethereum denominations named after cryptographers: 1 Szabo = 10^12 Wei = 10^-6 ETH and 1 Finney = 10^15 Wei = 10^-3 ETH. Everyday wallets mainly use Wei, Gwei and ETH, but these names still appear in historical docs, source constants and test vectors, so they are included.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

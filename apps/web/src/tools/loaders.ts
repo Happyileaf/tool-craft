@@ -220,4 +220,9 @@ export const toolLoaders: Record<
   'isin-validator': () => import('./isin-validator'),
   'uuid-name-generator': () => import('./uuid-name-generator'),
   'git-object-hash': () => import('./git-object-hash'),
+  'wifi-qr-payload': () => import('./wifi-qr-payload'),
+  'cvss-calculator': () => import('./cvss-calculator'),
+  'openssh-randomart': () => import('./openssh-randomart'),
+  'excel-date-converter': () => import('./excel-date-converter'),
+  'ethereum-unit-converter': () => import('./ethereum-unit-converter'),
 };

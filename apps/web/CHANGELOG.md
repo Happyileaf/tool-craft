@@ -4,8 +4,13 @@
 
 ## 日志
 
-## 2026-11-02 ：【Agent自主迭代】新增 15 个数学表达式求值、INI/JSON 互转、线性代数矩阵、文本相似度、JSON 转 Python dataclass、CAS 登记号校验、RC 滤波器参数、文件下载时间估算、Markdown 表格生成、Apple .strings 转换、色温颜色转换、体感温度、ISIN 校验、名称型 UUID 与 Git 对象哈希工具
+## 2026-11-02 ：【Agent自主迭代】新增 20 个数学表达式求值、INI/JSON 互转、线性代数矩阵、文本相似度、JSON 转 Python dataclass、CAS 登记号校验、RC 滤波器参数、文件下载时间估算、Markdown 表格生成、Apple .strings 转换、色温颜色转换、体感温度、ISIN 校验、名称型 UUID、Git 对象哈希、WIFI 二维码、CVSS 评分、OpenSSH randomart、Excel 序列号日期与以太坊单位换算工具
 
+- **新增**：WIFI 二维码连接字符串生成器（wifi-qr-payload）— 按 WIFI: 标准拼装 SSID / 密码 / 加密类型（WPA/WEP/nopass）/ 隐藏网络，转义 `\\ ; , " :` 特殊字符，支持明文与二维码双展示，纯本地运算
+- **新增**：CVSS v3.1 向量字符串解析与基础分计算器（cvss-calculator）— 解析 AV/AC/PR/UI/S/C/I/A 八个指标并按官方度量表与作用域规则计算 Base Score（0.0–10.0）与 None/Low/Medium/High/Critical 评级，向量合法性逐段校验，支持正向评级与向量双向编辑，纯本地运算
+- **新增**：OpenSSH randomart 指纹可视化生成器（openssh-randomart）— 实现 Drunken Bishop 算法把 MD5 主机密钥指纹绘成 Bishop's Art 随机画，边界字符与 RFC 4716 输出一致，支持 MD5 指纹 / 公钥 / 原始十六进制多输入，自实现 RFC 1321 MD5，纯本地零依赖
+- **新增**：Excel 序列号日期互转器（excel-date-converter）— 序列号与公历日期时间双向转换，完整复刻 Windows 1900 系统（含 phantom 序列号 60 = 不存在的 1900-02-29）与 Mac 1904 系统（允许负值、两系统恒差 1462），小数部分精确换算到毫秒，纯日历算法不受时区影响
+- **新增**：以太坊单位与 Gas 费用计算器（ethereum-unit-converter）— BigInt 整数内核支持 Wei 到 Tether 共 11 个单位高精度互转（1 ETH = 10¹⁸ Wei，超精度小数直接报错），内置 Legacy（gasUsed × gasPrice）与 EIP-1559（tip / base 燃烧 / 实际总费 / 授权上限，21000 × 20 Gwei = 0.00042 ETH）两套费用模型，纯本地运算
 - **新增**：数学表达式求值器（math-expression-evaluator）— 支持运算符优先级、括号嵌套、阶乘、三角函数与对数等常用数学函数及 pi/e/tau 常量，多行变量赋值复用、弧度 / 角度切换，输出逐步计算过程与行列定位的语法错误，纯本地词法 / 语法分析
 - **新增**：INI 配置 ↔ JSON 双向转换（ini-json-converter）— 支持 [section] 分节、= / : 分隔符、; / # 注释、引号转义、布尔 / 数字类型推断、同名分节合并与可选点号嵌套键，双向实时转换并对格式错误给出中文提示
 - **新增**：线性代数矩阵计算器（matrix-calculator）— 基于 BigInt 精确分数的矩阵加减、标量乘、矩阵乘法、转置、行列式、逆矩阵、秩与 RREF 逐步消元，并求解 Ax = b（唯一解 / 无解 / 无穷多解判定），支持空格逗号换行分隔粘贴
