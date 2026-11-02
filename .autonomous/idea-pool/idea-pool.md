@@ -214,9 +214,4 @@
 | 20261102080703 | GPS 周数与周内秒（TOW）↔ UTC 时间互转器 | Web Tool | External Reference | Pending | 2026-11-02 | | [详情](./idea-details/20261102080703.md) |
 | 20261102080704 | 体感温度计算器（热指数 Heat Index / 风寒 Wind Chill） | Web Tool | Exploration | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102080704.md) |
 | 20261102080705 | ECDH 密钥协商与 Ed25519 签名 / 验签工具 | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102080705.md) |
-| 20261102141207 | CVSS v3.1 向量字符串解析与基础分计算器 | Web Tool | Existing Gap | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102141207.md) |
-| 20261102141208 | OpenSSH randomart 指纹可视化生成器（Bishop's Art / Drunken Bishop） | Web Tool | External Reference | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102141208.md) |
-| 20261102141209 | Excel 序列号日期（1900 / 1904 日期系统）与公历日期互转器 | Web Tool | Existing Gap | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102141209.md) |
-| 20261102141210 | 以太坊单位与 Gas 费用计算器（Wei / Gwei / ETH 等） | Web Tool | Existing Gap | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102141210.md) |
-| 20261102141211 | WIFI 二维码连接字符串（WIFI: payload）生成器 | Web Tool | Existing Gap | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102141211.md) |
 

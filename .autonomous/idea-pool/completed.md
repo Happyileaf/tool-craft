@@ -74,3 +74,8 @@
 | 20261022221404 | 文本相似度计算器 | Web Tool | Existing Gap | `text-similarity` / [PR #136](https://github.com/Happyileaf/tool-craft/pull/136) | 2026-11-02 | [详情](./idea-details/20261022221404.md) |
 | 20261026200349 | 线性代数矩阵计算器（乘法 / 行列式 / 逆 / 秩 / RREF） | Web Tool | Existing Gap | `matrix-calculator` / [PR #136](https://github.com/Happyileaf/tool-craft/pull/136) | 2026-11-02 | [详情](./idea-details/20261026200349.md) |
 | 20261030200910 | JSON 转 Python dataclass 生成器 | Web Tool | Existing Gap | `json-to-python-dataclass` / [PR #136](https://github.com/Happyileaf/tool-craft/pull/136) | 2026-11-02 | [详情](./idea-details/20261030200910.md) |
+| 20261102141207 | CVSS v3.1 向量字符串解析与基础分计算器 | Web Tool | Existing Gap | `cvss-calculator` / [PR #144](https://github.com/Happyileaf/tool-craft/pull/144) | 2026-11-02 | [详情](./idea-details/20261102141207.md) |
+| 20261102141208 | OpenSSH randomart 指纹可视化生成器（Bishop's Art / Drunken Bishop） | Web Tool | External Reference | `openssh-randomart` / [PR #144](https://github.com/Happyileaf/tool-craft/pull/144) | 2026-11-02 | [详情](./idea-details/20261102141208.md) |
+| 20261102141209 | Excel 序列号日期（1900 / 1904 日期系统）与公历日期互转器 | Web Tool | Existing Gap | `excel-date-converter` / [PR #144](https://github.com/Happyileaf/tool-craft/pull/144) | 2026-11-02 | [详情](./idea-details/20261102141209.md) |
+| 20261102141210 | 以太坊单位与 Gas 费用计算器（Wei / Gwei / ETH 等） | Web Tool | Existing Gap | `ethereum-unit-converter` / [PR #144](https://github.com/Happyileaf/tool-craft/pull/144) | 2026-11-02 | [详情](./idea-details/20261102141210.md) |
+| 20261102141211 | WIFI 二维码连接字符串（WIFI: payload）生成器 | Web Tool | Existing Gap | `wifi-qr-payload` / [PR #144](https://github.com/Happyileaf/tool-craft/pull/144) | 2026-11-02 | [详情](./idea-details/20261102141211.md) |
