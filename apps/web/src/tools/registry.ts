@@ -19139,6 +19139,522 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'color-temperature-converter',
+    name: '色温与颜色双向转换器',
+    nameEn: 'Color Temperature Converter',
+    description:
+      '开尔文色温与 sRGB 颜色双向转换：黑体辐射近似公式计算暖光冷光色值，支持 HEX/RGB 输出与 McCamy 反向估算相关色温。',
+    descriptionEn:
+      'Convert between Kelvin color temperature and sRGB colors: blackbody approximation for warm/cool light with HEX/RGB output, plus McCamy reverse CCT estimation.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/color-temperature-converter',
+    iconName: 'Sparkles',
+    tags: ['色温', '开尔文', 'CCT', '黑体辐射', 'HEX', 'RGB', '灯光'],
+    tagsEn: ['Color Temperature', 'Kelvin', 'CCT', 'Blackbody', 'HEX', 'RGB', 'Lighting'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '6500',
+    doc: {
+      zh: {
+        whatIsIt:
+          '色温与颜色双向转换器是一款纯浏览器本地运算的设计辅助工具：正向以开尔文色温（K）计算黑体辐射对应的 sRGB 颜色，反向将任意 HEX / RGB 颜色按 McCamy 公式估算其相关色温（CCT），常用于摄影调色、灯光选型与 UI 设计。',
+        coreFeatures: [
+          '色温 → 颜色：Tanner Helland 黑体辐射分段近似，覆盖 1000–40000K 全范围',
+          '颜色 → 色温：sRGB 解伽马转线性后经 CIE XYZ 色度坐标与 McCamy 公式估算 CCT',
+          '实时色块预览，一键复制 HEX 与 rgb() 两种输出',
+          '烛光、钨丝灯、正午日光、阴天、蓝天等常见光源预设',
+          '纯浏览器本地运算，无任何网络请求',
+        ],
+        howToUse: [
+          '选择「色温 → 颜色」模式，输入色温数值或拖动滑块（1000–40000K）',
+          '也可直接点击常见光源预设快速定位典型色温',
+          '在右侧查看色块预览与 HEX / RGB 值，点击复制按钮取用',
+          '切换「颜色 → 色温」模式，输入 #RRGGBB、#RGB 或 rgb(r,g,b) 即可估算 CCT',
+        ],
+        useCases: [
+          '摄影与视频调色：判断 2700K 暖光与 6500K 冷光的实际色值差异',
+          '灯光设计与家居选型：将灯具标注的色温转换为直观颜色',
+          'UI / 视觉设计：为暖色、冷色主题界面挑选物理意义明确的光源色',
+        ],
+        privacyNote:
+          '所有计算均在浏览器本地完成，不发起任何网络请求，不记录输入内容。',
+        faqs: [
+          {
+            question: '色温转颜色用的是什么算法？准确吗？',
+            answer:
+              '正向采用 Tanner Helland 发布并被广泛引用的黑体辐射分段近似公式（以 T/100 为参数的红/绿/蓝分段多项式），在 1000–40000K 范围内与摄影、灯光行业常用的色温色表高度一致，适合设计选色；它不是 CIE 普朗克轨迹的严格积分结果。',
+          },
+          {
+            question: '反向估算的色温为什么和原值有偏差？',
+            answer:
+              '反向使用 McCamy (1992) 相关色温近似公式，且 sRGB 需要先解伽马转为线性光再转 XYZ，两次近似叠加后存在约几个百分点的误差；此外黑体近似生成的颜色并不严格落在黑体轨迹上，因此往返结果不会完全相等，属正常现象。',
+          },
+          {
+            question: '为什么输入纯黑会报错？',
+            answer:
+              '色温由 CIE xy 色度坐标计算，而色度坐标是 X、Y、Z 三刺激值的归一化比值；纯黑的三刺激值全部为 0，分母为零且不携带任何色度信息，物理上也不存在“黑色光”的色温。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Color Temperature Converter is a fully local browser utility: forward direction computes the sRGB color of blackbody radiation from a Kelvin temperature, and reverse direction estimates correlated color temperature (CCT) from any HEX/RGB color via the McCamy formula. It is useful for photo grading, lighting selection, and UI design.',
+        coreFeatures: [
+          'Kelvin → color: Tanner Helland blackbody piecewise approximation covering 1000–40000K',
+          'Color → Kelvin: sRGB de-gamma to linear, CIE XYZ chromaticity, then the McCamy CCT formula',
+          'Live swatch preview with one-click copy of HEX and rgb() output',
+          'Common light-source presets: candle, tungsten, midday sun, overcast, blue sky',
+          '100% in-browser computation with no network requests',
+        ],
+        howToUse: [
+          'Pick "Kelvin → color" and enter a temperature or drag the slider (1000–40000K)',
+          'Or click a common light-source preset to jump to a typical temperature',
+          'Read the swatch, HEX, and RGB values on the right; click copy to take them',
+          'Switch to "color → Kelvin" and enter #RRGGBB, #RGB, or rgb(r,g,b) to estimate CCT',
+        ],
+        useCases: [
+          'Photo/video grading: comparing the actual colors of 2700K warm and 6500K cool light',
+          'Lighting and interior design: turning lamp-labeled Kelvin values into concrete colors',
+          'UI/visual design: choosing physically meaningful light colors for warm and cool themes',
+        ],
+        privacyNote:
+          'All computation happens locally in your browser. No network requests are made and no input is logged.',
+        faqs: [
+          {
+            question: 'What algorithm powers Kelvin-to-color, and is it accurate?',
+            answer:
+              'The forward direction uses Tanner Helland’s widely cited piecewise blackbody approximation (per-channel polynomials parameterized by T/100). Over 1000–40000K it closely matches the color-temperature tables used in photography and lighting; it is not a strict integration of the CIE Planckian locus.',
+          },
+          {
+            question: 'Why does the reverse estimate differ from the original value?',
+            answer:
+              'The reverse uses the McCamy (1992) CCT approximation after de-gammaing sRGB into linear light and converting to XYZ. Two layers of approximation introduce a few percent error, and colors produced by the blackbody approximation do not sit exactly on the Planckian locus, so round trips are not exact — this is expected.',
+          },
+          {
+            question: 'Why does pure black produce an error?',
+            answer:
+              'CCT is computed from CIE xy chromaticity, a normalized ratio of the XYZ tristimulus values. Pure black has all-zero tristimulus values, so the denominator is zero and it carries no chromaticity information; physically there is no such thing as “black light”.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'apparent-temperature',
+    name: '体感温度计算器（热指数 / 风寒）',
+    nameEn: 'Apparent Temperature Calculator (Heat Index / Wind Chill)',
+    description:
+      '按 NWS 官方公式计算体感温度：炎热侧 Rothfusz 热指数多项式（含干湿调整项与危险等级），寒冷侧 2001 版风寒公式，支持摄氏度/华氏度切换。',
+    descriptionEn:
+      'Compute apparent temperature with official NWS formulas: the Rothfusz heat-index regression (with dry/humid adjustments and danger levels) for heat, and the 2001 wind-chill formula for cold, with Celsius/Fahrenheit support.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/apparent-temperature',
+    iconName: 'Flame',
+    tags: ['体感温度', '热指数', '风寒', 'Heat Index', 'Wind Chill', '湿度', '气象'],
+    tagsEn: ['Apparent Temperature', 'Heat Index', 'Wind Chill', 'Humidity', 'Weather', 'NWS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '体感温度计算器是一款纯浏览器本地运算的气象计算工具：炎热环境下输入气温与相对湿度，按美国国家气象局（NWS）Rothfusz 回归多项式计算热指数，并在低湿/高湿边界自动应用官方调整项；寒冷环境下输入气温与风速，按 2001 年美加联合风寒公式计算风寒温度。结果同时给出 NWS 危险等级，支持摄氏度与华氏度。',
+        coreFeatures: [
+          '热指数：9 项 Rothfusz 多项式，内置 ADJ1 低湿与 ADJ2 高湿调整项',
+          '低温低湿时自动回退到 NWS 简单公式（与气温平均，< 80°F 情形）',
+          '风寒：2001 版美加联合公式（V^0.16 幂次），自动判断适用区间',
+          '危险等级：注意 / 极小心 / 危险 / 极度危险，附中文防护说明',
+          '摄氏度/华氏度一键切换，风速对应 km/h 与 mph',
+          '纯浏览器本地确定性计算，无任何网络请求',
+        ],
+        howToUse: [
+          '选择「炎热侧：热指数」或「寒冷侧：风寒」模式',
+          '选择单位制（摄氏度配套 km/h，华氏度配套 mph）',
+          '热指数模式输入气温与相对湿度；风寒模式输入气温与风速',
+          '也可点击典型场景预设快速填充，在右侧查看体感温度与危险等级',
+        ],
+        useCases: [
+          '户外作业、运动与赛事：评估高温高湿环境的中暑风险',
+          '冬季出行与登山：结合风速判断冻伤时间窗口',
+          '气象科普：理解“桑拿天”与“干冷/湿冷”的量化差异',
+        ],
+        privacyNote:
+          '所有计算均在浏览器本地完成，不发起任何网络请求，不记录输入内容。',
+        faqs: [
+          {
+            question: '热指数是怎么算出来的？',
+            answer:
+              '热指数采用 NWS 的 Rothfusz 回归多项式（9 个常数项，以华氏度 T 与相对湿度 RH 为变量）。当相对湿度低于 13% 且气温在 80–111°F 时减去 ADJ1 调整项；高于 85% 且气温在 80–87°F 时加上 ADJ2 调整项。在较凉爽条件下（简单公式与气温平均低于 80°F）则使用更简单的经验公式。',
+          },
+          {
+            question: '为什么输入 30°C 却提示风寒不适用？',
+            answer:
+              '2001 版风寒公式只在气温不高于 50°F（10°C）且风速大于 3 mph（约 4.8 km/h）时有物理意义；温暖天气下风冷效应微弱，强行套公式会给出误导结果，此时应使用热指数模式。',
+          },
+          {
+            question: '为什么结果和手机天气 App 略有差异？',
+            answer:
+              '不同 App 可能使用澳式 Apparent Temperature（Steadman 模型）、湿度风温综合指数等不同公式。本工具严格使用美国 NWS 官方热指数与风寒公式；此外风速应为开阔地面 10 米高度的实测风速，输入口径不同也会带来差异。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Apparent Temperature Calculator is a fully local browser utility. In hot conditions it computes the NWS Rothfusz heat index from air temperature and relative humidity, automatically applying the official dry-air and humid adjustments; in cold conditions it applies the 2001 U.S./Canada joint wind-chill formula. Each result includes the NWS danger level, and both Celsius and Fahrenheit are supported.',
+        coreFeatures: [
+          'Heat index: 9-term Rothfusz regression with ADJ1 (dry) and ADJ2 (humid) adjustments',
+          'Automatic fallback to the simple NWS estimate averaged with temperature below 80°F',
+          'Wind chill: the 2001 joint formula (V^0.16) with automatic applicability checks',
+          'Danger bands: Caution / Extreme Caution / Danger / Extreme Danger with guidance',
+          'One-click Celsius/km·h⁻¹ ↔ Fahrenheit/mph switching',
+          '100% local deterministic computation with no network requests',
+        ],
+        howToUse: [
+          'Choose the heat-index (hot) or wind-chill (cold) mode',
+          'Pick a unit system (Celsius pairs with km/h, Fahrenheit with mph)',
+          'Enter temperature and humidity for heat index, or temperature and wind speed for wind chill',
+          'Or click a scenario preset; read the apparent temperature and danger band on the right',
+        ],
+        useCases: [
+          'Outdoor work, sports, and events: assessing heatstroke risk in hot, humid weather',
+          'Winter travel and mountaineering: estimating frostbite exposure from wind speed',
+          'Weather education: quantifying the difference between humid heat and dry cold',
+        ],
+        privacyNote:
+          'All computation happens locally in your browser. No network requests are made and no input is logged.',
+        faqs: [
+          {
+            question: 'How is the heat index calculated?',
+            answer:
+              'It uses the NWS Rothfusz regression polynomial (nine constants, with temperature T in °F and relative humidity RH). Below 13% RH with 80–111°F the ADJ1 dry correction is subtracted; above 85% RH with 80–87°F the ADJ2 humid correction is added. In cooler conditions (simple estimate averaged with T below 80°F) a simpler empirical formula is used instead.',
+          },
+          {
+            question: 'Why does 30°C say wind chill is not applicable?',
+            answer:
+              'The 2001 wind-chill formula is only meaningful at or below 50°F (10°C) with wind above 3 mph (~4.8 km/h). In warm weather the cooling effect is negligible and the formula would be misleading — use the heat-index mode instead.',
+          },
+          {
+            question: 'Why do results differ slightly from my weather app?',
+            answer:
+              'Apps may use other models such as the Australian Apparent Temperature (Steadman) or combined indices. This tool strictly implements the official U.S. NWS heat-index and wind-chill formulas; wind speed should also be measured over open ground at 10 m height, so differing input conventions cause discrepancies too.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'isin-validator',
+    name: 'ISIN 证券识别码校验器',
+    nameEn: 'ISIN Validator (ISO 6166 Securities Identifier)',
+    description:
+      '按 ISO 6166 校验 12 位 ISIN 证券识别码：字母 A=10…Z=35 展开后执行 Luhn mod 10，支持批量校验、逐位展开加权过程展示与 11 位主体补全校验位。',
+    descriptionEn:
+      'Validate 12-character ISINs per ISO 6166: letters expand A=10…Z=35 before the Luhn mod-10 check. Batch verification, a digit-by-digit weighted breakdown, and check-digit completion from an 11-character body are included.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/isin-validator',
+    iconName: 'Barcode',
+    tags: ['ISIN', 'ISO 6166', '证券', '校验位', 'Luhn', '金融数据', '批量校验'],
+    tagsEn: ['ISIN', 'ISO 6166', 'Securities', 'Check Digit', 'Luhn', 'Fintech', 'Batch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'ISIN 证券识别码校验器是一款纯浏览器本地运算的金融数据工具，实现 ISO 6166 国际证券识别码的校验位算法。ISIN 为 12 位字母数字（2 位国家/地区码 + 9 位字母数字主体 + 1 位校验位），校验时先把字母按 A=10…Z=35 展开为两位数字，再对展开串执行 Luhn（mod 10）。支持批量校验、逐位展开与加权过程展示，以及为 11 位主体补全校验位。',
+        coreFeatures: [
+          '严格实现 ISO 6166：字母 A=10…Z=35 展开 + Luhn mod 10 校验位',
+          '批量模式：每行一个 ISIN，逐行报告长度、结构或校验位错误',
+          '过程可视化：逐字符展开数字、加权求和、补数计算完整展示',
+          '补全模式：11 位主体一键补位，完整 ISIN 自动纠正错误校验位',
+          '容忍空格、连字符、全角字符并自动转大写',
+          '纯浏览器本地确定性计算，无任何网络请求',
+        ],
+        howToUse: [
+          '在「批量校验」模式下每行粘贴一个 ISIN，右侧得到合法编码列表与逐行告警',
+          '在「补全校验位」模式输入 11 位主体（或带错误校验位的完整码）即可得到正确编码',
+          '在底部「展开与加权过程」卡片输入单个 ISIN，查看每位字符的数字展开',
+        ],
+        useCases: [
+          '证券主数据清洗：批量核对行情、持仓与结算文件中的 ISIN',
+          '金融系统开发：接口入参前置校验，拒绝错误识别码',
+          '学习 ISO 6166 / Luhn 变体：直观看到字母展开与交替加权',
+        ],
+        privacyNote:
+          '所有编码均在浏览器本地处理，不发起任何网络请求，不记录输入内容。',
+        faqs: [
+          {
+            question: 'ISIN 的 Luhn 和银行卡的 Luhn 有什么区别？',
+            answer:
+              '银行卡只有数字，直接从右向左交替乘 2 求和；ISIN 主体含字母，必须先把每个字母按 A=10…Z=35 展开成两位数字（数字字符保持一位），拼接后再对展开串执行 Luhn，因此展开结果可能是 21–23 位数字。',
+          },
+          {
+            question: '前两位国家码会被单独验证吗？',
+            answer:
+              '本工具校验其必须为两个字母（ISO 6166 结构要求），但不维护 ISO 3166 国家码白名单：部分 ISIN 使用 XS 等特殊前缀（如 Euroclear/Clearstream 的国际债券），XS 并非国家码，强行限定国家集合会误判。校验位本身可保证主体未被抄写错误。',
+          },
+          {
+            question: '为什么 XS9135527440 被判定非法？',
+            answer:
+              '该码末位为 0，而对前 11 位主体展开后做 Luhn 加权求和，正确补数为 8，合法编码应为 XS9135527448。可用补全模式或底部过程卡片核对每一步加权。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ISIN Validator is a fully local browser tool implementing the ISO 6166 check-digit algorithm for International Securities Identification Numbers. An ISIN is 12 alphanumeric characters (a 2-letter country/prefix code, a 9-character alphanumeric body, and one check digit): letters are first expanded A=10…Z=35 into two digits, then Luhn mod 10 is applied to the expanded string. It supports batch verification, a digit-by-digit weighted breakdown, and check-digit completion from an 11-character body.',
+        coreFeatures: [
+          'Strict ISO 6166: A=10…Z=35 letter expansion followed by Luhn mod 10',
+          'Batch mode: one ISIN per line with per-line length, structure, and checksum errors',
+          'Visual walkthrough: per-character expansion, weighted sum, and 10s complement',
+          'Generate mode: complete an 11-character body or auto-correct a bad check digit',
+          'Tolerates spaces, hyphens, and full-width characters; auto-uppercases input',
+          '100% local deterministic computation with no network requests',
+        ],
+        howToUse: [
+          'In batch-validation mode paste one ISIN per line; the right panel lists valid codes with per-line warnings',
+          'In generate mode enter an 11-character body (or a full ISIN with a wrong check digit) to obtain the correct code',
+          'Use the breakdown card at the bottom to inspect each character’s numeric expansion for a single ISIN',
+        ],
+        useCases: [
+          'Securities master-data cleansing: bulk-checking ISINs in market-data, holdings, and settlement files',
+          'Fintech development: pre-validating identifiers at API boundaries',
+          'Learning ISO 6166 / Luhn variants: seeing letter expansion and alternating weights directly',
+        ],
+        privacyNote:
+          'All identifiers are processed locally in your browser. No network requests are made and no input is logged.',
+        faqs: [
+          {
+            question: 'How is the ISIN Luhn different from the bank-card Luhn?',
+            answer:
+              'Bank cards are numeric and are weighted straight from the right. An ISIN body contains letters, so every letter must first be expanded to two digits (A=10…Z=35) while digit characters stay one digit; Luhn then runs on the concatenated expansion, which may be 21–23 digits long.',
+          },
+          {
+            question: 'Are the first two country letters validated against a country list?',
+            answer:
+              'They are checked to be two letters as ISO 6166 requires, but no ISO 3166 whitelist is enforced: some ISINs use special prefixes such as XS (international bonds via Euroclear/Clearstream), which is not a country code. Enforcing a country set would cause false rejections, while the check digit still guards transcription errors.',
+          },
+          {
+            question: 'Why is XS9135527440 rejected?',
+            answer:
+              'Its last digit is 0, but Luhn weighting over the expanded 11-character body gives a 10s complement of 8 — the valid identifier is XS9135527448. You can verify every weighted step in the breakdown card or via generate mode.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'uuid-name-generator',
+    name: 'UUID v3 / v5 名称型生成器',
+    nameEn: 'Name-Based UUID Generator (v3 / v5, RFC 9562)',
+    description:
+      '按 RFC 9562 对「命名空间 UUID + 名称」确定性派生 v3（MD5）/ v5（SHA-1）UUID：内置 DNS / URL / OID / X.500 命名空间或自定义，相同输入永远得到相同 UUID，结果展示版本位与变体位。',
+    descriptionEn:
+      'Derive deterministic name-based UUIDs (v3 MD5 / v5 SHA-1) per RFC 9562 from a namespace UUID plus a name. Built-in DNS / URL / OID / X.500 namespaces or a custom one; identical inputs always produce the same UUID, with version and variant bits shown.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/uuid-name-generator',
+    iconName: 'Fingerprint',
+    tags: ['UUID', 'v3', 'v5', 'RFC 9562', '命名空间', '确定性', 'SHA-1', 'MD5'],
+    tagsEn: ['UUID', 'v3', 'v5', 'RFC 9562', 'Namespace', 'Deterministic', 'SHA-1', 'MD5'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'UUID v3 / v5 名称型生成器是一款纯浏览器本地运算的标识派生工具，实现 RFC 9562（取代 RFC 4122）规定的名称型 UUID：将命名空间 UUID 的 16 字节大端表示与名称的 UTF-8 字节拼接后做哈希——v5 取 SHA-1、v3 取 MD5——取摘要前 16 字节，再把第 7 字节高 4 位改写为版本号（3 或 5）、第 9 字节高 2 位改写为变体位 10。相同命名空间与名称在任何系统、任何时间都会得到完全相同的 UUID。',
+        coreFeatures: [
+          '严格 RFC 9562：命名空间 16 字节大端 + 名称 UTF-8 拼接后摘要派生',
+          'v5（SHA-1，经 Web Crypto）与 v3（MD5，内置零依赖实现）一键切换',
+          '内置 DNS / URL / OID / X.500 DN 四个标准命名空间，支持自定义 UUID',
+          '结果展示 version 位与 variant 10 位的设置结果，便于核对',
+          '输入即时重算，确定性输出可跨系统复现',
+          '纯浏览器本地计算，无任何网络请求',
+        ],
+        howToUse: [
+          '选择版本：新系统优先 v5，需要兼容历史数据时选 v3',
+          '从下拉框选择内置命名空间，或选择「自定义」并粘贴合法命名空间 UUID',
+          '输入名称（域名、URL、文件名或任意固定键名，按 UTF-8 处理）',
+          '结果区即时显示派生 UUID，点击即可复制',
+        ],
+        useCases: [
+          '根据域名、文件名、固定键名生成跨系统一致的稳定资源标识',
+          '配置迁移与数据对账：两边独立计算同一 UUID 即可对齐记录',
+          '与只能随机产出的 v4 互补：需要“可复现”时使用 v3 / v5',
+        ],
+        privacyNote:
+          '所有计算均在浏览器本地完成，不发起任何网络请求，不记录名称与命名空间。',
+        faqs: [
+          {
+            question: 'v3 和 v5 应该怎么选？',
+            answer:
+              '两者算法结构完全相同，只是摘要算法不同：v5 用 SHA-1、v3 用 MD5。RFC 9562 推荐新系统使用 v5；v3 主要用于与已经存在的 v3 数据保持兼容。对同一命名空间与名称，v3 与 v5 会得到不同的 UUID，不能混用。',
+          },
+          {
+            question: '名称型 UUID 和随机的 v4 有什么区别？',
+            answer:
+              'v4 每次随机生成，同一资源每次得到不同 UUID，适合无中心协调的唯一标识；v3 / v5 是确定性哈希派生，相同命名空间与名称永远得到相同 UUID，适合需要跨系统、跨时间复现的稳定标识，例如由域名派生配置记录主键。',
+          },
+          {
+            question: '自定义命名空间 UUID 有什么要求？',
+            answer:
+              '必须是合法的 8-4-4-4-12 形式 UUID。RFC 建议自定义命名空间本身使用一个随机 v4 UUID，并在你的系统内固定下来：命名空间起到“域隔离”作用，不同命名空间下即使名称相同也会派生出不同 UUID，可避免命名冲突。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Name-Based UUID Generator is a fully local browser tool implementing RFC 9562 (which obsoletes RFC 4122): the namespace UUID is converted to 16 big-endian bytes, concatenated with the UTF-8 bytes of the name, then hashed with SHA-1 (v5) or MD5 (v3). The first 16 digest bytes are taken, the high nibble of byte 7 is set to the version (3 or 5), and the high two bits of byte 9 are set to variant 10. The same namespace and name always produce the same UUID, on any system, at any time.',
+        coreFeatures: [
+          'Strict RFC 9562: 16-byte big-endian namespace plus UTF-8 name, then digest',
+          'Switch between v5 (SHA-1 via Web Crypto) and v3 (built-in zero-dependency MD5)',
+          'Built-in DNS / URL / OID / X.500 DN namespaces, plus a custom namespace UUID',
+          'Shows the resulting version nibble and variant-10 bits for verification',
+          'Recomputed instantly on every edit; deterministic and reproducible across systems',
+          '100% local computation with no network requests',
+        ],
+        howToUse: [
+          'Pick a version: prefer v5 for new systems, use v3 only for legacy compatibility',
+          'Choose a built-in namespace, or pick “custom” and paste a valid namespace UUID',
+          'Enter a name (domain, URL, filename, or any fixed key), encoded as UTF-8',
+          'The derived UUID appears instantly and can be copied with one click',
+        ],
+        useCases: [
+          'Deriving stable resource identifiers from domains, filenames, or fixed keys',
+          'Configuration migration and data reconciliation: both sides compute the same UUID',
+          'A deterministic complement to random v4 UUIDs whenever reproducibility matters',
+        ],
+        privacyNote:
+          'All computation happens locally in your browser. No network requests are made and neither names nor namespaces are logged.',
+        faqs: [
+          {
+            question: 'Should I use v3 or v5?',
+            answer:
+              'The construction is identical except for the digest: v5 uses SHA-1 and v3 uses MD5. RFC 9562 recommends v5 for new systems; v3 exists mainly to stay compatible with existing v3 data. For the same namespace and name, v3 and v5 produce different UUIDs and must not be mixed.',
+          },
+          {
+            question: 'How are name-based UUIDs different from random v4 UUIDs?',
+            answer:
+              'A v4 UUID is random and differs on every generation, which suits coordination-free uniqueness. v3 / v5 UUIDs are deterministic hash derivations: the same namespace and name always yield the same UUID, which suits stable identifiers that must be reproduced across systems and time, such as deriving a configuration-record key from a domain name.',
+          },
+          {
+            question: 'What are the requirements for a custom namespace UUID?',
+            answer:
+            'It must be a valid 8-4-4-4-12 UUID. RFC guidance suggests generating the namespace UUID once as a random v4 UUID and fixing it within your system: the namespace acts as a domain boundary, so the same name under different namespaces derives different UUIDs, preventing collisions.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'git-object-hash',
+    name: 'Git 底层对象哈希计算器',
+    nameEn: 'Git Object Hash Calculator (git hash-object equivalent)',
+    description:
+      '在浏览器本地计算 Git 底层对象 ID：blob / tree / commit / annotated tag 拼接「类型 长度 NUL」头后做 SHA-1 或 SHA-256，tree 自动二进制规范化与 Git 排序，等价 git hash-object / git mktree 的只读计算侧。',
+    descriptionEn:
+      'Compute Git object IDs locally: blob / tree / commit / annotated tag objects are hashed (SHA-1 or SHA-256) after prepending the "type length NUL" header, with automatic binary canonicalization and Git ordering for tree entries — the read-only equivalent of git hash-object / git mktree.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/git-object-hash',
+    iconName: 'Hash',
+    tags: ['Git', '对象哈希', 'hash-object', 'tree', 'SHA-1', 'SHA-256', '内容寻址'],
+    tagsEn: ['Git', 'Object Hash', 'hash-object', 'tree', 'SHA-1', 'SHA-256', 'Content Addressable'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Git 底层对象哈希计算器在浏览器本地复现 Git 的内容寻址模型：对象 ID = 对「<类型> SP <字节长度> NUL <原始内容>」做 SHA-1（或 SHA-256）摘要。支持四种对象——blob（文件内容）、tree（目录，条目形如「模式 名称 NUL 20/32 字节二进制哈希」，按 Git 规则排序，目录比较时隐含尾部 /）、commit 与 annotated tag（对规范化原始文本加头摘要）。结果与 git hash-object、git mktree 完全一致，无需安装 Git。',
+        coreFeatures: [
+          '四种对象：blob / tree / commit / annotated tag，覆盖 git hash-object 只读侧',
+          'SHA-1 与 SHA-256（object-format=sha256 仓库）两种摘要格式',
+          'tree 文本行自动二进制规范化：模式归一（目录内部存 40000）、按名 Git 排序、哈希转 20/32 字节',
+          '展示排序后的条目表、对象头（如 blob 6）与参与哈希总字节数',
+          '逐行校验：段数、模式白名单、名称禁含 /、哈希长度与十六进制、同名冲突',
+          '纯浏览器本地确定性计算，不做 CRLF 清洗，无任何网络请求',
+        ],
+        howToUse: [
+          '选择对象类型与哈希格式，工具会载入对应的标准示例',
+          'blob：直接粘贴文件原始内容（注意结尾换行影响哈希）',
+          'tree：每行输入「模式 名称 对象哈希」（空格或 Tab 分隔），右侧得到对象 ID 与排序后条目',
+          'commit / tag：粘贴 git cat-file 输出的完整原始文本（含结尾换行），即时得到对象 ID',
+        ],
+        useCases: [
+          '排查“工作区文件哈希为什么和仓库对象不一致”（结尾换行、CRLF、过滤器差异）',
+          '手工构造或校验 loose object、教学演示 Git 内容寻址模型',
+          '无 Git 环境下验证 CI 产物或审计材料中的对象 ID',
+        ],
+        privacyNote:
+          '所有内容均在浏览器本地处理，不发起任何网络请求，不记录输入内容。',
+        faqs: [
+          {
+            question: '为什么同样的文字，算出来和 git hash-object 不一样？',
+            answer:
+              '最常见原因是结尾换行：echo hello 产生 hello\\n（哈希 ce0136…4464a），而 printf hello 产生无换行的 hello（哈希 b6fc4c…a1b0）。其次是 CRLF 与 autocrlf/filters：本工具对输入逐字节原样摘要，不做任何清洗，与 git hash-object --stdin 行为一致；而 git hash-object 路径上的文件会受 .gitattributes 过滤器影响。',
+          },
+          {
+            question: 'tree 条目的排序规则是什么？',
+            answer:
+              'Git 按条目名逐字节排序，并对目录特殊处理：比较时在目录名后隐含一个 “/”（0x2f），但实际存储的名字不带尾斜杠。因此 a.dir（目录）排在 a.txt 之前：比较到第 5 字节时，目录的隐含 “/”（0x2f）小于文件名里的 “.”（0x2e）之后的 “t” 比较结果。模式在对象内部目录存为 40000（ls-tree 显示的 040000 只是展示格式），子对象哈希以 20 字节（SHA-1）或 32 字节（SHA-256）二进制存储。',
+          },
+          {
+            question: 'commit 和 tag 为什么要求粘贴“原始文本”？',
+            answer:
+              'commit 与 tag 对象体是严格规范化的文本（header 段落 + 一个空行 + 消息，通常以一个换行结尾），Git 对这些字节原样加头摘要。任何一个字节差异（时区写法、作者行格式、结尾换行）都会改变对象 ID。建议用 git cat-file commit <id> / git cat-file tag <id> 取得精确文本后粘贴，本工具不做字段补全或自动修正。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Git Object Hash Calculator reproduces Git’s content-addressing model locally in your browser: the object ID is the SHA-1 (or SHA-256) digest of "<type> SP <byte-length> NUL <raw content>". All four object kinds are supported — blobs (file contents), trees (directories whose entries are "mode SP name NUL 20/32 raw hash bytes", ordered with Git’s rules and an implicit trailing slash for directories during comparison), commits, and annotated tags (the canonical raw text hashed with its header). Results match git hash-object and git mktree exactly, with no Git installation required.',
+        coreFeatures: [
+          'Four object kinds: blob / tree / commit / annotated tag — the read-only side of git hash-object',
+          'Both SHA-1 and SHA-256 (object-format=sha256 repositories)',
+          'Tree lines are canonicalized to binary automatically: modes normalized (directories stored as 40000), Git name ordering, hashes as 20/32 raw bytes',
+          'Shows the sorted entry table, the object header (e.g. blob 6), and total hashed bytes',
+          'Per-line validation: field count, mode whitelist, no “/” in names, hash length/hex, duplicate names',
+          'Fully local deterministic computation with no CRLF scrubbing and no network requests',
+        ],
+        howToUse: [
+          'Pick the object type and hash format; a canonical sample is loaded automatically',
+          'blob: paste the exact file content (a trailing newline changes the hash)',
+          'tree: one line per entry as “mode name object-hash” (space or tab); get the ID and sorted entries on the right',
+          'commit / tag: paste the complete raw text from git cat-file (including the final newline) to get the object ID instantly',
+        ],
+        useCases: [
+          'Debugging why a working-tree file hash differs from the repository object (newlines, CRLF, filters)',
+          'Hand-building or verifying loose objects and teaching Git’s content-addressable model',
+          'Verifying object IDs in CI artifacts or audit material without a Git installation',
+        ],
+        privacyNote:
+          'All content is processed locally in your browser. No network requests are made and no input is logged.',
+        faqs: [
+          {
+            question: 'Why does my hash differ from git hash-object for the same text?',
+            answer:
+              'The most common cause is the trailing newline: echo hello produces hello\\n (ce0136…4464a) while printf hello produces hello without a newline (b6fc4c…a1b0). CRLF and autocrlf/filters are next: this tool hashes input bytes verbatim with no scrubbing, matching git hash-object --stdin; hashing a file by path may apply .gitattributes filters instead.',
+          },
+          {
+            question: 'What are the tree entry ordering rules?',
+            answer:
+              'Git orders entries byte-by-byte by name, with a special case for directories: an implicit “/” (0x2f) is appended to a directory name during comparison, although the stored name carries no trailing slash. Hence a directory a.dir sorts before a file a.txt (at the fifth byte, the directory’s implicit “/” 0x2f loses to the file comparison). Directory modes are stored internally as 40000 (the 040000 shown by ls-tree is display-only), and child hashes are 20 raw bytes for SHA-1 or 32 for SHA-256.',
+          },
+          {
+            question: 'Why must commits and tags be pasted as “raw text”?',
+            answer:
+              'Commit and tag bodies are strictly canonical text (a header section, one blank line, then the message, typically ending with a newline), and Git hashes those exact bytes with the header. Any byte difference — timezone spelling, author-line shape, a missing final newline — changes the object ID. Use git cat-file commit <id> / git cat-file tag <id> to obtain the precise text; the tool neither completes fields nor auto-corrects them.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -215,4 +215,9 @@ export const toolLoaders: Record<
   'download-time-calculator': () => import('./download-time-calculator'),
   'markdown-table-generator': () => import('./markdown-table-generator'),
   'strings-json-converter': () => import('./strings-json-converter'),
+  'color-temperature-converter': () => import('./color-temperature-converter'),
+  'apparent-temperature': () => import('./apparent-temperature'),
+  'isin-validator': () => import('./isin-validator'),
+  'uuid-name-generator': () => import('./uuid-name-generator'),
+  'git-object-hash': () => import('./git-object-hash'),
 };
