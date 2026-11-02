@@ -215,4 +215,5 @@ export const toolLoaders: Record<
   'download-time-calculator': () => import('./download-time-calculator'),
   'markdown-table-generator': () => import('./markdown-table-generator'),
   'strings-json-converter': () => import('./strings-json-converter'),
+  'color-temperature-converter': () => import('./color-temperature-converter'),
 };

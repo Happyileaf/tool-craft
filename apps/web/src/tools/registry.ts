@@ -19139,6 +19139,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'color-temperature-converter',
+    name: '色温与颜色双向转换器',
+    nameEn: 'Color Temperature Converter',
+    description:
+      '开尔文色温与 sRGB 颜色双向转换：黑体辐射近似公式计算暖光冷光色值，支持 HEX/RGB 输出与 McCamy 反向估算相关色温。',
+    descriptionEn:
+      'Convert between Kelvin color temperature and sRGB colors: blackbody approximation for warm/cool light with HEX/RGB output, plus McCamy reverse CCT estimation.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/color-temperature-converter',
+    iconName: 'Sparkles',
+    tags: ['色温', '开尔文', 'CCT', '黑体辐射', 'HEX', 'RGB', '灯光'],
+    tagsEn: ['Color Temperature', 'Kelvin', 'CCT', 'Blackbody', 'HEX', 'RGB', 'Lighting'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '6500',
+    doc: {
+      zh: {
+        whatIsIt:
+          '色温与颜色双向转换器是一款纯浏览器本地运算的设计辅助工具：正向以开尔文色温（K）计算黑体辐射对应的 sRGB 颜色，反向将任意 HEX / RGB 颜色按 McCamy 公式估算其相关色温（CCT），常用于摄影调色、灯光选型与 UI 设计。',
+        coreFeatures: [
+          '色温 → 颜色：Tanner Helland 黑体辐射分段近似，覆盖 1000–40000K 全范围',
+          '颜色 → 色温：sRGB 解伽马转线性后经 CIE XYZ 色度坐标与 McCamy 公式估算 CCT',
+          '实时色块预览，一键复制 HEX 与 rgb() 两种输出',
+          '烛光、钨丝灯、正午日光、阴天、蓝天等常见光源预设',
+          '纯浏览器本地运算，无任何网络请求',
+        ],
+        howToUse: [
+          '选择「色温 → 颜色」模式，输入色温数值或拖动滑块（1000–40000K）',
+          '也可直接点击常见光源预设快速定位典型色温',
+          '在右侧查看色块预览与 HEX / RGB 值，点击复制按钮取用',
+          '切换「颜色 → 色温」模式，输入 #RRGGBB、#RGB 或 rgb(r,g,b) 即可估算 CCT',
+        ],
+        useCases: [
+          '摄影与视频调色：判断 2700K 暖光与 6500K 冷光的实际色值差异',
+          '灯光设计与家居选型：将灯具标注的色温转换为直观颜色',
+          'UI / 视觉设计：为暖色、冷色主题界面挑选物理意义明确的光源色',
+        ],
+        privacyNote:
+          '所有计算均在浏览器本地完成，不发起任何网络请求，不记录输入内容。',
+        faqs: [
+          {
+            question: '色温转颜色用的是什么算法？准确吗？',
+            answer:
+              '正向采用 Tanner Helland 发布并被广泛引用的黑体辐射分段近似公式（以 T/100 为参数的红/绿/蓝分段多项式），在 1000–40000K 范围内与摄影、灯光行业常用的色温色表高度一致，适合设计选色；它不是 CIE 普朗克轨迹的严格积分结果。',
+          },
+          {
+            question: '反向估算的色温为什么和原值有偏差？',
+            answer:
+              '反向使用 McCamy (1992) 相关色温近似公式，且 sRGB 需要先解伽马转为线性光再转 XYZ，两次近似叠加后存在约几个百分点的误差；此外黑体近似生成的颜色并不严格落在黑体轨迹上，因此往返结果不会完全相等，属正常现象。',
+          },
+          {
+            question: '为什么输入纯黑会报错？',
+            answer:
+              '色温由 CIE xy 色度坐标计算，而色度坐标是 X、Y、Z 三刺激值的归一化比值；纯黑的三刺激值全部为 0，分母为零且不携带任何色度信息，物理上也不存在“黑色光”的色温。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Color Temperature Converter is a fully local browser utility: forward direction computes the sRGB color of blackbody radiation from a Kelvin temperature, and reverse direction estimates correlated color temperature (CCT) from any HEX/RGB color via the McCamy formula. It is useful for photo grading, lighting selection, and UI design.',
+        coreFeatures: [
+          'Kelvin → color: Tanner Helland blackbody piecewise approximation covering 1000–40000K',
+          'Color → Kelvin: sRGB de-gamma to linear, CIE XYZ chromaticity, then the McCamy CCT formula',
+          'Live swatch preview with one-click copy of HEX and rgb() output',
+          'Common light-source presets: candle, tungsten, midday sun, overcast, blue sky',
+          '100% in-browser computation with no network requests',
+        ],
+        howToUse: [
+          'Pick "Kelvin → color" and enter a temperature or drag the slider (1000–40000K)',
+          'Or click a common light-source preset to jump to a typical temperature',
+          'Read the swatch, HEX, and RGB values on the right; click copy to take them',
+          'Switch to "color → Kelvin" and enter #RRGGBB, #RGB, or rgb(r,g,b) to estimate CCT',
+        ],
+        useCases: [
+          'Photo/video grading: comparing the actual colors of 2700K warm and 6500K cool light',
+          'Lighting and interior design: turning lamp-labeled Kelvin values into concrete colors',
+          'UI/visual design: choosing physically meaningful light colors for warm and cool themes',
+        ],
+        privacyNote:
+          'All computation happens locally in your browser. No network requests are made and no input is logged.',
+        faqs: [
+          {
+            question: 'What algorithm powers Kelvin-to-color, and is it accurate?',
+            answer:
+              'The forward direction uses Tanner Helland’s widely cited piecewise blackbody approximation (per-channel polynomials parameterized by T/100). Over 1000–40000K it closely matches the color-temperature tables used in photography and lighting; it is not a strict integration of the CIE Planckian locus.',
+          },
+          {
+            question: 'Why does the reverse estimate differ from the original value?',
+            answer:
+              'The reverse uses the McCamy (1992) CCT approximation after de-gammaing sRGB into linear light and converting to XYZ. Two layers of approximation introduce a few percent error, and colors produced by the blackbody approximation do not sit exactly on the Planckian locus, so round trips are not exact — this is expected.',
+          },
+          {
+            question: 'Why does pure black produce an error?',
+            answer:
+              'CCT is computed from CIE xy chromaticity, a normalized ratio of the XYZ tristimulus values. Pure black has all-zero tristimulus values, so the denominator is zero and it carries no chromaticity information; physically there is no such thing as “black light”.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
