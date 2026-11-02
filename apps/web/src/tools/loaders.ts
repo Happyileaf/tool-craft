@@ -228,4 +228,5 @@ export const toolLoaders: Record<
   'braille-codec': () => import('./braille-codec'),
   'cubic-bezier-generator': () => import('./cubic-bezier-generator'),
   'keyboard-event-viewer': () => import('./keyboard-event-viewer'),
+  'gzip-codec': () => import('./gzip-codec'),
 };

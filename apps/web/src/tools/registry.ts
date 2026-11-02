@@ -20444,6 +20444,96 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'gzip-codec',
+    name: 'GZip / Deflate 压缩解压工具',
+    nameEn: 'GZip / Deflate Compress & Decompress',
+    description:
+      '在浏览器本地用原生 CompressionStream 对文本进行 gzip / deflate 压缩与解压，产物以 Hex（1f8b…）或 Base64 表示，展示原始/压缩字节数、压缩率与往返一致性校验；非法载荷与损坏数据给出明确中文错误，零依赖、无网络请求。',
+    descriptionEn:
+      'Compress and decompress text with gzip/deflate locally via the native CompressionStream API. Payloads are shown as Hex (1f8b…) or Base64, with byte counts, compression ratio and round-trip verification. Bad or corrupted input yields clear error messages. Zero dependencies, no network requests.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/gzip-codec',
+    iconName: 'Binary',
+    tags: ['gzip', 'deflate', '压缩', '解压', 'Base64'],
+    tagsEn: ['gzip', 'deflate', 'Compression', 'Decompression', 'Base64'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'GZip / Deflate 压缩解压工具基于浏览器原生 CompressionStream / DecompressionStream，在设备本地完成文本与 gzip/deflate 字节流的双向转换，常用于本地验证压缩数据、手工调试带 Content-Encoding: gzip 的接口载荷。',
+        coreFeatures: [
+          '文本 → gzip / raw deflate 压缩，输出 Hex 与 Base64 两种表示，支持一键复制',
+          'Hex / Base64 载荷 → UTF-8 文本解压，输入空白自动忽略',
+          '实时展示原始字节数、压缩字节数与压缩率，附 decompress(compress(x)) 往返一致性校验',
+          'gzip 魔数 1f 8b 预校验，损坏、截断或算法不匹配时给出明确错误而非页面崩溃',
+          '检测运行环境对 CompressionStream 的支持，不支持时显示降级提示',
+        ],
+        howToUse: [
+          '选择「压缩」或「解压」，再选择算法（gzip 或 deflate）与载荷格式（Hex / Base64）',
+          '压缩模式下左侧输入文本，右侧即时得到压缩产物与统计；解压模式粘贴载荷还原文本',
+          '点击「交换输入输出」可直接把上一次结果作为反向输入，验证往返',
+        ],
+        useCases: [
+          '调试 Content-Encoding: gzip 的 HTTP 接口，手工构造或解析压缩请求体',
+          '验证日志、文件中 gzip 字节流的魔数与内容',
+          '在不安装任何本地软件、不上传数据的前提下快速压缩小段文本',
+        ],
+        privacyNote:
+          '压缩与解压完全在浏览器内通过原生流 API 完成，不发起任何网络请求，输入数据不会离开设备。',
+        faqs: [
+          {
+            question: 'gzip、deflate 和 zlib 有什么区别？',
+            answer:
+              'gzip 是 DEFLATE 数据加 gzip 头与 CRC 尾（魔数 1f 8b）；本工具的 deflate 指 CompressionStream 的原始 DEFLATE 流，不带 zlib（78 9c）封装头；如需 zlib 容器请先去除两字节头或改用其他工具。',
+          },
+          {
+            question: '为什么很短的文本压缩后反而变大？',
+            answer:
+              'gzip/deflate 流包含固定头部、字典描述与校验尾，对极短或高熵文本，元数据开销可能超过节省的字节，压缩率可能超过 100%，这是正常现象。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The GZip / Deflate Compress & Decompress tool uses the browser-native CompressionStream / DecompressionStream APIs to convert between text and gzip/deflate byte streams entirely on-device. It is useful for verifying compressed payloads locally or hand-debugging API requests with Content-Encoding: gzip.',
+        coreFeatures: [
+          'Compress text to gzip / raw deflate, output as Hex or Base64 with one-click copy',
+          'Decompress Hex / Base64 payloads back to UTF-8 text; whitespace in input is ignored',
+          'Live original/compressed byte counts, compression ratio and decompress(compress(x)) round-trip check',
+          'Upfront gzip magic-number (1f 8b) validation; corrupted, truncated or mismatched payloads produce clear errors instead of crashing',
+          'Feature-detects CompressionStream support and shows a fallback notice when unavailable',
+        ],
+        howToUse: [
+          'Pick Compress or Decompress, then choose the algorithm (gzip or deflate) and payload format (Hex / Base64)',
+          'In compress mode enter text on the left to get the payload and stats; in decompress mode paste a payload to restore text',
+          'Click Swap to feed the last result back in the opposite direction and verify the round trip',
+        ],
+        useCases: [
+          'Debugging HTTP APIs with Content-Encoding: gzip by hand-building or parsing compressed bodies',
+          'Inspecting gzip byte streams in logs and files (magic number and contents)',
+          'Quickly compressing small text without installing software or uploading data',
+        ],
+        privacyNote:
+          'All compression and decompression run in-browser via native streaming APIs. No network request is made and input data never leaves your device.',
+        faqs: [
+          {
+            question: 'What is the difference between gzip, deflate and zlib?',
+            answer:
+              'gzip wraps DEFLATE data with a gzip header (magic 1f 8b) and CRC trailer. The deflate option here is CompressionStream raw DEFLATE without the zlib (78 9c) container header. For zlib-wrapped data, strip the wrapper or use another tool.',
+          },
+          {
+            question: 'Why can very short text become larger after compression?',
+            answer:
+              'gzip/deflate streams carry fixed headers, dictionary metadata and a checksum trailer. For tiny or high-entropy inputs that overhead can exceed the saved bytes, so the ratio may exceed 100%, which is expected.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
