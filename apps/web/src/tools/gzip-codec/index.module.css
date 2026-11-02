@@ -1,0 +1,77 @@
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.card {
+  min-width: 0;
+}
+
+.editor {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.outputArea {
+  min-height: 240px;
+  max-height: 460px;
+  overflow: auto;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.92);
+  padding: 16px;
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, monospace);
+  font-size: 13px;
+  line-height: 1.6;
+  word-break: break-all;
+  color: #a7f3d0;
+}
+
+.errorBox {
+  margin-top: 12px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.roundTrip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 6px;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+}
+
+@media (max-width: 860px) {
+  .panels {
+    grid-template-columns: 1fr;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -44,7 +44,7 @@
 | 20261017183437 | 百分比计算器 | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017183437.md) |
 | 20261017183438 | 图片与 Base64 Data URI 互转 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017183438.md) |
 | 20261017200232 | 字符集解码与乱码修复 | Web Tool | Existing Gap | Pending | 2026-10-17 | | [详情](./idea-details/20261017200232.md) |
-| 20261017200236 | CSS 缓动函数（cubic-bezier）生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017200236.md) |
+| 20261017200236 | CSS 缓动函数（cubic-bezier）生成器 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017200236.md) |
 | 20261017200238 | Markdown 表格生成器 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017200238.md) |
 | 20261017200239 | robots.txt 生成器 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017200239.md) |
 | 20261017200240 | MIME 类型速查与识别 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017200240.md) |
@@ -68,7 +68,7 @@
 | 20261021221302 | UUID 解析校验器（版本/变体/时间戳提取与合法性检查） | Web Tool | Existing Gap | In Progress | 2026-10-21 | trae-agent | [详情](./idea-details/20261021221302.md) |
 | 20261021221303 | Favicon 生成器（图片导出多尺寸 PNG 与 .ico） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021221303.md) |
 | 20261021221304 | Flexbox 布局可视化生成器（输出 CSS） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021221304.md) |
-| 20261021221305 | 键盘事件 / 按键码查看器（keyCode、code、修饰键速查与监听） | Web Tool | External Reference | Pending | 2026-10-21 | | [详情](./idea-details/20261021221305.md) |
+| 20261021221305 | 键盘事件 / 按键码查看器（keyCode、code、修饰键速查与监听） | Web Tool | External Reference | In Progress | 2026-10-21 | trae-agent | [详情](./idea-details/20261021221305.md) |
 | 20261021221306 | IBAN 银行账号校验与格式化（校验位算法） | Web Tool | External Reference | In Progress | 2026-10-21 | trae-agent | [详情](./idea-details/20261021221306.md) |
 | 20261021221308 | docker run 命令转 docker-compose.yml | Web Tool | External Reference | Pending | 2026-10-21 | | [详情](./idea-details/20261021221308.md) |
 | 20261022221403 | 全角/半角字符批量转换器 | Web Tool | Existing Gap | In Progress | 2026-10-22 | trae-agent | [详情](./idea-details/20261022221403.md) |
@@ -112,7 +112,7 @@
 | 20261027020214 | DMARC 记录生成与校验器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027020214.md) |
 | 20261027020216 | 多时区会议时间规划器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027020216.md) |
 | 20261027020217 | CSS clip-path 可视化生成器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027020217.md) |
-| 20261027020218 | 盲文（Braille）点阵编解码器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027020218.md) |
+| 20261027020218 | 盲文（Braille）点阵编解码器 | Web Tool | Exploration | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027020218.md) |
 | 20261027040226 | 色温 ↔ RGB/HEX 双向转换器（开尔文色温计算器） | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027040226.md) |
 | 20261027081101 | 文件魔数（Magic Number）签名识别器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027081101.md) |
 | 20261027081102 | 线性回归与相关系数计算器 | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027081102.md) |
@@ -166,13 +166,13 @@
 | 20261030140203 | EUI-64 / SLAAC IPv6 链路本地地址计算器 | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261030140203.md) |
 | 20261030140204 | Verhoeff / Damm 校验位计算器 | Web Tool | Exploration | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030140204.md) |
 | 20261030140205 | BMR 基础代谢与 TDEE 每日热量消耗计算器 | Web Tool | Exploration | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030140205.md) |
-| 20261030200907 | GZip / Deflate 压缩与解压工具 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030200907.md) |
+| 20261030200907 | GZip / Deflate 压缩与解压工具 | Web Tool | Existing Gap | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030200907.md) |
 | 20261030200909 | MGRS 军用地形图坐标 ↔ WGS-84 经纬度编解码器 | Web Tool | External Reference | Pending | 2026-10-30 | | [详情](./idea-details/20261030200909.md) |
 | 20261030200911 | systemd .service 单元文件生成器 | Web Tool | Exploration | Pending | 2026-10-30 | | [详情](./idea-details/20261030200911.md) |
 | 20261031020750 | Unified Diff / Patch 解析与统计查看器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031020750.md) |
 | 20261031020752 | ELF 文件头解析器 | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031020752.md) |
 | 20261031020753 | C 结构体位域打包 / 解包器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031020753.md) |
-| 20261031020754 | JSON → Rust struct 生成器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031020754.md) |
+| 20261031020754 | JSON → Rust struct 生成器 | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031020754.md) |
 | 20261031080655 | ZIP 归档结构解析器（只读列目录与元数据展示） | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031080655.md) |
 | 20261031080656 | MRZ 机读旅行证件校验器（TD1 / TD2 / TD3 护照机读码校验） | Web Tool | External Reference | Pending | 2026-10-31 | | [详情](./idea-details/20261031080656.md) |
 | 20261031080657 | AA 分账计算器（多人费用分摊与最小转账结算） | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031080657.md) |

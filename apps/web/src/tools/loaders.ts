@@ -225,4 +225,9 @@ export const toolLoaders: Record<
   'openssh-randomart': () => import('./openssh-randomart'),
   'excel-date-converter': () => import('./excel-date-converter'),
   'ethereum-unit-converter': () => import('./ethereum-unit-converter'),
+  'braille-codec': () => import('./braille-codec'),
+  'cubic-bezier-generator': () => import('./cubic-bezier-generator'),
+  'keyboard-event-viewer': () => import('./keyboard-event-viewer'),
+  'gzip-codec': () => import('./gzip-codec'),
+  'json-to-rust': () => import('./json-to-rust'),
 };

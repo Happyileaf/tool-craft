@@ -20166,6 +20166,464 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'cubic-bezier-generator',
+    name: 'CSS cubic-bezier 缓动函数生成器',
+    nameEn: 'CSS cubic-bezier Easing Function Generator',
+    description:
+      '在可缩放矢量曲线上拖拽控制点或直接填写四个数值，实时生成 CSS cubic-bezier() 缓动函数并预览位移动画；内置 linear、ease、ease-in/out/in-out 与 easeInBack/easeOutBack 过冲预设，x 越界即时报错。全部计算（牛顿迭代 + 二分回退求 y(x)）在浏览器本地完成。',
+    descriptionEn:
+      'Drag control points on an SVG curve or enter four numbers to generate a CSS cubic-bezier() easing function live, with a displacement animation preview. Ships linear/ease/ease-in/ease-out/ease-in-out and overshoot back presets and flags out-of-range x. All math (Newton iteration with bisection fallback for y(x)) runs locally in the browser.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/cubic-bezier-generator',
+    iconName: 'Spline',
+    tags: ['cubic-bezier', '缓动', 'CSS动画', 'transition', '贝塞尔'],
+    tagsEn: ['cubic-bezier', 'Easing', 'CSS Animation', 'Transition', 'Bézier'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS cubic-bezier 缓动函数生成器帮助前端开发者可视化调整动画时序曲线：拖拽曲线上的两个控制点或编辑四个数值，实时得到 cubic-bezier() 代码并观察方块位移动画，内置常用预设与过冲曲线，参数非法时即时提示。',
+        coreFeatures: [
+          'SVG 曲线图拖拽 P1/P2 控制点，x 轴限制 0–1，y 轴可越界展示过冲/回弹',
+          '四个数值输入框与曲线双向联动，实时生成 cubic-bezier(x1, y1, x2, y2)',
+          '内置 linear、ease、ease-in、ease-out、ease-in-out、easeInBack、easeOutBack 预设',
+          'requestAnimationFrame 驱动的方块位移动画演示，可调时长并显示实时 t → 输出值',
+          'x1/x2 越界或非有限数即时错误提示并禁用复制；纯本地计算，零依赖、无网络请求',
+        ],
+        howToUse: [
+          '在左侧曲线图直接拖拽橙色/绿色控制点，或在右侧修改 x1/y1/x2/y2 数值',
+          '点击预设按钮快速套用规范关键字曲线；参数自动联动到曲线与代码',
+          '点击「复制」取走 cubic-bezier()，或点「播放动画」用该曲线预览位移效果',
+        ],
+        useCases: [
+          '为 CSS transition / animation 设计自定义缓动节奏',
+          '教学演示：直观理解控制点、过冲曲线与 y(x) 求解',
+          '快速取得与 ease 等关键字等价的 cubic-bezier 数值',
+        ],
+        privacyNote:
+          '曲线求值、数值校验与动画演示全部在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么 x1、x2 必须在 0 到 1 之间，y 却可以超出？',
+            answer:
+              'CSS 规范要求缓动曲线在时间轴（x）上从 0 单调推进到 1，因此 x1、x2 限制在 [0,1]；输出进度（y）允许越界，从而产生 easeInBack（先反向）、easeOutBack（过冲后回落）等效果。',
+          },
+          {
+            question: '生成的代码如何使用？',
+            answer:
+              '复制得到的 cubic-bezier(...) 可直接用于 transition-timing-function 或 animation-timing-function，例如 transition: transform 1s cubic-bezier(0.25, 0.1, 0.25, 1);。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CSS cubic-bezier Easing Function Generator lets frontend developers shape animation timing visually: drag two control points on an SVG curve or edit four numbers, instantly obtaining cubic-bezier() code and watching a box animate with it. Common and overshoot presets are built in, with immediate validation errors.',
+        coreFeatures: [
+          'Drag P1/P2 handles on an SVG curve; x is constrained to 0-1 while y may overshoot for back/bounce-like motion',
+          'Four numeric inputs stay in two-way sync with the curve and produce cubic-bezier(x1, y1, x2, y2) live',
+          'Built-in linear, ease, ease-in, ease-out, ease-in-out, easeInBack and easeOutBack presets',
+          'requestAnimationFrame displacement demo with adjustable duration and live t-to-output readout',
+          'Immediate errors for out-of-range or non-finite x; fully local, zero-dependency, no network requests',
+        ],
+        howToUse: [
+          'Drag the orange/green handles on the curve, or edit the x1/y1/x2/y2 inputs on the right',
+          'Click a preset to apply spec-keyword curves; curve and code update together',
+          'Click Copy to take the cubic-bezier() value, or Play to preview motion using it',
+        ],
+        useCases: [
+          'Designing custom easing for CSS transitions and animations',
+          'Teaching control points, overshoot curves and y(x) solving visually',
+          'Obtaining numeric cubic-bezier equivalents of ease-family keywords',
+        ],
+        privacyNote:
+          'Curve evaluation, validation and the animation demo all run locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why must x1/x2 be within 0-1 while y may exceed it?',
+            answer:
+              'The CSS spec requires the easing curve to progress monotonically along the time axis (x) from 0 to 1, so x1/x2 are clamped to [0,1]. The output progress (y) may overshoot, enabling effects such as easeInBack (initial pullback) and easeOutBack (overshoot then settle).',
+          },
+          {
+            question: 'How do I use the generated code?',
+            answer:
+              'Paste the copied cubic-bezier(...) into transition-timing-function or animation-timing-function, e.g. transition: transform 1s cubic-bezier(0.25, 0.1, 0.25, 1);.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'braille-codec',
+    name: '盲文 Braille 点阵编解码器',
+    nameEn: 'Braille Dot Pattern Codec',
+    description:
+      '英文一级盲文（Grade 1）与 Unicode 盲文字符（U+2800–U+28FF）双向转换，自动处理数字号 ⠼；逐字符可视化六点格凸点（含 7、8 点扩展位）、点号集合与十六进制码位。纯浏览器本地零依赖运算，不支持字符给出警告并跳过。',
+    descriptionEn:
+      'Convert English Grade-1 text to Unicode Braille (U+2800-U+28FF) and back with automatic number-sign handling, and visualize each six-dot cell (including dots 7-8), active dot numbers and hex code points. Fully local, zero-dependency computation; unsupported characters are skipped with warnings.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/braille-codec',
+    iconName: 'Type',
+    tags: ['盲文', 'Braille', '点阵', 'Unicode', '无障碍'],
+    tagsEn: ['Braille', 'Dot Pattern', 'Unicode', 'Accessibility', 'A11y'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'hello 2026',
+    doc: {
+      zh: {
+        whatIsIt:
+          '盲文 Braille 点阵编解码器是一款纯浏览器本地运行的盲文转换与学习工具，实现英文一级盲文（Grade 1）与 Unicode Braille Patterns 码位之间的双向转换，并逐字符展示六点格凸点、点号与码位，可用于无障碍开发校验与盲文学习。',
+        coreFeatures: [
+          '文本→盲文：字母 a–z、数字 0–9、空格与常用标点编码为 U+2800–U+28FF，数字序列自动插入数字号 ⠼',
+          '盲文→文本：识别数字号上下文还原数字，未映射点位给出警告并跳过',
+          '六点格可视化：逐字符显示点 1–6（及扩展点 7、8）的点亮状态与 U+28xx 码位',
+          '大小写不敏感、空输入安全；不支持字符（如中文）以警告形式列出，绝不抛异常',
+        ],
+        howToUse: [
+          '选择「文本 → 盲文」或「盲文 → 文本」方向，在左侧输入内容',
+          '右侧即时显示盲文或还原文本，编码模式下方展示逐字符点阵与码位',
+          '查看黄色警告框了解被跳过的字符，点击「复制」取得结果',
+        ],
+        useCases: [
+          '无障碍开发：校验点显器/盲文显示使用的 Unicode Braille 单元编码',
+          '盲文学习：记忆字母数字点位与数字号规则',
+          '排版与 Unicode 分析：查看 U+2800–U+28FF 码位与点掩码',
+        ],
+        privacyNote:
+          '全部编解码由零依赖纯函数在浏览器本地完成，不发起任何网络请求，输入内容不会离开设备。',
+        faqs: [
+          {
+            question: '支持哪种盲文标准？',
+            answer:
+              '支持英文一级（不缩写）盲文：字母 a–z、数字（数字号 ⠼ 后借用 a–j 点位，j 表示 0）、空格与常用标点。二级缩写、汉语盲文及其他语种不在范围内，相关字符会被跳过并给出警告。',
+          },
+          {
+            question: 'Unicode 盲文码位如何计算？',
+            answer:
+              '码位 = 0x2800 + 凸点位掩码：点 1=0x01、点 2=0x02、点 3=0x04、点 4=0x08、点 5=0x10、点 6=0x20、点 7=0x40、点 8=0x80。例如点 1（字母 a）是 U+2801，点 1,2（字母 b）是 U+2803。',
+          },
+          {
+            question: '数字是怎么表示的？',
+            answer:
+              '数字复用字母 a–j 的点位并以数字号 ⠼（点 3,4,5,6）引导：a→1 … i→9，j→0。工具会在数字序列前自动插入数字号，遇到空格或字母时退出数字模式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Braille Dot Pattern Codec is a fully browser-local tool that converts English Grade-1 text to Unicode Braille Patterns and back, visualizing each six-dot cell, its dot numbers and code point. It supports accessibility-development verification and Braille learning.',
+        coreFeatures: [
+          'Text to Braille: encodes letters a-z, digits 0-9, spaces and common punctuation into U+2800-U+28FF, inserting the number sign before digit runs',
+          'Braille to text: restores digits from number-sign context; unmapped cells are skipped with warnings',
+          'Six-dot visualization: per-cell dots 1-6 (plus extension dots 7-8), active dot numbers and U+28xx code points',
+          'Case-insensitive and empty-input safe; unsupported characters (e.g. Chinese) are listed as warnings, never thrown',
+        ],
+        howToUse: [
+          'Choose the Text-to-Braille or Braille-to-Text direction and enter content on the left',
+          'The right panel instantly shows Braille or restored text; in encode mode a per-cell dot grid appears below',
+          'Review amber warnings for skipped characters and click Copy to take the result',
+        ],
+        useCases: [
+          'Accessibility development: validating Unicode Braille cell encoding for refreshable displays',
+          'Learning Grade-1 Braille: memorizing letter/number dot patterns and the number-sign rule',
+          'Typography and Unicode analysis: inspecting U+2800-U+28FF code points and dot masks',
+        ],
+        privacyNote:
+          'All encoding and decoding run locally via zero-dependency pure functions. No network request is made and no input ever leaves your device.',
+        faqs: [
+          {
+            question: 'Which Braille standard is supported?',
+            answer:
+              'English Grade-1 (uncontracted) Braille: letters a-z, digits via letters a-j after the number sign (j is 0), spaces and common punctuation. Grade-2 contractions, Chinese Braille and other languages are out of scope and are skipped with a warning.',
+          },
+          {
+            question: 'How are Unicode Braille code points computed?',
+            answer:
+              'Code point = 0x2800 + dot mask: dot 1 = 0x01, dot 2 = 0x02, dot 3 = 0x04, dot 4 = 0x08, dot 5 = 0x10, dot 6 = 0x20, dot 7 = 0x40, dot 8 = 0x80. Dot 1 (letter a) is U+2801; dots 1-2 (letter b) are U+2803.',
+          },
+          {
+            question: 'How are digits represented?',
+            answer:
+              'Digits reuse the patterns of letters a-j introduced by the number sign (dots 3-4-5-6): a maps to 1 through i to 9, j maps to 0. The sign is inserted before a digit run and number mode ends at a space or letter.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'keyboard-event-viewer',
+    name: '键盘事件 / 按键码查看器',
+    nameEn: 'Keyboard Event & KeyCode Viewer',
+    description:
+      '聚焦捕获区域后按下任意键或组合键，实时查看 KeyboardEvent 的 key、code、keyCode/which、location 与 ctrl/alt/shift/meta 修饰键状态，并以固定顺序展示可读组合键（如 Ctrl+Shift+A）；内置 A–Z、0–9、F1–F12、方向键与常用控制键速查表，支持按键名/code/键码过滤与最近事件历史，可选 preventDefault 拦截。',
+    descriptionEn:
+      'Focus the capture area and press any key or chord to inspect a live KeyboardEvent: key, code, legacy keyCode/which, location and ctrl/alt/shift/meta states, plus a fixed-order combo label (e.g. Ctrl+Shift+A). Includes a searchable reference table for A-Z, 0-9, F1-F12, arrows and control keys, recent-event history and an optional preventDefault switch.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/keyboard-event-viewer',
+    iconName: 'KeyRound',
+    tags: ['键盘事件', 'keyCode', 'KeyboardEvent', '快捷键', '前端调试'],
+    tagsEn: ['Keyboard Event', 'keyCode', 'KeyboardEvent', 'Shortcuts', 'Frontend Debug'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '键盘事件 / 按键码查看器是一款纯浏览器本地运行的前端调试工具：在捕获区域获得焦点后按下任意键，即可实时查看完整 KeyboardEvent 字段、修饰键状态与可读组合键表示，并通过静态速查表快速取得常用按键的 keyCode、code 与 key 值，常用于快捷键与游戏按键开发。',
+        coreFeatures: [
+          '实时捕获 keydown 事件：展示 key、code、keyCode/which（legacy）、location（标准/左/右/小键盘）与 repeat',
+          '修饰键状态面板：ctrlKey、altKey、shiftKey、metaKey 独立布尔标签，组合键按 Ctrl+Alt+Shift+Meta+主键 固定顺序渲染',
+          '最近 20 条事件历史（含时间戳），可一键清空；可选 preventDefault 开关拦截 Tab/F1 等默认行为',
+          '速查表覆盖 A–Z（65–90）、0–9（48–57）、F1–F12（112–123）、方向键（37–40）及 Enter/Esc/Space/Tab 等控制键，支持按键名、code、keyCode 子串过滤',
+        ],
+        howToUse: [
+          '点击「开始捕获」或直接点击虚线区域使其获得焦点',
+          '按下任意键或组合键，上方即时显示最新事件的全部字段与组合键',
+          '需要拦截 Tab、F1 等默认行为时，打开右上角「拦截默认行为」开关',
+          '在速查表搜索框输入按键名、code 或键码（如 Enter、KeyA、27）快速定位',
+        ],
+        useCases: [
+          '开发键盘快捷键功能时确认各按键的 key / code / keyCode',
+          '区分左右修饰键与数字小键盘事件（KeyboardEvent.location）',
+          '排查浏览器对空格、Tab、功能键的默认行为与组合键顺序',
+        ],
+        privacyNote:
+          '所有事件仅在当前页面内存中捕获与展示，不发起任何网络请求，离开页面后历史即消失。',
+        faqs: [
+          {
+            question: 'keyCode 和 which 为什么标注为已废弃？',
+            answer:
+              'keyCode / which 已从 Web 标准移除，不同布局键盘下取值不可靠，新代码应使用 event.key（逻辑值）与 event.code（物理位置）。工具保留二者仅用于兼容老代码速查。',
+          },
+          {
+            question: '为什么在捕获区域外按键没有反应？',
+            answer:
+              '监听绑定在捕获区域上，需要先点击区域获得焦点；这样设计可以避免工具页面劫持全局快捷键。失焦后面板显示「已失焦」，重新点击即可恢复。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Keyboard Event & KeyCode Viewer is a fully browser-local frontend debugging tool: focus the capture area and press any key to inspect every KeyboardEvent field, modifier states and a readable combo label, while a static reference table provides keyCode/code/key for common keys. It is handy when building keyboard shortcuts or game controls.',
+        coreFeatures: [
+          'Live keydown capture: key, code, legacy keyCode/which, location (standard/left/right/numpad) and repeat',
+          'Modifier panel with independent boolean tags for ctrlKey, altKey, shiftKey and metaKey; combos render in the fixed order Ctrl+Alt+Shift+Meta+main key',
+          'History of the latest 20 events with timestamps and a clear button; an optional preventDefault switch blocks default actions such as Tab/F1',
+          'Reference table covering A-Z (65-90), 0-9 (48-57), F1-F12 (112-123), arrows (37-40) and control keys like Enter/Esc/Space/Tab, filterable by name, code or keyCode substring',
+        ],
+        howToUse: [
+          'Click "Start capture" or click the dashed area to give it focus',
+          'Press any key or chord; the panel above instantly shows every field of the latest event and its combo',
+          'Turn on the preventDefault switch when you need to suppress default actions such as Tab or F1',
+          'Type a key name, code or code number (e.g. Enter, KeyA, 27) in the reference table search box to locate a key',
+        ],
+        useCases: [
+          'Looking up key / code / keyCode while implementing keyboard shortcuts',
+          'Distinguishing left/right modifiers and numpad keys via KeyboardEvent.location',
+          'Investigating browser default actions and combo ordering for Space, Tab and function keys',
+        ],
+        privacyNote:
+          'Events are captured and displayed in page memory only. No network request is made, and the history disappears when you leave the page.',
+        faqs: [
+          {
+            question: 'Why are keyCode and which marked deprecated?',
+            answer:
+              'keyCode and which have been removed from the Web standards and are unreliable across keyboard layouts. New code should use event.key (logical value) and event.code (physical position). They are kept here only for looking up legacy code.',
+          },
+          {
+            question: 'Why are key presses outside the capture area ignored?',
+            answer:
+              'The listener is attached to the capture area, which must first be focused by clicking it. This prevents the tool page from hijacking global shortcuts. Click again after the area loses focus to resume capture.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'gzip-codec',
+    name: 'GZip / Deflate 压缩解压工具',
+    nameEn: 'GZip / Deflate Compress & Decompress',
+    description:
+      '在浏览器本地用原生 CompressionStream 对文本进行 gzip / deflate 压缩与解压，产物以 Hex（1f8b…）或 Base64 表示，展示原始/压缩字节数、压缩率与往返一致性校验；非法载荷与损坏数据给出明确中文错误，零依赖、无网络请求。',
+    descriptionEn:
+      'Compress and decompress text with gzip/deflate locally via the native CompressionStream API. Payloads are shown as Hex (1f8b…) or Base64, with byte counts, compression ratio and round-trip verification. Bad or corrupted input yields clear error messages. Zero dependencies, no network requests.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/gzip-codec',
+    iconName: 'Binary',
+    tags: ['gzip', 'deflate', '压缩', '解压', 'Base64'],
+    tagsEn: ['gzip', 'deflate', 'Compression', 'Decompression', 'Base64'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'GZip / Deflate 压缩解压工具基于浏览器原生 CompressionStream / DecompressionStream，在设备本地完成文本与 gzip/deflate 字节流的双向转换，常用于本地验证压缩数据、手工调试带 Content-Encoding: gzip 的接口载荷。',
+        coreFeatures: [
+          '文本 → gzip / raw deflate 压缩，输出 Hex 与 Base64 两种表示，支持一键复制',
+          'Hex / Base64 载荷 → UTF-8 文本解压，输入空白自动忽略',
+          '实时展示原始字节数、压缩字节数与压缩率，附 decompress(compress(x)) 往返一致性校验',
+          'gzip 魔数 1f 8b 预校验，损坏、截断或算法不匹配时给出明确错误而非页面崩溃',
+          '检测运行环境对 CompressionStream 的支持，不支持时显示降级提示',
+        ],
+        howToUse: [
+          '选择「压缩」或「解压」，再选择算法（gzip 或 deflate）与载荷格式（Hex / Base64）',
+          '压缩模式下左侧输入文本，右侧即时得到压缩产物与统计；解压模式粘贴载荷还原文本',
+          '点击「交换输入输出」可直接把上一次结果作为反向输入，验证往返',
+        ],
+        useCases: [
+          '调试 Content-Encoding: gzip 的 HTTP 接口，手工构造或解析压缩请求体',
+          '验证日志、文件中 gzip 字节流的魔数与内容',
+          '在不安装任何本地软件、不上传数据的前提下快速压缩小段文本',
+        ],
+        privacyNote:
+          '压缩与解压完全在浏览器内通过原生流 API 完成，不发起任何网络请求，输入数据不会离开设备。',
+        faqs: [
+          {
+            question: 'gzip、deflate 和 zlib 有什么区别？',
+            answer:
+              'gzip 是 DEFLATE 数据加 gzip 头与 CRC 尾（魔数 1f 8b）；本工具的 deflate 指 CompressionStream 的原始 DEFLATE 流，不带 zlib（78 9c）封装头；如需 zlib 容器请先去除两字节头或改用其他工具。',
+          },
+          {
+            question: '为什么很短的文本压缩后反而变大？',
+            answer:
+              'gzip/deflate 流包含固定头部、字典描述与校验尾，对极短或高熵文本，元数据开销可能超过节省的字节，压缩率可能超过 100%，这是正常现象。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The GZip / Deflate Compress & Decompress tool uses the browser-native CompressionStream / DecompressionStream APIs to convert between text and gzip/deflate byte streams entirely on-device. It is useful for verifying compressed payloads locally or hand-debugging API requests with Content-Encoding: gzip.',
+        coreFeatures: [
+          'Compress text to gzip / raw deflate, output as Hex or Base64 with one-click copy',
+          'Decompress Hex / Base64 payloads back to UTF-8 text; whitespace in input is ignored',
+          'Live original/compressed byte counts, compression ratio and decompress(compress(x)) round-trip check',
+          'Upfront gzip magic-number (1f 8b) validation; corrupted, truncated or mismatched payloads produce clear errors instead of crashing',
+          'Feature-detects CompressionStream support and shows a fallback notice when unavailable',
+        ],
+        howToUse: [
+          'Pick Compress or Decompress, then choose the algorithm (gzip or deflate) and payload format (Hex / Base64)',
+          'In compress mode enter text on the left to get the payload and stats; in decompress mode paste a payload to restore text',
+          'Click Swap to feed the last result back in the opposite direction and verify the round trip',
+        ],
+        useCases: [
+          'Debugging HTTP APIs with Content-Encoding: gzip by hand-building or parsing compressed bodies',
+          'Inspecting gzip byte streams in logs and files (magic number and contents)',
+          'Quickly compressing small text without installing software or uploading data',
+        ],
+        privacyNote:
+          'All compression and decompression run in-browser via native streaming APIs. No network request is made and input data never leaves your device.',
+        faqs: [
+          {
+            question: 'What is the difference between gzip, deflate and zlib?',
+            answer:
+              'gzip wraps DEFLATE data with a gzip header (magic 1f 8b) and CRC trailer. The deflate option here is CompressionStream raw DEFLATE without the zlib (78 9c) container header. For zlib-wrapped data, strip the wrapper or use another tool.',
+          },
+          {
+            question: 'Why can very short text become larger after compression?',
+            answer:
+              'gzip/deflate streams carry fixed headers, dictionary metadata and a checksum trailer. For tiny or high-entropy inputs that overhead can exceed the saved bytes, so the ratio may exceed 100%, which is expected.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-to-rust',
+    name: 'JSON → Rust struct 生成器',
+    nameEn: 'JSON to Rust Struct Generator',
+    description:
+      '粘贴 JSON 样本即可推断生成可直接使用的 Rust serde 结构体：整数 i64、浮点 f64、布尔 bool、字符串 String、null 退化为 Option；嵌套对象生成具名 struct，同型对象数组合并为 Vec<T>，空/异型数组回退 serde_json::Value；字段 snake_case 化并自动添加 #[serde(rename)] 保留原键，规避 Rust 关键字与重名冲突。',
+    descriptionEn:
+      'Paste a JSON sample and get ready-to-use Rust serde structs: i64/f64/bool/String scalars, Option for nulls, named nested structs, Vec<T> from homogeneous object arrays with merged fields, serde_json::Value fallback for empty/mixed arrays, snake_case field names with automatic #[serde(rename)] for original keys, and Rust keyword / duplicate-name handling.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-rust',
+    iconName: 'FileCode',
+    tags: ['JSON', 'Rust', 'serde', '结构体', '代码生成'],
+    tagsEn: ['JSON', 'Rust', 'serde', 'Struct', 'Code Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON → Rust struct 生成器是一款纯浏览器本地运行的代码生成工具：粘贴一段 JSON 样本即可推断出带 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)] 的 Rust 结构体代码，自动处理命名转换、serde rename、嵌套与数组，免去为 JSON 接口手写模型的重复劳动。',
+        coreFeatures: [
+          '标量类型推断：整数 i64、浮点 f64、布尔 bool、字符串 String，null 退化为 Option<serde_json::Value>',
+          '嵌套对象递归生成具名 struct（PascalCase），同型对象数组合并字段为单个 Vec<Item>，缺失键自动标 Option',
+          'int/float 混合数组提升为 f64；空数组与不可合并的异型数组回退 Vec<serde_json::Value> 并给出提示',
+          '字段名 snake_case 化，与原键不一致或为非法标识符时自动添加 #[serde(rename = "原键")]，Rust 关键字加下划线后缀，重名结构体自动编号',
+        ],
+        howToUse: [
+          '在左侧粘贴 JSON 对象样本（根为数组或标量时会生成单字段包装结构体）',
+          '在顶部设置根结构体名称（默认 Root），可关闭 Option 包裹',
+          '右侧即时生成 Rust 代码，点击「复制 Rust 代码」直接使用',
+          '查看底部警告了解空数组、异型数组、缺失字段等推断决策',
+        ],
+        useCases: [
+          'Rust 后端（axum/actix）为外部 JSON API 快速编写请求/响应模型',
+          '处理带连字符、驼峰等非 Rust 风格键名的第三方接口数据',
+          '理解一份未知 JSON 样本的结构层次与字段可空性',
+        ],
+        privacyNote:
+          'JSON 解析、类型推断与代码生成全部在浏览器本地完成，不发起任何网络请求，样本数据不会离开设备。',
+        faqs: [
+          {
+            question: '为什么数字统一用 i64，而不是 u64 或 i32？',
+            answer:
+              '样本无法表达无符号或位宽意图，i64 是最通用、反序列化兼容性最好的默认选择；超出 i64 安全范围的整数会退化为 f64。生成后可按业务需要手动收窄类型。',
+          },
+          {
+            question: 'null 字段为什么是 Option<serde_json::Value> 而不是具体类型？',
+            answer:
+              'null 样本不携带具体类型信息，无法推断是字符串、数字还是对象。若同名字段在数组其他元素中出现具体值，工具会自动合并为 Option<具体类型>；否则保留 serde_json::Value 占位，待人工替换。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON to Rust Struct Generator is a fully browser-local code generator: paste a JSON sample and get Rust structs with #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)], with automatic naming conversion, serde renames, nesting and array handling — eliminating the boilerplate of hand-writing models for JSON APIs.',
+        coreFeatures: [
+          'Scalar inference: i64 integers, f64 floats, bool booleans, String; null falls back to Option<serde_json::Value>',
+          'Nested objects recursively produce named PascalCase structs; homogeneous object arrays merge fields into a single Vec<Item>, with missing keys marked Option',
+          'Mixed int/float arrays widen to f64; empty and unmergeable heterogeneous arrays fall back to Vec<serde_json::Value> with warnings',
+          'snake_case field names with automatic #[serde(rename = "original")] when they differ or are invalid identifiers, underscore suffix for Rust keywords, numbered suffixes for duplicate struct names',
+        ],
+        howToUse: [
+          'Paste a JSON object sample on the left (array/scalar roots produce a single-field wrapper struct)',
+          'Set the root struct name (default Root) at the top; Option wrapping can be disabled',
+          'The Rust code appears instantly on the right — click Copy to use it directly',
+          'Check the warnings below for inference decisions such as empty arrays, mixed arrays and missing fields',
+        ],
+        useCases: [
+          'Quickly writing request/response models in Rust backends (axum/actix) for external JSON APIs',
+          'Handling third-party payloads with hyphenated or camelCase keys that are not valid Rust style',
+          'Understanding the structure and nullability of an unknown JSON sample',
+        ],
+        privacyNote:
+          'JSON parsing, type inference and code generation all run locally in your browser. No network request is made and sample data never leaves your device.',
+        faqs: [
+          {
+            question: 'Why are all integers i64 instead of u64 or i32?',
+            answer:
+              'A sample cannot express signedness or width intent, and i64 is the most general default with the best deserialization compatibility. Integers beyond the safe i64 range fall back to f64. You can narrow types manually after generation.',
+          },
+          {
+            question: 'Why is a null field Option<serde_json::Value> instead of a concrete type?',
+            answer:
+              'A null sample carries no concrete type information — it could be a string, number or object. When the same field appears with a concrete value in another array element, the tool merges it into Option<concrete type>; otherwise serde_json::Value is kept as a placeholder for manual replacement.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
