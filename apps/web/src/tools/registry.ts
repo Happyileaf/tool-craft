@@ -20362,6 +20362,105 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'security-headers-generator',
+    name: 'HTTP 安全响应头生成器',
+    nameEn: 'HTTP Security Headers Generator',
+    description:
+      '表单化生成 Strict-Transport-Security、X-Frame-Options、X-Content-Type-Options、Referrer-Policy、Cross-Origin-Opener-Policy、Permissions-Policy 与 Content-Security-Policy 七类安全响应头：HSTS 提供 max-age 档位与 preload 校验，CSP 支持逐指令源选择与 Report-Only，Permissions-Policy 按特性控制授权范围，并实时输出原始头、Nginx add_header 与 Apache Header set 三种形态；preload 不达标、unsafe-inline、过宽 script-src 等危险组合即时告警。',
+    descriptionEn:
+      'Generate seven families of security response headers through a form: Strict-Transport-Security, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Cross-Origin-Opener-Policy, Permissions-Policy and Content-Security-Policy. HSTS offers max-age presets with preload validation, CSP supports per-directive source selection and Report-Only, Permissions-Policy controls each powerful feature, and output is rendered live as raw headers, Nginx add_header or Apache Header set. Risky combinations such as sub-spec preload, unsafe-inline and overly broad script-src produce instant warnings.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/security-headers-generator',
+    iconName: 'ShieldCheck',
+    tags: ['安全响应头', 'HSTS', 'CSP', 'Permissions-Policy', 'Nginx'],
+    tagsEn: ['Security Headers', 'HSTS', 'CSP', 'Permissions-Policy', 'Nginx'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '安全响应头是 Web 服务器在 HTTP 响应中下发的一组声明式指令，浏览器据此强制实施传输安全（HSTS）、点击劫持防护（X-Frame-Options / CSP frame-ancestors）、MIME 嗅探禁止（nosniff）、来源信息裁剪（Referrer-Policy）、跨源进程隔离（COOP）、强大 API 访问控制（Permissions-Policy）与内容安全策略（CSP）。它们不需要改业务 JS，是性价比最高的 Web 纵深防御手段。本工具把这些头的语法、档位与互斥关系做成表单，实时输出可直接粘贴到 Nginx / Apache 的配置，并对常见误用给出告警。',
+        coreFeatures: [
+          '七类安全头：HSTS、X-Frame-Options、X-Content-Type-Options、Referrer-Policy、COOP、Permissions-Policy、CSP',
+          'HSTS 档位化：300 秒测试到 2 年长期策略，勾选 preload 时校验 max-age≥31536000 与 includeSubDomains',
+          'CSP 逐指令配置：default-src / script-src / object-src / frame-ancestors 等 11 条常用指令，内置 self、none、https:、strict-dynamic 等源快捷项，支持自定义域名，可切换 Report-Only',
+          'Permissions-Policy 按摄像头、麦克风、地理位置、支付、USB、FLoC 六个特性分别设置 () / (self) / *',
+          '三种输出：原始 HTTP 头、Nginx add_header ... always、Apache Header always set，一键复制',
+          '风险告警：preload 不达标、max-age=0、unsafe-inline / unsafe-eval、script-src https:* 通配、缺少 default-src / object-src、Referrer unsafe-url 等即时提示',
+        ],
+        howToUse: [
+          '从推荐基线开始（工具载入时即为较保守的默认配置），按业务需要调整',
+          '配置 CSP 时建议先以 Report-Only 观察控制台违规报告，确认无误点报告后再切回强制',
+          '在右侧选择 Nginx 或 Apache 输出，复制到服务器配置后 reload，并通过浏览器 DevTools 响应头或 securityheaders.com 复核',
+        ],
+        useCases: [
+          '新站点上线前补齐安全响应头，争取安全评分站 A/A+',
+          '为 CSP 上线做准备：先用 Report-Only 收集违规，再逐步收紧 script-src',
+          '审计现有配置：检查 HSTS preload 条件、XFO 与 frame-ancestors 是否冲突',
+        ],
+        privacyNote: '所有配置与生成均在浏览器本地完成，不涉及任何网络请求。',
+        faqs: [
+          {
+            question: 'CSP 上线为什么推荐先用 Report-Only？',
+            answer:
+              'Content-Security-Policy 是强制头，策略过严会直接拦截线上脚本、样式或图片，导致白屏。改用 Content-Security-Policy-Report-Only 时浏览器只上报违规不拦截，可在 report-uri / report-to 端点观察一个发布周期，确认业务资源都被覆盖后再切成强制。',
+          },
+          {
+            question: 'HSTS preload 为什么要求 max-age 至少一年？',
+            answer:
+              'preload 列表会被硬编码进 Chrome、Firefox 等浏览器，一旦提交即使用户从未访问过站点也强制 HTTPS，回滚成本极高（需要从列表移除并等待浏览器发版）。因此 hstspreload.org 要求 max-age≥31536000（1 年）且包含 includeSubDomains，以证明站点已长期稳定支持全站 HTTPS。',
+          },
+          {
+            question: 'X-Frame-Options 和 CSP frame-ancestors 该用哪个？',
+            answer:
+              'frame-ancestors 是 CSP Level 2 的现代替代，支持指定多个允许来源，而 XFO 只有 DENY / SAMEORIGIN 两种粗粒度策略。现代浏览器在两者同时存在时以 frame-ancestors 为准，旧浏览器只识别 XFO，因此过渡期建议两者一起下发且意图一致；确认目标浏览器后可只保留 CSP。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Security response headers are declarative instructions sent by a web server that let browsers enforce transport security (HSTS), clickjacking protection (X-Frame-Options / CSP frame-ancestors), MIME-sniffing prevention (nosniff), referrer trimming (Referrer-Policy), cross-origin process isolation (COOP), powerful-feature access control (Permissions-Policy) and a Content Security Policy — high-leverage defense-in-depth that requires no application JavaScript changes. This tool turns their syntax, presets and interactions into a form, emits ready-to-paste Nginx/Apache configuration live, and warns about common misuses.',
+        coreFeatures: [
+          'Seven header families: HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, COOP, Permissions-Policy and CSP',
+          'Preset HSTS ages from 300 seconds (testing) to 2 years, with preload validating max-age ≥ 31536000 and includeSubDomains',
+          'Per-directive CSP editing across 11 common directives (default-src, script-src, object-src, frame-ancestors…), quick-pick sources such as self, none, https: and strict-dynamic, custom origins, plus a Report-Only switch',
+          'Permissions-Policy control for camera, microphone, geolocation, payment, USB and FLoC, each set to (), (self) or *',
+          'Three output modes: raw HTTP headers, Nginx add_header ... always, Apache Header always set — one click to copy',
+          'Risk warnings: sub-spec preload, max-age=0, unsafe-inline / unsafe-eval, wildcard script-src, missing default-src / object-src, Referrer unsafe-url, and more',
+        ],
+        howToUse: [
+          'Start from the conservative recommended baseline loaded by default, then adjust for your application',
+          'For CSP, run Report-Only first to collect violation reports from the console, then switch to enforcing once reports are clean',
+          'Choose Nginx or Apache output on the right, paste into server configuration, reload, and verify via DevTools response headers or securityheaders.com',
+        ],
+        useCases: [
+          'Adding security headers before launch to reach an A/A+ on security scanners',
+          'Preparing a CSP rollout: gather Report-Only violations before tightening script-src',
+          'Auditing an existing deployment for preload readiness and XFO/frame-ancestors conflicts',
+        ],
+        privacyNote: 'All configuration and generation happens locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why deploy CSP with Report-Only first?',
+            answer:
+              'Content-Security-Policy is enforcing — an overly strict policy blocks production scripts, styles or images and can blank the page. Content-Security-Policy-Report-Only only reports violations to a report-uri / report-to endpoint, so you can observe a release cycle, confirm all business resources are covered, and then switch to enforcement.',
+          },
+          {
+            question: 'Why does HSTS preload require max-age of at least a year?',
+            answer:
+              'The preload list is hard-coded into Chrome, Firefox and others, forcing HTTPS even for users who have never visited the site; rollback is costly (removal plus a browser release cycle). hstspreload.org therefore requires max-age ≥ 31536000 (1 year) plus includeSubDomains as evidence the whole site supports HTTPS reliably.',
+          },
+          {
+            question: 'X-Frame-Options or CSP frame-ancestors?',
+            answer:
+              'frame-ancestors is the modern CSP Level 2 replacement and supports multiple allowed origins, while XFO offers only coarse DENY / SAMEORIGIN. Modern browsers honor frame-ancestors when both are present; older browsers only understand XFO. During transition, send both with matching intent, then drop XFO once your browser support allows.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
