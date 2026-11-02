@@ -218,5 +218,5 @@
 | 20261102141208 | OpenSSH randomart 指纹可视化生成器（Bishop's Art / Drunken Bishop） | Web Tool | External Reference | Claimed | 2026-11-02 | trae-agent | [详情](./idea-details/20261102141208.md) |
 | 20261102141209 | Excel 序列号日期（1900 / 1904 日期系统）与公历日期互转器 | Web Tool | Existing Gap | Claimed | 2026-11-02 | trae-agent | [详情](./idea-details/20261102141209.md) |
 | 20261102141210 | 以太坊单位与 Gas 费用计算器（Wei / Gwei / ETH 等） | Web Tool | Existing Gap | Claimed | 2026-11-02 | trae-agent | [详情](./idea-details/20261102141210.md) |
-| 20261102141211 | WIFI 二维码连接字符串（WIFI: payload）生成器 | Web Tool | Existing Gap | Claimed | 2026-11-02 | trae-agent | [详情](./idea-details/20261102141211.md) |
+| 20261102141211 | WIFI 二维码连接字符串（WIFI: payload）生成器 | Web Tool | Existing Gap | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102141211.md) |
 

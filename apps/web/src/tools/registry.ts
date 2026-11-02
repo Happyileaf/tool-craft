@@ -19655,6 +19655,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'wifi-qr-payload',
+    name: 'WIFI 二维码连接串生成器',
+    nameEn: 'Wi-Fi QR Payload Generator & Parser',
+    description:
+      '按 zxing/WPA 规范从网络名称、密码、加密类型与隐藏标记生成并反向解析 WIFI: 二维码字符串，特殊字符自动转义，结果可直接用于任意二维码生成器扫码连网。',
+    descriptionEn:
+      'Build and parse zxing/WPA WIFI: QR payloads from SSID, password, encryption and hidden flags with correct escaping — paste the result into any QR generator to join a network by scanning.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/wifi-qr-payload',
+    iconName: 'Wifi',
+    tags: ['WIFI', '二维码', 'WPA', 'zxing', '配网'],
+    tagsEn: ['Wi-Fi', 'QR Code', 'WPA', 'zxing', 'Payload'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'WIFI 二维码连接串生成器在浏览器本地生成手机相机与扫码工具可识别的 Wi-Fi 配网字符串。语法由 zxing 注册并被 Android / iOS 相机广泛支持：WIFI:T:<WPA|WEP|nopass>;S:<SSID>;P:<密码>;H:<true>;;。本工具提供表单式正向生成与 payload 反向解析，严格按规范对 \\、;、,、"、: 五个特殊字符做反斜杠转义，避免 SSID 或密码中的分号导致解析截断。',
+        coreFeatures: [
+          '支持 WPA/WPA2/WPA3、WEP 与开放网络（nopass）三种加密类型',
+          '字段顺序固定 T/S/P/H，开放网络自动省略密码字段，仅隐藏网络输出 H:true',
+          '五个特殊字符 \\ ; , " : 自动转义，中文与普通文本原样保留',
+          '反向解析：粘贴已有 WIFI 字符串自动回填表单，缺省 T 时按 zxing 默认 WPA 处理',
+          '严格校验：SSID 为空、加密网络缺密码、未知字段、错误前后缀与孤立反斜杠均给出明确中文错误',
+        ],
+        howToUse: [
+          '在左侧选择加密类型、填写网络名称（SSID）与密码，开放网络无需密码',
+          '如路由器关闭了 SSID 广播，勾选「隐藏网络」',
+          '右侧即时生成 WIFI: 字符串，点击「复制」后粘贴到任意二维码生成器制作二维码',
+          '需要核对或修改已有配网串时，粘贴到反向解析框并点击「解析并回填」',
+        ],
+        useCases: [
+          '访客网络分享、民宿 / 会议室免口述密码扫码连网',
+          '路由器配置、IoT 设备配网卡与说明书二维码制作',
+          '排查手机扫码连不上：核对转义、加密类型与隐藏标记是否正确',
+        ],
+        privacyNote:
+          'SSID 与密码全程只在浏览器本地处理，不发起任何网络请求，不记录输入内容。',
+        faqs: [
+          {
+            question: '生成后怎么变成二维码？',
+            answer:
+              '复制本工具输出的 WIFI: 字符串，粘贴到站内的二维码生成器（或任意支持文本的 QR 工具）即可。本工具专注 payload 文本的正确构造与转义，不直接渲染图像。',
+          },
+          {
+            question: '为什么 SSID 或密码里的分号要加反斜杠？',
+            answer:
+              '分号是字段分隔符，未转义的 ; 会让扫描器把后面的内容截断或误判为新字段。zxing 规范要求 \\、;、,、"、: 五个字符必须写成 \\\\; 等转义形式，本工具自动处理，解析时再还原。',
+          },
+          {
+            question: 'WPA2 / WPA3 应该选哪个？',
+            answer:
+              'WIFI 字符串的 T 字段只有 WPA / WEP / nopass 三种取值，WPA2 与 WPA3 在扫码语法中统一记为 WPA，手机会在握手阶段自动协商具体版本。仅老旧 WEP 网络选择 WEP，免密热点选择开放网络。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Wi-Fi QR Payload Generator builds the Wi-Fi provisioning string recognized by phone cameras and scanners, entirely locally. The syntax is registered by zxing and widely supported by Android/iOS cameras: WIFI:T:<WPA|WEP|nopass>;S:<SSID>;P:<password>;H:<true>;;. The tool offers form-based generation and reverse parsing, strictly backslash-escaping the five reserved characters (\\, ;, ,, ", :) so a semicolon inside an SSID or password cannot truncate parsing.',
+        coreFeatures: [
+          'WPA/WPA2/WPA3, WEP, and open networks (nopass)',
+          'Fixed T/S/P/H field order: password omitted for open networks, H:true only for hidden SSIDs',
+          'Automatic escaping of \\ ; , " : with Chinese and normal text preserved verbatim',
+          'Reverse parser refills the form from any pasted WIFI string; missing T defaults to WPA per zxing',
+          'Clear Chinese errors for empty SSID, missing password, unknown fields, bad prefixes and dangling backslashes',
+        ],
+        howToUse: [
+          'Pick the encryption type and enter the SSID and password on the left (no password for open networks)',
+          'Check "Hidden network" if the router does not broadcast its SSID',
+          'Copy the WIFI: string on the right and paste it into any QR code generator',
+          'To inspect an existing payload, paste it into the reverse-parse box and click the parse button',
+        ],
+        useCases: [
+          'Sharing guest Wi-Fi in cafes, hotels and meeting rooms without dictating passwords',
+          'Provisioning QR codes for router setup, IoT onboarding cards and manuals',
+          'Debugging scan-to-connect failures: check escaping, encryption type and hidden flag',
+        ],
+        privacyNote:
+          'The SSID and password are processed only in your browser. No network requests are made and no input is logged.',
+        faqs: [
+          {
+            question: 'How do I turn the result into a QR code?',
+            answer:
+              'Copy the WIFI: string and paste it into the site QR generator or any text-capable QR tool. This tool focuses on constructing and escaping the payload text and does not render an image itself.',
+          },
+          {
+            question: 'Why are semicolons in the SSID or password escaped?',
+            answer:
+              'Semicolon is the field separator; an unescaped ; would make scanners truncate the value or read a new field. The zxing spec requires \\, ;, ,, " and : to be written as \\; etc. This tool escapes on build and unescapes on parse automatically.',
+          },
+          {
+            question: 'Which option for WPA2 / WPA3?',
+            answer:
+              'The T field only has WPA / WEP / nopass. WPA2 and WPA3 are both encoded as WPA; the phone negotiates the exact version during handshake. Use WEP only for legacy networks and nopass for open hotspots.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

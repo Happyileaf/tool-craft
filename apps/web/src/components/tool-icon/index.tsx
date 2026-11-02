@@ -40,6 +40,7 @@ import {
   Tags,
   Triangle,
   Type,
+  Wifi,
   type LucideProps,
 } from 'lucide-react';
 
@@ -88,6 +89,7 @@ const toolIconMap = {
   Barcode,
   Triangle,
   Radical,
+  Wifi,
 };
 
 /**
