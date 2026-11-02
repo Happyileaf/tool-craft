@@ -20561,6 +20561,106 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'ip-range-to-cidr',
+    name: 'IP 区间转 CIDR 聚合器',
+    nameEn: 'IP Range to Minimal CIDR Calculator',
+    description:
+      '将 IPv4/IPv6 起止地址区间聚合为数量最少的 CIDR 块列表，支持批量 CIDR 合并超网，基于 BigInt 纯本地计算。',
+    descriptionEn:
+      'Aggregate an IPv4/IPv6 start-end range into the minimal number of CIDR blocks, and summarize a batch of CIDRs into supernets, computed locally with BigInt.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ip-range-to-cidr',
+    iconName: 'Globe',
+    tags: ['IP', 'CIDR', 'IPv6', '子网', '网络'],
+    tagsEn: ['IP', 'CIDR', 'IPv6', 'Subnet', 'Network'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '192.168.1.5 - 192.168.1.19',
+    doc: {
+      zh: {
+        whatIsIt:
+          'IP 区间转 CIDR 聚合器用于把「起始 IP - 结束 IP」形式的连续地址段转换成数量最少、互不重叠的 CIDR 表示，IPv4 与 IPv6 均支持，也可将一批零散 CIDR 合并为最小超网集合，常用于防火墙规则、安全组白名单与路由表压缩。',
+        coreFeatures: [
+          'IPv4/IPv6 双栈：自动识别协议版本，IPv6 输出符合 RFC 5952 压缩格式',
+          '数学最优：贪心取对齐且不越过区间的最大 CIDR 块，块数最少并严格覆盖整个区间',
+          'CIDR 合并：批量输入可自动去重、合并重叠与相邻网段并输出最小超网',
+          '纯 BigInt 本地运算：无任何依赖，数据不离开浏览器',
+        ],
+        howToUse: [
+          '在「区间 → CIDR 列表」中输入同协议版本的起始与结束 IP，右侧实时给出 CIDR 块',
+          '查看 CIDR 块数、覆盖地址总数与每块容量，可一键复制全部结果',
+          '切换到「CIDR 合并」粘贴多行网段（每行一个，也支持空格或逗号分隔）',
+          '合并结果可直接粘贴到云厂商安全组、Nginx allow/deny 或路由配置中',
+        ],
+        useCases: [
+          '把供应商给的 IP 地址段压缩为最少的安全组/防火墙规则',
+          '合并多份网段资产清单，消除重叠与相邻碎片',
+          'IPv6 寻址规划与前缀委派校验',
+        ],
+        privacyNote:
+          '所有地址解析与位运算均基于浏览器本地 BigInt 完成，不发起任何网络请求，也不记录输入的 IP 数据。',
+        faqs: [
+          {
+            question: '为什么同样 7 个地址有时输出 3 个 CIDR、有时只有 1 个？',
+            answer:
+              'CIDR 块必须按 2 的幂大小对齐到网络边界。区间起点是否对齐决定了能否用大块覆盖，因此工具采用贪心算法，每一步取「起点对齐且不越过终点」的最大块，保证总块数最少。',
+          },
+          {
+            question: '和现有的 CIDR 子网计算器有什么区别？',
+            answer:
+              'CIDR 子网计算器解决「一个 CIDR 包含哪些地址、如何拆分」的问题；本工具解决反方向问题：给定任意起止区间，求能恰好覆盖它的最少 CIDR 集合，并额外支持批量网段合并。',
+          },
+          {
+            question: '支持 IPv6 内嵌 IPv4 写法吗？',
+            answer:
+              '支持解析 ::ffff:192.0.2.1 这类末段内嵌 IPv4 的地址；输出统一采用 RFC 5952 压缩形式（如 ::ffff:c000:201）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The IP Range to Minimal CIDR Calculator converts a contiguous start-end IP range into the fewest non-overlapping CIDR blocks for both IPv4 and IPv6, and summarizes a batch of CIDRs into minimal supernets. It is ideal for firewall rules, security-group allowlists, and route-table compression.',
+        coreFeatures: [
+          'Dual-stack: auto-detects IPv4/IPv6 and prints IPv6 in RFC 5952 compressed notation',
+          'Mathematically minimal: a greedy algorithm picks the largest aligned block that never crosses the end, so blocks are few and cover the range exactly',
+          'CIDR summarization: deduplicates and merges overlapping or adjacent prefixes in bulk',
+          'Zero-dependency local computation using native BigInt',
+        ],
+        howToUse: [
+          'Enter same-family start and end addresses in "Range to CIDR" to see blocks on the right',
+          'Review block count, total covered addresses, and per-block size, then copy the results',
+          'Switch to "CIDR summarize" and paste multiple prefixes (one per line or separated by spaces/commas)',
+          'Paste the merged output straight into cloud security groups, Nginx allow/deny, or route configs',
+        ],
+        useCases: [
+          'Compressing vendor IP ranges into the minimum set of firewall or security-group rules',
+          'Consolidating network inventories and removing overlapping fragments',
+          'IPv6 addressing plans and prefix-delegation verification',
+        ],
+        privacyNote:
+          'All parsing and bitwise math runs locally on native BigInt in your browser. No network request is made and no entered IP data is retained.',
+        faqs: [
+          {
+            question: 'Why does a 7-address range sometimes produce 3 CIDRs and sometimes 1?',
+            answer:
+              'A CIDR block must be a power-of-two sized range aligned to a network boundary. Alignment of the start address determines how large a block can be, so the greedy algorithm takes the largest aligned block that never crosses the end, guaranteeing the minimum total block count.',
+          },
+          {
+            question: 'How is this different from the CIDR subnet calculator?',
+            answer:
+              'A subnet calculator answers "which addresses are inside this CIDR and how can I split it". This tool solves the inverse problem — finding the minimum CIDR set that exactly covers an arbitrary start-end range — plus bulk prefix summarization.',
+          },
+          {
+            question: 'Does it support IPv4-mapped IPv6 notation?',
+            answer:
+              'Yes, forms like ::ffff:192.0.2.1 are parsed; output is normalized to RFC 5952 compressed notation such as ::ffff:c000:201.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
