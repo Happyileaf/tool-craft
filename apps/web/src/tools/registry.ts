@@ -20534,6 +20534,96 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'json-to-rust',
+    name: 'JSON → Rust struct 生成器',
+    nameEn: 'JSON to Rust Struct Generator',
+    description:
+      '粘贴 JSON 样本即可推断生成可直接使用的 Rust serde 结构体：整数 i64、浮点 f64、布尔 bool、字符串 String、null 退化为 Option；嵌套对象生成具名 struct，同型对象数组合并为 Vec<T>，空/异型数组回退 serde_json::Value；字段 snake_case 化并自动添加 #[serde(rename)] 保留原键，规避 Rust 关键字与重名冲突。',
+    descriptionEn:
+      'Paste a JSON sample and get ready-to-use Rust serde structs: i64/f64/bool/String scalars, Option for nulls, named nested structs, Vec<T> from homogeneous object arrays with merged fields, serde_json::Value fallback for empty/mixed arrays, snake_case field names with automatic #[serde(rename)] for original keys, and Rust keyword / duplicate-name handling.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-rust',
+    iconName: 'FileCode',
+    tags: ['JSON', 'Rust', 'serde', '结构体', '代码生成'],
+    tagsEn: ['JSON', 'Rust', 'serde', 'Struct', 'Code Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON → Rust struct 生成器是一款纯浏览器本地运行的代码生成工具：粘贴一段 JSON 样本即可推断出带 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)] 的 Rust 结构体代码，自动处理命名转换、serde rename、嵌套与数组，免去为 JSON 接口手写模型的重复劳动。',
+        coreFeatures: [
+          '标量类型推断：整数 i64、浮点 f64、布尔 bool、字符串 String，null 退化为 Option<serde_json::Value>',
+          '嵌套对象递归生成具名 struct（PascalCase），同型对象数组合并字段为单个 Vec<Item>，缺失键自动标 Option',
+          'int/float 混合数组提升为 f64；空数组与不可合并的异型数组回退 Vec<serde_json::Value> 并给出提示',
+          '字段名 snake_case 化，与原键不一致或为非法标识符时自动添加 #[serde(rename = "原键")]，Rust 关键字加下划线后缀，重名结构体自动编号',
+        ],
+        howToUse: [
+          '在左侧粘贴 JSON 对象样本（根为数组或标量时会生成单字段包装结构体）',
+          '在顶部设置根结构体名称（默认 Root），可关闭 Option 包裹',
+          '右侧即时生成 Rust 代码，点击「复制 Rust 代码」直接使用',
+          '查看底部警告了解空数组、异型数组、缺失字段等推断决策',
+        ],
+        useCases: [
+          'Rust 后端（axum/actix）为外部 JSON API 快速编写请求/响应模型',
+          '处理带连字符、驼峰等非 Rust 风格键名的第三方接口数据',
+          '理解一份未知 JSON 样本的结构层次与字段可空性',
+        ],
+        privacyNote:
+          'JSON 解析、类型推断与代码生成全部在浏览器本地完成，不发起任何网络请求，样本数据不会离开设备。',
+        faqs: [
+          {
+            question: '为什么数字统一用 i64，而不是 u64 或 i32？',
+            answer:
+              '样本无法表达无符号或位宽意图，i64 是最通用、反序列化兼容性最好的默认选择；超出 i64 安全范围的整数会退化为 f64。生成后可按业务需要手动收窄类型。',
+          },
+          {
+            question: 'null 字段为什么是 Option<serde_json::Value> 而不是具体类型？',
+            answer:
+              'null 样本不携带具体类型信息，无法推断是字符串、数字还是对象。若同名字段在数组其他元素中出现具体值，工具会自动合并为 Option<具体类型>；否则保留 serde_json::Value 占位，待人工替换。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON to Rust Struct Generator is a fully browser-local code generator: paste a JSON sample and get Rust structs with #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)], with automatic naming conversion, serde renames, nesting and array handling — eliminating the boilerplate of hand-writing models for JSON APIs.',
+        coreFeatures: [
+          'Scalar inference: i64 integers, f64 floats, bool booleans, String; null falls back to Option<serde_json::Value>',
+          'Nested objects recursively produce named PascalCase structs; homogeneous object arrays merge fields into a single Vec<Item>, with missing keys marked Option',
+          'Mixed int/float arrays widen to f64; empty and unmergeable heterogeneous arrays fall back to Vec<serde_json::Value> with warnings',
+          'snake_case field names with automatic #[serde(rename = "original")] when they differ or are invalid identifiers, underscore suffix for Rust keywords, numbered suffixes for duplicate struct names',
+        ],
+        howToUse: [
+          'Paste a JSON object sample on the left (array/scalar roots produce a single-field wrapper struct)',
+          'Set the root struct name (default Root) at the top; Option wrapping can be disabled',
+          'The Rust code appears instantly on the right — click Copy to use it directly',
+          'Check the warnings below for inference decisions such as empty arrays, mixed arrays and missing fields',
+        ],
+        useCases: [
+          'Quickly writing request/response models in Rust backends (axum/actix) for external JSON APIs',
+          'Handling third-party payloads with hyphenated or camelCase keys that are not valid Rust style',
+          'Understanding the structure and nullability of an unknown JSON sample',
+        ],
+        privacyNote:
+          'JSON parsing, type inference and code generation all run locally in your browser. No network request is made and sample data never leaves your device.',
+        faqs: [
+          {
+            question: 'Why are all integers i64 instead of u64 or i32?',
+            answer:
+              'A sample cannot express signedness or width intent, and i64 is the most general default with the best deserialization compatibility. Integers beyond the safe i64 range fall back to f64. You can narrow types manually after generation.',
+          },
+          {
+            question: 'Why is a null field Option<serde_json::Value> instead of a concrete type?',
+            answer:
+              'A null sample carries no concrete type information — it could be a string, number or object. When the same field appears with a concrete value in another array element, the tool merges it into Option<concrete type>; otherwise serde_json::Value is kept as a placeholder for manual replacement.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
