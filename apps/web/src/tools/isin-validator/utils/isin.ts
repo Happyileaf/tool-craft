@@ -136,7 +136,7 @@ export function processIsin(input: string, mode: 'validate' | 'generate' = 'vali
   }
 
   const body = normalized.slice(0, 11);
-  const givenCheck = normalized[11];
+  const givenCheck = normalized[11] ?? null;
   const steps = body.split('').map((ch) => ({ char: ch, expanded: expandChar(ch) }));
   const expanded = steps.map((s) => s.expanded).join('');
   const weightedSum = luhnSum(expanded);

@@ -260,7 +260,7 @@ export function apparentTemperature(mode: CalcMode, input: ApparentInput): Appar
     return {
       apparent,
       apparentF: value,
-      method: METHOD_LABELS['heat-index'][method],
+      method: METHOD_LABELS['heat-index'][method] ?? method,
       level: heatDangerLevel(value),
       error: null,
     };
@@ -318,7 +318,7 @@ export function apparentTemperature(mode: CalcMode, input: ApparentInput): Appar
   return {
     apparent,
     apparentF: wc,
-    method: METHOD_LABELS['wind-chill'].standard,
+    method: METHOD_LABELS['wind-chill'].standard ?? 'standard',
     level: windDangerLevel(wc),
     error: null,
   };

@@ -39,8 +39,6 @@ export interface TreeBuildResult {
 const SHA1_HEX_LENGTH = 40;
 const SHA256_HEX_LENGTH = 64;
 
-const HEX_CHARS = '0123456789abcdef';
-
 function isHex(value: string): boolean {
   return /^[0-9a-fA-F]+$/.test(value);
 }
@@ -73,7 +71,7 @@ export async function hashGitObject(
   const digest = new Uint8Array(await crypto.subtle.digest(algorithm, input));
   let oid = '';
   for (const byte of digest) {
-    oid += HEX_CHARS[byte >> 4] + HEX_CHARS[byte & 0x0f];
+    oid += byte.toString(16).padStart(2, '0');
   }
 
   return {
@@ -167,7 +165,9 @@ export function buildTreeContent(
         error: `第 ${lineIndex + 1} 行格式错误：应为「模式 名称 对象哈希」三段（如 100644 hello.txt ce0136…）`,
       };
     }
-    const [rawMode, name, oid] = parts.map((part) => part ?? '');
+    const rawMode = parts[0] ?? '';
+    const name = parts[1] ?? '';
+    const oid = parts[2] ?? '';
 
     const modeError = normalizeTreeMode(rawMode, lineIndex + 1);
     if (modeError.error) {
