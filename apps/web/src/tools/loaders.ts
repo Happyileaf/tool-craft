@@ -219,4 +219,5 @@ export const toolLoaders: Record<
   'apparent-temperature': () => import('./apparent-temperature'),
   'isin-validator': () => import('./isin-validator'),
   'uuid-name-generator': () => import('./uuid-name-generator'),
+  'git-object-hash': () => import('./git-object-hash'),
 };

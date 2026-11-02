@@ -19551,6 +19551,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'git-object-hash',
+    name: 'Git 底层对象哈希计算器',
+    nameEn: 'Git Object Hash Calculator (git hash-object equivalent)',
+    description:
+      '在浏览器本地计算 Git 底层对象 ID：blob / tree / commit / annotated tag 拼接「类型 长度 NUL」头后做 SHA-1 或 SHA-256，tree 自动二进制规范化与 Git 排序，等价 git hash-object / git mktree 的只读计算侧。',
+    descriptionEn:
+      'Compute Git object IDs locally: blob / tree / commit / annotated tag objects are hashed (SHA-1 or SHA-256) after prepending the "type length NUL" header, with automatic binary canonicalization and Git ordering for tree entries — the read-only equivalent of git hash-object / git mktree.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/git-object-hash',
+    iconName: 'Hash',
+    tags: ['Git', '对象哈希', 'hash-object', 'tree', 'SHA-1', 'SHA-256', '内容寻址'],
+    tagsEn: ['Git', 'Object Hash', 'hash-object', 'tree', 'SHA-1', 'SHA-256', 'Content Addressable'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Git 底层对象哈希计算器在浏览器本地复现 Git 的内容寻址模型：对象 ID = 对「<类型> SP <字节长度> NUL <原始内容>」做 SHA-1（或 SHA-256）摘要。支持四种对象——blob（文件内容）、tree（目录，条目形如「模式 名称 NUL 20/32 字节二进制哈希」，按 Git 规则排序，目录比较时隐含尾部 /）、commit 与 annotated tag（对规范化原始文本加头摘要）。结果与 git hash-object、git mktree 完全一致，无需安装 Git。',
+        coreFeatures: [
+          '四种对象：blob / tree / commit / annotated tag，覆盖 git hash-object 只读侧',
+          'SHA-1 与 SHA-256（object-format=sha256 仓库）两种摘要格式',
+          'tree 文本行自动二进制规范化：模式归一（目录内部存 40000）、按名 Git 排序、哈希转 20/32 字节',
+          '展示排序后的条目表、对象头（如 blob 6）与参与哈希总字节数',
+          '逐行校验：段数、模式白名单、名称禁含 /、哈希长度与十六进制、同名冲突',
+          '纯浏览器本地确定性计算，不做 CRLF 清洗，无任何网络请求',
+        ],
+        howToUse: [
+          '选择对象类型与哈希格式，工具会载入对应的标准示例',
+          'blob：直接粘贴文件原始内容（注意结尾换行影响哈希）',
+          'tree：每行输入「模式 名称 对象哈希」（空格或 Tab 分隔），右侧得到对象 ID 与排序后条目',
+          'commit / tag：粘贴 git cat-file 输出的完整原始文本（含结尾换行），即时得到对象 ID',
+        ],
+        useCases: [
+          '排查“工作区文件哈希为什么和仓库对象不一致”（结尾换行、CRLF、过滤器差异）',
+          '手工构造或校验 loose object、教学演示 Git 内容寻址模型',
+          '无 Git 环境下验证 CI 产物或审计材料中的对象 ID',
+        ],
+        privacyNote:
+          '所有内容均在浏览器本地处理，不发起任何网络请求，不记录输入内容。',
+        faqs: [
+          {
+            question: '为什么同样的文字，算出来和 git hash-object 不一样？',
+            answer:
+              '最常见原因是结尾换行：echo hello 产生 hello\\n（哈希 ce0136…4464a），而 printf hello 产生无换行的 hello（哈希 b6fc4c…a1b0）。其次是 CRLF 与 autocrlf/filters：本工具对输入逐字节原样摘要，不做任何清洗，与 git hash-object --stdin 行为一致；而 git hash-object 路径上的文件会受 .gitattributes 过滤器影响。',
+          },
+          {
+            question: 'tree 条目的排序规则是什么？',
+            answer:
+              'Git 按条目名逐字节排序，并对目录特殊处理：比较时在目录名后隐含一个 “/”（0x2f），但实际存储的名字不带尾斜杠。因此 a.dir（目录）排在 a.txt 之前：比较到第 5 字节时，目录的隐含 “/”（0x2f）小于文件名里的 “.”（0x2e）之后的 “t” 比较结果。模式在对象内部目录存为 40000（ls-tree 显示的 040000 只是展示格式），子对象哈希以 20 字节（SHA-1）或 32 字节（SHA-256）二进制存储。',
+          },
+          {
+            question: 'commit 和 tag 为什么要求粘贴“原始文本”？',
+            answer:
+              'commit 与 tag 对象体是严格规范化的文本（header 段落 + 一个空行 + 消息，通常以一个换行结尾），Git 对这些字节原样加头摘要。任何一个字节差异（时区写法、作者行格式、结尾换行）都会改变对象 ID。建议用 git cat-file commit <id> / git cat-file tag <id> 取得精确文本后粘贴，本工具不做字段补全或自动修正。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Git Object Hash Calculator reproduces Git’s content-addressing model locally in your browser: the object ID is the SHA-1 (or SHA-256) digest of "<type> SP <byte-length> NUL <raw content>". All four object kinds are supported — blobs (file contents), trees (directories whose entries are "mode SP name NUL 20/32 raw hash bytes", ordered with Git’s rules and an implicit trailing slash for directories during comparison), commits, and annotated tags (the canonical raw text hashed with its header). Results match git hash-object and git mktree exactly, with no Git installation required.',
+        coreFeatures: [
+          'Four object kinds: blob / tree / commit / annotated tag — the read-only side of git hash-object',
+          'Both SHA-1 and SHA-256 (object-format=sha256 repositories)',
+          'Tree lines are canonicalized to binary automatically: modes normalized (directories stored as 40000), Git name ordering, hashes as 20/32 raw bytes',
+          'Shows the sorted entry table, the object header (e.g. blob 6), and total hashed bytes',
+          'Per-line validation: field count, mode whitelist, no “/” in names, hash length/hex, duplicate names',
+          'Fully local deterministic computation with no CRLF scrubbing and no network requests',
+        ],
+        howToUse: [
+          'Pick the object type and hash format; a canonical sample is loaded automatically',
+          'blob: paste the exact file content (a trailing newline changes the hash)',
+          'tree: one line per entry as “mode name object-hash” (space or tab); get the ID and sorted entries on the right',
+          'commit / tag: paste the complete raw text from git cat-file (including the final newline) to get the object ID instantly',
+        ],
+        useCases: [
+          'Debugging why a working-tree file hash differs from the repository object (newlines, CRLF, filters)',
+          'Hand-building or verifying loose objects and teaching Git’s content-addressable model',
+          'Verifying object IDs in CI artifacts or audit material without a Git installation',
+        ],
+        privacyNote:
+          'All content is processed locally in your browser. No network requests are made and no input is logged.',
+        faqs: [
+          {
+            question: 'Why does my hash differ from git hash-object for the same text?',
+            answer:
+              'The most common cause is the trailing newline: echo hello produces hello\\n (ce0136…4464a) while printf hello produces hello without a newline (b6fc4c…a1b0). CRLF and autocrlf/filters are next: this tool hashes input bytes verbatim with no scrubbing, matching git hash-object --stdin; hashing a file by path may apply .gitattributes filters instead.',
+          },
+          {
+            question: 'What are the tree entry ordering rules?',
+            answer:
+              'Git orders entries byte-by-byte by name, with a special case for directories: an implicit “/” (0x2f) is appended to a directory name during comparison, although the stored name carries no trailing slash. Hence a directory a.dir sorts before a file a.txt (at the fifth byte, the directory’s implicit “/” 0x2f loses to the file comparison). Directory modes are stored internally as 40000 (the 040000 shown by ls-tree is display-only), and child hashes are 20 raw bytes for SHA-1 or 32 for SHA-256.',
+          },
+          {
+            question: 'Why must commits and tags be pasted as “raw text”?',
+            answer:
+              'Commit and tag bodies are strictly canonical text (a header section, one blank line, then the message, typically ending with a newline), and Git hashes those exact bytes with the header. Any byte difference — timezone spelling, author-line shape, a missing final newline — changes the object ID. Use git cat-file commit <id> / git cat-file tag <id> to obtain the precise text; the tool neither completes fields nor auto-corrects them.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
