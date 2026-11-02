@@ -19447,6 +19447,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'uuid-name-generator',
+    name: 'UUID v3 / v5 名称型生成器',
+    nameEn: 'Name-Based UUID Generator (v3 / v5, RFC 9562)',
+    description:
+      '按 RFC 9562 对「命名空间 UUID + 名称」确定性派生 v3（MD5）/ v5（SHA-1）UUID：内置 DNS / URL / OID / X.500 命名空间或自定义，相同输入永远得到相同 UUID，结果展示版本位与变体位。',
+    descriptionEn:
+      'Derive deterministic name-based UUIDs (v3 MD5 / v5 SHA-1) per RFC 9562 from a namespace UUID plus a name. Built-in DNS / URL / OID / X.500 namespaces or a custom one; identical inputs always produce the same UUID, with version and variant bits shown.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/uuid-name-generator',
+    iconName: 'Fingerprint',
+    tags: ['UUID', 'v3', 'v5', 'RFC 9562', '命名空间', '确定性', 'SHA-1', 'MD5'],
+    tagsEn: ['UUID', 'v3', 'v5', 'RFC 9562', 'Namespace', 'Deterministic', 'SHA-1', 'MD5'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'UUID v3 / v5 名称型生成器是一款纯浏览器本地运算的标识派生工具，实现 RFC 9562（取代 RFC 4122）规定的名称型 UUID：将命名空间 UUID 的 16 字节大端表示与名称的 UTF-8 字节拼接后做哈希——v5 取 SHA-1、v3 取 MD5——取摘要前 16 字节，再把第 7 字节高 4 位改写为版本号（3 或 5）、第 9 字节高 2 位改写为变体位 10。相同命名空间与名称在任何系统、任何时间都会得到完全相同的 UUID。',
+        coreFeatures: [
+          '严格 RFC 9562：命名空间 16 字节大端 + 名称 UTF-8 拼接后摘要派生',
+          'v5（SHA-1，经 Web Crypto）与 v3（MD5，内置零依赖实现）一键切换',
+          '内置 DNS / URL / OID / X.500 DN 四个标准命名空间，支持自定义 UUID',
+          '结果展示 version 位与 variant 10 位的设置结果，便于核对',
+          '输入即时重算，确定性输出可跨系统复现',
+          '纯浏览器本地计算，无任何网络请求',
+        ],
+        howToUse: [
+          '选择版本：新系统优先 v5，需要兼容历史数据时选 v3',
+          '从下拉框选择内置命名空间，或选择「自定义」并粘贴合法命名空间 UUID',
+          '输入名称（域名、URL、文件名或任意固定键名，按 UTF-8 处理）',
+          '结果区即时显示派生 UUID，点击即可复制',
+        ],
+        useCases: [
+          '根据域名、文件名、固定键名生成跨系统一致的稳定资源标识',
+          '配置迁移与数据对账：两边独立计算同一 UUID 即可对齐记录',
+          '与只能随机产出的 v4 互补：需要“可复现”时使用 v3 / v5',
+        ],
+        privacyNote:
+          '所有计算均在浏览器本地完成，不发起任何网络请求，不记录名称与命名空间。',
+        faqs: [
+          {
+            question: 'v3 和 v5 应该怎么选？',
+            answer:
+              '两者算法结构完全相同，只是摘要算法不同：v5 用 SHA-1、v3 用 MD5。RFC 9562 推荐新系统使用 v5；v3 主要用于与已经存在的 v3 数据保持兼容。对同一命名空间与名称，v3 与 v5 会得到不同的 UUID，不能混用。',
+          },
+          {
+            question: '名称型 UUID 和随机的 v4 有什么区别？',
+            answer:
+              'v4 每次随机生成，同一资源每次得到不同 UUID，适合无中心协调的唯一标识；v3 / v5 是确定性哈希派生，相同命名空间与名称永远得到相同 UUID，适合需要跨系统、跨时间复现的稳定标识，例如由域名派生配置记录主键。',
+          },
+          {
+            question: '自定义命名空间 UUID 有什么要求？',
+            answer:
+              '必须是合法的 8-4-4-4-12 形式 UUID。RFC 建议自定义命名空间本身使用一个随机 v4 UUID，并在你的系统内固定下来：命名空间起到“域隔离”作用，不同命名空间下即使名称相同也会派生出不同 UUID，可避免命名冲突。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Name-Based UUID Generator is a fully local browser tool implementing RFC 9562 (which obsoletes RFC 4122): the namespace UUID is converted to 16 big-endian bytes, concatenated with the UTF-8 bytes of the name, then hashed with SHA-1 (v5) or MD5 (v3). The first 16 digest bytes are taken, the high nibble of byte 7 is set to the version (3 or 5), and the high two bits of byte 9 are set to variant 10. The same namespace and name always produce the same UUID, on any system, at any time.',
+        coreFeatures: [
+          'Strict RFC 9562: 16-byte big-endian namespace plus UTF-8 name, then digest',
+          'Switch between v5 (SHA-1 via Web Crypto) and v3 (built-in zero-dependency MD5)',
+          'Built-in DNS / URL / OID / X.500 DN namespaces, plus a custom namespace UUID',
+          'Shows the resulting version nibble and variant-10 bits for verification',
+          'Recomputed instantly on every edit; deterministic and reproducible across systems',
+          '100% local computation with no network requests',
+        ],
+        howToUse: [
+          'Pick a version: prefer v5 for new systems, use v3 only for legacy compatibility',
+          'Choose a built-in namespace, or pick “custom” and paste a valid namespace UUID',
+          'Enter a name (domain, URL, filename, or any fixed key), encoded as UTF-8',
+          'The derived UUID appears instantly and can be copied with one click',
+        ],
+        useCases: [
+          'Deriving stable resource identifiers from domains, filenames, or fixed keys',
+          'Configuration migration and data reconciliation: both sides compute the same UUID',
+          'A deterministic complement to random v4 UUIDs whenever reproducibility matters',
+        ],
+        privacyNote:
+          'All computation happens locally in your browser. No network requests are made and neither names nor namespaces are logged.',
+        faqs: [
+          {
+            question: 'Should I use v3 or v5?',
+            answer:
+              'The construction is identical except for the digest: v5 uses SHA-1 and v3 uses MD5. RFC 9562 recommends v5 for new systems; v3 exists mainly to stay compatible with existing v3 data. For the same namespace and name, v3 and v5 produce different UUIDs and must not be mixed.',
+          },
+          {
+            question: 'How are name-based UUIDs different from random v4 UUIDs?',
+            answer:
+              'A v4 UUID is random and differs on every generation, which suits coordination-free uniqueness. v3 / v5 UUIDs are deterministic hash derivations: the same namespace and name always yield the same UUID, which suits stable identifiers that must be reproduced across systems and time, such as deriving a configuration-record key from a domain name.',
+          },
+          {
+            question: 'What are the requirements for a custom namespace UUID?',
+            answer:
+            'It must be a valid 8-4-4-4-12 UUID. RFC guidance suggests generating the namespace UUID once as a random v4 UUID and fixing it within your system: the namespace acts as a domain boundary, so the same name under different namespaces derives different UUIDs, preventing collisions.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

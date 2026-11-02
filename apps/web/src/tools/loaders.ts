@@ -218,4 +218,5 @@ export const toolLoaders: Record<
   'color-temperature-converter': () => import('./color-temperature-converter'),
   'apparent-temperature': () => import('./apparent-temperature'),
   'isin-validator': () => import('./isin-validator'),
+  'uuid-name-generator': () => import('./uuid-name-generator'),
 };
