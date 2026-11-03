@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261104020115 | ABA 银行路由号码（RTN / Routing Number）校验器 | Web Tool | Exploration | `aba-routing-validator` / [PR #160](https://github.com/Happyileaf/tool-craft/pull/160) | 2026-11-04 | [详情](./idea-details/20261104020115.md) |
+| 20261104020114 | CUSIP / SEDOL 证券识别码校验器（模 10 加权校验位与模 10 双倍加权） | Web Tool | Exploration | `cusip-sedol-validator` / [PR #160](https://github.com/Happyileaf/tool-craft/pull/160) | 2026-11-04 | [详情](./idea-details/20261104020114.md) |
+| 20261104020113 | AWG 美国线规计算器（线号 ↔ 直径 / 截面积 / 电阻 / 载流量） | Web Tool | Exploration | `awg-wire-calculator` / [PR #160](https://github.com/Happyileaf/tool-craft/pull/160) | 2026-11-04 | [详情](./idea-details/20261104020113.md) |
+| 20261104020112 | SMD 电阻阻值码计算器（3 位数字码与 EIA-96 字母码双向） | Web Tool | Exploration | `smd-resistor-code` / [PR #160](https://github.com/Happyileaf/tool-craft/pull/160) | 2026-11-04 | [详情](./idea-details/20261104020112.md) |
+| 20261030021006 | JSON 转 Zod schema 生成器 | Web Tool | Existing Gap | `json-to-zod` / [PR #160](https://github.com/Happyileaf/tool-craft/pull/160) | 2026-11-04 | [详情](./idea-details/20261030021006.md) |
 | 20261103200231 | 电阻分压器计算器（双电阻电压分压与负载效应） | Web Tool | Exploration | `resistor-voltage-divider` / [PR #157](https://github.com/Happyileaf/tool-craft/pull/157) | 2026-11-04 | [详情](./idea-details/20261103200231.md) |
 | 20261031140460 | 二进制数据转多语言字节数组代码生成器（C / Java / Python / Go） | Web Tool | Existing Gap | `byte-array-codegen` / [PR #157](https://github.com/Happyileaf/tool-craft/pull/157) | 2026-11-04 | [详情](./idea-details/20261031140460.md) |
 | 20261029200827 | VIN 车辆识别代号校验位计算器与合法性校验器（ISO 3779 / GB 16735） | Web Tool | External Reference | `vin-validator` / [PR #157](https://github.com/Happyileaf/tool-craft/pull/157) | 2026-11-04 | [详情](./idea-details/20261029200827.md) |
