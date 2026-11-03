@@ -20802,6 +20802,95 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'smpte-timecode-converter',
+    name: 'SMPTE 时间码互转器',
+    nameEn: 'SMPTE Timecode Converter',
+    description:
+      '在 SMPTE 时间码（HH:MM:SS:FF / 丢帧 HH:MM:SS;FF）与总帧数、真实时长之间双向换算，支持 24/25/30/29.97 DF/NDF 制式。',
+    descriptionEn:
+      'Convert between SMPTE timecode (HH:MM:SS:FF or drop-frame HH:MM:SS;FF), total frame count and real elapsed time for 24/25/30/29.97 DF/NDF rates.',
+    category: ToolCategoryEnum.DATE_TIME,
+    path: '/tools/smpte-timecode-converter',
+    iconName: 'VideoCameraOutlined',
+    tags: ['SMPTE', '时间码', '丢帧', '帧速率', '视频'],
+    tagsEn: ['SMPTE', 'Timecode', 'Drop Frame', 'FPS', 'Video'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'SMPTE 时间码互转器依据 SMPTE ST 12-1 / ST 12-2 标准，在人类可读的时间码（时:分:秒:帧）与媒体处理中使用的总帧数、真实墙钟时长之间双向换算，覆盖 24 fps 电影、25 fps PAL、30 fps 以及 NTSC 29.97 fps 的丢帧（DF）与非丢帧（NDF）制式。',
+        coreFeatures: [
+          '时间码 → 帧数：把 HH:MM:SS:FF 换算为从零点起的总帧数与真实毫秒时长',
+          '帧数/时长 → 时间码：输入总帧数，或形如 90s、12.5m、1h 的真实时长，反算时间码',
+          '丢帧处理：29.97 DF 自动执行每 10 分钟周期跳过帧号 0/1 的规则，非法丢帧时间码明确报错',
+          '多制式：24/25/30 fps 与 29.97 DF/NDF 一键切换，全角冒号也能解析',
+        ],
+        howToUse: [
+          '选择帧率制式（如 29.97 fps NTSC 丢帧 DF）',
+          '选择换算方向，输入时间码（如 00:01:00;02）或总帧数（如 1800）',
+          '查看规范时间码写法、总帧数与真实时长结果，可逐项复制',
+          '若输入了丢帧模式下不存在的时间码（如 00:01:00;00），按错误提示改成合法帧号',
+        ],
+        useCases: [
+          '剪辑/调色时核对 EDL、XML、ALE 中的时间码与素材实际帧数',
+          '开发视频播放器、抽帧服务或字幕同步逻辑时验证帧-时间换算',
+          '理解 NTSC 29.97 丢帧时间码为什么用分号以及每分钟“丢”两帧的原理',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地完成，不上传时间码或视频信息，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '丢帧时间码是不是真的把画面帧丢掉了？',
+            answer:
+              '不是。丢帧（Drop Frame）只调整时间码的编号：每分钟（除每第 10 分钟外）跳过帧号 0 和 1，使显示时间码追上真实墙钟时间，画面本身一帧都不会丢。它用分号（HH:MM:SS;FF）标记。',
+          },
+          {
+            question: '29.97 fps 为什么会有时间误差？',
+            answer:
+              'NTSC 色彩副载波兼容性把 30 fps 拉低到 30000/1001 ≈ 29.97 fps，每帧真实时长为 1.001/30 秒。按 30 fps 编号会越走越慢，丢帧编号法通过周期性跳号让时间码与墙钟保持一致（每小时误差约 ±3.6 ms）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The SMPTE Timecode Converter implements SMPTE ST 12-1 / ST 12-2 and converts between human-readable timecode (HH:MM:SS:FF), the total frame count used in media processing and real wall-clock duration. It supports 24 fps film, 25 fps PAL, 30 fps and NTSC 29.97 fps in both drop-frame (DF) and non-drop-frame (NDF) variants.',
+        coreFeatures: [
+          'Timecode → frames: turn HH:MM:SS:FF into the frame count from zero and the true millisecond duration',
+          'Frames/duration → timecode: enter a frame count or a duration such as 90s, 12.5m or 1h and get the timecode',
+          'Drop-frame math: 29.97 DF applies the skip-frames-0/1 rule every non-tenth minute and rejects impossible codes',
+          'Multi-rate: switch between 24/25/30 fps and 29.97 DF/NDF; full-width colons are accepted on input',
+        ],
+        howToUse: [
+          'Pick the frame-rate standard (e.g. 29.97 fps NTSC drop frame)',
+          'Choose the direction and enter a timecode (e.g. 00:01:00;02) or a frame count (e.g. 1800)',
+          'Read the canonical timecode, total frames and real duration from the table; copy any value',
+          'If a code does not exist in DF mode (e.g. 00:01:00;00), follow the error and choose a legal frame number',
+        ],
+        useCases: [
+          'Cross-checking timecodes in EDL/XML/ALE files against real frame counts in editing or color pipelines',
+          'Validating frame-time math when building players, frame extraction services or subtitle sync',
+          'Understanding why NTSC 29.97 drop frame uses a semicolon and “drops” two frame numbers per minute',
+        ],
+        privacyNote:
+          'All calculation happens locally in your browser. No timecode or media information is uploaded and no network request is made.',
+        faqs: [
+          {
+            question: 'Does drop frame actually drop picture frames?',
+            answer:
+              'No. Drop Frame only changes timecode numbering: frame numbers 0 and 1 are skipped at the start of every minute except every tenth minute, so the displayed timecode tracks wall-clock time. No picture frames are removed. DF codes use a semicolon (HH:MM:SS;FF).',
+          },
+          {
+            question: 'Why does 29.97 fps drift at all?',
+            answer:
+              'NTSC color-subcarrier compatibility pulled 30 fps down to 30000/1001 ≈ 29.97 fps, making each frame 1.001/30 s long. Numbering at 30 fps therefore runs slow; the drop-frame numbering scheme periodically skips numbers to keep timecode aligned with wall-clock time (about ±3.6 ms per hour).',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

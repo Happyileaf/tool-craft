@@ -232,4 +232,5 @@ export const toolLoaders: Record<
   'json-to-rust': () => import('./json-to-rust'),
   'ntp-timestamp-converter': () => import('./ntp-timestamp-converter'),
   'imei-validator': () => import('./imei-validator'),
+  'smpte-timecode-converter': () => import('./smpte-timecode-converter'),
 };
