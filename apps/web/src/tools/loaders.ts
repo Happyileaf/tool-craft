@@ -230,4 +230,5 @@ export const toolLoaders: Record<
   'keyboard-event-viewer': () => import('./keyboard-event-viewer'),
   'gzip-codec': () => import('./gzip-codec'),
   'json-to-rust': () => import('./json-to-rust'),
+  'ntp-timestamp-converter': () => import('./ntp-timestamp-converter'),
 };

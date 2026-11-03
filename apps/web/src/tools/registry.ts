@@ -20624,6 +20624,95 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'ntp-timestamp-converter',
+    name: 'NTP 64 位时间戳互转器',
+    nameEn: 'NTP 64-bit Timestamp Converter',
+    description:
+      '在 NTP 64 位定点时间戳（点分十进制/十六进制/uint64）与 UTC、Unix 秒、本地时间之间双向换算，支持 2036 回卷纪元解释。',
+    descriptionEn:
+      'Convert between 64-bit NTP timestamps (dotted decimal, hex or uint64) and UTC / Unix / local time, with 2036 era rollover handling.',
+    category: ToolCategoryEnum.DATE_TIME,
+    path: '/tools/ntp-timestamp-converter',
+    iconName: 'FieldTimeOutlined',
+    tags: ['NTP', '时间戳', 'UTC', 'RFC 5905', '网络协议'],
+    tagsEn: ['NTP', 'Timestamp', 'UTC', 'RFC 5905', 'Networking'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'NTP 64 位时间戳互转器用于在 RFC 5905 定义的 NTP 时间戳（高 32 位为 1900-01-01 UTC 起的秒数、低 32 位为秒的定点小数）与人类可读的 UTC、北京时间及 Unix 时间戳之间双向换算，并支持十进制 uint64、十六进制与点分十进制三种输入写法。',
+        coreFeatures: [
+          'NTP → 日期：解析十进制 uint64、0x 十六进制或点分十进制，输出秒/小数字段、Unix 秒/毫秒、UTC 与北京时间',
+          '日期 → NTP：接受 ISO 8601 字符串、Unix 秒或毫秒，输出点分十进制、十六进制与 64 位原始值',
+          '2036 回卷处理：原始值可按 Era 0（1900–2036）或 Era 1（2036–2152）解释，回卷附近给出醒目警告',
+          '纯 BigInt 运算：超过 Number 安全整数范围的 uint64 也能精确解析与换算，不丢失精度',
+        ],
+        howToUse: [
+          '选择换算方向（NTP → 日期 或 日期 → NTP）',
+          '在输入框填入 NTP 时间戳（如 3913056000.0）或日期字符串（如 2024-01-01T00:00:00Z）',
+          '查看结果表格中的 UTC、北京时间、Unix 秒/毫秒及三种 NTP 写法，可逐项复制',
+          '解读 2036 年之后的抓包数据时，用 Era 1 开关重新解释原始秒字段',
+        ],
+        useCases: [
+          '解读 Wireshark 抓包中的 NTP 报文 Transmit Timestamp',
+          '调试 NTP 服务端/客户端日志与嵌入式设备 RTC 同步问题',
+          '核对 SNTP/NTP 协议实现中 1900 纪元偏移与定点小数换算',
+        ],
+        privacyNote:
+          '所有换算均在浏览器本地完成，不连接任何 NTP 服务器或远端接口，输入数据不会离开设备。',
+        faqs: [
+          {
+            question: 'NTP 时间戳和 Unix 时间戳有什么区别？',
+            answer:
+              'Unix 时间戳是自 1970-01-01 UTC 起的纯秒数（通常为整数或毫秒）；NTP 时间戳自 1900-01-01 UTC 起算，且为 64 位定点数：高 32 位秒、低 32 位秒小数（分辨率约 2.33×10⁻¹⁰ 秒）。两者相差 2208988800 秒。',
+          },
+          {
+            question: '为什么需要 Era 0 / Era 1 开关？',
+            answer:
+              'NTP 秒字段只有 32 位，将在 2036-02-07T06:28:16Z 归零（第一次回卷）。之后线网上的小秒数既可能表示 1900–2036 年，也可能表示 2152 年之后，需要借助上下文确定纪元。本工具允许手动切换解释方式，并在结果可能落在回卷之后时给出提示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The NTP 64-bit Timestamp Converter converts between RFC 5905 NTP timestamps (upper 32 bits = seconds since 1900-01-01 UTC, lower 32 bits = fixed-point fraction) and human-readable UTC, Beijing time and Unix timestamps. It accepts decimal uint64, hexadecimal and dotted-decimal input.',
+        coreFeatures: [
+          'NTP → date: parse decimal uint64, 0x hex or dotted decimal; show second/fraction fields, Unix seconds/ms, UTC and Beijing time',
+          'Date → NTP: accept ISO 8601, Unix seconds or milliseconds; emit dotted decimal, hex and raw 64-bit forms',
+          '2036 rollover: interpret raw values as Era 0 (1900–2036) or Era 1 (2036–2152), with a clear warning near rollover',
+          'Pure BigInt math: uint64 values beyond the Number safe-integer range are parsed and converted exactly',
+        ],
+        howToUse: [
+          'Choose the conversion direction (NTP → date or date → NTP)',
+          'Enter an NTP timestamp (e.g. 3913056000.0) or a date string (e.g. 2024-01-01T00:00:00Z)',
+          'Read UTC, Beijing time, Unix seconds/ms and the three NTP notations from the result table and copy any row',
+          'When analyzing captures after 2036, switch to Era 1 to reinterpret the raw seconds field',
+        ],
+        useCases: [
+          'Reading Transmit Timestamp fields in NTP packets in Wireshark captures',
+          'Debugging NTP client/server logs and RTC sync on embedded devices',
+          'Verifying the 1900 epoch offset and fixed-point fraction math in SNTP implementations',
+        ],
+        privacyNote:
+          'All conversion runs locally in your browser. It never contacts an NTP server or any remote endpoint, and input never leaves your device.',
+        faqs: [
+          {
+            question: 'How is an NTP timestamp different from a Unix timestamp?',
+            answer:
+              'A Unix timestamp counts seconds (or milliseconds) since 1970-01-01 UTC. An NTP timestamp counts from 1900-01-01 UTC and is a 64-bit fixed-point number: 32 bits of seconds plus 32 bits of fraction (~2.33×10⁻¹⁰ s resolution). The epoch difference is 2208988800 seconds.',
+          },
+          {
+            question: 'Why do I need the Era 0 / Era 1 toggle?',
+            answer:
+              'The 32-bit seconds field wraps on 2036-02-07T06:28:16Z. A small raw value after that date could mean either 1900–2036 or 2036–2152 depending on context. The tool lets you choose the interpretation explicitly and warns when a result may lie beyond the rollover.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
