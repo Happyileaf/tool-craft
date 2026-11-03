@@ -239,4 +239,5 @@ export const toolLoaders: Record<
   'php-serialize-json': () => import('./php-serialize-json'),
   'json5-json-converter': () => import('./json5-json-converter'),
   'og-meta-generator': () => import('./og-meta-generator'),
+  'security-headers-generator': () => import('./security-headers-generator'),
 };

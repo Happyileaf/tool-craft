@@ -21498,6 +21498,123 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'security-headers-generator',
+    name: 'HTTP 安全响应头生成器',
+    nameEn: 'HTTP Security Headers Generator',
+    description:
+      '勾选配置 CSP、HSTS、X-Frame-Options、X-Content-Type-Options、Referrer-Policy、Permissions-Policy 与跨源隔离三件套（COOP/COEP/CORP），实时生成原始响应头、Nginx、Apache 与 HTML meta 四种配置，含重复指令、preload 条件与危险来源（unsafe-inline/eval）校验提示。',
+    descriptionEn:
+      'Configure CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy and the cross-origin isolation headers (COOP/COEP/CORP), and instantly emit raw headers, Nginx, Apache or HTML meta snippets, with validation for duplicate directives, preload requirements and risky sources such as unsafe-inline/eval.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/security-headers-generator',
+    iconName: 'ShieldCheck',
+    tags: ['安全响应头', 'CSP', 'HSTS', 'Nginx', 'XSS'],
+    tagsEn: ['Security Headers', 'CSP', 'HSTS', 'Nginx', 'XSS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP 安全响应头生成器帮助你为网站配置浏览器侧安全策略：包括防 XSS 与数据注入的 Content-Security-Policy（CSP，支持 Report-Only 仅报告模式）、强制 HTTPS 的 Strict-Transport-Security（HSTS，含 includeSubDomains / preload）、防点击劫持的 X-Frame-Options、禁止 MIME 嗅探的 X-Content-Type-Options、控制 Referer 泄露的 Referrer-Policy、管控摄像头 / 麦克风 / 地理位置等浏览器特性授权的 Permissions-Policy，以及实现跨源隔离所需的 COOP / COEP / CORP 三件套。生成结果可一键切换为原始响应头、Nginx add_header、Apache Header 指令或 HTML <meta> 四种形式。',
+        coreFeatures: [
+          '覆盖 7 大类主流安全响应头，开关式启用，未启用的头不出现在输出中',
+          'CSP 指令可视化增删，内置 default-src / script-src 等 12 个常用指令快捷添加，重复指令与非法字符本地报错',
+          '自动识别 unsafe-inline / unsafe-eval、缺失 default-src、未知指令拼写等风险并分级提示',
+          'HSTS 校验 preload 前置条件（max-age ≥ 1 年且包含子域），生产环境 max-age 过短给出建议',
+          'Permissions-Policy 自动把 self / * 与 https 源归一为 feature=(self "https://...") 标准语法',
+          '同一配置输出原始响应头、Nginx、Apache、HTML meta 四种形式；meta 形式自动标注无法通过 <meta> 设置的头',
+        ],
+        howToUse: [
+          '开启 Content-Security-Policy，先用快捷按钮添加 default-src 等指令并填写允许的来源',
+          '不确定影响时勾选「仅报告模式」上线观察浏览器上报，确认业务无阻断后再取消该选项',
+          '开启 HSTS 并设置 max-age（如 63072000=2 年），全站 HTTPS 后再勾选 includeSubDomains / preload',
+          '按需要打开 nosniff、X-Frame-Options、Referrer-Policy、Permissions-Policy 与跨源隔离头',
+          '对照错误与警告修正配置，选择 Nginx / Apache 等格式后点击「复制」部署到 Web 服务器',
+        ],
+        useCases: [
+          '新站点上线前一次性补齐安全响应头，提升 securityheaders.com / Mozilla Observatory 评级',
+          '为现有站点引入严格 CSP，先 Report-Only 收集违规再逐步收紧来源',
+          '需要 SharedArrayBuffer 等能力时配置 COOP/COEP 跨源隔离环境',
+          '统一输出 Nginx / Apache / 静态主机（meta）配置，避免手写语法错误',
+        ],
+        privacyNote:
+          '所有配置与生成过程完全在浏览器本地完成，不发起任何网络请求，也不依赖任何第三方库。',
+        faqs: [
+          {
+            question: 'CSP 配置后页面样式或脚本全部失效怎么办？',
+            answer:
+              '说明策略拦截了现有资源。先切换为「仅报告模式（Report-Only）」，浏览器只在控制台 / 上报端点记录违规而不拦截；根据违规中的 blocked-uri 与 violated-directive，把真实需要的 CDN、内联样式等来源逐步加入对应指令（内联脚本优先用 nonce / hash 而非 unsafe-inline），观察一段时间无违规后再切回强制模式。',
+          },
+          {
+            question: 'HSTS preload 为什么勾选后报错？',
+            answer:
+              '浏览器内置预加载列表（hstspreload.org）要求 max-age 至少 31536000 秒（1 年）、必须包含 includeSubDomains，且承诺所有子域长期支持 HTTPS。不满足条件时工具会直接报错。建议先在不勾选 preload 的情况下稳定运行一段时间，确认所有子域名（含邮件、后台等）都已 HTTPS 化后再申请加入预加载列表。',
+          },
+          {
+            question: '选了 HTML <meta> 格式后为什么少了很多头？',
+            answer:
+              'HTML 规范只允许通过 <meta http-equiv> 设置极少数响应头（如 Content-Security-Policy、Referrer-Policy）。HSTS、X-Frame-Options、Permissions-Policy、COOP/COEP/CORP 等必须由真实 HTTP 响应携带，工具会在输出中以 HTML 注释列出这些无法通过 meta 设置的头，它们需要在 Nginx / Apache / CDN 层配置。另外 Report-Only 版本的 CSP 也无法通过 meta 生效。',
+          },
+          {
+            question: 'X-Frame-Options 和 CSP frame-ancestors 应该用哪个？',
+            answer:
+              'frame-ancestors 是新标准、支持多个允许来源，X-Frame-Options 兼容性更广但只能表达 DENY 或 SAMEORIGIN。现代实践是两者同时输出（本工具即如此）：支持 CSP Level 2 的浏览器优先采用 frame-ancestors，老旧浏览器回退到 X-Frame-Options。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The HTTP Security Headers Generator helps you configure browser-side security policies: Content-Security-Policy (CSP, with Report-Only mode) against XSS and injection, Strict-Transport-Security (HSTS, with includeSubDomains/preload) to enforce HTTPS, X-Frame-Options against clickjacking, X-Content-Type-Options to block MIME sniffing, Referrer-Policy to limit referrer leakage, Permissions-Policy to gate camera/microphone/geolocation and similar features, and the COOP/COEP/CORP trio for cross-origin isolation. The result switches between raw headers, Nginx add_header, Apache Header directives and HTML <meta> form.',
+        coreFeatures: [
+          'Seven families of mainstream security headers, toggle-based; disabled headers never appear in the output',
+          'Visual add/remove of CSP directives with quick inserts for 12 common directives; duplicates and illegal characters are caught locally',
+          'Risk grading for unsafe-inline / unsafe-eval, missing default-src and unknown directive spellings',
+          'HSTS enforces preload prerequisites (max-age ≥ 1 year plus includeSubDomains) and warns on short production max-age',
+          'Permissions-Policy normalizes self / * and https origins into feature=(self "https://...") syntax',
+          'One config rendered as raw headers, Nginx, Apache or HTML meta; the meta form annotates headers that cannot be set via meta',
+        ],
+        howToUse: [
+          'Enable Content-Security-Policy and add directives such as default-src via the quick buttons, filling in allowed sources',
+          'When unsure of the impact, turn on Report-Only to collect browser reports, then remove it once nothing is blocked',
+          'Enable HSTS with a max-age (e.g. 63072000 = 2 years); add includeSubDomains/preload only after the whole site is HTTPS',
+          'Turn on nosniff, X-Frame-Options, Referrer-Policy, Permissions-Policy and isolation headers as needed',
+          'Fix errors and warnings, choose Nginx/Apache or another format, then click Copy to deploy on your web server',
+        ],
+        useCases: [
+          'Adding a complete set of security headers before launch to improve securityheaders.com / Mozilla Observatory grades',
+          'Rolling out a strict CSP, starting in Report-Only to collect violations before tightening sources',
+          'Configuring COOP/COEP cross-origin isolation to unlock features like SharedArrayBuffer',
+          'Producing consistent Nginx/Apache/static-host (meta) config without hand-written syntax errors',
+        ],
+        privacyNote:
+          'All configuration and generation happens locally in your browser; no network requests are made and no third-party libraries are used.',
+        faqs: [
+          {
+            question: 'Styles or scripts stopped working after deploying CSP — what now?',
+            answer:
+              'The policy is blocking existing resources. Switch to Report-Only first: browsers record violations in the console/report endpoint without blocking. Using blocked-uri and violated-directive from the reports, gradually add the CDNs and inline styles you actually need to the matching directives (prefer nonce/hash over unsafe-inline for inline scripts). Run for a while with no violations, then return to enforcing mode.',
+          },
+          {
+            question: 'Why does enabling HSTS preload show an error?',
+            answer:
+              'The browser preload list (hstspreload.org) requires max-age of at least 31536000 seconds (1 year), includeSubDomains, and a commitment that every subdomain stays on HTTPS. The tool errors out until these hold. Run without preload for a while and confirm all subdomains (mail, admin panels, etc.) are HTTPS before requesting preload inclusion.',
+          },
+          {
+            question: 'Why are many headers missing in the HTML <meta> format?',
+            answer:
+              'HTML allows only a few headers (such as Content-Security-Policy and Referrer-Policy) via <meta http-equiv>. HSTS, X-Frame-Options, Permissions-Policy and COOP/COEP/CORP must arrive as real HTTP response headers; the tool lists them in an HTML comment so you know what to configure at the Nginx/Apache/CDN layer. The Report-Only variant of CSP also cannot be delivered via meta.',
+          },
+          {
+            question: 'X-Frame-Options or CSP frame-ancestors — which should I use?',
+            answer:
+              'frame-ancestors is the modern standard and supports multiple allowed origins; X-Frame-Options has wider legacy coverage but only expresses DENY or SAMEORIGIN. Current practice is to send both (as this tool does): CSP Level 2-capable browsers honor frame-ancestors, while older browsers fall back to X-Frame-Options.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -50,7 +50,7 @@
 | 20261017220043 | 地理坐标格式转换（十进制 ↔ 度分秒） | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261017220043.md) |
 | 20261017220045 | vCard（VCF）名片生成器 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017220045.md) |
 | 20261017220047 | 开源许可证生成器 | Web Tool | Exploration | Pending | 2026-10-17 | | [详情](./idea-details/20261017220047.md) |
-| 20261017220048 | HTTP 安全响应头生成器（CSP / HSTS 等） | Web Tool | Existing Gap | Claimed | 2026-10-17 | trae-agent @ 2026-11-03 18:05 CST | [详情](./idea-details/20261017220048.md) |
+| 20261017220048 | HTTP 安全响应头生成器（CSP / HSTS 等） | Web Tool | Existing Gap | In Progress | 2026-10-17 | trae-agent @ 2026-11-03 18:05 CST | [详情](./idea-details/20261017220048.md) |
 | 20261017220049 | 列表集合运算（交集 / 并集 / 差集） | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017220049.md) |
 | 20261017220050 | 小数与分数互转 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017220050.md) |
 | 20261018000142 | Open Graph / SEO 元标签生成器 | Web Tool | Exploration | In Progress | 2026-10-18 | trae-agent @ 2026-11-03 18:05 CST | [详情](./idea-details/20261018000142.md) |
