@@ -86,7 +86,7 @@ class Json5Parser {
     if (this.pos >= this.text.length) {
       throw this.error('内容意外结束，缺少值');
     }
-    const char = this.text[this.pos];
+    const char = this.current();
     if (char === '{') {
       return this.parseObject();
     }
@@ -181,7 +181,7 @@ class Json5Parser {
     if (this.isIdentifierStart(char)) {
       const start = this.pos;
       this.pos += 1;
-      while (this.pos < this.text.length && this.isIdentifierPart(this.text[this.pos])) {
+      while (this.pos < this.text.length && this.isIdentifierPart(this.text[this.pos] ?? '')) {
         this.pos += 1;
       }
       return this.text.slice(start, this.pos);
@@ -255,7 +255,7 @@ class Json5Parser {
           if (next === '\r' && this.text[this.pos] === '\n') {
             this.pos += 1;
           }
-          while (this.pos < this.text.length && /[ \t]/.test(this.text[this.pos])) {
+          while (this.pos < this.text.length && /[ \t]/.test(this.text[this.pos] ?? '')) {
             this.pos += 1;
           }
           continue;
@@ -272,7 +272,7 @@ class Json5Parser {
   /** 位于反斜杠处，读取并返回一个转义字符 */
   private readEscapeSequence(): string {
     this.pos += 1; // 消费反斜杠
-    const char = this.text[this.pos];
+    const char = this.text[this.pos] ?? '';
     const simpleEscapes: Record<string, string> = {
       '"': '"',
       "'": "'",
@@ -286,9 +286,10 @@ class Json5Parser {
       v: '\v',
       '0': '\0',
     };
-    if (char in simpleEscapes) {
+    const escaped: string | undefined = simpleEscapes[char];
+    if (escaped !== undefined) {
       this.pos += 1;
-      return simpleEscapes[char];
+      return escaped;
     }
     if (char === 'x') {
       this.pos += 1;
@@ -347,7 +348,7 @@ class Json5Parser {
     if (this.text[this.pos] === '0' && (this.text[this.pos + 1] === 'x' || this.text[this.pos + 1] === 'X')) {
       this.pos += 2;
       const hexStart = this.pos;
-      while (this.pos < this.text.length && /[0-9a-fA-F]/.test(this.text[this.pos])) {
+      while (this.pos < this.text.length && /[0-9a-fA-F]/.test(this.text[this.pos] ?? '')) {
         this.pos += 1;
       }
       if (hexStart === this.pos) {
@@ -358,12 +359,12 @@ class Json5Parser {
     }
 
     // 十进制：允许前导小数点
-    while (this.pos < this.text.length && this.isDigit(this.text[this.pos])) {
+    while (this.pos < this.text.length && this.isDigit(this.text[this.pos] ?? '')) {
       this.pos += 1;
     }
     if (this.text[this.pos] === '.') {
       this.pos += 1;
-      while (this.pos < this.text.length && this.isDigit(this.text[this.pos])) {
+      while (this.pos < this.text.length && this.isDigit(this.text[this.pos] ?? '')) {
         this.pos += 1;
       }
     }
@@ -374,7 +375,7 @@ class Json5Parser {
         this.pos += 1;
       }
       const expStart = this.pos;
-      while (this.pos < this.text.length && this.isDigit(this.text[this.pos])) {
+      while (this.pos < this.text.length && this.isDigit(this.text[this.pos] ?? '')) {
         this.pos += 1;
       }
       if (expStart === this.pos) {

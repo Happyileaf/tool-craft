@@ -53,7 +53,7 @@ class PhpParser {
   }
 
   private skipWhitespace(): void {
-    while (this.pos < this.input.length && /\s/.test(this.input[this.pos])) {
+    while (this.pos < this.input.length && /\s/.test(this.peek())) {
       this.pos += 1;
     }
   }
@@ -196,7 +196,8 @@ class PhpParser {
     // 判断 list：键恰好为 0..n-1 且无重复
     let isList = entries.length > 0;
     for (let i = 0; i < entries.length; i += 1) {
-      if (entries[i][0] !== i) {
+      const entry = entries[i];
+      if (entry === undefined || entry[0] !== i) {
         isList = false;
         break;
       }

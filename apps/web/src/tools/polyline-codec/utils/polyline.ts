@@ -68,7 +68,10 @@ export function encodePolyline(points: LatLng[], precision: 5 | 6): EncodeResult
   let prevLng = 0;
 
   for (let i = 0; i < points.length; i += 1) {
-    const point = points[i];
+    const point: LatLng | undefined = points[i];
+    if (point === undefined) {
+      continue;
+    }
     if (
       typeof point.lat !== 'number' ||
       typeof point.lng !== 'number' ||
@@ -149,8 +152,12 @@ export function decodePolyline(text: string, precision: 5 | 6): DecodeResult {
       dimensions.push(delta);
     }
 
-    lat += dimensions[0];
-    lng += dimensions[1];
+    const [latDelta, lngDelta] = dimensions;
+    if (latDelta === undefined || lngDelta === undefined) {
+      return { points: [], error: `第 ${points.length + 1} 个坐标分块不完整` };
+    }
+    lat += latDelta;
+    lng += lngDelta;
     const latValue = lat / factor;
     const lngValue = lng / factor;
     if (latValue < -90 || latValue > 90) {
@@ -179,14 +186,18 @@ export function parsePointsText(text: string): { points: LatLng[]; error: string
     .filter((line) => line !== '');
 
   for (let i = 0; i < lines.length; i += 1) {
-    const parts = lines[i].split(/[,\s]+/).filter((part) => part !== '');
+    const line: string | undefined = lines[i];
+    if (line === undefined) {
+      continue;
+    }
+    const parts = line.split(/[,\s]+/).filter((part) => part !== '');
     if (parts.length !== 2) {
       return { points: [], error: `第 ${i + 1} 行格式错误：应为「纬度,经度」两个数字` };
     }
     const lat = Number(parts[0]);
     const lng = Number(parts[1]);
     if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
-      return { points: [], error: `第 ${i + 1} 行包含无法解析的数字：${lines[i]}` };
+      return { points: [], error: `第 ${i + 1} 行包含无法解析的数字：${line}` };
     }
     points.push({ lat, lng });
   }

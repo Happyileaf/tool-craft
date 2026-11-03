@@ -149,9 +149,10 @@ describe('collectHeaders', () => {
     const config = createSampleConfig();
     config.cspReportOnly = true;
     const { headers } = collectHeaders(config);
-    const csp = headers[0];
-    expect(csp.name).toBe('Content-Security-Policy-Report-Only');
-    expect(csp.metaSupported).toBe(false);
+    const csp = headers.find((header) => header.name.startsWith('Content-Security-Policy'));
+    expect(csp).toBeDefined();
+    expect(csp?.name).toBe('Content-Security-Policy-Report-Only');
+    expect(csp?.metaSupported).toBe(false);
   });
 
   it('未启用的头不出现', () => {

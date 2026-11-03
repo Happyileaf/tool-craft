@@ -22,8 +22,10 @@ describe('encodePolyline', () => {
     expect(result.error).toBeNull();
     const decoded = decodePolyline(result.output, 6);
     expect(decoded.error).toBeNull();
-    expect(decoded.points[0].lat).toBeCloseTo(39.9042, 6);
-    expect(decoded.points[0].lng).toBeCloseTo(116.4074, 6);
+    const point = decoded.points[0];
+    expect(point).toBeDefined();
+    expect(point?.lat).toBeCloseTo(39.9042, 6);
+    expect(point?.lng).toBeCloseTo(116.4074, 6);
   });
 
   it('拒绝越界纬度', () => {
@@ -45,8 +47,10 @@ describe('decodePolyline', () => {
     expect(result.points).toHaveLength(3);
     expect(result.points[0]).toEqual({ lat: 38.5, lng: -120.2 });
     expect(result.points[1]).toEqual({ lat: 40.7, lng: -120.95 });
-    expect(result.points[2].lat).toBeCloseTo(43.252, 5);
-    expect(result.points[2].lng).toBeCloseTo(-126.453, 5);
+    const lastPoint = result.points[2];
+    expect(lastPoint).toBeDefined();
+    expect(lastPoint?.lat).toBeCloseTo(43.252, 5);
+    expect(lastPoint?.lng).toBeCloseTo(-126.453, 5);
   });
 
   it('解码精度 6 的短折线', () => {
@@ -60,7 +64,7 @@ describe('decodePolyline', () => {
     ).output;
     const decoded = decodePolyline(encoded, 6);
     expect(decoded.points).toHaveLength(2);
-    expect(decoded.points[1].lat).toBeCloseTo(40.7, 6);
+    expect(decoded.points[1]?.lat).toBeCloseTo(40.7, 6);
   });
 
   it('空字符串返回空数组', () => {
@@ -97,7 +101,7 @@ describe('parsePointsText', () => {
     const result = parsePointsText('38.5, -120.2\n40.7,-120.95\n  \n');
     expect(result.error).toBeNull();
     expect(result.points).toHaveLength(2);
-    expect(result.points[1].lng).toBe(-120.95);
+    expect(result.points[1]?.lng).toBe(-120.95);
   });
 
   it('字段数错误时报错', () => {
