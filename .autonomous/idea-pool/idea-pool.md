@@ -214,4 +214,9 @@
 | 20261102200313 | PE 文件头只读解析器（DOS header / COFF header / Optional header / Section table） | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102200313.md) |
 | 20261102200314 | Source Map（.map）查看器与 VLQ mappings 解码器 | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102200314.md) |
 | 20261102200315 | 露点 / 湿球温度与气压海拔计算器 | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102200315.md) |
+| 20261103081157 | JSON5 ↔ JSON 双向转换器 | Web Tool | Existing Gap | Pending | 2026-11-03 | | [详情](./idea-details/20261103081157.md) |
+| 20261103081158 | BibTeX 条目解析器（.bib ↔ JSON / 格式化引用） | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103081158.md) |
+| 20261103081159 | NTP 64 位时间戳与 UTC/Unix 时间互转器 | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103081159.md) |
+| 20261103081200 | IMEI 移动设备识别码校验器（Luhn 校验位与 TAC/序列号拆解） | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103081200.md) |
+| 20261103081201 | SMPTE 时间码（LTC）与帧/真实时间互转器 | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103081201.md) |
 
