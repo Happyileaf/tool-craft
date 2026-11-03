@@ -240,4 +240,5 @@ export const toolLoaders: Record<
   'json5-json-converter': () => import('./json5-json-converter'),
   'og-meta-generator': () => import('./og-meta-generator'),
   'security-headers-generator': () => import('./security-headers-generator'),
+  'spf-record-generator': () => import('./spf-record-generator'),
 };

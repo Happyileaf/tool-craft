@@ -21615,6 +21615,109 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'spf-record-generator',
+    name: 'SPF 记录生成与校验器',
+    nameEn: 'SPF Record Generator & Validator',
+    description:
+      '按 RFC 7208 可视化拼装或校验发信域 SPF（TXT）记录，统计 10 次 DNS 查询上限风险并提示机制顺序。',
+    descriptionEn:
+      'Build or validate an SPF (TXT) record for your sending domain per RFC 7208, with the 10-DNS-lookup limit counter and mechanism-order warnings.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/spf-record-generator',
+    iconName: 'ShieldCheck',
+    tags: ['SPF', 'DNS', 'TXT', '邮件', '防仿冒', '运维'],
+    tagsEn: ['SPF', 'DNS', 'TXT', 'Email', 'Anti-spoofing', 'Ops'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'SPF 记录生成与校验器帮助邮件域管理员拼装和检查 Sender Policy Framework 的 DNS TXT 记录：通过限定符（+/-/~/?）与机制（ip4、ip6、a、mx、ptr、include、exists、all 及 redirect= 修饰符）声明哪些 IP 有权以该域发信，并重点统计 RFC 7208 §4.6.4 规定的 10 次 DNS 查询上限。全部在浏览器本地完成，不发起真实 DNS 查询。',
+        coreFeatures: [
+          '可视化增删机制、调整限定符与顺序，一键生成规范的 v=spf1 TXT 记录',
+          '内置 Google Workspace、Microsoft 365、SendGrid、Mailchimp、Amazon SES 常见 include 模板',
+          '粘贴现有记录做词法校验：非法机制、非法 IP/CIDR/域名逐条报错',
+          'DNS 查询计数（include/a/mx/ptr/exists/redirect）超过 10 次明确报错，达到 10 次给出警告',
+          '提示 +all 风险、all 非末尾、all 与 redirect 共存、记录超过 255 字节等问题',
+        ],
+        howToUse: [
+          '在「生成记录」页通过机制按钮逐条添加发信源，ip4/ip6 填地址或 CIDR，include 填第三方域',
+          '用上下箭头调整顺序，通常把 all（-all 或 ~all）放在最后',
+          '复制生成的完整记录，在域名 DNS 中新增 TXT 记录（主机记录留空或 @）',
+          '已有记录时切换到「校验现有记录」粘贴内容，查看错误、警告与查询计数',
+        ],
+        useCases: [
+          '企业邮箱域名配置 SPF，降低邮件进垃圾箱或被拒收概率',
+          '接入第三方群发/事务邮件服务前拼装 include 链',
+          '排查收件方报 PermError、SPF lookup limit exceeded 问题',
+          '检查历史遗留 SPF 记录是否存在 +all 等仿冒风险',
+        ],
+        privacyNote:
+          '所有输入与校验仅在浏览器本地进行，不发起任何 DNS 或网络请求，也不使用第三方库。',
+        faqs: [
+          {
+            question: '-all、~all、?all 有什么区别？',
+            answer:
+              '-all 表示 Fail，未命中的发信 IP 一律不授权，是生产环境推荐的严格策略；~all 是 SoftFail，收件方通常接收但标记为可疑，适合刚上线的观察期；?all 是 Neutral，等同于不表态；+all 允许任意 IP 发信，等于关闭 SPF 防护，绝不能用于生产。',
+          },
+          {
+            question: '为什么 include 多了会报错？',
+            answer:
+              'RFC 7208 §4.6.4 规定 SPF 评估期间最多进行 10 次 DNS 查询（统计 include、a、mx、ptr、exists、redirect，ip4/ip6 不计数）。超过上限收件方直接判定 PermError，邮件可能被拒。解决办法是减少 include 层级，或请服务商提供 IP 段做扁平化（flatten）。注意嵌套 include 内部的查询本工具无法静态统计。',
+          },
+          {
+            question: 'redirect= 和 include 有什么不同？',
+            answer:
+              'include 只是引入另一域的机制并继续评估本记录；redirect= 是修饰符，表示本记录未命中时整体改用目标域的策略，通常放在末尾。如果记录里已有 all，redirect 会被忽略（RFC 7208 §6.1）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The SPF Record Generator & Validator helps mail-domain administrators build and inspect the Sender Policy Framework DNS TXT record defined in RFC 7208: combine qualifiers (+/-~/?) with mechanisms (ip4, ip6, a, mx, ptr, include, exists, all and the redirect= modifier) to declare which IPs may send mail for the domain, with a built-in counter for the 10-DNS-lookup limit of §4.6.4. Everything runs locally in the browser; no real DNS queries are made.',
+        coreFeatures: [
+          'Add, remove and reorder mechanisms visually; emit a canonical v=spf1 TXT record',
+          'Built-in include presets for Google Workspace, Microsoft 365, SendGrid, Mailchimp and Amazon SES',
+          'Paste an existing record for lexical validation with per-term errors for bad mechanisms, IPs, CIDRs or domains',
+          'Errors above the 10-query DNS lookup budget (include/a/mx/ptr/exists/redirect) and a warning at exactly 10',
+          'Warns about +all, non-trailing all, all combined with redirect, and records longer than 255 bytes',
+        ],
+        howToUse: [
+          'On the generator tab, add sending sources with the mechanism buttons; fill an address/CIDR for ip4/ip6 or a third-party domain for include',
+          'Reorder with the arrows; keep all (-all or ~all) last',
+          'Copy the full record and publish it as a TXT record at the domain apex (host @ or blank)',
+          'To inspect an existing record, switch to the validator tab and paste it to see errors, warnings and the lookup count',
+        ],
+        useCases: [
+          'Publishing SPF for a business mail domain to improve deliverability',
+          'Combining include chains when onboarding transactional or marketing mail providers',
+          'Diagnosing recipient PermError / SPF lookup-limit failures',
+          'Auditing legacy records for dangerous +all policies',
+        ],
+        privacyNote:
+          'All input and validation happen locally in your browser; the tool performs no DNS or network requests and uses no third-party libraries.',
+        faqs: [
+          {
+            question: 'What is the difference between -all, ~all and ?all?',
+            answer:
+              '-all is Fail: IPs not matching earlier mechanisms are not authorized — the recommended production policy. ~all is SoftFail: receivers typically accept but flag the message, useful during rollout. ?all is Neutral (no opinion). +all authorizes every IP on the internet and effectively disables SPF; never use it in production.',
+          },
+          {
+            question: 'Why does adding more includes produce an error?',
+            answer:
+              'RFC 7208 §4.6.4 caps SPF evaluation at 10 DNS queries (counting include, a, mx, ptr, exists and redirect; ip4/ip6 do not count). Exceeding the cap makes receivers return PermError and mail may be rejected. Reduce the include chain or ask the provider for IP ranges to flatten. Queries hidden inside nested includes cannot be counted statically by this tool.',
+          },
+          {
+            question: 'How does redirect= differ from include?',
+            answer:
+              'include imports another domain’s mechanisms and keeps evaluating the current record, whereas redirect= is a modifier that hands the whole decision over to another domain when nothing matches, normally placed last. When an all mechanism exists, redirect is ignored per RFC 7208 §6.1.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
