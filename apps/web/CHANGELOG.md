@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-04 ：【Agent自主迭代】新增 5 个 SMD 电阻码、AWG 线规、CUSIP/SEDOL、ABA 路由号校验与 JSON 转 Zod 工具
+
+- **新增**：SMD 电阻码计算器（smd-resistor-code）— 支持 3 位（含 R 小数点）、4 位（精密）、EIA-96（两位代码 + 倍率字母，01–96 查表）三种贴片电阻打码体系双向换算与允差判定，内置阻值→标准 E 系列最近邻匹配与非法代码逐条报错，批量模式逐行解析多枚电阻打码，纯本地查表运算
+- **新增**：AWG 美国线规计算器（awg-wire-calculator）— 按 ASTM B258 标准以 0.127 mm × 92^((36-n)/39) 计算 0000–40 AWG 裸线直径与截面积，支持 mΩ/Ω/kΩ per 1000 ft/km、电阻↔长度互算、单股↔多股绞线等效换算，mm/AWG/in²/mil² 单位自适应，内置常用线规速查表，纯本地运算
+- **新增**：CUSIP / SEDOL 证券识别码校验器（cusip-sedol-validator）— 按长度自动识别体系：CUSIP 9 位按偶数位 ×2 拆位求和模 10、SEDOL 7 位按 1,3,1,7,3,9 加权并禁用元音字母，输出实际 / 期望校验位与逐字符加权明细，支持主体补全校验位、空白连字符归一与批量逐行校验，纯本地运算
+- **新增**：ABA 路由转账号校验器（aba-routing-validator）— 按美国银行家协会标准对 9 位 RTN 执行 3,7,1 循环加权模 10 校验，核验前两位 FRB 分区合法前缀（01–12 / 21–32 / 61–72 / 80），拆解联邦路由符号（4 位）、机构标识（4 位）与校验位并给出分区名称，支持空格 / 连字符归一与批量逐行校验带行号定位，纯本地运算
+- **新增**：JSON → Zod schema 生成器（json-to-zod）— 粘贴一个或空行分隔的多个 JSON 样例推断生成 Zod v3 schema 源码：整数 z.number().int()、布尔、null、空数组退化 z.unknown()，字符串按样本提示 email/uuid/url/datetime/date，重复离散值推断 z.enum，嵌套对象提升为具名 const（按依赖深度排序输出，无 TDZ），多样例合并缺失字段 .optional()、null 字段 .nullable()、异型值 z.union / z.literal，支持根名、2/4 空格缩进与导出开关，仅生成代码文本不引入 zod 运行时依赖，纯本地运算
+
 ## 2026-11-04 ：【Agent自主迭代】新增 5 个 SPF 记录、VIN 校验、电阻分压、摩尔质量与字节数组代码生成工具
 
 - **新增**：SPF 记录生成与校验器（spf-record-generator）— 按 RFC 7208 可视化拼装与词法校验 v=spf1 TXT 记录，支持限定符与 ip4/ip6/a/mx/ptr/include/exists/all 机制及 redirect=，逐项报错非法机制 / IP / CIDR / 域名，按 §4.6.4 统计 10 次 DNS 查询上限，提示 +all 风险、all 非末尾、all 与 redirect 共存与超 255 字节，内置常见邮件服务商 include 模板，纯本地运算
