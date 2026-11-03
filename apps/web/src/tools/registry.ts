@@ -21383,6 +21383,121 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'og-meta-generator',
+    name: 'Open Graph / SEO 元标签生成器',
+    nameEn: 'Open Graph / SEO Meta Tag Generator',
+    description:
+      '表单化填写标题、描述、canonical、分享图、站点名与 Twitter 账号，实时生成可粘贴到 <head> 的 title / meta description / canonical / og:* / twitter:* 标签片段，附长度校验、问题提示与社交分享卡片预览。',
+    descriptionEn:
+      'Fill in title, description, canonical URL, share image, site name and Twitter handles to instantly generate title / meta description / canonical / og:* / twitter:* tags for your <head>, with length checks, validation hints and a social card preview.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/og-meta-generator',
+    iconName: 'Globe',
+    tags: ['Open Graph', 'SEO', 'Twitter Card', 'meta', '社交分享'],
+    tagsEn: ['Open Graph', 'SEO', 'Twitter Card', 'meta', 'Social'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Open Graph / SEO 元标签生成器把页面标题、描述、规范链接、站点信息、分享图与社交账号等字段拼装成可直接粘贴到 HTML <head> 的标签片段：包含 <title>、meta description / keywords / author / robots、link canonical，以及 og:title、og:type、og:url、og:image 等 Open Graph 标签和 twitter:card 系列 Twitter Card 标签，让页面在 Google 等搜索引擎与微信、X（Twitter）、Facebook、Slack 等社交平台分享时呈现理想的标题、描述与缩略图。',
+        coreFeatures: [
+          '一次填写同时产出 SEO、Open Graph、Twitter Card 三组标签，字段为空的标签自动省略',
+          '标题（建议 ≤60 字符）与描述（建议 ≤160 字符）实时字数统计，超长黄色警告',
+          'canonical / og:url / og:image 强制 http(s) 绝对地址校验，非法值明确报错且不输出',
+          '支持 og:type（website/article/profile/book/音乐/视频）、og:locale、分享图尺寸与 alt、robots 指令预设',
+          'Twitter 账号自动补 @，locale 连字符自动归一为下划线，属性值统一 HTML 转义防止引号逃逸',
+          '内置社交分享卡片近似预览，所见即所得确认标题与描述的截断效果',
+        ],
+        howToUse: [
+          '在「页面基础信息」中填写标题、描述、规范链接与站点名，长度计数器会实时提示',
+          '按需填写分享图 URL（推荐 1200×630）、替代文字与宽高，选择 og:type 与 locale',
+          '选择 Twitter Card 类型（大图 / 小图 / app / player）并填写站点与作者账号',
+          '查看错误与警告提示，对照分享卡片预览确认效果',
+          '点击「复制 HTML」把生成的标签粘贴到页面模板的 <head> 中',
+        ],
+        useCases: [
+          '新页面上线前快速生成符合搜索引擎与社交平台规范的元标签',
+          '文章、产品页在微信 / X / Facebook / Slack 分享时修复无图、无描述或标题错误',
+          '前端静态页面、营销落地页缺少服务端模板能力时直接手写 head 标签',
+        ],
+        privacyNote:
+          '所有字段仅保存在浏览器页面状态中，HTML 片段完全在本地拼装，不发起任何网络请求（预览图仅由浏览器按你填写的 URL 直接加载），也不依赖任何第三方库。',
+        faqs: [
+          {
+            question: '生成的标签应该放在 HTML 的哪个位置？',
+            answer:
+              '全部放入页面的 <head>...</head> 中，与字符集声明（<meta charset>）和 viewport 标签并列。Open Graph 与 Twitter Card 标签不会在页面上可见，只被搜索引擎爬虫和社交平台抓取器读取。',
+          },
+          {
+            question: '为什么填写了图片 URL 却没有输出 og:image？',
+            answer:
+              '工具要求图片地址必须是 http(s) 开头的绝对地址，相对路径（如 /cover.png）无法被社交平台跨站抓取，会校验失败并跳过输出。把图片地址补全为 https://your-domain.com/cover.png 这类完整 URL 即可。',
+          },
+          {
+            question: '分享图尺寸有什么推荐？为什么要填宽高？',
+            answer:
+              '主流平台通用的大图卡片推荐 1200×630（约 1.91:1），文件控制在几百 KB 以内。显式提供 og:image:width / og:image:height 能让抓取器在不下载图片的情况下立即完成布局，减少分享卡片第一次抓取时的空白；宽高字段可留空，留空时对应标签不输出。',
+          },
+          {
+            question: '修改了标签为什么分享出去还是旧内容？',
+            answer:
+              '社交平台会缓存已抓取的卡片。可用 Facebook Sharing Debugger、X Card Validator 或微信的「重新抓取」能力强制刷新；同时确认线上页面返回的 HTML 中确实包含新标签（og 标签需要在服务端渲染的 HTML 或静态 HTML 中，纯客户端 JS 异步写入对部分爬虫无效）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Open Graph / SEO Meta Tag Generator turns page title, description, canonical URL, site info, share image and social handles into an HTML snippet you can paste straight into <head>: it covers <title>, meta description/keywords/author/robots, the canonical link, Open Graph tags such as og:title, og:type, og:url and og:image, plus the twitter:card family, so your pages show the right title, description and thumbnail on Google and when shared on WeChat, X (Twitter), Facebook or Slack.',
+        coreFeatures: [
+          'One form produces SEO, Open Graph and Twitter Card tags at once; empty fields are omitted automatically',
+          'Live counters for title (recommended ≤60 chars) and description (≤160 chars) with over-length warnings',
+          'canonical / og:url / og:image must be absolute http(s) URLs; invalid values are reported and never emitted',
+          'og:type presets (website/article/profile/book/music/video), og:locale, image dimensions and alt, plus robots directives',
+          'Twitter handles get an automatic @ prefix, locale hyphens normalize to underscores, and attribute values are HTML-escaped',
+          'Built-in near-real social card preview to confirm truncation before copying',
+        ],
+        howToUse: [
+          'Fill in title, description, canonical URL and site name under "Basic page info"; counters update live',
+          'Optionally add the share image URL (1200×630 recommended), alt text and dimensions, then pick og:type and locale',
+          'Choose the Twitter Card type (large image / summary / app / player) and enter site/creator handles',
+          'Review errors and warnings against the share-card preview',
+          'Click "Copy HTML" and paste the snippet into your page template <head>',
+        ],
+        useCases: [
+          'Generating search-engine- and social-friendly meta tags before launching a new page',
+          'Fixing missing images, descriptions or wrong titles when articles or product pages are shared on WeChat, X, Facebook or Slack',
+          'Hand-authoring head tags for static pages or landing pages without a server-side template',
+        ],
+        privacyNote:
+          'All fields stay in your browser page state; the snippet is assembled locally with no network requests and no third-party libraries (the preview image is loaded directly by your browser from the URL you enter).',
+        faqs: [
+          {
+            question: 'Where in the HTML should the generated tags go?',
+            answer:
+              'Inside the page <head>...</head>, alongside the charset and viewport declarations. Open Graph and Twitter Card tags are invisible on the page; only search crawlers and social scrapers read them.',
+          },
+          {
+            question: 'Why is og:image missing even though I entered an image URL?',
+            answer:
+              'The image must be an absolute http(s) URL. Relative paths like /cover.png cannot be fetched cross-site by social platforms, so they fail validation and the tag is skipped. Use a full URL such as https://your-domain.com/cover.png.',
+          },
+          {
+            question: 'What image size is recommended, and why provide width/height?',
+            answer:
+              'The broadly compatible large-card size is 1200×630 (~1.91:1), kept to a few hundred KB. Declaring og:image:width/height lets scrapers lay out the card without downloading the image, avoiding a blank card on the first scrape. The dimension fields are optional and the tags are omitted when empty.',
+          },
+          {
+            question: 'Why do shares still show old content after I changed the tags?',
+            answer:
+              'Social platforms cache scraped cards. Force a refresh with the Facebook Sharing Debugger, X Card Validator or WeChat’s re-scrape feature. Also make sure the new tags exist in the server-rendered or static HTML — tags injected only by client-side JavaScript are invisible to some crawlers.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

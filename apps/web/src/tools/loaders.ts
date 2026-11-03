@@ -238,4 +238,5 @@ export const toolLoaders: Record<
   'polyline-codec': () => import('./polyline-codec'),
   'php-serialize-json': () => import('./php-serialize-json'),
   'json5-json-converter': () => import('./json5-json-converter'),
+  'og-meta-generator': () => import('./og-meta-generator'),
 };
