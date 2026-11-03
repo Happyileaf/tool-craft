@@ -21282,6 +21282,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'json5-json-converter',
+    name: 'JSON5 ↔ JSON 双向转换器',
+    nameEn: 'JSON5 ↔ JSON Converter',
+    description:
+      '手写零依赖 JSON5 解析器：支持 // 与块注释、单引号字符串、未加引号键、尾逗号、0x 十六进制、前导小数点、Infinity/NaN 与续行字符串，JSON5/JSONC 一键转为标准 JSON，JSON 也可降级为 JSON5 友好写法。',
+    descriptionEn:
+      'A hand-written zero-dependency JSON5 parser: supports // and block comments, single-quoted strings, unquoted keys, trailing commas, 0x hex numbers, leading decimal points, Infinity/NaN and line-continuation strings, converting JSON5/JSONC to strict JSON and back to JSON5-friendly style.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json5-json-converter',
+    iconName: 'Braces',
+    tags: ['JSON5', 'JSONC', '配置文件', 'TS', '数据格式'],
+    tagsEn: ['JSON5', 'JSONC', 'Config', 'TypeScript', 'Data Format'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON5 是 JSON 的超集，目标是让手写配置与对象字面量更舒适：允许 // 行注释与 /* 块注释 */、单引号字符串、对象键不加引号（标识符键）、数组与对象尾逗号、0xFF 十六进制整数、.5 前导小数点、正号数字、Infinity/-Infinity/NaN、以及行尾反斜杠续行的多行字符串。本工具用零依赖手写递归下降解析器在浏览器本地完成 JSON5/JSONC 与标准 JSON 的双向转换。',
+        coreFeatures: [
+          'JSON5/JSONC → 标准 JSON：剥离注释、规范引号与键名、去除尾逗号、换算十六进制',
+          'JSON → JSON5 友好写法：默认单引号、合法标识符键不加引号、NaN/Infinity 原样保留',
+          '完整转义支持：\\n\\t、\\x41、\\u00e9、\\u{1F600} 码点转义与行尾续行',
+          '精确错误定位：所有语法错误带行列号，重复键、数字粘连、缺冒号等明确提示',
+          '零第三方依赖：解析器为本工具内置的手写实现，不引入 json5 npm 包',
+        ],
+        howToUse: [
+          '选择方向：JSON5/JSONC → 标准 JSON（常用于让带注释的配置可被程序解析）',
+          '粘贴内容：TS 配置对象、.json5/.jsonc 文件、带注释的接口响应都可以',
+          '查看结果与错误提示；含 Infinity/NaN 时会警告标准 JSON 将其输出为 null',
+          '反向（JSON → JSON5）适合把标准接口数据改写成可直接粘进 JS/TS 的字面量',
+        ],
+        useCases: [
+          '把写满注释与尾逗号的 .json5 / tsconfig 风格配置转换成可被 JSON.parse 读取的数据',
+          '调试前后端数据：把 TS 对象字面量贴进来，快速得到标准 JSON 发给接口',
+          '核对 JSON5 语法错误，行列号直接定位到注释、引号或尾逗号问题',
+        ],
+        privacyNote:
+          '全部解析与格式化仅在浏览器本地完成，不发起任何网络请求，配置内容不会离开你的设备。',
+        faqs: [
+          {
+            question: 'JSON5 和 JSONC 有什么区别？',
+            answer:
+              'JSONC 是「JSON with Comments」的简称，只在标准 JSON 上增加注释与（多数实现里的）尾逗号；JSON5 是更大的超集，还允许单引号、无引号键、十六进制数字、前导小数点、Infinity/NaN、续行字符串等。本工具的 JSON5 解析器天然兼容 JSONC 输入。',
+          },
+          {
+            question: '为什么 Infinity 转成标准 JSON 后变成了 null？',
+            answer:
+              '标准 JSON 规范没有 Infinity 与 NaN 字面量，JSON.stringify 会把它们序列化为 null。工具在检测到这些值时会给出警告；若需要保留语义，请使用 JSON → JSON5 方向，JSON5 文本支持直接书写 Infinity/NaN。',
+          },
+          {
+            question: '支持数字分隔符 1_000 吗？',
+            answer:
+              '当前手写解析器不支持 ES 风格数字分隔符（下划线），遇到 1_000 会明确报错而不是悄悄误解析；其余 JSON5 常用语法（注释、单引号、尾逗号、十六进制、续行、Unicode 转义等）均已支持。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'JSON5 is a superset of JSON designed for comfortable hand-written configs and object literals: it allows // line and /* block */ comments, single-quoted strings, unquoted identifier keys, trailing commas, 0xFF hex integers, leading-decimal numbers like .5, signed numbers, Infinity/-Infinity/NaN, and backslash line-continuation strings. This tool uses a hand-written zero-dependency recursive-descent parser to convert JSON5/JSONC to strict JSON and back, entirely in the browser.',
+        coreFeatures: [
+          'JSON5/JSONC → strict JSON: strips comments, normalizes quotes and keys, removes trailing commas, converts hex',
+          'JSON → JSON5-friendly style: single quotes by default, bare identifier keys, NaN/Infinity preserved',
+          'Full escapes: \\n\\t, \\x41, \\u00e9, \\u{1F600} code points and line continuation',
+          'Precise line/column errors for duplicate keys, glued numbers, missing colons and more',
+          'Zero third-party dependencies: a built-in hand-written parser rather than the json5 npm package',
+        ],
+        howToUse: [
+          'Pick a direction: JSON5/JSONC → strict JSON turns commented configs into machine-readable data',
+          'Paste TS config objects, .json5/.jsonc files, or commented API payloads',
+          'Review the output; Infinity/NaN warns that strict JSON emits them as null',
+          'The reverse direction (JSON → JSON5) rewrites API data into a JS/TS-ready literal',
+        ],
+        useCases: [
+          'Turning comment-heavy .json5 / tsconfig-style files into JSON.parse-ready data',
+          'Debugging frontend/backend data by converting a TS object literal to strict JSON for an API call',
+          'Diagnosing JSON5 syntax errors with direct line/column pointers',
+        ],
+        privacyNote:
+          'All parsing and formatting runs locally in your browser with no network requests; config content never leaves your device.',
+        faqs: [
+          {
+            question: 'What is the difference between JSON5 and JSONC?',
+            answer:
+              'JSONC ("JSON with Comments") only adds comments and, in most implementations, trailing commas to strict JSON; JSON5 is a larger superset that also permits single quotes, unquoted keys, hex numbers, leading decimals, Infinity/NaN and line continuation. This JSON5 parser naturally accepts JSONC input.',
+          },
+          {
+            question: 'Why does Infinity become null in strict JSON output?',
+            answer:
+              'Strict JSON has no Infinity or NaN literals, so JSON.stringify emits them as null. The tool warns when such values are present; to keep the semantics, use the JSON → JSON5 direction, where Infinity/NaN can be written directly.',
+          },
+          {
+            question: 'Are numeric separators like 1_000 supported?',
+            answer:
+              'The hand-written parser currently does not support ES-style underscore separators and reports an explicit error on 1_000 instead of misparsing it; all other common JSON5 syntax (comments, single quotes, trailing commas, hex, continuation, Unicode escapes) is supported.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
