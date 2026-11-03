@@ -17082,7 +17082,7 @@ info: request finished`,
       'Decode and reverse-lookup SMD resistor marking codes: 3-digit, 4-digit and EIA-96 letter codes.',
     category: ToolCategoryEnum.DEV_CODE,
     path: '/tools/smd-resistor-code',
-    iconName: 'Thunderbolt',
+    iconName: 'Binary',
     tags: ['SMD', '贴片电阻', 'EIA-96', '电阻', '电子'],
     tagsEn: ['SMD', 'Resistor', 'EIA-96', 'Electronics', 'Marking Code'],
     isPopular: false,
@@ -17182,7 +17182,7 @@ info: request finished`,
       'Convert American Wire Gauge numbers to diameter, cross-sectional area, copper resistance and ampacity, with reverse lookup by diameter (4/0–40 AWG).',
     category: ToolCategoryEnum.DEV_CODE,
     path: '/tools/awg-wire-calculator',
-    iconName: 'NodeIndex',
+    iconName: 'Gauge',
     tags: ['AWG', '线规', '导线', '电缆', '电子'],
     tagsEn: ['AWG', 'Wire Gauge', 'Cable', 'Electronics', 'Ampacity'],
     isPopular: false,
@@ -17267,6 +17267,106 @@ info: request finished`,
             question: 'What material and temperature is the resistance based on?',
             answer:
               'Resistance is derived from annealed copper at 20 °C (resistivity 1.7241×10⁻⁸ Ω·m, i.e. 10.37 Ω·cmil/ft) and the computed area. Aluminum or stranded conductors need correction factors, and copper resistance rises about 0.393% per °C.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'cusip-sedol-validator',
+    name: 'CUSIP / SEDOL 证券识别码校验器',
+    nameEn: 'CUSIP / SEDOL Security ID Validator',
+    description:
+      '按长度自动判别 9 位 CUSIP 或 7 位 SEDOL，依据官方模 10 加权算法核验末位校验位，并提示正确校验位。',
+    descriptionEn:
+      'Auto-detect 9-digit CUSIP or 7-digit SEDOL codes by length and verify the final check digit using the official mod-10 weighted algorithms, with the expected digit shown on failure.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/cusip-sedol-validator',
+    iconName: 'Fingerprint',
+    tags: ['CUSIP', 'SEDOL', '校验位', '证券', '金融'],
+    tagsEn: ['CUSIP', 'SEDOL', 'Check Digit', 'Securities', 'Finance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CUSIP / SEDOL 校验器用于核验证券识别码的末位校验位：CUSIP 是北美市场（美国 / 加拿大）的 9 位证券统一识别码，SEDOL 是英国及爱尔兰市场的 7 位证券识别码。工具按输入长度自动判别体系，完全在浏览器本地完成加权求和与模 10 运算。',
+        coreFeatures: [
+          '按长度自动判别：9 位按 CUSIP 双精度加权，7 位按 SEDOL CDMA（1,3,1,7,3,9）加权',
+          '自动去除空格与短横线并转大写，支持小写输入',
+          '校验失败时给出实际校验位与按前体位计算出的期望校验位',
+          '识别 SEDOL 禁用元音、CUSIP 历史字符 *、@、# 等具体错误原因',
+        ],
+        howToUse: [
+          '在输入框粘贴 9 位 CUSIP（如 Apple 的 037833100）或 7 位 SEDOL（如 Barclays 的 0263494）',
+          '可点击示例按钮快速填入合法或非法样例',
+          '查看成功 / 失败提示与「校验结果明细」中的实际、期望校验位',
+          '需要复制规范化（去空格、大写）结果时点击复制按钮',
+        ],
+        useCases: [
+          '金融数据清洗时批量核对行情 / 持仓文件中的证券代码',
+          '手工录入交易确认单、基金申赎单据时防止抄错校验位',
+          '开发清算、对账系统时验证 CUSIP / SEDOL 算法实现',
+        ],
+        privacyNote:
+          '识别码仅在浏览器内存中参与纯函数运算，不发起任何网络请求，也不会记录或上传输入内容。',
+        faqs: [
+          {
+            question: 'CUSIP 和 SEDOL 的校验算法有什么区别？',
+            answer:
+              'CUSIP 为 9 位：前 8 位参与运算，从首位起偶数位置数值乘 2，两位数乘积拆位求和，校验位 = (10 − 和模 10) 模 10。SEDOL 为 7 位：前 6 位按权重 1、3、1、7、3、9 加权求和后做同样的模 10 补数；且 SEDOL 字符集不含元音 A、E、I、O、U。',
+          },
+          {
+            question: '输入 12 位的 ISIN 能校验吗？',
+            answer:
+              '不能。ISIN（如 US0378331005）为 12 位、国家码开头，采用 mod 10 转换后 Luhn 类算法，与 CUSIP / SEDOL 不同。本工具按长度严格区分，12 位输入会被拒绝并提示长度不符。',
+          },
+          {
+            question: '为什么提示 CUSIP 含 *、@、# 历史字符？',
+            answer:
+              'CUSIP 早期规范允许 *、@、#（数值 36–38）出现在代码中，但现代发行代码只使用数字 0-9 与字母 A-Z。遇到这类字符通常意味着数据源非常陈旧或转写有误，应向数据提供方核对。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CUSIP / SEDOL validator checks the final check digit of security identifiers: CUSIP is the 9-digit identifier used in North American (US/Canada) markets, while SEDOL is the 7-digit identifier used in the UK and Ireland. The tool auto-detects the scheme by input length and performs all weighted mod-10 arithmetic locally in your browser.',
+        coreFeatures: [
+          'Auto-detection by length: 9-digit CUSIP double weighting vs 7-digit SEDOL CDMA weights (1,3,1,7,3,9)',
+          'Spaces and hyphens stripped, lower-case input accepted and normalized to upper case',
+          'On failure, shows both the actual check digit and the one computed from the body',
+          'Specific error reasons for SEDOL vowels and legacy CUSIP characters *, @, #',
+        ],
+        howToUse: [
+          'Paste a 9-digit CUSIP (e.g. Apple 037833100) or a 7-digit SEDOL (e.g. Barclays 0263494)',
+          'Use the example buttons to fill valid or deliberately invalid samples',
+          'Read the success/error alert and the actual vs expected check digit in the details card',
+          'Use the copy button to grab the normalized (spaces removed, upper-case) code',
+        ],
+        useCases: [
+          'Validating security codes in market-data or holdings files during data cleansing',
+          'Catching transcription errors when keying trade confirms or fund documents by hand',
+          'Verifying your own CUSIP / SEDOL implementation while building clearing or reconciliation systems',
+        ],
+        privacyNote:
+          'Identifiers are processed only in browser memory by pure functions; no network requests are made and input is never logged or uploaded.',
+        faqs: [
+          {
+            question: 'How do the CUSIP and SEDOL algorithms differ?',
+            answer:
+              'CUSIP has 9 digits: the first 8 are weighted, with every even position (counting from 1) doubled and two-digit products split and summed; the check digit is (10 − sum mod 10) mod 10. SEDOL has 7 digits: the first 6 use weights 1,3,1,7,3,9 with the same mod-10 complement, and the SEDOL alphabet excludes the vowels A, E, I, O, U.',
+          },
+          {
+            question: 'Can it validate a 12-character ISIN?',
+            answer:
+              'No. An ISIN (e.g. US0378331005) is 12 characters, starts with a country code and uses a different Luhn-style algorithm after letter conversion. The tool strictly distinguishes schemes by length, so 12-character input is rejected with a length message.',
+          },
+          {
+            question: 'What are the legacy CUSIP characters *, @ and #?',
+            answer:
+              'Early CUSIP rules allowed *, @ and # (values 36–38), but modern issues only use 0-9 and A-Z. Seeing these characters usually means a very old data source or a transcription error — verify with the data provider.',
           },
         ],
       },
