@@ -194,7 +194,6 @@
 | 20261101140216 | TypeID 标识符生成与解析器（typeid 规范） | Web Tool | External Reference | Pending | 2026-11-01 | | [详情](./idea-details/20261101140216.md) |
 | 20261101140217 | PHP serialize ↔ JSON 双向转换器 | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101140217.md) |
 | 20261101140218 | HTTP Cache-Control 指令解析与缓存新鲜度计算器（RFC 9111） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101140218.md) |
-| 20261101201001 | SMS 短信长度与分片（UDH concat）计算器（GSM 7-bit / UCS-2） | Web Tool | Existing Gap | In Progress | 2026-11-01 | trae-agent | [详情](./idea-details/20261101201001.md) |
 | 20261101201002 | Encoded Polyline Algorithm Format 折线编解码器（Google 精度 5 / 精度 6） | Web Tool | External Reference | Pending | 2026-11-01 | | [详情](./idea-details/20261101201002.md) |
 | 20261101201003 | Redis RESP2/RESP3 协议编解码器（含 inline 与 RESP3 类型） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201003.md) |
 | 20261101201004 | HAR 1.2 / 1.3 归档文件解析与请求摘要查看器（JSON 安全解析） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201004.md) |
@@ -206,7 +205,6 @@
 | 20261102020128 | Apple .strings 本地化文件 ↔ JSON 双向转换器（iOS / macOS Localizable.strings） | Web Tool | Existing Gap | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102020128.md) |
 | 20261102080701 | Enigma 转子密码机加解密模拟器 | Web Tool | External Reference | Pending | 2026-11-02 | | [详情](./idea-details/20261102080701.md) |
 | 20261102080702 | DNS 报文（message）线格式编码与解析器 | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102080702.md) |
-| 20261102080703 | GPS 周数与周内秒（TOW）↔ UTC 时间互转器 | Web Tool | External Reference | Claimed | 2026-11-02 | trae-agent | [详情](./idea-details/20261102080703.md) |
 | 20261102080704 | 体感温度计算器（热指数 Heat Index / 风寒 Wind Chill） | Web Tool | Exploration | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102080704.md) |
 | 20261102080705 | ECDH 密钥协商与 Ed25519 签名 / 验签工具 | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102080705.md) |
 | 20261102200311 | WebAssembly 二进制模块（.wasm）section 结构只读解析器 | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102200311.md) |
@@ -216,7 +214,4 @@
 | 20261102200315 | 露点 / 湿球温度与气压海拔计算器 | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102200315.md) |
 | 20261103081157 | JSON5 ↔ JSON 双向转换器 | Web Tool | Existing Gap | Pending | 2026-11-03 | | [详情](./idea-details/20261103081157.md) |
 | 20261103081158 | BibTeX 条目解析器（.bib ↔ JSON / 格式化引用） | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103081158.md) |
-| 20261103081159 | NTP 64 位时间戳与 UTC/Unix 时间互转器 | Web Tool | External Reference | Claimed | 2026-11-03 | trae-agent | [详情](./idea-details/20261103081159.md) |
-| 20261103081200 | IMEI 移动设备识别码校验器（Luhn 校验位与 TAC/序列号拆解） | Web Tool | External Reference | Claimed | 2026-11-03 | trae-agent | [详情](./idea-details/20261103081200.md) |
-| 20261103081201 | SMPTE 时间码（LTC）与帧/真实时间互转器 | Web Tool | External Reference | Claimed | 2026-11-03 | trae-agent | [详情](./idea-details/20261103081201.md) |
 
