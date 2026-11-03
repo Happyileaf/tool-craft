@@ -21615,6 +21615,521 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'spf-record-generator',
+    name: 'SPF 记录生成与校验器',
+    nameEn: 'SPF Record Generator & Validator',
+    description:
+      '按 RFC 7208 可视化拼装或校验发信域 SPF（TXT）记录，统计 10 次 DNS 查询上限风险并提示机制顺序。',
+    descriptionEn:
+      'Build or validate an SPF (TXT) record for your sending domain per RFC 7208, with the 10-DNS-lookup limit counter and mechanism-order warnings.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/spf-record-generator',
+    iconName: 'ShieldCheck',
+    tags: ['SPF', 'DNS', 'TXT', '邮件', '防仿冒', '运维'],
+    tagsEn: ['SPF', 'DNS', 'TXT', 'Email', 'Anti-spoofing', 'Ops'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'SPF 记录生成与校验器帮助邮件域管理员拼装和检查 Sender Policy Framework 的 DNS TXT 记录：通过限定符（+/-/~/?）与机制（ip4、ip6、a、mx、ptr、include、exists、all 及 redirect= 修饰符）声明哪些 IP 有权以该域发信，并重点统计 RFC 7208 §4.6.4 规定的 10 次 DNS 查询上限。全部在浏览器本地完成，不发起真实 DNS 查询。',
+        coreFeatures: [
+          '可视化增删机制、调整限定符与顺序，一键生成规范的 v=spf1 TXT 记录',
+          '内置 Google Workspace、Microsoft 365、SendGrid、Mailchimp、Amazon SES 常见 include 模板',
+          '粘贴现有记录做词法校验：非法机制、非法 IP/CIDR/域名逐条报错',
+          'DNS 查询计数（include/a/mx/ptr/exists/redirect）超过 10 次明确报错，达到 10 次给出警告',
+          '提示 +all 风险、all 非末尾、all 与 redirect 共存、记录超过 255 字节等问题',
+        ],
+        howToUse: [
+          '在「生成记录」页通过机制按钮逐条添加发信源，ip4/ip6 填地址或 CIDR，include 填第三方域',
+          '用上下箭头调整顺序，通常把 all（-all 或 ~all）放在最后',
+          '复制生成的完整记录，在域名 DNS 中新增 TXT 记录（主机记录留空或 @）',
+          '已有记录时切换到「校验现有记录」粘贴内容，查看错误、警告与查询计数',
+        ],
+        useCases: [
+          '企业邮箱域名配置 SPF，降低邮件进垃圾箱或被拒收概率',
+          '接入第三方群发/事务邮件服务前拼装 include 链',
+          '排查收件方报 PermError、SPF lookup limit exceeded 问题',
+          '检查历史遗留 SPF 记录是否存在 +all 等仿冒风险',
+        ],
+        privacyNote:
+          '所有输入与校验仅在浏览器本地进行，不发起任何 DNS 或网络请求，也不使用第三方库。',
+        faqs: [
+          {
+            question: '-all、~all、?all 有什么区别？',
+            answer:
+              '-all 表示 Fail，未命中的发信 IP 一律不授权，是生产环境推荐的严格策略；~all 是 SoftFail，收件方通常接收但标记为可疑，适合刚上线的观察期；?all 是 Neutral，等同于不表态；+all 允许任意 IP 发信，等于关闭 SPF 防护，绝不能用于生产。',
+          },
+          {
+            question: '为什么 include 多了会报错？',
+            answer:
+              'RFC 7208 §4.6.4 规定 SPF 评估期间最多进行 10 次 DNS 查询（统计 include、a、mx、ptr、exists、redirect，ip4/ip6 不计数）。超过上限收件方直接判定 PermError，邮件可能被拒。解决办法是减少 include 层级，或请服务商提供 IP 段做扁平化（flatten）。注意嵌套 include 内部的查询本工具无法静态统计。',
+          },
+          {
+            question: 'redirect= 和 include 有什么不同？',
+            answer:
+              'include 只是引入另一域的机制并继续评估本记录；redirect= 是修饰符，表示本记录未命中时整体改用目标域的策略，通常放在末尾。如果记录里已有 all，redirect 会被忽略（RFC 7208 §6.1）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The SPF Record Generator & Validator helps mail-domain administrators build and inspect the Sender Policy Framework DNS TXT record defined in RFC 7208: combine qualifiers (+/-~/?) with mechanisms (ip4, ip6, a, mx, ptr, include, exists, all and the redirect= modifier) to declare which IPs may send mail for the domain, with a built-in counter for the 10-DNS-lookup limit of §4.6.4. Everything runs locally in the browser; no real DNS queries are made.',
+        coreFeatures: [
+          'Add, remove and reorder mechanisms visually; emit a canonical v=spf1 TXT record',
+          'Built-in include presets for Google Workspace, Microsoft 365, SendGrid, Mailchimp and Amazon SES',
+          'Paste an existing record for lexical validation with per-term errors for bad mechanisms, IPs, CIDRs or domains',
+          'Errors above the 10-query DNS lookup budget (include/a/mx/ptr/exists/redirect) and a warning at exactly 10',
+          'Warns about +all, non-trailing all, all combined with redirect, and records longer than 255 bytes',
+        ],
+        howToUse: [
+          'On the generator tab, add sending sources with the mechanism buttons; fill an address/CIDR for ip4/ip6 or a third-party domain for include',
+          'Reorder with the arrows; keep all (-all or ~all) last',
+          'Copy the full record and publish it as a TXT record at the domain apex (host @ or blank)',
+          'To inspect an existing record, switch to the validator tab and paste it to see errors, warnings and the lookup count',
+        ],
+        useCases: [
+          'Publishing SPF for a business mail domain to improve deliverability',
+          'Combining include chains when onboarding transactional or marketing mail providers',
+          'Diagnosing recipient PermError / SPF lookup-limit failures',
+          'Auditing legacy records for dangerous +all policies',
+        ],
+        privacyNote:
+          'All input and validation happen locally in your browser; the tool performs no DNS or network requests and uses no third-party libraries.',
+        faqs: [
+          {
+            question: 'What is the difference between -all, ~all and ?all?',
+            answer:
+              '-all is Fail: IPs not matching earlier mechanisms are not authorized — the recommended production policy. ~all is SoftFail: receivers typically accept but flag the message, useful during rollout. ?all is Neutral (no opinion). +all authorizes every IP on the internet and effectively disables SPF; never use it in production.',
+          },
+          {
+            question: 'Why does adding more includes produce an error?',
+            answer:
+              'RFC 7208 §4.6.4 caps SPF evaluation at 10 DNS queries (counting include, a, mx, ptr, exists and redirect; ip4/ip6 do not count). Exceeding the cap makes receivers return PermError and mail may be rejected. Reduce the include chain or ask the provider for IP ranges to flatten. Queries hidden inside nested includes cannot be counted statically by this tool.',
+          },
+          {
+            question: 'How does redirect= differ from include?',
+            answer:
+              'include imports another domain’s mechanisms and keeps evaluating the current record, whereas redirect= is a modifier that hands the whole decision over to another domain when nothing matches, normally placed last. When an all mechanism exists, redirect is ignored per RFC 7208 §6.1.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'vin-validator',
+    name: 'VIN 车辆识别代号校验位计算器',
+    nameEn: 'VIN Check Digit Calculator (ISO 3779 / GB 16735)',
+    description:
+      '输入 17 位车辆识别代号（VIN），按 ISO 3779 / GB 16735 计算第 9 位校验码并逐位展示转码值、权重与加权过程。',
+    descriptionEn:
+      'Enter a 17-character Vehicle Identification Number to compute the position-9 check digit per ISO 3779 / GB 16735, with a full per-position transliteration, weight and product breakdown.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/vin-validator',
+    iconName: 'Barcode',
+    tags: ['VIN', '车辆识别代号', '车架号', '校验位', 'GB 16735', 'ISO 3779'],
+    tagsEn: ['VIN', 'Vehicle Identification Number', 'Check Digit', 'GB 16735', 'ISO 3779'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'VIN 校验位计算器依据 ISO 3779、GB 16735-2019（算法口径同美国 49 CFR 565.15）对 17 位车辆识别代号进行结构校验：将每个字符按固定转码表换算为 0-9，乘以 17 位权重数组后求和，再对 11 取模，余数 0-9 为校验数字、余数 10 记为 X，与第 9 位比对即可判断 VIN 是否抄写正确。全程离线，不查询车辆数据库。',
+        coreFeatures: [
+          '17 位长度与字符集校验，明确提示禁用字母 I/O/Q 与非法字符',
+          '自动转大写、去除空格与连字符，支持直接粘贴带分隔的 VIN',
+          '计算正确的第 9 位校验码（0-9 或 X），与实际字符比对给出 PASS/FAIL',
+          '逐位展示字符、转码值、权重、乘积与加权总和、模 11 余数',
+          '支持校验位为 X（余数 10）的车辆，纯本地计算零网络请求',
+        ],
+        howToUse: [
+          '在输入框粘贴或输入 17 位 VIN（支持小写与空格）',
+          '查看「校验位结论」卡片：绿色表示第 9 位正确，红色给出应有的校验码',
+          '展开逐位明细表核对每一位的转码值与权重，第 9 位以底色标出',
+          '需要重新输入时点击「载入示例」查看标准教学 VIN',
+        ],
+        useCases: [
+          '二手车、保险、年检场景核对车架号是否抄写/OCR 识别有误',
+          '车管、物流、汽修系统录入前做客户端预校验',
+          '车辆数据表批量导入前筛出明显错误的 VIN',
+          '教学演示 VIN 结构（WMI/VDS/VIS）与校验位算法',
+        ],
+        privacyNote:
+          'VIN 仅在浏览器本地参与计算，不发起任何网络请求，也不会保存或上传输入内容。',
+        faqs: [
+          {
+            question: '校验位错误是否一定说明 VIN 是伪造的？',
+            answer:
+              '不一定。该校验位规则强制适用于北美市场及中国 GB 16735 等法规覆盖的车辆；部分欧盟老款、澳洲车型历史上不强制校验位，会出现算不过但真实存在的 VIN。但如果是中规或美规车却校验失败，应高度警惕抄录错误、OCR 错误或篡改。',
+          },
+          {
+            question: '为什么有的车第 9 位是字母 X？',
+            answer:
+              '加权和对 11 取模，余数为 10 时用罗马数字 X 表示，这是标准规定的合法校验字符，并非异常。',
+          },
+          {
+            question: '为什么不能输入字母 I、O、Q？',
+            answer:
+              'ISO 3779 规定 VIN 字符集排除 I、O、Q，避免与数字 1、0 及 0 混淆。含这些字母的字符串在结构上就不是合法 VIN。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The VIN Check Digit Calculator validates a 17-character Vehicle Identification Number per ISO 3779 and China GB 16735-2019 (same arithmetic as U.S. 49 CFR 565.15): each character is transliterated to 0-9 using a fixed table, multiplied by its position weight, summed and taken modulo 11; remainders 0-9 are the check digit and remainder 10 is rendered as X. Comparing it with position 9 reveals transcription errors. Everything runs offline.',
+        coreFeatures: [
+          'Checks 17-character length and charset, flagging forbidden I/O/Q letters and illegal characters',
+          'Auto-uppercases and strips spaces/hyphens from pasted VINs',
+          'Computes the correct position-9 check digit (0-9 or X) and shows PASS/FAIL',
+          'Per-position table of character, transliterated value, weight and product, plus the weighted sum and modulo-11 remainder',
+          'Supports check digit X (remainder 10); fully local with no network access',
+        ],
+        howToUse: [
+          'Paste or type a 17-character VIN (lowercase and spaces are accepted)',
+          'Read the verdict card: green means position 9 matches; red shows the expected check digit',
+          'Inspect the position-by-position table; position 9 is highlighted',
+          'Use "Load sample" for a standard teaching VIN',
+        ],
+        useCases: [
+          'Verifying chassis numbers in used-car, insurance and inspection workflows',
+          'Client-side pre-checks before VIN entry into fleet, logistics or repair systems',
+          'Filtering malformed VINs before bulk data import',
+          'Teaching VIN structure (WMI/VDS/VIS) and the check-digit algorithm',
+        ],
+        privacyNote:
+          'The VIN is processed entirely in your browser. Nothing is uploaded, stored or sent over the network.',
+        faqs: [
+          {
+            question: 'Does a failed check digit prove the VIN is fake?',
+            answer:
+              'Not always. The check digit is mandatory for North American and Chinese-regulated vehicles, but some older European and Australian-market vehicles were built without enforcing it, so genuine VINs can fail the arithmetic. A failure on a Chinese- or US-market vehicle, however, strongly suggests a transcription, OCR or tampering error.',
+          },
+          {
+            question: 'Why is position 9 sometimes the letter X?',
+            answer:
+              'Because the weighted sum is taken modulo 11; a remainder of 10 is represented by the Roman numeral X, which is a perfectly valid check character.',
+          },
+          {
+            question: 'Why are I, O and Q not allowed?',
+            answer:
+              'ISO 3779 excludes I, O and Q from the VIN alphabet because they are easily confused with 1 and 0. A string containing them is structurally invalid.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'resistor-voltage-divider',
+    name: '电阻分压器计算器',
+    nameEn: 'Resistor Voltage Divider Calculator',
+    description:
+      '计算双电阻分压器输出电压、分压比与总电流，支持计入负载电阻 RL 的并联效应，或按目标电压反解 R2。',
+    descriptionEn:
+      'Compute the output voltage, ratio and current of a two-resistor voltage divider, with optional load resistor RL (parallel loading effect), or solve R2 for a target output voltage.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/resistor-voltage-divider',
+    iconName: 'Gauge',
+    tags: ['分压器', '电阻', '电路', '硬件', '嵌入式', '电压'],
+    tagsEn: ['Voltage Divider', 'Resistor', 'Circuit', 'Hardware', 'Embedded', 'Electronics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '电阻分压器计算器帮助硬件工程师快速求解两电阻串联分压电路：空载时输出 Vout = Vin × R2/(R1+R2)；当后级接有负载 RL 时，RL 与 R2 并联后再分压，输出会被拉低。工具也支持反向模式——给定 Vin、目标 Vout 和 R1，算出所需的 R2。所有计算在浏览器本地完成。',
+        coreFeatures: [
+          '正向计算 Vout、分压比、总电流、总功耗',
+          '可选计入负载 RL，自动按 R2∥RL 并联等效并给出负载电流与输出跌落百分比',
+          '反解模式：给定目标输出电压与 R1，计算所需 R2',
+          '电阻支持 Ω/kΩ/MΩ、电压支持 mV/V 输入，内置 5V→3.3V、12V→5V 带载示例',
+          '负载效应与选型提示（RL 建议 ≥10×R2、功耗与输出阻抗权衡）',
+        ],
+        howToUse: [
+          '选择计算模式：已知电阻求输出，或已知目标电压反解 R2',
+          '填入输入电压、R1，以及 R2（或目标 Vout），按需打开负载开关并填 RL',
+          '查看输出电压、分压比、电流功耗与负载跌落',
+          '点击示例链接可快速载入典型电路参数',
+        ],
+        useCases: [
+          'ADC 采集高于参考电压的信号前设计分压网络',
+          '为电平转换、三极管基极偏置、基准分压选阻值',
+          '评估传感器输出接上拉/下拉后被负载拉偏的程度',
+          '教学演示串联分压与戴维南等效电阻',
+        ],
+        privacyNote:
+          '所有参数仅在浏览器本地参与计算，不联网、不保存输入。',
+        faqs: [
+          {
+            question: '为什么实测 Vout 比理论值低？',
+            answer:
+              '多数情况是负载效应：后级电路等效为 RL 与 R2 并联，使下臂等效电阻变小。本工具打开「计入负载 RL」开关即可复现。若要求带载后电压仍稳定，应让 RL ≥ 10×R2，或改用运放电压跟随器/基准源缓冲。',
+          },
+          {
+            question: '电阻选大些还是小些？',
+            answer:
+              '阻值越小，带载能力越强但静态功耗越大（I=Vin/(R1+R2)）；阻值越大越省电，但输出阻抗高、易受漏电流和 ADC 输入阻抗影响。经验上让分压网络电流比负载电流大 10 倍以上，同时总功耗满足电池预算。',
+          },
+          {
+            question: '分压器能把 5V 转成 3.3V 给芯片供电吗？',
+            answer:
+              '不建议。电阻分压只能提供极小电流，芯片工作电流变化会让输出电压大幅波动；电源降压应使用 LDO 或 DC-DC。分压更适合 ADC 采样、基准电压等近乎零负载的信号场景。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Resistor Voltage Divider Calculator solves a two-resistor series divider: without load, Vout = Vin × R2/(R1+R2); when a load RL is attached, it parallels R2 and pulls the output down. A reverse mode computes the required R2 for a target Vout given Vin and R1. All math runs locally in the browser.',
+        coreFeatures: [
+          'Forward calculation of Vout, ratio, total current and power',
+          'Optional load RL with automatic R2∥RL parallel equivalent, load current and droop percentage',
+          'Solve mode: derive R2 from a target output voltage and known R1',
+          'Ω/kΩ/MΩ and mV/V unit inputs, with 5V→3.3V and loaded 12V→5V presets',
+          'Loading-effect and selection guidance (RL ≥ 10×R2, power vs. output impedance trade-off)',
+        ],
+        howToUse: [
+          'Pick a mode: compute output from resistors, or solve R2 for a target voltage',
+          'Enter Vin, R1 and R2 (or target Vout); optionally enable the load and enter RL',
+          'Read Vout, ratio, current, power and load droop',
+          'Use the preset links to load typical circuits',
+        ],
+        useCases: [
+          'Scaling signals above the ADC reference voltage',
+          'Choosing values for level shifting, transistor bias or reference dividers',
+          'Estimating how a sensor output droops under pull-up/down loading',
+          'Teaching series division and Thévenin equivalent resistance',
+        ],
+        privacyNote:
+          'All parameters are computed locally in your browser; nothing is uploaded or stored.',
+        faqs: [
+          {
+            question: 'Why is my measured Vout lower than the formula?',
+            answer:
+              'Usually loading: the downstream circuit acts as RL in parallel with R2, reducing the effective lower-arm resistance. Enable the load switch in this tool to reproduce it. For a stable voltage under load, keep RL ≥ 10×R2 or add an op-amp follower/reference buffer.',
+          },
+          {
+            question: 'Should I pick large or small resistor values?',
+            answer:
+              'Small values drive loads better but draw more quiescent current (I=Vin/(R1+R2)); large values save power but raise output impedance and sensitivity to leakage and ADC input impedance. A common rule is divider current at least 10× the load current while meeting the power budget.',
+          },
+          {
+            question: 'Can a divider convert 5V to 3.3V to power a chip?',
+            answer:
+              'No. A divider supplies only tiny current, and the voltage will collapse as the chip draws varying current; use an LDO or DC-DC for power. Dividers suit near-zero-load signal jobs such as ADC scaling and reference voltages.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'molar-mass-calculator',
+    name: '化学式摩尔质量计算器',
+    nameEn: 'Molar Mass Calculator',
+    description:
+      '解析化学式（下标、嵌套括号、结晶水），按 IUPAC 2021 原子量计算摩尔质量与各元素质量占比，支持批量输入。',
+    descriptionEn:
+      'Parse chemical formulas (subscripts, nested parentheses, hydrate dot notation) and compute molar mass plus per-element mass fractions from the IUPAC 2021 atomic weight table; batch input supported.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/molar-mass-calculator',
+    iconName: 'Pipette',
+    tags: ['化学', '摩尔质量', '分子式', '原子量', '结晶水', '教育'],
+    tagsEn: ['Chemistry', 'Molar Mass', 'Formula', 'Atomic Weight', 'Hydrate', 'Education'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '化学式摩尔质量计算器解析元素符号、数字下标、()/[] 嵌套括号与「·nH2O」结晶水记法，使用内置的 IUPAC/CIAAW 2021 常规原子量静态表计算摩尔质量（g/mol），并展开每个元素的原子个数、质量贡献与质量百分比。支持一次粘贴多个化学式（换行或逗号分隔）批量计算与一键复制。全部计算在浏览器本地完成。',
+        coreFeatures: [
+          '支持元素符号、数字下标（H2SO4）、()/[] 嵌套括号（Ca(OH)2、Fe2(SO4)3、K4[Fe(CN)6]）',
+          '支持结晶水与加合物记法 ·nH2O（兼容粗中点 • 与星号 *），自动合并全部组分',
+          '内置 1-118 号元素 IUPAC 2021 原子量；放射性元素取最稳定同位素近似值并以 ≈ 标注',
+          '输出摩尔质量、原子总数、各元素原子数/质量贡献/质量百分比（含占比条）',
+          '批量计算多个化学式，单个错误不影响其他结果，可一键复制全部结果',
+        ],
+        howToUse: [
+          '在文本框中输入一个或多个化学式，多个用换行、逗号或分号分隔',
+          '结果卡片展示摩尔质量与元素组成表，点击「复制全部结果」可导出文本',
+          '点击下方示例可快速追加常见化学式到输入框',
+          '若化学式有误（未知元素、括号不匹配、零下标等），对应卡片会给出明确错误',
+        ],
+        useCases: [
+          '化学实验配液时由质量与摩尔质量换算物质的量',
+          '中学/大学化学作业核对摩尔质量与元素质量分数',
+          '实验记录与报告中快速计算水合物（如五水硫酸铜）的式量',
+          '书写反应方程式配平与产率计算前的式量准备',
+        ],
+        privacyNote:
+          '化学式仅在浏览器本地解析计算，原子量为内置静态数据，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '原子量数据来自哪里，为什么版本固定？',
+            answer:
+              '采用 IUPAC/CIAAW 2021 常规原子量（Conventional Atomic Weights）内置静态表，不随时间更新，以保证同一化学式的计算结果可复现。对没有标准原子量的放射性元素（如 Tc、Pm 及序数 ≥84 的元素），按 IUPAC 惯例取最稳定同位素质量数（方括号值）并在结果中以 ≈ 标注。',
+          },
+          {
+            question: '如何输入结晶水合物，如五水硫酸铜？',
+            answer:
+              '输入 CuSO4·5H2O，其中「·」可用中文中点、粗中点「•」或星号「*」代替。解析器会把 5 份 H2O 并入计算，结果为 249.677 g/mol。',
+          },
+          {
+            question: '为什么我的化学式报错？',
+            answer:
+              '常见原因：元素符号大小写错误（h2o 应为 H2O）、元素不存在（Xz）、括号未闭合或多余（Ca(OH)2 才正确）、下标为 0（H0 非法）、下标前缺少元素或右括号。批量模式下只有出错的化学式显示红色提示，其余正常计算。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Molar Mass Calculator parses element symbols, numeric subscripts, nested ()/[] groups and "·nH2O" hydrate notation, then computes molar mass (g/mol) from a built-in IUPAC/CIAAW 2021 conventional atomic weight table, showing per-element atom counts, mass contributions and mass fractions. Paste several formulas at once (newline/comma separated) for batch results and copy. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Element symbols, subscripts (H2SO4), nested ()/[] groups (Ca(OH)2, Fe2(SO4)3, K4[Fe(CN)6])',
+          'Hydrate/adduct notation ·nH2O (also accepts • and *), with automatic group merging',
+          'Built-in atomic weights for elements 1-118 (IUPAC 2021); radioactive elements use most-stable-isotope values marked with ≈',
+          'Molar mass, total atoms, and a per-element table of counts, contributions and percentages',
+          'Batch calculation where one bad formula does not affect the others, plus copy-all',
+        ],
+        howToUse: [
+          'Enter one or more formulas, separated by newlines, commas or semicolons',
+          'Read molar mass and the element composition table; use "copy all results" to export text',
+          'Click an example to append a common formula',
+          'Errors such as unknown elements, mismatched parentheses or zero subscripts are shown only on the offending card',
+        ],
+        useCases: [
+          'Converting mass to amount of substance when preparing lab solutions',
+          'Checking molar mass and mass fractions for school/university chemistry homework',
+          'Computing formula weights of hydrates (e.g. copper(II) sulfate pentahydrate) for lab notes',
+          'Preparing formula weights before balancing equations or computing yields',
+        ],
+        privacyNote:
+          'Formulas are parsed locally in the browser using a static atomic weight table; no network requests are made.',
+        faqs: [
+          {
+            question: 'Where do the atomic weights come from, and why is the version fixed?',
+            answer:
+              'They come from a built-in static table of IUPAC/CIAAW 2021 conventional atomic weights, kept fixed so results stay reproducible. Radioactive elements without standard atomic weights (such as Tc, Pm and elements with atomic number ≥84) use the most stable isotope mass numbers (IUPAC bracketed values), marked with ≈ in the results.',
+          },
+          {
+            question: 'How do I enter a hydrate such as copper sulfate pentahydrate?',
+            answer:
+              'Enter CuSO4·5H2O; the middle dot may also be a bullet (•) or asterisk (*). The parser merges 5 equivalents of H2O, giving 249.677 g/mol.',
+          },
+          {
+            question: 'Why is my formula rejected?',
+            answer:
+              'Common causes: wrong capitalization (h2o instead of H2O), an unknown element (Xz), unbalanced or stray parentheses (Ca(OH)2 is correct), a zero subscript (H0), or a number with no element or closing parenthesis before it. In batch mode only the offending formula shows a red error; others still calculate.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'byte-array-codegen',
+    name: '字节数组代码生成器',
+    nameEn: 'Byte Array Code Generator',
+    description:
+      'Hex / Base64 / UTF-8 文本或本地文件一键生成 C / Java / Python / Go 字节数组声明代码；也可把粘贴回来的数组字面量反向解析为 Hex、Base64 与文本。',
+    descriptionEn:
+      'Turn Hex / Base64 / UTF-8 text or a local file into C / Java / Python / Go byte-array declarations, with adjustable bytes per line and variable name; also reverse-parses pasted array literals back into Hex, Base64 and text.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/byte-array-codegen',
+    iconName: 'Binary',
+    tags: ['字节数组', '代码生成', 'Hex', 'Base64', '嵌入式', '固件'],
+    tagsEn: ['Byte Array', 'Codegen', 'Hex', 'Base64', 'Embedded', 'Firmware'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '字节数组代码生成器把 Hex、Base64、UTF-8 文本（或本地文件）转换为 C/C++、Java、Python、Go 四种语言可直接粘贴使用的字节数组声明代码，支持自定义变量名与每行字节数；生成方向之外还提供反向解析：粘贴任意语言的数组字面量或 Python b"..." 字符串，即可还原为 Hex、Base64 与 UTF-8 文本。全部在浏览器本地完成，无任何新增依赖。',
+        coreFeatures: [
+          '输入支持 Hex（容忍空格/0x/逗号）、标准 Base64（兼容 URL-safe）、UTF-8 文本与本地文件读取（≤1 MiB）',
+          '输出 C const unsigned char[]（含 _len）、Java byte[]（>127 自动 (byte) 强转）、Python b"\\x.." 括号多行、Go []byte 短声明',
+          '可自定义变量名（校验标识符合法性）与每行字节数（1-64），一键复制并标注文件扩展名',
+          '反向解析 C/Java/Go/Python 数组字面量与 b"..." 转义字符串（\\xHH、八进制、\\n 等）',
+          '实时显示字节数与 Hex 预览，Java 负数小数字面量（-1）也能正确还原为 255',
+        ],
+        howToUse: [
+          '在「生成代码」模式选择输入类型，粘贴 Hex/Base64/文本，或点击「从文件读取」载入二进制文件',
+          '选择目标语言，设置变量名与每行字节数，代码即时生成，点击「复制代码」取用',
+          '需要还原代码中的数组时，切到「反向解析」，粘贴数组字面量或 b"..." 字符串',
+          '在解析结果表中可复制 Hex（带空格或连续）、Base64，或按 UTF-8 查看文本',
+        ],
+        useCases: [
+          '嵌入式开发中把证书、密钥、图片/字模数组写进固件源码',
+          '协议联调时把抓包得到的 Hex 报文快速生成各语言测试用例常量',
+          '把 Base64 资源片段转成 C/Java 静态字节数组',
+          '从他人代码里的 byte[]/b"" 字面量还原二进制，再转其他格式核对',
+        ],
+        privacyNote:
+          '所有数据转换均在浏览器本地完成，文件不会被上传；Base64/Hex 为内置实现，不发起网络请求。',
+        faqs: [
+          {
+            question: '为什么 Java 生成代码里有些字节前面有 (byte)？',
+            answer:
+              'Java 的 byte 是有符号类型，范围 -128 到 127；大于 127（0x80-0xFF）的字面量直接写会编译报错，生成器会自动加上 (byte) 强转，例如 (byte) 0xFF。反向解析时也接受 -1 这类负数小数字面量并还原为 255。',
+          },
+          {
+            question: '支持读取文件吗，大小有限制吗？',
+            answer:
+              '支持。点击「从文件读取」选择任意文件，浏览器在本地读取后转为 Hex 填充到输入框；为避免页面卡顿，上限为 1 MiB（1,048,576 字节），文件不会上传。',
+          },
+          {
+            question: '反向解析支持哪些写法？',
+            answer:
+              '支持 C/C++ 的 { 0x48, 0x69 }、Java 的 { (byte) 0x80, -1 }、Go 的 []byte{72, 105}（十进制/十六进制均可）以及 Python 的 b"\\x48\\x69" 转义字符串（\\xHH、八进制、\\n、\\r、\\t 等）。粘贴整段带变量声明的代码即可，解析器会自动定位数组体。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Byte Array Code Generator converts Hex, Base64, UTF-8 text (or a local file) into ready-to-paste byte-array declarations for C/C++, Java, Python and Go, with a custom variable name and configurable bytes per line. It also works in reverse: paste an array literal from any supported language or a Python b"..." string to recover Hex, Base64 and UTF-8 text. Everything runs locally in the browser with no added dependencies.',
+        coreFeatures: [
+          'Inputs: Hex (spaces/0x/commas tolerated), standard Base64 (URL-safe accepted), UTF-8 text, and local files (up to 1 MiB)',
+          'Outputs C const unsigned char[] (with _len), Java byte[] ((byte) cast above 127), parenthesized multi-line Python b"\\x..", and a Go []byte short declaration',
+          'Custom identifier-checked variable name, 1-64 bytes per line, one-click copy with file extension hint',
+          'Reverse parsing of C/Java/Go/Python array literals and b"..." escape strings (\\xHH, octal, \\n, etc.)',
+          'Live byte count and Hex preview; negative Java small literals like -1 decode back to 255',
+        ],
+        howToUse: [
+          'In "generate" mode choose the input type and paste Hex/Base64/text, or load a binary file',
+          'Pick a target language, set the variable name and bytes per line, then copy the generated code',
+          'To recover bytes from code, switch to "parse" and paste the array literal or b"..." string',
+          'From the result table, copy spaced or compact Hex, Base64, or view the bytes as UTF-8 text',
+        ],
+        useCases: [
+          'Embedding certificates, keys, images or font tables into embedded firmware source',
+          'Turning captured Hex protocol frames into per-language test constants',
+          'Converting Base64 resource snippets into C/Java static byte arrays',
+          'Recovering binary data from byte[]/b"" literals in someone else’s code',
+        ],
+        privacyNote:
+          'All conversion happens locally in the browser; files are never uploaded, and Hex/Base64 use built-in implementations with no network requests.',
+        faqs: [
+          {
+            question: 'Why do some Java bytes have a (byte) cast?',
+            answer:
+              'Java byte is signed (-128 to 127); literals above 127 (0x80-0xFF) fail to compile without a cast, so the generator emits e.g. (byte) 0xFF. Reverse parsing also accepts negative small literals such as -1, decoding it to 255.',
+          },
+          {
+            question: 'Can I load a file, and is there a size limit?',
+            answer:
+              'Yes. Click "load file" and pick any file; the browser reads it locally and fills the input with Hex. To keep the page responsive the limit is 1 MiB (1,048,576 bytes). Nothing is uploaded.',
+          },
+          {
+            question: 'Which syntaxes does reverse parsing accept?',
+            answer:
+              'C/C++ { 0x48, 0x69 }, Java { (byte) 0x80, -1 }, Go []byte{72, 105} (decimal or hex), and Python b"\\x48\\x69" escape strings (\\xHH, octal, \\n, \\r, \\t, etc.). Paste the full code including the declaration; the parser locates the array body automatically.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

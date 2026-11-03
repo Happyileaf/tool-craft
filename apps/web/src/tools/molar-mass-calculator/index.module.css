@@ -1,0 +1,29 @@
+.container {
+  width: 100%;
+}
+
+.mono {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace);
+}
+
+.formula {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace);
+  font-size: 15px;
+}
+
+.bigMass {
+  font-size: 30px;
+  font-weight: 700;
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, monospace);
+  color: var(--color-primary, #1677ff);
+}
+
+.hint {
+  color: var(--color-text-3, rgba(0, 0, 0, 0.45));
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.exampleLink {
+  cursor: pointer;
+}

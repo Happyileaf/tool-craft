@@ -1,0 +1,48 @@
+.container {
+  width: 100%;
+}
+
+.mono {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', Menus, monospace);
+}
+
+.vinInput {
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+
+.detailTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.detailTable th,
+.detailTable td {
+  border: 1px solid var(--color-border, #d9d9d9);
+  padding: 6px 4px;
+  text-align: center;
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, monospace);
+}
+
+.detailTable th {
+  background: var(--color-fill-1, rgba(0, 0, 0, 0.04));
+  font-weight: 600;
+}
+
+.checkCell {
+  background: color-mix(in srgb, var(--color-primary, #1677ff) 10%, transparent);
+}
+
+.hint {
+  color: var(--color-text-3, rgba(0, 0, 0, 0.45));
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.checkChar {
+  font-size: 40px;
+  font-weight: 700;
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, monospace);
+  line-height: 1.2;
+}
