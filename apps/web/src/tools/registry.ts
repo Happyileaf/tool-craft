@@ -22027,6 +22027,109 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'byte-array-codegen',
+    name: '字节数组代码生成器',
+    nameEn: 'Byte Array Code Generator',
+    description:
+      'Hex / Base64 / UTF-8 文本或本地文件一键生成 C / Java / Python / Go 字节数组声明代码；也可把粘贴回来的数组字面量反向解析为 Hex、Base64 与文本。',
+    descriptionEn:
+      'Turn Hex / Base64 / UTF-8 text or a local file into C / Java / Python / Go byte-array declarations, with adjustable bytes per line and variable name; also reverse-parses pasted array literals back into Hex, Base64 and text.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/byte-array-codegen',
+    iconName: 'Binary',
+    tags: ['字节数组', '代码生成', 'Hex', 'Base64', '嵌入式', '固件'],
+    tagsEn: ['Byte Array', 'Codegen', 'Hex', 'Base64', 'Embedded', 'Firmware'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '字节数组代码生成器把 Hex、Base64、UTF-8 文本（或本地文件）转换为 C/C++、Java、Python、Go 四种语言可直接粘贴使用的字节数组声明代码，支持自定义变量名与每行字节数；生成方向之外还提供反向解析：粘贴任意语言的数组字面量或 Python b"..." 字符串，即可还原为 Hex、Base64 与 UTF-8 文本。全部在浏览器本地完成，无任何新增依赖。',
+        coreFeatures: [
+          '输入支持 Hex（容忍空格/0x/逗号）、标准 Base64（兼容 URL-safe）、UTF-8 文本与本地文件读取（≤1 MiB）',
+          '输出 C const unsigned char[]（含 _len）、Java byte[]（>127 自动 (byte) 强转）、Python b"\\x.." 括号多行、Go []byte 短声明',
+          '可自定义变量名（校验标识符合法性）与每行字节数（1-64），一键复制并标注文件扩展名',
+          '反向解析 C/Java/Go/Python 数组字面量与 b"..." 转义字符串（\\xHH、八进制、\\n 等）',
+          '实时显示字节数与 Hex 预览，Java 负数小数字面量（-1）也能正确还原为 255',
+        ],
+        howToUse: [
+          '在「生成代码」模式选择输入类型，粘贴 Hex/Base64/文本，或点击「从文件读取」载入二进制文件',
+          '选择目标语言，设置变量名与每行字节数，代码即时生成，点击「复制代码」取用',
+          '需要还原代码中的数组时，切到「反向解析」，粘贴数组字面量或 b"..." 字符串',
+          '在解析结果表中可复制 Hex（带空格或连续）、Base64，或按 UTF-8 查看文本',
+        ],
+        useCases: [
+          '嵌入式开发中把证书、密钥、图片/字模数组写进固件源码',
+          '协议联调时把抓包得到的 Hex 报文快速生成各语言测试用例常量',
+          '把 Base64 资源片段转成 C/Java 静态字节数组',
+          '从他人代码里的 byte[]/b"" 字面量还原二进制，再转其他格式核对',
+        ],
+        privacyNote:
+          '所有数据转换均在浏览器本地完成，文件不会被上传；Base64/Hex 为内置实现，不发起网络请求。',
+        faqs: [
+          {
+            question: '为什么 Java 生成代码里有些字节前面有 (byte)？',
+            answer:
+              'Java 的 byte 是有符号类型，范围 -128 到 127；大于 127（0x80-0xFF）的字面量直接写会编译报错，生成器会自动加上 (byte) 强转，例如 (byte) 0xFF。反向解析时也接受 -1 这类负数小数字面量并还原为 255。',
+          },
+          {
+            question: '支持读取文件吗，大小有限制吗？',
+            answer:
+              '支持。点击「从文件读取」选择任意文件，浏览器在本地读取后转为 Hex 填充到输入框；为避免页面卡顿，上限为 1 MiB（1,048,576 字节），文件不会上传。',
+          },
+          {
+            question: '反向解析支持哪些写法？',
+            answer:
+              '支持 C/C++ 的 { 0x48, 0x69 }、Java 的 { (byte) 0x80, -1 }、Go 的 []byte{72, 105}（十进制/十六进制均可）以及 Python 的 b"\\x48\\x69" 转义字符串（\\xHH、八进制、\\n、\\r、\\t 等）。粘贴整段带变量声明的代码即可，解析器会自动定位数组体。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Byte Array Code Generator converts Hex, Base64, UTF-8 text (or a local file) into ready-to-paste byte-array declarations for C/C++, Java, Python and Go, with a custom variable name and configurable bytes per line. It also works in reverse: paste an array literal from any supported language or a Python b"..." string to recover Hex, Base64 and UTF-8 text. Everything runs locally in the browser with no added dependencies.',
+        coreFeatures: [
+          'Inputs: Hex (spaces/0x/commas tolerated), standard Base64 (URL-safe accepted), UTF-8 text, and local files (up to 1 MiB)',
+          'Outputs C const unsigned char[] (with _len), Java byte[] ((byte) cast above 127), parenthesized multi-line Python b"\\x..", and a Go []byte short declaration',
+          'Custom identifier-checked variable name, 1-64 bytes per line, one-click copy with file extension hint',
+          'Reverse parsing of C/Java/Go/Python array literals and b"..." escape strings (\\xHH, octal, \\n, etc.)',
+          'Live byte count and Hex preview; negative Java small literals like -1 decode back to 255',
+        ],
+        howToUse: [
+          'In "generate" mode choose the input type and paste Hex/Base64/text, or load a binary file',
+          'Pick a target language, set the variable name and bytes per line, then copy the generated code',
+          'To recover bytes from code, switch to "parse" and paste the array literal or b"..." string',
+          'From the result table, copy spaced or compact Hex, Base64, or view the bytes as UTF-8 text',
+        ],
+        useCases: [
+          'Embedding certificates, keys, images or font tables into embedded firmware source',
+          'Turning captured Hex protocol frames into per-language test constants',
+          'Converting Base64 resource snippets into C/Java static byte arrays',
+          'Recovering binary data from byte[]/b"" literals in someone else’s code',
+        ],
+        privacyNote:
+          'All conversion happens locally in the browser; files are never uploaded, and Hex/Base64 use built-in implementations with no network requests.',
+        faqs: [
+          {
+            question: 'Why do some Java bytes have a (byte) cast?',
+            answer:
+              'Java byte is signed (-128 to 127); literals above 127 (0x80-0xFF) fail to compile without a cast, so the generator emits e.g. (byte) 0xFF. Reverse parsing also accepts negative small literals such as -1, decoding it to 255.',
+          },
+          {
+            question: 'Can I load a file, and is there a size limit?',
+            answer:
+              'Yes. Click "load file" and pick any file; the browser reads it locally and fills the input with Hex. To keep the page responsive the limit is 1 MiB (1,048,576 bytes). Nothing is uploaded.',
+          },
+          {
+            question: 'Which syntaxes does reverse parsing accept?',
+            answer:
+              'C/C++ { 0x48, 0x69 }, Java { (byte) 0x80, -1 }, Go []byte{72, 105} (decimal or hex), and Python b"\\x48\\x69" escape strings (\\xHH, octal, \\n, \\r, \\t, etc.). Paste the full code including the declaration; the parser locates the array body automatically.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
