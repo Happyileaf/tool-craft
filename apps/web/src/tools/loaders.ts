@@ -242,4 +242,5 @@ export const toolLoaders: Record<
   'security-headers-generator': () => import('./security-headers-generator'),
   'spf-record-generator': () => import('./spf-record-generator'),
   'vin-validator': () => import('./vin-validator'),
+  'resistor-voltage-divider': () => import('./resistor-voltage-divider'),
 };

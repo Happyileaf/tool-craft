@@ -21821,6 +21821,109 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'resistor-voltage-divider',
+    name: '电阻分压器计算器',
+    nameEn: 'Resistor Voltage Divider Calculator',
+    description:
+      '计算双电阻分压器输出电压、分压比与总电流，支持计入负载电阻 RL 的并联效应，或按目标电压反解 R2。',
+    descriptionEn:
+      'Compute the output voltage, ratio and current of a two-resistor voltage divider, with optional load resistor RL (parallel loading effect), or solve R2 for a target output voltage.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/resistor-voltage-divider',
+    iconName: 'SlidersHorizontal',
+    tags: ['分压器', '电阻', '电路', '硬件', '嵌入式', '电压'],
+    tagsEn: ['Voltage Divider', 'Resistor', 'Circuit', 'Hardware', 'Embedded', 'Electronics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '电阻分压器计算器帮助硬件工程师快速求解两电阻串联分压电路：空载时输出 Vout = Vin × R2/(R1+R2)；当后级接有负载 RL 时，RL 与 R2 并联后再分压，输出会被拉低。工具也支持反向模式——给定 Vin、目标 Vout 和 R1，算出所需的 R2。所有计算在浏览器本地完成。',
+        coreFeatures: [
+          '正向计算 Vout、分压比、总电流、总功耗',
+          '可选计入负载 RL，自动按 R2∥RL 并联等效并给出负载电流与输出跌落百分比',
+          '反解模式：给定目标输出电压与 R1，计算所需 R2',
+          '电阻支持 Ω/kΩ/MΩ、电压支持 mV/V 输入，内置 5V→3.3V、12V→5V 带载示例',
+          '负载效应与选型提示（RL 建议 ≥10×R2、功耗与输出阻抗权衡）',
+        ],
+        howToUse: [
+          '选择计算模式：已知电阻求输出，或已知目标电压反解 R2',
+          '填入输入电压、R1，以及 R2（或目标 Vout），按需打开负载开关并填 RL',
+          '查看输出电压、分压比、电流功耗与负载跌落',
+          '点击示例链接可快速载入典型电路参数',
+        ],
+        useCases: [
+          'ADC 采集高于参考电压的信号前设计分压网络',
+          '为电平转换、三极管基极偏置、基准分压选阻值',
+          '评估传感器输出接上拉/下拉后被负载拉偏的程度',
+          '教学演示串联分压与戴维南等效电阻',
+        ],
+        privacyNote:
+          '所有参数仅在浏览器本地参与计算，不联网、不保存输入。',
+        faqs: [
+          {
+            question: '为什么实测 Vout 比理论值低？',
+            answer:
+              '多数情况是负载效应：后级电路等效为 RL 与 R2 并联，使下臂等效电阻变小。本工具打开「计入负载 RL」开关即可复现。若要求带载后电压仍稳定，应让 RL ≥ 10×R2，或改用运放电压跟随器/基准源缓冲。',
+          },
+          {
+            question: '电阻选大些还是小些？',
+            answer:
+              '阻值越小，带载能力越强但静态功耗越大（I=Vin/(R1+R2)）；阻值越大越省电，但输出阻抗高、易受漏电流和 ADC 输入阻抗影响。经验上让分压网络电流比负载电流大 10 倍以上，同时总功耗满足电池预算。',
+          },
+          {
+            question: '分压器能把 5V 转成 3.3V 给芯片供电吗？',
+            answer:
+              '不建议。电阻分压只能提供极小电流，芯片工作电流变化会让输出电压大幅波动；电源降压应使用 LDO 或 DC-DC。分压更适合 ADC 采样、基准电压等近乎零负载的信号场景。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Resistor Voltage Divider Calculator solves a two-resistor series divider: without load, Vout = Vin × R2/(R1+R2); when a load RL is attached, it parallels R2 and pulls the output down. A reverse mode computes the required R2 for a target Vout given Vin and R1. All math runs locally in the browser.',
+        coreFeatures: [
+          'Forward calculation of Vout, ratio, total current and power',
+          'Optional load RL with automatic R2∥RL parallel equivalent, load current and droop percentage',
+          'Solve mode: derive R2 from a target output voltage and known R1',
+          'Ω/kΩ/MΩ and mV/V unit inputs, with 5V→3.3V and loaded 12V→5V presets',
+          'Loading-effect and selection guidance (RL ≥ 10×R2, power vs. output impedance trade-off)',
+        ],
+        howToUse: [
+          'Pick a mode: compute output from resistors, or solve R2 for a target voltage',
+          'Enter Vin, R1 and R2 (or target Vout); optionally enable the load and enter RL',
+          'Read Vout, ratio, current, power and load droop',
+          'Use the preset links to load typical circuits',
+        ],
+        useCases: [
+          'Scaling signals above the ADC reference voltage',
+          'Choosing values for level shifting, transistor bias or reference dividers',
+          'Estimating how a sensor output droops under pull-up/down loading',
+          'Teaching series division and Thévenin equivalent resistance',
+        ],
+        privacyNote:
+          'All parameters are computed locally in your browser; nothing is uploaded or stored.',
+        faqs: [
+          {
+            question: 'Why is my measured Vout lower than the formula?',
+            answer:
+              'Usually loading: the downstream circuit acts as RL in parallel with R2, reducing the effective lower-arm resistance. Enable the load switch in this tool to reproduce it. For a stable voltage under load, keep RL ≥ 10×R2 or add an op-amp follower/reference buffer.',
+          },
+          {
+            question: 'Should I pick large or small resistor values?',
+            answer:
+              'Small values drive loads better but draw more quiescent current (I=Vin/(R1+R2)); large values save power but raise output impedance and sensitivity to leakage and ADC input impedance. A common rule is divider current at least 10× the load current while meeting the power budget.',
+          },
+          {
+            question: 'Can a divider convert 5V to 3.3V to power a chip?',
+            answer:
+              'No. A divider supplies only tiny current, and the voltage will collapse as the chip draws varying current; use an LDO or DC-DC for power. Dividers suit near-zero-load signal jobs such as ADC scaling and reference voltages.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
