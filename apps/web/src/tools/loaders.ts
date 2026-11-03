@@ -235,4 +235,9 @@ export const toolLoaders: Record<
   'smpte-timecode-converter': () => import('./smpte-timecode-converter'),
   'gps-week-converter': () => import('./gps-week-converter'),
   'sms-segment-calculator': () => import('./sms-segment-calculator'),
+  'polyline-codec': () => import('./polyline-codec'),
+  'php-serialize-json': () => import('./php-serialize-json'),
+  'json5-json-converter': () => import('./json5-json-converter'),
+  'og-meta-generator': () => import('./og-meta-generator'),
+  'security-headers-generator': () => import('./security-headers-generator'),
 };

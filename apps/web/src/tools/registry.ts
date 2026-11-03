@@ -21092,6 +21092,529 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'polyline-codec',
+    name: 'Encoded Polyline 折线编解码器',
+    nameEn: 'Encoded Polyline Codec',
+    description:
+      '在「纬度,经度」坐标列表与 Google Encoded Polyline Algorithm Format 压缩 ASCII 字符串之间双向转换，支持精度 5（经典 Directions API）与精度 6（官方推荐），截断与非法字符带精确定位。',
+    descriptionEn:
+      'Convert between lat,lng coordinate lists and Google Encoded Polyline Algorithm Format ASCII strings, supporting precision 5 (classic Directions API) and precision 6 (official recommendation), with pinpoint errors for truncation and invalid characters.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/polyline-codec',
+    iconName: 'Satellite',
+    tags: ['Polyline', 'Google Maps', '坐标', '编解码', 'GIS'],
+    tagsEn: ['Polyline', 'Google Maps', 'Coordinates', 'Codec', 'GIS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Encoded Polyline Algorithm Format 是 Google Maps 平台用于压缩折线坐标序列的字符串格式：对相邻坐标的有符号差值做 zigzag 展开，再按 5 位分块编码为可打印 ASCII（? 到 _ 区间），可把大量经纬度点压缩成很短的字符串。本工具支持精度 5（每度 1e5，经典 Directions API）与精度 6（每度 1e6，2019 年后官方推荐），提供坐标→折线编码与折线→坐标解码双向转换。',
+        coreFeatures: [
+          '双向转换：多行「纬度,经度」坐标列表一键编码，折线字符串解码为坐标表格',
+          '双精度支持：精度 5 与精度 6 自由切换，错误精度解码越界时给出提示',
+          'Google 官方向量 _p~iF~ps|U_ulLnnqC_mqNvxq`@ 内置为默认示例，结果可交叉验证',
+          '健壮错误处理：字符串截断、非法字符、坐标越界、字段数错误均带位置信息',
+        ],
+        howToUse: [
+          '选择转换方向：折线→坐标（解码）或坐标→折线（编码）',
+          '确认精度：旧版 Directions API 多为精度 5，2019 年后的接口与自采数据常用精度 6',
+          '粘贴折线字符串，或按每行「纬度,经度」输入坐标点（支持逗号或空白分隔）',
+          '查看结果表格或压缩字符串，点击「复制结果」获取 CSV 坐标或折线文本',
+        ],
+        useCases: [
+          '解析地图接口返回的 overview_polyline / routes.geometry 字段并核对坐标',
+          '调试轨迹回放、地理围栏与路径规划数据，检查压缩折线是否丢点',
+          '把 GPS 轨迹点压缩后拼进 URL 或配置文件，减少传输体积',
+        ],
+        privacyNote:
+          '所有坐标与折线仅在浏览器本地解析与生成，不发起任何网络请求，也不会把你的位置数据发送给 Google 或任何第三方。',
+        faqs: [
+          {
+            question: '精度 5 和精度 6 有什么区别？选错会怎样？',
+            answer:
+              '精度指编码前经纬度保留的小数位数：精度 5 每度 10^5（误差约 1 米），精度 6 每度 10^6（误差约 0.1 米）。两种字符串互不兼容，用错精度解码通常会得到严重失真的坐标，甚至触发经纬度越界提示，本工具会在解码结果越界时提醒你切换精度。',
+          },
+          {
+            question: '编码结果里反斜杠、@ 等字符怎么处理？',
+            answer:
+              '折线字符包含 ? 到 _ 的 ASCII，可能出现反斜杠等需要转义的字符。在 JSON 字符串中按常规转义即可（\\ 写成 \\\\）；直接作为 URL 参数时建议先做 encodeURIComponent。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Encoded Polyline Algorithm Format is Google Maps’ string format for compressing coordinate sequences: signed deltas between adjacent points are zigzag-encoded and chunked into 5-bit groups mapped to printable ASCII characters (? through _), turning many lat/lng points into a short string. This tool supports precision 5 (1e5 per degree, classic Directions API) and precision 6 (1e6, officially recommended since 2019), converting coordinate lists to polylines and back.',
+        coreFeatures: [
+          'Bidirectional: encode multi-line lat,lng lists and decode polyline strings into a coordinate table',
+          'Precision 5 and precision 6 switchable; decoding with the wrong precision is flagged when coordinates go out of range',
+          'Ships with Google’s official vector _p~iF~ps|U_ulLnnqC_mqNvxq`@ as the default sample for cross-checking',
+          'Robust errors with position info for truncation, invalid characters, out-of-range coordinates and malformed rows',
+        ],
+        howToUse: [
+          'Pick a direction: polyline → coordinates (decode) or coordinates → polyline (encode)',
+          'Confirm precision: legacy Directions API is usually precision 5; post-2019 APIs and self-collected data often use 6',
+          'Paste a polyline string, or enter points one per line as "lat,lng" (comma or whitespace separated)',
+          'Review the result table or compressed string, then click "Copy result" for CSV coordinates or the polyline text',
+        ],
+        useCases: [
+          'Inspecting overview_polyline / routes.geometry fields from map API responses',
+          'Debugging track playback, geofencing and route-planning data for dropped points',
+          'Compressing GPS tracks into URLs or config files to save bytes',
+        ],
+        privacyNote:
+          'All coordinates and polylines are parsed and generated locally in your browser; no network requests are made and your location data is never sent to Google or any third party.',
+        faqs: [
+          {
+            question: 'What is the difference between precision 5 and 6? What if I pick the wrong one?',
+            answer:
+              'Precision is the number of fractional digits kept before encoding: precision 5 is 10^5 per degree (~1 m error), precision 6 is 10^6 (~0.1 m). The two strings are incompatible; decoding with the wrong precision typically yields heavily distorted coordinates or an out-of-range warning, which this tool surfaces.',
+          },
+          {
+            question: 'How do I handle backslashes and @ characters in the output?',
+            answer:
+              'Polyline characters span ASCII ? through _, including backslash. Escape them as usual inside JSON strings (\\\\ for a backslash); when placing the polyline in a URL, apply encodeURIComponent first.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'php-serialize-json',
+    name: 'PHP serialize ↔ JSON 双向转换器',
+    nameEn: 'PHP Serialize ↔ JSON Converter',
+    description:
+      '解析与生成 PHP serialize() 文本（N/s/i/d/b/a 标量与嵌套数组），与 JSON 双向转换，按长度声明二进制安全解析字符串，索引数组与关联数组以标记对象区分，畸形输入带列号定位。',
+    descriptionEn:
+      'Parse and generate PHP serialize() text (N/s/i/d/b/a scalars and nested arrays), convert to and from JSON, parse strings binary-safely by declared length, distinguish indexed vs associative arrays with marker objects, and pinpoint malformed input by column.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/php-serialize-json',
+    iconName: 'Braces',
+    tags: ['PHP', 'serialize', 'Laravel', 'JSON', '数据迁移'],
+    tagsEn: ['PHP', 'serialize', 'Laravel', 'JSON', 'Migration'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'PHP serialize 转换器把 PHP serialize()/unserialize() 的文本格式（如 a:2:{s:1:"a";i:1;s:1:"b";s:1:"x";}）与 JSON 相互转换：支持 null、整数、浮点（含 INF/NAN）、布尔、按长度声明二进制安全的字符串，以及任意嵌套的索引数组与关联数组；对象（O:）、资源等 PHP 专有类型不支持并给出明确错误。',
+        coreFeatures: [
+          '双向转换：PHP 文本 → JSON 预览（缩进 2 格），合法 JSON → PHP serialize 文本',
+          '类型全覆盖：N / s / i / d / b / a 六类标记，支持 d:INF、d:-INF、d:NAN 与嵌套数组',
+          '数组语义保留：索引数组（0..n-1 数字键）与关联数组以 $$phpObject$$ / $$phpArrayKind$$ 标记对象区分',
+          '二进制安全字符串：严格按 s:长度: 声明切分内容，分号、引号、多字节字符不影响边界，长度不符即报错',
+          '精确定位：类型标记缺失、字段截断、布尔非 0/1、数组键类型错误等均给出列号',
+        ],
+        howToUse: [
+          '选择转换方向：PHP serialize → JSON 或 JSON → PHP serialize',
+          '粘贴从 Laravel 缓存、Cookie、老系统数据库中取出的 serialize 文本，或一段合法 JSON',
+          '查看 JSON 预览中的 $$phpArrayKind$$ 字段确认数组是 list 还是 assoc',
+          '确认无误后点击「复制结果」；报错信息会给出列号与期望字符',
+        ],
+        useCases: [
+          '排查 Laravel / 老 PHP 系统存进数据库或缓存（Redis、Memcached）的序列化字段',
+          '数据迁移时在 PHP 序列化文本与 JSON API 载荷之间互转并核对内容',
+          '构造、修改 serialize() 数据用于调试反序列化逻辑，无需安装 PHP 环境',
+        ],
+        privacyNote:
+          '所有文本仅在浏览器本地解析与生成，不发起任何网络请求，不依赖任何第三方库。',
+        faqs: [
+          {
+            question: '为什么 JSON 里的数组被包了一层 $$phpObject$$ 标记？',
+            answer:
+              'PHP 的数组同时承担「列表」和「字典」两种语义，而 JSON 中 [] 与 {} 无法表达「序列化时应该用哪种数组」。解析结果用 { "$$phpObject$$": true, "$$phpArrayKind$$": "array|assoc", "data": ... } 标记：array 对应 0..n-1 连续数字键，assoc 对应关联数组。再序列化回 PHP 时该标记会被还原为对应 a: 数组。',
+          },
+          {
+            question: '中文 / emoji 的字符串长度怎么算？',
+            answer:
+              '工具按 UTF-16 码元计数（与浏览器 String API 一致），emoji 等代理对字符算 2 个码元。注意 PHP 端若以单字节方式 serialize UTF-8 文本，长度声明是字节数；解析此类真实数据时，长度声明会原样按声明切分，只要输入字节流被逐码元读入即可正确还原，工具会在校验不符时明确报错而不是静默截断。',
+          },
+          {
+            question: '为什么不支持对象 O:8:"stdClass":... ？',
+            answer:
+              '对象携带 PHP 类名、私有 / 受保护属性（属性名含 NUL 字节）与魔术方法语义，反序列化在真实 PHP 环境中还可能触发 __wakeup / __destruct 安全风险。工具聚焦数据层互转，遇到 O: / C: 标记会给出包含类名的明确错误，不尝试解析。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool converts PHP serialize()/unserialize() text (e.g. a:2:{s:1:"a";i:1;s:1:"b";s:1:"x";}) to and from JSON. It supports null, integers, floats (including INF/NAN), booleans, binary-safe strings keyed by declared length, and arbitrarily nested indexed/associative arrays; PHP-specific object (O:) and resource types are explicitly rejected.',
+        coreFeatures: [
+          'Bidirectional: PHP text → pretty JSON, and valid JSON → PHP serialize text',
+          'Full scalar coverage: N / s / i / d / b / a markers, including d:INF, d:-INF, d:NAN and nesting',
+          'Array semantics preserved: indexed (0..n-1) vs associative arrays distinguished via $$phpObject$$ / $$phpArrayKind$$ marker objects',
+          'Binary-safe strings sliced strictly by the s:length: declaration; semicolons, quotes and multibyte chars never break the boundary',
+          'Column-precise errors for missing markers, truncation, non-0/1 booleans and bad array key types',
+        ],
+        howToUse: [
+          'Pick a direction: PHP serialize → JSON or JSON → PHP serialize',
+          'Paste serialized text from Laravel cache, cookies or legacy databases, or a valid JSON document',
+          'Check the $$phpArrayKind$$ field in the JSON preview to see whether an array is a list or an assoc map',
+          'Click "Copy result"; errors include the column and the expected character',
+        ],
+        useCases: [
+          'Inspecting serialized fields stored by Laravel or legacy PHP systems in databases, Redis or Memcached',
+          'Migrating data between PHP serialized text and JSON API payloads with content verification',
+          'Crafting or editing serialize() payloads to debug unserialization logic without a PHP runtime',
+        ],
+        privacyNote:
+          'All text is parsed and generated locally in your browser with no network requests or third-party libraries.',
+        faqs: [
+          {
+            question: 'Why are arrays wrapped in a $$phpObject$$ marker in JSON?',
+            answer:
+              'PHP arrays carry both "list" and "map" semantics, while JSON [] and {} cannot express which a: form to emit. The marker { "$$phpObject$$": true, "$$phpArrayKind$$": "array|assoc", "data": ... } records it: array means consecutive 0..n-1 integer keys, assoc means a map. Re-serializing back to PHP restores the right form.',
+          },
+          {
+            question: 'How are Chinese characters or emoji lengths counted?',
+            answer:
+              'The tool counts UTF-16 code units (matching the browser String API), so surrogate-pair emoji count as 2. If PHP serialized UTF-8 text byte-wise, the declaration is a byte count; when parsing such real-world data the tool slices exactly by the declared length and reports a clear error instead of silently truncating when the input does not match.',
+          },
+          {
+            question: 'Why are objects like O:8:"stdClass":... unsupported?',
+            answer:
+              'Objects carry class names, private/protected properties with NUL bytes and magic-method semantics; real unserialization can even trigger __wakeup/__destruct security risks. The tool focuses on data-level conversion and reports O:/C: markers with the class name instead of attempting to parse them.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json5-json-converter',
+    name: 'JSON5 ↔ JSON 双向转换器',
+    nameEn: 'JSON5 ↔ JSON Converter',
+    description:
+      '手写零依赖 JSON5 解析器：支持 // 与块注释、单引号字符串、未加引号键、尾逗号、0x 十六进制、前导小数点、Infinity/NaN 与续行字符串，JSON5/JSONC 一键转为标准 JSON，JSON 也可降级为 JSON5 友好写法。',
+    descriptionEn:
+      'A hand-written zero-dependency JSON5 parser: supports // and block comments, single-quoted strings, unquoted keys, trailing commas, 0x hex numbers, leading decimal points, Infinity/NaN and line-continuation strings, converting JSON5/JSONC to strict JSON and back to JSON5-friendly style.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json5-json-converter',
+    iconName: 'Braces',
+    tags: ['JSON5', 'JSONC', '配置文件', 'TS', '数据格式'],
+    tagsEn: ['JSON5', 'JSONC', 'Config', 'TypeScript', 'Data Format'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON5 是 JSON 的超集，目标是让手写配置与对象字面量更舒适：允许 // 行注释与 /* 块注释 */、单引号字符串、对象键不加引号（标识符键）、数组与对象尾逗号、0xFF 十六进制整数、.5 前导小数点、正号数字、Infinity/-Infinity/NaN、以及行尾反斜杠续行的多行字符串。本工具用零依赖手写递归下降解析器在浏览器本地完成 JSON5/JSONC 与标准 JSON 的双向转换。',
+        coreFeatures: [
+          'JSON5/JSONC → 标准 JSON：剥离注释、规范引号与键名、去除尾逗号、换算十六进制',
+          'JSON → JSON5 友好写法：默认单引号、合法标识符键不加引号、NaN/Infinity 原样保留',
+          '完整转义支持：\\n\\t、\\x41、\\u00e9、\\u{1F600} 码点转义与行尾续行',
+          '精确错误定位：所有语法错误带行列号，重复键、数字粘连、缺冒号等明确提示',
+          '零第三方依赖：解析器为本工具内置的手写实现，不引入 json5 npm 包',
+        ],
+        howToUse: [
+          '选择方向：JSON5/JSONC → 标准 JSON（常用于让带注释的配置可被程序解析）',
+          '粘贴内容：TS 配置对象、.json5/.jsonc 文件、带注释的接口响应都可以',
+          '查看结果与错误提示；含 Infinity/NaN 时会警告标准 JSON 将其输出为 null',
+          '反向（JSON → JSON5）适合把标准接口数据改写成可直接粘进 JS/TS 的字面量',
+        ],
+        useCases: [
+          '把写满注释与尾逗号的 .json5 / tsconfig 风格配置转换成可被 JSON.parse 读取的数据',
+          '调试前后端数据：把 TS 对象字面量贴进来，快速得到标准 JSON 发给接口',
+          '核对 JSON5 语法错误，行列号直接定位到注释、引号或尾逗号问题',
+        ],
+        privacyNote:
+          '全部解析与格式化仅在浏览器本地完成，不发起任何网络请求，配置内容不会离开你的设备。',
+        faqs: [
+          {
+            question: 'JSON5 和 JSONC 有什么区别？',
+            answer:
+              'JSONC 是「JSON with Comments」的简称，只在标准 JSON 上增加注释与（多数实现里的）尾逗号；JSON5 是更大的超集，还允许单引号、无引号键、十六进制数字、前导小数点、Infinity/NaN、续行字符串等。本工具的 JSON5 解析器天然兼容 JSONC 输入。',
+          },
+          {
+            question: '为什么 Infinity 转成标准 JSON 后变成了 null？',
+            answer:
+              '标准 JSON 规范没有 Infinity 与 NaN 字面量，JSON.stringify 会把它们序列化为 null。工具在检测到这些值时会给出警告；若需要保留语义，请使用 JSON → JSON5 方向，JSON5 文本支持直接书写 Infinity/NaN。',
+          },
+          {
+            question: '支持数字分隔符 1_000 吗？',
+            answer:
+              '当前手写解析器不支持 ES 风格数字分隔符（下划线），遇到 1_000 会明确报错而不是悄悄误解析；其余 JSON5 常用语法（注释、单引号、尾逗号、十六进制、续行、Unicode 转义等）均已支持。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'JSON5 is a superset of JSON designed for comfortable hand-written configs and object literals: it allows // line and /* block */ comments, single-quoted strings, unquoted identifier keys, trailing commas, 0xFF hex integers, leading-decimal numbers like .5, signed numbers, Infinity/-Infinity/NaN, and backslash line-continuation strings. This tool uses a hand-written zero-dependency recursive-descent parser to convert JSON5/JSONC to strict JSON and back, entirely in the browser.',
+        coreFeatures: [
+          'JSON5/JSONC → strict JSON: strips comments, normalizes quotes and keys, removes trailing commas, converts hex',
+          'JSON → JSON5-friendly style: single quotes by default, bare identifier keys, NaN/Infinity preserved',
+          'Full escapes: \\n\\t, \\x41, \\u00e9, \\u{1F600} code points and line continuation',
+          'Precise line/column errors for duplicate keys, glued numbers, missing colons and more',
+          'Zero third-party dependencies: a built-in hand-written parser rather than the json5 npm package',
+        ],
+        howToUse: [
+          'Pick a direction: JSON5/JSONC → strict JSON turns commented configs into machine-readable data',
+          'Paste TS config objects, .json5/.jsonc files, or commented API payloads',
+          'Review the output; Infinity/NaN warns that strict JSON emits them as null',
+          'The reverse direction (JSON → JSON5) rewrites API data into a JS/TS-ready literal',
+        ],
+        useCases: [
+          'Turning comment-heavy .json5 / tsconfig-style files into JSON.parse-ready data',
+          'Debugging frontend/backend data by converting a TS object literal to strict JSON for an API call',
+          'Diagnosing JSON5 syntax errors with direct line/column pointers',
+        ],
+        privacyNote:
+          'All parsing and formatting runs locally in your browser with no network requests; config content never leaves your device.',
+        faqs: [
+          {
+            question: 'What is the difference between JSON5 and JSONC?',
+            answer:
+              'JSONC ("JSON with Comments") only adds comments and, in most implementations, trailing commas to strict JSON; JSON5 is a larger superset that also permits single quotes, unquoted keys, hex numbers, leading decimals, Infinity/NaN and line continuation. This JSON5 parser naturally accepts JSONC input.',
+          },
+          {
+            question: 'Why does Infinity become null in strict JSON output?',
+            answer:
+              'Strict JSON has no Infinity or NaN literals, so JSON.stringify emits them as null. The tool warns when such values are present; to keep the semantics, use the JSON → JSON5 direction, where Infinity/NaN can be written directly.',
+          },
+          {
+            question: 'Are numeric separators like 1_000 supported?',
+            answer:
+              'The hand-written parser currently does not support ES-style underscore separators and reports an explicit error on 1_000 instead of misparsing it; all other common JSON5 syntax (comments, single quotes, trailing commas, hex, continuation, Unicode escapes) is supported.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'og-meta-generator',
+    name: 'Open Graph / SEO 元标签生成器',
+    nameEn: 'Open Graph / SEO Meta Tag Generator',
+    description:
+      '表单化填写标题、描述、canonical、分享图、站点名与 Twitter 账号，实时生成可粘贴到 <head> 的 title / meta description / canonical / og:* / twitter:* 标签片段，附长度校验、问题提示与社交分享卡片预览。',
+    descriptionEn:
+      'Fill in title, description, canonical URL, share image, site name and Twitter handles to instantly generate title / meta description / canonical / og:* / twitter:* tags for your <head>, with length checks, validation hints and a social card preview.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/og-meta-generator',
+    iconName: 'Globe',
+    tags: ['Open Graph', 'SEO', 'Twitter Card', 'meta', '社交分享'],
+    tagsEn: ['Open Graph', 'SEO', 'Twitter Card', 'meta', 'Social'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Open Graph / SEO 元标签生成器把页面标题、描述、规范链接、站点信息、分享图与社交账号等字段拼装成可直接粘贴到 HTML <head> 的标签片段：包含 <title>、meta description / keywords / author / robots、link canonical，以及 og:title、og:type、og:url、og:image 等 Open Graph 标签和 twitter:card 系列 Twitter Card 标签，让页面在 Google 等搜索引擎与微信、X（Twitter）、Facebook、Slack 等社交平台分享时呈现理想的标题、描述与缩略图。',
+        coreFeatures: [
+          '一次填写同时产出 SEO、Open Graph、Twitter Card 三组标签，字段为空的标签自动省略',
+          '标题（建议 ≤60 字符）与描述（建议 ≤160 字符）实时字数统计，超长黄色警告',
+          'canonical / og:url / og:image 强制 http(s) 绝对地址校验，非法值明确报错且不输出',
+          '支持 og:type（website/article/profile/book/音乐/视频）、og:locale、分享图尺寸与 alt、robots 指令预设',
+          'Twitter 账号自动补 @，locale 连字符自动归一为下划线，属性值统一 HTML 转义防止引号逃逸',
+          '内置社交分享卡片近似预览，所见即所得确认标题与描述的截断效果',
+        ],
+        howToUse: [
+          '在「页面基础信息」中填写标题、描述、规范链接与站点名，长度计数器会实时提示',
+          '按需填写分享图 URL（推荐 1200×630）、替代文字与宽高，选择 og:type 与 locale',
+          '选择 Twitter Card 类型（大图 / 小图 / app / player）并填写站点与作者账号',
+          '查看错误与警告提示，对照分享卡片预览确认效果',
+          '点击「复制 HTML」把生成的标签粘贴到页面模板的 <head> 中',
+        ],
+        useCases: [
+          '新页面上线前快速生成符合搜索引擎与社交平台规范的元标签',
+          '文章、产品页在微信 / X / Facebook / Slack 分享时修复无图、无描述或标题错误',
+          '前端静态页面、营销落地页缺少服务端模板能力时直接手写 head 标签',
+        ],
+        privacyNote:
+          '所有字段仅保存在浏览器页面状态中，HTML 片段完全在本地拼装，不发起任何网络请求（预览图仅由浏览器按你填写的 URL 直接加载），也不依赖任何第三方库。',
+        faqs: [
+          {
+            question: '生成的标签应该放在 HTML 的哪个位置？',
+            answer:
+              '全部放入页面的 <head>...</head> 中，与字符集声明（<meta charset>）和 viewport 标签并列。Open Graph 与 Twitter Card 标签不会在页面上可见，只被搜索引擎爬虫和社交平台抓取器读取。',
+          },
+          {
+            question: '为什么填写了图片 URL 却没有输出 og:image？',
+            answer:
+              '工具要求图片地址必须是 http(s) 开头的绝对地址，相对路径（如 /cover.png）无法被社交平台跨站抓取，会校验失败并跳过输出。把图片地址补全为 https://your-domain.com/cover.png 这类完整 URL 即可。',
+          },
+          {
+            question: '分享图尺寸有什么推荐？为什么要填宽高？',
+            answer:
+              '主流平台通用的大图卡片推荐 1200×630（约 1.91:1），文件控制在几百 KB 以内。显式提供 og:image:width / og:image:height 能让抓取器在不下载图片的情况下立即完成布局，减少分享卡片第一次抓取时的空白；宽高字段可留空，留空时对应标签不输出。',
+          },
+          {
+            question: '修改了标签为什么分享出去还是旧内容？',
+            answer:
+              '社交平台会缓存已抓取的卡片。可用 Facebook Sharing Debugger、X Card Validator 或微信的「重新抓取」能力强制刷新；同时确认线上页面返回的 HTML 中确实包含新标签（og 标签需要在服务端渲染的 HTML 或静态 HTML 中，纯客户端 JS 异步写入对部分爬虫无效）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Open Graph / SEO Meta Tag Generator turns page title, description, canonical URL, site info, share image and social handles into an HTML snippet you can paste straight into <head>: it covers <title>, meta description/keywords/author/robots, the canonical link, Open Graph tags such as og:title, og:type, og:url and og:image, plus the twitter:card family, so your pages show the right title, description and thumbnail on Google and when shared on WeChat, X (Twitter), Facebook or Slack.',
+        coreFeatures: [
+          'One form produces SEO, Open Graph and Twitter Card tags at once; empty fields are omitted automatically',
+          'Live counters for title (recommended ≤60 chars) and description (≤160 chars) with over-length warnings',
+          'canonical / og:url / og:image must be absolute http(s) URLs; invalid values are reported and never emitted',
+          'og:type presets (website/article/profile/book/music/video), og:locale, image dimensions and alt, plus robots directives',
+          'Twitter handles get an automatic @ prefix, locale hyphens normalize to underscores, and attribute values are HTML-escaped',
+          'Built-in near-real social card preview to confirm truncation before copying',
+        ],
+        howToUse: [
+          'Fill in title, description, canonical URL and site name under "Basic page info"; counters update live',
+          'Optionally add the share image URL (1200×630 recommended), alt text and dimensions, then pick og:type and locale',
+          'Choose the Twitter Card type (large image / summary / app / player) and enter site/creator handles',
+          'Review errors and warnings against the share-card preview',
+          'Click "Copy HTML" and paste the snippet into your page template <head>',
+        ],
+        useCases: [
+          'Generating search-engine- and social-friendly meta tags before launching a new page',
+          'Fixing missing images, descriptions or wrong titles when articles or product pages are shared on WeChat, X, Facebook or Slack',
+          'Hand-authoring head tags for static pages or landing pages without a server-side template',
+        ],
+        privacyNote:
+          'All fields stay in your browser page state; the snippet is assembled locally with no network requests and no third-party libraries (the preview image is loaded directly by your browser from the URL you enter).',
+        faqs: [
+          {
+            question: 'Where in the HTML should the generated tags go?',
+            answer:
+              'Inside the page <head>...</head>, alongside the charset and viewport declarations. Open Graph and Twitter Card tags are invisible on the page; only search crawlers and social scrapers read them.',
+          },
+          {
+            question: 'Why is og:image missing even though I entered an image URL?',
+            answer:
+              'The image must be an absolute http(s) URL. Relative paths like /cover.png cannot be fetched cross-site by social platforms, so they fail validation and the tag is skipped. Use a full URL such as https://your-domain.com/cover.png.',
+          },
+          {
+            question: 'What image size is recommended, and why provide width/height?',
+            answer:
+              'The broadly compatible large-card size is 1200×630 (~1.91:1), kept to a few hundred KB. Declaring og:image:width/height lets scrapers lay out the card without downloading the image, avoiding a blank card on the first scrape. The dimension fields are optional and the tags are omitted when empty.',
+          },
+          {
+            question: 'Why do shares still show old content after I changed the tags?',
+            answer:
+              'Social platforms cache scraped cards. Force a refresh with the Facebook Sharing Debugger, X Card Validator or WeChat’s re-scrape feature. Also make sure the new tags exist in the server-rendered or static HTML — tags injected only by client-side JavaScript are invisible to some crawlers.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'security-headers-generator',
+    name: 'HTTP 安全响应头生成器',
+    nameEn: 'HTTP Security Headers Generator',
+    description:
+      '勾选配置 CSP、HSTS、X-Frame-Options、X-Content-Type-Options、Referrer-Policy、Permissions-Policy 与跨源隔离三件套（COOP/COEP/CORP），实时生成原始响应头、Nginx、Apache 与 HTML meta 四种配置，含重复指令、preload 条件与危险来源（unsafe-inline/eval）校验提示。',
+    descriptionEn:
+      'Configure CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy and the cross-origin isolation headers (COOP/COEP/CORP), and instantly emit raw headers, Nginx, Apache or HTML meta snippets, with validation for duplicate directives, preload requirements and risky sources such as unsafe-inline/eval.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/security-headers-generator',
+    iconName: 'ShieldCheck',
+    tags: ['安全响应头', 'CSP', 'HSTS', 'Nginx', 'XSS'],
+    tagsEn: ['Security Headers', 'CSP', 'HSTS', 'Nginx', 'XSS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP 安全响应头生成器帮助你为网站配置浏览器侧安全策略：包括防 XSS 与数据注入的 Content-Security-Policy（CSP，支持 Report-Only 仅报告模式）、强制 HTTPS 的 Strict-Transport-Security（HSTS，含 includeSubDomains / preload）、防点击劫持的 X-Frame-Options、禁止 MIME 嗅探的 X-Content-Type-Options、控制 Referer 泄露的 Referrer-Policy、管控摄像头 / 麦克风 / 地理位置等浏览器特性授权的 Permissions-Policy，以及实现跨源隔离所需的 COOP / COEP / CORP 三件套。生成结果可一键切换为原始响应头、Nginx add_header、Apache Header 指令或 HTML <meta> 四种形式。',
+        coreFeatures: [
+          '覆盖 7 大类主流安全响应头，开关式启用，未启用的头不出现在输出中',
+          'CSP 指令可视化增删，内置 default-src / script-src 等 12 个常用指令快捷添加，重复指令与非法字符本地报错',
+          '自动识别 unsafe-inline / unsafe-eval、缺失 default-src、未知指令拼写等风险并分级提示',
+          'HSTS 校验 preload 前置条件（max-age ≥ 1 年且包含子域），生产环境 max-age 过短给出建议',
+          'Permissions-Policy 自动把 self / * 与 https 源归一为 feature=(self "https://...") 标准语法',
+          '同一配置输出原始响应头、Nginx、Apache、HTML meta 四种形式；meta 形式自动标注无法通过 <meta> 设置的头',
+        ],
+        howToUse: [
+          '开启 Content-Security-Policy，先用快捷按钮添加 default-src 等指令并填写允许的来源',
+          '不确定影响时勾选「仅报告模式」上线观察浏览器上报，确认业务无阻断后再取消该选项',
+          '开启 HSTS 并设置 max-age（如 63072000=2 年），全站 HTTPS 后再勾选 includeSubDomains / preload',
+          '按需要打开 nosniff、X-Frame-Options、Referrer-Policy、Permissions-Policy 与跨源隔离头',
+          '对照错误与警告修正配置，选择 Nginx / Apache 等格式后点击「复制」部署到 Web 服务器',
+        ],
+        useCases: [
+          '新站点上线前一次性补齐安全响应头，提升 securityheaders.com / Mozilla Observatory 评级',
+          '为现有站点引入严格 CSP，先 Report-Only 收集违规再逐步收紧来源',
+          '需要 SharedArrayBuffer 等能力时配置 COOP/COEP 跨源隔离环境',
+          '统一输出 Nginx / Apache / 静态主机（meta）配置，避免手写语法错误',
+        ],
+        privacyNote:
+          '所有配置与生成过程完全在浏览器本地完成，不发起任何网络请求，也不依赖任何第三方库。',
+        faqs: [
+          {
+            question: 'CSP 配置后页面样式或脚本全部失效怎么办？',
+            answer:
+              '说明策略拦截了现有资源。先切换为「仅报告模式（Report-Only）」，浏览器只在控制台 / 上报端点记录违规而不拦截；根据违规中的 blocked-uri 与 violated-directive，把真实需要的 CDN、内联样式等来源逐步加入对应指令（内联脚本优先用 nonce / hash 而非 unsafe-inline），观察一段时间无违规后再切回强制模式。',
+          },
+          {
+            question: 'HSTS preload 为什么勾选后报错？',
+            answer:
+              '浏览器内置预加载列表（hstspreload.org）要求 max-age 至少 31536000 秒（1 年）、必须包含 includeSubDomains，且承诺所有子域长期支持 HTTPS。不满足条件时工具会直接报错。建议先在不勾选 preload 的情况下稳定运行一段时间，确认所有子域名（含邮件、后台等）都已 HTTPS 化后再申请加入预加载列表。',
+          },
+          {
+            question: '选了 HTML <meta> 格式后为什么少了很多头？',
+            answer:
+              'HTML 规范只允许通过 <meta http-equiv> 设置极少数响应头（如 Content-Security-Policy、Referrer-Policy）。HSTS、X-Frame-Options、Permissions-Policy、COOP/COEP/CORP 等必须由真实 HTTP 响应携带，工具会在输出中以 HTML 注释列出这些无法通过 meta 设置的头，它们需要在 Nginx / Apache / CDN 层配置。另外 Report-Only 版本的 CSP 也无法通过 meta 生效。',
+          },
+          {
+            question: 'X-Frame-Options 和 CSP frame-ancestors 应该用哪个？',
+            answer:
+              'frame-ancestors 是新标准、支持多个允许来源，X-Frame-Options 兼容性更广但只能表达 DENY 或 SAMEORIGIN。现代实践是两者同时输出（本工具即如此）：支持 CSP Level 2 的浏览器优先采用 frame-ancestors，老旧浏览器回退到 X-Frame-Options。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The HTTP Security Headers Generator helps you configure browser-side security policies: Content-Security-Policy (CSP, with Report-Only mode) against XSS and injection, Strict-Transport-Security (HSTS, with includeSubDomains/preload) to enforce HTTPS, X-Frame-Options against clickjacking, X-Content-Type-Options to block MIME sniffing, Referrer-Policy to limit referrer leakage, Permissions-Policy to gate camera/microphone/geolocation and similar features, and the COOP/COEP/CORP trio for cross-origin isolation. The result switches between raw headers, Nginx add_header, Apache Header directives and HTML <meta> form.',
+        coreFeatures: [
+          'Seven families of mainstream security headers, toggle-based; disabled headers never appear in the output',
+          'Visual add/remove of CSP directives with quick inserts for 12 common directives; duplicates and illegal characters are caught locally',
+          'Risk grading for unsafe-inline / unsafe-eval, missing default-src and unknown directive spellings',
+          'HSTS enforces preload prerequisites (max-age ≥ 1 year plus includeSubDomains) and warns on short production max-age',
+          'Permissions-Policy normalizes self / * and https origins into feature=(self "https://...") syntax',
+          'One config rendered as raw headers, Nginx, Apache or HTML meta; the meta form annotates headers that cannot be set via meta',
+        ],
+        howToUse: [
+          'Enable Content-Security-Policy and add directives such as default-src via the quick buttons, filling in allowed sources',
+          'When unsure of the impact, turn on Report-Only to collect browser reports, then remove it once nothing is blocked',
+          'Enable HSTS with a max-age (e.g. 63072000 = 2 years); add includeSubDomains/preload only after the whole site is HTTPS',
+          'Turn on nosniff, X-Frame-Options, Referrer-Policy, Permissions-Policy and isolation headers as needed',
+          'Fix errors and warnings, choose Nginx/Apache or another format, then click Copy to deploy on your web server',
+        ],
+        useCases: [
+          'Adding a complete set of security headers before launch to improve securityheaders.com / Mozilla Observatory grades',
+          'Rolling out a strict CSP, starting in Report-Only to collect violations before tightening sources',
+          'Configuring COOP/COEP cross-origin isolation to unlock features like SharedArrayBuffer',
+          'Producing consistent Nginx/Apache/static-host (meta) config without hand-written syntax errors',
+        ],
+        privacyNote:
+          'All configuration and generation happens locally in your browser; no network requests are made and no third-party libraries are used.',
+        faqs: [
+          {
+            question: 'Styles or scripts stopped working after deploying CSP — what now?',
+            answer:
+              'The policy is blocking existing resources. Switch to Report-Only first: browsers record violations in the console/report endpoint without blocking. Using blocked-uri and violated-directive from the reports, gradually add the CDNs and inline styles you actually need to the matching directives (prefer nonce/hash over unsafe-inline for inline scripts). Run for a while with no violations, then return to enforcing mode.',
+          },
+          {
+            question: 'Why does enabling HSTS preload show an error?',
+            answer:
+              'The browser preload list (hstspreload.org) requires max-age of at least 31536000 seconds (1 year), includeSubDomains, and a commitment that every subdomain stays on HTTPS. The tool errors out until these hold. Run without preload for a while and confirm all subdomains (mail, admin panels, etc.) are HTTPS before requesting preload inclusion.',
+          },
+          {
+            question: 'Why are many headers missing in the HTML <meta> format?',
+            answer:
+              'HTML allows only a few headers (such as Content-Security-Policy and Referrer-Policy) via <meta http-equiv>. HSTS, X-Frame-Options, Permissions-Policy and COOP/COEP/CORP must arrive as real HTTP response headers; the tool lists them in an HTML comment so you know what to configure at the Nginx/Apache/CDN layer. The Report-Only variant of CSP also cannot be delivered via meta.',
+          },
+          {
+            question: 'X-Frame-Options or CSP frame-ancestors — which should I use?',
+            answer:
+              'frame-ancestors is the modern standard and supports multiple allowed origins; X-Frame-Options has wider legacy coverage but only expresses DENY or SAMEORIGIN. Current practice is to send both (as this tool does): CSP Level 2-capable browsers honor frame-ancestors, while older browsers fall back to X-Frame-Options.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

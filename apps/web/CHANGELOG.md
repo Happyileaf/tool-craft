@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-03 ：【Agent自主迭代】新增 5 个 Polyline 编解码、PHP 序列化转换、JSON5 转换、Open Graph 元信息与 HTTP 安全响应头工具
+
+- **新增**：Google Polyline 折线编码 / 解码器（polyline-codec）— 按 Google Encoded Polyline Algorithm Format 实现 zigzag + 5 位分块 ASCII 编解码，支持精度 5（Directions API 经典格式）与精度 6（官方推荐精度），含坐标越界 / 截断 / 非法字符的定位报错与多行「纬度,经度」文本批量解析，双向往返校验，纯本地运算
+- **新增**：PHP serialize ↔ JSON 互转器（php-serialize-json）— 手写解析器支持 s:/i:/d:/b:/a:/O:/N; 等 PHP 序列化类型与关联数组 / 列表自动判别，对象与数组种类以 $$phpObject$$ / $$phpArrayKind$$ 标记保真，反向序列化按 JSON 值类型生成对应 PHP 表示，错误带列位置提示，纯本地零依赖
+- **新增**：JSON5 ↔ JSON 转换器（json5-json-converter）— 手写 JSON5 解析器支持 // 与块注释、单引号字符串、未加引号标识符键、尾逗号、十六进制、正号数字、前导小数点、±Infinity/NaN、行尾反斜杠续行与 \\x/\\u 转义，输出标准 JSON（2/4 格缩进或压缩），数字后非法字符等错误带行列定位，纯本地运算
+- **新增**：Open Graph / 社交分享 Meta 标签生成器（og-meta-generator）— 按 Open Graph / Twitter Cards 规范生成 title、description、canonical、og:title/description/url/type/site_name/locale/image(+alt/width/height) 与 twitter:card/site/creator 标签，标题 60 字 / 描述 160 字长度提示，URL 与 Twitter 账号（@ 归一）合法性校验，属性值 HTML 转义，附分享卡片实时预览，纯本地运算
+- **新增**：HTTP 安全响应头生成器（security-headers-generator）— 可视化配置并生成 CSP（含 12 条常用指令、Report-Only 头名切换、无值指令）、HSTS（含 preload 最低 max-age 校验）、X-Frame-Options、X-Content-Type-Options、Referrer-Policy、Permissions-Policy、COOP/COEP/CORP，支持原始文本 / Nginx / Apache / HTML meta 四种输出格式（meta 不支持的头以注释列出），逐条配置告警与错误提示，纯本地运算
+
 ## 2026-11-03 ：【Agent自主迭代】新增 5 个 NTP 时间戳、IMEI 校验、SMPTE 时间码、GPS 周数与 SMS 分片计算工具
 
 - **新增**：NTP 64 位时间戳互转器（ntp-timestamp-converter）— 按 RFC 5905 解析 NTP 64 位定点时间戳（高 32 位秒 + 低 32 位小数），支持十进制 / 十六进制 / 点分十进制三种写法与 UTC、北京时间、Unix 毫秒双向互转，BigInt 内核可处理超过安全整数的原始值，显式标注 2036-02-07 秒字段回卷（Era 0 → 1）并支持手动指定纪元，纯本地运算
