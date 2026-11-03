@@ -235,4 +235,5 @@ export const toolLoaders: Record<
   'smpte-timecode-converter': () => import('./smpte-timecode-converter'),
   'gps-week-converter': () => import('./gps-week-converter'),
   'sms-segment-calculator': () => import('./sms-segment-calculator'),
+  'polyline-codec': () => import('./polyline-codec'),
 };

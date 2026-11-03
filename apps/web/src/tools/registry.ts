@@ -21092,6 +21092,95 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'polyline-codec',
+    name: 'Encoded Polyline 折线编解码器',
+    nameEn: 'Encoded Polyline Codec',
+    description:
+      '在「纬度,经度」坐标列表与 Google Encoded Polyline Algorithm Format 压缩 ASCII 字符串之间双向转换，支持精度 5（经典 Directions API）与精度 6（官方推荐），截断与非法字符带精确定位。',
+    descriptionEn:
+      'Convert between lat,lng coordinate lists and Google Encoded Polyline Algorithm Format ASCII strings, supporting precision 5 (classic Directions API) and precision 6 (official recommendation), with pinpoint errors for truncation and invalid characters.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/polyline-codec',
+    iconName: 'Satellite',
+    tags: ['Polyline', 'Google Maps', '坐标', '编解码', 'GIS'],
+    tagsEn: ['Polyline', 'Google Maps', 'Coordinates', 'Codec', 'GIS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Encoded Polyline Algorithm Format 是 Google Maps 平台用于压缩折线坐标序列的字符串格式：对相邻坐标的有符号差值做 zigzag 展开，再按 5 位分块编码为可打印 ASCII（? 到 _ 区间），可把大量经纬度点压缩成很短的字符串。本工具支持精度 5（每度 1e5，经典 Directions API）与精度 6（每度 1e6，2019 年后官方推荐），提供坐标→折线编码与折线→坐标解码双向转换。',
+        coreFeatures: [
+          '双向转换：多行「纬度,经度」坐标列表一键编码，折线字符串解码为坐标表格',
+          '双精度支持：精度 5 与精度 6 自由切换，错误精度解码越界时给出提示',
+          'Google 官方向量 _p~iF~ps|U_ulLnnqC_mqNvxq`@ 内置为默认示例，结果可交叉验证',
+          '健壮错误处理：字符串截断、非法字符、坐标越界、字段数错误均带位置信息',
+        ],
+        howToUse: [
+          '选择转换方向：折线→坐标（解码）或坐标→折线（编码）',
+          '确认精度：旧版 Directions API 多为精度 5，2019 年后的接口与自采数据常用精度 6',
+          '粘贴折线字符串，或按每行「纬度,经度」输入坐标点（支持逗号或空白分隔）',
+          '查看结果表格或压缩字符串，点击「复制结果」获取 CSV 坐标或折线文本',
+        ],
+        useCases: [
+          '解析地图接口返回的 overview_polyline / routes.geometry 字段并核对坐标',
+          '调试轨迹回放、地理围栏与路径规划数据，检查压缩折线是否丢点',
+          '把 GPS 轨迹点压缩后拼进 URL 或配置文件，减少传输体积',
+        ],
+        privacyNote:
+          '所有坐标与折线仅在浏览器本地解析与生成，不发起任何网络请求，也不会把你的位置数据发送给 Google 或任何第三方。',
+        faqs: [
+          {
+            question: '精度 5 和精度 6 有什么区别？选错会怎样？',
+            answer:
+              '精度指编码前经纬度保留的小数位数：精度 5 每度 10^5（误差约 1 米），精度 6 每度 10^6（误差约 0.1 米）。两种字符串互不兼容，用错精度解码通常会得到严重失真的坐标，甚至触发经纬度越界提示，本工具会在解码结果越界时提醒你切换精度。',
+          },
+          {
+            question: '编码结果里反斜杠、@ 等字符怎么处理？',
+            answer:
+              '折线字符包含 ? 到 _ 的 ASCII，可能出现反斜杠等需要转义的字符。在 JSON 字符串中按常规转义即可（\\ 写成 \\\\）；直接作为 URL 参数时建议先做 encodeURIComponent。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Encoded Polyline Algorithm Format is Google Maps’ string format for compressing coordinate sequences: signed deltas between adjacent points are zigzag-encoded and chunked into 5-bit groups mapped to printable ASCII characters (? through _), turning many lat/lng points into a short string. This tool supports precision 5 (1e5 per degree, classic Directions API) and precision 6 (1e6, officially recommended since 2019), converting coordinate lists to polylines and back.',
+        coreFeatures: [
+          'Bidirectional: encode multi-line lat,lng lists and decode polyline strings into a coordinate table',
+          'Precision 5 and precision 6 switchable; decoding with the wrong precision is flagged when coordinates go out of range',
+          'Ships with Google’s official vector _p~iF~ps|U_ulLnnqC_mqNvxq`@ as the default sample for cross-checking',
+          'Robust errors with position info for truncation, invalid characters, out-of-range coordinates and malformed rows',
+        ],
+        howToUse: [
+          'Pick a direction: polyline → coordinates (decode) or coordinates → polyline (encode)',
+          'Confirm precision: legacy Directions API is usually precision 5; post-2019 APIs and self-collected data often use 6',
+          'Paste a polyline string, or enter points one per line as "lat,lng" (comma or whitespace separated)',
+          'Review the result table or compressed string, then click "Copy result" for CSV coordinates or the polyline text',
+        ],
+        useCases: [
+          'Inspecting overview_polyline / routes.geometry fields from map API responses',
+          'Debugging track playback, geofencing and route-planning data for dropped points',
+          'Compressing GPS tracks into URLs or config files to save bytes',
+        ],
+        privacyNote:
+          'All coordinates and polylines are parsed and generated locally in your browser; no network requests are made and your location data is never sent to Google or any third party.',
+        faqs: [
+          {
+            question: 'What is the difference between precision 5 and 6? What if I pick the wrong one?',
+            answer:
+              'Precision is the number of fractional digits kept before encoding: precision 5 is 10^5 per degree (~1 m error), precision 6 is 10^6 (~0.1 m). The two strings are incompatible; decoding with the wrong precision typically yields heavily distorted coordinates or an out-of-range warning, which this tool surfaces.',
+          },
+          {
+            question: 'How do I handle backslashes and @ characters in the output?',
+            answer:
+              'Polyline characters span ASCII ? through _, including backslash. Escape them as usual inside JSON strings (\\\\ for a backslash); when placing the polyline in a URL, apply encodeURIComponent first.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
