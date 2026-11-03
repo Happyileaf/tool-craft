@@ -243,4 +243,5 @@ export const toolLoaders: Record<
   'spf-record-generator': () => import('./spf-record-generator'),
   'vin-validator': () => import('./vin-validator'),
   'resistor-voltage-divider': () => import('./resistor-voltage-divider'),
+  'molar-mass-calculator': () => import('./molar-mass-calculator'),
 };

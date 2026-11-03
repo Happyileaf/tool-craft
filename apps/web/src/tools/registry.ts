@@ -21831,7 +21831,7 @@ sqrt(area) + 2 * r`,
       'Compute the output voltage, ratio and current of a two-resistor voltage divider, with optional load resistor RL (parallel loading effect), or solve R2 for a target output voltage.',
     category: ToolCategoryEnum.TIME_MATH,
     path: '/tools/resistor-voltage-divider',
-    iconName: 'SlidersHorizontal',
+    iconName: 'Gauge',
     tags: ['分压器', '电阻', '电路', '硬件', '嵌入式', '电压'],
     tagsEn: ['Voltage Divider', 'Resistor', 'Circuit', 'Hardware', 'Embedded', 'Electronics'],
     isPopular: false,
@@ -21919,6 +21919,109 @@ sqrt(area) + 2 * r`,
             question: 'Can a divider convert 5V to 3.3V to power a chip?',
             answer:
               'No. A divider supplies only tiny current, and the voltage will collapse as the chip draws varying current; use an LDO or DC-DC for power. Dividers suit near-zero-load signal jobs such as ADC scaling and reference voltages.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'molar-mass-calculator',
+    name: '化学式摩尔质量计算器',
+    nameEn: 'Molar Mass Calculator',
+    description:
+      '解析化学式（下标、嵌套括号、结晶水），按 IUPAC 2021 原子量计算摩尔质量与各元素质量占比，支持批量输入。',
+    descriptionEn:
+      'Parse chemical formulas (subscripts, nested parentheses, hydrate dot notation) and compute molar mass plus per-element mass fractions from the IUPAC 2021 atomic weight table; batch input supported.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/molar-mass-calculator',
+    iconName: 'Pipette',
+    tags: ['化学', '摩尔质量', '分子式', '原子量', '结晶水', '教育'],
+    tagsEn: ['Chemistry', 'Molar Mass', 'Formula', 'Atomic Weight', 'Hydrate', 'Education'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '化学式摩尔质量计算器解析元素符号、数字下标、()/[] 嵌套括号与「·nH2O」结晶水记法，使用内置的 IUPAC/CIAAW 2021 常规原子量静态表计算摩尔质量（g/mol），并展开每个元素的原子个数、质量贡献与质量百分比。支持一次粘贴多个化学式（换行或逗号分隔）批量计算与一键复制。全部计算在浏览器本地完成。',
+        coreFeatures: [
+          '支持元素符号、数字下标（H2SO4）、()/[] 嵌套括号（Ca(OH)2、Fe2(SO4)3、K4[Fe(CN)6]）',
+          '支持结晶水与加合物记法 ·nH2O（兼容粗中点 • 与星号 *），自动合并全部组分',
+          '内置 1-118 号元素 IUPAC 2021 原子量；放射性元素取最稳定同位素近似值并以 ≈ 标注',
+          '输出摩尔质量、原子总数、各元素原子数/质量贡献/质量百分比（含占比条）',
+          '批量计算多个化学式，单个错误不影响其他结果，可一键复制全部结果',
+        ],
+        howToUse: [
+          '在文本框中输入一个或多个化学式，多个用换行、逗号或分号分隔',
+          '结果卡片展示摩尔质量与元素组成表，点击「复制全部结果」可导出文本',
+          '点击下方示例可快速追加常见化学式到输入框',
+          '若化学式有误（未知元素、括号不匹配、零下标等），对应卡片会给出明确错误',
+        ],
+        useCases: [
+          '化学实验配液时由质量与摩尔质量换算物质的量',
+          '中学/大学化学作业核对摩尔质量与元素质量分数',
+          '实验记录与报告中快速计算水合物（如五水硫酸铜）的式量',
+          '书写反应方程式配平与产率计算前的式量准备',
+        ],
+        privacyNote:
+          '化学式仅在浏览器本地解析计算，原子量为内置静态数据，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '原子量数据来自哪里，为什么版本固定？',
+            answer:
+              '采用 IUPAC/CIAAW 2021 常规原子量（Conventional Atomic Weights）内置静态表，不随时间更新，以保证同一化学式的计算结果可复现。对没有标准原子量的放射性元素（如 Tc、Pm 及序数 ≥84 的元素），按 IUPAC 惯例取最稳定同位素质量数（方括号值）并在结果中以 ≈ 标注。',
+          },
+          {
+            question: '如何输入结晶水合物，如五水硫酸铜？',
+            answer:
+              '输入 CuSO4·5H2O，其中「·」可用中文中点、粗中点「•」或星号「*」代替。解析器会把 5 份 H2O 并入计算，结果为 249.677 g/mol。',
+          },
+          {
+            question: '为什么我的化学式报错？',
+            answer:
+              '常见原因：元素符号大小写错误（h2o 应为 H2O）、元素不存在（Xz）、括号未闭合或多余（Ca(OH)2 才正确）、下标为 0（H0 非法）、下标前缺少元素或右括号。批量模式下只有出错的化学式显示红色提示，其余正常计算。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Molar Mass Calculator parses element symbols, numeric subscripts, nested ()/[] groups and "·nH2O" hydrate notation, then computes molar mass (g/mol) from a built-in IUPAC/CIAAW 2021 conventional atomic weight table, showing per-element atom counts, mass contributions and mass fractions. Paste several formulas at once (newline/comma separated) for batch results and copy. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Element symbols, subscripts (H2SO4), nested ()/[] groups (Ca(OH)2, Fe2(SO4)3, K4[Fe(CN)6])',
+          'Hydrate/adduct notation ·nH2O (also accepts • and *), with automatic group merging',
+          'Built-in atomic weights for elements 1-118 (IUPAC 2021); radioactive elements use most-stable-isotope values marked with ≈',
+          'Molar mass, total atoms, and a per-element table of counts, contributions and percentages',
+          'Batch calculation where one bad formula does not affect the others, plus copy-all',
+        ],
+        howToUse: [
+          'Enter one or more formulas, separated by newlines, commas or semicolons',
+          'Read molar mass and the element composition table; use "copy all results" to export text',
+          'Click an example to append a common formula',
+          'Errors such as unknown elements, mismatched parentheses or zero subscripts are shown only on the offending card',
+        ],
+        useCases: [
+          'Converting mass to amount of substance when preparing lab solutions',
+          'Checking molar mass and mass fractions for school/university chemistry homework',
+          'Computing formula weights of hydrates (e.g. copper(II) sulfate pentahydrate) for lab notes',
+          'Preparing formula weights before balancing equations or computing yields',
+        ],
+        privacyNote:
+          'Formulas are parsed locally in the browser using a static atomic weight table; no network requests are made.',
+        faqs: [
+          {
+            question: 'Where do the atomic weights come from, and why is the version fixed?',
+            answer:
+              'They come from a built-in static table of IUPAC/CIAAW 2021 conventional atomic weights, kept fixed so results stay reproducible. Radioactive elements without standard atomic weights (such as Tc, Pm and elements with atomic number ≥84) use the most stable isotope mass numbers (IUPAC bracketed values), marked with ≈ in the results.',
+          },
+          {
+            question: 'How do I enter a hydrate such as copper sulfate pentahydrate?',
+            answer:
+              'Enter CuSO4·5H2O; the middle dot may also be a bullet (•) or asterisk (*). The parser merges 5 equivalents of H2O, giving 249.677 g/mol.',
+          },
+          {
+            question: 'Why is my formula rejected?',
+            answer:
+              'Common causes: wrong capitalization (h2o instead of H2O), an unknown element (Xz), unbalanced or stray parentheses (Ca(OH)2 is correct), a zero subscript (H0), or a number with no element or closing parenthesis before it. In batch mode only the offending formula shows a red error; others still calculate.',
           },
         ],
       },
