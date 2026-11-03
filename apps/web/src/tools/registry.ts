@@ -17373,6 +17373,106 @@ info: request finished`,
     },
   },
   {
+    slug: 'aba-routing-validator',
+    name: 'ABA 路由号码（RTN）校验器',
+    nameEn: 'ABA Routing Number (RTN) Validator',
+    description:
+      '校验 9 位美国 ABA 银行路由号码的 3/7/1 加权校验位与合法前缀区间，拆解联邦路由符号与机构标识，支持多行批量校验。',
+    descriptionEn:
+      'Validate 9-digit US ABA routing transit numbers with the 3/7/1 check-digit weighting and legal prefix ranges, break down the FRB symbol and institution ID, and validate lists in bulk.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/aba-routing-validator',
+    iconName: 'KeyRound',
+    tags: ['ABA', 'RTN', '路由号码', '银行', '校验位'],
+    tagsEn: ['ABA', 'RTN', 'Routing Number', 'Banking', 'Check Digit'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'ABA 路由号码（Routing Transit Number，RTN）是美国银行间清算使用的 9 位数字代码。本工具按美联储标准核验：前 8 位与末位校验位做 3、7、1 循环加权求和，结果必须能被 10 整除；同时检查前两位是否落在 01–12（联邦储备区）、21–32（储蓄机构）、61–72（电子交易）或 80（旅客支票）合法区间。',
+        coreFeatures: [
+          '3、7、1 循环加权模 10 校验位核验，失败给出明确原因',
+          '拆解 9 位结构：前 4 位联邦储备路由符号、中 4 位机构标识、末位校验位',
+          '前两位映射为联邦储备区名称（01 波士顿至 12 旧金山）或机构类型',
+          '批量模式：每行一个号码，表格逐行给出合法 / 非法与原因',
+        ],
+        howToUse: [
+          '单个校验：输入 9 位数字（允许空格或短横线分隔，如 0210-0002-1）',
+          '点击示例按钮快速填入真实号码或非法样例',
+          '切换到「批量校验」，每行粘贴一个路由号码并查看统计与明细表',
+          '使用复制按钮获取规范化（无分隔符）号码',
+        ],
+        useCases: [
+          '录入 ACH 转账、支票、电汇信息时防止路由号抄错',
+          '金融数据文件批量清洗时标注非法路由号码行',
+          '开发支付、对账系统时核对 ABA 校验算法实现',
+        ],
+        privacyNote:
+          '路由号码仅在浏览器内存中参与纯函数运算，不发起网络请求，也不会记录或上传输入内容。',
+        faqs: [
+          {
+            question: 'ABA RTN 和 SWIFT / BIC 是一回事吗？',
+            answer:
+              '不是。ABA RTN 是美国境内 ACH 与支票清算使用的 9 位数字码；SWIFT/BIC 是 8 或 11 位字母数字码，用于国际电汇识别银行。国际汇款通常两者都需要（美国中转行 RTN + 收款行 SWIFT）。',
+          },
+          {
+            question: '校验通过能保证号码正在使用吗？',
+            answer:
+              '不能。校验位与前缀合法只说明格式自洽，机构可能因并购而注销或更换路由号码。实际划款前请以美联储官方目录（FedDirectory）或收款行公布的号码为准。',
+          },
+          {
+            question: '前两位数字各代表什么？',
+            answer:
+              '01–12 为 12 个联邦储备区（如 02 纽约、12 旧金山）；21–32 为储蓄贷款机构（thrift）；61–72 为电子交易路由号；80 专用于旅客支票。其他两位数前缀均不合法。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ABA Routing Transit Number (RTN) is the 9-digit code used for interbank clearing in the United States. This tool applies the Federal Reserve standard — a repeating 3, 7, 1 weighting across all nine digits whose sum must be divisible by 10 — and checks that the first two digits fall in a legal range: 01–12 (Federal Reserve districts), 21–32 (thrift institutions), 61–72 (electronic transactions) or 80 (travelers cheques).',
+        coreFeatures: [
+          'Repeating 3/7/1 mod-10 check-digit validation with explicit failure reasons',
+          'Structure breakdown: 4-digit FRB routing symbol, 4-digit institution ID, check digit',
+          'Prefix mapped to a Federal Reserve district name (01 Boston through 12 San Francisco) or institution type',
+          'Bulk mode: one number per line with a per-row validity table and totals',
+        ],
+        howToUse: [
+          'Single mode: enter 9 digits (spaces or hyphens accepted, e.g. 0210-0002-1)',
+          'Use the example buttons for real numbers or deliberately invalid samples',
+          'Switch to bulk mode, paste one routing number per line, and review the summary and detail table',
+          'Use the copy button to grab the normalized number without separators',
+        ],
+        useCases: [
+          'Preventing typos when keying ACH, cheque or wire-transfer details',
+          'Flagging bad routing numbers row by row while cleansing financial data files',
+          'Verifying your own ABA checksum implementation in payments or reconciliation systems',
+        ],
+        privacyNote:
+          'Routing numbers are processed only in browser memory by pure functions; no network requests are made and input is never logged or uploaded.',
+        faqs: [
+          {
+            question: 'Is an ABA RTN the same as a SWIFT/BIC?',
+            answer:
+              'No. The ABA RTN is a 9-digit number for domestic ACH and cheque clearing in the US; SWIFT/BIC is an 8- or 11-character alphanumeric code identifying banks internationally. Cross-border wires often need both (a US intermediary RTN plus the beneficiary bank SWIFT).',
+          },
+          {
+            question: 'Does a passing checksum mean the number is in active use?',
+            answer:
+              'No. A valid checksum and prefix only prove the format is self-consistent; the number may have been retired after a merger. Confirm against the official Federal Reserve FedDirectory or the payee bank before moving funds.',
+          },
+          {
+            question: 'What do the first two digits mean?',
+            answer:
+              '01–12 are the twelve Federal Reserve districts (e.g. 02 New York, 12 San Francisco); 21–32 are thrift institutions; 61–72 are electronic-transaction routing numbers; 80 is reserved for travelers cheques. Any other two-digit prefix is invalid.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'json-form-urlencoded',
     name: 'JSON ↔ 表单请求体转换器',
     nameEn: 'JSON ↔ x-www-form-urlencoded Converter',
