@@ -1,0 +1,70 @@
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.editor {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.statCard {
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: var(--color-fill-quaternary, rgba(0, 0, 0, 0.02));
+  border: 1px solid var(--color-border-secondary, rgba(0, 0, 0, 0.06));
+}
+
+.statLabel {
+  font-size: 12px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+}
+
+.statValue {
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: 4px;
+  line-height: 1.2;
+}
+
+.statSub {
+  font-size: 12px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+  margin-top: 2px;
+}
+
+.warnings {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.charTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.segmentText {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+@media (max-width: 860px) {
+  .statGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

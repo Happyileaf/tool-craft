@@ -230,4 +230,9 @@ export const toolLoaders: Record<
   'keyboard-event-viewer': () => import('./keyboard-event-viewer'),
   'gzip-codec': () => import('./gzip-codec'),
   'json-to-rust': () => import('./json-to-rust'),
+  'ntp-timestamp-converter': () => import('./ntp-timestamp-converter'),
+  'imei-validator': () => import('./imei-validator'),
+  'smpte-timecode-converter': () => import('./smpte-timecode-converter'),
+  'gps-week-converter': () => import('./gps-week-converter'),
+  'sms-segment-calculator': () => import('./sms-segment-calculator'),
 };

@@ -20624,6 +20624,474 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'ntp-timestamp-converter',
+    name: 'NTP 64 位时间戳互转器',
+    nameEn: 'NTP 64-bit Timestamp Converter',
+    description:
+      '在 NTP 64 位定点时间戳（点分十进制/十六进制/uint64）与 UTC、Unix 秒、本地时间之间双向换算，支持 2036 回卷纪元解释。',
+    descriptionEn:
+      'Convert between 64-bit NTP timestamps (dotted decimal, hex or uint64) and UTC / Unix / local time, with 2036 era rollover handling.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/ntp-timestamp-converter',
+    iconName: 'Timer',
+    tags: ['NTP', '时间戳', 'UTC', 'RFC 5905', '网络协议'],
+    tagsEn: ['NTP', 'Timestamp', 'UTC', 'RFC 5905', 'Networking'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'NTP 64 位时间戳互转器用于在 RFC 5905 定义的 NTP 时间戳（高 32 位为 1900-01-01 UTC 起的秒数、低 32 位为秒的定点小数）与人类可读的 UTC、北京时间及 Unix 时间戳之间双向换算，并支持十进制 uint64、十六进制与点分十进制三种输入写法。',
+        coreFeatures: [
+          'NTP → 日期：解析十进制 uint64、0x 十六进制或点分十进制，输出秒/小数字段、Unix 秒/毫秒、UTC 与北京时间',
+          '日期 → NTP：接受 ISO 8601 字符串、Unix 秒或毫秒，输出点分十进制、十六进制与 64 位原始值',
+          '2036 回卷处理：原始值可按 Era 0（1900–2036）或 Era 1（2036–2152）解释，回卷附近给出醒目警告',
+          '纯 BigInt 运算：超过 Number 安全整数范围的 uint64 也能精确解析与换算，不丢失精度',
+        ],
+        howToUse: [
+          '选择换算方向（NTP → 日期 或 日期 → NTP）',
+          '在输入框填入 NTP 时间戳（如 3913056000.0）或日期字符串（如 2024-01-01T00:00:00Z）',
+          '查看结果表格中的 UTC、北京时间、Unix 秒/毫秒及三种 NTP 写法，可逐项复制',
+          '解读 2036 年之后的抓包数据时，用 Era 1 开关重新解释原始秒字段',
+        ],
+        useCases: [
+          '解读 Wireshark 抓包中的 NTP 报文 Transmit Timestamp',
+          '调试 NTP 服务端/客户端日志与嵌入式设备 RTC 同步问题',
+          '核对 SNTP/NTP 协议实现中 1900 纪元偏移与定点小数换算',
+        ],
+        privacyNote:
+          '所有换算均在浏览器本地完成，不连接任何 NTP 服务器或远端接口，输入数据不会离开设备。',
+        faqs: [
+          {
+            question: 'NTP 时间戳和 Unix 时间戳有什么区别？',
+            answer:
+              'Unix 时间戳是自 1970-01-01 UTC 起的纯秒数（通常为整数或毫秒）；NTP 时间戳自 1900-01-01 UTC 起算，且为 64 位定点数：高 32 位秒、低 32 位秒小数（分辨率约 2.33×10⁻¹⁰ 秒）。两者相差 2208988800 秒。',
+          },
+          {
+            question: '为什么需要 Era 0 / Era 1 开关？',
+            answer:
+              'NTP 秒字段只有 32 位，将在 2036-02-07T06:28:16Z 归零（第一次回卷）。之后线网上的小秒数既可能表示 1900–2036 年，也可能表示 2152 年之后，需要借助上下文确定纪元。本工具允许手动切换解释方式，并在结果可能落在回卷之后时给出提示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The NTP 64-bit Timestamp Converter converts between RFC 5905 NTP timestamps (upper 32 bits = seconds since 1900-01-01 UTC, lower 32 bits = fixed-point fraction) and human-readable UTC, Beijing time and Unix timestamps. It accepts decimal uint64, hexadecimal and dotted-decimal input.',
+        coreFeatures: [
+          'NTP → date: parse decimal uint64, 0x hex or dotted decimal; show second/fraction fields, Unix seconds/ms, UTC and Beijing time',
+          'Date → NTP: accept ISO 8601, Unix seconds or milliseconds; emit dotted decimal, hex and raw 64-bit forms',
+          '2036 rollover: interpret raw values as Era 0 (1900–2036) or Era 1 (2036–2152), with a clear warning near rollover',
+          'Pure BigInt math: uint64 values beyond the Number safe-integer range are parsed and converted exactly',
+        ],
+        howToUse: [
+          'Choose the conversion direction (NTP → date or date → NTP)',
+          'Enter an NTP timestamp (e.g. 3913056000.0) or a date string (e.g. 2024-01-01T00:00:00Z)',
+          'Read UTC, Beijing time, Unix seconds/ms and the three NTP notations from the result table and copy any row',
+          'When analyzing captures after 2036, switch to Era 1 to reinterpret the raw seconds field',
+        ],
+        useCases: [
+          'Reading Transmit Timestamp fields in NTP packets in Wireshark captures',
+          'Debugging NTP client/server logs and RTC sync on embedded devices',
+          'Verifying the 1900 epoch offset and fixed-point fraction math in SNTP implementations',
+        ],
+        privacyNote:
+          'All conversion runs locally in your browser. It never contacts an NTP server or any remote endpoint, and input never leaves your device.',
+        faqs: [
+          {
+            question: 'How is an NTP timestamp different from a Unix timestamp?',
+            answer:
+              'A Unix timestamp counts seconds (or milliseconds) since 1970-01-01 UTC. An NTP timestamp counts from 1900-01-01 UTC and is a 64-bit fixed-point number: 32 bits of seconds plus 32 bits of fraction (~2.33×10⁻¹⁰ s resolution). The epoch difference is 2208988800 seconds.',
+          },
+          {
+            question: 'Why do I need the Era 0 / Era 1 toggle?',
+            answer:
+              'The 32-bit seconds field wraps on 2036-02-07T06:28:16Z. A small raw value after that date could mean either 1900–2036 or 2036–2152 depending on context. The tool lets you choose the interpretation explicitly and warns when a result may lie beyond the rollover.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'imei-validator',
+    name: 'IMEI 移动设备识别码校验器',
+    nameEn: 'IMEI Checksum Validator',
+    description:
+      '校验 15 位 IMEI 的 Luhn 校验位、识别 16 位 IMEISV，并拆解 TAC 型号分配码、SNR 序列号与校验位/软件版本号，纯本地计算。',
+    descriptionEn:
+      'Validate the Luhn check digit of 15-digit IMEI numbers, recognize 16-digit IMEISV, and break down TAC, SNR and check digit/SVN — fully offline.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/imei-validator',
+    iconName: 'Smartphone',
+    tags: ['IMEI', 'Luhn', '校验位', '3GPP', '移动通信'],
+    tagsEn: ['IMEI', 'Luhn', 'Checksum', '3GPP', 'Mobile'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'IMEI 校验器依据 3GPP TS 23.003 规范，对国际移动设备识别码（IMEI）进行结构拆解与 Luhn（mod 10）校验位验证，并支持 16 位 IMEISV（含软件版本号、无校验位）的格式识别与字段解析。',
+        coreFeatures: [
+          'Luhn 校验：验证 15 位 IMEI 末位校验位，错误时给出正确校验位',
+          '结构拆解：展示 TAC（前 8 位型号分配码）、SNR（6 位序列号）与校验位',
+          'IMEISV 支持：识别 16 位格式并解析末 2 位 SVN 软件版本号，提示 00 保留值',
+          '宽松输入：自动去除空格与连字符分组，实时反馈格式错误原因',
+        ],
+        howToUse: [
+          '在输入框粘贴或输入 15 位 IMEI（或 16 位 IMEISV），可含空格或连字符',
+          '查看绿色/红色提示与字段拆解表格，确认校验位是否正确',
+          '校验失败时，对照给出的正确校验位修正末位数字',
+          '使用示例按钮快速体验合法 IMEI、IMEISV 与错误校验位三种情况',
+        ],
+        useCases: [
+          '核对设备外包装、系统拨号界面（*#06#）与条码上的 IMEI 是否抄录有误',
+          '开发电信设备管理、MDM 录入功能时做客户端预校验',
+          '学习 Luhn 算法与 3GPP IMEI/IMEISV 编码结构',
+        ],
+        privacyNote:
+          '校验与拆解完全在浏览器本地进行，不查询任何 TAC 在线数据库，不发起网络请求，输入号码不会离开设备。',
+        faqs: [
+          {
+            question: '校验通过能说明这个 IMEI 是真实存在的吗？',
+            answer:
+              '不能。Luhn 只是防错的自洽校验，任何 14 位数字都能算出一个合法校验位。要确认设备型号与真实登记信息，需要查询运营商或厂商的 TAC 数据库（GSMA 等），本工具刻意不做在线查询。',
+          },
+          {
+            question: 'IMEI 和 IMEISV 有什么区别？',
+            answer:
+              'IMEI 为 15 位：8 位 TAC + 6 位 SNR + 1 位 Luhn 校验位。IMEISV 为 16 位：8 位 TAC + 6 位 SNR + 2 位 SVN（软件版本号），没有校验位；SVN 取 1–98，99 预留，00 在 3GPP 中为保留值。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The IMEI Checksum Validator implements 3GPP TS 23.003: it breaks down an International Mobile Equipment Identity into TAC, SNR and check digit and verifies the Luhn (mod 10) digit. It also recognizes the 16-digit IMEISV form (with Software Version Number and no check digit).',
+        coreFeatures: [
+          'Luhn validation: verify the 15th IMEI check digit and show the correct digit on mismatch',
+          'Structure breakdown: TAC (first 8 digits), SNR (6-digit serial) and check digit',
+          'IMEISV support: recognize the 16-digit form, parse the trailing SVN and flag the reserved 00 value',
+          'Lenient input: strips spaces and hyphens automatically with live, specific error messages',
+        ],
+        howToUse: [
+          'Paste or type a 15-digit IMEI (or 16-digit IMEISV); spaces and hyphens are accepted',
+          'Read the success/error banner and the breakdown table',
+          'On failure, replace the last digit with the suggested correct check digit',
+          'Use the sample buttons to try a valid IMEI, an IMEISV and a bad check digit',
+        ],
+        useCases: [
+          'Checking IMEIs copied from packaging, the *#06# dialer screen or barcodes for typos',
+          'Client-side pre-validation in telecom asset and MDM management tools',
+          'Learning the Luhn algorithm and the 3GPP IMEI/IMEISV structure',
+        ],
+        privacyNote:
+          'Validation and parsing run entirely in your browser. No TAC database is queried, no network request is made, and the number you type never leaves your device.',
+        faqs: [
+          {
+            question: 'Does a passing checksum prove the IMEI belongs to a real device?',
+            answer:
+              'No. Luhn is only a self-consistency typo check: any 14 digits can be extended with a valid check digit. Confirming model and registration requires a carrier or GSMA TAC database lookup, which this tool deliberately does not perform.',
+          },
+          {
+            question: 'What is the difference between IMEI and IMEISV?',
+            answer:
+              'IMEI is 15 digits: 8-digit TAC + 6-digit SNR + 1-digit Luhn check. IMEISV is 16 digits: 8-digit TAC + 6-digit SNR + 2-digit SVN (software version) with no check digit. Valid SVNs are 1–98 (99 reserved); 00 is reserved by 3GPP.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'smpte-timecode-converter',
+    name: 'SMPTE 时间码互转器',
+    nameEn: 'SMPTE Timecode Converter',
+    description:
+      '在 SMPTE 时间码（HH:MM:SS:FF / 丢帧 HH:MM:SS;FF）与总帧数、真实时长之间双向换算，支持 24/25/30/29.97 DF/NDF 制式。',
+    descriptionEn:
+      'Convert between SMPTE timecode (HH:MM:SS:FF or drop-frame HH:MM:SS;FF), total frame count and real elapsed time for 24/25/30/29.97 DF/NDF rates.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/smpte-timecode-converter',
+    iconName: 'Video',
+    tags: ['SMPTE', '时间码', '丢帧', '帧速率', '视频'],
+    tagsEn: ['SMPTE', 'Timecode', 'Drop Frame', 'FPS', 'Video'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'SMPTE 时间码互转器依据 SMPTE ST 12-1 / ST 12-2 标准，在人类可读的时间码（时:分:秒:帧）与媒体处理中使用的总帧数、真实墙钟时长之间双向换算，覆盖 24 fps 电影、25 fps PAL、30 fps 以及 NTSC 29.97 fps 的丢帧（DF）与非丢帧（NDF）制式。',
+        coreFeatures: [
+          '时间码 → 帧数：把 HH:MM:SS:FF 换算为从零点起的总帧数与真实毫秒时长',
+          '帧数/时长 → 时间码：输入总帧数，或形如 90s、12.5m、1h 的真实时长，反算时间码',
+          '丢帧处理：29.97 DF 自动执行每 10 分钟周期跳过帧号 0/1 的规则，非法丢帧时间码明确报错',
+          '多制式：24/25/30 fps 与 29.97 DF/NDF 一键切换，全角冒号也能解析',
+        ],
+        howToUse: [
+          '选择帧率制式（如 29.97 fps NTSC 丢帧 DF）',
+          '选择换算方向，输入时间码（如 00:01:00;02）或总帧数（如 1800）',
+          '查看规范时间码写法、总帧数与真实时长结果，可逐项复制',
+          '若输入了丢帧模式下不存在的时间码（如 00:01:00;00），按错误提示改成合法帧号',
+        ],
+        useCases: [
+          '剪辑/调色时核对 EDL、XML、ALE 中的时间码与素材实际帧数',
+          '开发视频播放器、抽帧服务或字幕同步逻辑时验证帧-时间换算',
+          '理解 NTSC 29.97 丢帧时间码为什么用分号以及每分钟“丢”两帧的原理',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地完成，不上传时间码或视频信息，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '丢帧时间码是不是真的把画面帧丢掉了？',
+            answer:
+              '不是。丢帧（Drop Frame）只调整时间码的编号：每分钟（除每第 10 分钟外）跳过帧号 0 和 1，使显示时间码追上真实墙钟时间，画面本身一帧都不会丢。它用分号（HH:MM:SS;FF）标记。',
+          },
+          {
+            question: '29.97 fps 为什么会有时间误差？',
+            answer:
+              'NTSC 色彩副载波兼容性把 30 fps 拉低到 30000/1001 ≈ 29.97 fps，每帧真实时长为 1.001/30 秒。按 30 fps 编号会越走越慢，丢帧编号法通过周期性跳号让时间码与墙钟保持一致（每小时误差约 ±3.6 ms）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The SMPTE Timecode Converter implements SMPTE ST 12-1 / ST 12-2 and converts between human-readable timecode (HH:MM:SS:FF), the total frame count used in media processing and real wall-clock duration. It supports 24 fps film, 25 fps PAL, 30 fps and NTSC 29.97 fps in both drop-frame (DF) and non-drop-frame (NDF) variants.',
+        coreFeatures: [
+          'Timecode → frames: turn HH:MM:SS:FF into the frame count from zero and the true millisecond duration',
+          'Frames/duration → timecode: enter a frame count or a duration such as 90s, 12.5m or 1h and get the timecode',
+          'Drop-frame math: 29.97 DF applies the skip-frames-0/1 rule every non-tenth minute and rejects impossible codes',
+          'Multi-rate: switch between 24/25/30 fps and 29.97 DF/NDF; full-width colons are accepted on input',
+        ],
+        howToUse: [
+          'Pick the frame-rate standard (e.g. 29.97 fps NTSC drop frame)',
+          'Choose the direction and enter a timecode (e.g. 00:01:00;02) or a frame count (e.g. 1800)',
+          'Read the canonical timecode, total frames and real duration from the table; copy any value',
+          'If a code does not exist in DF mode (e.g. 00:01:00;00), follow the error and choose a legal frame number',
+        ],
+        useCases: [
+          'Cross-checking timecodes in EDL/XML/ALE files against real frame counts in editing or color pipelines',
+          'Validating frame-time math when building players, frame extraction services or subtitle sync',
+          'Understanding why NTSC 29.97 drop frame uses a semicolon and “drops” two frame numbers per minute',
+        ],
+        privacyNote:
+          'All calculation happens locally in your browser. No timecode or media information is uploaded and no network request is made.',
+        faqs: [
+          {
+            question: 'Does drop frame actually drop picture frames?',
+            answer:
+              'No. Drop Frame only changes timecode numbering: frame numbers 0 and 1 are skipped at the start of every minute except every tenth minute, so the displayed timecode tracks wall-clock time. No picture frames are removed. DF codes use a semicolon (HH:MM:SS;FF).',
+          },
+          {
+            question: 'Why does 29.97 fps drift at all?',
+            answer:
+              'NTSC color-subcarrier compatibility pulled 30 fps down to 30000/1001 ≈ 29.97 fps, making each frame 1.001/30 s long. Numbering at 30 fps therefore runs slow; the drop-frame numbering scheme periodically skips numbers to keep timecode aligned with wall-clock time (about ±3.6 ms per hour).',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'gps-week-converter',
+    name: 'GPS 周数 / 周内秒互转器',
+    nameEn: 'GPS Week / TOW Converter',
+    description:
+      '在 GPS 连续周数与周内秒（TOW）、LNAV 10 位回卷周数（WN）和 UTC 时间之间双向换算，内置至 2017 年的闰秒表与 1024 周回卷解释。',
+    descriptionEn:
+      'Convert between GPS continuous week number, time of week (TOW), 10-bit LNAV rollover week number and UTC, with a leap-second table through 2017 and 1024-week rollover handling.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/gps-week-converter',
+    iconName: 'Satellite',
+    tags: ['GPS', '周数', 'TOW', '闰秒', '卫星导航'],
+    tagsEn: ['GPS', 'Week Number', 'TOW', 'Leap Second', 'GNSS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '2024-03-01T00:00:00Z',
+    doc: {
+      zh: {
+        whatIsIt:
+          'GPS 周数 / 周内秒互转器依据 GPS 接口控制文件（IS-GPS-200）的时间体系实现：GPS 时从 1980-01-06T00:00:00Z 起算，不跳闰秒，以“连续周数 + 周内秒（TOW，每周日 00:00 归零，范围 0–604799）”标记时刻。工具同时支持旧式 LNAV 电文的 10 位周数（WN，0–1023，每 1024 周约 19.7 年回卷一次）与现代化 CNAV 的连续周数，并按 IERS 闰秒表完成与 UTC 的双向换算。',
+        coreFeatures: [
+          'UTC → GPS：输入 ISO 8601 时间，得到连续周数、周内秒、TOW 时钟表示与当前闰秒数',
+          'GPS → UTC：输入连续周数（CNAV）或 10 位 WN（LNAV）+ TOW，反算 UTC 与北京时间',
+          '回卷解释：LNAV WN 可选择 1980 / 1999 / 2019 / 2038 四个回卷周期，自动还原连续周数',
+          '闰秒修正：内置 1980 年以来全部 19 次闰秒节点（截至 2017-01-01，共 18 秒），跨闰秒时刻亦可准确换算',
+        ],
+        howToUse: [
+          '选择换算方向：UTC → GPS 或 GPS → UTC',
+          'UTC → GPS：填入 ISO 8601 时间（如 2024-03-01T00:00:00Z），立即查看连续周数、LNAV WN 与 TOW',
+          'GPS → UTC：选择连续周（CNAV）或 LNAV WN 模式；LNAV 模式需再选回卷周期，然后填入周数与周内秒',
+          '结果表格可逐项复制；周内秒支持小数，TOW 时钟表示形如“5 天 00:00:18”',
+        ],
+        useCases: [
+          '解析接收机日志、RINEX 文件或 NMEA/UBX 报文里的周数与 TOW，定位真实 UTC 时间',
+          '嵌入式 / GNSS 模块开发中处理 10 位周数回卷（2019 已发生一次，下一次 2038-11-21）',
+          '教学演示 GPS 时与 UTC 的差异（闰秒）以及周数回卷的成因',
+        ],
+        privacyNote:
+          '全部换算在浏览器本地完成，不向任何服务器发送时间或位置信息。',
+        faqs: [
+          {
+            question: 'LNAV WN 回卷是什么意思？',
+            answer:
+              'GPS 传统导航电文只用 10 个比特表示周数，范围 0–1023；数满 1024 周（约 19.7 年）后归零重新计数。已发生两次回卷：1999-08-22 与 2019-04-07，下一次在 2038-11-21。因此单独一个 WN 无法唯一确定日期，必须结合接收时间推断它属于哪个周期；工具通过回卷周期选项显式完成这一步。',
+          },
+          {
+            question: '为什么 GPS 时间比 UTC 快 18 秒？',
+            answer:
+              'GPS 时从 1980 年起连续走时、不插入闰秒，而 UTC 会在需要时加闰秒以跟随地球自转。自 1980 年以来 UTC 共插入 18 次闰秒（截至 2017-01-01），所以目前 GPS 比 UTC 快 18 秒，换算时工具会按目标时刻自动加减。',
+          },
+          {
+            question: 'TOW（周内秒）从什么时候开始计数？',
+            answer:
+              'TOW 从每周日 00:00:00 GPS 时开始，从 0 计到 604799.999…，下一个周日归零。例如 TOW 432018 表示周五 00:00:18（5 天又 18 秒）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The GPS Week / TOW Converter implements the time system defined in IS-GPS-200: GPS Time started at 1980-01-06T00:00:00Z, never inserts leap seconds, and labels an instant by a continuous week number plus Time Of Week (TOW, reset every Sunday 00:00, range 0–604799). The tool supports both the legacy 10-bit LNAV week number (WN, 0–1023, rolling over every 1024 weeks / ~19.7 years) and the modern continuous CNAV week number, and converts to and from UTC using the IERS leap-second table.',
+        coreFeatures: [
+          'UTC → GPS: enter an ISO 8601 instant and get continuous week, TOW, clock-style TOW and current leap-second offset',
+          'GPS → UTC: enter a continuous week (CNAV) or 10-bit WN (LNAV) plus TOW and get UTC and Beijing time',
+          'Rollover handling: pick the 1980 / 1999 / 2019 / 2038 rollover cycle for an LNAV WN to recover the continuous week',
+          'Leap-second aware: built-in table of all 19 leap-second steps since 1980 (18 seconds since 2017-01-01), accurate across leap-second boundaries',
+        ],
+        howToUse: [
+          'Choose the direction: UTC → GPS or GPS → UTC',
+          'UTC → GPS: type an ISO 8601 instant (e.g. 2024-03-01T00:00:00Z) to see the continuous week, LNAV WN and TOW',
+          'GPS → UTC: choose continuous-week (CNAV) or LNAV WN input; for LNAV also pick the rollover cycle, then fill in week and TOW',
+          'Every result row is copyable; TOW accepts fractions and the clock form looks like “5 days 00:00:18”',
+        ],
+        useCases: [
+          'Turning week/TOW values from receiver logs, RINEX files or NMEA/UBX messages into real UTC instants',
+          'Handling the 10-bit week rollover in embedded/GNSS development (it happened in 2019; next is 2038-11-21)',
+          'Teaching why GPS Time differs from UTC (leap seconds) and why week numbers roll over',
+        ],
+        privacyNote:
+          'All conversion runs locally in your browser; no time or location data is sent to any server.',
+        faqs: [
+          {
+            question: 'What is the LNAV week-number rollover?',
+            answer:
+              'The legacy GPS navigation message uses only 10 bits for the week number (0–1023); after 1024 weeks (~19.7 years) it wraps to zero. Rollovers occurred on 1999-08-22 and 2019-04-07, with the next on 2038-11-21. A WN alone is therefore ambiguous — you must know which cycle it belongs to, which is exactly what the rollover-cycle selector resolves.',
+          },
+          {
+            question: 'Why is GPS Time 18 seconds ahead of UTC?',
+            answer:
+              'GPS Time has run continuously since 1980 without leap seconds, while UTC inserts leap seconds to follow Earth rotation. Eighteen leap seconds have been inserted since 1980 (as of 2017-01-01), so GPS is currently 18 seconds ahead of UTC; the tool adds or subtracts the offset automatically for the target instant.',
+          },
+          {
+            question: 'When does TOW (Time Of Week) start counting?',
+            answer:
+              'TOW starts at 0 on Sunday 00:00:00 GPS Time and counts up to 604799.999… before resetting the next Sunday. For example TOW 432018 is Friday 00:00:18 (5 days and 18 seconds).',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'sms-segment-calculator',
+    name: 'SMS 短信长度与分片计算器',
+    nameEn: 'SMS Length & Segment Calculator',
+    description:
+      '按 3GPP TS 23.038 计算短信计费长度与分片条数：自动判定 GSM 7-bit / UCS-2 编码，标注扩展字符与非 GSM 字符，展示 UDH concat 长短信每段净荷与 PDU 字节数。',
+    descriptionEn:
+      'Count SMS billing length and segments per 3GPP TS 23.038: automatic GSM 7-bit / UCS-2 detection, extension and non-GSM character highlighting, plus UDH concat payload and PDU byte breakdown.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/sms-segment-calculator',
+    iconName: 'MessageSquare',
+    tags: ['SMS', 'GSM 7-bit', 'UCS-2', '长短信', 'UDH'],
+    tagsEn: ['SMS', 'GSM 7-bit', 'UCS-2', 'Concatenated SMS', 'UDH'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'Your verification code is 482915. It expires in 10 minutes. Do not share this code with anyone.',
+    doc: {
+      zh: {
+        whatIsIt:
+          'SMS 短信长度与分片计算器依据 3GPP TS 23.038（字母表与编码）和 TS 23.040（TP 层与 UDH 拼接头）在浏览器本地完成确定性计算：自动判断文本可由 GSM 7-bit 默认字母表表示还是必须使用 UCS-2，给出字符数、计费单位（septet / 编码单元）、PDU 字节数与长短信分片条数，并逐一标注 GSM 扩展字符与触发 UCS-2 的非 GSM 字符。',
+        coreFeatures: [
+          '编码自动判定：全部字符落在 GSM 默认字母表（含扩展表）走 7-bit，否则整体切换 UCS-2',
+          '长度与计费：GSM-7 单条 160 septet、长短信每段 153；UCS-2 单条 70 个编码单元、长短信每段 67',
+          'UDH 拼接头：长短信每段 6 字节 concat 头（净荷由 140 降为 134 字节），分片明细表给出每段单位与 PDU 字节',
+          '字符级标注：扩展字符 ^{}\\[~]|€ 每个占 2 个 septet；emoji 等 BMP 外字符在 UCS-2 中占代理对 2 单元且不跨段拆分',
+        ],
+        howToUse: [
+          '在文本框粘贴或输入短信内容，结果随输入实时更新',
+          '查看顶部四张统计卡：编码方式、计费分片条数、单位总数/PDU 字节、末段剩余容量',
+          '通过字符标签确认哪些扩展字符按 2 单位计费、哪些非 GSM 字符导致了 UCS-2 膨胀',
+          '需要验证网关行为时可切换“强制 GSM-7 / 强制 UCS-2”，强制 GSM 遇到不可编码字符会给出错误告警',
+        ],
+        useCases: [
+          '发送通知、营销或验证码短信前预估计费条数，控制在单条或整数分段内',
+          '排查用户反馈“短信被拆成好几条 / 末尾内容丢失”的分段边界问题',
+          '开发短信网关、手机端输入框剩余字数提示时核对 7-bit 与 UCS-2 的容量规则',
+        ],
+        privacyNote:
+          '所有文本仅保存在浏览器内存中参与计算，不向任何服务器发送短信内容或手机号。',
+        faqs: [
+          {
+            question: '为什么加了一个中文字符，可发长度就从 160 降到 70？',
+            answer:
+              'SMS 一条 TP-UD 固定 140 字节。纯 GSM 文本用 7-bit 打包，140 字节可容纳 160 个字符；只要混入一个 GSM 字母表之外的字符（中文、emoji、全角标点等），整条短信就必须改用 UCS-2（每字符 2 字节），容量立刻变为 70 个字符。',
+          },
+          {
+            question: '为什么长短信每段只能放 153 / 67 个字符？',
+            answer:
+              '长短信（concatenated SMS）需要在每段开头放 6 字节的 UDH 用户数据头（信息要素标识、总段数、本段序号、引用号），净荷只剩 134 字节。GSM-7 下 134×8/7 = 153 个 septet；UCS-2 下 134/2 = 67 个编码单元。',
+          },
+          {
+            question: '哪些字符在 GSM-7 下算两个字符？',
+            answer:
+              '扩展表的 9 个字符：^ { } \\ [ ~ ] | €。它们在 PDU 中以 ESC 转义加一个码值表示，占 2 个 septet；其余默认字母表字符（含空格、换行、£¥§ 等）均为 1 个 septet。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The SMS Length & Segment Calculator performs deterministic, fully local analysis based on 3GPP TS 23.038 (alphabets and coding) and TS 23.040 (TP layer and UDH concatenation header). It decides whether a message fits the GSM 7-bit default alphabet or requires UCS-2, and reports character count, billing units (septets / code units), PDU bytes and the number of long-message segments, highlighting every GSM extension character and every non-GSM character.',
+        coreFeatures: [
+          'Auto coding: GSM 7-bit when all characters exist in the default alphabet (including extensions), otherwise UCS-2 for the whole message',
+          'Length and billing: 160 septets per single GSM message, 153 per concat segment; 70 code units per single UCS-2 message, 67 per segment',
+          'UDH header: 6-byte concat header on every long segment (134-byte payload), with a per-segment table of units and PDU bytes',
+          'Character-level detail: extension characters ^{}\\[~]|€ cost 2 septets each; emoji and other supplementary characters occupy a 2-unit surrogate pair that is never split across segments',
+        ],
+        howToUse: [
+          'Paste or type the message text; all figures update live',
+          'Read the four stat cards: coding, billable segments, total units / PDU bytes, and remaining capacity in the last segment',
+          'Use the character tags to see which extension characters cost double and which non-GSM characters forced the UCS-2 switch',
+          'Switch to “force GSM-7 / force UCS-2” to verify gateway behavior; forcing GSM on unencodable text raises an error-level warning',
+        ],
+        useCases: [
+          'Estimating billable segments before sending notifications, marketing or OTP messages',
+          'Diagnosing “my message got split / the tail was dropped” reports by inspecting segment boundaries',
+          'Validating the character-counter logic of SMS gateways and phone input fields for both 7-bit and UCS-2',
+        ],
+        privacyNote:
+          'The text stays in browser memory for computation only; no message content or phone number is sent anywhere.',
+        faqs: [
+          {
+            question: 'Why does one Chinese character drop the limit from 160 to 70?',
+            answer:
+              'A single SMS TP-UD holds 140 bytes. Pure GSM text is packed at 7 bits per character, so 140 bytes fit 160 characters; as soon as one character lies outside the GSM alphabet (Chinese, emoji, full-width punctuation, etc.), the whole message must use UCS-2 at 2 bytes per character, cutting capacity to 70.',
+          },
+          {
+            question: 'Why only 153 / 67 characters per long-message segment?',
+            answer:
+              'A concatenated SMS needs a 6-byte UDH at the start of every segment (IEI, total parts, part number, reference), leaving 134 payload bytes: 134×8/7 = 153 septets for GSM-7 and 134/2 = 67 code units for UCS-2.',
+          },
+          {
+            question: 'Which characters count double in GSM-7?',
+            answer:
+              'The nine extension-table characters: ^ { } \\ [ ~ ] | €. They are encoded as ESC plus a code value (2 septets); every other default-alphabet character (including spaces, newlines, £¥§) costs 1 septet.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
