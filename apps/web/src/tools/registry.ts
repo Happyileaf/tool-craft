@@ -17073,6 +17073,506 @@ info: request finished`,
     },
   },
   {
+    slug: 'smd-resistor-code',
+    name: 'SMD 电阻阻值码计算器',
+    nameEn: 'SMD Resistor Code Calculator',
+    description:
+      '解码贴片电阻表面印字：3 位数字码、4 位数字码、EIA-96 字母码双向转换阻值。',
+    descriptionEn:
+      'Decode and reverse-lookup SMD resistor marking codes: 3-digit, 4-digit and EIA-96 letter codes.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/smd-resistor-code',
+    iconName: 'Binary',
+    tags: ['SMD', '贴片电阻', 'EIA-96', '电阻', '电子'],
+    tagsEn: ['SMD', 'Resistor', 'EIA-96', 'Electronics', 'Marking Code'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'SMD 贴片电阻阻值码计算器，支持解码 3 位数字码（E24，±5%）、4 位数字码（±1%）、EIA-96 两位数字加字母乘数码（±1%），以及 R 小数点位置码与零欧姆跳线，并可由目标阻值反查最接近的标准印字码。',
+        coreFeatures: [
+          '自动识别三种主流印字体系：472 = 4.7 kΩ、4701 = 4.7 kΩ、47A = 301 Ω',
+          '支持 R 位置码（R10 = 0.1 Ω、10R0 = 10 Ω）与 000 / 0000 零欧姆跳线',
+          '按目标阻值在 E24 / E96 标准系列中搜索相对偏差最小的印字码',
+          '输出阻值、体系、典型精度与易读量级（Ω / kΩ / MΩ），全部本地计算',
+        ],
+        howToUse: [
+          '在「印字码解码」输入框输入电阻表面印字（大小写、空格不限），即时得到阻值',
+          '点击示例按钮可快速载入 472、4701、47A、R10 等典型码',
+          '在「按目标阻值反查」中输入期望欧姆值，查看三个系列中最接近的印字码与偏差',
+          '点击候选码的「载入解码」可将该印字码带回上方复核',
+        ],
+        useCases: [
+          '维修电路板时识读 0402 / 0603 / 0805 贴片电阻上的微小印字',
+          'BOM 选型时确认某阻值应采购哪种 EIA-96 丝印的 ±1% 电阻',
+          '硬件调试中核对 E24 与 E96 系列的替代关系与阻值偏差',
+        ],
+        privacyNote:
+          '所有计算均为浏览器本地纯函数运算，不发起任何网络请求，输入内容不会离开设备。',
+        faqs: [
+          {
+            question: '3 位码 472 为什么是 4.7 kΩ？',
+            answer:
+              '3 位码前两位是有效数字 47，第三位是 10 的幂次，47 × 10² = 4700 Ω = 4.7 kΩ。4 位码同理但有三位有效数字，如 4701 = 470 × 10¹ = 4.7 kΩ，精度通常为 ±1%。',
+          },
+          {
+            question: 'EIA-96 码（如 47A）怎么读？',
+            answer:
+              'EIA-96 用于 ±1% 的 E96 系列：前两位 01-96 是标准基数表的序号（47 对应 301），末位字母是乘数，A = ×1、B = ×10、C = ×100、X = ×0.1、Y = ×0.01，故 47A = 301 Ω、01B = 1 kΩ。',
+          },
+          {
+            question: 'R 字母出现在码中代表什么？',
+            answer:
+              'R 充当小数点位置：R10 = 0.10 Ω、1R0 = 1.0 Ω、10R0 = 10 Ω。4 位体系（三位数字加 R）为 ±1%，3 位体系为 ±5%。000 或 0000 表示零欧姆跳线。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'An SMD resistor marking code calculator supporting 3-digit (E24, ±5%), 4-digit (±1%), EIA-96 two-digit-plus-letter (±1%) codes, R decimal-point codes, zero-ohm jumpers, and reverse lookup of the nearest standard code for a target resistance.',
+        coreFeatures: [
+          'Auto-detects all three mainstream marking systems: 472 = 4.7 kΩ, 4701 = 4.7 kΩ, 47A = 301 Ω',
+          'Supports R decimal codes (R10 = 0.1 Ω, 10R0 = 10 Ω) and 000 / 0000 zero-ohm jumpers',
+          'Reverse lookup: finds the closest standard code and deviation across E24 / E96 series',
+          'Reports resistance, code family, typical tolerance and metric prefix; fully local',
+        ],
+        howToUse: [
+          'Type the package marking in the decode box (case and spaces are ignored)',
+          'Use the example buttons to load typical codes such as 472, 4701, 47A or R10',
+          'Enter a target resistance in ohms to compare nearest codes across the three series',
+          'Click "Load" on a candidate to decode that exact marking again',
+        ],
+        useCases: [
+          'Reading tiny markings on 0402 / 0603 / 0805 parts during PCB repair',
+          'Choosing the correct EIA-96 printed ±1% part for a target resistance',
+          'Comparing E24 and E96 substitution options and their deviations',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser via pure functions; no network requests are made and your input never leaves the device.',
+        faqs: [
+          {
+            question: 'Why does the 3-digit code 472 mean 4.7 kΩ?',
+            answer:
+              'The first two digits are significant figures (47) and the third is a power of ten: 47 × 10² = 4700 Ω = 4.7 kΩ. A 4-digit code uses three significant figures, e.g. 4701 = 470 × 10¹ = 4.7 kΩ, typically ±1%.',
+          },
+          {
+            question: 'How is an EIA-96 code like 47A read?',
+            answer:
+              'EIA-96 is used for ±1% E96 parts: the two digits 01-96 index the standard mantissa table (47 → 301), and the letter is the multiplier — A = ×1, B = ×10, C = ×100, X = ×0.1, Y = ×0.01. So 47A = 301 Ω and 01B = 1 kΩ.',
+          },
+          {
+            question: 'What does the R in a marking mean?',
+            answer:
+              'R marks the decimal point: R10 = 0.10 Ω, 1R0 = 1.0 Ω, 10R0 = 10 Ω. Four-position markings (three digits plus R) are ±1%, three-position are ±5%. 000 or 0000 denotes a zero-ohm jumper.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'awg-wire-calculator',
+    name: 'AWG 美国线规计算器',
+    nameEn: 'AWG Wire Gauge Calculator',
+    description:
+      '由 AWG 线号计算导体直径、截面积、铜电阻与载流量，并支持按直径反查标准线号（4/0–40 AWG）。',
+    descriptionEn:
+      'Convert American Wire Gauge numbers to diameter, cross-sectional area, copper resistance and ampacity, with reverse lookup by diameter (4/0–40 AWG).',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/awg-wire-calculator',
+    iconName: 'Gauge',
+    tags: ['AWG', '线规', '导线', '电缆', '电子'],
+    tagsEn: ['AWG', 'Wire Gauge', 'Cable', 'Electronics', 'Ampacity'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'AWG（American Wire Gauge，美国线规）计算器：输入线号即可得到导体直径（mm / inch）、截面积（mm² / kcmil）、20 ℃ 退火铜每千米与每千英尺电阻，以及机箱布线经验载流量，并支持由实测直径反查最接近的标准线号。',
+        coreFeatures: [
+          '闭式公式 d = 0.127 × 92^((36-n)/39) mm，覆盖 4/0（0000）至 40 AWG',
+          '输出直径、截面积、Ω/km、Ω/1000 ft 与 kcmil 多种单位',
+          '按直径反查最接近的标准线号并给出相对偏差',
+          '内置 0–30 AWG 常见线号速查表，全部本地计算',
+        ],
+        howToUse: [
+          '在输入框填写线号，如 12、24，或 aught 线号 4/0、3/0、2/0、1/0（也支持 0000/000/00）',
+          '查看直径、截面积、电阻与经验载流量结果',
+          '在「按直径反查」中输入实测直径（mm），获取最接近的标准线号',
+          '参考底部速查表快速比较常见线号参数',
+        ],
+        useCases: [
+          '接线 / 线束 / 配电柜选型时核对线径与载流量',
+          'PCB 绕线、变压器与电感绕制时估算线径和铜阻',
+          '美标线材（18/20/22/24 AWG）与国标 mm² 标称互查',
+        ],
+        privacyNote:
+          '全部参数均为浏览器本地纯函数计算，不发起网络请求，输入不会离开设备。',
+        faqs: [
+          {
+            question: 'AWG 数字越大导线越粗还是越细？',
+            answer:
+              '数字越大导线越细：4/0（0000）最粗（11.68 mm），40 AWG 最细（0.0799 mm）。线号每增加 3，截面积约减半（直径约缩小到 1/√2）；每增加 6，直径约减半；每增加 10，截面积约缩小到 1/10。',
+          },
+          {
+            question: '载流量数值为什么与其他资料略有出入？',
+            answer:
+              '载流量不是线规标准的一部分，它取决于绝缘耐温等级、单根还是成束敷设、环境温度与允许压降。本工具给出单根铜线机箱布线的保守经验值，工程选型请以 NEC 表 310.15 或线缆厂家手册为准。',
+          },
+          {
+            question: '电阻基于什么材料与温度？',
+            answer:
+              '电阻按 20 ℃ 退火铜（电阻率 1.7241×10⁻⁸ Ω·m，即 10.37 Ω·cmil/ft）由截面积换算，适用于标准实心铜线；铝线或绞合线需另乘系数，温度每升高 1 ℃ 铜阻约增加 0.393%。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'An American Wire Gauge (AWG) calculator: enter a gauge number to get conductor diameter (mm / inch), cross-sectional area (mm² / kcmil), annealed-copper resistance at 20 °C (Ω/km and Ω/1000 ft), and a chassis-wiring ampacity estimate, with reverse lookup of the nearest standard gauge from a measured diameter.',
+        coreFeatures: [
+          'Closed-form d = 0.127 × 92^((36-n)/39) mm covering 4/0 (0000) through 40 AWG',
+          'Diameter, area, Ω/km, Ω/1000 ft and kcmil outputs',
+          'Reverse lookup of the nearest standard gauge by diameter with relative deviation',
+          'Built-in 0–30 AWG quick-reference table; everything is computed locally',
+        ],
+        howToUse: [
+          'Enter a gauge such as 12 or 24, or an aught size 4/0, 3/0, 2/0, 1/0 (0000/000/00 also accepted)',
+          'Review diameter, area, resistance and ampacity results',
+          'Enter a measured diameter in mm under reverse lookup to find the nearest gauge',
+          'Use the quick-reference table to compare common gauges',
+        ],
+        useCases: [
+          'Sizing wires, harnesses and panels for diameter and current capacity',
+          'Estimating wire size and copper resistance for PCB jumpers and coil winding',
+          'Cross-checking AWG-labelled wire against mm² specifications',
+        ],
+        privacyNote:
+          'All values are computed locally in the browser by pure functions with no network requests; input never leaves the device.',
+        faqs: [
+          {
+            question: 'Does a higher AWG number mean a thicker wire?',
+            answer:
+              'No — higher numbers mean thinner wire: 4/0 (0000) is the thickest at 11.68 mm and 40 AWG the thinnest at 0.0799 mm. Every +3 gauges halves the cross-sectional area (diameter shrinks by √2), +6 gauges roughly halves the diameter, and +10 gauges cuts the area by ~10×.',
+          },
+          {
+            question: 'Why does the ampacity differ from other references?',
+            answer:
+              'Ampacity is not defined by the gauge standard; it depends on insulation temperature rating, bundling, ambient temperature and allowed voltage drop. The tool shows conservative single-conductor chassis-wiring figures — use NEC Table 310.15 or the cable manufacturer for engineering decisions.',
+          },
+          {
+            question: 'What material and temperature is the resistance based on?',
+            answer:
+              'Resistance is derived from annealed copper at 20 °C (resistivity 1.7241×10⁻⁸ Ω·m, i.e. 10.37 Ω·cmil/ft) and the computed area. Aluminum or stranded conductors need correction factors, and copper resistance rises about 0.393% per °C.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'cusip-sedol-validator',
+    name: 'CUSIP / SEDOL 证券识别码校验器',
+    nameEn: 'CUSIP / SEDOL Security ID Validator',
+    description:
+      '按长度自动判别 9 位 CUSIP 或 7 位 SEDOL，依据官方模 10 加权算法核验末位校验位，并提示正确校验位。',
+    descriptionEn:
+      'Auto-detect 9-digit CUSIP or 7-digit SEDOL codes by length and verify the final check digit using the official mod-10 weighted algorithms, with the expected digit shown on failure.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/cusip-sedol-validator',
+    iconName: 'Fingerprint',
+    tags: ['CUSIP', 'SEDOL', '校验位', '证券', '金融'],
+    tagsEn: ['CUSIP', 'SEDOL', 'Check Digit', 'Securities', 'Finance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CUSIP / SEDOL 校验器用于核验证券识别码的末位校验位：CUSIP 是北美市场（美国 / 加拿大）的 9 位证券统一识别码，SEDOL 是英国及爱尔兰市场的 7 位证券识别码。工具按输入长度自动判别体系，完全在浏览器本地完成加权求和与模 10 运算。',
+        coreFeatures: [
+          '按长度自动判别：9 位按 CUSIP 双精度加权，7 位按 SEDOL CDMA（1,3,1,7,3,9）加权',
+          '自动去除空格与短横线并转大写，支持小写输入',
+          '校验失败时给出实际校验位与按前体位计算出的期望校验位',
+          '识别 SEDOL 禁用元音、CUSIP 历史字符 *、@、# 等具体错误原因',
+        ],
+        howToUse: [
+          '在输入框粘贴 9 位 CUSIP（如 Apple 的 037833100）或 7 位 SEDOL（如 Barclays 的 0263494）',
+          '可点击示例按钮快速填入合法或非法样例',
+          '查看成功 / 失败提示与「校验结果明细」中的实际、期望校验位',
+          '需要复制规范化（去空格、大写）结果时点击复制按钮',
+        ],
+        useCases: [
+          '金融数据清洗时批量核对行情 / 持仓文件中的证券代码',
+          '手工录入交易确认单、基金申赎单据时防止抄错校验位',
+          '开发清算、对账系统时验证 CUSIP / SEDOL 算法实现',
+        ],
+        privacyNote:
+          '识别码仅在浏览器内存中参与纯函数运算，不发起任何网络请求，也不会记录或上传输入内容。',
+        faqs: [
+          {
+            question: 'CUSIP 和 SEDOL 的校验算法有什么区别？',
+            answer:
+              'CUSIP 为 9 位：前 8 位参与运算，从首位起偶数位置数值乘 2，两位数乘积拆位求和，校验位 = (10 − 和模 10) 模 10。SEDOL 为 7 位：前 6 位按权重 1、3、1、7、3、9 加权求和后做同样的模 10 补数；且 SEDOL 字符集不含元音 A、E、I、O、U。',
+          },
+          {
+            question: '输入 12 位的 ISIN 能校验吗？',
+            answer:
+              '不能。ISIN（如 US0378331005）为 12 位、国家码开头，采用 mod 10 转换后 Luhn 类算法，与 CUSIP / SEDOL 不同。本工具按长度严格区分，12 位输入会被拒绝并提示长度不符。',
+          },
+          {
+            question: '为什么提示 CUSIP 含 *、@、# 历史字符？',
+            answer:
+              'CUSIP 早期规范允许 *、@、#（数值 36–38）出现在代码中，但现代发行代码只使用数字 0-9 与字母 A-Z。遇到这类字符通常意味着数据源非常陈旧或转写有误，应向数据提供方核对。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CUSIP / SEDOL validator checks the final check digit of security identifiers: CUSIP is the 9-digit identifier used in North American (US/Canada) markets, while SEDOL is the 7-digit identifier used in the UK and Ireland. The tool auto-detects the scheme by input length and performs all weighted mod-10 arithmetic locally in your browser.',
+        coreFeatures: [
+          'Auto-detection by length: 9-digit CUSIP double weighting vs 7-digit SEDOL CDMA weights (1,3,1,7,3,9)',
+          'Spaces and hyphens stripped, lower-case input accepted and normalized to upper case',
+          'On failure, shows both the actual check digit and the one computed from the body',
+          'Specific error reasons for SEDOL vowels and legacy CUSIP characters *, @, #',
+        ],
+        howToUse: [
+          'Paste a 9-digit CUSIP (e.g. Apple 037833100) or a 7-digit SEDOL (e.g. Barclays 0263494)',
+          'Use the example buttons to fill valid or deliberately invalid samples',
+          'Read the success/error alert and the actual vs expected check digit in the details card',
+          'Use the copy button to grab the normalized (spaces removed, upper-case) code',
+        ],
+        useCases: [
+          'Validating security codes in market-data or holdings files during data cleansing',
+          'Catching transcription errors when keying trade confirms or fund documents by hand',
+          'Verifying your own CUSIP / SEDOL implementation while building clearing or reconciliation systems',
+        ],
+        privacyNote:
+          'Identifiers are processed only in browser memory by pure functions; no network requests are made and input is never logged or uploaded.',
+        faqs: [
+          {
+            question: 'How do the CUSIP and SEDOL algorithms differ?',
+            answer:
+              'CUSIP has 9 digits: the first 8 are weighted, with every even position (counting from 1) doubled and two-digit products split and summed; the check digit is (10 − sum mod 10) mod 10. SEDOL has 7 digits: the first 6 use weights 1,3,1,7,3,9 with the same mod-10 complement, and the SEDOL alphabet excludes the vowels A, E, I, O, U.',
+          },
+          {
+            question: 'Can it validate a 12-character ISIN?',
+            answer:
+              'No. An ISIN (e.g. US0378331005) is 12 characters, starts with a country code and uses a different Luhn-style algorithm after letter conversion. The tool strictly distinguishes schemes by length, so 12-character input is rejected with a length message.',
+          },
+          {
+            question: 'What are the legacy CUSIP characters *, @ and #?',
+            answer:
+              'Early CUSIP rules allowed *, @ and # (values 36–38), but modern issues only use 0-9 and A-Z. Seeing these characters usually means a very old data source or a transcription error — verify with the data provider.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'aba-routing-validator',
+    name: 'ABA 路由号码（RTN）校验器',
+    nameEn: 'ABA Routing Number (RTN) Validator',
+    description:
+      '校验 9 位美国 ABA 银行路由号码的 3/7/1 加权校验位与合法前缀区间，拆解联邦路由符号与机构标识，支持多行批量校验。',
+    descriptionEn:
+      'Validate 9-digit US ABA routing transit numbers with the 3/7/1 check-digit weighting and legal prefix ranges, break down the FRB symbol and institution ID, and validate lists in bulk.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/aba-routing-validator',
+    iconName: 'KeyRound',
+    tags: ['ABA', 'RTN', '路由号码', '银行', '校验位'],
+    tagsEn: ['ABA', 'RTN', 'Routing Number', 'Banking', 'Check Digit'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'ABA 路由号码（Routing Transit Number，RTN）是美国银行间清算使用的 9 位数字代码。本工具按美联储标准核验：前 8 位与末位校验位做 3、7、1 循环加权求和，结果必须能被 10 整除；同时检查前两位是否落在 01–12（联邦储备区）、21–32（储蓄机构）、61–72（电子交易）或 80（旅客支票）合法区间。',
+        coreFeatures: [
+          '3、7、1 循环加权模 10 校验位核验，失败给出明确原因',
+          '拆解 9 位结构：前 4 位联邦储备路由符号、中 4 位机构标识、末位校验位',
+          '前两位映射为联邦储备区名称（01 波士顿至 12 旧金山）或机构类型',
+          '批量模式：每行一个号码，表格逐行给出合法 / 非法与原因',
+        ],
+        howToUse: [
+          '单个校验：输入 9 位数字（允许空格或短横线分隔，如 0210-0002-1）',
+          '点击示例按钮快速填入真实号码或非法样例',
+          '切换到「批量校验」，每行粘贴一个路由号码并查看统计与明细表',
+          '使用复制按钮获取规范化（无分隔符）号码',
+        ],
+        useCases: [
+          '录入 ACH 转账、支票、电汇信息时防止路由号抄错',
+          '金融数据文件批量清洗时标注非法路由号码行',
+          '开发支付、对账系统时核对 ABA 校验算法实现',
+        ],
+        privacyNote:
+          '路由号码仅在浏览器内存中参与纯函数运算，不发起网络请求，也不会记录或上传输入内容。',
+        faqs: [
+          {
+            question: 'ABA RTN 和 SWIFT / BIC 是一回事吗？',
+            answer:
+              '不是。ABA RTN 是美国境内 ACH 与支票清算使用的 9 位数字码；SWIFT/BIC 是 8 或 11 位字母数字码，用于国际电汇识别银行。国际汇款通常两者都需要（美国中转行 RTN + 收款行 SWIFT）。',
+          },
+          {
+            question: '校验通过能保证号码正在使用吗？',
+            answer:
+              '不能。校验位与前缀合法只说明格式自洽，机构可能因并购而注销或更换路由号码。实际划款前请以美联储官方目录（FedDirectory）或收款行公布的号码为准。',
+          },
+          {
+            question: '前两位数字各代表什么？',
+            answer:
+              '01–12 为 12 个联邦储备区（如 02 纽约、12 旧金山）；21–32 为储蓄贷款机构（thrift）；61–72 为电子交易路由号；80 专用于旅客支票。其他两位数前缀均不合法。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ABA Routing Transit Number (RTN) is the 9-digit code used for interbank clearing in the United States. This tool applies the Federal Reserve standard — a repeating 3, 7, 1 weighting across all nine digits whose sum must be divisible by 10 — and checks that the first two digits fall in a legal range: 01–12 (Federal Reserve districts), 21–32 (thrift institutions), 61–72 (electronic transactions) or 80 (travelers cheques).',
+        coreFeatures: [
+          'Repeating 3/7/1 mod-10 check-digit validation with explicit failure reasons',
+          'Structure breakdown: 4-digit FRB routing symbol, 4-digit institution ID, check digit',
+          'Prefix mapped to a Federal Reserve district name (01 Boston through 12 San Francisco) or institution type',
+          'Bulk mode: one number per line with a per-row validity table and totals',
+        ],
+        howToUse: [
+          'Single mode: enter 9 digits (spaces or hyphens accepted, e.g. 0210-0002-1)',
+          'Use the example buttons for real numbers or deliberately invalid samples',
+          'Switch to bulk mode, paste one routing number per line, and review the summary and detail table',
+          'Use the copy button to grab the normalized number without separators',
+        ],
+        useCases: [
+          'Preventing typos when keying ACH, cheque or wire-transfer details',
+          'Flagging bad routing numbers row by row while cleansing financial data files',
+          'Verifying your own ABA checksum implementation in payments or reconciliation systems',
+        ],
+        privacyNote:
+          'Routing numbers are processed only in browser memory by pure functions; no network requests are made and input is never logged or uploaded.',
+        faqs: [
+          {
+            question: 'Is an ABA RTN the same as a SWIFT/BIC?',
+            answer:
+              'No. The ABA RTN is a 9-digit number for domestic ACH and cheque clearing in the US; SWIFT/BIC is an 8- or 11-character alphanumeric code identifying banks internationally. Cross-border wires often need both (a US intermediary RTN plus the beneficiary bank SWIFT).',
+          },
+          {
+            question: 'Does a passing checksum mean the number is in active use?',
+            answer:
+              'No. A valid checksum and prefix only prove the format is self-consistent; the number may have been retired after a merger. Confirm against the official Federal Reserve FedDirectory or the payee bank before moving funds.',
+          },
+          {
+            question: 'What do the first two digits mean?',
+            answer:
+              '01–12 are the twelve Federal Reserve districts (e.g. 02 New York, 12 San Francisco); 21–32 are thrift institutions; 61–72 are electronic-transaction routing numbers; 80 is reserved for travelers cheques. Any other two-digit prefix is invalid.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-to-zod',
+    name: 'JSON 转 Zod Schema 生成器',
+    nameEn: 'JSON to Zod Schema Generator',
+    description:
+      '从一个或多个 JSON 样例推断 Zod v3 schema：对象、数组、枚举、联合、可选与可空字段，以及 email/uuid/url/date 格式提示。',
+    descriptionEn:
+      'Infer a Zod v3 schema from one or more JSON samples: objects, arrays, enums, unions, optional/nullable fields, and email/uuid/url/date format hints.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-zod',
+    iconName: 'FileJson2',
+    tags: ['Zod', 'JSON', 'Schema', 'TypeScript', '代码生成'],
+    tagsEn: ['Zod', 'JSON', 'Schema', 'TypeScript', 'Codegen'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON 转 Zod Schema 生成器从真实的 JSON 响应或样例数据出发，递归推断字段类型并生成可直接复制的 Zod v3 校验代码（z.object / z.array / z.enum / z.union 等）。工具只产出源码文本，不会安装或引入 zod 运行时依赖，全部推断在浏览器本地完成。',
+        coreFeatures: [
+          '基本类型与约束：z.string、z.number().int()、z.boolean、z.null，空数组为 z.array(z.unknown())',
+          '字符串格式提示：email、uuid、url、datetime、date（多样本格式不一致时退化为普通 string）',
+          '多样例推断：空行分隔多个 JSON，缺失字段变 .optional()，null 变 .nullable()，取值可重复且离散时推断 z.enum',
+          '嵌套对象与数组提取为独立命名 const，支持自定义根名、2/4 空格缩进、是否导出根 schema',
+        ],
+        howToUse: [
+          '在左侧粘贴一个 JSON 样例，右侧实时生成 Zod schema',
+          '需要推断可选 / 可空 / 枚举 / 联合时，点击「多样例」并用空行分隔多个 JSON 文档',
+          '调整根 schema 名、缩进与导出开关，或点击「复制结果」获取源码',
+          '将生成的代码粘贴到你的 TypeScript 项目，并确保项目已自行安装 zod',
+        ],
+        useCases: [
+          '为已有后端 API 响应快速补齐运行时校验层',
+          '对接第三方接口时从样例报文生成类型守卫与表单校验',
+          '多样例数据合并分析字段是否可选、可空或为枚举',
+        ],
+        privacyNote:
+          'JSON 解析与 schema 推断全部在浏览器内存中进行，不发起网络请求，也不会上传样例数据。',
+        faqs: [
+          {
+            question: '生成的代码需要安装什么依赖？',
+            answer:
+              '代码使用 Zod v3 API（如 z.string().email()、z.union），需在目标项目自行 npm install zod。工具站本身不依赖 zod，只输出文本。',
+          },
+          {
+            question: '多个 JSON 样例怎么提供？',
+            answer:
+              '在输入框中用空行分隔多个完整的 JSON 文档即可。某字段只在部分样例出现会被标记 .optional()，出现 null 会标记 .nullable()，离散且重复出现的字符串会推断为 z.enum。',
+          },
+          {
+            question: '推断结果能保证覆盖所有真实数据吗？',
+            answer:
+              '不能。推断只基于所提供的样例：样例中没出现的字段、格式或联合分支无法被发现。生产环境应结合接口契约人工复核，并按需补充 .min()、.max() 等业务约束。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON to Zod Schema Generator recursively infers field types from real JSON responses or samples and produces ready-to-paste Zod v3 validation code (z.object / z.array / z.enum / z.union and more). It emits source text only — no zod runtime dependency is installed or imported — and all inference runs locally in your browser.',
+        coreFeatures: [
+          'Primitives and constraints: z.string, z.number().int(), z.boolean, z.null; empty arrays become z.array(z.unknown())',
+          'String format hints: email, uuid, url, datetime, date (falls back to plain string when samples disagree)',
+          'Multi-sample inference: blank-line-separated JSON documents make missing fields .optional(), null values .nullable(), and repeated discrete strings z.enum',
+          'Nested objects and arrays extracted as named consts, with custom root name, 2/4-space indent, and export toggle',
+        ],
+        howToUse: [
+          'Paste one JSON sample on the left; the Zod schema updates live on the right',
+          'For optional/nullable/enum/union inference, click "multi-sample" and separate complete JSON documents with blank lines',
+          'Adjust the root schema name, indentation and export toggle, then click "Copy result"',
+          'Paste the generated code into your TypeScript project and make sure zod is installed there',
+        ],
+        useCases: [
+          'Quickly adding a runtime validation layer for existing backend API responses',
+          'Generating type guards and form validation from sample payloads of third-party APIs',
+          'Analyzing whether fields are optional, nullable or enum-valued across multiple samples',
+        ],
+        privacyNote:
+          'JSON parsing and schema inference run entirely in browser memory; no network requests are made and sample data is never uploaded.',
+        faqs: [
+          {
+            question: 'What dependency does the generated code need?',
+            answer:
+              'The output uses Zod v3 APIs (e.g. z.string().email(), z.union), so install zod in the target project yourself. The tool site does not depend on zod — it only emits text.',
+          },
+          {
+            question: 'How do I provide multiple JSON samples?',
+            answer:
+              'Separate complete JSON documents with blank lines in the input box. A field present in only some samples becomes .optional(), null values become .nullable(), and repeated discrete strings are inferred as z.enum.',
+          },
+          {
+            question: 'Does the inferred schema cover all real-world data?',
+            answer:
+              'No. Inference is limited by the samples provided: fields, formats or union branches absent from samples cannot be discovered. Review against the API contract for production and add business constraints such as .min() and .max() as needed.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'json-form-urlencoded',
     name: 'JSON ↔ 表单请求体转换器',
     nameEn: 'JSON ↔ x-www-form-urlencoded Converter',

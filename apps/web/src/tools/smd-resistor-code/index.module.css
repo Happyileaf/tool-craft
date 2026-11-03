@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hint {
+  margin: 0 0 16px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.label {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+}
+
+.codeInput {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 2px;
+}
+
+.targetInput {
+  width: 200px;
+}
+
+.monoTag {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+}
+
+.muted {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.exact {
+  color: #389e0d;
+  font-weight: 600;
+}
