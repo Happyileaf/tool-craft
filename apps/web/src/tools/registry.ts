@@ -21718,6 +21718,109 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'vin-validator',
+    name: 'VIN 车辆识别代号校验位计算器',
+    nameEn: 'VIN Check Digit Calculator (ISO 3779 / GB 16735)',
+    description:
+      '输入 17 位车辆识别代号（VIN），按 ISO 3779 / GB 16735 计算第 9 位校验码并逐位展示转码值、权重与加权过程。',
+    descriptionEn:
+      'Enter a 17-character Vehicle Identification Number to compute the position-9 check digit per ISO 3779 / GB 16735, with a full per-position transliteration, weight and product breakdown.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/vin-validator',
+    iconName: 'Barcode',
+    tags: ['VIN', '车辆识别代号', '车架号', '校验位', 'GB 16735', 'ISO 3779'],
+    tagsEn: ['VIN', 'Vehicle Identification Number', 'Check Digit', 'GB 16735', 'ISO 3779'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'VIN 校验位计算器依据 ISO 3779、GB 16735-2019（算法口径同美国 49 CFR 565.15）对 17 位车辆识别代号进行结构校验：将每个字符按固定转码表换算为 0-9，乘以 17 位权重数组后求和，再对 11 取模，余数 0-9 为校验数字、余数 10 记为 X，与第 9 位比对即可判断 VIN 是否抄写正确。全程离线，不查询车辆数据库。',
+        coreFeatures: [
+          '17 位长度与字符集校验，明确提示禁用字母 I/O/Q 与非法字符',
+          '自动转大写、去除空格与连字符，支持直接粘贴带分隔的 VIN',
+          '计算正确的第 9 位校验码（0-9 或 X），与实际字符比对给出 PASS/FAIL',
+          '逐位展示字符、转码值、权重、乘积与加权总和、模 11 余数',
+          '支持校验位为 X（余数 10）的车辆，纯本地计算零网络请求',
+        ],
+        howToUse: [
+          '在输入框粘贴或输入 17 位 VIN（支持小写与空格）',
+          '查看「校验位结论」卡片：绿色表示第 9 位正确，红色给出应有的校验码',
+          '展开逐位明细表核对每一位的转码值与权重，第 9 位以底色标出',
+          '需要重新输入时点击「载入示例」查看标准教学 VIN',
+        ],
+        useCases: [
+          '二手车、保险、年检场景核对车架号是否抄写/OCR 识别有误',
+          '车管、物流、汽修系统录入前做客户端预校验',
+          '车辆数据表批量导入前筛出明显错误的 VIN',
+          '教学演示 VIN 结构（WMI/VDS/VIS）与校验位算法',
+        ],
+        privacyNote:
+          'VIN 仅在浏览器本地参与计算，不发起任何网络请求，也不会保存或上传输入内容。',
+        faqs: [
+          {
+            question: '校验位错误是否一定说明 VIN 是伪造的？',
+            answer:
+              '不一定。该校验位规则强制适用于北美市场及中国 GB 16735 等法规覆盖的车辆；部分欧盟老款、澳洲车型历史上不强制校验位，会出现算不过但真实存在的 VIN。但如果是中规或美规车却校验失败，应高度警惕抄录错误、OCR 错误或篡改。',
+          },
+          {
+            question: '为什么有的车第 9 位是字母 X？',
+            answer:
+              '加权和对 11 取模，余数为 10 时用罗马数字 X 表示，这是标准规定的合法校验字符，并非异常。',
+          },
+          {
+            question: '为什么不能输入字母 I、O、Q？',
+            answer:
+              'ISO 3779 规定 VIN 字符集排除 I、O、Q，避免与数字 1、0 及 0 混淆。含这些字母的字符串在结构上就不是合法 VIN。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The VIN Check Digit Calculator validates a 17-character Vehicle Identification Number per ISO 3779 and China GB 16735-2019 (same arithmetic as U.S. 49 CFR 565.15): each character is transliterated to 0-9 using a fixed table, multiplied by its position weight, summed and taken modulo 11; remainders 0-9 are the check digit and remainder 10 is rendered as X. Comparing it with position 9 reveals transcription errors. Everything runs offline.',
+        coreFeatures: [
+          'Checks 17-character length and charset, flagging forbidden I/O/Q letters and illegal characters',
+          'Auto-uppercases and strips spaces/hyphens from pasted VINs',
+          'Computes the correct position-9 check digit (0-9 or X) and shows PASS/FAIL',
+          'Per-position table of character, transliterated value, weight and product, plus the weighted sum and modulo-11 remainder',
+          'Supports check digit X (remainder 10); fully local with no network access',
+        ],
+        howToUse: [
+          'Paste or type a 17-character VIN (lowercase and spaces are accepted)',
+          'Read the verdict card: green means position 9 matches; red shows the expected check digit',
+          'Inspect the position-by-position table; position 9 is highlighted',
+          'Use "Load sample" for a standard teaching VIN',
+        ],
+        useCases: [
+          'Verifying chassis numbers in used-car, insurance and inspection workflows',
+          'Client-side pre-checks before VIN entry into fleet, logistics or repair systems',
+          'Filtering malformed VINs before bulk data import',
+          'Teaching VIN structure (WMI/VDS/VIS) and the check-digit algorithm',
+        ],
+        privacyNote:
+          'The VIN is processed entirely in your browser. Nothing is uploaded, stored or sent over the network.',
+        faqs: [
+          {
+            question: 'Does a failed check digit prove the VIN is fake?',
+            answer:
+              'Not always. The check digit is mandatory for North American and Chinese-regulated vehicles, but some older European and Australian-market vehicles were built without enforcing it, so genuine VINs can fail the arithmetic. A failure on a Chinese- or US-market vehicle, however, strongly suggests a transcription, OCR or tampering error.',
+          },
+          {
+            question: 'Why is position 9 sometimes the letter X?',
+            answer:
+              'Because the weighted sum is taken modulo 11; a remainder of 10 is represented by the Roman numeral X, which is a perfectly valid check character.',
+          },
+          {
+            question: 'Why are I, O and Q not allowed?',
+            answer:
+              'ISO 3779 excludes I, O and Q from the VIN alphabet because they are easily confused with 1 and 0. A string containing them is structurally invalid.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

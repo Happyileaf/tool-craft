@@ -241,4 +241,5 @@ export const toolLoaders: Record<
   'og-meta-generator': () => import('./og-meta-generator'),
   'security-headers-generator': () => import('./security-headers-generator'),
   'spf-record-generator': () => import('./spf-record-generator'),
+  'vin-validator': () => import('./vin-validator'),
 };
