@@ -20713,6 +20713,95 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'imei-validator',
+    name: 'IMEI 移动设备识别码校验器',
+    nameEn: 'IMEI Checksum Validator',
+    description:
+      '校验 15 位 IMEI 的 Luhn 校验位、识别 16 位 IMEISV，并拆解 TAC 型号分配码、SNR 序列号与校验位/软件版本号，纯本地计算。',
+    descriptionEn:
+      'Validate the Luhn check digit of 15-digit IMEI numbers, recognize 16-digit IMEISV, and break down TAC, SNR and check digit/SVN — fully offline.',
+    category: ToolCategoryEnum.DEV_NETWORK,
+    path: '/tools/imei-validator',
+    iconName: 'SafetyCertificateOutlined',
+    tags: ['IMEI', 'Luhn', '校验位', '3GPP', '移动通信'],
+    tagsEn: ['IMEI', 'Luhn', 'Checksum', '3GPP', 'Mobile'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'IMEI 校验器依据 3GPP TS 23.003 规范，对国际移动设备识别码（IMEI）进行结构拆解与 Luhn（mod 10）校验位验证，并支持 16 位 IMEISV（含软件版本号、无校验位）的格式识别与字段解析。',
+        coreFeatures: [
+          'Luhn 校验：验证 15 位 IMEI 末位校验位，错误时给出正确校验位',
+          '结构拆解：展示 TAC（前 8 位型号分配码）、SNR（6 位序列号）与校验位',
+          'IMEISV 支持：识别 16 位格式并解析末 2 位 SVN 软件版本号，提示 00 保留值',
+          '宽松输入：自动去除空格与连字符分组，实时反馈格式错误原因',
+        ],
+        howToUse: [
+          '在输入框粘贴或输入 15 位 IMEI（或 16 位 IMEISV），可含空格或连字符',
+          '查看绿色/红色提示与字段拆解表格，确认校验位是否正确',
+          '校验失败时，对照给出的正确校验位修正末位数字',
+          '使用示例按钮快速体验合法 IMEI、IMEISV 与错误校验位三种情况',
+        ],
+        useCases: [
+          '核对设备外包装、系统拨号界面（*#06#）与条码上的 IMEI 是否抄录有误',
+          '开发电信设备管理、MDM 录入功能时做客户端预校验',
+          '学习 Luhn 算法与 3GPP IMEI/IMEISV 编码结构',
+        ],
+        privacyNote:
+          '校验与拆解完全在浏览器本地进行，不查询任何 TAC 在线数据库，不发起网络请求，输入号码不会离开设备。',
+        faqs: [
+          {
+            question: '校验通过能说明这个 IMEI 是真实存在的吗？',
+            answer:
+              '不能。Luhn 只是防错的自洽校验，任何 14 位数字都能算出一个合法校验位。要确认设备型号与真实登记信息，需要查询运营商或厂商的 TAC 数据库（GSMA 等），本工具刻意不做在线查询。',
+          },
+          {
+            question: 'IMEI 和 IMEISV 有什么区别？',
+            answer:
+              'IMEI 为 15 位：8 位 TAC + 6 位 SNR + 1 位 Luhn 校验位。IMEISV 为 16 位：8 位 TAC + 6 位 SNR + 2 位 SVN（软件版本号），没有校验位；SVN 取 1–98，99 预留，00 在 3GPP 中为保留值。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The IMEI Checksum Validator implements 3GPP TS 23.003: it breaks down an International Mobile Equipment Identity into TAC, SNR and check digit and verifies the Luhn (mod 10) digit. It also recognizes the 16-digit IMEISV form (with Software Version Number and no check digit).',
+        coreFeatures: [
+          'Luhn validation: verify the 15th IMEI check digit and show the correct digit on mismatch',
+          'Structure breakdown: TAC (first 8 digits), SNR (6-digit serial) and check digit',
+          'IMEISV support: recognize the 16-digit form, parse the trailing SVN and flag the reserved 00 value',
+          'Lenient input: strips spaces and hyphens automatically with live, specific error messages',
+        ],
+        howToUse: [
+          'Paste or type a 15-digit IMEI (or 16-digit IMEISV); spaces and hyphens are accepted',
+          'Read the success/error banner and the breakdown table',
+          'On failure, replace the last digit with the suggested correct check digit',
+          'Use the sample buttons to try a valid IMEI, an IMEISV and a bad check digit',
+        ],
+        useCases: [
+          'Checking IMEIs copied from packaging, the *#06# dialer screen or barcodes for typos',
+          'Client-side pre-validation in telecom asset and MDM management tools',
+          'Learning the Luhn algorithm and the 3GPP IMEI/IMEISV structure',
+        ],
+        privacyNote:
+          'Validation and parsing run entirely in your browser. No TAC database is queried, no network request is made, and the number you type never leaves your device.',
+        faqs: [
+          {
+            question: 'Does a passing checksum prove the IMEI belongs to a real device?',
+            answer:
+              'No. Luhn is only a self-consistency typo check: any 14 digits can be extended with a valid check digit. Confirming model and registration requires a carrier or GSMA TAC database lookup, which this tool deliberately does not perform.',
+          },
+          {
+            question: 'What is the difference between IMEI and IMEISV?',
+            answer:
+              'IMEI is 15 digits: 8-digit TAC + 6-digit SNR + 1-digit Luhn check. IMEISV is 16 digits: 8-digit TAC + 6-digit SNR + 2-digit SVN (software version) with no check digit. Valid SVNs are 1–98 (99 reserved); 00 is reserved by 3GPP.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -231,4 +231,5 @@ export const toolLoaders: Record<
   'gzip-codec': () => import('./gzip-codec'),
   'json-to-rust': () => import('./json-to-rust'),
   'ntp-timestamp-converter': () => import('./ntp-timestamp-converter'),
+  'imei-validator': () => import('./imei-validator'),
 };
