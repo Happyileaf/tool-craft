@@ -221,4 +221,5 @@
 | 20261103140205 | 加班工资计算器（中国大陆劳动法） | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103140205.md) |
 | 20261103200231 | 电阻分压器计算器（双电阻电压分压与负载效应） | Web Tool | Exploration | Pending | 2026-11-03 | | [详情](./idea-details/20261103200231.md) |
 | 20261103200232 | Black-Scholes 期权定价计算器（含 Greeks） | Web Tool | Exploration | Pending | 2026-11-03 | | [详情](./idea-details/20261103200232.md) |
+| 20261103200233 | Apache / Nginx Combined Log Format 访问日志解析器 | Web Tool | Existing Gap | Pending | 2026-11-03 | | [详情](./idea-details/20261103200233.md) |
 
