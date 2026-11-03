@@ -21181,6 +21181,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'php-serialize-json',
+    name: 'PHP serialize ↔ JSON 双向转换器',
+    nameEn: 'PHP Serialize ↔ JSON Converter',
+    description:
+      '解析与生成 PHP serialize() 文本（N/s/i/d/b/a 标量与嵌套数组），与 JSON 双向转换，按长度声明二进制安全解析字符串，索引数组与关联数组以标记对象区分，畸形输入带列号定位。',
+    descriptionEn:
+      'Parse and generate PHP serialize() text (N/s/i/d/b/a scalars and nested arrays), convert to and from JSON, parse strings binary-safely by declared length, distinguish indexed vs associative arrays with marker objects, and pinpoint malformed input by column.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/php-serialize-json',
+    iconName: 'Braces',
+    tags: ['PHP', 'serialize', 'Laravel', 'JSON', '数据迁移'],
+    tagsEn: ['PHP', 'serialize', 'Laravel', 'JSON', 'Migration'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'PHP serialize 转换器把 PHP serialize()/unserialize() 的文本格式（如 a:2:{s:1:"a";i:1;s:1:"b";s:1:"x";}）与 JSON 相互转换：支持 null、整数、浮点（含 INF/NAN）、布尔、按长度声明二进制安全的字符串，以及任意嵌套的索引数组与关联数组；对象（O:）、资源等 PHP 专有类型不支持并给出明确错误。',
+        coreFeatures: [
+          '双向转换：PHP 文本 → JSON 预览（缩进 2 格），合法 JSON → PHP serialize 文本',
+          '类型全覆盖：N / s / i / d / b / a 六类标记，支持 d:INF、d:-INF、d:NAN 与嵌套数组',
+          '数组语义保留：索引数组（0..n-1 数字键）与关联数组以 $$phpObject$$ / $$phpArrayKind$$ 标记对象区分',
+          '二进制安全字符串：严格按 s:长度: 声明切分内容，分号、引号、多字节字符不影响边界，长度不符即报错',
+          '精确定位：类型标记缺失、字段截断、布尔非 0/1、数组键类型错误等均给出列号',
+        ],
+        howToUse: [
+          '选择转换方向：PHP serialize → JSON 或 JSON → PHP serialize',
+          '粘贴从 Laravel 缓存、Cookie、老系统数据库中取出的 serialize 文本，或一段合法 JSON',
+          '查看 JSON 预览中的 $$phpArrayKind$$ 字段确认数组是 list 还是 assoc',
+          '确认无误后点击「复制结果」；报错信息会给出列号与期望字符',
+        ],
+        useCases: [
+          '排查 Laravel / 老 PHP 系统存进数据库或缓存（Redis、Memcached）的序列化字段',
+          '数据迁移时在 PHP 序列化文本与 JSON API 载荷之间互转并核对内容',
+          '构造、修改 serialize() 数据用于调试反序列化逻辑，无需安装 PHP 环境',
+        ],
+        privacyNote:
+          '所有文本仅在浏览器本地解析与生成，不发起任何网络请求，不依赖任何第三方库。',
+        faqs: [
+          {
+            question: '为什么 JSON 里的数组被包了一层 $$phpObject$$ 标记？',
+            answer:
+              'PHP 的数组同时承担「列表」和「字典」两种语义，而 JSON 中 [] 与 {} 无法表达「序列化时应该用哪种数组」。解析结果用 { "$$phpObject$$": true, "$$phpArrayKind$$": "array|assoc", "data": ... } 标记：array 对应 0..n-1 连续数字键，assoc 对应关联数组。再序列化回 PHP 时该标记会被还原为对应 a: 数组。',
+          },
+          {
+            question: '中文 / emoji 的字符串长度怎么算？',
+            answer:
+              '工具按 UTF-16 码元计数（与浏览器 String API 一致），emoji 等代理对字符算 2 个码元。注意 PHP 端若以单字节方式 serialize UTF-8 文本，长度声明是字节数；解析此类真实数据时，长度声明会原样按声明切分，只要输入字节流被逐码元读入即可正确还原，工具会在校验不符时明确报错而不是静默截断。',
+          },
+          {
+            question: '为什么不支持对象 O:8:"stdClass":... ？',
+            answer:
+              '对象携带 PHP 类名、私有 / 受保护属性（属性名含 NUL 字节）与魔术方法语义，反序列化在真实 PHP 环境中还可能触发 __wakeup / __destruct 安全风险。工具聚焦数据层互转，遇到 O: / C: 标记会给出包含类名的明确错误，不尝试解析。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool converts PHP serialize()/unserialize() text (e.g. a:2:{s:1:"a";i:1;s:1:"b";s:1:"x";}) to and from JSON. It supports null, integers, floats (including INF/NAN), booleans, binary-safe strings keyed by declared length, and arbitrarily nested indexed/associative arrays; PHP-specific object (O:) and resource types are explicitly rejected.',
+        coreFeatures: [
+          'Bidirectional: PHP text → pretty JSON, and valid JSON → PHP serialize text',
+          'Full scalar coverage: N / s / i / d / b / a markers, including d:INF, d:-INF, d:NAN and nesting',
+          'Array semantics preserved: indexed (0..n-1) vs associative arrays distinguished via $$phpObject$$ / $$phpArrayKind$$ marker objects',
+          'Binary-safe strings sliced strictly by the s:length: declaration; semicolons, quotes and multibyte chars never break the boundary',
+          'Column-precise errors for missing markers, truncation, non-0/1 booleans and bad array key types',
+        ],
+        howToUse: [
+          'Pick a direction: PHP serialize → JSON or JSON → PHP serialize',
+          'Paste serialized text from Laravel cache, cookies or legacy databases, or a valid JSON document',
+          'Check the $$phpArrayKind$$ field in the JSON preview to see whether an array is a list or an assoc map',
+          'Click "Copy result"; errors include the column and the expected character',
+        ],
+        useCases: [
+          'Inspecting serialized fields stored by Laravel or legacy PHP systems in databases, Redis or Memcached',
+          'Migrating data between PHP serialized text and JSON API payloads with content verification',
+          'Crafting or editing serialize() payloads to debug unserialization logic without a PHP runtime',
+        ],
+        privacyNote:
+          'All text is parsed and generated locally in your browser with no network requests or third-party libraries.',
+        faqs: [
+          {
+            question: 'Why are arrays wrapped in a $$phpObject$$ marker in JSON?',
+            answer:
+              'PHP arrays carry both "list" and "map" semantics, while JSON [] and {} cannot express which a: form to emit. The marker { "$$phpObject$$": true, "$$phpArrayKind$$": "array|assoc", "data": ... } records it: array means consecutive 0..n-1 integer keys, assoc means a map. Re-serializing back to PHP restores the right form.',
+          },
+          {
+            question: 'How are Chinese characters or emoji lengths counted?',
+            answer:
+              'The tool counts UTF-16 code units (matching the browser String API), so surrogate-pair emoji count as 2. If PHP serialized UTF-8 text byte-wise, the declaration is a byte count; when parsing such real-world data the tool slices exactly by the declared length and reports a clear error instead of silently truncating when the input does not match.',
+          },
+          {
+            question: 'Why are objects like O:8:"stdClass":... unsupported?',
+            answer:
+              'Objects carry class names, private/protected properties with NUL bytes and magic-method semantics; real unserialization can even trigger __wakeup/__destruct security risks. The tool focuses on data-level conversion and reports O:/C: markers with the class name instead of attempting to parse them.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

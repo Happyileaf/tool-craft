@@ -236,4 +236,5 @@ export const toolLoaders: Record<
   'gps-week-converter': () => import('./gps-week-converter'),
   'sms-segment-calculator': () => import('./sms-segment-calculator'),
   'polyline-codec': () => import('./polyline-codec'),
+  'php-serialize-json': () => import('./php-serialize-json'),
 };
