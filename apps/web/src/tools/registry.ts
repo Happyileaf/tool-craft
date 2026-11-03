@@ -17073,6 +17073,106 @@ info: request finished`,
     },
   },
   {
+    slug: 'smd-resistor-code',
+    name: 'SMD 电阻阻值码计算器',
+    nameEn: 'SMD Resistor Code Calculator',
+    description:
+      '解码贴片电阻表面印字：3 位数字码、4 位数字码、EIA-96 字母码双向转换阻值。',
+    descriptionEn:
+      'Decode and reverse-lookup SMD resistor marking codes: 3-digit, 4-digit and EIA-96 letter codes.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/smd-resistor-code',
+    iconName: 'Thunderbolt',
+    tags: ['SMD', '贴片电阻', 'EIA-96', '电阻', '电子'],
+    tagsEn: ['SMD', 'Resistor', 'EIA-96', 'Electronics', 'Marking Code'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'SMD 贴片电阻阻值码计算器，支持解码 3 位数字码（E24，±5%）、4 位数字码（±1%）、EIA-96 两位数字加字母乘数码（±1%），以及 R 小数点位置码与零欧姆跳线，并可由目标阻值反查最接近的标准印字码。',
+        coreFeatures: [
+          '自动识别三种主流印字体系：472 = 4.7 kΩ、4701 = 4.7 kΩ、47A = 301 Ω',
+          '支持 R 位置码（R10 = 0.1 Ω、10R0 = 10 Ω）与 000 / 0000 零欧姆跳线',
+          '按目标阻值在 E24 / E96 标准系列中搜索相对偏差最小的印字码',
+          '输出阻值、体系、典型精度与易读量级（Ω / kΩ / MΩ），全部本地计算',
+        ],
+        howToUse: [
+          '在「印字码解码」输入框输入电阻表面印字（大小写、空格不限），即时得到阻值',
+          '点击示例按钮可快速载入 472、4701、47A、R10 等典型码',
+          '在「按目标阻值反查」中输入期望欧姆值，查看三个系列中最接近的印字码与偏差',
+          '点击候选码的「载入解码」可将该印字码带回上方复核',
+        ],
+        useCases: [
+          '维修电路板时识读 0402 / 0603 / 0805 贴片电阻上的微小印字',
+          'BOM 选型时确认某阻值应采购哪种 EIA-96 丝印的 ±1% 电阻',
+          '硬件调试中核对 E24 与 E96 系列的替代关系与阻值偏差',
+        ],
+        privacyNote:
+          '所有计算均为浏览器本地纯函数运算，不发起任何网络请求，输入内容不会离开设备。',
+        faqs: [
+          {
+            question: '3 位码 472 为什么是 4.7 kΩ？',
+            answer:
+              '3 位码前两位是有效数字 47，第三位是 10 的幂次，47 × 10² = 4700 Ω = 4.7 kΩ。4 位码同理但有三位有效数字，如 4701 = 470 × 10¹ = 4.7 kΩ，精度通常为 ±1%。',
+          },
+          {
+            question: 'EIA-96 码（如 47A）怎么读？',
+            answer:
+              'EIA-96 用于 ±1% 的 E96 系列：前两位 01-96 是标准基数表的序号（47 对应 301），末位字母是乘数，A = ×1、B = ×10、C = ×100、X = ×0.1、Y = ×0.01，故 47A = 301 Ω、01B = 1 kΩ。',
+          },
+          {
+            question: 'R 字母出现在码中代表什么？',
+            answer:
+              'R 充当小数点位置：R10 = 0.10 Ω、1R0 = 1.0 Ω、10R0 = 10 Ω。4 位体系（三位数字加 R）为 ±1%，3 位体系为 ±5%。000 或 0000 表示零欧姆跳线。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'An SMD resistor marking code calculator supporting 3-digit (E24, ±5%), 4-digit (±1%), EIA-96 two-digit-plus-letter (±1%) codes, R decimal-point codes, zero-ohm jumpers, and reverse lookup of the nearest standard code for a target resistance.',
+        coreFeatures: [
+          'Auto-detects all three mainstream marking systems: 472 = 4.7 kΩ, 4701 = 4.7 kΩ, 47A = 301 Ω',
+          'Supports R decimal codes (R10 = 0.1 Ω, 10R0 = 10 Ω) and 000 / 0000 zero-ohm jumpers',
+          'Reverse lookup: finds the closest standard code and deviation across E24 / E96 series',
+          'Reports resistance, code family, typical tolerance and metric prefix; fully local',
+        ],
+        howToUse: [
+          'Type the package marking in the decode box (case and spaces are ignored)',
+          'Use the example buttons to load typical codes such as 472, 4701, 47A or R10',
+          'Enter a target resistance in ohms to compare nearest codes across the three series',
+          'Click "Load" on a candidate to decode that exact marking again',
+        ],
+        useCases: [
+          'Reading tiny markings on 0402 / 0603 / 0805 parts during PCB repair',
+          'Choosing the correct EIA-96 printed ±1% part for a target resistance',
+          'Comparing E24 and E96 substitution options and their deviations',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser via pure functions; no network requests are made and your input never leaves the device.',
+        faqs: [
+          {
+            question: 'Why does the 3-digit code 472 mean 4.7 kΩ?',
+            answer:
+              'The first two digits are significant figures (47) and the third is a power of ten: 47 × 10² = 4700 Ω = 4.7 kΩ. A 4-digit code uses three significant figures, e.g. 4701 = 470 × 10¹ = 4.7 kΩ, typically ±1%.',
+          },
+          {
+            question: 'How is an EIA-96 code like 47A read?',
+            answer:
+              'EIA-96 is used for ±1% E96 parts: the two digits 01-96 index the standard mantissa table (47 → 301), and the letter is the multiplier — A = ×1, B = ×10, C = ×100, X = ×0.1, Y = ×0.01. So 47A = 301 Ω and 01B = 1 kΩ.',
+          },
+          {
+            question: 'What does the R in a marking mean?',
+            answer:
+              'R marks the decimal point: R10 = 0.10 Ω, 1R0 = 1.0 Ω, 10R0 = 10 Ω. Four-position markings (three digits plus R) are ±1%, three-position are ±5%. 000 or 0000 denotes a zero-ohm jumper.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'json-form-urlencoded',
     name: 'JSON ↔ 表单请求体转换器',
     nameEn: 'JSON ↔ x-www-form-urlencoded Converter',
