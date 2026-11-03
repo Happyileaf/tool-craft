@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261103200231 | 电阻分压器计算器（双电阻电压分压与负载效应） | Web Tool | Exploration | `resistor-voltage-divider` / [PR #157](https://github.com/Happyileaf/tool-craft/pull/157) | 2026-11-04 | [详情](./idea-details/20261103200231.md) |
+| 20261031140460 | 二进制数据转多语言字节数组代码生成器（C / Java / Python / Go） | Web Tool | Existing Gap | `byte-array-codegen` / [PR #157](https://github.com/Happyileaf/tool-craft/pull/157) | 2026-11-04 | [详情](./idea-details/20261031140460.md) |
+| 20261029200827 | VIN 车辆识别代号校验位计算器与合法性校验器（ISO 3779 / GB 16735） | Web Tool | External Reference | `vin-validator` / [PR #157](https://github.com/Happyileaf/tool-craft/pull/157) | 2026-11-04 | [详情](./idea-details/20261029200827.md) |
+| 20261026200348 | 化学式摩尔质量计算器 | Web Tool | Exploration | `molar-mass-calculator` / [PR #157](https://github.com/Happyileaf/tool-craft/pull/157) | 2026-11-04 | [详情](./idea-details/20261026200348.md) |
+| 20261023020512 | SPF 记录生成与校验器 | Web Tool | Existing Gap | `spf-record-generator` / [PR #157](https://github.com/Happyileaf/tool-craft/pull/157) | 2026-11-04 | [详情](./idea-details/20261023020512.md) |
 | 20261017160148 | ULID generator | Web Tool | Exploration | `ulid-generator` / [PR #66](https://github.com/Happyileaf/tool-craft/pull/66) | 2026-10-26 | [详情](./idea-details/20261017160148.md) |
 | 20261017183433 | ROT13 与凯撒密码 | Web Tool | Exploration | `caesar-cipher` / [PR #66](https://github.com/Happyileaf/tool-craft/pull/66) | 2026-10-26 | [详情](./idea-details/20261017183433.md) |
 | 20261017200235 | 最大公约数 / 最小公倍数 / 质因数分解计算器 | Web Tool | Exploration | `number-theory-calculator` / [PR #66](https://github.com/Happyileaf/tool-craft/pull/66) | 2026-10-26 | [详情](./idea-details/20261017200235.md) |
