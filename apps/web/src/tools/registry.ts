@@ -17173,6 +17173,106 @@ info: request finished`,
     },
   },
   {
+    slug: 'awg-wire-calculator',
+    name: 'AWG 美国线规计算器',
+    nameEn: 'AWG Wire Gauge Calculator',
+    description:
+      '由 AWG 线号计算导体直径、截面积、铜电阻与载流量，并支持按直径反查标准线号（4/0–40 AWG）。',
+    descriptionEn:
+      'Convert American Wire Gauge numbers to diameter, cross-sectional area, copper resistance and ampacity, with reverse lookup by diameter (4/0–40 AWG).',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/awg-wire-calculator',
+    iconName: 'NodeIndex',
+    tags: ['AWG', '线规', '导线', '电缆', '电子'],
+    tagsEn: ['AWG', 'Wire Gauge', 'Cable', 'Electronics', 'Ampacity'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'AWG（American Wire Gauge，美国线规）计算器：输入线号即可得到导体直径（mm / inch）、截面积（mm² / kcmil）、20 ℃ 退火铜每千米与每千英尺电阻，以及机箱布线经验载流量，并支持由实测直径反查最接近的标准线号。',
+        coreFeatures: [
+          '闭式公式 d = 0.127 × 92^((36-n)/39) mm，覆盖 4/0（0000）至 40 AWG',
+          '输出直径、截面积、Ω/km、Ω/1000 ft 与 kcmil 多种单位',
+          '按直径反查最接近的标准线号并给出相对偏差',
+          '内置 0–30 AWG 常见线号速查表，全部本地计算',
+        ],
+        howToUse: [
+          '在输入框填写线号，如 12、24，或 aught 线号 4/0、3/0、2/0、1/0（也支持 0000/000/00）',
+          '查看直径、截面积、电阻与经验载流量结果',
+          '在「按直径反查」中输入实测直径（mm），获取最接近的标准线号',
+          '参考底部速查表快速比较常见线号参数',
+        ],
+        useCases: [
+          '接线 / 线束 / 配电柜选型时核对线径与载流量',
+          'PCB 绕线、变压器与电感绕制时估算线径和铜阻',
+          '美标线材（18/20/22/24 AWG）与国标 mm² 标称互查',
+        ],
+        privacyNote:
+          '全部参数均为浏览器本地纯函数计算，不发起网络请求，输入不会离开设备。',
+        faqs: [
+          {
+            question: 'AWG 数字越大导线越粗还是越细？',
+            answer:
+              '数字越大导线越细：4/0（0000）最粗（11.68 mm），40 AWG 最细（0.0799 mm）。线号每增加 3，截面积约减半（直径约缩小到 1/√2）；每增加 6，直径约减半；每增加 10，截面积约缩小到 1/10。',
+          },
+          {
+            question: '载流量数值为什么与其他资料略有出入？',
+            answer:
+              '载流量不是线规标准的一部分，它取决于绝缘耐温等级、单根还是成束敷设、环境温度与允许压降。本工具给出单根铜线机箱布线的保守经验值，工程选型请以 NEC 表 310.15 或线缆厂家手册为准。',
+          },
+          {
+            question: '电阻基于什么材料与温度？',
+            answer:
+              '电阻按 20 ℃ 退火铜（电阻率 1.7241×10⁻⁸ Ω·m，即 10.37 Ω·cmil/ft）由截面积换算，适用于标准实心铜线；铝线或绞合线需另乘系数，温度每升高 1 ℃ 铜阻约增加 0.393%。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'An American Wire Gauge (AWG) calculator: enter a gauge number to get conductor diameter (mm / inch), cross-sectional area (mm² / kcmil), annealed-copper resistance at 20 °C (Ω/km and Ω/1000 ft), and a chassis-wiring ampacity estimate, with reverse lookup of the nearest standard gauge from a measured diameter.',
+        coreFeatures: [
+          'Closed-form d = 0.127 × 92^((36-n)/39) mm covering 4/0 (0000) through 40 AWG',
+          'Diameter, area, Ω/km, Ω/1000 ft and kcmil outputs',
+          'Reverse lookup of the nearest standard gauge by diameter with relative deviation',
+          'Built-in 0–30 AWG quick-reference table; everything is computed locally',
+        ],
+        howToUse: [
+          'Enter a gauge such as 12 or 24, or an aught size 4/0, 3/0, 2/0, 1/0 (0000/000/00 also accepted)',
+          'Review diameter, area, resistance and ampacity results',
+          'Enter a measured diameter in mm under reverse lookup to find the nearest gauge',
+          'Use the quick-reference table to compare common gauges',
+        ],
+        useCases: [
+          'Sizing wires, harnesses and panels for diameter and current capacity',
+          'Estimating wire size and copper resistance for PCB jumpers and coil winding',
+          'Cross-checking AWG-labelled wire against mm² specifications',
+        ],
+        privacyNote:
+          'All values are computed locally in the browser by pure functions with no network requests; input never leaves the device.',
+        faqs: [
+          {
+            question: 'Does a higher AWG number mean a thicker wire?',
+            answer:
+              'No — higher numbers mean thinner wire: 4/0 (0000) is the thickest at 11.68 mm and 40 AWG the thinnest at 0.0799 mm. Every +3 gauges halves the cross-sectional area (diameter shrinks by √2), +6 gauges roughly halves the diameter, and +10 gauges cuts the area by ~10×.',
+          },
+          {
+            question: 'Why does the ampacity differ from other references?',
+            answer:
+              'Ampacity is not defined by the gauge standard; it depends on insulation temperature rating, bundling, ambient temperature and allowed voltage drop. The tool shows conservative single-conductor chassis-wiring figures — use NEC Table 310.15 or the cable manufacturer for engineering decisions.',
+          },
+          {
+            question: 'What material and temperature is the resistance based on?',
+            answer:
+              'Resistance is derived from annealed copper at 20 °C (resistivity 1.7241×10⁻⁸ Ω·m, i.e. 10.37 Ω·cmil/ft) and the computed area. Aluminum or stranded conductors need correction factors, and copper resistance rises about 0.393% per °C.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'json-form-urlencoded',
     name: 'JSON ↔ 表单请求体转换器',
     nameEn: 'JSON ↔ x-www-form-urlencoded Converter',
