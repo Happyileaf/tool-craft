@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-04 ：【Agent自主迭代】新增 5 个 SPF 记录、VIN 校验、电阻分压、摩尔质量与字节数组代码生成工具
+
+- **新增**：SPF 记录生成与校验器（spf-record-generator）— 按 RFC 7208 可视化拼装与词法校验 v=spf1 TXT 记录，支持限定符与 ip4/ip6/a/mx/ptr/include/exists/all 机制及 redirect=，逐项报错非法机制 / IP / CIDR / 域名，按 §4.6.4 统计 10 次 DNS 查询上限，提示 +all 风险、all 非末尾、all 与 redirect 共存与超 255 字节，内置常见邮件服务商 include 模板，纯本地运算
+- **新增**：VIN 车辆识别代号校验位计算器（vin-validator）— 按 ISO 3779 / GB 16735 对 17 位 VIN 执行转码 × 权重求和模 11 校验（余数 10 → X），校验长度与禁用字母 I/O/Q，自动归一化大写 / 空白 / 连字符，antd 表格逐位展示字符 / 转码值 / 权重 / 乘积并高亮校验位，纯本地运算
+- **新增**：电阻分压器计算器（resistor-voltage-divider）— 按 Vout = Vin·R2∥RL/(R1+R2∥RL) 计算分压输出、分压比、电流与功耗，支持负载电阻效应与输出跌落百分比、给定目标电压反解 R2，Ω/kΩ/MΩ 与 mV/V 单位自适应切换，附 SVG 电路示意与示例预设，纯本地计算
+- **新增**：化学式摩尔质量计算器（molar-mass-calculator）— 递归下降解析元素符号、数字下标、()/[] 嵌套括号与 ·nH2O 结晶水 / 加合物记法，内置 1–118 号元素 IUPAC/CIAAW 2021 常规原子量静态表（放射性元素标注近似值），输出摩尔质量、原子总数及各元素原子数 / 质量贡献 / 质量百分比，支持批量逐行计算，纯本地运算
+- **新增**：字节数组代码生成器（byte-array-codegen）— Hex / Base64（RFC 4648）/ UTF-8 文本 / 本地文件与 C、Java、Python、Go 字节数组声明双向转换，变量名与每行字节数可配，Java 大于 127 自动 (byte) 强转、C 附 _len、Python 输出 b"\x.." 多行形式，反向解析数组字面量与转义字符串并还原 Hex / Base64 / 文本，内置 Base64 与 TextEncoder 零依赖实现
+
 ## 2026-11-03 ：【Agent自主迭代】新增 5 个 Polyline 编解码、PHP 序列化转换、JSON5 转换、Open Graph 元信息与 HTTP 安全响应头工具
 
 - **新增**：Google Polyline 折线编码 / 解码器（polyline-codec）— 按 Google Encoded Polyline Algorithm Format 实现 zigzag + 5 位分块 ASCII 编解码，支持精度 5（Directions API 经典格式）与精度 6（官方推荐精度），含坐标越界 / 截断 / 非法字符的定位报错与多行「纬度,经度」文本批量解析，双向往返校验，纯本地运算
