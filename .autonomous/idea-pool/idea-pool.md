@@ -149,7 +149,7 @@
 | 20261029200826 | JWK Thumbprint 指纹计算器（RFC 7638） | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261029200826.md) |
 | 20261030021004 | AWS SigV4 请求签名生成器 | Web Tool | Exploration | Pending | 2026-10-30 | | [详情](./idea-details/20261030021004.md) |
 | 20261030021005 | OpenSSH 公钥指纹计算器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030021005.md) |
-| 20261030021006 | JSON 转 Zod schema 生成器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030021006.md) |
+| 20261030021006 | JSON 转 Zod schema 生成器 | Web Tool | Existing Gap | Claimed | 2026-10-30 | trae-agent | [详情](./idea-details/20261030021006.md) |
 | 20261030021007 | multipart/form-data 请求体构造器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030021007.md) |
 | 20261030021008 | SHA-3 / Keccak 哈希计算器（FIPS 202） | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030021008.md) |
 | 20261030080719 | Intel HEX 解析与校验和工具 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030080719.md) |
@@ -219,9 +219,9 @@
 | 20261103200233 | Apache / Nginx Combined Log Format 访问日志解析器 | Web Tool | Existing Gap | Pending | 2026-11-03 | | [详情](./idea-details/20261103200233.md) |
 | 20261103200234 | IPv4 数据报头解析与校验和验证器（RFC 791） | Web Tool | Existing Gap | Pending | 2026-11-03 | | [详情](./idea-details/20261103200234.md) |
 | 20261103200235 | 化学方程式配平器与摩尔计量计算器 | Web Tool | Exploration | Pending | 2026-11-03 | | [详情](./idea-details/20261103200235.md) |
-| 20261104020112 | SMD 电阻阻值码计算器（3 位数字码与 EIA-96 字母码双向） | Web Tool | Exploration | Pending | 2026-11-04 | | [详情](./idea-details/20261104020112.md) |
-| 20261104020113 | AWG 美国线规计算器（线号 ↔ 直径 / 截面积 / 电阻 / 载流量） | Web Tool | Exploration | Pending | 2026-11-04 | | [详情](./idea-details/20261104020113.md) |
-| 20261104020114 | CUSIP / SEDOL 证券识别码校验器（模 10 加权校验位与模 10 双倍加权） | Web Tool | Exploration | Pending | 2026-11-04 | | [详情](./idea-details/20261104020114.md) |
-| 20261104020115 | ABA 银行路由号码（RTN / Routing Number）校验器 | Web Tool | Exploration | Pending | 2026-11-04 | | [详情](./idea-details/20261104020115.md) |
+| 20261104020112 | SMD 电阻阻值码计算器（3 位数字码与 EIA-96 字母码双向） | Web Tool | Exploration | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104020112.md) |
+| 20261104020113 | AWG 美国线规计算器（线号 ↔ 直径 / 截面积 / 电阻 / 载流量） | Web Tool | Exploration | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104020113.md) |
+| 20261104020114 | CUSIP / SEDOL 证券识别码校验器（模 10 加权校验位与模 10 双倍加权） | Web Tool | Exploration | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104020114.md) |
+| 20261104020115 | ABA 银行路由号码（RTN / Routing Number）校验器 | Web Tool | Exploration | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104020115.md) |
 | 20261104020116 | IPFS CID 解析器与格式转换器（CIDv0/CIDv1、multibase 与 multihash 拆解） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104020116.md) |
 
