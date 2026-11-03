@@ -31,6 +31,7 @@ import {
   Pipette,
   QrCode,
   Radical,
+  Satellite,
   ShieldCheck,
   Shuffle,
   Sigma,
@@ -38,6 +39,8 @@ import {
   Snowflake,
   Sparkles,
   Table2,
+  Timer,
+  Video,
   Tags,
   Triangle,
   Type,
@@ -91,6 +94,9 @@ const toolIconMap = {
   Barcode,
   Triangle,
   Radical,
+  Satellite,
+  Timer,
+  Video,
   Wifi,
 };
 

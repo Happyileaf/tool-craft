@@ -233,4 +233,5 @@ export const toolLoaders: Record<
   'ntp-timestamp-converter': () => import('./ntp-timestamp-converter'),
   'imei-validator': () => import('./imei-validator'),
   'smpte-timecode-converter': () => import('./smpte-timecode-converter'),
+  'gps-week-converter': () => import('./gps-week-converter'),
 };

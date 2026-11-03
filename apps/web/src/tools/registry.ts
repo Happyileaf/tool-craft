@@ -20634,7 +20634,7 @@ sqrt(area) + 2 * r`,
       'Convert between 64-bit NTP timestamps (dotted decimal, hex or uint64) and UTC / Unix / local time, with 2036 era rollover handling.',
     category: ToolCategoryEnum.DATE_TIME,
     path: '/tools/ntp-timestamp-converter',
-    iconName: 'FieldTimeOutlined',
+    iconName: 'Timer',
     tags: ['NTP', '时间戳', 'UTC', 'RFC 5905', '网络协议'],
     tagsEn: ['NTP', 'Timestamp', 'UTC', 'RFC 5905', 'Networking'],
     isPopular: false,
@@ -20723,7 +20723,7 @@ sqrt(area) + 2 * r`,
       'Validate the Luhn check digit of 15-digit IMEI numbers, recognize 16-digit IMEISV, and break down TAC, SNR and check digit/SVN — fully offline.',
     category: ToolCategoryEnum.DEV_NETWORK,
     path: '/tools/imei-validator',
-    iconName: 'SafetyCertificateOutlined',
+    iconName: 'Smartphone',
     tags: ['IMEI', 'Luhn', '校验位', '3GPP', '移动通信'],
     tagsEn: ['IMEI', 'Luhn', 'Checksum', '3GPP', 'Mobile'],
     isPopular: false,
@@ -20812,7 +20812,7 @@ sqrt(area) + 2 * r`,
       'Convert between SMPTE timecode (HH:MM:SS:FF or drop-frame HH:MM:SS;FF), total frame count and real elapsed time for 24/25/30/29.97 DF/NDF rates.',
     category: ToolCategoryEnum.DATE_TIME,
     path: '/tools/smpte-timecode-converter',
-    iconName: 'VideoCameraOutlined',
+    iconName: 'Video',
     tags: ['SMPTE', '时间码', '丢帧', '帧速率', '视频'],
     tagsEn: ['SMPTE', 'Timecode', 'Drop Frame', 'FPS', 'Video'],
     isPopular: false,
@@ -20886,6 +20886,106 @@ sqrt(area) + 2 * r`,
             question: 'Why does 29.97 fps drift at all?',
             answer:
               'NTSC color-subcarrier compatibility pulled 30 fps down to 30000/1001 ≈ 29.97 fps, making each frame 1.001/30 s long. Numbering at 30 fps therefore runs slow; the drop-frame numbering scheme periodically skips numbers to keep timecode aligned with wall-clock time (about ±3.6 ms per hour).',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'gps-week-converter',
+    name: 'GPS 周数 / 周内秒互转器',
+    nameEn: 'GPS Week / TOW Converter',
+    description:
+      '在 GPS 连续周数与周内秒（TOW）、LNAV 10 位回卷周数（WN）和 UTC 时间之间双向换算，内置至 2017 年的闰秒表与 1024 周回卷解释。',
+    descriptionEn:
+      'Convert between GPS continuous week number, time of week (TOW), 10-bit LNAV rollover week number and UTC, with a leap-second table through 2017 and 1024-week rollover handling.',
+    category: ToolCategoryEnum.DATE_TIME,
+    path: '/tools/gps-week-converter',
+    iconName: 'Satellite',
+    tags: ['GPS', '周数', 'TOW', '闰秒', '卫星导航'],
+    tagsEn: ['GPS', 'Week Number', 'TOW', 'Leap Second', 'GNSS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '2024-03-01T00:00:00Z',
+    doc: {
+      zh: {
+        whatIsIt:
+          'GPS 周数 / 周内秒互转器依据 GPS 接口控制文件（IS-GPS-200）的时间体系实现：GPS 时从 1980-01-06T00:00:00Z 起算，不跳闰秒，以“连续周数 + 周内秒（TOW，每周日 00:00 归零，范围 0–604799）”标记时刻。工具同时支持旧式 LNAV 电文的 10 位周数（WN，0–1023，每 1024 周约 19.7 年回卷一次）与现代化 CNAV 的连续周数，并按 IERS 闰秒表完成与 UTC 的双向换算。',
+        coreFeatures: [
+          'UTC → GPS：输入 ISO 8601 时间，得到连续周数、周内秒、TOW 时钟表示与当前闰秒数',
+          'GPS → UTC：输入连续周数（CNAV）或 10 位 WN（LNAV）+ TOW，反算 UTC 与北京时间',
+          '回卷解释：LNAV WN 可选择 1980 / 1999 / 2019 / 2038 四个回卷周期，自动还原连续周数',
+          '闰秒修正：内置 1980 年以来全部 19 次闰秒节点（截至 2017-01-01，共 18 秒），跨闰秒时刻亦可准确换算',
+        ],
+        howToUse: [
+          '选择换算方向：UTC → GPS 或 GPS → UTC',
+          'UTC → GPS：填入 ISO 8601 时间（如 2024-03-01T00:00:00Z），立即查看连续周数、LNAV WN 与 TOW',
+          'GPS → UTC：选择连续周（CNAV）或 LNAV WN 模式；LNAV 模式需再选回卷周期，然后填入周数与周内秒',
+          '结果表格可逐项复制；周内秒支持小数，TOW 时钟表示形如“5 天 00:00:18”',
+        ],
+        useCases: [
+          '解析接收机日志、RINEX 文件或 NMEA/UBX 报文里的周数与 TOW，定位真实 UTC 时间',
+          '嵌入式 / GNSS 模块开发中处理 10 位周数回卷（2019 已发生一次，下一次 2038-11-21）',
+          '教学演示 GPS 时与 UTC 的差异（闰秒）以及周数回卷的成因',
+        ],
+        privacyNote:
+          '全部换算在浏览器本地完成，不向任何服务器发送时间或位置信息。',
+        faqs: [
+          {
+            question: 'LNAV WN 回卷是什么意思？',
+            answer:
+              'GPS 传统导航电文只用 10 个比特表示周数，范围 0–1023；数满 1024 周（约 19.7 年）后归零重新计数。已发生两次回卷：1999-08-22 与 2019-04-07，下一次在 2038-11-21。因此单独一个 WN 无法唯一确定日期，必须结合接收时间推断它属于哪个周期；工具通过回卷周期选项显式完成这一步。',
+          },
+          {
+            question: '为什么 GPS 时间比 UTC 快 18 秒？',
+            answer:
+              'GPS 时从 1980 年起连续走时、不插入闰秒，而 UTC 会在需要时加闰秒以跟随地球自转。自 1980 年以来 UTC 共插入 18 次闰秒（截至 2017-01-01），所以目前 GPS 比 UTC 快 18 秒，换算时工具会按目标时刻自动加减。',
+          },
+          {
+            question: 'TOW（周内秒）从什么时候开始计数？',
+            answer:
+              'TOW 从每周日 00:00:00 GPS 时开始，从 0 计到 604799.999…，下一个周日归零。例如 TOW 432018 表示周五 00:00:18（5 天又 18 秒）。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The GPS Week / TOW Converter implements the time system defined in IS-GPS-200: GPS Time started at 1980-01-06T00:00:00Z, never inserts leap seconds, and labels an instant by a continuous week number plus Time Of Week (TOW, reset every Sunday 00:00, range 0–604799). The tool supports both the legacy 10-bit LNAV week number (WN, 0–1023, rolling over every 1024 weeks / ~19.7 years) and the modern continuous CNAV week number, and converts to and from UTC using the IERS leap-second table.',
+        coreFeatures: [
+          'UTC → GPS: enter an ISO 8601 instant and get continuous week, TOW, clock-style TOW and current leap-second offset',
+          'GPS → UTC: enter a continuous week (CNAV) or 10-bit WN (LNAV) plus TOW and get UTC and Beijing time',
+          'Rollover handling: pick the 1980 / 1999 / 2019 / 2038 rollover cycle for an LNAV WN to recover the continuous week',
+          'Leap-second aware: built-in table of all 19 leap-second steps since 1980 (18 seconds since 2017-01-01), accurate across leap-second boundaries',
+        ],
+        howToUse: [
+          'Choose the direction: UTC → GPS or GPS → UTC',
+          'UTC → GPS: type an ISO 8601 instant (e.g. 2024-03-01T00:00:00Z) to see the continuous week, LNAV WN and TOW',
+          'GPS → UTC: choose continuous-week (CNAV) or LNAV WN input; for LNAV also pick the rollover cycle, then fill in week and TOW',
+          'Every result row is copyable; TOW accepts fractions and the clock form looks like “5 days 00:00:18”',
+        ],
+        useCases: [
+          'Turning week/TOW values from receiver logs, RINEX files or NMEA/UBX messages into real UTC instants',
+          'Handling the 10-bit week rollover in embedded/GNSS development (it happened in 2019; next is 2038-11-21)',
+          'Teaching why GPS Time differs from UTC (leap seconds) and why week numbers roll over',
+        ],
+        privacyNote:
+          'All conversion runs locally in your browser; no time or location data is sent to any server.',
+        faqs: [
+          {
+            question: 'What is the LNAV week-number rollover?',
+            answer:
+              'The legacy GPS navigation message uses only 10 bits for the week number (0–1023); after 1024 weeks (~19.7 years) it wraps to zero. Rollovers occurred on 1999-08-22 and 2019-04-07, with the next on 2038-11-21. A WN alone is therefore ambiguous — you must know which cycle it belongs to, which is exactly what the rollover-cycle selector resolves.',
+          },
+          {
+            question: 'Why is GPS Time 18 seconds ahead of UTC?',
+            answer:
+              'GPS Time has run continuously since 1980 without leap seconds, while UTC inserts leap seconds to follow Earth rotation. Eighteen leap seconds have been inserted since 1980 (as of 2017-01-01), so GPS is currently 18 seconds ahead of UTC; the tool adds or subtracts the offset automatically for the target instant.',
+          },
+          {
+            question: 'When does TOW (Time Of Week) start counting?',
+            answer:
+              'TOW starts at 0 on Sunday 00:00:00 GPS Time and counts up to 604799.999… before resetting the next Sunday. For example TOW 432018 is Friday 00:00:18 (5 days and 18 seconds).',
           },
         ],
       },
