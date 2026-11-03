@@ -17473,6 +17473,106 @@ info: request finished`,
     },
   },
   {
+    slug: 'json-to-zod',
+    name: 'JSON 转 Zod Schema 生成器',
+    nameEn: 'JSON to Zod Schema Generator',
+    description:
+      '从一个或多个 JSON 样例推断 Zod v3 schema：对象、数组、枚举、联合、可选与可空字段，以及 email/uuid/url/date 格式提示。',
+    descriptionEn:
+      'Infer a Zod v3 schema from one or more JSON samples: objects, arrays, enums, unions, optional/nullable fields, and email/uuid/url/date format hints.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-zod',
+    iconName: 'FileJson2',
+    tags: ['Zod', 'JSON', 'Schema', 'TypeScript', '代码生成'],
+    tagsEn: ['Zod', 'JSON', 'Schema', 'TypeScript', 'Codegen'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON 转 Zod Schema 生成器从真实的 JSON 响应或样例数据出发，递归推断字段类型并生成可直接复制的 Zod v3 校验代码（z.object / z.array / z.enum / z.union 等）。工具只产出源码文本，不会安装或引入 zod 运行时依赖，全部推断在浏览器本地完成。',
+        coreFeatures: [
+          '基本类型与约束：z.string、z.number().int()、z.boolean、z.null，空数组为 z.array(z.unknown())',
+          '字符串格式提示：email、uuid、url、datetime、date（多样本格式不一致时退化为普通 string）',
+          '多样例推断：空行分隔多个 JSON，缺失字段变 .optional()，null 变 .nullable()，取值可重复且离散时推断 z.enum',
+          '嵌套对象与数组提取为独立命名 const，支持自定义根名、2/4 空格缩进、是否导出根 schema',
+        ],
+        howToUse: [
+          '在左侧粘贴一个 JSON 样例，右侧实时生成 Zod schema',
+          '需要推断可选 / 可空 / 枚举 / 联合时，点击「多样例」并用空行分隔多个 JSON 文档',
+          '调整根 schema 名、缩进与导出开关，或点击「复制结果」获取源码',
+          '将生成的代码粘贴到你的 TypeScript 项目，并确保项目已自行安装 zod',
+        ],
+        useCases: [
+          '为已有后端 API 响应快速补齐运行时校验层',
+          '对接第三方接口时从样例报文生成类型守卫与表单校验',
+          '多样例数据合并分析字段是否可选、可空或为枚举',
+        ],
+        privacyNote:
+          'JSON 解析与 schema 推断全部在浏览器内存中进行，不发起网络请求，也不会上传样例数据。',
+        faqs: [
+          {
+            question: '生成的代码需要安装什么依赖？',
+            answer:
+              '代码使用 Zod v3 API（如 z.string().email()、z.union），需在目标项目自行 npm install zod。工具站本身不依赖 zod，只输出文本。',
+          },
+          {
+            question: '多个 JSON 样例怎么提供？',
+            answer:
+              '在输入框中用空行分隔多个完整的 JSON 文档即可。某字段只在部分样例出现会被标记 .optional()，出现 null 会标记 .nullable()，离散且重复出现的字符串会推断为 z.enum。',
+          },
+          {
+            question: '推断结果能保证覆盖所有真实数据吗？',
+            answer:
+              '不能。推断只基于所提供的样例：样例中没出现的字段、格式或联合分支无法被发现。生产环境应结合接口契约人工复核，并按需补充 .min()、.max() 等业务约束。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON to Zod Schema Generator recursively infers field types from real JSON responses or samples and produces ready-to-paste Zod v3 validation code (z.object / z.array / z.enum / z.union and more). It emits source text only — no zod runtime dependency is installed or imported — and all inference runs locally in your browser.',
+        coreFeatures: [
+          'Primitives and constraints: z.string, z.number().int(), z.boolean, z.null; empty arrays become z.array(z.unknown())',
+          'String format hints: email, uuid, url, datetime, date (falls back to plain string when samples disagree)',
+          'Multi-sample inference: blank-line-separated JSON documents make missing fields .optional(), null values .nullable(), and repeated discrete strings z.enum',
+          'Nested objects and arrays extracted as named consts, with custom root name, 2/4-space indent, and export toggle',
+        ],
+        howToUse: [
+          'Paste one JSON sample on the left; the Zod schema updates live on the right',
+          'For optional/nullable/enum/union inference, click "multi-sample" and separate complete JSON documents with blank lines',
+          'Adjust the root schema name, indentation and export toggle, then click "Copy result"',
+          'Paste the generated code into your TypeScript project and make sure zod is installed there',
+        ],
+        useCases: [
+          'Quickly adding a runtime validation layer for existing backend API responses',
+          'Generating type guards and form validation from sample payloads of third-party APIs',
+          'Analyzing whether fields are optional, nullable or enum-valued across multiple samples',
+        ],
+        privacyNote:
+          'JSON parsing and schema inference run entirely in browser memory; no network requests are made and sample data is never uploaded.',
+        faqs: [
+          {
+            question: 'What dependency does the generated code need?',
+            answer:
+              'The output uses Zod v3 APIs (e.g. z.string().email(), z.union), so install zod in the target project yourself. The tool site does not depend on zod — it only emits text.',
+          },
+          {
+            question: 'How do I provide multiple JSON samples?',
+            answer:
+              'Separate complete JSON documents with blank lines in the input box. A field present in only some samples becomes .optional(), null values become .nullable(), and repeated discrete strings are inferred as z.enum.',
+          },
+          {
+            question: 'Does the inferred schema cover all real-world data?',
+            answer:
+              'No. Inference is limited by the samples provided: fields, formats or union branches absent from samples cannot be discovered. Review against the API contract for production and add business constraints such as .min() and .max() as needed.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'json-form-urlencoded',
     name: 'JSON ↔ 表单请求体转换器',
     nameEn: 'JSON ↔ x-www-form-urlencoded Converter',
