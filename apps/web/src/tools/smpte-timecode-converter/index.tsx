@@ -1,9 +1,10 @@
+'use client';
+
 import React, { useMemo, useState } from 'react';
 import { Alert, Button, Card, Descriptions, Input, Radio, Space, Table, Tag, Typography, message } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { CopyOutlined, ThunderboltOutlined } from '@ant-design/icons';
-import ToolMetaHeader from '../../components/ToolMetaHeader';
-import ToolDocSection from '../../components/ToolDocSection';
+import type { ToolComponentProps } from '../loaders';
 import {
   SMPTE_DIRECTION_OPTIONS,
   SMPTE_SAMPLE_FRAMES,
@@ -56,12 +57,12 @@ const resultColumns: ColumnsType<ResultRow> = [
   },
 ];
 
-const SmpteTimecodeConverter: React.FC<{ defaultInput?: string }> = ({ defaultInput }) => {
+const SmpteTimecodeConverter: React.FC<ToolComponentProps> = () => {
   const [direction, setDirection] = useState<Direction>('tc-to-frames');
   const [profileKey, setProfileKey] = useState<string>('29.97df');
-  const [tcInput, setTcInput] = useState(defaultInput ?? SMPTE_SAMPLE_TIMECODE);
+  const [tcInput, setTcInput] = useState(SMPTE_SAMPLE_TIMECODE);
   const [frameInput, setFrameInput] = useState(SMPTE_SAMPLE_FRAMES);
-  const profile = FPS_PROFILES[profileKey];
+  const profile = FPS_PROFILES[profileKey] ?? FPS_PROFILES['29.97df']!;
 
   const tcResult = useMemo(() => {
     const parsed = parseTimecode(tcInput);
@@ -70,7 +71,7 @@ const SmpteTimecodeConverter: React.FC<{ defaultInput?: string }> = ({ defaultIn
     }
     const invalid = validateTimecode(parsed.parts, profile);
     if (invalid) {
-      return { error: invalid as const };
+      return { error: invalid };
     }
     const total = timecodeToTotalFrames(parsed.parts, profile);
     const realMs = totalFramesToRealMs(total, profile);
@@ -98,8 +99,8 @@ const SmpteTimecodeConverter: React.FC<{ defaultInput?: string }> = ({ defaultIn
     } else {
       const durationMatch = trimmed.match(/^([\d.]+)\s*(ms|s|m|h)$/i);
       if (durationMatch) {
-        const amount = Number(durationMatch[1]);
-        const unit = durationMatch[2].toLowerCase();
+        const amount = Number(durationMatch[1] ?? '');
+        const unit = (durationMatch[2] ?? '').toLowerCase();
         const ms = unit === 'ms' ? amount : amount * (unit === 's' ? 1000 : unit === 'm' ? 60_000 : 3_600_000);
         total = realMsToTotalFrames(ms, profile);
         sourceLabel = `真实时长（${trimmed} ≈ ${total} 帧）`;
@@ -124,8 +125,6 @@ const SmpteTimecodeConverter: React.FC<{ defaultInput?: string }> = ({ defaultIn
 
   return (
     <div className={styles.container}>
-      <ToolMetaHeader slug="smpte-timecode-converter" defaultInput={defaultInput} />
-
       <Card>
         <Space direction="vertical" size="middle" style={{ width: '100%' }}>
           <div>
@@ -138,7 +137,7 @@ const SmpteTimecodeConverter: React.FC<{ defaultInput?: string }> = ({ defaultIn
                 value={profileKey}
                 onChange={(event) => setProfileKey(event.target.value)}
                 options={SMPTE_PROFILE_KEYS.map((key) => ({
-                  label: FPS_PROFILES[key].label,
+                  label: FPS_PROFILES[key]?.label ?? key,
                   value: key,
                 }))}
               />
@@ -218,10 +217,6 @@ const SmpteTimecodeConverter: React.FC<{ defaultInput?: string }> = ({ defaultIn
             </Space>
           )}
         </Space>
-      </Card>
-
-      <Card>
-        <ToolDocSection slug="smpte-timecode-converter" />
       </Card>
     </div>
   );

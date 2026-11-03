@@ -20632,7 +20632,7 @@ sqrt(area) + 2 * r`,
       '在 NTP 64 位定点时间戳（点分十进制/十六进制/uint64）与 UTC、Unix 秒、本地时间之间双向换算，支持 2036 回卷纪元解释。',
     descriptionEn:
       'Convert between 64-bit NTP timestamps (dotted decimal, hex or uint64) and UTC / Unix / local time, with 2036 era rollover handling.',
-    category: ToolCategoryEnum.DATE_TIME,
+    category: ToolCategoryEnum.TIME_MATH,
     path: '/tools/ntp-timestamp-converter',
     iconName: 'Timer',
     tags: ['NTP', '时间戳', 'UTC', 'RFC 5905', '网络协议'],
@@ -20721,7 +20721,7 @@ sqrt(area) + 2 * r`,
       '校验 15 位 IMEI 的 Luhn 校验位、识别 16 位 IMEISV，并拆解 TAC 型号分配码、SNR 序列号与校验位/软件版本号，纯本地计算。',
     descriptionEn:
       'Validate the Luhn check digit of 15-digit IMEI numbers, recognize 16-digit IMEISV, and break down TAC, SNR and check digit/SVN — fully offline.',
-    category: ToolCategoryEnum.DEV_NETWORK,
+    category: ToolCategoryEnum.DEV_CODE,
     path: '/tools/imei-validator',
     iconName: 'Smartphone',
     tags: ['IMEI', 'Luhn', '校验位', '3GPP', '移动通信'],
@@ -20810,7 +20810,7 @@ sqrt(area) + 2 * r`,
       '在 SMPTE 时间码（HH:MM:SS:FF / 丢帧 HH:MM:SS;FF）与总帧数、真实时长之间双向换算，支持 24/25/30/29.97 DF/NDF 制式。',
     descriptionEn:
       'Convert between SMPTE timecode (HH:MM:SS:FF or drop-frame HH:MM:SS;FF), total frame count and real elapsed time for 24/25/30/29.97 DF/NDF rates.',
-    category: ToolCategoryEnum.DATE_TIME,
+    category: ToolCategoryEnum.TIME_MATH,
     path: '/tools/smpte-timecode-converter',
     iconName: 'Video',
     tags: ['SMPTE', '时间码', '丢帧', '帧速率', '视频'],
@@ -20899,7 +20899,7 @@ sqrt(area) + 2 * r`,
       '在 GPS 连续周数与周内秒（TOW）、LNAV 10 位回卷周数（WN）和 UTC 时间之间双向换算，内置至 2017 年的闰秒表与 1024 周回卷解释。',
     descriptionEn:
       'Convert between GPS continuous week number, time of week (TOW), 10-bit LNAV rollover week number and UTC, with a leap-second table through 2017 and 1024-week rollover handling.',
-    category: ToolCategoryEnum.DATE_TIME,
+    category: ToolCategoryEnum.TIME_MATH,
     path: '/tools/gps-week-converter',
     iconName: 'Satellite',
     tags: ['GPS', '周数', 'TOW', '闰秒', '卫星导航'],
@@ -20986,6 +20986,107 @@ sqrt(area) + 2 * r`,
             question: 'When does TOW (Time Of Week) start counting?',
             answer:
               'TOW starts at 0 on Sunday 00:00:00 GPS Time and counts up to 604799.999… before resetting the next Sunday. For example TOW 432018 is Friday 00:00:18 (5 days and 18 seconds).',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'sms-segment-calculator',
+    name: 'SMS 短信长度与分片计算器',
+    nameEn: 'SMS Length & Segment Calculator',
+    description:
+      '按 3GPP TS 23.038 计算短信计费长度与分片条数：自动判定 GSM 7-bit / UCS-2 编码，标注扩展字符与非 GSM 字符，展示 UDH concat 长短信每段净荷与 PDU 字节数。',
+    descriptionEn:
+      'Count SMS billing length and segments per 3GPP TS 23.038: automatic GSM 7-bit / UCS-2 detection, extension and non-GSM character highlighting, plus UDH concat payload and PDU byte breakdown.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/sms-segment-calculator',
+    iconName: 'MessageSquare',
+    tags: ['SMS', 'GSM 7-bit', 'UCS-2', '长短信', 'UDH'],
+    tagsEn: ['SMS', 'GSM 7-bit', 'UCS-2', 'Concatenated SMS', 'UDH'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'Your verification code is 482915. It expires in 10 minutes. Do not share this code with anyone.',
+    doc: {
+      zh: {
+        whatIsIt:
+          'SMS 短信长度与分片计算器依据 3GPP TS 23.038（字母表与编码）和 TS 23.040（TP 层与 UDH 拼接头）在浏览器本地完成确定性计算：自动判断文本可由 GSM 7-bit 默认字母表表示还是必须使用 UCS-2，给出字符数、计费单位（septet / 编码单元）、PDU 字节数与长短信分片条数，并逐一标注 GSM 扩展字符与触发 UCS-2 的非 GSM 字符。',
+        coreFeatures: [
+          '编码自动判定：全部字符落在 GSM 默认字母表（含扩展表）走 7-bit，否则整体切换 UCS-2',
+          '长度与计费：GSM-7 单条 160 septet、长短信每段 153；UCS-2 单条 70 个编码单元、长短信每段 67',
+          'UDH 拼接头：长短信每段 6 字节 concat 头（净荷由 140 降为 134 字节），分片明细表给出每段单位与 PDU 字节',
+          '字符级标注：扩展字符 ^{}\\[~]|€ 每个占 2 个 septet；emoji 等 BMP 外字符在 UCS-2 中占代理对 2 单元且不跨段拆分',
+        ],
+        howToUse: [
+          '在文本框粘贴或输入短信内容，结果随输入实时更新',
+          '查看顶部四张统计卡：编码方式、计费分片条数、单位总数/PDU 字节、末段剩余容量',
+          '通过字符标签确认哪些扩展字符按 2 单位计费、哪些非 GSM 字符导致了 UCS-2 膨胀',
+          '需要验证网关行为时可切换“强制 GSM-7 / 强制 UCS-2”，强制 GSM 遇到不可编码字符会给出错误告警',
+        ],
+        useCases: [
+          '发送通知、营销或验证码短信前预估计费条数，控制在单条或整数分段内',
+          '排查用户反馈“短信被拆成好几条 / 末尾内容丢失”的分段边界问题',
+          '开发短信网关、手机端输入框剩余字数提示时核对 7-bit 与 UCS-2 的容量规则',
+        ],
+        privacyNote:
+          '所有文本仅保存在浏览器内存中参与计算，不向任何服务器发送短信内容或手机号。',
+        faqs: [
+          {
+            question: '为什么加了一个中文字符，可发长度就从 160 降到 70？',
+            answer:
+              'SMS 一条 TP-UD 固定 140 字节。纯 GSM 文本用 7-bit 打包，140 字节可容纳 160 个字符；只要混入一个 GSM 字母表之外的字符（中文、emoji、全角标点等），整条短信就必须改用 UCS-2（每字符 2 字节），容量立刻变为 70 个字符。',
+          },
+          {
+            question: '为什么长短信每段只能放 153 / 67 个字符？',
+            answer:
+              '长短信（concatenated SMS）需要在每段开头放 6 字节的 UDH 用户数据头（信息要素标识、总段数、本段序号、引用号），净荷只剩 134 字节。GSM-7 下 134×8/7 = 153 个 septet；UCS-2 下 134/2 = 67 个编码单元。',
+          },
+          {
+            question: '哪些字符在 GSM-7 下算两个字符？',
+            answer:
+              '扩展表的 9 个字符：^ { } \\ [ ~ ] | €。它们在 PDU 中以 ESC 转义加一个码值表示，占 2 个 septet；其余默认字母表字符（含空格、换行、£¥§ 等）均为 1 个 septet。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The SMS Length & Segment Calculator performs deterministic, fully local analysis based on 3GPP TS 23.038 (alphabets and coding) and TS 23.040 (TP layer and UDH concatenation header). It decides whether a message fits the GSM 7-bit default alphabet or requires UCS-2, and reports character count, billing units (septets / code units), PDU bytes and the number of long-message segments, highlighting every GSM extension character and every non-GSM character.',
+        coreFeatures: [
+          'Auto coding: GSM 7-bit when all characters exist in the default alphabet (including extensions), otherwise UCS-2 for the whole message',
+          'Length and billing: 160 septets per single GSM message, 153 per concat segment; 70 code units per single UCS-2 message, 67 per segment',
+          'UDH header: 6-byte concat header on every long segment (134-byte payload), with a per-segment table of units and PDU bytes',
+          'Character-level detail: extension characters ^{}\\[~]|€ cost 2 septets each; emoji and other supplementary characters occupy a 2-unit surrogate pair that is never split across segments',
+        ],
+        howToUse: [
+          'Paste or type the message text; all figures update live',
+          'Read the four stat cards: coding, billable segments, total units / PDU bytes, and remaining capacity in the last segment',
+          'Use the character tags to see which extension characters cost double and which non-GSM characters forced the UCS-2 switch',
+          'Switch to “force GSM-7 / force UCS-2” to verify gateway behavior; forcing GSM on unencodable text raises an error-level warning',
+        ],
+        useCases: [
+          'Estimating billable segments before sending notifications, marketing or OTP messages',
+          'Diagnosing “my message got split / the tail was dropped” reports by inspecting segment boundaries',
+          'Validating the character-counter logic of SMS gateways and phone input fields for both 7-bit and UCS-2',
+        ],
+        privacyNote:
+          'The text stays in browser memory for computation only; no message content or phone number is sent anywhere.',
+        faqs: [
+          {
+            question: 'Why does one Chinese character drop the limit from 160 to 70?',
+            answer:
+              'A single SMS TP-UD holds 140 bytes. Pure GSM text is packed at 7 bits per character, so 140 bytes fit 160 characters; as soon as one character lies outside the GSM alphabet (Chinese, emoji, full-width punctuation, etc.), the whole message must use UCS-2 at 2 bytes per character, cutting capacity to 70.',
+          },
+          {
+            question: 'Why only 153 / 67 characters per long-message segment?',
+            answer:
+              'A concatenated SMS needs a 6-byte UDH at the start of every segment (IEI, total parts, part number, reference), leaving 134 payload bytes: 134×8/7 = 153 septets for GSM-7 and 134/2 = 67 code units for UCS-2.',
+          },
+          {
+            question: 'Which characters count double in GSM-7?',
+            answer:
+              'The nine extension-table characters: ^ { } \\ [ ~ ] | €. They are encoded as ESC plus a code value (2 septets); every other default-alphabet character (including spaces, newlines, £¥§) costs 1 septet.',
           },
         ],
       },

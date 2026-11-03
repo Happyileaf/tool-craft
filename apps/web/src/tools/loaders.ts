@@ -234,4 +234,5 @@ export const toolLoaders: Record<
   'imei-validator': () => import('./imei-validator'),
   'smpte-timecode-converter': () => import('./smpte-timecode-converter'),
   'gps-week-converter': () => import('./gps-week-converter'),
+  'sms-segment-calculator': () => import('./sms-segment-calculator'),
 };

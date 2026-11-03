@@ -23,9 +23,12 @@ export const NTP_ROLLOVER_UNIX_MS = Date.UTC(2036, 1, 7, 6, 28, 16);
  * @param era - 回卷纪年号，0 表示 1900–2036，1 表示 2036–2152
  * @returns Unix 毫秒时间戳
  */
+const BIGINT_32 = BigInt(32);
+const BIGINT_32_MASK = BigInt(0xffffffff);
+
 export function ntpToUnixMs(value: bigint, era = 0): number {
-  const seconds = Number((value >> 32n) & 0xffffffffn) + era * NTP_FRACTION_SCALE;
-  const fraction = Number(value & 0xffffffffn);
+  const seconds = Number((value >> BIGINT_32) & BIGINT_32_MASK) + era * NTP_FRACTION_SCALE;
+  const fraction = Number(value & BIGINT_32_MASK);
   return Math.round((seconds - NTP_EPOCH_OFFSET_SECONDS) * 1000 + (fraction * 1000) / NTP_FRACTION_SCALE);
 }
 
@@ -42,7 +45,7 @@ export function unixMsToNtp(unixMs: number): { value: bigint; era: number } {
   const secondsInEra = Math.floor(ntpSecondsFloat) % NTP_FRACTION_SCALE;
   const fraction = Math.round(((ntpSecondsFloat - Math.floor(ntpSecondsFloat)) * NTP_FRACTION_SCALE) % NTP_FRACTION_SCALE);
   return {
-    value: (BigInt(secondsInEra) << 32n) | BigInt(fraction),
+    value: (BigInt(secondsInEra) << BIGINT_32) | BigInt(fraction),
     era,
   };
 }
@@ -74,15 +77,16 @@ export function parseNtpInput(text: string): bigint | null {
 
   if (input.includes('.')) {
     const parts = input.split('.');
-    if (parts.length !== 2 || !/^\d+$/.test(parts[0]) || !/^\d+$/.test(parts[1])) {
+    const secText = parts[0] ?? '';
+    const fracText = parts[1] ?? '';
+    if (parts.length !== 2 || !/^\d+$/.test(secText) || !/^\d+$/.test(fracText)) {
       return null;
     }
-    const seconds = BigInt(parts[0]);
+    const seconds = BigInt(secText);
     // 小数十进制串 -> 32 位定点小数：fraction / 10^k * 2^32
-    const fracText = parts[1];
-    const decimalDivisor = 10n ** BigInt(fracText.length);
+    const decimalDivisor = BigInt(10) ** BigInt(fracText.length);
     const fraction = (BigInt(fracText) * BigInt(NTP_FRACTION_SCALE)) / decimalDivisor;
-    return (seconds << 32n) | fraction;
+    return (seconds << BIGINT_32) | fraction;
   }
 
   if (/^\d+$/.test(input)) {
@@ -116,7 +120,7 @@ export function formatBeijing(unixMs: number): string {
  */
 export function splitNtp(value: bigint): { seconds: number; fraction: number } {
   return {
-    seconds: Number((value >> 32n) & 0xffffffffn),
-    fraction: Number(value & 0xffffffffn),
+    seconds: Number((value >> BIGINT_32) & BIGINT_32_MASK),
+    fraction: Number(value & BIGINT_32_MASK),
   };
 }

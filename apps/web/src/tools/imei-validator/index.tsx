@@ -1,8 +1,9 @@
+'use client';
+
 import React, { useMemo, useState } from 'react';
 import { Alert, Button, Card, Descriptions, Input, Space, Tag, Typography, message } from 'antd';
 import { CopyOutlined, ThunderboltOutlined } from '@ant-design/icons';
-import ToolMetaHeader from '../../components/ToolMetaHeader';
-import ToolDocSection from '../../components/ToolDocSection';
+import type { ToolComponentProps } from '../loaders';
 import { IMEI_SAMPLE_INPUT, IMEI_SAMPLE_LIST } from './constants';
 import styles from './index.module.css';
 import { analyzeImei, luhnCheckDigit } from './utils/imei';
@@ -18,16 +19,14 @@ const copyText = async (text: string) => {
   }
 };
 
-const ImeiValidator: React.FC<{ defaultInput?: string }> = ({ defaultInput }) => {
-  const [input, setInput] = useState(defaultInput ?? IMEI_SAMPLE_INPUT);
+const ImeiValidator: React.FC<ToolComponentProps> = () => {
+  const [input, setInput] = useState(IMEI_SAMPLE_INPUT);
   const analysis = useMemo(() => analyzeImei(input), [input]);
   const normalized = analysis.normalized;
   const payload14 = /^\d{15,16}$/.test(normalized) ? normalized.slice(0, 14) : '';
 
   return (
     <div className={styles.container}>
-      <ToolMetaHeader slug="imei-validator" defaultInput={defaultInput} />
-
       <Card>
         <Space direction="vertical" size="middle" style={{ width: '100%' }}>
           <div>
@@ -147,10 +146,6 @@ const ImeiValidator: React.FC<{ defaultInput?: string }> = ({ defaultInput }) =>
             />
           )}
         </Space>
-      </Card>
-
-      <Card>
-        <ToolDocSection slug="imei-validator" />
       </Card>
     </div>
   );

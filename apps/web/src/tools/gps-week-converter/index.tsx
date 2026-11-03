@@ -1,9 +1,10 @@
+'use client';
+
 import React, { useMemo, useState } from 'react';
 import { Alert, Button, Card, InputNumber, Radio, Space, Table, Tag, Typography, message } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { CopyOutlined, ThunderboltOutlined } from '@ant-design/icons';
-import ToolMetaHeader from '../../components/ToolMetaHeader';
-import ToolDocSection from '../../components/ToolDocSection';
+import type { ToolComponentProps } from '../loaders';
 import { GPS_DIRECTION_OPTIONS, GPS_ROLLOVER_OPTIONS, GPS_SAMPLE_DATE } from './constants';
 import styles from './index.module.css';
 import {
@@ -55,9 +56,9 @@ const copyText = async (text: string) => {
 
 const formatUtc = (unixMs: number) => new Date(unixMs).toISOString().replace(/\.\d{3}Z$/, 'Z');
 
-const GpsWeekConverter: React.FC<{ defaultInput?: string }> = ({ defaultInput }) => {
+const GpsWeekConverter: React.FC<ToolComponentProps> = () => {
   const [direction, setDirection] = useState<Direction>('utc-to-gps');
-  const [dateInput, setDateInput] = useState(defaultInput ?? GPS_SAMPLE_DATE);
+  const [dateInput, setDateInput] = useState(GPS_SAMPLE_DATE);
   const [weekInput, setWeekInput] = useState<number | null>(2303);
   const [towInput, setTowInput] = useState<number | null>(432018);
   const [inputMode, setInputMode] = useState<'continuous' | 'lnav'>('continuous');
@@ -120,8 +121,6 @@ const GpsWeekConverter: React.FC<{ defaultInput?: string }> = ({ defaultInput })
 
   return (
     <div className={styles.container}>
-      <ToolMetaHeader slug="gps-week-converter" defaultInput={defaultInput} />
-
       <Card>
         <Space direction="vertical" size="middle" style={{ width: '100%' }}>
           <Radio.Group
@@ -250,10 +249,6 @@ const GpsWeekConverter: React.FC<{ defaultInput?: string }> = ({ defaultInput })
             </Space>
           )}
         </Space>
-      </Card>
-
-      <Card>
-        <ToolDocSection slug="gps-week-converter" />
       </Card>
     </div>
   );

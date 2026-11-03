@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useMemo, useState } from 'react';
 import {
   Alert,
@@ -17,8 +19,7 @@ import {
   CopyOutlined,
   ThunderboltOutlined,
 } from '@ant-design/icons';
-import ToolMetaHeader from '../../components/ToolMetaHeader';
-import ToolDocSection from '../../components/ToolDocSection';
+import type { ToolComponentProps } from '../loaders';
 import { NTP_DATE_PLACEHOLDER, NTP_DIRECTION_OPTIONS, NTP_SAMPLE_INPUT } from './constants';
 import styles from './index.module.css';
 import {
@@ -90,7 +91,7 @@ function NtpToDatePanel() {
     const fracDecimal =
       fraction === 0
         ? '0'
-        : String((BigInt(fraction) * 1000000000n) / BigInt(NTP_FRACTION_SCALE)).replace(/0+$/, '');
+        : String((BigInt(fraction) * BigInt(1000000000)) / BigInt(NTP_FRACTION_SCALE)).replace(/0+$/, '');
     return {
       value,
       seconds,
@@ -191,7 +192,7 @@ function DateToNtpPanel() {
     }
     const { value, era } = unixMsToNtp(unixMs);
     const { seconds, fraction } = splitNtp(value);
-    const fracDecimal = fraction === 0 ? '0' : String((BigInt(fraction) * 1000000000n) / BigInt(NTP_FRACTION_SCALE)).replace(/0+$/, '');
+    const fracDecimal = fraction === 0 ? '0' : String((BigInt(fraction) * BigInt(1000000000)) / BigInt(NTP_FRACTION_SCALE)).replace(/0+$/, '');
     return {
       value,
       era,
@@ -261,13 +262,11 @@ function DateToNtpPanel() {
   );
 }
 
-const NtpTimestampConverter: React.FC<{ defaultInput?: string }> = ({ defaultInput }) => {
+const NtpTimestampConverter: React.FC<ToolComponentProps> = () => {
   const [direction, setDirection] = useState<Direction>('ntp-to-date');
 
   return (
     <div className={styles.container}>
-      <ToolMetaHeader slug="ntp-timestamp-converter" defaultInput={defaultInput} />
-
       <Card>
         <Space direction="vertical" size="middle" style={{ width: '100%' }}>
           <Radio.Group
@@ -284,10 +283,6 @@ const NtpTimestampConverter: React.FC<{ defaultInput?: string }> = ({ defaultInp
           />
           {direction === 'ntp-to-date' ? <NtpToDatePanel /> : <DateToNtpPanel />}
         </Space>
-      </Card>
-
-      <Card>
-        <ToolDocSection slug="ntp-timestamp-converter" />
       </Card>
     </div>
   );
