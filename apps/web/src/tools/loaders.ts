@@ -246,4 +246,5 @@ export const toolLoaders: Record<
   'molar-mass-calculator': () => import('./molar-mass-calculator'),
   'byte-array-codegen': () => import('./byte-array-codegen'),
   'json-to-java': () => import('./json-to-java'),
+  'json-to-csharp': () => import('./json-to-csharp'),
 };

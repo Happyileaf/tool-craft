@@ -22528,6 +22528,106 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'json-to-csharp',
+    name: 'JSON → C# record / class 生成器',
+    nameEn: 'JSON to C# Record / Class Generator',
+    description:
+      '粘贴 JSON 样本即可推断生成 C# 数据模型：支持 C# 10+ record 主构造函数与传统 class（{ get; set; } 属性）两种风格；整数 int/long、浮点 double、布尔 bool、字符串 string、数组 List<T>，嵌套对象生成为 sealed record/class；属性名 PascalCase 化并转义关键字，null 与仅部分数组元素出现的字段标记可空（int?/bool? 及 #nullable enable 下 string?），可选命名空间输出。',
+    descriptionEn:
+      'Paste a JSON sample and get inferred C# data models in two styles: C# 10+ positional records or classic classes with { get; set; } properties. Integers map to int/long, floats to double, booleans to bool, strings to string, arrays to List<T>, with nested objects emitted as sealed records/classes. Property names are PascalCased with keyword escaping; null and partially-present fields are nullable (int?/bool?, string? under #nullable enable), with an optional namespace.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-csharp',
+    iconName: 'FileCode',
+    tags: ['JSON', 'C#', 'record', 'class', 'DTO', '代码生成'],
+    tagsEn: ['JSON', 'C#', 'record', 'class', 'DTO', 'Code Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON → C# 生成器是一款纯浏览器本地运行的代码生成工具：粘贴 JSON 样本即可推断出可直接使用的 C# record 或 class 代码，自动处理类型映射、嵌套类型、List 泛型、PascalCase 命名与关键字冲突，免去为接口手写 DTO/Model 的重复劳动。',
+        coreFeatures: [
+          '双风格输出：C# 10+ 位置 record（主构造函数、不可变）或传统 class（public 属性 { get; set; }），嵌套类型统一 sealed',
+          '类型推断：小整数 int、大整数 long、浮点 double、布尔 bool、字符串 string；null 与不可合并的异型值回退 object',
+          '集合映射：同型对象数组合并字段生成 List<Item>，空数组元素回退 List<object> 并给出提示',
+          '可空与命名：属性名 PascalCase 化、关键字加 @ 转义、重名嵌套类自动编号；出现 null 或缺省的值类型字段输出 int?/bool?，开启 #nullable enable 时引用类型附加 ?，可选 file-scoped namespace',
+        ],
+        howToUse: [
+          '在左侧粘贴 JSON 对象样本（根为数组或标量时会生成单属性包装类）',
+          '在顶部设置根类名、命名空间（可留空）、record/class 风格、是否启用 #nullable enable',
+          '右侧即时生成 C# 代码，点击「复制 C# 代码」直接使用',
+          '查看下方警告了解空数组、类型冲突等推断决策',
+        ],
+        useCases: [
+          'ASP.NET Core 后端为外部 JSON API 快速编写请求/响应 DTO 或 record',
+          '对接键名带连字符、下划线或数字开头的第三方接口数据',
+          '理解未知 JSON 样本的结构层次与字段可空性',
+        ],
+        privacyNote:
+          'JSON 解析、类型推断与代码生成全部在浏览器本地完成，不发起任何网络请求，样本数据不会离开设备。',
+        faqs: [
+          {
+            question: 'record 和 class 两种风格怎么选？',
+            answer:
+              'record（C# 10+ 位置记录）用主构造函数一行声明、内置值相等与不可变语义，适合 DTO/响应模型；class 风格输出 { get; set; } 自动属性，兼容旧框架与需要可变对象、EF Core 实体的场景。',
+          },
+          {
+            question: '为什么字段变成了 int? / string?？',
+            answer:
+              '样本中该字段出现过 null（或数组里只在部分元素中存在）时，工具将其标记为可空：值类型输出 int?/bool? 等 Nullable<T>，引用类型在开启 #nullable enable 时附加 string?/List<T>?，便于 System.Text.Json / Newtonsoft.Json 正确反序列化。',
+          },
+          {
+            question: 'null 字段为什么生成 object？',
+            answer:
+              'null 不携带具体类型信息。若同名字段在数组其他元素中出现具体值，会自动合并为具体可空类型；否则保留 object 占位，待人工替换。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON to C# Generator is a fully browser-local code generator: paste a JSON sample and get ready-to-use C# records or classes, with automatic type mapping, nested types, List generics, PascalCase naming and keyword handling — eliminating boilerplate DTO/Model code for JSON APIs.',
+        coreFeatures: [
+          'Two styles: C# 10+ positional records (immutable, value equality) or classic classes with public { get; set; } properties; nested types are sealed',
+          'Type inference: int for small integers, long for larger, double, bool, string; null and unmergeable mixed values fall back to object',
+          'Collections: homogeneous object arrays merge fields into List<Item>; empty arrays fall back to List<object> with a warning',
+          'Nullability & naming: PascalCase properties, @-escaped keywords, numbered duplicate class names; null/missing value-type fields become int?/bool?, reference types gain ? under #nullable enable; optional file-scoped namespace',
+        ],
+        howToUse: [
+          'Paste a JSON object sample on the left (array/scalar roots produce a single-property wrapper class)',
+          'Set the root class name, namespace (optional), record/class style and #nullable enable at the top',
+          'The C# code appears instantly on the right — click Copy to use it directly',
+          'Check the warnings below for inference decisions such as empty arrays and type conflicts',
+        ],
+        useCases: [
+          'Quickly writing request/response DTOs or records in ASP.NET Core backends for external JSON APIs',
+          'Integrating third-party payloads whose keys use hyphens, underscores or leading digits',
+          'Understanding the structure and nullability of an unknown JSON sample',
+        ],
+        privacyNote:
+          'JSON parsing, type inference and code generation all run locally in your browser. No network request is made and sample data never leaves your device.',
+        faqs: [
+          {
+            question: 'Should I choose record or class?',
+            answer:
+              'Positional records (C# 10+) declare a constructor in one line with built-in value equality and immutable semantics — ideal for DTOs/response models. The class style emits { get; set; } auto-properties, compatible with older frameworks and mutable/EF Core entity scenarios.',
+          },
+          {
+            question: 'Why did a field become int? / string??',
+            answer:
+              'When the field is null in the sample (or only present in some array elements), it is marked nullable: value types become Nullable<T> such as int?/bool?, while reference types gain string?/List<T>? when #nullable enable is on, helping System.Text.Json/Newtonsoft.Json deserialize correctly.',
+          },
+          {
+            question: 'Why is a null field generated as object?',
+            answer:
+              'null carries no concrete type information. When the same field appears with a concrete value in another array element, it is merged into a concrete nullable type; otherwise object is kept as a placeholder for manual replacement.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'json-to-java',
     name: 'JSON → Java class / record 生成器',
     nameEn: 'JSON to Java Class / Record Generator',
