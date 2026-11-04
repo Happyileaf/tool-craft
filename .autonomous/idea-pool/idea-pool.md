@@ -115,7 +115,7 @@
 | 20261027081105 | RSS / Atom Feed 生成器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027081105.md) |
 | 20261027140131 | PBKDF2 密钥派生计算器（RFC 8018） | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027140131.md) |
 | 20261027140132 | Bech32 / Bech32m 编解码器（BIP-173 / BIP-350） | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027140132.md) |
-| 20261027140134 | IP 地址范围 → 最小 CIDR 列表聚合器（IPv4 / IPv6） | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027140134.md) |
+| 20261027140134 | IP 地址范围 → 最小 CIDR 列表聚合器（IPv4 / IPv6） | Web Tool | Existing Gap | Claimed | 2026-10-27 | trae-agent | [详情](./idea-details/20261027140134.md) |
 | 20261027201026 | ASCII 码表查询器（字符 / 十进制 / 十六进制 / 二进制对照） | Web Tool | External Reference | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027201026.md) |
 | 20261027201028 | 概率分布计算器（正态 / 二项 / 泊松 PMF、PDF、CDF 与分位） | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027201028.md) |
 | 20261027201029 | 欧姆定律与功率计算器（V / I / R / P 知二求二） | Web Tool | Exploration | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027201029.md) |
@@ -226,12 +226,12 @@
 | 20261104081015 | BMP / DIB 位图文件头结构只读解析器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104081015.md) |
 | 20261104140121 | JSON → Dart model 类代码生成器（freezed / json_serializable 风格可选） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104140121.md) |
 | 20261104140122 | WebSocket 帧（RFC 6455）线格式编解码与掩码/分片解析器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104140122.md) |
-| 20261104140123 | 模运算计算器（模逆 / 模幂 / 中国剩余定理 / 同余方程） | Web Tool | Exploration | Pending | 2026-11-04 | | [详情](./idea-details/20261104140123.md) |
+| 20261104140123 | 模运算计算器（模逆 / 模幂 / 中国剩余定理 / 同余方程） | Web Tool | Exploration | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104140123.md) |
 | 20261104140124 | Mach-O / Fat Mach-O 文件头只读解析器（macOS 二进制 load commands 树） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104140124.md) |
 | 20261104140125 | .gitattributes 文件生成器（换行符 / 二进制标记 / merge driver / linguist 规则） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104140125.md) |
-| 20261104200903 | HOTP（RFC 4226）基于计数器的一次性密码生成与校验器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104200903.md) |
-| 20261104200904 | 位掩码（Bitmask / 位标志）可视化计算器 | Web Tool | Exploration | Pending | 2026-11-04 | | [详情](./idea-details/20261104200904.md) |
+| 20261104200903 | HOTP（RFC 4226）基于计数器的一次性密码生成与校验器 | Web Tool | Existing Gap | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200903.md) |
+| 20261104200904 | 位掩码（Bitmask / 位标志）可视化计算器 | Web Tool | Exploration | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200904.md) |
 | 20261104200905 | LC 谐振频率与电抗计算器（谐振频率 / 容抗 / 感抗互求） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104200905.md) |
-| 20261104200906 | JSON 推断并生成 SQL CREATE TABLE 建表语句（DDL）生成器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104200906.md) |
+| 20261104200906 | JSON 推断并生成 SQL CREATE TABLE 建表语句（DDL）生成器 | Web Tool | Existing Gap | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200906.md) |
 | 20261104200907 | GIF（GIF87a / GIF89a）文件结构只读解析器（块树与帧时序展示） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104200907.md) |
 
