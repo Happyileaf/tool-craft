@@ -124,7 +124,12 @@ function isNullableNamed(t: CsType): boolean {
 function mergeType(a: CsType, b: CsType, ctx: InferContext, path: string): CsType {
   if (isNullableNamed(a)) return b;
   if (isNullableNamed(b)) return a;
-  if (a.kind === 'object' || b.kind === 'object') return OBJECT_TYPE;
+  if (
+    (a.kind === 'named' && a.name === 'object') ||
+    (b.kind === 'named' && b.name === 'object')
+  ) {
+    return OBJECT_TYPE;
+  }
 
   if (a.kind === 'named' && b.kind === 'named') {
     if (a.name === b.name) return a;
@@ -160,7 +165,9 @@ function mergeType(a: CsType, b: CsType, ctx: InferContext, path: string): CsTyp
     return { kind: 'list', element: mergeType(a.element, b.element, ctx, `${path}[]`) };
   }
 
-  ctx.warnings.push(`字段 "${path}" 类型冲突（${typeName(a)} / ${typeName(b)}），回退为 object`);
+  ctx.warnings.push(
+    `字段 "${path}" 类型冲突（${typeName(a, false, false)} / ${typeName(b, false, false)}），回退为 object`,
+  );
   return OBJECT_TYPE;
 }
 
