@@ -23128,6 +23128,503 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'ne555-astable-calculator',
+    name: '555 定时器非稳态计算器',
+    nameEn: '555 Astable Calculator',
+    description:
+      '按 R1、R2、C 计算 555 非稳态电路的高低电平时间、周期、频率与占空比；支持经典接法与二极管≈50% 改进电路，方波示意与多单位自适应。',
+    descriptionEn:
+      'Compute 555 astable high/low times, period, frequency and duty cycle from R1, R2 and C, with the classic and diode (~50%) variants, a waveform sketch, and adaptive units.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/ne555-astable-calculator',
+    iconName: 'Timer',
+    tags: ['555 定时器', '非稳态', '占空比', '电子工程', '方波'],
+    tagsEn: ['555 Timer', 'Astable', 'Duty Cycle', 'Electronics', 'Square Wave'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '555 定时器非稳态计算器是一款面向电子爱好者与硬件工程师的纯浏览器本地工具：输入外接电阻 R1、R2 与电容 C，实时算出高电平时间 t1、低电平时间 t2、周期 T、振荡频率 f 与占空比 D，并绘出电容在 ⅓Vcc 与 ⅔Vcc 之间充放电的方波示意。支持经典接法与串联二极管的约 50% 占空比改进接法。',
+        coreFeatures: [
+          '经典模式：t1 = ln2·(R1+R2)·C，t2 = ln2·R2·C，f = 1/(t1+t2)，D = t1/T',
+          '二极管改进模式：t1 = ln2·R1·C、t2 = ln2·R2·C，R1 = R2 时占空比约 50%（忽略二极管压降）',
+          '电阻 Ω/kΩ/MΩ、电容 pF/nF/µF/mF/F 输入，时间 ns/µs/ms/s 与频率 Hz/kHz/MHz 自动选前缀输出',
+          '按 t1/t2 比例生成输出方波示意，标注 Vcc / 0 V 电平',
+          '超出 NE555 典型最高频率（约 2 MHz）时给出器件范围警告；示例预设与一键复制结果',
+        ],
+        howToUse: [
+          '选择电路模式（经典非稳态或二极管改进型）',
+          '填入 R1、R2、C 的数值并选择单位，结果实时更新',
+          '在结果表中查看 t1、t2、T、f、占空比，下方查看方波示意',
+          '可点击示例预设快速填入典型取值（如 1kΩ / 1kΩ / 1µF → 约 481 Hz、66.7%）',
+        ],
+        useCases: [
+          '面包板搭 555 闪烁灯 / 方波信号源前核算阻容取值',
+          'PWM 粗调、时钟发生与音调电路的频率、占空比估算',
+          '教学中演示充放电时间常数与 555 阈值（⅓Vcc、⅔Vcc）的关系',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地完成，不发起任何网络请求，输入的参数不会离开设备。',
+        faqs: [
+          {
+            question: '为什么经典接法占空比永远大于 50%？',
+            answer:
+              '经典接法中电容充电经 R1+R2、放电只经 R2，故 t1 = ln2·(R1+R2)·C 恒大于 t2 = ln2·R2·C，占空比 D = (R1+R2)/(R1+2R2) 恒大于 50%；R2 远大于 R1 时才趋近 50%。要得到约 50% 的对称方波，可在 R2 上串联二极管（改进模式），让充电只经 R1。',
+          },
+          {
+            question: '二极管模式为什么说是「约」50%？',
+            answer:
+              '串联二极管后充电电流绕过 R2，但二极管存在约 0.6–0.7 V 的正向压降，且充电、放电回路并不完全对称；本工具按理想模型（忽略压降）计算，R1 = R2 时占空比为精确的 50%，实际电路会有小幅偏差。',
+          },
+          {
+            question: '频率很高时结果还准吗？',
+            answer:
+              '公式是理想一阶 RC 模型。双极型 NE555 最高工作频率通常约 2 MHz，超过时触发器延迟、寄生电容与输出级翻转时间占比增大，实际频率会偏低。CMOS 版本（如 7555、TLC555）上限更高。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The 555 Astable Calculator is a fully local tool for electronics hobbyists and hardware engineers: enter the external resistors R1, R2 and capacitor C to instantly obtain the high time t1, low time t2, period T, frequency f and duty cycle D, with a sketch of the square wave produced as the capacitor charges/discharges between ⅓Vcc and ⅔Vcc. Both the classic wiring and the diode (~50% duty) variant are supported.',
+        coreFeatures: [
+          'Classic mode: t1 = ln2·(R1+R2)·C, t2 = ln2·R2·C, f = 1/(t1+t2), D = t1/T',
+          'Diode variant: t1 = ln2·R1·C, t2 = ln2·R2·C; R1 = R2 gives ~50% duty (diode drop ignored)',
+          'Ω/kΩ/MΩ and pF/nF/µF/mF/F inputs with automatic ns/µs/ms/s and Hz/kHz/MHz output prefixes',
+          'Square-wave sketch scaled by the t1/t2 ratio, labelled Vcc / 0 V',
+          'Warns beyond the typical NE555 limit (~2 MHz); example presets and one-click copy',
+        ],
+        howToUse: [
+          'Pick the circuit mode (classic astable or diode variant)',
+          'Enter R1, R2 and C with units; results update instantly',
+          'Read t1, t2, T, f and duty cycle from the table, with the waveform sketch below',
+          'Use a preset such as 1kΩ / 1kΩ / 1µF → ~481 Hz at 66.7% to get started',
+        ],
+        useCases: [
+          'Choosing R/C values for a 555 LED flasher or square-wave generator on a breadboard',
+          'Rough PWM, clock generation, and tone-circuit frequency / duty estimation',
+          'Teaching RC charge/discharge time constants and the 555 thresholds (⅓Vcc, ⅔Vcc)',
+        ],
+        privacyNote:
+          'All computation runs locally in your browser with no network requests; your inputs never leave the device.',
+        faqs: [
+          {
+            question: 'Why is the duty cycle always above 50% in the classic circuit?',
+            answer:
+              'In the classic wiring the capacitor charges through R1+R2 but discharges only through R2, so t1 = ln2·(R1+R2)·C is always larger than t2 = ln2·R2·C, giving D = (R1+R2)/(R1+2R2) > 50%; it approaches 50% only when R2 ≫ R1. Add a diode across R2 (diode mode) to charge through R1 alone for a near-symmetric wave.',
+          },
+          {
+            question: 'Why "approximately" 50% in diode mode?',
+            answer:
+              'With the diode the charge current bypasses R2, but the diode has a ~0.6–0.7 V forward drop and the charge/discharge paths are not perfectly symmetric. This tool uses the ideal model (drop ignored), where R1 = R2 yields exactly 50%; real circuits deviate slightly.',
+          },
+          {
+            question: 'Are the results accurate at very high frequencies?',
+            answer:
+              'The formulas assume an ideal first-order RC model. A bipolar NE555 typically tops out around 2 MHz; beyond that, propagation delay, parasitic capacitance, and output slew time dominate and the real frequency runs low. CMOS variants (7555, TLC555) reach higher.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'dew-point-calculator',
+    name: '露点 / 湿球与气压海拔计算器',
+    nameEn: 'Dew Point / Wet Bulb & Pressure Altitude Calculator',
+    description:
+      '由气温与相对湿度计算露点（Magnus）、湿球温度（Stull）与结露温差，并在气压与海拔之间按 ISA 压高公式双向换算，给出精度范围提示与结露风险。',
+    descriptionEn:
+      'Derive dew point (Magnus), wet-bulb temperature (Stull) and dew-point spread from air temperature and relative humidity, and convert between pressure and altitude with the ISA barometric formula, including accuracy-range warnings.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/dew-point-calculator',
+    iconName: 'Droplets',
+    tags: ['露点', '湿球温度', '相对湿度', '气压海拔', '气象'],
+    tagsEn: ['Dew Point', 'Wet Bulb', 'Humidity', 'Barometric Altitude', 'Meteorology'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '露点 / 湿球与气压海拔计算器是一款纯浏览器本地的气象换算工具：输入气温与相对湿度，按 Magnus 公式计算露点温度、按 Stull 2011 经验式估算湿球温度，并给出结露温差与结露 / 结霜风险提示；同时可在站点气压与海拔之间按国际标准大气（ISA）对流层压高公式双向换算。',
+        coreFeatures: [
+          '露点：γ = ln(RH/100) + 17.625·T/(243.04+T)，Td = 243.04·γ/(17.625−γ)（Magnus / Lawrence 2005 参数）',
+          '湿球：Stull（2011）经验式，适用约 -20–50 °C、RH 5–99%，越界给出精度警告',
+          '结露温差 T−Td 与露点风险标签（高湿 / 略潮 / 舒适 / 严寒结霜）',
+          '气压 → 海拔（以当前气温作基准温度修正）、海拔 → 标准气压（1013.25 hPa、L=0.0065 K/m）',
+          '内置 0–8848 m 标准气压对照、天气示例预设与一键复制',
+        ],
+        howToUse: [
+          '填入气温（°C）与相对湿度（%），露点 / 湿球 / 温差立即更新',
+          '在第二张卡片输入站点气压查看对应海拔，或输入海拔查看标准气压',
+          '出现适用范围提示时，注意经验公式在极端温湿度下精度下降',
+        ],
+        useCases: [
+          '回南天 / 梅雨季判断墙面、玻璃是否可能结露，评估除湿目标露点',
+          '户外、登山、飞行（无人机）活动中由气压估算海拔或由海拔估算气压',
+          '暖通空调（HVAC）与气象教学中的湿度参数换算',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地完成，不发起任何网络请求，输入数据不会离开设备。',
+        faqs: [
+          {
+            question: '露点和相对湿度有什么区别？',
+            answer:
+              '相对湿度是当前水汽压与同温度饱和水汽压之比，随气温变化；露点是空气在等压冷却到饱和时的温度，只与水汽绝对含量有关，因此更适合直接判断结露风险——当物体表面温度低于露点时就会结露。',
+          },
+          {
+            question: '湿球温度用的是精确热力学方法吗？',
+            answer:
+              '本工具采用 Stull（2011）经验式，在 -20–50 °C、RH 5–99% 的常见范围内与热力学迭代解误差通常小于 1 °C，优点是无需迭代、零依赖；极端高温低湿或接近饱和场景下精度下降时会显示提示。',
+          },
+          {
+            question: '气压反推海拔与实际海拔为何可能对不上？',
+            answer:
+              '压高公式假设标准大气（海平面 1013.25 hPa、15 °C、恒定递减率 6.5 K/km），而实际海平面气压随天气系统波动、近地面存在逆温等。本工具允许以当前气温作基准温度修正，但高海拔或复杂天气下结果仍仅供估算，精确测量需 GPS。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Dew Point / Wet Bulb & Pressure Altitude Calculator is a fully local meteorology tool: enter air temperature and relative humidity to obtain the dew point (Magnus formula), the wet-bulb temperature (Stull 2011 approximation) and the dew-point spread with condensation/frost risk hints, plus two-way conversion between station pressure and altitude using the ISA tropospheric barometric formula.',
+        coreFeatures: [
+          'Dew point via the Magnus/Lawrence 2005 constants (α=17.625, b=243.04 °C)',
+          'Wet-bulb via the Stull (2011) empirical formula (~-20–50 °C, RH 5–99%), with out-of-envelope warnings',
+          'Dew-point spread T−Td and risk tags (humid / damp / comfortable / severe-cold frost)',
+          'Pressure → altitude (temperature-corrected) and altitude → standard pressure (1013.25 hPa, L=0.0065 K/m)',
+          'Built-in 0–8848 m pressure table, weather presets and one-click copy',
+        ],
+        howToUse: [
+          'Enter air temperature (°C) and relative humidity (%); dew point / wet bulb / spread update instantly',
+          'Enter station pressure to see altitude, or altitude to see standard pressure in the second card',
+          'Heed the range notice: the empirical wet-bulb formula loses accuracy at extremes',
+        ],
+        useCases: [
+          'Judging whether walls or glass will condense in humid seasons; setting dehumidifier targets',
+          'Estimating altitude from pressure (hiking, drones) or pressure from elevation',
+          'HVAC calculations and meteorology teaching',
+        ],
+        privacyNote:
+          'All computation runs locally in your browser with no network requests; your inputs never leave the device.',
+        faqs: [
+          {
+            question: 'How is dew point different from relative humidity?',
+            answer:
+              'Relative humidity is the ratio of actual to saturation vapour pressure and changes with temperature; dew point is the temperature at which air becomes saturated at constant pressure, depending only on absolute moisture content. Condensation forms whenever a surface cools below the dew point.',
+          },
+          {
+            question: 'Is the wet-bulb temperature thermodynamically exact?',
+            answer:
+              'This tool uses the Stull (2011) empirical formula, which typically stays within ~1 °C of the thermodynamic iteration over -20–50 °C and RH 5–99% without requiring iteration or dependencies. A warning appears where accuracy degrades at extremes.',
+          },
+          {
+            question: 'Why might pressure-derived altitude disagree with real altitude?',
+            answer:
+              'The barometric formula assumes the standard atmosphere (1013.25 hPa, 15 °C, constant 6.5 K/km lapse), while real sea-level pressure varies with weather and inversions occur. The tool accepts the current temperature as a correction, but precise elevation still requires GPS.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'mercator-tile-calculator',
+    name: 'Web Mercator 瓦片计算器',
+    nameEn: 'Web Mercator Tile Calculator',
+    description:
+      '在经纬度、缩放层级、XYZ 瓦片、像素坐标、包围盒之间互算：输出 QuadKey、TMS y、父/子瓦片与 OSM 切片 URL（EPSG:3857 Slippy Map）。',
+    descriptionEn:
+      'Convert between lng/lat, zoom, XYZ tile indices, pixel coordinates and tile bounds in Web Mercator (EPSG:3857), with QuadKey, TMS y, parent/children tiles and OSM tile URLs.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/mercator-tile-calculator',
+    iconName: 'Map',
+    tags: ['Web Mercator', 'XYZ 瓦片', 'Slippy Map', 'QuadKey', 'EPSG:3857', 'GIS'],
+    tagsEn: ['Web Mercator', 'XYZ Tiles', 'Slippy Map', 'QuadKey', 'EPSG:3857', 'GIS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Web Mercator 瓦片计算器是一款纯浏览器本地的 GIS 辅助工具，实现 OSM / Google Slippy Map（EPSG:3857）切片方案：给定点经纬度与缩放层级 z（0–22），返回全局像素、瓦片 XYZ、瓦片内像素与 TMS y；反向输入 z/x/y 可求瓦片四至包围盒、中心点、父瓦片、四个子瓦片、Bing QuadKey 与可直接打开的 OSM 栅格切片 URL。',
+        coreFeatures: [
+          '正向：X=(lng+180)/360·n，Y=(1−asinh(tan φ)/π)/2·n（n=2^z），输出瓦片 / 全局像素 / 瓦片内像素',
+          '反向：z/x/y → 北南西东四至与中心经纬度，z=0 覆盖 ±85.0511° 全球',
+          '父子层级：父瓦片（z−1）、四个子瓦片（z+1，可点击下钻）',
+          'Bing Maps QuadKey（基数 4 位交错）双向转换、OSM↔TMS 的 y 翻转',
+          '生成 https://tile.openstreetmap.org/{z}/{x}/{y}.png 直链；极地 / 越界 / 非整数 zoom 明确报错',
+        ],
+        howToUse: [
+          '在第一张卡片填入经纬度并拖动缩放滑块，查看瓦片坐标、像素与切片 URL',
+          '在第二张卡片输入 z/x/y 查看四至、中心、父/子瓦片与 QuadKey',
+          '点击子瓦片路径可直接下钻；需要 TMS 时读取对应的 TMS y 值',
+        ],
+        useCases: [
+          '开发在线地图时核对某坐标落在哪个瓦片、拼接切片 URL 或排查偏移',
+          '在 OSM XYZ、TMS、Bing QuadKey 等切片命名方案之间转换',
+          'GIS / 遥感教学中演示 Web Mercator 投影与瓦片金字塔结构',
+        ],
+        privacyNote:
+          '坐标换算全部在浏览器本地完成；仅在你主动点击 OSM 切片链接时才会访问 openstreetmap.org，工具本身不发送数据。',
+        faqs: [
+          {
+            question: '为什么纬度被限制在约 ±85.0511°？',
+            answer:
+              'Web Mercator 把两极投影到无穷远，为了让世界地图成为正方形，约定在 y 方向裁到与赤道方向等宽，对应纬度约 ±85.05112878°。超过该纬度的点不存在合法 XYZ 瓦片，工具会直接报错而非静默钳制。',
+          },
+          {
+            question: 'XYZ 和 TMS、QuadKey 有什么区别？',
+            answer:
+              'OSM/Google 的 XYZ 原点在左上角，y 向下递增；TMS 原点在左下角，y = n−1−XYZ_y；Bing QuadKey 用一个基数 4 字符串同时编码层级与位置（每级 2 bit，位交错 x、y）。三者描述的是同一套 Web Mercator 切片，只是命名方式不同。',
+          },
+          {
+            question: '本初子午线与赤道交点（0,0）落在哪个瓦片？',
+            answer:
+              '以 z=1 为例，X=(0+180)/360·2=1、Y=0.5·2=1，恰好位于瓦片 (1,1) 的左上角边界上。瓦片区间约定为左闭右开，故该点归入右下瓦片；经度 ±180 边界同理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Web Mercator Tile Calculator is a fully local GIS helper implementing the OSM/Google Slippy Map tiling scheme (EPSG:3857): given lng/lat and zoom z (0–22) it returns global pixels, XYZ tile indices, in-tile pixels and the TMS y; conversely, z/x/y yields the tile bounding box, center, parent tile, four children, the Bing QuadKey and a directly openable OSM raster URL.',
+        coreFeatures: [
+          'Forward: X=(lng+180)/360·n, Y=(1−asinh(tan φ)/π)/2·n (n=2^z) → tile / global px / inner px',
+          'Inverse: z/x/y → N/S/W/E bounds and center; z=0 spans ±85.0511° worldwide',
+          'Hierarchy: parent tile (z−1) and four children (z+1, clickable drill-down)',
+          'Bing QuadKey (base-4 interleaved digits) and OSM↔TMS y flip',
+          'Emits https://tile.openstreetmap.org/{z}/{x}/{y}.png links; explicit errors for polar/out-of-range/non-integer zoom',
+        ],
+        howToUse: [
+          'Enter lng/lat and drag the zoom slider in the first card to read tile indices, pixels and tile URL',
+          'Enter z/x/y in the second card to see bounds, center, parent/children and QuadKey',
+          'Click a child path to drill down; read the TMS y value when a TMS scheme is required',
+        ],
+        useCases: [
+          'Checking which tile covers a coordinate while building online maps, assembling tile URLs, debugging offsets',
+          'Converting between OSM XYZ, TMS and Bing QuadKey naming schemes',
+          'Teaching the Web Mercator projection and tile pyramid in GIS/remote-sensing courses',
+        ],
+        privacyNote:
+          'All coordinate math runs locally in your browser; openstreetmap.org is contacted only when you explicitly click a tile link, and the tool itself sends no data.',
+        faqs: [
+          {
+            question: 'Why is latitude capped around ±85.0511°?',
+            answer:
+              'Web Mercator projects the poles to infinity; to keep the world map square it is clipped in y to the same extent as the equator in x, corresponding to about ±85.05112878°. Points beyond that have no valid XYZ tile, so the tool errors instead of silently clamping.',
+          },
+          {
+            question: 'How do XYZ, TMS and QuadKey differ?',
+            answer:
+              'OSM/Google XYZ has its origin at the top-left with y growing downward; TMS starts bottom-left with y = n−1−XYZ_y; the Bing QuadKey encodes zoom and position in one base-4 string (2 bits per level, interleaving x and y). All three describe the same Web Mercator pyramid under different naming conventions.',
+          },
+          {
+            question: 'Which tile contains the prime-meridian/equator point (0,0)?',
+            answer:
+              'At z=1, X=(0+180)/360·2=1 and Y=0.5·2=1 — exactly the top-left corner of tile (1,1). Tiles use half-open intervals, so the boundary point belongs to the lower-right tile; the ±180° edges follow the same convention.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'access-log-parser',
+    name: 'NCSA 访问日志解析与统计器',
+    nameEn: 'Access Log Parser & Analyzer',
+    description:
+      '批量解析 NCSA Common / Combined 访问日志：逐行提取 IP、时间（CLF→ISO 8601）、方法路径、状态码、字节、Referer、UA 与响应耗时，畸形行精确定位，并汇总状态分布、Top IP / 路径 / UA、流量与 QPS。',
+    descriptionEn:
+      'Batch-parse NCSA Common/Combined access logs: extract IP, time (CLF→ISO 8601), method/path, status, bytes, referer, UA and request time per line, pinpoint malformed lines, and summarize status mix, top IPs/paths/UAs, traffic and QPS.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/access-log-parser',
+    iconName: 'List',
+    tags: ['访问日志', 'NCSA', 'Combined Log Format', '日志解析', '运维统计'],
+    tagsEn: ['Access Log', 'NCSA', 'Combined Log Format', 'Log Parser', 'Ops Analytics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'NCSA 访问日志解析与统计器是一款纯浏览器本地的运维辅助工具：粘贴 Apache / Nginx 默认输出的 Common Log Format 或 Combined Log Format 日志（可混合格式、可带末尾 request_time 扩展），逐行解析为结构化字段，对无法匹配的行给出行号与具体原因，并一次性汇总状态码分布、Top IP / 路径 / User-Agent、流量总量、时间跨度与 QPS。',
+        coreFeatures: [
+          '自动识别 Common（7 字段）与 Combined（+Referer+UA），支持末尾 request_time 响应耗时扩展',
+          'CLF 时间 10/Oct/2026:13:55:36 -0700 转标准 ISO 8601（保留并正确换算原始时区偏移）',
+          "请求行拆分方法 / 路径（保留 query string）/ 协议；空字节 '-' 识别为 null 并单独计数",
+          '畸形行（引号 / 括号未闭合、字段缺失、坏时间、非法状态码等）不中断批量解析，标注行号与原因',
+          '单次 O(n) 遍历聚合：状态码分类与明细、Top 5 IP / 路径 / UA、总流量、时间跨度、QPS 与平均耗时',
+        ],
+        howToUse: [
+          '将整段访问日志粘贴到文本框（或点击「载入示例」），解析与统计即时刷新',
+          '在统计卡片中查看成功率、状态码分布、Top 排行、流量与时间跨度',
+          '切到「仅错误」查看所有畸形行及失败原因；成功结果可用「复制 JSON」导出结构化数据',
+        ],
+        useCases: [
+          '排查 4xx / 5xx 突增、刷接口来源 IP 与高频路径',
+          '从 Apache / Nginx 日志快速估算流量规模、时间跨度与请求速率',
+          '校验日志格式是否规范，定位被截断或字段错位的异常行',
+        ],
+        privacyNote:
+          '日志全程只在浏览器本地解析，不发起任何网络请求，粘贴的访问日志不会上传或离开设备。',
+        faqs: [
+          {
+            question: '支持哪些日志格式？',
+            answer:
+              '支持 NCSA Common Log Format（host ident authuser [time] "request" status bytes）与在其后追加 Referer、User-Agent 两个引号字段的 Combined Log Format；两种格式可在同一批文本中混合出现。若 Combined 行末再跟一个裸数值，则识别为 request_time（秒）。其它自定义字段（如 $request_id）会被判为字段过多。',
+          },
+          {
+            question: 'CLF 时间如何处理时区？',
+            answer:
+              '方括号内形如 10/Oct/2026:13:55:36 -0700 的时间带显式偏移，工具按偏移换算为绝对时刻并输出 UTC 的 ISO 8601（如 2026-10-10T20:55:36Z），时间跨度与 QPS 均基于绝对时刻计算，不受日志内不同偏移混用影响。',
+          },
+          {
+            question: '与单行 access-log-to-curl / User-Agent 解析类工具有何不同？',
+            answer:
+              '本工具面向整段日志的批量结构化解析与统计汇总：逐行表格、错误行定位、状态码分布、Top 排行、流量与 QPS。它不是把单行请求转成 curl 命令，也不深入解析 UA 的设备 / 浏览器语义，两者互不替代。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Access Log Parser & Analyzer is a fully local ops tool: paste Apache/Nginx-style Common or Combined Log Format lines (formats may be mixed, with an optional trailing request_time), get per-line structured fields, precise line-numbered errors for malformed rows, and one-pass summaries of status mix, top IPs/paths/UAs, total traffic, time span and QPS.',
+        coreFeatures: [
+          'Auto-detects Common (7 fields) and Combined (+referer+UA), with optional trailing request_time',
+          'CLF time 10/Oct/2026:13:55:36 -0700 → ISO 8601, correctly converting the original offset',
+          "Splits the request line into method/path (query kept)/protocol; '-' bytes → null, counted separately",
+          'Malformed lines (unbalanced quotes/brackets, missing fields, bad time/status) never abort the batch; each gets a line number and reason',
+          'Single O(n) pass: status classes and details, top 5 IPs/paths/UAs, traffic, span, QPS and average latency',
+        ],
+        howToUse: [
+          'Paste a chunk of access log into the textarea (or load the sample); parsing and summary update instantly',
+          'Read success rate, status distribution, top rankings, traffic and time span from the summary cards',
+          'Switch to "errors only" for malformed rows, or copy structured JSON of successful entries',
+        ],
+        useCases: [
+          'Investigating 4xx/5xx spikes, abusive IPs and hot paths',
+          'Estimating traffic volume, window span and request rate from Apache/Nginx logs',
+          'Validating log formatting and locating truncated or misaligned rows',
+        ],
+        privacyNote:
+          'All parsing happens locally in your browser with no network requests; pasted logs never leave the device.',
+        faqs: [
+          {
+            question: 'Which log formats are supported?',
+            answer:
+              'NCSA Common Log Format (host ident authuser [time] "request" status bytes) and Combined (plus quoted referer and user-agent); the two may be mixed in one paste. A trailing bare number on a Combined row is read as request_time in seconds. Other custom fields (e.g. $request_id) are reported as too many fields.',
+          },
+          {
+            question: 'How are CLF timestamps and timezones handled?',
+            answer:
+              'The bracketed timestamp such as 10/Oct/2026:13:55:36 -0700 carries an explicit offset; it is converted to an absolute instant and emitted as UTC ISO 8601 (e.g. 2026-10-10T20:55:36Z). Span and QPS use absolute instants, so logs mixing different offsets are aggregated correctly.',
+          },
+          {
+            question: 'How is this different from single-line access-log-to-curl or UA parsers?',
+            answer:
+              'This tool batch-parses a whole log into structured rows plus analytics: per-line table, error localization, status distribution, top rankings, traffic and QPS. It does not turn one request into a curl command nor infer device/browser semantics from the UA string; the use cases are distinct.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'rlp-codec',
+    name: '以太坊 RLP 编解码器',
+    nameEn: 'Ethereum RLP Encoder / Decoder',
+    description:
+      '按以太坊黄皮书实现 RLP（Recursive Length Prefix）编码与解码：JSON 直观描述（UTF-8 文本 / hex 原始字节 / 嵌套列表）一键编码，hex 解码为带偏移与类型标注的结构化树；严格拒绝截断、尾字节、前导零等非规范编码。',
+    descriptionEn:
+      'Ethereum yellow-paper RLP (Recursive Length Prefix) encoder/decoder: encode an intuitive JSON description (UTF-8 text / raw hex bytes / nested lists), and decode hex into a structured tree annotated with offsets and node types; strictly rejects truncation, trailing bytes, leading zeros and other non-canonical encodings.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/rlp-codec',
+    iconName: 'Binary',
+    tags: ['RLP', '以太坊', 'Ethereum', '序列化', '编码解码'],
+    tagsEn: ['RLP', 'Ethereum', 'Serialization', 'Codec', 'Yellow Paper'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '以太坊 RLP 编解码器是一款纯浏览器本地工具，实现黄皮书附录 B 定义的 Recursive Length Prefix 序列化：编码侧用 JSON 描述数据（普通字符串按 UTF-8、["hex","0x.."] 按原始字节、数组表示可嵌套列表），即时输出 0x 十六进制；解码侧把任意 RLP hex 还原为带字节偏移、节点类型（单字节 / 长短字符串 / 长短列表）与 payload 长度的结构化树，并以表格逐节点展示，非法或非规范数据精确报错到字节偏移。',
+        coreFeatures: [
+          '完整五类前缀：单字节（<0x80）、0x80 短字符串、0xb7 长字符串、0xc0 短列表、0xf7 长列表',
+          'JSON 编码输入：字符串按 UTF-8，["hex", "0x.."] 按原始字节，数组任意嵌套，空串→0x80、空列表→0xc0',
+          '解码树展示类型、字节偏移、前缀 / payload 长度，字符串同时尝试 UTF-8 还原，并输出扁平表格',
+          '严格规范校验：截断、根外尾字节、长度前导零、短格式误用（如 0x817f）一律拒绝并给出偏移',
+          '嵌套深度上限 64，防止恶意深嵌套；17 个单测覆盖以太坊官方向量（dog、cat+dog、集合论嵌套、1024 零字节等）',
+        ],
+        howToUse: [
+          '编码：在上方文本框按 JSON 写数据（可用「示例」载入类交易字段），结果即时出现在下方，可一键送去解码',
+          '解码：在下方输入 0x 开头的 RLP hex，查看类型树、逐节点表格与 UTF-8 还原；非规范编码会显示字节偏移',
+          '地址、数值等二进制字段务必用 ["hex", "0x.."] 形式输入，普通字符串才按 UTF-8 编码',
+        ],
+        useCases: [
+          '学习与核对以太坊交易 / 收据的 RLP 编码（如 EIP-155 签名字段、raw transaction）',
+          '调试自研序列化代码，快速生成官方向量或定位非规范编码的出错字节',
+          '分析裸 RLP 数据（节点发现消息、devp2p 负载）的字段边界与嵌套结构',
+        ],
+        privacyNote:
+          '全部编解码在浏览器本地完成，不发起网络请求，输入的交易字段或数据不会离开设备。',
+        faqs: [
+          {
+            question: '编码输入里字符串和 ["hex", ...] 有什么区别？',
+            answer:
+              '普通字符串按 UTF-8 字节编码，例如 "dog" → 0x83646f67；["hex","0x7067"] 按给出的原始字节编码，得到 0x827067。以太坊中的地址（20 字节）、金额、nonce 等定长二进制必须用 hex 形式输入，否则语义错误。另外约定：单字节且值 <0x80 时 RLP 就是字节本身（0x7f→0x7f）。',
+          },
+          {
+            question: '什么是非规范（non-canonical）编码？为什么要拒绝？',
+            answer:
+              '黄皮书要求唯一（canonical）编码：能用短格式就不能用长格式、长度大端表示不得带前导零、单字节 <0x80 不得套 0x81 前缀。例如 0x817f 与裸 0x7f 表示同一数据，前者即非规范；0xb80100 用长格式编码 1 字节同样非法。宽松接受会造成同一数据多个哈希、共识分叉等问题，因此解码器直接报错并给出偏移。',
+          },
+          {
+            question: 'RLP 与 RLPx、SSZ 是一回事吗？',
+            answer:
+              '不是。RLP 是以太坊最早的通用递归长度前缀序列化，用于交易、区块头等；RLPx 是节点之间的加密传输协议（内部消息用 RLP 编码）；SSZ 是信标链阶段引入的另一套序列化。本工具只实现 RLP 本身。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Ethereum RLP Encoder/Decoder is a fully local tool implementing Recursive Length Prefix serialization (Yellow Paper Appendix B): describe data as JSON (plain strings → UTF-8, ["hex","0x.."] → raw bytes, arrays → nested lists) and get 0x-hex instantly; decode any RLP hex into a structured tree annotated with byte offsets, node types (single byte / short & long strings / short & long lists) and payload lengths, with byte-accurate errors for invalid or non-canonical data.',
+        coreFeatures: [
+          'All five prefix classes: single byte (<0x80), 0x80 short string, 0xb7 long string, 0xc0 short list, 0xf7 long list',
+          'JSON encoder input: strings → UTF-8, ["hex","0x.."] → raw bytes, arbitrarily nested arrays; ""→0x80, []→0xc0',
+          'Decoded tree with type, byte offset, prefix/payload length, best-effort UTF-8 rendering, plus a flat per-node table',
+          'Strict canonical checks: truncation, trailing bytes, length leading zeros and short-form misuse (e.g. 0x817f) are rejected with offsets',
+          'Nesting depth capped at 64; 17 unit tests cover Ethereum wiki vectors (dog, cat+dog, set-theoretical nesting, 1024 zero bytes, …)',
+        ],
+        howToUse: [
+          'Encode: write JSON data in the top box (load the transaction-like sample), the hex result appears below and can be sent to the decoder',
+          'Decode: paste 0x-prefixed RLP hex and inspect the type tree, per-node table and UTF-8 rendering; non-canonical input reports a byte offset',
+          'Always use ["hex","0x.."] for addresses, numbers and other binary fields; only plain strings are encoded as UTF-8',
+        ],
+        useCases: [
+          'Learning and verifying RLP of Ethereum transactions/receipts (EIP-155 signature fields, raw transactions)',
+          'Debugging hand-written serializers: generate reference vectors or pinpoint the offending byte of non-canonical output',
+          'Inspecting field boundaries and nesting in raw RLP data (discovery messages, devp2p payloads)',
+        ],
+        privacyNote:
+          'All encoding and decoding runs locally in your browser with no network requests; transaction fields or data never leave the device.',
+        faqs: [
+          {
+            question: 'What is the difference between a string and ["hex", ...] in encoder input?',
+            answer:
+              'A plain string is encoded as its UTF-8 bytes, e.g. "dog" → 0x83646f67; ["hex","0x7067"] uses the exact bytes given, yielding 0x827067. Fixed-width binary fields such as 20-byte addresses, amounts and nonces must use hex form or the semantics are wrong. Also, a single byte below 0x80 is encoded as itself (0x7f → 0x7f).',
+          },
+          {
+            question: 'What is non-canonical encoding and why reject it?',
+            answer:
+              'The Yellow Paper mandates a unique encoding: never use the long form where the short form fits, the big-endian length must have no leading zero, and a byte below 0x80 must not be wrapped in a 0x81 prefix. For example 0x817f duplicates the bare byte 0x7f, and 0xb80100 uses the long form for a 1-byte payload — both invalid. Lenient acceptance would allow multiple hashes for the same data and consensus splits, so the decoder rejects them with an offset.',
+          },
+          {
+            question: 'Is RLP the same as RLPx or SSZ?',
+            answer:
+              'No. RLP is Ethereum’s original recursive-length-prefix serialization for transactions and block headers; RLPx is the encrypted transport between nodes (its messages happen to use RLP); SSZ is the serialization introduced for the beacon chain. This tool implements RLP only.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
