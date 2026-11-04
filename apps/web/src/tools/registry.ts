@@ -23625,6 +23625,518 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'modular-arithmetic-calculator',
+    name: '模运算计算器',
+    nameEn: 'Modular Arithmetic Calculator',
+    description:
+      '基于 BigInt 的模逆元、模幂、模线性方程与中国剩余定理求解器，支持十进制与十六进制大整数，本地完成全部计算。',
+    descriptionEn:
+      'BigInt-powered solver for modular inverse, modular exponentiation, linear congruences and the Chinese Remainder Theorem, with decimal and hexadecimal big-integer inputs, fully computed locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/modular-arithmetic-calculator',
+    iconName: 'Sigma',
+    tags: ['模运算', '模逆元', '模幂', '中国剩余定理', 'CRT', '同余方程', '数论'],
+    tagsEn: ['Modular arithmetic', 'Modular inverse', 'Modular exponentiation', 'CRT', 'Congruence', 'Number theory'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '3',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的模运算计算器，基于 BigInt 精确处理任意长度整数，覆盖模逆元、平方-乘模幂、模线性方程全部剩余类解与中国剩余定理（CRT）四大数论常用场景，支持十进制与 0x 十六进制输入，适合密码学学习与竞赛推导。',
+        coreFeatures: [
+          '模逆元：扩展欧几里得算法求 a⁻¹ mod m，不互素时给出 gcd 与无逆元原因',
+          '模幂：平方-乘快速幂 a^e mod m，支持负指数（自动走逆元路径）与超大指数',
+          '模线性方程：求 ax≡b (mod m) 的全部最小非负剩余类解，无解时明确报错',
+          '中国剩余定理：可视化编辑同余方程组，支持模数不互素的可解性判定与冲突检测',
+          '全程 BigInt 运算，不受 Number 安全整数范围限制；零网络请求，输入不离开浏览器',
+        ],
+        howToUse: [
+          '在顶部选择计算模式：模逆元、模幂、同余方程或中国剩余定理',
+          '按提示填写底数、指数 / 右端项与模数，支持十进制或 0x 十六进制，负数以 - 开头',
+          'CRT 模式下在表格中逐行填写余数与模数，可增删方程行',
+          '点击「计算」查看结果，错误输入会在结果区给出具体原因，可一键复制结果',
+        ],
+        useCases: [
+          'RSA / ECC 等密码算法学习中验证模逆元与模幂中间结果',
+          '算法竞赛中快速求解同余方程与中国剩余定理问题',
+          '数论教学中对照扩展欧几里得算法的推导结果',
+        ],
+        privacyNote:
+          '所有整数仅在浏览器内存中参与本地 BigInt 运算，不发起任何网络请求，不上传、不记录输入内容。',
+        faqs: [
+          {
+            question: '为什么提示「逆元不存在」？',
+            answer:
+              '模逆元仅在底数与模数互素（gcd = 1）时存在。工具会同时给出实际 gcd，例如 gcd(2, 4) = 2，此时 2 在模 4 下没有逆元。',
+          },
+          {
+            question: '支持多大的整数？',
+            answer:
+              '全部运算基于 BigInt 而非 Number，没有 2^53 的安全整数上限，可处理数百位的十进制整数或等长的 0x 十六进制输入。',
+          },
+          {
+            question: 'CRT 模式下模数不互素怎么办？',
+            answer:
+              '工具不要求模数两两互素：会先做可解性判定，同余冲突（余数差不能被对应 gcd 整除）时报错并指出冲突的方程，可解时按最小公倍数合并并给出最小非负解。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local modular arithmetic calculator built on BigInt for integers of any size, covering modular inverse, square-and-multiply modular exponentiation, all residue-class solutions of linear congruences, and the Chinese Remainder Theorem (CRT), with decimal and 0x hexadecimal input for cryptography study and contest work.',
+        coreFeatures: [
+          'Modular inverse via the extended Euclidean algorithm, reporting the gcd reason when no inverse exists',
+          'Square-and-multiply modular exponentiation with negative exponents (inverse path) and very large exponents',
+          'Linear congruence solver returning every least non-negative residue class, with explicit no-solution errors',
+          'CRT editor for congruence systems, including solvability checks and conflict detection for non-coprime moduli',
+          'BigInt throughout with no Number safe-integer ceiling; zero network requests and fully local processing',
+        ],
+        howToUse: [
+          'Pick a mode at the top: inverse, exponentiation, linear congruence, or Chinese Remainder Theorem',
+          'Fill in base, exponent / right-hand side and modulus using decimal or 0x hexadecimal; prefix negatives with -',
+          'In CRT mode, edit remainder/modulus rows in the table and add or remove equations',
+          'Click Compute to see the result; invalid input shows a concrete reason in the result area, and results can be copied in one click',
+        ],
+        useCases: [
+          'Verifying modular inverse and exponentiation steps while learning RSA / ECC cryptography',
+          'Solving contest problems involving congruences and the Chinese Remainder Theorem',
+          'Cross-checking extended Euclidean algorithm derivations in number-theory teaching',
+        ],
+        privacyNote:
+          'All integers are processed in browser memory via local BigInt operations with no network requests; your input is never uploaded or recorded.',
+        faqs: [
+          {
+            question: 'Why does it say the inverse does not exist?',
+            answer:
+              'A modular inverse exists only when the base and modulus are coprime (gcd = 1). The tool reports the actual gcd, e.g. gcd(2, 4) = 2, so 2 has no inverse modulo 4.',
+          },
+          {
+            question: 'How large can the integers be?',
+            answer:
+              'Every operation uses BigInt rather than Number, so there is no 2^53 safe-integer limit; hundreds-of-digit decimal values or equally long 0x hexadecimal inputs are supported.',
+          },
+          {
+            question: 'What if CRT moduli are not coprime?',
+            answer:
+              'Coprime moduli are not required: the tool first checks solvability, reports a conflict (with the offending equation) when remainder differences are not divisible by the corresponding gcd, and otherwise merges by least common multiple into the least non-negative solution.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'bitmask-calculator',
+    name: '位掩码可视化计算器',
+    nameEn: 'Bitmask Visual Calculator',
+    description:
+      '逐位勾选的位掩码工具，支持 8/16/32/64 位、二进制八进制十进制十六进制互转、AND/OR/XOR/NAND/NOT、移位与循环移位、MSB/LSB/Popcount 统计及有符号视图。',
+    descriptionEn:
+      'A clickable bitmask workbench for 8/16/32/64-bit widths with bin/oct/dec/hex conversion, AND/OR/XOR/NAND/NOT, shifts and rotations, MSB/LSB/Popcount stats and a signed two’s-complement view.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/bitmask-calculator',
+    iconName: 'Binary',
+    tags: ['位掩码', '位运算', 'bitmask', '二进制', '移位', '循环移位', 'popcount'],
+    tagsEn: ['Bitmask', 'Bitwise', 'Binary', 'Shift', 'Rotation', 'Popcount'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '170',
+    doc: {
+      zh: {
+        whatIsIt:
+          '位掩码可视化计算器把抽象的位操作变成可点击的比特网格：每个位独立编号（0 为最低位 LSB），点击即可翻转，实时联动二进制、八进制、十进制与十六进制，并提供双掩码逻辑运算、移位 / 循环移位与位统计，覆盖嵌入式寄存器、权限标志与协议字段的日常计算场景，全部基于 BigInt 在浏览器本地完成，最大支持 64 位。',
+        coreFeatures: [
+          '8 / 16 / 32 / 64 四种位宽，逐位点击翻转，支持一键全部置 1 / 清 0',
+          '二进制（含前导零）、八进制、0x 十六进制、十进制实时互转，支持有符号二补码视图',
+          '双掩码 AND / OR / XOR，单目 NOT 与 NAND，超宽输入自动高位截断并提示',
+          '逻辑左移 / 逻辑右移 / 算术右移（保留符号位）/ 循环左移 / 循环右移，含 64 位回绕',
+          'MSB、LSB、Popcount（置 1 位数）与位宽上限统计；零网络请求，输入不离开浏览器',
+        ],
+        howToUse: [
+          '选择位宽后直接点击比特网格翻转对应位，或在十进制输入框键入数值（支持 0x / 0o / 0b 前缀）后回车',
+          '在「进制与位统计」卡片查看四种进制表示，打开「有符号视图」切换二补码解释',
+          '在「双掩码运算」卡片输入第二个掩码 B 并选择 AND / OR / XOR，同时给出 NAND 与 NOT A',
+          '在「移位与循环移位」卡片选择运算类型并填写位数，结果同时以十六进制、十进制与二进制展示',
+        ],
+        useCases: [
+          '嵌入式开发中计算寄存器位标志（如 RX_EN、TX_EN）与硬件掩码',
+          '权限系统 / 特性开关的多 bit 组合与判定',
+          '网络协议字段解析、教学演示位运算与二补码表示',
+        ],
+        privacyNote:
+          '所有掩码仅在浏览器内存中通过 BigInt 参与本地运算，不发起任何网络请求，不上传、不记录输入内容。',
+        faqs: [
+          {
+            question: '位编号从哪一侧开始？',
+            answer:
+              '编号 0 是最低有效位（LSB，最右侧），网格从左到右按高位到低位排列，与寄存器文档的常见画法一致。',
+          },
+          {
+            question: '算术右移和逻辑右移有什么区别？',
+            answer:
+              '逻辑右移（SHR）左侧统一补 0；算术右移（SAR）按二补码规则补符号位，负数右移后仍保持负数。工具在有符号视图下可直接对照两者差异。',
+          },
+          {
+            question: '输入超过当前位宽怎么办？',
+            answer:
+              '十进制输入框提交超宽数值时会明确报错；位宽切换时已有掩码按高位截断规范化到新位宽，64 位模式可承载完整 uint64 范围。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Bitmask Visual Calculator turns abstract bit operations into a clickable bit grid: every bit is numbered (0 is the LSB), toggled on click, and kept in sync with binary, octal, decimal and hexadecimal views, with dual-mask logic operations, shifts/rotations and bit statistics for register maps, permission flags and protocol fields. Everything runs locally on BigInt up to 64 bits.',
+        coreFeatures: [
+          '8/16/32/64-bit widths with per-bit click toggling and one-click set/clear all',
+          'Real-time conversion between zero-padded binary, octal, 0x hex and decimal, plus a signed two’s-complement view',
+          'Dual-mask AND/OR/XOR, unary NOT and NAND; out-of-range values are truncated with clear feedback',
+          'Logical left/right shift, arithmetic right shift (sign-preserving), rotate left/right including 64-bit wrap-around',
+          'MSB, LSB, popcount and width-limit stats; zero network requests with fully local processing',
+        ],
+        howToUse: [
+          'Pick a width and click the bit grid to toggle bits, or type a value (0x/0o/0b prefixes supported) in the decimal field and press Enter',
+          'Read all four numeral systems in the stats card, and enable the signed view for two’s-complement interpretation',
+          'Enter a second mask B and choose AND/OR/XOR in the dual-mask card; NAND and NOT A are shown alongside',
+          'Choose a shift/rotation type and amount; the result is shown in hex, decimal and binary together',
+        ],
+        useCases: [
+          'Working out register bit flags (e.g. RX_EN, TX_EN) and hardware masks in embedded development',
+          'Combining and testing multi-bit permission or feature flags',
+          'Parsing network protocol fields and teaching bitwise operations and two’s complement',
+        ],
+        privacyNote:
+          'All masks are processed in browser memory via local BigInt operations with no network requests; your input is never uploaded or recorded.',
+        faqs: [
+          {
+            question: 'Which side does bit numbering start from?',
+            answer:
+              'Bit 0 is the least significant bit (LSB, far right); the grid is laid out high-to-low from left to right, matching common register-map diagrams.',
+          },
+          {
+            question: 'What is the difference between arithmetic and logical right shift?',
+            answer:
+              'Logical shift right (SHR) fills zeros on the left; arithmetic shift right (SAR) fills sign bits under two’s complement so negative values stay negative. Toggle the signed view to compare them directly.',
+          },
+          {
+            question: 'What if my input exceeds the current width?',
+            answer:
+              'Submitting an out-of-range value in the decimal field raises an explicit error; switching width truncates the existing mask to the new width, and 64-bit mode covers the full uint64 range.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'hotp-generator',
+    name: 'HOTP 一次性密码生成与校验器',
+    nameEn: 'HOTP Generator and Validator',
+    description:
+      'RFC 4226 HOTP 生成与服务端校验工具，支持任意计数器步进、Base32/Hex/文本密钥、6–8 位与 SHA-1/256/512，内置附录 D 官方向量与 look-ahead 窗口重放检测。',
+    descriptionEn:
+      'RFC 4226 HOTP generator and server-side validator with arbitrary counter stepping, Base32/Hex/text secrets, 6–8 digits and SHA-1/256/512, built-in Appendix-D test vectors and look-ahead replay detection.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/hotp-generator',
+    iconName: 'KeyRound',
+    tags: ['HOTP', 'RFC4226', '一次性密码', 'HMAC', '动态口令', '2FA', '身份验证'],
+    tagsEn: ['HOTP', 'RFC 4226', 'One-time password', 'HMAC', '2FA', 'Authentication'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ',
+    doc: {
+      zh: {
+        whatIsIt:
+          'HOTP（HMAC-based One-Time Password，RFC 4226）是基于共享密钥与递增计数器的一次性密码算法，广泛用于硬件令牌与两步验证。本工具在浏览器本地完成 HMAC 动态截断，可对任意计数器生成 6–8 位验证码，并提供服务端视角的 look-ahead 窗口校验与重放检测，同时内置 RFC 4226 附录 D 全部 10 条官方向量逐条对照。',
+        coreFeatures: [
+          '任意非负计数器（BigInt 承载），支持加减步进与直接输入，编码取低 64 位符合 RFC',
+          '密钥支持 Base32、Hex（可带 0x）与原始 UTF-8 文本三种格式，解析错误明确提示',
+          '验证码位数 6 / 7 / 8，哈希算法 SHA-1 / SHA-256 / SHA-512，参数变化自动重新生成',
+          '服务端窗口校验：在 current ~ current+window 内查找提交码，返回前进步数与建议推进的计数器',
+          '内置 RFC 4226 附录 D 官方向量表，实时生成值与期望值自动比对；常量时间字符串比较防计时侧信道',
+        ],
+        howToUse: [
+          '选择密钥格式并粘贴共享密钥，或点击「载入 RFC 4226 官方向量」使用标准测试密钥',
+          '调整位数与哈希算法，通过加减按钮或输入框设置计数器，验证码自动生成并可一键复制',
+          '在「服务端校验」卡片输入用户提交码与窗口大小，点击校验查看命中位置或拒绝原因',
+          '在底部官方向量表中确认本工具输出与 RFC 期望值逐条一致',
+        ],
+        useCases: [
+          '硬件 OTP 令牌、身份认证服务端的 HOTP 逻辑开发与联调',
+          '两步验证（2FA）登录流程中计数器失步的窗口重同步验证',
+          '密码学教学中对照 RFC 4226 动态截断（Dynamic Truncation）过程',
+        ],
+        privacyNote:
+          '密钥与验证码仅在浏览器内存中通过 Web Crypto 本地计算，不发起任何网络请求，不上传、不落盘、不记录任何输入。',
+        faqs: [
+          {
+            question: 'HOTP 和 TOTP 有什么区别？',
+            answer:
+              'HOTP 的密码随计数器变化，需要客户端与服务端各自维护并在验证后推进计数器；TOTP（RFC 6238）把计数器换成 floor(时间戳/步长)，密码随时间自动变化。本工具专注 HOTP 的任意计数器与窗口重同步，这是 TOTP 工具不具备的能力。',
+          },
+          {
+            question: '窗口校验如何防止重放攻击？',
+            answer:
+              '校验只接受当前计数器及其之后 window 步内的码，验证成功后服务端应把计数器推进到命中值 +1。同一旧计数器的码再次提交时，因落后于服务端计数器而无法命中，即被判定为重放并拒绝。',
+          },
+          {
+            question: '为什么默认使用 SHA-1？安全吗？',
+            answer:
+              'RFC 4226 规定 HOTP 默认算法为 HMAC-SHA-1。这里的 SHA-1 用于 HMAC 而非裸哈希，HMAC 的安全性质不依赖碰撞抗性，业界实践中仍视为安全；如需更强算法可切换 SHA-256 / SHA-512，但需客户端与服务端保持一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'HOTP (HMAC-based One-Time Password, RFC 4226) derives one-time passwords from a shared secret and an incrementing counter, widely used in hardware tokens and two-factor authentication. This tool performs HMAC dynamic truncation locally in the browser for any counter, produces 6–8-digit codes, and adds server-side look-ahead window verification with replay detection, plus a live check against all ten official Appendix-D vectors.',
+        coreFeatures: [
+          'Arbitrary non-negative counters on BigInt with stepping and direct entry; encoding takes the low 64 bits per RFC',
+          'Secrets accepted as Base32, Hex (0x optional) or raw UTF-8 text, with explicit parse errors',
+          '6/7/8-digit codes and SHA-1/SHA-256/SHA-512, regenerated automatically when parameters change',
+          'Server-side window verification from current to current+window, returning the matched offset and the counter to advance to',
+          'Built-in RFC 4226 Appendix-D vector table with live comparison; constant-time string comparison against timing side channels',
+        ],
+        howToUse: [
+          'Pick a secret format and paste the shared secret, or load the standard RFC 4226 test secret with one click',
+          'Adjust digits and hash algorithm, set the counter via stepper or input; the code regenerates automatically and can be copied',
+          'Enter a submitted token and window size in the server verification card to see the match position or rejection reason',
+          'Confirm tool output against every expected RFC value in the bottom vector table',
+        ],
+        useCases: [
+          'Developing and debugging HOTP logic for hardware OTP tokens and authentication backends',
+          'Window-based resynchronization when counters drift in 2FA login flows',
+          'Teaching the RFC 4226 dynamic truncation procedure in cryptography courses',
+        ],
+        privacyNote:
+          'Secrets and codes are computed locally with Web Crypto in browser memory only; no network requests are made and no input is uploaded, persisted or logged.',
+        faqs: [
+          {
+            question: 'What is the difference between HOTP and TOTP?',
+            answer:
+              'HOTP changes the password with a counter that client and server each maintain and advance after verification; TOTP (RFC 6238) replaces the counter with floor(timestamp/step) so codes rotate with time. This tool focuses on arbitrary HOTP counters and window resynchronization, which a TOTP tool cannot do.',
+          },
+          {
+            question: 'How does window verification prevent replay?',
+            answer:
+              'Only codes at the current counter or up to window steps ahead are accepted. After a success the server advances its counter to matched + 1, so resubmitting an older code fails because it now lies behind the server counter and is treated as a replay.',
+          },
+          {
+            question: 'Why is SHA-1 the default? Is it secure?',
+            answer:
+              'RFC 4226 mandates HMAC-SHA-1 as the HOTP default. Here SHA-1 is used inside HMAC rather than as a bare hash, and HMAC security does not rely on collision resistance, so it remains accepted in practice. Switch to SHA-256/SHA-512 when stronger hashes are required, keeping client and server settings identical.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ip-range-to-cidr',
+    name: 'IP 范围转 CIDR 聚合与超网合并器',
+    nameEn: 'IP Range to CIDR Aggregator and Supernet Merger',
+    description:
+      '把 IPv4/IPv6 起止地址范围聚合为数量最少的 CIDR 前缀列表，并支持把一组重叠或相邻的 CIDR 去重合并为最小超网，输出每块起止地址与地址总数，适用于防火墙白名单、路由汇总与安全组配置。',
+    descriptionEn:
+      'Aggregate IPv4/IPv6 start-end ranges into the fewest CIDR prefixes, and merge a set of overlapping or adjacent CIDRs into minimal supernets, with per-block start/end addresses and address totals for firewall allowlists, route summarization and security groups.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ip-range-to-cidr',
+    iconName: 'Globe',
+    tags: ['CIDR', 'IP 地址', '子网聚合', '超网', '防火墙', '路由汇总', 'IPv6'],
+    tagsEn: ['CIDR', 'IP address', 'Subnet aggregation', 'Supernet', 'Firewall', 'Route summarization', 'IPv6'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '192.168.1.0 - 192.168.1.30',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具在浏览器本地完成两个方向的 CIDR 运算：正向把每行「起始 IP - 结束 IP」的连续地址范围（IPv4 或 IPv6）聚合为覆盖该范围、数量最少的 CIDR 前缀集合；反向把一组可能重叠、相邻或互相包含的 CIDR 去重后逐级合并为最小超网列表。所有地址以 BigInt 承载，IPv6 输出遵循 RFC 5952 压缩格式。',
+        coreFeatures: [
+          '范围 → CIDR：贪心选取边界对齐且不越界的最大块，保证前缀数量最少且无重叠、无遗漏',
+          'CIDR 合并：自动排序、去重与包含消除，相邻同级对齐块逐级合并为超网',
+          '同时支持 IPv4 与 IPv6，128 位地址全程 BigInt 运算，输出 RFC 5952 压缩 IPv6',
+          '结果表格展示每个 CIDR 的起始地址、结束地址与地址数，并汇总块数与覆盖地址总数',
+          '起止倒置、地址族混用、非法地址与前缀越界均给出明确的中文错误提示',
+        ],
+        howToUse: [
+          '选择「范围 → CIDR」模式，在文本框每行输入一个起止范围，起止地址可用短横线或空格分隔',
+          '或选择「CIDR 合并超网」模式，每行粘贴一个 CIDR，工具自动去重并尝试逐级合并',
+          '结果区查看最小 CIDR 列表、每块起止地址与地址数，点击「复制 CIDR」按行复制全部前缀',
+          '可点击顶部示例按钮快速载入非对齐段、整段 /24、单 IP 或 IPv6 场景',
+        ],
+        useCases: [
+          '编写防火墙白名单、ACL 与云安全组规则时把零散 IP 段压缩为最小前缀集合',
+          '网络路由汇总（route summarization）与超网规划，减少路由表条目',
+          '核对地址范围与 CIDR 列表的等价覆盖关系，排查规则冗余与包含冲突',
+        ],
+        privacyNote:
+          '所有 IP 地址与 CIDR 仅在浏览器内存中本地计算，不发起任何网络请求，不上传、不落盘、不记录任何输入。',
+        faqs: [
+          {
+            question: '为什么一个范围会拆成多个 CIDR？',
+            answer:
+              'CIDR 块的起止地址必须满足固定边界对齐（块大小为 2 的幂且网络地址是块大小的整数倍）。当范围起点或终点不落在天然边界上时，无法用单个前缀精确覆盖，贪心算法会依次选取当前可用的最大对齐块，因此得到数量最少的一组 CIDR，它们两两不重叠且合起来恰好等于原范围。',
+          },
+          {
+            question: 'CIDR 合并后的超网会不会扩大覆盖范围？',
+            answer:
+              '合并只发生在同前缀长度、地址相邻且边界对齐的两个块之间，合并后的超网恰好覆盖原来两个块的并集，不会引入额外地址。存在包含或重叠关系时先做去重消除；无法对齐合并的块会原样保留。',
+          },
+          {
+            question: '和已有的 CIDR 子网计算器有什么区别？',
+            answer:
+              'CIDR 子网计算器对单个「地址 + 前缀」做正向拆解（网络地址、广播地址、可用主机范围等）；本工具处理其反方向问题——把起止地址范围聚合为最小 CIDR 列表，并额外提供多 CIDR 的超网合并，两者能力互补且不重叠。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool runs two CIDR workflows locally in the browser: forward aggregation turns each line of start-end IP ranges (IPv4 or IPv6) into the fewest CIDR prefixes covering exactly that range; reverse merging deduplicates a set of overlapping, adjacent or contained CIDRs and collapses them into minimal supernets. All addresses are carried on BigInt and IPv6 output follows RFC 5952 compression.',
+        coreFeatures: [
+          'Range to CIDR: a greedy pass picks the largest aligned block that never overruns the end, guaranteeing the fewest prefixes with no overlap and no gaps',
+          'CIDR merge: automatic sorting, deduplication and containment elimination, then level-by-level merging of adjacent aligned siblings into supernets',
+          'Both IPv4 and IPv6 with full 128-bit BigInt arithmetic and RFC 5952 compressed IPv6 output',
+          'Result table shows each CIDR with start address, end address and address count, plus totals for block count and covered addresses',
+          'Reversed ranges, mixed address families, invalid addresses and out-of-range prefixes raise clear error messages',
+        ],
+        howToUse: [
+          'In "Range to CIDR" mode, enter one start-end range per line; the two addresses may be separated by a hyphen or whitespace',
+          'Or switch to "CIDR merge" mode and paste one CIDR per line; duplicates are removed and mergeable blocks collapse automatically',
+          'Review the minimal CIDR list with per-block start, end and address count, then use "Copy CIDR" to copy all prefixes line by line',
+          'Use the sample buttons to load misaligned ranges, a full /24, a single IP or IPv6 scenarios',
+        ],
+        useCases: [
+          'Compressing scattered IP ranges into minimal prefix sets for firewall allowlists, ACLs and cloud security groups',
+          'Route summarization and supernet planning to shrink routing table entries',
+          'Verifying equivalent coverage between ranges and CIDR lists and spotting redundant or conflicting rules',
+        ],
+        privacyNote:
+          'All IP addresses and CIDRs are computed locally in browser memory only; no network requests are made and no input is uploaded, persisted or logged.',
+        faqs: [
+          {
+            question: 'Why does one range split into several CIDRs?',
+            answer:
+              'A CIDR block must be aligned to a fixed boundary: its size is a power of two and the network address is a multiple of that size. When a range starts or ends off a natural boundary it cannot be matched by one prefix, so the greedy algorithm repeatedly takes the largest aligned block available, producing the fewest CIDRs that are mutually disjoint and together equal the original range.',
+          },
+          {
+            question: 'Can merging expand the covered address space?',
+            answer:
+              'No. Merging only happens between two blocks of equal prefix length that are adjacent and correctly aligned, so the resulting supernet covers exactly their union. Containment and overlap are removed by deduplication first; blocks that cannot be aligned are kept unchanged.',
+          },
+          {
+            question: 'How is this different from the existing CIDR subnet calculator?',
+            answer:
+              'The subnet calculator expands a single address-plus-prefix into network, broadcast and usable host details. This tool solves the inverse problem—aggregating start-end ranges into the smallest CIDR set—and additionally merges multiple CIDRs into supernets, so the capabilities complement rather than overlap.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-to-sql-ddl',
+    name: 'JSON 转 SQL 建表语句生成器',
+    nameEn: 'JSON to SQL DDL Generator',
+    description:
+      '粘贴 JSON 对象或对象数组，自动推断列类型、VARCHAR 长度、NOT NULL 与 snake_case 列名，生成 MySQL、PostgreSQL、SQLite 三方言的 CREATE TABLE 建表语句，支持自增主键、IF NOT EXISTS、DROP TABLE 前缀与列注释。',
+    descriptionEn:
+      'Paste a JSON object or an array of objects to infer column types, VARCHAR lengths, NOT NULL constraints and snake_case names, then generate CREATE TABLE DDL for MySQL, PostgreSQL and SQLite, with auto-increment primary keys, IF NOT EXISTS, DROP TABLE prefixes and column comments.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-to-sql-ddl',
+    iconName: 'Database',
+    tags: ['JSON', 'SQL', 'DDL', '建表', 'MySQL', 'PostgreSQL', 'SQLite', '类型推断'],
+    tagsEn: ['JSON', 'SQL', 'DDL', 'CREATE TABLE', 'MySQL', 'PostgreSQL', 'SQLite', 'type inference'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '[{"userId":1,"userName":"alice","isActive":true}]',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具把 JSON 样本转换为可直接执行的 SQL CREATE TABLE 语句：综合多条记录推断每个字段的逻辑类型（布尔、INTEGER、BIGINT、DOUBLE、VARCHAR/TEXT、JSON），按样本最大长度加余量确定 VARCHAR 长度，依据是否出现 null 或字段缺失推断 NOT NULL，并把驼峰键名转换为 snake_case 列名，再按 MySQL、PostgreSQL 或 SQLite 方言输出 DDL。全部推断与生成在浏览器本地完成。',
+        coreFeatures: [
+          '多样本综合类型推断：布尔、32 位整数、越界整数升级 BIGINT、浮点 DOUBLE、字符串 VARCHAR/TEXT、嵌套对象与数组 JSON',
+          'VARCHAR 按样本最大长度 ×1.5 预留余量并设下限，超阈值自动退化为 TEXT',
+          'null 与字段缺失参与可空性推断，全部样本非空才输出 NOT NULL；全 null 字段回退为可空 TEXT 占位',
+          '驼峰/连字符键名转 snake_case，SQL 保留字自动加后缀，表名与列名按方言加反引号或双引号',
+          '三方言自增主键（AUTO_INCREMENT / SERIAL / INTEGER PRIMARY KEY AUTOINCREMENT）、IF NOT EXISTS、DROP TABLE IF EXISTS 前缀与列注释',
+          'JSON 语法错误给出行号级提示，顶层标量或标量数组明确报错',
+        ],
+        howToUse: [
+          '在左侧粘贴单个 JSON 对象或对象数组，样本越多类型与可空性推断越准确',
+          '选择目标 SQL 方言并填写表名，按需切换自增主键、snake_case、长度余量、IF NOT EXISTS、DROP TABLE 与列注释开关',
+          '右侧实时查看生成的 DDL，下方表格核对每个字段的推断类型、长度与可空性',
+          '点击「复制 DDL」复制完整建表语句到剪贴板',
+        ],
+        useCases: [
+          '原型开发或数据导入时，依据接口返回的 JSON 快速生成初始建表语句',
+          '把 NoSQL/接口文档中的样例数据转换为关系型表结构草稿，再由人工细化',
+          '在 MySQL、PostgreSQL、SQLite 之间迁移或对比方言差异（主键、JSON、布尔类型写法）',
+        ],
+        privacyNote:
+          '所有 JSON 仅在浏览器内存中本地解析与推断，不发起任何网络请求，不上传、不落盘、不记录任何业务数据。',
+        faqs: [
+          {
+            question: '推断出的类型可以直接用于生产环境吗？',
+            answer:
+              '生成结果是基于有限样本的结构草稿，适合作为建表起点。生产环境仍需人工复核：样本未覆盖的更长字符串、更大整数或新字段类型无法被提前发现，索引、外键、唯一约束与默认值也需要按业务补充。',
+          },
+          {
+            question: '为什么有的整数被推断成 BIGINT？',
+            answer:
+              '32 位有符号整数范围是 -2147483648 到 2147483647。任一样本中的整数超出该范围即升级为 BIGINT，避免 INSERT 时溢出；浮点与整数混合则统一推断为 DOUBLE/REAL。',
+          },
+          {
+            question: '嵌套对象和数组会怎么处理？',
+            answer:
+              '对象与数组作为结构化值统一映射为 JSON 类型：MySQL 输出 JSON、PostgreSQL 输出 JSONB、SQLite 因无原生 JSON 类型而使用 TEXT 存储。不会自动拍平为多张关联表。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool turns JSON samples into ready-to-run SQL CREATE TABLE statements. It combines multiple records to infer each field’s logical type (boolean, INTEGER, BIGINT, DOUBLE, VARCHAR/TEXT, JSON), sizes VARCHAR from the longest sample plus padding, derives NOT NULL from nulls and missing keys, converts camelCase keys to snake_case columns, and emits DDL for MySQL, PostgreSQL or SQLite. All inference and generation happen locally in the browser.',
+        coreFeatures: [
+          'Multi-sample type inference: boolean, 32-bit integers, out-of-range integers promoted to BIGINT, DOUBLE floats, VARCHAR/TEXT strings, and JSON for nested objects or arrays',
+          'VARCHAR sized at 1.5x the longest sample with a minimum floor, collapsing to TEXT past a configurable threshold',
+          'Nullability inference from explicit nulls and missing keys; NOT NULL only when every sample has a value; all-null fields fall back to nullable TEXT placeholders',
+          'camelCase/kebab-case keys become snake_case, reserved words get a suffix, and identifiers are quoted with backticks or double quotes per dialect',
+          'Dialect-specific auto-increment primary keys (AUTO_INCREMENT / SERIAL / INTEGER PRIMARY KEY AUTOINCREMENT), IF NOT EXISTS, DROP TABLE IF EXISTS prefixes and column comments',
+          'Line-level JSON syntax errors and clear messages for scalar top-level values or scalar arrays',
+        ],
+        howToUse: [
+          'Paste a single JSON object or an array of objects on the left; more samples yield more accurate type and nullability inference',
+          'Pick the target SQL dialect and enter a table name, then toggle primary key, snake_case, length padding, IF NOT EXISTS, DROP TABLE and comments as needed',
+          'Review the generated DDL on the right and the per-field inference table (type, length, nullability) below',
+          'Use "Copy DDL" to copy the complete statement to the clipboard',
+        ],
+        useCases: [
+          'Quickly scaffolding CREATE TABLE statements from API payloads during prototyping or data import',
+          'Turning NoSQL or API-document sample data into relational table drafts for human refinement',
+          'Migrating between MySQL, PostgreSQL and SQLite and comparing dialect differences for primary keys, JSON and booleans',
+        ],
+        privacyNote:
+          'All JSON is parsed and inferred locally in browser memory only; no network requests are made and no business data is uploaded, persisted or logged.',
+        faqs: [
+          {
+            question: 'Can the inferred schema go straight to production?',
+            answer:
+              'The output is a sample-based draft meant as a starting point. Review it manually before production: longer strings, larger integers or new field types absent from the samples cannot be predicted, and indexes, foreign keys, unique constraints and defaults must be added to fit the business.',
+          },
+          {
+            question: 'Why are some integers inferred as BIGINT?',
+            answer:
+              'A signed 32-bit integer spans -2147483648 to 2147483647. Any sample outside that range is promoted to BIGINT to prevent insert overflow; mixing floats with integers widens the column to DOUBLE/REAL instead.',
+          },
+          {
+            question: 'How are nested objects and arrays handled?',
+            answer:
+              'Structured values map uniformly to a JSON type: JSON on MySQL, JSONB on PostgreSQL, and TEXT on SQLite which has no native JSON type. They are not flattened into related tables automatically.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

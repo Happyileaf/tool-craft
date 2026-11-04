@@ -255,4 +255,9 @@ export const toolLoaders: Record<
   'mercator-tile-calculator': () => import('./mercator-tile-calculator'),
   'access-log-parser': () => import('./access-log-parser'),
   'rlp-codec': () => import('./rlp-codec'),
+  'modular-arithmetic-calculator': () => import('./modular-arithmetic-calculator'),
+  'bitmask-calculator': () => import('./bitmask-calculator'),
+  'hotp-generator': () => import('./hotp-generator'),
+  'ip-range-to-cidr': () => import('./ip-range-to-cidr'),
+  'json-to-sql-ddl': () => import('./json-to-sql-ddl'),
 };

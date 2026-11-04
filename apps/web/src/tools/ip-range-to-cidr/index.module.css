@@ -1,0 +1,54 @@
+.container {
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.inputArea {
+  margin-bottom: 16px;
+}
+
+.resultCard {
+  min-width: 0;
+  margin-bottom: 16px;
+}
+
+.summaryRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 12px;
+}
+
+.summaryItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summaryLabel {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.summaryValue {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1677ff;
+  word-break: break-all;
+}
+
+.cidrText {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #1677ff;
+}

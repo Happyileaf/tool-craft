@@ -1,0 +1,93 @@
+.container {
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.bitGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.bitCell {
+  width: 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  user-select: none;
+}
+
+.bitIndex {
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.45);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.bitButton {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  background: #fafafa;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.bitButton:hover {
+  border-color: #1677ff;
+}
+
+.bitButtonOn {
+  background: #1677ff;
+  border-color: #1677ff;
+  color: #fff;
+}
+
+.bitButtonOff {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  word-break: break-all;
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.statItem {
+  background: #fafafa;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+  margin-bottom: 4px;
+}
+
+.statValue {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 15px;
+  font-weight: 600;
+}

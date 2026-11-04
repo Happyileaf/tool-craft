@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-05 ：【Agent自主迭代】新增 5 个模运算、位掩码、HOTP、IP 范围聚合与 JSON 转 DDL 工具
+
+- **新增**：模运算计算器（modular-arithmetic-calculator）— 支持模逆元（扩展欧几里得）、模幂（平方-乘，含负指数）、线性同余方程求解与中国剩余定理 CRT（支持非互素模数与冲突检测），大整数全程 BigInt 运算，CRT 同余方程组可增删编辑，非法输入逐条中文报错，纯本地运算
+- **新增**：位掩码可视化计算器（bitmask-calculator）— 8/16/32/64 位宽下的可点击比特网格与二进制/八进制/十进制/十六进制四进制联动，支持置位/清位/取反/测位、AND/OR/XOR/NOT/NAND、逻辑与算术移位及循环移位（含 64 位回绕）、MSB/LSB/置位数与有符号二补码互转，纯本地运算
+- **新增**：HOTP 一次性密码生成与校验器（hotp-generator）— 遵循 RFC 4226，支持 Base32/Hex/文本密钥与 SHA-1/SHA-256/SHA-512、6–10 位验证码，基于 Web Crypto HMAC 动态截断生成，提供计数器步进、look-ahead 窗口校验（常量时间比较）与 RFC 4226 标准向量实时对照表，纯本地运算
+- **新增**：IP 范围转 CIDR 聚合与超网合并器（ip-range-to-cidr）— 把 IPv4/IPv6 起止地址范围贪心聚合为数量最少且无重叠无遗漏的 CIDR 前缀，并支持一组重叠/相邻 CIDR 的去重与逐级超网合并，全程 BigInt 承载 128 位地址、IPv6 输出遵循 RFC 5952，结果表格含每块起止地址与地址总数，纯本地运算
+- **新增**：JSON 转 SQL 建表语句生成器（json-to-sql-ddl）— 粘贴 JSON 对象或对象数组，综合多样本推断 BOOLEAN/INTEGER/BIGINT/DOUBLE/VARCHAR·TEXT/JSON 类型、VARCHAR 长度余量与阈值退化、null 与缺失驱动的 NOT NULL、snake_case 列名与保留字处理，生成 MySQL/PostgreSQL/SQLite 三方言 CREATE TABLE（自增主键、IF NOT EXISTS、DROP TABLE 前缀、列注释），JSON 语法错误行号级提示，纯本地运算
+
 ## 2026-11-04 ：【Agent自主迭代】新增 5 个 555 多谐振荡、露点、墨卡托瓦片、访问日志解析与以太坊 RLP 编解码工具
 
 - **新增**：NE555 非稳态多谐振荡器计算器（ne555-astable-calculator）— 按 f = 1.44/((R_A+2R_B)C) 计算频率、周期、占空比与高低电平时间，支持 nF/µF、Ω/kΩ/MΩ 词头自适应与给定目标频率的参数估算，输出充放电波形示意，电阻 / 电容非法值逐条中文报错，纯本地运算
