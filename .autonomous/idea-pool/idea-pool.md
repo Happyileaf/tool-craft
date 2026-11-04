@@ -228,5 +228,5 @@
 | 20261104081013 | 555 定时器（Astable / Monostable）参数计算器 | Web Tool | Exploration | Pending | 2026-11-04 | | [详情](./idea-details/20261104081013.md) |
 | 20261104081014 | EPC QR Code（SEPA 转账）负载生成与解析器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104081014.md) |
 | 20261104081015 | BMP / DIB 位图文件头结构只读解析器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104081015.md) |
-| 20261104081016 | JSON → Swift struct / Codable 模型生成器 | Web Tool | Existing Gap | Claimed | 2026-11-04 | trae-agent @ 2026-11-04 12:03 CST | [详情](./idea-details/20261104081016.md) |
+| 20261104081016 | JSON → Swift struct / Codable 模型生成器 | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent @ 2026-11-04 12:03 CST | [详情](./idea-details/20261104081016.md) |
 

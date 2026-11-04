@@ -22926,6 +22926,106 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'json-to-swift',
+    name: 'JSON → Swift struct 生成器',
+    nameEn: 'JSON to Swift Struct (Codable) Generator',
+    description:
+      '粘贴 JSON 样本自动推断生成 Swift struct: Codable 模型：嵌套对象生成独立 struct，整数 Int、浮点 Double、布尔 Bool、字符串 String、数组 [T]；同型对象数组合并字段，空数组/异型值回退 Any；null 或缺字段属性输出 T?，snake_case/连字符键自动 camelCase 并生成 CodingKeys，Swift 关键字自动反引号转义。',
+    descriptionEn:
+      'Paste a JSON sample and get inferred Swift struct: Codable models: nested objects become separate structs; integers map to Int, floats to Double, booleans to Bool, strings to String, arrays to [T]; homogeneous object arrays merge fields while empty arrays and mixed values fall back to Any. Null or missing fields become T?, snake_case/hyphen keys are camelCased with CodingKeys, and Swift keywords are escaped with backticks.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-swift',
+    iconName: 'FileCode',
+    tags: ['JSON', 'Swift', 'Codable', 'iOS', 'struct', '代码生成'],
+    tagsEn: ['JSON', 'Swift', 'Codable', 'iOS', 'struct', 'Code Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON → Swift struct 生成器是一款纯浏览器本地运行的代码生成工具：粘贴 API 返回的 JSON 样本即可推断出可直接用于 iOS/macOS 工程的 Codable 模型，自动处理类型映射、嵌套结构体、数组、可选类型、键名映射与关键字冲突，免去手写 Decodable 模型的重复劳动。',
+        coreFeatures: [
+          'Codable 模型输出：根结构体与每个嵌套对象生成独立的 struct X: Codable',
+          '类型推断：整数 Int、浮点 Double、布尔 Bool、字符串 String；数组推断为 [元素类型]，同型对象数组合并字段，空数组回退 [Any]，Int/Double 自动拓宽，不可合并的异型值回退 Any 并告警',
+          '可选类型：出现 null 或数组元素中缺失的字段输出 T?，可一键关闭',
+          '键名映射：默认将 snake_case/连字符键转为 camelCase 并生成 CodingKeys（保留未改名字段），也可保留原键；Swift 关键字自动反引号转义，重名嵌套结构体自动编号',
+        ],
+        howToUse: [
+          '在左侧粘贴 JSON 对象样本（根为数组或标量时生成 items/value 单属性包装结构体）',
+          '在顶部设置根结构体名、属性命名风格、是否可选、是否生成 CodingKeys',
+          '右侧即时生成 Swift 代码，点击「复制 Swift 代码」直接粘贴到 Xcode 工程',
+          '查看下方警告了解空数组、类型冲突等推断决策',
+        ],
+        useCases: [
+          '为 Alamofire / URLSession 接口快速编写 Decodable 响应模型',
+          '对接 REST API 时把 JSON 文档样例转成 SwiftUI 预览与测试数据模型',
+          '处理键名为 snake_case 或含连字符、Swift 关键字的第三方接口',
+        ],
+        privacyNote:
+          'JSON 解析、类型推断与代码生成全部在浏览器本地完成，不发起任何网络请求，样本数据不会离开设备。',
+        faqs: [
+          {
+            question: '生成的代码如何处理 snake_case 键？',
+            answer:
+              '默认把属性转为 camelCase（如 user_id → userId）并生成 CodingKeys 枚举映射原始键，JSONDecoder 无需设置 keyDecodingStrategy 即可解码；也可切换为「保留原键」或整体关闭 CodingKeys。',
+          },
+          {
+            question: '为什么字段是可选类型 T?？',
+            answer:
+              '样本中该字段出现过 null，或只在数组的部分元素中存在，工具据此判定它可能缺失并输出 T?。确认接口必定返回该字段时，可手动去掉问号，或关闭「可选类型」开关重新生成。',
+          },
+          {
+            question: 'null 字段为什么是 Any?？',
+            answer:
+              'null 不携带具体类型信息。若同名字段在其他数组元素中有具体值，会自动合并为具体可选类型；否则保留 Any? 占位，需要人工替换为真实类型。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON to Swift Struct Generator is a fully browser-local code generator: paste a JSON API sample and get Codable models ready for iOS/macOS projects, with automatic type mapping, nested structs, arrays, optionals, key mapping and keyword handling.',
+        coreFeatures: [
+          'Codable output: the root and every nested object become separate struct X: Codable declarations',
+          'Type inference: Int for integers, Double for floats, Bool, String; arrays infer [Element], homogeneous object arrays merge fields, empty arrays fall back to [Any], Int/Double widen automatically, and unmergeable mixed values fall back to Any with a warning',
+          'Optionals: fields that are null or missing from some array elements become T?; the option can be switched off',
+          'Key mapping: snake_case/hyphen keys are camelCased by default with CodingKeys (unchanged keys kept as plain cases); alternatively keep original keys; Swift keywords are backtick-escaped and duplicate nested struct names are numbered',
+        ],
+        howToUse: [
+          'Paste a JSON object sample on the left (array/scalar roots produce an items/value wrapper struct)',
+          'Set the root struct name, property naming style, optionals and CodingKeys at the top',
+          'Swift code appears instantly on the right — click Copy and paste it straight into your Xcode project',
+          'Check the warnings below for inference decisions such as empty arrays and type conflicts',
+        ],
+        useCases: [
+          'Quickly writing Decodable response models for Alamofire or URLSession APIs',
+          'Turning JSON documentation samples into models for SwiftUI previews and test data',
+          'Handling third-party APIs with snake_case keys, hyphens, or Swift keyword names',
+        ],
+        privacyNote:
+          'JSON parsing, type inference and code generation all run locally in your browser. No network request is made and sample data never leaves your device.',
+        faqs: [
+          {
+            question: 'How are snake_case keys handled?',
+            answer:
+              'Properties are camelCased by default (user_id → userId) with a CodingKeys enum mapping the original keys, so JSONDecoder needs no keyDecodingStrategy. You can also keep original keys or disable CodingKeys entirely.',
+          },
+          {
+            question: 'Why is a field optional (T?)?',
+            answer:
+              'The field is null in the sample or only present in some array elements, so it is treated as potentially missing and generated as T?. If the API guarantees the field, remove the question mark manually or regenerate with optionals disabled.',
+          },
+          {
+            question: 'Why is a null field Any?',
+            answer:
+              'null carries no concrete type information. When the same field has a concrete value in another array element, it merges into a concrete optional type; otherwise Any? is kept as a placeholder for manual replacement.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'byte-array-codegen',
     name: '字节数组代码生成器',
     nameEn: 'Byte Array Code Generator',
