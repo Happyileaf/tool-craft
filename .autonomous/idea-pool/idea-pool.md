@@ -224,4 +224,5 @@
 | 20261104081013 | 555 定时器（Astable / Monostable）参数计算器 | Web Tool | Exploration | Pending | 2026-11-04 | | [详情](./idea-details/20261104081013.md) |
 | 20261104081014 | EPC QR Code（SEPA 转账）负载生成与解析器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104081014.md) |
 | 20261104081015 | BMP / DIB 位图文件头结构只读解析器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104081015.md) |
+| 20261104140121 | JSON → Dart model 类代码生成器（freezed / json_serializable 风格可选） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104140121.md) |
 
