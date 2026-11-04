@@ -23427,6 +23427,105 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'access-log-parser',
+    name: 'NCSA 访问日志解析与统计器',
+    nameEn: 'Access Log Parser & Analyzer',
+    description:
+      '批量解析 NCSA Common / Combined 访问日志：逐行提取 IP、时间（CLF→ISO 8601）、方法路径、状态码、字节、Referer、UA 与响应耗时，畸形行精确定位，并汇总状态分布、Top IP / 路径 / UA、流量与 QPS。',
+    descriptionEn:
+      'Batch-parse NCSA Common/Combined access logs: extract IP, time (CLF→ISO 8601), method/path, status, bytes, referer, UA and request time per line, pinpoint malformed lines, and summarize status mix, top IPs/paths/UAs, traffic and QPS.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/access-log-parser',
+    iconName: 'List',
+    tags: ['访问日志', 'NCSA', 'Combined Log Format', '日志解析', '运维统计'],
+    tagsEn: ['Access Log', 'NCSA', 'Combined Log Format', 'Log Parser', 'Ops Analytics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'NCSA 访问日志解析与统计器是一款纯浏览器本地的运维辅助工具：粘贴 Apache / Nginx 默认输出的 Common Log Format 或 Combined Log Format 日志（可混合格式、可带末尾 request_time 扩展），逐行解析为结构化字段，对无法匹配的行给出行号与具体原因，并一次性汇总状态码分布、Top IP / 路径 / User-Agent、流量总量、时间跨度与 QPS。',
+        coreFeatures: [
+          '自动识别 Common（7 字段）与 Combined（+Referer+UA），支持末尾 request_time 响应耗时扩展',
+          'CLF 时间 10/Oct/2026:13:55:36 -0700 转标准 ISO 8601（保留并正确换算原始时区偏移）',
+          "请求行拆分方法 / 路径（保留 query string）/ 协议；空字节 '-' 识别为 null 并单独计数",
+          '畸形行（引号 / 括号未闭合、字段缺失、坏时间、非法状态码等）不中断批量解析，标注行号与原因',
+          '单次 O(n) 遍历聚合：状态码分类与明细、Top 5 IP / 路径 / UA、总流量、时间跨度、QPS 与平均耗时',
+        ],
+        howToUse: [
+          '将整段访问日志粘贴到文本框（或点击「载入示例」），解析与统计即时刷新',
+          '在统计卡片中查看成功率、状态码分布、Top 排行、流量与时间跨度',
+          '切到「仅错误」查看所有畸形行及失败原因；成功结果可用「复制 JSON」导出结构化数据',
+        ],
+        useCases: [
+          '排查 4xx / 5xx 突增、刷接口来源 IP 与高频路径',
+          '从 Apache / Nginx 日志快速估算流量规模、时间跨度与请求速率',
+          '校验日志格式是否规范，定位被截断或字段错位的异常行',
+        ],
+        privacyNote:
+          '日志全程只在浏览器本地解析，不发起任何网络请求，粘贴的访问日志不会上传或离开设备。',
+        faqs: [
+          {
+            question: '支持哪些日志格式？',
+            answer:
+              '支持 NCSA Common Log Format（host ident authuser [time] "request" status bytes）与在其后追加 Referer、User-Agent 两个引号字段的 Combined Log Format；两种格式可在同一批文本中混合出现。若 Combined 行末再跟一个裸数值，则识别为 request_time（秒）。其它自定义字段（如 $request_id）会被判为字段过多。',
+          },
+          {
+            question: 'CLF 时间如何处理时区？',
+            answer:
+              '方括号内形如 10/Oct/2026:13:55:36 -0700 的时间带显式偏移，工具按偏移换算为绝对时刻并输出 UTC 的 ISO 8601（如 2026-10-10T20:55:36Z），时间跨度与 QPS 均基于绝对时刻计算，不受日志内不同偏移混用影响。',
+          },
+          {
+            question: '与单行 access-log-to-curl / User-Agent 解析类工具有何不同？',
+            answer:
+              '本工具面向整段日志的批量结构化解析与统计汇总：逐行表格、错误行定位、状态码分布、Top 排行、流量与 QPS。它不是把单行请求转成 curl 命令，也不深入解析 UA 的设备 / 浏览器语义，两者互不替代。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Access Log Parser & Analyzer is a fully local ops tool: paste Apache/Nginx-style Common or Combined Log Format lines (formats may be mixed, with an optional trailing request_time), get per-line structured fields, precise line-numbered errors for malformed rows, and one-pass summaries of status mix, top IPs/paths/UAs, total traffic, time span and QPS.',
+        coreFeatures: [
+          'Auto-detects Common (7 fields) and Combined (+referer+UA), with optional trailing request_time',
+          'CLF time 10/Oct/2026:13:55:36 -0700 → ISO 8601, correctly converting the original offset',
+          "Splits the request line into method/path (query kept)/protocol; '-' bytes → null, counted separately",
+          'Malformed lines (unbalanced quotes/brackets, missing fields, bad time/status) never abort the batch; each gets a line number and reason',
+          'Single O(n) pass: status classes and details, top 5 IPs/paths/UAs, traffic, span, QPS and average latency',
+        ],
+        howToUse: [
+          'Paste a chunk of access log into the textarea (or load the sample); parsing and summary update instantly',
+          'Read success rate, status distribution, top rankings, traffic and time span from the summary cards',
+          'Switch to "errors only" for malformed rows, or copy structured JSON of successful entries',
+        ],
+        useCases: [
+          'Investigating 4xx/5xx spikes, abusive IPs and hot paths',
+          'Estimating traffic volume, window span and request rate from Apache/Nginx logs',
+          'Validating log formatting and locating truncated or misaligned rows',
+        ],
+        privacyNote:
+          'All parsing happens locally in your browser with no network requests; pasted logs never leave the device.',
+        faqs: [
+          {
+            question: 'Which log formats are supported?',
+            answer:
+              'NCSA Common Log Format (host ident authuser [time] "request" status bytes) and Combined (plus quoted referer and user-agent); the two may be mixed in one paste. A trailing bare number on a Combined row is read as request_time in seconds. Other custom fields (e.g. $request_id) are reported as too many fields.',
+          },
+          {
+            question: 'How are CLF timestamps and timezones handled?',
+            answer:
+              'The bracketed timestamp such as 10/Oct/2026:13:55:36 -0700 carries an explicit offset; it is converted to an absolute instant and emitted as UTC ISO 8601 (e.g. 2026-10-10T20:55:36Z). Span and QPS use absolute instants, so logs mixing different offsets are aggregated correctly.',
+          },
+          {
+            question: 'How is this different from single-line access-log-to-curl or UA parsers?',
+            answer:
+              'This tool batch-parses a whole log into structured rows plus analytics: per-line table, error localization, status distribution, top rankings, traffic and QPS. It does not turn one request into a curl command nor infer device/browser semantics from the UA string; the use cases are distinct.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

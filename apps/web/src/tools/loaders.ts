@@ -253,4 +253,5 @@ export const toolLoaders: Record<
   'ne555-astable-calculator': () => import('./ne555-astable-calculator'),
   'dew-point-calculator': () => import('./dew-point-calculator'),
   'mercator-tile-calculator': () => import('./mercator-tile-calculator'),
+  'access-log-parser': () => import('./access-log-parser'),
 };
