@@ -245,4 +245,9 @@ export const toolLoaders: Record<
   'resistor-voltage-divider': () => import('./resistor-voltage-divider'),
   'molar-mass-calculator': () => import('./molar-mass-calculator'),
   'byte-array-codegen': () => import('./byte-array-codegen'),
+  'json-to-java': () => import('./json-to-java'),
+  'json-to-csharp': () => import('./json-to-csharp'),
+  'json-to-kotlin': () => import('./json-to-kotlin'),
+  'json-to-php': () => import('./json-to-php'),
+  'json-to-swift': () => import('./json-to-swift'),
 };

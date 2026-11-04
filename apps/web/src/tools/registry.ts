@@ -22528,6 +22528,504 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'json-to-csharp',
+    name: 'JSON → C# record / class 生成器',
+    nameEn: 'JSON to C# Record / Class Generator',
+    description:
+      '粘贴 JSON 样本即可推断生成 C# 数据模型：支持 C# 10+ record 主构造函数与传统 class（{ get; set; } 属性）两种风格；整数 int/long、浮点 double、布尔 bool、字符串 string、数组 List<T>，嵌套对象生成为 sealed record/class；属性名 PascalCase 化并转义关键字，null 与仅部分数组元素出现的字段标记可空（int?/bool? 及 #nullable enable 下 string?），可选命名空间输出。',
+    descriptionEn:
+      'Paste a JSON sample and get inferred C# data models in two styles: C# 10+ positional records or classic classes with { get; set; } properties. Integers map to int/long, floats to double, booleans to bool, strings to string, arrays to List<T>, with nested objects emitted as sealed records/classes. Property names are PascalCased with keyword escaping; null and partially-present fields are nullable (int?/bool?, string? under #nullable enable), with an optional namespace.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-csharp',
+    iconName: 'FileCode',
+    tags: ['JSON', 'C#', 'record', 'class', 'DTO', '代码生成'],
+    tagsEn: ['JSON', 'C#', 'record', 'class', 'DTO', 'Code Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON → C# 生成器是一款纯浏览器本地运行的代码生成工具：粘贴 JSON 样本即可推断出可直接使用的 C# record 或 class 代码，自动处理类型映射、嵌套类型、List 泛型、PascalCase 命名与关键字冲突，免去为接口手写 DTO/Model 的重复劳动。',
+        coreFeatures: [
+          '双风格输出：C# 10+ 位置 record（主构造函数、不可变）或传统 class（public 属性 { get; set; }），嵌套类型统一 sealed',
+          '类型推断：小整数 int、大整数 long、浮点 double、布尔 bool、字符串 string；null 与不可合并的异型值回退 object',
+          '集合映射：同型对象数组合并字段生成 List<Item>，空数组元素回退 List<object> 并给出提示',
+          '可空与命名：属性名 PascalCase 化、关键字加 @ 转义、重名嵌套类自动编号；出现 null 或缺省的值类型字段输出 int?/bool?，开启 #nullable enable 时引用类型附加 ?，可选 file-scoped namespace',
+        ],
+        howToUse: [
+          '在左侧粘贴 JSON 对象样本（根为数组或标量时会生成单属性包装类）',
+          '在顶部设置根类名、命名空间（可留空）、record/class 风格、是否启用 #nullable enable',
+          '右侧即时生成 C# 代码，点击「复制 C# 代码」直接使用',
+          '查看下方警告了解空数组、类型冲突等推断决策',
+        ],
+        useCases: [
+          'ASP.NET Core 后端为外部 JSON API 快速编写请求/响应 DTO 或 record',
+          '对接键名带连字符、下划线或数字开头的第三方接口数据',
+          '理解未知 JSON 样本的结构层次与字段可空性',
+        ],
+        privacyNote:
+          'JSON 解析、类型推断与代码生成全部在浏览器本地完成，不发起任何网络请求，样本数据不会离开设备。',
+        faqs: [
+          {
+            question: 'record 和 class 两种风格怎么选？',
+            answer:
+              'record（C# 10+ 位置记录）用主构造函数一行声明、内置值相等与不可变语义，适合 DTO/响应模型；class 风格输出 { get; set; } 自动属性，兼容旧框架与需要可变对象、EF Core 实体的场景。',
+          },
+          {
+            question: '为什么字段变成了 int? / string?？',
+            answer:
+              '样本中该字段出现过 null（或数组里只在部分元素中存在）时，工具将其标记为可空：值类型输出 int?/bool? 等 Nullable<T>，引用类型在开启 #nullable enable 时附加 string?/List<T>?，便于 System.Text.Json / Newtonsoft.Json 正确反序列化。',
+          },
+          {
+            question: 'null 字段为什么生成 object？',
+            answer:
+              'null 不携带具体类型信息。若同名字段在数组其他元素中出现具体值，会自动合并为具体可空类型；否则保留 object 占位，待人工替换。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON to C# Generator is a fully browser-local code generator: paste a JSON sample and get ready-to-use C# records or classes, with automatic type mapping, nested types, List generics, PascalCase naming and keyword handling — eliminating boilerplate DTO/Model code for JSON APIs.',
+        coreFeatures: [
+          'Two styles: C# 10+ positional records (immutable, value equality) or classic classes with public { get; set; } properties; nested types are sealed',
+          'Type inference: int for small integers, long for larger, double, bool, string; null and unmergeable mixed values fall back to object',
+          'Collections: homogeneous object arrays merge fields into List<Item>; empty arrays fall back to List<object> with a warning',
+          'Nullability & naming: PascalCase properties, @-escaped keywords, numbered duplicate class names; null/missing value-type fields become int?/bool?, reference types gain ? under #nullable enable; optional file-scoped namespace',
+        ],
+        howToUse: [
+          'Paste a JSON object sample on the left (array/scalar roots produce a single-property wrapper class)',
+          'Set the root class name, namespace (optional), record/class style and #nullable enable at the top',
+          'The C# code appears instantly on the right — click Copy to use it directly',
+          'Check the warnings below for inference decisions such as empty arrays and type conflicts',
+        ],
+        useCases: [
+          'Quickly writing request/response DTOs or records in ASP.NET Core backends for external JSON APIs',
+          'Integrating third-party payloads whose keys use hyphens, underscores or leading digits',
+          'Understanding the structure and nullability of an unknown JSON sample',
+        ],
+        privacyNote:
+          'JSON parsing, type inference and code generation all run locally in your browser. No network request is made and sample data never leaves your device.',
+        faqs: [
+          {
+            question: 'Should I choose record or class?',
+            answer:
+              'Positional records (C# 10+) declare a constructor in one line with built-in value equality and immutable semantics — ideal for DTOs/response models. The class style emits { get; set; } auto-properties, compatible with older frameworks and mutable/EF Core entity scenarios.',
+          },
+          {
+            question: 'Why did a field become int? / string??',
+            answer:
+              'When the field is null in the sample (or only present in some array elements), it is marked nullable: value types become Nullable<T> such as int?/bool?, while reference types gain string?/List<T>? when #nullable enable is on, helping System.Text.Json/Newtonsoft.Json deserialize correctly.',
+          },
+          {
+            question: 'Why is a null field generated as object?',
+            answer:
+              'null carries no concrete type information. When the same field appears with a concrete value in another array element, it is merged into a concrete nullable type; otherwise object is kept as a placeholder for manual replacement.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-to-java',
+    name: 'JSON → Java class / record 生成器',
+    nameEn: 'JSON to Java Class / Record Generator',
+    description:
+      '粘贴 JSON 样本即可推断生成 Java 数据模型：支持 Java 16+ record 与传统 POJO（字段 + getter/setter）两种风格；整数 int/long（可选 BigInteger）、浮点 double（可选 BigDecimal）、布尔 boolean、字符串 String、数组 List<T> 或 T[]，嵌套对象生成静态内部类；字段名小驼峰化并规避关键字，出现 null 的原始类型字段自动改用包装类型，可选包名输出。',
+    descriptionEn:
+      'Paste a JSON sample and get inferred Java data models in two styles: Java 16+ records or classic POJOs with getters/setters. Integers map to int/long (optional BigInteger), floats to double (optional BigDecimal), booleans to boolean, strings to String, arrays to List<T> or T[], with nested objects as static inner classes. Field names are camelCased with keyword escaping, nullable primitive fields use boxed types, and an optional package declaration is supported.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-java',
+    iconName: 'FileCode',
+    tags: ['JSON', 'Java', 'record', 'POJO', 'DTO', '代码生成'],
+    tagsEn: ['JSON', 'Java', 'record', 'POJO', 'DTO', 'Code Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON → Java 生成器是一款纯浏览器本地运行的代码生成工具：粘贴 JSON 样本即可推断出可直接使用的 Java record 或 POJO 类代码，自动处理类型映射、嵌套内部类、数组泛型、字段命名与关键字冲突，免去为接口手写 DTO/VO 的重复劳动。',
+        coreFeatures: [
+          '双风格输出：Java 16+ record（一行声明、不可变）或传统 class（private 字段 + getter/setter，boolean 使用 isXxx）',
+          '类型推断：小整数 int、大整数 long（开启后超大整数 BigInteger）、浮点 double（可选 BigDecimal）、boolean、String；null 与不可合并的异型值回退 Object',
+          '集合映射：同型对象数组合并字段生成 List<Item>（可切换为 Item[]），空数组元素回退 List<Object> 并给出提示',
+          '命名处理：JSON 键转小驼峰字段名与大驼峰类名，非法字符/数字开头/Java 关键字自动修正，重名嵌套类自动编号，可选 package 声明与 import',
+        ],
+        howToUse: [
+          '在左侧粘贴 JSON 对象样本（根为数组或标量时会生成单字段包装类）',
+          '在顶部设置根类名、包名（可留空）、record/class 风格、List 或数组、是否使用大数类型',
+          '右侧即时生成 Java 代码，点击「复制 Java 代码」直接使用',
+          '查看下方警告了解空数组、类型冲突等推断决策',
+        ],
+        useCases: [
+          'Spring Boot 后端为外部 JSON API 快速编写请求/响应 DTO 或 Java 16 record',
+          '对接键名带连字符、下划线或数字开头的第三方接口数据',
+          '理解未知 JSON 样本的结构层次与字段可空性',
+        ],
+        privacyNote:
+          'JSON 解析、类型推断与代码生成全部在浏览器本地完成，不发起任何网络请求，样本数据不会离开设备。',
+        faqs: [
+          {
+            question: 'record 和 class 两种风格怎么选？',
+            answer:
+              'record 是 Java 16+ 的不可变数据载体，构造器、访问器、equals/hashCode/toString 由编译器生成，适合 DTO/VO；class 风格输出传统 private 字段加 getter/setter，兼容旧版 Java 与需要可变对象、JPA 实体的场景。',
+          },
+          {
+            question: '为什么有的 int 字段变成了 Integer？',
+            answer:
+              '当样本中该字段（或数组同名字段）出现过 null 时，原始类型无法表示空值，工具会自动改用包装类型（Integer/Long/Double/Boolean），保证 Jackson/Gson 反序列化时不抛空指针。',
+          },
+          {
+            question: 'null 字段为什么生成 Object？',
+            answer:
+              'null 不携带具体类型信息，无法推断是字符串、数字还是对象。若同名字段在数组其他元素中出现具体值，会自动合并为具体包装类型；否则保留 Object 占位，待人工替换。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON to Java Generator is a fully browser-local code generator: paste a JSON sample and get ready-to-use Java records or POJOs, with automatic type mapping, nested inner classes, array generics, naming and keyword handling — eliminating boilerplate DTO/VO code for JSON APIs.',
+        coreFeatures: [
+          'Two output styles: Java 16+ records (compact, immutable) or classic classes (private fields + getters/setters, isXxx for boolean)',
+          'Type inference: int for small integers, long for larger ones (BigInteger optional for huge ints), double (BigDecimal optional), boolean, String; null and unmergeable mixed values fall back to Object',
+          'Collection mapping: homogeneous object arrays merge fields into List<Item> (switchable to Item[]), empty arrays fall back to List<Object> with a warning',
+          'Naming: JSON keys become camelCase fields and PascalCase classes; invalid characters, leading digits and Java keywords are handled automatically; duplicate nested class names are numbered; optional package declaration and imports',
+        ],
+        howToUse: [
+          'Paste a JSON object sample on the left (array/scalar roots produce a single-field wrapper class)',
+          'Set the root class name, package (optional), record/class style, List vs arrays, and big-number types at the top',
+          'The Java code appears instantly on the right — click Copy to use it directly',
+          'Check the warnings below for inference decisions such as empty arrays and type conflicts',
+        ],
+        useCases: [
+          'Quickly writing request/response DTOs or Java 16 records in Spring Boot backends for external JSON APIs',
+          'Integrating third-party payloads whose keys use hyphens, underscores or leading digits',
+          'Understanding the structure and nullability of an unknown JSON sample',
+        ],
+        privacyNote:
+          'JSON parsing, type inference and code generation all run locally in your browser. No network request is made and sample data never leaves your device.',
+        faqs: [
+          {
+            question: 'Should I choose record or class?',
+            answer:
+              'Records (Java 16+) are immutable data carriers with compiler-generated constructor, accessors, equals/hashCode and toString — ideal for DTOs/VOs. The class style emits traditional private fields with getters/setters, compatible with older Java and mutable/JPA-entity scenarios.',
+          },
+          {
+            question: 'Why did an int field become Integer?',
+            answer:
+              'When the field (or a same-named field in an array element) is null in the sample, a primitive cannot represent null, so the tool automatically uses the boxed type (Integer/Long/Double/Boolean) to keep Jackson/Gson deserialization safe.',
+          },
+          {
+            question: 'Why is a null field generated as Object?',
+            answer:
+              'null carries no concrete type information. When the same field appears with a concrete value in another array element, it is merged into a concrete boxed type; otherwise Object is kept as a placeholder for manual replacement.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-to-kotlin',
+    name: 'JSON → Kotlin data class 生成器',
+    nameEn: 'JSON to Kotlin Data Class Generator',
+    description:
+      '粘贴 JSON 样本即可推断生成 Kotlin 数据模型：输出嵌套 data class，整数 Int/Long、浮点 Double、布尔 Boolean、字符串 String、数组 List<T>（可切 Array<T>），null 与异型值回退 Any；属性可保留原键或转 camelCase，非法键与硬关键字自动转义并加 @SerializedName 注解，出现 null 或缺省的字段输出 T? = null，可选 package 声明。',
+    descriptionEn:
+      'Paste a JSON sample and get inferred Kotlin data models with nested data classes: integers map to Int/Long, floats to Double, booleans to Boolean, strings to String, arrays to List<T> (switchable to Array<T>), and null or mixed values to Any. Properties keep original keys or use camelCase; invalid keys and hard keywords are escaped with @SerializedName annotations, null or missing fields become T? = null, and an optional package declaration is supported.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-kotlin',
+    iconName: 'FileCode',
+    tags: ['JSON', 'Kotlin', 'data class', 'Gson', 'DTO', '代码生成'],
+    tagsEn: ['JSON', 'Kotlin', 'data class', 'Gson', 'DTO', 'Code Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON → Kotlin 生成器是一款纯浏览器本地运行的代码生成工具：粘贴 JSON 样本即可推断出可直接使用的 data class 代码，自动处理类型映射、嵌套类、List 泛型、属性命名、可空性与关键字冲突，免去为 Android/服务端接口手写 DTO 的重复劳动。',
+        coreFeatures: [
+          'data class 输出：根类内嵌嵌套 data class，所有属性以 val 声明并采用尾随逗号',
+          '类型推断：小整数 Int、大整数 Long、浮点 Double、Boolean、String；null 与不可合并的异型值回退 Any，数值按 Int→Long→Double 自动拓宽',
+          '集合映射：同型对象数组合并字段生成 List<Item>（可切换 Array<Item>），空数组元素回退 List<Any> 并给出提示',
+          '命名与可空：属性可保留原键或统一 camelCase，非法键/硬关键字转义并自动附加 Gson @SerializedName 注解；出现 null 或缺省的字段输出 T? = null，重名嵌套类自动编号，可选 package 声明',
+        ],
+        howToUse: [
+          '在左侧粘贴 JSON 对象样本（根为数组或标量时会生成 items/value 单属性包装类）',
+          '在顶部设置根类名、包名（可留空）、属性命名风格、是否可空、集合使用 List 还是 Array',
+          '右侧即时生成 Kotlin 代码，点击「复制 Kotlin 代码」直接使用',
+          '查看下方警告了解空数组、类型冲突等推断决策',
+        ],
+        useCases: [
+          'Android 开发中为 Retrofit/Gson 接口快速编写响应 data class',
+          'Spring Boot / Ktor 服务端为外部 JSON API 生成请求/响应 DTO',
+          '对接键名带连字符、下划线或 Kotlin 关键字的第三方接口数据',
+        ],
+        privacyNote:
+          'JSON 解析、类型推断与代码生成全部在浏览器本地完成，不发起任何网络请求，样本数据不会离开设备。',
+        faqs: [
+          {
+            question: '为什么字段变成了 T? = null？',
+            answer:
+              '样本中该字段出现过 null（或数组里只在部分元素中存在）时，工具将其标记为可空并赋予默认值 null，生成的 data class 主构造参数即可省略该字段，适配 Gson/Moshi/kotlinx.serialization 的反序列化。',
+          },
+          {
+            question: '@SerializedName 注解什么时候出现？',
+            answer:
+              '当 JSON 原键不是合法 Kotlin 标识符（含连字符、空格、数字开头）或与硬关键字冲突时，属性名会被改写并自动加上 @SerializedName("原键")；选择 camelCase 命名时，所有非 camelCase 原键也会自动加注解以保证正确映射。',
+          },
+          {
+            question: 'null 字段为什么生成 Any？',
+            answer:
+              'null 不携带具体类型信息。若同名字段在数组其他元素中出现具体值，会自动合并为具体可空类型；否则保留 Any 占位，待人工替换。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON to Kotlin Generator is a fully browser-local code generator: paste a JSON sample and get ready-to-use data class code, with automatic type mapping, nested classes, List generics, property naming, nullability and keyword handling — eliminating boilerplate DTO code for Android and server-side JSON APIs.',
+        coreFeatures: [
+          'Data class output: nested data classes inside the root class, every property declared as val with trailing commas',
+          'Type inference: Int for small integers, Long for larger, Double for floats, Boolean, String; null and unmergeable mixed values fall back to Any, with automatic Int→Long→Double numeric widening',
+          'Collections: homogeneous object arrays merge fields into List<Item> (switchable to Array<Item>); empty arrays fall back to List<Any> with a warning',
+          'Naming & nullability: keep original keys or unify to camelCase; invalid keys and hard keywords are escaped with Gson @SerializedName annotations; null or missing fields become T? = null; duplicate nested class names are numbered; optional package declaration',
+        ],
+        howToUse: [
+          'Paste a JSON object sample on the left (array/scalar roots produce an items/value wrapper class)',
+          'Set the root class name, package (optional), property naming style, nullability and List vs Array at the top',
+          'The Kotlin code appears instantly on the right — click Copy to use it directly',
+          'Check the warnings below for inference decisions such as empty arrays and type conflicts',
+        ],
+        useCases: [
+          'Quickly writing Retrofit/Gson response data classes in Android development',
+          'Generating request/response DTOs for external JSON APIs in Spring Boot or Ktor backends',
+          'Integrating third-party payloads whose keys use hyphens, underscores or Kotlin keywords',
+        ],
+        privacyNote:
+          'JSON parsing, type inference and code generation all run locally in your browser. No network request is made and sample data never leaves your device.',
+        faqs: [
+          {
+            question: 'Why did a field become T? = null?',
+            answer:
+              'When the field is null in the sample (or only present in some array elements), it is marked nullable with a null default, so the data class constructor parameter can be omitted — matching how Gson/Moshi/kotlinx.serialization deserialize payloads.',
+          },
+          {
+            question: 'When is the @SerializedName annotation emitted?',
+            answer:
+              'When the original JSON key is not a valid Kotlin identifier (hyphens, spaces, leading digits) or clashes with a hard keyword, the property is renamed and @SerializedName("original") is added automatically. Under camelCase naming, every key that differs from its camelCased form gets the annotation to keep correct mapping.',
+          },
+          {
+            question: 'Why is a null field generated as Any?',
+            answer:
+              'null carries no concrete type information. When the same field appears with a concrete value in another array element, it is merged into a concrete nullable type; otherwise Any is kept as a placeholder for manual replacement.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-to-php',
+    name: 'JSON → PHP 数组生成器',
+    nameEn: 'JSON to PHP Array Generator',
+    description:
+      '粘贴 JSON 一键生成可直接粘贴的 PHP 数组字面量：对象转关联数组（\'key\' =>）、数组转索引数组，字符串按 PHP 单引号规则转义，数字区分 int/float 并保留浮点精度，布尔 true/false、null、空数组 []；支持短数组 [] 与传统 array() 语法、4 空格与 Tab 缩进、结尾分号切换。',
+    descriptionEn:
+      'Turn JSON into ready-to-paste PHP array literals: objects become associative arrays (\'key\' =>), arrays become indexed arrays, strings follow PHP single-quote escaping, numbers keep int/float precision, with booleans, null and empty arrays emitted natively. Switch between short [] and traditional array() syntax, 4-space or Tab indentation, and the trailing semicolon.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-php',
+    iconName: 'FileCode',
+    tags: ['JSON', 'PHP', 'array', 'fixture', '代码生成'],
+    tagsEn: ['JSON', 'PHP', 'array', 'fixture', 'Code Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON → PHP 数组生成器是一款纯浏览器本地运行的转换工具：把接口返回的 JSON 样例或配置直接转成可粘贴进 PHP 源码的数组字面量，自动完成关联/索引数组、字符串转义、缩进与语法风格处理，省去手工搬运引号和 => 的重复劳动。',
+        coreFeatures: [
+          '忠实转换：对象 → 关联数组（\'key\' =>）、数组 → 索引数组，递归任意嵌套深度',
+          'PHP 字面量规则：字符串按单引号规则仅转义反斜杠与单引号（双引号、$ 原样保留），int/float 保持字面量精度，布尔与 null 输出 true/false/null',
+          '语法可切换：短数组 [] 或传统 array()，4 空格或 Tab 缩进，结尾分号可关闭（便于嵌入更大表达式）',
+          '空对象与空数组均输出 []，非法 JSON 即时给出解析错误',
+        ],
+        howToUse: [
+          '在左侧粘贴 JSON（根可以是对象、数组或标量）',
+          '在顶部选择 [] / array() 语法、缩进风格与是否带分号',
+          '右侧即时生成以 $data = 开头的 PHP 代码，点击「复制 PHP 代码」直接使用',
+        ],
+        useCases: [
+          '把接口 JSON 样例快速变成 PHPUnit 测试 fixture / 测试数据',
+          '将 JSON 配置转换为 Laravel/Symfony 项目中的默认配置数组',
+          '编写 PHP 脚本时从 JSON 响应中搬运结构化数据',
+        ],
+        privacyNote:
+          'JSON 解析与代码生成全部在浏览器本地完成，不发起任何网络请求，数据不会离开设备。',
+        faqs: [
+          {
+            question: '为什么字符串用单引号而不是双引号？',
+            answer:
+              '单引号字符串只需转义反斜杠和单引号本身，输出最稳定、可读性最好，且不会对 $variable 做变量插值，能原样保留 JSON 文本。',
+          },
+          {
+            question: '空对象 {} 和空数组 [] 生成结果一样吗？',
+            answer:
+              '一样，都输出 []。PHP 数组本身同时承担列表与哈希表语义，空数组无法也无需区分；含元素的对象始终生成带字符串键的关联数组。',
+          },
+          {
+            question: '和「PHP serialize ↔ JSON」工具有什么区别？',
+            answer:
+              '本工具输出可直接放进 PHP 源码的数组字面量；serialize 转换处理的是 PHP serialize() 的 a:1:{s:3:"key";…} 数据格式，用于缓存/持久化数据交换，两者语法与用途完全不同。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON to PHP Array Generator is a fully browser-local converter that turns API JSON samples or config into PHP array literals ready to paste into source code, handling associative/indexed arrays, string escaping, indentation and syntax style automatically.',
+        coreFeatures: [
+          'Faithful conversion: objects to associative arrays (\'key\' =>), arrays to indexed arrays, recursively at any depth',
+          'PHP literal rules: single-quoted strings escape only backslashes and quotes (double quotes and $ are preserved), int/float keep literal precision, booleans and null emit true/false/null',
+          'Switchable style: short [] or traditional array() syntax, 4-space or Tab indentation, optional trailing semicolon for embedding in larger expressions',
+          'Both empty objects and empty arrays emit []; invalid JSON produces an immediate parse error',
+        ],
+        howToUse: [
+          'Paste JSON on the left (the root may be an object, array or scalar)',
+          'Choose [] vs array() syntax, indentation style and semicolon at the top',
+          'PHP code starting with $data = appears instantly on the right — click Copy to use it directly',
+        ],
+        useCases: [
+          'Turning API JSON samples into PHPUnit fixtures and test data',
+          'Converting JSON config into default configuration arrays in Laravel/Symfony projects',
+          'Moving structured data from JSON responses into PHP scripts',
+        ],
+        privacyNote:
+          'JSON parsing and code generation all run locally in your browser. No network request is made and data never leaves your device.',
+        faqs: [
+          {
+            question: 'Why single-quoted strings instead of double quotes?',
+            answer:
+              'Single-quoted strings only require escaping backslashes and single quotes, producing the most stable and readable output without interpolating $variables, so the JSON text is preserved verbatim.',
+          },
+          {
+            question: 'Do empty objects {} and empty arrays [] produce the same result?',
+            answer:
+              'Yes, both emit []. A PHP array serves as both list and hashmap, so an empty one cannot and need not be distinguished; objects with elements always produce associative arrays with string keys.',
+          },
+          {
+            question: 'How is this different from the PHP serialize ↔ JSON tool?',
+            answer:
+              'This tool emits array literals that go straight into PHP source code. The serialize converter handles PHP serialize() output such as a:1:{s:3:"key";…} for cache/persistence data exchange — different syntax and purpose entirely.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-to-swift',
+    name: 'JSON → Swift struct 生成器',
+    nameEn: 'JSON to Swift Struct (Codable) Generator',
+    description:
+      '粘贴 JSON 样本自动推断生成 Swift struct: Codable 模型：嵌套对象生成独立 struct，整数 Int、浮点 Double、布尔 Bool、字符串 String、数组 [T]；同型对象数组合并字段，空数组/异型值回退 Any；null 或缺字段属性输出 T?，snake_case/连字符键自动 camelCase 并生成 CodingKeys，Swift 关键字自动反引号转义。',
+    descriptionEn:
+      'Paste a JSON sample and get inferred Swift struct: Codable models: nested objects become separate structs; integers map to Int, floats to Double, booleans to Bool, strings to String, arrays to [T]; homogeneous object arrays merge fields while empty arrays and mixed values fall back to Any. Null or missing fields become T?, snake_case/hyphen keys are camelCased with CodingKeys, and Swift keywords are escaped with backticks.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-swift',
+    iconName: 'FileCode',
+    tags: ['JSON', 'Swift', 'Codable', 'iOS', 'struct', '代码生成'],
+    tagsEn: ['JSON', 'Swift', 'Codable', 'iOS', 'struct', 'Code Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON → Swift struct 生成器是一款纯浏览器本地运行的代码生成工具：粘贴 API 返回的 JSON 样本即可推断出可直接用于 iOS/macOS 工程的 Codable 模型，自动处理类型映射、嵌套结构体、数组、可选类型、键名映射与关键字冲突，免去手写 Decodable 模型的重复劳动。',
+        coreFeatures: [
+          'Codable 模型输出：根结构体与每个嵌套对象生成独立的 struct X: Codable',
+          '类型推断：整数 Int、浮点 Double、布尔 Bool、字符串 String；数组推断为 [元素类型]，同型对象数组合并字段，空数组回退 [Any]，Int/Double 自动拓宽，不可合并的异型值回退 Any 并告警',
+          '可选类型：出现 null 或数组元素中缺失的字段输出 T?，可一键关闭',
+          '键名映射：默认将 snake_case/连字符键转为 camelCase 并生成 CodingKeys（保留未改名字段），也可保留原键；Swift 关键字自动反引号转义，重名嵌套结构体自动编号',
+        ],
+        howToUse: [
+          '在左侧粘贴 JSON 对象样本（根为数组或标量时生成 items/value 单属性包装结构体）',
+          '在顶部设置根结构体名、属性命名风格、是否可选、是否生成 CodingKeys',
+          '右侧即时生成 Swift 代码，点击「复制 Swift 代码」直接粘贴到 Xcode 工程',
+          '查看下方警告了解空数组、类型冲突等推断决策',
+        ],
+        useCases: [
+          '为 Alamofire / URLSession 接口快速编写 Decodable 响应模型',
+          '对接 REST API 时把 JSON 文档样例转成 SwiftUI 预览与测试数据模型',
+          '处理键名为 snake_case 或含连字符、Swift 关键字的第三方接口',
+        ],
+        privacyNote:
+          'JSON 解析、类型推断与代码生成全部在浏览器本地完成，不发起任何网络请求，样本数据不会离开设备。',
+        faqs: [
+          {
+            question: '生成的代码如何处理 snake_case 键？',
+            answer:
+              '默认把属性转为 camelCase（如 user_id → userId）并生成 CodingKeys 枚举映射原始键，JSONDecoder 无需设置 keyDecodingStrategy 即可解码；也可切换为「保留原键」或整体关闭 CodingKeys。',
+          },
+          {
+            question: '为什么字段是可选类型 T?？',
+            answer:
+              '样本中该字段出现过 null，或只在数组的部分元素中存在，工具据此判定它可能缺失并输出 T?。确认接口必定返回该字段时，可手动去掉问号，或关闭「可选类型」开关重新生成。',
+          },
+          {
+            question: 'null 字段为什么是 Any?？',
+            answer:
+              'null 不携带具体类型信息。若同名字段在其他数组元素中有具体值，会自动合并为具体可选类型；否则保留 Any? 占位，需要人工替换为真实类型。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON to Swift Struct Generator is a fully browser-local code generator: paste a JSON API sample and get Codable models ready for iOS/macOS projects, with automatic type mapping, nested structs, arrays, optionals, key mapping and keyword handling.',
+        coreFeatures: [
+          'Codable output: the root and every nested object become separate struct X: Codable declarations',
+          'Type inference: Int for integers, Double for floats, Bool, String; arrays infer [Element], homogeneous object arrays merge fields, empty arrays fall back to [Any], Int/Double widen automatically, and unmergeable mixed values fall back to Any with a warning',
+          'Optionals: fields that are null or missing from some array elements become T?; the option can be switched off',
+          'Key mapping: snake_case/hyphen keys are camelCased by default with CodingKeys (unchanged keys kept as plain cases); alternatively keep original keys; Swift keywords are backtick-escaped and duplicate nested struct names are numbered',
+        ],
+        howToUse: [
+          'Paste a JSON object sample on the left (array/scalar roots produce an items/value wrapper struct)',
+          'Set the root struct name, property naming style, optionals and CodingKeys at the top',
+          'Swift code appears instantly on the right — click Copy and paste it straight into your Xcode project',
+          'Check the warnings below for inference decisions such as empty arrays and type conflicts',
+        ],
+        useCases: [
+          'Quickly writing Decodable response models for Alamofire or URLSession APIs',
+          'Turning JSON documentation samples into models for SwiftUI previews and test data',
+          'Handling third-party APIs with snake_case keys, hyphens, or Swift keyword names',
+        ],
+        privacyNote:
+          'JSON parsing, type inference and code generation all run locally in your browser. No network request is made and sample data never leaves your device.',
+        faqs: [
+          {
+            question: 'How are snake_case keys handled?',
+            answer:
+              'Properties are camelCased by default (user_id → userId) with a CodingKeys enum mapping the original keys, so JSONDecoder needs no keyDecodingStrategy. You can also keep original keys or disable CodingKeys entirely.',
+          },
+          {
+            question: 'Why is a field optional (T?)?',
+            answer:
+              'The field is null in the sample or only present in some array elements, so it is treated as potentially missing and generated as T?. If the API guarantees the field, remove the question mark manually or regenerate with optionals disabled.',
+          },
+          {
+            question: 'Why is a null field Any?',
+            answer:
+              'null carries no concrete type information. When the same field has a concrete value in another array element, it merges into a concrete optional type; otherwise Any? is kept as a placeholder for manual replacement.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'byte-array-codegen',
     name: '字节数组代码生成器',
     nameEn: 'Byte Array Code Generator',
