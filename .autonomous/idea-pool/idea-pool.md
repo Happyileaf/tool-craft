@@ -170,12 +170,10 @@
 | 20261031080657 | AA 分账计算器（多人费用分摊与最小转账结算） | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031080657.md) |
 | 20261031080659 | CBOR (RFC 8949) ↔ JSON 编解码器（含诊断记法与十六进制互转） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031080659.md) |
 | 20261031080660 | 数独（Sudoku）求解器与题目生成器（9×9，含多解/无解检测） | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031080660.md) |
-| 20261031080662 | JSON → Java class / record 生成器（含嵌套类型推断） | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent @ 2026-11-04 12:03 CST | [详情](./idea-details/20261031080662.md) |
 | 20261031140456 | PNG 文件 chunk 结构解析器（IHDR / IDAT / IEND 等） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031140456.md) |
 | 20261031140457 | TAR 归档结构解析器（512 字节头与文件目录树展示） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031140457.md) |
 | 20261031140458 | 四元数 ↔ 欧拉角 ↔ 旋转矩阵互转器 | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031140458.md) |
 | 20261031140459 | 英文文本可读性评分器（Flesch Reading Ease / Grade Level） | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031140459.md) |
-| 20261031201034 | JSON → C# record/class 生成器（含嵌套类型推断） | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent @ 2026-11-04 12:03 CST | [详情](./idea-details/20261031201034.md) |
 | 20261031201036 | WAV（RIFF）音频文件头与 chunk 解析器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201036.md) |
 | 20261031201037 | SQLite 数据库文件头解析器（前 100 字节只读） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201037.md) |
 | 20261031201038 | 无 schema 的 Protobuf 线格式原始解码器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201038.md) |
@@ -186,14 +184,12 @@
 | 20261101020827 | Shamir 秘密分片与恢复工具（GF(2⁸)，Shamir's Secret Sharing） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101020827.md) |
 | 20261101080346 | CIE Lab 色差计算器（ΔE76 / ΔE94 / ΔE2000，sRGB ↔ Lab） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101080346.md) |
 | 20261101140214 | RFC 2047 邮件头编码字解码器（=?…?= encoded-word） | Web Tool | Existing Gap | In Progress | 2026-11-01 | trae-agent | [详情](./idea-details/20261101140214.md) |
-| 20261101140215 | JSON → Kotlin data class 生成器（含嵌套类型推断） | Web Tool | Existing Gap | In Progress | 2026-11-01 | trae-agent @ 2026-11-04 12:03 CST | [详情](./idea-details/20261101140215.md) |
 | 20261101140216 | TypeID 标识符生成与解析器（typeid 规范） | Web Tool | External Reference | Pending | 2026-11-01 | | [详情](./idea-details/20261101140216.md) |
 | 20261101140217 | PHP serialize ↔ JSON 双向转换器 | Web Tool | Existing Gap | In Progress | 2026-11-01 | trae-agent @ 2026-11-03 18:05 CST | [详情](./idea-details/20261101140217.md) |
 | 20261101140218 | HTTP Cache-Control 指令解析与缓存新鲜度计算器（RFC 9111） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101140218.md) |
 | 20261101201002 | Encoded Polyline Algorithm Format 折线编解码器（Google 精度 5 / 精度 6） | Web Tool | External Reference | In Progress | 2026-11-01 | trae-agent @ 2026-11-03 18:05 CST | [详情](./idea-details/20261101201002.md) |
 | 20261101201003 | Redis RESP2/RESP3 协议编解码器（含 inline 与 RESP3 类型） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201003.md) |
 | 20261101201004 | HAR 1.2 / 1.3 归档文件解析与请求摘要查看器（JSON 安全解析） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201004.md) |
-| 20261101201005 | JSON 转 PHP array 代码生成器（含嵌套类型推断与短数组语法） | Web Tool | Existing Gap | In Progress | 2026-11-01 | trae-agent @ 2026-11-04 12:03 CST | [详情](./idea-details/20261101201005.md) |
 | 20261102020124 | Git 底层对象哈希计算器（blob / tree / commit / tag，git hash-object 等价） | Web Tool | Exploration | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102020124.md) |
 | 20261102020125 | Java .class 字节码文件头解析器（魔数 / 版本 / 常量池计数与条目只读树） | Web Tool | Exploration | Pending | 2026-11-02 | | [详情](./idea-details/20261102020125.md) |
 | 20261102020126 | CAS 化学物质登记号校验器（CAS Registry Number 模 10 校验位） | Web Tool | Exploration | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102020126.md) |
@@ -228,5 +224,4 @@
 | 20261104081013 | 555 定时器（Astable / Monostable）参数计算器 | Web Tool | Exploration | Pending | 2026-11-04 | | [详情](./idea-details/20261104081013.md) |
 | 20261104081014 | EPC QR Code（SEPA 转账）负载生成与解析器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104081014.md) |
 | 20261104081015 | BMP / DIB 位图文件头结构只读解析器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104081015.md) |
-| 20261104081016 | JSON → Swift struct / Codable 模型生成器 | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent @ 2026-11-04 12:03 CST | [详情](./idea-details/20261104081016.md) |
 

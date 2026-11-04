@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261104081016 | JSON → Swift struct / Codable 模型生成器 | Web Tool | Existing Gap | `json-to-swift` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261104081016.md) |
+| 20261101201005 | JSON 转 PHP array 代码生成器（含嵌套类型推断与短数组语法） | Web Tool | Existing Gap | `json-to-php` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261101201005.md) |
+| 20261101140215 | JSON → Kotlin data class 生成器（含嵌套类型推断） | Web Tool | Existing Gap | `json-to-kotlin` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261101140215.md) |
+| 20261031201034 | JSON → C# record/class 生成器（含嵌套类型推断） | Web Tool | Existing Gap | `json-to-csharp` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261031201034.md) |
+| 20261031080662 | JSON → Java class / record 生成器 | Web Tool | Existing Gap | `json-to-java` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261031080662.md) |
 | 20261103200231 | 电阻分压器计算器（双电阻电压分压与负载效应） | Web Tool | Exploration | `resistor-voltage-divider` / [PR #157](https://github.com/Happyileaf/tool-craft/pull/157) | 2026-11-04 | [详情](./idea-details/20261103200231.md) |
 | 20261031140460 | 二进制数据转多语言字节数组代码生成器（C / Java / Python / Go） | Web Tool | Existing Gap | `byte-array-codegen` / [PR #157](https://github.com/Happyileaf/tool-craft/pull/157) | 2026-11-04 | [详情](./idea-details/20261031140460.md) |
 | 20261029200827 | VIN 车辆识别代号校验位计算器与合法性校验器（ISO 3779 / GB 16735） | Web Tool | External Reference | `vin-validator` / [PR #157](https://github.com/Happyileaf/tool-craft/pull/157) | 2026-11-04 | [详情](./idea-details/20261029200827.md) |
