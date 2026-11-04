@@ -22728,6 +22728,106 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'json-to-kotlin',
+    name: 'JSON → Kotlin data class 生成器',
+    nameEn: 'JSON to Kotlin Data Class Generator',
+    description:
+      '粘贴 JSON 样本即可推断生成 Kotlin 数据模型：输出嵌套 data class，整数 Int/Long、浮点 Double、布尔 Boolean、字符串 String、数组 List<T>（可切 Array<T>），null 与异型值回退 Any；属性可保留原键或转 camelCase，非法键与硬关键字自动转义并加 @SerializedName 注解，出现 null 或缺省的字段输出 T? = null，可选 package 声明。',
+    descriptionEn:
+      'Paste a JSON sample and get inferred Kotlin data models with nested data classes: integers map to Int/Long, floats to Double, booleans to Boolean, strings to String, arrays to List<T> (switchable to Array<T>), and null or mixed values to Any. Properties keep original keys or use camelCase; invalid keys and hard keywords are escaped with @SerializedName annotations, null or missing fields become T? = null, and an optional package declaration is supported.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-kotlin',
+    iconName: 'FileCode',
+    tags: ['JSON', 'Kotlin', 'data class', 'Gson', 'DTO', '代码生成'],
+    tagsEn: ['JSON', 'Kotlin', 'data class', 'Gson', 'DTO', 'Code Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON → Kotlin 生成器是一款纯浏览器本地运行的代码生成工具：粘贴 JSON 样本即可推断出可直接使用的 data class 代码，自动处理类型映射、嵌套类、List 泛型、属性命名、可空性与关键字冲突，免去为 Android/服务端接口手写 DTO 的重复劳动。',
+        coreFeatures: [
+          'data class 输出：根类内嵌嵌套 data class，所有属性以 val 声明并采用尾随逗号',
+          '类型推断：小整数 Int、大整数 Long、浮点 Double、Boolean、String；null 与不可合并的异型值回退 Any，数值按 Int→Long→Double 自动拓宽',
+          '集合映射：同型对象数组合并字段生成 List<Item>（可切换 Array<Item>），空数组元素回退 List<Any> 并给出提示',
+          '命名与可空：属性可保留原键或统一 camelCase，非法键/硬关键字转义并自动附加 Gson @SerializedName 注解；出现 null 或缺省的字段输出 T? = null，重名嵌套类自动编号，可选 package 声明',
+        ],
+        howToUse: [
+          '在左侧粘贴 JSON 对象样本（根为数组或标量时会生成 items/value 单属性包装类）',
+          '在顶部设置根类名、包名（可留空）、属性命名风格、是否可空、集合使用 List 还是 Array',
+          '右侧即时生成 Kotlin 代码，点击「复制 Kotlin 代码」直接使用',
+          '查看下方警告了解空数组、类型冲突等推断决策',
+        ],
+        useCases: [
+          'Android 开发中为 Retrofit/Gson 接口快速编写响应 data class',
+          'Spring Boot / Ktor 服务端为外部 JSON API 生成请求/响应 DTO',
+          '对接键名带连字符、下划线或 Kotlin 关键字的第三方接口数据',
+        ],
+        privacyNote:
+          'JSON 解析、类型推断与代码生成全部在浏览器本地完成，不发起任何网络请求，样本数据不会离开设备。',
+        faqs: [
+          {
+            question: '为什么字段变成了 T? = null？',
+            answer:
+              '样本中该字段出现过 null（或数组里只在部分元素中存在）时，工具将其标记为可空并赋予默认值 null，生成的 data class 主构造参数即可省略该字段，适配 Gson/Moshi/kotlinx.serialization 的反序列化。',
+          },
+          {
+            question: '@SerializedName 注解什么时候出现？',
+            answer:
+              '当 JSON 原键不是合法 Kotlin 标识符（含连字符、空格、数字开头）或与硬关键字冲突时，属性名会被改写并自动加上 @SerializedName("原键")；选择 camelCase 命名时，所有非 camelCase 原键也会自动加注解以保证正确映射。',
+          },
+          {
+            question: 'null 字段为什么生成 Any？',
+            answer:
+              'null 不携带具体类型信息。若同名字段在数组其他元素中出现具体值，会自动合并为具体可空类型；否则保留 Any 占位，待人工替换。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON to Kotlin Generator is a fully browser-local code generator: paste a JSON sample and get ready-to-use data class code, with automatic type mapping, nested classes, List generics, property naming, nullability and keyword handling — eliminating boilerplate DTO code for Android and server-side JSON APIs.',
+        coreFeatures: [
+          'Data class output: nested data classes inside the root class, every property declared as val with trailing commas',
+          'Type inference: Int for small integers, Long for larger, Double for floats, Boolean, String; null and unmergeable mixed values fall back to Any, with automatic Int→Long→Double numeric widening',
+          'Collections: homogeneous object arrays merge fields into List<Item> (switchable to Array<Item>); empty arrays fall back to List<Any> with a warning',
+          'Naming & nullability: keep original keys or unify to camelCase; invalid keys and hard keywords are escaped with Gson @SerializedName annotations; null or missing fields become T? = null; duplicate nested class names are numbered; optional package declaration',
+        ],
+        howToUse: [
+          'Paste a JSON object sample on the left (array/scalar roots produce an items/value wrapper class)',
+          'Set the root class name, package (optional), property naming style, nullability and List vs Array at the top',
+          'The Kotlin code appears instantly on the right — click Copy to use it directly',
+          'Check the warnings below for inference decisions such as empty arrays and type conflicts',
+        ],
+        useCases: [
+          'Quickly writing Retrofit/Gson response data classes in Android development',
+          'Generating request/response DTOs for external JSON APIs in Spring Boot or Ktor backends',
+          'Integrating third-party payloads whose keys use hyphens, underscores or Kotlin keywords',
+        ],
+        privacyNote:
+          'JSON parsing, type inference and code generation all run locally in your browser. No network request is made and sample data never leaves your device.',
+        faqs: [
+          {
+            question: 'Why did a field become T? = null?',
+            answer:
+              'When the field is null in the sample (or only present in some array elements), it is marked nullable with a null default, so the data class constructor parameter can be omitted — matching how Gson/Moshi/kotlinx.serialization deserialize payloads.',
+          },
+          {
+            question: 'When is the @SerializedName annotation emitted?',
+            answer:
+              'When the original JSON key is not a valid Kotlin identifier (hyphens, spaces, leading digits) or clashes with a hard keyword, the property is renamed and @SerializedName("original") is added automatically. Under camelCase naming, every key that differs from its camelCased form gets the annotation to keep correct mapping.',
+          },
+          {
+            question: 'Why is a null field generated as Any?',
+            answer:
+              'null carries no concrete type information. When the same field appears with a concrete value in another array element, it is merged into a concrete nullable type; otherwise Any is kept as a placeholder for manual replacement.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'byte-array-codegen',
     name: '字节数组代码生成器',
     nameEn: 'Byte Array Code Generator',
