@@ -23625,6 +23625,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'modular-arithmetic-calculator',
+    name: '模运算计算器',
+    nameEn: 'Modular Arithmetic Calculator',
+    description:
+      '基于 BigInt 的模逆元、模幂、模线性方程与中国剩余定理求解器，支持十进制与十六进制大整数，本地完成全部计算。',
+    descriptionEn:
+      'BigInt-powered solver for modular inverse, modular exponentiation, linear congruences and the Chinese Remainder Theorem, with decimal and hexadecimal big-integer inputs, fully computed locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/modular-arithmetic-calculator',
+    iconName: 'Sigma',
+    tags: ['模运算', '模逆元', '模幂', '中国剩余定理', 'CRT', '同余方程', '数论'],
+    tagsEn: ['Modular arithmetic', 'Modular inverse', 'Modular exponentiation', 'CRT', 'Congruence', 'Number theory'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '3',
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的模运算计算器，基于 BigInt 精确处理任意长度整数，覆盖模逆元、平方-乘模幂、模线性方程全部剩余类解与中国剩余定理（CRT）四大数论常用场景，支持十进制与 0x 十六进制输入，适合密码学学习与竞赛推导。',
+        coreFeatures: [
+          '模逆元：扩展欧几里得算法求 a⁻¹ mod m，不互素时给出 gcd 与无逆元原因',
+          '模幂：平方-乘快速幂 a^e mod m，支持负指数（自动走逆元路径）与超大指数',
+          '模线性方程：求 ax≡b (mod m) 的全部最小非负剩余类解，无解时明确报错',
+          '中国剩余定理：可视化编辑同余方程组，支持模数不互素的可解性判定与冲突检测',
+          '全程 BigInt 运算，不受 Number 安全整数范围限制；零网络请求，输入不离开浏览器',
+        ],
+        howToUse: [
+          '在顶部选择计算模式：模逆元、模幂、同余方程或中国剩余定理',
+          '按提示填写底数、指数 / 右端项与模数，支持十进制或 0x 十六进制，负数以 - 开头',
+          'CRT 模式下在表格中逐行填写余数与模数，可增删方程行',
+          '点击「计算」查看结果，错误输入会在结果区给出具体原因，可一键复制结果',
+        ],
+        useCases: [
+          'RSA / ECC 等密码算法学习中验证模逆元与模幂中间结果',
+          '算法竞赛中快速求解同余方程与中国剩余定理问题',
+          '数论教学中对照扩展欧几里得算法的推导结果',
+        ],
+        privacyNote:
+          '所有整数仅在浏览器内存中参与本地 BigInt 运算，不发起任何网络请求，不上传、不记录输入内容。',
+        faqs: [
+          {
+            question: '为什么提示「逆元不存在」？',
+            answer:
+              '模逆元仅在底数与模数互素（gcd = 1）时存在。工具会同时给出实际 gcd，例如 gcd(2, 4) = 2，此时 2 在模 4 下没有逆元。',
+          },
+          {
+            question: '支持多大的整数？',
+            answer:
+              '全部运算基于 BigInt 而非 Number，没有 2^53 的安全整数上限，可处理数百位的十进制整数或等长的 0x 十六进制输入。',
+          },
+          {
+            question: 'CRT 模式下模数不互素怎么办？',
+            answer:
+              '工具不要求模数两两互素：会先做可解性判定，同余冲突（余数差不能被对应 gcd 整除）时报错并指出冲突的方程，可解时按最小公倍数合并并给出最小非负解。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local modular arithmetic calculator built on BigInt for integers of any size, covering modular inverse, square-and-multiply modular exponentiation, all residue-class solutions of linear congruences, and the Chinese Remainder Theorem (CRT), with decimal and 0x hexadecimal input for cryptography study and contest work.',
+        coreFeatures: [
+          'Modular inverse via the extended Euclidean algorithm, reporting the gcd reason when no inverse exists',
+          'Square-and-multiply modular exponentiation with negative exponents (inverse path) and very large exponents',
+          'Linear congruence solver returning every least non-negative residue class, with explicit no-solution errors',
+          'CRT editor for congruence systems, including solvability checks and conflict detection for non-coprime moduli',
+          'BigInt throughout with no Number safe-integer ceiling; zero network requests and fully local processing',
+        ],
+        howToUse: [
+          'Pick a mode at the top: inverse, exponentiation, linear congruence, or Chinese Remainder Theorem',
+          'Fill in base, exponent / right-hand side and modulus using decimal or 0x hexadecimal; prefix negatives with -',
+          'In CRT mode, edit remainder/modulus rows in the table and add or remove equations',
+          'Click Compute to see the result; invalid input shows a concrete reason in the result area, and results can be copied in one click',
+        ],
+        useCases: [
+          'Verifying modular inverse and exponentiation steps while learning RSA / ECC cryptography',
+          'Solving contest problems involving congruences and the Chinese Remainder Theorem',
+          'Cross-checking extended Euclidean algorithm derivations in number-theory teaching',
+        ],
+        privacyNote:
+          'All integers are processed in browser memory via local BigInt operations with no network requests; your input is never uploaded or recorded.',
+        faqs: [
+          {
+            question: 'Why does it say the inverse does not exist?',
+            answer:
+              'A modular inverse exists only when the base and modulus are coprime (gcd = 1). The tool reports the actual gcd, e.g. gcd(2, 4) = 2, so 2 has no inverse modulo 4.',
+          },
+          {
+            question: 'How large can the integers be?',
+            answer:
+              'Every operation uses BigInt rather than Number, so there is no 2^53 safe-integer limit; hundreds-of-digit decimal values or equally long 0x hexadecimal inputs are supported.',
+          },
+          {
+            question: 'What if CRT moduli are not coprime?',
+            answer:
+              'Coprime moduli are not required: the tool first checks solvability, reports a conflict (with the offending equation) when remainder differences are not divisible by the corresponding gcd, and otherwise merges by least common multiple into the least non-negative solution.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

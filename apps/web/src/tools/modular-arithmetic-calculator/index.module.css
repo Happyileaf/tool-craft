@@ -1,0 +1,59 @@
+.container {
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card {
+  min-width: 0;
+}
+
+.fieldRow {
+  width: 100%;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fieldLabel {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.numberInput {
+  width: 200px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.result {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 15px;
+  line-height: 1.9;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.resultLine {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lineTag {
+  flex: none;
+}
