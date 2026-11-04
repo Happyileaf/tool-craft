@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-04 ：【Agent自主迭代】新增 5 个 JSON 转 Java、C#、Kotlin、PHP 数组与 Swift 模型代码生成工具
+
+- **新增**：JSON → Java class/record 生成器（json-to-java）— 粘贴 JSON 推断生成嵌套 Java 模型：整数按范围映射 int/long/BigInteger、浮点 double/BigDecimal、boolean/String/Object，同型对象数组合并字段生成 List<Item>，空/异型数组回退 List<Object> 并告警，null 与缺失字段输出装箱类型，支持 record 与传统 class（含 isXxx boolean 访问器）、List/[] 集合、大数类型与 package 声明，纯本地运算
+- **新增**：JSON → C# record/class 生成器（json-to-csharp）— 粘贴 JSON 推断生成嵌套 C# 模型：int/long/double/bool/string/object 映射、List<T> 集合、同型对象数组合并字段，PascalCase 属性名与 @ 关键字转义，支持 record 与传统 class（{ get; set; }）、#nullable enable 可空引用类型（null/缺失字段加 ?）与 namespace 声明，纯本地运算
+- **新增**：JSON → Kotlin data class 生成器（json-to-kotlin）— 粘贴 JSON 推断生成内嵌 data class：Int/Long/Double/Boolean/String/Any 映射与 Int→Long→Double 数值拓宽，List<T>/Array<T> 可切换，null/缺失字段输出 T? = null，preserve/camelCase 属性命名，非法键与硬关键字自动转义并附加 Gson @SerializedName 注解，重名嵌套类编号，可选 package，纯本地运算
+- **新增**：JSON → PHP 数组生成器（json-to-php）— JSON 对象转关联数组（'key' =>）、数组转索引数组，递归任意嵌套，字符串按 PHP 单引号规则转义，int/float 保留字面量精度，布尔/null/空数组忠实映射，支持短数组 [] 与传统 array() 语法、4 空格/Tab 缩进、结尾分号开关，输出 $data 赋值语句，纯本地运算
+- **新增**：JSON → Swift struct 生成器（json-to-swift）— 粘贴 JSON 推断生成 struct: Codable 模型：Int/Double/Bool/String/Any 映射、[T] 数组与同型对象数组合并，空/异型数组回退 [Any] 并告警，null/缺失字段输出 T?，snake_case/连字符键转 camelCase 并生成 CodingKeys（保留未改名字段），Swift 关键字反引号转义，重名结构体编号，顶层数组/标量自动包装，纯本地运算
+
 ## 2026-11-04 ：【Agent自主迭代】新增 5 个 SMD 电阻码、AWG 线规、CUSIP/SEDOL、ABA 路由号校验与 JSON 转 Zod 工具
 
 - **新增**：SMD 电阻码计算器（smd-resistor-code）— 支持 3 位（含 R 小数点）、4 位（精密）、EIA-96（两位代码 + 倍率字母，01–96 查表）三种贴片电阻打码体系双向换算与允差判定，内置阻值→标准 E 系列最近邻匹配与非法代码逐条报错，批量模式逐行解析多枚电阻打码，纯本地查表运算
