@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-04 ：【Agent自主迭代】新增 5 个 555 多谐振荡、露点、墨卡托瓦片、访问日志解析与以太坊 RLP 编解码工具
+
+- **新增**：NE555 非稳态多谐振荡器计算器（ne555-astable-calculator）— 按 f = 1.44/((R_A+2R_B)C) 计算频率、周期、占空比与高低电平时间，支持 nF/µF、Ω/kΩ/MΩ 词头自适应与给定目标频率的参数估算，输出充放电波形示意，电阻 / 电容非法值逐条中文报错，纯本地运算
+- **新增**：露点 / 湿球温度计算器（dew-point-calculator）— 按 Magnus 公式与 Stull（2011）湿球经验式由温度与相对湿度计算露点温度、湿球温度、绝对湿度（g/m³）、水汽压与热指数，支持摄氏 / 华氏切换，并由气压与露点反算压力高度，超范围输入给出告警，纯本地运算
+- **新增**：Web 墨卡托 XYZ 瓦片计算器（mercator-tile-calculator）— 在经纬度、缩放级（z0–z22）与 Google/OSM XYZ 瓦片号之间双向换算，支持 TMS 瓦片号翻转、瓦片边界经纬度框、分辨率（m/px）与比例尺，批量表格逐行计算并对纬度 ±85.0511° 范围外输入报错，纯本地运算
+- **新增**：NCSA 访问日志解析器（access-log-parser）— tokenizer 级解析 Common / Combined Log Format（引号与方括号转义、可选 request_time 扩展），CLF 本地时间带偏移转 UTC ISO（含跨 UTC 日期的近午夜时间与闰日校验），一次遍历聚合成功率、状态码分类 / Top、流量字节、Top IP/路径/UA、时间跨度与 QPS，畸形行不中断批量解析并带行号定位，纯本地运算
+- **新增**：以太坊 RLP 编解码器（rlp-codec）— 按黄皮书附录 B 实现递归长度前缀双向编解码，支持 UTF-8 文本与 `["hex","0x.."]` 原始字节输入、任意嵌套列表，解码以类型树（单字节 / 短字符串 / 长字符串 / 短列表 / 长列表）与扁平表格展示偏移与长度；严格 canonical 校验（前导零、长短格式误用、单字节包裹、截断、根外尾字节均带偏移报错），嵌套深度上限 64，官方向量（dog / Lorem 56B / 1024 零字节等）逐字节验证，纯本地运算
+
 ## 2026-11-04 ：【Agent自主迭代】新增 5 个 JSON 转 Java、C#、Kotlin、PHP 数组与 Swift 模型代码生成工具
 
 - **新增**：JSON → Java class/record 生成器（json-to-java）— 粘贴 JSON 推断生成嵌套 Java 模型：整数按范围映射 int/long/BigInteger、浮点 double/BigDecimal、boolean/String/Object，同型对象数组合并字段生成 List<Item>，空/异型数组回退 List<Object> 并告警，null 与缺失字段输出装箱类型，支持 record 与传统 class（含 isXxx boolean 访问器）、List/[] 集合、大数类型与 package 声明，纯本地运算
