@@ -23727,6 +23727,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'bitmask-calculator',
+    name: '位掩码可视化计算器',
+    nameEn: 'Bitmask Visual Calculator',
+    description:
+      '逐位勾选的位掩码工具，支持 8/16/32/64 位、二进制八进制十进制十六进制互转、AND/OR/XOR/NAND/NOT、移位与循环移位、MSB/LSB/Popcount 统计及有符号视图。',
+    descriptionEn:
+      'A clickable bitmask workbench for 8/16/32/64-bit widths with bin/oct/dec/hex conversion, AND/OR/XOR/NAND/NOT, shifts and rotations, MSB/LSB/Popcount stats and a signed two’s-complement view.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/bitmask-calculator',
+    iconName: 'Binary',
+    tags: ['位掩码', '位运算', 'bitmask', '二进制', '移位', '循环移位', 'popcount'],
+    tagsEn: ['Bitmask', 'Bitwise', 'Binary', 'Shift', 'Rotation', 'Popcount'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '170',
+    doc: {
+      zh: {
+        whatIsIt:
+          '位掩码可视化计算器把抽象的位操作变成可点击的比特网格：每个位独立编号（0 为最低位 LSB），点击即可翻转，实时联动二进制、八进制、十进制与十六进制，并提供双掩码逻辑运算、移位 / 循环移位与位统计，覆盖嵌入式寄存器、权限标志与协议字段的日常计算场景，全部基于 BigInt 在浏览器本地完成，最大支持 64 位。',
+        coreFeatures: [
+          '8 / 16 / 32 / 64 四种位宽，逐位点击翻转，支持一键全部置 1 / 清 0',
+          '二进制（含前导零）、八进制、0x 十六进制、十进制实时互转，支持有符号二补码视图',
+          '双掩码 AND / OR / XOR，单目 NOT 与 NAND，超宽输入自动高位截断并提示',
+          '逻辑左移 / 逻辑右移 / 算术右移（保留符号位）/ 循环左移 / 循环右移，含 64 位回绕',
+          'MSB、LSB、Popcount（置 1 位数）与位宽上限统计；零网络请求，输入不离开浏览器',
+        ],
+        howToUse: [
+          '选择位宽后直接点击比特网格翻转对应位，或在十进制输入框键入数值（支持 0x / 0o / 0b 前缀）后回车',
+          '在「进制与位统计」卡片查看四种进制表示，打开「有符号视图」切换二补码解释',
+          '在「双掩码运算」卡片输入第二个掩码 B 并选择 AND / OR / XOR，同时给出 NAND 与 NOT A',
+          '在「移位与循环移位」卡片选择运算类型并填写位数，结果同时以十六进制、十进制与二进制展示',
+        ],
+        useCases: [
+          '嵌入式开发中计算寄存器位标志（如 RX_EN、TX_EN）与硬件掩码',
+          '权限系统 / 特性开关的多 bit 组合与判定',
+          '网络协议字段解析、教学演示位运算与二补码表示',
+        ],
+        privacyNote:
+          '所有掩码仅在浏览器内存中通过 BigInt 参与本地运算，不发起任何网络请求，不上传、不记录输入内容。',
+        faqs: [
+          {
+            question: '位编号从哪一侧开始？',
+            answer:
+              '编号 0 是最低有效位（LSB，最右侧），网格从左到右按高位到低位排列，与寄存器文档的常见画法一致。',
+          },
+          {
+            question: '算术右移和逻辑右移有什么区别？',
+            answer:
+              '逻辑右移（SHR）左侧统一补 0；算术右移（SAR）按二补码规则补符号位，负数右移后仍保持负数。工具在有符号视图下可直接对照两者差异。',
+          },
+          {
+            question: '输入超过当前位宽怎么办？',
+            answer:
+              '十进制输入框提交超宽数值时会明确报错；位宽切换时已有掩码按高位截断规范化到新位宽，64 位模式可承载完整 uint64 范围。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Bitmask Visual Calculator turns abstract bit operations into a clickable bit grid: every bit is numbered (0 is the LSB), toggled on click, and kept in sync with binary, octal, decimal and hexadecimal views, with dual-mask logic operations, shifts/rotations and bit statistics for register maps, permission flags and protocol fields. Everything runs locally on BigInt up to 64 bits.',
+        coreFeatures: [
+          '8/16/32/64-bit widths with per-bit click toggling and one-click set/clear all',
+          'Real-time conversion between zero-padded binary, octal, 0x hex and decimal, plus a signed two’s-complement view',
+          'Dual-mask AND/OR/XOR, unary NOT and NAND; out-of-range values are truncated with clear feedback',
+          'Logical left/right shift, arithmetic right shift (sign-preserving), rotate left/right including 64-bit wrap-around',
+          'MSB, LSB, popcount and width-limit stats; zero network requests with fully local processing',
+        ],
+        howToUse: [
+          'Pick a width and click the bit grid to toggle bits, or type a value (0x/0o/0b prefixes supported) in the decimal field and press Enter',
+          'Read all four numeral systems in the stats card, and enable the signed view for two’s-complement interpretation',
+          'Enter a second mask B and choose AND/OR/XOR in the dual-mask card; NAND and NOT A are shown alongside',
+          'Choose a shift/rotation type and amount; the result is shown in hex, decimal and binary together',
+        ],
+        useCases: [
+          'Working out register bit flags (e.g. RX_EN, TX_EN) and hardware masks in embedded development',
+          'Combining and testing multi-bit permission or feature flags',
+          'Parsing network protocol fields and teaching bitwise operations and two’s complement',
+        ],
+        privacyNote:
+          'All masks are processed in browser memory via local BigInt operations with no network requests; your input is never uploaded or recorded.',
+        faqs: [
+          {
+            question: 'Which side does bit numbering start from?',
+            answer:
+              'Bit 0 is the least significant bit (LSB, far right); the grid is laid out high-to-low from left to right, matching common register-map diagrams.',
+          },
+          {
+            question: 'What is the difference between arithmetic and logical right shift?',
+            answer:
+              'Logical shift right (SHR) fills zeros on the left; arithmetic shift right (SAR) fills sign bits under two’s complement so negative values stay negative. Toggle the signed view to compare them directly.',
+          },
+          {
+            question: 'What if my input exceeds the current width?',
+            answer:
+              'Submitting an out-of-range value in the decimal field raises an explicit error; switching width truncates the existing mask to the new width, and 64-bit mode covers the full uint64 range.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

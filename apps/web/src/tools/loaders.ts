@@ -256,4 +256,5 @@ export const toolLoaders: Record<
   'access-log-parser': () => import('./access-log-parser'),
   'rlp-codec': () => import('./rlp-codec'),
   'modular-arithmetic-calculator': () => import('./modular-arithmetic-calculator'),
+  'bitmask-calculator': () => import('./bitmask-calculator'),
 };
