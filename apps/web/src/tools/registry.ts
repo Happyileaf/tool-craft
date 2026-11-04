@@ -24238,6 +24238,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'unit-converter',
+    name: '单位换算器',
+    nameEn: 'Unit & Measurement Converter',
+    category: ToolCategoryEnum.TIME_MATH,
+    description:
+      '在长度、质量、温度、面积、体积、速度、数据存储、时间、压强、角度与能量 11 个分类的常用单位之间本地换算，统一线性比例模型（factor + offset）正确处理温度温标平移，同时展示主换算结果与同一输入对全部单位的快速换算表，支持一键交换源/目标单位。',
+    descriptionEn:
+      'Convert locally between common units across 11 categories — length, mass, temperature, area, volume, speed, data storage, time, pressure, angle and energy. A unified linear model (factor + offset) handles temperature scale shifts correctly, showing the primary result plus a quick table of the same input converted to every unit, with one-click source/target swap.',
+    path: '/tools/unit-converter',
+    iconName: 'Calculator',
+    tags: ['单位换算', '计量单位', '长度', '温度', '重量', '数据存储', '面积', '体积'],
+    tagsEn: ['unit converter', 'measurement', 'length', 'temperature', 'mass', 'data storage', 'area', 'volume'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '单位换算器内置 11 个物理量分类、共 70 余个常用公制/英制/二进制单位，采用统一的「基准值 = 输入值 × factor + offset」线性模型把任意单位先归一化到分类基准单位再换算到目标单位；温度类单位借助 offset 正确表达摄氏、华氏、开尔文之间的温标平移，数据存储同时覆盖十进制（KB=1000B）与二进制（KiB=1024B）两套体系，全部计算在浏览器本地完成。',
+        coreFeatures: [
+          '11 个分类：长度、质量、温度、面积、体积、速度、数据存储、时间、压强、角度、能量',
+          '统一 factor + offset 线性模型，温度温标平移（如 °C/°F/K）精确可往返',
+          '数据存储区分十进制（KB/MB）与二进制（KiB/MiB），字节与比特互转',
+          '主结果之外提供同一输入对当前分类全部单位的快速换算表',
+          '一键交换源/目标单位并自动带入结果，结果按有效数字截断消除浮点尾差',
+        ],
+        howToUse: [
+          '在标签页选择物理量分类（如长度、温度、数据存储）',
+          '输入数值，并分别选择源单位与目标单位，结果实时计算',
+          '点击「交换」可对调源/目标单位，并把当前结果作为新输入',
+          '在下方快速换算表查看同一输入对该分类所有其他单位的结果，使用「复制结果」复制主换算值',
+        ],
+        useCases: [
+          '前端表单、报表或物联网数据中把传感器原始单位转换为展示单位',
+          '存储容量、带宽、文件大小在十进制与二进制单位之间核对',
+          '旅行、烹饪、工程与物理场景下的英制/公制及温标快速换算',
+        ],
+        privacyNote:
+          '换算仅使用内置单位系数在浏览器本地进行，不发起任何网络请求，不读取或上传用户输入。',
+        faqs: [
+          {
+            question: '温度换算为什么和普通乘法不一样？',
+            answer:
+              '温标之间不仅有比例差异还有零点平移，例如华氏度转摄氏度需先减 32 再乘 5/9。工具用 factor + offset 两个参数统一表达这类线性关系，因此摄氏、华氏、开尔文可以精确互转并支持往返还原。',
+          },
+          {
+            question: 'KB 和 KiB 有什么区别，工具如何处理？',
+            answer:
+              '十进制体系 1 KB = 1000 B、1 MB = 1000 KB；二进制体系 1 KiB = 1024 B、1 MiB = 1024 KiB。工具在数据存储分类中同时提供两套单位，按各自系数独立换算，避免常见的 1000/1024 混淆。',
+          },
+          {
+            question: '换算结果出现很长的小数怎么办？',
+            answer:
+              '浮点运算可能产生尾差，工具会按最多 10 位有效数字对结果四舍五入并去掉无意义的尾随零；极端量级（如超过 1e15 或小于 1e-9）则保留原值，避免科学计数法被误处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Unit & Measurement Converter ships 11 physical categories with 70+ common metric, imperial and binary units. A unified linear model — base value = input × factor + offset — first normalizes any unit to the category base unit and then to the target unit. The offset expresses temperature scale shifts between Celsius, Fahrenheit and Kelvin, while data storage covers both decimal (KB = 1000 B) and binary (KiB = 1024 B) systems. Everything runs locally in the browser.',
+        coreFeatures: [
+          '11 categories: length, mass, temperature, area, volume, speed, data storage, time, pressure, angle, energy',
+          'Unified factor + offset linear model with exact, round-trippable temperature conversion (°C/°F/K)',
+          'Data storage distinguishes decimal (KB/MB) from binary (KiB/MiB) and converts bytes to bits',
+          'Besides the primary result, a quick table converts the same input into every other unit of the category',
+          'One-click source/target swap that carries the result over, with significant-digit rounding to remove float noise',
+        ],
+        howToUse: [
+          'Pick a physical category tab (e.g. length, temperature, data storage)',
+          'Enter a value and choose the source and target units; the result updates instantly',
+          'Click "Swap" to exchange the source and target units while carrying the current result as the new input',
+          'Review the quick conversion table for all other units and use "Copy Result" for the primary value',
+        ],
+        useCases: [
+          'Converting raw sensor units into display units in forms, reports or IoT dashboards',
+          'Reconciling storage capacity, bandwidth and file sizes between decimal and binary units',
+          'Quick imperial/metric and temperature conversions for travel, cooking, engineering and physics',
+        ],
+        privacyNote:
+          'Conversions use only built-in coefficients and run locally in the browser; no network requests are made and no input is read or uploaded.',
+        faqs: [
+          {
+            question: 'Why is temperature conversion not plain multiplication?',
+            answer:
+              'Temperature scales differ in both ratio and zero point — for example Fahrenheit to Celsius subtracts 32 before multiplying by 5/9. The factor + offset model expresses this linear relationship uniformly, so Celsius, Fahrenheit and Kelvin convert accurately and round-trip.',
+          },
+          {
+            question: 'What is the difference between KB and KiB?',
+            answer:
+              'In the decimal system 1 KB = 1000 B and 1 MB = 1000 KB; in the binary system 1 KiB = 1024 B and 1 MiB = 1024 KiB. The data-storage category provides both sets with independent coefficients to avoid the common 1000/1024 confusion.',
+          },
+          {
+            question: 'What if the result has many decimal places?',
+            answer:
+              'Floating-point math can leave residual digits, so results are rounded to at most 10 significant digits with trailing zeros stripped. Extreme magnitudes (above 1e15 or below 1e-9) are kept as-is to avoid mishandling scientific notation.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

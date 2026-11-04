@@ -261,4 +261,5 @@ export const toolLoaders: Record<
   'ip-range-to-cidr': () => import('./ip-range-to-cidr'),
   'json-to-sql-ddl': () => import('./json-to-sql-ddl'),
   'random-data-generator': () => import('./random-data-generator'),
+  'unit-converter': () => import('./unit-converter'),
 };
