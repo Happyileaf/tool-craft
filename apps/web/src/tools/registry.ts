@@ -23328,6 +23328,105 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'mercator-tile-calculator',
+    name: 'Web Mercator 瓦片计算器',
+    nameEn: 'Web Mercator Tile Calculator',
+    description:
+      '在经纬度、缩放层级、XYZ 瓦片、像素坐标、包围盒之间互算：输出 QuadKey、TMS y、父/子瓦片与 OSM 切片 URL（EPSG:3857 Slippy Map）。',
+    descriptionEn:
+      'Convert between lng/lat, zoom, XYZ tile indices, pixel coordinates and tile bounds in Web Mercator (EPSG:3857), with QuadKey, TMS y, parent/children tiles and OSM tile URLs.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/mercator-tile-calculator',
+    iconName: 'Map',
+    tags: ['Web Mercator', 'XYZ 瓦片', 'Slippy Map', 'QuadKey', 'EPSG:3857', 'GIS'],
+    tagsEn: ['Web Mercator', 'XYZ Tiles', 'Slippy Map', 'QuadKey', 'EPSG:3857', 'GIS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Web Mercator 瓦片计算器是一款纯浏览器本地的 GIS 辅助工具，实现 OSM / Google Slippy Map（EPSG:3857）切片方案：给定点经纬度与缩放层级 z（0–22），返回全局像素、瓦片 XYZ、瓦片内像素与 TMS y；反向输入 z/x/y 可求瓦片四至包围盒、中心点、父瓦片、四个子瓦片、Bing QuadKey 与可直接打开的 OSM 栅格切片 URL。',
+        coreFeatures: [
+          '正向：X=(lng+180)/360·n，Y=(1−asinh(tan φ)/π)/2·n（n=2^z），输出瓦片 / 全局像素 / 瓦片内像素',
+          '反向：z/x/y → 北南西东四至与中心经纬度，z=0 覆盖 ±85.0511° 全球',
+          '父子层级：父瓦片（z−1）、四个子瓦片（z+1，可点击下钻）',
+          'Bing Maps QuadKey（基数 4 位交错）双向转换、OSM↔TMS 的 y 翻转',
+          '生成 https://tile.openstreetmap.org/{z}/{x}/{y}.png 直链；极地 / 越界 / 非整数 zoom 明确报错',
+        ],
+        howToUse: [
+          '在第一张卡片填入经纬度并拖动缩放滑块，查看瓦片坐标、像素与切片 URL',
+          '在第二张卡片输入 z/x/y 查看四至、中心、父/子瓦片与 QuadKey',
+          '点击子瓦片路径可直接下钻；需要 TMS 时读取对应的 TMS y 值',
+        ],
+        useCases: [
+          '开发在线地图时核对某坐标落在哪个瓦片、拼接切片 URL 或排查偏移',
+          '在 OSM XYZ、TMS、Bing QuadKey 等切片命名方案之间转换',
+          'GIS / 遥感教学中演示 Web Mercator 投影与瓦片金字塔结构',
+        ],
+        privacyNote:
+          '坐标换算全部在浏览器本地完成；仅在你主动点击 OSM 切片链接时才会访问 openstreetmap.org，工具本身不发送数据。',
+        faqs: [
+          {
+            question: '为什么纬度被限制在约 ±85.0511°？',
+            answer:
+              'Web Mercator 把两极投影到无穷远，为了让世界地图成为正方形，约定在 y 方向裁到与赤道方向等宽，对应纬度约 ±85.05112878°。超过该纬度的点不存在合法 XYZ 瓦片，工具会直接报错而非静默钳制。',
+          },
+          {
+            question: 'XYZ 和 TMS、QuadKey 有什么区别？',
+            answer:
+              'OSM/Google 的 XYZ 原点在左上角，y 向下递增；TMS 原点在左下角，y = n−1−XYZ_y；Bing QuadKey 用一个基数 4 字符串同时编码层级与位置（每级 2 bit，位交错 x、y）。三者描述的是同一套 Web Mercator 切片，只是命名方式不同。',
+          },
+          {
+            question: '本初子午线与赤道交点（0,0）落在哪个瓦片？',
+            answer:
+              '以 z=1 为例，X=(0+180)/360·2=1、Y=0.5·2=1，恰好位于瓦片 (1,1) 的左上角边界上。瓦片区间约定为左闭右开，故该点归入右下瓦片；经度 ±180 边界同理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Web Mercator Tile Calculator is a fully local GIS helper implementing the OSM/Google Slippy Map tiling scheme (EPSG:3857): given lng/lat and zoom z (0–22) it returns global pixels, XYZ tile indices, in-tile pixels and the TMS y; conversely, z/x/y yields the tile bounding box, center, parent tile, four children, the Bing QuadKey and a directly openable OSM raster URL.',
+        coreFeatures: [
+          'Forward: X=(lng+180)/360·n, Y=(1−asinh(tan φ)/π)/2·n (n=2^z) → tile / global px / inner px',
+          'Inverse: z/x/y → N/S/W/E bounds and center; z=0 spans ±85.0511° worldwide',
+          'Hierarchy: parent tile (z−1) and four children (z+1, clickable drill-down)',
+          'Bing QuadKey (base-4 interleaved digits) and OSM↔TMS y flip',
+          'Emits https://tile.openstreetmap.org/{z}/{x}/{y}.png links; explicit errors for polar/out-of-range/non-integer zoom',
+        ],
+        howToUse: [
+          'Enter lng/lat and drag the zoom slider in the first card to read tile indices, pixels and tile URL',
+          'Enter z/x/y in the second card to see bounds, center, parent/children and QuadKey',
+          'Click a child path to drill down; read the TMS y value when a TMS scheme is required',
+        ],
+        useCases: [
+          'Checking which tile covers a coordinate while building online maps, assembling tile URLs, debugging offsets',
+          'Converting between OSM XYZ, TMS and Bing QuadKey naming schemes',
+          'Teaching the Web Mercator projection and tile pyramid in GIS/remote-sensing courses',
+        ],
+        privacyNote:
+          'All coordinate math runs locally in your browser; openstreetmap.org is contacted only when you explicitly click a tile link, and the tool itself sends no data.',
+        faqs: [
+          {
+            question: 'Why is latitude capped around ±85.0511°?',
+            answer:
+              'Web Mercator projects the poles to infinity; to keep the world map square it is clipped in y to the same extent as the equator in x, corresponding to about ±85.05112878°. Points beyond that have no valid XYZ tile, so the tool errors instead of silently clamping.',
+          },
+          {
+            question: 'How do XYZ, TMS and QuadKey differ?',
+            answer:
+              'OSM/Google XYZ has its origin at the top-left with y growing downward; TMS starts bottom-left with y = n−1−XYZ_y; the Bing QuadKey encodes zoom and position in one base-4 string (2 bits per level, interleaving x and y). All three describe the same Web Mercator pyramid under different naming conventions.',
+          },
+          {
+            question: 'Which tile contains the prime-meridian/equator point (0,0)?',
+            answer:
+              'At z=1, X=(0+180)/360·2=1 and Y=0.5·2=1 — exactly the top-left corner of tile (1,1). Tiles use half-open intervals, so the boundary point belongs to the lower-right tile; the ±180° edges follow the same convention.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
