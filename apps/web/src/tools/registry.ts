@@ -23229,6 +23229,105 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'dew-point-calculator',
+    name: '露点 / 湿球与气压海拔计算器',
+    nameEn: 'Dew Point / Wet Bulb & Pressure Altitude Calculator',
+    description:
+      '由气温与相对湿度计算露点（Magnus）、湿球温度（Stull）与结露温差，并在气压与海拔之间按 ISA 压高公式双向换算，给出精度范围提示与结露风险。',
+    descriptionEn:
+      'Derive dew point (Magnus), wet-bulb temperature (Stull) and dew-point spread from air temperature and relative humidity, and convert between pressure and altitude with the ISA barometric formula, including accuracy-range warnings.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/dew-point-calculator',
+    iconName: 'Droplets',
+    tags: ['露点', '湿球温度', '相对湿度', '气压海拔', '气象'],
+    tagsEn: ['Dew Point', 'Wet Bulb', 'Humidity', 'Barometric Altitude', 'Meteorology'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '露点 / 湿球与气压海拔计算器是一款纯浏览器本地的气象换算工具：输入气温与相对湿度，按 Magnus 公式计算露点温度、按 Stull 2011 经验式估算湿球温度，并给出结露温差与结露 / 结霜风险提示；同时可在站点气压与海拔之间按国际标准大气（ISA）对流层压高公式双向换算。',
+        coreFeatures: [
+          '露点：γ = ln(RH/100) + 17.625·T/(243.04+T)，Td = 243.04·γ/(17.625−γ)（Magnus / Lawrence 2005 参数）',
+          '湿球：Stull（2011）经验式，适用约 -20–50 °C、RH 5–99%，越界给出精度警告',
+          '结露温差 T−Td 与露点风险标签（高湿 / 略潮 / 舒适 / 严寒结霜）',
+          '气压 → 海拔（以当前气温作基准温度修正）、海拔 → 标准气压（1013.25 hPa、L=0.0065 K/m）',
+          '内置 0–8848 m 标准气压对照、天气示例预设与一键复制',
+        ],
+        howToUse: [
+          '填入气温（°C）与相对湿度（%），露点 / 湿球 / 温差立即更新',
+          '在第二张卡片输入站点气压查看对应海拔，或输入海拔查看标准气压',
+          '出现适用范围提示时，注意经验公式在极端温湿度下精度下降',
+        ],
+        useCases: [
+          '回南天 / 梅雨季判断墙面、玻璃是否可能结露，评估除湿目标露点',
+          '户外、登山、飞行（无人机）活动中由气压估算海拔或由海拔估算气压',
+          '暖通空调（HVAC）与气象教学中的湿度参数换算',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地完成，不发起任何网络请求，输入数据不会离开设备。',
+        faqs: [
+          {
+            question: '露点和相对湿度有什么区别？',
+            answer:
+              '相对湿度是当前水汽压与同温度饱和水汽压之比，随气温变化；露点是空气在等压冷却到饱和时的温度，只与水汽绝对含量有关，因此更适合直接判断结露风险——当物体表面温度低于露点时就会结露。',
+          },
+          {
+            question: '湿球温度用的是精确热力学方法吗？',
+            answer:
+              '本工具采用 Stull（2011）经验式，在 -20–50 °C、RH 5–99% 的常见范围内与热力学迭代解误差通常小于 1 °C，优点是无需迭代、零依赖；极端高温低湿或接近饱和场景下精度下降时会显示提示。',
+          },
+          {
+            question: '气压反推海拔与实际海拔为何可能对不上？',
+            answer:
+              '压高公式假设标准大气（海平面 1013.25 hPa、15 °C、恒定递减率 6.5 K/km），而实际海平面气压随天气系统波动、近地面存在逆温等。本工具允许以当前气温作基准温度修正，但高海拔或复杂天气下结果仍仅供估算，精确测量需 GPS。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Dew Point / Wet Bulb & Pressure Altitude Calculator is a fully local meteorology tool: enter air temperature and relative humidity to obtain the dew point (Magnus formula), the wet-bulb temperature (Stull 2011 approximation) and the dew-point spread with condensation/frost risk hints, plus two-way conversion between station pressure and altitude using the ISA tropospheric barometric formula.',
+        coreFeatures: [
+          'Dew point via the Magnus/Lawrence 2005 constants (α=17.625, b=243.04 °C)',
+          'Wet-bulb via the Stull (2011) empirical formula (~-20–50 °C, RH 5–99%), with out-of-envelope warnings',
+          'Dew-point spread T−Td and risk tags (humid / damp / comfortable / severe-cold frost)',
+          'Pressure → altitude (temperature-corrected) and altitude → standard pressure (1013.25 hPa, L=0.0065 K/m)',
+          'Built-in 0–8848 m pressure table, weather presets and one-click copy',
+        ],
+        howToUse: [
+          'Enter air temperature (°C) and relative humidity (%); dew point / wet bulb / spread update instantly',
+          'Enter station pressure to see altitude, or altitude to see standard pressure in the second card',
+          'Heed the range notice: the empirical wet-bulb formula loses accuracy at extremes',
+        ],
+        useCases: [
+          'Judging whether walls or glass will condense in humid seasons; setting dehumidifier targets',
+          'Estimating altitude from pressure (hiking, drones) or pressure from elevation',
+          'HVAC calculations and meteorology teaching',
+        ],
+        privacyNote:
+          'All computation runs locally in your browser with no network requests; your inputs never leave the device.',
+        faqs: [
+          {
+            question: 'How is dew point different from relative humidity?',
+            answer:
+              'Relative humidity is the ratio of actual to saturation vapour pressure and changes with temperature; dew point is the temperature at which air becomes saturated at constant pressure, depending only on absolute moisture content. Condensation forms whenever a surface cools below the dew point.',
+          },
+          {
+            question: 'Is the wet-bulb temperature thermodynamically exact?',
+            answer:
+              'This tool uses the Stull (2011) empirical formula, which typically stays within ~1 °C of the thermodynamic iteration over -20–50 °C and RH 5–99% without requiring iteration or dependencies. A warning appears where accuracy degrades at extremes.',
+          },
+          {
+            question: 'Why might pressure-derived altitude disagree with real altitude?',
+            answer:
+              'The barometric formula assumes the standard atmosphere (1013.25 hPa, 15 °C, constant 6.5 K/km lapse), while real sea-level pressure varies with weather and inversions occur. The tool accepts the current temperature as a correction, but precise elevation still requires GPS.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

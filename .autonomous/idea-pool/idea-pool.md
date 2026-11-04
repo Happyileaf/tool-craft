@@ -203,7 +203,7 @@
 | 20261102200312 | 原始 EML / MIME 邮件只读解析器（multipart 树与邮件头展示） | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102200312.md) |
 | 20261102200313 | PE 文件头只读解析器（DOS header / COFF header / Optional header / Section table） | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102200313.md) |
 | 20261102200314 | Source Map（.map）查看器与 VLQ mappings 解码器 | Web Tool | Existing Gap | Pending | 2026-11-02 | | [详情](./idea-details/20261102200314.md) |
-| 20261102200315 | 露点 / 湿球温度与气压海拔计算器 | Web Tool | Existing Gap | Claimed | 2026-11-02 | trae-agent | [详情](./idea-details/20261102200315.md) |
+| 20261102200315 | 露点 / 湿球温度与气压海拔计算器 | Web Tool | Existing Gap | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102200315.md) |
 | 20261103081157 | JSON5 ↔ JSON 双向转换器 | Web Tool | Existing Gap | In Progress | 2026-11-03 | trae-agent @ 2026-11-03 18:05 CST | [详情](./idea-details/20261103081157.md) |
 | 20261103081158 | BibTeX 条目解析器（.bib ↔ JSON / 格式化引用） | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103081158.md) |
 | 20261103140201 | 假设检验计算器（t 检验 / 卡方检验） | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103140201.md) |
