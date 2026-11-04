@@ -22828,6 +22828,104 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'json-to-php',
+    name: 'JSON → PHP 数组生成器',
+    nameEn: 'JSON to PHP Array Generator',
+    description:
+      '粘贴 JSON 一键生成可直接粘贴的 PHP 数组字面量：对象转关联数组（\'key\' =>）、数组转索引数组，字符串按 PHP 单引号规则转义，数字区分 int/float 并保留浮点精度，布尔 true/false、null、空数组 []；支持短数组 [] 与传统 array() 语法、4 空格与 Tab 缩进、结尾分号切换。',
+    descriptionEn:
+      'Turn JSON into ready-to-paste PHP array literals: objects become associative arrays (\'key\' =>), arrays become indexed arrays, strings follow PHP single-quote escaping, numbers keep int/float precision, with booleans, null and empty arrays emitted natively. Switch between short [] and traditional array() syntax, 4-space or Tab indentation, and the trailing semicolon.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-php',
+    iconName: 'FileCode',
+    tags: ['JSON', 'PHP', 'array', 'fixture', '代码生成'],
+    tagsEn: ['JSON', 'PHP', 'array', 'fixture', 'Code Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON → PHP 数组生成器是一款纯浏览器本地运行的转换工具：把接口返回的 JSON 样例或配置直接转成可粘贴进 PHP 源码的数组字面量，自动完成关联/索引数组、字符串转义、缩进与语法风格处理，省去手工搬运引号和 => 的重复劳动。',
+        coreFeatures: [
+          '忠实转换：对象 → 关联数组（\'key\' =>）、数组 → 索引数组，递归任意嵌套深度',
+          'PHP 字面量规则：字符串按单引号规则仅转义反斜杠与单引号（双引号、$ 原样保留），int/float 保持字面量精度，布尔与 null 输出 true/false/null',
+          '语法可切换：短数组 [] 或传统 array()，4 空格或 Tab 缩进，结尾分号可关闭（便于嵌入更大表达式）',
+          '空对象与空数组均输出 []，非法 JSON 即时给出解析错误',
+        ],
+        howToUse: [
+          '在左侧粘贴 JSON（根可以是对象、数组或标量）',
+          '在顶部选择 [] / array() 语法、缩进风格与是否带分号',
+          '右侧即时生成以 $data = 开头的 PHP 代码，点击「复制 PHP 代码」直接使用',
+        ],
+        useCases: [
+          '把接口 JSON 样例快速变成 PHPUnit 测试 fixture / 测试数据',
+          '将 JSON 配置转换为 Laravel/Symfony 项目中的默认配置数组',
+          '编写 PHP 脚本时从 JSON 响应中搬运结构化数据',
+        ],
+        privacyNote:
+          'JSON 解析与代码生成全部在浏览器本地完成，不发起任何网络请求，数据不会离开设备。',
+        faqs: [
+          {
+            question: '为什么字符串用单引号而不是双引号？',
+            answer:
+              '单引号字符串只需转义反斜杠和单引号本身，输出最稳定、可读性最好，且不会对 $variable 做变量插值，能原样保留 JSON 文本。',
+          },
+          {
+            question: '空对象 {} 和空数组 [] 生成结果一样吗？',
+            answer:
+              '一样，都输出 []。PHP 数组本身同时承担列表与哈希表语义，空数组无法也无需区分；含元素的对象始终生成带字符串键的关联数组。',
+          },
+          {
+            question: '和「PHP serialize ↔ JSON」工具有什么区别？',
+            answer:
+              '本工具输出可直接放进 PHP 源码的数组字面量；serialize 转换处理的是 PHP serialize() 的 a:1:{s:3:"key";…} 数据格式，用于缓存/持久化数据交换，两者语法与用途完全不同。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON to PHP Array Generator is a fully browser-local converter that turns API JSON samples or config into PHP array literals ready to paste into source code, handling associative/indexed arrays, string escaping, indentation and syntax style automatically.',
+        coreFeatures: [
+          'Faithful conversion: objects to associative arrays (\'key\' =>), arrays to indexed arrays, recursively at any depth',
+          'PHP literal rules: single-quoted strings escape only backslashes and quotes (double quotes and $ are preserved), int/float keep literal precision, booleans and null emit true/false/null',
+          'Switchable style: short [] or traditional array() syntax, 4-space or Tab indentation, optional trailing semicolon for embedding in larger expressions',
+          'Both empty objects and empty arrays emit []; invalid JSON produces an immediate parse error',
+        ],
+        howToUse: [
+          'Paste JSON on the left (the root may be an object, array or scalar)',
+          'Choose [] vs array() syntax, indentation style and semicolon at the top',
+          'PHP code starting with $data = appears instantly on the right — click Copy to use it directly',
+        ],
+        useCases: [
+          'Turning API JSON samples into PHPUnit fixtures and test data',
+          'Converting JSON config into default configuration arrays in Laravel/Symfony projects',
+          'Moving structured data from JSON responses into PHP scripts',
+        ],
+        privacyNote:
+          'JSON parsing and code generation all run locally in your browser. No network request is made and data never leaves your device.',
+        faqs: [
+          {
+            question: 'Why single-quoted strings instead of double quotes?',
+            answer:
+              'Single-quoted strings only require escaping backslashes and single quotes, producing the most stable and readable output without interpolating $variables, so the JSON text is preserved verbatim.',
+          },
+          {
+            question: 'Do empty objects {} and empty arrays [] produce the same result?',
+            answer:
+              'Yes, both emit []. A PHP array serves as both list and hashmap, so an empty one cannot and need not be distinguished; objects with elements always produce associative arrays with string keys.',
+          },
+          {
+            question: 'How is this different from the PHP serialize ↔ JSON tool?',
+            answer:
+              'This tool emits array literals that go straight into PHP source code. The serialize converter handles PHP serialize() output such as a:1:{s:3:"key";…} for cache/persistence data exchange — different syntax and purpose entirely.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'byte-array-codegen',
     name: '字节数组代码生成器',
     nameEn: 'Byte Array Code Generator',
