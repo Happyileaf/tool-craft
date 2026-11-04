@@ -24339,6 +24339,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'image-data-uri-converter',
+    name: '图片 Data URI 互转',
+    nameEn: 'Image & Base64 Data URI Converter',
+    description:
+      '在本地把 PNG/JPEG/GIF/WebP/SVG/BMP/ICO/AVIF 图片与 Base64 Data URI 双向互转：图片可拖拽或点选编码为 data:image/...;base64 文本并复制，Data URI 可解码还原为图片预览与下载；含 MIME 白名单校验、文件头魔数交叉验证与大小限制，全程不落地不上传。',
+    descriptionEn:
+      'Convert PNG/JPEG/GIF/WebP/SVG/BMP/ICO/AVIF images to and from Base64 Data URIs entirely locally: drag or pick an image to encode into data:image/...;base64 text and copy it, or paste a Data URI to decode, preview and download it back. Includes MIME allow-list validation, file-signature cross-checking and size limits, with no upload and no server round-trip.',
+    category: ToolCategoryEnum.IMAGE_MEDIA,
+    path: '/tools/image-data-uri-converter',
+    iconName: 'Image',
+    tags: ['Data URI', 'Base64', '图片转换', '内嵌图片', 'data:image', '预览', '本地处理'],
+    tagsEn: ['Data URI', 'Base64', 'image converter', 'embedded image', 'data:image', 'preview', 'local'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '图片 Data URI 互转工具基于浏览器原生 FileReader、Blob 与 URL API，在本地完成图片文件与 Base64 Data URI 之间的双向转换。编码方向通过 FileReader.readAsDataURL 把图片读成 data:image/<类型>;base64,... 文本；解码方向先做协议、图片 MIME 白名单与 base64 合法性校验，再用 atob 还原字节并依据 PNG/JPEG/GIF/WebP/BMP/SVG 文件头魔数交叉验证声明类型与真实内容是否一致，最后通过 Blob URL 预览并支持下载。',
+        coreFeatures: [
+          '双向互转：图片文件 → Data URI，Data URI → 图片预览/下载',
+          '支持 PNG、JPEG、GIF、WebP、SVG、BMP、ICO、AVIF 共 8 类图片',
+          'MIME 白名单 + base64 合法性 + 文件头魔数三重校验，类型不一致时高亮告警',
+          '点击或拖拽上传，blob URL 预览，自动管理 ObjectURL 生命周期避免内存泄漏',
+          '文件与文本均限制在 20 MB 内，全部本地处理，不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择方向：「图片 → Data URI」或「Data URI → 图片」',
+          '编码：点击虚线框选择图片或把图片拖入，转换后在预览区复制完整 Data URI',
+          '解码：把 data:image/...;base64,... 文本粘贴到文本框，点击「还原为图片」',
+          '查看预览与类型/大小信息；若声明类型与魔数探测不一致会出现橙色告警，确认后可点「下载图片」保存',
+        ],
+        useCases: [
+          '把小图标、占位图内联进 CSS/HTML/JSON，减少 HTTP 请求或避免外链',
+          '在接口 mock、Markdown、邮件模板中嵌入图片数据',
+          '核对他人提供的 Data URI 是否为声称的图片类型、是否被篡改或损坏',
+        ],
+        privacyNote:
+          '图片与 Data URI 仅在浏览器内存中处理，组件卸载即释放 blob URL，不写入磁盘、不发起网络请求、不上传任何数据。',
+        faqs: [
+          {
+            question: '它和已有的 Base64 编解码工具有什么区别？',
+            answer:
+              '通用 Base64 工具面向文本，文件能力仅支持把文件读成 Data URI（单向）。本工具专注图片二进制场景，额外提供 Data URI 反向还原为图片、缩略预览、按图片类型下载，以及基于文件头魔数的真实类型交叉验证，是完整的双向图片工作流。',
+          },
+          {
+            question: '为什么提示类型不一致（魔数告警）？',
+            answer:
+              'Data URI 头部声明的 MIME（如 image/png）与文件开头二进制签名探测出的真实类型（如 image/jpeg）不符，常见于手动改了扩展名或拼接 Data URI。图片通常仍可预览，但建议以魔数探测结果为准核对来源可信度。',
+          },
+          {
+            question: '为什么限制 20 MB？',
+            answer:
+              'Data URI 是 base64 文本，体积约比原文件大 33%，超大图片会占用大量内存并使文本框卡顿。20 MB 上限兼顾常见图标、截图与设计素材；更大的文件建议用对象存储或 CDN 引用而非内联 Data URI。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Image & Base64 Data URI Converter uses the native browser FileReader, Blob and URL APIs to convert locally between image files and Base64 Data URIs in both directions. Encoding reads an image via FileReader.readAsDataURL into data:image/<type>;base64,... text. Decoding first validates the scheme, an image MIME allow-list and Base64 legality, then restores bytes with atob and cross-checks the declared MIME against the real PNG/JPEG/GIF/WebP/BMP/SVG file signature, finally previewing through a Blob URL with download support.',
+        coreFeatures: [
+          'Bidirectional conversion: image file → Data URI and Data URI → image preview/download',
+          'Supports 8 image types: PNG, JPEG, GIF, WebP, SVG, BMP, ICO, AVIF',
+          'Three layers of validation — MIME allow-list, Base64 legality and file-signature (magic number) cross-check — with mismatch warnings',
+          'Click or drag to upload, Blob URL preview, and automatic ObjectURL lifecycle management to prevent memory leaks',
+          'Both files and text are capped at 20 MB; everything runs locally with no network requests',
+        ],
+        howToUse: [
+          'Pick a direction: "Image → Data URI" or "Data URI → Image"',
+          'Encode: click the dashed area or drag in an image, then copy the full Data URI from the preview panel',
+          'Decode: paste the data:image/...;base64,... text into the box and click "Restore to image"',
+          'Review the preview, type and size; an orange warning appears if the declared MIME differs from the detected signature, and you can save with "Download image"',
+        ],
+        useCases: [
+          'Inlining small icons and placeholders into CSS/HTML/JSON to cut HTTP requests or avoid external links',
+          'Embedding image data in API mocks, Markdown documents and email templates',
+          'Verifying whether a supplied Data URI is really the claimed image type and has not been tampered with or corrupted',
+        ],
+        privacyNote:
+          'Images and Data URIs are processed only in browser memory and Blob URLs are released on unmount; nothing is written to disk, sent over the network or uploaded.',
+        faqs: [
+          {
+            question: 'How is this different from the existing Base64 tool?',
+            answer:
+              'The general Base64 tool targets text and its file capability only reads a file into a Data URI (one direction). This tool focuses on binary images and adds the reverse restoration from Data URI to an image, thumbnail preview, type-aware download, and magic-number verification of the true content type — a complete bidirectional image workflow.',
+          },
+          {
+            question: 'Why am I seeing a signature mismatch warning?',
+            answer:
+              'The MIME declared in the Data URI header (e.g. image/png) differs from the real type detected from the leading binary signature (e.g. image/jpeg), which usually happens after a manual extension change or hand-built Data URI. The image may still preview, but treat the detected signature as authoritative when assessing trust.',
+          },
+          {
+            question: 'Why the 20 MB limit?',
+            answer:
+              'A Data URI is Base64 text roughly 33% larger than the original file; very large images consume substantial memory and make the text area sluggish. The 20 MB cap covers typical icons, screenshots and design assets. For larger files, prefer object storage or a CDN link over an inline Data URI.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

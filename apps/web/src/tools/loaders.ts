@@ -262,4 +262,5 @@ export const toolLoaders: Record<
   'json-to-sql-ddl': () => import('./json-to-sql-ddl'),
   'random-data-generator': () => import('./random-data-generator'),
   'unit-converter': () => import('./unit-converter'),
+  'image-data-uri-converter': () => import('./image-data-uri-converter'),
 };
