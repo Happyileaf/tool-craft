@@ -22528,6 +22528,106 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'json-to-java',
+    name: 'JSON → Java class / record 生成器',
+    nameEn: 'JSON to Java Class / Record Generator',
+    description:
+      '粘贴 JSON 样本即可推断生成 Java 数据模型：支持 Java 16+ record 与传统 POJO（字段 + getter/setter）两种风格；整数 int/long（可选 BigInteger）、浮点 double（可选 BigDecimal）、布尔 boolean、字符串 String、数组 List<T> 或 T[]，嵌套对象生成静态内部类；字段名小驼峰化并规避关键字，出现 null 的原始类型字段自动改用包装类型，可选包名输出。',
+    descriptionEn:
+      'Paste a JSON sample and get inferred Java data models in two styles: Java 16+ records or classic POJOs with getters/setters. Integers map to int/long (optional BigInteger), floats to double (optional BigDecimal), booleans to boolean, strings to String, arrays to List<T> or T[], with nested objects as static inner classes. Field names are camelCased with keyword escaping, nullable primitive fields use boxed types, and an optional package declaration is supported.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-java',
+    iconName: 'FileCode',
+    tags: ['JSON', 'Java', 'record', 'POJO', 'DTO', '代码生成'],
+    tagsEn: ['JSON', 'Java', 'record', 'POJO', 'DTO', 'Code Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON → Java 生成器是一款纯浏览器本地运行的代码生成工具：粘贴 JSON 样本即可推断出可直接使用的 Java record 或 POJO 类代码，自动处理类型映射、嵌套内部类、数组泛型、字段命名与关键字冲突，免去为接口手写 DTO/VO 的重复劳动。',
+        coreFeatures: [
+          '双风格输出：Java 16+ record（一行声明、不可变）或传统 class（private 字段 + getter/setter，boolean 使用 isXxx）',
+          '类型推断：小整数 int、大整数 long（开启后超大整数 BigInteger）、浮点 double（可选 BigDecimal）、boolean、String；null 与不可合并的异型值回退 Object',
+          '集合映射：同型对象数组合并字段生成 List<Item>（可切换为 Item[]），空数组元素回退 List<Object> 并给出提示',
+          '命名处理：JSON 键转小驼峰字段名与大驼峰类名，非法字符/数字开头/Java 关键字自动修正，重名嵌套类自动编号，可选 package 声明与 import',
+        ],
+        howToUse: [
+          '在左侧粘贴 JSON 对象样本（根为数组或标量时会生成单字段包装类）',
+          '在顶部设置根类名、包名（可留空）、record/class 风格、List 或数组、是否使用大数类型',
+          '右侧即时生成 Java 代码，点击「复制 Java 代码」直接使用',
+          '查看下方警告了解空数组、类型冲突等推断决策',
+        ],
+        useCases: [
+          'Spring Boot 后端为外部 JSON API 快速编写请求/响应 DTO 或 Java 16 record',
+          '对接键名带连字符、下划线或数字开头的第三方接口数据',
+          '理解未知 JSON 样本的结构层次与字段可空性',
+        ],
+        privacyNote:
+          'JSON 解析、类型推断与代码生成全部在浏览器本地完成，不发起任何网络请求，样本数据不会离开设备。',
+        faqs: [
+          {
+            question: 'record 和 class 两种风格怎么选？',
+            answer:
+              'record 是 Java 16+ 的不可变数据载体，构造器、访问器、equals/hashCode/toString 由编译器生成，适合 DTO/VO；class 风格输出传统 private 字段加 getter/setter，兼容旧版 Java 与需要可变对象、JPA 实体的场景。',
+          },
+          {
+            question: '为什么有的 int 字段变成了 Integer？',
+            answer:
+              '当样本中该字段（或数组同名字段）出现过 null 时，原始类型无法表示空值，工具会自动改用包装类型（Integer/Long/Double/Boolean），保证 Jackson/Gson 反序列化时不抛空指针。',
+          },
+          {
+            question: 'null 字段为什么生成 Object？',
+            answer:
+              'null 不携带具体类型信息，无法推断是字符串、数字还是对象。若同名字段在数组其他元素中出现具体值，会自动合并为具体包装类型；否则保留 Object 占位，待人工替换。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON to Java Generator is a fully browser-local code generator: paste a JSON sample and get ready-to-use Java records or POJOs, with automatic type mapping, nested inner classes, array generics, naming and keyword handling — eliminating boilerplate DTO/VO code for JSON APIs.',
+        coreFeatures: [
+          'Two output styles: Java 16+ records (compact, immutable) or classic classes (private fields + getters/setters, isXxx for boolean)',
+          'Type inference: int for small integers, long for larger ones (BigInteger optional for huge ints), double (BigDecimal optional), boolean, String; null and unmergeable mixed values fall back to Object',
+          'Collection mapping: homogeneous object arrays merge fields into List<Item> (switchable to Item[]), empty arrays fall back to List<Object> with a warning',
+          'Naming: JSON keys become camelCase fields and PascalCase classes; invalid characters, leading digits and Java keywords are handled automatically; duplicate nested class names are numbered; optional package declaration and imports',
+        ],
+        howToUse: [
+          'Paste a JSON object sample on the left (array/scalar roots produce a single-field wrapper class)',
+          'Set the root class name, package (optional), record/class style, List vs arrays, and big-number types at the top',
+          'The Java code appears instantly on the right — click Copy to use it directly',
+          'Check the warnings below for inference decisions such as empty arrays and type conflicts',
+        ],
+        useCases: [
+          'Quickly writing request/response DTOs or Java 16 records in Spring Boot backends for external JSON APIs',
+          'Integrating third-party payloads whose keys use hyphens, underscores or leading digits',
+          'Understanding the structure and nullability of an unknown JSON sample',
+        ],
+        privacyNote:
+          'JSON parsing, type inference and code generation all run locally in your browser. No network request is made and sample data never leaves your device.',
+        faqs: [
+          {
+            question: 'Should I choose record or class?',
+            answer:
+              'Records (Java 16+) are immutable data carriers with compiler-generated constructor, accessors, equals/hashCode and toString — ideal for DTOs/VOs. The class style emits traditional private fields with getters/setters, compatible with older Java and mutable/JPA-entity scenarios.',
+          },
+          {
+            question: 'Why did an int field become Integer?',
+            answer:
+              'When the field (or a same-named field in an array element) is null in the sample, a primitive cannot represent null, so the tool automatically uses the boxed type (Integer/Long/Double/Boolean) to keep Jackson/Gson deserialization safe.',
+          },
+          {
+            question: 'Why is a null field generated as Object?',
+            answer:
+              'null carries no concrete type information. When the same field appears with a concrete value in another array element, it is merged into a concrete boxed type; otherwise Object is kept as a placeholder for manual replacement.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'byte-array-codegen',
     name: '字节数组代码生成器',
     nameEn: 'Byte Array Code Generator',

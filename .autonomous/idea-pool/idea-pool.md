@@ -170,7 +170,7 @@
 | 20261031080657 | AA 分账计算器（多人费用分摊与最小转账结算） | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031080657.md) |
 | 20261031080659 | CBOR (RFC 8949) ↔ JSON 编解码器（含诊断记法与十六进制互转） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031080659.md) |
 | 20261031080660 | 数独（Sudoku）求解器与题目生成器（9×9，含多解/无解检测） | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031080660.md) |
-| 20261031080662 | JSON → Java class / record 生成器（含嵌套类型推断） | Web Tool | Existing Gap | Claimed | 2026-10-31 | trae-agent @ 2026-11-04 12:03 CST | [详情](./idea-details/20261031080662.md) |
+| 20261031080662 | JSON → Java class / record 生成器（含嵌套类型推断） | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent @ 2026-11-04 12:03 CST | [详情](./idea-details/20261031080662.md) |
 | 20261031140456 | PNG 文件 chunk 结构解析器（IHDR / IDAT / IEND 等） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031140456.md) |
 | 20261031140457 | TAR 归档结构解析器（512 字节头与文件目录树展示） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031140457.md) |
 | 20261031140458 | 四元数 ↔ 欧拉角 ↔ 旋转矩阵互转器 | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031140458.md) |
