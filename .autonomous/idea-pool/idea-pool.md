@@ -221,7 +221,7 @@
 | 20261104020115 | ABA 银行路由号码（RTN / Routing Number）校验器 | Web Tool | Exploration | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104020115.md) |
 | 20261104020116 | IPFS CID 解析器与格式转换器（CIDv0/CIDv1、multibase 与 multihash 拆解） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104020116.md) |
 | 20261104081012 | APCA（WCAG 3）感知对比度计算器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104081012.md) |
-| 20261104081013 | 555 定时器（Astable / Monostable）参数计算器 | Web Tool | Exploration | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104081013.md) |
+| 20261104081013 | 555 定时器（Astable / Monostable）参数计算器 | Web Tool | Exploration | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104081013.md) |
 | 20261104081014 | EPC QR Code（SEPA 转账）负载生成与解析器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104081014.md) |
 | 20261104081015 | BMP / DIB 位图文件头结构只读解析器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104081015.md) |
 | 20261104140121 | JSON → Dart model 类代码生成器（freezed / json_serializable 风格可选） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104140121.md) |

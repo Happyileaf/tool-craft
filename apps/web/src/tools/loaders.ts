@@ -250,4 +250,5 @@ export const toolLoaders: Record<
   'json-to-kotlin': () => import('./json-to-kotlin'),
   'json-to-php': () => import('./json-to-php'),
   'json-to-swift': () => import('./json-to-swift'),
+  'ne555-astable-calculator': () => import('./ne555-astable-calculator'),
 };

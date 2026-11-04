@@ -23128,6 +23128,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'ne555-astable-calculator',
+    name: '555 定时器非稳态计算器',
+    nameEn: '555 Astable Calculator',
+    description:
+      '按 R1、R2、C 计算 555 非稳态电路的高低电平时间、周期、频率与占空比；支持经典接法与二极管≈50% 改进电路，方波示意与多单位自适应。',
+    descriptionEn:
+      'Compute 555 astable high/low times, period, frequency and duty cycle from R1, R2 and C, with the classic and diode (~50%) variants, a waveform sketch, and adaptive units.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/ne555-astable-calculator',
+    iconName: 'Timer',
+    tags: ['555 定时器', '非稳态', '占空比', '电子工程', '方波'],
+    tagsEn: ['555 Timer', 'Astable', 'Duty Cycle', 'Electronics', 'Square Wave'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '555 定时器非稳态计算器是一款面向电子爱好者与硬件工程师的纯浏览器本地工具：输入外接电阻 R1、R2 与电容 C，实时算出高电平时间 t1、低电平时间 t2、周期 T、振荡频率 f 与占空比 D，并绘出电容在 ⅓Vcc 与 ⅔Vcc 之间充放电的方波示意。支持经典接法与串联二极管的约 50% 占空比改进接法。',
+        coreFeatures: [
+          '经典模式：t1 = ln2·(R1+R2)·C，t2 = ln2·R2·C，f = 1/(t1+t2)，D = t1/T',
+          '二极管改进模式：t1 = ln2·R1·C、t2 = ln2·R2·C，R1 = R2 时占空比约 50%（忽略二极管压降）',
+          '电阻 Ω/kΩ/MΩ、电容 pF/nF/µF/mF/F 输入，时间 ns/µs/ms/s 与频率 Hz/kHz/MHz 自动选前缀输出',
+          '按 t1/t2 比例生成输出方波示意，标注 Vcc / 0 V 电平',
+          '超出 NE555 典型最高频率（约 2 MHz）时给出器件范围警告；示例预设与一键复制结果',
+        ],
+        howToUse: [
+          '选择电路模式（经典非稳态或二极管改进型）',
+          '填入 R1、R2、C 的数值并选择单位，结果实时更新',
+          '在结果表中查看 t1、t2、T、f、占空比，下方查看方波示意',
+          '可点击示例预设快速填入典型取值（如 1kΩ / 1kΩ / 1µF → 约 481 Hz、66.7%）',
+        ],
+        useCases: [
+          '面包板搭 555 闪烁灯 / 方波信号源前核算阻容取值',
+          'PWM 粗调、时钟发生与音调电路的频率、占空比估算',
+          '教学中演示充放电时间常数与 555 阈值（⅓Vcc、⅔Vcc）的关系',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地完成，不发起任何网络请求，输入的参数不会离开设备。',
+        faqs: [
+          {
+            question: '为什么经典接法占空比永远大于 50%？',
+            answer:
+              '经典接法中电容充电经 R1+R2、放电只经 R2，故 t1 = ln2·(R1+R2)·C 恒大于 t2 = ln2·R2·C，占空比 D = (R1+R2)/(R1+2R2) 恒大于 50%；R2 远大于 R1 时才趋近 50%。要得到约 50% 的对称方波，可在 R2 上串联二极管（改进模式），让充电只经 R1。',
+          },
+          {
+            question: '二极管模式为什么说是「约」50%？',
+            answer:
+              '串联二极管后充电电流绕过 R2，但二极管存在约 0.6–0.7 V 的正向压降，且充电、放电回路并不完全对称；本工具按理想模型（忽略压降）计算，R1 = R2 时占空比为精确的 50%，实际电路会有小幅偏差。',
+          },
+          {
+            question: '频率很高时结果还准吗？',
+            answer:
+              '公式是理想一阶 RC 模型。双极型 NE555 最高工作频率通常约 2 MHz，超过时触发器延迟、寄生电容与输出级翻转时间占比增大，实际频率会偏低。CMOS 版本（如 7555、TLC555）上限更高。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The 555 Astable Calculator is a fully local tool for electronics hobbyists and hardware engineers: enter the external resistors R1, R2 and capacitor C to instantly obtain the high time t1, low time t2, period T, frequency f and duty cycle D, with a sketch of the square wave produced as the capacitor charges/discharges between ⅓Vcc and ⅔Vcc. Both the classic wiring and the diode (~50% duty) variant are supported.',
+        coreFeatures: [
+          'Classic mode: t1 = ln2·(R1+R2)·C, t2 = ln2·R2·C, f = 1/(t1+t2), D = t1/T',
+          'Diode variant: t1 = ln2·R1·C, t2 = ln2·R2·C; R1 = R2 gives ~50% duty (diode drop ignored)',
+          'Ω/kΩ/MΩ and pF/nF/µF/mF/F inputs with automatic ns/µs/ms/s and Hz/kHz/MHz output prefixes',
+          'Square-wave sketch scaled by the t1/t2 ratio, labelled Vcc / 0 V',
+          'Warns beyond the typical NE555 limit (~2 MHz); example presets and one-click copy',
+        ],
+        howToUse: [
+          'Pick the circuit mode (classic astable or diode variant)',
+          'Enter R1, R2 and C with units; results update instantly',
+          'Read t1, t2, T, f and duty cycle from the table, with the waveform sketch below',
+          'Use a preset such as 1kΩ / 1kΩ / 1µF → ~481 Hz at 66.7% to get started',
+        ],
+        useCases: [
+          'Choosing R/C values for a 555 LED flasher or square-wave generator on a breadboard',
+          'Rough PWM, clock generation, and tone-circuit frequency / duty estimation',
+          'Teaching RC charge/discharge time constants and the 555 thresholds (⅓Vcc, ⅔Vcc)',
+        ],
+        privacyNote:
+          'All computation runs locally in your browser with no network requests; your inputs never leave the device.',
+        faqs: [
+          {
+            question: 'Why is the duty cycle always above 50% in the classic circuit?',
+            answer:
+              'In the classic wiring the capacitor charges through R1+R2 but discharges only through R2, so t1 = ln2·(R1+R2)·C is always larger than t2 = ln2·R2·C, giving D = (R1+R2)/(R1+2R2) > 50%; it approaches 50% only when R2 ≫ R1. Add a diode across R2 (diode mode) to charge through R1 alone for a near-symmetric wave.',
+          },
+          {
+            question: 'Why "approximately" 50% in diode mode?',
+            answer:
+              'With the diode the charge current bypasses R2, but the diode has a ~0.6–0.7 V forward drop and the charge/discharge paths are not perfectly symmetric. This tool uses the ideal model (drop ignored), where R1 = R2 yields exactly 50%; real circuits deviate slightly.',
+          },
+          {
+            question: 'Are the results accurate at very high frequencies?',
+            answer:
+              'The formulas assume an ideal first-order RC model. A bipolar NE555 typically tops out around 2 MHz; beyond that, propagation delay, parasitic capacitance, and output slew time dominate and the real frequency runs low. CMOS variants (7555, TLC555) reach higher.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
