@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261104081013 | 555 定时器（Astable / Monostable）参数计算器 | Web Tool | Exploration | `ne555-astable-calculator` / [PR #166](https://github.com/Happyileaf/tool-craft/pull/166) | 2026-11-04 | [详情](./idea-details/20261104081013.md) |
+| 20261102200315 | 露点 / 湿球温度与气压海拔计算器 | Web Tool | Existing Gap | `dew-point-calculator` / [PR #166](https://github.com/Happyileaf/tool-craft/pull/166) | 2026-11-04 | [详情](./idea-details/20261102200315.md) |
+| 20261029080302 | Web Mercator 瓦片坐标计算器 | Web Tool | External Reference | `mercator-tile-calculator` / [PR #166](https://github.com/Happyileaf/tool-craft/pull/166) | 2026-11-04 | [详情](./idea-details/20261029080302.md) |
+| 20261103200233 | Apache / Nginx Combined Log Format 访问日志解析器 | Web Tool | Existing Gap | `access-log-parser` / [PR #166](https://github.com/Happyileaf/tool-craft/pull/166) | 2026-11-04 | [详情](./idea-details/20261103200233.md) |
+| 20261028140209 | 以太坊 RLP（Recursive Length Prefix）递归长度前缀编解码器 | Web Tool | Exploration | `rlp-codec` / [PR #166](https://github.com/Happyileaf/tool-craft/pull/166) | 2026-11-04 | [详情](./idea-details/20261028140209.md) |
 | 20261104081016 | JSON → Swift struct / Codable 模型生成器 | Web Tool | Existing Gap | `json-to-swift` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261104081016.md) |
 | 20261101201005 | JSON 转 PHP array 代码生成器（含嵌套类型推断与短数组语法） | Web Tool | Existing Gap | `json-to-php` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261101201005.md) |
 | 20261101140215 | JSON → Kotlin data class 生成器（含嵌套类型推断） | Web Tool | Existing Gap | `json-to-kotlin` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261101140215.md) |
