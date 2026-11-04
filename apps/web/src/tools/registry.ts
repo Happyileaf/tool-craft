@@ -24033,6 +24033,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'json-to-sql-ddl',
+    name: 'JSON 转 SQL 建表语句生成器',
+    nameEn: 'JSON to SQL DDL Generator',
+    description:
+      '粘贴 JSON 对象或对象数组，自动推断列类型、VARCHAR 长度、NOT NULL 与 snake_case 列名，生成 MySQL、PostgreSQL、SQLite 三方言的 CREATE TABLE 建表语句，支持自增主键、IF NOT EXISTS、DROP TABLE 前缀与列注释。',
+    descriptionEn:
+      'Paste a JSON object or an array of objects to infer column types, VARCHAR lengths, NOT NULL constraints and snake_case names, then generate CREATE TABLE DDL for MySQL, PostgreSQL and SQLite, with auto-increment primary keys, IF NOT EXISTS, DROP TABLE prefixes and column comments.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-to-sql-ddl',
+    iconName: 'Database',
+    tags: ['JSON', 'SQL', 'DDL', '建表', 'MySQL', 'PostgreSQL', 'SQLite', '类型推断'],
+    tagsEn: ['JSON', 'SQL', 'DDL', 'CREATE TABLE', 'MySQL', 'PostgreSQL', 'SQLite', 'type inference'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '[{"userId":1,"userName":"alice","isActive":true}]',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具把 JSON 样本转换为可直接执行的 SQL CREATE TABLE 语句：综合多条记录推断每个字段的逻辑类型（布尔、INTEGER、BIGINT、DOUBLE、VARCHAR/TEXT、JSON），按样本最大长度加余量确定 VARCHAR 长度，依据是否出现 null 或字段缺失推断 NOT NULL，并把驼峰键名转换为 snake_case 列名，再按 MySQL、PostgreSQL 或 SQLite 方言输出 DDL。全部推断与生成在浏览器本地完成。',
+        coreFeatures: [
+          '多样本综合类型推断：布尔、32 位整数、越界整数升级 BIGINT、浮点 DOUBLE、字符串 VARCHAR/TEXT、嵌套对象与数组 JSON',
+          'VARCHAR 按样本最大长度 ×1.5 预留余量并设下限，超阈值自动退化为 TEXT',
+          'null 与字段缺失参与可空性推断，全部样本非空才输出 NOT NULL；全 null 字段回退为可空 TEXT 占位',
+          '驼峰/连字符键名转 snake_case，SQL 保留字自动加后缀，表名与列名按方言加反引号或双引号',
+          '三方言自增主键（AUTO_INCREMENT / SERIAL / INTEGER PRIMARY KEY AUTOINCREMENT）、IF NOT EXISTS、DROP TABLE IF EXISTS 前缀与列注释',
+          'JSON 语法错误给出行号级提示，顶层标量或标量数组明确报错',
+        ],
+        howToUse: [
+          '在左侧粘贴单个 JSON 对象或对象数组，样本越多类型与可空性推断越准确',
+          '选择目标 SQL 方言并填写表名，按需切换自增主键、snake_case、长度余量、IF NOT EXISTS、DROP TABLE 与列注释开关',
+          '右侧实时查看生成的 DDL，下方表格核对每个字段的推断类型、长度与可空性',
+          '点击「复制 DDL」复制完整建表语句到剪贴板',
+        ],
+        useCases: [
+          '原型开发或数据导入时，依据接口返回的 JSON 快速生成初始建表语句',
+          '把 NoSQL/接口文档中的样例数据转换为关系型表结构草稿，再由人工细化',
+          '在 MySQL、PostgreSQL、SQLite 之间迁移或对比方言差异（主键、JSON、布尔类型写法）',
+        ],
+        privacyNote:
+          '所有 JSON 仅在浏览器内存中本地解析与推断，不发起任何网络请求，不上传、不落盘、不记录任何业务数据。',
+        faqs: [
+          {
+            question: '推断出的类型可以直接用于生产环境吗？',
+            answer:
+              '生成结果是基于有限样本的结构草稿，适合作为建表起点。生产环境仍需人工复核：样本未覆盖的更长字符串、更大整数或新字段类型无法被提前发现，索引、外键、唯一约束与默认值也需要按业务补充。',
+          },
+          {
+            question: '为什么有的整数被推断成 BIGINT？',
+            answer:
+              '32 位有符号整数范围是 -2147483648 到 2147483647。任一样本中的整数超出该范围即升级为 BIGINT，避免 INSERT 时溢出；浮点与整数混合则统一推断为 DOUBLE/REAL。',
+          },
+          {
+            question: '嵌套对象和数组会怎么处理？',
+            answer:
+              '对象与数组作为结构化值统一映射为 JSON 类型：MySQL 输出 JSON、PostgreSQL 输出 JSONB、SQLite 因无原生 JSON 类型而使用 TEXT 存储。不会自动拍平为多张关联表。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool turns JSON samples into ready-to-run SQL CREATE TABLE statements. It combines multiple records to infer each field’s logical type (boolean, INTEGER, BIGINT, DOUBLE, VARCHAR/TEXT, JSON), sizes VARCHAR from the longest sample plus padding, derives NOT NULL from nulls and missing keys, converts camelCase keys to snake_case columns, and emits DDL for MySQL, PostgreSQL or SQLite. All inference and generation happen locally in the browser.',
+        coreFeatures: [
+          'Multi-sample type inference: boolean, 32-bit integers, out-of-range integers promoted to BIGINT, DOUBLE floats, VARCHAR/TEXT strings, and JSON for nested objects or arrays',
+          'VARCHAR sized at 1.5x the longest sample with a minimum floor, collapsing to TEXT past a configurable threshold',
+          'Nullability inference from explicit nulls and missing keys; NOT NULL only when every sample has a value; all-null fields fall back to nullable TEXT placeholders',
+          'camelCase/kebab-case keys become snake_case, reserved words get a suffix, and identifiers are quoted with backticks or double quotes per dialect',
+          'Dialect-specific auto-increment primary keys (AUTO_INCREMENT / SERIAL / INTEGER PRIMARY KEY AUTOINCREMENT), IF NOT EXISTS, DROP TABLE IF EXISTS prefixes and column comments',
+          'Line-level JSON syntax errors and clear messages for scalar top-level values or scalar arrays',
+        ],
+        howToUse: [
+          'Paste a single JSON object or an array of objects on the left; more samples yield more accurate type and nullability inference',
+          'Pick the target SQL dialect and enter a table name, then toggle primary key, snake_case, length padding, IF NOT EXISTS, DROP TABLE and comments as needed',
+          'Review the generated DDL on the right and the per-field inference table (type, length, nullability) below',
+          'Use "Copy DDL" to copy the complete statement to the clipboard',
+        ],
+        useCases: [
+          'Quickly scaffolding CREATE TABLE statements from API payloads during prototyping or data import',
+          'Turning NoSQL or API-document sample data into relational table drafts for human refinement',
+          'Migrating between MySQL, PostgreSQL and SQLite and comparing dialect differences for primary keys, JSON and booleans',
+        ],
+        privacyNote:
+          'All JSON is parsed and inferred locally in browser memory only; no network requests are made and no business data is uploaded, persisted or logged.',
+        faqs: [
+          {
+            question: 'Can the inferred schema go straight to production?',
+            answer:
+              'The output is a sample-based draft meant as a starting point. Review it manually before production: longer strings, larger integers or new field types absent from the samples cannot be predicted, and indexes, foreign keys, unique constraints and defaults must be added to fit the business.',
+          },
+          {
+            question: 'Why are some integers inferred as BIGINT?',
+            answer:
+              'A signed 32-bit integer spans -2147483648 to 2147483647. Any sample outside that range is promoted to BIGINT to prevent insert overflow; mixing floats with integers widens the column to DOUBLE/REAL instead.',
+          },
+          {
+            question: 'How are nested objects and arrays handled?',
+            answer:
+              'Structured values map uniformly to a JSON type: JSON on MySQL, JSONB on PostgreSQL, and TEXT on SQLite which has no native JSON type. They are not flattened into related tables automatically.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

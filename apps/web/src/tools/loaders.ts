@@ -259,4 +259,5 @@ export const toolLoaders: Record<
   'bitmask-calculator': () => import('./bitmask-calculator'),
   'hotp-generator': () => import('./hotp-generator'),
   'ip-range-to-cidr': () => import('./ip-range-to-cidr'),
+  'json-to-sql-ddl': () => import('./json-to-sql-ddl'),
 };
