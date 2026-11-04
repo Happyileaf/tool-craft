@@ -24137,6 +24137,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'random-data-generator',
+    name: '随机数据生成器',
+    nameEn: 'Random Data Generator',
+    description:
+      '基于浏览器 crypto.getRandomValues 加密安全随机源，本地批量生成整数、浮点数、布尔值、十六进制/RGB 颜色、UUID v4、英文姓名、邮箱、手机号、单词、Lorem 段落与 ISO 日期时间等模拟数据，支持自定义数值区间、小数位与生成条数，结果可逐条或一键复制。',
+    descriptionEn:
+      'Generate batches of mock data locally with the browser crypto.getRandomValues secure source: integers, floats, booleans, hex/RGB colors, UUID v4, names, emails, phone numbers, words, Lorem paragraphs and ISO datetimes, with custom numeric ranges, decimal places and counts, and per-row or one-click copy.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/random-data-generator',
+    iconName: 'Shuffle',
+    tags: ['随机数据', '模拟数据', 'Mock', 'UUID', '测试数据', '加密随机', '颜色', '姓名'],
+    tagsEn: ['random data', 'mock data', 'fake data', 'UUID', 'test data', 'crypto random', 'color', 'name'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '随机数据生成器用浏览器原生 crypto.getRandomValues 加密安全随机源（拒绝采样消除取模偏差）在本地批量制造各类测试与演示数据，覆盖整数、浮点数、布尔、十六进制与 RGB 颜色、UUID v4、英文姓名、邮箱、中国大陆手机号、英文单词、Lorem ipsum 段落和 ISO 8601 日期时间，数值类型可配置区间与小数位，条数上限 500，全部生成不离开浏览器。',
+        coreFeatures: [
+          '12 种数据类型：整数、浮点、布尔、Hex/RGB 颜色、UUID v4、姓名、邮箱、手机号、单词、Lorem 段落、日期时间',
+          '基于 crypto.getRandomValues 的加密安全随机源，拒绝采样保证区间整数无取模偏差',
+          '整数支持自定义闭区间，浮点支持自定义区间与 0-10 位小数，日期支持自定义时间范围',
+          '单次最多生成 500 条，结果以表格展示并支持分页、逐条复制与一键复制全部',
+          'UUID 优先使用 crypto.randomUUID，不支持的环境自动回退到手写 RFC 4122 v4 实现',
+        ],
+        howToUse: [
+          '在「数据类型」下拉中选择需要生成的数据类型',
+          '设置生成条数（1-500）；整数/浮点类型额外配置最小值、最大值，浮点再设置小数位',
+          '点击「生成」按钮，结果在下方表格逐行展示',
+          '使用每行的「复制」复制单条，或卡片右上角「复制全部」按换行拼接复制所有结果',
+        ],
+        useCases: [
+          '为单元测试、接口联调或数据库灌库快速构造批量模拟数据',
+          '生成随机 UUID、颜色、手机号、邮箱等占位内容填充原型与演示页面',
+          '在不依赖外部 faker 服务、不上传数据的前提下离线获取测试样本',
+        ],
+        privacyNote:
+          '所有随机值均在浏览器本地通过加密安全随机源生成，不发起任何网络请求，不读取、上传或持久化任何用户数据。',
+        faqs: [
+          {
+            question: '生成的随机数是否安全、可用于安全场景吗？',
+            answer:
+              '随机源来自浏览器 crypto.getRandomValues，属于密码学安全的伪随机数生成器，并通过拒绝采样消除了取模偏差，适合令牌、盐值等对随机性要求较高的场景；但本工具定位为模拟数据生成，安全密钥仍建议结合具体协议与长度要求评估。',
+          },
+          {
+            question: '为什么一次最多只能生成 500 条？',
+            answer:
+              '为避免一次性生成过多字符串拖慢主线程、占用过多内存，工具把单次条数钳制在 1-500 之间；需要更多数据可多次生成后拼接，或使用「复制全部」分批导出。',
+          },
+          {
+            question: '生成的邮箱、姓名和手机号是真实的吗？',
+            answer:
+              '都不是真实个人信息。姓名与邮箱来自内置的常见英文名/姓词库随机组合，手机号按中国大陆合法号段前缀加随机后缀生成，仅用于测试和占位，不对应任何真实用户。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Random Data Generator creates batches of test and demo data entirely in the browser using the native crypto.getRandomValues secure source (with rejection sampling to remove modulo bias). It covers integers, floats, booleans, hex and RGB colors, UUID v4, English names, emails, China-mainland phone numbers, words, Lorem ipsum paragraphs and ISO 8601 datetimes, with configurable ranges, decimal places and up to 500 rows per run.',
+        coreFeatures: [
+          '12 data types: integer, float, boolean, hex/RGB color, UUID v4, name, email, phone, word, Lorem paragraph, datetime',
+          'Cryptographically secure randomness from crypto.getRandomValues with rejection sampling for unbiased bounded integers',
+          'Custom closed ranges for integers, custom ranges and 0-10 decimals for floats, and a custom time window for datetimes',
+          'Up to 500 rows per run shown in a paginated table with per-row copy and one-click copy-all',
+          'UUIDs prefer crypto.randomUUID and fall back to a hand-written RFC 4122 v4 implementation when unavailable',
+        ],
+        howToUse: [
+          'Pick the desired data type from the dropdown',
+          'Set the count (1-500); for integer/float types also configure min, max and, for floats, decimal places',
+          'Click "Generate" to render the rows in the table below',
+          'Use each row’s "Copy" for a single value or "Copy All" on the card to copy every value joined by newlines',
+        ],
+        useCases: [
+          'Quickly building bulk mock data for unit tests, API integration or database seeding',
+          'Producing placeholder UUIDs, colors, phone numbers and emails for prototypes and demos',
+          'Obtaining test samples offline without depending on an external faker service or uploading data',
+        ],
+        privacyNote:
+          'Every value is generated locally from a cryptographically secure random source with no network requests; no user data is read, uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Are the random numbers safe for security-sensitive use?',
+            answer:
+              'The source is the browser crypto.getRandomValues CSPRNG and rejection sampling removes modulo bias, so it suits tokens and salts that demand strong randomness. The tool is nonetheless aimed at mock data; production keys should still be evaluated against the specific protocol and length requirements.',
+          },
+          {
+            question: 'Why is the count capped at 500 per run?',
+            answer:
+              'Generating too many strings at once can block the main thread and consume excess memory, so the count is clamped to 1-500. For larger datasets, generate multiple batches and concatenate, or use "Copy All" to export in chunks.',
+          },
+          {
+            question: 'Are the emails, names and phone numbers real?',
+            answer:
+              'No. Names and emails combine built-in common English first/last-name word banks, and phone numbers use valid China-mainland prefixes with random suffixes. They exist only for testing and placeholders and do not correspond to any real person.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
