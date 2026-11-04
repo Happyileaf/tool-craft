@@ -23526,6 +23526,105 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'rlp-codec',
+    name: '以太坊 RLP 编解码器',
+    nameEn: 'Ethereum RLP Encoder / Decoder',
+    description:
+      '按以太坊黄皮书实现 RLP（Recursive Length Prefix）编码与解码：JSON 直观描述（UTF-8 文本 / hex 原始字节 / 嵌套列表）一键编码，hex 解码为带偏移与类型标注的结构化树；严格拒绝截断、尾字节、前导零等非规范编码。',
+    descriptionEn:
+      'Ethereum yellow-paper RLP (Recursive Length Prefix) encoder/decoder: encode an intuitive JSON description (UTF-8 text / raw hex bytes / nested lists), and decode hex into a structured tree annotated with offsets and node types; strictly rejects truncation, trailing bytes, leading zeros and other non-canonical encodings.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/rlp-codec',
+    iconName: 'Binary',
+    tags: ['RLP', '以太坊', 'Ethereum', '序列化', '编码解码'],
+    tagsEn: ['RLP', 'Ethereum', 'Serialization', 'Codec', 'Yellow Paper'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '以太坊 RLP 编解码器是一款纯浏览器本地工具，实现黄皮书附录 B 定义的 Recursive Length Prefix 序列化：编码侧用 JSON 描述数据（普通字符串按 UTF-8、["hex","0x.."] 按原始字节、数组表示可嵌套列表），即时输出 0x 十六进制；解码侧把任意 RLP hex 还原为带字节偏移、节点类型（单字节 / 长短字符串 / 长短列表）与 payload 长度的结构化树，并以表格逐节点展示，非法或非规范数据精确报错到字节偏移。',
+        coreFeatures: [
+          '完整五类前缀：单字节（<0x80）、0x80 短字符串、0xb7 长字符串、0xc0 短列表、0xf7 长列表',
+          'JSON 编码输入：字符串按 UTF-8，["hex", "0x.."] 按原始字节，数组任意嵌套，空串→0x80、空列表→0xc0',
+          '解码树展示类型、字节偏移、前缀 / payload 长度，字符串同时尝试 UTF-8 还原，并输出扁平表格',
+          '严格规范校验：截断、根外尾字节、长度前导零、短格式误用（如 0x817f）一律拒绝并给出偏移',
+          '嵌套深度上限 64，防止恶意深嵌套；17 个单测覆盖以太坊官方向量（dog、cat+dog、集合论嵌套、1024 零字节等）',
+        ],
+        howToUse: [
+          '编码：在上方文本框按 JSON 写数据（可用「示例」载入类交易字段），结果即时出现在下方，可一键送去解码',
+          '解码：在下方输入 0x 开头的 RLP hex，查看类型树、逐节点表格与 UTF-8 还原；非规范编码会显示字节偏移',
+          '地址、数值等二进制字段务必用 ["hex", "0x.."] 形式输入，普通字符串才按 UTF-8 编码',
+        ],
+        useCases: [
+          '学习与核对以太坊交易 / 收据的 RLP 编码（如 EIP-155 签名字段、raw transaction）',
+          '调试自研序列化代码，快速生成官方向量或定位非规范编码的出错字节',
+          '分析裸 RLP 数据（节点发现消息、devp2p 负载）的字段边界与嵌套结构',
+        ],
+        privacyNote:
+          '全部编解码在浏览器本地完成，不发起网络请求，输入的交易字段或数据不会离开设备。',
+        faqs: [
+          {
+            question: '编码输入里字符串和 ["hex", ...] 有什么区别？',
+            answer:
+              '普通字符串按 UTF-8 字节编码，例如 "dog" → 0x83646f67；["hex","0x7067"] 按给出的原始字节编码，得到 0x827067。以太坊中的地址（20 字节）、金额、nonce 等定长二进制必须用 hex 形式输入，否则语义错误。另外约定：单字节且值 <0x80 时 RLP 就是字节本身（0x7f→0x7f）。',
+          },
+          {
+            question: '什么是非规范（non-canonical）编码？为什么要拒绝？',
+            answer:
+              '黄皮书要求唯一（canonical）编码：能用短格式就不能用长格式、长度大端表示不得带前导零、单字节 <0x80 不得套 0x81 前缀。例如 0x817f 与裸 0x7f 表示同一数据，前者即非规范；0xb80100 用长格式编码 1 字节同样非法。宽松接受会造成同一数据多个哈希、共识分叉等问题，因此解码器直接报错并给出偏移。',
+          },
+          {
+            question: 'RLP 与 RLPx、SSZ 是一回事吗？',
+            answer:
+              '不是。RLP 是以太坊最早的通用递归长度前缀序列化，用于交易、区块头等；RLPx 是节点之间的加密传输协议（内部消息用 RLP 编码）；SSZ 是信标链阶段引入的另一套序列化。本工具只实现 RLP 本身。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Ethereum RLP Encoder/Decoder is a fully local tool implementing Recursive Length Prefix serialization (Yellow Paper Appendix B): describe data as JSON (plain strings → UTF-8, ["hex","0x.."] → raw bytes, arrays → nested lists) and get 0x-hex instantly; decode any RLP hex into a structured tree annotated with byte offsets, node types (single byte / short & long strings / short & long lists) and payload lengths, with byte-accurate errors for invalid or non-canonical data.',
+        coreFeatures: [
+          'All five prefix classes: single byte (<0x80), 0x80 short string, 0xb7 long string, 0xc0 short list, 0xf7 long list',
+          'JSON encoder input: strings → UTF-8, ["hex","0x.."] → raw bytes, arbitrarily nested arrays; ""→0x80, []→0xc0',
+          'Decoded tree with type, byte offset, prefix/payload length, best-effort UTF-8 rendering, plus a flat per-node table',
+          'Strict canonical checks: truncation, trailing bytes, length leading zeros and short-form misuse (e.g. 0x817f) are rejected with offsets',
+          'Nesting depth capped at 64; 17 unit tests cover Ethereum wiki vectors (dog, cat+dog, set-theoretical nesting, 1024 zero bytes, …)',
+        ],
+        howToUse: [
+          'Encode: write JSON data in the top box (load the transaction-like sample), the hex result appears below and can be sent to the decoder',
+          'Decode: paste 0x-prefixed RLP hex and inspect the type tree, per-node table and UTF-8 rendering; non-canonical input reports a byte offset',
+          'Always use ["hex","0x.."] for addresses, numbers and other binary fields; only plain strings are encoded as UTF-8',
+        ],
+        useCases: [
+          'Learning and verifying RLP of Ethereum transactions/receipts (EIP-155 signature fields, raw transactions)',
+          'Debugging hand-written serializers: generate reference vectors or pinpoint the offending byte of non-canonical output',
+          'Inspecting field boundaries and nesting in raw RLP data (discovery messages, devp2p payloads)',
+        ],
+        privacyNote:
+          'All encoding and decoding runs locally in your browser with no network requests; transaction fields or data never leave the device.',
+        faqs: [
+          {
+            question: 'What is the difference between a string and ["hex", ...] in encoder input?',
+            answer:
+              'A plain string is encoded as its UTF-8 bytes, e.g. "dog" → 0x83646f67; ["hex","0x7067"] uses the exact bytes given, yielding 0x827067. Fixed-width binary fields such as 20-byte addresses, amounts and nonces must use hex form or the semantics are wrong. Also, a single byte below 0x80 is encoded as itself (0x7f → 0x7f).',
+          },
+          {
+            question: 'What is non-canonical encoding and why reject it?',
+            answer:
+              'The Yellow Paper mandates a unique encoding: never use the long form where the short form fits, the big-endian length must have no leading zero, and a byte below 0x80 must not be wrapped in a 0x81 prefix. For example 0x817f duplicates the bare byte 0x7f, and 0xb80100 uses the long form for a 1-byte payload — both invalid. Lenient acceptance would allow multiple hashes for the same data and consensus splits, so the decoder rejects them with an offset.',
+          },
+          {
+            question: 'Is RLP the same as RLPx or SSZ?',
+            answer:
+              'No. RLP is Ethereum’s original recursive-length-prefix serialization for transactions and block headers; RLPx is the encrypted transport between nodes (its messages happen to use RLP); SSZ is the serialization introduced for the beacon chain. This tool implements RLP only.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
