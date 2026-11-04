@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261104200906 | JSON 推断并生成 SQL CREATE TABLE 建表语句（DDL）生成器 | Web Tool | Existing Gap | `json-to-sql-ddl` / [PR #169](https://github.com/Happyileaf/tool-craft/pull/169) | 2026-11-05 | [详情](./idea-details/20261104200906.md) |
+| 20261104200904 | 位掩码（Bitmask / 位标志）可视化计算器 | Web Tool | Exploration | `bitmask-calculator` / [PR #169](https://github.com/Happyileaf/tool-craft/pull/169) | 2026-11-05 | [详情](./idea-details/20261104200904.md) |
+| 20261104200903 | HOTP（RFC 4226）基于计数器的一次性密码生成与校验器 | Web Tool | Existing Gap | `hotp-generator` / [PR #169](https://github.com/Happyileaf/tool-craft/pull/169) | 2026-11-05 | [详情](./idea-details/20261104200903.md) |
+| 20261104140123 | 模运算计算器（模逆 / 模幂 / 中国剩余定理 / 同余方程） | Web Tool | Exploration | `modular-arithmetic-calculator` / [PR #169](https://github.com/Happyileaf/tool-craft/pull/169) | 2026-11-05 | [详情](./idea-details/20261104140123.md) |
+| 20261027140134 | IP 地址范围 → 最小 CIDR 列表聚合器（IPv4 / IPv6） | Web Tool | Existing Gap | `ip-range-to-cidr` / [PR #169](https://github.com/Happyileaf/tool-craft/pull/169) | 2026-11-05 | [详情](./idea-details/20261027140134.md) |
 | 20261104081016 | JSON → Swift struct / Codable 模型生成器 | Web Tool | Existing Gap | `json-to-swift` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261104081016.md) |
 | 20261101201005 | JSON 转 PHP array 代码生成器（含嵌套类型推断与短数组语法） | Web Tool | Existing Gap | `json-to-php` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261101201005.md) |
 | 20261101140215 | JSON → Kotlin data class 生成器（含嵌套类型推断） | Web Tool | Existing Gap | `json-to-kotlin` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261101140215.md) |
