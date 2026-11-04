@@ -24137,6 +24137,507 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'random-data-generator',
+    name: '随机数据生成器',
+    nameEn: 'Random Data Generator',
+    description:
+      '基于浏览器 crypto.getRandomValues 加密安全随机源，本地批量生成整数、浮点数、布尔值、十六进制/RGB 颜色、UUID v4、英文姓名、邮箱、手机号、单词、Lorem 段落与 ISO 日期时间等模拟数据，支持自定义数值区间、小数位与生成条数，结果可逐条或一键复制。',
+    descriptionEn:
+      'Generate batches of mock data locally with the browser crypto.getRandomValues secure source: integers, floats, booleans, hex/RGB colors, UUID v4, names, emails, phone numbers, words, Lorem paragraphs and ISO datetimes, with custom numeric ranges, decimal places and counts, and per-row or one-click copy.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/random-data-generator',
+    iconName: 'Shuffle',
+    tags: ['随机数据', '模拟数据', 'Mock', 'UUID', '测试数据', '加密随机', '颜色', '姓名'],
+    tagsEn: ['random data', 'mock data', 'fake data', 'UUID', 'test data', 'crypto random', 'color', 'name'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '随机数据生成器用浏览器原生 crypto.getRandomValues 加密安全随机源（拒绝采样消除取模偏差）在本地批量制造各类测试与演示数据，覆盖整数、浮点数、布尔、十六进制与 RGB 颜色、UUID v4、英文姓名、邮箱、中国大陆手机号、英文单词、Lorem ipsum 段落和 ISO 8601 日期时间，数值类型可配置区间与小数位，条数上限 500，全部生成不离开浏览器。',
+        coreFeatures: [
+          '12 种数据类型：整数、浮点、布尔、Hex/RGB 颜色、UUID v4、姓名、邮箱、手机号、单词、Lorem 段落、日期时间',
+          '基于 crypto.getRandomValues 的加密安全随机源，拒绝采样保证区间整数无取模偏差',
+          '整数支持自定义闭区间，浮点支持自定义区间与 0-10 位小数，日期支持自定义时间范围',
+          '单次最多生成 500 条，结果以表格展示并支持分页、逐条复制与一键复制全部',
+          'UUID 优先使用 crypto.randomUUID，不支持的环境自动回退到手写 RFC 4122 v4 实现',
+        ],
+        howToUse: [
+          '在「数据类型」下拉中选择需要生成的数据类型',
+          '设置生成条数（1-500）；整数/浮点类型额外配置最小值、最大值，浮点再设置小数位',
+          '点击「生成」按钮，结果在下方表格逐行展示',
+          '使用每行的「复制」复制单条，或卡片右上角「复制全部」按换行拼接复制所有结果',
+        ],
+        useCases: [
+          '为单元测试、接口联调或数据库灌库快速构造批量模拟数据',
+          '生成随机 UUID、颜色、手机号、邮箱等占位内容填充原型与演示页面',
+          '在不依赖外部 faker 服务、不上传数据的前提下离线获取测试样本',
+        ],
+        privacyNote:
+          '所有随机值均在浏览器本地通过加密安全随机源生成，不发起任何网络请求，不读取、上传或持久化任何用户数据。',
+        faqs: [
+          {
+            question: '生成的随机数是否安全、可用于安全场景吗？',
+            answer:
+              '随机源来自浏览器 crypto.getRandomValues，属于密码学安全的伪随机数生成器，并通过拒绝采样消除了取模偏差，适合令牌、盐值等对随机性要求较高的场景；但本工具定位为模拟数据生成，安全密钥仍建议结合具体协议与长度要求评估。',
+          },
+          {
+            question: '为什么一次最多只能生成 500 条？',
+            answer:
+              '为避免一次性生成过多字符串拖慢主线程、占用过多内存，工具把单次条数钳制在 1-500 之间；需要更多数据可多次生成后拼接，或使用「复制全部」分批导出。',
+          },
+          {
+            question: '生成的邮箱、姓名和手机号是真实的吗？',
+            answer:
+              '都不是真实个人信息。姓名与邮箱来自内置的常见英文名/姓词库随机组合，手机号按中国大陆合法号段前缀加随机后缀生成，仅用于测试和占位，不对应任何真实用户。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Random Data Generator creates batches of test and demo data entirely in the browser using the native crypto.getRandomValues secure source (with rejection sampling to remove modulo bias). It covers integers, floats, booleans, hex and RGB colors, UUID v4, English names, emails, China-mainland phone numbers, words, Lorem ipsum paragraphs and ISO 8601 datetimes, with configurable ranges, decimal places and up to 500 rows per run.',
+        coreFeatures: [
+          '12 data types: integer, float, boolean, hex/RGB color, UUID v4, name, email, phone, word, Lorem paragraph, datetime',
+          'Cryptographically secure randomness from crypto.getRandomValues with rejection sampling for unbiased bounded integers',
+          'Custom closed ranges for integers, custom ranges and 0-10 decimals for floats, and a custom time window for datetimes',
+          'Up to 500 rows per run shown in a paginated table with per-row copy and one-click copy-all',
+          'UUIDs prefer crypto.randomUUID and fall back to a hand-written RFC 4122 v4 implementation when unavailable',
+        ],
+        howToUse: [
+          'Pick the desired data type from the dropdown',
+          'Set the count (1-500); for integer/float types also configure min, max and, for floats, decimal places',
+          'Click "Generate" to render the rows in the table below',
+          'Use each row’s "Copy" for a single value or "Copy All" on the card to copy every value joined by newlines',
+        ],
+        useCases: [
+          'Quickly building bulk mock data for unit tests, API integration or database seeding',
+          'Producing placeholder UUIDs, colors, phone numbers and emails for prototypes and demos',
+          'Obtaining test samples offline without depending on an external faker service or uploading data',
+        ],
+        privacyNote:
+          'Every value is generated locally from a cryptographically secure random source with no network requests; no user data is read, uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Are the random numbers safe for security-sensitive use?',
+            answer:
+              'The source is the browser crypto.getRandomValues CSPRNG and rejection sampling removes modulo bias, so it suits tokens and salts that demand strong randomness. The tool is nonetheless aimed at mock data; production keys should still be evaluated against the specific protocol and length requirements.',
+          },
+          {
+            question: 'Why is the count capped at 500 per run?',
+            answer:
+              'Generating too many strings at once can block the main thread and consume excess memory, so the count is clamped to 1-500. For larger datasets, generate multiple batches and concatenate, or use "Copy All" to export in chunks.',
+          },
+          {
+            question: 'Are the emails, names and phone numbers real?',
+            answer:
+              'No. Names and emails combine built-in common English first/last-name word banks, and phone numbers use valid China-mainland prefixes with random suffixes. They exist only for testing and placeholders and do not correspond to any real person.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'unit-converter',
+    name: '单位换算器',
+    nameEn: 'Unit & Measurement Converter',
+    category: ToolCategoryEnum.TIME_MATH,
+    description:
+      '在长度、质量、温度、面积、体积、速度、数据存储、时间、压强、角度与能量 11 个分类的常用单位之间本地换算，统一线性比例模型（factor + offset）正确处理温度温标平移，同时展示主换算结果与同一输入对全部单位的快速换算表，支持一键交换源/目标单位。',
+    descriptionEn:
+      'Convert locally between common units across 11 categories — length, mass, temperature, area, volume, speed, data storage, time, pressure, angle and energy. A unified linear model (factor + offset) handles temperature scale shifts correctly, showing the primary result plus a quick table of the same input converted to every unit, with one-click source/target swap.',
+    path: '/tools/unit-converter',
+    iconName: 'Calculator',
+    tags: ['单位换算', '计量单位', '长度', '温度', '重量', '数据存储', '面积', '体积'],
+    tagsEn: ['unit converter', 'measurement', 'length', 'temperature', 'mass', 'data storage', 'area', 'volume'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '单位换算器内置 11 个物理量分类、共 70 余个常用公制/英制/二进制单位，采用统一的「基准值 = 输入值 × factor + offset」线性模型把任意单位先归一化到分类基准单位再换算到目标单位；温度类单位借助 offset 正确表达摄氏、华氏、开尔文之间的温标平移，数据存储同时覆盖十进制（KB=1000B）与二进制（KiB=1024B）两套体系，全部计算在浏览器本地完成。',
+        coreFeatures: [
+          '11 个分类：长度、质量、温度、面积、体积、速度、数据存储、时间、压强、角度、能量',
+          '统一 factor + offset 线性模型，温度温标平移（如 °C/°F/K）精确可往返',
+          '数据存储区分十进制（KB/MB）与二进制（KiB/MiB），字节与比特互转',
+          '主结果之外提供同一输入对当前分类全部单位的快速换算表',
+          '一键交换源/目标单位并自动带入结果，结果按有效数字截断消除浮点尾差',
+        ],
+        howToUse: [
+          '在标签页选择物理量分类（如长度、温度、数据存储）',
+          '输入数值，并分别选择源单位与目标单位，结果实时计算',
+          '点击「交换」可对调源/目标单位，并把当前结果作为新输入',
+          '在下方快速换算表查看同一输入对该分类所有其他单位的结果，使用「复制结果」复制主换算值',
+        ],
+        useCases: [
+          '前端表单、报表或物联网数据中把传感器原始单位转换为展示单位',
+          '存储容量、带宽、文件大小在十进制与二进制单位之间核对',
+          '旅行、烹饪、工程与物理场景下的英制/公制及温标快速换算',
+        ],
+        privacyNote:
+          '换算仅使用内置单位系数在浏览器本地进行，不发起任何网络请求，不读取或上传用户输入。',
+        faqs: [
+          {
+            question: '温度换算为什么和普通乘法不一样？',
+            answer:
+              '温标之间不仅有比例差异还有零点平移，例如华氏度转摄氏度需先减 32 再乘 5/9。工具用 factor + offset 两个参数统一表达这类线性关系，因此摄氏、华氏、开尔文可以精确互转并支持往返还原。',
+          },
+          {
+            question: 'KB 和 KiB 有什么区别，工具如何处理？',
+            answer:
+              '十进制体系 1 KB = 1000 B、1 MB = 1000 KB；二进制体系 1 KiB = 1024 B、1 MiB = 1024 KiB。工具在数据存储分类中同时提供两套单位，按各自系数独立换算，避免常见的 1000/1024 混淆。',
+          },
+          {
+            question: '换算结果出现很长的小数怎么办？',
+            answer:
+              '浮点运算可能产生尾差，工具会按最多 10 位有效数字对结果四舍五入并去掉无意义的尾随零；极端量级（如超过 1e15 或小于 1e-9）则保留原值，避免科学计数法被误处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Unit & Measurement Converter ships 11 physical categories with 70+ common metric, imperial and binary units. A unified linear model — base value = input × factor + offset — first normalizes any unit to the category base unit and then to the target unit. The offset expresses temperature scale shifts between Celsius, Fahrenheit and Kelvin, while data storage covers both decimal (KB = 1000 B) and binary (KiB = 1024 B) systems. Everything runs locally in the browser.',
+        coreFeatures: [
+          '11 categories: length, mass, temperature, area, volume, speed, data storage, time, pressure, angle, energy',
+          'Unified factor + offset linear model with exact, round-trippable temperature conversion (°C/°F/K)',
+          'Data storage distinguishes decimal (KB/MB) from binary (KiB/MiB) and converts bytes to bits',
+          'Besides the primary result, a quick table converts the same input into every other unit of the category',
+          'One-click source/target swap that carries the result over, with significant-digit rounding to remove float noise',
+        ],
+        howToUse: [
+          'Pick a physical category tab (e.g. length, temperature, data storage)',
+          'Enter a value and choose the source and target units; the result updates instantly',
+          'Click "Swap" to exchange the source and target units while carrying the current result as the new input',
+          'Review the quick conversion table for all other units and use "Copy Result" for the primary value',
+        ],
+        useCases: [
+          'Converting raw sensor units into display units in forms, reports or IoT dashboards',
+          'Reconciling storage capacity, bandwidth and file sizes between decimal and binary units',
+          'Quick imperial/metric and temperature conversions for travel, cooking, engineering and physics',
+        ],
+        privacyNote:
+          'Conversions use only built-in coefficients and run locally in the browser; no network requests are made and no input is read or uploaded.',
+        faqs: [
+          {
+            question: 'Why is temperature conversion not plain multiplication?',
+            answer:
+              'Temperature scales differ in both ratio and zero point — for example Fahrenheit to Celsius subtracts 32 before multiplying by 5/9. The factor + offset model expresses this linear relationship uniformly, so Celsius, Fahrenheit and Kelvin convert accurately and round-trip.',
+          },
+          {
+            question: 'What is the difference between KB and KiB?',
+            answer:
+              'In the decimal system 1 KB = 1000 B and 1 MB = 1000 KB; in the binary system 1 KiB = 1024 B and 1 MiB = 1024 KiB. The data-storage category provides both sets with independent coefficients to avoid the common 1000/1024 confusion.',
+          },
+          {
+            question: 'What if the result has many decimal places?',
+            answer:
+              'Floating-point math can leave residual digits, so results are rounded to at most 10 significant digits with trailing zeros stripped. Extreme magnitudes (above 1e15 or below 1e-9) are kept as-is to avoid mishandling scientific notation.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'image-data-uri-converter',
+    name: '图片 Data URI 互转',
+    nameEn: 'Image & Base64 Data URI Converter',
+    description:
+      '在本地把 PNG/JPEG/GIF/WebP/SVG/BMP/ICO/AVIF 图片与 Base64 Data URI 双向互转：图片可拖拽或点选编码为 data:image/...;base64 文本并复制，Data URI 可解码还原为图片预览与下载；含 MIME 白名单校验、文件头魔数交叉验证与大小限制，全程不落地不上传。',
+    descriptionEn:
+      'Convert PNG/JPEG/GIF/WebP/SVG/BMP/ICO/AVIF images to and from Base64 Data URIs entirely locally: drag or pick an image to encode into data:image/...;base64 text and copy it, or paste a Data URI to decode, preview and download it back. Includes MIME allow-list validation, file-signature cross-checking and size limits, with no upload and no server round-trip.',
+    category: ToolCategoryEnum.IMAGE_MEDIA,
+    path: '/tools/image-data-uri-converter',
+    iconName: 'Image',
+    tags: ['Data URI', 'Base64', '图片转换', '内嵌图片', 'data:image', '预览', '本地处理'],
+    tagsEn: ['Data URI', 'Base64', 'image converter', 'embedded image', 'data:image', 'preview', 'local'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '图片 Data URI 互转工具基于浏览器原生 FileReader、Blob 与 URL API，在本地完成图片文件与 Base64 Data URI 之间的双向转换。编码方向通过 FileReader.readAsDataURL 把图片读成 data:image/<类型>;base64,... 文本；解码方向先做协议、图片 MIME 白名单与 base64 合法性校验，再用 atob 还原字节并依据 PNG/JPEG/GIF/WebP/BMP/SVG 文件头魔数交叉验证声明类型与真实内容是否一致，最后通过 Blob URL 预览并支持下载。',
+        coreFeatures: [
+          '双向互转：图片文件 → Data URI，Data URI → 图片预览/下载',
+          '支持 PNG、JPEG、GIF、WebP、SVG、BMP、ICO、AVIF 共 8 类图片',
+          'MIME 白名单 + base64 合法性 + 文件头魔数三重校验，类型不一致时高亮告警',
+          '点击或拖拽上传，blob URL 预览，自动管理 ObjectURL 生命周期避免内存泄漏',
+          '文件与文本均限制在 20 MB 内，全部本地处理，不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择方向：「图片 → Data URI」或「Data URI → 图片」',
+          '编码：点击虚线框选择图片或把图片拖入，转换后在预览区复制完整 Data URI',
+          '解码：把 data:image/...;base64,... 文本粘贴到文本框，点击「还原为图片」',
+          '查看预览与类型/大小信息；若声明类型与魔数探测不一致会出现橙色告警，确认后可点「下载图片」保存',
+        ],
+        useCases: [
+          '把小图标、占位图内联进 CSS/HTML/JSON，减少 HTTP 请求或避免外链',
+          '在接口 mock、Markdown、邮件模板中嵌入图片数据',
+          '核对他人提供的 Data URI 是否为声称的图片类型、是否被篡改或损坏',
+        ],
+        privacyNote:
+          '图片与 Data URI 仅在浏览器内存中处理，组件卸载即释放 blob URL，不写入磁盘、不发起网络请求、不上传任何数据。',
+        faqs: [
+          {
+            question: '它和已有的 Base64 编解码工具有什么区别？',
+            answer:
+              '通用 Base64 工具面向文本，文件能力仅支持把文件读成 Data URI（单向）。本工具专注图片二进制场景，额外提供 Data URI 反向还原为图片、缩略预览、按图片类型下载，以及基于文件头魔数的真实类型交叉验证，是完整的双向图片工作流。',
+          },
+          {
+            question: '为什么提示类型不一致（魔数告警）？',
+            answer:
+              'Data URI 头部声明的 MIME（如 image/png）与文件开头二进制签名探测出的真实类型（如 image/jpeg）不符，常见于手动改了扩展名或拼接 Data URI。图片通常仍可预览，但建议以魔数探测结果为准核对来源可信度。',
+          },
+          {
+            question: '为什么限制 20 MB？',
+            answer:
+              'Data URI 是 base64 文本，体积约比原文件大 33%，超大图片会占用大量内存并使文本框卡顿。20 MB 上限兼顾常见图标、截图与设计素材；更大的文件建议用对象存储或 CDN 引用而非内联 Data URI。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Image & Base64 Data URI Converter uses the native browser FileReader, Blob and URL APIs to convert locally between image files and Base64 Data URIs in both directions. Encoding reads an image via FileReader.readAsDataURL into data:image/<type>;base64,... text. Decoding first validates the scheme, an image MIME allow-list and Base64 legality, then restores bytes with atob and cross-checks the declared MIME against the real PNG/JPEG/GIF/WebP/BMP/SVG file signature, finally previewing through a Blob URL with download support.',
+        coreFeatures: [
+          'Bidirectional conversion: image file → Data URI and Data URI → image preview/download',
+          'Supports 8 image types: PNG, JPEG, GIF, WebP, SVG, BMP, ICO, AVIF',
+          'Three layers of validation — MIME allow-list, Base64 legality and file-signature (magic number) cross-check — with mismatch warnings',
+          'Click or drag to upload, Blob URL preview, and automatic ObjectURL lifecycle management to prevent memory leaks',
+          'Both files and text are capped at 20 MB; everything runs locally with no network requests',
+        ],
+        howToUse: [
+          'Pick a direction: "Image → Data URI" or "Data URI → Image"',
+          'Encode: click the dashed area or drag in an image, then copy the full Data URI from the preview panel',
+          'Decode: paste the data:image/...;base64,... text into the box and click "Restore to image"',
+          'Review the preview, type and size; an orange warning appears if the declared MIME differs from the detected signature, and you can save with "Download image"',
+        ],
+        useCases: [
+          'Inlining small icons and placeholders into CSS/HTML/JSON to cut HTTP requests or avoid external links',
+          'Embedding image data in API mocks, Markdown documents and email templates',
+          'Verifying whether a supplied Data URI is really the claimed image type and has not been tampered with or corrupted',
+        ],
+        privacyNote:
+          'Images and Data URIs are processed only in browser memory and Blob URLs are released on unmount; nothing is written to disk, sent over the network or uploaded.',
+        faqs: [
+          {
+            question: 'How is this different from the existing Base64 tool?',
+            answer:
+              'The general Base64 tool targets text and its file capability only reads a file into a Data URI (one direction). This tool focuses on binary images and adds the reverse restoration from Data URI to an image, thumbnail preview, type-aware download, and magic-number verification of the true content type — a complete bidirectional image workflow.',
+          },
+          {
+            question: 'Why am I seeing a signature mismatch warning?',
+            answer:
+              'The MIME declared in the Data URI header (e.g. image/png) differs from the real type detected from the leading binary signature (e.g. image/jpeg), which usually happens after a manual extension change or hand-built Data URI. The image may still preview, but treat the detected signature as authoritative when assessing trust.',
+          },
+          {
+            question: 'Why the 20 MB limit?',
+            answer:
+              'A Data URI is Base64 text roughly 33% larger than the original file; very large images consume substantial memory and make the text area sluggish. The 20 MB cap covers typical icons, screenshots and design assets. For larger files, prefer object storage or a CDN link over an inline Data URI.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'license-generator',
+    name: '开源许可证生成器',
+    nameEn: 'Open Source License Generator',
+    description:
+      '选择 MIT、Apache-2.0、BSD、ISC、GPL-3.0、Unlicense 等常见开源许可证，填入年份与著作权人即可生成完整 LICENSE 全文，并对比 copyleft 强度、专利授权与适用场景。',
+    descriptionEn:
+      'Pick a popular open-source license (MIT, Apache-2.0, BSD, ISC, GPL-3.0, Unlicense and more), fill in the year and copyright holder, and generate a complete LICENSE file, with side-by-side guidance on copyleft strength, patent grants and use cases.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/license-generator',
+    iconName: 'FileText',
+    tags: ['开源许可证', 'LICENSE', 'MIT', 'Apache', 'GPL', '仓库初始化'],
+    tagsEn: ['open source license', 'LICENSE', 'MIT', 'Apache', 'GPL', 'repo setup'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '开源许可证生成器内置 7 种主流 SPDX 许可证的官方完整文本，只需选择许可证并填写著作权年份与著作权人，即可在浏览器本地生成可直接粘贴或下载的 LICENSE 文件，无需联网、不经过任何服务器。',
+        coreFeatures: [
+          '覆盖 MIT、Apache-2.0、BSD-2-Clause、BSD-3-Clause、ISC、GPL-3.0、Unlicense 七种主流许可证',
+          '模板取自 SPDX 官方文本，仅替换年份与著作权人占位符，法律条款原文逐字保留',
+          '结构化对比 copyleft 强度、是否含专利授权、适用场景，辅助选型决策',
+          '一键复制全文或下载为 LICENSE 文件，新仓库初始化即可使用',
+        ],
+        howToUse: [
+          '在下拉框中选择目标许可证，可输入关键词快速筛选',
+          '查看许可证简介、copyleft 强度与专利授权说明，确认是否符合项目诉求',
+          '填写著作权年份与著作权人（个人姓名或组织名称）',
+          '在预览区核对全文后，点击「复制全文」或「下载 LICENSE」',
+        ],
+        useCases: [
+          '新建开源仓库时快速补全标准化 LICENSE 文件',
+          '技术选型阶段对比宽松许可证与 copyleft 许可证的差异',
+          '为企业内部开源项目选择带专利授权条款的 Apache-2.0 等许可证',
+        ],
+        privacyNote:
+          '所有模板文本与填充逻辑均在浏览器本地执行，著作权人等信息不会被记录或上传。',
+        faqs: [
+          {
+            question: '生成的许可证文本是否具有法律效力？',
+            answer:
+              '工具输出的是 SPDX 官方许可证的完整标准文本，填充方式与 GitHub choosealicense 等官方流程一致；但具体法律效力仍建议结合所在司法辖区咨询专业法律人士。',
+          },
+          {
+            question: 'MIT、Apache-2.0 与 GPL-3.0 该怎么选？',
+            answer:
+              '希望最大复用自由、条款最简选 MIT；关注专利授权与企业合规选 Apache-2.0；要求衍生作品必须同样开源、防止闭源挪用则选 GPL-3.0。界面内的 copyleft 与专利授权标签可快速区分。',
+          },
+          {
+            question: 'Unlicense 为什么不需要填写年份和著作权人？',
+            answer:
+              'Unlicense 是公有领域弃权声明，作者放弃全部著作权，文本本身不含版权声明占位符，因此直接输出官方原文即可。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Open Source License Generator ships the full official text of seven mainstream SPDX licenses. Pick one, fill in the copyright year and holder, and produce a ready-to-paste LICENSE file entirely in your browser — no network and no server involved.',
+        coreFeatures: [
+          'Seven mainstream licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, GPL-3.0 and Unlicense',
+          'Templates come from the official SPDX texts; only year and holder placeholders are replaced, every legal clause is preserved verbatim',
+          'Structured comparison of copyleft strength, patent grants and use cases to support license selection',
+          'Copy the full text or download it as a LICENSE file in one click for new repository setup',
+        ],
+        howToUse: [
+          'Choose the target license from the dropdown, filtering by keyword if needed',
+          'Review the summary, copyleft strength and patent-grant notes to confirm it fits your project',
+          'Enter the copyright year and the copyright holder (an individual or organization)',
+          'Check the preview, then click "Copy" or "Download LICENSE"',
+        ],
+        useCases: [
+          'Adding a standard LICENSE file when bootstrapping a new open-source repository',
+          'Comparing permissive and copyleft licenses during technology selection',
+          'Choosing a patent-aware license such as Apache-2.0 for enterprise open-source projects',
+        ],
+        privacyNote:
+          'All template text and filling logic run locally in your browser; the copyright holder and other inputs are never logged or uploaded.',
+        faqs: [
+          {
+            question: 'Is the generated license text legally valid?',
+            answer:
+              'The output is the complete standard text published by SPDX, filled in the same way as official flows such as GitHub choosealicense. For enforceability in your jurisdiction, consult a qualified legal professional.',
+          },
+          {
+            question: 'How do I choose between MIT, Apache-2.0 and GPL-3.0?',
+            answer:
+              'Pick MIT for maximum reuse freedom and the shortest terms; Apache-2.0 when patent grants and enterprise compliance matter; GPL-3.0 when derivative works must stay open source and proprietary appropriation must be prevented. The copyleft and patent tags in the UI make the distinction immediate.',
+          },
+          {
+            question: 'Why does Unlicense need no year or copyright holder?',
+            answer:
+              'Unlicense is a public-domain dedication in which the author waives all copyright. Its text contains no copyright-statement placeholders, so the official wording is returned as-is.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'clamp-typography-generator',
+    name: 'CSS clamp 流式排版生成器',
+    nameEn: 'CSS Clamp Fluid Typography Generator',
+    description:
+      '输入最小/最大字号与对应视口宽度，自动推导线性公式并生成 font-size 的 clamp() 表达式，支持 vw/cqw 单位、实时字号预览与多视口采样表。',
+    descriptionEn:
+      'Enter minimum/maximum font sizes and their viewport widths to derive the linear formula and generate a font-size clamp() expression, with vw/cqw units, live type preview and a multi-viewport sampling table.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/clamp-typography-generator',
+    iconName: 'Type',
+    tags: ['CSS', 'clamp', '流式排版', '响应式', '字体', 'vw'],
+    tagsEn: ['CSS', 'clamp', 'fluid typography', 'responsive', 'font', 'vw'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS clamp 流式排版生成器根据最小字号、最大字号以及它们各自对应的视口宽度，自动求解线性插值公式，生成可直接粘贴到样式表中的 font-size: clamp(...) 声明，让文字在两个断点之间平滑缩放、断点之外保持边界字号，全程在浏览器本地完成计算。',
+        coreFeatures: [
+          '两点式线性推导：自动计算斜率、视口单位系数与截距，无需手算公式',
+          '支持 vw 视口单位与 cqw 容器查询单位两种响应式上下文',
+          '实时文字预览与 320px-1920px 多视口字号采样表，明确标注钳制与线性区间',
+          '一键复制 clamp() 表达式或完整 CSS 声明，参数非法时即时中文报错',
+        ],
+        howToUse: [
+          '填写最小字号及其生效的最小视口宽度（常见移动端 375px 断点）',
+          '填写最大字号及其生效的最大视口宽度（常见桌面端 1280px 断点）',
+          '选择视口单位：整页排版用 vw，组件级容器查询用 cqw',
+          '复制生成的 CSS 声明到样式表，并在预览区核对各视口下的实际字号',
+        ],
+        useCases: [
+          '响应式标题与正文排版，避免为每个断点编写媒体查询覆盖字号',
+          '设计系统中统一 H1-H6、正文、注释等文本层级的流式缩放规则',
+          '基于容器查询（cqw）的组件库排版，让字号随容器而非视口变化',
+        ],
+        privacyNote:
+          '所有公式推导与预览均在浏览器本地完成，不涉及任何网络请求或数据上传。',
+        faqs: [
+          {
+            question: '生成的 clamp() 表达式三个参数分别是什么？',
+            answer:
+              '依次为最小值、首选值与最大值。首选值是「截距 px + 视口系数 vw/cqw」的线性表达式，视口很小时字号被钳制在最小值，视口很大时钳制在最大值，中间区间线性缩放。',
+          },
+          {
+            question: 'vw 和 cqw 应该如何选择？',
+            answer:
+              '字号需要跟随浏览器视口宽度变化时选 vw；组件可能出现在页面任意宽度容器中、希望字号跟随父容器变化时选 cqw，但使用 cqw 需在容器元素上声明 container-type: inline-size。',
+          },
+          {
+            question: '为什么截距可能是负数？',
+            answer:
+              '截距是线性公式外推到视口宽度为 0 时的理论字号，仅用于公式表达，不代表真实渲染字号；实际字号始终被 clamp 的最小值与最大值钳制，因此负截距不影响显示安全。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CSS Clamp Fluid Typography Generator takes a minimum and maximum font size together with their viewport widths, solves the linear interpolation formula automatically, and produces a paste-ready font-size: clamp(...) declaration. Type scales smoothly between the two breakpoints and stays pinned at the boundary values outside them, with every calculation performed locally in the browser.',
+        coreFeatures: [
+          'Two-point linear derivation: slope, viewport-unit coefficient and intercept are computed for you',
+          'Both vw viewport units and cqw container-query units are supported',
+          'Live type preview plus a 320px-1920px sampling table that labels clamped and linear ranges',
+          'Copy the clamp() expression or the full CSS declaration in one click, with instant validation messages',
+        ],
+        howToUse: [
+          'Enter the minimum font size and the minimum viewport width where it applies (a typical mobile breakpoint is 375px)',
+          'Enter the maximum font size and the maximum viewport width where it applies (a typical desktop breakpoint is 1280px)',
+          'Choose vw for page-level typography or cqw for component-level container queries',
+          'Copy the generated CSS declaration and verify the rendered sizes across viewports in the preview',
+        ],
+        useCases: [
+          'Responsive headings and body copy without stacking font-size overrides in media queries',
+          'Standardizing fluid scaling rules for H1-H6, body and caption levels inside a design system',
+          'Container-query based component typography (cqw) where type follows the parent container rather than the viewport',
+        ],
+        privacyNote:
+          'All formula derivation and preview rendering happens locally in your browser; no network request or data upload is involved.',
+        faqs: [
+          {
+            question: 'What do the three clamp() arguments mean?',
+            answer:
+              'They are the minimum value, the preferred value and the maximum value. The preferred value is a linear expression of "intercept px + viewport coefficient vw/cqw"; below the small viewport the size is pinned to the minimum, above the large viewport to the maximum, and it scales linearly in between.',
+          },
+          {
+            question: 'How do I choose between vw and cqw?',
+            answer:
+              'Use vw when type should follow the browser viewport width. Use cqw when a component may sit in containers of any width and type should follow the parent container; cqw requires container-type: inline-size on the container element.',
+          },
+          {
+            question: 'Why can the intercept be negative?',
+            answer:
+              'The intercept is the theoretical font size extrapolated to a zero-width viewport and exists only to express the formula. It never represents a real rendered size, because clamp always pins the result between the minimum and maximum values, so a negative intercept is display-safe.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

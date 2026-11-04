@@ -260,4 +260,9 @@ export const toolLoaders: Record<
   'hotp-generator': () => import('./hotp-generator'),
   'ip-range-to-cidr': () => import('./ip-range-to-cidr'),
   'json-to-sql-ddl': () => import('./json-to-sql-ddl'),
+  'random-data-generator': () => import('./random-data-generator'),
+  'unit-converter': () => import('./unit-converter'),
+  'image-data-uri-converter': () => import('./image-data-uri-converter'),
+  'license-generator': () => import('./license-generator'),
+  'clamp-typography-generator': () => import('./clamp-typography-generator'),
 };

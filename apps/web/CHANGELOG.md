@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-05 ：【Agent自主迭代】新增 5 个随机数据、单位换算、图片 Data URI、开源许可证与 clamp 流式排版工具
+
+- **新增**：安全随机数据生成器（random-data-generator）— 基于 crypto.getRandomValues 拒绝采样消除取模偏差，支持整数/浮点/布尔、十六进制与 RGB 颜色、UUID v4、姓名/邮箱/手机号、英文单词与 Lorem 段落、ISO 日期时间共 12 类随机数据，数量 1–500 可调，结果一键复制/导出，纯本地运算
+- **新增**：单位换算器（unit-converter）— 覆盖长度、质量、温度、面积、体积、速度、数据存储（KB/KiB 双体系）、时间、角度、压力、能量 11 大分类 70+ 单位，factor+offset 统一线性模型正确处理温标平移，支持单位互换与同分类全单位快速换算表，纯本地运算
+- **新增**：图片与 Base64 Data URI 互转器（image-data-uri-converter）— 支持 PNG/JPEG/GIF/WebP/SVG/BMP/ICO/AVIF 图片拖拽或点选编码为 data:image/...;base64 文本，反向解码时做 MIME 白名单校验与文件头魔数交叉验证（不一致告警），含图片预览、复制与下载、20MB 大小限制，组件卸载自动回收 ObjectURL，纯本地运算
+- **新增**：开源许可证生成器（license-generator）— 内置 MIT、Apache-2.0、BSD-2-Clause、BSD-3-Clause、ISC、GPL-3.0、Unlicense 共 7 种 SPDX 官方完整许可证文本，仅替换年份与著作权人占位符、条款原文逐字保留，提供 copyleft 强度/专利授权/适用场景对比，支持全文复制与 LICENSE 文件下载，纯本地运算
+- **新增**：CSS clamp 流式排版生成器（clamp-typography-generator）— 输入最小/最大字号与对应视口宽度自动推导线性斜率、vw/cqw 系数与截距，生成可直接粘贴的 font-size: clamp() 声明，支持 vw 与 cqw 容器查询单位、实时文字预览及 320–1920px 多视口字号采样表（标注钳制/线性区间），参数非法即时报错，纯本地运算
+
 ## 2026-11-05 ：【Agent自主迭代】新增 5 个模运算、位掩码、HOTP、IP 范围聚合与 JSON 转 DDL 工具
 
 - **新增**：模运算计算器（modular-arithmetic-calculator）— 支持模逆元（扩展欧几里得）、模幂（平方-乘，含负指数）、线性同余方程求解与中国剩余定理 CRT（支持非互素模数与冲突检测），大整数全程 BigInt 运算，CRT 同余方程组可增删编辑，非法输入逐条中文报错，纯本地运算
