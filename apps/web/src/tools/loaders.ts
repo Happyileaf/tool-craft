@@ -258,4 +258,5 @@ export const toolLoaders: Record<
   'modular-arithmetic-calculator': () => import('./modular-arithmetic-calculator'),
   'bitmask-calculator': () => import('./bitmask-calculator'),
   'hotp-generator': () => import('./hotp-generator'),
+  'ip-range-to-cidr': () => import('./ip-range-to-cidr'),
 };

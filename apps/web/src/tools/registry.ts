@@ -23931,6 +23931,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'ip-range-to-cidr',
+    name: 'IP 范围转 CIDR 聚合与超网合并器',
+    nameEn: 'IP Range to CIDR Aggregator and Supernet Merger',
+    description:
+      '把 IPv4/IPv6 起止地址范围聚合为数量最少的 CIDR 前缀列表，并支持把一组重叠或相邻的 CIDR 去重合并为最小超网，输出每块起止地址与地址总数，适用于防火墙白名单、路由汇总与安全组配置。',
+    descriptionEn:
+      'Aggregate IPv4/IPv6 start-end ranges into the fewest CIDR prefixes, and merge a set of overlapping or adjacent CIDRs into minimal supernets, with per-block start/end addresses and address totals for firewall allowlists, route summarization and security groups.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ip-range-to-cidr',
+    iconName: 'Globe',
+    tags: ['CIDR', 'IP 地址', '子网聚合', '超网', '防火墙', '路由汇总', 'IPv6'],
+    tagsEn: ['CIDR', 'IP address', 'Subnet aggregation', 'Supernet', 'Firewall', 'Route summarization', 'IPv6'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '192.168.1.0 - 192.168.1.30',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具在浏览器本地完成两个方向的 CIDR 运算：正向把每行「起始 IP - 结束 IP」的连续地址范围（IPv4 或 IPv6）聚合为覆盖该范围、数量最少的 CIDR 前缀集合；反向把一组可能重叠、相邻或互相包含的 CIDR 去重后逐级合并为最小超网列表。所有地址以 BigInt 承载，IPv6 输出遵循 RFC 5952 压缩格式。',
+        coreFeatures: [
+          '范围 → CIDR：贪心选取边界对齐且不越界的最大块，保证前缀数量最少且无重叠、无遗漏',
+          'CIDR 合并：自动排序、去重与包含消除，相邻同级对齐块逐级合并为超网',
+          '同时支持 IPv4 与 IPv6，128 位地址全程 BigInt 运算，输出 RFC 5952 压缩 IPv6',
+          '结果表格展示每个 CIDR 的起始地址、结束地址与地址数，并汇总块数与覆盖地址总数',
+          '起止倒置、地址族混用、非法地址与前缀越界均给出明确的中文错误提示',
+        ],
+        howToUse: [
+          '选择「范围 → CIDR」模式，在文本框每行输入一个起止范围，起止地址可用短横线或空格分隔',
+          '或选择「CIDR 合并超网」模式，每行粘贴一个 CIDR，工具自动去重并尝试逐级合并',
+          '结果区查看最小 CIDR 列表、每块起止地址与地址数，点击「复制 CIDR」按行复制全部前缀',
+          '可点击顶部示例按钮快速载入非对齐段、整段 /24、单 IP 或 IPv6 场景',
+        ],
+        useCases: [
+          '编写防火墙白名单、ACL 与云安全组规则时把零散 IP 段压缩为最小前缀集合',
+          '网络路由汇总（route summarization）与超网规划，减少路由表条目',
+          '核对地址范围与 CIDR 列表的等价覆盖关系，排查规则冗余与包含冲突',
+        ],
+        privacyNote:
+          '所有 IP 地址与 CIDR 仅在浏览器内存中本地计算，不发起任何网络请求，不上传、不落盘、不记录任何输入。',
+        faqs: [
+          {
+            question: '为什么一个范围会拆成多个 CIDR？',
+            answer:
+              'CIDR 块的起止地址必须满足固定边界对齐（块大小为 2 的幂且网络地址是块大小的整数倍）。当范围起点或终点不落在天然边界上时，无法用单个前缀精确覆盖，贪心算法会依次选取当前可用的最大对齐块，因此得到数量最少的一组 CIDR，它们两两不重叠且合起来恰好等于原范围。',
+          },
+          {
+            question: 'CIDR 合并后的超网会不会扩大覆盖范围？',
+            answer:
+              '合并只发生在同前缀长度、地址相邻且边界对齐的两个块之间，合并后的超网恰好覆盖原来两个块的并集，不会引入额外地址。存在包含或重叠关系时先做去重消除；无法对齐合并的块会原样保留。',
+          },
+          {
+            question: '和已有的 CIDR 子网计算器有什么区别？',
+            answer:
+              'CIDR 子网计算器对单个「地址 + 前缀」做正向拆解（网络地址、广播地址、可用主机范围等）；本工具处理其反方向问题——把起止地址范围聚合为最小 CIDR 列表，并额外提供多 CIDR 的超网合并，两者能力互补且不重叠。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool runs two CIDR workflows locally in the browser: forward aggregation turns each line of start-end IP ranges (IPv4 or IPv6) into the fewest CIDR prefixes covering exactly that range; reverse merging deduplicates a set of overlapping, adjacent or contained CIDRs and collapses them into minimal supernets. All addresses are carried on BigInt and IPv6 output follows RFC 5952 compression.',
+        coreFeatures: [
+          'Range to CIDR: a greedy pass picks the largest aligned block that never overruns the end, guaranteeing the fewest prefixes with no overlap and no gaps',
+          'CIDR merge: automatic sorting, deduplication and containment elimination, then level-by-level merging of adjacent aligned siblings into supernets',
+          'Both IPv4 and IPv6 with full 128-bit BigInt arithmetic and RFC 5952 compressed IPv6 output',
+          'Result table shows each CIDR with start address, end address and address count, plus totals for block count and covered addresses',
+          'Reversed ranges, mixed address families, invalid addresses and out-of-range prefixes raise clear error messages',
+        ],
+        howToUse: [
+          'In "Range to CIDR" mode, enter one start-end range per line; the two addresses may be separated by a hyphen or whitespace',
+          'Or switch to "CIDR merge" mode and paste one CIDR per line; duplicates are removed and mergeable blocks collapse automatically',
+          'Review the minimal CIDR list with per-block start, end and address count, then use "Copy CIDR" to copy all prefixes line by line',
+          'Use the sample buttons to load misaligned ranges, a full /24, a single IP or IPv6 scenarios',
+        ],
+        useCases: [
+          'Compressing scattered IP ranges into minimal prefix sets for firewall allowlists, ACLs and cloud security groups',
+          'Route summarization and supernet planning to shrink routing table entries',
+          'Verifying equivalent coverage between ranges and CIDR lists and spotting redundant or conflicting rules',
+        ],
+        privacyNote:
+          'All IP addresses and CIDRs are computed locally in browser memory only; no network requests are made and no input is uploaded, persisted or logged.',
+        faqs: [
+          {
+            question: 'Why does one range split into several CIDRs?',
+            answer:
+              'A CIDR block must be aligned to a fixed boundary: its size is a power of two and the network address is a multiple of that size. When a range starts or ends off a natural boundary it cannot be matched by one prefix, so the greedy algorithm repeatedly takes the largest aligned block available, producing the fewest CIDRs that are mutually disjoint and together equal the original range.',
+          },
+          {
+            question: 'Can merging expand the covered address space?',
+            answer:
+              'No. Merging only happens between two blocks of equal prefix length that are adjacent and correctly aligned, so the resulting supernet covers exactly their union. Containment and overlap are removed by deduplication first; blocks that cannot be aligned are kept unchanged.',
+          },
+          {
+            question: 'How is this different from the existing CIDR subnet calculator?',
+            answer:
+              'The subnet calculator expands a single address-plus-prefix into network, broadcast and usable host details. This tool solves the inverse problem—aggregating start-end ranges into the smallest CIDR set—and additionally merges multiple CIDRs into supernets, so the capabilities complement rather than overlap.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
