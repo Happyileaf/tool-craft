@@ -24539,6 +24539,105 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'clamp-typography-generator',
+    name: 'CSS clamp 流式排版生成器',
+    nameEn: 'CSS Clamp Fluid Typography Generator',
+    description:
+      '输入最小/最大字号与对应视口宽度，自动推导线性公式并生成 font-size 的 clamp() 表达式，支持 vw/cqw 单位、实时字号预览与多视口采样表。',
+    descriptionEn:
+      'Enter minimum/maximum font sizes and their viewport widths to derive the linear formula and generate a font-size clamp() expression, with vw/cqw units, live type preview and a multi-viewport sampling table.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/clamp-typography-generator',
+    iconName: 'Type',
+    tags: ['CSS', 'clamp', '流式排版', '响应式', '字体', 'vw'],
+    tagsEn: ['CSS', 'clamp', 'fluid typography', 'responsive', 'font', 'vw'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS clamp 流式排版生成器根据最小字号、最大字号以及它们各自对应的视口宽度，自动求解线性插值公式，生成可直接粘贴到样式表中的 font-size: clamp(...) 声明，让文字在两个断点之间平滑缩放、断点之外保持边界字号，全程在浏览器本地完成计算。',
+        coreFeatures: [
+          '两点式线性推导：自动计算斜率、视口单位系数与截距，无需手算公式',
+          '支持 vw 视口单位与 cqw 容器查询单位两种响应式上下文',
+          '实时文字预览与 320px-1920px 多视口字号采样表，明确标注钳制与线性区间',
+          '一键复制 clamp() 表达式或完整 CSS 声明，参数非法时即时中文报错',
+        ],
+        howToUse: [
+          '填写最小字号及其生效的最小视口宽度（常见移动端 375px 断点）',
+          '填写最大字号及其生效的最大视口宽度（常见桌面端 1280px 断点）',
+          '选择视口单位：整页排版用 vw，组件级容器查询用 cqw',
+          '复制生成的 CSS 声明到样式表，并在预览区核对各视口下的实际字号',
+        ],
+        useCases: [
+          '响应式标题与正文排版，避免为每个断点编写媒体查询覆盖字号',
+          '设计系统中统一 H1-H6、正文、注释等文本层级的流式缩放规则',
+          '基于容器查询（cqw）的组件库排版，让字号随容器而非视口变化',
+        ],
+        privacyNote:
+          '所有公式推导与预览均在浏览器本地完成，不涉及任何网络请求或数据上传。',
+        faqs: [
+          {
+            question: '生成的 clamp() 表达式三个参数分别是什么？',
+            answer:
+              '依次为最小值、首选值与最大值。首选值是「截距 px + 视口系数 vw/cqw」的线性表达式，视口很小时字号被钳制在最小值，视口很大时钳制在最大值，中间区间线性缩放。',
+          },
+          {
+            question: 'vw 和 cqw 应该如何选择？',
+            answer:
+              '字号需要跟随浏览器视口宽度变化时选 vw；组件可能出现在页面任意宽度容器中、希望字号跟随父容器变化时选 cqw，但使用 cqw 需在容器元素上声明 container-type: inline-size。',
+          },
+          {
+            question: '为什么截距可能是负数？',
+            answer:
+              '截距是线性公式外推到视口宽度为 0 时的理论字号，仅用于公式表达，不代表真实渲染字号；实际字号始终被 clamp 的最小值与最大值钳制，因此负截距不影响显示安全。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CSS Clamp Fluid Typography Generator takes a minimum and maximum font size together with their viewport widths, solves the linear interpolation formula automatically, and produces a paste-ready font-size: clamp(...) declaration. Type scales smoothly between the two breakpoints and stays pinned at the boundary values outside them, with every calculation performed locally in the browser.',
+        coreFeatures: [
+          'Two-point linear derivation: slope, viewport-unit coefficient and intercept are computed for you',
+          'Both vw viewport units and cqw container-query units are supported',
+          'Live type preview plus a 320px-1920px sampling table that labels clamped and linear ranges',
+          'Copy the clamp() expression or the full CSS declaration in one click, with instant validation messages',
+        ],
+        howToUse: [
+          'Enter the minimum font size and the minimum viewport width where it applies (a typical mobile breakpoint is 375px)',
+          'Enter the maximum font size and the maximum viewport width where it applies (a typical desktop breakpoint is 1280px)',
+          'Choose vw for page-level typography or cqw for component-level container queries',
+          'Copy the generated CSS declaration and verify the rendered sizes across viewports in the preview',
+        ],
+        useCases: [
+          'Responsive headings and body copy without stacking font-size overrides in media queries',
+          'Standardizing fluid scaling rules for H1-H6, body and caption levels inside a design system',
+          'Container-query based component typography (cqw) where type follows the parent container rather than the viewport',
+        ],
+        privacyNote:
+          'All formula derivation and preview rendering happens locally in your browser; no network request or data upload is involved.',
+        faqs: [
+          {
+            question: 'What do the three clamp() arguments mean?',
+            answer:
+              'They are the minimum value, the preferred value and the maximum value. The preferred value is a linear expression of "intercept px + viewport coefficient vw/cqw"; below the small viewport the size is pinned to the minimum, above the large viewport to the maximum, and it scales linearly in between.',
+          },
+          {
+            question: 'How do I choose between vw and cqw?',
+            answer:
+              'Use vw when type should follow the browser viewport width. Use cqw when a component may sit in containers of any width and type should follow the parent container; cqw requires container-type: inline-size on the container element.',
+          },
+          {
+            question: 'Why can the intercept be negative?',
+            answer:
+              'The intercept is the theoretical font size extrapolated to a zero-width viewport and exists only to express the formula. It never represents a real rendered size, because clamp always pins the result between the minimum and maximum values, so a negative intercept is display-safe.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

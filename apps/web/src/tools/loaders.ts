@@ -264,4 +264,5 @@ export const toolLoaders: Record<
   'unit-converter': () => import('./unit-converter'),
   'image-data-uri-converter': () => import('./image-data-uri-converter'),
   'license-generator': () => import('./license-generator'),
+  'clamp-typography-generator': () => import('./clamp-typography-generator'),
 };
