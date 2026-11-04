@@ -23829,6 +23829,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'hotp-generator',
+    name: 'HOTP 一次性密码生成与校验器',
+    nameEn: 'HOTP Generator and Validator',
+    description:
+      'RFC 4226 HOTP 生成与服务端校验工具，支持任意计数器步进、Base32/Hex/文本密钥、6–8 位与 SHA-1/256/512，内置附录 D 官方向量与 look-ahead 窗口重放检测。',
+    descriptionEn:
+      'RFC 4226 HOTP generator and server-side validator with arbitrary counter stepping, Base32/Hex/text secrets, 6–8 digits and SHA-1/256/512, built-in Appendix-D test vectors and look-ahead replay detection.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/hotp-generator',
+    iconName: 'KeyRound',
+    tags: ['HOTP', 'RFC4226', '一次性密码', 'HMAC', '动态口令', '2FA', '身份验证'],
+    tagsEn: ['HOTP', 'RFC 4226', 'One-time password', 'HMAC', '2FA', 'Authentication'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ',
+    doc: {
+      zh: {
+        whatIsIt:
+          'HOTP（HMAC-based One-Time Password，RFC 4226）是基于共享密钥与递增计数器的一次性密码算法，广泛用于硬件令牌与两步验证。本工具在浏览器本地完成 HMAC 动态截断，可对任意计数器生成 6–8 位验证码，并提供服务端视角的 look-ahead 窗口校验与重放检测，同时内置 RFC 4226 附录 D 全部 10 条官方向量逐条对照。',
+        coreFeatures: [
+          '任意非负计数器（BigInt 承载），支持加减步进与直接输入，编码取低 64 位符合 RFC',
+          '密钥支持 Base32、Hex（可带 0x）与原始 UTF-8 文本三种格式，解析错误明确提示',
+          '验证码位数 6 / 7 / 8，哈希算法 SHA-1 / SHA-256 / SHA-512，参数变化自动重新生成',
+          '服务端窗口校验：在 current ~ current+window 内查找提交码，返回前进步数与建议推进的计数器',
+          '内置 RFC 4226 附录 D 官方向量表，实时生成值与期望值自动比对；常量时间字符串比较防计时侧信道',
+        ],
+        howToUse: [
+          '选择密钥格式并粘贴共享密钥，或点击「载入 RFC 4226 官方向量」使用标准测试密钥',
+          '调整位数与哈希算法，通过加减按钮或输入框设置计数器，验证码自动生成并可一键复制',
+          '在「服务端校验」卡片输入用户提交码与窗口大小，点击校验查看命中位置或拒绝原因',
+          '在底部官方向量表中确认本工具输出与 RFC 期望值逐条一致',
+        ],
+        useCases: [
+          '硬件 OTP 令牌、身份认证服务端的 HOTP 逻辑开发与联调',
+          '两步验证（2FA）登录流程中计数器失步的窗口重同步验证',
+          '密码学教学中对照 RFC 4226 动态截断（Dynamic Truncation）过程',
+        ],
+        privacyNote:
+          '密钥与验证码仅在浏览器内存中通过 Web Crypto 本地计算，不发起任何网络请求，不上传、不落盘、不记录任何输入。',
+        faqs: [
+          {
+            question: 'HOTP 和 TOTP 有什么区别？',
+            answer:
+              'HOTP 的密码随计数器变化，需要客户端与服务端各自维护并在验证后推进计数器；TOTP（RFC 6238）把计数器换成 floor(时间戳/步长)，密码随时间自动变化。本工具专注 HOTP 的任意计数器与窗口重同步，这是 TOTP 工具不具备的能力。',
+          },
+          {
+            question: '窗口校验如何防止重放攻击？',
+            answer:
+              '校验只接受当前计数器及其之后 window 步内的码，验证成功后服务端应把计数器推进到命中值 +1。同一旧计数器的码再次提交时，因落后于服务端计数器而无法命中，即被判定为重放并拒绝。',
+          },
+          {
+            question: '为什么默认使用 SHA-1？安全吗？',
+            answer:
+              'RFC 4226 规定 HOTP 默认算法为 HMAC-SHA-1。这里的 SHA-1 用于 HMAC 而非裸哈希，HMAC 的安全性质不依赖碰撞抗性，业界实践中仍视为安全；如需更强算法可切换 SHA-256 / SHA-512，但需客户端与服务端保持一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'HOTP (HMAC-based One-Time Password, RFC 4226) derives one-time passwords from a shared secret and an incrementing counter, widely used in hardware tokens and two-factor authentication. This tool performs HMAC dynamic truncation locally in the browser for any counter, produces 6–8-digit codes, and adds server-side look-ahead window verification with replay detection, plus a live check against all ten official Appendix-D vectors.',
+        coreFeatures: [
+          'Arbitrary non-negative counters on BigInt with stepping and direct entry; encoding takes the low 64 bits per RFC',
+          'Secrets accepted as Base32, Hex (0x optional) or raw UTF-8 text, with explicit parse errors',
+          '6/7/8-digit codes and SHA-1/SHA-256/SHA-512, regenerated automatically when parameters change',
+          'Server-side window verification from current to current+window, returning the matched offset and the counter to advance to',
+          'Built-in RFC 4226 Appendix-D vector table with live comparison; constant-time string comparison against timing side channels',
+        ],
+        howToUse: [
+          'Pick a secret format and paste the shared secret, or load the standard RFC 4226 test secret with one click',
+          'Adjust digits and hash algorithm, set the counter via stepper or input; the code regenerates automatically and can be copied',
+          'Enter a submitted token and window size in the server verification card to see the match position or rejection reason',
+          'Confirm tool output against every expected RFC value in the bottom vector table',
+        ],
+        useCases: [
+          'Developing and debugging HOTP logic for hardware OTP tokens and authentication backends',
+          'Window-based resynchronization when counters drift in 2FA login flows',
+          'Teaching the RFC 4226 dynamic truncation procedure in cryptography courses',
+        ],
+        privacyNote:
+          'Secrets and codes are computed locally with Web Crypto in browser memory only; no network requests are made and no input is uploaded, persisted or logged.',
+        faqs: [
+          {
+            question: 'What is the difference between HOTP and TOTP?',
+            answer:
+              'HOTP changes the password with a counter that client and server each maintain and advance after verification; TOTP (RFC 6238) replaces the counter with floor(timestamp/step) so codes rotate with time. This tool focuses on arbitrary HOTP counters and window resynchronization, which a TOTP tool cannot do.',
+          },
+          {
+            question: 'How does window verification prevent replay?',
+            answer:
+              'Only codes at the current counter or up to window steps ahead are accepted. After a success the server advances its counter to matched + 1, so resubmitting an older code fails because it now lies behind the server counter and is treated as a replay.',
+          },
+          {
+            question: 'Why is SHA-1 the default? Is it secure?',
+            answer:
+              'RFC 4226 mandates HMAC-SHA-1 as the HOTP default. Here SHA-1 is used inside HMAC rather than as a bare hash, and HMAC security does not rely on collision resistance, so it remains accepted in practice. Switch to SHA-256/SHA-512 when stronger hashes are required, keeping client and server settings identical.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

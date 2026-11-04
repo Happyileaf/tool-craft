@@ -1,0 +1,32 @@
+.container {
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.codeDisplay {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-align: center;
+  padding: 16px 0;
+  color: #1677ff;
+}
+
+.vectorTable {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+}
+
+.matchTag {
+  min-width: 48px;
+  text-align: center;
+}

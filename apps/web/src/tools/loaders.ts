@@ -257,4 +257,5 @@ export const toolLoaders: Record<
   'rlp-codec': () => import('./rlp-codec'),
   'modular-arithmetic-calculator': () => import('./modular-arithmetic-calculator'),
   'bitmask-calculator': () => import('./bitmask-calculator'),
+  'hotp-generator': () => import('./hotp-generator'),
 };
