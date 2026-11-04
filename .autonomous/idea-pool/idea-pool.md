@@ -234,4 +234,9 @@
 | 20261104200905 | LC 谐振频率与电抗计算器（谐振频率 / 容抗 / 感抗互求） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104200905.md) |
 | 20261104200906 | JSON 推断并生成 SQL CREATE TABLE 建表语句（DDL）生成器 | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200906.md) |
 | 20261104200907 | GIF（GIF87a / GIF89a）文件结构只读解析器（块树与帧时序展示） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104200907.md) |
+| 20261105020213 | 文本自动换行与行宽格式化器（hard wrap / unwrap，按宽度折行与还原） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105020213.md) |
+| 20261105020214 | UPC-E 与 UPC-A 条码压缩/展开转换器（含模 10 校验位） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105020214.md) |
+| 20261105020215 | BCD 码编解码器（8421 / 余3码 / 2421 码与打包 BCD 字节） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105020215.md) |
+| 20261105020216 | 干支纪年与生肖转换器（公历年份 ↔ 天干地支/六十甲子/生肖） | Web Tool | Exploration | Pending | 2026-11-05 | | [详情](./idea-details/20261105020216.md) |
+| 20261105020217 | E.164 电话号码规范化与格式化器（国际格式解析与校验） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105020217.md) |
 
