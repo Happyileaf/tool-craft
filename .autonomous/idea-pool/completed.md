@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261017125919 | Random data generator | Web Tool | Exploration | `random-data-generator` / [PR #172](https://github.com/Happyileaf/tool-craft/pull/172) | 2026-11-05 | [详情](./idea-details/20261017125919.md) |
+| 20261017160152 | Unit & measurement converter | Web Tool | Existing Gap | `unit-converter` / [PR #172](https://github.com/Happyileaf/tool-craft/pull/172) | 2026-11-05 | [详情](./idea-details/20261017160152.md) |
+| 20261017183438 | 图片与 Base64 Data URI 互转 | Web Tool | Existing Gap | `image-data-uri-converter` / [PR #172](https://github.com/Happyileaf/tool-craft/pull/172) | 2026-11-05 | [详情](./idea-details/20261017183438.md) |
+| 20261017220047 | 开源许可证生成器 | Web Tool | Exploration | `license-generator` / [PR #172](https://github.com/Happyileaf/tool-craft/pull/172) | 2026-11-05 | [详情](./idea-details/20261017220047.md) |
+| 20261018000149 | CSS clamp() 流式排版生成器 | Web Tool | Exploration | `clamp-typography-generator` / [PR #172](https://github.com/Happyileaf/tool-craft/pull/172) | 2026-11-05 | [详情](./idea-details/20261018000149.md) |
 | 20261104081016 | JSON → Swift struct / Codable 模型生成器 | Web Tool | Existing Gap | `json-to-swift` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261104081016.md) |
 | 20261101201005 | JSON 转 PHP array 代码生成器（含嵌套类型推断与短数组语法） | Web Tool | Existing Gap | `json-to-php` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261101201005.md) |
 | 20261101140215 | JSON → Kotlin data class 生成器（含嵌套类型推断） | Web Tool | Existing Gap | `json-to-kotlin` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261101140215.md) |
