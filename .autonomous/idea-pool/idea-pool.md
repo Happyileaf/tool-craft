@@ -228,4 +228,5 @@
 | 20261104140122 | WebSocket 帧（RFC 6455）线格式编解码与掩码/分片解析器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104140122.md) |
 | 20261104140123 | 模运算计算器（模逆 / 模幂 / 中国剩余定理 / 同余方程） | Web Tool | Exploration | Pending | 2026-11-04 | | [详情](./idea-details/20261104140123.md) |
 | 20261104140124 | Mach-O / Fat Mach-O 文件头只读解析器（macOS 二进制 load commands 树） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104140124.md) |
+| 20261104140125 | .gitattributes 文件生成器（换行符 / 二进制标记 / merge driver / linguist 规则） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104140125.md) |
 
