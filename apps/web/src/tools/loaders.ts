@@ -263,4 +263,5 @@ export const toolLoaders: Record<
   'random-data-generator': () => import('./random-data-generator'),
   'unit-converter': () => import('./unit-converter'),
   'image-data-uri-converter': () => import('./image-data-uri-converter'),
+  'license-generator': () => import('./license-generator'),
 };

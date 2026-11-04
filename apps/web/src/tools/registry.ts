@@ -24440,6 +24440,105 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'license-generator',
+    name: '开源许可证生成器',
+    nameEn: 'Open Source License Generator',
+    description:
+      '选择 MIT、Apache-2.0、BSD、ISC、GPL-3.0、Unlicense 等常见开源许可证，填入年份与著作权人即可生成完整 LICENSE 全文，并对比 copyleft 强度、专利授权与适用场景。',
+    descriptionEn:
+      'Pick a popular open-source license (MIT, Apache-2.0, BSD, ISC, GPL-3.0, Unlicense and more), fill in the year and copyright holder, and generate a complete LICENSE file, with side-by-side guidance on copyleft strength, patent grants and use cases.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/license-generator',
+    iconName: 'FileText',
+    tags: ['开源许可证', 'LICENSE', 'MIT', 'Apache', 'GPL', '仓库初始化'],
+    tagsEn: ['open source license', 'LICENSE', 'MIT', 'Apache', 'GPL', 'repo setup'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '开源许可证生成器内置 7 种主流 SPDX 许可证的官方完整文本，只需选择许可证并填写著作权年份与著作权人，即可在浏览器本地生成可直接粘贴或下载的 LICENSE 文件，无需联网、不经过任何服务器。',
+        coreFeatures: [
+          '覆盖 MIT、Apache-2.0、BSD-2-Clause、BSD-3-Clause、ISC、GPL-3.0、Unlicense 七种主流许可证',
+          '模板取自 SPDX 官方文本，仅替换年份与著作权人占位符，法律条款原文逐字保留',
+          '结构化对比 copyleft 强度、是否含专利授权、适用场景，辅助选型决策',
+          '一键复制全文或下载为 LICENSE 文件，新仓库初始化即可使用',
+        ],
+        howToUse: [
+          '在下拉框中选择目标许可证，可输入关键词快速筛选',
+          '查看许可证简介、copyleft 强度与专利授权说明，确认是否符合项目诉求',
+          '填写著作权年份与著作权人（个人姓名或组织名称）',
+          '在预览区核对全文后，点击「复制全文」或「下载 LICENSE」',
+        ],
+        useCases: [
+          '新建开源仓库时快速补全标准化 LICENSE 文件',
+          '技术选型阶段对比宽松许可证与 copyleft 许可证的差异',
+          '为企业内部开源项目选择带专利授权条款的 Apache-2.0 等许可证',
+        ],
+        privacyNote:
+          '所有模板文本与填充逻辑均在浏览器本地执行，著作权人等信息不会被记录或上传。',
+        faqs: [
+          {
+            question: '生成的许可证文本是否具有法律效力？',
+            answer:
+              '工具输出的是 SPDX 官方许可证的完整标准文本，填充方式与 GitHub choosealicense 等官方流程一致；但具体法律效力仍建议结合所在司法辖区咨询专业法律人士。',
+          },
+          {
+            question: 'MIT、Apache-2.0 与 GPL-3.0 该怎么选？',
+            answer:
+              '希望最大复用自由、条款最简选 MIT；关注专利授权与企业合规选 Apache-2.0；要求衍生作品必须同样开源、防止闭源挪用则选 GPL-3.0。界面内的 copyleft 与专利授权标签可快速区分。',
+          },
+          {
+            question: 'Unlicense 为什么不需要填写年份和著作权人？',
+            answer:
+              'Unlicense 是公有领域弃权声明，作者放弃全部著作权，文本本身不含版权声明占位符，因此直接输出官方原文即可。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Open Source License Generator ships the full official text of seven mainstream SPDX licenses. Pick one, fill in the copyright year and holder, and produce a ready-to-paste LICENSE file entirely in your browser — no network and no server involved.',
+        coreFeatures: [
+          'Seven mainstream licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, GPL-3.0 and Unlicense',
+          'Templates come from the official SPDX texts; only year and holder placeholders are replaced, every legal clause is preserved verbatim',
+          'Structured comparison of copyleft strength, patent grants and use cases to support license selection',
+          'Copy the full text or download it as a LICENSE file in one click for new repository setup',
+        ],
+        howToUse: [
+          'Choose the target license from the dropdown, filtering by keyword if needed',
+          'Review the summary, copyleft strength and patent-grant notes to confirm it fits your project',
+          'Enter the copyright year and the copyright holder (an individual or organization)',
+          'Check the preview, then click "Copy" or "Download LICENSE"',
+        ],
+        useCases: [
+          'Adding a standard LICENSE file when bootstrapping a new open-source repository',
+          'Comparing permissive and copyleft licenses during technology selection',
+          'Choosing a patent-aware license such as Apache-2.0 for enterprise open-source projects',
+        ],
+        privacyNote:
+          'All template text and filling logic run locally in your browser; the copyright holder and other inputs are never logged or uploaded.',
+        faqs: [
+          {
+            question: 'Is the generated license text legally valid?',
+            answer:
+              'The output is the complete standard text published by SPDX, filled in the same way as official flows such as GitHub choosealicense. For enforceability in your jurisdiction, consult a qualified legal professional.',
+          },
+          {
+            question: 'How do I choose between MIT, Apache-2.0 and GPL-3.0?',
+            answer:
+              'Pick MIT for maximum reuse freedom and the shortest terms; Apache-2.0 when patent grants and enterprise compliance matter; GPL-3.0 when derivative works must stay open source and proprietary appropriation must be prevented. The copyleft and patent tags in the UI make the distinction immediate.',
+          },
+          {
+            question: 'Why does Unlicense need no year or copyright holder?',
+            answer:
+              'Unlicense is a public-domain dedication in which the author waives all copyright. Its text contains no copyright-statement placeholders, so the official wording is returned as-is.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
