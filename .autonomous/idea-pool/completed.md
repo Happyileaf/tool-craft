@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261106020729 | HTTP 头字段速查 | Web Tool | Exploration | `http-headers-reference` / [PR #182](https://github.com/Happyileaf/tool-craft/pull/182) | 2026-11-06 | [详情](./idea-details/20261106020729.md) |
+| 20261106020728 | HTTP 请求方法速查 | Web Tool | Exploration | `http-methods-reference` / [PR #182](https://github.com/Happyileaf/tool-craft/pull/182) | 2026-11-06 | [详情](./idea-details/20261106020728.md) |
+| 20261106020727 | 正则表达式语法速查 | Web Tool | Exploration | `regex-syntax-reference` / [PR #182](https://github.com/Happyileaf/tool-craft/pull/182) | 2026-11-06 | [详情](./idea-details/20261106020727.md) |
+| 20261106020726 | CSS 命名颜色速查 | Web Tool | Exploration | `css-named-colors` / [PR #182](https://github.com/Happyileaf/tool-craft/pull/182) | 2026-11-06 | [详情](./idea-details/20261106020726.md) |
+| 20261106020725 | BCP 47 语言标签解析器 | Web Tool | Exploration | `bcp47-language-tag` / [PR #182](https://github.com/Happyileaf/tool-craft/pull/182) | 2026-11-06 | [详情](./idea-details/20261106020725.md) |
 | 20261104081016 | JSON → Swift struct / Codable 模型生成器 | Web Tool | Existing Gap | `json-to-swift` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261104081016.md) |
 | 20261101201005 | JSON 转 PHP array 代码生成器（含嵌套类型推断与短数组语法） | Web Tool | Existing Gap | `json-to-php` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261101201005.md) |
 | 20261101140215 | JSON → Kotlin data class 生成器（含嵌套类型推断） | Web Tool | Existing Gap | `json-to-kotlin` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261101140215.md) |
