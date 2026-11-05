@@ -276,4 +276,5 @@ export const toolLoaders: Record<
   'intel-hex-parser': () => import('./intel-hex-parser'),
   'diff-patch-parser': () => import('./diff-patch-parser'),
   'bcp47-language-tag': () => import('./bcp47-language-tag'),
+  'css-named-colors': () => import('./css-named-colors'),
 };

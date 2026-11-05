@@ -25774,6 +25774,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'css-named-colors',
+    name: 'CSS 命名颜色速查',
+    nameEn: 'CSS Named Colors Reference',
+    description:
+      '内置 CSS Color Module Level 4 全部 148 个标准命名颜色（含 rebeccapurple），按名称或 HEX/RGB/HSL 值搜索，展示色块、HEX、RGB、HSL 并支持一键复制；输入任意颜色值可反查 RGB 空间最接近的 3 个命名色，支持基础色分区与字母/色相排序。',
+    descriptionEn:
+      'Bundles all 148 CSS Color Module Level 4 named colors (including rebeccapurple) with swatches, HEX, RGB and HSL values and one-click copy. Search by name or any HEX/RGB/HSL value, reverse-lookup the three nearest named colors in RGB space, and switch between basic/extended grouping and alphabetical or hue ordering.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/css-named-colors',
+    iconName: 'Palette',
+    tags: ['CSS', '命名颜色', 'named colors', '颜色表', 'HEX', 'RGB', 'HSL'],
+    tagsEn: ['CSS', 'Named Colors', 'Color Table', 'HEX', 'RGB', 'HSL'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '#ff0000',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS 命名颜色速查把 W3C CSS Color Module Level 4 定义的 148 个标准命名颜色（如 red、lightblue、rebeccapurple）整理为离线可查的参考表，每个颜色展示色块、名称与 HEX/RGB/HSL 三种表示，并支持按名称或颜色值搜索、任意颜色反查最近命名色以及一键复制。',
+        coreFeatures: [
+          '完整内置 148 个标准命名颜色，含 gray/grey、aqua/cyan 等别名与 rebeccapurple，数据为构建时常量、零网络请求',
+          '名称搜索不区分大小写、支持包含匹配（blue 可命中 lightblue、darkblue、cornflowerblue 等）',
+          '输入 #rrggbb、3 位 HEX、rgb()/rgba()、hsl() 或颜色名，反查 RGB 欧氏距离最近的 3 个命名色并给出距离',
+          '基础 16 色与扩展色分区展示，可在字母序与色相环排序间切换',
+          '点击色块、名称或任意数值即复制并给出反馈；transparent、currentcolor 特殊关键字单独说明',
+        ],
+        howToUse: [
+          '在搜索框输入颜色名称片段可实时过滤网格；输入颜色值则自动反查最接近的命名色',
+          '在「最接近的命名颜色」卡片查看前三名及 RGB 距离，距离 0 表示完全匹配',
+          '点击任意色块复制 HEX，点击名称或 RGB/HSL 行复制对应文本',
+          '使用排序切换在字母序与色相序间切换，基础色与扩展色分区浏览',
+        ],
+        useCases: [
+          '编写样式时快速确认某命名颜色的 HEX/RGB 值',
+          '把设计稿给出的任意色值映射为语义化的标准命名颜色',
+          '教学或评审中对照基础 16 色与扩展命名色',
+          '排查 gray/grey、aqua/cyan 等历史别名的等价关系',
+        ],
+        privacyNote:
+          '颜色数据与全部计算都在浏览器本地完成，不发起任何网络请求，输入内容不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么是 148 个颜色？',
+            answer:
+              'CSS Color Module Level 4 定义了 148 个命名颜色关键字，其中包含 gray 与 grey、aqua 与 cyan 等历史别名，因此去重后的实际唯一颜色值少于 148；rebeccapurple（#663399）是后续加入的命名色。',
+          },
+          {
+            question: '反查的“距离”是怎么计算的？',
+            answer:
+              '把目标颜色与每个命名颜色都表示为 RGB 三维向量，计算欧氏距离 sqrt((r1-r2)²+(g1-g2)²+(b2-b2)²)，距离越小越接近，距离为 0 表示与某命名色完全相同。该度量简单直观，但未做感知均匀校正，仅供快速近似参考。',
+          },
+          {
+            question: 'transparent 和 currentcolor 为什么单独列出？',
+            answer:
+              '它们是 CSS 颜色关键字但不对应固定的命名色值：transparent 表示完全透明（等价 rgba(0,0,0,0)），currentcolor 取当前元素 color 的计算值，因此无法给出固定 HEX/RGB，只能单独说明而不纳入 148 色表。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CSS Named Colors Reference organizes all 148 named colors defined by W3C CSS Color Module Level 4 (such as red, lightblue and rebeccapurple) into an offline lookup table, showing each swatch with its name and HEX/RGB/HSL representations, plus name/value search, nearest-color reverse lookup and one-click copy.',
+        coreFeatures: [
+          'Bundles all 148 named colors including gray/grey and aqua/cyan aliases and rebeccapurple, as build-time constants with zero network requests',
+          'Case-insensitive substring name search (blue matches lightblue, darkblue, cornflowerblue and more)',
+          'Accepts #rrggbb, 3-digit HEX, rgb()/rgba(), hsl() or a color name and reverse-looks-up the three nearest named colors with RGB Euclidean distance',
+          'Separates the 16 basic colors from extended colors and switches between alphabetical and hue ordering',
+          'Click a swatch, name or value to copy with visible feedback; transparent and currentcolor special keywords are explained separately',
+        ],
+        howToUse: [
+          'Type a name fragment to filter the grid, or enter a color value to reverse-lookup the nearest named colors',
+          'Review the top three matches and their RGB distances in the nearest-colors card; distance 0 means an exact match',
+          'Click a swatch to copy its HEX, or a name / RGB / HSL row to copy that text',
+          'Toggle alphabetical versus hue ordering and browse basic and extended groups separately',
+        ],
+        useCases: [
+          'Quickly confirming the HEX/RGB value of a named color while writing styles',
+          'Mapping an arbitrary design color to a semantic standard named color',
+          'Teaching or reviewing the 16 basic colors versus extended named colors',
+          'Checking historical aliases such as gray/grey and aqua/cyan',
+        ],
+        privacyNote:
+          'All color data and calculations run locally in the browser. No network request is made and your input is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why are there 148 colors?',
+            answer:
+              'CSS Color Module Level 4 defines 148 named color keywords, including historical aliases such as gray/grey and aqua/cyan, so the number of unique color values is lower than 148. rebeccapurple (#663399) was added in a later revision.',
+          },
+          {
+            question: 'How is the reverse-lookup distance calculated?',
+            answer:
+              'Both the target and each named color are represented as RGB three-dimensional vectors, and the tool computes the Euclidean distance sqrt((r1-r2)²+(g1-g2)²+(b1-b2)²). A smaller distance means closer, and 0 means an exact match. It is a simple, intuitive metric without perceptual-uniformity correction and is intended for quick approximation.',
+          },
+          {
+            question: 'Why are transparent and currentcolor listed separately?',
+            answer:
+              'They are CSS color keywords but do not map to fixed named color values: transparent means fully transparent (equivalent to rgba(0,0,0,0)) and currentcolor resolves to the computed color property of the current element, so neither has a fixed HEX/RGB and they are documented outside the 148-color table.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
