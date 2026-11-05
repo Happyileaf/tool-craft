@@ -25982,6 +25982,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'http-methods-reference',
+    name: 'HTTP 请求方法速查',
+    nameEn: 'HTTP Methods Reference',
+    description:
+      '依据 RFC 9110/9111/5789 内置 GET、HEAD、POST、PUT、DELETE、CONNECT、OPTIONS、TRACE、PATCH 九个标准方法的 safe、幂等、可缓存与请求体属性矩阵，含请求/响应示例、常见状态码搭配，并提供 PUT vs PATCH、POST vs PUT、OPTIONS 与 CORS 预检专题对比。',
+    descriptionEn:
+      'An RFC 9110/9111/5789 based reference of all nine standard HTTP methods (GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH) with safe, idempotent, cacheable and request-body property matrix, request/response examples, common status codes and focused comparisons of PUT vs PATCH, POST vs PUT and OPTIONS CORS preflight.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/http-methods-reference',
+    iconName: 'Globe',
+    tags: ['HTTP', '请求方法', '幂等', 'REST', 'RFC', '速查'],
+    tagsEn: ['HTTP', 'Methods', 'Idempotent', 'REST', 'RFC', 'Cheat Sheet'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '幂等',
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP 请求方法速查把九个标准请求方法整理为离线可查的属性矩阵与详情卡片：每个方法给出语义说明、Safe（只读安全）、Idempotent（幂等）、Cacheable（可缓存）、请求体支持度、RFC 来源、典型场景、请求/响应示例、常见状态码与误用提示，并附 PUT vs PATCH、POST vs PUT、OPTIONS 与 CORS 预检三组专题对比。数据依据 RFC 9110、RFC 9111 与 RFC 5789 内置，纯本地渲染、零网络请求。',
+        coreFeatures: [
+          '完整覆盖 GET、HEAD、POST、PUT、DELETE、CONNECT、OPTIONS、TRACE、PATCH 九个标准方法',
+          'safe / idempotent / cacheable / 请求体属性矩阵与 RFC 9110 定义一致，并由内置不变量校验函数自动核对',
+          '每行可展开查看请求与响应示例、常见状态码搭配、典型场景与安全注意事项，示例可一键复制',
+          '专题对比区讲清 PUT 与 PATCH 的整体替换 / 部分更新、POST 与 PUT 的 URI 决策权与幂等差异、OPTIONS 与 CORS 预检流程',
+          '顶部按方法名或关键字（如“幂等”“缓存”“CORS”）过滤，同时联动方法表与对比条目',
+        ],
+        howToUse: [
+          '在搜索框输入方法名或关键字实时过滤，或点击快捷示例标签',
+          '在属性矩阵中通过“是 / 否”标签快速识别 safe、幂等、可缓存与请求体支持度',
+          '点击表格行展开，查看请求/响应示例、常见状态码与注意事项，可复制示例文本',
+          '滚动到“专题对比”卡片，对照 PUT/PATCH、POST/PUT 与 CORS 预检的差异',
+        ],
+        useCases: [
+          '设计 REST API 时确定各操作应使用的方法与状态码',
+          '代码评审中核对接口是否违反 safe / 幂等语义（如用 GET 执行写操作）',
+          '排查重复提交、重试安全性与 CORS 预检相关问题',
+          '后端与前端协作时统一 HTTP 方法术语与行为约定',
+        ],
+        privacyNote:
+          '全部数据为本地内置的静态参考内容，工具不会发起任何 HTTP 请求，也不会收集或上传你的搜索内容。',
+        faqs: [
+          {
+            question: 'PATCH 为什么不保证幂等？',
+            answer:
+              'RFC 5789 只定义 PATCH 为“部分修改”，幂等性取决于补丁媒体类型。例如 JSON Patch 的 {"op":"add","path":"/tags/-"} 每次执行都会向数组追加元素，重复请求结果不同；而 Merge Patch 用固定值覆盖字段时则可设计成幂等。工具中 PATCH 的 idempotent 标注为“否”，并在注意事项中说明这一点。',
+          },
+          {
+            question: 'GET 可以带请求体吗？',
+            answer:
+              'RFC 9110 没有为 GET 的 payload 定义通用语义，不禁止但也不保证中间代理与服务器会处理它，因此属性矩阵将 GET 的请求体标为“未定义”。实践中检索参数应放在查询串，需要携带复杂条件时可改用 POST 搜索接口。HEAD 与 TRACE 则明确不允许消息体。',
+          },
+          {
+            question: 'safe 和 idempotent 是什么关系？',
+            answer:
+              'safe 表示方法本质只读、不应改变服务端状态（GET、HEAD、OPTIONS、TRACE）；idempotent 表示多次执行与单次执行效果相同。RFC 9110 规定所有 safe 方法自动幂等，但幂等方法不一定 safe，例如 PUT 与 DELETE 会改变资源状态却可重复执行。工具内置的不变量校验会强制核对这一关系。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The HTTP Methods Reference turns the nine standard request methods into an offline property matrix and detail cards: each entry documents semantics, Safe, Idempotent, Cacheable, request-body support, RFC source, typical use cases, request/response examples, common status codes and pitfalls, plus three focused comparisons (PUT vs PATCH, POST vs PUT and OPTIONS CORS preflight). Data is bundled from RFC 9110, RFC 9111 and RFC 5789 and rendered entirely locally with no network requests.',
+        coreFeatures: [
+          'Covers all nine standard methods: GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE and PATCH',
+          'The safe / idempotent / cacheable / body matrix matches RFC 9110 and is automatically checked by a built-in invariant validator',
+          'Expandable rows show request/response examples, common status codes and safety notes, with one-click example copying',
+          'Dedicated comparison cards explain full replacement vs partial modification, URI ownership and idempotency differences, and the OPTIONS CORS preflight flow',
+          'Keyword search (e.g. "idempotent", "cache", "CORS") filters both the method table and comparison entries',
+        ],
+        howToUse: [
+          'Type a method name or keyword in the search box to filter live, or click a quick-sample tag',
+          'Use the yes/no badges in the matrix to quickly identify safe, idempotent, cacheable and body-support properties',
+          'Expand a row to inspect request/response examples, common status codes and pitfalls, and copy example text',
+          'Scroll to the comparison cards to compare PUT/PATCH, POST/PUT and CORS preflight behavior',
+        ],
+        useCases: [
+          'Choosing methods and status codes for REST API design',
+          'Reviewing whether an endpoint violates safe/idempotent semantics (such as writes behind GET)',
+          'Investigating duplicate submission, retry safety and CORS preflight issues',
+          'Aligning HTTP method terminology and behavior between frontend and backend teams',
+        ],
+        privacyNote:
+          'All content is static data bundled locally. The tool never sends HTTP requests and never collects or uploads your searches.',
+        faqs: [
+          {
+            question: 'Why is PATCH not guaranteed to be idempotent?',
+            answer:
+              'RFC 5789 only defines PATCH as a partial modification; idempotency depends on the patch media type. A JSON Patch add operation like {"op":"add","path":"/tags/-"} appends to an array on every call, so repeated requests differ, while a Merge Patch that overwrites a field with a fixed value can be designed as idempotent. The matrix therefore marks PATCH as non-idempotent and explains the nuance in its pitfalls.',
+          },
+          {
+            question: 'Can a GET request carry a body?',
+            answer:
+              'RFC 9110 defines no general semantics for a GET payload — it is not forbidden, but proxies and servers are not guaranteed to process it, so the matrix marks GET body support as "undefined". In practice, put search parameters in the query string, or use a POST search endpoint for complex criteria. HEAD and TRACE explicitly disallow a message body.',
+          },
+          {
+            question: 'What is the relationship between safe and idempotent?',
+            answer:
+              'Safe means the method is read-only and should not change server state (GET, HEAD, OPTIONS, TRACE); idempotent means repeated execution has the same effect as one execution. RFC 9110 states that every safe method is automatically idempotent, while idempotent methods need not be safe — PUT and DELETE change state but can be repeated. The built-in invariant validator enforces this relationship.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

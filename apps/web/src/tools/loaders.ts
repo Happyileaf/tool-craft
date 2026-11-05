@@ -278,4 +278,5 @@ export const toolLoaders: Record<
   'bcp47-language-tag': () => import('./bcp47-language-tag'),
   'css-named-colors': () => import('./css-named-colors'),
   'regex-syntax-reference': () => import('./regex-syntax-reference'),
+  'http-methods-reference': () => import('./http-methods-reference'),
 };
