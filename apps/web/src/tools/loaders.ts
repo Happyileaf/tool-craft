@@ -274,4 +274,5 @@ export const toolLoaders: Record<
   'plus-code-codec': () => import('./plus-code-codec'),
   'lc-resonance-calculator': () => import('./lc-resonance-calculator'),
   'java-descriptor-converter': () => import('./java-descriptor-converter'),
+  'sse-codec': () => import('./sse-codec'),
 };

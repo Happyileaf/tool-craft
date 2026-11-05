@@ -25672,6 +25672,120 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'sse-codec',
+    name: 'SSE 消息格式编解码器',
+    nameEn: 'Server-Sent Events (SSE) Codec',
+    description:
+      '按 HTML Living Standard §9.2 在浏览器本地完成 text/event-stream 线格式与结构化消息的双向转换：解析 event/data/id/retry 字段、多行 data 拼接、注释心跳、CRLF/CR/LF 混合换行与末尾无空行事件块，非法 retry 给出规范告警；编码侧把消息数组输出为标准流，自动拆分多行 data、规范化换行并补齐派发空行，零依赖纯函数实现。',
+    descriptionEn:
+      'Bidirectional conversion between text/event-stream wire format and structured messages in your browser, following HTML Living Standard §9.2: parse event/data/id/retry fields, multi-line data joining, comment heartbeats, mixed CRLF/CR/LF endings and unterminated final event blocks, with spec-compliant warnings for invalid retry values. The encoder turns message arrays into a standard stream, splitting multi-line data, normalizing newlines and appending the dispatch blank line. Built with zero-dependency pure functions.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/sse-codec',
+    iconName: 'MessageSquare',
+    tags: ['SSE', 'Server-Sent Events', '编解码', '事件流', 'HTTP'],
+    tagsEn: ['SSE', 'Server-Sent Events', 'Codec', 'Event Stream', 'HTTP'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'event: update\ndata: {"price": 12.5}\n\n',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Server-Sent Events（SSE）是浏览器与服务器之间基于 HTTP 的单向事件推送协议，其 text/event-stream 载荷是纯文本线格式：每条消息由若干「字段: 值」行组成，遇到空行派发，字段包括 event（事件类型）、data（数据，多行以换行拼接）、id（lastEventId）与 retry（重连等待毫秒），以冒号开头的行是注释（常用于心跳）。本工具按 HTML Living Standard §9.2 的派发算法实现双向转换，并对不符合规范的输入给出告警或错误。',
+        coreFeatures: [
+          '解码：严格按标准行解析算法处理 LF / CRLF / CR 三种换行、UTF-8 BOM、冒号后单空格规则与无冒号字段行',
+          '多行 data 自动以换行拼接；event 派发后重置，id/retry 按标准作为跨消息持久状态保留',
+          '注释心跳单独列为条目并保留行号；未知字段忽略；非法 retry 不更新重连时间并输出带行号的告警',
+          '编码：消息数组输出标准流，多行 data 拆为多个 data: 行，换行统一为 LF，块间空行分隔且结尾补齐派发空行',
+          '零依赖纯函数内核与 React UI 解耦，17 条单元测试覆盖 MDN 经典向量、round-trip 逆运算与各类边界情况',
+        ],
+        howToUse: [
+          '解码模式：把抓包或后端日志中的 text/event-stream 文本粘贴到左侧，右侧表格逐条列出消息与注释，可一键复制结构化 JSON',
+          '编码模式：在左侧填写消息对象数组（每条可含 data/event/id/retry），右侧实时生成可直接发送的 SSE 流文本',
+          'data 字段中的换行无需手工处理：解码自动拼接、编码自动拆行',
+          'retry 必须是非负整数（毫秒）；非法值会在解码告警中指出行号，在编码时直接报错',
+        ],
+        useCases: [
+          '调试 EventSource、Fetch streaming 或 AI 流式接口（如 SSE 承载的 token 流）的实际报文',
+          '为后端接口或 Mock Server 构造符合规范的 SSE 测试数据',
+          '排查事件不派发、多行消息断裂、retry 不生效等线格式问题',
+          '学习 SSE 协议规范与浏览器 EventSource 的派发语义',
+        ],
+        privacyNote:
+          '全部编解码在浏览器本地由零依赖 TypeScript 纯函数完成，不发起任何网络请求，粘贴的事件流与消息内容不会离开设备。',
+        faqs: [
+          {
+            question: '为什么解析出的后一条消息里带着前面消息的 id？',
+            answer:
+              '这是 SSE 规范的刻意设计：id 对应浏览器的 lastEventId、retry 对应重连时间，二者是连接级持久状态，派发消息时不会重置；而 data 与 event 缓冲区在每次空行派发后清空。因此当后续消息未重新声明 id 时，解析结果会沿用上一个 id，这与浏览器 EventSource 的行为完全一致。',
+          },
+          {
+            question: '消息为什么必须以空行结尾？',
+            answer:
+              '标准规定空行是事件派发的触发器：没有空行，字段只停留在缓冲区里，EventSource 不会产生 message 事件。编码模式输出的流会自动在结尾补一个空行；解码模式对「最后一个事件块没有终止空行」的宽容处理是工具的辅助能力，真实服务端仍应保证空行派发。',
+          },
+          {
+            question: 'data 里的换行和字段行的换行有什么区别？',
+            answer:
+              '线格式中每个字段只能占一行，想发送含换行的数据，就要写多个 data: 行：标准把同名 data 行的值用「\\n」拼接成一个 data 字符串。编码模式检测到 data 中的换行会自动拆行，解码模式再还原，因此 JSON 之外的纯文本多行消息也能正确 round-trip。',
+          },
+          {
+            question: '注释心跳有什么用，会出现在消息里吗？',
+            answer:
+              '以冒号开头的行（如 ": ping"）是注释，浏览器会完全忽略，不触发任何事件；服务端常用它在空闲时发送心跳，防止代理层因超时断开连接。本工具把注释单独展示在结果表格中并标记行号，便于核对心跳节奏，但它们不会进入结构化消息 JSON。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Server-Sent Events (SSE) is a one-way HTTP push protocol whose text/event-stream payload is a plain-text wire format: each message consists of "field: value" lines and is dispatched on a blank line. Fields are event (type), data (joined with newlines across multiple lines), id (lastEventId) and retry (reconnect delay in milliseconds); lines starting with a colon are comments, often used as heartbeats. This tool implements bidirectional conversion following the HTML Living Standard §9.2 dispatch algorithm, with warnings or errors for non-conformant input.',
+        coreFeatures: [
+          'Decoding: the spec line-parsing algorithm handles LF/CRLF/CR endings, a leading UTF-8 BOM, the single-space-after-colon rule and colon-less field lines',
+          'Multi-line data is joined with newlines; event resets on dispatch while id/retry persist across messages as connection-level state',
+          'Comment heartbeats are listed separately with line numbers; unknown fields are ignored; an invalid retry leaves reconnect time untouched and emits a line-specific warning',
+          'Encoding: message arrays become a standard stream—multi-line data splits into data: lines, newlines normalize to LF, blocks are separated by blank lines and a final dispatch blank line is appended',
+          'Zero-dependency pure-function core decoupled from the React UI, with 17 unit tests covering MDN-classic vectors, round-trip inverses and edge cases',
+        ],
+        howToUse: [
+          'Decode mode: paste text/event-stream traffic from packet captures or backend logs on the left; the right table lists messages and comments and can copy structured JSON',
+          'Encode mode: enter an array of message objects (each with data/event/id/retry as needed) on the left and get a ready-to-send SSE stream on the right',
+          'Newlines inside data require no manual handling: decoding joins them and encoding splits them automatically',
+          'retry must be a non-negative integer in milliseconds; bad values produce line-numbered warnings when decoding and hard errors when encoding',
+        ],
+        useCases: [
+          'Debugging real payloads from EventSource, Fetch streaming or AI token-stream endpoints over SSE',
+          'Building spec-compliant SSE fixtures for backend APIs or mock servers',
+          'Diagnosing undelivered events, broken multi-line messages and ineffective retry values',
+          'Learning the SSE protocol and the dispatch semantics of the browser EventSource API',
+        ],
+        privacyNote:
+          'All encoding and decoding runs locally in your browser via zero-dependency TypeScript pure functions. No network requests are made, and pasted streams or messages never leave your device.',
+        faqs: [
+          {
+            question: 'Why does a later parsed message carry the id of an earlier one?',
+            answer:
+              'This is intentional: id maps to the browser’s lastEventId and retry to the reconnect delay, both connection-level persistent state that survives dispatch, while the data and event buffers reset on every blank line. When a later message does not redeclare id, the parsed result reuses the previous id—exactly how the browser EventSource behaves.',
+          },
+          {
+            question: 'Why must a message end with a blank line?',
+            answer:
+              'The spec uses a blank line as the dispatch trigger: without it, fields stay buffered and EventSource emits no message event. Encode mode automatically appends the trailing blank line; the decoder’s tolerance of an unterminated final block is a convenience of this tool, while real servers should always dispatch with a blank line.',
+          },
+          {
+            question: 'What is the difference between newlines inside data and field-line newlines?',
+            answer:
+              'Each field occupies a single line in the wire format. To send data containing newlines, write multiple data: lines: the spec joins same-named data values with "\\n" into one data string. Encode mode splits data on newlines automatically and decode mode restores them, so plain-text multi-line messages round-trip just like JSON.',
+          },
+          {
+            question: 'What are comment heartbeats for, and do they appear in messages?',
+            answer:
+              'Lines starting with a colon (e.g. ": ping") are comments that browsers ignore entirely—no event fires. Servers send them during idle periods as heartbeats to stop proxies from timing out the connection. This tool shows comments separately in the result table with line numbers so you can verify heartbeat cadence, but they never enter the structured message JSON.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
