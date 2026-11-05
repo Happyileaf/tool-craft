@@ -277,4 +277,5 @@ export const toolLoaders: Record<
   'diff-patch-parser': () => import('./diff-patch-parser'),
   'bcp47-language-tag': () => import('./bcp47-language-tag'),
   'css-named-colors': () => import('./css-named-colors'),
+  'regex-syntax-reference': () => import('./regex-syntax-reference'),
 };

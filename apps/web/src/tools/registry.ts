@@ -25878,6 +25878,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'regex-syntax-reference',
+    name: '正则表达式语法速查',
+    nameEn: 'Regex Syntax Reference',
+    description:
+      '内置 JavaScript 正则 8 大分类 40 条语法（字符类、量词、锚点、分组、环视断言、交替转义、标志位、Unicode 属性转义），支持关键字搜索与分类折叠；每条样例均由浏览器原生 RegExp 实测渲染匹配结果，并标注 JS 与 Python/Java/PCRE 的语言差异。',
+    descriptionEn:
+      'A searchable, categorized reference of 40 JavaScript regex syntax entries across 8 categories (character classes, quantifiers, anchors, groups, lookaround, alternation/escapes, flags and Unicode property escapes). Every example is executed by the native RegExp engine to render real match results, with notes on JavaScript vs Python/Java/PCRE differences.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/regex-syntax-reference',
+    iconName: 'Braces',
+    tags: ['正则', 'Regex', '语法速查', 'RegExp', '环视', '标志位'],
+    tagsEn: ['Regex', 'RegExp', 'Cheat Sheet', 'Lookaround', 'Flags', 'Syntax'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'look',
+    doc: {
+      zh: {
+        whatIsIt:
+          '正则表达式语法速查把 JavaScript（ECMAScript）常用正则语法整理为离线可查的参考表，覆盖字符类、量词、锚点与边界、分组与引用、环视断言、交替与转义、标志位和 Unicode 属性转义 8 个分类共 40 个条目，每个条目给出语法、含义、可运行的示例正则以及匹配 / 不匹配样例，样例结果由浏览器原生 RegExp 实时运行得到，而非静态文案。',
+        coreFeatures: [
+          '8 大分类 40 条语法，每条含语法符号、中英文名、解释、可运行 pattern 与匹配 / 不匹配样例',
+          '所有样例经原生 RegExp 实测：页面展示真实命中片段与一致性标记，非法正则显示构造失败而不崩溃',
+          '顶部搜索框按名称、英文名、语法符号、解释与关键字过滤（如 look 命中四个环视条目），支持分类折叠浏览',
+          '标志位完整列出 g、i、m、s、u、y 及各自作用，含 dotAll、sticky 等行为说明',
+          '单独区块说明 JS 与 Python/Java/PCRE 在 \\d、lookbehind、命名组、Unicode 属性转义等方面的差异，全部数据本地内置、零网络请求',
+        ],
+        howToUse: [
+          '在搜索框输入名称、语法或关键字（如 look、\\d、锚点、flag）实时过滤，也可点击快捷示例',
+          '按分类折叠面板浏览，每个条目卡片展示示例正则 /pattern/flags 与逐条样例的实测命中结果',
+          '点击条目右上角复制按钮可复制完整正则字面量到剪贴板',
+          '在页面底部「常见语言差异」卡片对照 JavaScript 与其他主流语言的行为区别',
+        ],
+        useCases: [
+          '编写正则时快速确认元字符、量词或环视断言的准确写法',
+          '学习 lookahead / lookbehind、命名捕获组、Unicode 属性转义等进阶语法',
+          '排查同一条正则在 JavaScript 与 Python/Java/PCRE 之间的迁移兼容问题',
+          '作为团队代码评审与正则相关技术分享的离线速查表',
+        ],
+        privacyNote:
+          '全部语法数据与 RegExp 实测都在浏览器本地完成，不发起任何网络请求，输入的搜索词不会被上传或记录。',
+        faqs: [
+          {
+            question: '这个工具和 regex-tester 有什么区别？',
+            answer:
+              'regex-tester 面向调试执行：输入自定义正则与文本，查看匹配高亮、捕获分组与替换结果；本工具面向查阅学习：内置结构化的语法条目与标准样例，专注“某条语法怎么写、什么效果”，两者互补，不提供在线调试与替换。',
+          },
+          {
+            question: '页面上的匹配结果是写死的吗？',
+            answer:
+              '不是。每个条目加载时都会用 new RegExp(pattern, flags) 在浏览器中原生构造并对每条样例执行 match，页面展示的命中片段与“命中 / 不命中”标记全部来自真实运行结果；若某条正则无法构造会显示构造失败告警，单测也会强制校验全部样例与文档预期一致。',
+          },
+          {
+            question: '为什么有的“不匹配”字符串看起来包含 pattern？',
+            answer:
+              'JavaScript 的 test()/match() 默认是子串搜索而非整串匹配，只要字符串中存在任意匹配片段即算命中。因此条目的不匹配样例都经过精心选择（例如 a{2,4} 的不匹配样例用 b 而非 aaaaa，后者仍包含 aaaa 子串），避免量词回溯与部分匹配造成误解；需要整串匹配时应自行加 ^ 与 $ 锚点。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Regex Syntax Reference organizes common JavaScript (ECMAScript) regular expression syntax into an offline lookup table covering 40 entries across 8 categories: character classes, quantifiers, anchors and boundaries, groups and references, lookaround assertions, alternation and escapes, flags, and Unicode property escapes. Each entry shows the syntax, meaning, a runnable example pattern and match/non-match samples whose results are produced by the native RegExp engine rather than static text.',
+        coreFeatures: [
+          '40 syntax entries in 8 categories, each with syntax token, bilingual names, explanation, a runnable pattern and match/non-match samples',
+          'Every sample is executed by the native RegExp engine: the page shows real matched substrings and consistency badges, and an invalid pattern renders a construction failure alert instead of crashing',
+          'Keyword search over names, syntax tokens, explanations and keywords (e.g. "look" finds all four lookaround entries) plus collapsible category browsing',
+          'All six flags g, i, m, s, u and y are listed with their effects, including dotAll and sticky behavior',
+          'A dedicated section documents JavaScript vs Python/Java/PCRE differences around \\d, lookbehind, named groups and Unicode property escapes; all data is bundled locally with zero network requests',
+        ],
+        howToUse: [
+          'Type a name, token or keyword (such as look, \\d, anchor or flag) in the search box to filter live, or click a quick sample',
+          'Browse the collapsible category panels; each entry card shows the example /pattern/flags and per-sample real match results',
+          'Click the copy button on an entry to copy the full regex literal to the clipboard',
+          'Review the language-difference card at the bottom to compare JavaScript behavior with other mainstream languages',
+        ],
+        useCases: [
+          'Quickly confirming the exact syntax of metacharacters, quantifiers or lookaround assertions while writing a regex',
+          'Learning advanced syntax such as lookahead/lookbehind, named capture groups and Unicode property escapes',
+          'Investigating migration compatibility of the same pattern between JavaScript and Python/Java/PCRE',
+          'An offline cheat sheet for code reviews and regex-related technical sharing',
+        ],
+        privacyNote:
+          'All syntax data and RegExp executions run locally in the browser. No network request is made and your search terms are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How is this different from regex-tester?',
+            answer:
+              'regex-tester is for execution and debugging: you supply a custom pattern and text to inspect match highlights, capture groups and replacements. This tool is for reference and learning: it bundles structured syntax entries with canonical samples focused on "how is this syntax written and what does it do". The two complement each other; online debugging and replacement are intentionally out of scope here.',
+          },
+          {
+            question: 'Are the match results on the page hard-coded?',
+            answer:
+              'No. On load, every entry is constructed with new RegExp(pattern, flags) and each sample is executed via match in the browser. The displayed matched substrings and match/non-match badges all come from real execution; a pattern that cannot be constructed shows a failure alert, and unit tests enforce that every sample agrees with the documented expectation.',
+          },
+          {
+            question: 'Why do some "non-match" strings seem to contain the pattern?',
+            answer:
+              'JavaScript test()/match() performs substring search by default rather than full-string matching, so any matching fragment counts as a hit. Non-match samples are therefore chosen carefully (for example a{2,4} uses "b" instead of "aaaaa", which still contains the "aaaa" substring) to avoid confusion from backtracking and partial matches; add ^ and $ anchors when you need full-string matching.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
