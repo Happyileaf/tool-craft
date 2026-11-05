@@ -1,0 +1,82 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ruleCard {
+  margin-bottom: 12px;
+}
+
+.disabledCard {
+  opacity: 0.6;
+}
+
+.ruleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.fieldRow {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.patternInput {
+  flex: 1;
+  min-width: 0;
+}
+
+.groupInput {
+  flex: 0 0 220px;
+  min-width: 0;
+}
+
+.attributeSelect {
+  width: 100%;
+}
+
+.valueRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.valueInput {
+  width: 280px;
+  max-width: 100%;
+}
+
+.binaryNote {
+  margin-top: 12px;
+}
+
+.errorList {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.output {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.hint {
+  color: rgb(107 114 128);
+  font-size: 13px;
+  line-height: 1.8;
+  margin-top: 8px;
+}

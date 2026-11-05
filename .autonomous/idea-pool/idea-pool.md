@@ -53,7 +53,7 @@
 | 20261017220049 | 列表集合运算（交集 / 并集 / 差集） | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017220049.md) |
 | 20261017220050 | 小数与分数互转 | Web Tool | Exploration | In Progress | 2026-10-17 | trae-agent | [详情](./idea-details/20261017220050.md) |
 | 20261018000142 | Open Graph / SEO 元标签生成器 | Web Tool | Exploration | In Progress | 2026-10-18 | trae-agent @ 2026-11-03 18:05 CST | [详情](./idea-details/20261018000142.md) |
-| 20261018000143 | JSON 结构化差异对比 | Web Tool | Existing Gap | Pending | 2026-10-18 | | [详情](./idea-details/20261018000143.md) |
+| 20261018000143 | JSON 结构化差异对比 | Web Tool | Existing Gap | In Progress | 2026-10-18 | trae-agent | [详情](./idea-details/20261018000143.md) |
 | 20261018000145 | MAC 地址格式转换与校验 | Web Tool | Exploration | In Progress | 2026-10-18 | trae-agent | [详情](./idea-details/20261018000145.md) |
 | 20261018000146 | Markdown 目录（TOC）生成器 | Web Tool | Exploration | In Progress | 2026-10-18 | trae-agent | [详情](./idea-details/20261018000146.md) |
 | 20261018000148 | 哈希类型识别器 | Web Tool | Existing Gap | In Progress | 2026-10-18 | trae-agent | [详情](./idea-details/20261018000148.md) |
@@ -151,7 +151,7 @@
 | 20261030021006 | JSON 转 Zod schema 生成器 | Web Tool | Existing Gap | Claimed | 2026-10-30 | trae-agent | [详情](./idea-details/20261030021006.md) |
 | 20261030021007 | multipart/form-data 请求体构造器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030021007.md) |
 | 20261030021008 | SHA-3 / Keccak 哈希计算器（FIPS 202） | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030021008.md) |
-| 20261030080719 | Intel HEX 解析与校验和工具 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030080719.md) |
+| 20261030080719 | Intel HEX 解析与校验和工具 | Web Tool | Existing Gap | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030080719.md) |
 | 20261030080720 | UTM ↔ WGS84 经纬度坐标互转器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030080720.md) |
 | 20261030080721 | ISIN 证券识别码校验器 | Web Tool | External Reference | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030080721.md) |
 | 20261030140201 | JSON 转 Go struct 生成器 | Web Tool | Existing Gap | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030140201.md) |
@@ -161,7 +161,7 @@
 | 20261030140205 | BMR 基础代谢与 TDEE 每日热量消耗计算器 | Web Tool | Exploration | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030140205.md) |
 | 20261030200909 | MGRS 军用地形图坐标 ↔ WGS-84 经纬度编解码器 | Web Tool | External Reference | Pending | 2026-10-30 | | [详情](./idea-details/20261030200909.md) |
 | 20261030200911 | systemd .service 单元文件生成器 | Web Tool | Exploration | Pending | 2026-10-30 | | [详情](./idea-details/20261030200911.md) |
-| 20261031020750 | Unified Diff / Patch 解析与统计查看器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031020750.md) |
+| 20261031020750 | Unified Diff / Patch 解析与统计查看器 | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031020750.md) |
 | 20261031020752 | ELF 文件头解析器 | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031020752.md) |
 | 20261031020753 | C 结构体位域打包 / 解包器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031020753.md) |
 | 20261031080655 | ZIP 归档结构解析器（只读列目录与元数据展示） | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031080655.md) |
@@ -227,7 +227,7 @@
 | 20261104140122 | WebSocket 帧（RFC 6455）线格式编解码与掩码/分片解析器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104140122.md) |
 | 20261104140123 | 模运算计算器（模逆 / 模幂 / 中国剩余定理 / 同余方程） | Web Tool | Exploration | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104140123.md) |
 | 20261104140124 | Mach-O / Fat Mach-O 文件头只读解析器（macOS 二进制 load commands 树） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104140124.md) |
-| 20261104140125 | .gitattributes 文件生成器（换行符 / 二进制标记 / merge driver / linguist 规则） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104140125.md) |
+| 20261104140125 | .gitattributes 文件生成器（换行符 / 二进制标记 / merge driver / linguist 规则） | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104140125.md) |
 | 20261104200903 | HOTP（RFC 4226）基于计数器的一次性密码生成与校验器 | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200903.md) |
 | 20261104200904 | 位掩码（Bitmask / 位标志）可视化计算器 | Web Tool | Exploration | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200904.md) |
 | 20261104200905 | LC 谐振频率与电抗计算器（谐振频率 / 容抗 / 感抗互求） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104200905.md) |
@@ -247,6 +247,6 @@
 | 20261105140800 | DKIM DNS TXT 记录生成器（选择器公钥记录拼装与标签语法校验） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105140800.md) |
 | 20261105140801 | 摄影景深与超焦距计算器（弥散圆 / 光圈 / 焦距 / 对焦距离互求） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105140801.md) |
 | 20261105140802 | CORS 响应头配置生成器（Allow-Origin / Credentials / 预检缓存策略拼装与校验） | Web Tool | External Reference | Pending | 2026-11-05 | | [详情](./idea-details/20261105140802.md) |
-| 20261105140803 | SSE（Server-Sent Events）消息格式编码 / 解码器（event/data/id/retry 字段与多行 data） | Web Tool | External Reference | Pending | 2026-11-05 | | [详情](./idea-details/20261105140803.md) |
+| 20261105140803 | SSE（Server-Sent Events）消息格式编码 / 解码器（event/data/id/retry 字段与多行 data） | Web Tool | External Reference | In Progress | 2026-11-05 | trae-agent | [详情](./idea-details/20261105140803.md) |
 | 20261105140804 | 表达式调度场算法可视化器（中缀转后缀 RPN 与逐步求值过程演示） | Web Tool | Exploration | Pending | 2026-11-05 | | [详情](./idea-details/20261105140804.md) |
 
