@@ -24873,6 +24873,120 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'bcd-codec',
+    name: 'BCD 码编解码器',
+    nameEn: 'BCD Code Encoder & Decoder',
+    description:
+      '十进制数字与二-十进制编码（BCD）双向转换：支持 8421 加权码、余 3 码（Excess-3）、2421 加权码三种码制的逐位 4 位码组映射，以及打包 BCD 字节（每字节两位数字，奇数位末 nibble 补 0xF）的打包与解包；对非法码组（如 8421 的 1010–1111）给出明确定位，逐码组展示数字与二进制对应关系。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert between decimal digits and binary-coded decimal (BCD) representations in both directions: per-digit 4-bit group mapping for 8421 weighted code, Excess-3, and 2421 weighted code, plus packing and unpacking packed-BCD bytes (two digits per byte, trailing 0xF nibble for odd counts). Illegal groups such as 1010–1111 in 8421 are reported with exact positions, and every digit-to-binary mapping is shown explicitly. Fully local browser computation with zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/bcd-codec',
+    iconName: 'Binary',
+    tags: ['BCD', '8421码', '余3码', '2421码', '打包BCD', '嵌入式', '数字电路'],
+    tagsEn: ['BCD', '8421', 'Excess-3', '2421 Code', 'Packed BCD', 'Embedded', 'Digital Logic'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '259\n007\n1234',
+    doc: {
+      zh: {
+        whatIsIt:
+          'BCD 码编解码器在浏览器本地完成十进制数字与二-十进制编码的双向转换，覆盖 8421 加权码、余 3 码（Excess-3）、2421 加权码三种码制，以及嵌入式与金融报文中常见的打包 BCD（packed BCD）字节形态。',
+        coreFeatures: [
+          '三种码制逐位查表：8421、余 3（数字加 3）、2421 标准加权表，输出空格分隔的 4 位二进制码组',
+          '打包 BCD：每两位十进制数字压入一个字节，奇数位自动在末字节低 nibble 补 0xF，解包时自动识别并跳过该填充位',
+          '严格非法码组校验：8421 拒绝 1010–1111，2421 拒绝标准表未使用的 0101–1010，并给出出错码组',
+          '逐码组明细：界面展示每个 nibble 的二进制与对应数字，便于核对报文与电路波形',
+          '多行批量处理，每行独立返回结果或错误，互不影响',
+        ],
+        howToUse: [
+          '选择转换模式：十进制→码组、码组→十进制、打包 BCD 或解包 BCD',
+          '码组方向再选择具体码制（8421 / 余 3 / 2421），打包方向固定使用 8421',
+          '在左侧文本框每行输入一条数据：码组可用空格分隔或直接粘贴连续二进制串',
+          '右侧即时显示转换结果、逐码组对应关系与错误定位，点击「复制」导出全部成功结果',
+        ],
+        useCases: [
+          '嵌入式固件调试：核对 RTC、ADC、金融 POS 报文中的打包 BCD 字段',
+          '数字电路与计算机组成原理课程中 BCD 码制的作业验证与波形对照',
+          '余 3 码、2421 自补码特性的教学演示',
+          '逆向分析通信协议时还原 BCD 编码的金额、时间与卡号字段',
+        ],
+        privacyNote:
+          '所有转换均在浏览器本地完成，输入的数字与字节不会上传或存储到任何服务器，刷新页面即清空。',
+        faqs: [
+          {
+            question: '8421 码和普通二进制有什么区别？',
+            answer:
+              '8421 BCD 把每一位十进制数字独立编码为 4 位二进制（0–9 对应 0000–1001），1010–1111 为非法码组；而普通二进制把整个数值作为一个整体转换。例如 25 的 8421 BCD 是 0010 0101，普通二进制则是 11001。',
+          },
+          {
+            question: '余 3 码和 2421 码的「自补」是什么意思？',
+            answer:
+              '在这两种码制中，数字 n 的码组按位取反后恰好等于 9−n 的码组，因此求十进制对 9 的补数只需按位反相，简化了早期 BCD 减法电路。本工具的测试用例对余 3 码的该特性做了全量（0–9）验证。',
+          },
+          {
+            question: '打包 BCD 数字位数为奇数怎么办？',
+            answer:
+              '打包时末字节低 nibble 按行业惯例补 0xF（例如 123 → 12 3F），结果中会以警告标签标注；解包时仅末字节低 nibble 的 0xF 会被当作填充位自动跳过，其他任何位置出现大于 9 的 nibble 仍会报错。',
+          },
+          {
+            question: '解包输入支持哪些格式？',
+            answer:
+              '支持空格分隔的十六进制字节（12 34）、0x 前缀（0x12 0x34）与逗号分隔（0x12,0x34），可混用大小写；十六进制位数必须为偶数，每两位构成一个字节。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The BCD encoder/decoder converts between decimal digits and binary-coded decimal representations entirely in your browser, covering 8421 weighted code, Excess-3, and 2421 weighted code, as well as the packed-BCD byte format widely used in embedded firmware and financial messages.',
+        coreFeatures: [
+          'Per-digit lookup for three schemes: 8421, Excess-3 (digit plus 3), and the standard 2421 weighted table, emitted as space-separated 4-bit groups',
+          'Packed BCD: two decimal digits per byte; odd counts get a trailing 0xF nibble that is auto-detected and skipped when unpacking',
+          'Strict illegal-group validation: 1010–1111 rejected for 8421 and the unused 0101–1010 gap rejected for 2421, with the offending group named in the error',
+          'Nibble-level detail showing the binary group and its digit for every position, handy for message and waveform inspection',
+          'Line-by-line batch processing where each row succeeds or fails independently',
+        ],
+        howToUse: [
+          'Pick a mode: digits-to-groups, groups-to-digits, pack to packed BCD, or unpack packed BCD',
+          'For group modes choose the scheme (8421 / Excess-3 / 2421); packing always uses 8421',
+          'Enter one record per line in the left editor: groups may be space-separated or pasted as one continuous bit string',
+          'Read results, nibble mappings, and error positions on the right, then use Copy to export every successful row',
+        ],
+        useCases: [
+          'Firmware debugging of packed-BCD fields in RTC, ADC, and POS payment messages',
+          'Homework verification and waveform comparison for digital logic and computer organization courses',
+          'Teaching the self-complementing property of Excess-3 and 2421 codes',
+          'Recovering BCD-encoded amounts, timestamps, and card numbers during protocol reverse engineering',
+        ],
+        privacyNote:
+          'All conversion runs locally in your browser. Digits and bytes you enter are never uploaded or stored on any server and are cleared when the page is refreshed.',
+        faqs: [
+          {
+            question: 'How is 8421 BCD different from plain binary?',
+            answer:
+              '8421 BCD encodes each decimal digit independently as four bits (0–9 map to 0000–1001), and 1010–1111 are illegal groups. Plain binary converts the whole number as one value: 25 is 0010 0101 in BCD but 11001 in plain binary.',
+          },
+          {
+            question: 'What does "self-complementing" mean for Excess-3 and 2421?',
+            answer:
+              'In these schemes, bitwise-inverting the code of digit n yields exactly the code of digit 9−n. Taking the nines complement therefore reduces to inverting every bit, which simplified early BCD subtraction circuits. The built-in tests verify this property for all digits 0–9 in Excess-3.',
+          },
+          {
+            question: 'What happens with an odd number of digits in packed BCD?',
+            answer:
+              'The last byte is padded with 0xF in its low nibble (e.g. 123 packs to 12 3F) and a warning tag is shown. When unpacking, a 0xF is only accepted as padding in the low nibble of the final byte; any nibble greater than 9 anywhere else is still an error.',
+          },
+          {
+            question: 'Which input formats does unpacking accept?',
+            answer:
+            'Space-separated hex bytes (12 34), 0x-prefixed bytes (0x12 0x34), and comma-separated bytes (0x12,0x34), in either letter case. The hex length must be even since two digits form one byte.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
