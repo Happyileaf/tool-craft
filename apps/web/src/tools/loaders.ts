@@ -270,4 +270,9 @@ export const toolLoaders: Record<
   'bcd-codec': () => import('./bcd-codec'),
   'sexagenary-cycle': () => import('./sexagenary-cycle'),
   'sql-literal-escape': () => import('./sql-literal-escape'),
+  'eip55-checksum': () => import('./eip55-checksum'),
+  'plus-code-codec': () => import('./plus-code-codec'),
+  'lc-resonance-calculator': () => import('./lc-resonance-calculator'),
+  'java-descriptor-converter': () => import('./java-descriptor-converter'),
+  'sse-codec': () => import('./sse-codec'),
 };

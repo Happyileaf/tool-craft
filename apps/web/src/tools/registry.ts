@@ -25215,6 +25215,577 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'eip55-checksum',
+    name: '以太坊地址 EIP-55 校验和编码与校验器',
+    nameEn: 'Ethereum EIP-55 Address Checksum Encoder & Verifier',
+    description:
+      '按 EIP-55 规则对 20 字节以太坊地址做混合大小写校验和编码与校验：内置零依赖原始 Keccak-256（padding 0x01，区别于 NIST SHA3-256），对小写 hex 主体取摘要后按哈希半字节 ≥ 8 决定字母大小写；支持带 / 不带 0x 前缀、每行一条批量编码与校验，能识别全小写 / 全大写的「无校验和」地址并检测大小写篡改，非法长度与非十六进制字符逐条定位报错，纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Apply and verify EIP-55 mixed-case checksums for 20-byte Ethereum addresses: a zero-dependency original Keccak-256 (padding 0x01, distinct from NIST SHA3-256) is built in, hashing the lowercased hex body and capitalizing letters whose hash nibble is at least 8. Addresses with or without the 0x prefix are supported in line-by-line batch encode and verify modes; all-lowercase/all-uppercase "no checksum" addresses are recognized and tampered letter case is detected, while bad lengths and non-hex characters are reported per line. Fully local browser computation with zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/eip55-checksum',
+    iconName: 'ShieldCheck',
+    tags: ['以太坊', 'EIP-55', '校验和', 'Keccak-256', '地址', 'Ethereum', 'checksum', '批量处理'],
+    tagsEn: ['Ethereum', 'EIP-55', 'Checksum', 'Keccak-256', 'Address', 'Batch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaed\n0xFB6916095CA1DF60BB79CE92CE3EA74C37C5D359\n0xdbf03b407c01e7cd3cbea99509d93f8dddc8c6fb',
+    doc: {
+      zh: {
+        whatIsIt:
+          '以太坊地址 EIP-55 校验和编码与校验器是一款纯浏览器本地运行的工具，用于把全小写或全大写的 40 位十六进制地址转换为 EIP-55 混合大小写形式，或核验一个地址的大小写是否符合校验和。EIP-55 不增加任何额外字符，而是利用字母 A–F 的大小写携带校验信息：对小写地址计算 Keccak-256 摘要，若某字母对应哈希位的半字节值不小于 8 就大写，否则小写，从而让一个被抄错的字符极大概率导致校验失败。',
+        coreFeatures: [
+          '零依赖内置原始 Keccak-256（域分隔 0x01），与 NIST SHA3-256（0x06）严格区分，附空串与 abc 标准向量自测',
+          'EIP-55 编码：任意大小写输入统一输出带 0x 前缀的标准混合大小写地址，重复编码幂等',
+          'EIP-55 校验：逐字符比对期望大小写，检测地址抄写 / 篡改导致的校验和失配',
+          '识别全小写 / 全大写「无校验和」地址，提示其未携带校验信息并直接给出标准形式',
+          '支持省略 0x 前缀输入、每行一条批量处理，非法长度与非十六进制字符逐条行号定位报错',
+        ],
+        howToUse: [
+          '在「处理模式」卡片选择「计算校验和」或「校验地址」',
+          '在左侧文本框粘贴一个或多个以太坊地址（每行一条，0x 前缀可选）',
+          '编码模式下右侧实时输出 EIP-55 混合大小写地址，点击「复制」获取结果',
+          '校验模式下每条结果标注「校验和正确」或「无有效校验和」，大小写被改动的地址会明确提示不一致',
+        ],
+        useCases: [
+          '钱包、智能合约开发中把链上查询到的小写地址转换为可人工核对的 EIP-55 形式',
+          '转账前核对对方地址，及时发现少字符、错字符或大小写被意外改动的情况',
+          '批量处理导出的地址清单，统一为带校验和的规范格式',
+          '教学与调试：理解 Keccak-256 与 SHA3-256 的填充差异及 EIP-55 的编码原理',
+        ],
+        privacyNote:
+          '全部哈希与编码均在浏览器本地由零依赖 TypeScript 完成，不发起任何网络请求；输入的地址不会离开设备。',
+        faqs: [
+          {
+            question: '为什么不直接用 Web Crypto 的 SHA3-256？',
+            answer:
+              'EIP-55 使用的是 Keccak 团队原始提交版本，填充域分隔字节为 0x01；而 NIST 标准化后的 SHA3-256 使用 0x06，二者对同一输入产生完全不同的摘要。Web Crypto 只提供 NIST SHA3，因此本工具按 Keccak 参考实现手工内置了原始 Keccak-256，并以空串 c5d2… 与 abc 4e03… 标准向量保证正确性。',
+          },
+          {
+            question: '全小写地址校验时为什么提示「未携带校验和」？',
+            answer:
+              'EIP-55 的校验信息完全藏在字母大小写里。全小写或全大写地址没有任何大小写变化，等于没有携带可核验的校验信息，本身在链上仍然有效。工具不会把它判为错误地址，而是标记 checksumMatched=false 并同时计算出标准 EIP-55 形式供你使用。',
+          },
+          {
+            question: '校验和能防止哪些错误？',
+            answer:
+              '它主要用于发现人工抄写、口头传递或排版过程中的字符错误与意外大小写改动。由于地址本身有 160 位、校验信息又来自 Keccak-256，任何单个字母被错误大写 / 小写都会以极高概率被检出；但它不是加密签名，无法抵御攻击者有意构造的同形地址，转账前仍应通过可信渠道核对完整地址。',
+          },
+          {
+            question: '不带 0x 前缀的地址可以处理吗？',
+            answer:
+              '可以。工具对输入的 0x 前缀做可选解析，输出时统一补上 0x；校验时也会按相同前缀规则逐字符比较，因此带前缀与不带前缀的等价地址都会得到一致的 EIP-55 结果。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Ethereum EIP-55 Address Checksum Encoder & Verifier runs entirely in your browser to turn all-lowercase or all-uppercase 40-hex-digit addresses into the EIP-55 mixed-case form, and to check whether an address follows it. EIP-55 adds no extra characters: it encodes checksum bits in the capitalization of A–F letters. The lowercased address is hashed with Keccak-256, and a letter is capitalized when its corresponding hash nibble is 8 or above, so a mistyped character almost always fails verification.',
+        coreFeatures: [
+          'Zero-dependency built-in original Keccak-256 (domain byte 0x01), strictly distinct from NIST SHA3-256 (0x06), self-tested with empty-string and abc vectors',
+          'EIP-55 encoding: any-case input yields a standard 0x-prefixed mixed-case address, and encoding is idempotent',
+          'EIP-55 verification: character-by-character comparison detects checksum mismatch caused by copying errors or tampered case',
+          'Recognizes all-lowercase/all-uppercase "no checksum" addresses, warns that they carry no checksum, and emits the canonical form',
+          'Accepts addresses with or without 0x, processes one address per line in batch, and reports bad length or non-hex characters with per-line positions',
+        ],
+        howToUse: [
+          'Choose "Compute checksum" or "Verify address" in the mode card',
+          'Paste one or more Ethereum addresses into the left editor, one per line (0x prefix optional)',
+          'In encode mode the EIP-55 mixed-case addresses appear live on the right; click Copy to grab them',
+          'In verify mode each row is tagged "checksum valid" or "no usable checksum", and altered letter case is explicitly flagged',
+        ],
+        useCases: [
+          'Converting lowercase on-chain addresses from wallets and smart-contract tooling into human-checkable EIP-55 form',
+          'Checking a payee address before transfer to catch missing, wrong or accidentally re-cased characters',
+          'Normalizing exported address lists into the checksummed canonical format in batch',
+          'Learning and debugging the padding difference between Keccak-256 and SHA3-256 and how EIP-55 works',
+        ],
+        privacyNote:
+          'All hashing and encoding run locally in your browser via zero-dependency TypeScript. No network requests are made, so your addresses never leave your device.',
+        faqs: [
+          {
+            question: 'Why not use Web Crypto SHA3-256 directly?',
+            answer:
+              'EIP-55 uses the original Keccak submission with domain padding byte 0x01, whereas NIST-standardized SHA3-256 uses 0x06, producing completely different digests for the same input. Web Crypto only offers NIST SHA3, so this tool ships a hand-written original Keccak-256 per the Keccak reference, validated against the canonical empty-string c5d2… and abc 4e03… vectors.',
+          },
+          {
+            question: 'Why does an all-lowercase address show "carries no checksum"?',
+            answer:
+              'EIP-55 stores its checksum entirely in letter capitalization. An all-lowercase or all-uppercase address has no case variation, so it carries no verifiable checksum, even though it remains a valid on-chain address. The tool does not call it invalid: checksumMatched is false and the canonical EIP-55 form is computed for you at the same time.',
+          },
+          {
+            question: 'What errors does the checksum catch?',
+            answer:
+              'It mainly catches character mistakes and accidental case changes from manual transcription, verbal relay or formatting. With 160 address bits and a Keccak-256-derived checksum, any single wrongly cased letter is detected with overwhelming probability. It is not a cryptographic signature, however, and cannot defend against an attacker deliberately crafting a look-alike address—always cross-check the full address through a trusted channel before sending funds.',
+          },
+          {
+            question: 'Can I paste addresses without the 0x prefix?',
+            answer:
+              'Yes. The 0x prefix is parsed as optional on input and always added on output; verification compares under the same prefix rules, so equivalent addresses with or without 0x produce identical EIP-55 results.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'plus-code-codec',
+    name: 'Plus Codes（Open Location Code）编解码器',
+    nameEn: 'Plus Codes (Open Location Code) Encoder & Decoder',
+    description:
+      '在 WGS-84 经纬度与 Google Plus Codes 之间双向转换：编码支持 2/4/6/8 位区域码与 10–15 位网格码并实时展示对应精度，解码输出中心点、四角边界与码区尺寸，另支持基于参考位置的短码缩短与还原；算法为确定性 Base20 格网编码，严格对照 Google 官方整数实现与官方测试向量（encoding/validity/shortCode 三套 CSV），零依赖纯本地运算。',
+    descriptionEn:
+      'Convert between WGS-84 coordinates and Google Plus Codes in both directions: encoding supports 2/4/6/8-character area codes and 10–15-character grid codes with live precision, decoding returns the center point, bounding box and cell size, and reference-based shortening plus recovery of short codes is included. The deterministic Base20 grid algorithm is a faithful port of the official Google integer implementation validated against the official encoding, validity and short-code CSV test vectors, with zero dependencies and fully local computation.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/plus-code-codec',
+    iconName: 'Map',
+    tags: ['Plus Codes', 'Open Location Code', 'OLC', '地理编码', '经纬度', '短码'],
+    tagsEn: ['Plus Codes', 'Open Location Code', 'OLC', 'Geocoding', 'Coordinates', 'Short Code'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '20.3701135, 2.78223535156',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Plus Codes（Open Location Code，OLC）是 Google 开源的位置编码：它把地球表面切成层级嵌套的格网，用排除了易混淆字符的 20 进制字母表把任意经纬度编码成形如 7FG49QCJ+2VX 的短字符串。分隔符「+」固定出现在第 8 个字符之后，前 10 个字符是 5 对经纬度区域码，之后每增加一位再做 5 行 × 4 列的网格细化；即使没有街道门牌，也能用一串可口头传递的代码分享米级精度的位置。',
+        coreFeatures: [
+          '坐标编码：支持 2、4、6、8 位低精度区域码与 10–15 位高精度网格码，下拉实时显示对应纬度精度',
+          '完整解码：输出码区中心、南北 / 东西边界、码区尺寸与有效码长，非法字符与短码输入明确报错',
+          '短码缩短与还原：按参考位置把完整码缩短（如 9QCJ+2VX），或用参考点把短码恢复为完整码',
+          '合法性校验：严格按官方规则校验分隔符位置、填充 0、字符表与首对字符越界，兼容小写输入',
+          '零依赖纯函数实现，逐行对照 Google 官方 openlocationcode.js 整数算法，并通过官方三套 CSV 测试向量',
+        ],
+        howToUse: [
+          '在「处理模式」中选择编码、解码或短码缩短 / 还原',
+          '编码模式：填入纬度与经度（经度自动按 ±180 回绕、纬度自动裁剪到 ±90），选择码长后右侧实时生成 Plus Code',
+          '解码模式：粘贴完整 Plus Code，右侧展示中心、四角边界、码区尺寸；短码会被识别并提示先还原',
+          '短码模式：输入完整码时按参考位置缩短，输入短码时用同一参考位置还原，点击「复制」获取结果',
+        ],
+        useCases: [
+          '无门牌地址地区（村镇、户外、工地）分享救援、物流或集合位置',
+          '把 GPS 坐标压缩成可口头传递、可印刷在名片或票据上的短代码',
+          '与 Geohash、WGS-84 坐标等其他位置标识互相对照与教学演示',
+          '离线环境下的确定性地理编码：不依赖任何在线地图服务',
+        ],
+        privacyNote:
+          '所有编解码均由浏览器本地零依赖 TypeScript 完成，不发起任何网络请求，输入的坐标与位置代码不会离开设备。',
+        faqs: [
+          {
+            question: 'Plus Code 和 Geohash 有什么区别？',
+            answer:
+              '两者都是把经纬度编码成短字符串的格网方案，但算法完全不同：Geohash 使用 Base32 与 Z 序（Morton）曲线交替二分经纬度；Plus Codes 使用排除易混淆字符的 Base20 字母表，经纬度成对编码且「+」固定在第 8 位之后，网格细化阶段采用 5 行 × 4 列。Plus Codes 还天然支持配合参考位置使用的短码，同一条街道附近可以只传 4–6 个字符。',
+          },
+          {
+            question: '码长应该怎么选？',
+            answer:
+              '10 位码（如 8FVC2222+22）的码区约 14 米见方，已覆盖大多数寻址场景；11–15 位用于需要亚米级精度的工程测量。2/4/6/8 位是只含区域部分的低精度码，会用 0 填充并以「+」结尾（如 7FG40000+），适合表达城市级或街区级范围，不能再做短码缩短。奇数长度只允许出现在 10 位之后的网格部分。',
+          },
+          {
+            question: '短码（Short Code）为什么需要参考位置？',
+            answer:
+              '短码省略了完整码前面的区域字符，例如完整码 9C3W9QCJ+2VX 在参考点附近可缩短为 9QCJ+2VX 甚至 +2VX。被省略的前缀要靠一个大致的参考经纬度补回，工具按官方 recoverNearest 算法选择距离参考点最近的完整码区。因此同一短码配合不同参考位置可能还原到不同区域，传递短码时必须同时告知大致位置（如城市名）。',
+          },
+          {
+            question: '为什么实现不用现成的 npm 包？',
+            answer:
+              '为保证零依赖与可审计性，本工具直接把 Google 官方 openlocationcode.js 的整数算法移植为 TypeScript，避免浮点归一化带来的边界误差，并完整保留官方的越界裁剪、经度回绕与填充规则。测试使用官方仓库提供的 encoding.csv、validityTests.csv 与 shortCodeTests.csv 全量向量，确保与 Google 实现逐字符一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Plus Codes (Open Location Code, OLC) is Google’s open location encoding: the Earth’s surface is divided into a hierarchy of nested grids, and any latitude/longitude pair is encoded with a confusion-resistant Base20 alphabet into a short string such as 7FG49QCJ+2VX. The "+" separator always sits after the eighth character; the first ten characters form five lat/lng area pairs, and every extra character refines the cell through a 5-row by 4-column grid. Even without street addresses, a meter-accurate location can be shared as a code that is easy to say out loud.',
+        coreFeatures: [
+          'Coordinate encoding: 2/4/6/8-character area codes and 10–15-character grid codes, with the matching latitude precision shown live',
+          'Full decoding: center point, south/north and west/east bounds, cell size and effective code length; short codes and illegal characters are explicitly rejected',
+          'Shortening and recovery: shorten a full code relative to a reference point (e.g. 9QCJ+2VX), or recover a short code back to a full code with the same reference',
+          'Validity checks per the official rules: separator position, padding zeros, alphabet and out-of-range first pairs, accepting lowercase input',
+          'Zero-dependency pure functions ported line by line from the official Google openlocationcode.js integer algorithm, verified against all three official CSV vector suites',
+        ],
+        howToUse: [
+          'Choose encode, decode, or shorten/recover in the mode card',
+          'Encode mode: enter latitude and longitude (longitude wraps at ±180, latitude clamps to ±90), pick a code length, and the Plus Code appears live on the right',
+          'Decode mode: paste a full Plus Code to see the center, bounding box and cell size; short codes are flagged and must be recovered first',
+          'Short-code mode: a full code is shortened against the reference location, while a short code is recovered; click Copy to grab the result',
+        ],
+        useCases: [
+          'Sharing rescue, delivery or meeting locations in areas without street addresses (villages, outdoors, construction sites)',
+          'Compressing GPS coordinates into short codes that can be spoken or printed on business cards and tickets',
+          'Comparing and teaching alongside Geohash, WGS-84 coordinates and other location identifiers',
+          'Deterministic geocoding in offline environments without any online map service',
+        ],
+        privacyNote:
+          'All encoding and decoding runs locally in your browser via zero-dependency TypeScript. No network requests are made, so coordinates and codes never leave your device.',
+        faqs: [
+          {
+            question: 'How do Plus Codes differ from Geohash?',
+            answer:
+              'Both encode coordinates into short grid-based strings, but the algorithms differ: Geohash uses Base32 with a Z-order (Morton) curve that bisects latitude and longitude alternately, while Plus Codes use a confusion-resistant Base20 alphabet, encode lat/lng in pairs with "+" fixed after position eight, and refine beyond ten characters on a 5×4 grid. Plus Codes also have first-class short codes that rely on a reference location, so only four to six characters may be needed near a known area.',
+          },
+          {
+            question: 'Which code length should I choose?',
+            answer:
+              'A 10-character code (e.g. 8FVC2222+22) defines a cell of roughly 14 meters, enough for most addressing; 11–15 characters suit engineering-grade sub-meter precision. Lengths 2/4/6/8 are coarse area codes padded with zeros and ending in "+" (e.g. 7FG40000+) for city- or block-level areas, and they cannot be shortened. Odd lengths are only allowed for the grid portion beyond ten characters.',
+          },
+          {
+            question: 'Why does a short code need a reference location?',
+            answer:
+              'A short code drops the leading area characters of the full code—9C3W9QCJ+2VX may become 9QCJ+2VX or even +2VX near a reference point. The missing prefix is rebuilt from an approximate reference latitude/longitude, and the official recoverNearest algorithm picks the full cell nearest that reference. The same short code can therefore recover to different areas with different references, so a rough location (such as a city) must always accompany a short code.',
+          },
+          {
+            question: 'Why not use an existing npm package?',
+            answer:
+              'For zero dependencies and auditability, the official Google openlocationcode.js integer algorithm is ported directly to TypeScript, avoiding the boundary errors that floating-point normalization can introduce while preserving the official clipping, longitude wrapping and padding rules. Tests use the full official encoding.csv, validityTests.csv and shortCodeTests.csv vectors to guarantee character-for-character compatibility with Google’s implementation.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'lc-resonance-calculator',
+    name: 'LC 谐振频率与电抗计算器',
+    nameEn: 'LC Resonance & Reactance Calculator',
+    description:
+      '理想 LC 谐振回路知二求三：f₀ = 1/(2π√(LC))，并在给定频率下计算感抗 Xl = 2πfL 与容抗 Xc = 1/(2πfC)，支持 L、C、f、Ω 间 nH~H、pF~F、Hz~GHz 单位自适应换算与常用电容选型参考。',
+    descriptionEn:
+      'Solve an ideal LC resonant tank from any two known quantities: f₀ = 1/(2π√(LC)), plus inductive reactance Xl = 2πfL and capacitive reactance Xc = 1/(2πfC) at a given frequency, with adaptive nH–H, pF–F, Hz–GHz and ohm prefixes and standard-capacitance selection hints.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/lc-resonance-calculator',
+    iconName: 'Gauge',
+    tags: ['LC谐振', '谐振频率', '感抗', '容抗', '电感', '电容'],
+    tagsEn: ['LC Resonance', 'Resonant Frequency', 'Inductive Reactance', 'Capacitive Reactance', 'Inductor', 'Capacitor'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'L=100µH, C=100pF',
+    doc: {
+      zh: {
+        whatIsIt:
+          'LC 谐振频率与电抗计算器面向射频、开关电源与模拟电路选型场景，基于理想无损电感 L 与电容 C 的解析公式做本地实时求解：谐振时感抗与容抗大小相等、符号相反，回路总电抗为零。工具覆盖谐振频率正算、由目标频率反求 L 或 C，以及单一频率下的感抗 / 容抗计算，并自动在毫、微、纳、皮等工程单位间换算。',
+        coreFeatures: [
+          '五种求解模式：L+C→f₀、L+f₀→C、C+f₀→L、L+f→Xl、C+f→Xc，覆盖 idea 全部验收场景',
+          '多单位输入：电感 nH/µH/mH/H，电容 pF/nF/µF/F，频率 Hz/kHz/MHz/GHz，结果按数量级自适应展示',
+          '一次求解同时给出角频率 ω = 2πf 与谐振点 Xl = Xc，便于核对谐振条件',
+          '常用电容选型参考：在目标谐振频率下列出标准电容量级对应的理想电感值',
+          '零依赖纯函数计算内核与 UI 解耦，非法输入（零、负数、缺失）给出明确中文报错',
+        ],
+        howToUse: [
+          '在模式按钮中选择已知量组合，例如「L + C → f₀」',
+          '为每个已知量填写数值并通过右侧下拉选择单位',
+          '结果表格实时展示求解量、角频率与电抗，切换模式时已填的共同已知量会保留',
+          '点击示例按钮可快速载入 100µH×100pF 等典型工况，点击「复制结果」导出文本',
+        ],
+        useCases: [
+          '射频调谐回路、天线匹配与 Colpitts / Hartley 振荡器的谐振频率估算',
+          'DC-DC 开关电源输出 LC 滤波器的截止频率与纹波选型',
+          '给定工作频率评估电感感抗、电容容抗，判断旁路 / 隔直是否充分',
+          '面试与教学中验证 f₀、Xl、Xc 公式及单位换算',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地以纯函数完成，不发送任何网络请求，电路参数不会离开设备。',
+        faqs: [
+          {
+            question: '为什么谐振时 Xl 等于 Xc？',
+            answer:
+              '感抗 Xl = 2πfL 随频率升高而增大，容抗 Xc = 1/(2πfC) 随频率升高而减小；二者在谐振频率 f₀ = 1/(2π√(LC)) 处数值相等、相位相反，回路总电抗为零，电流只受等效串联电阻限制。本工具按理想无损模型计算，未计入 ESR、磁芯损耗与寄生参数。',
+          },
+          {
+            question: '计算结果和 LTspice / 万用表实测不一致？',
+            answer:
+              '本工具采用理想 L、C 解析公式，实际元件存在容差、等效串联电阻（ESR）、自谐振频率（SRF）与寄生电容，高频下偏差尤其明显。选型时应留足裕量，并以元件数据手册的 SRF、Q 值与温度特性为准；工具输出的是理想参考值而非精确仿真。',
+          },
+          {
+            question: '为什么频率或元件值非常小时结果出现很大的数？',
+            answer:
+              'f₀ 与 √(LC) 成反比、Xc 与 fC 成反比，当 L、C 或 f 趋近零时结果会趋于无穷大，这是公式本身的数学行为。工具要求所有输入为正数，零与负数会直接报错；结果表格使用自适应单位（如 kΩ、MHz）以避免长串零。',
+          },
+          {
+            question: '选型参考表里的电感是标准值吗？',
+            answer:
+              '不是。表格按常用标准电容量级（10pF–100nF）反推在目标频率下谐振所需的理想电感，仅用于快速判断可行的数量级区间；实际选型还需结合 E 系列标准值、饱和电流、Q 值与封装，再用电感的标称值回算实际谐振频率。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The LC Resonance & Reactance Calculator serves RF, switching-power-supply and analog-circuit selection with local, real-time solutions of the analytical formulas for an ideal lossless inductor L and capacitor C. At resonance the inductive and capacitive reactances are equal in magnitude and opposite in sign, so the total tank reactance is zero. It covers forward resonant-frequency calculation, inverse solving of L or C from a target frequency, and single-frequency reactance calculations, with automatic engineering-prefix conversion across milli, micro, nano and pico units.',
+        coreFeatures: [
+          'Five solve modes: L+C→f₀, L+f₀→C, C+f₀→L, L+f→Xl and C+f→Xc, covering every acceptance scenario',
+          'Multi-unit inputs: nH/µH/mH/H for inductance, pF/nF/µF/F for capacitance, Hz/kHz/MHz/GHz for frequency, with adaptive output prefixes',
+          'Each solution also reports angular frequency ω = 2πf and the resonant Xl = Xc pair for sanity checks',
+          'Selection hints: ideal inductances for common standard capacitance magnitudes at the target resonant frequency',
+          'Zero-dependency pure-function calculation core decoupled from the UI, with explicit Chinese error messages for zero, negative or missing inputs',
+        ],
+        howToUse: [
+          'Pick the mode matching your known quantities, e.g. "L + C → f₀"',
+          'Enter each value and choose its unit in the dropdown beside it',
+          'The result table live-updates with the solved quantity, angular frequency and reactances; shared known values are kept when switching modes',
+          'Use the example buttons to load typical cases such as 100µH×100pF, and click Copy Result to export the text',
+        ],
+        useCases: [
+          'Resonant-frequency estimates for RF tuning tanks, antenna matching and Colpitts/Hartley oscillators',
+          'Cutoff-frequency and ripple selection for output LC filters in DC-DC switching converters',
+          'Judging bypass/DC-blocking adequacy from inductive and capacitive reactance at a working frequency',
+          'Verifying f₀, Xl and Xc formulas and unit conversions in interviews and teaching',
+        ],
+        privacyNote:
+          'All computation runs locally in your browser as pure functions. No network requests are made, and circuit parameters never leave your device.',
+        faqs: [
+          {
+            question: 'Why does Xl equal Xc at resonance?',
+            answer:
+              'Inductive reactance Xl = 2πfL grows with frequency while capacitive reactance Xc = 1/(2πfC) shrinks; at the resonant frequency f₀ = 1/(2π√(LC)) they match in magnitude and oppose in phase, leaving zero net tank reactance so current is limited only by equivalent series resistance. The tool uses an ideal lossless model and does not account for ESR, core losses or parasitics.',
+          },
+          {
+            question: 'Why do results differ from LTspice or bench measurements?',
+            answer:
+              'The tool applies ideal L and C analytical formulas. Real components have tolerances, equivalent series resistance (ESR), self-resonant frequency (SRF) and parasitic capacitance, with deviations growing at high frequencies. Leave design margin and rely on datasheet SRF, Q and temperature characteristics; the output is an ideal reference rather than a precise simulation.',
+          },
+          {
+            question: 'Why do very small frequencies or component values produce huge results?',
+            answer:
+              'f₀ is inversely proportional to √(LC) and Xc is inversely proportional to fC, so results diverge as L, C or f approach zero—an inherent property of the formulas. All inputs must be positive; zero and negative values are rejected, and adaptive prefixes (kΩ, MHz, etc.) keep output readable.',
+          },
+          {
+            question: 'Are the inductances in the selection table standard values?',
+            answer:
+              'No. The table back-solves the ideal inductance needed to resonate at the target frequency for common standard capacitance magnitudes (10pF–100nF), giving a quick order-of-magnitude feasibility view. Real selection must also consider E-series nominal values, saturation current, Q and package, then re-check the actual resonant frequency with the chosen nominal inductor.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'java-descriptor-converter',
+    name: 'Java 内部类名与描述符转换器',
+    nameEn: 'Java Binary Name & JVM Descriptor Converter',
+    description:
+      '按 JVMS §4.2/§4.3 在浏览器本地完成字节码名称与类型表示互转：内部名（java/util/Map$Entry）与源码类名（java.util.Map.Entry）双向转换，字段描述符（如 [[Ljava/lang/String;、I、Z）生成与解析，方法描述符（如 (Ljava/lang/String;I)V）的参数列表与返回类型拆解；覆盖全部 8 种原始类型、void、数组维度（≤255）与引用类型语法校验，非法输入给出带位置的具体错误，零依赖纯函数实现。',
+    descriptionEn:
+      'Convert Java bytecode names and type representations locally per JVMS §4.2/§4.3: bidirectional conversion between binary names (java/util/Map$Entry) and dotted source names (java.util.Map.Entry), building and parsing field descriptors (e.g. [[Ljava/lang/String;, I, Z), and splitting method descriptors (e.g. (Ljava/lang/String;I)V) into parameter and return types. It covers all eight primitives, void, array dimensions (up to 255) and reference-type syntax validation, with position-specific error messages and a zero-dependency pure-function core.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/java-descriptor-converter',
+    iconName: 'FileCode',
+    tags: ['Java', 'JVM', '字节码', '描述符', 'Descriptor', '内部类'],
+    tagsEn: ['Java', 'JVM', 'Bytecode', 'Descriptor', 'Internal Name', 'JVMS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '(Ljava/lang/String;I)V',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Java 源码编译成 class 文件后，类名与类型在字节码常量池中并不按源码写法存储：类使用以「/」分隔包、以「$」连接内部类的内部名（binary name），字段与方法参数则使用 JVMS §4.3 定义的描述符（descriptor）字符串，例如 int 记为 I、boolean 数组记为 [Z、String 二维数组记为 [[Ljava/lang/String;。本工具按 Java 虚拟机规范在这些表示之间做确定性双向转换，并对每一处语法错误返回带字符位置的中文提示。',
+        coreFeatures: [
+          '内部名互转：java/util/Map$Entry 与 java.util.Map.Entry 双向转换，支持匿名类编号（如 Outer$1）与多级嵌套',
+          '字段描述符：源码类型（含 int[][] 等数组后缀）生成描述符，反向解析出基础类型、数组维度与引用 / 原始分类',
+          '方法描述符：按 (参数...)返回 语法拆解参数列表与返回类型，或由逗号分隔的源码签名生成完整描述符',
+          '完整语法校验：覆盖 B/C/D/F/I/J/S/Z/V 九种单字符标记、L...; 引用语法、数组维度上限 255 与参数数量上限，错误信息标注具体位置',
+          '零依赖纯函数内核与 React UI 解耦，15 条固定向量单元测试覆盖规范示例、round-trip 逆运算与各类非法输入',
+        ],
+        howToUse: [
+          '在顶部选择「内部名」「字段描述符」或「方法描述符」模式',
+          '内部名模式：左右两栏分别粘贴源码类名与内部名，另一侧实时给出转换结果并可一键复制',
+          '字段模式：先用方向按钮选择生成或解析，输入类型名（数组以 [] 结尾）或描述符，结果展示描述符、基础类型与维度',
+          '方法模式：生成时按「类型, 类型」填写参数（无参留空）并填写返回类型；解析时直接粘贴 (…)X 形式描述符，表格逐个列出参数',
+        ],
+        useCases: [
+          '阅读 javap -v、ASM、Byte Buddy 等字节码工具输出时把描述符翻译回可读的 Java 类型',
+          '编写注解处理器、Agent 或字节码插桩逻辑时手工核对方法与字段描述符',
+          '排查 ClassFormatError、NoSuchMethodError 中描述符不匹配的具体差异',
+          'JVM 规范教学与面试准备：理解内部名、字段描述符与方法描述符的编码规则',
+        ],
+        privacyNote:
+          '全部转换在浏览器本地由零依赖 TypeScript 纯函数完成，不发起任何网络请求，输入的类名与描述符不会离开设备。',
+        faqs: [
+          {
+            question: '源码类名转内部名时，工具怎么区分包名的点和内部类的点？',
+            answer:
+              'Java 源码中包段按约定全小写、类段首字母大写，工具把第一个首字母大写的段视为顶层类，其后的点全部转成「$」，之前的点转成「/」，例如 com.example.Outer.Inner → com/example/Outer$Inner。字节码内部名本身没有歧义，反向转换只是机械地把 / 与 $ 替换为点。若源码类名不符合大写约定（不推荐），请直接以内部名模式输入。',
+          },
+          {
+            question: '描述符里的 V（void）能用在字段上吗？',
+            answer:
+              '不能。按 JVMS §4.3.2，字段描述符只允许 B/C/D/F/I/J/S/Z 八种原始类型、L...; 引用类型与它们的数组；V 仅出现在方法描述符的返回类型位置表示无返回值。本工具的字段模式接受 V 仅用于语法学习，实际 class 文件中出现 void 字段会被校验器拒绝。',
+          },
+          {
+            question: '数组维度和参数数量为什么限制 255？',
+            answer:
+              '这是 JVM 规范的硬限制：描述符中「[」前缀最多 255 个，而方法参数（含实例方法隐式传入的 this）受限于方法代码属性的最大局部变量表等约束，实践中参数数量上限也是 255。超过上限的描述符无法通过类文件校验，工具会在生成与解析两端同时拦截并报错。',
+          },
+          {
+            question: '为什么非法描述符的报错里带「位置」？',
+            answer:
+              '解析器按字符游标逐个消费描述符，遇到缺分号、意外结束或未知类型标记时会把当前下标写进错误信息（如「位置 12 缺少 ;」），便于在很长的方法描述符里快速定位问题。所有校验规则与 JVMS §4.3 的文法一一对应，错误提示可直接对照规范条目排查。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Once Java source is compiled into a class file, class names and types are no longer stored in source form: classes use binary names with "/" for packages and "$" for nested classes, while fields and method parameters use descriptor strings defined in JVMS §4.3—int becomes I, a boolean array becomes [Z, and a two-dimensional String array becomes [[Ljava/lang/String;. This tool performs deterministic bidirectional conversion between these representations per the JVM specification, returning position-specific messages for every syntax error.',
+        coreFeatures: [
+          'Binary-name conversion: java/util/Map$Entry ↔ java.util.Map.Entry, including anonymous class numbers (e.g. Outer$1) and multi-level nesting',
+          'Field descriptors: build descriptors from source types with [] array suffixes, or parse them back into base type, dimensions and reference/primitive classification',
+          'Method descriptors: split (params)return syntax into a parameter list and return type, or build the full descriptor from a comma-separated source signature',
+          'Full syntax validation: the nine single-letter markers B/C/D/F/I/J/S/Z/V, L...; reference syntax, the 255 array-dimension and parameter limits, with error messages citing character positions',
+          'Zero-dependency pure-function core decoupled from the React UI, with 15 fixed-vector unit tests covering spec examples, round-trip inverses and malformed inputs',
+        ],
+        howToUse: [
+          'Pick the binary-name, field-descriptor or method-descriptor mode at the top',
+          'Name mode: paste a dotted source name on the left and a binary name on the right; each side live-converts and offers one-click copy',
+          'Field mode: choose build or parse with the direction toggle, enter a type name (arrays end with []) or a descriptor, and inspect the descriptor, base type and dimensions',
+          'Method mode: for building, enter comma-separated parameter types (leave empty for no args) and a return type; for parsing, paste a (…)X descriptor and read the per-parameter table',
+        ],
+        useCases: [
+          'Translating output from javap -v, ASM or Byte Buddy back into readable Java types',
+          'Hand-checking field and method descriptors while writing annotation processors, agents or bytecode instrumentation',
+          'Diagnosing descriptor mismatches behind ClassFormatError or NoSuchMethodError',
+          'Teaching and interview preparation for JVM binary names, field descriptors and method descriptors',
+        ],
+        privacyNote:
+          'All conversion runs locally in your browser via zero-dependency TypeScript pure functions. No network requests are made, and entered names or descriptors never leave your device.',
+        faqs: [
+          {
+            question: 'How does the tool tell package dots from nested-class dots in a source name?',
+            answer:
+              'By convention Java package segments are lowercase while class segments start with an uppercase letter. The tool treats the first capitalized segment as the top-level class, turns preceding dots into "/" and every later dot into "$"—com.example.Outer.Inner becomes com/example/Outer$Inner. Binary names themselves are unambiguous, so the reverse direction simply replaces / and $ with dots. For non-conventional names, enter the binary name directly in that mode.',
+          },
+          {
+            question: 'Can V (void) be used in a field descriptor?',
+            answer:
+              'No. Per JVMS §4.3.2, field descriptors only allow the eight primitives B/C/D/F/I/J/S/Z, L...; reference types and their arrays. V appears only as the return type of a method descriptor to denote no return value. A void field in an actual class file would be rejected by the verifier.',
+          },
+          {
+            question: 'Why are array dimensions and parameter counts limited to 255?',
+            answer:
+              'These are hard JVM specification limits: a descriptor carries at most 255 "[" prefixes, and method parameters (including the implicit this for instance methods) are bounded by the limits of the method’s local variable table, giving a practical maximum of 255 parameters. Descriptors beyond these limits fail class-file verification, and the tool rejects them on both build and parse paths.',
+          },
+          {
+            question: 'Why do error messages include a position?',
+            answer:
+              'The parser walks the descriptor with a character cursor, so a missing semicolon, unexpected end or unknown type marker can be reported with its exact index (e.g. "missing ; at position 12"), which is invaluable inside long method descriptors. Every validation rule maps to the JVMS §4.3 grammar, so messages can be cross-checked directly against the specification.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'sse-codec',
+    name: 'SSE 消息格式编解码器',
+    nameEn: 'Server-Sent Events (SSE) Codec',
+    description:
+      '按 HTML Living Standard §9.2 在浏览器本地完成 text/event-stream 线格式与结构化消息的双向转换：解析 event/data/id/retry 字段、多行 data 拼接、注释心跳、CRLF/CR/LF 混合换行与末尾无空行事件块，非法 retry 给出规范告警；编码侧把消息数组输出为标准流，自动拆分多行 data、规范化换行并补齐派发空行，零依赖纯函数实现。',
+    descriptionEn:
+      'Bidirectional conversion between text/event-stream wire format and structured messages in your browser, following HTML Living Standard §9.2: parse event/data/id/retry fields, multi-line data joining, comment heartbeats, mixed CRLF/CR/LF endings and unterminated final event blocks, with spec-compliant warnings for invalid retry values. The encoder turns message arrays into a standard stream, splitting multi-line data, normalizing newlines and appending the dispatch blank line. Built with zero-dependency pure functions.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/sse-codec',
+    iconName: 'MessageSquare',
+    tags: ['SSE', 'Server-Sent Events', '编解码', '事件流', 'HTTP'],
+    tagsEn: ['SSE', 'Server-Sent Events', 'Codec', 'Event Stream', 'HTTP'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'event: update\ndata: {"price": 12.5}\n\n',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Server-Sent Events（SSE）是浏览器与服务器之间基于 HTTP 的单向事件推送协议，其 text/event-stream 载荷是纯文本线格式：每条消息由若干「字段: 值」行组成，遇到空行派发，字段包括 event（事件类型）、data（数据，多行以换行拼接）、id（lastEventId）与 retry（重连等待毫秒），以冒号开头的行是注释（常用于心跳）。本工具按 HTML Living Standard §9.2 的派发算法实现双向转换，并对不符合规范的输入给出告警或错误。',
+        coreFeatures: [
+          '解码：严格按标准行解析算法处理 LF / CRLF / CR 三种换行、UTF-8 BOM、冒号后单空格规则与无冒号字段行',
+          '多行 data 自动以换行拼接；event 派发后重置，id/retry 按标准作为跨消息持久状态保留',
+          '注释心跳单独列为条目并保留行号；未知字段忽略；非法 retry 不更新重连时间并输出带行号的告警',
+          '编码：消息数组输出标准流，多行 data 拆为多个 data: 行，换行统一为 LF，块间空行分隔且结尾补齐派发空行',
+          '零依赖纯函数内核与 React UI 解耦，17 条单元测试覆盖 MDN 经典向量、round-trip 逆运算与各类边界情况',
+        ],
+        howToUse: [
+          '解码模式：把抓包或后端日志中的 text/event-stream 文本粘贴到左侧，右侧表格逐条列出消息与注释，可一键复制结构化 JSON',
+          '编码模式：在左侧填写消息对象数组（每条可含 data/event/id/retry），右侧实时生成可直接发送的 SSE 流文本',
+          'data 字段中的换行无需手工处理：解码自动拼接、编码自动拆行',
+          'retry 必须是非负整数（毫秒）；非法值会在解码告警中指出行号，在编码时直接报错',
+        ],
+        useCases: [
+          '调试 EventSource、Fetch streaming 或 AI 流式接口（如 SSE 承载的 token 流）的实际报文',
+          '为后端接口或 Mock Server 构造符合规范的 SSE 测试数据',
+          '排查事件不派发、多行消息断裂、retry 不生效等线格式问题',
+          '学习 SSE 协议规范与浏览器 EventSource 的派发语义',
+        ],
+        privacyNote:
+          '全部编解码在浏览器本地由零依赖 TypeScript 纯函数完成，不发起任何网络请求，粘贴的事件流与消息内容不会离开设备。',
+        faqs: [
+          {
+            question: '为什么解析出的后一条消息里带着前面消息的 id？',
+            answer:
+              '这是 SSE 规范的刻意设计：id 对应浏览器的 lastEventId、retry 对应重连时间，二者是连接级持久状态，派发消息时不会重置；而 data 与 event 缓冲区在每次空行派发后清空。因此当后续消息未重新声明 id 时，解析结果会沿用上一个 id，这与浏览器 EventSource 的行为完全一致。',
+          },
+          {
+            question: '消息为什么必须以空行结尾？',
+            answer:
+              '标准规定空行是事件派发的触发器：没有空行，字段只停留在缓冲区里，EventSource 不会产生 message 事件。编码模式输出的流会自动在结尾补一个空行；解码模式对「最后一个事件块没有终止空行」的宽容处理是工具的辅助能力，真实服务端仍应保证空行派发。',
+          },
+          {
+            question: 'data 里的换行和字段行的换行有什么区别？',
+            answer:
+              '线格式中每个字段只能占一行，想发送含换行的数据，就要写多个 data: 行：标准把同名 data 行的值用「\\n」拼接成一个 data 字符串。编码模式检测到 data 中的换行会自动拆行，解码模式再还原，因此 JSON 之外的纯文本多行消息也能正确 round-trip。',
+          },
+          {
+            question: '注释心跳有什么用，会出现在消息里吗？',
+            answer:
+              '以冒号开头的行（如 ": ping"）是注释，浏览器会完全忽略，不触发任何事件；服务端常用它在空闲时发送心跳，防止代理层因超时断开连接。本工具把注释单独展示在结果表格中并标记行号，便于核对心跳节奏，但它们不会进入结构化消息 JSON。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Server-Sent Events (SSE) is a one-way HTTP push protocol whose text/event-stream payload is a plain-text wire format: each message consists of "field: value" lines and is dispatched on a blank line. Fields are event (type), data (joined with newlines across multiple lines), id (lastEventId) and retry (reconnect delay in milliseconds); lines starting with a colon are comments, often used as heartbeats. This tool implements bidirectional conversion following the HTML Living Standard §9.2 dispatch algorithm, with warnings or errors for non-conformant input.',
+        coreFeatures: [
+          'Decoding: the spec line-parsing algorithm handles LF/CRLF/CR endings, a leading UTF-8 BOM, the single-space-after-colon rule and colon-less field lines',
+          'Multi-line data is joined with newlines; event resets on dispatch while id/retry persist across messages as connection-level state',
+          'Comment heartbeats are listed separately with line numbers; unknown fields are ignored; an invalid retry leaves reconnect time untouched and emits a line-specific warning',
+          'Encoding: message arrays become a standard stream—multi-line data splits into data: lines, newlines normalize to LF, blocks are separated by blank lines and a final dispatch blank line is appended',
+          'Zero-dependency pure-function core decoupled from the React UI, with 17 unit tests covering MDN-classic vectors, round-trip inverses and edge cases',
+        ],
+        howToUse: [
+          'Decode mode: paste text/event-stream traffic from packet captures or backend logs on the left; the right table lists messages and comments and can copy structured JSON',
+          'Encode mode: enter an array of message objects (each with data/event/id/retry as needed) on the left and get a ready-to-send SSE stream on the right',
+          'Newlines inside data require no manual handling: decoding joins them and encoding splits them automatically',
+          'retry must be a non-negative integer in milliseconds; bad values produce line-numbered warnings when decoding and hard errors when encoding',
+        ],
+        useCases: [
+          'Debugging real payloads from EventSource, Fetch streaming or AI token-stream endpoints over SSE',
+          'Building spec-compliant SSE fixtures for backend APIs or mock servers',
+          'Diagnosing undelivered events, broken multi-line messages and ineffective retry values',
+          'Learning the SSE protocol and the dispatch semantics of the browser EventSource API',
+        ],
+        privacyNote:
+          'All encoding and decoding runs locally in your browser via zero-dependency TypeScript pure functions. No network requests are made, and pasted streams or messages never leave your device.',
+        faqs: [
+          {
+            question: 'Why does a later parsed message carry the id of an earlier one?',
+            answer:
+              'This is intentional: id maps to the browser’s lastEventId and retry to the reconnect delay, both connection-level persistent state that survives dispatch, while the data and event buffers reset on every blank line. When a later message does not redeclare id, the parsed result reuses the previous id—exactly how the browser EventSource behaves.',
+          },
+          {
+            question: 'Why must a message end with a blank line?',
+            answer:
+              'The spec uses a blank line as the dispatch trigger: without it, fields stay buffered and EventSource emits no message event. Encode mode automatically appends the trailing blank line; the decoder’s tolerance of an unterminated final block is a convenience of this tool, while real servers should always dispatch with a blank line.',
+          },
+          {
+            question: 'What is the difference between newlines inside data and field-line newlines?',
+            answer:
+              'Each field occupies a single line in the wire format. To send data containing newlines, write multiple data: lines: the spec joins same-named data values with "\\n" into one data string. Encode mode splits data on newlines automatically and decode mode restores them, so plain-text multi-line messages round-trip just like JSON.',
+          },
+          {
+            question: 'What are comment heartbeats for, and do they appear in messages?',
+            answer:
+              'Lines starting with a colon (e.g. ": ping") are comments that browsers ignore entirely—no event fires. Servers send them during idle periods as heartbeats to stop proxies from timing out the connection. This tool shows comments separately in the result table with line numbers so you can verify heartbeat cadence, but they never enter the structured message JSON.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

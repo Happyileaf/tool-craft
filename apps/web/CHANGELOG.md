@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-05 ：【Agent自主迭代】新增 5 个 EIP-55、Plus Codes、LC 谐振、Java 描述符与 SSE 编解码工具
+
+- **新增**：以太坊 EIP-55 地址校验和编码器（eip55-checksum）— 按 EIP-55 对 20 字节十六进制地址做混合大小写校验和编码与验证，内置 EIP-55 官方测试向量、缺 0x 前缀与 ENS 名称提示，非法长度 / 非十六进制字符逐条中文报错，基于 keccak-256 纯本地运算
+- **新增**：Plus Codes（Open Location Code）编解码器（plus-code-codec）— 移植 Google 官方整数算法，支持全精度 / 缩短码编码与区域解码、shorten 缩短与 recoverNearest 就近恢复、合法性与码长校验，三套官方 CSV 向量（encoding / validity / shortCode）全量断言，经纬度自动裁剪与回绕归一，纯本地运算
+- **新增**：LC 谐振频率与电抗计算器（lc-resonance-calculator）— 按 f₀=1/(2π√(LC)) 支持 L+C、L+f、C+f 知二求三及感抗 / 容抗计算，nH–H、pF–F、Hz–GHz、Ω–MΩ 单位词头自适应，输出谐振频率、角频率、Xl/Xc 与标准电容反推电感选型表，非法值逐条中文报错，纯本地运算
+- **新增**：Java 内部类名与描述符转换器（java-descriptor-converter）— 按 JVMS §4.2/§4.3 双向转换内部名（java/util/Map$Entry）与源码类名，生成 / 解析字段描述符（8 种原始类型、L...; 引用、数组维度 ≤255）与方法描述符参数 / 返回类型，支持匿名类编号并对非法描述符给出带字符位置的错误，纯本地运算
+- **新增**：SSE 消息格式编解码器（sse-codec）— 按 HTML Living Standard §9.2 解析 text/event-stream 流：event/data/id/retry 字段、多行 data 拼接、注释心跳、LF/CRLF/CR 混合换行、BOM 与无终止空行事件块，id/retry 持久态语义与浏览器一致，非法 retry 带行号告警；编码侧自动拆分多行 data、归一换行并补派发空行，纯本地运算
+
 ## 2026-11-05 ：【Agent自主迭代】新增 10 个文本换行、UPC-E、BCD、干支纪年与 SQL 字面量等工具
 
 - **新增**：文本自动换行与行宽格式化器（text-wrap-formatter）— 按指定列宽对纯文本/注释/段落做硬换行与软换行重组，支持 Markdown 列表与引用前缀续行、保留代码块与空段落、中英混排按显示宽度折行，可批量处理多行并一键复制，纯本地运算
