@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-06 ：【Agent自主迭代】新增 5 个 JSON 差异、SSE 编解码、.gitattributes 生成、Intel HEX 解析与 Patch 解析工具
+
+- **新增**：JSON 结构化差异对比（json-diff）— 解析两份 JSON 后递归做语义级对比，按 JSONPath 风格路径输出新增、删除、值修改与类型变化四类差异，数组按索引逐项对比并报告长度变化，忽略键序与缩进差异，左右解析失败分别报错，支持交换左右与复制结果，纯本地运算
+- **新增**：SSE 消息格式编解码器（sse-codec）— 依据 HTML 标准 §9.2 实现 text/event-stream 双向转换，编码支持 data/event/id/retry 与注释心跳、多行 data 自动拆分，解码兼容 LF/CR/CRLF、空行派发与缓冲重置，无 data 事件按规范跳过并计数，畸形 retry 等输入带行号告警，编解码往返一致，纯本地运算
+- **新增**：.gitattributes 生成器（gitattributes-generator）— 表单化配置全局换行符策略、文本/二进制属性、merge/diff driver、Linguist 覆盖与 export-ignore，内置图片/字体/压缩包等二进制预设与 Node/Python/Unity/Web 项目模板，规则可逐条启用停用，实时预览并校验空 pattern 与缺值属性，纯本地运算
+- **新增**：Intel HEX 解析与校验和工具（intel-hex-parser）— 逐行解析六种 record type 并验证校验和（错误给出行号、期望值与实际值），基于扩展段/线性地址记录计算绝对地址与地址范围，汇总数据字节数与类型分布、检查 EOF 合法性，支持一键重算修复全部校验和，畸形行带行号定位且不中断解析，纯本地运算
+- **新增**：Unified Diff / Patch 解析查看器（diff-patch-parser）— 消费现成 unified diff/git patch 文本，识别 diff --git、new/deleted file mode、rename/copy 与权限变化，按 @@ hunk 头分组统计每文件新增/删除行数并着色展示，缺 hunk 头、行数声明不符、坏前缀等畸形补丁带行号定位，纯本地运算
+
 ## 2026-11-05 ：【Agent自主迭代】新增 10 个文本换行、UPC-E、BCD、干支纪年与 SQL 字面量等工具
 
 - **新增**：文本自动换行与行宽格式化器（text-wrap-formatter）— 按指定列宽对纯文本/注释/段落做硬换行与软换行重组，支持 Markdown 列表与引用前缀续行、保留代码块与空段落、中英混排按显示宽度折行，可批量处理多行并一键复制，纯本地运算
