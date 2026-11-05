@@ -24638,6 +24638,125 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'text-wrap-formatter',
+    name: '文本自动换行与行宽格式化器',
+    nameEn: 'Text Hard Wrap & Unwrap Formatter',
+    description:
+      '按固定列宽对纯文本执行硬换行（hard wrap）与反向还原（unwrap）：拉丁等按空格分词的文字在词边界贪心折行，CJK 与全角文字按字符折行，段落间空行始终保留；可选超长单词硬切、行尾空白裁剪，并输出行数、最长行宽与段落数统计。反向模式合并段落内换行（CJK 边界不补空格），可与折行结果往返还原。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Hard-wrap plain text to a fixed column width and unwrap it back: space-delimited scripts break greedily on word boundaries, CJK and full-width text breaks per character, and blank lines between paragraphs are always preserved. Optional long-word breaking and trailing whitespace trimming come with line count, maximum line width and paragraph statistics. Unwrap mode joins in-paragraph newlines (no inserted space at CJK boundaries), round-tripping the wrapped output. Fully local browser computation with zero new dependencies.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/text-wrap-formatter',
+    iconName: 'Type',
+    tags: ['硬换行', '自动换行', '行宽', '文本折行', 'hard wrap', 'unwrap', '文本格式化', 'CJK'],
+    tagsEn: ['Hard Wrap', 'Text Wrapping', 'Line Width', 'Word Wrap', 'Unwrap', 'Text Formatting', 'CJK'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'Hard wrapping rewrites a paragraph so that every line fits inside a fixed column width, without breaking words apart. It is commonly used for plain-text emails, commit messages and code comments.',
+    doc: {
+      zh: {
+        whatIsIt:
+          '文本自动换行与行宽格式化器是一款纯浏览器本地运行的排版小工具，用于把段落按指定列宽重排为等宽折行文本（hard wrap），或把已折行的文本合并还原。它正确处理两类书写系统：拉丁等空格分词文字尽量在词边界换行而不切断单词，中日韩（CJK）与全角文字则允许在任意字符边界换行；以空行分隔的段落边界在两个方向上都完整保留。',
+        coreFeatures: [
+          '双向处理：按列宽硬换行（wrap）与段落内换行合并还原（unwrap）',
+          '书写系统感知：拉丁文字按词边界折行，CJK / 全角文字按字符折行且不插入多余空格',
+          '段落保持：以空行分隔的段落独立折行，段落边界与空行数保留',
+          '超长单词策略：默认原样保留（溢出列宽），可开启按列宽硬切',
+          '行尾空白裁剪开关，并统计行数、最长行宽与段落数',
+          '可往返还原：折行结果经 unwrap 可恢复为原始段落；纯本地计算、零新增依赖',
+        ],
+        howToUse: [
+          '在「处理选项」卡片选择硬换行或还原模式',
+          '折行模式下设置列宽（也可点击 40/60/72/80/100/120 预设），并按需切换超长单词硬切、行尾空白裁剪',
+          '在左侧输入框粘贴纯文本，使用空行分隔不同段落',
+          '右侧实时显示结果与统计信息，点击「复制」获取输出',
+          '需要恢复整段文本时切换到还原模式，段落内换行会按书写系统规则合并',
+        ],
+        useCases: [
+          '纯文本邮件、Git commit message、代码注释的 72/80 列排版',
+          '终端、串口或固定宽度显示场景下的文本重排',
+          'PDF / 扫描件提取文本的折行修复与段落还原',
+          'CJK 与拉丁混排文本在不切断单词、不增加空格前提下的行宽统一',
+        ],
+        privacyNote:
+          '全部处理均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；输入的文本不会离开设备。',
+        faqs: [
+          {
+            question: '硬换行和 CSS 的 word-wrap 有什么区别？',
+            answer:
+              'CSS 的换行只是显示层的视觉折行，文本本身的换行符并未改变；硬换行（hard wrap）会真正重写字符串，在超过列宽的位置插入换行符，生成可复制、可保存的等宽纯文本，适合邮件、终端与代码注释等不依赖渲染引擎的场景。',
+          },
+          {
+            question: '为什么中文换行后没有加空格，而英文单词之间有空格？',
+            answer:
+              'CJK 与全角字符本身不带分词空格，允许在任意字符边界断开，因此折行与还原时都不插入空格；拉丁文字以空格分词，折行只在词边界发生，还原时用单个空格把被拆开的行重新连接，从而保持原文语义。',
+          },
+          {
+            question: '「超长单词硬切」关闭时一个很长的单词会怎样？',
+            answer:
+              '该单词不会被切断，而是整体保留在同一行并超过设定列宽（溢出显示），以避免破坏 URL、哈希值、标识符等不可拆分内容；开启硬切后才会严格按列宽把它切成多段。',
+          },
+          {
+            question: '还原（unwrap）能完全恢复原文吗？',
+            answer:
+              '对本工具折行产生的文本可以往返还原：段落内换行按规则合并、段落间空行保留。若原文本身在段落内含有需要保留的手动换行，unwrap 会按同样规则将其视为折行换行合并，这是无标记纯文本格式本身的歧义，并非工具缺陷。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Text Hard Wrap & Unwrap Formatter is a fully browser-local layout utility that reflows paragraphs into fixed-column wrapped text (hard wrap) and merges wrapped lines back into paragraphs (unwrap). It handles two writing systems correctly: space-delimited scripts such as Latin break greedily on word boundaries without splitting words, while CJK and full-width text may break at any character boundary. Paragraphs separated by blank lines are preserved in both directions.',
+        coreFeatures: [
+          'Bidirectional: fixed-column hard wrap and in-paragraph newline unwrap',
+          'Writing-system aware: Latin breaks on word boundaries, CJK/full-width breaks per character without inserted spaces',
+          'Paragraph preserving: paragraphs separated by blank lines wrap independently and keep their boundaries',
+          'Long-word policy: kept intact by default (overflowing the column), with optional hard breaking at column width',
+          'Trailing whitespace trimming toggle plus line count, maximum line width and paragraph statistics',
+          'Round-trip safe: wrapped output can be unwrapped back to the original paragraphs; fully local with zero new dependencies',
+        ],
+        howToUse: [
+          'Choose hard wrap or unwrap mode in the options card',
+          'In wrap mode set the column width (or use the 40/60/72/80/100/120 presets) and toggle long-word breaking and trailing whitespace trimming as needed',
+          'Paste plain text into the left editor, separating paragraphs with blank lines',
+          'The result and statistics update live on the right; click Copy to grab the output',
+          'Switch to unwrap mode to rejoin lines inside paragraphs according to the writing-system rules',
+        ],
+        useCases: [
+          '72/80-column formatting for plain-text emails, Git commit messages and code comments',
+          'Reflowing text for terminals, serial consoles or fixed-width displays',
+          'Repairing wrapped text extracted from PDFs or scans and rebuilding paragraphs',
+          'Unifying line width in mixed CJK/Latin text without splitting words or adding stray spaces',
+        ],
+        privacyNote:
+          'All processing runs locally in your browser via zero-dependency pure functions. No network requests are made, so your text never leaves your device.',
+        faqs: [
+          {
+            question: 'How is hard wrap different from CSS word-wrap?',
+            answer:
+              'CSS wrapping is a visual display effect and never changes the newline characters in the string. Hard wrap actually rewrites the string by inserting newline characters wherever the column width is exceeded, producing copyable, savable fixed-width plain text for emails, terminals and code comments that do not rely on a rendering engine.',
+          },
+          {
+            question: 'Why are there no spaces when Chinese wraps, but spaces remain between English words?',
+            answer:
+              'CJK and full-width characters carry no word-separating spaces and may break at any character boundary, so no space is inserted during wrapping or unwrapping. Latin text is tokenized by spaces, breaks only on word boundaries, and rejoins split lines with a single space to preserve the original meaning.',
+          },
+          {
+            question: 'What happens to a very long word when long-word breaking is off?',
+            answer:
+              'The word is never split: it stays on one line and overflows the configured column width, protecting non-breakable content such as URLs, hashes and identifiers. Only when hard breaking is enabled will it be cut strictly at the column width.',
+          },
+          {
+            question: 'Can unwrap restore the original text exactly?',
+            answer:
+              'Text produced by this tool round-trips cleanly: in-paragraph newlines are merged by the same rules and blank lines between paragraphs are kept. If the original already contained intentional manual line breaks inside a paragraph, unwrap treats them as wrapping newlines and merges them too—an inherent ambiguity of unmarked plain text rather than a tool defect.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

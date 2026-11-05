@@ -265,4 +265,5 @@ export const toolLoaders: Record<
   'image-data-uri-converter': () => import('./image-data-uri-converter'),
   'license-generator': () => import('./license-generator'),
   'clamp-typography-generator': () => import('./clamp-typography-generator'),
+  'text-wrap-formatter': () => import('./text-wrap-formatter'),
 };
