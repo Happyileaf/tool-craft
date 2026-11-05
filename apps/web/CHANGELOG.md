@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-06 ：【Agent自主迭代】新增 5 个 BCP 47、CSS 命名色、正则语法、HTTP 方法与 HTTP 头字段速查工具
+
+- **新增**：BCP 47 语言标签解析器（bcp47-language-tag）— 按 RFC 5646 在浏览器本地拆解语言、脚本、区域、变体、扩展（含 u 扩展 keyword）与私有子标签，结构化展示错误、告警与大小写规范化建议，并用原生 Intl.Locale 交叉验证，纯本地运算
+- **新增**：CSS 命名颜色速查（css-named-colors）— 内置 CSS Color Module Level 4 全部 148 个标准命名颜色（含 rebeccapurple），按名称或 HEX/RGB/HSL 值搜索并展示色块与多格式值、一键复制，任意颜色值可反查 RGB 空间最接近的 3 个命名色，支持基础色分区与字母/色相排序，纯本地运算
+- **新增**：正则表达式语法速查（regex-syntax-reference）— 内置 JavaScript 正则 8 大分类 40 条语法（字符类、量词、锚点、分组、环视断言、交替转义、标志位、Unicode 属性转义），每条样例由原生 RegExp 实测渲染匹配结果，支持关键字搜索、分类折叠与 JS/Python/Java/PCRE 语言差异对照，纯本地运算
+- **新增**：HTTP 请求方法速查（http-methods-reference）— 依据 RFC 9110/9111/5789 内置 GET、HEAD、POST、PUT、DELETE、CONNECT、OPTIONS、TRACE、PATCH 九个标准方法的 safe、幂等、可缓存与请求体属性矩阵，含请求/响应示例、常见状态码搭配与 PUT vs PATCH、POST vs PUT、OPTIONS CORS 预检专题对比，内置不变量校验，纯本地运算
+- **新增**：HTTP 头字段速查（http-headers-reference）— 内置 54 个高频头字段并按通用表示、请求、响应、缓存、认证 Cookie、CORS、安全、内容协商八大分类组织，每条含方向、取值语法、示例、RFC 出处与常见坑，醒目标注 13 个 forbidden header name 与 5 个废弃头及替代方案，支持关键字搜索与分类、方向组合筛选及空状态，纯本地运算
+
 ## 2026-11-06 ：【Agent自主迭代】新增 5 个 JSON 差异、SSE 编解码、.gitattributes 生成、Intel HEX 解析与 Patch 解析工具
 
 - **新增**：JSON 结构化差异对比（json-diff）— 解析两份 JSON 后递归做语义级对比，按 JSONPath 风格路径输出新增、删除、值修改与类型变化四类差异，数组按索引逐项对比并报告长度变化，忽略键序与缩进差异，左右解析失败分别报错，支持交换左右与复制结果，纯本地运算
