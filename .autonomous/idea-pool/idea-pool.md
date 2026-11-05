@@ -236,7 +236,7 @@
 | 20261105020213 | 文本自动换行与行宽格式化器（hard wrap / unwrap，按宽度折行与还原） | Web Tool | Existing Gap | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105020213.md) |
 | 20261105020214 | UPC-E 与 UPC-A 条码压缩/展开转换器（含模 10 校验位） | Web Tool | Existing Gap | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105020214.md) |
 | 20261105020215 | BCD 码编解码器（8421 / 余3码 / 2421 码与打包 BCD 字节） | Web Tool | Existing Gap | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105020215.md) |
-| 20261105020216 | 干支纪年与生肖转换器（公历年份 ↔ 天干地支/六十甲子/生肖） | Web Tool | Exploration | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105020216.md) |
+| 20261105020216 | 干支纪年与生肖转换器（公历年份 ↔ 天干地支/六十甲子/生肖） | Web Tool | Exploration | In Progress | 2026-11-05 | trae-agent | [详情](./idea-details/20261105020216.md) |
 | 20261105020217 | E.164 电话号码规范化与格式化器（国际格式解析与校验） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105020217.md) |
 | 20261105080301 | ITU E.123 电话号码格式化器（国际/本地分组、可视分隔与 E.164 互转） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105080301.md) |
 | 20261105080302 | Java 内部类名与描述符（Descriptor / Signature）转换器 | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105080302.md) |

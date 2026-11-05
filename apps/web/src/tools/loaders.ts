@@ -268,4 +268,5 @@ export const toolLoaders: Record<
   'text-wrap-formatter': () => import('./text-wrap-formatter'),
   'upc-e-converter': () => import('./upc-e-converter'),
   'bcd-codec': () => import('./bcd-codec'),
+  'sexagenary-cycle': () => import('./sexagenary-cycle'),
 };

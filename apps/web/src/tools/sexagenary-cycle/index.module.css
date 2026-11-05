@@ -1,0 +1,152 @@
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.card {
+  min-width: 0;
+}
+
+.editor {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-size: 14px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+}
+
+.rangeControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.rangeLabel {
+  font-size: 13px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+}
+
+.resultList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resultRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border, #d9d9d9);
+  border-radius: 8px;
+  font-size: 14px;
+  flex-wrap: wrap;
+}
+
+.resultRowError {
+  border-color: var(--color-error, #ff4d4f);
+  color: var(--color-error, #ff4d4f);
+  font-size: 13px;
+}
+
+.year {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-weight: 600;
+  min-width: 64px;
+}
+
+.ganzhi {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.parts {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.part {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--color-fill-secondary, rgba(0, 0, 0, 0.04));
+  font-size: 12px;
+}
+
+.yearList {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.summary {
+  font-size: 13px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+}
+
+.cycleGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+
+.cycleCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 4px;
+  border: 1px solid var(--color-border, #d9d9d9);
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.cycleIndex {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-size: 11px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+}
+
+.cycleGanzhi {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.cycleZodiac {
+  font-size: 11px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+}
+
+@media (max-width: 860px) {
+  .panels {
+    grid-template-columns: 1fr;
+  }
+
+  .cycleGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

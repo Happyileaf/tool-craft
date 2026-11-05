@@ -24987,6 +24987,120 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'sexagenary-cycle',
+    name: '干支纪年与生肖转换器',
+    nameEn: 'Sexagenary Cycle (Ganzhi) Converter',
+    description:
+      '公历年份与干支纪年双向换算：输入公历年即时得出天干地支、六十甲子序号（1–60）、生肖、五行与阴阳；反向输入甲子序号或干支组合（如「甲子」），可推算指定区间内对应的全部公历年份；内置完整六十甲子循环表。按公历年整体对应（year-based）口径实现并在界面标注立春/春节差异，纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert between Gregorian years and the Chinese sexagenary (Ganzhi) cycle in both directions: a Gregorian year instantly yields its heavenly stem and earthly branch, cycle index (1–60), zodiac animal, element, and polarity; in reverse, a cycle index or stem-branch pair (e.g. Jiazi) returns every matching Gregorian year inside a chosen range. A full 60-term cycle table is included. The tool uses the year-based convention and clearly labels the Lichun/Spring Festival boundary caveat. Fully local browser computation with zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/sexagenary-cycle',
+    iconName: 'MoonStar',
+    tags: ['干支', '六十甲子', '生肖', '天干地支', '五行', '纪年'],
+    tagsEn: ['Ganzhi', 'Sexagenary Cycle', 'Zodiac', 'Heavenly Stems', 'Five Elements', 'Calendar'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1984\n2024\n1985\n2023',
+    doc: {
+      zh: {
+        whatIsIt:
+          '干支纪年与生肖转换器在浏览器本地完成公历年与传统干支纪年的双向换算，依据「公元 4 年为甲子年」这一固定锚点，通过天干 (year−4) mod 10、地支 (year−4) mod 12 的取模规则，输出六十甲子序号、干支组合、生肖、五行与阴阳，并支持反向推算与完整六十甲子循环表查阅。',
+        coreFeatures: [
+          '正向换算：公历年 → 天干地支、六十甲子序号（1–60）、生肖、天干五行与阴阳，支持每行一条批量处理',
+          '反向推算：输入甲子序号（1–60）或两字干支组合，返回指定公历区间内全部匹配年份，区间可自由设定',
+          '完整六十甲子循环表：60 个干支组合按序号排列，附生肖与五行，便于对照查阅',
+          '严格校验：拒绝不存在的干支组合（天干地支阴阳不一致，如「甲丑」）、越界序号与公元 0 年',
+          '公元前支持：可用「前 72」或「公元前 72」表示负年份，取模对负数同样正确',
+        ],
+        howToUse: [
+          '选择转换方向：公历年→干支，或干支→公历年',
+          '正向：在输入框每行填写一个公历年（公元前写「前 72」），右侧即时显示干支、甲子序号、生肖、五行',
+          '反向：每行填写 1–60 的甲子序号或干支组合，并在上方设定查询起止年份，右侧列出区间内全部匹配年',
+          '页面底部提供完整六十甲子循环表；点击「复制」可导出全部成功结果',
+        ],
+        useCases: [
+          '历史学习与古籍阅读：快速换算史书中的干支纪年与公历年',
+          '书法、国画落款与传统文案中的年份干支核对',
+          '命理、民俗内容创作时查生肖、五行与六十甲子序号',
+          '教学演示天干、地支、生肖两两配对与 60 年循环规律',
+        ],
+        privacyNote:
+          '所有换算均基于固定小表与取模规则在浏览器本地完成，不依赖任何历法数据表或服务端接口，输入内容不会上传或存储，刷新页面即清空。',
+        faqs: [
+          {
+            question: '为什么工具结果和我在立春当天排的八字不一样？',
+            answer:
+              '传统命理以立春为岁首、民间也有以春节（正月初一）为界的口径，年初岁末会出现跨年差异。本工具采用 year-based 口径：整个公历年对应同一组干支（公元 4 年为甲子年），与常见年份对照表一致，适合年份级换算，但不用于节气当天的精确排盘，界面已对此显著标注。',
+          },
+          {
+            question: '六十甲子序号是怎么算出来的？',
+            answer:
+              '以公元 4 年（甲子年）为序号 1，序号为 (year−4) mod 60 + 1，取值 1–60。例如 2024 年：(2024−4) mod 60 = 40，序号为 41，对应甲辰。天干与地支分别再对 10、12 取模得到。',
+          },
+          {
+            question: '为什么「甲丑」这类组合会报错？',
+            answer:
+              '天干与地支各按阴阳（奇偶）排列，六十甲子只包含阴阳一致的配对，共 10×12÷2 = 60 个合法组合。甲为阳干、丑为阴支，奇偶不一致，六十甲子中不存在「甲丑」，工具会直接判为非法组合。',
+          },
+          {
+            question: '公元前的年份怎么输入？',
+            answer:
+              '使用「前 72」或「公元前 72」的形式，工具内部按 −72 处理并对负数正确取模。注意公历没有公元 0 年：公元前 1 年的下一年就是公元 1 年，输入 0 会被拒绝并提示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Sexagenary Cycle converter performs bidirectional conversion between Gregorian years and the traditional Chinese Ganzhi calendar entirely in your browser. Anchored on 4 CE being the Jiazi year, it applies the modular rules stem = (year−4) mod 10 and branch = (year−4) mod 12 to produce the cycle index, stem-branch pair, zodiac animal, element, and polarity, with reverse lookup and a full 60-term cycle table built in.',
+        coreFeatures: [
+          'Forward conversion: Gregorian year to heavenly stem, earthly branch, cycle index (1–60), zodiac, stem element, and polarity, with line-by-line batch processing',
+          'Reverse lookup: a cycle index (1–60) or a two-character stem-branch pair returns every matching Gregorian year in a freely configurable range',
+          'Full sexagenary table: all 60 stem-branch pairs ordered by index, each annotated with zodiac and element',
+          'Strict validation: impossible pairs whose stem/branch polarity mismatches (e.g. Jia-Chou), out-of-range indices, and the nonexistent year 0 are all rejected',
+          'BCE support: write "前 72" or "公元前 72" for negative years; modulo arithmetic handles negatives correctly',
+        ],
+        howToUse: [
+          'Pick a direction: Gregorian year to Ganzhi, or Ganzhi to Gregorian years',
+          'Forward mode: enter one Gregorian year per line (use "前 72" for BCE); the right panel instantly shows the pair, cycle index, zodiac, and element',
+          'Reverse mode: enter a 1–60 index or a stem-branch pair per line, set the range above, and every matching year in the interval is listed',
+          'A complete 60-term cycle table sits at the bottom of the page; use Copy to export all successful results',
+        ],
+        useCases: [
+          'Reading history books and quickly mapping Ganzhi year names to Gregorian years',
+          'Checking the year inscription for calligraphy, paintings, and traditional documents',
+          'Looking up zodiac signs, elements, and cycle indices for folk-custom content creation',
+          'Teaching how stems, branches, and zodiac animals pair into a 60-year cycle',
+        ],
+        privacyNote:
+          'All conversion relies on fixed lookup tables and modular arithmetic running locally in your browser, with no calendar data files or server calls. Your input is never uploaded or stored and is cleared on refresh.',
+        faqs: [
+          {
+            question: 'Why does the result differ from a Baizi chart cast on Lichun?',
+            answer:
+              'Traditional fate calculation treats Lichun (Start of Spring) as the year boundary, while folk convention often uses the Spring Festival (lunar new year). This tool uses the year-based convention where an entire Gregorian year maps to one Ganzhi pair (4 CE = Jiazi), matching common year lookup tables. It is intended for year-level conversion, not precise day-level chart casting, and the caveat is highlighted in the UI.',
+          },
+          {
+            question: 'How is the sexagenary cycle index computed?',
+            answer:
+              'With 4 CE (Jiazi) as index 1, the index is (year−4) mod 60 + 1, ranging from 1 to 60. For 2024: (2024−4) mod 60 = 40, so the index is 41, corresponding to Jia-Chen. The stem and branch are then derived modulo 10 and 12 respectively.',
+          },
+          {
+            question: 'Why is a pair like "Jia-Chou" rejected?',
+            answer:
+              'Stems and branches are ordered by yin-yang parity, and the sexagenary cycle only contains pairs whose parity matches, giving 10×12÷2 = 60 legal combinations. Jia is a yang stem while Chou is a yin branch, so Jia-Chou never occurs in the cycle and is reported as an illegal pair.',
+          },
+          {
+            question: 'How do I enter a BCE year?',
+            answer:
+              'Use the form "前 72" or "公元前 72"; the tool treats it internally as −72 and applies modulo correctly for negatives. Note that the Gregorian calendar has no year 0: 1 BCE is immediately followed by 1 CE, so entering 0 is rejected with an explanatory message.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
