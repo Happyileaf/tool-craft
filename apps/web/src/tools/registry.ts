@@ -25215,6 +25215,461 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'json-diff',
+    name: 'JSON 结构化差异对比',
+    nameEn: 'JSON Structured Diff',
+    description:
+      '对两份 JSON 做语义级递归对比，按 JSONPath 路径列出新增、删除、修改与类型变化，忽略键序与缩进差异。',
+    descriptionEn:
+      'Semantic recursive comparison of two JSON documents, listing added, removed, changed, and type-changed fields by JSONPath while ignoring key order and indentation.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/json-diff',
+    iconName: 'Shuffle',
+    tags: ['JSON', '差异对比', 'Diff', 'JSONPath', '数据比对'],
+    tagsEn: ['JSON', 'Diff', 'Comparison', 'JSONPath', 'Data Compare'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON 结构化差异对比工具在浏览器本地解析两份 JSON 文本，递归比较对象与数组，按 JSONPath 风格路径输出字段级差异，不受键顺序、缩进与空白影响。',
+        coreFeatures: [
+          '路径级差异：区分新增、删除、值修改与类型变化四类结果',
+          'JSONPath 风格定位：支持 $.a.b、$.items[0].id 与特殊键名',
+          '数组按索引逐项对比并报告长度变化',
+          '左右 JSON 解析失败时分别给出明确错误提示，不产出误导性结果',
+          '一键交换左右输入、载入示例与复制差异结果',
+        ],
+        howToUse: [
+          '在左侧与右侧文本框分别粘贴需要对比的两份 JSON',
+          '工具实时解析并对比，语法错误会在对应一侧红字提示',
+          '在结果表格中按路径查看每条差异的类型、旧值与新值',
+          '需要反向对比时点击「交换左右」，或点击「复制结果」导出',
+        ],
+        useCases: [
+          '对比接口响应或配置文件在不同版本间的字段变化',
+          '审查 JSON 数据迁移、种子数据改动的具体路径',
+          '定位嵌套对象与数组元素的细微差异',
+        ],
+        privacyNote:
+          '所有 JSON 解析与递归对比均在浏览器本地完成，不发起任何网络请求，输入数据不会上传或留存。',
+        faqs: [
+          {
+            question: '和文本 Diff 工具有什么区别？',
+            answer:
+              '文本 Diff 按行比较，键顺序或缩进变化就会报差异；本工具先解析为 JSON 数据结构再做语义对比，只报告真正的字段值变化，自动忽略键序与格式差异。',
+          },
+          {
+            question: '数组是怎么比较的？',
+            answer:
+              '数组按索引逐项对比，并在长度不一致时报告元素数量变化；每个元素的差异路径会带上 [索引]，便于直接定位。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JSON Structured Diff tool parses two JSON documents locally in your browser and recursively compares objects and arrays, emitting field-level differences with JSONPath-style paths regardless of key order, indentation, or whitespace.',
+        coreFeatures: [
+          'Path-level diffs classified as added, removed, changed, or type-changed',
+          'JSONPath-style locations such as $.a.b, $.items[0].id, with special key support',
+          'Index-by-index array comparison with length-change reporting',
+          'Distinct parse error messages for the left and right inputs',
+          'Swap sides, load sample, and copy results in one click',
+        ],
+        howToUse: [
+          'Paste the two JSON documents into the left and right editors',
+          'The tool parses and compares in real time, flagging syntax errors on the offending side',
+          'Review each difference path, type, old value, and new value in the result table',
+          'Use "Swap" to reverse the comparison or "Copy" to export the results',
+        ],
+        useCases: [
+          'Comparing API responses or config files across versions',
+          'Reviewing exact paths affected by JSON data migrations or seed changes',
+          'Pinpointing subtle differences in nested objects and array elements',
+        ],
+        privacyNote:
+          'All JSON parsing and recursive comparison runs locally in your browser with no network requests; your input is never uploaded or retained.',
+        faqs: [
+          {
+            question: 'How is this different from a text diff tool?',
+            answer:
+              'A text diff compares line by line, so reordering keys or changing indentation creates noise. This tool parses the JSON into data structures and compares semantics, reporting only real value changes while ignoring key order and formatting.',
+          },
+          {
+            question: 'How are arrays compared?',
+            answer:
+              'Arrays are compared element by element by index, and length mismatches are reported explicitly; each element path includes its [index] so you can locate it directly.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'sse-codec',
+    name: 'SSE 消息格式编解码器',
+    nameEn: 'SSE Message Format Encoder/Decoder',
+    description:
+      '依据 HTML 标准在本地完成 Server-Sent Events 线格式双向转换，支持 event/data/id/retry 字段、多行 data 与畸形输入定位。',
+    descriptionEn:
+      'Bidirectional conversion of Server-Sent Events wire format per the HTML spec, supporting event/data/id/retry fields, multi-line data, and located malformed-input warnings.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/sse-codec',
+    iconName: 'Satellite',
+    tags: ['SSE', 'Server-Sent Events', 'event-stream', '编解码', '实时通信'],
+    tagsEn: ['SSE', 'Server-Sent Events', 'event-stream', 'Codec', 'Realtime'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'SSE 编解码器依据 HTML 标准 §9.2 在浏览器本地实现 text/event-stream 线格式的编码与解码：把结构化消息拼装为 SSE 文本，或把原始事件流还原为消息对象数组。',
+        coreFeatures: [
+          '编码：支持 data、event、id、retry 与注释心跳，多行 data 自动拆分',
+          '解码：兼容 LF/CR/CRLF 三种换行，按规范处理空行派发与缓冲重置',
+          '同名 data 行按换行拼接，未知字段忽略，无 data 的事件不计入派发',
+          'retry 非数字等畸形输入给出带行号的警告',
+          '编解码往返一致，可一键复制线格式或 JSON 结果',
+        ],
+        howToUse: [
+          '在「编码」页增删消息并填写 data/event/id/retry，实时查看生成的 event-stream 文本',
+          '在「解码」页粘贴原始 SSE 流，查看还原出的消息数组与警告',
+          '根据 Alert 中的行号定位并修正畸形字段',
+          '点击复制按钮导出对应结果',
+        ],
+        useCases: [
+          '开发调试 EventSource 接口时构造或核对事件流报文',
+          '验证后端推送的 SSE 数据是否符合 HTML 线格式规范',
+          '教学演示 SSE 事件分发与多行 data 拼接规则',
+        ],
+        privacyNote:
+          '全部编解码均为浏览器本地字符串运算，不建立任何网络连接，事件数据不会离开当前页面。',
+        faqs: [
+          {
+            question: '为什么有些事件解码后消失了？',
+            answer:
+              '按 HTML 规范，缓冲中没有任何 data 行的事件在遇到空行时不会派发（例如只含 event 或 id 的片段），工具会计入 skipped 并提示数量，这与浏览器 EventSource 行为一致。',
+          },
+          {
+            question: 'retry 字段填错会怎样？',
+            answer:
+              '编码时 retry 必须是非负十进制整数，否则返回校验错误阻止生成；解码时遇到非数字 retry 会按规范忽略该字段并给出带行号警告，不影响其他事件解析。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The SSE codec implements HTML spec §9.2 text/event-stream encoding and decoding locally in your browser: assembling structured messages into SSE text, or reconstructing an event stream into an array of message objects.',
+        coreFeatures: [
+          'Encoding with data, event, id, retry, and comment heartbeat fields; multi-line data is split automatically',
+          'Decoding compatible with LF/CR/CRLF, following spec dispatch on blank lines and buffer reset',
+          'Same-named data lines are joined with newlines, unknown fields ignored, and events without data are not dispatched',
+          'Line-numbered warnings for malformed input such as non-numeric retry',
+          'Round-trip consistent encoding/decoding with one-click copy of wire text or JSON',
+        ],
+        howToUse: [
+          'On the Encode tab, add or remove messages and fill data/event/id/retry to preview the event-stream text live',
+          'On the Decode tab, paste a raw SSE stream to inspect reconstructed messages and warnings',
+          'Use the line numbers in alerts to locate and fix malformed fields',
+          'Click copy to export the corresponding result',
+        ],
+        useCases: [
+          'Building or verifying event-stream payloads while developing EventSource APIs',
+          'Validating that backend pushes conform to the HTML wire format',
+          'Teaching SSE dispatch and multi-line data concatenation rules',
+        ],
+        privacyNote:
+          'All encoding and decoding is local string computation in the browser. No network connection is created and event data never leaves the page.',
+        faqs: [
+          {
+            question: 'Why do some events disappear after decoding?',
+            answer:
+              'Per the HTML spec, a buffer without any data line is not dispatched when a blank line arrives (for example a fragment containing only event or id). The tool counts these as skipped and reports the number, matching browser EventSource behavior.',
+          },
+          {
+            question: 'What happens if retry is invalid?',
+            answer:
+              'When encoding, retry must be a non-negative decimal integer or a validation error blocks generation. When decoding, a non-numeric retry is ignored per spec with a line-numbered warning, while other events still parse.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'gitattributes-generator',
+    name: '.gitattributes 生成器',
+    nameEn: '.gitattributes Generator',
+    description:
+      '通过表单交互式生成 .gitattributes：换行符策略、二进制标记、merge/diff driver、Linguist 覆盖与项目模板，实时预览并校验。',
+    descriptionEn:
+      'Interactively build a .gitattributes file with EOL policies, binary markers, merge/diff drivers, Linguist overrides, and project templates, with live preview and validation.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/gitattributes-generator',
+    iconName: 'FileCode',
+    tags: ['Git', '.gitattributes', '换行符', 'Linguist', '配置生成'],
+    tagsEn: ['Git', '.gitattributes', 'EOL', 'Linguist', 'Config Generator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '.gitattributes 生成器帮助开发者通过可视化表单拼装 Git 属性规则，覆盖换行符、二进制标记、自定义 driver 与 GitHub Linguist 覆盖，并实时生成可复制的文件内容。',
+        coreFeatures: [
+          '全局换行符策略：text=auto、eol=lf、eol=crlf 等一键设置',
+          '按扩展名配置文本/二进制属性与 -diff、-merge 等行为',
+          '图片、字体、压缩包、办公文档等二进制预设与 Node/Python/Unity 模板',
+          'Linguist vendored/generated/documentation/language 与 export-ignore 规则',
+          '规则可逐条启用停用，实时校验空 pattern 与缺值属性',
+        ],
+        howToUse: [
+          '选择全局换行符策略，或直接套用一个项目模板',
+          '通过预设按钮追加二进制规则，或手动添加 pattern 并勾选属性',
+          '需要 Linguist 覆盖时填写 linguist-language 等带值属性',
+          '在预览区确认内容后点击复制，保存为仓库根目录 .gitattributes',
+        ],
+        useCases: [
+          '统一跨平台团队的 LF/CRLF 换行符行为',
+          '标记二进制资源避免错误的文本合并与 diff 噪音',
+          '调整 GitHub 语言统计与生成文件识别',
+        ],
+        privacyNote:
+          '规则拼装与校验完全在浏览器本地进行，不访问文件系统或网络，配置内容不会被上传。',
+        faqs: [
+          {
+            question: 'binary 和 -diff -merge -text 有什么关系？',
+            answer:
+              '在 Git 中 binary 是内置宏，等价于同时设置 -diff -merge -text，表示该文件不做文本 diff、不参与三向合并且不做换行符转换；工具在界面中给出了该等价说明。',
+          },
+          {
+            question: '停用的规则会出现在输出里吗？',
+            answer:
+              '不会。被停用（取消勾选）的规则既不参与校验也不会写入预览，重新启用后才会再次输出，便于临时调整而无需删除规则。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The .gitattributes Generator helps developers assemble Git attribute rules through a visual form, covering line endings, binary markers, custom drivers, and GitHub Linguist overrides, producing ready-to-copy file content in real time.',
+        coreFeatures: [
+          'Global EOL policy: text=auto, eol=lf, eol=crlf in one selection',
+          'Per-extension text/binary attributes with -diff and -merge behaviors',
+          'Binary presets for images, fonts, archives, and office files, plus Node/Python/Unity templates',
+          'Linguist vendored/generated/documentation/language and export-ignore rules',
+          'Per-rule enable/disable with live validation for empty patterns and missing values',
+        ],
+        howToUse: [
+          'Pick a global EOL policy or apply a project template',
+          'Append binary rules via presets, or add a pattern manually and select attributes',
+          'Fill valued attributes such as linguist-language for Linguist overrides',
+          'Review the preview and copy it into a .gitattributes file at the repository root',
+        ],
+        useCases: [
+          'Standardizing LF/CRLF behavior across cross-platform teams',
+          'Marking binary assets to avoid incorrect text merges and diff noise',
+          'Adjusting GitHub language statistics and generated-file detection',
+        ],
+        privacyNote:
+          'Rule assembly and validation run entirely in your browser with no file system or network access; configuration content is never uploaded.',
+        faqs: [
+          {
+            question: 'How does binary relate to -diff -merge -text?',
+            answer:
+              'In Git, binary is a built-in macro equivalent to -diff -merge -text: the file gets no textual diff, no three-way merge, and no EOL conversion. The UI surfaces this equivalence explicitly.',
+          },
+          {
+            question: 'Do disabled rules appear in the output?',
+            answer:
+              'No. Disabled (unchecked) rules are excluded from both validation and the preview. Re-enabling a rule brings it back, which is handy for temporary adjustments without deleting anything.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'intel-hex-parser',
+    name: 'Intel HEX 解析与校验和工具',
+    nameEn: 'Intel HEX Parser & Checksum Verifier',
+    description:
+      '解析 Intel HEX 记录类型与数据载荷，逐行校验校验和、跟踪绝对地址并汇总统计，支持一键重算修复校验和。',
+    descriptionEn:
+      'Parse Intel HEX record types and payloads, verify per-line checksums, track absolute addresses with summary stats, and recalculate or fix checksums in one click.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/intel-hex-parser',
+    iconName: 'HardDrive',
+    tags: ['Intel HEX', '固件', '校验和', '嵌入式', '烧录'],
+    tagsEn: ['Intel HEX', 'Firmware', 'Checksum', 'Embedded', 'Flashing'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Intel HEX 解析与校验和工具逐行解析嵌入式固件常见的 .hex 文本记录，识别全部六种 record type，验证每行校验和并结合扩展地址记录计算绝对地址，还能重算修复错误校验和。',
+        coreFeatures: [
+          '识别数据、EOF、扩展段/线性地址、起始段/线性地址六种记录类型',
+          '逐行校验和验证，错误时给出行号、期望值与实际值',
+          '基于 type 02/04 地址记录计算数据的绝对地址与整体地址范围',
+          '汇总总行数、数据字节数、记录类型分布与 EOF 合法性',
+          '一键重算全部校验和并输出修正后的完整 HEX 文本',
+        ],
+        howToUse: [
+          '把 Intel HEX 文本粘贴到输入框，或点击「载入示例」',
+          '查看统计卡片与记录明细表，定位校验和错误或畸形行',
+          '根据 Alert 中的行号与原因排查坏行',
+          '需要修复时点击「一键修复全部校验和」并复制结果',
+        ],
+        useCases: [
+          '烧录前核对固件 HEX 文件完整性与坏行',
+          '分析 Bootloader/应用的起始地址与加载范围',
+          '手工编辑数据后重新生成合法校验和',
+        ],
+        privacyNote:
+          '所有解析与校验和运算都在浏览器本地完成，固件数据不发起任何网络请求、不上传或留存。',
+        faqs: [
+          {
+            question: '绝对地址是怎么算出来的？',
+            answer:
+              'Type 04 扩展线性地址记录提供高 16 位基址（左移 16 位），Type 02 扩展段地址记录提供段址（乘以 16）；数据记录的绝对地址 = 当前基址 + 行内 16 位偏移，工具会自动跟踪最近的地址记录。',
+          },
+          {
+            question: '校验和错误还能修复吗？',
+            answer:
+              '可以。只要该行的长度、地址、类型与数据字节本身合法，工具就能按「所有字节和模 256 取补」重新计算正确校验和；结构畸形（如字节数不符）的行会原样保留并提示先修正结构。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Intel HEX Parser & Checksum Verifier parses the .hex text records common in embedded firmware line by line, recognizes all six record types, verifies each checksum, derives absolute addresses from extension address records, and can recalculate broken checksums.',
+        coreFeatures: [
+          'Recognizes data, EOF, extended segment/linear address, and start segment/linear address records',
+          'Per-line checksum verification with line number, expected, and actual values on failure',
+          'Absolute addresses and overall range derived from type 02/04 address records',
+          'Summary of total lines, data bytes, record-type distribution, and EOF validity',
+          'One-click checksum recalculation producing a corrected full HEX document',
+        ],
+        howToUse: [
+          'Paste Intel HEX text into the editor or click "Load sample"',
+          'Review the statistic cards and record table to locate checksum errors or malformed lines',
+          'Use the line numbers and reasons in the alert to investigate bad lines',
+          'Click "Fix all checksums" when needed and copy the corrected output',
+        ],
+        useCases: [
+          'Verifying firmware HEX integrity and bad lines before flashing',
+          'Analyzing bootloader/application start addresses and load ranges',
+          'Regenerating valid checksums after hand-editing data bytes',
+        ],
+        privacyNote:
+          'All parsing and checksum math runs locally in the browser. Firmware data is never sent over the network, uploaded, or retained.',
+        faqs: [
+          {
+            question: 'How is the absolute address calculated?',
+            answer:
+              'A type 04 extended linear address record supplies the upper 16-bit base (shifted left by 16), while a type 02 extended segment address supplies a segment value (multiplied by 16). A data record’s absolute address equals the current base plus its 16-bit in-line offset; the tool tracks the most recent address record automatically.',
+          },
+          {
+            question: 'Can a checksum error be fixed?',
+            answer:
+              'Yes. As long as the line’s length, address, type, and data bytes are structurally valid, the tool recomputes the correct checksum as the two’s complement of the byte sum modulo 256. Structurally malformed lines (such as byte-count mismatch) are preserved verbatim with a prompt to fix the structure first.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'diff-patch-parser',
+    name: 'Unified Diff / Patch 解析查看器',
+    nameEn: 'Unified Diff & Patch Parser',
+    description:
+      '解析现成 unified diff/git patch 文本，按文件与 hunk 分组展示增删统计，识别新增/删除/重命名并定位畸形补丁。',
+    descriptionEn:
+      'Parse existing unified diff/git patch text, group it by file and hunk with addition/deletion stats, detect add/delete/rename changes, and locate malformed patches.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/diff-patch-parser',
+    iconName: 'Code',
+    tags: ['Diff', 'Patch', 'Git', '代码评审', '补丁解析'],
+    tagsEn: ['Diff', 'Patch', 'Git', 'Code Review', 'Patch Parser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Unified Diff / Patch 解析查看器消费已有的补丁文本，逐行解析文件头与 hunk 结构，给出每个文件的增删行统计与着色视图，并对格式不合法的补丁给出带行号的定位提示。',
+        coreFeatures: [
+          '识别 diff --git、---/+++、new/deleted file mode、rename/copy 与权限变化',
+          '按 @@ -a,b +c,d @@ 拆分 hunk 并统计每文件新增/删除行数',
+          '新增、删除、上下文行着色，No newline 标记单独处理',
+          '畸形检测：缺 hunk 头、行数声明不符、坏行前缀、半截 hunk 头',
+          '文件折叠面板与顶部总统计，适合评审裸补丁文本',
+        ],
+        howToUse: [
+          '把 unified diff 或 git format-patch 产出的文本粘贴到输入框',
+          '通过顶部统计快速掌握文件数、增删行与 hunk 数',
+          '展开文件面板查看按 hunk 分组的着色差异',
+          '根据错误 Alert 的行号修正不合法补丁',
+        ],
+        useCases: [
+          '代码评审时快速掌握裸 patch 的改动范围',
+          'CI 中排查补丁应用失败或格式损坏的具体位置',
+          '分析重命名、新文件、删除文件与权限变更',
+        ],
+        privacyNote:
+          '补丁解析为浏览器本地纯文本运算，不连接 Git 服务或任何网络端点，粘贴的代码不会被上传。',
+        faqs: [
+          {
+            question: '它和文本对比工具（text-diff）有什么区别？',
+            answer:
+              'text-diff 接收两段文本并「生成」差异；本工具方向相反——消费已经存在的 diff/patch 文本，解析其文件与 hunk 结构并做统计和错误定位，不做两段文本比对。',
+          },
+          {
+            question: 'hunk 头里省略行数时如何处理？',
+            answer:
+              '按 unified diff 规范，@@ -a +c @@ 这种省略 ,count 的写法表示该侧计数为 1，解析器按此规则处理，并在校验时与实际 +/-/上下文行数核对，不符即报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Unified Diff & Patch Parser consumes an existing patch body, parsing file headers and hunk structure line by line to produce per-file addition/deletion stats and a colored view, with line-numbered diagnostics for malformed patches.',
+        coreFeatures: [
+          'Recognizes diff --git, ---/+++, new/deleted file mode, rename/copy, and mode changes',
+          'Splits hunks by @@ -a,b +c,d @@ and counts additions/deletions per file',
+          'Colored added, removed, and context lines, with No-newline markers handled separately',
+          'Malformed-patch detection: missing hunk header, declared count mismatch, bad line prefix, truncated hunk header',
+          'Collapsible file panels and top-level summary for reviewing raw patch text',
+        ],
+        howToUse: [
+          'Paste unified diff or git format-patch output into the editor',
+          'Use the top statistics to grasp file count, changed lines, and hunk count at a glance',
+          'Expand file panels to inspect colorized diffs grouped by hunk',
+          'Follow line numbers in the error alert to repair an invalid patch',
+        ],
+        useCases: [
+          'Quickly understanding the scope of a raw patch during code review',
+          'Diagnosing where a patch failed to apply or became corrupted in CI',
+          'Analyzing renames, new files, deletions, and permission changes',
+        ],
+        privacyNote:
+          'Patch parsing is pure local text computation in the browser. It never contacts a Git service or any network endpoint, and pasted code is not uploaded.',
+        faqs: [
+          {
+            question: 'How does this differ from the text diff tool?',
+            answer:
+              'The text diff tool takes two texts and generates a diff. This tool works in the opposite direction: it consumes an already-existing diff/patch body, parses its file and hunk structure for stats and error location, and never compares two source texts.',
+          },
+          {
+            question: 'How are hunk headers without counts handled?',
+            answer:
+              'Per the unified diff convention, a header like @@ -a +c @@ that omits ,count implies a count of 1 on that side. The parser applies this rule and still cross-checks the actual +/-/context line counts, reporting a mismatch as an error.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

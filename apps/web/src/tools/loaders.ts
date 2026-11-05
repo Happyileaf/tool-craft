@@ -270,4 +270,9 @@ export const toolLoaders: Record<
   'bcd-codec': () => import('./bcd-codec'),
   'sexagenary-cycle': () => import('./sexagenary-cycle'),
   'sql-literal-escape': () => import('./sql-literal-escape'),
+  'json-diff': () => import('./json-diff'),
+  'sse-codec': () => import('./sse-codec'),
+  'gitattributes-generator': () => import('./gitattributes-generator'),
+  'intel-hex-parser': () => import('./intel-hex-parser'),
+  'diff-patch-parser': () => import('./diff-patch-parser'),
 };
