@@ -238,4 +238,10 @@
 | 20261105020215 | BCD 码编解码器（8421 / 余3码 / 2421 码与打包 BCD 字节） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105020215.md) |
 | 20261105020216 | 干支纪年与生肖转换器（公历年份 ↔ 天干地支/六十甲子/生肖） | Web Tool | Exploration | Pending | 2026-11-05 | | [详情](./idea-details/20261105020216.md) |
 | 20261105020217 | E.164 电话号码规范化与格式化器（国际格式解析与校验） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105020217.md) |
+| 20261105080301 | ITU E.123 电话号码格式化器（国际/本地分组、可视分隔与 E.164 互转） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105080301.md) |
+| 20261105080302 | Java 内部类名与描述符（Descriptor / Signature）转换器 | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105080302.md) |
+| 20261105080303 | DICOM UID 生成器与校验器（医疗影像唯一标识符，根 UID + 后缀） | Web Tool | External Reference | Pending | 2026-11-05 | | [详情](./idea-details/20261105080303.md) |
+| 20261105080304 | Markdown 链接检查器（引用一致性、重复引用定义与本地锚点校验） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105080304.md) |
+| 20261105080305 | gettext PO / POT 消息目录 ↔ JSON 双向转换器 | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105080305.md) |
+| 20261105080308 | SQL 字符串字面量转义 / 反转义工具（标准单引号与 LIKE 通配符转义） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105080308.md) |
 
