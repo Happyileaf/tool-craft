@@ -270,4 +270,5 @@ export const toolLoaders: Record<
   'bcd-codec': () => import('./bcd-codec'),
   'sexagenary-cycle': () => import('./sexagenary-cycle'),
   'sql-literal-escape': () => import('./sql-literal-escape'),
+  'eip55-checksum': () => import('./eip55-checksum'),
 };

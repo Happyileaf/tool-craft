@@ -25215,6 +25215,121 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'eip55-checksum',
+    name: '以太坊地址 EIP-55 校验和编码与校验器',
+    nameEn: 'Ethereum EIP-55 Address Checksum Encoder & Verifier',
+    description:
+      '按 EIP-55 规则对 20 字节以太坊地址做混合大小写校验和编码与校验：内置零依赖原始 Keccak-256（padding 0x01，区别于 NIST SHA3-256），对小写 hex 主体取摘要后按哈希半字节 ≥ 8 决定字母大小写；支持带 / 不带 0x 前缀、每行一条批量编码与校验，能识别全小写 / 全大写的「无校验和」地址并检测大小写篡改，非法长度与非十六进制字符逐条定位报错，纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Apply and verify EIP-55 mixed-case checksums for 20-byte Ethereum addresses: a zero-dependency original Keccak-256 (padding 0x01, distinct from NIST SHA3-256) is built in, hashing the lowercased hex body and capitalizing letters whose hash nibble is at least 8. Addresses with or without the 0x prefix are supported in line-by-line batch encode and verify modes; all-lowercase/all-uppercase "no checksum" addresses are recognized and tampered letter case is detected, while bad lengths and non-hex characters are reported per line. Fully local browser computation with zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/eip55-checksum',
+    iconName: 'ShieldCheck',
+    tags: ['以太坊', 'EIP-55', '校验和', 'Keccak-256', '地址', 'Ethereum', 'checksum', '批量处理'],
+    tagsEn: ['Ethereum', 'EIP-55', 'Checksum', 'Keccak-256', 'Address', 'Batch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaed\n0xFB6916095CA1DF60BB79CE92CE3EA74C37C5D359\n0xdbf03b407c01e7cd3cbea99509d93f8dddc8c6fb',
+    doc: {
+      zh: {
+        whatIsIt:
+          '以太坊地址 EIP-55 校验和编码与校验器是一款纯浏览器本地运行的工具，用于把全小写或全大写的 40 位十六进制地址转换为 EIP-55 混合大小写形式，或核验一个地址的大小写是否符合校验和。EIP-55 不增加任何额外字符，而是利用字母 A–F 的大小写携带校验信息：对小写地址计算 Keccak-256 摘要，若某字母对应哈希位的半字节值不小于 8 就大写，否则小写，从而让一个被抄错的字符极大概率导致校验失败。',
+        coreFeatures: [
+          '零依赖内置原始 Keccak-256（域分隔 0x01），与 NIST SHA3-256（0x06）严格区分，附空串与 abc 标准向量自测',
+          'EIP-55 编码：任意大小写输入统一输出带 0x 前缀的标准混合大小写地址，重复编码幂等',
+          'EIP-55 校验：逐字符比对期望大小写，检测地址抄写 / 篡改导致的校验和失配',
+          '识别全小写 / 全大写「无校验和」地址，提示其未携带校验信息并直接给出标准形式',
+          '支持省略 0x 前缀输入、每行一条批量处理，非法长度与非十六进制字符逐条行号定位报错',
+        ],
+        howToUse: [
+          '在「处理模式」卡片选择「计算校验和」或「校验地址」',
+          '在左侧文本框粘贴一个或多个以太坊地址（每行一条，0x 前缀可选）',
+          '编码模式下右侧实时输出 EIP-55 混合大小写地址，点击「复制」获取结果',
+          '校验模式下每条结果标注「校验和正确」或「无有效校验和」，大小写被改动的地址会明确提示不一致',
+        ],
+        useCases: [
+          '钱包、智能合约开发中把链上查询到的小写地址转换为可人工核对的 EIP-55 形式',
+          '转账前核对对方地址，及时发现少字符、错字符或大小写被意外改动的情况',
+          '批量处理导出的地址清单，统一为带校验和的规范格式',
+          '教学与调试：理解 Keccak-256 与 SHA3-256 的填充差异及 EIP-55 的编码原理',
+        ],
+        privacyNote:
+          '全部哈希与编码均在浏览器本地由零依赖 TypeScript 完成，不发起任何网络请求；输入的地址不会离开设备。',
+        faqs: [
+          {
+            question: '为什么不直接用 Web Crypto 的 SHA3-256？',
+            answer:
+              'EIP-55 使用的是 Keccak 团队原始提交版本，填充域分隔字节为 0x01；而 NIST 标准化后的 SHA3-256 使用 0x06，二者对同一输入产生完全不同的摘要。Web Crypto 只提供 NIST SHA3，因此本工具按 Keccak 参考实现手工内置了原始 Keccak-256，并以空串 c5d2… 与 abc 4e03… 标准向量保证正确性。',
+          },
+          {
+            question: '全小写地址校验时为什么提示「未携带校验和」？',
+            answer:
+              'EIP-55 的校验信息完全藏在字母大小写里。全小写或全大写地址没有任何大小写变化，等于没有携带可核验的校验信息，本身在链上仍然有效。工具不会把它判为错误地址，而是标记 checksumMatched=false 并同时计算出标准 EIP-55 形式供你使用。',
+          },
+          {
+            question: '校验和能防止哪些错误？',
+            answer:
+              '它主要用于发现人工抄写、口头传递或排版过程中的字符错误与意外大小写改动。由于地址本身有 160 位、校验信息又来自 Keccak-256，任何单个字母被错误大写 / 小写都会以极高概率被检出；但它不是加密签名，无法抵御攻击者有意构造的同形地址，转账前仍应通过可信渠道核对完整地址。',
+          },
+          {
+            question: '不带 0x 前缀的地址可以处理吗？',
+            answer:
+              '可以。工具对输入的 0x 前缀做可选解析，输出时统一补上 0x；校验时也会按相同前缀规则逐字符比较，因此带前缀与不带前缀的等价地址都会得到一致的 EIP-55 结果。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Ethereum EIP-55 Address Checksum Encoder & Verifier runs entirely in your browser to turn all-lowercase or all-uppercase 40-hex-digit addresses into the EIP-55 mixed-case form, and to check whether an address follows it. EIP-55 adds no extra characters: it encodes checksum bits in the capitalization of A–F letters. The lowercased address is hashed with Keccak-256, and a letter is capitalized when its corresponding hash nibble is 8 or above, so a mistyped character almost always fails verification.',
+        coreFeatures: [
+          'Zero-dependency built-in original Keccak-256 (domain byte 0x01), strictly distinct from NIST SHA3-256 (0x06), self-tested with empty-string and abc vectors',
+          'EIP-55 encoding: any-case input yields a standard 0x-prefixed mixed-case address, and encoding is idempotent',
+          'EIP-55 verification: character-by-character comparison detects checksum mismatch caused by copying errors or tampered case',
+          'Recognizes all-lowercase/all-uppercase "no checksum" addresses, warns that they carry no checksum, and emits the canonical form',
+          'Accepts addresses with or without 0x, processes one address per line in batch, and reports bad length or non-hex characters with per-line positions',
+        ],
+        howToUse: [
+          'Choose "Compute checksum" or "Verify address" in the mode card',
+          'Paste one or more Ethereum addresses into the left editor, one per line (0x prefix optional)',
+          'In encode mode the EIP-55 mixed-case addresses appear live on the right; click Copy to grab them',
+          'In verify mode each row is tagged "checksum valid" or "no usable checksum", and altered letter case is explicitly flagged',
+        ],
+        useCases: [
+          'Converting lowercase on-chain addresses from wallets and smart-contract tooling into human-checkable EIP-55 form',
+          'Checking a payee address before transfer to catch missing, wrong or accidentally re-cased characters',
+          'Normalizing exported address lists into the checksummed canonical format in batch',
+          'Learning and debugging the padding difference between Keccak-256 and SHA3-256 and how EIP-55 works',
+        ],
+        privacyNote:
+          'All hashing and encoding run locally in your browser via zero-dependency TypeScript. No network requests are made, so your addresses never leave your device.',
+        faqs: [
+          {
+            question: 'Why not use Web Crypto SHA3-256 directly?',
+            answer:
+              'EIP-55 uses the original Keccak submission with domain padding byte 0x01, whereas NIST-standardized SHA3-256 uses 0x06, producing completely different digests for the same input. Web Crypto only offers NIST SHA3, so this tool ships a hand-written original Keccak-256 per the Keccak reference, validated against the canonical empty-string c5d2… and abc 4e03… vectors.',
+          },
+          {
+            question: 'Why does an all-lowercase address show "carries no checksum"?',
+            answer:
+              'EIP-55 stores its checksum entirely in letter capitalization. An all-lowercase or all-uppercase address has no case variation, so it carries no verifiable checksum, even though it remains a valid on-chain address. The tool does not call it invalid: checksumMatched is false and the canonical EIP-55 form is computed for you at the same time.',
+          },
+          {
+            question: 'What errors does the checksum catch?',
+            answer:
+              'It mainly catches character mistakes and accidental case changes from manual transcription, verbal relay or formatting. With 160 address bits and a Keccak-256-derived checksum, any single wrongly cased letter is detected with overwhelming probability. It is not a cryptographic signature, however, and cannot defend against an attacker deliberately crafting a look-alike address—always cross-check the full address through a trusted channel before sending funds.',
+          },
+          {
+            question: 'Can I paste addresses without the 0x prefix?',
+            answer:
+              'Yes. The 0x prefix is parsed as optional on input and always added on output; verification compares under the same prefix rules, so equivalent addresses with or without 0x produce identical EIP-55 results.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
