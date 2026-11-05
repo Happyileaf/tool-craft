@@ -265,4 +265,9 @@ export const toolLoaders: Record<
   'image-data-uri-converter': () => import('./image-data-uri-converter'),
   'license-generator': () => import('./license-generator'),
   'clamp-typography-generator': () => import('./clamp-typography-generator'),
+  'text-wrap-formatter': () => import('./text-wrap-formatter'),
+  'upc-e-converter': () => import('./upc-e-converter'),
+  'bcd-codec': () => import('./bcd-codec'),
+  'sexagenary-cycle': () => import('./sexagenary-cycle'),
+  'sql-literal-escape': () => import('./sql-literal-escape'),
 };
