@@ -254,4 +254,11 @@
 | 20261106020727 | 正则表达式语法速查 | Web Tool | Exploration | Pending | 2026-11-06 | | [详情](./idea-details/20261106020727.md) |
 | 20261106020728 | HTTP 请求方法速查 | Web Tool | Exploration | Pending | 2026-11-06 | | [详情](./idea-details/20261106020728.md) |
 | 20261106020729 | HTTP 头字段速查 | Web Tool | Exploration | Pending | 2026-11-06 | | [详情](./idea-details/20261106020729.md) |
+| 20261106060111 | 邮箱地址语法校验与结构解析器 | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106060111.md) |
+| 20261106060112 | iCalendar RRULE 重复规则解析与展开器（RFC 5545） | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106060112.md) |
+| 20261106060113 | 二维/三维向量运算计算器（点积、叉积、夹角、投影） | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106060113.md) |
+| 20261106060114 | JPEG 文件 marker 段结构只读解析器（SOI / APP / DQT / SOF / SOS / EOI） | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106060114.md) |
+| 20261106060115 | 多边形面积与周长计算器（鞋带公式，含 GeoJSON 粘贴） | Web Tool | Exploration | Pending | 2026-11-06 | | [详情](./idea-details/20261106060115.md) |
+| 20261106060116 | 多面骰子（d4/d6/d20 等）投掷模拟与点数和概率分布计算器 | Web Tool | Exploration | Pending | 2026-11-06 | | [详情](./idea-details/20261106060116.md) |
+| 20261106060117 | GPA 平均绩点计算器（百分制/4.0/4.3 多算法与学分加权） | Web Tool | Exploration | Pending | 2026-11-06 | | [详情](./idea-details/20261106060117.md) |
 
