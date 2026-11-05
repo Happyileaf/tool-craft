@@ -25670,6 +25670,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'bcp47-language-tag',
+    name: 'BCP 47 语言标签解析器',
+    nameEn: 'BCP 47 Language Tag Parser',
+    description:
+      '按 RFC 5646 在浏览器本地拆解 BCP 47 语言标签，结构化展示语言、脚本、区域、变体、扩展（含 u 扩展 keyword）与私有子标签，输出结构错误、告警、大小写规范化建议，并用原生 Intl.Locale 交叉验证。',
+    descriptionEn:
+      'Parse BCP 47 language tags per RFC 5646 entirely in the browser, breaking them into language, script, region, variants, extensions (including u-extension keywords) and private-use subtags, with structural errors, warnings, casing normalization advice, and native Intl.Locale cross-validation.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/bcp47-language-tag',
+    iconName: 'Globe',
+    tags: ['BCP 47', 'RFC 5646', 'i18n', '语言标签', 'locale', 'Intl'],
+    tagsEn: ['BCP 47', 'RFC 5646', 'i18n', 'Language Tag', 'locale', 'Intl'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'zh-Hans-CN-u-ca-chinese-nu-hans',
+    doc: {
+      zh: {
+        whatIsIt:
+          'BCP 47 语言标签解析器按 RFC 5646 语法在浏览器本地把语言标签（如 zh-Hans-CN-u-ca-chinese-nu-hans）拆解为 language、extlang、script、region、variants、extensions 与 privateuse 等组成部分，标注每个子标签的含义，并对结构错误、未收录子标签与大小写不规范给出可解释诊断。',
+        coreFeatures: [
+          '完整识别 language、extlang、script、region、variants、单字母扩展（含 u 扩展 attribute 与 keyword）及 x- 私有子标签',
+          '区分结构 error 与可解析告警 warning：非法下划线、连续连字符、重复扩展前缀、错误长度等报 error，未注册子标签仅告警',
+          '识别 en-GB-oed、i-klingon 等 grandfathered 遗留标签并整体处理',
+          '按 BCP 47 推荐大小写输出规范化标签（language 小写、script 首字母大写、region 大写）并给出修改建议',
+          '运行时用浏览器原生 Intl.Locale 对规范化结果做交叉验证，全部计算本地完成、零网络请求',
+        ],
+        howToUse: [
+          '在输入框粘贴或键入语言标签，也可点击下方快捷示例',
+          '在「解析结果」卡片查看各组成部分及常用语言、脚本、区域的中文名',
+          '展开 u 扩展可查看 attribute 与 keyword 键值对，私有子标签单独列出',
+          '在「诊断与规范化建议」卡片按 error / warning 定位问题，并复制规范化标签',
+        ],
+        useCases: [
+          '排查 i18n 资源命名与 locale 文件名（en_US 与 en-US）不一致问题',
+          '校验后端返回的 Accept-Language、Content-Language 标签是否合法',
+          '理解复杂标签中 u 扩展日历（ca）、数字系统（nu）、排序规则（co）的含义',
+          '为多语言应用设计语言选择与回退逻辑前确认标签结构',
+        ],
+        privacyNote:
+          '所有解析与诊断均为浏览器本地纯函数计算，不发起任何网络请求，输入的语言标签不会被上传或记录。',
+        faqs: [
+          {
+            question: 'error 和 warning 有什么区别？',
+            answer:
+              'error 表示标签违反 RFC 5646 语法结构（例如用下划线分隔、连续连字符、重复扩展前缀、子标签长度非法），需要修正；warning 表示结构可解析，但子标签未收录于内置常用表或属于 grandfathered 遗留标签，是否真正注册需对照 IANA 语言子标签注册表确认。',
+          },
+          {
+            question: '为什么 zh-Hans-CN 解析后会提示规范化？',
+            answer:
+              'BCP 47 推荐子标签使用特定大小写：language 全小写（zh）、script 首字母大写（Hans）、region 全大写（CN）。若输入 zh-hans-cn 这类全小写写法，工具会输出规范化结果 zh-Hans-CN 并给出逐项建议；两者语义等价，规范化仅为可读性与互操作性。',
+          },
+          {
+            question: 'u 扩展里的 ca、nu、co 分别是什么？',
+            answer:
+              'u 表示 Unicode 扩展，其后的 2 字母 key 携带 locale 偏好：ca 是日历（如 ca-chinese 中国农历、ca-gregory 公历），nu 是数字系统（如 nu-hans 中文小写数字、nu-latn 拉丁数字），co 是排序规则（如 co-phonebk 电话簿排序）。工具会把每个 key 与其取值拆成 keyword 展示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The BCP 47 Language Tag Parser breaks a language tag (such as zh-Hans-CN-u-ca-chinese-nu-hans) into language, extlang, script, region, variants, extensions and private-use subtags per RFC 5646, entirely in the browser, annotating each subtag and producing explainable diagnostics for structural errors, unregistered subtags, and non-canonical casing.',
+        coreFeatures: [
+          'Recognizes language, extlang, script, region, variants, singleton extensions (including u-extension attributes and keywords) and x- private-use subtags',
+          'Distinguishes structural errors from parseable warnings: illegal underscores, double hyphens, duplicate singletons and bad lengths are errors; unregistered subtags only warn',
+          'Identifies grandfathered tags such as en-GB-oed and i-klingon and handles them as whole units',
+          'Emits a canonical tag with BCP 47 casing (lowercase language, title-case script, uppercase region) plus targeted suggestions',
+          'Cross-validates the canonical result with the native Intl.Locale API at runtime; all computation is local with zero network requests',
+        ],
+        howToUse: [
+          'Paste or type a language tag in the input, or click a quick sample below it',
+          'Review the components and the friendly names of common languages, scripts and regions in the result card',
+          'Expand an extension to inspect u-extension attributes and keyword key/value pairs; private-use subtags are listed separately',
+          'Use the diagnostics card to locate errors and warnings, then copy the canonical tag',
+        ],
+        useCases: [
+          'Debugging mismatches between i18n resource naming and locale file names (en_US vs en-US)',
+          'Validating Accept-Language or Content-Language tags returned by a backend',
+          'Understanding u-extension calendar (ca), numbering system (nu) and collation (co) in complex tags',
+          'Confirming tag structure before designing language selection and fallback logic for a multilingual app',
+        ],
+        privacyNote:
+          'All parsing and diagnostics are pure local computations in the browser. No network request is made, and the language tag you type is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the difference between an error and a warning?',
+            answer:
+              'An error means the tag violates the RFC 5646 grammar (for example underscore separators, double hyphens, duplicate extension singletons, or an illegal subtag length) and must be fixed. A warning means the tag is structurally parseable but a subtag is absent from the bundled common tables or the tag is grandfathered; whether it is actually registered should be confirmed against the IANA Language Subtag Registry.',
+          },
+          {
+            question: 'Why does zh-Hans-CN trigger normalization advice?',
+            answer:
+              'BCP 47 recommends specific casing: lowercase language (zh), title-case script (Hans), uppercase region (CN). If you type an all-lowercase form such as zh-hans-cn, the tool returns the canonical zh-Hans-CN with itemized advice. The forms are semantically equivalent; normalization only improves readability and interoperability.',
+          },
+          {
+            question: 'What do ca, nu and co mean inside a u extension?',
+            answer:
+              'The u singleton marks a Unicode extension whose 2-letter keys carry locale preferences: ca is the calendar (e.g. ca-chinese Chinese calendar, ca-gregory Gregorian), nu is the numbering system (e.g. nu-hans Chinese numerals, nu-latn Latin digits), and co is collation (e.g. co-phonebk phonebook ordering). The tool splits each key and its values into a displayed keyword.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
