@@ -25444,6 +25444,120 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'lc-resonance-calculator',
+    name: 'LC 谐振频率与电抗计算器',
+    nameEn: 'LC Resonance & Reactance Calculator',
+    description:
+      '理想 LC 谐振回路知二求三：f₀ = 1/(2π√(LC))，并在给定频率下计算感抗 Xl = 2πfL 与容抗 Xc = 1/(2πfC)，支持 L、C、f、Ω 间 nH~H、pF~F、Hz~GHz 单位自适应换算与常用电容选型参考。',
+    descriptionEn:
+      'Solve an ideal LC resonant tank from any two known quantities: f₀ = 1/(2π√(LC)), plus inductive reactance Xl = 2πfL and capacitive reactance Xc = 1/(2πfC) at a given frequency, with adaptive nH–H, pF–F, Hz–GHz and ohm prefixes and standard-capacitance selection hints.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/lc-resonance-calculator',
+    iconName: 'Gauge',
+    tags: ['LC谐振', '谐振频率', '感抗', '容抗', '电感', '电容'],
+    tagsEn: ['LC Resonance', 'Resonant Frequency', 'Inductive Reactance', 'Capacitive Reactance', 'Inductor', 'Capacitor'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'L=100µH, C=100pF',
+    doc: {
+      zh: {
+        whatIsIt:
+          'LC 谐振频率与电抗计算器面向射频、开关电源与模拟电路选型场景，基于理想无损电感 L 与电容 C 的解析公式做本地实时求解：谐振时感抗与容抗大小相等、符号相反，回路总电抗为零。工具覆盖谐振频率正算、由目标频率反求 L 或 C，以及单一频率下的感抗 / 容抗计算，并自动在毫、微、纳、皮等工程单位间换算。',
+        coreFeatures: [
+          '五种求解模式：L+C→f₀、L+f₀→C、C+f₀→L、L+f→Xl、C+f→Xc，覆盖 idea 全部验收场景',
+          '多单位输入：电感 nH/µH/mH/H，电容 pF/nF/µF/F，频率 Hz/kHz/MHz/GHz，结果按数量级自适应展示',
+          '一次求解同时给出角频率 ω = 2πf 与谐振点 Xl = Xc，便于核对谐振条件',
+          '常用电容选型参考：在目标谐振频率下列出标准电容量级对应的理想电感值',
+          '零依赖纯函数计算内核与 UI 解耦，非法输入（零、负数、缺失）给出明确中文报错',
+        ],
+        howToUse: [
+          '在模式按钮中选择已知量组合，例如「L + C → f₀」',
+          '为每个已知量填写数值并通过右侧下拉选择单位',
+          '结果表格实时展示求解量、角频率与电抗，切换模式时已填的共同已知量会保留',
+          '点击示例按钮可快速载入 100µH×100pF 等典型工况，点击「复制结果」导出文本',
+        ],
+        useCases: [
+          '射频调谐回路、天线匹配与 Colpitts / Hartley 振荡器的谐振频率估算',
+          'DC-DC 开关电源输出 LC 滤波器的截止频率与纹波选型',
+          '给定工作频率评估电感感抗、电容容抗，判断旁路 / 隔直是否充分',
+          '面试与教学中验证 f₀、Xl、Xc 公式及单位换算',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地以纯函数完成，不发送任何网络请求，电路参数不会离开设备。',
+        faqs: [
+          {
+            question: '为什么谐振时 Xl 等于 Xc？',
+            answer:
+              '感抗 Xl = 2πfL 随频率升高而增大，容抗 Xc = 1/(2πfC) 随频率升高而减小；二者在谐振频率 f₀ = 1/(2π√(LC)) 处数值相等、相位相反，回路总电抗为零，电流只受等效串联电阻限制。本工具按理想无损模型计算，未计入 ESR、磁芯损耗与寄生参数。',
+          },
+          {
+            question: '计算结果和 LTspice / 万用表实测不一致？',
+            answer:
+              '本工具采用理想 L、C 解析公式，实际元件存在容差、等效串联电阻（ESR）、自谐振频率（SRF）与寄生电容，高频下偏差尤其明显。选型时应留足裕量，并以元件数据手册的 SRF、Q 值与温度特性为准；工具输出的是理想参考值而非精确仿真。',
+          },
+          {
+            question: '为什么频率或元件值非常小时结果出现很大的数？',
+            answer:
+              'f₀ 与 √(LC) 成反比、Xc 与 fC 成反比，当 L、C 或 f 趋近零时结果会趋于无穷大，这是公式本身的数学行为。工具要求所有输入为正数，零与负数会直接报错；结果表格使用自适应单位（如 kΩ、MHz）以避免长串零。',
+          },
+          {
+            question: '选型参考表里的电感是标准值吗？',
+            answer:
+              '不是。表格按常用标准电容量级（10pF–100nF）反推在目标频率下谐振所需的理想电感，仅用于快速判断可行的数量级区间；实际选型还需结合 E 系列标准值、饱和电流、Q 值与封装，再用电感的标称值回算实际谐振频率。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The LC Resonance & Reactance Calculator serves RF, switching-power-supply and analog-circuit selection with local, real-time solutions of the analytical formulas for an ideal lossless inductor L and capacitor C. At resonance the inductive and capacitive reactances are equal in magnitude and opposite in sign, so the total tank reactance is zero. It covers forward resonant-frequency calculation, inverse solving of L or C from a target frequency, and single-frequency reactance calculations, with automatic engineering-prefix conversion across milli, micro, nano and pico units.',
+        coreFeatures: [
+          'Five solve modes: L+C→f₀, L+f₀→C, C+f₀→L, L+f→Xl and C+f→Xc, covering every acceptance scenario',
+          'Multi-unit inputs: nH/µH/mH/H for inductance, pF/nF/µF/F for capacitance, Hz/kHz/MHz/GHz for frequency, with adaptive output prefixes',
+          'Each solution also reports angular frequency ω = 2πf and the resonant Xl = Xc pair for sanity checks',
+          'Selection hints: ideal inductances for common standard capacitance magnitudes at the target resonant frequency',
+          'Zero-dependency pure-function calculation core decoupled from the UI, with explicit Chinese error messages for zero, negative or missing inputs',
+        ],
+        howToUse: [
+          'Pick the mode matching your known quantities, e.g. "L + C → f₀"',
+          'Enter each value and choose its unit in the dropdown beside it',
+          'The result table live-updates with the solved quantity, angular frequency and reactances; shared known values are kept when switching modes',
+          'Use the example buttons to load typical cases such as 100µH×100pF, and click Copy Result to export the text',
+        ],
+        useCases: [
+          'Resonant-frequency estimates for RF tuning tanks, antenna matching and Colpitts/Hartley oscillators',
+          'Cutoff-frequency and ripple selection for output LC filters in DC-DC switching converters',
+          'Judging bypass/DC-blocking adequacy from inductive and capacitive reactance at a working frequency',
+          'Verifying f₀, Xl and Xc formulas and unit conversions in interviews and teaching',
+        ],
+        privacyNote:
+          'All computation runs locally in your browser as pure functions. No network requests are made, and circuit parameters never leave your device.',
+        faqs: [
+          {
+            question: 'Why does Xl equal Xc at resonance?',
+            answer:
+              'Inductive reactance Xl = 2πfL grows with frequency while capacitive reactance Xc = 1/(2πfC) shrinks; at the resonant frequency f₀ = 1/(2π√(LC)) they match in magnitude and oppose in phase, leaving zero net tank reactance so current is limited only by equivalent series resistance. The tool uses an ideal lossless model and does not account for ESR, core losses or parasitics.',
+          },
+          {
+            question: 'Why do results differ from LTspice or bench measurements?',
+            answer:
+              'The tool applies ideal L and C analytical formulas. Real components have tolerances, equivalent series resistance (ESR), self-resonant frequency (SRF) and parasitic capacitance, with deviations growing at high frequencies. Leave design margin and rely on datasheet SRF, Q and temperature characteristics; the output is an ideal reference rather than a precise simulation.',
+          },
+          {
+            question: 'Why do very small frequencies or component values produce huge results?',
+            answer:
+              'f₀ is inversely proportional to √(LC) and Xc is inversely proportional to fC, so results diverge as L, C or f approach zero—an inherent property of the formulas. All inputs must be positive; zero and negative values are rejected, and adaptive prefixes (kΩ, MHz, etc.) keep output readable.',
+          },
+          {
+            question: 'Are the inductances in the selection table standard values?',
+            answer:
+              'No. The table back-solves the ideal inductance needed to resonate at the target frequency for common standard capacitance magnitudes (10pF–100nF), giving a quick order-of-magnitude feasibility view. Real selection must also consider E-series nominal values, saturation current, Q and package, then re-check the actual resonant frequency with the chosen nominal inductor.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

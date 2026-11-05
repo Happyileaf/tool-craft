@@ -272,4 +272,5 @@ export const toolLoaders: Record<
   'sql-literal-escape': () => import('./sql-literal-escape'),
   'eip55-checksum': () => import('./eip55-checksum'),
   'plus-code-codec': () => import('./plus-code-codec'),
+  'lc-resonance-calculator': () => import('./lc-resonance-calculator'),
 };
