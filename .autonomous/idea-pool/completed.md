@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261105140803 | SSE（Server-Sent Events）消息格式编码 / 解码器（event/data/id/retry 字段与多行 data） | Web Tool | External Reference | `sse-codec` / [PR #177](https://github.com/Happyileaf/tool-craft/pull/177) | 2026-11-05 | [详情](./idea-details/20261105140803.md) |
+| 20261105080302 | Java 内部类名与描述符（Descriptor / Signature）转换器 | Web Tool | Existing Gap | `java-descriptor-converter` / [PR #177](https://github.com/Happyileaf/tool-craft/pull/177) | 2026-11-05 | [详情](./idea-details/20261105080302.md) |
+| 20261104200905 | LC 谐振频率与电抗计算器（谐振频率 / 容抗 / 感抗互求） | Web Tool | Existing Gap | `lc-resonance-calculator` / [PR #177](https://github.com/Happyileaf/tool-craft/pull/177) | 2026-11-05 | [详情](./idea-details/20261104200905.md) |
+| 20261029140204 | Plus Codes（Open Location Code）编解码器 | Web Tool | Exploration | `plus-code-codec` / [PR #177](https://github.com/Happyileaf/tool-craft/pull/177) | 2026-11-05 | [详情](./idea-details/20261029140204.md) |
+| 20261028081033 | 以太坊地址 EIP-55 校验和编码与校验器 | Web Tool | Existing Gap | `eip55-checksum` / [PR #177](https://github.com/Happyileaf/tool-craft/pull/177) | 2026-11-05 | [详情](./idea-details/20261028081033.md) |
 | 20261104081016 | JSON → Swift struct / Codable 模型生成器 | Web Tool | Existing Gap | `json-to-swift` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261104081016.md) |
 | 20261101201005 | JSON 转 PHP array 代码生成器（含嵌套类型推断与短数组语法） | Web Tool | Existing Gap | `json-to-php` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261101201005.md) |
 | 20261101140215 | JSON → Kotlin data class 生成器（含嵌套类型推断） | Web Tool | Existing Gap | `json-to-kotlin` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261101140215.md) |

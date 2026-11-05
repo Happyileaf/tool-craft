@@ -121,7 +121,6 @@
 | 20261028020202 | Sqids / Hashids 短 ID 编解码器 | Web Tool | External Reference | Pending | 2026-10-28 | | [详情](./idea-details/20261028020202.md) |
 | 20261028020204 | BIP-39 助记词生成与校验器 | Web Tool | External Reference | Pending | 2026-10-28 | | [详情](./idea-details/20261028020204.md) |
 | 20261028020206 | Java .properties 配置与 JSON 双向转换器 | Web Tool | Existing Gap | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028020206.md) |
-| 20261028081033 | 以太坊地址 EIP-55 校验和编码与校验器 | Web Tool | Existing Gap | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028081033.md) |
 | 20261028081035 | BMI 身体质量指数计算器（中国 / WHO 双标准分级） | Web Tool | Exploration | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028081035.md) |
 | 20261028140205 | JSONC / 宽松 JSON 转标准 JSON（注释与尾随逗号剥离） | Web Tool | Existing Gap | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028140205.md) |
 | 20261028140206 | 二进制 ↔ Gray 码（格雷码）双向转换器 | Web Tool | Exploration | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028140206.md) |
@@ -142,7 +141,6 @@
 | 20261029140201 | SRI 子资源完整性哈希生成器（Subresource Integrity） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140201.md) |
 | 20261029140202 | HKDF 密钥派生计算器（RFC 5869） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140202.md) |
 | 20261029140203 | JSON Patch 应用器（RFC 6902） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140203.md) |
-| 20261029140204 | Plus Codes（Open Location Code）编解码器 | Web Tool | Exploration | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140204.md) |
 | 20261029140205 | 中文数字 ↔ 阿拉伯数字双向转换器（含大写金额用字） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140205.md) |
 | 20261029200825 | UUID v3 / v5 名称型 UUID 生成器（RFC 9562 命名空间哈希） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029200825.md) |
 | 20261029200826 | JWK Thumbprint 指纹计算器（RFC 7638） | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261029200826.md) |
@@ -230,7 +228,6 @@
 | 20261104140125 | .gitattributes 文件生成器（换行符 / 二进制标记 / merge driver / linguist 规则） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104140125.md) |
 | 20261104200903 | HOTP（RFC 4226）基于计数器的一次性密码生成与校验器 | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200903.md) |
 | 20261104200904 | 位掩码（Bitmask / 位标志）可视化计算器 | Web Tool | Exploration | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200904.md) |
-| 20261104200905 | LC 谐振频率与电抗计算器（谐振频率 / 容抗 / 感抗互求） | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200905.md) |
 | 20261104200906 | JSON 推断并生成 SQL CREATE TABLE 建表语句（DDL）生成器 | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200906.md) |
 | 20261104200907 | GIF（GIF87a / GIF89a）文件结构只读解析器（块树与帧时序展示） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104200907.md) |
 | 20261105020213 | 文本自动换行与行宽格式化器（hard wrap / unwrap，按宽度折行与还原） | Web Tool | Existing Gap | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105020213.md) |
@@ -239,7 +236,6 @@
 | 20261105020216 | 干支纪年与生肖转换器（公历年份 ↔ 天干地支/六十甲子/生肖） | Web Tool | Exploration | In Progress | 2026-11-05 | trae-agent | [详情](./idea-details/20261105020216.md) |
 | 20261105020217 | E.164 电话号码规范化与格式化器（国际格式解析与校验） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105020217.md) |
 | 20261105080301 | ITU E.123 电话号码格式化器（国际/本地分组、可视分隔与 E.164 互转） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105080301.md) |
-| 20261105080302 | Java 内部类名与描述符（Descriptor / Signature）转换器 | Web Tool | Existing Gap | In Progress | 2026-11-05 | trae-agent | [详情](./idea-details/20261105080302.md) |
 | 20261105080303 | DICOM UID 生成器与校验器（医疗影像唯一标识符，根 UID + 后缀） | Web Tool | External Reference | Pending | 2026-11-05 | | [详情](./idea-details/20261105080303.md) |
 | 20261105080304 | Markdown 链接检查器（引用一致性、重复引用定义与本地锚点校验） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105080304.md) |
 | 20261105080305 | gettext PO / POT 消息目录 ↔ JSON 双向转换器 | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105080305.md) |
@@ -247,6 +243,5 @@
 | 20261105140800 | DKIM DNS TXT 记录生成器（选择器公钥记录拼装与标签语法校验） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105140800.md) |
 | 20261105140801 | 摄影景深与超焦距计算器（弥散圆 / 光圈 / 焦距 / 对焦距离互求） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105140801.md) |
 | 20261105140802 | CORS 响应头配置生成器（Allow-Origin / Credentials / 预检缓存策略拼装与校验） | Web Tool | External Reference | Pending | 2026-11-05 | | [详情](./idea-details/20261105140802.md) |
-| 20261105140803 | SSE（Server-Sent Events）消息格式编码 / 解码器（event/data/id/retry 字段与多行 data） | Web Tool | External Reference | In Progress | 2026-11-05 | trae-agent | [详情](./idea-details/20261105140803.md) |
 | 20261105140804 | 表达式调度场算法可视化器（中缀转后缀 RPN 与逐步求值过程演示） | Web Tool | Exploration | Pending | 2026-11-05 | | [详情](./idea-details/20261105140804.md) |
 
