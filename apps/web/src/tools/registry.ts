@@ -24757,6 +24757,122 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'upc-e-converter',
+    name: 'UPC-E 与 UPC-A 条码转换器',
+    nameEn: 'UPC-E ↔ UPC-A Barcode Converter',
+    description:
+      '依据 GS1 规范在 12 位 UPC-A 标准码与 8 位 UPC-E 压缩码之间双向转换：自动识别六种零串压缩模式（模式位 0..9），计算并校验模 10 校验位，展示编号系统位、厂商码、产品码分段，支持每行一条的批量处理与清晰的错误提示。纯浏览器本地运算、零新增依赖，不生成条码图形，仅做数值编码转换。',
+    descriptionEn:
+      'Convert between 12-digit UPC-A and 8-digit UPC-E barcodes per the GS1 specification in both directions: the tool recognizes all six zero-suppression modes (mode digit 0..9), computes and verifies the mod-10 check digit, breaks out number system, manufacturer and product fields, and supports line-by-line batch processing with explicit error messages. Fully local browser computation with zero new dependencies; it performs numeric encoding conversion only and does not render barcode graphics.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/upc-e-converter',
+    iconName: 'Barcode',
+    tags: ['UPC-E', 'UPC-A', '条码', 'GS1', '模10校验', '编码转换', '批量处理'],
+    tagsEn: ['UPC-E', 'UPC-A', 'Barcode', 'GS1', 'Mod-10 Checksum', 'Encoding', 'Batch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '012000003455\n052000003451\n012345000058',
+    doc: {
+      zh: {
+        whatIsIt:
+          'UPC-E 与 UPC-A 条码转换器是一款纯浏览器本地运行的编码工具，依据 GS1 General Specifications 在 12 位 UPC-A 标准码与 8 位 UPC-E 零压缩短码之间双向转换。UPC-E 通过六种固定模式把厂商码或产品码中的连续零压缩进一个模式位，本工具自动判别模式、还原或压缩零串，并以模 10（奇数位权重 3、偶数位权重 1）计算和校验校验位。它只处理数字编码本身，不绘制条码图形，也不联网查询商品数据库。',
+        coreFeatures: [
+          '双向转换：UPC-A → UPC-E 压缩与 UPC-E → UPC-A 展开，覆盖模式位 0..9 全部六种规则',
+          '模 10 校验位自动计算，并对输入携带的校验位做严格校验，错误时给出期望值',
+          '支持 11/12 位 UPC-A 与 7/8 位 UPC-E 输入（缺校验位时自动补全）',
+          '结构化展示编号系统位、厂商码、产品码与校验位分段',
+          '每行一条的批量处理，逐行返回成功结果或明确的失败原因',
+          '编号系统位仅允许 0/1，不可压缩或非法编码给出可理解的中文错误；纯本地计算、零新增依赖',
+        ],
+        howToUse: [
+          '选择转换方向：UPC-A → UPC-E（压缩）或 UPC-E → UPC-A（展开）',
+          '在左侧文本框粘贴条码数字，每行一条；可省略校验位由工具自动补全',
+          '右侧逐行显示转换结果、校验位与字段分段，无效行会标注具体原因',
+          '点击「复制」一次性复制全部成功结果（每行一条）',
+        ],
+        useCases: [
+          '零售包装空间受限时，在标签系统设计阶段评估商品码能否压缩为 UPC-E',
+          'POS、ERP、WMS 等系统中 UPC-E 短码与 UPC-A 标准码的数据互导',
+          '学习 GS1 零压缩规则与模 10 校验算法时的交互式验证',
+          '批量校验历史条码数据的校验位与字段合法性',
+        ],
+        privacyNote:
+          '全部转换均在浏览器本地由零依赖纯函数完成，不发起任何网络请求，也不访问商品数据库；输入的条码数字不会离开设备。',
+        faqs: [
+          {
+            question: '为什么有的 UPC-A 无法压缩成 UPC-E？',
+            answer:
+              'UPC-E 只能压缩编号系统位为 0 或 1、且厂商码或产品码包含特定连续零布局的编码（GS1 规定的六种模式之一）。普通厂商码如 76999 不含符合规则的零串，因此没有对应的 UPC-E 形式，工具会明确提示不满足压缩模式，而不是强行生成无效短码。',
+          },
+          {
+            question: 'UPC-E 的模式位是怎么决定压缩方式的？',
+            answer:
+              'UPC-E 的第 7 位（信息位 X6）是模式位，取值 0..9。0/1/2、3、4 分别对应厂商码三种零串布局，5..9 对应产品码为 0000X6 的布局。展开时按该模式位把零插回固定位置，压缩时则按厂商码/产品码的零串位置反查模式位；本工具的两个方向严格互逆，可往返还原。',
+          },
+          {
+            question: '输入的校验位不对会怎样？',
+            answer:
+              '当输入包含校验位（12 位 UPC-A 或 8 位 UPC-E）时，工具会重新计算模 10 校验位并比对；不一致时该行判为失败，并提示末位应为的正确数字。若只输入 11 位或 7 位数据位，工具会自动计算并追加校验位。',
+          },
+          {
+            question: '这个工具会生成可以扫描的条码图片吗？',
+            answer:
+              '不会。本工具聚焦数值编码层面的 UPC-A/UPC-E 转换与校验，输出的是数字字符串和字段分段；条码图形渲染需要独立的图形生成能力，不在本工具范围内。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The UPC-E ↔ UPC-A Barcode Converter is a fully browser-local encoding utility that converts between 12-digit UPC-A standard codes and 8-digit zero-suppressed UPC-E codes according to the GS1 General Specifications. UPC-E compresses runs of zeros in the manufacturer or product code into a single mode digit using six fixed patterns. The tool detects the mode, restores or removes the zeros, and computes and verifies the mod-10 check digit (odd positions weighted 3, even positions weighted 1). It manipulates numeric codes only: it neither renders barcode graphics nor queries any online product database.',
+        coreFeatures: [
+          'Bidirectional conversion: UPC-A to UPC-E compression and UPC-E to UPC-A expansion covering all six rules for mode digits 0..9',
+          'Automatic mod-10 check digit calculation with strict verification of supplied check digits and expected-value hints',
+          'Accepts 11/12-digit UPC-A and 7/8-digit UPC-E input, filling in a missing check digit automatically',
+          'Structured breakdown of number system digit, manufacturer code, product code and check digit',
+          'Line-by-line batch processing with per-row success output or explicit failure reasons',
+          'Number system digit restricted to 0/1; non-compressible or invalid codes produce clear errors; fully local with zero new dependencies',
+        ],
+        howToUse: [
+          'Choose the direction: UPC-A to UPC-E (compress) or UPC-E to UPC-A (expand)',
+          'Paste barcode digits into the left editor, one code per line; the check digit may be omitted and will be computed',
+          'The right panel shows each converted code with its check digit and field segments, marking invalid rows with specific reasons',
+          'Click Copy to grab every successful result at once, one per line',
+        ],
+        useCases: [
+          'Evaluating whether a product code can be shortened to UPC-E when retail label space is constrained',
+          'Exchanging UPC-E short codes and UPC-A standard codes between POS, ERP and WMS systems',
+          'Interactively learning the GS1 zero-suppression rules and the mod-10 checksum algorithm',
+          'Batch validating check digits and field legality of historical barcode data',
+        ],
+        privacyNote:
+          'All conversion runs locally in your browser via zero-dependency pure functions. No network requests are made and no product database is contacted, so the barcode digits you enter never leave your device.',
+        faqs: [
+          {
+            question: 'Why can some UPC-A codes not be compressed into UPC-E?',
+            answer:
+              'UPC-E only accepts codes whose number system digit is 0 or 1 and whose manufacturer or product code contains one of the specific zero layouts defined by the six GS1 modes. An ordinary manufacturer code such as 76999 has no qualifying zero run, so no UPC-E form exists; the tool reports that the compression pattern is not satisfied instead of emitting an invalid short code.',
+          },
+          {
+            question: 'How does the UPC-E mode digit control compression?',
+            answer:
+              'The seventh digit of UPC-E (info digit X6) is the mode digit, ranging 0..9. Values 0/1/2, 3 and 4 map to three manufacturer-code zero layouts, while 5..9 map to a product code of 0000X6. Expansion reinserts zeros at fixed positions according to this digit, and compression reverse-looks-up the mode from the zero positions; the two directions are strict inverses and round-trip exactly.',
+          },
+          {
+            question: 'What happens if my check digit is wrong?',
+            answer:
+              'When input includes a check digit (12-digit UPC-A or 8-digit UPC-E), the tool recomputes the mod-10 check digit and compares it. A mismatch fails that row and states the correct final digit. If you enter only the 11 or 7 data digits, the check digit is calculated and appended automatically.',
+          },
+          {
+            question: 'Does this tool produce a scannable barcode image?',
+            answer:
+              'No. It focuses on numeric UPC-A/UPC-E conversion and validation, outputting digit strings and field segments only. Rendering barcode graphics requires separate graphics-generation capabilities and is outside the scope of this tool.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
