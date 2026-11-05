@@ -25558,6 +25558,120 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'java-descriptor-converter',
+    name: 'Java 内部类名与描述符转换器',
+    nameEn: 'Java Binary Name & JVM Descriptor Converter',
+    description:
+      '按 JVMS §4.2/§4.3 在浏览器本地完成字节码名称与类型表示互转：内部名（java/util/Map$Entry）与源码类名（java.util.Map.Entry）双向转换，字段描述符（如 [[Ljava/lang/String;、I、Z）生成与解析，方法描述符（如 (Ljava/lang/String;I)V）的参数列表与返回类型拆解；覆盖全部 8 种原始类型、void、数组维度（≤255）与引用类型语法校验，非法输入给出带位置的具体错误，零依赖纯函数实现。',
+    descriptionEn:
+      'Convert Java bytecode names and type representations locally per JVMS §4.2/§4.3: bidirectional conversion between binary names (java/util/Map$Entry) and dotted source names (java.util.Map.Entry), building and parsing field descriptors (e.g. [[Ljava/lang/String;, I, Z), and splitting method descriptors (e.g. (Ljava/lang/String;I)V) into parameter and return types. It covers all eight primitives, void, array dimensions (up to 255) and reference-type syntax validation, with position-specific error messages and a zero-dependency pure-function core.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/java-descriptor-converter',
+    iconName: 'FileCode',
+    tags: ['Java', 'JVM', '字节码', '描述符', 'Descriptor', '内部类'],
+    tagsEn: ['Java', 'JVM', 'Bytecode', 'Descriptor', 'Internal Name', 'JVMS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '(Ljava/lang/String;I)V',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Java 源码编译成 class 文件后，类名与类型在字节码常量池中并不按源码写法存储：类使用以「/」分隔包、以「$」连接内部类的内部名（binary name），字段与方法参数则使用 JVMS §4.3 定义的描述符（descriptor）字符串，例如 int 记为 I、boolean 数组记为 [Z、String 二维数组记为 [[Ljava/lang/String;。本工具按 Java 虚拟机规范在这些表示之间做确定性双向转换，并对每一处语法错误返回带字符位置的中文提示。',
+        coreFeatures: [
+          '内部名互转：java/util/Map$Entry 与 java.util.Map.Entry 双向转换，支持匿名类编号（如 Outer$1）与多级嵌套',
+          '字段描述符：源码类型（含 int[][] 等数组后缀）生成描述符，反向解析出基础类型、数组维度与引用 / 原始分类',
+          '方法描述符：按 (参数...)返回 语法拆解参数列表与返回类型，或由逗号分隔的源码签名生成完整描述符',
+          '完整语法校验：覆盖 B/C/D/F/I/J/S/Z/V 九种单字符标记、L...; 引用语法、数组维度上限 255 与参数数量上限，错误信息标注具体位置',
+          '零依赖纯函数内核与 React UI 解耦，15 条固定向量单元测试覆盖规范示例、round-trip 逆运算与各类非法输入',
+        ],
+        howToUse: [
+          '在顶部选择「内部名」「字段描述符」或「方法描述符」模式',
+          '内部名模式：左右两栏分别粘贴源码类名与内部名，另一侧实时给出转换结果并可一键复制',
+          '字段模式：先用方向按钮选择生成或解析，输入类型名（数组以 [] 结尾）或描述符，结果展示描述符、基础类型与维度',
+          '方法模式：生成时按「类型, 类型」填写参数（无参留空）并填写返回类型；解析时直接粘贴 (…)X 形式描述符，表格逐个列出参数',
+        ],
+        useCases: [
+          '阅读 javap -v、ASM、Byte Buddy 等字节码工具输出时把描述符翻译回可读的 Java 类型',
+          '编写注解处理器、Agent 或字节码插桩逻辑时手工核对方法与字段描述符',
+          '排查 ClassFormatError、NoSuchMethodError 中描述符不匹配的具体差异',
+          'JVM 规范教学与面试准备：理解内部名、字段描述符与方法描述符的编码规则',
+        ],
+        privacyNote:
+          '全部转换在浏览器本地由零依赖 TypeScript 纯函数完成，不发起任何网络请求，输入的类名与描述符不会离开设备。',
+        faqs: [
+          {
+            question: '源码类名转内部名时，工具怎么区分包名的点和内部类的点？',
+            answer:
+              'Java 源码中包段按约定全小写、类段首字母大写，工具把第一个首字母大写的段视为顶层类，其后的点全部转成「$」，之前的点转成「/」，例如 com.example.Outer.Inner → com/example/Outer$Inner。字节码内部名本身没有歧义，反向转换只是机械地把 / 与 $ 替换为点。若源码类名不符合大写约定（不推荐），请直接以内部名模式输入。',
+          },
+          {
+            question: '描述符里的 V（void）能用在字段上吗？',
+            answer:
+              '不能。按 JVMS §4.3.2，字段描述符只允许 B/C/D/F/I/J/S/Z 八种原始类型、L...; 引用类型与它们的数组；V 仅出现在方法描述符的返回类型位置表示无返回值。本工具的字段模式接受 V 仅用于语法学习，实际 class 文件中出现 void 字段会被校验器拒绝。',
+          },
+          {
+            question: '数组维度和参数数量为什么限制 255？',
+            answer:
+              '这是 JVM 规范的硬限制：描述符中「[」前缀最多 255 个，而方法参数（含实例方法隐式传入的 this）受限于方法代码属性的最大局部变量表等约束，实践中参数数量上限也是 255。超过上限的描述符无法通过类文件校验，工具会在生成与解析两端同时拦截并报错。',
+          },
+          {
+            question: '为什么非法描述符的报错里带「位置」？',
+            answer:
+              '解析器按字符游标逐个消费描述符，遇到缺分号、意外结束或未知类型标记时会把当前下标写进错误信息（如「位置 12 缺少 ;」），便于在很长的方法描述符里快速定位问题。所有校验规则与 JVMS §4.3 的文法一一对应，错误提示可直接对照规范条目排查。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Once Java source is compiled into a class file, class names and types are no longer stored in source form: classes use binary names with "/" for packages and "$" for nested classes, while fields and method parameters use descriptor strings defined in JVMS §4.3—int becomes I, a boolean array becomes [Z, and a two-dimensional String array becomes [[Ljava/lang/String;. This tool performs deterministic bidirectional conversion between these representations per the JVM specification, returning position-specific messages for every syntax error.',
+        coreFeatures: [
+          'Binary-name conversion: java/util/Map$Entry ↔ java.util.Map.Entry, including anonymous class numbers (e.g. Outer$1) and multi-level nesting',
+          'Field descriptors: build descriptors from source types with [] array suffixes, or parse them back into base type, dimensions and reference/primitive classification',
+          'Method descriptors: split (params)return syntax into a parameter list and return type, or build the full descriptor from a comma-separated source signature',
+          'Full syntax validation: the nine single-letter markers B/C/D/F/I/J/S/Z/V, L...; reference syntax, the 255 array-dimension and parameter limits, with error messages citing character positions',
+          'Zero-dependency pure-function core decoupled from the React UI, with 15 fixed-vector unit tests covering spec examples, round-trip inverses and malformed inputs',
+        ],
+        howToUse: [
+          'Pick the binary-name, field-descriptor or method-descriptor mode at the top',
+          'Name mode: paste a dotted source name on the left and a binary name on the right; each side live-converts and offers one-click copy',
+          'Field mode: choose build or parse with the direction toggle, enter a type name (arrays end with []) or a descriptor, and inspect the descriptor, base type and dimensions',
+          'Method mode: for building, enter comma-separated parameter types (leave empty for no args) and a return type; for parsing, paste a (…)X descriptor and read the per-parameter table',
+        ],
+        useCases: [
+          'Translating output from javap -v, ASM or Byte Buddy back into readable Java types',
+          'Hand-checking field and method descriptors while writing annotation processors, agents or bytecode instrumentation',
+          'Diagnosing descriptor mismatches behind ClassFormatError or NoSuchMethodError',
+          'Teaching and interview preparation for JVM binary names, field descriptors and method descriptors',
+        ],
+        privacyNote:
+          'All conversion runs locally in your browser via zero-dependency TypeScript pure functions. No network requests are made, and entered names or descriptors never leave your device.',
+        faqs: [
+          {
+            question: 'How does the tool tell package dots from nested-class dots in a source name?',
+            answer:
+              'By convention Java package segments are lowercase while class segments start with an uppercase letter. The tool treats the first capitalized segment as the top-level class, turns preceding dots into "/" and every later dot into "$"—com.example.Outer.Inner becomes com/example/Outer$Inner. Binary names themselves are unambiguous, so the reverse direction simply replaces / and $ with dots. For non-conventional names, enter the binary name directly in that mode.',
+          },
+          {
+            question: 'Can V (void) be used in a field descriptor?',
+            answer:
+              'No. Per JVMS §4.3.2, field descriptors only allow the eight primitives B/C/D/F/I/J/S/Z, L...; reference types and their arrays. V appears only as the return type of a method descriptor to denote no return value. A void field in an actual class file would be rejected by the verifier.',
+          },
+          {
+            question: 'Why are array dimensions and parameter counts limited to 255?',
+            answer:
+              'These are hard JVM specification limits: a descriptor carries at most 255 "[" prefixes, and method parameters (including the implicit this for instance methods) are bounded by the limits of the method’s local variable table, giving a practical maximum of 255 parameters. Descriptors beyond these limits fail class-file verification, and the tool rejects them on both build and parse paths.',
+          },
+          {
+            question: 'Why do error messages include a position?',
+            answer:
+              'The parser walks the descriptor with a character cursor, so a missing semicolon, unexpected end or unknown type marker can be reported with its exact index (e.g. "missing ; at position 12"), which is invaluable inside long method descriptors. Every validation rule maps to the JVMS §4.3 grammar, so messages can be cross-checked directly against the specification.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

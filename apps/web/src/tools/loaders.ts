@@ -273,4 +273,5 @@ export const toolLoaders: Record<
   'eip55-checksum': () => import('./eip55-checksum'),
   'plus-code-codec': () => import('./plus-code-codec'),
   'lc-resonance-calculator': () => import('./lc-resonance-calculator'),
+  'java-descriptor-converter': () => import('./java-descriptor-converter'),
 };
