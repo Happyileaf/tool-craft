@@ -1,0 +1,134 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.search {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+.filters {
+  margin-top: 12px;
+}
+
+.select {
+  min-width: 160px;
+}
+
+.samples {
+  margin-top: 12px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.count {
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 13px;
+}
+
+.collapse {
+  background: #fff;
+}
+
+.collapseLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.collapseLabelEn {
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 12px;
+}
+
+.countTag {
+  margin-inline-start: 4px;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 12px;
+}
+
+.headerCard {
+  border: 1px solid rgba(5, 5, 5, 0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.headerTop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.headerName {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #f0f5ff;
+  color: #1d39c4;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 13px;
+  font-weight: 600;
+  word-break: break-all;
+  flex: 1;
+}
+
+.summary {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.75);
+  line-height: 1.6;
+}
+
+.metaRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.metaLabel {
+  flex-shrink: 0;
+  width: 56px;
+  color: rgba(0, 0, 0, 0.45);
+  padding-top: 1px;
+}
+
+.metaCode {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 4px;
+  padding: 1px 6px;
+  word-break: break-all;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.spec {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.pitfallList {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: rgba(0, 0, 0, 0.65);
+}

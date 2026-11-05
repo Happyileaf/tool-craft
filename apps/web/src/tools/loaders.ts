@@ -279,4 +279,5 @@ export const toolLoaders: Record<
   'css-named-colors': () => import('./css-named-colors'),
   'regex-syntax-reference': () => import('./regex-syntax-reference'),
   'http-methods-reference': () => import('./http-methods-reference'),
+  'http-headers-reference': () => import('./http-headers-reference'),
 };

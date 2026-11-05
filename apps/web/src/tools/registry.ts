@@ -26086,6 +26086,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'http-headers-reference',
+    name: 'HTTP 头字段速查',
+    nameEn: 'HTTP Headers Reference',
+    description:
+      '内置 54 个高频 HTTP 头字段的离线速查表，按通用表示、请求、响应、缓存、认证 Cookie、CORS、安全与内容协商八大分类组织，每条含方向、取值语法、示例、RFC 出处与常见坑，并醒目标注 forbidden header name 与废弃头，支持关键字搜索与分类、方向组合筛选。',
+    descriptionEn:
+      'An offline reference of 54 common HTTP headers organized into eight categories (general, request, response, caching, auth/cookie, CORS, security and negotiation), each with direction, syntax, example, RFC source and pitfalls, highlighting forbidden header names and deprecated headers, with keyword search plus combined category and direction filters.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/http-headers-reference',
+    iconName: 'Tags',
+    tags: ['HTTP', '请求头', '响应头', 'CORS', '缓存', '安全'],
+    tagsEn: ['HTTP', 'Headers', 'Request', 'Response', 'CORS', 'Security'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'cache',
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP 头字段速查把 54 个高频头字段整理为可搜索、可筛选的离线参考表，覆盖通用与表示、请求上下文、响应与实体、条件请求与缓存、认证与 Cookie、CORS 跨域、安全、内容协商八大分类。每个条目给出方向（请求头 / 响应头 / 通用）、一句话说明、取值语法或枚举、真实示例、关联 RFC 或标准，以及常见误用提示；对 Fetch 规范中的 forbidden request header name（如 Host、Origin、Cookie）与已废弃头（如 Pragma、X-Frame-Options）给出醒目标记。全部数据依据 MDN 与 RFC 9110/9111/6265/6797 等内置，纯本地渲染、零网络请求。',
+        coreFeatures: [
+          '收录 54 个高频头字段，每条均含方向、分类、说明、取值语法与示例五个必填信息，并附 RFC 出处与常见坑',
+          '八大分类与请求 / 响应 / 通用方向标签可组合筛选，搜索框同时匹配头名称、说明、语法、示例与关键字',
+          'forbidden header name 以红色“禁止修改”标签醒目标注，废弃头单独标记并说明替代方案（如 Pragma → Cache-Control、X-Frame-Options → CSP frame-ancestors）',
+          '每个条目支持一键复制头字段名称，并展示语法、示例与标准来源等元信息',
+          '内置数据完整性校验函数，自动检查重名、分类登记、必填字段与命名规范，无结果时展示空状态而非空白页',
+        ],
+        howToUse: [
+          '在顶部搜索框输入头名称或关键字（如 cache、authorization、CSP、跨域）实时过滤，或点击快捷示例标签',
+          '用分类与方向两个下拉框组合筛选，例如只看 CORS 分类下的响应头',
+          '在分组卡片中查看头字段说明、取值语法、示例、RFC 出处与常见坑，点击复制按钮复制头名称',
+          '留意红色“禁止修改”标签与废弃标签，避免在 Fetch 代码中手动设置受限头或使用已淘汰方案',
+        ],
+        useCases: [
+          '编写或调试 Fetch / axios 请求时快速确认头字段的合法方向与取值语法',
+          '设计缓存策略时对照 Cache-Control、ETag、If-None-Match 等条件请求与缓存头',
+          '配置 CORS、CSP、HSTS、Cookie 等跨域与安全响应头时查阅标准语义与陷阱',
+          '代码评审中识别对 forbidden header name 的手动赋值与已废弃头的误用',
+        ],
+        privacyNote:
+          '全部条目为本地内置的静态参考数据，工具不会发起任何网络请求，也不会收集或上传你的搜索与筛选内容。',
+        faqs: [
+          {
+            question: '什么是 forbidden header name，为什么不能手动设置？',
+            answer:
+              'Fetch 标准把 Host、Origin、Cookie、Connection、Content-Length 等头列为 forbidden request header name，浏览器会在底层自动管理它们，JavaScript 无法通过 headers 追加或覆盖，以防止脚本伪造路由、来源与连接控制信息。工具中这些头带有红色“禁止修改”标签，共标注 13 个。',
+          },
+          {
+            question: '搜索 cache 为什么能同时命中 ETag 和 If-None-Match？',
+            answer:
+              '搜索不仅匹配头名称，还会匹配条目的说明、语法、示例、常见坑与关键字字段。ETag 与 If-None-Match 是条件请求与缓存验证机制的核心头，其关键字中包含 cache，因此搜索 cache 会与 Cache-Control 一起被过滤出来，便于系统性查阅整套缓存头。',
+          },
+          {
+            question: 'X-Frame-Options 为什么被标记为废弃？',
+            answer:
+              'X-Frame-Options 只能用 DENY/SAMEORIGIN 粗粒度控制页面嵌入，且无法表达“允许指定祖先源”。CSP 的 frame-ancestors 指令提供了更灵活且标准化的替代方案，现代浏览器优先遵循 frame-ancestors。工具在该条目的常见坑中明确标注了这一替代关系，同类废弃头还有 Pragma、Warning、X-XSS-Protection 与 Accept-Charset。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The HTTP Headers Reference turns 54 common headers into a searchable, filterable offline table across eight categories: general/representation, request context, response/entity, conditional/caching, auth/cookie, CORS, security and content negotiation. Each entry documents direction (request, response or both), a one-line summary, value syntax or enumeration, a realistic example, the related RFC or standard, and common pitfalls. Forbidden request header names from the Fetch specification (such as Host, Origin and Cookie) and deprecated headers (such as Pragma and X-Frame-Options) are highlighted with dedicated badges. All data is bundled from MDN and RFC 9110/9111/6265/6797 and rendered entirely locally with no network requests.',
+        coreFeatures: [
+          '54 common headers, each with the five required fields of direction, category, summary, syntax and example, plus RFC source and pitfalls',
+          'Eight categories and request/response/both direction badges support combined filtering; search matches name, summary, syntax, example and keywords together',
+          'Forbidden header names carry a red "forbidden" badge, while deprecated headers are marked separately with their replacements (e.g. Pragma → Cache-Control, X-Frame-Options → CSP frame-ancestors)',
+          'One-click copying of each header name alongside syntax, example and standard metadata',
+          'A built-in integrity validator checks duplicates, category registration, required fields and naming conventions; empty results render an explicit empty state',
+        ],
+        howToUse: [
+          'Type a header name or keyword (such as cache, authorization, CSP or CORS) in the search box to filter live, or click a quick-sample tag',
+          'Combine the category and direction dropdowns — for example, response headers inside the CORS category only',
+          'Inspect summary, syntax, example, RFC source and pitfalls in the grouped cards, and click copy to grab a header name',
+          'Watch for red forbidden badges and deprecated badges to avoid manually setting restricted headers or retired mechanisms in Fetch code',
+        ],
+        useCases: [
+          'Quickly confirming valid direction and value syntax when writing or debugging Fetch/axios requests',
+          'Reviewing Cache-Control, ETag, If-None-Match and other conditional/caching headers while designing cache strategies',
+          'Looking up standard semantics and traps when configuring CORS, CSP, HSTS and Cookie response headers',
+          'Spotting manual assignment of forbidden header names and misuse of deprecated headers during code review',
+        ],
+        privacyNote:
+          'Every entry is static reference data bundled locally. The tool never makes network requests and never collects or uploads your searches or filters.',
+        faqs: [
+          {
+            question: 'What is a forbidden header name and why cannot I set it manually?',
+            answer:
+              'The Fetch standard classifies headers such as Host, Origin, Cookie, Connection and Content-Length as forbidden request header names. The browser manages them automatically at a lower layer, so JavaScript cannot append or overwrite them through the headers API — this prevents scripts from forging routing, origin and connection-control information. The tool marks 13 such headers with a red forbidden badge.',
+          },
+          {
+            question: 'Why does searching "cache" also match ETag and If-None-Match?',
+            answer:
+              'Search matches not only the header name but also the summary, syntax, example, pitfalls and keyword fields. ETag and If-None-Match are core headers of the conditional-request and cache-validation mechanism and carry "cache" in their keywords, so they appear alongside Cache-Control when you search "cache", making it easy to review the full caching header set.',
+          },
+          {
+            question: 'Why is X-Frame-Options marked as deprecated?',
+            answer:
+              'X-Frame-Options only offers coarse-grained framing control via DENY/SAMEORIGIN and cannot express "allow specific ancestor origins". The CSP frame-ancestors directive is the more flexible, standardized replacement and takes precedence in modern browsers. The entry documents this relationship in its pitfalls, alongside other deprecated headers: Pragma, Warning, X-XSS-Protection and Accept-Charset.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
