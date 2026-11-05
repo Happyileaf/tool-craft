@@ -25330,6 +25330,120 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'plus-code-codec',
+    name: 'Plus Codes（Open Location Code）编解码器',
+    nameEn: 'Plus Codes (Open Location Code) Encoder & Decoder',
+    description:
+      '在 WGS-84 经纬度与 Google Plus Codes 之间双向转换：编码支持 2/4/6/8 位区域码与 10–15 位网格码并实时展示对应精度，解码输出中心点、四角边界与码区尺寸，另支持基于参考位置的短码缩短与还原；算法为确定性 Base20 格网编码，严格对照 Google 官方整数实现与官方测试向量（encoding/validity/shortCode 三套 CSV），零依赖纯本地运算。',
+    descriptionEn:
+      'Convert between WGS-84 coordinates and Google Plus Codes in both directions: encoding supports 2/4/6/8-character area codes and 10–15-character grid codes with live precision, decoding returns the center point, bounding box and cell size, and reference-based shortening plus recovery of short codes is included. The deterministic Base20 grid algorithm is a faithful port of the official Google integer implementation validated against the official encoding, validity and short-code CSV test vectors, with zero dependencies and fully local computation.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/plus-code-codec',
+    iconName: 'Map',
+    tags: ['Plus Codes', 'Open Location Code', 'OLC', '地理编码', '经纬度', '短码'],
+    tagsEn: ['Plus Codes', 'Open Location Code', 'OLC', 'Geocoding', 'Coordinates', 'Short Code'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '20.3701135, 2.78223535156',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Plus Codes（Open Location Code，OLC）是 Google 开源的位置编码：它把地球表面切成层级嵌套的格网，用排除了易混淆字符的 20 进制字母表把任意经纬度编码成形如 7FG49QCJ+2VX 的短字符串。分隔符「+」固定出现在第 8 个字符之后，前 10 个字符是 5 对经纬度区域码，之后每增加一位再做 5 行 × 4 列的网格细化；即使没有街道门牌，也能用一串可口头传递的代码分享米级精度的位置。',
+        coreFeatures: [
+          '坐标编码：支持 2、4、6、8 位低精度区域码与 10–15 位高精度网格码，下拉实时显示对应纬度精度',
+          '完整解码：输出码区中心、南北 / 东西边界、码区尺寸与有效码长，非法字符与短码输入明确报错',
+          '短码缩短与还原：按参考位置把完整码缩短（如 9QCJ+2VX），或用参考点把短码恢复为完整码',
+          '合法性校验：严格按官方规则校验分隔符位置、填充 0、字符表与首对字符越界，兼容小写输入',
+          '零依赖纯函数实现，逐行对照 Google 官方 openlocationcode.js 整数算法，并通过官方三套 CSV 测试向量',
+        ],
+        howToUse: [
+          '在「处理模式」中选择编码、解码或短码缩短 / 还原',
+          '编码模式：填入纬度与经度（经度自动按 ±180 回绕、纬度自动裁剪到 ±90），选择码长后右侧实时生成 Plus Code',
+          '解码模式：粘贴完整 Plus Code，右侧展示中心、四角边界、码区尺寸；短码会被识别并提示先还原',
+          '短码模式：输入完整码时按参考位置缩短，输入短码时用同一参考位置还原，点击「复制」获取结果',
+        ],
+        useCases: [
+          '无门牌地址地区（村镇、户外、工地）分享救援、物流或集合位置',
+          '把 GPS 坐标压缩成可口头传递、可印刷在名片或票据上的短代码',
+          '与 Geohash、WGS-84 坐标等其他位置标识互相对照与教学演示',
+          '离线环境下的确定性地理编码：不依赖任何在线地图服务',
+        ],
+        privacyNote:
+          '所有编解码均由浏览器本地零依赖 TypeScript 完成，不发起任何网络请求，输入的坐标与位置代码不会离开设备。',
+        faqs: [
+          {
+            question: 'Plus Code 和 Geohash 有什么区别？',
+            answer:
+              '两者都是把经纬度编码成短字符串的格网方案，但算法完全不同：Geohash 使用 Base32 与 Z 序（Morton）曲线交替二分经纬度；Plus Codes 使用排除易混淆字符的 Base20 字母表，经纬度成对编码且「+」固定在第 8 位之后，网格细化阶段采用 5 行 × 4 列。Plus Codes 还天然支持配合参考位置使用的短码，同一条街道附近可以只传 4–6 个字符。',
+          },
+          {
+            question: '码长应该怎么选？',
+            answer:
+              '10 位码（如 8FVC2222+22）的码区约 14 米见方，已覆盖大多数寻址场景；11–15 位用于需要亚米级精度的工程测量。2/4/6/8 位是只含区域部分的低精度码，会用 0 填充并以「+」结尾（如 7FG40000+），适合表达城市级或街区级范围，不能再做短码缩短。奇数长度只允许出现在 10 位之后的网格部分。',
+          },
+          {
+            question: '短码（Short Code）为什么需要参考位置？',
+            answer:
+              '短码省略了完整码前面的区域字符，例如完整码 9C3W9QCJ+2VX 在参考点附近可缩短为 9QCJ+2VX 甚至 +2VX。被省略的前缀要靠一个大致的参考经纬度补回，工具按官方 recoverNearest 算法选择距离参考点最近的完整码区。因此同一短码配合不同参考位置可能还原到不同区域，传递短码时必须同时告知大致位置（如城市名）。',
+          },
+          {
+            question: '为什么实现不用现成的 npm 包？',
+            answer:
+              '为保证零依赖与可审计性，本工具直接把 Google 官方 openlocationcode.js 的整数算法移植为 TypeScript，避免浮点归一化带来的边界误差，并完整保留官方的越界裁剪、经度回绕与填充规则。测试使用官方仓库提供的 encoding.csv、validityTests.csv 与 shortCodeTests.csv 全量向量，确保与 Google 实现逐字符一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Plus Codes (Open Location Code, OLC) is Google’s open location encoding: the Earth’s surface is divided into a hierarchy of nested grids, and any latitude/longitude pair is encoded with a confusion-resistant Base20 alphabet into a short string such as 7FG49QCJ+2VX. The "+" separator always sits after the eighth character; the first ten characters form five lat/lng area pairs, and every extra character refines the cell through a 5-row by 4-column grid. Even without street addresses, a meter-accurate location can be shared as a code that is easy to say out loud.',
+        coreFeatures: [
+          'Coordinate encoding: 2/4/6/8-character area codes and 10–15-character grid codes, with the matching latitude precision shown live',
+          'Full decoding: center point, south/north and west/east bounds, cell size and effective code length; short codes and illegal characters are explicitly rejected',
+          'Shortening and recovery: shorten a full code relative to a reference point (e.g. 9QCJ+2VX), or recover a short code back to a full code with the same reference',
+          'Validity checks per the official rules: separator position, padding zeros, alphabet and out-of-range first pairs, accepting lowercase input',
+          'Zero-dependency pure functions ported line by line from the official Google openlocationcode.js integer algorithm, verified against all three official CSV vector suites',
+        ],
+        howToUse: [
+          'Choose encode, decode, or shorten/recover in the mode card',
+          'Encode mode: enter latitude and longitude (longitude wraps at ±180, latitude clamps to ±90), pick a code length, and the Plus Code appears live on the right',
+          'Decode mode: paste a full Plus Code to see the center, bounding box and cell size; short codes are flagged and must be recovered first',
+          'Short-code mode: a full code is shortened against the reference location, while a short code is recovered; click Copy to grab the result',
+        ],
+        useCases: [
+          'Sharing rescue, delivery or meeting locations in areas without street addresses (villages, outdoors, construction sites)',
+          'Compressing GPS coordinates into short codes that can be spoken or printed on business cards and tickets',
+          'Comparing and teaching alongside Geohash, WGS-84 coordinates and other location identifiers',
+          'Deterministic geocoding in offline environments without any online map service',
+        ],
+        privacyNote:
+          'All encoding and decoding runs locally in your browser via zero-dependency TypeScript. No network requests are made, so coordinates and codes never leave your device.',
+        faqs: [
+          {
+            question: 'How do Plus Codes differ from Geohash?',
+            answer:
+              'Both encode coordinates into short grid-based strings, but the algorithms differ: Geohash uses Base32 with a Z-order (Morton) curve that bisects latitude and longitude alternately, while Plus Codes use a confusion-resistant Base20 alphabet, encode lat/lng in pairs with "+" fixed after position eight, and refine beyond ten characters on a 5×4 grid. Plus Codes also have first-class short codes that rely on a reference location, so only four to six characters may be needed near a known area.',
+          },
+          {
+            question: 'Which code length should I choose?',
+            answer:
+              'A 10-character code (e.g. 8FVC2222+22) defines a cell of roughly 14 meters, enough for most addressing; 11–15 characters suit engineering-grade sub-meter precision. Lengths 2/4/6/8 are coarse area codes padded with zeros and ending in "+" (e.g. 7FG40000+) for city- or block-level areas, and they cannot be shortened. Odd lengths are only allowed for the grid portion beyond ten characters.',
+          },
+          {
+            question: 'Why does a short code need a reference location?',
+            answer:
+              'A short code drops the leading area characters of the full code—9C3W9QCJ+2VX may become 9QCJ+2VX or even +2VX near a reference point. The missing prefix is rebuilt from an approximate reference latitude/longitude, and the official recoverNearest algorithm picks the full cell nearest that reference. The same short code can therefore recover to different areas with different references, so a rough location (such as a city) must always accompany a short code.',
+          },
+          {
+            question: 'Why not use an existing npm package?',
+            answer:
+              'For zero dependencies and auditability, the official Google openlocationcode.js integer algorithm is ported directly to TypeScript, avoiding the boundary errors that floating-point normalization can introduce while preserving the official clipping, longitude wrapping and padding rules. Tests use the full official encoding.csv, validityTests.csv and shortCodeTests.csv vectors to guarantee character-for-character compatibility with Google’s implementation.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

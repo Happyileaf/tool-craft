@@ -271,4 +271,5 @@ export const toolLoaders: Record<
   'sexagenary-cycle': () => import('./sexagenary-cycle'),
   'sql-literal-escape': () => import('./sql-literal-escape'),
   'eip55-checksum': () => import('./eip55-checksum'),
+  'plus-code-codec': () => import('./plus-code-codec'),
 };
