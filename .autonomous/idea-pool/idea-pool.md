@@ -243,5 +243,5 @@
 | 20261105080303 | DICOM UID 生成器与校验器（医疗影像唯一标识符，根 UID + 后缀） | Web Tool | External Reference | Pending | 2026-11-05 | | [详情](./idea-details/20261105080303.md) |
 | 20261105080304 | Markdown 链接检查器（引用一致性、重复引用定义与本地锚点校验） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105080304.md) |
 | 20261105080305 | gettext PO / POT 消息目录 ↔ JSON 双向转换器 | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105080305.md) |
-| 20261105080308 | SQL 字符串字面量转义 / 反转义工具（标准单引号与 LIKE 通配符转义） | Web Tool | Existing Gap | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105080308.md) |
+| 20261105080308 | SQL 字符串字面量转义 / 反转义工具（标准单引号与 LIKE 通配符转义） | Web Tool | Existing Gap | In Progress | 2026-11-05 | trae-agent | [详情](./idea-details/20261105080308.md) |
 

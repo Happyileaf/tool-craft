@@ -269,4 +269,5 @@ export const toolLoaders: Record<
   'upc-e-converter': () => import('./upc-e-converter'),
   'bcd-codec': () => import('./bcd-codec'),
   'sexagenary-cycle': () => import('./sexagenary-cycle'),
+  'sql-literal-escape': () => import('./sql-literal-escape'),
 };

@@ -25101,6 +25101,120 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'sql-literal-escape',
+    name: 'SQL 字符串转义与 LIKE 通配符工具',
+    nameEn: 'SQL Literal Escape & LIKE Wildcard Tool',
+    description:
+      '处理 SQL 字符串字面量的转义与反转义：标准 SQL 模式将单引号双写为 \'\'，MySQL 模式生成反斜杠序列（\\\'、\\\\、\\n、\\t 等）并同时双写引号；反转义严格校验未闭合引号与未知转义序列；LIKE 模式转义 %、_ 通配符与转义符本身并生成 LIKE \'...\' ESCAPE \'\\\' 完整表达式。支持每行一条批量处理，纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Escape and unescape SQL string literals: ANSI mode doubles single quotes as \'\', while MySQL mode emits backslash sequences (\\\', \\\\, \\n, \\t, etc.) alongside doubled quotes. Unescaping strictly validates unclosed quotes and unknown escape sequences. LIKE mode escapes the % and _ wildcards plus the escape character itself and emits a complete LIKE \'...\' ESCAPE \'\\\' clause. Line-by-line batch processing, fully local browser computation with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/sql-literal-escape',
+    iconName: 'FileCode',
+    tags: ['SQL', '转义', 'MySQL', 'LIKE', '通配符', '字面量'],
+    tagsEn: ['SQL', 'Escape', 'MySQL', 'LIKE', 'Wildcard', 'Literal'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: "O'Reilly\nit's a test",
+    doc: {
+      zh: {
+        whatIsIt:
+          'SQL 字符串转义与 LIKE 通配符工具在浏览器本地完成 SQL 字面量的双向转义：既支持 ANSI SQL 标准的双写单引号规则，也支持 MySQL 的反斜杠转义语法，并针对 LIKE 查询提供通配符 %、_ 的专用转义与 ESCAPE 子句生成，避免拼接 SQL 时因引号或通配符处理不当导致语法错误或非预期匹配。',
+        coreFeatures: [
+          '标准 SQL 模式：单引号双写为 \'\'，不产生反斜杠序列，兼容 ANSI SQL、PostgreSQL、Oracle 等',
+          'MySQL 模式：生成 \\\'、\\"、\\\\、\\0、\\b、\\n、\\r、\\t、\\Z 反斜杠序列，同时双写单引号以兼容各类 SQL_MODE',
+          '严格反转义：未双写/未转义的裸引号、未知反斜杠序列、末尾孤立反斜杠均给出明确定位报错',
+          'LIKE 专用模式：仅转义 %、_ 与转义符本身，自动生成 LIKE \'...\' ESCAPE \'\\\' 表达式，反转义支持直接粘贴完整表达式',
+          '每行一条批量处理，成功与失败行分别统计，结果一键复制',
+        ],
+        howToUse: [
+          '选择转换模式：标准/MySQL 转义或反转义，或 LIKE 转义/反转义',
+          '转义方向：在左侧粘贴原始文本（每行一条），右侧即时输出带外层单引号的 SQL 字面量',
+          '反转义方向：粘贴带外层单引号的完整字面量；LIKE 反转义也可直接粘贴完整 LIKE ... ESCAPE 表达式',
+          'LIKE 转义结果会在每行下方附带可直接使用的 LIKE 子句，点击「复制」导出全部结果',
+        ],
+        useCases: [
+          '手工构造 INSERT/UPDATE/WHERE 语句时安全处理含单引号的文本（如 O\'Reilly）',
+          '排查日志或审计中的 SQL 字面量，将转义内容还原为可读文本',
+          '构造精确匹配的 LIKE 查询：把用户名、文件名中的 % 与 _ 当作普通字符匹配',
+          '在标准 SQL 与 MySQL 两种转义口径之间核对生成结果',
+        ],
+        privacyNote:
+          '所有转义与解析均为浏览器本地的纯字符串运算，不连接数据库、不发起任何网络请求，输入的 SQL 与业务数据不会上传或留存，刷新页面即清空。',
+        faqs: [
+          {
+            question: '它和「字符串字面量转义 / 反转义」工具有什么区别？',
+            answer:
+              '通用字符串工具面向 JavaScript/JSON、Python、Java 字面量（\\n、\\uXXXX 等规则）；本工具专门处理 SQL：标准 SQL 的双写单引号、MySQL 反斜杠序列，以及通用工具不具备的 LIKE 通配符转义和 ESCAPE 子句生成。',
+          },
+          {
+            question: '标准 SQL 模式下反斜杠为什么没有被转义？',
+            answer:
+              'ANSI SQL 标准中字符串只有单引号是特殊字符，转义方式是双写为 \'\'；反斜杠在标准模式下是普通字符，应原样保留。只有 MySQL（及开启反斜杠转义的方言）才把 \\\\ 视为转义符，因此请在 MySQL 模式下处理反斜杠。',
+          },
+          {
+            question: '为什么 LIKE 转义要额外生成 ESCAPE 子句？',
+            answer:
+              'SQL 不会自动知道反斜杠是转义符，必须在语句中声明 LIKE \'100\\%%\' ESCAPE \'\\\'，数据库才会把 \\% 当作普通百分号。工具生成的完整表达式可直接粘进查询，避免漏写 ESCAPE 导致通配符仍然生效。',
+          },
+          {
+            question: '反转义时报「未正确闭合」是什么意思？',
+            answer:
+              '标准 SQL 中单引号必须成对双写；如果字面量内部出现未双写的裸单引号，解析器无法判断它是内容还是字符串结束，即判定字面量未闭合。MySQL 模式同理，裸引号或末尾孤立反斜杠都会触发该错误并给出位置。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The SQL Literal Escape tool performs bidirectional escaping of SQL string literals entirely in your browser: it supports both the ANSI SQL doubled-quote rule and MySQL backslash syntax, plus dedicated LIKE wildcard escaping with ESCAPE clause generation, preventing syntax errors and unintended pattern matches when hand-building SQL.',
+        coreFeatures: [
+          'ANSI mode: single quotes are doubled as \'\' with no backslash sequences, compatible with ANSI SQL, PostgreSQL, Oracle, and more',
+          'MySQL mode: emits \\\', \\", \\\\, \\0, \\b, \\n, \\r, \\t, and \\Z backslash sequences while still doubling single quotes for all SQL_MODE settings',
+          'Strict unescaping: bare quotes, unknown backslash sequences, and trailing lone backslashes produce clearly located errors',
+          'Dedicated LIKE mode: escapes only %, _, and the escape character, auto-generating a LIKE \'...\' ESCAPE \'\\\' clause; reverse mode accepts a pasted full expression',
+          'Line-by-line batch processing with per-line success/failure stats and one-click copy',
+        ],
+        howToUse: [
+          'Choose a mode: ANSI/MySQL escape or unescape, or LIKE escape/unescape',
+          'Escape direction: paste raw text (one item per line) on the left and get quoted SQL literals instantly on the right',
+          'Unescape direction: paste complete quoted literals; LIKE unescape also accepts a full LIKE ... ESCAPE expression',
+          'Each LIKE result shows the ready-to-use clause beneath the line; use Copy to export everything',
+        ],
+        useCases: [
+          'Safely embedding text containing apostrophes (e.g. O\'Reilly) into hand-written INSERT/UPDATE/WHERE statements',
+          'Turning escaped literals from logs or audits back into readable text',
+          'Building exact-match LIKE queries where % and _ in usernames or file names must be treated literally',
+          'Comparing output between the ANSI and MySQL escaping conventions',
+        ],
+        privacyNote:
+          'All escaping and parsing is pure local string computation in your browser. It never connects to a database or sends network requests; the SQL and business data you enter are not uploaded, retained, or stored, and everything is cleared on refresh.',
+        faqs: [
+          {
+            question: 'How is this different from the generic String Literal Escape tool?',
+            answer:
+              'The generic tool targets JavaScript/JSON, Python, and Java literals (\\n, \\uXXXX, and similar rules). This tool is SQL-specific: doubled single quotes in ANSI mode, MySQL backslash sequences, and LIKE wildcard escaping with ESCAPE clause generation, which the generic tool does not provide.',
+          },
+          {
+            question: 'Why isn\'t the backslash escaped in ANSI mode?',
+            answer:
+              'Under the ANSI SQL standard the only special character inside a string is the single quote, escaped by doubling it as \'\'. A backslash is an ordinary character and must be preserved verbatim. Only MySQL (and dialects with backslash escaping enabled) treat \\\\ as an escape character, so use MySQL mode for backslash handling.',
+          },
+          {
+            question: 'Why does LIKE escaping generate an ESCAPE clause?',
+            answer:
+              'SQL does not assume that a backslash is an escape character. You must declare LIKE \'100\\%%\' ESCAPE \'\\\' so the database treats \\% as a literal percent sign. The complete expression generated by the tool can be pasted straight into a query, avoiding a missing ESCAPE that would leave the wildcard active.',
+          },
+          {
+            question: 'What does the "not properly closed" unescape error mean?',
+            answer:
+              'In ANSI SQL single quotes must appear as doubled pairs. A bare, undoubled quote inside a literal makes it impossible to tell content from the string terminator, so the literal is treated as unclosed. The same applies in MySQL mode to bare quotes or a trailing lone backslash; the error message includes the offending position.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
