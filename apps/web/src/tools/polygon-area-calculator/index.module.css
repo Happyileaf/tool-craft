@@ -1,0 +1,109 @@
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-primary, #1f2329);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: var(--color-text-secondary, #646a73);
+  line-height: 1.6;
+}
+
+.panel {
+  padding: 20px;
+  border: 1px solid var(--color-border, #e5e6eb);
+  border-radius: 12px;
+  background: var(--color-bg-container, #fff);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.fieldLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary, #1f2329);
+}
+
+.textarea {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border, #e5e6eb);
+  font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+  font-size: 13px;
+  resize: 'vertical';
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.summaryCard {
+  padding: 16px;
+  border: 1px solid var(--color-border, #e5e6eb);
+  border-radius: 10px;
+  background: var(--color-fill-quaternary, #fafafa);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.summaryLabel {
+  font-size: 12px;
+  color: var(--color-text-tertiary, #8f959e);
+  font-weight: 600;
+}
+
+.summaryValue {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text-primary, #1f2329);
+  font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+}
+
+.resultTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary, #1f2329);
+}
+
+.empty {
+  padding: 32px;
+  text-align: center;
+  color: var(--color-text-tertiary, #8f959e);
+  font-size: 13px;
+  border: 1px dashed var(--color-border, #e5e6eb);
+  border-radius: 10px;
+}
+
+.mono {
+  font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+}

@@ -8605,6 +8605,104 @@ info: request finished`,
     },
   },
   {
+    slug: 'polygon-area-calculator',
+    name: '多边形面积与周长计算器（鞋带公式，含 GeoJSON）',
+    nameEn: 'Polygon Area & Perimeter Calculator',
+    description:
+      '用鞋带公式量算平面多边形的有符号 / 绝对面积、周长与环方向，支持手动逐行输入 x,y 坐标或粘贴 GeoJSON Polygon / MultiPolygon（自动处理孔洞扣减、闭合点去重与自相交检测），纯浏览器本地计算。',
+    descriptionEn:
+      'Computes signed/absolute area, perimeter and ring orientation of planar polygons with the shoelace formula. Accepts manual x,y lines or pasted GeoJSON Polygon/MultiPolygon, with automatic hole subtraction, closing-point deduplication and self-intersection detection, fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/polygon-area-calculator',
+    iconName: 'BorderOuterOutlined',
+    tags: ['多边形', '鞋带公式', '面积', '周长', 'GeoJSON', '几何'],
+    tagsEn: ['Polygon', 'Shoelace Formula', 'Area', 'Perimeter', 'GeoJSON', 'Geometry'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0, 0\n4, 0\n4, 4\n0, 4',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具基于鞋带公式（Shoelace Formula）量算平面多边形：输入按顺序排列的顶点坐标即可得到有符号面积（其正负指示环方向）、绝对面积与周长；也支持直接粘贴 GeoJSON Polygon / MultiPolygon，自动识别外环与孔洞环并按「外环面积 − 孔洞面积」给出净面积。工具会自动去除首尾重复的闭合点，并对非相邻边做自相交粗检。所有计算均在浏览器本地完成。',
+        coreFeatures: [
+          '鞋带公式：O(n) 求和得到有符号面积，正值表示逆时针、负值表示顺时针，绝对值即面积',
+          '周长与闭合处理：相邻顶点欧氏距离求和（含闭合边），首尾重复点自动去重避免重复边',
+          'GeoJSON 支持：解析 Polygon / MultiPolygon 的外环与孔洞，净面积自动扣减孔洞',
+          '健壮性：顶点不足、非数字坐标、JSON 损坏、类型不符均明确报错，并检测自相交给出警告',
+        ],
+        howToUse: [
+          '选择「手动坐标」时每行输入一个 x,y（容忍逗号、中文逗号、空白等分隔），按环顺序排列',
+          '选择「GeoJSON 粘贴」时贴入 Polygon 或 MultiPolygon JSON，孔洞环会被自动识别并扣减',
+          '点击「开始量算」，顶部卡片显示净面积 / 外环周长 / 总顶点数，下方表格逐环列出明细与方向',
+        ],
+        useCases: [
+          '根据地块边界顶点快速估算占地面积与边界长度',
+          '解析 GeoJSON 面数据，核对外环与孔洞（如建筑内庭院）的净面积',
+          '学习计算几何时验证鞋带公式与环方向（CCW/CW）判定',
+        ],
+        privacyNote:
+          '坐标与 GeoJSON 全部在浏览器本地解析和量算，不发起任何网络请求，数据不会离开设备。',
+        faqs: [
+          {
+            question: '有符号面积的正负代表什么？',
+            answer:
+              '在右手坐标系（y 轴向上）下，顶点按逆时针排列时鞋带求和为正、顺时针为负；工具据此标注 CCW / CW，并以绝对值作为面积。GeoJSON 规范默认 CRS 为经纬度且外环取逆时针，可据此快速核对环方向。',
+          },
+          {
+            question: '自相交警告出现时结果还能用吗？',
+            answer:
+              '自相交（蝴蝶结等）多边形不是简单多边形，鞋带公式仍会给出一个代数面积，但该值通常不再等于直观围合面积，几何意义存疑。工具会明确给出警告，建议先修正顶点顺序再采用结果。',
+          },
+          {
+            question: 'GeoJSON 的孔洞是怎么处理的？',
+            answer:
+              'Polygon 的 coordinates 中第一个环为外环，其余环为孔洞。工具逐环量算后，用外环面积减去所有孔洞面积之和得到净面积；MultiPolygon 则对每个多边形分别量算后汇总。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool measures planar polygons with the shoelace formula: ordered vertices yield the signed area (whose sign indicates ring orientation), absolute area and perimeter. It also accepts pasted GeoJSON Polygon/MultiPolygon, identifying outer and hole rings automatically and reporting net area as outer minus holes. Duplicate closing points are removed and non-adjacent edges are checked for self-intersection. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Shoelace formula: O(n) summation gives signed area—positive for CCW, negative for CW, absolute value is the area',
+          'Perimeter and closure handling: sum of Euclidean edge lengths including the closing edge, with repeated first/last point deduplicated',
+          'GeoJSON support: parses Polygon/MultiPolygon outer and hole rings; net area subtracts holes automatically',
+          'Robustness: explicit errors for too few vertices, non-numeric coordinates, broken JSON or wrong type, plus self-intersection warnings',
+        ],
+        howToUse: [
+          'In manual mode enter one x,y pair per line (commas, Chinese commas and whitespace accepted), in ring order',
+          'In GeoJSON mode paste a Polygon or MultiPolygon; hole rings are detected and subtracted automatically',
+          'Click Calculate; top cards show net area / outer perimeter / total vertices, and the table lists per-ring details and orientation',
+        ],
+        useCases: [
+          'Estimate land parcel area and boundary length from boundary vertices',
+          'Parse GeoJSON surfaces and verify net area of outer rings with holes (e.g. building courtyards)',
+          'Validate the shoelace formula and CCW/CW orientation while learning computational geometry',
+        ],
+        privacyNote:
+          'Coordinates and GeoJSON are parsed and measured entirely in your browser; no network requests are made and data never leaves your device.',
+        faqs: [
+          {
+            question: 'What does the sign of the signed area mean?',
+            answer:
+              'In a right-handed coordinate system (y up), counter-clockwise vertices produce a positive shoelace sum and clockwise a negative one; the tool labels CCW/CW accordingly and uses the absolute value as area. GeoJSON specifies CCW outer rings for its default geographic CRS, so this helps verify ring orientation.',
+          },
+          {
+            question: 'Can I still use the result when a self-intersection warning appears?',
+            answer:
+              'A self-intersecting (e.g. bowtie) polygon is not simple. The shoelace formula still returns an algebraic area, but it generally no longer equals the intuitive enclosed area and lacks clear geometric meaning. Fix the vertex ordering before relying on the result.',
+          },
+          {
+            question: 'How are GeoJSON holes handled?',
+            answer:
+              'In a Polygon, the first coordinate ring is the outer ring and subsequent rings are holes. The tool measures each ring and subtracts total hole area from the outer ring to obtain net area; MultiPolygon measures each polygon separately and aggregates them.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'cookie-parser',
     name: 'Cookie 字符串解析与生成器',
     nameEn: 'Cookie Parser & Set-Cookie Builder',

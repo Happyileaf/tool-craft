@@ -110,6 +110,7 @@ export const toolLoaders: Record<
   'ohms-law-calculator': () => import('./ohms-law-calculator'),
   'phone-e164-normalizer': () => import('./phone-e164-normalizer'),
   'vector-calculator': () => import('./vector-calculator'),
+  'polygon-area-calculator': () => import('./polygon-area-calculator'),
   'cookie-parser': () => import('./cookie-parser'),
   'ascii-table': () => import('./ascii-table'),
   'base62-codec': () => import('./base62-codec'),
