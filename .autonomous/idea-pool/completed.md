@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261106160211 | 电阻串并联等效电阻与公差累积计算器 | Web Tool | Exploration | `resistor-network-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106160211.md) |
+| 20261106060117 | GPA 平均绩点计算器（百分制/4.0/4.3 多算法与学分加权） | Web Tool | Exploration | `gpa-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060117.md) |
+| 20261106060115 | 多边形面积与周长计算器（鞋带公式，含 GeoJSON 粘贴） | Web Tool | Exploration | `polygon-area-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060115.md) |
+| 20261106060113 | 二维/三维向量运算计算器（点积、叉积、夹角、投影） | Web Tool | Existing Gap | `vector-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060113.md) |
+| 20261105020217 | E.164 电话号码规范化与格式化器（国际格式解析与校验） | Web Tool | Existing Gap | `phone-e164-normalizer` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261105020217.md) |
 | 20261104081016 | JSON → Swift struct / Codable 模型生成器 | Web Tool | Existing Gap | `json-to-swift` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261104081016.md) |
 | 20261101201005 | JSON 转 PHP array 代码生成器（含嵌套类型推断与短数组语法） | Web Tool | Existing Gap | `json-to-php` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261101201005.md) |
 | 20261101140215 | JSON → Kotlin data class 生成器（含嵌套类型推断） | Web Tool | Existing Gap | `json-to-kotlin` / [PR #163](https://github.com/Happyileaf/tool-craft/pull/163) | 2026-11-04 | [详情](./idea-details/20261101140215.md) |
