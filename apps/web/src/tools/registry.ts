@@ -26175,6 +26175,470 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'utf8-bom-handler',
+    name: 'UTF-8 BOM 添加 / 剥离与字节序标记处理器',
+    nameEn: 'UTF-8 BOM Handler',
+    description:
+      '检测文本开头与内部的 U+FEFF（UTF-8 编码 EF BB BF，3 字节），一键添加（幂等不重复）、剥离开头 BOM 或移除全文全部 U+FEFF 零宽字符，实时展示 UTF-8 字节大小与处理前后字节差。',
+    descriptionEn:
+      'Detect the leading and inner U+FEFF (EF BB BF, 3 bytes in UTF-8), add it idempotently, strip the leading BOM, or remove every U+FEFF in the text, with live UTF-8 byte-size stats and before/after deltas.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/utf8-bom-handler',
+    iconName: 'Binary',
+    tags: ['UTF-8', 'BOM', '字节序标记', 'U+FEFF', '文本清洗'],
+    tagsEn: ['UTF-8', 'BOM', 'Byte Order Mark', 'U+FEFF', 'Text Cleaning'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '﻿name, city\nAlice, New York﻿\nBob, London',
+    doc: {
+      zh: {
+        whatIsIt:
+          'UTF-8 BOM 处理器是一款纯浏览器本地运行的字节序标记工具：检测文本是否以 U+FEFF 开头、统计文本内部隐藏的 U+FEFF 零宽字符，并支持添加、剥离开头 BOM 或清除全文 U+FEFF，同时按 TextEncoder UTF-8 编码给出精确字节统计。',
+        coreFeatures: [
+          '开头 BOM 检测：识别 U+FEFF（EF BB BF）并以标签醒目标注',
+          '内部 U+FEFF 计数：把出现在文本中间的不可见零宽字符单独统计并告警',
+          '四种模式：仅检测、添加 BOM（幂等，已有 BOM 不重复添加）、仅剥离开头 BOM、剥离全部 U+FEFF',
+          'UTF-8 字节统计：展示当前字节数、去除全部 BOM 后的字节数与处理前后差值（每个 BOM 固定 3 字节）',
+          '纯字符串与 TextEncoder 运算，零新增依赖，结果一键复制',
+        ],
+        howToUse: [
+          '在文本框粘贴或输入需要处理的文本，检测结论与字节统计即时刷新',
+          '通过按钮切换处理模式：仅检测、添加 BOM、剥离开头 BOM、剥离全部 U+FEFF',
+          '查看结果区的开头 BOM 状态与字节变化（+3 / −3 等），点击「复制处理结果」获取文本',
+        ],
+        useCases: [
+          '清洗从 Windows 记事本或 Excel 导出的带 BOM 的 CSV / JSON，避免解析器把 BOM 当作首字段字符',
+          '排查文本中间混入 U+FEFF 零宽字符导致的隐形语法错误或比对失败',
+          '为要求带 BOM 的遗留系统（如部分 ERP 导入模板）主动添加 UTF-8 BOM',
+        ],
+        privacyNote: '所有检测与处理均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: 'UTF-8 文本需要 BOM 吗？',
+            answer:
+              '通常不需要。Unicode 标准允许但不推荐在 UTF-8 中使用 BOM：UTF-8 字节序固定，不存在字节序歧义，而开头的 U+FEFF 会被 JSON 解析器、Shell 脚本（#! 行）、PHP 头部函数等当作普通字符导致错误。仅在对接强制要求 BOM 的遗留 Windows 软件时才需要添加。',
+          },
+          {
+            question: '开头 BOM 和文本内部的 U+FEFF 有什么区别？',
+            answer:
+              '同一个码位 U+FEFF，出现在文本开头时按 BOM（字节序标记）语义解释；出现在其他位置时是零宽不换行空格（ZERO WIDTH NO-BREAK SPACE），视觉上不可见却真实占 3 个 UTF-8 字节，可能造成字符串匹配、去重与解析异常。本工具对两者分别计数，「剥离开头 BOM」只处理首个字符，「剥离全部」才会清除内部零宽字符。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'UTF-8 BOM Handler is a fully local tool that detects a leading U+FEFF (EF BB BF), counts hidden inner U+FEFF zero-width characters, and can add, strip the leading BOM, or remove every U+FEFF, with precise UTF-8 byte statistics from TextEncoder.',
+        coreFeatures: [
+          'Leading-BOM detection for U+FEFF (EF BB BF) with clear status tags',
+          'Inner U+FEFF counting that flags invisible zero-width characters beyond the first position',
+          'Four modes: detect only, add BOM (idempotent), strip leading BOM, strip all U+FEFF',
+          'UTF-8 byte stats: current size, size without any BOM, and before/after delta (each BOM is exactly 3 bytes)',
+          'Pure string and TextEncoder logic with zero new dependencies and one-click copy',
+        ],
+        howToUse: [
+          'Paste or type text; the detection summary and byte statistics update instantly',
+          'Switch modes with the buttons: detect, add BOM, strip leading BOM, or strip all U+FEFF',
+          'Check the resulting leading-BOM status and byte delta (+3 / −3), then copy the processed text',
+        ],
+        useCases: [
+          'Cleaning BOM-prefixed CSV/JSON exported from Windows Notepad or Excel so parsers do not treat the BOM as part of the first field',
+          'Hunting invisible inner U+FEFF characters that cause subtle syntax errors or comparison failures',
+          'Adding a UTF-8 BOM for legacy systems (e.g. ERP import templates) that require one',
+        ],
+        privacyNote: 'All detection and processing run locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Does UTF-8 need a BOM?',
+            answer:
+              'Usually no. The Unicode Standard permits but does not recommend a BOM in UTF-8: UTF-8 has fixed byte order, so the mark carries no meaning there, yet a leading U+FEFF breaks JSON parsers, shell shebang lines and PHP header functions. Add it only for legacy Windows software that explicitly requires it.',
+          },
+          {
+            question: 'What is the difference between a leading BOM and an inner U+FEFF?',
+            answer:
+              'They are the same code point U+FEFF. At the start of text it is interpreted as the byte order mark; elsewhere it is a zero-width no-break space—invisible but still 3 UTF-8 bytes, and a common cause of string-match and parsing bugs. This tool counts them separately: "strip leading" removes only the first character, while "strip all" also clears inner zero-width characters.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'phone-number-normalizer',
+    name: 'E.164 电话号码规范化与格式化器',
+    nameEn: 'E.164 Phone Number Normalizer',
+    description:
+      '把 +86 138 0000 0000、0086…、(021) 1234-5678、1-800-FLOWERS 等多种写法清洗并校验为 ITU-T E.164 规范形式（+ 国家码 + 国内号码，3–15 位数字），输出国家码、国内号码、RFC 3966 tel URI 与可视分组，支持分机号与逐行批量处理。',
+    descriptionEn:
+      'Clean and validate phone numbers in mixed formats (plus/00 prefixes, parentheses, vanity letters, extensions) into the ITU-T E.164 canonical form, with country-code split, RFC 3966 tel URI, visual grouping and line-by-line batch processing.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/phone-number-normalizer',
+    iconName: 'Phone',
+    tags: ['E.164', '电话号码', '规范化', 'tel URI', 'vanity 号码'],
+    tagsEn: ['E.164', 'Phone Number', 'Normalization', 'tel URI', 'Vanity Number'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '+86 138 0000 0000\n0086 (021) 1234-5678\n+1 (202) 555-0100;ext=42\n1-800-FLOWERS',
+    doc: {
+      zh: {
+        whatIsIt:
+          'E.164 电话号码规范化器依据 ITU-T E.164 建议书，把任意书写形式的电话号码清洗为全球通用的规范形式「+」+ 国家码 + 国内号码，并对字符、前缀与长度做结构化校验，同时输出 RFC 3966 tel URI、可视分组与分机信息，支持批量逐行处理。',
+        coreFeatures: [
+          '多格式清洗：空格、连字符、括号、点、斜杠分隔符自动剥离，00 国际前缀等价转换为 +',
+          'vanity 字母号码：按电话键盘把 1-800-FLOWERS 等字母映射为数字',
+          'E.164 校验：数字总长 3–15 位、国家码 1–3 位且首位非 0、国内号码不得保留 trunk prefix 0，逐条中文报错',
+          '本地号码补全：无国际前缀时按默认国家码补全，并自动去除国内长途前缀 0',
+          '结构化输出：E.164 串、国家码、国内号码、tel: URI（含 ;ext= 分机）、3-3-4 启发式可视分组，批量结果一键复制',
+        ],
+        howToUse: [
+          '在默认国家码框填写无 + 前缀号码的归属国家码（如 86、1、44），带 + / 00 的号码不受影响',
+          '每行一个号码粘贴到文本框，结果表格即时显示合法/非法与规范化结果',
+          '点击「复制成功结果」获取全部 E.164 号码；分机号通过 ;ext=、x、转、# 写法自动识别',
+        ],
+        useCases: [
+          'CRM / 用户系统入库前统一手机号与固话格式，避免重复账号与拨号失败',
+          '把 Excel 中混合格式的客户电话批量转换为可直接用于短信网关的 E.164 号码',
+          '校验国际号码结构、生成 tel: 链接，或转换 vanity 营销号码',
+        ],
+        privacyNote: '所有号码仅在浏览器本地解析与校验，不发起任何网络请求、不做号段归属查询。',
+        faqs: [
+          {
+            question: '为什么提示「国内号码部分不能以 0 开头」？',
+            answer:
+              '0 在许多国家是国内长途前缀（trunk prefix，如中国 021、英国 07xxx），只在国内拨号时使用。E.164 国际规范形式要求去除该前缀：本工具对带默认国家码的本地号码会自动剥离首位 0；若国际格式中仍出现 0 开头的国内部分，则视为格式错误提示。',
+          },
+          {
+            question: '校验通过是否代表号码真实可用？',
+            answer:
+              '不代表。本工具只依据 E.164 做字符、前缀与长度（3–15 位）的结构校验，不维护各国号段分配数据库，因此无法确认号码是否已开通、运营商归属或是否为虚拟号段。需要真实性核验应接入具备号段数据库的电信服务。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The E.164 Phone Number Normalizer implements the ITU-T E.164 recommendation to clean phone numbers in any written form into the global canonical format (+, country code and national number), validates characters, prefixes and length, and emits an RFC 3966 tel URI, visual grouping and extension data with line-by-line batch support.',
+        coreFeatures: [
+          'Flexible cleaning: strips spaces, hyphens, parentheses, dots and slashes; converts the 00 international prefix into +',
+          'Vanity support: maps letters such as 1-800-FLOWERS to digits via the telephone keypad',
+          'E.164 validation: 3–15 digits total, 1–3 digit non-zero-leading country code, no trunk prefix in the national part, with per-line error messages',
+          'Local-number completion: applies a configurable default country code and drops the domestic trunk-prefix zero',
+          'Structured output: E.164 string, country code, national number, tel: URI (with ;ext=), heuristic 3-3-4 grouping and one-click batch copy',
+        ],
+        howToUse: [
+          'Set the default country code (e.g. 86, 1, 44) used for numbers without an international prefix',
+          'Paste one number per line; the table instantly shows validity and the normalized result',
+          'Use "copy successful results" for all E.164 numbers; extensions written as ;ext=, x, # or 转 are detected automatically',
+        ],
+        useCases: [
+          'Normalizing CRM/user-directory phone numbers before storage to prevent duplicate accounts and dialing failures',
+          'Converting mixed-format customer numbers in spreadsheets into E.164 strings ready for SMS gateways',
+          'Validating international number structure, generating tel: links or translating vanity marketing numbers',
+        ],
+        privacyNote: 'All parsing and validation happen locally in the browser; no network requests or carrier-database lookups are made.',
+        faqs: [
+          {
+            question: 'Why does it reject a national number starting with 0?',
+            answer:
+              'A leading 0 is often a domestic trunk prefix (e.g. 021 in China, 07xxx in the UK) used only for national dialing. E.164 requires it to be removed: local numbers with a default country code are fixed automatically, while an international input that still carries the zero is reported as a formatting error.',
+          },
+          {
+            question: 'Does a passing validation mean the number is really in service?',
+            answer:
+              'No. The tool checks only E.164 structure—characters, prefixes and the 3–15 digit length. It does not maintain national numbering-plan databases, so it cannot confirm activation, carrier ownership or virtual-number ranges. Use a telecom HLR/lookup service for real-world validity.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'vector-angle-distance-calculator',
+    name: '二维/三维向量运算计算器',
+    nameEn: '2D/3D Vector Calculator',
+    description:
+      '输入两个 2D 或 3D 向量，计算模长、点积、叉积、夹角（弧度/角度）、标量与向量投影、和差数乘，并判定正交、平行同向/反向关系；夹角采用 atan2 计算保证数值稳定性。',
+    descriptionEn:
+      'Enter two 2D/3D vectors to get magnitudes, dot product, cross product, angle (radians/degrees), scalar and vector projection, sum, difference, scaling, plus orthogonal/parallel relationship checks, with numerically stable atan2-based angles.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/vector-angle-distance-calculator',
+    iconName: 'Sigma',
+    tags: ['向量', '点积', '叉积', '夹角', '投影', '线性代数'],
+    tagsEn: ['Vector', 'Dot Product', 'Cross Product', 'Angle', 'Projection', 'Linear Algebra'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'a = (1, 0, 0)，b = (0, 1, 0)',
+    doc: {
+      zh: {
+        whatIsIt:
+          '向量运算计算器面向二维与三维向量代数场景，输入两个向量的分量即可获得模长、点积、叉积、夹角、投影、和差与数乘结果，并自动判定正交、平行同向或反向关系，全部为本地确定性数值运算。',
+        coreFeatures: [
+          '2D / 3D 维度一键切换，分量支持负数与小数',
+          '模长、点积、叉积（2D 返回标量 z 分量，3D 返回向量）',
+          '夹角同时输出弧度与角度，基于 atan2(|a×b|, a·b) 计算，避免反余弦在端点处的精度损失',
+          '标量投影 comp_b(a) 与向量投影 proj_b(a)，投影结果与方向向量共线可验证',
+          '和、差、数乘与正交/平行同向/反向关系自动判定，容差 1e-10',
+        ],
+        howToUse: [
+          '选择二维或三维模式，分别填写向量 a、b 的 x/y（/z）分量',
+          '可选填写数乘系数 k（作用于向量 a）',
+          '结果分区展示基础量、夹角投影与线性运算；零向量参与夹角/投影时给出明确错误提示',
+        ],
+        useCases: [
+          '学生核对线性代数 / 大学物理作业中的点积、叉积与夹角计算',
+          '图形学与游戏开发中验证法线、光照方向向量的正交或平行关系',
+          '工程力学中快速计算力向量在指定方向上的投影分量',
+        ],
+        privacyNote: '所有计算均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么夹角用 atan2 而不是 arccos？',
+            answer:
+              '直接用 arccos(a·b/(|a||b|)) 在夹角接近 0° 或 180° 时，浮点误差会使参数略微超出 [-1,1] 并损失精度。改用 atan2(|a×b|, a·b) 不依赖除法归一化，对小角度与共线情形更稳定，结果同样落在 [0, π]。',
+          },
+          {
+            question: '二维叉积为什么是一个数字？',
+            answer:
+              '二维向量可视为三维 xy 平面上 z=0 的向量，其叉积方向恒沿 z 轴，因此只需返回 z 分量标量 a_x·b_y − a_y·b_x：正值表示 b 在 a 的逆时针方向，负值表示顺时针，零表示共线。三维模式下则返回完整的叉积向量。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A vector algebra calculator for 2D and 3D vectors: enter components of two vectors to obtain magnitudes, dot product, cross product, angle, projections, sum, difference and scaling, along with automatic orthogonal/parallel relationship detection, all via deterministic local computation.',
+        coreFeatures: [
+          'One-click 2D/3D switching with negative and decimal components',
+          'Magnitude, dot product and cross product (scalar z-component in 2D, full vector in 3D)',
+          'Angle in both radians and degrees, computed via atan2(|a×b|, a·b) to avoid acos precision loss at endpoints',
+          'Scalar projection comp_b(a) and vector projection proj_b(a), verifiably collinear with the direction vector',
+          'Sum, difference, scaling and orthogonal / parallel-same / parallel-opposite detection with a 1e-10 tolerance',
+        ],
+        howToUse: [
+          'Pick 2D or 3D mode and fill in the x/y (/z) components of vectors a and b',
+          'Optionally set a scalar multiplier k applied to vector a',
+          'Read the grouped result sections; zero-vector angle/projection attempts produce explicit errors',
+        ],
+        useCases: [
+          'Students checking dot/cross product and angle homework in linear algebra and physics',
+          'Graphics or game developers verifying orthogonality of normals and light-direction vectors',
+          'Engineering mechanics: quickly projecting a force vector onto a reference direction',
+        ],
+        privacyNote: 'All computation runs locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why atan2 instead of arccos for the angle?',
+            answer:
+              'Using arccos(a·b/(|a||b|)) suffers when the angle is near 0° or 180°: floating-point error can push the argument slightly outside [-1,1] and lose precision. atan2(|a×b|, a·b) needs no normalized quotient and stays stable for small angles and collinear vectors while still returning a value in [0, π].',
+          },
+          {
+            question: 'Why is the 2D cross product a single number?',
+            answer:
+              'Treat 2D vectors as 3D vectors with z=0: their cross product always points along the z-axis, so only the scalar z-component a_x·b_y − a_y·b_x is needed. A positive value means b is counterclockwise from a, negative means clockwise, and zero means collinear. Full cross-product vectors are returned in 3D mode.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'polygon-area-perimeter-calculator',
+    name: '多边形面积与周长计算器',
+    nameEn: 'Polygon Area & Perimeter Calculator',
+    description:
+      '粘贴顶点坐标（每行 x,y）或 GeoJSON Polygon/MultiPolygon，自动闭合与去重，用鞋带公式计算有向/绝对面积、周长、质心与环绕方向（CCW/CW），支持带孔多边形外环减内环与 MultiPolygon 汇总。',
+    descriptionEn:
+      'Paste vertex coordinates (x,y per line) or GeoJSON Polygon/MultiPolygon to get signed/absolute area via the shoelace formula, perimeter, centroid and winding direction (CCW/CW), with automatic closure, duplicate removal, hole subtraction and MultiPolygon aggregation.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/polygon-area-perimeter-calculator',
+    iconName: 'Triangle',
+    tags: ['多边形', '鞋带公式', '面积', '周长', 'GeoJSON', '质心'],
+    tagsEn: ['Polygon', 'Shoelace Formula', 'Area', 'Perimeter', 'GeoJSON', 'Centroid'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0, 0\n1, 0\n1, 1\n0, 1',
+    doc: {
+      zh: {
+        whatIsIt:
+          '多边形面积与周长计算器基于鞋带（Shoelace）公式，对任意简单多边形做确定性 O(n) 平面度量：输入每行一个顶点坐标，或直接粘贴 GeoJSON Polygon / MultiPolygon，即可得到有向面积、绝对面积、周长、顶点数、质心与环绕方向，并支持带孔多边形的净面积计算。',
+        coreFeatures: [
+          '两种输入模式：坐标文本（逗号/空格/制表符/中文逗号分隔）与 GeoJSON 粘贴（兼容 Feature 包装）',
+          '自动闭合与去重：首末点不同自动补闭合边，相邻重复点与显式闭合点自动移除且不重复计边',
+          '鞋带公式输出带符号有向面积（CCW 正 / CW 负）与绝对面积，周长按逐边欧氏距离求和',
+          'GeoJSON 带孔 Polygon 净面积 = 外环 − 内环之和；MultiPolygon 逐多边形输出并汇总净面积与周长',
+          '共线退化多边形识别（面积为 0），坐标格式错误带行号提示',
+        ],
+        howToUse: [
+          '选择「坐标文本」模式，每行输入一个顶点 x, y，无需重复首点闭合',
+          '或切换到「GeoJSON」模式，粘贴 Polygon / MultiPolygon 几何（含孔时把内环放入 coordinates 的后续数组）',
+          '查看结果卡片中的面积、周长、方向 Tag 与顶点表格；GeoJSON 模式按多边形分区展示',
+        ],
+        useCases: [
+          '核对数学 / 地理作业中任意多边形的面积与周长手算结果',
+          '处理 GIS 导出的 GeoJSON 地块数据，快速核算带孔地块净面积',
+          '前端图形 / 游戏开发中验证碰撞轮廓的环绕方向与几何度量',
+        ],
+        privacyNote:
+          '所有解析与计算均在浏览器本地完成，不发起任何网络请求，坐标数据不会离开设备。',
+        faqs: [
+          {
+            question: '环绕方向 CCW / CW 是按什么坐标系判定的？',
+            answer:
+              '按数学坐标系（y 轴向上）判定：鞋带公式有向面积为正即逆时针 CCW，为负即顺时针 CW。GeoJSON RFC 7946 规定外环应为 CCW；若你的数据来自屏幕坐标（y 轴向下），符号会相反，但绝对面积与周长不受影响。',
+          },
+          {
+            question: 'GeoJSON 经纬度算出的面积是真实地表面积吗？',
+            answer:
+              '不是。本工具把经纬度直接当作平面笛卡尔坐标做近似计算，不做球面或投影修正，小范围地块误差可接受，跨城市 / 国家级范围的面积仅作参考；需要精确地表面积应先投影到合适的等积投影坐标系。',
+          },
+          {
+            question: '质心为什么和教材里的形心对不上？',
+            answer:
+              '本工具输出的是顶点算术平均（所有顶点坐标的平均值），计算简单且确定，但不是面积加权的几何形心（centroid of area）。对顶点分布不均匀的多边形两者会有差异，界面中已明确标注口径。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A polygon area and perimeter calculator built on the shoelace formula, delivering deterministic O(n) planar measurements for any simple polygon. Enter one vertex per line or paste GeoJSON Polygon/MultiPolygon to obtain signed area, absolute area, perimeter, vertex count, centroid and winding direction, including net area for polygons with holes.',
+        coreFeatures: [
+          'Two input modes: coordinate text (comma/space/tab/Chinese-comma separated) and GeoJSON paste (Feature wrappers accepted)',
+          'Automatic closure and deduplication: missing closing edges are added implicitly, while adjacent duplicates and explicit closing points are removed without double-counting',
+          'Signed shoelace area (positive CCW / negative CW) plus absolute area, with perimeter summed from Euclidean edge lengths',
+          'GeoJSON holes: net area = outer ring minus inner rings; MultiPolygon reports per-polygon metrics plus totals',
+          'Degenerate collinear polygon detection (zero area) and line-numbered coordinate parse errors',
+        ],
+        howToUse: [
+          'In coordinate mode, enter one vertex as x, y per line; repeating the first point is unnecessary',
+          'Or switch to GeoJSON mode and paste a Polygon / MultiPolygon geometry (inner rings follow the outer ring inside coordinates)',
+          'Read area, perimeter, winding tag and the vertex table; GeoJSON results are grouped per polygon',
+        ],
+        useCases: [
+          'Checking hand-computed area and perimeter of arbitrary polygons in math or geography homework',
+          'Estimating net area of parcels with holes from GIS-exported GeoJSON data',
+          'Verifying winding order and geometry metrics of collision outlines in frontend graphics or game development',
+        ],
+        privacyNote:
+          'All parsing and computation run locally in the browser with no network requests; coordinate data never leaves the device.',
+        faqs: [
+          {
+            question: 'Which coordinate system does the CCW/CW detection assume?',
+            answer:
+              'The mathematical convention with the y-axis pointing up: a positive shoelace signed area means counterclockwise (CCW) and negative means clockwise (CW). GeoJSON RFC 7946 requires outer rings to be CCW. Data expressed in screen coordinates (y-axis down) shows the opposite sign, while absolute area and perimeter remain unaffected.',
+          },
+          {
+            question: 'Is the area computed from longitude/latitude the true ground area?',
+            answer:
+              'No. Longitude and latitude are treated as planar Cartesian coordinates without spherical or projection correction. The approximation is acceptable for small parcels, while city- or country-scale areas are indicative only; project to an equal-area coordinate reference system for accurate ground area.',
+          },
+          {
+            question: 'Why does the centroid differ from the textbook centroid?',
+            answer:
+              'The reported point is the arithmetic mean of the vertices (average of all vertex coordinates), which is simple and deterministic but differs from the area-weighted geometric centroid. Expect differences on polygons with unevenly distributed vertices; the UI labels the convention explicitly.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'gpa-calculator',
+    name: 'GPA 平均绩点计算器',
+    nameEn: 'GPA Calculator (4.0 / 4.3 / WES / China)',
+    description:
+      '录入课程成绩（百分制或 A+ ~ F 等级）与学分，按标准 4.0、改良 4.3、WES 分段、中国高校百分制对照四套口径换算单课绩点，输出学分加权 GPA、算术平均分与总学分，结果并排对照。',
+    descriptionEn:
+      'Enter courses with percentage or letter grades (A+ to F) and credits to compute credit-weighted GPA under four scales — standard 4.0, modified 4.3, WES bands and the common Chinese percentage mapping — alongside the arithmetic average and total credits.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/gpa-calculator',
+    iconName: 'Calculator',
+    tags: ['GPA', '绩点', '学分加权', '成绩单', 'WES', '留学'],
+    tagsEn: ['GPA', 'Grade Point', 'Credit Weighted', 'Transcript', 'WES', 'Study Abroad'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '高等数学 92 分 / 4 学分；大学英语 85 分 / 3 学分；程序设计 A / 3 学分',
+    doc: {
+      zh: {
+        whatIsIt:
+          'GPA 平均绩点计算器面向学生与留学申请场景：录入每门课的百分制成绩或 A+ ~ F 等级与学分，工具按四套静态换算表给出单课绩点，并计算学分加权 GPA、百分制算术平均分与总学分，四口径结果并排对照，全部为浏览器本地运算。',
+        coreFeatures: [
+          '四套换算口径：标准 4.0（美式分段 + 等级直映）、改良 4.3（A+ = 4.3）、WES 风格粗分段（85/75/60）、中国大陆高校常见百分制对照',
+          '成绩支持 0–100 数字与 A+ / A / A- ... / F 等级；等级先映射为百分制段中位分再参与百分制口径，换算链路透明',
+          '学分加权 GPA = Σ(绩点 × 学分) / Σ 学分，另附百分制算术平均分、总学分与课程数',
+          '课程行可增删、示例成绩单一键填充、汇总结果一键复制',
+          '不及格（<60 或 F）按各表 0 绩点处理但学分仍计入分母；非法学分 / 成绩逐条带行号报错',
+        ],
+        howToUse: [
+          '在表格中填写课程名（可选）、成绩（数字框输入百分制，或下拉选择等级）与学分',
+          '点击「添加课程」增加行，或点击「载入示例成绩单」快速体验',
+          '查看四口径 GPA 卡片与算术平均分、总学分；点击「复制汇总」获取纯文本结果',
+        ],
+        useCases: [
+          '期末后按本校口径核算学期 / 累计 GPA 并与手算结果核对',
+          '留学申请时预估 WES 认证或目标校 4.0 口径下的绩点表现',
+          '对比同一成绩单在 4.0 与 4.3 体系下的差异，辅助重修 / 选课决策',
+        ],
+        privacyNote:
+          '所有成绩仅保存在当前页面内存中，刷新即清空，不发起任何网络请求，不上传成绩单。',
+        faqs: [
+          {
+            question: '等级成绩是怎么参与百分制口径计算的？',
+            answer:
+              '等级先映射为所在百分制段的中位分（如 A- → 89、B → 83、F → 40），再用该分数走 WES 与中国百分制分段表；标准 4.0 与改良 4.3 口径下等级则直接映射绩点（如 A 在两口径下分别为 4.0、4.0，A+ 为 4.0、4.3）。',
+          },
+          {
+            question: '不及格课程会计入 GPA 吗？',
+            answer:
+              '会。低于 60 分或 F 等级在四套口径下绩点均为 0，但其学分仍然保留在加权分母 Σ 学分中，因此会拉低整体 GPA，这与多数院校的处理方式一致。',
+          },
+          {
+            question: '为什么我的学校算出的 GPA 和工具不一样？',
+            answer:
+              '本工具内置的是四套通用静态对照表，不支持院校自定义分段、课程性质权重（必修 / 选修差异化）或刷分覆盖规则。若你的学校有官方换算表，应以学校口径为准，本工具适合快速估算与多口径横向对比。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A GPA calculator for students and study-abroad applicants: enter each course with a percentage score or an A+–F letter grade plus credits, and get per-course grade points under four static scales, credit-weighted GPA, arithmetic average and total credits, with all four scales shown side by side, computed entirely in the browser.',
+        coreFeatures: [
+          'Four scales: standard 4.0 (US bands plus direct letter mapping), modified 4.3 (A+ = 4.3), WES-style coarse bands (85/75/60) and the common Chinese percentage mapping',
+          'Accepts 0–100 numeric scores and A+/A/A- ... / F letters; letters map to band midpoint percentages before entering percentage-based scales, keeping the conversion chain transparent',
+          'Weighted GPA = Σ(points × credits) / Σ credits, plus arithmetic percentage average, total credits and course count',
+          'Add/remove course rows, one-click sample transcript and copy-to-clipboard summary',
+          'Failing grades (<60 or F) earn zero points but keep their credits in the denominator; invalid credits or grades raise row-numbered errors',
+        ],
+        howToUse: [
+          'Fill each row with an optional course name, a grade (numeric percentage input or letter dropdown) and credits',
+          'Use "Add course" for more rows or "Load sample transcript" for a quick demo',
+          'Read the four GPA cards plus average and total credits, then copy the summary as plain text',
+        ],
+        useCases: [
+          'Computing semester or cumulative GPA under your school scale and checking it against hand calculations',
+          'Estimating WES evaluation or target-school 4.0-scale results for study-abroad applications',
+          'Comparing the same transcript under 4.0 and 4.3 systems to inform retake or course-selection decisions',
+        ],
+        privacyNote:
+          'Grades live only in the current page memory and clear on refresh; no network requests are made and no transcript is uploaded.',
+        faqs: [
+          {
+            question: 'How do letter grades feed into the percentage-based scales?',
+            answer:
+              'Letters first map to the midpoint percentage of their band (e.g., A- → 89, B → 83, F → 40), and that percentage then runs through the WES and Chinese band tables. Under the standard 4.0 and modified 4.3 scales, letters map directly to points (A is 4.0 in both, while A+ is 4.0 vs 4.3).',
+          },
+          {
+            question: 'Do failed courses count toward GPA?',
+            answer:
+              'Yes. Scores below 60 or an F earn zero grade points on every scale, but their credits remain in the weighted denominator Σ credits, so they drag the overall GPA down — matching the convention used by most institutions.',
+          },
+          {
+            question: 'Why does my school-computed GPA differ from this tool?',
+            answer:
+              'The tool ships four generic static tables and does not support institution-specific bands, differentiated weights for required vs elective courses, or grade-replacement retake rules. When your school publishes an official mapping, treat it as authoritative; this tool is intended for quick estimation and cross-scale comparison.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

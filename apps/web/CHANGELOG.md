@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-06 ：【Agent自主迭代】新增 5 个 UTF-8 BOM、E.164 号码、向量运算、多边形度量与 GPA 计算工具
+
+- **新增**：UTF-8 BOM 检测与处理器（utf8-bom-handler）— 检测文本开头与内部 U+FEFF（UTF-8 编码 EF BB BF，3 字节），支持添加 / 仅剥离开头 BOM / 剥离全部 U+FEFF 四种模式，输出处理前后字节大小与内部零宽字符计数，纯本地运算
+- **新增**：E.164 电话号码规范化器（phone-number-normalizer）— 依据 ITU-T E.164 清洗分隔符、转换 vanity 字母（1-800-FLOWERS）、处理国际前缀（+/00）与国内 trunk prefix、启发式切分 1–3 位国家码，输出规范号码、可视分组与 RFC 3966 tel URI，保留分机号，支持批量逐行处理并对非法字符、超长、多 + 等问题逐条报错，纯本地运算
+- **新增**：二维 / 三维向量运算计算器（vector-angle-distance-calculator）— 计算模长、点积、叉积（2D 标量 z 分量 / 3D 向量）、夹角（atan2 稳定算法，弧度 + 角度）、标量与向量投影、和差数乘，并判定正交 / 平行同向 / 平行反向关系，零向量参与非法运算时明确报错，纯本地运算
+- **新增**：多边形面积与周长计算器（polygon-area-perimeter-calculator）— 坐标文本或 GeoJSON Polygon/MultiPolygon 输入，自动闭合与相邻重复点去重，鞋带公式输出有向 / 绝对面积、逐边欧氏周长、顶点算术质心与 CCW/CW 环绕方向，支持带孔多边形净面积（外环减内环）与 MultiPolygon 汇总，共线退化识别，纯本地运算
+- **新增**：GPA 平均绩点计算器（gpa-calculator）— 课程行可增删，成绩支持百分制与 A+ ~ F 等级，内置标准 4.0、改良 4.3（A+ = 4.3）、WES 粗分段、中国高校百分制对照四套换算表，输出学分加权 GPA、算术平均分与总学分，等级经中位段分数透明换算，不及格 0 绩点仍计学分，非法学分 / 成绩逐条报错，纯本地运算
+
 ## 2026-11-06 ：【Agent自主迭代】新增 5 个 BCP 47 解析、CSS 命名颜色、正则速查、HTTP 方法与 HTTP 头字段参考工具
 
 - **新增**：BCP 47 语言标签解析器（unicode-bcp47-lookup）— 依据 RFC 5646 ABNF 把标签拆分为 language/extlang/script/region/variant/extension/privateuse，输出推荐大小写规范化标签并支持复制，结构化解析 Unicode u 扩展的 attribute 与 keyword，识别 grandfathered 遗留标签与 x- 私有段，对非法字符、下划线分隔、重复扩展前缀、超长等问题逐条给出错误或警告，内置常用 ISO 639/15924/3166/UN M.49 子标签表交叉验证，纯本地运算
