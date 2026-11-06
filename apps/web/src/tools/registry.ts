@@ -26351,6 +26351,94 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'vector-angle-distance-calculator',
+    name: '二维/三维向量运算计算器',
+    nameEn: '2D/3D Vector Calculator',
+    description:
+      '输入两个 2D 或 3D 向量，计算模长、点积、叉积、夹角（弧度/角度）、标量与向量投影、和差数乘，并判定正交、平行同向/反向关系；夹角采用 atan2 计算保证数值稳定性。',
+    descriptionEn:
+      'Enter two 2D/3D vectors to get magnitudes, dot product, cross product, angle (radians/degrees), scalar and vector projection, sum, difference, scaling, plus orthogonal/parallel relationship checks, with numerically stable atan2-based angles.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/vector-angle-distance-calculator',
+    iconName: 'Sigma',
+    tags: ['向量', '点积', '叉积', '夹角', '投影', '线性代数'],
+    tagsEn: ['Vector', 'Dot Product', 'Cross Product', 'Angle', 'Projection', 'Linear Algebra'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'a = (1, 0, 0)，b = (0, 1, 0)',
+    doc: {
+      zh: {
+        whatIsIt:
+          '向量运算计算器面向二维与三维向量代数场景，输入两个向量的分量即可获得模长、点积、叉积、夹角、投影、和差与数乘结果，并自动判定正交、平行同向或反向关系，全部为本地确定性数值运算。',
+        coreFeatures: [
+          '2D / 3D 维度一键切换，分量支持负数与小数',
+          '模长、点积、叉积（2D 返回标量 z 分量，3D 返回向量）',
+          '夹角同时输出弧度与角度，基于 atan2(|a×b|, a·b) 计算，避免反余弦在端点处的精度损失',
+          '标量投影 comp_b(a) 与向量投影 proj_b(a)，投影结果与方向向量共线可验证',
+          '和、差、数乘与正交/平行同向/反向关系自动判定，容差 1e-10',
+        ],
+        howToUse: [
+          '选择二维或三维模式，分别填写向量 a、b 的 x/y（/z）分量',
+          '可选填写数乘系数 k（作用于向量 a）',
+          '结果分区展示基础量、夹角投影与线性运算；零向量参与夹角/投影时给出明确错误提示',
+        ],
+        useCases: [
+          '学生核对线性代数 / 大学物理作业中的点积、叉积与夹角计算',
+          '图形学与游戏开发中验证法线、光照方向向量的正交或平行关系',
+          '工程力学中快速计算力向量在指定方向上的投影分量',
+        ],
+        privacyNote: '所有计算均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么夹角用 atan2 而不是 arccos？',
+            answer:
+              '直接用 arccos(a·b/(|a||b|)) 在夹角接近 0° 或 180° 时，浮点误差会使参数略微超出 [-1,1] 并损失精度。改用 atan2(|a×b|, a·b) 不依赖除法归一化，对小角度与共线情形更稳定，结果同样落在 [0, π]。',
+          },
+          {
+            question: '二维叉积为什么是一个数字？',
+            answer:
+              '二维向量可视为三维 xy 平面上 z=0 的向量，其叉积方向恒沿 z 轴，因此只需返回 z 分量标量 a_x·b_y − a_y·b_x：正值表示 b 在 a 的逆时针方向，负值表示顺时针，零表示共线。三维模式下则返回完整的叉积向量。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A vector algebra calculator for 2D and 3D vectors: enter components of two vectors to obtain magnitudes, dot product, cross product, angle, projections, sum, difference and scaling, along with automatic orthogonal/parallel relationship detection, all via deterministic local computation.',
+        coreFeatures: [
+          'One-click 2D/3D switching with negative and decimal components',
+          'Magnitude, dot product and cross product (scalar z-component in 2D, full vector in 3D)',
+          'Angle in both radians and degrees, computed via atan2(|a×b|, a·b) to avoid acos precision loss at endpoints',
+          'Scalar projection comp_b(a) and vector projection proj_b(a), verifiably collinear with the direction vector',
+          'Sum, difference, scaling and orthogonal / parallel-same / parallel-opposite detection with a 1e-10 tolerance',
+        ],
+        howToUse: [
+          'Pick 2D or 3D mode and fill in the x/y (/z) components of vectors a and b',
+          'Optionally set a scalar multiplier k applied to vector a',
+          'Read the grouped result sections; zero-vector angle/projection attempts produce explicit errors',
+        ],
+        useCases: [
+          'Students checking dot/cross product and angle homework in linear algebra and physics',
+          'Graphics or game developers verifying orthogonality of normals and light-direction vectors',
+          'Engineering mechanics: quickly projecting a force vector onto a reference direction',
+        ],
+        privacyNote: 'All computation runs locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why atan2 instead of arccos for the angle?',
+            answer:
+              'Using arccos(a·b/(|a||b|)) suffers when the angle is near 0° or 180°: floating-point error can push the argument slightly outside [-1,1] and lose precision. atan2(|a×b|, a·b) needs no normalized quotient and stays stable for small angles and collinear vectors while still returning a value in [0, π].',
+          },
+          {
+            question: 'Why is the 2D cross product a single number?',
+            answer:
+              'Treat 2D vectors as 3D vectors with z=0: their cross product always points along the z-axis, so only the scalar z-component a_x·b_y − a_y·b_x is needed. A positive value means b is counterclockwise from a, negative means clockwise, and zero means collinear. Full cross-product vectors are returned in 3D mode.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

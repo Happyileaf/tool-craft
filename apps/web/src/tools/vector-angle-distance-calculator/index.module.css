@@ -1,0 +1,39 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1000px;
+}
+
+.card {
+  width: 100%;
+}
+
+.vectorRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vectorLabel {
+  min-width: 48px;
+  font-weight: 600;
+  font-family: var(--font-mono, monospace);
+}
+
+.componentInput {
+  width: 130px;
+}
+
+.hint {
+  color: rgb(0 0 0 / 45%);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.formula {
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  color: rgb(0 0 0 / 75%);
+}
