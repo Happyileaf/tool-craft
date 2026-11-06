@@ -90,6 +90,7 @@ export const toolLoaders: Record<
   'utf8-bom-handler': () => import('./utf8-bom-handler'),
   'phone-number-normalizer': () => import('./phone-number-normalizer'),
   'vector-angle-distance-calculator': () => import('./vector-angle-distance-calculator'),
+  'polygon-area-perimeter-calculator': () => import('./polygon-area-perimeter-calculator'),
   'mac-address-converter': () => import('./mac-address-converter'),
   'number-to-words': () => import('./number-to-words'),
   'fullwidth-halfwidth-converter': () => import('./fullwidth-halfwidth-converter'),

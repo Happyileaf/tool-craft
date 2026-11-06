@@ -26439,6 +26439,106 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'polygon-area-perimeter-calculator',
+    name: '多边形面积与周长计算器',
+    nameEn: 'Polygon Area & Perimeter Calculator',
+    description:
+      '粘贴顶点坐标（每行 x,y）或 GeoJSON Polygon/MultiPolygon，自动闭合与去重，用鞋带公式计算有向/绝对面积、周长、质心与环绕方向（CCW/CW），支持带孔多边形外环减内环与 MultiPolygon 汇总。',
+    descriptionEn:
+      'Paste vertex coordinates (x,y per line) or GeoJSON Polygon/MultiPolygon to get signed/absolute area via the shoelace formula, perimeter, centroid and winding direction (CCW/CW), with automatic closure, duplicate removal, hole subtraction and MultiPolygon aggregation.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/polygon-area-perimeter-calculator',
+    iconName: 'Triangle',
+    tags: ['多边形', '鞋带公式', '面积', '周长', 'GeoJSON', '质心'],
+    tagsEn: ['Polygon', 'Shoelace Formula', 'Area', 'Perimeter', 'GeoJSON', 'Centroid'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0, 0\n1, 0\n1, 1\n0, 1',
+    doc: {
+      zh: {
+        whatIsIt:
+          '多边形面积与周长计算器基于鞋带（Shoelace）公式，对任意简单多边形做确定性 O(n) 平面度量：输入每行一个顶点坐标，或直接粘贴 GeoJSON Polygon / MultiPolygon，即可得到有向面积、绝对面积、周长、顶点数、质心与环绕方向，并支持带孔多边形的净面积计算。',
+        coreFeatures: [
+          '两种输入模式：坐标文本（逗号/空格/制表符/中文逗号分隔）与 GeoJSON 粘贴（兼容 Feature 包装）',
+          '自动闭合与去重：首末点不同自动补闭合边，相邻重复点与显式闭合点自动移除且不重复计边',
+          '鞋带公式输出带符号有向面积（CCW 正 / CW 负）与绝对面积，周长按逐边欧氏距离求和',
+          'GeoJSON 带孔 Polygon 净面积 = 外环 − 内环之和；MultiPolygon 逐多边形输出并汇总净面积与周长',
+          '共线退化多边形识别（面积为 0），坐标格式错误带行号提示',
+        ],
+        howToUse: [
+          '选择「坐标文本」模式，每行输入一个顶点 x, y，无需重复首点闭合',
+          '或切换到「GeoJSON」模式，粘贴 Polygon / MultiPolygon 几何（含孔时把内环放入 coordinates 的后续数组）',
+          '查看结果卡片中的面积、周长、方向 Tag 与顶点表格；GeoJSON 模式按多边形分区展示',
+        ],
+        useCases: [
+          '核对数学 / 地理作业中任意多边形的面积与周长手算结果',
+          '处理 GIS 导出的 GeoJSON 地块数据，快速核算带孔地块净面积',
+          '前端图形 / 游戏开发中验证碰撞轮廓的环绕方向与几何度量',
+        ],
+        privacyNote:
+          '所有解析与计算均在浏览器本地完成，不发起任何网络请求，坐标数据不会离开设备。',
+        faqs: [
+          {
+            question: '环绕方向 CCW / CW 是按什么坐标系判定的？',
+            answer:
+              '按数学坐标系（y 轴向上）判定：鞋带公式有向面积为正即逆时针 CCW，为负即顺时针 CW。GeoJSON RFC 7946 规定外环应为 CCW；若你的数据来自屏幕坐标（y 轴向下），符号会相反，但绝对面积与周长不受影响。',
+          },
+          {
+            question: 'GeoJSON 经纬度算出的面积是真实地表面积吗？',
+            answer:
+              '不是。本工具把经纬度直接当作平面笛卡尔坐标做近似计算，不做球面或投影修正，小范围地块误差可接受，跨城市 / 国家级范围的面积仅作参考；需要精确地表面积应先投影到合适的等积投影坐标系。',
+          },
+          {
+            question: '质心为什么和教材里的形心对不上？',
+            answer:
+              '本工具输出的是顶点算术平均（所有顶点坐标的平均值），计算简单且确定，但不是面积加权的几何形心（centroid of area）。对顶点分布不均匀的多边形两者会有差异，界面中已明确标注口径。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A polygon area and perimeter calculator built on the shoelace formula, delivering deterministic O(n) planar measurements for any simple polygon. Enter one vertex per line or paste GeoJSON Polygon/MultiPolygon to obtain signed area, absolute area, perimeter, vertex count, centroid and winding direction, including net area for polygons with holes.',
+        coreFeatures: [
+          'Two input modes: coordinate text (comma/space/tab/Chinese-comma separated) and GeoJSON paste (Feature wrappers accepted)',
+          'Automatic closure and deduplication: missing closing edges are added implicitly, while adjacent duplicates and explicit closing points are removed without double-counting',
+          'Signed shoelace area (positive CCW / negative CW) plus absolute area, with perimeter summed from Euclidean edge lengths',
+          'GeoJSON holes: net area = outer ring minus inner rings; MultiPolygon reports per-polygon metrics plus totals',
+          'Degenerate collinear polygon detection (zero area) and line-numbered coordinate parse errors',
+        ],
+        howToUse: [
+          'In coordinate mode, enter one vertex as x, y per line; repeating the first point is unnecessary',
+          'Or switch to GeoJSON mode and paste a Polygon / MultiPolygon geometry (inner rings follow the outer ring inside coordinates)',
+          'Read area, perimeter, winding tag and the vertex table; GeoJSON results are grouped per polygon',
+        ],
+        useCases: [
+          'Checking hand-computed area and perimeter of arbitrary polygons in math or geography homework',
+          'Estimating net area of parcels with holes from GIS-exported GeoJSON data',
+          'Verifying winding order and geometry metrics of collision outlines in frontend graphics or game development',
+        ],
+        privacyNote:
+          'All parsing and computation run locally in the browser with no network requests; coordinate data never leaves the device.',
+        faqs: [
+          {
+            question: 'Which coordinate system does the CCW/CW detection assume?',
+            answer:
+              'The mathematical convention with the y-axis pointing up: a positive shoelace signed area means counterclockwise (CCW) and negative means clockwise (CW). GeoJSON RFC 7946 requires outer rings to be CCW. Data expressed in screen coordinates (y-axis down) shows the opposite sign, while absolute area and perimeter remain unaffected.',
+          },
+          {
+            question: 'Is the area computed from longitude/latitude the true ground area?',
+            answer:
+              'No. Longitude and latitude are treated as planar Cartesian coordinates without spherical or projection correction. The approximation is acceptable for small parcels, while city- or country-scale areas are indicative only; project to an equal-area coordinate reference system for accurate ground area.',
+          },
+          {
+            question: 'Why does the centroid differ from the textbook centroid?',
+            answer:
+              'The reported point is the arithmetic mean of the vertices (average of all vertex coordinates), which is simple and deterministic but differs from the area-weighted geometric centroid. Expect differences on polygons with unevenly distributed vertices; the UI labels the convention explicitly.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
