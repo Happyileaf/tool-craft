@@ -285,4 +285,5 @@ export const toolLoaders: Record<
   'gitattributes-generator': () => import('./gitattributes-generator'),
   'intel-hex-parser': () => import('./intel-hex-parser'),
   'diff-patch-parser': () => import('./diff-patch-parser'),
+  'set-similarity-calculator': () => import('./set-similarity-calculator'),
 };

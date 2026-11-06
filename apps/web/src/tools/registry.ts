@@ -26665,6 +26665,97 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'set-similarity-calculator',
+    name: '集合 Jaccard / Dice / Overlap 相似度计算器',
+    nameEn: 'Set Similarity Calculator',
+    description:
+      '输入多个命名集合，自动去重后计算两两 Jaccard 指数、Sørensen–Dice 系数与重叠系数，输出配对明细表、Jaccard 对称热力矩阵与交并集明细，并可导出 CSV，适用于标签体系比对与去重评估。',
+    descriptionEn:
+      'Feed in multiple named sets and get pairwise Jaccard index, Sørensen–Dice coefficient and overlap coefficient after deduplication, with a detail table, a symmetric Jaccard heatmap matrix, intersection/union breakdowns and CSV export — ideal for tag taxonomy comparison and dedup analysis.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/set-similarity-calculator',
+    iconName: 'Table2',
+    tags: ['集合', 'Jaccard', 'Dice', '重叠系数', '相似度', '标签比对'],
+    tagsEn: ['Set', 'Jaccard', 'Dice', 'Overlap', 'Similarity', 'Tag Compare'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的集合相似度工具：将多段元素列表解析为命名集合并自动去重，对每对集合计算 Jaccard、Sørensen–Dice 与 Overlap 三种系数，同时给出对称热力矩阵与交并集明细。',
+        coreFeatures: [
+          '三种系数同屏：Jaccard |A∩B|/|A∪B|、Dice 2|A∩B|/(|A|+|B|)、Overlap |A∩B|/min(|A|,|B|)',
+          '多集合支持：最多 6 个命名集合，自动按换行、逗号、空白拆分并去重保序',
+          'Jaccard 对称热力矩阵：对角线恒为 1，颜色深浅直观反映相似度',
+          '交并集明细：每个配对列出交集与并集元素，一键复制并集',
+          '忽略大小写开关与空集合除零保护，结果可导出 CSV',
+          '纯本地运行：所有计算在浏览器内完成，不发起任何网络请求',
+        ],
+        howToUse: [
+          '在各文本框粘贴集合，每段首个词作为集合名，其余为元素',
+          '按需开启「忽略大小写」，至少提供 2 个非空集合',
+          '查看配对系数表、热力矩阵与交并集明细，需要时导出 CSV',
+        ],
+        useCases: [
+          '标签体系比对：评估两套关键词 / 用户标签的重合程度',
+          '数据去重：量化两份 ID、词表或文献集合的重叠比例',
+          '推荐与聚类特征：以 Jaccard / Dice 作为集合间距离特征',
+        ],
+        privacyNote:
+          '所有集合数据与相似度计算均在浏览器本地完成，粘贴的内容不会被上传或记录。',
+        faqs: [
+          {
+            question: 'Jaccard、Dice、Overlap 三个系数有什么区别？',
+            answer:
+              'Jaccard 用并集大小归一化，惩罚不相交元素；Dice 用两集合大小之和归一化，对重合更宽容；Overlap 用较小集合归一化，在包含关系下恒为 1，适合大小悬殊的集合比较。',
+          },
+          {
+            question: '空集合会导致除零错误吗？',
+            answer:
+              '不会。两个集合都为空时三个系数定义为 1（两空集完全相同）；仅一方为空时系数为 0，工具内置除零保护并正常输出。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based set similarity tool. It parses multiple element lists into named, deduplicated sets and computes Jaccard, Sørensen–Dice and Overlap coefficients for every pair, alongside a symmetric heatmap matrix and intersection/union breakdowns.',
+        coreFeatures: [
+          'Three coefficients at once: Jaccard |A∩B|/|A∪B|, Dice 2|A∩B|/(|A|+|B|), Overlap |A∩B|/min(|A|,|B|)',
+          'Up to 6 named sets, split by newlines, commas or whitespace, deduplicated with order preserved',
+          'Symmetric Jaccard heatmap matrix with a diagonal of 1 and color-coded similarity',
+          'Per-pair intersection/union element breakdowns with one-click union copy',
+          'Case-insensitive toggle and divide-by-zero guards, with CSV export',
+          '100% local: every calculation runs in the browser with no network requests',
+        ],
+        howToUse: [
+          'Paste each set into a text area; the first token is the set name and the rest are elements',
+          'Enable "Ignore case" if needed and provide at least 2 non-empty sets',
+          'Review the coefficient table, heatmap matrix and intersection/union details, then export CSV if required',
+        ],
+        useCases: [
+          'Tag taxonomy comparison: measure overlap between keyword or user-tag systems',
+          'Deduplication: quantify overlap between ID lists, vocabularies or literature sets',
+          'Recommendation/clustering features: use Jaccard or Dice as a set-distance feature',
+        ],
+        privacyNote:
+          'All set data and similarity calculations stay in your browser. Pasted content is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How do Jaccard, Dice and Overlap differ?',
+            answer:
+              'Jaccard normalizes by the union size and penalizes disjoint elements; Dice normalizes by the sum of both set sizes and is more forgiving; Overlap normalizes by the smaller set and equals 1 for containment, suiting sets of very different sizes.',
+          },
+          {
+            question: 'Do empty sets cause division-by-zero errors?',
+            answer:
+              'No. When both sets are empty all three coefficients are defined as 1 (identical empty sets); when only one is empty the coefficients are 0. Built-in guards keep output valid.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
