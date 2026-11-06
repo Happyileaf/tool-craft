@@ -10,6 +10,7 @@
 - **新增**：CSS 命名颜色速查（css-named-colors-lookup）— 内置 CSS Color Level 4 全部 148 个命名颜色（含 rebeccapurple）与标准 RGB/HEX/HSL 值，支持名称片段搜索、#hex/rgb()/hsl() 颜色值反查、RGB 欧氏距离最近 5 色推荐、基础 16 色分组与字母/色相排序，色卡一键复制 HEX 并附 transparent/currentcolor 关键字说明，纯本地离线运算
 - **新增**：正则表达式语法速查（regex-cheatsheet）— 8 大分类 32 条 JavaScript 正则语法（字符类、量词、锚点、分组引用、环视、交替转义、g/i/m/s/u/y 标志位、Unicode 属性转义），每条附可运行示例与匹配/不匹配样例并由浏览器原生 RegExp 渲染时实时实测、展示实际命中文本与零宽匹配，支持关键字搜索（look 直达环视）与分类折叠，另附 JS 与 Python/Java/PCRE 引擎差异说明，纯本地离线运算
 - **新增**：HTTP 请求方法速查（http-methods-reference）— 依据 RFC 9110/9111/5789 内置 GET/HEAD/POST/PUT/DELETE/CONNECT/OPTIONS/TRACE/PATCH 共 9 个标准方法的 safe/idempotent/cacheable/请求体属性、RFC 来源、典型场景、常见误用与请求响应文本示例，支持方法名与「幂等」等关键字搜索及常用/特殊方法分组，附 PUT vs PATCH、POST vs PUT、OPTIONS 与 CORS 预检三组专题对比，纯本地离线运算
+- **新增**：HTTP 头字段速查（http-headers-reference）— 内置 7 大类 51 个常用头（通用/请求/响应/实体/缓存/CORS/安全），逐条标注请求响应方向、逐跳 hop-by-hop 与 Fetch 标准禁止修改属性、RFC 来源、取值示例与安全注意（含 Authorization/Cookie/Set-Cookie 及全部安全头），支持关键字、分类与方向三维过滤，另附基础安全头组合、Cookie 安全属性、CORS 凭据搭配三组安全实践专题，纯本地离线运算
 
 ## 2026-11-06 ：【Agent自主迭代】新增 5 个 JSON 差异、SSE 编解码、.gitattributes 生成、Intel HEX 解析与 Patch 解析工具
 

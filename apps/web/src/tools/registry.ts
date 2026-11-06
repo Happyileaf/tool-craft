@@ -26074,6 +26074,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'http-headers-reference',
+    name: 'HTTP 头字段速查',
+    nameEn: 'HTTP Headers Reference',
+    description:
+      '覆盖通用、请求、响应、实体、缓存、CORS、安全 7 大类共 51 个常用 HTTP 头字段，逐条标注请求/响应方向、逐跳 hop-by-hop 与 Fetch 标准禁止修改属性、RFC 来源、取值示例与安全注意事项，支持关键字、分类与方向三维过滤，附安全响应头组合、Cookie 安全属性、CORS 凭据三组实践专题，纯本地离线运行。',
+    descriptionEn:
+      'Look up 51 common HTTP headers across 7 categories (general, request, response, entity, caching, CORS, security) with direction, hop-by-hop and Fetch-forbidden flags, RFC sources, value examples and security notes. Filter by keyword, category and direction, plus three security practice playbooks (baseline headers, Cookie attributes, CORS credentials), fully offline.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/http-headers-reference',
+    iconName: 'FileText',
+    tags: ['HTTP', '请求头', '响应头', 'CORS', '安全头'],
+    tagsEn: ['HTTP', 'Headers', 'CORS', 'Security Headers', 'Reference'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP 头字段速查是一款纯浏览器本地运行的参考工具，内置 RFC 9110、RFC 9111、RFC 6265、Fetch / CORS 与各安全头规范定义的 51 个常用头字段，逐条给出请求 / 响应方向、逐跳（hop-by-hop）属性、Fetch 标准禁止修改标记、RFC 来源、取值示例与安全注意事项，并提供基础安全响应头、Cookie 安全属性、CORS 凭据搭配三组实践专题。',
+        coreFeatures: [
+          '7 大类 51 个头字段：通用、请求、响应、表示 / 实体、缓存、CORS 跨域、安全，头名唯一且全部带取值示例',
+          '方向与属性标签：请求头 / 响应头 / 双向、逐跳 hop-by-hop、Fetch 标准「禁止修改」红色标记一目了然',
+          '安全注意事项：Authorization、Cookie、Set-Cookie 及 CSP、HSTS、X-Frame-Options 等全部安全头均带独立安全告警',
+          '三维过滤：关键字（头名 / 中文 / 描述 / RFC）+ 分类 + 方向组合检索，如 csp、缓存、cookie',
+          '安全实践专题：基础安全头组合、Cookie 的 HttpOnly/Secure/SameSite、CORS 凭据白名单正确搭配与可复制配置示例',
+        ],
+        howToUse: [
+          '在搜索框输入头名或关键字（如 Content-Type、csp、缓存、cookie），配合分类与方向单选按钮组合过滤',
+          '查看每张卡片的方向标签、逐跳 / 禁止修改标记、RFC 来源与示例值，黄色告警条展示安全注意事项',
+          '在页面底部「安全实践专题」查看推荐配置组合，可直接参考示例配置自己的服务端响应头',
+          '所有数据均为内置静态内容，检索与渲染不发起任何网络请求',
+        ],
+        useCases: [
+          '配置网关 / CDN 响应头时确认标准名称、取值格式与 RFC 来源',
+          '排查 CORS 预检失败、Cookie 未携带或请求走私等问题时核对头部语义与限制',
+          '安全加固时按实践专题逐项补齐 CSP、HSTS、nosniff 等安全响应头',
+        ],
+        privacyNote:
+          '全部头字段数据与示例内置在代码包中，搜索、过滤与渲染均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '「禁止修改」标记是什么意思？',
+            answer:
+              '对应 Fetch 标准的 forbidden header name 清单：浏览器环境下 JavaScript 无法通过 fetch / XMLHttpRequest 自行设置这些请求头（如 Host、User-Agent、Origin、Cookie、Authorization），也无法读取部分响应头（如 Set-Cookie），它们由浏览器或代理自动管理，以防止脚本伪造关键协议信息。',
+          },
+          {
+            question: '逐跳（hop-by-hop）头和普通头有什么区别？',
+            answer:
+              '逐跳头只对单次 TCP 传输连接有效，代理转发时必须消费并移除，不能端到端传递，典型如 Connection、Transfer-Encoding、Upgrade、Proxy-Authorization；其余头为端到端头，会沿整条链路透传。HTTP/2 与 HTTP/3 进一步直接禁用了大部分逐跳头。',
+          },
+          {
+            question: '安全实践专题里的配置可以直接复制使用吗？',
+            answer:
+              '示例展示的是推荐基线，落地前需按业务调整：CSP 应先用 Content-Security-Policy-Report-Only 模式观察违规报告再强制启用；HSTS 开启 includeSubDomains / preload 前必须确认所有子域都已支持 HTTPS；跨域带 Cookie 时 Allow-Origin 必须回显白名单具体源而不能使用通配符 *。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'HTTP Headers Reference is a fully offline tool covering 51 common headers from RFC 9110, RFC 9111, RFC 6265, Fetch/CORS and security-header specifications. Each entry shows request/response direction, hop-by-hop status, the Fetch forbidden-header flag, RFC source, an example value and security notes, complemented by three security practice playbooks for baseline response headers, Cookie attributes and CORS credentials.',
+        coreFeatures: [
+          '51 headers in 7 categories: general, request, response, entity, caching, CORS and security, each with a unique name and value example',
+          'Direction and property tags: request/response/both, hop-by-hop and a red Fetch-forbidden marker at a glance',
+          'Dedicated security warnings on Authorization, Cookie, Set-Cookie and every security header such as CSP, HSTS and X-Frame-Options',
+          'Three-dimensional filtering combining keyword (name, Chinese label, description, RFC), category and direction, e.g. csp, cache, cookie',
+          'Security playbooks with copyable examples: baseline response headers, HttpOnly/Secure/SameSite Cookie attributes, and correct CORS credential allowlisting',
+        ],
+        howToUse: [
+          'Type a header name or keyword (Content-Type, csp, cache, cookie) and combine category and direction radio filters',
+          'Read each card’s direction tags, hop-by-hop/forbidden markers, RFC source and example; the yellow alert carries security notes',
+          'Consult the Security Practices section at the bottom for recommended configurations to apply on your server',
+          'Everything is bundled static data; search and rendering never issue network requests',
+        ],
+        useCases: [
+          'Confirming canonical names, value formats and RFC sources when configuring gateway or CDN response headers',
+          'Checking header semantics and restrictions while debugging CORS preflight failures, missing Cookies or request smuggling',
+          'Hardening security by rolling out CSP, HSTS, nosniff and related headers following the practice playbooks',
+        ],
+        privacyNote:
+          'All header data and examples are bundled in the code package. Search, filtering and rendering run entirely in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'What does the "forbidden" flag mean?',
+            answer:
+              'It maps to the Fetch standard forbidden header name list: in browsers JavaScript cannot set these request headers (Host, User-Agent, Origin, Cookie, Authorization) or read certain response headers (Set-Cookie) via fetch/XMLHttpRequest. The browser or proxy manages them automatically so scripts cannot forge critical protocol metadata.',
+          },
+          {
+            question: 'How do hop-by-hop headers differ from normal headers?',
+            answer:
+              'Hop-by-hop headers apply only to a single transport connection and must be consumed and stripped by forwarding proxies rather than passed end-to-end—typical examples are Connection, Transfer-Encoding, Upgrade and Proxy-Authorization. Other headers are end-to-end and travel the full chain. HTTP/2 and HTTP/3 ban most hop-by-hop headers outright.',
+          },
+          {
+            question: 'Can I copy the practice playbook configurations directly?',
+            answer:
+              'The examples are recommended baselines that need business-specific tuning: run CSP in Content-Security-Policy-Report-Only mode first to observe violations before enforcing it; confirm every subdomain supports HTTPS before enabling HSTS includeSubDomains/preload; and for credentialed CORS, Allow-Origin must echo an allowlisted specific origin rather than the wildcard *.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

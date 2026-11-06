@@ -186,6 +186,7 @@ export const toolLoaders: Record<
   'css-named-colors-lookup': () => import('./css-named-colors-lookup'),
   'regex-cheatsheet': () => import('./regex-cheatsheet'),
   'http-methods-reference': () => import('./http-methods-reference'),
+  'http-headers-reference': () => import('./http-headers-reference'),
   'ascii-tree-generator': () => import('./ascii-tree-generator'),
   'readability-score': () => import('./readability-score'),
   'vcard-generator': () => import('./vcard-generator'),
