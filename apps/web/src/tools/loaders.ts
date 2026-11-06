@@ -91,6 +91,7 @@ export const toolLoaders: Record<
   'phone-number-normalizer': () => import('./phone-number-normalizer'),
   'vector-angle-distance-calculator': () => import('./vector-angle-distance-calculator'),
   'polygon-area-perimeter-calculator': () => import('./polygon-area-perimeter-calculator'),
+  'gpa-calculator': () => import('./gpa-calculator'),
   'mac-address-converter': () => import('./mac-address-converter'),
   'number-to-words': () => import('./number-to-words'),
   'fullwidth-halfwidth-converter': () => import('./fullwidth-halfwidth-converter'),

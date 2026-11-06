@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1080px;
+}
+
+.card {
+  width: 100%;
+}
+
+.toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.scaleGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.scaleCard {
+  border: 1px solid rgb(0 0 0 / 10%);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: rgb(0 0 0 / 2%);
+}
+
+.scaleName {
+  font-size: 13px;
+  color: rgb(0 0 0 / 55%);
+  margin-bottom: 6px;
+}
+
+.scaleValue {
+  font-size: 26px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+}
+
+.scaleMax {
+  font-size: 12px;
+  color: rgb(0 0 0 / 45%);
+  margin-top: 2px;
+}
+
+.gradeInput {
+  width: 110px;
+}
+
+.creditsInput {
+  width: 90px;
+}
+
+.hint {
+  color: rgb(0 0 0 / 45%);
+  font-size: 12px;
+  line-height: 1.7;
+}

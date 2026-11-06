@@ -26539,6 +26539,106 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'gpa-calculator',
+    name: 'GPA 平均绩点计算器',
+    nameEn: 'GPA Calculator (4.0 / 4.3 / WES / China)',
+    description:
+      '录入课程成绩（百分制或 A+ ~ F 等级）与学分，按标准 4.0、改良 4.3、WES 分段、中国高校百分制对照四套口径换算单课绩点，输出学分加权 GPA、算术平均分与总学分，结果并排对照。',
+    descriptionEn:
+      'Enter courses with percentage or letter grades (A+ to F) and credits to compute credit-weighted GPA under four scales — standard 4.0, modified 4.3, WES bands and the common Chinese percentage mapping — alongside the arithmetic average and total credits.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/gpa-calculator',
+    iconName: 'Calculator',
+    tags: ['GPA', '绩点', '学分加权', '成绩单', 'WES', '留学'],
+    tagsEn: ['GPA', 'Grade Point', 'Credit Weighted', 'Transcript', 'WES', 'Study Abroad'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '高等数学 92 分 / 4 学分；大学英语 85 分 / 3 学分；程序设计 A / 3 学分',
+    doc: {
+      zh: {
+        whatIsIt:
+          'GPA 平均绩点计算器面向学生与留学申请场景：录入每门课的百分制成绩或 A+ ~ F 等级与学分，工具按四套静态换算表给出单课绩点，并计算学分加权 GPA、百分制算术平均分与总学分，四口径结果并排对照，全部为浏览器本地运算。',
+        coreFeatures: [
+          '四套换算口径：标准 4.0（美式分段 + 等级直映）、改良 4.3（A+ = 4.3）、WES 风格粗分段（85/75/60）、中国大陆高校常见百分制对照',
+          '成绩支持 0–100 数字与 A+ / A / A- ... / F 等级；等级先映射为百分制段中位分再参与百分制口径，换算链路透明',
+          '学分加权 GPA = Σ(绩点 × 学分) / Σ 学分，另附百分制算术平均分、总学分与课程数',
+          '课程行可增删、示例成绩单一键填充、汇总结果一键复制',
+          '不及格（<60 或 F）按各表 0 绩点处理但学分仍计入分母；非法学分 / 成绩逐条带行号报错',
+        ],
+        howToUse: [
+          '在表格中填写课程名（可选）、成绩（数字框输入百分制，或下拉选择等级）与学分',
+          '点击「添加课程」增加行，或点击「载入示例成绩单」快速体验',
+          '查看四口径 GPA 卡片与算术平均分、总学分；点击「复制汇总」获取纯文本结果',
+        ],
+        useCases: [
+          '期末后按本校口径核算学期 / 累计 GPA 并与手算结果核对',
+          '留学申请时预估 WES 认证或目标校 4.0 口径下的绩点表现',
+          '对比同一成绩单在 4.0 与 4.3 体系下的差异，辅助重修 / 选课决策',
+        ],
+        privacyNote:
+          '所有成绩仅保存在当前页面内存中，刷新即清空，不发起任何网络请求，不上传成绩单。',
+        faqs: [
+          {
+            question: '等级成绩是怎么参与百分制口径计算的？',
+            answer:
+              '等级先映射为所在百分制段的中位分（如 A- → 89、B → 83、F → 40），再用该分数走 WES 与中国百分制分段表；标准 4.0 与改良 4.3 口径下等级则直接映射绩点（如 A 在两口径下分别为 4.0、4.0，A+ 为 4.0、4.3）。',
+          },
+          {
+            question: '不及格课程会计入 GPA 吗？',
+            answer:
+              '会。低于 60 分或 F 等级在四套口径下绩点均为 0，但其学分仍然保留在加权分母 Σ 学分中，因此会拉低整体 GPA，这与多数院校的处理方式一致。',
+          },
+          {
+            question: '为什么我的学校算出的 GPA 和工具不一样？',
+            answer:
+              '本工具内置的是四套通用静态对照表，不支持院校自定义分段、课程性质权重（必修 / 选修差异化）或刷分覆盖规则。若你的学校有官方换算表，应以学校口径为准，本工具适合快速估算与多口径横向对比。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A GPA calculator for students and study-abroad applicants: enter each course with a percentage score or an A+–F letter grade plus credits, and get per-course grade points under four static scales, credit-weighted GPA, arithmetic average and total credits, with all four scales shown side by side, computed entirely in the browser.',
+        coreFeatures: [
+          'Four scales: standard 4.0 (US bands plus direct letter mapping), modified 4.3 (A+ = 4.3), WES-style coarse bands (85/75/60) and the common Chinese percentage mapping',
+          'Accepts 0–100 numeric scores and A+/A/A- ... / F letters; letters map to band midpoint percentages before entering percentage-based scales, keeping the conversion chain transparent',
+          'Weighted GPA = Σ(points × credits) / Σ credits, plus arithmetic percentage average, total credits and course count',
+          'Add/remove course rows, one-click sample transcript and copy-to-clipboard summary',
+          'Failing grades (<60 or F) earn zero points but keep their credits in the denominator; invalid credits or grades raise row-numbered errors',
+        ],
+        howToUse: [
+          'Fill each row with an optional course name, a grade (numeric percentage input or letter dropdown) and credits',
+          'Use "Add course" for more rows or "Load sample transcript" for a quick demo',
+          'Read the four GPA cards plus average and total credits, then copy the summary as plain text',
+        ],
+        useCases: [
+          'Computing semester or cumulative GPA under your school scale and checking it against hand calculations',
+          'Estimating WES evaluation or target-school 4.0-scale results for study-abroad applications',
+          'Comparing the same transcript under 4.0 and 4.3 systems to inform retake or course-selection decisions',
+        ],
+        privacyNote:
+          'Grades live only in the current page memory and clear on refresh; no network requests are made and no transcript is uploaded.',
+        faqs: [
+          {
+            question: 'How do letter grades feed into the percentage-based scales?',
+            answer:
+              'Letters first map to the midpoint percentage of their band (e.g., A- → 89, B → 83, F → 40), and that percentage then runs through the WES and Chinese band tables. Under the standard 4.0 and modified 4.3 scales, letters map directly to points (A is 4.0 in both, while A+ is 4.0 vs 4.3).',
+          },
+          {
+            question: 'Do failed courses count toward GPA?',
+            answer:
+              'Yes. Scores below 60 or an F earn zero grade points on every scale, but their credits remain in the weighted denominator Σ credits, so they drag the overall GPA down — matching the convention used by most institutions.',
+          },
+          {
+            question: 'Why does my school-computed GPA differ from this tool?',
+            answer:
+              'The tool ships four generic static tables and does not support institution-specific bands, differentiated weights for required vs elective courses, or grade-replacement retake rules. When your school publishes an official mapping, treat it as authoritative; this tool is intended for quick estimation and cross-scale comparison.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
