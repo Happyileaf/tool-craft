@@ -25872,6 +25872,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'regex-cheatsheet',
+    name: '正则表达式语法速查（JavaScript）',
+    nameEn: 'Regular Expression Syntax Cheat Sheet (JavaScript)',
+    description:
+      '可搜索、按分类折叠的 JavaScript 正则速查表，覆盖字符类、量词、锚点、分组、环视、交替、g/i/m/s/u/y 标志位与 Unicode 属性转义共 8 类 32 个条目；全部示例由浏览器原生 RegExp 实时实测并展示命中结果，另附 JS 与 Python/Java/PCRE 的引擎差异说明，纯本地离线运行。',
+    descriptionEn:
+      'A searchable, category-collapsible JavaScript regex cheat sheet covering 32 entries across 8 categories: character classes, quantifiers, anchors, groups, lookaround, alternation, g/i/m/s/u/y flags and Unicode property escapes. Every sample is verified live by the native RegExp engine with rendered match results, plus JS vs Python/Java/PCRE engine differences, fully offline.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/regex-cheatsheet',
+    iconName: 'List',
+    tags: ['正则', 'Regex', '速查表', 'RegExp', '语法参考'],
+    tagsEn: ['Regex', 'Cheat Sheet', 'RegExp', 'Syntax Reference', 'JavaScript'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '正则表达式语法速查是一款纯浏览器本地运行的查阅型参考工具，以结构化条目呈现 JavaScript 风格正则的元字符、字符类、量词、锚点、分组与引用、环视断言、交替转义、标志位与 Unicode 属性转义，每个条目都附带可运行示例与匹配 / 不匹配样例，并由原生 RegExp 在渲染时实时实测，保证文档与运行时行为一致。',
+        coreFeatures: [
+          '8 个分类、32 个语法条目：字符类与元字符、量词、锚点边界、分组引用、环视、交替转义、标志位、Unicode 属性转义',
+          '原生 RegExp 实测：每条示例的匹配与不匹配样例在页面加载时用 new RegExp 真实执行，展示命中文本与零宽匹配，异常条目直接标红',
+          '关键字搜索：按名称、语法、描述、关键字与分类名实时过滤（如输入 look 即列出全部环视断言）',
+          '分类折叠浏览：按 8 个分类分组的 Collapse 面板，支持空状态提示',
+          '引擎差异区块：文档说明 JS 与 Python/Java/PCRE 在 \\d Unicode 数字、lookbehind、Unicode 属性转义等方面的典型区别',
+        ],
+        howToUse: [
+          '在顶部搜索框输入语法或关键字（如 look、量词、\\p）即可过滤条目，清空搜索恢复全部',
+          '使用分类按钮在 8 个分类之间切换，或在折叠面板中按需展开 / 收起',
+          '查看每条卡片的示例 /pattern/flags，绿色标记表示样例命中并展示实际匹配文本，红色标记表示不匹配',
+          '页面顶部的实测统计标签显示条目数、分类数与原生 RegExp 校验结果；底部可阅读跨引擎差异说明',
+        ],
+        useCases: [
+          '编写正则时快速确认量词惰性写法、命名捕获组、环视断言等语法细节',
+          '面试与教学场景系统复习 JavaScript RegExp 的标志位与 Unicode 属性转义',
+          '跨语言迁移正则时查阅 JS 与 Python/Java/PCRE 的行为差异，规避兼容性坑',
+        ],
+        privacyNote:
+          '全部条目数据内置在代码包中，搜索、过滤与 RegExp 实测均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '本工具和 regex-tester、regex-replace 有什么区别？',
+            answer:
+              '本工具定位为「查阅学习」的静态语法参考表，内容是内置的结构化条目并逐条实测；regex-tester 侧重自定义正则的在线调试与捕获组分析，regex-replace 侧重替换执行，三者互补。',
+          },
+          {
+            question: '页面上的「命中 / 不匹配」结果是写死的吗？',
+            answer:
+              '不是。页面加载时会对全部 32 个条目逐条 new RegExp(pattern, flags) 并对每个样例真实执行，展示实际匹配文本（零宽匹配会标注「零宽」），若任何样例与预期不符会显示「示例校验异常」标签。',
+          },
+          {
+            question: '为什么搜索 look 能找到环视相关条目？',
+            answer:
+              '搜索会匹配条目的名称、语法、描述与关键字字段，lookahead/lookbehind 条目的关键字中包含 look，因此输入 look 可一次过滤出正向/负向先行与后行断言共 4 个条目。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Regular Expression Syntax Cheat Sheet is a fully offline reference tool presenting JavaScript-style regex metacharacters, character classes, quantifiers, anchors, groups and references, lookaround assertions, alternation and escaping, flags and Unicode property escapes as structured entries. Every entry ships runnable examples with match/reject samples that are executed live by the native RegExp engine at render time, keeping documentation consistent with runtime behavior.',
+        coreFeatures: [
+          '32 entries across 8 categories: character classes, quantifiers, anchors, groups, lookaround, alternation/escaping, flags and Unicode property escapes',
+          'Native RegExp verification: every match/reject sample is executed with new RegExp at page load, showing the actual matched text and zero-width matches, with failed expectations flagged in red',
+          'Keyword search over names, syntax, descriptions, keywords and category labels (e.g. look lists all lookaround entries)',
+          'Category browsing via collapsible panels with an empty-state hint',
+          'Engine-difference section documenting typical JS vs Python/Java/PCRE divergences such as \\d Unicode digits, lookbehind support and Unicode property escapes',
+        ],
+        howToUse: [
+          'Type a syntax token or keyword (look, quantifier, \\p) in the search box to filter entries; clear it to restore the full list',
+          'Switch between the 8 categories with the filter buttons, or expand and collapse panels as needed',
+          'Read each card’s /pattern/flags example: green marks indicate a hit with the actual matched text, red marks indicate no match',
+          'The top stats tags show entry count, category count and native RegExp verification status; cross-engine notes are available at the bottom',
+        ],
+        useCases: [
+          'Quickly confirming lazy quantifiers, named capture groups or lookaround syntax while writing regular expressions',
+          'Systematically revising JavaScript RegExp flags and Unicode property escapes for interviews or teaching',
+          'Checking JS vs Python/Java/PCRE behavior differences when porting regexes across languages',
+        ],
+        privacyNote:
+          'All entry data is bundled in the code package. Search, filtering and RegExp verification run entirely in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'How does this differ from regex-tester and regex-replace?',
+            answer:
+              'This tool is a read-and-learn static syntax reference with built-in structured entries verified on the fly; regex-tester focuses on debugging custom patterns with capture-group analysis, and regex-replace focuses on replacement execution. The three complement each other.',
+          },
+          {
+            question: 'Are the match / reject results hard-coded?',
+            answer:
+              'No. On page load all 32 entries are checked by constructing new RegExp(pattern, flags) and running every sample for real, rendering the actual matched text (zero-width matches are labeled accordingly). Any sample violating its expectation triggers an "example verification failed" tag.',
+          },
+          {
+            question: 'Why does searching "look" find the lookaround entries?',
+            answer:
+              'Search matches entry names, syntax, descriptions and keyword fields. The lookahead/lookbehind entries carry "look" in their keywords, so the query returns all four positive/negative lookahead and lookbehind assertions.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
