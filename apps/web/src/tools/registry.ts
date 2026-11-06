@@ -8703,6 +8703,104 @@ info: request finished`,
     },
   },
   {
+    slug: 'gpa-calculator',
+    name: 'GPA 平均绩点计算器（多算法学分加权）',
+    nameEn: 'GPA Calculator (Weighted, Multi-Scale)',
+    description:
+      '录入课程学分与百分制或字母等级成绩，并列对照标准 4.0、改良 4.3 与中国高校百分制三套口径的学分加权 GPA，附总学分、算术平均分与逐课程绩点明细，纯浏览器本地计算。',
+    descriptionEn:
+      'Enter course credits with percentage or letter grades and compare credit-weighted GPA across the standard 4.0, modified 4.3 and Chinese university percentage scales, with total credits, arithmetic average and per-course point details, fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/gpa-calculator',
+    iconName: 'ReadOutlined',
+    tags: ['GPA', '绩点', '学分加权', '留学申请', '成绩换算', '教育'],
+    tagsEn: ['GPA', 'Grade Point', 'Weighted', 'Study Abroad', 'Grade Conversion', 'Education'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '高等数学,3,90\n大学英语,2,80\n专业导论,1,A',
+    doc: {
+      zh: {
+        whatIsIt:
+          'GPA 平均绩点计算器把课程学分与成绩（百分制分数或 A+ 至 F 字母等级）按三套常见口径换算为绩点，并以「Σ(绩点×学分)/Σ学分」计算学分加权平均绩点，同时给出总学分、算术平均分与逐课程明细，方便在留学申请与校内评定中对比不同换算口径。所有计算均在浏览器本地完成。',
+        coreFeatures: [
+          '三套算法并列：标准 4.0（A 上限 4.0）、改良 4.3（A+ 可达 4.3）、中国高校百分制分段对照表',
+          '双成绩录入：百分制 0–100 分数或字母等级，同一成绩单支持混录',
+          '学分加权：严格按 Σ(绩点×学分)/Σ学分 计算，并附算术平均分与总学分',
+          '健壮校验：学分必须为正、成绩越界或未知等级均明确报错，空成绩单提示先添加课程',
+        ],
+        howToUse: [
+          '在课程表中填写课程名（可选）、学分，并切换该行的成绩录入方式（百分制或字母等级）',
+          '用「添加一行」动态增删课程，完成后点击「计算 GPA」',
+          '查看顶部总学分、算术平均分与三套算法加权 GPA 卡片，以及下方对照表和逐课程绩点明细',
+        ],
+        useCases: [
+          '留学申请时按目标院校口径（4.0 或 4.3）预估加权 GPA',
+          '校内评奖评优时核对中国高校百分制对照表下的绩点',
+          '对比同一成绩单在不同换算口径下的结果差异',
+        ],
+        privacyNote:
+          '成绩与学分全部在浏览器本地换算，不发起任何网络请求，数据不会离开设备。',
+        faqs: [
+          {
+            question: '字母等级在中国高校对照表下怎么处理？',
+            answer:
+              '中国高校表以百分制分段为准。遇到字母等级时，工具先按内置等效分（如 A=95、B=85）映射为百分制，再查中国高校分段表得到绩点，因此三套算法对任意成绩单都能给出结果。',
+          },
+          {
+            question: '标准 4.0 和改良 4.3 有什么区别？',
+            answer:
+              '两套算法的 B/C/D 等级与 +/- 微调完全一致，唯一差异在最高档：标准 4.0 中 A+ 与 A 均为 4.0，而改良 4.3 中 A+ 为 4.3、A 仍为 4.0。因此含 A+ 的成绩单在 4.3 口径下结果更高。',
+          },
+          {
+            question: '加权 GPA 和算术平均分有什么不同？',
+            answer:
+              '加权 GPA 先把每门课成绩换算为绩点，再按学分加权平均；算术平均分则直接对百分制分数（字母等级先转等效百分）做学分加权平均，单位仍是「分」。两者口径不同，建议按使用场景选择。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The GPA Calculator converts course credits and grades (percentage scores 0–100 or letter grades A+ to F) into grade points under three common scales, then computes the credit-weighted GPA as sum(points x credits)/sum(credits), with total credits, arithmetic average and per-course details to compare conversion conventions for study-abroad applications and internal assessment. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Three scales side by side: standard 4.0 (capped at A=4.0), modified 4.3 (A+ reaches 4.3), and the Chinese university percentage band table',
+          'Dual grade input: percentage scores or letter grades, freely mixed within one transcript',
+          'Credit weighting: strictly sum(points x credits)/sum(credits), plus arithmetic average and total credits',
+          'Robust validation: positive credits required, out-of-range scores and unknown letters raise explicit errors, empty transcripts prompt to add courses',
+        ],
+        howToUse: [
+          'Fill in the course table with an optional name, credits, and switch each row between percentage and letter-grade entry',
+          'Add or remove rows dynamically, then click Calculate GPA',
+          'Review the top cards for total credits, arithmetic average and weighted GPA on all three scales, plus the comparison table and per-course details',
+        ],
+        useCases: [
+          'Estimating weighted GPA under a target school’s 4.0 or 4.3 convention for applications',
+          'Checking grade points under the Chinese university percentage band table for scholarships',
+          'Comparing how the same transcript scores under different conversion scales',
+        ],
+        privacyNote:
+          'Grades and credits are converted entirely in your browser; no network requests are made and data never leaves your device.',
+        faqs: [
+          {
+            question: 'How are letter grades handled under the Chinese percentage table?',
+            answer:
+              'That scale is defined on percentage bands. Letter grades are first mapped to built-in equivalent percentages (e.g. A=95, B=85) and then looked up in the Chinese band table, so all three scales always return a result for any transcript.',
+          },
+          {
+            question: 'What is the difference between standard 4.0 and modified 4.3?',
+            answer:
+              'The B/C/D grades and plus/minus adjustments are identical; the only difference is the top mark. Under standard 4.0 both A+ and A are 4.0, while under modified 4.3 A+ is 4.3 and A stays 4.0, so transcripts containing A+ score higher on the 4.3 scale.',
+          },
+          {
+            question: 'How does weighted GPA differ from the arithmetic average?',
+            answer:
+              'Weighted GPA first converts each grade to grade points and then averages them by credits. The arithmetic average directly credit-weights percentage scores (letters mapped to equivalent percentages) and stays in "points" units. Use whichever convention your scenario requires.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'cookie-parser',
     name: 'Cookie 字符串解析与生成器',
     nameEn: 'Cookie Parser & Set-Cookie Builder',

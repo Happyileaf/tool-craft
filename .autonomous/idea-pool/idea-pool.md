@@ -260,7 +260,7 @@
 | 20261106060114 | JPEG 文件 marker 段结构只读解析器（SOI / APP / DQT / SOF / SOS / EOI） | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106060114.md) |
 | 20261106060115 | 多边形面积与周长计算器（鞋带公式，含 GeoJSON 粘贴） | Web Tool | Exploration | In Progress | 2026-11-06 | trae-agent | [详情](./idea-details/20261106060115.md) |
 | 20261106060116 | 多面骰子（d4/d6/d20 等）投掷模拟与点数和概率分布计算器 | Web Tool | Exploration | Pending | 2026-11-06 | | [详情](./idea-details/20261106060116.md) |
-| 20261106060117 | GPA 平均绩点计算器（百分制/4.0/4.3 多算法与学分加权） | Web Tool | Exploration | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106060117.md) |
+| 20261106060117 | GPA 平均绩点计算器（百分制/4.0/4.3 多算法与学分加权） | Web Tool | Exploration | In Progress | 2026-11-06 | trae-agent | [详情](./idea-details/20261106060117.md) |
 | 20261106160207 | GS1-128 / SSCC / EAN-14 校验位计算器与包装层级条码助手 | Web Tool | External Reference | Pending | 2026-11-06 | | [详情](./idea-details/20261106160207.md) |
 | 20261106160208 | Netpbm（PPM / PGM / PBM）图像生成与解析器 | Web Tool | External Reference | Pending | 2026-11-06 | | [详情](./idea-details/20261106160208.md) |
 | 20261106160209 | Markdown Frontmatter（YAML / TOML）解析与编辑器 | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106160209.md) |
