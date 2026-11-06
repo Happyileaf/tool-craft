@@ -26263,6 +26263,94 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'phone-number-normalizer',
+    name: 'E.164 电话号码规范化与格式化器',
+    nameEn: 'E.164 Phone Number Normalizer',
+    description:
+      '把 +86 138 0000 0000、0086…、(021) 1234-5678、1-800-FLOWERS 等多种写法清洗并校验为 ITU-T E.164 规范形式（+ 国家码 + 国内号码，3–15 位数字），输出国家码、国内号码、RFC 3966 tel URI 与可视分组，支持分机号与逐行批量处理。',
+    descriptionEn:
+      'Clean and validate phone numbers in mixed formats (plus/00 prefixes, parentheses, vanity letters, extensions) into the ITU-T E.164 canonical form, with country-code split, RFC 3966 tel URI, visual grouping and line-by-line batch processing.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/phone-number-normalizer',
+    iconName: 'Phone',
+    tags: ['E.164', '电话号码', '规范化', 'tel URI', 'vanity 号码'],
+    tagsEn: ['E.164', 'Phone Number', 'Normalization', 'tel URI', 'Vanity Number'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '+86 138 0000 0000\n0086 (021) 1234-5678\n+1 (202) 555-0100;ext=42\n1-800-FLOWERS',
+    doc: {
+      zh: {
+        whatIsIt:
+          'E.164 电话号码规范化器依据 ITU-T E.164 建议书，把任意书写形式的电话号码清洗为全球通用的规范形式「+」+ 国家码 + 国内号码，并对字符、前缀与长度做结构化校验，同时输出 RFC 3966 tel URI、可视分组与分机信息，支持批量逐行处理。',
+        coreFeatures: [
+          '多格式清洗：空格、连字符、括号、点、斜杠分隔符自动剥离，00 国际前缀等价转换为 +',
+          'vanity 字母号码：按电话键盘把 1-800-FLOWERS 等字母映射为数字',
+          'E.164 校验：数字总长 3–15 位、国家码 1–3 位且首位非 0、国内号码不得保留 trunk prefix 0，逐条中文报错',
+          '本地号码补全：无国际前缀时按默认国家码补全，并自动去除国内长途前缀 0',
+          '结构化输出：E.164 串、国家码、国内号码、tel: URI（含 ;ext= 分机）、3-3-4 启发式可视分组，批量结果一键复制',
+        ],
+        howToUse: [
+          '在默认国家码框填写无 + 前缀号码的归属国家码（如 86、1、44），带 + / 00 的号码不受影响',
+          '每行一个号码粘贴到文本框，结果表格即时显示合法/非法与规范化结果',
+          '点击「复制成功结果」获取全部 E.164 号码；分机号通过 ;ext=、x、转、# 写法自动识别',
+        ],
+        useCases: [
+          'CRM / 用户系统入库前统一手机号与固话格式，避免重复账号与拨号失败',
+          '把 Excel 中混合格式的客户电话批量转换为可直接用于短信网关的 E.164 号码',
+          '校验国际号码结构、生成 tel: 链接，或转换 vanity 营销号码',
+        ],
+        privacyNote: '所有号码仅在浏览器本地解析与校验，不发起任何网络请求、不做号段归属查询。',
+        faqs: [
+          {
+            question: '为什么提示「国内号码部分不能以 0 开头」？',
+            answer:
+              '0 在许多国家是国内长途前缀（trunk prefix，如中国 021、英国 07xxx），只在国内拨号时使用。E.164 国际规范形式要求去除该前缀：本工具对带默认国家码的本地号码会自动剥离首位 0；若国际格式中仍出现 0 开头的国内部分，则视为格式错误提示。',
+          },
+          {
+            question: '校验通过是否代表号码真实可用？',
+            answer:
+              '不代表。本工具只依据 E.164 做字符、前缀与长度（3–15 位）的结构校验，不维护各国号段分配数据库，因此无法确认号码是否已开通、运营商归属或是否为虚拟号段。需要真实性核验应接入具备号段数据库的电信服务。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The E.164 Phone Number Normalizer implements the ITU-T E.164 recommendation to clean phone numbers in any written form into the global canonical format (+, country code and national number), validates characters, prefixes and length, and emits an RFC 3966 tel URI, visual grouping and extension data with line-by-line batch support.',
+        coreFeatures: [
+          'Flexible cleaning: strips spaces, hyphens, parentheses, dots and slashes; converts the 00 international prefix into +',
+          'Vanity support: maps letters such as 1-800-FLOWERS to digits via the telephone keypad',
+          'E.164 validation: 3–15 digits total, 1–3 digit non-zero-leading country code, no trunk prefix in the national part, with per-line error messages',
+          'Local-number completion: applies a configurable default country code and drops the domestic trunk-prefix zero',
+          'Structured output: E.164 string, country code, national number, tel: URI (with ;ext=), heuristic 3-3-4 grouping and one-click batch copy',
+        ],
+        howToUse: [
+          'Set the default country code (e.g. 86, 1, 44) used for numbers without an international prefix',
+          'Paste one number per line; the table instantly shows validity and the normalized result',
+          'Use "copy successful results" for all E.164 numbers; extensions written as ;ext=, x, # or 转 are detected automatically',
+        ],
+        useCases: [
+          'Normalizing CRM/user-directory phone numbers before storage to prevent duplicate accounts and dialing failures',
+          'Converting mixed-format customer numbers in spreadsheets into E.164 strings ready for SMS gateways',
+          'Validating international number structure, generating tel: links or translating vanity marketing numbers',
+        ],
+        privacyNote: 'All parsing and validation happen locally in the browser; no network requests or carrier-database lookups are made.',
+        faqs: [
+          {
+            question: 'Why does it reject a national number starting with 0?',
+            answer:
+              'A leading 0 is often a domestic trunk prefix (e.g. 021 in China, 07xxx in the UK) used only for national dialing. E.164 requires it to be removed: local numbers with a default country code are fixed automatically, while an international input that still carries the zero is reported as a formatting error.',
+          },
+          {
+            question: 'Does a passing validation mean the number is really in service?',
+            answer:
+              'No. The tool checks only E.164 structure—characters, prefixes and the 3–15 digit length. It does not maintain national numbering-plan databases, so it cannot confirm activation, carrier ownership or virtual-number ranges. Use a telecom HLR/lookup service for real-world validity.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

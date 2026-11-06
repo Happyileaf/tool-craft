@@ -88,6 +88,7 @@ export const toolLoaders: Record<
   'line-ending-converter': () => import('./line-ending-converter'),
   'decimal-fraction-converter': () => import('./decimal-fraction-converter'),
   'utf8-bom-handler': () => import('./utf8-bom-handler'),
+  'phone-number-normalizer': () => import('./phone-number-normalizer'),
   'mac-address-converter': () => import('./mac-address-converter'),
   'number-to-words': () => import('./number-to-words'),
   'fullwidth-halfwidth-converter': () => import('./fullwidth-halfwidth-converter'),
