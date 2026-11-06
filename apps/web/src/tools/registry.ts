@@ -8409,6 +8409,496 @@ info: request finished`,
     },
   },
   {
+    slug: 'phone-e164-normalizer',
+    name: 'E.164 电话号码规范化器（国际格式解析与校验）',
+    nameEn: 'E.164 Phone Number Normalizer',
+    description:
+      '清洗空格、连字符、括号、点等分隔符，识别 + / 00 国际前缀并按内置国家码表最长前缀匹配，校验订阅号长度区间与 E.164 15 位上限，输出标准 E.164 号码与国际分组展示，支持多行批量、逐行独立返回成功或失败原因，纯浏览器本地计算。',
+    descriptionEn:
+      'Strips spaces, dashes, parentheses and dots, detects + / 00 international prefixes, matches the country code by longest prefix against a built-in table, validates subscriber-number length and the E.164 15-digit limit, and emits canonical E.164 plus grouped display. Multi-line batch processing reports per-line success or error, fully locally in the browser.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/phone-e164-normalizer',
+    iconName: 'PhoneOutlined',
+    tags: ['电话号码', 'E.164', '国家码', '格式化', '校验', '批量处理'],
+    tagsEn: ['Phone Number', 'E.164', 'Country Code', 'Format', 'Validation', 'Batch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '138 0000 0000\n001-415-555-2671\n+852 9123 4567',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具把随手输入的电话号码（含空格、连字符、括号、点等分隔符，以及 + 或 00 国际前缀）清洗为标准 E.164 格式（+ 国家码 + 订阅号），依据内置常用国家 / 地区码表解析国家码、校验订阅号长度区间，并给出国际分组展示。支持多行批量处理，逐行独立返回成功或失败原因，全部计算在浏览器本地完成，不上传任何号码。仅做结构层面的字符与长度校验，不查询实时号段数据库，不保证号码真实存在。',
+        coreFeatures: [
+          '分隔符清洗：剥离空格、连字符、括号、点、斜杠，识别 + 与 00 国际前缀',
+          '国家码解析：1~3 位最长前缀匹配内置码表（+86、+1、+44、+81、+852、+886 等），未带前缀按默认国家补全',
+          '严格校验：订阅号长度区间、E.164 数字 15 位上限、非法字符均给出明确错误而非静默产出',
+          '批量处理：多行逐行独立返回 E.164、国家 / 地区、订阅号与国际分组展示，空行自动跳过',
+        ],
+        howToUse: [
+          '选择默认国家 / 地区（号码未带国家码时使用），在文本框每行输入一个电话号码',
+          '点击「规范化」，结果表格逐行展示状态、标准 E.164、国家 / 地区、订阅号与分组展示',
+          '可点击「填入示例」快速体验，失败行会在 E.164 列显示具体原因',
+        ],
+        useCases: [
+          '把 CRM / Excel 中格式混乱的客户电话批量清洗为统一 E.164 后再入库',
+          '国际业务对接前确认号码的国家码与长度结构是否合理',
+          '开发调试时快速验证用户输入号码能否通过结构校验',
+        ],
+        privacyNote:
+          '全部为浏览器本地同步运算，电话号码不会离开设备，也不发起任何网络请求；本工具不做号段实号核验。',
+        faqs: [
+          {
+            question: '校验通过是否代表号码真实可拨通？',
+            answer:
+              '不是。本工具只校验字符、国家码与长度结构，不接入运营商号段数据库，无法判断号码是否已分配或停机，页面会显著标注这一限制。',
+          },
+          {
+            question: '为什么有的号码提示国家码无法识别？',
+            answer:
+              '内置码表仅覆盖常用国家 / 地区，小众国家码可能未收录；这类号码会返回「无法识别的国家码」，不会猜测输出。',
+          },
+          {
+            question: '批量号码中某一行出错会影响其他行吗？',
+            answer:
+              '不会。每一行独立清洗与校验，成功行给出 E.164 结果，失败行给出具体原因，空行自动跳过。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool normalizes free-form phone numbers (with spaces, dashes, parentheses, dots, and + / 00 international prefixes) into canonical E.164 form, resolves the country code from a built-in table, validates subscriber-number length, and renders an internationally grouped display. It processes multiple lines independently, runs entirely in the browser, and never uploads numbers. Only structural character and length checks are performed; no live numbering database is queried, so reachability is not guaranteed.',
+        coreFeatures: [
+          'Separator cleaning: removes spaces, dashes, parentheses, dots and slashes, detecting + and 00 prefixes',
+          'Country-code resolution: 1–3 digit longest-prefix match over a built-in table (+86, +1, +44, +81, +852, +886…), default country for unprefixed input',
+          'Strict validation: subscriber length range, the E.164 15-digit cap and illegal characters raise explicit errors',
+          'Batch processing: per-line E.164, country, subscriber number and grouped display, with blank lines skipped',
+        ],
+        howToUse: [
+          'Pick the default country (used when no country code is present) and enter one phone number per line',
+          'Click Normalize; the result table shows status, canonical E.164, country, subscriber number and grouped display per line',
+          'Use the sample button for a quick demo; failed rows show the specific reason in the E.164 column',
+        ],
+        useCases: [
+          'Clean messy CRM / spreadsheet phone columns into uniform E.164 before importing to a database',
+          'Sanity-check country codes and length structure before international business integration',
+          'Quickly verify whether user-entered numbers pass structural validation during development',
+        ],
+        privacyNote:
+          'Everything is computed synchronously and locally in your browser; phone numbers never leave your device and no network requests are made. No live number validation is performed.',
+        faqs: [
+          {
+            question: 'Does passing validation mean the number is reachable?',
+            answer:
+              'No. Only character, country-code and length structure are checked. No live numbering database is queried, so assignment or active status cannot be confirmed; the page states this limitation clearly.',
+          },
+          {
+            question: 'Why is a country code reported as unrecognized?',
+            answer:
+              'The built-in table covers common countries and regions. Less common codes may be absent, in which case an explicit error is returned rather than a guess.',
+          },
+          {
+            question: 'Does one bad line in a batch affect the others?',
+            answer:
+              'No. Each line is cleaned and validated independently; blank lines are skipped and failures include a specific reason.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'vector-calculator',
+    name: '二维 / 三维向量运算计算器（点积、叉积、夹角、投影）',
+    nameEn: '2D/3D Vector Calculator',
+    description:
+      '对二维或三维几何向量计算模长、单位化、加减、数乘、点积、叉积（仅 3D）、夹角（度 / 弧度）与标量 / 向量投影，零向量等非法情形明确报错而非返回 NaN，纯浏览器本地计算。',
+    descriptionEn:
+      'Computes magnitude, normalization, addition, subtraction, scalar multiplication, dot product, cross product (3D only), angle (degrees/radians) and scalar/vector projection for 2D or 3D geometric vectors. Invalid cases such as zero vectors raise explicit errors instead of NaN, fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/vector-calculator',
+    iconName: 'AimOutlined',
+    tags: ['向量', '点积', '叉积', '夹角', '投影', '线性代数'],
+    tagsEn: ['Vector', 'Dot Product', 'Cross Product', 'Angle', 'Projection', 'Linear Algebra'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'A = (1, 2, 3)，B = (4, 5, 6)',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具面向二维 / 三维几何向量，提供模长、单位化、加减法、数乘、点积、叉积（仅 3D）、夹角（度或弧度）以及标量投影与向量投影等常用运算。输入分量后一次性输出全部结果，所有运算均在浏览器本地完成。对零向量单位化 / 求夹角、向零向量投影等非法情形会给出明确错误，而不是产生 NaN。',
+        coreFeatures: [
+          '基础运算：模长、单位化、A±B、数乘 k·A',
+          '点积与叉积：点积支持 2D/3D，叉积按定义仅 3D 可用，2D 下禁用并提示',
+          '夹角与投影：由点积公式反余弦求夹角（度 / 弧度可切），标量投影与向量投影分别给出',
+          '健壮性：维度一致性校验、零向量非法运算明确报错、浮点结果统一舍入并消除 -0',
+        ],
+        howToUse: [
+          '选择 2D 或 3D 维度与夹角单位（度 / 弧度），填写向量 A、B 各分量与数乘标量 k',
+          '点击「计算」，结果卡片展示全部运算；非法运算（如零向量单位化）在对应卡片显示错误原因',
+          '2D 模式下叉积卡片会提示不可用，切换到 3D 后自动恢复',
+        ],
+        useCases: [
+          '学习线性代数 / 大学物理时快速核对向量运算结果',
+          '图形学、游戏开发中计算法线（叉积）、光照（点积）与投影',
+          '工程计算中求两方向夹角、向量在某轴上的投影分量',
+        ],
+        privacyNote:
+          '全部为浏览器本地同步数值运算，不发起任何网络请求，输入分量不会离开设备。',
+        faqs: [
+          {
+            question: '为什么 2D 模式不能算叉积？',
+            answer:
+              '叉积 A×B 的结果是一个同时垂直于 A、B 的向量，仅在三维空间中有定义；二维没有唯一的垂直向量方向，因此工具在 2D 下禁用叉积并明确提示，切换到 3D 即可使用。',
+          },
+          {
+            question: '为什么输入零向量时有些结果报错？',
+            answer:
+              '单位化需要除以模长、夹角公式含 |A||B| 分母、投影需要参考向量模长，零向量会导致除零。工具直接给出明确错误而不是返回 NaN，避免误导后续计算。',
+          },
+          {
+            question: '和已有的矩阵计算器有什么区别？',
+            answer:
+              '矩阵计算器处理矩阵之间的乘法、行列式、逆矩阵等；本工具聚焦自由几何向量的点积、叉积、夹角、投影等几何运算，二者数据模型与用途不同，互不替代。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool operates on 2D/3D geometric vectors and provides magnitude, normalization, addition, subtraction, scalar multiplication, dot product, cross product (3D only), angle (degrees or radians), and scalar/vector projection. All results are computed at once in the browser. Invalid operations such as normalizing a zero vector, taking an angle involving a zero vector, or projecting onto a zero vector raise explicit errors instead of producing NaN.',
+        coreFeatures: [
+          'Basics: magnitude, normalization, A±B, scalar multiplication k·A',
+          'Dot and cross products: dot product in 2D/3D; cross product by definition in 3D only, disabled with a hint in 2D',
+          'Angle and projection: arccosine of the dot-product cosine (degrees/radians toggle), plus scalar and vector projection',
+          'Robustness: dimension consistency checks, explicit errors for illegal zero-vector operations, rounded output with -0 removed',
+        ],
+        howToUse: [
+          'Choose 2D/3D and the angle unit (degrees/radians), then fill in components of A and B and the scalar k',
+          'Click Calculate; result cards show every operation, with illegal ones (e.g. normalizing a zero vector) showing an error on that card',
+          'The cross-product card reports unavailable in 2D and becomes active after switching to 3D',
+        ],
+        useCases: [
+          'Verify vector homework while learning linear algebra or physics',
+          'Compute normals (cross product), lighting (dot product) and projections in graphics or game development',
+          'Find the angle between directions or projected components in engineering calculations',
+        ],
+        privacyNote:
+          'All numeric computation runs synchronously and locally in the browser; no network requests are made and components never leave your device.',
+        faqs: [
+          {
+            question: 'Why is cross product disabled in 2D?',
+            answer:
+              'The cross product A×B yields a vector perpendicular to both A and B, which is only defined in three dimensions. There is no unique perpendicular direction in 2D, so the tool disables it with a clear hint and re-enables it in 3D.',
+          },
+          {
+            question: 'Why do some operations error on a zero vector?',
+            answer:
+              'Normalization divides by magnitude, the angle formula has |A||B| in the denominator, and projection needs a non-zero reference vector. Zero vectors cause division by zero, so the tool raises an explicit error rather than returning NaN.',
+          },
+          {
+            question: 'How is this different from the matrix calculator?',
+            answer:
+              'The matrix calculator handles matrix multiplication, determinants, inverses, etc., while this tool focuses on geometric operations of free vectors—dot product, cross product, angle and projection. Their data models and purposes differ and do not overlap.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'polygon-area-calculator',
+    name: '多边形面积与周长计算器（鞋带公式，含 GeoJSON）',
+    nameEn: 'Polygon Area & Perimeter Calculator',
+    description:
+      '用鞋带公式量算平面多边形的有符号 / 绝对面积、周长与环方向，支持手动逐行输入 x,y 坐标或粘贴 GeoJSON Polygon / MultiPolygon（自动处理孔洞扣减、闭合点去重与自相交检测），纯浏览器本地计算。',
+    descriptionEn:
+      'Computes signed/absolute area, perimeter and ring orientation of planar polygons with the shoelace formula. Accepts manual x,y lines or pasted GeoJSON Polygon/MultiPolygon, with automatic hole subtraction, closing-point deduplication and self-intersection detection, fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/polygon-area-calculator',
+    iconName: 'BorderOuterOutlined',
+    tags: ['多边形', '鞋带公式', '面积', '周长', 'GeoJSON', '几何'],
+    tagsEn: ['Polygon', 'Shoelace Formula', 'Area', 'Perimeter', 'GeoJSON', 'Geometry'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0, 0\n4, 0\n4, 4\n0, 4',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具基于鞋带公式（Shoelace Formula）量算平面多边形：输入按顺序排列的顶点坐标即可得到有符号面积（其正负指示环方向）、绝对面积与周长；也支持直接粘贴 GeoJSON Polygon / MultiPolygon，自动识别外环与孔洞环并按「外环面积 − 孔洞面积」给出净面积。工具会自动去除首尾重复的闭合点，并对非相邻边做自相交粗检。所有计算均在浏览器本地完成。',
+        coreFeatures: [
+          '鞋带公式：O(n) 求和得到有符号面积，正值表示逆时针、负值表示顺时针，绝对值即面积',
+          '周长与闭合处理：相邻顶点欧氏距离求和（含闭合边），首尾重复点自动去重避免重复边',
+          'GeoJSON 支持：解析 Polygon / MultiPolygon 的外环与孔洞，净面积自动扣减孔洞',
+          '健壮性：顶点不足、非数字坐标、JSON 损坏、类型不符均明确报错，并检测自相交给出警告',
+        ],
+        howToUse: [
+          '选择「手动坐标」时每行输入一个 x,y（容忍逗号、中文逗号、空白等分隔），按环顺序排列',
+          '选择「GeoJSON 粘贴」时贴入 Polygon 或 MultiPolygon JSON，孔洞环会被自动识别并扣减',
+          '点击「开始量算」，顶部卡片显示净面积 / 外环周长 / 总顶点数，下方表格逐环列出明细与方向',
+        ],
+        useCases: [
+          '根据地块边界顶点快速估算占地面积与边界长度',
+          '解析 GeoJSON 面数据，核对外环与孔洞（如建筑内庭院）的净面积',
+          '学习计算几何时验证鞋带公式与环方向（CCW/CW）判定',
+        ],
+        privacyNote:
+          '坐标与 GeoJSON 全部在浏览器本地解析和量算，不发起任何网络请求，数据不会离开设备。',
+        faqs: [
+          {
+            question: '有符号面积的正负代表什么？',
+            answer:
+              '在右手坐标系（y 轴向上）下，顶点按逆时针排列时鞋带求和为正、顺时针为负；工具据此标注 CCW / CW，并以绝对值作为面积。GeoJSON 规范默认 CRS 为经纬度且外环取逆时针，可据此快速核对环方向。',
+          },
+          {
+            question: '自相交警告出现时结果还能用吗？',
+            answer:
+              '自相交（蝴蝶结等）多边形不是简单多边形，鞋带公式仍会给出一个代数面积，但该值通常不再等于直观围合面积，几何意义存疑。工具会明确给出警告，建议先修正顶点顺序再采用结果。',
+          },
+          {
+            question: 'GeoJSON 的孔洞是怎么处理的？',
+            answer:
+              'Polygon 的 coordinates 中第一个环为外环，其余环为孔洞。工具逐环量算后，用外环面积减去所有孔洞面积之和得到净面积；MultiPolygon 则对每个多边形分别量算后汇总。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool measures planar polygons with the shoelace formula: ordered vertices yield the signed area (whose sign indicates ring orientation), absolute area and perimeter. It also accepts pasted GeoJSON Polygon/MultiPolygon, identifying outer and hole rings automatically and reporting net area as outer minus holes. Duplicate closing points are removed and non-adjacent edges are checked for self-intersection. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Shoelace formula: O(n) summation gives signed area—positive for CCW, negative for CW, absolute value is the area',
+          'Perimeter and closure handling: sum of Euclidean edge lengths including the closing edge, with repeated first/last point deduplicated',
+          'GeoJSON support: parses Polygon/MultiPolygon outer and hole rings; net area subtracts holes automatically',
+          'Robustness: explicit errors for too few vertices, non-numeric coordinates, broken JSON or wrong type, plus self-intersection warnings',
+        ],
+        howToUse: [
+          'In manual mode enter one x,y pair per line (commas, Chinese commas and whitespace accepted), in ring order',
+          'In GeoJSON mode paste a Polygon or MultiPolygon; hole rings are detected and subtracted automatically',
+          'Click Calculate; top cards show net area / outer perimeter / total vertices, and the table lists per-ring details and orientation',
+        ],
+        useCases: [
+          'Estimate land parcel area and boundary length from boundary vertices',
+          'Parse GeoJSON surfaces and verify net area of outer rings with holes (e.g. building courtyards)',
+          'Validate the shoelace formula and CCW/CW orientation while learning computational geometry',
+        ],
+        privacyNote:
+          'Coordinates and GeoJSON are parsed and measured entirely in your browser; no network requests are made and data never leaves your device.',
+        faqs: [
+          {
+            question: 'What does the sign of the signed area mean?',
+            answer:
+              'In a right-handed coordinate system (y up), counter-clockwise vertices produce a positive shoelace sum and clockwise a negative one; the tool labels CCW/CW accordingly and uses the absolute value as area. GeoJSON specifies CCW outer rings for its default geographic CRS, so this helps verify ring orientation.',
+          },
+          {
+            question: 'Can I still use the result when a self-intersection warning appears?',
+            answer:
+              'A self-intersecting (e.g. bowtie) polygon is not simple. The shoelace formula still returns an algebraic area, but it generally no longer equals the intuitive enclosed area and lacks clear geometric meaning. Fix the vertex ordering before relying on the result.',
+          },
+          {
+            question: 'How are GeoJSON holes handled?',
+            answer:
+              'In a Polygon, the first coordinate ring is the outer ring and subsequent rings are holes. The tool measures each ring and subtracts total hole area from the outer ring to obtain net area; MultiPolygon measures each polygon separately and aggregates them.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'gpa-calculator',
+    name: 'GPA 平均绩点计算器（多算法学分加权）',
+    nameEn: 'GPA Calculator (Weighted, Multi-Scale)',
+    description:
+      '录入课程学分与百分制或字母等级成绩，并列对照标准 4.0、改良 4.3 与中国高校百分制三套口径的学分加权 GPA，附总学分、算术平均分与逐课程绩点明细，纯浏览器本地计算。',
+    descriptionEn:
+      'Enter course credits with percentage or letter grades and compare credit-weighted GPA across the standard 4.0, modified 4.3 and Chinese university percentage scales, with total credits, arithmetic average and per-course point details, fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/gpa-calculator',
+    iconName: 'ReadOutlined',
+    tags: ['GPA', '绩点', '学分加权', '留学申请', '成绩换算', '教育'],
+    tagsEn: ['GPA', 'Grade Point', 'Weighted', 'Study Abroad', 'Grade Conversion', 'Education'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '高等数学,3,90\n大学英语,2,80\n专业导论,1,A',
+    doc: {
+      zh: {
+        whatIsIt:
+          'GPA 平均绩点计算器把课程学分与成绩（百分制分数或 A+ 至 F 字母等级）按三套常见口径换算为绩点，并以「Σ(绩点×学分)/Σ学分」计算学分加权平均绩点，同时给出总学分、算术平均分与逐课程明细，方便在留学申请与校内评定中对比不同换算口径。所有计算均在浏览器本地完成。',
+        coreFeatures: [
+          '三套算法并列：标准 4.0（A 上限 4.0）、改良 4.3（A+ 可达 4.3）、中国高校百分制分段对照表',
+          '双成绩录入：百分制 0–100 分数或字母等级，同一成绩单支持混录',
+          '学分加权：严格按 Σ(绩点×学分)/Σ学分 计算，并附算术平均分与总学分',
+          '健壮校验：学分必须为正、成绩越界或未知等级均明确报错，空成绩单提示先添加课程',
+        ],
+        howToUse: [
+          '在课程表中填写课程名（可选）、学分，并切换该行的成绩录入方式（百分制或字母等级）',
+          '用「添加一行」动态增删课程，完成后点击「计算 GPA」',
+          '查看顶部总学分、算术平均分与三套算法加权 GPA 卡片，以及下方对照表和逐课程绩点明细',
+        ],
+        useCases: [
+          '留学申请时按目标院校口径（4.0 或 4.3）预估加权 GPA',
+          '校内评奖评优时核对中国高校百分制对照表下的绩点',
+          '对比同一成绩单在不同换算口径下的结果差异',
+        ],
+        privacyNote:
+          '成绩与学分全部在浏览器本地换算，不发起任何网络请求，数据不会离开设备。',
+        faqs: [
+          {
+            question: '字母等级在中国高校对照表下怎么处理？',
+            answer:
+              '中国高校表以百分制分段为准。遇到字母等级时，工具先按内置等效分（如 A=95、B=85）映射为百分制，再查中国高校分段表得到绩点，因此三套算法对任意成绩单都能给出结果。',
+          },
+          {
+            question: '标准 4.0 和改良 4.3 有什么区别？',
+            answer:
+              '两套算法的 B/C/D 等级与 +/- 微调完全一致，唯一差异在最高档：标准 4.0 中 A+ 与 A 均为 4.0，而改良 4.3 中 A+ 为 4.3、A 仍为 4.0。因此含 A+ 的成绩单在 4.3 口径下结果更高。',
+          },
+          {
+            question: '加权 GPA 和算术平均分有什么不同？',
+            answer:
+              '加权 GPA 先把每门课成绩换算为绩点，再按学分加权平均；算术平均分则直接对百分制分数（字母等级先转等效百分）做学分加权平均，单位仍是「分」。两者口径不同，建议按使用场景选择。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The GPA Calculator converts course credits and grades (percentage scores 0–100 or letter grades A+ to F) into grade points under three common scales, then computes the credit-weighted GPA as sum(points x credits)/sum(credits), with total credits, arithmetic average and per-course details to compare conversion conventions for study-abroad applications and internal assessment. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Three scales side by side: standard 4.0 (capped at A=4.0), modified 4.3 (A+ reaches 4.3), and the Chinese university percentage band table',
+          'Dual grade input: percentage scores or letter grades, freely mixed within one transcript',
+          'Credit weighting: strictly sum(points x credits)/sum(credits), plus arithmetic average and total credits',
+          'Robust validation: positive credits required, out-of-range scores and unknown letters raise explicit errors, empty transcripts prompt to add courses',
+        ],
+        howToUse: [
+          'Fill in the course table with an optional name, credits, and switch each row between percentage and letter-grade entry',
+          'Add or remove rows dynamically, then click Calculate GPA',
+          'Review the top cards for total credits, arithmetic average and weighted GPA on all three scales, plus the comparison table and per-course details',
+        ],
+        useCases: [
+          'Estimating weighted GPA under a target school’s 4.0 or 4.3 convention for applications',
+          'Checking grade points under the Chinese university percentage band table for scholarships',
+          'Comparing how the same transcript scores under different conversion scales',
+        ],
+        privacyNote:
+          'Grades and credits are converted entirely in your browser; no network requests are made and data never leaves your device.',
+        faqs: [
+          {
+            question: 'How are letter grades handled under the Chinese percentage table?',
+            answer:
+              'That scale is defined on percentage bands. Letter grades are first mapped to built-in equivalent percentages (e.g. A=95, B=85) and then looked up in the Chinese band table, so all three scales always return a result for any transcript.',
+          },
+          {
+            question: 'What is the difference between standard 4.0 and modified 4.3?',
+            answer:
+              'The B/C/D grades and plus/minus adjustments are identical; the only difference is the top mark. Under standard 4.0 both A+ and A are 4.0, while under modified 4.3 A+ is 4.3 and A stays 4.0, so transcripts containing A+ score higher on the 4.3 scale.',
+          },
+          {
+            question: 'How does weighted GPA differ from the arithmetic average?',
+            answer:
+              'Weighted GPA first converts each grade to grade points and then averages them by credits. The arithmetic average directly credit-weights percentage scores (letters mapped to equivalent percentages) and stays in "points" units. Use whichever convention your scenario requires.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'resistor-network-calculator',
+    name: '电阻串并联等效与公差累积计算器',
+    nameEn: 'Resistor Series/Parallel Equivalent & Tolerance Calculator',
+    description:
+      '录入多个电阻的工程简写阻值（10k、4k7、2R2、1M）与公差，计算纯串 / 纯并拓扑的标称等效电阻、最坏情况上下界、方和根（RSS）公差，并推荐最接近的 E24 标准阻值，服务硬件选型与电路调试，纯浏览器本地计算。',
+    descriptionEn:
+      'Enter multiple resistors with engineering shorthand values (10k, 4k7, 2R2, 1M) and tolerances to compute the nominal series/parallel equivalent, worst-case bounds, root-sum-square (RSS) tolerance, and the nearest E24 standard value for hardware selection, fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/resistor-network-calculator',
+    iconName: 'ThunderboltOutlined',
+    tags: ['电阻', '串并联', '等效电阻', '公差', 'RSS', 'E24', '硬件'],
+    tagsEn: ['Resistor', 'Series Parallel', 'Equivalent Resistance', 'Tolerance', 'RSS', 'E24', 'Hardware'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '100,5%\n200,5%',
+    doc: {
+      zh: {
+        whatIsIt:
+          '电阻串并联等效与公差累积计算器面向硬件选型与电路调试：把若干电阻按纯串联或纯并联拓扑组合，先用 R=ΣRi 与 1/R=Σ(1/Ri) 求标称等效，再按每个电阻的公差百分比计算最坏情况阻值上下界与方和根（RSS）统计公差，最后在内置 E24 数列中推荐最接近的标准阻值。阻值支持 10k、4k7、2R2、1M 等工程简写，全部在浏览器本地完成。',
+        coreFeatures: [
+          '工程简写解析：10k→10000、4k7→4700、2R2→2.2、1M→1000000，容忍 Ω 单位与空白',
+          '两种确定拓扑：纯串联 R=ΣRi、纯并联 1/R=Σ(1/Ri)，并联 0Ω 短路明确报错',
+          '公差累积：最坏情况逐电阻取极值组合，RSS 按等效对各电阻的灵敏度加权',
+          'E24 标准阻值推荐：跨数量级匹配最接近的标准值并给出绝对与相对偏差',
+        ],
+        howToUse: [
+          '在表格中逐行填写阻值工程简写与公差百分比（留空默认 ±5%），用「添加电阻」增删行',
+          '选择串联或并联拓扑，点击「计算等效电阻」',
+          '查看标称等效、最坏情况阻值范围、最坏情况与 RSS 公差百分比，以及 E24 推荐值',
+        ],
+        useCases: [
+          '上拉/限流电阻组合的等效阻值与公差预估',
+          '电源分压、采样网络在元件公差下的输出范围分析',
+          'BOM 选型时从计算值回查最接近的 E24 标准阻值',
+        ],
+        privacyNote:
+          '所有阻值与公差仅在浏览器本地参与运算，不发起网络请求，数据不会离开设备。',
+        faqs: [
+          {
+            question: '为什么并联电路不能输入 0Ω 电阻？',
+            answer:
+              '0Ω 电阻在并联拓扑中相当于短路，理论等效电阻为 0，且并联公式 1/R=Σ(1/Ri) 会出现除零。工具因此对并联下的 0Ω 直接报错；串联中的 0Ω 不影响求和，允许输入。',
+          },
+          {
+            question: '最坏情况公差和 RSS 公差有什么区别？',
+            answer:
+              '最坏情况假设所有电阻同时偏向最不利的极值，给出确定的阻值上下界，结果最保守；方和根（RSS）假设各电阻公差相互独立，按等效电阻对各电阻的灵敏度加权后求平方和开根，得到统计意义上更贴近实际散布的公差，通常小于最坏情况值。',
+          },
+          {
+            question: '4k7、2R2 这类简写是怎么解析的？',
+            answer:
+              '后缀 R/K/M 既表示量级也可充当小数点：位于数字末尾时直接乘量级（10k=10000、1M=1000000），位于数字中间时视为小数点（4k7=4.7k=4700、2R2=2.2、R22=0.22）。纯数字按欧姆处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Resistor Series/Parallel Equivalent & Tolerance Calculator supports hardware selection and circuit debugging: combine resistors in a purely series or parallel topology, derive the nominal equivalent from R=sum(Ri) and 1/R=sum(1/Ri), then compute worst-case bounds and root-sum-square (RSS) statistical tolerance from each resistor’s tolerance percentage, and finally recommend the nearest value from the built-in E24 series. Shorthand such as 10k, 4k7, 2R2 and 1M is supported, all locally in the browser.',
+        coreFeatures: [
+          'Engineering shorthand parsing: 10k→10000, 4k7→4700, 2R2→2.2, 1M→1000000, tolerating Ω units and whitespace',
+          'Two fixed topologies: pure series R=sum(Ri) and pure parallel 1/R=sum(1/Ri), with explicit rejection of a 0Ω short in parallel',
+          'Tolerance accumulation: worst-case combines per-resistor extremes, while RSS weights by the equivalent’s sensitivity to each resistor',
+          'E24 standard-value recommendation: matches the nearest standard value across decades with absolute and relative deviation',
+        ],
+        howToUse: [
+          'Fill each row with a shorthand resistance and tolerance percentage (blank defaults to ±5%), adding or removing rows as needed',
+          'Choose the series or parallel topology and click Calculate',
+          'Review the nominal equivalent, worst-case range, worst-case and RSS tolerance percentages, and the E24 recommendation',
+        ],
+        useCases: [
+          'Estimating equivalent resistance and tolerance of pull-up or current-limiting combinations',
+          'Analyzing output ranges of divider and sensing networks under component tolerances',
+          'Looking up the nearest E24 standard value from a calculated target when designing a BOM',
+        ],
+        privacyNote:
+          'All resistance and tolerance values are computed locally in your browser with no network requests; data never leaves your device.',
+        faqs: [
+          {
+            question: 'Why is a 0Ω resistor rejected in a parallel circuit?',
+            answer:
+              'A 0Ω resistor is a short in parallel, forcing the equivalent to zero and causing division by zero in 1/R=sum(1/Ri). The tool therefore rejects it explicitly; 0Ω is allowed in series because it does not affect the sum.',
+          },
+          {
+            question: 'What is the difference between worst-case and RSS tolerance?',
+            answer:
+              'Worst case assumes every resistor simultaneously drifts to its most unfavorable extreme, giving guaranteed bounds and the most conservative result. Root-sum-square (RSS) assumes independent tolerances, weighting by the equivalent’s sensitivity to each resistor and combining quadratures, which reflects realistic statistical spread and is typically smaller than the worst-case value.',
+          },
+          {
+            question: 'How are shorthand forms like 4k7 and 2R2 parsed?',
+            answer:
+              'The R/K/M suffix denotes both magnitude and a possible decimal point: at the end it scales the number directly (10k=10000, 1M=1000000), while in the middle it acts as a decimal point (4k7=4.7k=4700, 2R2=2.2, R22=0.22). Plain numbers are treated as ohms.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'cookie-parser',
     name: 'Cookie 字符串解析与生成器',
     nameEn: 'Cookie Parser & Set-Cookie Builder',

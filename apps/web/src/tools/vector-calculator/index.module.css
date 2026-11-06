@@ -1,0 +1,130 @@
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-primary, #1f2329);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: var(--color-text-secondary, #646a73);
+  line-height: 1.6;
+}
+
+.panel {
+  padding: 20px;
+  border: 1px solid var(--color-border, #e5e6eb);
+  border-radius: 12px;
+  background: var(--color-bg-container, #fff);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.controls {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.controlItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.controlLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary, #646a73);
+}
+
+.vectorRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vectorName {
+  font-weight: 700;
+  font-size: 16px;
+  min-width: 64px;
+  color: var(--color-text-primary, #1f2329);
+}
+
+.componentInputs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.component {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.componentTag {
+  font-style: italic;
+  font-weight: 600;
+  color: var(--color-text-secondary, #646a73);
+}
+
+.resultGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.resultCard {
+  padding: 14px 16px;
+  border: 1px solid var(--color-border, #e5e6eb);
+  border-radius: 10px;
+  background: var(--color-fill-quaternary, #fafafa);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.resultLabel {
+  font-size: 12px;
+  color: var(--color-text-tertiary, #8f959e);
+  font-weight: 600;
+}
+
+.resultValue {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary, #1f2329);
+  font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+  word-break: break-all;
+}
+
+.resultValueError {
+  color: var(--color-error, #f53f3f);
+  font-size: 13px;
+  font-family: inherit;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
