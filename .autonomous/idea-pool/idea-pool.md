@@ -237,7 +237,7 @@
 | 20261105020214 | UPC-E 与 UPC-A 条码压缩/展开转换器（含模 10 校验位） | Web Tool | Existing Gap | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105020214.md) |
 | 20261105020215 | BCD 码编解码器（8421 / 余3码 / 2421 码与打包 BCD 字节） | Web Tool | Existing Gap | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105020215.md) |
 | 20261105020216 | 干支纪年与生肖转换器（公历年份 ↔ 天干地支/六十甲子/生肖） | Web Tool | Exploration | In Progress | 2026-11-05 | trae-agent | [详情](./idea-details/20261105020216.md) |
-| 20261105020217 | E.164 电话号码规范化与格式化器（国际格式解析与校验） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105020217.md) |
+| 20261105020217 | E.164 电话号码规范化与格式化器（国际格式解析与校验） | Web Tool | Existing Gap | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105020217.md) |
 | 20261105080301 | ITU E.123 电话号码格式化器（国际/本地分组、可视分隔与 E.164 互转） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105080301.md) |
 | 20261105080302 | Java 内部类名与描述符（Descriptor / Signature）转换器 | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105080302.md) |
 | 20261105080303 | DICOM UID 生成器与校验器（医疗影像唯一标识符，根 UID + 后缀） | Web Tool | External Reference | Pending | 2026-11-05 | | [详情](./idea-details/20261105080303.md) |
@@ -256,15 +256,14 @@
 | 20261106020729 | HTTP 头字段速查 | Web Tool | Exploration | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106020729.md) |
 | 20261106060111 | 邮箱地址语法校验与结构解析器 | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106060111.md) |
 | 20261106060112 | iCalendar RRULE 重复规则解析与展开器（RFC 5545） | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106060112.md) |
-| 20261106060113 | 二维/三维向量运算计算器（点积、叉积、夹角、投影） | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106060113.md) |
+| 20261106060113 | 二维/三维向量运算计算器（点积、叉积、夹角、投影） | Web Tool | Existing Gap | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106060113.md) |
 | 20261106060114 | JPEG 文件 marker 段结构只读解析器（SOI / APP / DQT / SOF / SOS / EOI） | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106060114.md) |
-| 20261106060115 | 多边形面积与周长计算器（鞋带公式，含 GeoJSON 粘贴） | Web Tool | Exploration | Pending | 2026-11-06 | | [详情](./idea-details/20261106060115.md) |
+| 20261106060115 | 多边形面积与周长计算器（鞋带公式，含 GeoJSON 粘贴） | Web Tool | Exploration | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106060115.md) |
 | 20261106060116 | 多面骰子（d4/d6/d20 等）投掷模拟与点数和概率分布计算器 | Web Tool | Exploration | Pending | 2026-11-06 | | [详情](./idea-details/20261106060116.md) |
-| 20261106060117 | GPA 平均绩点计算器（百分制/4.0/4.3 多算法与学分加权） | Web Tool | Exploration | Pending | 2026-11-06 | | [详情](./idea-details/20261106060117.md) |
-| 20261106160206 | UTF-8 BOM 添加 / 剥离与字节序标记处理器 | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106160206.md) |
+| 20261106060117 | GPA 平均绩点计算器（百分制/4.0/4.3 多算法与学分加权） | Web Tool | Exploration | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106060117.md) |
 | 20261106160207 | GS1-128 / SSCC / EAN-14 校验位计算器与包装层级条码助手 | Web Tool | External Reference | Pending | 2026-11-06 | | [详情](./idea-details/20261106160207.md) |
 | 20261106160208 | Netpbm（PPM / PGM / PBM）图像生成与解析器 | Web Tool | External Reference | Pending | 2026-11-06 | | [详情](./idea-details/20261106160208.md) |
 | 20261106160209 | Markdown Frontmatter（YAML / TOML）解析与编辑器 | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106160209.md) |
 | 20261106160210 | 集合 Jaccard / 重叠系数 / Dice 相似度计算器 | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106160210.md) |
-| 20261106160211 | 电阻串并联等效电阻与公差累积计算器 | Web Tool | Exploration | Pending | 2026-11-06 | | [详情](./idea-details/20261106160211.md) |
+| 20261106160211 | 电阻串并联等效电阻与公差累积计算器 | Web Tool | Exploration | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106160211.md) |
 
