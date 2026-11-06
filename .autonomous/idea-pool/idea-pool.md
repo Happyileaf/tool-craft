@@ -265,5 +265,5 @@
 | 20261106160208 | Netpbm（PPM / PGM / PBM）图像生成与解析器 | Web Tool | External Reference | Pending | 2026-11-06 | | [详情](./idea-details/20261106160208.md) |
 | 20261106160209 | Markdown Frontmatter（YAML / TOML）解析与编辑器 | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106160209.md) |
 | 20261106160210 | 集合 Jaccard / 重叠系数 / Dice 相似度计算器 | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106160210.md) |
-| 20261106160211 | 电阻串并联等效电阻与公差累积计算器 | Web Tool | Exploration | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106160211.md) |
+| 20261106160211 | 电阻串并联等效电阻与公差累积计算器 | Web Tool | Exploration | In Progress | 2026-11-06 | trae-agent | [详情](./idea-details/20261106160211.md) |
 

@@ -112,6 +112,7 @@ export const toolLoaders: Record<
   'vector-calculator': () => import('./vector-calculator'),
   'polygon-area-calculator': () => import('./polygon-area-calculator'),
   'gpa-calculator': () => import('./gpa-calculator'),
+  'resistor-network-calculator': () => import('./resistor-network-calculator'),
   'cookie-parser': () => import('./cookie-parser'),
   'ascii-table': () => import('./ascii-table'),
   'base62-codec': () => import('./base62-codec'),

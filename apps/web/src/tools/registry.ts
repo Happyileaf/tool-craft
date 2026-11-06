@@ -8801,6 +8801,104 @@ info: request finished`,
     },
   },
   {
+    slug: 'resistor-network-calculator',
+    name: '电阻串并联等效与公差累积计算器',
+    nameEn: 'Resistor Series/Parallel Equivalent & Tolerance Calculator',
+    description:
+      '录入多个电阻的工程简写阻值（10k、4k7、2R2、1M）与公差，计算纯串 / 纯并拓扑的标称等效电阻、最坏情况上下界、方和根（RSS）公差，并推荐最接近的 E24 标准阻值，服务硬件选型与电路调试，纯浏览器本地计算。',
+    descriptionEn:
+      'Enter multiple resistors with engineering shorthand values (10k, 4k7, 2R2, 1M) and tolerances to compute the nominal series/parallel equivalent, worst-case bounds, root-sum-square (RSS) tolerance, and the nearest E24 standard value for hardware selection, fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/resistor-network-calculator',
+    iconName: 'ThunderboltOutlined',
+    tags: ['电阻', '串并联', '等效电阻', '公差', 'RSS', 'E24', '硬件'],
+    tagsEn: ['Resistor', 'Series Parallel', 'Equivalent Resistance', 'Tolerance', 'RSS', 'E24', 'Hardware'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '100,5%\n200,5%',
+    doc: {
+      zh: {
+        whatIsIt:
+          '电阻串并联等效与公差累积计算器面向硬件选型与电路调试：把若干电阻按纯串联或纯并联拓扑组合，先用 R=ΣRi 与 1/R=Σ(1/Ri) 求标称等效，再按每个电阻的公差百分比计算最坏情况阻值上下界与方和根（RSS）统计公差，最后在内置 E24 数列中推荐最接近的标准阻值。阻值支持 10k、4k7、2R2、1M 等工程简写，全部在浏览器本地完成。',
+        coreFeatures: [
+          '工程简写解析：10k→10000、4k7→4700、2R2→2.2、1M→1000000，容忍 Ω 单位与空白',
+          '两种确定拓扑：纯串联 R=ΣRi、纯并联 1/R=Σ(1/Ri)，并联 0Ω 短路明确报错',
+          '公差累积：最坏情况逐电阻取极值组合，RSS 按等效对各电阻的灵敏度加权',
+          'E24 标准阻值推荐：跨数量级匹配最接近的标准值并给出绝对与相对偏差',
+        ],
+        howToUse: [
+          '在表格中逐行填写阻值工程简写与公差百分比（留空默认 ±5%），用「添加电阻」增删行',
+          '选择串联或并联拓扑，点击「计算等效电阻」',
+          '查看标称等效、最坏情况阻值范围、最坏情况与 RSS 公差百分比，以及 E24 推荐值',
+        ],
+        useCases: [
+          '上拉/限流电阻组合的等效阻值与公差预估',
+          '电源分压、采样网络在元件公差下的输出范围分析',
+          'BOM 选型时从计算值回查最接近的 E24 标准阻值',
+        ],
+        privacyNote:
+          '所有阻值与公差仅在浏览器本地参与运算，不发起网络请求，数据不会离开设备。',
+        faqs: [
+          {
+            question: '为什么并联电路不能输入 0Ω 电阻？',
+            answer:
+              '0Ω 电阻在并联拓扑中相当于短路，理论等效电阻为 0，且并联公式 1/R=Σ(1/Ri) 会出现除零。工具因此对并联下的 0Ω 直接报错；串联中的 0Ω 不影响求和，允许输入。',
+          },
+          {
+            question: '最坏情况公差和 RSS 公差有什么区别？',
+            answer:
+              '最坏情况假设所有电阻同时偏向最不利的极值，给出确定的阻值上下界，结果最保守；方和根（RSS）假设各电阻公差相互独立，按等效电阻对各电阻的灵敏度加权后求平方和开根，得到统计意义上更贴近实际散布的公差，通常小于最坏情况值。',
+          },
+          {
+            question: '4k7、2R2 这类简写是怎么解析的？',
+            answer:
+              '后缀 R/K/M 既表示量级也可充当小数点：位于数字末尾时直接乘量级（10k=10000、1M=1000000），位于数字中间时视为小数点（4k7=4.7k=4700、2R2=2.2、R22=0.22）。纯数字按欧姆处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Resistor Series/Parallel Equivalent & Tolerance Calculator supports hardware selection and circuit debugging: combine resistors in a purely series or parallel topology, derive the nominal equivalent from R=sum(Ri) and 1/R=sum(1/Ri), then compute worst-case bounds and root-sum-square (RSS) statistical tolerance from each resistor’s tolerance percentage, and finally recommend the nearest value from the built-in E24 series. Shorthand such as 10k, 4k7, 2R2 and 1M is supported, all locally in the browser.',
+        coreFeatures: [
+          'Engineering shorthand parsing: 10k→10000, 4k7→4700, 2R2→2.2, 1M→1000000, tolerating Ω units and whitespace',
+          'Two fixed topologies: pure series R=sum(Ri) and pure parallel 1/R=sum(1/Ri), with explicit rejection of a 0Ω short in parallel',
+          'Tolerance accumulation: worst-case combines per-resistor extremes, while RSS weights by the equivalent’s sensitivity to each resistor',
+          'E24 standard-value recommendation: matches the nearest standard value across decades with absolute and relative deviation',
+        ],
+        howToUse: [
+          'Fill each row with a shorthand resistance and tolerance percentage (blank defaults to ±5%), adding or removing rows as needed',
+          'Choose the series or parallel topology and click Calculate',
+          'Review the nominal equivalent, worst-case range, worst-case and RSS tolerance percentages, and the E24 recommendation',
+        ],
+        useCases: [
+          'Estimating equivalent resistance and tolerance of pull-up or current-limiting combinations',
+          'Analyzing output ranges of divider and sensing networks under component tolerances',
+          'Looking up the nearest E24 standard value from a calculated target when designing a BOM',
+        ],
+        privacyNote:
+          'All resistance and tolerance values are computed locally in your browser with no network requests; data never leaves your device.',
+        faqs: [
+          {
+            question: 'Why is a 0Ω resistor rejected in a parallel circuit?',
+            answer:
+              'A 0Ω resistor is a short in parallel, forcing the equivalent to zero and causing division by zero in 1/R=sum(1/Ri). The tool therefore rejects it explicitly; 0Ω is allowed in series because it does not affect the sum.',
+          },
+          {
+            question: 'What is the difference between worst-case and RSS tolerance?',
+            answer:
+              'Worst case assumes every resistor simultaneously drifts to its most unfavorable extreme, giving guaranteed bounds and the most conservative result. Root-sum-square (RSS) assumes independent tolerances, weighting by the equivalent’s sensitivity to each resistor and combining quadratures, which reflects realistic statistical spread and is typically smaller than the worst-case value.',
+          },
+          {
+            question: 'How are shorthand forms like 4k7 and 2R2 parsed?',
+            answer:
+              'The R/K/M suffix denotes both magnitude and a possible decimal point: at the end it scales the number directly (10k=10000, 1M=1000000), while in the middle it acts as a decimal point (4k7=4.7k=4700, 2R2=2.2, R22=0.22). Plain numbers are treated as ohms.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'cookie-parser',
     name: 'Cookie 字符串解析与生成器',
     nameEn: 'Cookie Parser & Set-Cookie Builder',
