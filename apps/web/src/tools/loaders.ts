@@ -285,4 +285,9 @@ export const toolLoaders: Record<
   'gitattributes-generator': () => import('./gitattributes-generator'),
   'intel-hex-parser': () => import('./intel-hex-parser'),
   'diff-patch-parser': () => import('./diff-patch-parser'),
+  'set-similarity-calculator': () => import('./set-similarity-calculator'),
+  'email-syntax-validator': () => import('./email-syntax-validator'),
+  'dice-roll-probability': () => import('./dice-roll-probability'),
+  'syslog-parser': () => import('./syslog-parser'),
+  'markdown-link-checker': () => import('./markdown-link-checker'),
 };

@@ -1,4 +1,5 @@
 import {
+  AtSign,
   Barcode,
   Binary,
   Blend,
@@ -8,6 +9,7 @@ import {
   Clock,
   Code,
   Coins,
+  Dices,
   Droplets,
   Eye,
   EyeOff,
@@ -23,6 +25,7 @@ import {
   KeyRound,
   Layers,
   LayoutGrid,
+  Link2,
   List,
   Map,
   MessageSquare,
@@ -33,6 +36,7 @@ import {
   QrCode,
   Radical,
   Satellite,
+  ScrollText,
   ShieldCheck,
   Shuffle,
   Sigma,
@@ -53,6 +57,7 @@ import {
  * 工具图标名称与对应图标的映射表
  */
 const toolIconMap = {
+  AtSign,
   Braces,
   Image,
   FileText,
@@ -97,6 +102,9 @@ const toolIconMap = {
   Triangle,
   Radical,
   Satellite,
+  ScrollText,
+  Dices,
+  Link2,
   Timer,
   Video,
   Wifi,

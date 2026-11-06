@@ -26665,6 +26665,460 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'set-similarity-calculator',
+    name: '集合 Jaccard / Dice / Overlap 相似度计算器',
+    nameEn: 'Set Similarity Calculator',
+    description:
+      '输入多个命名集合，自动去重后计算两两 Jaccard 指数、Sørensen–Dice 系数与重叠系数，输出配对明细表、Jaccard 对称热力矩阵与交并集明细，并可导出 CSV，适用于标签体系比对与去重评估。',
+    descriptionEn:
+      'Feed in multiple named sets and get pairwise Jaccard index, Sørensen–Dice coefficient and overlap coefficient after deduplication, with a detail table, a symmetric Jaccard heatmap matrix, intersection/union breakdowns and CSV export — ideal for tag taxonomy comparison and dedup analysis.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/set-similarity-calculator',
+    iconName: 'Table2',
+    tags: ['集合', 'Jaccard', 'Dice', '重叠系数', '相似度', '标签比对'],
+    tagsEn: ['Set', 'Jaccard', 'Dice', 'Overlap', 'Similarity', 'Tag Compare'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的集合相似度工具：将多段元素列表解析为命名集合并自动去重，对每对集合计算 Jaccard、Sørensen–Dice 与 Overlap 三种系数，同时给出对称热力矩阵与交并集明细。',
+        coreFeatures: [
+          '三种系数同屏：Jaccard |A∩B|/|A∪B|、Dice 2|A∩B|/(|A|+|B|)、Overlap |A∩B|/min(|A|,|B|)',
+          '多集合支持：最多 6 个命名集合，自动按换行、逗号、空白拆分并去重保序',
+          'Jaccard 对称热力矩阵：对角线恒为 1，颜色深浅直观反映相似度',
+          '交并集明细：每个配对列出交集与并集元素，一键复制并集',
+          '忽略大小写开关与空集合除零保护，结果可导出 CSV',
+          '纯本地运行：所有计算在浏览器内完成，不发起任何网络请求',
+        ],
+        howToUse: [
+          '在各文本框粘贴集合，每段首个词作为集合名，其余为元素',
+          '按需开启「忽略大小写」，至少提供 2 个非空集合',
+          '查看配对系数表、热力矩阵与交并集明细，需要时导出 CSV',
+        ],
+        useCases: [
+          '标签体系比对：评估两套关键词 / 用户标签的重合程度',
+          '数据去重：量化两份 ID、词表或文献集合的重叠比例',
+          '推荐与聚类特征：以 Jaccard / Dice 作为集合间距离特征',
+        ],
+        privacyNote:
+          '所有集合数据与相似度计算均在浏览器本地完成，粘贴的内容不会被上传或记录。',
+        faqs: [
+          {
+            question: 'Jaccard、Dice、Overlap 三个系数有什么区别？',
+            answer:
+              'Jaccard 用并集大小归一化，惩罚不相交元素；Dice 用两集合大小之和归一化，对重合更宽容；Overlap 用较小集合归一化，在包含关系下恒为 1，适合大小悬殊的集合比较。',
+          },
+          {
+            question: '空集合会导致除零错误吗？',
+            answer:
+              '不会。两个集合都为空时三个系数定义为 1（两空集完全相同）；仅一方为空时系数为 0，工具内置除零保护并正常输出。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-based set similarity tool. It parses multiple element lists into named, deduplicated sets and computes Jaccard, Sørensen–Dice and Overlap coefficients for every pair, alongside a symmetric heatmap matrix and intersection/union breakdowns.',
+        coreFeatures: [
+          'Three coefficients at once: Jaccard |A∩B|/|A∪B|, Dice 2|A∩B|/(|A|+|B|), Overlap |A∩B|/min(|A|,|B|)',
+          'Up to 6 named sets, split by newlines, commas or whitespace, deduplicated with order preserved',
+          'Symmetric Jaccard heatmap matrix with a diagonal of 1 and color-coded similarity',
+          'Per-pair intersection/union element breakdowns with one-click union copy',
+          'Case-insensitive toggle and divide-by-zero guards, with CSV export',
+          '100% local: every calculation runs in the browser with no network requests',
+        ],
+        howToUse: [
+          'Paste each set into a text area; the first token is the set name and the rest are elements',
+          'Enable "Ignore case" if needed and provide at least 2 non-empty sets',
+          'Review the coefficient table, heatmap matrix and intersection/union details, then export CSV if required',
+        ],
+        useCases: [
+          'Tag taxonomy comparison: measure overlap between keyword or user-tag systems',
+          'Deduplication: quantify overlap between ID lists, vocabularies or literature sets',
+          'Recommendation/clustering features: use Jaccard or Dice as a set-distance feature',
+        ],
+        privacyNote:
+          'All set data and similarity calculations stay in your browser. Pasted content is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How do Jaccard, Dice and Overlap differ?',
+            answer:
+              'Jaccard normalizes by the union size and penalizes disjoint elements; Dice normalizes by the sum of both set sizes and is more forgiving; Overlap normalizes by the smaller set and equals 1 for containment, suiting sets of very different sizes.',
+          },
+          {
+            question: 'Do empty sets cause division-by-zero errors?',
+            answer:
+              'No. When both sets are empty all three coefficients are defined as 1 (identical empty sets); when only one is empty the coefficients are 0. Built-in guards keep output valid.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'email-syntax-validator',
+    name: '邮箱地址语法校验与结构解析器',
+    nameEn: 'Email Syntax Validator & Parser',
+    description:
+      '对单个邮箱地址做确定性字符级语法校验，输出合法结论、逐条错误原因与警告，并拆解 local-part、domain、引号形态、IP 字面量域与 IDN 特征，覆盖连续点、长度上限、IPv4/IPv6 字面量等边界。',
+    descriptionEn:
+      'Deterministic character-level syntax validation for a single email address, with pass/fail verdicts, itemized error reasons and warnings, plus structured parsing of local-part, domain, quoted-string form, IP-literal domains and IDN signals — covering consecutive dots, length limits and IPv4/IPv6 literals.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/email-syntax-validator',
+    iconName: 'AtSign',
+    tags: ['邮箱', 'Email', '语法校验', 'RFC 5322', '解析', 'IDN'],
+    tagsEn: ['Email', 'Syntax', 'Validation', 'RFC 5322', 'Parser', 'IDN'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的邮箱地址语法校验工具：基于 RFC 5321/5322 主流实践对地址做字符级检查，给出合法 / 非法结论、逐条原因与警告，并结构化拆解 local-part 与 domain 的形态。',
+        coreFeatures: [
+          '整体结论 + 逐条原因：连续点、点号位置、空 local/domain、非法字符、长度上限等',
+          '结构拆解：local-part、domain 及 dot-atom / quoted-string、domain / IPv4 / IPv6 字面量形态',
+          '域规则：标签 1–63 字符、总长 ≤255、连字符位置、点号连续性，单标签域给出告警',
+          'IP 字面量：[1.2.3.4] 四段 0–255 与前导零检查、[IPv6:...] 十六进制与双冒号压缩检查',
+          'IDN 识别：非 ASCII 地址标注并提示 punycode 转换，地址总长按 RFC 5321 限制 254',
+          '纯本地运行：不联网、不验证邮箱是否真实存在，仅做语法诊断',
+        ],
+        howToUse: [
+          '在文本框粘贴单个邮箱地址（自动去除首尾空白）',
+          '查看合法 / 非法徽标、原因清单与警告',
+          '在结构化拆解区核对 local-part、domain 形态与长度指标，或点击示例快速体验边界向量',
+        ],
+        useCases: [
+          '表单校验前的本地语法预检与错误定位',
+          '数据清洗：批量排查导入邮箱列表中的格式问题（逐地址粘贴）',
+          '学习邮件地址规范：理解引号本地部分、IP 字面量域与 IDN 等概念',
+        ],
+        privacyNote:
+          '地址仅在浏览器内存中参与字符级校验，不发起 DNS / SMTP 等任何网络请求，也不会被上传或记录。',
+        faqs: [
+          {
+            question: '校验通过是否代表邮箱真实存在、可以收到邮件？',
+            answer:
+              '不是。本工具只做语法格式诊断，不连接 DNS、不查询 MX 记录、不进行 SMTP 握手，因此无法证明邮箱真实存在或可投递。',
+          },
+          {
+            question: '为什么单标签域名（如 a@localhost）合法但有警告？',
+            answer:
+              '单标签域名在语法上可被接受，常见于内网主机名或本地测试环境，但公共邮件系统通常要求含顶级域的完整域名，因此工具判为合法同时给出投递告警。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local email syntax validator. Following mainstream RFC 5321/5322 practice, it runs character-level checks, returns a pass/fail verdict with itemized reasons and warnings, and parses the shape of the local-part and domain.',
+        coreFeatures: [
+          'Verdict plus itemized reasons: consecutive dots, dot placement, empty local/domain, illegal characters and length limits',
+          'Structured parsing: local-part, domain and dot-atom/quoted-string, domain/IPv4/IPv6-literal forms',
+          'Domain rules: 1–63 char labels, total ≤255, hyphen placement and dot continuity, with a single-label warning',
+          'IP literals: four 0–255 octets and leading-zero checks for [1.2.3.4]; hex and :: compression checks for [IPv6:...]',
+          'IDN detection flags non-ASCII addresses with a punycode hint; total length capped at 254 per RFC 5321',
+          '100% local: no network calls and no mailbox-existence verification, syntax diagnosis only',
+        ],
+        howToUse: [
+          'Paste a single email address into the text area (surrounding whitespace is trimmed automatically)',
+          'Review the pass/fail badge, reason list and warnings',
+          'Inspect the structured local-part/domain forms and length metrics, or use examples to explore edge cases',
+        ],
+        useCases: [
+          'Local syntax pre-check and error localization before form submission',
+          'Data cleansing: diagnose formatting issues in imported email lists address by address',
+          'Learning email specifications such as quoted local-parts, IP-literal domains and IDN',
+        ],
+        privacyNote:
+          'Addresses stay in browser memory for character-level checks. No DNS/SMTP or other network requests are made, and nothing is uploaded or logged.',
+        faqs: [
+          {
+            question: 'Does a passing result mean the mailbox really exists and can receive mail?',
+            answer:
+              'No. The tool performs syntax diagnosis only — it never queries DNS or MX records nor performs an SMTP handshake, so it cannot prove that a mailbox exists or is deliverable.',
+          },
+          {
+            question: 'Why is a single-label domain like a@localhost valid but warned about?',
+            answer:
+              'A single-label domain is syntactically acceptable and common for intranet hosts or local testing, but public mail systems generally expect a full domain with a TLD, so it passes while receiving a deliverability warning.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'dice-roll-probability',
+    name: '多面骰子投掷模拟与点数和概率分布计算器',
+    nameEn: 'Dice Roll & Probability Distribution Calculator',
+    description:
+      '解析 NdS、常量修正与 kh/kl/dh/dl 保留丢弃规则的骰子表达式，使用 Web Crypto 随机投掷并展示逐粒明细，同时用动态规划计算点数和的精确概率、累积分布、期望值与上尾概率，支持 d4/d6/d20/d100 等多面骰。',
+    descriptionEn:
+      'Parse dice expressions with NdS, constant modifiers and kh/kl/dh/dl keep/drop rules, roll with Web Crypto while showing per-die details, and use dynamic programming to compute exact sum probabilities, cumulative distribution, expected value and upper-tail probabilities for dice from d4 to d100.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/dice-roll-probability',
+    iconName: 'Dices',
+    tags: ['骰子', '概率分布', '期望值', 'TRPG', '动态规划', '随机模拟'],
+    tagsEn: ['Dice', 'Probability', 'Expected Value', 'TRPG', 'Dynamic Programming', 'Simulation'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的骰子工具：既能用密码学安全随机数模拟真实投掷，又能用概率动态规划给出点数和的精确分布，而不是仅靠有限次模拟估算。',
+        coreFeatures: [
+          '表达式解析：NdS（N 可省略）、+/- 常量、多骰子项相加（2d6+1d4）',
+          '保留 / 丢弃规则：kh/kl 保留最高最低、dh/dl 丢弃最高最低，覆盖优势劣势骰',
+          'Web Crypto 投掷：逐粒点数、保留丢弃标记、骰子和与最终总和，保留最近 10 次历史',
+          '精确分布：概率 DP 输出每个总和的概率、累积概率 P(X≤k)、期望值与极值',
+          '区间概率：输入目标值计算 P(X≥目标)，直方图直观展示分布形态',
+          '纯本地运行：随机数由 crypto.getRandomValues 生成，不发起任何网络请求',
+        ],
+        howToUse: [
+          '输入或点击示例表达式，如 3d6+2、2d20kh1、4d6dl1',
+          '点击「投掷」查看随机结果与逐粒明细，调整目标值查看上尾概率',
+          '在分布表与直方图中核对精确概率、累积分布与期望值',
+        ],
+        useCases: [
+          'TRPG / 跑团：快速结算攻击、伤害与属性骰，理解优势劣势骰的分布差异',
+          '概率教学：直观观察中心极限定理下点数和趋近正态的过程',
+          '桌游与游戏数值设计：评估检定成功率与伤害区间',
+        ],
+        privacyNote:
+          '所有投掷均在浏览器本地完成，随机数来自 Web Crypto API，表达式与结果不会被上传或记录。',
+        faqs: [
+          {
+            question: '分布是模拟出来的还是精确计算的？',
+            answer:
+              '分布表、期望值与累积概率由动态规划精确计算（以归一化概率递推，避免大组合数溢出），与投掷次数无关；「投掷」按钮仅用于模拟真实随机结果。',
+          },
+          {
+            question: 'kh、dl 这些后缀是什么意思？',
+            answer:
+              'kh<n> 保留最高的 n 粒、kl<n> 保留最低的 n 粒；dh<n>/dl<n> 分别丢弃最高 / 最低的 n 粒，省略 n 时默认 1。例如 2d20kh1 即 D&D 的优势骰，4d6dl1 是经典的属性生成方式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local dice tool that both simulates real rolls with cryptographically secure randomness and computes the exact sum distribution with probability dynamic programming instead of estimating from a limited number of trials.',
+        coreFeatures: [
+          'Expression parsing: NdS (N optional), +/- constants and combined terms like 2d6+1d4',
+          'Keep/drop rules: kh/kl keep highest/lowest, dh/dl drop highest/lowest, covering advantage and disadvantage',
+          'Web Crypto rolls with per-die values, keep/drop markers, dice sum and final total, keeping the latest 10 rolls',
+          'Exact distribution: probability DP yields per-sum probability, cumulative P(X≤k), expected value and extremes',
+          'Tail probability: enter a target to get P(X≥target), with a histogram of the distribution shape',
+          '100% local: randomness comes from crypto.getRandomValues with no network requests',
+        ],
+        howToUse: [
+          'Type or pick an example expression such as 3d6+2, 2d20kh1 or 4d6dl1',
+          'Click Roll for random outcomes and per-die details, then adjust the target for tail probability',
+          'Verify exact probabilities, cumulative distribution and expected value in the table and histogram',
+        ],
+        useCases: [
+          'TRPG sessions: resolve attack, damage and ability rolls and understand advantage/disadvantage distributions',
+          'Probability teaching: watch the sum distribution approach normal as dice count grows',
+          'Board-game and game-value design: assess check success rates and damage ranges',
+        ],
+        privacyNote:
+          'Every roll happens locally in your browser using the Web Crypto API. Expressions and results are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Is the distribution simulated or exact?',
+            answer:
+              'The table, expected value and cumulative probabilities are exact results of probability dynamic programming (normalized probabilities to avoid huge combinatorial counts), independent of roll count. The Roll button only simulates actual random outcomes.',
+          },
+          {
+            question: 'What do suffixes like kh and dl mean?',
+            answer:
+              'kh<n> keeps the highest n dice, kl<n> keeps the lowest n; dh<n>/dl<n> drop the highest/lowest n, defaulting to 1 when n is omitted. For example 2d20kh1 is the D&D advantage roll and 4d6dl1 is the classic ability-score method.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'syslog-parser',
+    name: 'Syslog 日志行解析器',
+    nameEn: 'Syslog Line Parser',
+    description:
+      '本地批量解析 RFC 5424 / RFC 3164 syslog 日志，解码 PRI 设施与严重级，展开结构化数据并标注异常行。',
+    descriptionEn:
+      'Parse RFC 5424 / RFC 3164 syslog lines locally: decode PRI facility and severity, expand structured data, and flag malformed lines.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/syslog-parser',
+    iconName: 'ScrollText',
+    tags: ['Syslog', '日志', 'RFC 5424', 'RFC 3164', '运维'],
+    tagsEn: ['Syslog', 'Log', 'RFC 5424', 'RFC 3164', 'DevOps'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '<165>1 2003-10-11T22:14:15.003Z mymachine.example.com evntslog - ID47 [exampleSDID@32473 iut="3" eventSource="Application"] An application event log entry',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Syslog 日志行解析器是一款纯浏览器本地运行的日志结构化工具体，按 RFC 5424 与 RFC 3164 线协议逐行拆解日志，自动解码 PRI 值为设施（facility）与严重级（severity），并展开结构化数据（SD）块。',
+        coreFeatures: [
+          '双协议识别：自动区分 RFC 5424、RFC 3164 与无 PRI 的未知文本',
+          'PRI 解码：将 <165> 这类优先级值还原为 facility/severity 编码与标准名称，并对越界 PRI 报错',
+          '结构化数据展开：逐块解析 SD-ID 与 key="value" 参数，支持转义字符还原与多块相邻场景',
+          '批量统计：输出总行数、各格式计数与错误行数，空行自动跳过',
+        ],
+        howToUse: [
+          '将一段 syslog 日志粘贴到输入框，每行一条，结果随输入实时更新',
+          '在统计卡片查看各格式与错误行分布',
+          '在结果表格中查看每行的严重级、设施、时间戳、主机、应用与消息正文',
+          '展开任意行可查看结构化数据块、解析错误详情与原始行文本',
+        ],
+        useCases: [
+          '排查 Linux / 网络设备日志时快速理解 facility 与 severity 含义',
+          '校验日志采集管道输出的 RFC 5424 报文是否合规',
+          '批量定位缺少 PRI 前缀或字段不完整的异常日志行',
+        ],
+        privacyNote:
+          '所有解析均在浏览器本地内存中完成，不发起任何网络请求，日志内容不会被上传或留存。',
+        faqs: [
+          {
+            question: '为什么有的行被标记为「未知」格式？',
+            answer:
+              '缺少 <PRI> 尖括号前缀的行会被标记为 unknown 并原样保留在消息字段中，同时给出提示，不会被丢弃。',
+          },
+          {
+            question: 'RFC 5424 的 NILVALUE（短横线）如何处理？',
+            answer:
+              '时间戳、主机名、应用名等字段的 "-" 占位会被解析为 undefined（界面显示为 -），结构化数据为 "-" 时返回空数组。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Syslog Line Parser is a fully in-browser utility that dissects log lines per the RFC 5424 and RFC 3164 wire protocols, decoding PRI values into facility and severity names and expanding structured-data (SD) blocks.',
+        coreFeatures: [
+          'Dual-protocol detection: automatically distinguishes RFC 5424, RFC 3164, and PRI-less unknown text',
+          'PRI decoding: turns values such as <165> into facility/severity codes and standard names, with errors for out-of-range PRI',
+          'Structured-data expansion: parses SD-ID and key="value" parameters per block, including escape unescaping and adjacent blocks',
+          'Batch summary: total lines, per-format counts, and error-line count; blank lines are skipped',
+        ],
+        howToUse: [
+          'Paste syslog text into the editor, one entry per line; results update live as you type',
+          'Check the statistic cards for format and error distribution',
+          'Review severity, facility, timestamp, host, app, and message in the result table',
+          'Expand any row to inspect structured-data blocks, parse errors, and the raw line',
+        ],
+        useCases: [
+          'Understanding facility and severity when troubleshooting Linux or network-device logs',
+          'Validating RFC 5424 payloads produced by a log-collection pipeline',
+          'Spotting malformed lines that miss the PRI prefix or required fields',
+        ],
+        privacyNote:
+          'All parsing happens locally in browser memory with no network requests; log content is never uploaded or retained.',
+        faqs: [
+          {
+            question: 'Why are some lines marked as unknown?',
+            answer:
+              'Lines without an angle-bracket <PRI> prefix are marked unknown, kept verbatim in the message field with a hint, and never dropped.',
+          },
+          {
+            question: 'How are RFC 5424 NILVALUE hyphens handled?',
+            answer:
+              'Dash placeholders for timestamp, host, app and similar fields become undefined (shown as -); a dash for structured data yields an empty block array.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'markdown-link-checker',
+    name: 'Markdown 链接检查器',
+    nameEn: 'Markdown Link Checker',
+    description:
+      '本地静态检查 Markdown 引用一致性、重复引用定义与页内锚点有效性，自动跳过代码块并分类统计链接。',
+    descriptionEn:
+      'Statically check Markdown reference consistency, duplicate definitions, and in-page anchor validity locally, skipping code blocks with categorized link counts.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/markdown-link-checker',
+    iconName: 'Link2',
+    tags: ['Markdown', '链接', '锚点', '引用', '文档'],
+    tagsEn: ['Markdown', 'Link', 'Anchor', 'Reference', 'Docs'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '[快速开始][foo]\n\n[foo]: https://example.com',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Markdown 链接检查器是一款纯浏览器本地运行的文档链接体检工具，对 Markdown 做静态分析（不发起任何网络请求），覆盖行内链接、引用式链接、引用定义、自动链接与裸 URL，并按 GitHub 风格 slug 规则校验页内锚点。',
+        coreFeatures: [
+          '全量链接提取：识别行内、引用式（含紧凑引用与简写）、引用定义、自动链接与裸 URL，图片链接单独标注',
+          '引用一致性：报出未定义引用、定义未使用与重复定义，标签按 CommonMark 规则大小写折叠',
+          '锚点校验：按 GitHub slug 规则比对 ATX/Setext 标题，失效页内锚点逐行列出',
+          '代码块免疫：围栏代码块与行内代码中的类链接文本自动跳过，避免误报',
+        ],
+        howToUse: [
+          '将 Markdown 文档粘贴到输入框，检查结果随输入实时更新',
+          '在统计卡片查看外链、相对链接、锚点、邮件的分类计数与错误/警告数',
+          '在问题清单中按行号定位未定义引用、重复定义与失效锚点',
+          '在全部链接表格核对每条链接的类型、目标与分类',
+        ],
+        useCases: [
+          '提交文档前自查失效的页内目录跳转',
+          '重构长文档时清理未使用或重复的引用定义',
+          '校验开源仓库 README / Wiki 的引用标签是否完整',
+        ],
+        privacyNote:
+          '工具仅做本地文本静态分析，不探测外链可达性、不发起任何网络请求，文档内容不会离开浏览器。',
+        faqs: [
+          {
+            question: '会检查外部链接是否可以打开吗？',
+            answer:
+              '不会。为保证零网络与隐私安全，工具只做静态结构检查（引用一致性与页内锚点），外链可达性不在范围内。',
+          },
+          {
+            question: 'GitHub 风格锚点是怎么生成的？',
+            answer:
+              '标题转小写、去除字母数字下划线连字符与空白之外的标点（含撇号、感叹号），空白压缩为连字符，例如 "What\'s New?" 生成 whats-new，中文等 Unicode 字母保留。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Markdown Link Checker is a fully in-browser documentation link auditor. It performs static analysis with no network requests, covering inline links, reference links, definitions, autolinks, and bare URLs, while validating in-page anchors against GitHub-style slugs.',
+        coreFeatures: [
+          'Full link extraction: inline, reference (including collapsed and shortcut), definitions, autolinks, and bare URLs, with image links flagged separately',
+          'Reference consistency: reports undefined references, unused definitions, and duplicates, with case-insensitive CommonMark label folding',
+          'Anchor validation: compares ATX/Setext headings using GitHub slug rules and lists broken in-page anchors by line',
+          'Code-aware: link-like text inside fenced blocks and inline code is skipped to prevent false positives',
+        ],
+        howToUse: [
+          'Paste a Markdown document into the editor; results update live',
+          'Review categorized counts for external, relative, anchor, and mail links plus error/warning totals',
+          'Locate undefined references, duplicate definitions, and broken anchors by line in the issue list',
+          'Verify every link type, target, and category in the full link table',
+        ],
+        useCases: [
+          'Self-checking broken in-page navigation before publishing docs',
+          'Cleaning unused or duplicate reference definitions while refactoring long documents',
+          'Validating reference labels in open-source README and Wiki files',
+        ],
+        privacyNote:
+          'The tool only performs local static text analysis. It never probes external reachability or sends network requests, so documents never leave the browser.',
+        faqs: [
+          {
+            question: 'Does it verify that external links are reachable?',
+            answer:
+              'No. To stay fully offline and privacy-safe it only checks static structure (reference consistency and in-page anchors); external reachability is out of scope.',
+          },
+          {
+            question: 'How are GitHub-style anchors generated?',
+            answer:
+              'Headings are lowercased, punctuation beyond alphanumerics, underscore, hyphen and whitespace is removed (including apostrophes and exclamation marks), and whitespace collapses to hyphens. For example "What\'s New?" becomes whats-new, while Unicode letters such as Chinese are kept.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
