@@ -261,4 +261,10 @@
 | 20261106060115 | 多边形面积与周长计算器（鞋带公式，含 GeoJSON 粘贴） | Web Tool | Exploration | Pending | 2026-11-06 | | [详情](./idea-details/20261106060115.md) |
 | 20261106060116 | 多面骰子（d4/d6/d20 等）投掷模拟与点数和概率分布计算器 | Web Tool | Exploration | Pending | 2026-11-06 | | [详情](./idea-details/20261106060116.md) |
 | 20261106060117 | GPA 平均绩点计算器（百分制/4.0/4.3 多算法与学分加权） | Web Tool | Exploration | Pending | 2026-11-06 | | [详情](./idea-details/20261106060117.md) |
+| 20261106160206 | UTF-8 BOM 添加 / 剥离与字节序标记处理器 | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106160206.md) |
+| 20261106160207 | GS1-128 / SSCC / EAN-14 校验位计算器与包装层级条码助手 | Web Tool | External Reference | Pending | 2026-11-06 | | [详情](./idea-details/20261106160207.md) |
+| 20261106160208 | Netpbm（PPM / PGM / PBM）图像生成与解析器 | Web Tool | External Reference | Pending | 2026-11-06 | | [详情](./idea-details/20261106160208.md) |
+| 20261106160209 | Markdown Frontmatter（YAML / TOML）解析与编辑器 | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106160209.md) |
+| 20261106160210 | 集合 Jaccard / 重叠系数 / Dice 相似度计算器 | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106160210.md) |
+| 20261106160211 | 电阻串并联等效电阻与公差累积计算器 | Web Tool | Exploration | Pending | 2026-11-06 | | [详情](./idea-details/20261106160211.md) |
 
