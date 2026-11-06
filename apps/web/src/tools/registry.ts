@@ -27029,6 +27029,96 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'markdown-link-checker',
+    name: 'Markdown 链接检查器',
+    nameEn: 'Markdown Link Checker',
+    description:
+      '本地静态检查 Markdown 引用一致性、重复引用定义与页内锚点有效性，自动跳过代码块并分类统计链接。',
+    descriptionEn:
+      'Statically check Markdown reference consistency, duplicate definitions, and in-page anchor validity locally, skipping code blocks with categorized link counts.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/markdown-link-checker',
+    iconName: 'Link2',
+    tags: ['Markdown', '链接', '锚点', '引用', '文档'],
+    tagsEn: ['Markdown', 'Link', 'Anchor', 'Reference', 'Docs'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '[快速开始][foo]\n\n[foo]: https://example.com',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Markdown 链接检查器是一款纯浏览器本地运行的文档链接体检工具，对 Markdown 做静态分析（不发起任何网络请求），覆盖行内链接、引用式链接、引用定义、自动链接与裸 URL，并按 GitHub 风格 slug 规则校验页内锚点。',
+        coreFeatures: [
+          '全量链接提取：识别行内、引用式（含紧凑引用与简写）、引用定义、自动链接与裸 URL，图片链接单独标注',
+          '引用一致性：报出未定义引用、定义未使用与重复定义，标签按 CommonMark 规则大小写折叠',
+          '锚点校验：按 GitHub slug 规则比对 ATX/Setext 标题，失效页内锚点逐行列出',
+          '代码块免疫：围栏代码块与行内代码中的类链接文本自动跳过，避免误报',
+        ],
+        howToUse: [
+          '将 Markdown 文档粘贴到输入框，检查结果随输入实时更新',
+          '在统计卡片查看外链、相对链接、锚点、邮件的分类计数与错误/警告数',
+          '在问题清单中按行号定位未定义引用、重复定义与失效锚点',
+          '在全部链接表格核对每条链接的类型、目标与分类',
+        ],
+        useCases: [
+          '提交文档前自查失效的页内目录跳转',
+          '重构长文档时清理未使用或重复的引用定义',
+          '校验开源仓库 README / Wiki 的引用标签是否完整',
+        ],
+        privacyNote:
+          '工具仅做本地文本静态分析，不探测外链可达性、不发起任何网络请求，文档内容不会离开浏览器。',
+        faqs: [
+          {
+            question: '会检查外部链接是否可以打开吗？',
+            answer:
+              '不会。为保证零网络与隐私安全，工具只做静态结构检查（引用一致性与页内锚点），外链可达性不在范围内。',
+          },
+          {
+            question: 'GitHub 风格锚点是怎么生成的？',
+            answer:
+              '标题转小写、去除字母数字下划线连字符与空白之外的标点（含撇号、感叹号），空白压缩为连字符，例如 "What\'s New?" 生成 whats-new，中文等 Unicode 字母保留。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Markdown Link Checker is a fully in-browser documentation link auditor. It performs static analysis with no network requests, covering inline links, reference links, definitions, autolinks, and bare URLs, while validating in-page anchors against GitHub-style slugs.',
+        coreFeatures: [
+          'Full link extraction: inline, reference (including collapsed and shortcut), definitions, autolinks, and bare URLs, with image links flagged separately',
+          'Reference consistency: reports undefined references, unused definitions, and duplicates, with case-insensitive CommonMark label folding',
+          'Anchor validation: compares ATX/Setext headings using GitHub slug rules and lists broken in-page anchors by line',
+          'Code-aware: link-like text inside fenced blocks and inline code is skipped to prevent false positives',
+        ],
+        howToUse: [
+          'Paste a Markdown document into the editor; results update live',
+          'Review categorized counts for external, relative, anchor, and mail links plus error/warning totals',
+          'Locate undefined references, duplicate definitions, and broken anchors by line in the issue list',
+          'Verify every link type, target, and category in the full link table',
+        ],
+        useCases: [
+          'Self-checking broken in-page navigation before publishing docs',
+          'Cleaning unused or duplicate reference definitions while refactoring long documents',
+          'Validating reference labels in open-source README and Wiki files',
+        ],
+        privacyNote:
+          'The tool only performs local static text analysis. It never probes external reachability or sends network requests, so documents never leave the browser.',
+        faqs: [
+          {
+            question: 'Does it verify that external links are reachable?',
+            answer:
+              'No. To stay fully offline and privacy-safe it only checks static structure (reference consistency and in-page anchors); external reachability is out of scope.',
+          },
+          {
+            question: 'How are GitHub-style anchors generated?',
+            answer:
+              'Headings are lowercased, punctuation beyond alphanumerics, underscore, hyphen and whitespace is removed (including apostrophes and exclamation marks), and whitespace collapses to hyphens. For example "What\'s New?" becomes whats-new, while Unicode letters such as Chinese are kept.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

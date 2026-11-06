@@ -289,4 +289,5 @@ export const toolLoaders: Record<
   'email-syntax-validator': () => import('./email-syntax-validator'),
   'dice-roll-probability': () => import('./dice-roll-probability'),
   'syslog-parser': () => import('./syslog-parser'),
+  'markdown-link-checker': () => import('./markdown-link-checker'),
 };
