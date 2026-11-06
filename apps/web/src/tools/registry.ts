@@ -25670,6 +25670,511 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'unicode-bcp47-lookup',
+    name: 'BCP 47 语言标签解析器',
+    nameEn: 'BCP 47 Language Tag Parser',
+    description:
+      '解析 BCP 47（RFC 5646）语言标签，拆分 language、extlang、script、region、variant、extension 与私有使用段，输出规范化大小写、u 扩展 keyword，并对非法字符、重复前缀等问题给出逐条错误与警告。',
+    descriptionEn:
+      'Parse BCP 47 (RFC 5646) language tags into language, extlang, script, region, variant, extension and private-use subtags, with canonical casing, Unicode u-extension keywords, and itemized errors and warnings.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/unicode-bcp47-lookup',
+    iconName: 'Language',
+    tags: ['BCP47', 'RFC5646', 'i18n', '语言标签', 'locale', '解析'],
+    tagsEn: ['BCP47', 'RFC5646', 'i18n', 'Language Tag', 'Locale', 'Parser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'BCP 47 语言标签解析器是一款纯浏览器本地运行的 i18n 参考工具，依据 RFC 5646 的 ABNF 语法把 zh-Hans-CN、en-US-u-ca-gregory 等标签拆解为结构化子标签，内置常用 ISO 639 语言、ISO 15924 文字、ISO 3166 / UN M.49 区域登记表，并识别 grandfathered 遗留标签与 x- 私有使用段。',
+        coreFeatures: [
+          '完整语法分段：language、extlang（最多 3 个）、script、region、variant、单字母 extension、privateuse',
+          '规范化输出：语言小写、脚本首字母大写、区域大写，并支持一键复制推荐写法',
+          'Unicode u 扩展结构化：区分 attribute 与 keyword（键 + 多值），如 u-ca-gregory-co-phonebk',
+          '逐条诊断：非法字符、下划线分隔、首尾连字符、重复扩展前缀、超长标签等给出可解释错误或警告',
+          '内置常用子标签登记表交叉验证，未命中时给出 warning 而非误判；全部计算本地完成、无网络请求',
+        ],
+        howToUse: [
+          '在输入框粘贴语言标签（如 zh-Hans-CN），实时查看合法 / 非法状态与结构化分段',
+          '点击示例按钮快速体验 extlang、u 扩展、数字区域代码与 grandfathered 标签',
+          '根据错误提示修正标签（例如下划线改为连字符、删除重复的扩展前缀）',
+          '展开底部语法速查卡片对照 RFC 5646 各子标签的长度与位置规则',
+        ],
+        useCases: [
+          '前端 i18n 配置（Intl、dayjs、ICU MessageFormat）时校验 locale 标签拼写与结构',
+          '审查 Accept-Language、HTML lang 属性、HTTP 与文件名中的语言标签',
+          '学习 BCP 47 / RFC 5646 语法，排查区域设置不生效、扩展前缀重复等问题',
+        ],
+        privacyNote:
+          '解析完全在浏览器本地进行，不发起任何网络请求，输入的标签不会被上传或记录。',
+        faqs: [
+          {
+            question: '标签合法但出现 warning 是为什么？',
+            answer:
+              'warning 表示语法符合 RFC 5646，但子标签未命中内置常用登记表（如非常用 ISO 639 代码）或属于 grandfathered 遗留标签。标签仍可正常使用，建议核对官方登记拼写或迁移到现代首选写法。',
+          },
+          {
+            question: '为什么 zh_Hans_CN 报错？',
+            answer:
+              'BCP 47 规定子标签之间只能使用 ASCII 连字符「-」，下划线常见于 POSIX locale（如 zh_CN.UTF-8）但不合法，应改写为 zh-Hans-CN。',
+          },
+          {
+            question: 'u 扩展里的 keyword 如何识别？',
+            answer:
+              'u 前缀之后，2 字母 token 视为 keyword 键（如 ca、co、nu），其后直到下一个 2 字母键之前的 token 都是该键的值；2–3 字母且出现在任何键之前的 token 视为 attribute。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'BCP 47 Language Tag Parser is a fully offline i18n reference tool that splits tags such as zh-Hans-CN or en-US-u-ca-gregory into structured subtags per the RFC 5646 ABNF, with built-in high-frequency ISO 639 language, ISO 15924 script, ISO 3166 / UN M.49 region registries, plus grandfathered tag and x- private-use recognition.',
+        coreFeatures: [
+          'Full grammar decomposition: language, extlang (up to 3), script, region, variant, singleton extensions, privateuse',
+          'Canonical output with recommended casing (lowercase language, title-case script, uppercase region) and one-click copy',
+          'Structured Unicode u-extension: attributes vs keywords with key and multiple values, e.g. u-ca-gregory-co-phonebk',
+          'Itemized diagnostics for illegal characters, underscore separators, leading/trailing hyphens, duplicate extension singletons, over-length tags, and more',
+          'Cross-checks against built-in subtag registries, emitting warnings instead of false negatives; fully local, no network calls',
+        ],
+        howToUse: [
+          'Paste a language tag (e.g. zh-Hans-CN) to see validity and the structured subtag breakdown in real time',
+          'Use the example buttons to explore extlang, u-extension, numeric region codes and grandfathered tags',
+          'Fix tags following the error messages (e.g. replace underscores with hyphens, remove duplicate extension singletons)',
+          'Review the RFC 5646 syntax reference cards at the bottom for subtag length and ordering rules',
+        ],
+        useCases: [
+          'Validating locale tags for frontend i18n stacks (Intl, dayjs, ICU MessageFormat)',
+          'Auditing Accept-Language, HTML lang attributes and language tags in HTTP or filenames',
+          'Learning BCP 47 / RFC 5646 grammar and debugging locale resolution or duplicate-extension issues',
+        ],
+        privacyNote:
+          'All parsing runs locally in the browser. No network requests are made and typed tags are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why does a valid tag still show a warning?',
+            answer:
+              'A warning means the grammar is valid per RFC 5646, but a subtag is absent from the built-in high-frequency registry (such as a rare ISO 639 code) or the tag is grandfathered. It remains usable; verify the official registered spelling or migrate to the preferred modern form.',
+          },
+          {
+            question: 'Why is zh_Hans_CN rejected?',
+            answer:
+              'BCP 47 only allows ASCII hyphens between subtags. Underscores appear in POSIX locales (e.g. zh_CN.UTF-8) but are not legal here; write zh-Hans-CN instead.',
+          },
+          {
+            question: 'How are keywords in the u-extension recognized?',
+            answer:
+              'After the u singleton, a 2-letter token starts a keyword (ca, co, nu...); every following token until the next 2-letter key belongs to that keyword as values. A 2–3 letter token appearing before any key is treated as an attribute.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'css-named-colors-lookup',
+    name: 'CSS 命名颜色速查',
+    nameEn: 'CSS Named Colors Reference',
+    description:
+      '内置 CSS Color Module Level 4 全部 148 个命名颜色（含 rebeccapurple），支持按名称搜索、HEX/RGB/HSL 值反查、最近命名色推荐与一键复制，展示 HEX、RGB、HSL 与基础 16 色标记，纯本地离线可用。',
+    descriptionEn:
+      'All 148 CSS Color Module Level 4 named colors (including rebeccapurple) built in, with name search, HEX/RGB/HSL reverse lookup, nearest named-color suggestions, one-click copy, and basic-16 markers, fully offline.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/css-named-colors-lookup',
+    iconName: 'BgColors',
+    tags: ['CSS', '命名颜色', '颜色表', 'HEX', 'RGB', 'HSL'],
+    tagsEn: ['CSS', 'Named Colors', 'Color Table', 'HEX', 'RGB', 'HSL'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS 命名颜色速查是一款纯浏览器本地运行的颜色参考工具，内置 W3C CSS Color Module Level 4 §4 定义的 148 个命名颜色关键字及其标准 RGB 值（含 rebeccapurple，以及 gray/grey、aqua/cyan 等同值别名），构建时常量内置、零网络请求。',
+        coreFeatures: [
+          '完整 148 色数据：名称、#RRGGBB、RGB 三元组、HSL 换算值与基础 16 色标记',
+          '双模式查询：按名称片段搜索（如 blue 命中 blue/darkblue/lightblue），或输入 #hex、rgb()、hsl() 反查',
+          '智能反查：精确命中命名色时给出名称，未命中时基于 RGB 欧氏距离推荐最接近的 5 个命名颜色',
+          '色卡浏览：支持字母 / 色相排序、全部 / 基础 16 色 / 扩展色分组过滤',
+          '一键复制 HEX，自动为深色 / 浅色块选择可读文字颜色；另附 transparent、currentcolor 特殊关键字说明',
+        ],
+        howToUse: [
+          '在搜索框输入颜色名称片段（如 coral）即可过滤色卡，点击任意色卡复制 HEX',
+          '输入颜色值（#ff6347、rgb(255,99,71) 或 hsl(9,100%,64%)）查看精确命中或最接近的命名颜色',
+          '使用分组按钮切换基础 16 色，使用分段控件切换字母 / 色相排序',
+          '列表底部可查看 transparent、currentcolor 两个非数值型关键字的语义说明',
+        ],
+        useCases: [
+          '前端开发时快速确认 tomato、rebeccapurple 等命名颜色的 HEX / RGB 值',
+          '设计走查时把设计稿中的任意 HEX 反查为语义化命名颜色，提升样式可读性',
+          '教学与面试复习 CSS 颜色体系、基础 16 色与 W3C 扩展命名色',
+        ],
+        privacyNote:
+          '所有颜色数据内置在代码包中，搜索、反查与复制全部在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么有 148 个名称却只有 139 个唯一 HEX？',
+            answer:
+              'W3C 标准本身定义了同值别名：aqua 与 cyan、fuchsia 与 magenta 值相同，另外 gray/grey、darkgray/darkgrey 等 7 组英美拼写也共用同一 RGB，因此 148 个名称对应 139 个唯一色值，这是标准规定而非数据错误。',
+          },
+          {
+            question: 'rebeccapurple 有什么特殊之处？',
+            answer:
+              'rebeccapurple（#663399）是 CSS Color Level 4 正式收录的第 148 个命名颜色，用以纪念 W3C CSS 专家 Eric Meyer 的女儿 Rebecca，本工具已完整收录。',
+          },
+          {
+            question: '输入任意 HEX 都能找到命名颜色吗？',
+            answer:
+              '只有 139 个唯一色值能精确命中；其他 HEX 会基于 RGB 空间欧氏距离推荐最接近的 5 个命名颜色并给出距离值，距离为 0 即完全一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'CSS Named Colors Reference is a fully offline color tool bundling all 148 named color keywords and standard RGB values defined in W3C CSS Color Module Level 4 §4 (including rebeccapurple and gray/grey, aqua/cyan value aliases), shipped as build-time constants with zero network calls.',
+        coreFeatures: [
+          'Complete 148-color dataset: name, #RRGGBB, RGB triple, computed HSL and basic-16 marker',
+          'Dual query modes: name fragment search (e.g. blue matches blue/darkblue/lightblue) or #hex/rgb()/hsl() reverse lookup',
+          'Smart matching: exact named-color hit, otherwise the 5 nearest named colors ranked by RGB Euclidean distance',
+          'Swatch browsing with alphabetical / hue sorting and all / basic-16 / extended filters',
+          'One-click HEX copy with auto readable text color, plus notes on the transparent and currentcolor keywords',
+        ],
+        howToUse: [
+          'Type a name fragment (e.g. coral) to filter swatches; click any swatch to copy its HEX',
+          'Enter a color value (#ff6347, rgb(255,99,71) or hsl(9,100%,64%)) for an exact hit or nearest-color suggestions',
+          'Switch to the basic-16 group with the filter buttons and toggle alphabetical / hue order with the segmented control',
+          'See the semantics of the non-numeric transparent and currentcolor keywords at the bottom',
+        ],
+        useCases: [
+          'Looking up HEX / RGB values of named colors such as tomato or rebeccapurple during frontend work',
+          'Reverse-matching arbitrary design HEX values to semantic named colors for more readable stylesheets',
+          'Learning or teaching the CSS color system, basic 16 colors and W3C extended named colors',
+        ],
+        privacyNote:
+          'All color data is bundled in the code package. Search, reverse lookup and copy run entirely in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why do 148 names map to only 139 unique HEX values?',
+            answer:
+              'The W3C standard itself defines value aliases: aqua/cyan and fuchsia/magenta share values, plus seven gray/grey spelling pairs. So 148 names correspond to 139 unique values by specification, not by data error.',
+          },
+          {
+            question: 'What is special about rebeccapurple?',
+            answer:
+              'rebeccapurple (#663399) is the 148th named color formally added in CSS Color Level 4, named in memory of Rebecca, daughter of W3C CSS expert Eric Meyer. It is fully included here.',
+          },
+          {
+            question: 'Can every HEX be mapped to a named color?',
+            answer:
+              'Only 139 unique values hit exactly; any other HEX returns the 5 nearest named colors by RGB Euclidean distance with distance values, where a distance of 0 means an exact match.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'regex-cheatsheet',
+    name: '正则表达式语法速查（JavaScript）',
+    nameEn: 'Regular Expression Syntax Cheat Sheet (JavaScript)',
+    description:
+      '可搜索、按分类折叠的 JavaScript 正则速查表，覆盖字符类、量词、锚点、分组、环视、交替、g/i/m/s/u/y 标志位与 Unicode 属性转义共 8 类 32 个条目；全部示例由浏览器原生 RegExp 实时实测并展示命中结果，另附 JS 与 Python/Java/PCRE 的引擎差异说明，纯本地离线运行。',
+    descriptionEn:
+      'A searchable, category-collapsible JavaScript regex cheat sheet covering 32 entries across 8 categories: character classes, quantifiers, anchors, groups, lookaround, alternation, g/i/m/s/u/y flags and Unicode property escapes. Every sample is verified live by the native RegExp engine with rendered match results, plus JS vs Python/Java/PCRE engine differences, fully offline.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/regex-cheatsheet',
+    iconName: 'List',
+    tags: ['正则', 'Regex', '速查表', 'RegExp', '语法参考'],
+    tagsEn: ['Regex', 'Cheat Sheet', 'RegExp', 'Syntax Reference', 'JavaScript'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '正则表达式语法速查是一款纯浏览器本地运行的查阅型参考工具，以结构化条目呈现 JavaScript 风格正则的元字符、字符类、量词、锚点、分组与引用、环视断言、交替转义、标志位与 Unicode 属性转义，每个条目都附带可运行示例与匹配 / 不匹配样例，并由原生 RegExp 在渲染时实时实测，保证文档与运行时行为一致。',
+        coreFeatures: [
+          '8 个分类、32 个语法条目：字符类与元字符、量词、锚点边界、分组引用、环视、交替转义、标志位、Unicode 属性转义',
+          '原生 RegExp 实测：每条示例的匹配与不匹配样例在页面加载时用 new RegExp 真实执行，展示命中文本与零宽匹配，异常条目直接标红',
+          '关键字搜索：按名称、语法、描述、关键字与分类名实时过滤（如输入 look 即列出全部环视断言）',
+          '分类折叠浏览：按 8 个分类分组的 Collapse 面板，支持空状态提示',
+          '引擎差异区块：文档说明 JS 与 Python/Java/PCRE 在 \\d Unicode 数字、lookbehind、Unicode 属性转义等方面的典型区别',
+        ],
+        howToUse: [
+          '在顶部搜索框输入语法或关键字（如 look、量词、\\p）即可过滤条目，清空搜索恢复全部',
+          '使用分类按钮在 8 个分类之间切换，或在折叠面板中按需展开 / 收起',
+          '查看每条卡片的示例 /pattern/flags，绿色标记表示样例命中并展示实际匹配文本，红色标记表示不匹配',
+          '页面顶部的实测统计标签显示条目数、分类数与原生 RegExp 校验结果；底部可阅读跨引擎差异说明',
+        ],
+        useCases: [
+          '编写正则时快速确认量词惰性写法、命名捕获组、环视断言等语法细节',
+          '面试与教学场景系统复习 JavaScript RegExp 的标志位与 Unicode 属性转义',
+          '跨语言迁移正则时查阅 JS 与 Python/Java/PCRE 的行为差异，规避兼容性坑',
+        ],
+        privacyNote:
+          '全部条目数据内置在代码包中，搜索、过滤与 RegExp 实测均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '本工具和 regex-tester、regex-replace 有什么区别？',
+            answer:
+              '本工具定位为「查阅学习」的静态语法参考表，内容是内置的结构化条目并逐条实测；regex-tester 侧重自定义正则的在线调试与捕获组分析，regex-replace 侧重替换执行，三者互补。',
+          },
+          {
+            question: '页面上的「命中 / 不匹配」结果是写死的吗？',
+            answer:
+              '不是。页面加载时会对全部 32 个条目逐条 new RegExp(pattern, flags) 并对每个样例真实执行，展示实际匹配文本（零宽匹配会标注「零宽」），若任何样例与预期不符会显示「示例校验异常」标签。',
+          },
+          {
+            question: '为什么搜索 look 能找到环视相关条目？',
+            answer:
+              '搜索会匹配条目的名称、语法、描述与关键字字段，lookahead/lookbehind 条目的关键字中包含 look，因此输入 look 可一次过滤出正向/负向先行与后行断言共 4 个条目。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Regular Expression Syntax Cheat Sheet is a fully offline reference tool presenting JavaScript-style regex metacharacters, character classes, quantifiers, anchors, groups and references, lookaround assertions, alternation and escaping, flags and Unicode property escapes as structured entries. Every entry ships runnable examples with match/reject samples that are executed live by the native RegExp engine at render time, keeping documentation consistent with runtime behavior.',
+        coreFeatures: [
+          '32 entries across 8 categories: character classes, quantifiers, anchors, groups, lookaround, alternation/escaping, flags and Unicode property escapes',
+          'Native RegExp verification: every match/reject sample is executed with new RegExp at page load, showing the actual matched text and zero-width matches, with failed expectations flagged in red',
+          'Keyword search over names, syntax, descriptions, keywords and category labels (e.g. look lists all lookaround entries)',
+          'Category browsing via collapsible panels with an empty-state hint',
+          'Engine-difference section documenting typical JS vs Python/Java/PCRE divergences such as \\d Unicode digits, lookbehind support and Unicode property escapes',
+        ],
+        howToUse: [
+          'Type a syntax token or keyword (look, quantifier, \\p) in the search box to filter entries; clear it to restore the full list',
+          'Switch between the 8 categories with the filter buttons, or expand and collapse panels as needed',
+          'Read each card’s /pattern/flags example: green marks indicate a hit with the actual matched text, red marks indicate no match',
+          'The top stats tags show entry count, category count and native RegExp verification status; cross-engine notes are available at the bottom',
+        ],
+        useCases: [
+          'Quickly confirming lazy quantifiers, named capture groups or lookaround syntax while writing regular expressions',
+          'Systematically revising JavaScript RegExp flags and Unicode property escapes for interviews or teaching',
+          'Checking JS vs Python/Java/PCRE behavior differences when porting regexes across languages',
+        ],
+        privacyNote:
+          'All entry data is bundled in the code package. Search, filtering and RegExp verification run entirely in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'How does this differ from regex-tester and regex-replace?',
+            answer:
+              'This tool is a read-and-learn static syntax reference with built-in structured entries verified on the fly; regex-tester focuses on debugging custom patterns with capture-group analysis, and regex-replace focuses on replacement execution. The three complement each other.',
+          },
+          {
+            question: 'Are the match / reject results hard-coded?',
+            answer:
+              'No. On page load all 32 entries are checked by constructing new RegExp(pattern, flags) and running every sample for real, rendering the actual matched text (zero-width matches are labeled accordingly). Any sample violating its expectation triggers an "example verification failed" tag.',
+          },
+          {
+            question: 'Why does searching "look" find the lookaround entries?',
+            answer:
+              'Search matches entry names, syntax, descriptions and keyword fields. The lookahead/lookbehind entries carry "look" in their keywords, so the query returns all four positive/negative lookahead and lookbehind assertions.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'http-methods-reference',
+    name: 'HTTP 请求方法速查',
+    nameEn: 'HTTP Request Methods Reference',
+    description:
+      '依据 RFC 9110/9111/5789 速查 GET、HEAD、POST、PUT、DELETE、CONNECT、OPTIONS、TRACE、PATCH 共 9 个标准方法的 safe/idempotent/cacheable/请求体属性、RFC 来源、典型场景、常见误用与请求响应示例，支持关键字与分组过滤，附 PUT vs PATCH、POST vs PUT、OPTIONS 与 CORS 预检专题对比，纯本地离线运行。',
+    descriptionEn:
+      'Look up all nine standard HTTP methods (GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH) per RFC 9110/9111/5789 with safe/idempotent/cacheable/body properties, RFC sources, use cases, pitfalls and request/response examples. Keyword and group filters plus PUT vs PATCH, POST vs PUT and OPTIONS/CORS preflight comparisons, fully offline.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/http-methods-reference',
+    iconName: 'Globe',
+    tags: ['HTTP', '请求方法', 'REST', '幂等', 'RFC 9110'],
+    tagsEn: ['HTTP', 'Methods', 'REST', 'Idempotent', 'RFC 9110'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP 请求方法速查是一款纯浏览器本地运行的参考工具，以结构化表格呈现 RFC 9110 定义的 9 个标准请求方法，逐条给出安全性（safe）、幂等性（idempotent）、可缓存性、是否允许请求体、RFC 来源、典型场景、常见误用与纯文本请求 / 响应示例，并提供 PUT 与 PATCH、POST 与 PUT、OPTIONS 与 CORS 预检三组专题对比。',
+        coreFeatures: [
+          '完整覆盖 GET/HEAD/POST/PUT/DELETE/CONNECT/OPTIONS/TRACE/PATCH 9 个标准方法，属性与 RFC 9110 §9.2/§9.3、RFC 9111、RFC 5789 一致',
+          'safe / idempotent / cacheable / 请求体四个布尔属性以醒目标签可视化，PATCH 明确标注为非 safe、非默认幂等',
+          '每个方法展开后含语义、RFC 来源、常见状态码、误用清单与请求 / 响应文本示例（不实际发送请求）',
+          '关键字检索方法名、中文名、语义与关键字（如「幂等」命中全部幂等方法），并支持常用 / 特殊方法分组',
+          '专题对比区：PUT vs PATCH 整体替换与部分更新、POST vs PUT 的 URI 决策与幂等、OPTIONS 与 CORS 预检关系',
+        ],
+        howToUse: [
+          '在搜索框输入方法名或关键字（如 PATCH、幂等、cors）实时过滤，使用分组按钮切换常用 CRUD 与特殊方法',
+          '点击任意方法展开详情，查看语义、RFC 来源、状态码搭配、误用清单与请求 / 响应示例',
+          '在页面底部专题对比区查看 PUT vs PATCH 等差异表格与请求体示例',
+          '所有内容均为内置静态数据，检索与渲染不发起任何网络请求',
+        ],
+        useCases: [
+          '设计 RESTful API 时确认方法选择是否符合 safe / idempotent 语义',
+          '排查重复提交、缓存失效或 PATCH 幂等性争议时对照 RFC 标准定义',
+          '面试与教学中系统复习 HTTP 方法语义及 PUT/POST/PATCH 的区别',
+        ],
+        privacyNote:
+          '全部方法数据与示例内置在代码包中，搜索、过滤与渲染均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么 PATCH 不是幂等方法？',
+            answer:
+              'RFC 5789 规定 PATCH 携带的是修改指令，重复应用同一补丁可能叠加生效（例如自增或 JSON Patch 的 add 操作），因此标准不保证幂等；能否安全重试取决于具体的补丁媒体类型与服务端实现，工具中已明确标注「非默认幂等」。',
+          },
+          {
+            question: 'safe 和 idempotent 有什么区别？',
+            answer:
+              'safe 描述方法是否只读、不会产生预期副作用（GET/HEAD/OPTIONS/TRACE）；idempotent 描述多次相同请求的最终服务器状态是否与单次一致（PUT、DELETE 虽有副作用但幂等）。所有 safe 方法天然幂等，但幂等方法不一定 safe。',
+          },
+          {
+            question: 'PUT 和 PATCH 应该如何选择？',
+            answer:
+              '客户端持有资源完整表示并希望整体替换时用 PUT（天然幂等，未提供的字段会被重置）；只修改部分字段时用 PATCH，请求体是补丁指令并通过 Content-Type 声明格式（如 application/merge-patch+json），工具内的专题对比含完整请求体示例。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'HTTP Request Methods Reference is a fully offline tool presenting the nine standard request methods defined in RFC 9110, each with safe/idempotent/cacheable/body properties, RFC sources, use cases, pitfalls and textual request/response examples, plus three focused comparisons: PUT vs PATCH, POST vs PUT and OPTIONS vs CORS preflight.',
+        coreFeatures: [
+          'All nine standard methods GET/HEAD/POST/PUT/DELETE/CONNECT/OPTIONS/TRACE/PATCH with properties aligned to RFC 9110 §9.2/§9.3, RFC 9111 and RFC 5789',
+          'Visual tags for safe, idempotent, cacheable and request-body properties; PATCH is explicitly marked non-safe and non-idempotent by default',
+          'Expandable details with semantics, RFC source, common status codes, pitfalls and request/response examples (never sent over the network)',
+          'Keyword search over names, semantics and keywords (e.g. "idempotent" matches every idempotent method) plus common/special grouping',
+          'Comparison section covering PUT vs PATCH full replacement vs partial update, POST vs PUT URI ownership, and OPTIONS vs CORS preflight',
+        ],
+        howToUse: [
+          'Type a method name or keyword (PATCH, idempotent, cors) to filter live, and switch common CRUD vs special methods with the group buttons',
+          'Expand any method to read semantics, RFC source, status code pairings, pitfalls and examples',
+          'Review the comparison tables and body examples at the bottom of the page',
+          'Everything is bundled static data; search and rendering never issue network requests',
+        ],
+        useCases: [
+          'Choosing methods that match safe/idempotent semantics while designing RESTful APIs',
+          'Settling duplicate-submit, caching or PATCH idempotency disputes against the RFC definitions',
+          'Studying HTTP method semantics and the PUT/POST/PATCH distinctions for interviews or teaching',
+        ],
+        privacyNote:
+          'All method data and examples are bundled in the code package. Search, filtering and rendering run entirely in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why is PATCH not idempotent?',
+            answer:
+              'RFC 5789 models PATCH as a set of modification instructions; applying the same patch twice may stack effects (e.g. increments or JSON Patch add ops), so idempotency is not guaranteed by the standard and depends on the patch media type and server implementation. The tool marks it as non-idempotent by default.',
+          },
+          {
+            question: 'What is the difference between safe and idempotent?',
+            answer:
+              'Safe means the method is read-only with no intended side effects (GET/HEAD/OPTIONS/TRACE); idempotent means repeated identical requests leave the server in the same final state as one request (PUT and DELETE have side effects but are idempotent). Every safe method is idempotent, but not vice versa.',
+          },
+          {
+            question: 'How do I choose between PUT and PATCH?',
+            answer:
+              'Use PUT when the client holds the full representation and wants a complete replacement (naturally idempotent; omitted fields are reset). Use PATCH for partial field changes where the body is a patch instruction with a declared Content-Type such as application/merge-patch+json. The comparison section includes full body examples.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'http-headers-reference',
+    name: 'HTTP 头字段速查',
+    nameEn: 'HTTP Headers Reference',
+    description:
+      '覆盖通用、请求、响应、实体、缓存、CORS、安全 7 大类共 51 个常用 HTTP 头字段，逐条标注请求/响应方向、逐跳 hop-by-hop 与 Fetch 标准禁止修改属性、RFC 来源、取值示例与安全注意事项，支持关键字、分类与方向三维过滤，附安全响应头组合、Cookie 安全属性、CORS 凭据三组实践专题，纯本地离线运行。',
+    descriptionEn:
+      'Look up 51 common HTTP headers across 7 categories (general, request, response, entity, caching, CORS, security) with direction, hop-by-hop and Fetch-forbidden flags, RFC sources, value examples and security notes. Filter by keyword, category and direction, plus three security practice playbooks (baseline headers, Cookie attributes, CORS credentials), fully offline.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/http-headers-reference',
+    iconName: 'FileText',
+    tags: ['HTTP', '请求头', '响应头', 'CORS', '安全头'],
+    tagsEn: ['HTTP', 'Headers', 'CORS', 'Security Headers', 'Reference'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP 头字段速查是一款纯浏览器本地运行的参考工具，内置 RFC 9110、RFC 9111、RFC 6265、Fetch / CORS 与各安全头规范定义的 51 个常用头字段，逐条给出请求 / 响应方向、逐跳（hop-by-hop）属性、Fetch 标准禁止修改标记、RFC 来源、取值示例与安全注意事项，并提供基础安全响应头、Cookie 安全属性、CORS 凭据搭配三组实践专题。',
+        coreFeatures: [
+          '7 大类 51 个头字段：通用、请求、响应、表示 / 实体、缓存、CORS 跨域、安全，头名唯一且全部带取值示例',
+          '方向与属性标签：请求头 / 响应头 / 双向、逐跳 hop-by-hop、Fetch 标准「禁止修改」红色标记一目了然',
+          '安全注意事项：Authorization、Cookie、Set-Cookie 及 CSP、HSTS、X-Frame-Options 等全部安全头均带独立安全告警',
+          '三维过滤：关键字（头名 / 中文 / 描述 / RFC）+ 分类 + 方向组合检索，如 csp、缓存、cookie',
+          '安全实践专题：基础安全头组合、Cookie 的 HttpOnly/Secure/SameSite、CORS 凭据白名单正确搭配与可复制配置示例',
+        ],
+        howToUse: [
+          '在搜索框输入头名或关键字（如 Content-Type、csp、缓存、cookie），配合分类与方向单选按钮组合过滤',
+          '查看每张卡片的方向标签、逐跳 / 禁止修改标记、RFC 来源与示例值，黄色告警条展示安全注意事项',
+          '在页面底部「安全实践专题」查看推荐配置组合，可直接参考示例配置自己的服务端响应头',
+          '所有数据均为内置静态内容，检索与渲染不发起任何网络请求',
+        ],
+        useCases: [
+          '配置网关 / CDN 响应头时确认标准名称、取值格式与 RFC 来源',
+          '排查 CORS 预检失败、Cookie 未携带或请求走私等问题时核对头部语义与限制',
+          '安全加固时按实践专题逐项补齐 CSP、HSTS、nosniff 等安全响应头',
+        ],
+        privacyNote:
+          '全部头字段数据与示例内置在代码包中，搜索、过滤与渲染均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '「禁止修改」标记是什么意思？',
+            answer:
+              '对应 Fetch 标准的 forbidden header name 清单：浏览器环境下 JavaScript 无法通过 fetch / XMLHttpRequest 自行设置这些请求头（如 Host、User-Agent、Origin、Cookie、Authorization），也无法读取部分响应头（如 Set-Cookie），它们由浏览器或代理自动管理，以防止脚本伪造关键协议信息。',
+          },
+          {
+            question: '逐跳（hop-by-hop）头和普通头有什么区别？',
+            answer:
+              '逐跳头只对单次 TCP 传输连接有效，代理转发时必须消费并移除，不能端到端传递，典型如 Connection、Transfer-Encoding、Upgrade、Proxy-Authorization；其余头为端到端头，会沿整条链路透传。HTTP/2 与 HTTP/3 进一步直接禁用了大部分逐跳头。',
+          },
+          {
+            question: '安全实践专题里的配置可以直接复制使用吗？',
+            answer:
+              '示例展示的是推荐基线，落地前需按业务调整：CSP 应先用 Content-Security-Policy-Report-Only 模式观察违规报告再强制启用；HSTS 开启 includeSubDomains / preload 前必须确认所有子域都已支持 HTTPS；跨域带 Cookie 时 Allow-Origin 必须回显白名单具体源而不能使用通配符 *。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'HTTP Headers Reference is a fully offline tool covering 51 common headers from RFC 9110, RFC 9111, RFC 6265, Fetch/CORS and security-header specifications. Each entry shows request/response direction, hop-by-hop status, the Fetch forbidden-header flag, RFC source, an example value and security notes, complemented by three security practice playbooks for baseline response headers, Cookie attributes and CORS credentials.',
+        coreFeatures: [
+          '51 headers in 7 categories: general, request, response, entity, caching, CORS and security, each with a unique name and value example',
+          'Direction and property tags: request/response/both, hop-by-hop and a red Fetch-forbidden marker at a glance',
+          'Dedicated security warnings on Authorization, Cookie, Set-Cookie and every security header such as CSP, HSTS and X-Frame-Options',
+          'Three-dimensional filtering combining keyword (name, Chinese label, description, RFC), category and direction, e.g. csp, cache, cookie',
+          'Security playbooks with copyable examples: baseline response headers, HttpOnly/Secure/SameSite Cookie attributes, and correct CORS credential allowlisting',
+        ],
+        howToUse: [
+          'Type a header name or keyword (Content-Type, csp, cache, cookie) and combine category and direction radio filters',
+          'Read each card’s direction tags, hop-by-hop/forbidden markers, RFC source and example; the yellow alert carries security notes',
+          'Consult the Security Practices section at the bottom for recommended configurations to apply on your server',
+          'Everything is bundled static data; search and rendering never issue network requests',
+        ],
+        useCases: [
+          'Confirming canonical names, value formats and RFC sources when configuring gateway or CDN response headers',
+          'Checking header semantics and restrictions while debugging CORS preflight failures, missing Cookies or request smuggling',
+          'Hardening security by rolling out CSP, HSTS, nosniff and related headers following the practice playbooks',
+        ],
+        privacyNote:
+          'All header data and examples are bundled in the code package. Search, filtering and rendering run entirely in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'What does the "forbidden" flag mean?',
+            answer:
+              'It maps to the Fetch standard forbidden header name list: in browsers JavaScript cannot set these request headers (Host, User-Agent, Origin, Cookie, Authorization) or read certain response headers (Set-Cookie) via fetch/XMLHttpRequest. The browser or proxy manages them automatically so scripts cannot forge critical protocol metadata.',
+          },
+          {
+            question: 'How do hop-by-hop headers differ from normal headers?',
+            answer:
+              'Hop-by-hop headers apply only to a single transport connection and must be consumed and stripped by forwarding proxies rather than passed end-to-end—typical examples are Connection, Transfer-Encoding, Upgrade and Proxy-Authorization. Other headers are end-to-end and travel the full chain. HTTP/2 and HTTP/3 ban most hop-by-hop headers outright.',
+          },
+          {
+            question: 'Can I copy the practice playbook configurations directly?',
+            answer:
+              'The examples are recommended baselines that need business-specific tuning: run CSP in Content-Security-Policy-Report-Only mode first to observe violations before enforcing it; confirm every subdomain supports HTTPS before enabling HSTS includeSubDomains/preload; and for credentialed CORS, Allow-Origin must echo an allowlisted specific origin rather than the wildcard *.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
