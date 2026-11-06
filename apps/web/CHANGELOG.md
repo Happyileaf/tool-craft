@@ -4,6 +4,10 @@
 
 ## 日志
 
+## 2026-11-06 ：【Agent自主迭代】新增 5 个 BCP 47 解析、CSS 命名颜色、正则速查、HTTP 方法与 HTTP 头字段参考工具
+
+- **新增**：BCP 47 语言标签解析器（unicode-bcp47-lookup）— 依据 RFC 5646 ABNF 把标签拆分为 language/extlang/script/region/variant/extension/privateuse，输出推荐大小写规范化标签并支持复制，结构化解析 Unicode u 扩展的 attribute 与 keyword，识别 grandfathered 遗留标签与 x- 私有段，对非法字符、下划线分隔、重复扩展前缀、超长等问题逐条给出错误或警告，内置常用 ISO 639/15924/3166/UN M.49 子标签表交叉验证，纯本地运算
+
 ## 2026-11-06 ：【Agent自主迭代】新增 5 个 JSON 差异、SSE 编解码、.gitattributes 生成、Intel HEX 解析与 Patch 解析工具
 
 - **新增**：JSON 结构化差异对比（json-diff）— 解析两份 JSON 后递归做语义级对比，按 JSONPath 风格路径输出新增、删除、值修改与类型变化四类差异，数组按索引逐项对比并报告长度变化，忽略键序与缩进差异，左右解析失败分别报错，支持交换左右与复制结果，纯本地运算

@@ -25670,6 +25670,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'unicode-bcp47-lookup',
+    name: 'BCP 47 语言标签解析器',
+    nameEn: 'BCP 47 Language Tag Parser',
+    description:
+      '解析 BCP 47（RFC 5646）语言标签，拆分 language、extlang、script、region、variant、extension 与私有使用段，输出规范化大小写、u 扩展 keyword，并对非法字符、重复前缀等问题给出逐条错误与警告。',
+    descriptionEn:
+      'Parse BCP 47 (RFC 5646) language tags into language, extlang, script, region, variant, extension and private-use subtags, with canonical casing, Unicode u-extension keywords, and itemized errors and warnings.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/unicode-bcp47-lookup',
+    iconName: 'Language',
+    tags: ['BCP47', 'RFC5646', 'i18n', '语言标签', 'locale', '解析'],
+    tagsEn: ['BCP47', 'RFC5646', 'i18n', 'Language Tag', 'Locale', 'Parser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'BCP 47 语言标签解析器是一款纯浏览器本地运行的 i18n 参考工具，依据 RFC 5646 的 ABNF 语法把 zh-Hans-CN、en-US-u-ca-gregory 等标签拆解为结构化子标签，内置常用 ISO 639 语言、ISO 15924 文字、ISO 3166 / UN M.49 区域登记表，并识别 grandfathered 遗留标签与 x- 私有使用段。',
+        coreFeatures: [
+          '完整语法分段：language、extlang（最多 3 个）、script、region、variant、单字母 extension、privateuse',
+          '规范化输出：语言小写、脚本首字母大写、区域大写，并支持一键复制推荐写法',
+          'Unicode u 扩展结构化：区分 attribute 与 keyword（键 + 多值），如 u-ca-gregory-co-phonebk',
+          '逐条诊断：非法字符、下划线分隔、首尾连字符、重复扩展前缀、超长标签等给出可解释错误或警告',
+          '内置常用子标签登记表交叉验证，未命中时给出 warning 而非误判；全部计算本地完成、无网络请求',
+        ],
+        howToUse: [
+          '在输入框粘贴语言标签（如 zh-Hans-CN），实时查看合法 / 非法状态与结构化分段',
+          '点击示例按钮快速体验 extlang、u 扩展、数字区域代码与 grandfathered 标签',
+          '根据错误提示修正标签（例如下划线改为连字符、删除重复的扩展前缀）',
+          '展开底部语法速查卡片对照 RFC 5646 各子标签的长度与位置规则',
+        ],
+        useCases: [
+          '前端 i18n 配置（Intl、dayjs、ICU MessageFormat）时校验 locale 标签拼写与结构',
+          '审查 Accept-Language、HTML lang 属性、HTTP 与文件名中的语言标签',
+          '学习 BCP 47 / RFC 5646 语法，排查区域设置不生效、扩展前缀重复等问题',
+        ],
+        privacyNote:
+          '解析完全在浏览器本地进行，不发起任何网络请求，输入的标签不会被上传或记录。',
+        faqs: [
+          {
+            question: '标签合法但出现 warning 是为什么？',
+            answer:
+              'warning 表示语法符合 RFC 5646，但子标签未命中内置常用登记表（如非常用 ISO 639 代码）或属于 grandfathered 遗留标签。标签仍可正常使用，建议核对官方登记拼写或迁移到现代首选写法。',
+          },
+          {
+            question: '为什么 zh_Hans_CN 报错？',
+            answer:
+              'BCP 47 规定子标签之间只能使用 ASCII 连字符「-」，下划线常见于 POSIX locale（如 zh_CN.UTF-8）但不合法，应改写为 zh-Hans-CN。',
+          },
+          {
+            question: 'u 扩展里的 keyword 如何识别？',
+            answer:
+              'u 前缀之后，2 字母 token 视为 keyword 键（如 ca、co、nu），其后直到下一个 2 字母键之前的 token 都是该键的值；2–3 字母且出现在任何键之前的 token 视为 attribute。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'BCP 47 Language Tag Parser is a fully offline i18n reference tool that splits tags such as zh-Hans-CN or en-US-u-ca-gregory into structured subtags per the RFC 5646 ABNF, with built-in high-frequency ISO 639 language, ISO 15924 script, ISO 3166 / UN M.49 region registries, plus grandfathered tag and x- private-use recognition.',
+        coreFeatures: [
+          'Full grammar decomposition: language, extlang (up to 3), script, region, variant, singleton extensions, privateuse',
+          'Canonical output with recommended casing (lowercase language, title-case script, uppercase region) and one-click copy',
+          'Structured Unicode u-extension: attributes vs keywords with key and multiple values, e.g. u-ca-gregory-co-phonebk',
+          'Itemized diagnostics for illegal characters, underscore separators, leading/trailing hyphens, duplicate extension singletons, over-length tags, and more',
+          'Cross-checks against built-in subtag registries, emitting warnings instead of false negatives; fully local, no network calls',
+        ],
+        howToUse: [
+          'Paste a language tag (e.g. zh-Hans-CN) to see validity and the structured subtag breakdown in real time',
+          'Use the example buttons to explore extlang, u-extension, numeric region codes and grandfathered tags',
+          'Fix tags following the error messages (e.g. replace underscores with hyphens, remove duplicate extension singletons)',
+          'Review the RFC 5646 syntax reference cards at the bottom for subtag length and ordering rules',
+        ],
+        useCases: [
+          'Validating locale tags for frontend i18n stacks (Intl, dayjs, ICU MessageFormat)',
+          'Auditing Accept-Language, HTML lang attributes and language tags in HTTP or filenames',
+          'Learning BCP 47 / RFC 5646 grammar and debugging locale resolution or duplicate-extension issues',
+        ],
+        privacyNote:
+          'All parsing runs locally in the browser. No network requests are made and typed tags are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why does a valid tag still show a warning?',
+            answer:
+              'A warning means the grammar is valid per RFC 5646, but a subtag is absent from the built-in high-frequency registry (such as a rare ISO 639 code) or the tag is grandfathered. It remains usable; verify the official registered spelling or migrate to the preferred modern form.',
+          },
+          {
+            question: 'Why is zh_Hans_CN rejected?',
+            answer:
+              'BCP 47 only allows ASCII hyphens between subtags. Underscores appear in POSIX locales (e.g. zh_CN.UTF-8) but are not legal here; write zh-Hans-CN instead.',
+          },
+          {
+            question: 'How are keywords in the u-extension recognized?',
+            answer:
+              'After the u singleton, a 2-letter token starts a keyword (ca, co, nu...); every following token until the next 2-letter key belongs to that keyword as values. A 2–3 letter token appearing before any key is treated as an attribute.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

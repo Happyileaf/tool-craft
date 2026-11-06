@@ -182,6 +182,7 @@ export const toolLoaders: Record<
   'linear-regression': () => import('./linear-regression'),
   'mime-type-lookup': () => import('./mime-type-lookup'),
   'well-known-ports': () => import('./well-known-ports'),
+  'unicode-bcp47-lookup': () => import('./unicode-bcp47-lookup'),
   'ascii-tree-generator': () => import('./ascii-tree-generator'),
   'readability-score': () => import('./readability-score'),
   'vcard-generator': () => import('./vcard-generator'),
