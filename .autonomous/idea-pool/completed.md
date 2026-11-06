@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261106160210 | 集合 Jaccard / 重叠系数 / Dice 相似度计算器 | Web Tool | Existing Gap | `set-similarity-calculator` / [PR #189](https://github.com/Happyileaf/tool-craft/pull/189) | 2026-11-07 | [详情](./idea-details/20261106160210.md) |
+| 20261106060116 | 多面骰子（d4/d6/d20 等）投掷模拟与点数和概率分布计算器 | Web Tool | Exploration | `dice-roll-probability` / [PR #189](https://github.com/Happyileaf/tool-craft/pull/189) | 2026-11-07 | [详情](./idea-details/20261106060116.md) |
+| 20261106060111 | 邮箱地址语法校验与结构解析器 | Web Tool | Existing Gap | `email-syntax-validator` / [PR #189](https://github.com/Happyileaf/tool-craft/pull/189) | 2026-11-07 | [详情](./idea-details/20261106060111.md) |
+| 20261105080304 | Markdown 链接检查器（引用一致性、重复引用定义与本地锚点校验） | Web Tool | Existing Gap | `markdown-link-checker` / [PR #189](https://github.com/Happyileaf/tool-craft/pull/189) | 2026-11-07 | [详情](./idea-details/20261105080304.md) |
+| 20261103140204 | Syslog 日志行解析与字段拆分器 | Web Tool | External Reference | `syslog-parser` / [PR #189](https://github.com/Happyileaf/tool-craft/pull/189) | 2026-11-07 | [详情](./idea-details/20261103140204.md) |
 | 20261106160211 | 电阻串并联等效电阻与公差累积计算器 | Web Tool | Exploration | `resistor-network-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106160211.md) |
 | 20261106060117 | GPA 平均绩点计算器（百分制/4.0/4.3 多算法与学分加权） | Web Tool | Exploration | `gpa-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060117.md) |
 | 20261106060115 | 多边形面积与周长计算器（鞋带公式，含 GeoJSON 粘贴） | Web Tool | Exploration | `polygon-area-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060115.md) |
