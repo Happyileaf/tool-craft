@@ -108,6 +108,7 @@ export const toolLoaders: Record<
   'secure-random-picker': () => import('./secure-random-picker'),
   'bech32-codec': () => import('./bech32-codec'),
   'ohms-law-calculator': () => import('./ohms-law-calculator'),
+  'phone-e164-normalizer': () => import('./phone-e164-normalizer'),
   'cookie-parser': () => import('./cookie-parser'),
   'ascii-table': () => import('./ascii-table'),
   'base62-codec': () => import('./base62-codec'),

@@ -8409,6 +8409,104 @@ info: request finished`,
     },
   },
   {
+    slug: 'phone-e164-normalizer',
+    name: 'E.164 电话号码规范化器（国际格式解析与校验）',
+    nameEn: 'E.164 Phone Number Normalizer',
+    description:
+      '清洗空格、连字符、括号、点等分隔符，识别 + / 00 国际前缀并按内置国家码表最长前缀匹配，校验订阅号长度区间与 E.164 15 位上限，输出标准 E.164 号码与国际分组展示，支持多行批量、逐行独立返回成功或失败原因，纯浏览器本地计算。',
+    descriptionEn:
+      'Strips spaces, dashes, parentheses and dots, detects + / 00 international prefixes, matches the country code by longest prefix against a built-in table, validates subscriber-number length and the E.164 15-digit limit, and emits canonical E.164 plus grouped display. Multi-line batch processing reports per-line success or error, fully locally in the browser.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/phone-e164-normalizer',
+    iconName: 'PhoneOutlined',
+    tags: ['电话号码', 'E.164', '国家码', '格式化', '校验', '批量处理'],
+    tagsEn: ['Phone Number', 'E.164', 'Country Code', 'Format', 'Validation', 'Batch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '138 0000 0000\n001-415-555-2671\n+852 9123 4567',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具把随手输入的电话号码（含空格、连字符、括号、点等分隔符，以及 + 或 00 国际前缀）清洗为标准 E.164 格式（+ 国家码 + 订阅号），依据内置常用国家 / 地区码表解析国家码、校验订阅号长度区间，并给出国际分组展示。支持多行批量处理，逐行独立返回成功或失败原因，全部计算在浏览器本地完成，不上传任何号码。仅做结构层面的字符与长度校验，不查询实时号段数据库，不保证号码真实存在。',
+        coreFeatures: [
+          '分隔符清洗：剥离空格、连字符、括号、点、斜杠，识别 + 与 00 国际前缀',
+          '国家码解析：1~3 位最长前缀匹配内置码表（+86、+1、+44、+81、+852、+886 等），未带前缀按默认国家补全',
+          '严格校验：订阅号长度区间、E.164 数字 15 位上限、非法字符均给出明确错误而非静默产出',
+          '批量处理：多行逐行独立返回 E.164、国家 / 地区、订阅号与国际分组展示，空行自动跳过',
+        ],
+        howToUse: [
+          '选择默认国家 / 地区（号码未带国家码时使用），在文本框每行输入一个电话号码',
+          '点击「规范化」，结果表格逐行展示状态、标准 E.164、国家 / 地区、订阅号与分组展示',
+          '可点击「填入示例」快速体验，失败行会在 E.164 列显示具体原因',
+        ],
+        useCases: [
+          '把 CRM / Excel 中格式混乱的客户电话批量清洗为统一 E.164 后再入库',
+          '国际业务对接前确认号码的国家码与长度结构是否合理',
+          '开发调试时快速验证用户输入号码能否通过结构校验',
+        ],
+        privacyNote:
+          '全部为浏览器本地同步运算，电话号码不会离开设备，也不发起任何网络请求；本工具不做号段实号核验。',
+        faqs: [
+          {
+            question: '校验通过是否代表号码真实可拨通？',
+            answer:
+              '不是。本工具只校验字符、国家码与长度结构，不接入运营商号段数据库，无法判断号码是否已分配或停机，页面会显著标注这一限制。',
+          },
+          {
+            question: '为什么有的号码提示国家码无法识别？',
+            answer:
+              '内置码表仅覆盖常用国家 / 地区，小众国家码可能未收录；这类号码会返回「无法识别的国家码」，不会猜测输出。',
+          },
+          {
+            question: '批量号码中某一行出错会影响其他行吗？',
+            answer:
+              '不会。每一行独立清洗与校验，成功行给出 E.164 结果，失败行给出具体原因，空行自动跳过。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool normalizes free-form phone numbers (with spaces, dashes, parentheses, dots, and + / 00 international prefixes) into canonical E.164 form, resolves the country code from a built-in table, validates subscriber-number length, and renders an internationally grouped display. It processes multiple lines independently, runs entirely in the browser, and never uploads numbers. Only structural character and length checks are performed; no live numbering database is queried, so reachability is not guaranteed.',
+        coreFeatures: [
+          'Separator cleaning: removes spaces, dashes, parentheses, dots and slashes, detecting + and 00 prefixes',
+          'Country-code resolution: 1–3 digit longest-prefix match over a built-in table (+86, +1, +44, +81, +852, +886…), default country for unprefixed input',
+          'Strict validation: subscriber length range, the E.164 15-digit cap and illegal characters raise explicit errors',
+          'Batch processing: per-line E.164, country, subscriber number and grouped display, with blank lines skipped',
+        ],
+        howToUse: [
+          'Pick the default country (used when no country code is present) and enter one phone number per line',
+          'Click Normalize; the result table shows status, canonical E.164, country, subscriber number and grouped display per line',
+          'Use the sample button for a quick demo; failed rows show the specific reason in the E.164 column',
+        ],
+        useCases: [
+          'Clean messy CRM / spreadsheet phone columns into uniform E.164 before importing to a database',
+          'Sanity-check country codes and length structure before international business integration',
+          'Quickly verify whether user-entered numbers pass structural validation during development',
+        ],
+        privacyNote:
+          'Everything is computed synchronously and locally in your browser; phone numbers never leave your device and no network requests are made. No live number validation is performed.',
+        faqs: [
+          {
+            question: 'Does passing validation mean the number is reachable?',
+            answer:
+              'No. Only character, country-code and length structure are checked. No live numbering database is queried, so assignment or active status cannot be confirmed; the page states this limitation clearly.',
+          },
+          {
+            question: 'Why is a country code reported as unrecognized?',
+            answer:
+              'The built-in table covers common countries and regions. Less common codes may be absent, in which case an explicit error is returned rather than a guess.',
+          },
+          {
+            question: 'Does one bad line in a batch affect the others?',
+            answer:
+              'No. Each line is cleaned and validated independently; blank lines are skipped and failures include a specific reason.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'cookie-parser',
     name: 'Cookie 字符串解析与生成器',
     nameEn: 'Cookie Parser & Set-Cookie Builder',
