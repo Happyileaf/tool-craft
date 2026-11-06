@@ -183,6 +183,7 @@ export const toolLoaders: Record<
   'mime-type-lookup': () => import('./mime-type-lookup'),
   'well-known-ports': () => import('./well-known-ports'),
   'unicode-bcp47-lookup': () => import('./unicode-bcp47-lookup'),
+  'css-named-colors-lookup': () => import('./css-named-colors-lookup'),
   'ascii-tree-generator': () => import('./ascii-tree-generator'),
   'readability-score': () => import('./readability-score'),
   'vcard-generator': () => import('./vcard-generator'),

@@ -7,6 +7,7 @@
 ## 2026-11-06 ：【Agent自主迭代】新增 5 个 BCP 47 解析、CSS 命名颜色、正则速查、HTTP 方法与 HTTP 头字段参考工具
 
 - **新增**：BCP 47 语言标签解析器（unicode-bcp47-lookup）— 依据 RFC 5646 ABNF 把标签拆分为 language/extlang/script/region/variant/extension/privateuse，输出推荐大小写规范化标签并支持复制，结构化解析 Unicode u 扩展的 attribute 与 keyword，识别 grandfathered 遗留标签与 x- 私有段，对非法字符、下划线分隔、重复扩展前缀、超长等问题逐条给出错误或警告，内置常用 ISO 639/15924/3166/UN M.49 子标签表交叉验证，纯本地运算
+- **新增**：CSS 命名颜色速查（css-named-colors-lookup）— 内置 CSS Color Level 4 全部 148 个命名颜色（含 rebeccapurple）与标准 RGB/HEX/HSL 值，支持名称片段搜索、#hex/rgb()/hsl() 颜色值反查、RGB 欧氏距离最近 5 色推荐、基础 16 色分组与字母/色相排序，色卡一键复制 HEX 并附 transparent/currentcolor 关键字说明，纯本地离线运算
 
 ## 2026-11-06 ：【Agent自主迭代】新增 5 个 JSON 差异、SSE 编解码、.gitattributes 生成、Intel HEX 解析与 Patch 解析工具
 

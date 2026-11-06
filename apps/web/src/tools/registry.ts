@@ -25771,6 +25771,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'css-named-colors-lookup',
+    name: 'CSS 命名颜色速查',
+    nameEn: 'CSS Named Colors Reference',
+    description:
+      '内置 CSS Color Module Level 4 全部 148 个命名颜色（含 rebeccapurple），支持按名称搜索、HEX/RGB/HSL 值反查、最近命名色推荐与一键复制，展示 HEX、RGB、HSL 与基础 16 色标记，纯本地离线可用。',
+    descriptionEn:
+      'All 148 CSS Color Module Level 4 named colors (including rebeccapurple) built in, with name search, HEX/RGB/HSL reverse lookup, nearest named-color suggestions, one-click copy, and basic-16 markers, fully offline.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/css-named-colors-lookup',
+    iconName: 'BgColors',
+    tags: ['CSS', '命名颜色', '颜色表', 'HEX', 'RGB', 'HSL'],
+    tagsEn: ['CSS', 'Named Colors', 'Color Table', 'HEX', 'RGB', 'HSL'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS 命名颜色速查是一款纯浏览器本地运行的颜色参考工具，内置 W3C CSS Color Module Level 4 §4 定义的 148 个命名颜色关键字及其标准 RGB 值（含 rebeccapurple，以及 gray/grey、aqua/cyan 等同值别名），构建时常量内置、零网络请求。',
+        coreFeatures: [
+          '完整 148 色数据：名称、#RRGGBB、RGB 三元组、HSL 换算值与基础 16 色标记',
+          '双模式查询：按名称片段搜索（如 blue 命中 blue/darkblue/lightblue），或输入 #hex、rgb()、hsl() 反查',
+          '智能反查：精确命中命名色时给出名称，未命中时基于 RGB 欧氏距离推荐最接近的 5 个命名颜色',
+          '色卡浏览：支持字母 / 色相排序、全部 / 基础 16 色 / 扩展色分组过滤',
+          '一键复制 HEX，自动为深色 / 浅色块选择可读文字颜色；另附 transparent、currentcolor 特殊关键字说明',
+        ],
+        howToUse: [
+          '在搜索框输入颜色名称片段（如 coral）即可过滤色卡，点击任意色卡复制 HEX',
+          '输入颜色值（#ff6347、rgb(255,99,71) 或 hsl(9,100%,64%)）查看精确命中或最接近的命名颜色',
+          '使用分组按钮切换基础 16 色，使用分段控件切换字母 / 色相排序',
+          '列表底部可查看 transparent、currentcolor 两个非数值型关键字的语义说明',
+        ],
+        useCases: [
+          '前端开发时快速确认 tomato、rebeccapurple 等命名颜色的 HEX / RGB 值',
+          '设计走查时把设计稿中的任意 HEX 反查为语义化命名颜色，提升样式可读性',
+          '教学与面试复习 CSS 颜色体系、基础 16 色与 W3C 扩展命名色',
+        ],
+        privacyNote:
+          '所有颜色数据内置在代码包中，搜索、反查与复制全部在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么有 148 个名称却只有 139 个唯一 HEX？',
+            answer:
+              'W3C 标准本身定义了同值别名：aqua 与 cyan、fuchsia 与 magenta 值相同，另外 gray/grey、darkgray/darkgrey 等 7 组英美拼写也共用同一 RGB，因此 148 个名称对应 139 个唯一色值，这是标准规定而非数据错误。',
+          },
+          {
+            question: 'rebeccapurple 有什么特殊之处？',
+            answer:
+              'rebeccapurple（#663399）是 CSS Color Level 4 正式收录的第 148 个命名颜色，用以纪念 W3C CSS 专家 Eric Meyer 的女儿 Rebecca，本工具已完整收录。',
+          },
+          {
+            question: '输入任意 HEX 都能找到命名颜色吗？',
+            answer:
+              '只有 139 个唯一色值能精确命中；其他 HEX 会基于 RGB 空间欧氏距离推荐最接近的 5 个命名颜色并给出距离值，距离为 0 即完全一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'CSS Named Colors Reference is a fully offline color tool bundling all 148 named color keywords and standard RGB values defined in W3C CSS Color Module Level 4 §4 (including rebeccapurple and gray/grey, aqua/cyan value aliases), shipped as build-time constants with zero network calls.',
+        coreFeatures: [
+          'Complete 148-color dataset: name, #RRGGBB, RGB triple, computed HSL and basic-16 marker',
+          'Dual query modes: name fragment search (e.g. blue matches blue/darkblue/lightblue) or #hex/rgb()/hsl() reverse lookup',
+          'Smart matching: exact named-color hit, otherwise the 5 nearest named colors ranked by RGB Euclidean distance',
+          'Swatch browsing with alphabetical / hue sorting and all / basic-16 / extended filters',
+          'One-click HEX copy with auto readable text color, plus notes on the transparent and currentcolor keywords',
+        ],
+        howToUse: [
+          'Type a name fragment (e.g. coral) to filter swatches; click any swatch to copy its HEX',
+          'Enter a color value (#ff6347, rgb(255,99,71) or hsl(9,100%,64%)) for an exact hit or nearest-color suggestions',
+          'Switch to the basic-16 group with the filter buttons and toggle alphabetical / hue order with the segmented control',
+          'See the semantics of the non-numeric transparent and currentcolor keywords at the bottom',
+        ],
+        useCases: [
+          'Looking up HEX / RGB values of named colors such as tomato or rebeccapurple during frontend work',
+          'Reverse-matching arbitrary design HEX values to semantic named colors for more readable stylesheets',
+          'Learning or teaching the CSS color system, basic 16 colors and W3C extended named colors',
+        ],
+        privacyNote:
+          'All color data is bundled in the code package. Search, reverse lookup and copy run entirely in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why do 148 names map to only 139 unique HEX values?',
+            answer:
+              'The W3C standard itself defines value aliases: aqua/cyan and fuchsia/magenta share values, plus seven gray/grey spelling pairs. So 148 names correspond to 139 unique values by specification, not by data error.',
+          },
+          {
+            question: 'What is special about rebeccapurple?',
+            answer:
+              'rebeccapurple (#663399) is the 148th named color formally added in CSS Color Level 4, named in memory of Rebecca, daughter of W3C CSS expert Eric Meyer. It is fully included here.',
+          },
+          {
+            question: 'Can every HEX be mapped to a named color?',
+            answer:
+              'Only 139 unique values hit exactly; any other HEX returns the 5 nearest named colors by RGB Euclidean distance with distance values, where a distance of 0 means an exact match.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
