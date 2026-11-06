@@ -185,6 +185,7 @@ export const toolLoaders: Record<
   'unicode-bcp47-lookup': () => import('./unicode-bcp47-lookup'),
   'css-named-colors-lookup': () => import('./css-named-colors-lookup'),
   'regex-cheatsheet': () => import('./regex-cheatsheet'),
+  'http-methods-reference': () => import('./http-methods-reference'),
   'ascii-tree-generator': () => import('./ascii-tree-generator'),
   'readability-score': () => import('./readability-score'),
   'vcard-generator': () => import('./vcard-generator'),

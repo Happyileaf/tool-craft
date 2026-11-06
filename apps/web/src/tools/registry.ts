@@ -25973,6 +25973,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'http-methods-reference',
+    name: 'HTTP 请求方法速查',
+    nameEn: 'HTTP Request Methods Reference',
+    description:
+      '依据 RFC 9110/9111/5789 速查 GET、HEAD、POST、PUT、DELETE、CONNECT、OPTIONS、TRACE、PATCH 共 9 个标准方法的 safe/idempotent/cacheable/请求体属性、RFC 来源、典型场景、常见误用与请求响应示例，支持关键字与分组过滤，附 PUT vs PATCH、POST vs PUT、OPTIONS 与 CORS 预检专题对比，纯本地离线运行。',
+    descriptionEn:
+      'Look up all nine standard HTTP methods (GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH) per RFC 9110/9111/5789 with safe/idempotent/cacheable/body properties, RFC sources, use cases, pitfalls and request/response examples. Keyword and group filters plus PUT vs PATCH, POST vs PUT and OPTIONS/CORS preflight comparisons, fully offline.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/http-methods-reference',
+    iconName: 'Globe',
+    tags: ['HTTP', '请求方法', 'REST', '幂等', 'RFC 9110'],
+    tagsEn: ['HTTP', 'Methods', 'REST', 'Idempotent', 'RFC 9110'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP 请求方法速查是一款纯浏览器本地运行的参考工具，以结构化表格呈现 RFC 9110 定义的 9 个标准请求方法，逐条给出安全性（safe）、幂等性（idempotent）、可缓存性、是否允许请求体、RFC 来源、典型场景、常见误用与纯文本请求 / 响应示例，并提供 PUT 与 PATCH、POST 与 PUT、OPTIONS 与 CORS 预检三组专题对比。',
+        coreFeatures: [
+          '完整覆盖 GET/HEAD/POST/PUT/DELETE/CONNECT/OPTIONS/TRACE/PATCH 9 个标准方法，属性与 RFC 9110 §9.2/§9.3、RFC 9111、RFC 5789 一致',
+          'safe / idempotent / cacheable / 请求体四个布尔属性以醒目标签可视化，PATCH 明确标注为非 safe、非默认幂等',
+          '每个方法展开后含语义、RFC 来源、常见状态码、误用清单与请求 / 响应文本示例（不实际发送请求）',
+          '关键字检索方法名、中文名、语义与关键字（如「幂等」命中全部幂等方法），并支持常用 / 特殊方法分组',
+          '专题对比区：PUT vs PATCH 整体替换与部分更新、POST vs PUT 的 URI 决策与幂等、OPTIONS 与 CORS 预检关系',
+        ],
+        howToUse: [
+          '在搜索框输入方法名或关键字（如 PATCH、幂等、cors）实时过滤，使用分组按钮切换常用 CRUD 与特殊方法',
+          '点击任意方法展开详情，查看语义、RFC 来源、状态码搭配、误用清单与请求 / 响应示例',
+          '在页面底部专题对比区查看 PUT vs PATCH 等差异表格与请求体示例',
+          '所有内容均为内置静态数据，检索与渲染不发起任何网络请求',
+        ],
+        useCases: [
+          '设计 RESTful API 时确认方法选择是否符合 safe / idempotent 语义',
+          '排查重复提交、缓存失效或 PATCH 幂等性争议时对照 RFC 标准定义',
+          '面试与教学中系统复习 HTTP 方法语义及 PUT/POST/PATCH 的区别',
+        ],
+        privacyNote:
+          '全部方法数据与示例内置在代码包中，搜索、过滤与渲染均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么 PATCH 不是幂等方法？',
+            answer:
+              'RFC 5789 规定 PATCH 携带的是修改指令，重复应用同一补丁可能叠加生效（例如自增或 JSON Patch 的 add 操作），因此标准不保证幂等；能否安全重试取决于具体的补丁媒体类型与服务端实现，工具中已明确标注「非默认幂等」。',
+          },
+          {
+            question: 'safe 和 idempotent 有什么区别？',
+            answer:
+              'safe 描述方法是否只读、不会产生预期副作用（GET/HEAD/OPTIONS/TRACE）；idempotent 描述多次相同请求的最终服务器状态是否与单次一致（PUT、DELETE 虽有副作用但幂等）。所有 safe 方法天然幂等，但幂等方法不一定 safe。',
+          },
+          {
+            question: 'PUT 和 PATCH 应该如何选择？',
+            answer:
+              '客户端持有资源完整表示并希望整体替换时用 PUT（天然幂等，未提供的字段会被重置）；只修改部分字段时用 PATCH，请求体是补丁指令并通过 Content-Type 声明格式（如 application/merge-patch+json），工具内的专题对比含完整请求体示例。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'HTTP Request Methods Reference is a fully offline tool presenting the nine standard request methods defined in RFC 9110, each with safe/idempotent/cacheable/body properties, RFC sources, use cases, pitfalls and textual request/response examples, plus three focused comparisons: PUT vs PATCH, POST vs PUT and OPTIONS vs CORS preflight.',
+        coreFeatures: [
+          'All nine standard methods GET/HEAD/POST/PUT/DELETE/CONNECT/OPTIONS/TRACE/PATCH with properties aligned to RFC 9110 §9.2/§9.3, RFC 9111 and RFC 5789',
+          'Visual tags for safe, idempotent, cacheable and request-body properties; PATCH is explicitly marked non-safe and non-idempotent by default',
+          'Expandable details with semantics, RFC source, common status codes, pitfalls and request/response examples (never sent over the network)',
+          'Keyword search over names, semantics and keywords (e.g. "idempotent" matches every idempotent method) plus common/special grouping',
+          'Comparison section covering PUT vs PATCH full replacement vs partial update, POST vs PUT URI ownership, and OPTIONS vs CORS preflight',
+        ],
+        howToUse: [
+          'Type a method name or keyword (PATCH, idempotent, cors) to filter live, and switch common CRUD vs special methods with the group buttons',
+          'Expand any method to read semantics, RFC source, status code pairings, pitfalls and examples',
+          'Review the comparison tables and body examples at the bottom of the page',
+          'Everything is bundled static data; search and rendering never issue network requests',
+        ],
+        useCases: [
+          'Choosing methods that match safe/idempotent semantics while designing RESTful APIs',
+          'Settling duplicate-submit, caching or PATCH idempotency disputes against the RFC definitions',
+          'Studying HTTP method semantics and the PUT/POST/PATCH distinctions for interviews or teaching',
+        ],
+        privacyNote:
+          'All method data and examples are bundled in the code package. Search, filtering and rendering run entirely in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Why is PATCH not idempotent?',
+            answer:
+              'RFC 5789 models PATCH as a set of modification instructions; applying the same patch twice may stack effects (e.g. increments or JSON Patch add ops), so idempotency is not guaranteed by the standard and depends on the patch media type and server implementation. The tool marks it as non-idempotent by default.',
+          },
+          {
+            question: 'What is the difference between safe and idempotent?',
+            answer:
+              'Safe means the method is read-only with no intended side effects (GET/HEAD/OPTIONS/TRACE); idempotent means repeated identical requests leave the server in the same final state as one request (PUT and DELETE have side effects but are idempotent). Every safe method is idempotent, but not vice versa.',
+          },
+          {
+            question: 'How do I choose between PUT and PATCH?',
+            answer:
+              'Use PUT when the client holds the full representation and wants a complete replacement (naturally idempotent; omitted fields are reset). Use PATCH for partial field changes where the body is a patch instruction with a declared Content-Type such as application/merge-patch+json. The comparison section includes full body examples.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
