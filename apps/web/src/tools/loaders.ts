@@ -288,4 +288,5 @@ export const toolLoaders: Record<
   'set-similarity-calculator': () => import('./set-similarity-calculator'),
   'email-syntax-validator': () => import('./email-syntax-validator'),
   'dice-roll-probability': () => import('./dice-roll-probability'),
+  'syslog-parser': () => import('./syslog-parser'),
 };

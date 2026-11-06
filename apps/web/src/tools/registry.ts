@@ -26938,6 +26938,97 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'syslog-parser',
+    name: 'Syslog 日志行解析器',
+    nameEn: 'Syslog Line Parser',
+    description:
+      '本地批量解析 RFC 5424 / RFC 3164 syslog 日志，解码 PRI 设施与严重级，展开结构化数据并标注异常行。',
+    descriptionEn:
+      'Parse RFC 5424 / RFC 3164 syslog lines locally: decode PRI facility and severity, expand structured data, and flag malformed lines.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/syslog-parser',
+    iconName: 'ScrollText',
+    tags: ['Syslog', '日志', 'RFC 5424', 'RFC 3164', '运维'],
+    tagsEn: ['Syslog', 'Log', 'RFC 5424', 'RFC 3164', 'DevOps'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '<165>1 2003-10-11T22:14:15.003Z mymachine.example.com evntslog - ID47 [exampleSDID@32473 iut="3" eventSource="Application"] An application event log entry',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Syslog 日志行解析器是一款纯浏览器本地运行的日志结构化工具体，按 RFC 5424 与 RFC 3164 线协议逐行拆解日志，自动解码 PRI 值为设施（facility）与严重级（severity），并展开结构化数据（SD）块。',
+        coreFeatures: [
+          '双协议识别：自动区分 RFC 5424、RFC 3164 与无 PRI 的未知文本',
+          'PRI 解码：将 <165> 这类优先级值还原为 facility/severity 编码与标准名称，并对越界 PRI 报错',
+          '结构化数据展开：逐块解析 SD-ID 与 key="value" 参数，支持转义字符还原与多块相邻场景',
+          '批量统计：输出总行数、各格式计数与错误行数，空行自动跳过',
+        ],
+        howToUse: [
+          '将一段 syslog 日志粘贴到输入框，每行一条，结果随输入实时更新',
+          '在统计卡片查看各格式与错误行分布',
+          '在结果表格中查看每行的严重级、设施、时间戳、主机、应用与消息正文',
+          '展开任意行可查看结构化数据块、解析错误详情与原始行文本',
+        ],
+        useCases: [
+          '排查 Linux / 网络设备日志时快速理解 facility 与 severity 含义',
+          '校验日志采集管道输出的 RFC 5424 报文是否合规',
+          '批量定位缺少 PRI 前缀或字段不完整的异常日志行',
+        ],
+        privacyNote:
+          '所有解析均在浏览器本地内存中完成，不发起任何网络请求，日志内容不会被上传或留存。',
+        faqs: [
+          {
+            question: '为什么有的行被标记为「未知」格式？',
+            answer:
+              '缺少 <PRI> 尖括号前缀的行会被标记为 unknown 并原样保留在消息字段中，同时给出提示，不会被丢弃。',
+          },
+          {
+            question: 'RFC 5424 的 NILVALUE（短横线）如何处理？',
+            answer:
+              '时间戳、主机名、应用名等字段的 "-" 占位会被解析为 undefined（界面显示为 -），结构化数据为 "-" 时返回空数组。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Syslog Line Parser is a fully in-browser utility that dissects log lines per the RFC 5424 and RFC 3164 wire protocols, decoding PRI values into facility and severity names and expanding structured-data (SD) blocks.',
+        coreFeatures: [
+          'Dual-protocol detection: automatically distinguishes RFC 5424, RFC 3164, and PRI-less unknown text',
+          'PRI decoding: turns values such as <165> into facility/severity codes and standard names, with errors for out-of-range PRI',
+          'Structured-data expansion: parses SD-ID and key="value" parameters per block, including escape unescaping and adjacent blocks',
+          'Batch summary: total lines, per-format counts, and error-line count; blank lines are skipped',
+        ],
+        howToUse: [
+          'Paste syslog text into the editor, one entry per line; results update live as you type',
+          'Check the statistic cards for format and error distribution',
+          'Review severity, facility, timestamp, host, app, and message in the result table',
+          'Expand any row to inspect structured-data blocks, parse errors, and the raw line',
+        ],
+        useCases: [
+          'Understanding facility and severity when troubleshooting Linux or network-device logs',
+          'Validating RFC 5424 payloads produced by a log-collection pipeline',
+          'Spotting malformed lines that miss the PRI prefix or required fields',
+        ],
+        privacyNote:
+          'All parsing happens locally in browser memory with no network requests; log content is never uploaded or retained.',
+        faqs: [
+          {
+            question: 'Why are some lines marked as unknown?',
+            answer:
+              'Lines without an angle-bracket <PRI> prefix are marked unknown, kept verbatim in the message field with a hint, and never dropped.',
+          },
+          {
+            question: 'How are RFC 5424 NILVALUE hyphens handled?',
+            answer:
+              'Dash placeholders for timestamp, host, app and similar fields become undefined (shown as -); a dash for structured data yields an empty block array.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

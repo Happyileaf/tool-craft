@@ -208,7 +208,7 @@
 | 20261103140201 | 假设检验计算器（t 检验 / 卡方检验） | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103140201.md) |
 | 20261103140202 | 月相查询与月龄计算器 | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103140202.md) |
 | 20261103140203 | VLSM 可变长子网划分规划器 | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103140203.md) |
-| 20261103140204 | Syslog 日志行解析与字段拆分器 | Web Tool | External Reference | Claimed | 2026-11-03 | trae-agent | [详情](./idea-details/20261103140204.md) |
+| 20261103140204 | Syslog 日志行解析与字段拆分器 | Web Tool | External Reference | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103140204.md) |
 | 20261103140205 | 加班工资计算器（中国大陆劳动法） | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103140205.md) |
 | 20261103200232 | Black-Scholes 期权定价计算器（含 Greeks） | Web Tool | Exploration | Pending | 2026-11-03 | | [详情](./idea-details/20261103200232.md) |
 | 20261103200233 | Apache / Nginx Combined Log Format 访问日志解析器 | Web Tool | Existing Gap | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103200233.md) |
