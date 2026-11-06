@@ -26756,6 +26756,97 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'email-syntax-validator',
+    name: '邮箱地址语法校验与结构解析器',
+    nameEn: 'Email Syntax Validator & Parser',
+    description:
+      '对单个邮箱地址做确定性字符级语法校验，输出合法结论、逐条错误原因与警告，并拆解 local-part、domain、引号形态、IP 字面量域与 IDN 特征，覆盖连续点、长度上限、IPv4/IPv6 字面量等边界。',
+    descriptionEn:
+      'Deterministic character-level syntax validation for a single email address, with pass/fail verdicts, itemized error reasons and warnings, plus structured parsing of local-part, domain, quoted-string form, IP-literal domains and IDN signals — covering consecutive dots, length limits and IPv4/IPv6 literals.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/email-syntax-validator',
+    iconName: 'AtSign',
+    tags: ['邮箱', 'Email', '语法校验', 'RFC 5322', '解析', 'IDN'],
+    tagsEn: ['Email', 'Syntax', 'Validation', 'RFC 5322', 'Parser', 'IDN'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的邮箱地址语法校验工具：基于 RFC 5321/5322 主流实践对地址做字符级检查，给出合法 / 非法结论、逐条原因与警告，并结构化拆解 local-part 与 domain 的形态。',
+        coreFeatures: [
+          '整体结论 + 逐条原因：连续点、点号位置、空 local/domain、非法字符、长度上限等',
+          '结构拆解：local-part、domain 及 dot-atom / quoted-string、domain / IPv4 / IPv6 字面量形态',
+          '域规则：标签 1–63 字符、总长 ≤255、连字符位置、点号连续性，单标签域给出告警',
+          'IP 字面量：[1.2.3.4] 四段 0–255 与前导零检查、[IPv6:...] 十六进制与双冒号压缩检查',
+          'IDN 识别：非 ASCII 地址标注并提示 punycode 转换，地址总长按 RFC 5321 限制 254',
+          '纯本地运行：不联网、不验证邮箱是否真实存在，仅做语法诊断',
+        ],
+        howToUse: [
+          '在文本框粘贴单个邮箱地址（自动去除首尾空白）',
+          '查看合法 / 非法徽标、原因清单与警告',
+          '在结构化拆解区核对 local-part、domain 形态与长度指标，或点击示例快速体验边界向量',
+        ],
+        useCases: [
+          '表单校验前的本地语法预检与错误定位',
+          '数据清洗：批量排查导入邮箱列表中的格式问题（逐地址粘贴）',
+          '学习邮件地址规范：理解引号本地部分、IP 字面量域与 IDN 等概念',
+        ],
+        privacyNote:
+          '地址仅在浏览器内存中参与字符级校验，不发起 DNS / SMTP 等任何网络请求，也不会被上传或记录。',
+        faqs: [
+          {
+            question: '校验通过是否代表邮箱真实存在、可以收到邮件？',
+            answer:
+              '不是。本工具只做语法格式诊断，不连接 DNS、不查询 MX 记录、不进行 SMTP 握手，因此无法证明邮箱真实存在或可投递。',
+          },
+          {
+            question: '为什么单标签域名（如 a@localhost）合法但有警告？',
+            answer:
+              '单标签域名在语法上可被接受，常见于内网主机名或本地测试环境，但公共邮件系统通常要求含顶级域的完整域名，因此工具判为合法同时给出投递告警。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local email syntax validator. Following mainstream RFC 5321/5322 practice, it runs character-level checks, returns a pass/fail verdict with itemized reasons and warnings, and parses the shape of the local-part and domain.',
+        coreFeatures: [
+          'Verdict plus itemized reasons: consecutive dots, dot placement, empty local/domain, illegal characters and length limits',
+          'Structured parsing: local-part, domain and dot-atom/quoted-string, domain/IPv4/IPv6-literal forms',
+          'Domain rules: 1–63 char labels, total ≤255, hyphen placement and dot continuity, with a single-label warning',
+          'IP literals: four 0–255 octets and leading-zero checks for [1.2.3.4]; hex and :: compression checks for [IPv6:...]',
+          'IDN detection flags non-ASCII addresses with a punycode hint; total length capped at 254 per RFC 5321',
+          '100% local: no network calls and no mailbox-existence verification, syntax diagnosis only',
+        ],
+        howToUse: [
+          'Paste a single email address into the text area (surrounding whitespace is trimmed automatically)',
+          'Review the pass/fail badge, reason list and warnings',
+          'Inspect the structured local-part/domain forms and length metrics, or use examples to explore edge cases',
+        ],
+        useCases: [
+          'Local syntax pre-check and error localization before form submission',
+          'Data cleansing: diagnose formatting issues in imported email lists address by address',
+          'Learning email specifications such as quoted local-parts, IP-literal domains and IDN',
+        ],
+        privacyNote:
+          'Addresses stay in browser memory for character-level checks. No DNS/SMTP or other network requests are made, and nothing is uploaded or logged.',
+        faqs: [
+          {
+            question: 'Does a passing result mean the mailbox really exists and can receive mail?',
+            answer:
+              'No. The tool performs syntax diagnosis only — it never queries DNS or MX records nor performs an SMTP handshake, so it cannot prove that a mailbox exists or is deliverable.',
+          },
+          {
+            question: 'Why is a single-label domain like a@localhost valid but warned about?',
+            answer:
+              'A single-label domain is syntactically acceptable and common for intranet hosts or local testing, but public mail systems generally expect a full domain with a TLD, so it passes while receiving a deliverability warning.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
