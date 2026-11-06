@@ -8507,6 +8507,104 @@ info: request finished`,
     },
   },
   {
+    slug: 'vector-calculator',
+    name: '二维 / 三维向量运算计算器（点积、叉积、夹角、投影）',
+    nameEn: '2D/3D Vector Calculator',
+    description:
+      '对二维或三维几何向量计算模长、单位化、加减、数乘、点积、叉积（仅 3D）、夹角（度 / 弧度）与标量 / 向量投影，零向量等非法情形明确报错而非返回 NaN，纯浏览器本地计算。',
+    descriptionEn:
+      'Computes magnitude, normalization, addition, subtraction, scalar multiplication, dot product, cross product (3D only), angle (degrees/radians) and scalar/vector projection for 2D or 3D geometric vectors. Invalid cases such as zero vectors raise explicit errors instead of NaN, fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/vector-calculator',
+    iconName: 'AimOutlined',
+    tags: ['向量', '点积', '叉积', '夹角', '投影', '线性代数'],
+    tagsEn: ['Vector', 'Dot Product', 'Cross Product', 'Angle', 'Projection', 'Linear Algebra'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'A = (1, 2, 3)，B = (4, 5, 6)',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具面向二维 / 三维几何向量，提供模长、单位化、加减法、数乘、点积、叉积（仅 3D）、夹角（度或弧度）以及标量投影与向量投影等常用运算。输入分量后一次性输出全部结果，所有运算均在浏览器本地完成。对零向量单位化 / 求夹角、向零向量投影等非法情形会给出明确错误，而不是产生 NaN。',
+        coreFeatures: [
+          '基础运算：模长、单位化、A±B、数乘 k·A',
+          '点积与叉积：点积支持 2D/3D，叉积按定义仅 3D 可用，2D 下禁用并提示',
+          '夹角与投影：由点积公式反余弦求夹角（度 / 弧度可切），标量投影与向量投影分别给出',
+          '健壮性：维度一致性校验、零向量非法运算明确报错、浮点结果统一舍入并消除 -0',
+        ],
+        howToUse: [
+          '选择 2D 或 3D 维度与夹角单位（度 / 弧度），填写向量 A、B 各分量与数乘标量 k',
+          '点击「计算」，结果卡片展示全部运算；非法运算（如零向量单位化）在对应卡片显示错误原因',
+          '2D 模式下叉积卡片会提示不可用，切换到 3D 后自动恢复',
+        ],
+        useCases: [
+          '学习线性代数 / 大学物理时快速核对向量运算结果',
+          '图形学、游戏开发中计算法线（叉积）、光照（点积）与投影',
+          '工程计算中求两方向夹角、向量在某轴上的投影分量',
+        ],
+        privacyNote:
+          '全部为浏览器本地同步数值运算，不发起任何网络请求，输入分量不会离开设备。',
+        faqs: [
+          {
+            question: '为什么 2D 模式不能算叉积？',
+            answer:
+              '叉积 A×B 的结果是一个同时垂直于 A、B 的向量，仅在三维空间中有定义；二维没有唯一的垂直向量方向，因此工具在 2D 下禁用叉积并明确提示，切换到 3D 即可使用。',
+          },
+          {
+            question: '为什么输入零向量时有些结果报错？',
+            answer:
+              '单位化需要除以模长、夹角公式含 |A||B| 分母、投影需要参考向量模长，零向量会导致除零。工具直接给出明确错误而不是返回 NaN，避免误导后续计算。',
+          },
+          {
+            question: '和已有的矩阵计算器有什么区别？',
+            answer:
+              '矩阵计算器处理矩阵之间的乘法、行列式、逆矩阵等；本工具聚焦自由几何向量的点积、叉积、夹角、投影等几何运算，二者数据模型与用途不同，互不替代。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool operates on 2D/3D geometric vectors and provides magnitude, normalization, addition, subtraction, scalar multiplication, dot product, cross product (3D only), angle (degrees or radians), and scalar/vector projection. All results are computed at once in the browser. Invalid operations such as normalizing a zero vector, taking an angle involving a zero vector, or projecting onto a zero vector raise explicit errors instead of producing NaN.',
+        coreFeatures: [
+          'Basics: magnitude, normalization, A±B, scalar multiplication k·A',
+          'Dot and cross products: dot product in 2D/3D; cross product by definition in 3D only, disabled with a hint in 2D',
+          'Angle and projection: arccosine of the dot-product cosine (degrees/radians toggle), plus scalar and vector projection',
+          'Robustness: dimension consistency checks, explicit errors for illegal zero-vector operations, rounded output with -0 removed',
+        ],
+        howToUse: [
+          'Choose 2D/3D and the angle unit (degrees/radians), then fill in components of A and B and the scalar k',
+          'Click Calculate; result cards show every operation, with illegal ones (e.g. normalizing a zero vector) showing an error on that card',
+          'The cross-product card reports unavailable in 2D and becomes active after switching to 3D',
+        ],
+        useCases: [
+          'Verify vector homework while learning linear algebra or physics',
+          'Compute normals (cross product), lighting (dot product) and projections in graphics or game development',
+          'Find the angle between directions or projected components in engineering calculations',
+        ],
+        privacyNote:
+          'All numeric computation runs synchronously and locally in the browser; no network requests are made and components never leave your device.',
+        faqs: [
+          {
+            question: 'Why is cross product disabled in 2D?',
+            answer:
+              'The cross product A×B yields a vector perpendicular to both A and B, which is only defined in three dimensions. There is no unique perpendicular direction in 2D, so the tool disables it with a clear hint and re-enables it in 3D.',
+          },
+          {
+            question: 'Why do some operations error on a zero vector?',
+            answer:
+              'Normalization divides by magnitude, the angle formula has |A||B| in the denominator, and projection needs a non-zero reference vector. Zero vectors cause division by zero, so the tool raises an explicit error rather than returning NaN.',
+          },
+          {
+            question: 'How is this different from the matrix calculator?',
+            answer:
+              'The matrix calculator handles matrix multiplication, determinants, inverses, etc., while this tool focuses on geometric operations of free vectors—dot product, cross product, angle and projection. Their data models and purposes differ and do not overlap.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'cookie-parser',
     name: 'Cookie 字符串解析与生成器',
     nameEn: 'Cookie Parser & Set-Cookie Builder',
