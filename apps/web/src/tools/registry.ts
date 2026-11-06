@@ -26847,6 +26847,97 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'dice-roll-probability',
+    name: '多面骰子投掷模拟与点数和概率分布计算器',
+    nameEn: 'Dice Roll & Probability Distribution Calculator',
+    description:
+      '解析 NdS、常量修正与 kh/kl/dh/dl 保留丢弃规则的骰子表达式，使用 Web Crypto 随机投掷并展示逐粒明细，同时用动态规划计算点数和的精确概率、累积分布、期望值与上尾概率，支持 d4/d6/d20/d100 等多面骰。',
+    descriptionEn:
+      'Parse dice expressions with NdS, constant modifiers and kh/kl/dh/dl keep/drop rules, roll with Web Crypto while showing per-die details, and use dynamic programming to compute exact sum probabilities, cumulative distribution, expected value and upper-tail probabilities for dice from d4 to d100.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/dice-roll-probability',
+    iconName: 'Dices',
+    tags: ['骰子', '概率分布', '期望值', 'TRPG', '动态规划', '随机模拟'],
+    tagsEn: ['Dice', 'Probability', 'Expected Value', 'TRPG', 'Dynamic Programming', 'Simulation'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的骰子工具：既能用密码学安全随机数模拟真实投掷，又能用概率动态规划给出点数和的精确分布，而不是仅靠有限次模拟估算。',
+        coreFeatures: [
+          '表达式解析：NdS（N 可省略）、+/- 常量、多骰子项相加（2d6+1d4）',
+          '保留 / 丢弃规则：kh/kl 保留最高最低、dh/dl 丢弃最高最低，覆盖优势劣势骰',
+          'Web Crypto 投掷：逐粒点数、保留丢弃标记、骰子和与最终总和，保留最近 10 次历史',
+          '精确分布：概率 DP 输出每个总和的概率、累积概率 P(X≤k)、期望值与极值',
+          '区间概率：输入目标值计算 P(X≥目标)，直方图直观展示分布形态',
+          '纯本地运行：随机数由 crypto.getRandomValues 生成，不发起任何网络请求',
+        ],
+        howToUse: [
+          '输入或点击示例表达式，如 3d6+2、2d20kh1、4d6dl1',
+          '点击「投掷」查看随机结果与逐粒明细，调整目标值查看上尾概率',
+          '在分布表与直方图中核对精确概率、累积分布与期望值',
+        ],
+        useCases: [
+          'TRPG / 跑团：快速结算攻击、伤害与属性骰，理解优势劣势骰的分布差异',
+          '概率教学：直观观察中心极限定理下点数和趋近正态的过程',
+          '桌游与游戏数值设计：评估检定成功率与伤害区间',
+        ],
+        privacyNote:
+          '所有投掷均在浏览器本地完成，随机数来自 Web Crypto API，表达式与结果不会被上传或记录。',
+        faqs: [
+          {
+            question: '分布是模拟出来的还是精确计算的？',
+            answer:
+              '分布表、期望值与累积概率由动态规划精确计算（以归一化概率递推，避免大组合数溢出），与投掷次数无关；「投掷」按钮仅用于模拟真实随机结果。',
+          },
+          {
+            question: 'kh、dl 这些后缀是什么意思？',
+            answer:
+              'kh<n> 保留最高的 n 粒、kl<n> 保留最低的 n 粒；dh<n>/dl<n> 分别丢弃最高 / 最低的 n 粒，省略 n 时默认 1。例如 2d20kh1 即 D&D 的优势骰，4d6dl1 是经典的属性生成方式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local dice tool that both simulates real rolls with cryptographically secure randomness and computes the exact sum distribution with probability dynamic programming instead of estimating from a limited number of trials.',
+        coreFeatures: [
+          'Expression parsing: NdS (N optional), +/- constants and combined terms like 2d6+1d4',
+          'Keep/drop rules: kh/kl keep highest/lowest, dh/dl drop highest/lowest, covering advantage and disadvantage',
+          'Web Crypto rolls with per-die values, keep/drop markers, dice sum and final total, keeping the latest 10 rolls',
+          'Exact distribution: probability DP yields per-sum probability, cumulative P(X≤k), expected value and extremes',
+          'Tail probability: enter a target to get P(X≥target), with a histogram of the distribution shape',
+          '100% local: randomness comes from crypto.getRandomValues with no network requests',
+        ],
+        howToUse: [
+          'Type or pick an example expression such as 3d6+2, 2d20kh1 or 4d6dl1',
+          'Click Roll for random outcomes and per-die details, then adjust the target for tail probability',
+          'Verify exact probabilities, cumulative distribution and expected value in the table and histogram',
+        ],
+        useCases: [
+          'TRPG sessions: resolve attack, damage and ability rolls and understand advantage/disadvantage distributions',
+          'Probability teaching: watch the sum distribution approach normal as dice count grows',
+          'Board-game and game-value design: assess check success rates and damage ranges',
+        ],
+        privacyNote:
+          'Every roll happens locally in your browser using the Web Crypto API. Expressions and results are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Is the distribution simulated or exact?',
+            answer:
+              'The table, expected value and cumulative probabilities are exact results of probability dynamic programming (normalized probabilities to avoid huge combinatorial counts), independent of roll count. The Roll button only simulates actual random outcomes.',
+          },
+          {
+            question: 'What do suffixes like kh and dl mean?',
+            answer:
+              'kh<n> keeps the highest n dice, kl<n> keeps the lowest n; dh<n>/dl<n> drop the highest/lowest n, defaulting to 1 when n is omitted. For example 2d20kh1 is the D&D advantage roll and 4d6dl1 is the classic ability-score method.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
