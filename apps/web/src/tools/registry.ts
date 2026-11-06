@@ -26175,6 +26175,94 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'utf8-bom-handler',
+    name: 'UTF-8 BOM 添加 / 剥离与字节序标记处理器',
+    nameEn: 'UTF-8 BOM Handler',
+    description:
+      '检测文本开头与内部的 U+FEFF（UTF-8 编码 EF BB BF，3 字节），一键添加（幂等不重复）、剥离开头 BOM 或移除全文全部 U+FEFF 零宽字符，实时展示 UTF-8 字节大小与处理前后字节差。',
+    descriptionEn:
+      'Detect the leading and inner U+FEFF (EF BB BF, 3 bytes in UTF-8), add it idempotently, strip the leading BOM, or remove every U+FEFF in the text, with live UTF-8 byte-size stats and before/after deltas.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/utf8-bom-handler',
+    iconName: 'Binary',
+    tags: ['UTF-8', 'BOM', '字节序标记', 'U+FEFF', '文本清洗'],
+    tagsEn: ['UTF-8', 'BOM', 'Byte Order Mark', 'U+FEFF', 'Text Cleaning'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '﻿name, city\nAlice, New York﻿\nBob, London',
+    doc: {
+      zh: {
+        whatIsIt:
+          'UTF-8 BOM 处理器是一款纯浏览器本地运行的字节序标记工具：检测文本是否以 U+FEFF 开头、统计文本内部隐藏的 U+FEFF 零宽字符，并支持添加、剥离开头 BOM 或清除全文 U+FEFF，同时按 TextEncoder UTF-8 编码给出精确字节统计。',
+        coreFeatures: [
+          '开头 BOM 检测：识别 U+FEFF（EF BB BF）并以标签醒目标注',
+          '内部 U+FEFF 计数：把出现在文本中间的不可见零宽字符单独统计并告警',
+          '四种模式：仅检测、添加 BOM（幂等，已有 BOM 不重复添加）、仅剥离开头 BOM、剥离全部 U+FEFF',
+          'UTF-8 字节统计：展示当前字节数、去除全部 BOM 后的字节数与处理前后差值（每个 BOM 固定 3 字节）',
+          '纯字符串与 TextEncoder 运算，零新增依赖，结果一键复制',
+        ],
+        howToUse: [
+          '在文本框粘贴或输入需要处理的文本，检测结论与字节统计即时刷新',
+          '通过按钮切换处理模式：仅检测、添加 BOM、剥离开头 BOM、剥离全部 U+FEFF',
+          '查看结果区的开头 BOM 状态与字节变化（+3 / −3 等），点击「复制处理结果」获取文本',
+        ],
+        useCases: [
+          '清洗从 Windows 记事本或 Excel 导出的带 BOM 的 CSV / JSON，避免解析器把 BOM 当作首字段字符',
+          '排查文本中间混入 U+FEFF 零宽字符导致的隐形语法错误或比对失败',
+          '为要求带 BOM 的遗留系统（如部分 ERP 导入模板）主动添加 UTF-8 BOM',
+        ],
+        privacyNote: '所有检测与处理均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: 'UTF-8 文本需要 BOM 吗？',
+            answer:
+              '通常不需要。Unicode 标准允许但不推荐在 UTF-8 中使用 BOM：UTF-8 字节序固定，不存在字节序歧义，而开头的 U+FEFF 会被 JSON 解析器、Shell 脚本（#! 行）、PHP 头部函数等当作普通字符导致错误。仅在对接强制要求 BOM 的遗留 Windows 软件时才需要添加。',
+          },
+          {
+            question: '开头 BOM 和文本内部的 U+FEFF 有什么区别？',
+            answer:
+              '同一个码位 U+FEFF，出现在文本开头时按 BOM（字节序标记）语义解释；出现在其他位置时是零宽不换行空格（ZERO WIDTH NO-BREAK SPACE），视觉上不可见却真实占 3 个 UTF-8 字节，可能造成字符串匹配、去重与解析异常。本工具对两者分别计数，「剥离开头 BOM」只处理首个字符，「剥离全部」才会清除内部零宽字符。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'UTF-8 BOM Handler is a fully local tool that detects a leading U+FEFF (EF BB BF), counts hidden inner U+FEFF zero-width characters, and can add, strip the leading BOM, or remove every U+FEFF, with precise UTF-8 byte statistics from TextEncoder.',
+        coreFeatures: [
+          'Leading-BOM detection for U+FEFF (EF BB BF) with clear status tags',
+          'Inner U+FEFF counting that flags invisible zero-width characters beyond the first position',
+          'Four modes: detect only, add BOM (idempotent), strip leading BOM, strip all U+FEFF',
+          'UTF-8 byte stats: current size, size without any BOM, and before/after delta (each BOM is exactly 3 bytes)',
+          'Pure string and TextEncoder logic with zero new dependencies and one-click copy',
+        ],
+        howToUse: [
+          'Paste or type text; the detection summary and byte statistics update instantly',
+          'Switch modes with the buttons: detect, add BOM, strip leading BOM, or strip all U+FEFF',
+          'Check the resulting leading-BOM status and byte delta (+3 / −3), then copy the processed text',
+        ],
+        useCases: [
+          'Cleaning BOM-prefixed CSV/JSON exported from Windows Notepad or Excel so parsers do not treat the BOM as part of the first field',
+          'Hunting invisible inner U+FEFF characters that cause subtle syntax errors or comparison failures',
+          'Adding a UTF-8 BOM for legacy systems (e.g. ERP import templates) that require one',
+        ],
+        privacyNote: 'All detection and processing run locally in the browser with no network requests.',
+        faqs: [
+          {
+            question: 'Does UTF-8 need a BOM?',
+            answer:
+              'Usually no. The Unicode Standard permits but does not recommend a BOM in UTF-8: UTF-8 has fixed byte order, so the mark carries no meaning there, yet a leading U+FEFF breaks JSON parsers, shell shebang lines and PHP header functions. Add it only for legacy Windows software that explicitly requires it.',
+          },
+          {
+            question: 'What is the difference between a leading BOM and an inner U+FEFF?',
+            answer:
+              'They are the same code point U+FEFF. At the start of text it is interpreted as the byte order mark; elsewhere it is a zero-width no-break space—invisible but still 3 UTF-8 bytes, and a common cause of string-match and parsing bugs. This tool counts them separately: "strip leading" removes only the first character, while "strip all" also clears inner zero-width characters.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
