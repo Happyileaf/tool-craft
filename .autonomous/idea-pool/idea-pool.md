@@ -249,11 +249,6 @@
 | 20261105140802 | CORS 响应头配置生成器（Allow-Origin / Credentials / 预检缓存策略拼装与校验） | Web Tool | External Reference | Pending | 2026-11-05 | | [详情](./idea-details/20261105140802.md) |
 | 20261105140803 | SSE（Server-Sent Events）消息格式编码 / 解码器（event/data/id/retry 字段与多行 data） | Web Tool | External Reference | In Progress | 2026-11-05 | trae-agent | [详情](./idea-details/20261105140803.md) |
 | 20261105140804 | 表达式调度场算法可视化器（中缀转后缀 RPN 与逐步求值过程演示） | Web Tool | Exploration | Pending | 2026-11-05 | | [详情](./idea-details/20261105140804.md) |
-| 20261106020725 | BCP 47 语言标签解析器 | Web Tool | Exploration | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106020725.md) |
-| 20261106020726 | CSS 命名颜色速查 | Web Tool | Exploration | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106020726.md) |
-| 20261106020727 | 正则表达式语法速查 | Web Tool | Exploration | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106020727.md) |
-| 20261106020728 | HTTP 请求方法速查 | Web Tool | Exploration | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106020728.md) |
-| 20261106020729 | HTTP 头字段速查 | Web Tool | Exploration | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106020729.md) |
 | 20261106060111 | 邮箱地址语法校验与结构解析器 | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106060111.md) |
 | 20261106060112 | iCalendar RRULE 重复规则解析与展开器（RFC 5545） | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106060112.md) |
 | 20261106060113 | 二维/三维向量运算计算器（点积、叉积、夹角、投影） | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106060113.md) |
