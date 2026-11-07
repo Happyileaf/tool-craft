@@ -295,4 +295,5 @@ export const toolLoaders: Record<
   'cors-header-generator': () => import('./cors-header-generator'),
   'dkim-record-generator': () => import('./dkim-record-generator'),
   'po-json-converter': () => import('./po-json-converter'),
+  'java-descriptor-converter': () => import('./java-descriptor-converter'),
 };

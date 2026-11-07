@@ -27624,6 +27624,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'java-descriptor-converter',
+    name: 'Java 内部类名与描述符转换器',
+    nameEn: 'Java Descriptor & Binary Name Converter',
+    description:
+      '按 JVMS §4.2 / §4.3 / §4.3.3 在本地完成 Java 内部名（binary name）与源码类名互转、字段描述符与方法描述符的生成和解析，支持数组维度、原始类型与引用类型，非法描述符给出具体错误位置。',
+    descriptionEn:
+      'Convert Java binary names, field descriptors and method descriptors per JVMS §4.2 / §4.3 / §4.3.3 entirely in the browser, with array dimensions, primitives and reference types, and position-specific errors for malformed descriptors.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/java-descriptor-converter',
+    iconName: 'Code',
+    tags: ['Java', 'JVM', '字节码', '描述符', 'Descriptor', '内部类', 'JVMS'],
+    tagsEn: ['Java', 'JVM', 'Bytecode', 'Descriptor', 'Binary Name', 'Inner Class', 'JVMS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '([[Ljava/lang/String;I)V',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Java 内部类名与描述符转换器面向字节码调试场景，依据 Java 虚拟机规范在浏览器本地完成三类表示的双向转换：内部名（斜杠分隔、嵌套类以 $ 标记，如 java/util/Map$Entry）与源码全限定名（点号分隔）；字段描述符（如 [[Ljava/lang/String;、I、Z）；方法描述符（如 (Ljava/lang/String;I)V），并拆解参数列表与返回类型。',
+        coreFeatures: [
+          '内部名 ↔ 源码类名双向转换，正确处理包分隔斜杠与嵌套类 $ 标记',
+          '字段描述符解析与生成，覆盖八类原始类型（含 void）、引用类型与最多 255 维数组',
+          '方法描述符解析与生成，拆解参数类型列表与返回类型并渲染可读签名',
+          '严格语法校验：缺少分号、非法字符、void 数组、空段等错误均给出字符位置',
+          '零依赖纯 TypeScript 函数，主线程毫秒级完成，全部输入仅留在本机',
+        ],
+        howToUse: [
+          '在「字段描述符 / 方法描述符 / 内部名」标签中选择需要的转换方向',
+          '粘贴 JVM 描述符或 Java 源码类型，结果随输入实时更新',
+          '方法描述符可在解析视图查看参数与返回类型，或用逗号分隔的参数加返回类型反向生成',
+          '点击「复制」获取结果；非法输入会在红色提示框中看到具体错误位置',
+        ],
+        useCases: [
+          '阅读 javap -s 输出或字节码日志时，把描述符快速还原为可读 Java 类型',
+          '编写字节码生成库（ASM、ByteBuddy）时核对方法与字段描述符',
+          '排查 ClassFormatError、NoSuchMethodError 中的类型签名不匹配问题',
+        ],
+        privacyNote:
+          '所有解析与转换均在浏览器本地由纯函数完成，类名与描述符不会上传到任何服务器，断网环境同样可用。',
+        faqs: [
+          {
+            question: '为什么 java.util.Map.Entry 转内部名时嵌套类没有变成 $？',
+            answer:
+              '源码全限定名中的点号同时承担包分隔与嵌套类分隔，仅凭字符串无法区分二者，因此默认统一映射为 JVM 斜杠。若已知是嵌套类，请按 JVMS 二进制名显式书写「java.util.Map$Entry」，工具会保留 $ 标记。',
+          },
+          {
+            question: '字段描述符和方法描述符有什么区别？',
+            answer:
+              '字段描述符描述单个类型，如 I 表示 int、[Ljava/lang/String; 表示 String 数组；方法描述符以括号包裹参数描述符列表，括号后接返回类型，如 (Ljava/lang/String;I)V 表示接收 String 与 int、无返回值（void）的方法。',
+          },
+          {
+            question: '为什么 void[] 会报错？',
+            answer:
+              'JVMS 规定 void（描述符 V）只能作为方法返回类型，不能作为字段或数组元素类型，因此 void[] 与 [V 都会被拒绝并提示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Java Descriptor & Binary Name Converter supports bytecode debugging by converting three JVM representations locally: binary names (slash-separated, nested classes marked with $, e.g. java/util/Map$Entry) vs source fully-qualified names; field descriptors (e.g. [[Ljava/lang/String;, I, Z); and method descriptors (e.g. (Ljava/lang/String;I)V), with parameter and return type breakdown, following the JVM Specification.',
+        coreFeatures: [
+          'Bidirectional binary name ↔ source name conversion, handling package slashes and nested-class $ markers',
+          'Field descriptor parsing and generation across all eight primitives (incl. void), reference types and up to 255 array dimensions',
+          'Method descriptor parsing and generation with parameter list, return type and a readable signature view',
+          'Strict validation with character-position errors for missing semicolons, illegal characters, void arrays and empty segments',
+          'Zero-dependency pure TypeScript functions on the main thread; all input stays on the device',
+        ],
+        howToUse: [
+          'Pick the field descriptor, method descriptor or binary name tab for the direction you need',
+          'Paste a JVM descriptor or Java source type; the result updates live',
+          'Inspect method parameters and return types, or generate a descriptor from comma-separated parameters plus a return type',
+          'Click Copy to grab the result; malformed input shows a red alert with the exact error position',
+        ],
+        useCases: [
+          'Turning javap -s output or bytecode logs back into readable Java types',
+          'Verifying method and field descriptors when writing ASM or ByteBuddy bytecode generators',
+          'Diagnosing type-signature mismatches behind ClassFormatError or NoSuchMethodError',
+        ],
+        privacyNote:
+          'All parsing and conversion run locally in the browser through pure functions. Class names and descriptors are never uploaded, and the tool works fully offline.',
+        faqs: [
+          {
+            question: 'Why does java.util.Map.Entry not become a $ nested name?',
+            answer:
+              'Dots in a source fully-qualified name serve both package and nested-class separation, which cannot be distinguished from the string alone, so they map uniformly to JVM slashes. When you know it is a nested class, write the binary form explicitly as java.util.Map$Entry and the $ marker is preserved.',
+          },
+          {
+            question: 'What is the difference between field and method descriptors?',
+            answer:
+              'A field descriptor describes one type, e.g. I for int or [Ljava/lang/String; for a String array. A method descriptor wraps the parameter descriptor list in parentheses followed by the return type, e.g. (Ljava/lang/String;I)V for a method taking String and int with void return.',
+          },
+          {
+            question: 'Why is void[] rejected?',
+            answer:
+              'The JVMS allows void (descriptor V) only as a method return type, never as a field or array component, so both void[] and [V] are rejected with an explanatory error.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
