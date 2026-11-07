@@ -298,4 +298,5 @@ export const toolLoaders: Record<
   'pricing-markup-calculator': () => import('./pricing-markup-calculator'),
   'm3u-playlist-parser': () => import('./m3u-playlist-parser'),
   'plane-geometry-calculator': () => import('./plane-geometry-calculator'),
+  'black-scholes-calculator': () => import('./black-scholes-calculator'),
 };

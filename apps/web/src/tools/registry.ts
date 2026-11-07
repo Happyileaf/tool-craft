@@ -27903,6 +27903,99 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'black-scholes-calculator',
+    name: 'Black-Scholes 期权定价计算器（含 Greeks）',
+    nameEn: 'Black-Scholes Option Pricing & Greeks Calculator',
+    description:
+      '基于 Black-Scholes-Merton 模型计算欧式看涨/看跌期权理论价格与 Delta、Gamma、Theta、Vega、Rho 五项 Greeks，支持连续股息率，并可由市场价格用二分法反解年化隐含波动率；正态分布函数内置 erf 近似，零依赖、纯本地运行。',
+    descriptionEn:
+      'Price European call/put options with the Black-Scholes-Merton model and compute Delta, Gamma, Theta, Vega and Rho, with continuous dividend yield and bisection-based implied volatility backed out from a market price. The normal CDF uses a built-in erf approximation — zero dependencies, fully local.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/black-scholes-calculator',
+    iconName: 'Sigma',
+    tags: ['期权', 'Black-Scholes', 'Greeks', '隐含波动率', '金融', '定价'],
+    tagsEn: ['Options', 'Black-Scholes', 'Greeks', 'Implied Volatility', 'Finance', 'Pricing'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '面向金融学习者与从业者的纯客户端欧式期权定价工具，实现完整的 Black-Scholes-Merton 公式与五项风险敏感度指标，并提供隐含波动率反解，所有计算不依赖外部服务。',
+        coreFeatures: [
+          '看涨/看跌理论价格：支持标的现价、行权价、无风险利率、年化波动率、期限（年）与连续股息率',
+          '五项 Greeks：Delta、Gamma、Theta（按自然日）、Vega 与 Rho（按 1% 变动口径缩放）',
+          '隐含波动率：输入市场价格后用二分法反解，并校验无套利价格下界',
+          '稳健边界：零波动或到期时回退内在价值，避免 0/0；非法参数逐条报错',
+          '内置 erf 近似实现正态 CDF（误差 < 1.5e-7），不引入任何数值计算依赖',
+          '满足 put-call parity 的对称实现，纯本地运行不上传数据',
+        ],
+        howToUse: [
+          '选择看涨 Call 或看跌 Put',
+          '填写 S、K、r、σ、T、q，利率与波动率支持 5% 或 0.05 两种写法，期限以年为单位',
+          '读取理论价格与 Greeks 卡片',
+          '需要隐含波动率时在「市场价格」填入成交价，结果区自动给出年化 IV',
+        ],
+        useCases: [
+          '期权课程作业：核对 BSM 公式手算结果与 Greeks',
+          '报价合理性检查：对比市场价反推出的隐含波动率',
+          '风险度量：快速理解 Delta 对冲、Theta 衰减与 Vega 敞口',
+        ],
+        privacyNote:
+          '所有价格与参数仅在浏览器本地参与浮点运算，不会被收集或发送到任何服务器。',
+        faqs: [
+          {
+            question: 'Vega 和 Rho 的数值为什么看起来比教材小？',
+            answer:
+              '教材公式给出的是对 1 个波动率/利率单位（即 100%）的敏感度，本工具按实务口径除以 100，展示标的参数每变动 1% 时期权价格的变化，Theta 则按自然日折算。',
+          },
+          {
+            question: '适用哪些期权，有什么限制？',
+            answer:
+              '适用于欧式期权、标的可近似为几何布朗运动且波动率恒定的情形。美式期权、随机波动率、跳跃扩散等场景需要更复杂的模型，本工具不覆盖。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A client-side European option pricing tool for finance learners and practitioners, implementing the full Black-Scholes-Merton formula, five risk-sensitivity Greeks and implied-volatility solving without any external service.',
+        coreFeatures: [
+          'Call/put theoretical price from spot, strike, risk-free rate, annual volatility, time to maturity in years and continuous dividend yield',
+          'Five Greeks: Delta, Gamma, daily Theta, plus Vega and Rho scaled to 1% parameter moves',
+          'Implied volatility: enter a market price to solve via bisection, with no-arbitrage lower-bound validation',
+          'Robust edges: zero volatility or maturity falls back to intrinsic value instead of 0/0; bad parameters raise explicit errors',
+          'Built-in erf approximation for the normal CDF (error < 1.5e-7) with no numerical dependencies',
+          'Symmetric implementation satisfying put-call parity, running entirely locally',
+        ],
+        howToUse: [
+          'Choose call or put',
+          'Fill in S, K, r, σ, T and q; rates accept either 5% or 0.05, and maturity is in years',
+          'Read the theoretical price and Greeks cards',
+          'For implied volatility, enter a traded price in the market-price field to see annualized IV automatically',
+        ],
+        useCases: [
+          'Coursework: verify hand-computed BSM prices and Greeks',
+          'Quote sanity checks: compare the IV implied by a market price',
+          'Risk literacy: build intuition for Delta hedging, Theta decay and Vega exposure',
+        ],
+        privacyNote:
+          'All prices and parameters are used only in local floating-point math and are never collected or sent to any server.',
+        faqs: [
+          {
+            question: 'Why do Vega and Rho look smaller than in textbooks?',
+            answer:
+              'Textbook formulas show sensitivity to a full unit (100%) of volatility or rate. This tool divides by 100 to present the price change per 1% move, matching trading conventions, while Theta is expressed per calendar day.',
+          },
+          {
+            question: 'Which options does it support, and what are the limits?',
+            answer:
+              'It suits European options where the underlying approximates geometric Brownian motion with constant volatility. American options, stochastic volatility and jump-diffusion settings require richer models that this tool does not cover.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
