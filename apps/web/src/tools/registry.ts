@@ -27624,6 +27624,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'pricing-margin-calculator',
+    name: '毛利率 / 加价率 / 售价双向定价计算器',
+    nameEn: 'Margin & Markup Pricing Calculator',
+    description:
+      '在成本价、售价、毛利率（分母为售价）与加价率（分母为成本）之间按已知量双向求解，实时算出毛利额；支持批量「成本,目标毛利率」生成售价 CSV、折扣场景保本价反推，以及毛利率与加价率互转对照。零依赖纯本地运算，明确区分两个极易混淆的定价口径。',
+    descriptionEn:
+      'Solve bidirectionally between cost, price, gross margin (profit divided by price) and markup (profit divided by cost), deriving the missing values and gross profit live. It also batches cost-plus-margin rows into a price CSV, computes the break-even price under a discount, and provides a margin-to-markup lookup table. Fully local, zero-dependency computation that keeps the two easily confused pricing definitions explicit.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/pricing-margin-calculator',
+    iconName: 'Gauge',
+    tags: ['毛利率', '加价率', '定价', '售价', '保本价', '零售'],
+    tagsEn: ['Margin', 'Markup', 'Pricing', 'Break-even', 'Retail', 'CSV'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '毛利率 / 加价率 / 售价双向定价计算器是一款纯浏览器本地运行的定价工具。它围绕两个分母不同的比率展开：毛利率 =（售价−成本）/售价，加价率 =（售价−成本）/成本。只要填入成本、售价、毛利率、加价率中的任意两个有效已知量，就能一次性解出其余全部数值，并额外提供批量定价、折扣保本价与两率互转对照。',
+        coreFeatures: [
+          '双向求解：成本+售价、成本+毛利率、成本+加价率、售价+毛利率、售价+加价率五种组合均可求解',
+          '口径分离：界面与结果同时标注毛利率（除售价）与加价率（除成本），避免混用导致定价错误',
+          '批量定价：粘贴「成本,毛利率%」多行文本，输出含表头的售价 CSV，非法行带行号告警且不中断其余行',
+          '折扣保本价：给定成本与让利折扣反推保本售价，并回算折后收入验算',
+          '两率对照表：常用毛利率档位对应的加价率与逆运算结果一表呈现',
+        ],
+        howToUse: [
+          '在「双向定价求解」标签页填入至少两个已知量（成本/售价之一搭配毛利率或加价率，或同时填成本与售价）',
+          '右侧卡片实时显示售价、成本、毛利率、加价率与毛利额；输入不足或非法时展示可读提示',
+          '批量场景切换到「批量按毛利率定价」，每行输入「成本,毛利率百分数」，复制结果 CSV',
+          '促销场景在「折扣保本价」输入成本与让利比例，查看不亏损所需的最低售价',
+        ],
+        useCases: [
+          '零售与电商商户根据目标毛利率快速反推商品售价',
+          '把供应商报价（成本+加价率口径）换算成自己的毛利率口径核对利润',
+          '大促打折前计算保本售价，避免折后价格低于成本',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地完成，不向任何服务器发送成本、售价或批量数据，断网环境同样可用。',
+        faqs: [
+          {
+            question: '毛利率和加价率到底差在哪？',
+            answer:
+              '两者分子都是售价−成本，但分母不同：毛利率除以售价，加价率除以成本。因此同一笔生意毛利率永远小于等于加价率，例如成本 80、售价 100 时毛利率为 20%，加价率为 25%。本工具在每个结果上都标注了对应口径。',
+          },
+          {
+            question: '为什么毛利率不能输入 100%？',
+            answer:
+              '毛利率 100% 意味着成本为零，由售价 = 成本 /（1−毛利率）可知此时售价无有限解；输入框限制在 100% 以下，纯函数也会对该边界返回明确错误。',
+          },
+          {
+            question: '批量模式支持什么分隔符？',
+            answer:
+              '每行一条记录，成本与毛利率之间用英文逗号或制表符分隔，毛利率按百分数填写（20 表示 20%）。空行自动跳过；列数不对、含非数字、负数或毛利率越界的行会带行号告警，其余行正常计算。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Margin & Markup Pricing Calculator runs entirely in the browser around two ratios with different denominators: gross margin = (price − cost) / price and markup = (price − cost) / cost. Given any two valid known values among cost, price, margin and markup, it solves all remaining values at once, and adds batch pricing, discount break-even price and a margin/markup lookup table.',
+        coreFeatures: [
+          'Bidirectional solving for five input combinations: cost+price, cost+margin, cost+markup, price+margin and price+markup',
+          'Explicit definitions: every result labels margin (over price) versus markup (over cost) to prevent mixing the two',
+          'Batch pricing: paste multiple "cost,margin%" lines and get a headered price CSV; bad lines report line numbers without stopping the rest',
+          'Break-even price: reverse-calculate the minimum price under a discount and verify the discounted revenue',
+          'Lookup table showing markup for common margin levels with the reverse conversion',
+        ],
+        howToUse: [
+          'On the "Bidirectional pricing" tab, fill at least two known values (cost or price paired with margin or markup, or both cost and price)',
+          'The result card updates live with price, cost, margin, markup and gross profit; invalid or insufficient input shows a readable message',
+          'For batch work, switch to the batch tab, enter one "cost,margin percent" pair per line, then copy the CSV output',
+          'For promotions, enter cost and discount on the break-even tab to see the lowest price that avoids a loss',
+        ],
+        useCases: [
+          'Retailers and e-commerce sellers deriving shelf price from a target gross margin',
+          'Converting supplier markup quotes into the margin definition used internally',
+          'Checking the break-even price before running a discount campaign',
+        ],
+        privacyNote:
+          'All computation happens locally in the browser. Cost, price and batch data never leave the device, and the tool works offline.',
+        faqs: [
+          {
+            question: 'What exactly is the difference between margin and markup?',
+            answer:
+              'Both use price − cost as the numerator, but the denominators differ: margin divides by price while markup divides by cost. For example, cost 80 and price 100 give a 20% margin but a 25% markup. Every result in this tool labels which definition it uses.',
+          },
+          {
+            question: 'Why can margin not be 100%?',
+            answer:
+              'A 100% margin implies zero cost, and since price = cost / (1 − margin), there is no finite price solution. The input is capped below 100%, and the pure function returns an explicit error at that boundary.',
+          },
+          {
+            question: 'What separators does the batch mode accept?',
+            answer:
+            'One record per line, with cost and margin separated by a comma or tab; margin is a percentage (20 means 20%). Blank lines are skipped, while malformed lines (wrong column count, non-numeric, negative, or out-of-range margin) produce line-numbered warnings and the remaining lines still compute.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
