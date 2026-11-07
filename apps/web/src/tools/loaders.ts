@@ -297,4 +297,5 @@ export const toolLoaders: Record<
   'po-json-converter': () => import('./po-json-converter'),
   'pricing-markup-calculator': () => import('./pricing-markup-calculator'),
   'm3u-playlist-parser': () => import('./m3u-playlist-parser'),
+  'plane-geometry-calculator': () => import('./plane-geometry-calculator'),
 };

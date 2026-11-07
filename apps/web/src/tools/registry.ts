@@ -27810,6 +27810,99 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'plane-geometry-calculator',
+    name: '平面解析几何计算器',
+    nameEn: 'Plane Analytic Geometry Calculator',
+    description:
+      '输入两个点即可得到斜率、倾斜角、距离、中点与一般式直线方程；支持两条直线的平行、垂直、重合判定与交点坐标，以及点到直线的距离。内部统一使用 Ax+By+C=0 一般式，竖直线不会触发除零。',
+    descriptionEn:
+      'Enter two points to get slope, inclination angle, distance, midpoint and the general line equation; decide whether two lines are parallel, perpendicular or coincident and find their intersection, plus point-to-line distance. Everything uses the general Ax+By+C=0 form internally, so vertical lines never divide by zero.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/plane-geometry-calculator',
+    iconName: 'Radical',
+    tags: ['解析几何', '斜率', '直线方程', '交点', '距离', '中点'],
+    tagsEn: ['Geometry', 'Slope', 'Line Equation', 'Intersection', 'Distance', 'Midpoint'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '面向学生与教师的纯本地平面解析几何工具，覆盖两点参数推导、两直线关系判定与点到直线距离三类高频计算，所有结果即时更新且无需联网。',
+        coreFeatures: [
+          '两点模块：斜率、倾斜角（度）、欧氏距离、中点坐标与一般式方程一次给出',
+          '直线模块：斜截式输入两条直线，自动判定平行、垂直、重合并计算交点或垂足',
+          '距离模块：计算任意点到直线的垂直距离并展示一般式',
+          '一般式 Ax+By+C=0 内部统一表示，竖直直线斜率显示为「不存在」而非除零崩溃',
+          '相同点、非法输入等边界情况给出明确错误提示',
+          '纯本地计算，坐标数据不离开浏览器',
+        ],
+        howToUse: [
+          '顶部切换三个计算模块',
+          '两点模块分别填写 P1、P2 的 x、y 坐标，结果区即时刷新',
+          '直线模块填写两条直线的斜率 k 与截距 b，查看关系标签与交点',
+          '距离模块填写点坐标与直线参数，读取垂直距离',
+        ],
+        useCases: [
+          '中学数学作业核对：直线方程、交点与距离快速验算',
+          '教学演示：直观展示平行、垂直与重合的数值条件',
+          '工程草图：快速估算坐标点之间的几何量',
+        ],
+        privacyNote:
+          '所有坐标仅在浏览器本地参与运算，不会被上传或存储。',
+        faqs: [
+          {
+            question: '竖直线（如 x=1）怎么输入？',
+            answer:
+              '两点模块直接输入两个 x 相同的点即可，斜率会显示「不存在（竖直）」、倾斜角为 90°，内部一般式保证不除零。直线模块采用斜截式，适合非竖直直线。',
+          },
+          {
+            question: '倾斜角的范围是多少？',
+            answer:
+              '倾斜角取直线向上方向与 x 轴正方向的夹角，范围为 [0°, 180°)，例如从 (0,0) 到 (3,-3) 会归一化为 135° 而不是 -45°。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local plane analytic-geometry tool for students and teachers covering three common calculations: parameters from two points, the relationship between two lines, and point-to-line distance, with instant results and no network access.',
+        coreFeatures: [
+          'Two-point module: slope, inclination angle in degrees, Euclidean distance, midpoint and general-form equation in one view',
+          'Line module: enter two slope-intercept lines to detect parallel, perpendicular or coincident relationships and compute the intersection or foot',
+          'Distance module: perpendicular distance from any point to a line, with the general form shown',
+          'The general Ax+By+C=0 representation means vertical lines report "undefined slope" instead of dividing by zero',
+          'Clear errors for degenerate cases such as identical points or invalid input',
+          'Local-only math — coordinates never leave the browser',
+        ],
+        howToUse: [
+          'Switch between the three modules at the top',
+          'In the two-point module, fill in x and y for P1 and P2; results refresh instantly',
+          'In the line module, enter slope k and intercept b for two lines to see the relationship tag and intersection',
+          'In the distance module, enter a point and line parameters to read the perpendicular distance',
+        ],
+        useCases: [
+          'Check homework: quickly verify line equations, intersections and distances',
+          'Classroom demos: show the numeric conditions for parallel, perpendicular and coincident lines',
+          'Engineering sketches: quickly estimate geometric quantities between coordinates',
+        ],
+        privacyNote:
+          'All coordinates are computed locally in your browser and are never uploaded or stored.',
+        faqs: [
+          {
+            question: 'How do I enter a vertical line such as x=1?',
+            answer:
+              'In the two-point module, simply enter two points sharing the same x. Slope shows "undefined (vertical)" and the inclination is 90°; the internal general form prevents division by zero. The line module uses slope-intercept form and suits non-vertical lines.',
+          },
+          {
+            question: 'What is the range of the inclination angle?',
+            answer:
+              'The inclination is the angle between the upward line direction and the positive x-axis, ranging over [0°, 180°). For example, from (0,0) to (3,-3) it normalizes to 135° rather than -45°.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
