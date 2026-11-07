@@ -299,4 +299,5 @@ export const toolLoaders: Record<
   'e123-phone-formatter': () => import('./e123-phone-formatter'),
   'dmarc-record-generator': () => import('./dmarc-record-generator'),
   'plus-code-codec': () => import('./plus-code-codec'),
+  'changelog-generator': () => import('./changelog-generator'),
 };

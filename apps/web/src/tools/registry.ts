@@ -1,5 +1,6 @@
 import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
+import { DEFAULT_SAMPLE_INPUT as CHANGELOG_SAMPLE_INPUT } from './changelog-generator/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -28029,6 +28030,110 @@ sqrt(area) + 2 * r`,
             question: 'Which code length should I choose?',
             answer:
               'Ten digits is the standard precision, about a 14m × 14m cell near the equator and sufficient for most addressing; six digits is neighborhood level (0.05°) for city-scale aggregation; 11–15 digits are for sub-meter professional surveying. Below ten digits only even lengths are valid.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'changelog-generator',
+    name: 'CHANGELOG.md 生成器（Keep a Changelog）',
+    nameEn: 'Keep a Changelog Generator',
+    description:
+      '粘贴一批 Conventional Commits 提交信息，按 feat / fix / perf / docs 等类型自动分组，生成符合 Keep a Changelog 1.1.0 的变更日志片段，支持版本号与日期标题、作用域前缀、内部类型收录与 Breaking Change 置顶，可一键复制或下载 CHANGELOG.md。',
+    descriptionEn:
+      'Paste a batch of Conventional Commits messages and group them automatically into a Keep a Changelog 1.1.0 fragment, with version/date headings, scope prefixes, internal-type inclusion and breaking changes pinned to the top. Copy or download CHANGELOG.md in one click.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/changelog-generator',
+    iconName: 'ScrollText',
+    tags: ['CHANGELOG', 'Keep a Changelog', 'Conventional Commits', '发版', 'Git'],
+    tagsEn: ['CHANGELOG', 'Keep a Changelog', 'Conventional Commits', 'Release', 'Git'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: CHANGELOG_SAMPLE_INPUT,
+    doc: {
+      zh: {
+        whatIsIt:
+          'CHANGELOG.md 生成器是一款纯浏览器本地工具：把一批 Conventional Commits 风格的提交信息（含 git log --oneline 的短哈希前缀）解析为结构化条目，按 Keep a Changelog 1.1.0 的 Added / Changed / Deprecated / Removed / Fixed / Security 六组渲染成可直接粘贴的变更日志片段，破坏性变更自动置顶。',
+        coreFeatures: [
+          '解析 type(scope)!: subject 语法，自动剥离可选短哈希，Merge 合并提交跳过',
+          '六组标准分类：feat→Added、fix→Fixed、perf/refactor/docs/revert→Changed，并按主题语义识别安全、弃用与移除关键词',
+          '破坏性变更（! 标记）汇总到版本下的 BREAKING CHANGES 区块并在条目内标注',
+          '可选版本号与真实日历日期标题，留空分别回退 Unreleased 与无日期',
+          '开关控制作用域前缀、内部类型（style/test/build/ci/chore）收录与 Keep a Changelog 文档头',
+          '未识别行逐条告警且不写入文档，支持复制 Markdown 与下载 CHANGELOG.md，零依赖纯本地',
+        ],
+        howToUse: [
+          '把发版区间内的提交信息逐行粘贴到输入框（可直接贴 git log --oneline 输出）',
+          '填写版本号（如 1.2.0）与发布日期 YYYY-MM-DD，或留空使用 Unreleased',
+          '按需要切换作用域前缀、内部类型收录与文档头开关，结果区实时渲染',
+          '检查未识别行告警后，点击「复制」或「下载 CHANGELOG.md」取得最终片段',
+        ],
+        useCases: [
+          '发版前把一个迭代的数十条提交快速整理为规范变更日志',
+          '为开源项目生成符合 Keep a Changelog 与语义化版本习惯的 release 片段',
+          '在没有 conventional-changelog 工具链的轻量仓库中替代手工分组',
+        ],
+        privacyNote:
+          '提交信息的解析、分组与 Markdown 拼接全部在浏览器本地完成，不发起任何网络请求，代码仓库历史不会离开本机。',
+        faqs: [
+          {
+            question: '和 Conventional Commits 提交信息生成器有什么区别？',
+            answer:
+              '两者方向相反且互补：提交信息生成器由表单生成单条规范提交信息；本工具把已有的多条提交信息反向汇总为变更日志文档。前者的输出正好可以作为本工具的输入。',
+          },
+          {
+            question: '哪些行会被标记为未识别？',
+            answer:
+              '不符合 type(scope)!: subject 语法、且没有可剥离短哈希前缀的行会进入未识别列表，不会写入文档；Merge 合并提交属于正常跳过而非未识别。可改写为规范提交后重新粘贴。',
+          },
+          {
+            question: 'Security / Deprecated / Removed 分组如何判定？',
+            answer:
+              '在标准类型映射之外，工具会扫描主题中的安全（如 CVE、XSS、漏洞）、弃用（deprecate、弃用）与移除（remove、删除）关键词，命中后优先归入对应分组；security 类型提交直接进入 Security。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Keep a Changelog Generator is a fully in-browser tool that parses a batch of Conventional Commits messages (including git log --oneline hash prefixes) into structured entries and renders a ready-to-paste changelog fragment following the Keep a Changelog 1.1.0 groups Added / Changed / Deprecated / Removed / Fixed / Security, with breaking changes pinned to the top.',
+        coreFeatures: [
+          'Parses type(scope)!: subject syntax, strips optional short hashes and skips merge commits',
+          'Six standard groups: feat→Added, fix→Fixed, perf/refactor/docs/revert→Changed, plus keyword-based security, deprecation and removal detection',
+          'Breaking changes (! marker) are collected under a BREAKING CHANGES block and annotated inside entries',
+          'Optional version and real calendar-date headings, falling back to Unreleased and no date when empty',
+          'Toggles for scope prefixes, internal types (style/test/build/ci/chore) and the Keep a Changelog document header',
+          'Unrecognized lines are warned about and excluded from the document; copy Markdown or download CHANGELOG.md, zero dependencies and fully local',
+        ],
+        howToUse: [
+          'Paste the commits of a release range line by line (raw git log --oneline output works)',
+          'Fill in a version such as 1.2.0 and a YYYY-MM-DD release date, or leave them empty for Unreleased',
+          'Toggle scope prefixes, internal-type inclusion and the document header; the result renders live',
+          'Review the unrecognized-line warnings, then click Copy or download CHANGELOG.md',
+        ],
+        useCases: [
+          'Turning dozens of commits from an iteration into a structured release changelog',
+          'Producing Keep a Changelog and SemVer-style release fragments for open-source projects',
+          'Replacing manual grouping in lightweight repositories without a conventional-changelog toolchain',
+        ],
+        privacyNote:
+          'Parsing, grouping and Markdown assembly all run locally in the browser with no network requests; repository history never leaves the device.',
+        faqs: [
+          {
+            question: 'How is this different from the Conventional Commit Message Generator?',
+            answer:
+              'They work in opposite, complementary directions: the message generator builds one standardized commit message from a form, while this tool aggregates many existing commit messages into a changelog document. The output of the former is valid input for the latter.',
+          },
+          {
+            question: 'Which lines are reported as unrecognized?',
+            answer:
+              'Lines that do not match the type(scope)!: subject syntax and have no strippable hash prefix are listed as unrecognized and excluded from the document. Merge commits are skipped normally rather than treated as unrecognized. Rewrite them as conventional commits and paste again.',
+          },
+          {
+            question: 'How are the Security, Deprecated and Removed groups decided?',
+            answer:
+              'Beyond the standard type mapping, subject keywords for security (e.g. CVE, XSS), deprecation (deprecate) and removal (remove) take priority over the type mapping, and the security commit type always lands in Security.',
           },
         ],
       },
