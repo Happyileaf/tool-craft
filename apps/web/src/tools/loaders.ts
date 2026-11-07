@@ -299,4 +299,5 @@ export const toolLoaders: Record<
   'm3u-playlist-codec': () => import('./m3u-playlist-codec'),
   'lrc-lyrics-codec': () => import('./lrc-lyrics-codec'),
   'markdown-frontmatter-editor': () => import('./markdown-frontmatter-editor'),
+  'gs1-check-digit-calculator': () => import('./gs1-check-digit-calculator'),
 };

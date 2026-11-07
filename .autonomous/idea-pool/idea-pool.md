@@ -256,7 +256,7 @@
 | 20261106060112 | iCalendar RRULE 重复规则解析与展开器（RFC 5545） | Web Tool | Existing Gap | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106060112.md) |
 | 20261106060114 | JPEG 文件 marker 段结构只读解析器（SOI / APP / DQT / SOF / SOS / EOI） | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106060114.md) |
 | 20261106060116 | 多面骰子（d4/d6/d20 等）投掷模拟与点数和概率分布计算器 | Web Tool | Exploration | In Progress | 2026-11-06 | trae-agent | [详情](./idea-details/20261106060116.md) |
-| 20261106160207 | GS1-128 / SSCC / EAN-14 校验位计算器与包装层级条码助手 | Web Tool | External Reference | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106160207.md) |
+| 20261106160207 | GS1-128 / SSCC / EAN-14 校验位计算器与包装层级条码助手 | Web Tool | External Reference | In Progress | 2026-11-06 | trae-agent | [详情](./idea-details/20261106160207.md) |
 | 20261106160208 | Netpbm（PPM / PGM / PBM）图像生成与解析器 | Web Tool | External Reference | Pending | 2026-11-06 | | [详情](./idea-details/20261106160208.md) |
 | 20261106160209 | Markdown Frontmatter（YAML / TOML）解析与编辑器 | Web Tool | Existing Gap | In Progress | 2026-11-06 | trae-agent | [详情](./idea-details/20261106160209.md) |
 | 20261106160210 | 集合 Jaccard / 重叠系数 / Dice 相似度计算器 | Web Tool | Existing Gap | In Progress | 2026-11-06 | trae-agent | [详情](./idea-details/20261106160210.md) |

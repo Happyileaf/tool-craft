@@ -28032,6 +28032,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'gs1-check-digit-calculator',
+    name: 'GS1 校验位 / SSCC / ITF-14 计算器',
+    nameEn: 'GS1 Check Digit / SSCC / ITF-14 Calculator',
+    description:
+      '按 GS1 模 10 加权算法（自右向左权重 3、1 交替）计算与验证校验位，支持单条分步复算与批量验证；可生成 18 位 SSCC、14 位 ITF-14/GTIN-14，并把 GTIN-8/12/13 左侧补零转换为 GTIN-14。空格与连字符自动清洗，非法字符与长度越界返回带原因的错误，纯浏览器本地运算、不渲染条码图形。',
+    descriptionEn:
+      'Compute and verify GS1 modulo-10 check digits (weights 3 and 1 alternating from the right) with step-by-step single-code math and batch verification; generate 18-digit SSCC and 14-digit ITF-14/GTIN-14 codes, and left-pad GTIN-8/12/13 into GTIN-14. Spaces and hyphens are stripped automatically, illegal characters and length violations return reason-bearing errors, and everything runs locally in the browser without rendering barcode images.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/gs1-check-digit-calculator',
+    iconName: 'Barcode',
+    tags: ['GS1', '校验位', 'SSCC', 'ITF-14', 'GTIN-14', '供应链'],
+    tagsEn: ['GS1', 'Check Digit', 'SSCC', 'ITF-14', 'GTIN-14', 'Supply Chain'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'GS1 校验位计算器面向供应链与仓储标签核对场景，实现 GS1 General Specifications 规定的模 10 加权算法，并封装 SSCC（18 位系列货运包装箱代码）、ITF-14/GTIN-14（14 位外箱编码）的生成与短码补零转换，全程零依赖、纯浏览器本地运算。',
+        coreFeatures: [
+          '模 10 加权分步展示：逐位显示数字 × 权重（3/1 交替）的乘积、加权和与取模过程，结果可手工复算',
+          '单条补全与批量验证：payload 一键追加校验位；多行完整编码逐行标注通过 / 失败及期望值',
+          'SSCC 生成：扩展位 + 厂商识别代码与序列号自动左侧补零对齐 17 位 payload，输出 18 位完整编码',
+          'ITF-14/GTIN-14 生成：包装指示符 0-9 加 12 位内容组成 13 位 payload，再追加校验位形成 14 位编码',
+          'GTIN-8/12/13 补零转 GTIN-14：补零不改变模 10 加权结果，转换前后校验位保持一致，原码非法时拒绝转换',
+        ],
+        howToUse: [
+          '在「校验位计算 / 批量验证」标签输入不含校验位的 payload 查看分步过程，或在下方批量框每行粘贴一个完整编码',
+          '切换到「SSCC 生成」，填写 1 位扩展位与不超过 16 位的主体数字，得到 18 位 SSCC',
+          '在「ITF-14 生成」中填写包装指示符与不超过 12 位的内容码，生成 14 位外箱编码',
+          '在「GTIN 补零转换」中粘贴含校验位的 GTIN-8/12/13 数字串，校验通过后得到 GTIN-14',
+        ],
+        useCases: [
+          '物流入库前核对外箱标签 SSCC / ITF-14 的校验位是否打印正确',
+          'WMS / ERP 批量生成包装层级条码数字串并导出给标签打印系统',
+          '把零售单元 GTIN-13 转换为储运单元 GTIN-14 后再做供应链数据对接',
+        ],
+        privacyNote:
+          '所有编码计算与批量验证均在浏览器本地完成，数字串不离开设备、不上传服务器。',
+        faqs: [
+          {
+            question: '校验位的权重方向是怎样的？',
+            answer:
+              '从 payload 最右侧数字开始，权重按 3、1、3、1 交替向左；加权和对 10 取模后，校验位 = (10 − 模值) mod 10。工具会把每一位的乘积与求和过程完整展示，便于对照 GS1 规范手工复算。',
+          },
+          {
+            question: '为什么输入里的空格和连字符也能算？',
+            answer:
+              '条码常按分组排版（如 1-3-4-? 分段），工具会先剥离所有空白与连字符再校验；但若包含字母等非数字字符，或清洗后长度不符合码制规定，会返回带具体原因的错误而不是静默截断。',
+          },
+          {
+            question: 'GTIN-13 补零成 GTIN-14 后校验位会变吗？',
+            answer:
+              '不会。左侧补零增加的是高位，而模 10 权重自右向左交替，补入的 0 乘以任何权重仍为 0，因此加权和与校验位保持不变；工具仍会先验证原码校验位，原码非法时拒绝转换。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A GS1 check-digit calculator for supply-chain and warehouse label verification. It implements the modulo-10 weighted algorithm defined in the GS1 General Specifications and wraps SSCC (18-digit serial shipping container code), ITF-14/GTIN-14 generation and short-code zero-padding, all with zero dependencies and fully local browser computation.',
+        coreFeatures: [
+          'Step-by-step modulo-10 math: per-digit products with alternating 3/1 weights, the weighted sum and the modulo operation, all reproducible by hand',
+          'Single-code completion and batch verification: append the check digit to a payload with one click, or validate full codes line by line with pass/fail and expected values',
+          'SSCC generation: extension digit plus company prefix and serial number are zero-padded to a 17-digit payload, producing an 18-digit code',
+          'ITF-14/GTIN-14 generation: a 0-9 packaging indicator plus a 12-digit body forms a 13-digit payload, then the check digit yields a 14-digit code',
+          'GTIN-8/12/13 to GTIN-14 padding: leading zeros never change the modulo-10 weighted sum, so the check digit is preserved; invalid source codes are rejected',
+        ],
+        howToUse: [
+          'On the check-digit tab, enter a payload without its check digit for the step-by-step breakdown, or paste full codes one per line in the batch box',
+          'Open the SSCC tab, enter one extension digit and up to 16 body digits to obtain an 18-digit SSCC',
+          'On the ITF-14 tab, enter a packaging indicator and up to 12 body digits to generate a 14-digit carton code',
+          'On the GTIN padding tab, paste a GTIN-8/12/13 string including its check digit; after validation you get the GTIN-14 form',
+        ],
+        useCases: [
+          'Verifying SSCC / ITF-14 check digits on carton labels before warehouse receiving',
+          'Batch-generating packaging-level barcode number strings in WMS/ERP for label-printing systems',
+          'Converting retail-unit GTIN-13 codes into logistics-unit GTIN-14 codes for supply-chain data exchange',
+        ],
+        privacyNote:
+          'All code calculation and batch verification run locally in the browser; the digit strings never leave the device or reach a server.',
+        faqs: [
+          {
+            question: 'What is the weighting direction for the check digit?',
+            answer:
+              'Starting from the rightmost payload digit, weights alternate 3, 1, 3, 1 toward the left. The weighted sum is taken modulo 10, and the check digit equals (10 − modulo) mod 10. The tool shows every product and the summation so you can reproduce the math against the GS1 spec.',
+          },
+          {
+            question: 'Why do spaces and hyphens in the input still work?',
+            answer:
+              'Barcodes are often typeset in grouped segments, so the tool first strips all whitespace and hyphens before validating. However, letters or other non-digits, or lengths that violate the code format after cleaning, produce an explicit reason-bearing error instead of silent truncation.',
+          },
+          {
+            question: 'Does the check digit change when a GTIN-13 is padded to GTIN-14?',
+            answer:
+              'No. Leading zeros are added at the high-position side while weights are counted from the right, and zero multiplied by any weight stays zero, so the weighted sum and check digit are preserved. The tool still validates the source code first and rejects invalid ones.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
