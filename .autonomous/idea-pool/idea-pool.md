@@ -110,7 +110,6 @@
 | 20261027040226 | 色温 ↔ RGB/HEX 双向转换器（开尔文色温计算器） | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027040226.md) |
 | 20261027081101 | 文件魔数（Magic Number）签名识别器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027081101.md) |
 | 20261027081102 | 线性回归与相关系数计算器 | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027081102.md) |
-| 20261027081103 | 个人所得税计算器（工资薪金 / 年终奖） | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027081103.md) |
 | 20261027081105 | RSS / Atom Feed 生成器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027081105.md) |
 | 20261027140131 | PBKDF2 密钥派生计算器（RFC 8018） | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027140131.md) |
 | 20261027140132 | Bech32 / Bech32m 编解码器（BIP-173 / BIP-350） | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027140132.md) |
@@ -210,7 +209,6 @@
 | 20261103140203 | VLSM 可变长子网划分规划器 | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103140203.md) |
 | 20261103140204 | Syslog 日志行解析与字段拆分器 | Web Tool | External Reference | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103140204.md) |
 | 20261103140205 | 加班工资计算器（中国大陆劳动法） | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103140205.md) |
-| 20261103200232 | Black-Scholes 期权定价计算器（含 Greeks） | Web Tool | Exploration | Pending | 2026-11-03 | | [详情](./idea-details/20261103200232.md) |
 | 20261103200233 | Apache / Nginx Combined Log Format 访问日志解析器 | Web Tool | Existing Gap | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103200233.md) |
 | 20261103200234 | IPv4 数据报头解析与校验和验证器（RFC 791） | Web Tool | Existing Gap | Pending | 2026-11-03 | | [详情](./idea-details/20261103200234.md) |
 | 20261103200235 | 化学方程式配平器与摩尔计量计算器 | Web Tool | Exploration | Pending | 2026-11-03 | | [详情](./idea-details/20261103200235.md) |
@@ -268,13 +266,10 @@
 | 20261107140226 | iCalendar VTODO / VJOURNAL 待办与日记组件生成器（RFC 5545） | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140226.md) |
 | 20261107140227 | 三相交流电路功率 / 功率因数 / 扭矩换算计算器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140227.md) |
 | 20261107140228 | Widmark 血液酒精浓度（BAC）估算与代谢时间计算器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140228.md) |
-| 20261107140229 | 毛利率 / 加价率 / 售价双向定价计算器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140229.md) |
-| 20261107140230 | M3U / M3U8 播放列表生成与解析器（含 HLS 媒体序列） | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140230.md) |
 | 20261107200150 | Base-N 任意进制整数互转器（radix 2–36 与自定义字母表） | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200150.md) |
 | 20261107200151 | CRC-8 / CRC-16 / CRC-32 / CRC-64 多参数模型计算器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200151.md) |
 | 20261107200152 | 培根 / 栅栏 / Playfair / Atbash 古典密码合集 | Web Tool | Exploration | Pending | 2026-11-07 | | [详情](./idea-details/20261107200152.md) |
 | 20261107200153 | HSV / HSL / HWB / Lab / LCH 多色彩空间互转器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200153.md) |
-| 20261107200154 | 平面解析几何计算器（两点斜率 / 直线方程 / 交点 / 距离 / 中点 / 平行垂直） | Web Tool | Exploration | Pending | 2026-11-07 | | [详情](./idea-details/20261107200154.md) |
 | 20261107200155 | ICMPv4 Echo（Ping）报文构建与十六进制解析器 | Web Tool | External Reference | Pending | 2026-11-07 | | [详情](./idea-details/20261107200155.md) |
 | 20261107200156 | IPv4 首部（Header）构建与十六进制解析器（含 IHL / 分片 / 选项） | Web Tool | External Reference | Pending | 2026-11-07 | | [详情](./idea-details/20261107200156.md) |
 | 20261107200157 | Markdown 表格 ↔ CSV / JSON / HTML / LaTeX 多向转换器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200157.md) |

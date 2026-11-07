@@ -295,4 +295,9 @@ export const toolLoaders: Record<
   'cors-header-generator': () => import('./cors-header-generator'),
   'dkim-record-generator': () => import('./dkim-record-generator'),
   'po-json-converter': () => import('./po-json-converter'),
+  'pricing-markup-calculator': () => import('./pricing-markup-calculator'),
+  'm3u-playlist-parser': () => import('./m3u-playlist-parser'),
+  'plane-geometry-calculator': () => import('./plane-geometry-calculator'),
+  'black-scholes-calculator': () => import('./black-scholes-calculator'),
+  'china-income-tax-calculator': () => import('./china-income-tax-calculator'),
 };

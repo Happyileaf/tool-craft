@@ -27624,6 +27624,479 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'pricing-markup-calculator',
+    name: '毛利率 / 加价率 / 售价双向定价计算器',
+    nameEn: 'Margin & Markup Pricing Calculator',
+    description:
+      '在成本价、售价、毛利率（÷售价）与加价率 markup（÷成本）之间任意已知量双向求解，支持批量售价表 CSV 导出、多档折扣保本价反推与两种利润率口径互转，明确区分极易混淆的分母口径。',
+    descriptionEn:
+      'Solve any unknown among cost, price, gross margin (divided by price) and markup (divided by cost) in both directions, with batch CSV pricing tables, break-even list price across discount tiers, and margin↔markup conversion that keeps the two denominators straight.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/pricing-markup-calculator',
+    iconName: 'Coins',
+    tags: ['毛利率', '加价率', '定价', '售价', '零售', 'CSV'],
+    tagsEn: ['Margin', 'Markup', 'Pricing', 'Retail', 'Break-even', 'CSV'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '面向零售、电商与小微商户的纯本地定价工具，围绕成本价、售价、毛利率、加价率与毛利额做任意已知量求未知量的双向换算，并提供批量售价表、折扣保本价与口径互转能力。',
+        coreFeatures: [
+          '三种求解模式：成本+售价推导利润率、成本+目标利润率求售价、售价+目标利润率反推成本',
+          '口径区分：毛利率分母为售价、加价率分母为成本，并提供二者实时互转提示',
+          '批量定价：粘贴「成本,毛利率」多行文本，逐行输出售价表并一键复制 CSV，非法行带错误不中断',
+          '保本反推：录入多档折扣率，按最深折扣计算不亏本的最低挂牌价',
+          '边界保护：毛利率 ≥100%、成本为 0 求加价率、负价等非法输入逐条报错而非除零',
+          '纯本地运行：所有运算在浏览器内完成，不发起任何网络请求',
+        ],
+        howToUse: [
+          '顶部按钮选择求解模式，并在需要时切换毛利率 / 加价率口径',
+          '单条换算区填入成本、售价或目标利润率（支持 20% 或 20 两种写法），结果即时更新',
+          '批量区每行填写「成本,毛利率」，缺省毛利率取上方统一设置，点击「复制 CSV」导出',
+          '折扣区填入成本与各档折扣率（0.8 表示 8 折），查看保本挂牌价',
+        ],
+        useCases: [
+          '零售与电商：按目标毛利率快速给商品定价并核算毛利额',
+          '批发报价：在习惯使用加价率的场景与毛利率口径之间换算',
+          '促销规划：评估多档打折活动后仍能保本的挂牌价',
+        ],
+        privacyNote:
+          '全部成本、售价与利润率数据仅在浏览器本地参与计算，不会被上传或记录。',
+        faqs: [
+          {
+            question: '毛利率和加价率有什么区别？',
+            answer:
+              '毛利率 =（售价−成本）÷售价，加价率 markup =（售价−成本）÷成本，二者分子相同但分母不同。例如成本 80、售价 100 时毛利率为 20%，加价率为 25%，工具会同时展示并支持互转。',
+          },
+          {
+            question: '为什么输入 100% 毛利率会报错？',
+            answer:
+              '由售价 = 成本 ÷（1−毛利率）可知，毛利率趋近 100% 时售价趋于无穷大，数学上不存在有限售价，因此工具要求毛利率严格小于 100%。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local pricing tool for retail, e-commerce and small merchants that solves any unknown among cost, price, gross margin, markup and gross profit in both directions, plus batch pricing tables, discount break-even prices and rate-basis conversion.',
+        coreFeatures: [
+          'Three modes: derive rates from cost+price, find price from cost+target rate, or reverse cost from price+target rate',
+          'Basis-aware: margin divides by price while markup divides by cost, with live margin↔markup conversion hints',
+          'Batch pricing: paste multi-line "cost,margin" text to get a price table and copy it as CSV; bad rows report errors without stopping the run',
+          'Break-even: enter several discount tiers and compute the minimum list price that stays profitable at the deepest discount',
+          'Guarded edges: margin ≥100%, markup on zero cost and negative prices each raise explicit errors instead of dividing by zero',
+          '100% local: every calculation runs in the browser with no network request',
+        ],
+        howToUse: [
+          'Pick a mode with the top buttons and switch between margin and markup basis when needed',
+          'Enter cost, price or target rate (both "20%" and "20" are accepted); results update instantly',
+          'In the batch panel, enter one "cost,margin" pair per line; the default margin applies when omitted, then copy CSV',
+          'Enter cost and discount rates (0.8 means 20% off) to see the break-even list price',
+        ],
+        useCases: [
+          'Retail and e-commerce: price products from a target margin and inspect gross profit',
+          'Wholesale quotes: convert between markup-based workflows and margin-based reporting',
+          'Promotions: find a list price that still breaks even after stacked discounts',
+        ],
+        privacyNote:
+          'All cost, price and rate data is computed locally in your browser and is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the difference between margin and markup?',
+            answer:
+              'Margin = (price − cost) ÷ price, while markup = (price − cost) ÷ cost. They share the same numerator but use different denominators: with cost 80 and price 100, margin is 20% but markup is 25%. The tool shows both and converts between them.',
+          },
+          {
+            question: 'Why does a 100% margin raise an error?',
+            answer:
+              'Since price = cost ÷ (1 − margin), a margin approaching 100% pushes price toward infinity, so no finite price exists. The tool therefore requires margin to be strictly below 100%.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'm3u-playlist-parser',
+    name: 'M3U / M3U8 播放列表生成与解析器',
+    nameEn: 'M3U / M3U8 Playlist Parser & Generator',
+    description:
+      '纯浏览器内双向处理 M3U/M3U8 播放列表：解析普通播放列表与 RFC 8216 HLS 媒体播放列表（VERSION、TARGETDURATION、MEDIA-SEQUENCE、PLAYLIST-TYPE、ENDLIST、分片时长），输出结构化表格与带行号的格式诊断，并可从表格反向生成规范文本，全程不请求任何远程切片。',
+    descriptionEn:
+      'Work with M3U/M3U8 playlists entirely in the browser: parse plain playlists and RFC 8216 HLS media playlists (VERSION, TARGETDURATION, MEDIA-SEQUENCE, PLAYLIST-TYPE, ENDLIST and segment durations) into a structured table with line-numbered diagnostics, or generate canonical text back from a table — no remote segment is ever fetched.',
+    category: ToolCategoryEnum.IMAGE_MEDIA,
+    path: '/tools/m3u-playlist-parser',
+    iconName: 'List',
+    tags: ['M3U', 'M3U8', 'HLS', '播放列表', 'RFC 8216', '视频'],
+    tagsEn: ['M3U', 'M3U8', 'HLS', 'Playlist', 'RFC 8216', 'Video'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '面向流媒体与本地媒体管理的纯客户端工具，支持把 M3U/M3U8 文本解析为结构化条目表格，识别 HLS 媒体播放列表的关键标签与分片时长，也支持从表格反向生成规范的播放列表文本，所有处理均在本地完成。',
+        coreFeatures: [
+          '解析普通播放列表的 #EXTINF 时长、标题与资源 URI，兼容 LF/CRLF 与裸 URI',
+          '识别 HLS 标签：#EXT-X-VERSION、TARGETDURATION、MEDIA-SEQUENCE、PLAYLIST-TYPE、ENDLIST',
+          '格式诊断带行号：缺失 #EXTM3U、EXTINF 未配对、非法取值、分片时长超 TARGETDURATION 等',
+          '统计条目数、总时长（时钟格式）与 HLS 头部参数，未知标签原样保留',
+          '反向生成：可视化表格编辑条目与 HLS 参数，输出可往返解析的规范文本',
+          '纯本地运行，不下载任何音视频切片或远程资源',
+        ],
+        howToUse: [
+          '解析模式：把 M3U/M3U8 内容粘贴到左侧输入框，右侧即时查看条目表格、HLS 参数与格式问题',
+          '需要机器处理时点击「复制 JSON」导出结构化条目',
+          '生成模式：在表格中填写时长（可空）、标题与资源 URI，按需开启 HLS 参数',
+          '设置 TARGETDURATION、MEDIA-SEQUENCE、PLAYLIST-TYPE 与 ENDLIST 后复制生成结果',
+        ],
+        useCases: [
+          '流媒体开发：检查 HLS 媒体播放列表的标签与分片时长是否合规',
+          '媒体库整理：把本地 M3U 歌单解析为表格核对时长与路径',
+          '测试造数：快速生成带 HLS 头部参数的 M3U8 样例',
+        ],
+        privacyNote:
+          '播放列表内容仅在浏览器本地解析与生成，工具不会请求列表中的任何 URI，也不会上传文本。',
+        faqs: [
+          {
+            question: '会真的去播放或下载视频切片吗？',
+            answer:
+              '不会。工具只做文本层面的解析与生成，列表中的 URI 被当作普通字符串处理，不发起任何网络请求。',
+          },
+          {
+            question: '主播放列表（master playlist）支持吗？',
+            answer:
+              '当前聚焦含 #EXTINF 分片的媒体播放列表；主播放列表中的 #EXT-X-STREAM-INF 等标签会作为未识别标签原样保留并提示，不会丢失内容。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A client-side tool for streaming and local media management that parses M3U/M3U8 text into structured entry tables, recognizes key HLS media-playlist tags and segment durations, and generates canonical playlist text back from a table — all locally.',
+        coreFeatures: [
+          'Parse #EXTINF duration, title and resource URI from plain playlists; tolerates LF/CRLF and bare URIs',
+          'Recognize HLS tags: #EXT-X-VERSION, TARGETDURATION, MEDIA-SEQUENCE, PLAYLIST-TYPE and ENDLIST',
+          'Line-numbered diagnostics for missing #EXTM3U, unpaired EXTINF, invalid values and segments exceeding TARGETDURATION',
+          'Stats for entry count, total duration (clock format) and HLS header values; unknown tags are preserved',
+          'Round-trip generation: edit entries and HLS parameters in a table to emit canonical text that reparses cleanly',
+          'Fully local — no audio/video segment or remote resource is ever downloaded',
+        ],
+        howToUse: [
+          'In parse mode, paste M3U/M3U8 content on the left to see the entry table, HLS parameters and format issues on the right',
+          'Click "Copy JSON" when you need structured entries for downstream processing',
+          'In generate mode, fill duration (optional), title and URI rows, then enable HLS parameters if needed',
+          'Set TARGETDURATION, MEDIA-SEQUENCE, PLAYLIST-TYPE and ENDLIST, then copy the generated text',
+        ],
+        useCases: [
+          'Streaming engineering: validate HLS media-playlist tags and segment durations',
+          'Media libraries: parse local M3U lists into a table to audit durations and paths',
+          'Test fixtures: quickly produce M3U8 samples with HLS header parameters',
+        ],
+        privacyNote:
+          'Playlist content is parsed and generated entirely in your browser; the tool never requests the listed URIs or uploads your text.',
+        faqs: [
+          {
+            question: 'Does it actually play or download video segments?',
+            answer:
+              'No. The tool works purely on text. URIs are treated as plain strings and no network request is ever made.',
+          },
+          {
+            question: 'Are HLS master playlists supported?',
+            answer:
+              'The focus is media playlists with #EXTINF segments. Master-playlist tags such as #EXT-X-STREAM-INF are retained verbatim as unrecognized tags with a notice, so no content is lost.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'plane-geometry-calculator',
+    name: '平面解析几何计算器',
+    nameEn: 'Plane Analytic Geometry Calculator',
+    description:
+      '输入两个点即可得到斜率、倾斜角、距离、中点与一般式直线方程；支持两条直线的平行、垂直、重合判定与交点坐标，以及点到直线的距离。内部统一使用 Ax+By+C=0 一般式，竖直线不会触发除零。',
+    descriptionEn:
+      'Enter two points to get slope, inclination angle, distance, midpoint and the general line equation; decide whether two lines are parallel, perpendicular or coincident and find their intersection, plus point-to-line distance. Everything uses the general Ax+By+C=0 form internally, so vertical lines never divide by zero.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/plane-geometry-calculator',
+    iconName: 'Radical',
+    tags: ['解析几何', '斜率', '直线方程', '交点', '距离', '中点'],
+    tagsEn: ['Geometry', 'Slope', 'Line Equation', 'Intersection', 'Distance', 'Midpoint'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '面向学生与教师的纯本地平面解析几何工具，覆盖两点参数推导、两直线关系判定与点到直线距离三类高频计算，所有结果即时更新且无需联网。',
+        coreFeatures: [
+          '两点模块：斜率、倾斜角（度）、欧氏距离、中点坐标与一般式方程一次给出',
+          '直线模块：斜截式输入两条直线，自动判定平行、垂直、重合并计算交点或垂足',
+          '距离模块：计算任意点到直线的垂直距离并展示一般式',
+          '一般式 Ax+By+C=0 内部统一表示，竖直直线斜率显示为「不存在」而非除零崩溃',
+          '相同点、非法输入等边界情况给出明确错误提示',
+          '纯本地计算，坐标数据不离开浏览器',
+        ],
+        howToUse: [
+          '顶部切换三个计算模块',
+          '两点模块分别填写 P1、P2 的 x、y 坐标，结果区即时刷新',
+          '直线模块填写两条直线的斜率 k 与截距 b，查看关系标签与交点',
+          '距离模块填写点坐标与直线参数，读取垂直距离',
+        ],
+        useCases: [
+          '中学数学作业核对：直线方程、交点与距离快速验算',
+          '教学演示：直观展示平行、垂直与重合的数值条件',
+          '工程草图：快速估算坐标点之间的几何量',
+        ],
+        privacyNote:
+          '所有坐标仅在浏览器本地参与运算，不会被上传或存储。',
+        faqs: [
+          {
+            question: '竖直线（如 x=1）怎么输入？',
+            answer:
+              '两点模块直接输入两个 x 相同的点即可，斜率会显示「不存在（竖直）」、倾斜角为 90°，内部一般式保证不除零。直线模块采用斜截式，适合非竖直直线。',
+          },
+          {
+            question: '倾斜角的范围是多少？',
+            answer:
+              '倾斜角取直线向上方向与 x 轴正方向的夹角，范围为 [0°, 180°)，例如从 (0,0) 到 (3,-3) 会归一化为 135° 而不是 -45°。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local plane analytic-geometry tool for students and teachers covering three common calculations: parameters from two points, the relationship between two lines, and point-to-line distance, with instant results and no network access.',
+        coreFeatures: [
+          'Two-point module: slope, inclination angle in degrees, Euclidean distance, midpoint and general-form equation in one view',
+          'Line module: enter two slope-intercept lines to detect parallel, perpendicular or coincident relationships and compute the intersection or foot',
+          'Distance module: perpendicular distance from any point to a line, with the general form shown',
+          'The general Ax+By+C=0 representation means vertical lines report "undefined slope" instead of dividing by zero',
+          'Clear errors for degenerate cases such as identical points or invalid input',
+          'Local-only math — coordinates never leave the browser',
+        ],
+        howToUse: [
+          'Switch between the three modules at the top',
+          'In the two-point module, fill in x and y for P1 and P2; results refresh instantly',
+          'In the line module, enter slope k and intercept b for two lines to see the relationship tag and intersection',
+          'In the distance module, enter a point and line parameters to read the perpendicular distance',
+        ],
+        useCases: [
+          'Check homework: quickly verify line equations, intersections and distances',
+          'Classroom demos: show the numeric conditions for parallel, perpendicular and coincident lines',
+          'Engineering sketches: quickly estimate geometric quantities between coordinates',
+        ],
+        privacyNote:
+          'All coordinates are computed locally in your browser and are never uploaded or stored.',
+        faqs: [
+          {
+            question: 'How do I enter a vertical line such as x=1?',
+            answer:
+              'In the two-point module, simply enter two points sharing the same x. Slope shows "undefined (vertical)" and the inclination is 90°; the internal general form prevents division by zero. The line module uses slope-intercept form and suits non-vertical lines.',
+          },
+          {
+            question: 'What is the range of the inclination angle?',
+            answer:
+              'The inclination is the angle between the upward line direction and the positive x-axis, ranging over [0°, 180°). For example, from (0,0) to (3,-3) it normalizes to 135° rather than -45°.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'black-scholes-calculator',
+    name: 'Black-Scholes 期权定价计算器（含 Greeks）',
+    nameEn: 'Black-Scholes Option Pricing & Greeks Calculator',
+    description:
+      '基于 Black-Scholes-Merton 模型计算欧式看涨/看跌期权理论价格与 Delta、Gamma、Theta、Vega、Rho 五项 Greeks，支持连续股息率，并可由市场价格用二分法反解年化隐含波动率；正态分布函数内置 erf 近似，零依赖、纯本地运行。',
+    descriptionEn:
+      'Price European call/put options with the Black-Scholes-Merton model and compute Delta, Gamma, Theta, Vega and Rho, with continuous dividend yield and bisection-based implied volatility backed out from a market price. The normal CDF uses a built-in erf approximation — zero dependencies, fully local.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/black-scholes-calculator',
+    iconName: 'Sigma',
+    tags: ['期权', 'Black-Scholes', 'Greeks', '隐含波动率', '金融', '定价'],
+    tagsEn: ['Options', 'Black-Scholes', 'Greeks', 'Implied Volatility', 'Finance', 'Pricing'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '面向金融学习者与从业者的纯客户端欧式期权定价工具，实现完整的 Black-Scholes-Merton 公式与五项风险敏感度指标，并提供隐含波动率反解，所有计算不依赖外部服务。',
+        coreFeatures: [
+          '看涨/看跌理论价格：支持标的现价、行权价、无风险利率、年化波动率、期限（年）与连续股息率',
+          '五项 Greeks：Delta、Gamma、Theta（按自然日）、Vega 与 Rho（按 1% 变动口径缩放）',
+          '隐含波动率：输入市场价格后用二分法反解，并校验无套利价格下界',
+          '稳健边界：零波动或到期时回退内在价值，避免 0/0；非法参数逐条报错',
+          '内置 erf 近似实现正态 CDF（误差 < 1.5e-7），不引入任何数值计算依赖',
+          '满足 put-call parity 的对称实现，纯本地运行不上传数据',
+        ],
+        howToUse: [
+          '选择看涨 Call 或看跌 Put',
+          '填写 S、K、r、σ、T、q，利率与波动率支持 5% 或 0.05 两种写法，期限以年为单位',
+          '读取理论价格与 Greeks 卡片',
+          '需要隐含波动率时在「市场价格」填入成交价，结果区自动给出年化 IV',
+        ],
+        useCases: [
+          '期权课程作业：核对 BSM 公式手算结果与 Greeks',
+          '报价合理性检查：对比市场价反推出的隐含波动率',
+          '风险度量：快速理解 Delta 对冲、Theta 衰减与 Vega 敞口',
+        ],
+        privacyNote:
+          '所有价格与参数仅在浏览器本地参与浮点运算，不会被收集或发送到任何服务器。',
+        faqs: [
+          {
+            question: 'Vega 和 Rho 的数值为什么看起来比教材小？',
+            answer:
+              '教材公式给出的是对 1 个波动率/利率单位（即 100%）的敏感度，本工具按实务口径除以 100，展示标的参数每变动 1% 时期权价格的变化，Theta 则按自然日折算。',
+          },
+          {
+            question: '适用哪些期权，有什么限制？',
+            answer:
+              '适用于欧式期权、标的可近似为几何布朗运动且波动率恒定的情形。美式期权、随机波动率、跳跃扩散等场景需要更复杂的模型，本工具不覆盖。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A client-side European option pricing tool for finance learners and practitioners, implementing the full Black-Scholes-Merton formula, five risk-sensitivity Greeks and implied-volatility solving without any external service.',
+        coreFeatures: [
+          'Call/put theoretical price from spot, strike, risk-free rate, annual volatility, time to maturity in years and continuous dividend yield',
+          'Five Greeks: Delta, Gamma, daily Theta, plus Vega and Rho scaled to 1% parameter moves',
+          'Implied volatility: enter a market price to solve via bisection, with no-arbitrage lower-bound validation',
+          'Robust edges: zero volatility or maturity falls back to intrinsic value instead of 0/0; bad parameters raise explicit errors',
+          'Built-in erf approximation for the normal CDF (error < 1.5e-7) with no numerical dependencies',
+          'Symmetric implementation satisfying put-call parity, running entirely locally',
+        ],
+        howToUse: [
+          'Choose call or put',
+          'Fill in S, K, r, σ, T and q; rates accept either 5% or 0.05, and maturity is in years',
+          'Read the theoretical price and Greeks cards',
+          'For implied volatility, enter a traded price in the market-price field to see annualized IV automatically',
+        ],
+        useCases: [
+          'Coursework: verify hand-computed BSM prices and Greeks',
+          'Quote sanity checks: compare the IV implied by a market price',
+          'Risk literacy: build intuition for Delta hedging, Theta decay and Vega exposure',
+        ],
+        privacyNote:
+          'All prices and parameters are used only in local floating-point math and are never collected or sent to any server.',
+        faqs: [
+          {
+            question: 'Why do Vega and Rho look smaller than in textbooks?',
+            answer:
+              'Textbook formulas show sensitivity to a full unit (100%) of volatility or rate. This tool divides by 100 to present the price change per 1% move, matching trading conventions, while Theta is expressed per calendar day.',
+          },
+          {
+            question: 'Which options does it support, and what are the limits?',
+            answer:
+              'It suits European options where the underlying approximates geometric Brownian motion with constant volatility. American options, stochastic volatility and jump-diffusion settings require richer models that this tool does not cover.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'china-income-tax-calculator',
+    name: '个人所得税计算器（工资薪金 / 年终奖）',
+    nameEn: 'China Individual Income Tax Calculator',
+    description:
+      '按中国内地个税规则测算工资薪金年度应纳税额与税后到手，内置七级超额累进税率表与速算扣除数，支持全年一次性奖金单独计税 / 并入综合所得方案对比，并可生成 12 个月累计预扣预缴明细；纯本地计算，不收集收入隐私。',
+    descriptionEn:
+      'Estimate China individual income tax on wages and year-end bonuses with the seven-bracket progressive table and quick deductions built in. Compare separate versus combined bonus taxation and generate a 12-month cumulative withholding schedule, all computed locally without collecting any income data.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/china-income-tax-calculator',
+    iconName: 'Calculator',
+    tags: ['个税', '工资薪金', '年终奖', '累计预扣', '税后收入'],
+    tagsEn: ['IIT', 'Salary Tax', 'Annual Bonus', 'Withholding', 'After-tax Income'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '个人所得税计算器是一款遵循中国内地现行综合所得计税规则的纯浏览器工具，覆盖工资薪金年度汇算、全年一次性奖金两种计税方式对比，以及按月累计预扣预缴明细，所有税率表与速算扣除数均作为内置常量，规则调整时更新常量即可。',
+        coreFeatures: [
+          '七级超额累进：内置综合所得年度税率表与月度税率表，级距端点精确落在较低档，不错档',
+          '年度综合所得：输入税前工资、社保公积金、专项附加与其他扣除，输出应纳税所得额、税额与税后到手',
+          '年终奖方案对比：自动计算单独计税与并入综合所得两种方案，推荐更省税的选择并给出差额',
+          '累计预扣明细：按月均匀口径生成 12 个月累计应纳税所得额、累计税额与当月预扣，便于核对工资条',
+          '纯本地运算：收入数据不离开浏览器，不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择「年度综合所得」模块，填写全年税前工资、社保公积金与专项附加扣除，立即查看年度税额',
+          '切换到「年终奖方案对比」，填写全年一次性奖金，对比两种计税方式并参考推荐方案',
+          '切换到「月度累计预扣明细」，填写月工资与月扣除，查看 12 个月预扣表',
+          '所有金额单位均为人民币元，税率以百分数展示，临界点附近请留意税收悬崖提示',
+        ],
+        useCases: [
+          '跳槽或调薪时评估税前报价对应的实际到手收入',
+          '年终奖发放前比较单独计税与并入综合所得，选择税负更低的申报方式',
+          '核对 HR 工资条上的累计预扣预缴税额是否正确',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地完成，不记录、不上传任何工资、奖金等收入隐私数据。',
+        faqs: [
+          {
+            question: '为什么年终奖 36001 元比 36000 元税后反而少？',
+            answer:
+              '单独计税以奖金除以 12 的商数查月度税率表，36000 元恰好适用 3% 档，超出 1 元即跳到 10% 档且速算扣除数较小，形成「多发 1 元、多缴上千元」的税收悬崖，工具会在临界点给出提示。',
+          },
+          {
+            question: '单独计税和并入综合所得，选哪个？',
+            answer:
+              '没有统一答案：收入较低、扣除额未用足时并入综合所得可能更省税；收入较高时单独计税通常更优。工具会同时计算两方案的全年税额并自动推荐税额更低的一方，税额相等时默认推荐单独计税。',
+          },
+          {
+            question: '累计预扣明细为什么下半年当月税额会变多？',
+            answer:
+              '累计预扣法按年累计应纳税所得额套用年度税率表，随着累计收入跨过更高级距，适用税率上升，因此同样的月工资在下半年当月预扣税额会增加，全年累计税额与年度汇算口径一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully in-browser calculator following China current individual income tax rules for comprehensive income. It covers annual salary tax, the two taxation methods for the annual one-time bonus, and a month-by-month cumulative withholding schedule, with tax brackets and quick deductions stored as built-in constants.',
+        coreFeatures: [
+          'Seven-bracket progressive table: annual and monthly bracket tables built in, with bracket endpoints correctly kept in the lower bracket',
+          'Annual comprehensive income: enter gross salary, social insurance and housing fund, special additional deductions and others to get taxable income, tax and after-tax pay',
+          'Bonus method comparison: compute separate versus combined bonus taxation automatically, recommend the cheaper option and show the saving',
+          'Withholding schedule: build a 12-month table of cumulative taxable income, cumulative tax and current-month withholding under an even monthly basis',
+          'Fully local: income data never leaves the browser and no network request is made',
+        ],
+        howToUse: [
+          'Open the "Annual Comprehensive Income" module and fill in gross annual salary, social insurance/housing fund and special deductions to see the annual tax instantly',
+          'Switch to "Bonus Comparison", enter the annual one-time bonus, and compare the two taxation methods with the recommendation',
+          'Switch to "Monthly Withholding" and enter monthly salary and deductions for the 12-month withholding table',
+          'All amounts are in CNY yuan and rates are shown as percentages; watch the tax-cliff warning near critical points',
+        ],
+        useCases: [
+          'Estimating real take-home pay from a pre-tax offer when changing jobs or negotiating a raise',
+          'Choosing the lower-tax filing method for the annual bonus before payroll runs',
+          'Checking whether the cumulative withholding on an HR payslip is correct',
+        ],
+        privacyNote:
+          'All calculations run locally in the browser. No salary, bonus or other private income data is recorded or uploaded.',
+        faqs: [
+          {
+            question: 'Why can a 36,001 yuan bonus leave less after-tax cash than 36,000?',
+            answer:
+              'Separate bonus taxation divides the bonus by 12 to pick a monthly bracket: 36,000 stays in the 3% bracket, while one extra yuan jumps to the 10% bracket with a small quick deduction, creating a well-known tax cliff. The tool warns about these critical points.',
+          },
+          {
+            question: 'Separate or combined bonus taxation — which should I choose?',
+            answer:
+              'It depends. When income is low and deductions are not fully used, combining can be cheaper; for higher earners separate taxation usually wins. The tool computes both full-year tax amounts and recommends the lower one, defaulting to separate when they tie.',
+          },
+          {
+            question: 'Why does monthly withholding rise in the second half of the year?',
+            answer:
+              'The cumulative withholding method applies the annual bracket table to year-to-date taxable income. As cumulative income crosses higher brackets, the applicable rate rises, so the same monthly salary attracts more withholding later in the year; the full-year cumulative tax matches the annual reconciliation.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

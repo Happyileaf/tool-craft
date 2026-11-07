@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-08 ：【Agent自主迭代】新增 5 个定价、M3U 解析、平面几何、Black-Scholes 期权定价与个人所得税工具
+
+- **新增**：毛利率/加价率/售价双向定价计算器（pricing-markup-calculator）— 区分毛利率（÷售价）与加价率（÷成本）口径，支持成本/售价/利润互查、按目标毛利率或加价率反推定价与成本、折扣保本定价与 CSV 批量定价，零依赖纯函数核心，纯本地运算
+- **新增**：M3U/M3U8 播放列表生成与解析器（m3u-playlist-parser）— 依据 RFC 8216 识别 EXT-X-VERSION/TARGETDURATION/MEDIA-SEQUENCE/PLAYLIST-TYPE/ENDLIST 等 HLS 标签，解析分片时长与时钟格式并诊断超 TARGETDURATION 分片，支持解析与生成双模式、错误带行号，纯本地运算
+- **新增**：平面解析几何计算器（plane-geometry-calculator）— 基于一般式 Ax+By+C=0 规避竖直直线除零，覆盖两点斜率/倾斜角/距离/中点/方程、两直线平行/重合/相交/垂直判定与交点、点到直线距离，纯本地运算
+- **新增**：Black-Scholes 期权定价计算器（black-scholes-calculator）— BSM 模型计算欧式看涨/看跌价格与 Delta/Gamma/Theta/Vega/Rho 五项 Greeks（支持连续股息率，内置 erf 近似正态 CDF），到期与零波动回退内在价值，二分法由市场价格反解隐含波动率，Theta 按自然日、Vega/Rho 按 1% 口径，纯本地运算
+- **新增**：个人所得税计算器（china-income-tax-calculator）— 内置七级超额累进年度/月度税率表与速算扣除数（级距端点不错档），支持年度综合所得测算、全年一次性奖金单独计税/并入综合所得方案对比并自动推荐、12 个月累计预扣预缴明细表，纯本地运算不收集收入隐私
+
 ## 2026-11-07 ：【Agent自主迭代】新增 5 个 Luhn 校验、闰秒 TAI 转换、CORS 头、DKIM 记录与 PO/JSON 转换工具
 
 - **新增**：Luhn 模 10 校验码生成与批量校验器（luhn-check-generator）— 按 ISO/IEC 7812 Luhn 模 10 算法生成校验位并批量验证卡号/IMEI 等编号，自动归一空格连字符，输出逐行合法/非法判定与统计，非法或空输入带行号告警，纯本地运算
