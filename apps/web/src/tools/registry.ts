@@ -27725,6 +27725,109 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'm3u-playlist-codec',
+    name: 'M3U / M3U8 播放列表生成与解析器（含 HLS 媒体序列）',
+    nameEn: 'M3U / M3U8 Playlist Parser & Builder (HLS)',
+    description:
+      '在浏览器本地解析与生成 M3U / M3U8 播放列表：识别 #EXTM3U 头、#EXTINF 时长标题、#EXT-X-STREAM-INF 变体流属性（带引号值正确处理）、#EXT-X-KEY 等 HLS 指令；提供结构化表格、带行号校验问题、parse↔stringify 往返序列化以及相对 URI 按 Base URL 转绝对。零依赖纯文本处理，支持 CRLF 与 BOM 归一化。',
+    descriptionEn:
+      'Parse and build M3U/M3U8 playlists locally in the browser: recognizes the #EXTM3U header, #EXTINF duration and title, #EXT-X-STREAM-INF variant attributes (including quoted values), and HLS directives such as #EXT-X-KEY. It offers a structured table, line-numbered validation issues, parse-to-stringify round-tripping, and resolving relative URIs against a base URL. Zero-dependency text processing with CRLF and BOM normalization.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/m3u-playlist-codec',
+    iconName: 'List',
+    tags: ['M3U', 'M3U8', 'HLS', '播放列表', '流媒体', '解析'],
+    tagsEn: ['M3U', 'M3U8', 'HLS', 'Playlist', 'Streaming', 'Parser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'M3U / M3U8 播放列表生成与解析器是一款纯浏览器本地运行的文本工具，面向音视频播放列表与 HLS（HTTP Live Streaming）媒体序列。它把以 # 开头的标签行与 URI 行解析为结构化条目，也能把结构化结果重新序列化为规范的 LF 文本，全程不依赖任何第三方解析库。',
+        coreFeatures: [
+          '解析 #EXTM3U、#EXTINF（含 -1 直播流）、#EXT-X-STREAM-INF、#EXT-X-KEY 等常见标签，独立指令按原顺序保留',
+          '属性列表解析支持带引号值与引号内逗号（如 CODECS="avc1,mp4a"），自动去外层引号',
+          '校验报告带行号：缺失文件头、EXTINF 后无 URI、时长非数字等问题分级展示',
+          'parse → stringify → parse 语义往返一致，输出统一 LF 换行',
+          '相对 URI 按 Base URL 一键转绝对，绝对地址与 data: URI 保持不变',
+          '自动剥离 UTF-8 BOM、归一化 CRLF/CR，空文件与纯注释不报错',
+        ],
+        howToUse: [
+          '把 M3U/M3U8 文本粘贴到左侧输入框（或点击「载入样例」），右侧即时显示条目表格与校验结果',
+          '在表格中查看每条目的时长、标题、URI 以及 STREAM-INF 属性标签',
+          '切换到「序列化与相对转绝对」标签查看往返文本，并填入 Base URL 生成绝对 URI 版本',
+          '使用复制按钮导出处理后的文本',
+        ],
+        useCases: [
+          '排查 HLS 直播 / 点播 m3u8 清单的标签配对与 URI 问题',
+          '把本地相对路径的播放列表转换为可分发的绝对 URL 版本',
+          '在接入播放器前快速核对 EXTINF 时长、变体流码率与分辨率属性',
+        ],
+        privacyNote:
+          '所有文本仅在浏览器本地解析与转换，不会请求播放列表中的任何 URI，也不上传内容，断网可用。',
+        faqs: [
+          {
+            question: '会真的去请求播放列表里的视频地址吗？',
+            answer:
+              '不会。工具只做文本层面的解析与改写，URI 行被当作普通字符串处理；相对转绝对也仅基于 Base URL 做字符串级 URL 解析，不发起任何网络请求。',
+          },
+          {
+            question: '#EXTINF 时长为 -1 是什么意思？',
+            answer:
+              '按常见播放列表约定，-1 表示直播流或时长未知的条目。解析器会原样保留并在表格中标注为「直播」，不会当作错误。',
+          },
+          {
+            question: '没有 #EXTM3U 头还能解析吗？',
+            answer:
+              '可以。解析器按宽松模式继续处理 URI 与标签行，同时在校验结果中给出「缺少 #EXTM3U 文件头」的警告，提示该文件可能不是规范的 M3U。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The M3U/M3U8 Playlist Parser & Builder is a browser-local text tool for audio/video playlists and HLS media sequences. It turns hash-prefixed tag lines and URI lines into structured entries and can serialize the result back into canonical LF text, all without third-party parsing libraries.',
+        coreFeatures: [
+          'Parses #EXTM3U, #EXTINF (including -1 live streams), #EXT-X-STREAM-INF, #EXT-X-KEY and other common tags while preserving standalone directives in order',
+          'Attribute parsing handles quoted values and commas inside quotes (e.g. CODECS="avc1,mp4a") and strips surrounding quotes',
+          'Line-numbered validation report for a missing header, EXTINF without a URI, non-numeric duration and more, with severity levels',
+          'Semantically stable parse → stringify → parse round trip with LF-normalized output',
+          'Resolves relative URIs against a base URL while leaving absolute and data: URIs untouched',
+          'Strips the UTF-8 BOM and normalizes CRLF/CR; empty or comment-only files do not error',
+        ],
+        howToUse: [
+          'Paste M3U/M3U8 text into the left editor (or load the sample) to see the entry table and validation result on the right',
+          'Inspect duration, title, URI and STREAM-INF attributes per entry',
+          'Open the serialization tab for round-trip text and enter a base URL to produce an absolute-URI version',
+          'Use the copy buttons to export the processed text',
+        ],
+        useCases: [
+          'Debugging tag pairing and URI problems in HLS live or VOD m3u8 manifests',
+          'Converting a playlist of relative paths into distributable absolute URLs',
+          'Quickly checking EXTINF durations, variant bandwidth and resolution attributes before player integration',
+        ],
+        privacyNote:
+          'All text is parsed and transformed locally in the browser. No URI in the playlist is ever requested, nothing is uploaded, and the tool works offline.',
+        faqs: [
+          {
+            question: 'Does it actually request the video URLs in the playlist?',
+            answer:
+              'No. The tool works purely on text. URI lines are treated as strings, and relative-to-absolute resolution only applies URL string logic against the base URL — no network requests are made.',
+          },
+          {
+            question: 'What does an #EXTINF duration of -1 mean?',
+            answer:
+              'By common playlist convention, -1 marks a live stream or an entry with unknown duration. The parser keeps it as-is and labels it "live" in the table instead of treating it as an error.',
+          },
+          {
+            question: 'Can it parse files without an #EXTM3U header?',
+            answer:
+              'Yes. It continues in lenient mode and still processes URI and tag lines, while the validation report warns that the #EXTM3U header is missing, which suggests the file may not be a standards-compliant M3U.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

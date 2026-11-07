@@ -296,4 +296,5 @@ export const toolLoaders: Record<
   'dkim-record-generator': () => import('./dkim-record-generator'),
   'po-json-converter': () => import('./po-json-converter'),
   'pricing-margin-calculator': () => import('./pricing-margin-calculator'),
+  'm3u-playlist-codec': () => import('./m3u-playlist-codec'),
 };
