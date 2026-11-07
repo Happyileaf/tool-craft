@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261107080340 | 信用卡 / IMEI 风格 Luhn 号码批量校验与校验位生成器 | Web Tool | Existing Gap | `luhn-check-generator` / [PR #191](https://github.com/Happyileaf/tool-craft/pull/191) | 2026-11-07 | [详情](./idea-details/20261107080340.md) |
+| 20261107080341 | 闰秒感知的 TAI / UTC / Unix 时间互转器（含历史跳秒表） | Web Tool | Existing Gap | `leap-second-tai-converter` / [PR #191](https://github.com/Happyileaf/tool-craft/pull/191) | 2026-11-07 | [详情](./idea-details/20261107080341.md) |
+| 20261105140802 | CORS 响应头配置生成器（Allow-Origin / Credentials / 预检缓存策略拼装与校验） | Web Tool | External Reference | `cors-header-generator` / [PR #191](https://github.com/Happyileaf/tool-craft/pull/191) | 2026-11-07 | [详情](./idea-details/20261105140802.md) |
+| 20261105140800 | DKIM DNS TXT 记录生成器（选择器公钥记录拼装与标签语法校验） | Web Tool | Existing Gap | `dkim-record-generator` / [PR #191](https://github.com/Happyileaf/tool-craft/pull/191) | 2026-11-07 | [详情](./idea-details/20261105140800.md) |
+| 20261105080305 | gettext PO / POT 消息目录 ↔ JSON 双向转换器 | Web Tool | Existing Gap | `po-json-converter` / [PR #191](https://github.com/Happyileaf/tool-craft/pull/191) | 2026-11-07 | [详情](./idea-details/20261105080305.md) |
 | 20261106160211 | 电阻串并联等效电阻与公差累积计算器 | Web Tool | Exploration | `resistor-network-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106160211.md) |
 | 20261106060117 | GPA 平均绩点计算器（百分制/4.0/4.3 多算法与学分加权） | Web Tool | Exploration | `gpa-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060117.md) |
 | 20261106060115 | 多边形面积与周长计算器（鞋带公式，含 GeoJSON 粘贴） | Web Tool | Exploration | `polygon-area-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060115.md) |
