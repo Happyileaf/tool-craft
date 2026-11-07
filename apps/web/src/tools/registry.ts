@@ -27119,6 +27119,106 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'luhn-check-generator',
+    name: 'Luhn 批量校验与校验位生成器',
+    nameEn: 'Luhn Batch Check & Check Digit Generator',
+    description:
+      '面向信用卡号、IMEI、加拿大 SIN 等任意使用 Luhn（模 10 / ISO/IEC 7812）校验位的数字串，逐行批量校验合法性并指出正确校验位，或为前缀自动补全校验位；自动清洗空格与连字符，输出逐条结果与合法/非法统计。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Validate or append the Luhn (mod 10 / ISO/IEC 7812) check digit for any digit string such as credit card numbers, IMEI or Canadian SIN, one entry per line with batch statistics. Spaces and hyphens are stripped automatically; invalid lines report the correct check digit. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/luhn-check-generator',
+    iconName: 'ShieldCheck',
+    tags: ['Luhn', '模10', '校验位', '信用卡', 'IMEI', '批量校验'],
+    tagsEn: ['Luhn', 'Mod 10', 'Check Digit', 'Credit Card', 'IMEI', 'Batch Validation'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '7992739871\n411111111111111\n35693803564380',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Luhn 批量校验与校验位生成器是一款纯浏览器本地运行的模 10 校验工具。Luhn 算法（ISO/IEC 7812 附录 B）只向数字串追加一位校验位即可检出绝大多数抄录错误，是银行卡号、IMEI、加拿大社会保险号（SIN）等编号体系的通用校验标准。本工具不绑定具体卡种，面向任意使用 Luhn 的数字串提供混合批量处理。',
+        coreFeatures: [
+          '双模式逐行处理：不带校验位时自动补全，带末位时校验合法性并给出正确校验位',
+          '批量统计：校验模式汇总总条数、合法与非法数量，非法行逐行告警并保留原行',
+          '分组容错：自动忽略空格与连字符，兼容 4111-1111-1111-1111 这类排版',
+          '纯函数实现：Luhn 求和与校验位反算均为零依赖确定性运算，结果可复现',
+        ],
+        howToUse: [
+          '在输入区顶部选择「生成校验位」或「校验合法性」模式',
+          '每行粘贴一个数字编号，可含空格或连字符',
+          '生成模式输出补全后的完整编号；校验模式输出合法编号与统计标签',
+          '查看告警区定位出错行，点击「复制」取走全部结果',
+        ],
+        useCases: [
+          '批量核对信用卡号、IMEI、SIN 等 Luhn 编号的录入质量',
+          '为测试环境生成能通过校验位检查的假卡号 / 假 IMEI',
+          '教学演示模 10 加权求和与校验位反算原理',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地由零依赖纯函数完成，输入的号码不会上传或离开设备。',
+        faqs: [
+          {
+            question: 'Luhn 校验能证明号码是真实有效的银行卡吗？',
+            answer:
+              '不能。Luhn 只验证校验位数学上是否自洽，可拦截大部分抄录错误，但无法证明号码已发行、账户存在或额度可用。本工具不做 BIN 卡种识别或任何联网核验。',
+          },
+          {
+            question: '为什么有的相邻数字换位检测不出来？',
+            answer:
+              '这是 Luhn 算法的已知局限：相差为 0 或 9 的两个数字换位（如 09↔90）时加权和不变，无法检出。需要 100% 检出相邻换位的场景应使用 Verhoeff 或 Damm 算法，站内另有对应工具。',
+          },
+          {
+            question: '它和已有的银行卡 / IMEI 校验器有什么区别？',
+            answer:
+              'bank-card-validator 聚焦银行卡 BIN 与卡种识别，imei-validator 聚焦 IMEI 结构拆解（TAC、序列号）；本工具不假设编号来源，对任意 Luhn 数字串做通用的混合批量校验与校验位反算，三者互补。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Luhn Batch Check & Check Digit Generator is a fully browser-local mod-10 validation utility. The Luhn algorithm (ISO/IEC 7812 Annex B) appends a single check digit that catches the great majority of transcription errors and is the standard behind credit card numbers, IMEI and Canadian SIN. This tool is not tied to any card scheme and handles any Luhn-protected digit string in mixed batches.',
+        coreFeatures: [
+          'Dual per-line modes: append a missing check digit, or validate an existing trailing digit and report the correct one',
+          'Batch statistics: validate mode totals entries and valid/invalid counts, with per-line warnings while preserving invalid lines',
+          'Grouping tolerant: spaces and hyphens are ignored, accepting typography such as 4111-1111-1111-1111',
+          'Pure functions: Luhn summation and check-digit derivation are dependency-free deterministic operations with reproducible output',
+        ],
+        howToUse: [
+          'Choose "Generate check digit" or "Validate" at the top of the input panel',
+          'Paste one digit string per line; spaces and hyphens are allowed',
+          'Generate mode returns completed numbers; validate mode returns valid numbers plus statistic tags',
+          'Use the warning area to locate bad lines and click Copy to take all results',
+        ],
+        useCases: [
+          'Batch-check data-entry quality for Luhn identifiers such as card numbers, IMEI and SIN',
+          'Generate synthetic card numbers / IMEIs that pass check-digit validation in test environments',
+          'Teach weighted mod-10 summation and check-digit derivation',
+        ],
+        privacyNote:
+          'All computation runs locally in the browser via dependency-free pure functions; entered numbers are never uploaded and never leave the device.',
+        faqs: [
+          {
+            question: 'Does a Luhn pass prove the number is a real, active bank card?',
+            answer:
+              'No. Luhn only proves the check digit is mathematically consistent and catches most transcription errors. It cannot prove the number was issued, that an account exists, or that funds are available. This tool performs no BIN lookup or online verification.',
+          },
+          {
+            question: 'Why are some adjacent digit swaps not detected?',
+            answer:
+              'This is a known Luhn limitation: swapping two digits whose difference is 0 or 9 (e.g. 09 and 90) leaves the weighted sum unchanged. Schemes that must detect every adjacent transposition should use Verhoeff or Damm, available as separate tools on this site.',
+          },
+          {
+            question: 'How is this different from the existing bank-card and IMEI validators?',
+            answer:
+              'bank-card-validator focuses on BIN and card-scheme identification, while imei-validator dissects IMEI structure (TAC, serial). This tool makes no assumptions about the identifier source and performs generic mixed-batch Luhn validation and check-digit derivation; the three complement each other.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

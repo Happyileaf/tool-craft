@@ -290,4 +290,5 @@ export const toolLoaders: Record<
   'dice-roll-probability': () => import('./dice-roll-probability'),
   'syslog-parser': () => import('./syslog-parser'),
   'markdown-link-checker': () => import('./markdown-link-checker'),
+  'luhn-check-generator': () => import('./luhn-check-generator'),
 };
