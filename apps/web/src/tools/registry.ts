@@ -27996,6 +27996,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'china-income-tax-calculator',
+    name: '个人所得税计算器（工资薪金 / 年终奖）',
+    nameEn: 'China Individual Income Tax Calculator',
+    description:
+      '按中国内地个税规则测算工资薪金年度应纳税额与税后到手，内置七级超额累进税率表与速算扣除数，支持全年一次性奖金单独计税 / 并入综合所得方案对比，并可生成 12 个月累计预扣预缴明细；纯本地计算，不收集收入隐私。',
+    descriptionEn:
+      'Estimate China individual income tax on wages and year-end bonuses with the seven-bracket progressive table and quick deductions built in. Compare separate versus combined bonus taxation and generate a 12-month cumulative withholding schedule, all computed locally without collecting any income data.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/china-income-tax-calculator',
+    iconName: 'Calculator',
+    tags: ['个税', '工资薪金', '年终奖', '累计预扣', '税后收入'],
+    tagsEn: ['IIT', 'Salary Tax', 'Annual Bonus', 'Withholding', 'After-tax Income'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '个人所得税计算器是一款遵循中国内地现行综合所得计税规则的纯浏览器工具，覆盖工资薪金年度汇算、全年一次性奖金两种计税方式对比，以及按月累计预扣预缴明细，所有税率表与速算扣除数均作为内置常量，规则调整时更新常量即可。',
+        coreFeatures: [
+          '七级超额累进：内置综合所得年度税率表与月度税率表，级距端点精确落在较低档，不错档',
+          '年度综合所得：输入税前工资、社保公积金、专项附加与其他扣除，输出应纳税所得额、税额与税后到手',
+          '年终奖方案对比：自动计算单独计税与并入综合所得两种方案，推荐更省税的选择并给出差额',
+          '累计预扣明细：按月均匀口径生成 12 个月累计应纳税所得额、累计税额与当月预扣，便于核对工资条',
+          '纯本地运算：收入数据不离开浏览器，不发起任何网络请求',
+        ],
+        howToUse: [
+          '选择「年度综合所得」模块，填写全年税前工资、社保公积金与专项附加扣除，立即查看年度税额',
+          '切换到「年终奖方案对比」，填写全年一次性奖金，对比两种计税方式并参考推荐方案',
+          '切换到「月度累计预扣明细」，填写月工资与月扣除，查看 12 个月预扣表',
+          '所有金额单位均为人民币元，税率以百分数展示，临界点附近请留意税收悬崖提示',
+        ],
+        useCases: [
+          '跳槽或调薪时评估税前报价对应的实际到手收入',
+          '年终奖发放前比较单独计税与并入综合所得，选择税负更低的申报方式',
+          '核对 HR 工资条上的累计预扣预缴税额是否正确',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地完成，不记录、不上传任何工资、奖金等收入隐私数据。',
+        faqs: [
+          {
+            question: '为什么年终奖 36001 元比 36000 元税后反而少？',
+            answer:
+              '单独计税以奖金除以 12 的商数查月度税率表，36000 元恰好适用 3% 档，超出 1 元即跳到 10% 档且速算扣除数较小，形成「多发 1 元、多缴上千元」的税收悬崖，工具会在临界点给出提示。',
+          },
+          {
+            question: '单独计税和并入综合所得，选哪个？',
+            answer:
+              '没有统一答案：收入较低、扣除额未用足时并入综合所得可能更省税；收入较高时单独计税通常更优。工具会同时计算两方案的全年税额并自动推荐税额更低的一方，税额相等时默认推荐单独计税。',
+          },
+          {
+            question: '累计预扣明细为什么下半年当月税额会变多？',
+            answer:
+              '累计预扣法按年累计应纳税所得额套用年度税率表，随着累计收入跨过更高级距，适用税率上升，因此同样的月工资在下半年当月预扣税额会增加，全年累计税额与年度汇算口径一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully in-browser calculator following China current individual income tax rules for comprehensive income. It covers annual salary tax, the two taxation methods for the annual one-time bonus, and a month-by-month cumulative withholding schedule, with tax brackets and quick deductions stored as built-in constants.',
+        coreFeatures: [
+          'Seven-bracket progressive table: annual and monthly bracket tables built in, with bracket endpoints correctly kept in the lower bracket',
+          'Annual comprehensive income: enter gross salary, social insurance and housing fund, special additional deductions and others to get taxable income, tax and after-tax pay',
+          'Bonus method comparison: compute separate versus combined bonus taxation automatically, recommend the cheaper option and show the saving',
+          'Withholding schedule: build a 12-month table of cumulative taxable income, cumulative tax and current-month withholding under an even monthly basis',
+          'Fully local: income data never leaves the browser and no network request is made',
+        ],
+        howToUse: [
+          'Open the "Annual Comprehensive Income" module and fill in gross annual salary, social insurance/housing fund and special deductions to see the annual tax instantly',
+          'Switch to "Bonus Comparison", enter the annual one-time bonus, and compare the two taxation methods with the recommendation',
+          'Switch to "Monthly Withholding" and enter monthly salary and deductions for the 12-month withholding table',
+          'All amounts are in CNY yuan and rates are shown as percentages; watch the tax-cliff warning near critical points',
+        ],
+        useCases: [
+          'Estimating real take-home pay from a pre-tax offer when changing jobs or negotiating a raise',
+          'Choosing the lower-tax filing method for the annual bonus before payroll runs',
+          'Checking whether the cumulative withholding on an HR payslip is correct',
+        ],
+        privacyNote:
+          'All calculations run locally in the browser. No salary, bonus or other private income data is recorded or uploaded.',
+        faqs: [
+          {
+            question: 'Why can a 36,001 yuan bonus leave less after-tax cash than 36,000?',
+            answer:
+              'Separate bonus taxation divides the bonus by 12 to pick a monthly bracket: 36,000 stays in the 3% bracket, while one extra yuan jumps to the 10% bracket with a small quick deduction, creating a well-known tax cliff. The tool warns about these critical points.',
+          },
+          {
+            question: 'Separate or combined bonus taxation — which should I choose?',
+            answer:
+              'It depends. When income is low and deductions are not fully used, combining can be cheaper; for higher earners separate taxation usually wins. The tool computes both full-year tax amounts and recommends the lower one, defaulting to separate when they tie.',
+          },
+          {
+            question: 'Why does monthly withholding rise in the second half of the year?',
+            answer:
+              'The cumulative withholding method applies the annual bracket table to year-to-date taxable income. As cumulative income crosses higher brackets, the applicable rate rises, so the same monthly salary attracts more withholding later in the year; the full-year cumulative tax matches the annual reconciliation.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
