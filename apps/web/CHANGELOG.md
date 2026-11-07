@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-07 ：【Agent自主迭代】新增 5 个 Luhn 校验、闰秒 TAI 转换、CORS 头、DKIM 记录与 PO/JSON 转换工具
+
+- **新增**：Luhn 模 10 校验码生成与批量校验器（luhn-check-generator）— 按 ISO/IEC 7812 Luhn 模 10 算法生成校验位并批量验证卡号/IMEI 等编号，自动归一空格连字符，输出逐行合法/非法判定与统计，非法或空输入带行号告警，纯本地运算
+- **新增**：闰秒 TAI ↔ Unix 时间转换器（leap-second-tai-converter）— 内置截至 2017 年的 IERS 闰秒表（28 条边界、TAI−UTC 偏移 10→37 秒），双向换算 Unix 与 TAI 秒、闰秒日判定与 UTC 格式化，边界表区间定位避免迭代不收敛，附闰秒明细可查表，纯本地运算
+- **新增**：CORS 响应头与 nginx 片段生成器（cors-header-generator）— 按 Fetch 标准由来源模式（通配/反射/白名单）、凭证、方法与头配置生成 Access-Control-* 响应头与预检头，拦截凭证与通配互斥等非法组合，反射模式自动补 Vary: Origin 并输出可直接粘贴的 nginx 配置，纯本地运算
+- **新增**：DKIM DNS TXT 记录生成器（dkim-record-generator）— 按 RFC 6376 拼装 <selector>._domainkey.<domain> 的 v=DKIM1 TXT 记录，接受 PEM 或裸 Base64 公钥并自动清洗，校验选择器/域名/tag-value 语法、弱 RSA 密钥告警，超长记录按 RFC 1035 自动 255 字符分段，纯本地运算
+- **新增**：gettext PO/POT ↔ JSON 双向转换器（po-json-converter）— 零依赖行状态机解析 msgctxt、msgid_plural 复数、msgstr[n]、跨行续行字符串、C 风格转义与 # 注释并输出结构化 JSON，也可从 JSON 反向序列化合法 PO，错误带原文行提示，固定样本往返单测覆盖，纯本地运算
+
 ## 2026-11-07 ：【Agent自主迭代】新增 5 个集合相似度、邮箱语法、骰子概率、Syslog 解析与 Markdown 链接检查工具
 
 - **新增**：集合相似度计算器（set-similarity-calculator）— 多组命名集合的成员解析与去重，两两计算 Jaccard、Dice（Sørensen）与 Overlap 三种系数，两空集判 1、单空集判 0 并内置除零保护，输出配对表与对称热力矩阵（对角线为 1），支持忽略大小写、最多 6 组集合与 CSV 导出，纯本地运算

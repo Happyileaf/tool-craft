@@ -27119,6 +27119,511 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'luhn-check-generator',
+    name: 'Luhn 批量校验与校验位生成器',
+    nameEn: 'Luhn Batch Check & Check Digit Generator',
+    description:
+      '面向信用卡号、IMEI、加拿大 SIN 等任意使用 Luhn（模 10 / ISO/IEC 7812）校验位的数字串，逐行批量校验合法性并指出正确校验位，或为前缀自动补全校验位；自动清洗空格与连字符，输出逐条结果与合法/非法统计。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Validate or append the Luhn (mod 10 / ISO/IEC 7812) check digit for any digit string such as credit card numbers, IMEI or Canadian SIN, one entry per line with batch statistics. Spaces and hyphens are stripped automatically; invalid lines report the correct check digit. Everything runs locally in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/luhn-check-generator',
+    iconName: 'ShieldCheck',
+    tags: ['Luhn', '模10', '校验位', '信用卡', 'IMEI', '批量校验'],
+    tagsEn: ['Luhn', 'Mod 10', 'Check Digit', 'Credit Card', 'IMEI', 'Batch Validation'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '7992739871\n411111111111111\n35693803564380',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Luhn 批量校验与校验位生成器是一款纯浏览器本地运行的模 10 校验工具。Luhn 算法（ISO/IEC 7812 附录 B）只向数字串追加一位校验位即可检出绝大多数抄录错误，是银行卡号、IMEI、加拿大社会保险号（SIN）等编号体系的通用校验标准。本工具不绑定具体卡种，面向任意使用 Luhn 的数字串提供混合批量处理。',
+        coreFeatures: [
+          '双模式逐行处理：不带校验位时自动补全，带末位时校验合法性并给出正确校验位',
+          '批量统计：校验模式汇总总条数、合法与非法数量，非法行逐行告警并保留原行',
+          '分组容错：自动忽略空格与连字符，兼容 4111-1111-1111-1111 这类排版',
+          '纯函数实现：Luhn 求和与校验位反算均为零依赖确定性运算，结果可复现',
+        ],
+        howToUse: [
+          '在输入区顶部选择「生成校验位」或「校验合法性」模式',
+          '每行粘贴一个数字编号，可含空格或连字符',
+          '生成模式输出补全后的完整编号；校验模式输出合法编号与统计标签',
+          '查看告警区定位出错行，点击「复制」取走全部结果',
+        ],
+        useCases: [
+          '批量核对信用卡号、IMEI、SIN 等 Luhn 编号的录入质量',
+          '为测试环境生成能通过校验位检查的假卡号 / 假 IMEI',
+          '教学演示模 10 加权求和与校验位反算原理',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地由零依赖纯函数完成，输入的号码不会上传或离开设备。',
+        faqs: [
+          {
+            question: 'Luhn 校验能证明号码是真实有效的银行卡吗？',
+            answer:
+              '不能。Luhn 只验证校验位数学上是否自洽，可拦截大部分抄录错误，但无法证明号码已发行、账户存在或额度可用。本工具不做 BIN 卡种识别或任何联网核验。',
+          },
+          {
+            question: '为什么有的相邻数字换位检测不出来？',
+            answer:
+              '这是 Luhn 算法的已知局限：相差为 0 或 9 的两个数字换位（如 09↔90）时加权和不变，无法检出。需要 100% 检出相邻换位的场景应使用 Verhoeff 或 Damm 算法，站内另有对应工具。',
+          },
+          {
+            question: '它和已有的银行卡 / IMEI 校验器有什么区别？',
+            answer:
+              'bank-card-validator 聚焦银行卡 BIN 与卡种识别，imei-validator 聚焦 IMEI 结构拆解（TAC、序列号）；本工具不假设编号来源，对任意 Luhn 数字串做通用的混合批量校验与校验位反算，三者互补。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Luhn Batch Check & Check Digit Generator is a fully browser-local mod-10 validation utility. The Luhn algorithm (ISO/IEC 7812 Annex B) appends a single check digit that catches the great majority of transcription errors and is the standard behind credit card numbers, IMEI and Canadian SIN. This tool is not tied to any card scheme and handles any Luhn-protected digit string in mixed batches.',
+        coreFeatures: [
+          'Dual per-line modes: append a missing check digit, or validate an existing trailing digit and report the correct one',
+          'Batch statistics: validate mode totals entries and valid/invalid counts, with per-line warnings while preserving invalid lines',
+          'Grouping tolerant: spaces and hyphens are ignored, accepting typography such as 4111-1111-1111-1111',
+          'Pure functions: Luhn summation and check-digit derivation are dependency-free deterministic operations with reproducible output',
+        ],
+        howToUse: [
+          'Choose "Generate check digit" or "Validate" at the top of the input panel',
+          'Paste one digit string per line; spaces and hyphens are allowed',
+          'Generate mode returns completed numbers; validate mode returns valid numbers plus statistic tags',
+          'Use the warning area to locate bad lines and click Copy to take all results',
+        ],
+        useCases: [
+          'Batch-check data-entry quality for Luhn identifiers such as card numbers, IMEI and SIN',
+          'Generate synthetic card numbers / IMEIs that pass check-digit validation in test environments',
+          'Teach weighted mod-10 summation and check-digit derivation',
+        ],
+        privacyNote:
+          'All computation runs locally in the browser via dependency-free pure functions; entered numbers are never uploaded and never leave the device.',
+        faqs: [
+          {
+            question: 'Does a Luhn pass prove the number is a real, active bank card?',
+            answer:
+              'No. Luhn only proves the check digit is mathematically consistent and catches most transcription errors. It cannot prove the number was issued, that an account exists, or that funds are available. This tool performs no BIN lookup or online verification.',
+          },
+          {
+            question: 'Why are some adjacent digit swaps not detected?',
+            answer:
+              'This is a known Luhn limitation: swapping two digits whose difference is 0 or 9 (e.g. 09 and 90) leaves the weighted sum unchanged. Schemes that must detect every adjacent transposition should use Verhoeff or Damm, available as separate tools on this site.',
+          },
+          {
+            question: 'How is this different from the existing bank-card and IMEI validators?',
+            answer:
+              'bank-card-validator focuses on BIN and card-scheme identification, while imei-validator dissects IMEI structure (TAC, serial). This tool makes no assumptions about the identifier source and performs generic mixed-batch Luhn validation and check-digit derivation; the three complement each other.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'leap-second-tai-converter',
+    name: '闰秒感知 TAI / UTC / Unix 时间互转器',
+    nameEn: 'Leap-Second-Aware TAI / UTC / Unix Time Converter',
+    description:
+      '基于 IERS 历史闰秒表（1972 年起 27 次正闰秒）在 TAI 原子时、UTC 与 Unix 时间戳之间精确互转，自动计算对应时刻的 TAI−UTC 偏移，标记闰秒插入日并展示完整闰秒表；支持小数秒，1972 年前的平滑跳变年代明确报错。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert precisely between TAI atomic time, UTC and Unix timestamps using the IERS historical leap-second table (27 positive leap seconds since 1972), computing the TAI-UTC offset at each instant, flagging leap-second days and listing the full table. Fractional seconds are supported; pre-1972 smooth-offset dates are explicitly rejected. Runs entirely in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/leap-second-tai-converter',
+    iconName: 'Clock',
+    tags: ['TAI', 'UTC', '闰秒', 'Unix时间戳', 'IERS', '原子时'],
+    tagsEn: ['TAI', 'UTC', 'Leap Second', 'Unix Timestamp', 'IERS', 'Atomic Time'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1483228800',
+    doc: {
+      zh: {
+        whatIsIt:
+          '闰秒感知 TAI / UTC / Unix 时间互转器是一款纯浏览器本地运行的高精度时间换算工具。TAI（国际原子时）是连续均匀的时间尺度，而 UTC 通过不定期插入正闰秒与地球自转保持对齐，两者之差（TAI−UTC）已从 1972 年的 10 秒累积到 37 秒。普通 Unix 时间戳按「每天 86400 秒」平滑计数，无法表达闰秒；本工具内置 IERS 公告的完整历史闰秒表，在换算时逐时刻应用正确偏移。',
+        coreFeatures: [
+          '双向换算：Unix（UTC）→ TAI 与 TAI → Unix（UTC），自动给出 TAI−UTC 偏移与 UTC 可读时间',
+          '完整 IERS 闰秒表：1972-01-01 至 2017-01-01 共 28 行（基线 + 27 次正闰秒），页面可查',
+          '闰秒日标记：识别落在 23:59:60 插入日前后的时刻并高亮提示',
+          '边界安全：1972 年表覆盖范围之外的输入明确报错，最后闰秒之后按当前偏移外推并在页面说明',
+          '纯函数实现：查表与偏移计算零依赖、确定性输出，固定向量可单测复现',
+        ],
+        howToUse: [
+          '选择换算方向（Unix → TAI 或 TAI → Unix）',
+          '在输入框填入秒级时间戳，支持小数秒',
+          '查看四张结果卡片：Unix、TAI、TAI−UTC 偏移与 UTC 日期时间',
+          '遇到闰秒日会出现橙色标记；页面底部可浏览完整历史闰秒表',
+        ],
+        useCases: [
+          '天文、卫星与 GNSS 数据处理中 TAI/UTC/GPS 时间尺度对齐',
+          '分布式系统与日志审计中理解闰秒对时间戳的影响',
+          '教学演示原子时、世界时与闰秒机制',
+        ],
+        privacyNote:
+          '全部换算在浏览器本地由零依赖纯函数完成，输入的时间戳不会上传或离开设备。',
+        faqs: [
+          {
+            question: '它和已有的 epoch-converter、gps-week-converter 有什么区别？',
+            answer:
+              'epoch-converter 等工具按固定 86400 秒/天做 Unix 与日历时间互转，完全不感知闰秒；gps-week-converter 使用 GPS 时的固定 19 秒偏移（GPS 不跟踪闰秒）。本工具专注 TAI 与 UTC 之间随历史变化的偏移，内置完整 IERS 闰秒表并标记闰秒日，解决的是不同问题。',
+          },
+          {
+            question: '为什么不支持 1972 年之前的时间？',
+            answer:
+              '1972 年之前 UTC 采用频率微调 + 不定期平滑跳变（而非整数闰秒）与 TAI 对齐，偏移不是整秒且规则复杂。本表从 1972-01-01（TAI−UTC=10s）开始覆盖，更早的时间会明确报错而非给出误导性结果。',
+          },
+          {
+            question: '未来如果 IERS 公告新的闰秒怎么办？',
+            answer:
+              '最后一条闰秒（2017-01-01）之后的日期按当前 37 秒偏移外推，页面已显著说明。IERS 一旦公告新闰秒，更新代码中的 LEAP_SECONDS 表并补充对应测试向量即可。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Leap-Second-Aware TAI / UTC / Unix Time Converter is a high-precision, fully browser-local time-scale utility. TAI (International Atomic Time) is a continuous, uniform time scale, while UTC stays aligned with Earth rotation through occasional positive leap seconds; the TAI-UTC difference has accumulated from 10 seconds in 1972 to 37 seconds today. Ordinary Unix timestamps count a smooth 86400 seconds per day and cannot express leap seconds. This tool embeds the full IERS historical leap-second table and applies the correct offset at every instant.',
+        coreFeatures: [
+          'Bidirectional conversion: Unix (UTC) to TAI and TAI back to Unix (UTC), reporting the TAI-UTC offset and a human-readable UTC time',
+          'Complete IERS table: 28 rows from 1972-01-01 to 2017-01-01 (baseline plus 27 positive leap seconds), browsable on the page',
+          'Leap-day flag: highlights instants around a 23:59:60 insertion day',
+          'Safe boundaries: input before the 1972 coverage is explicitly rejected; dates after the last leap second extrapolate with the current offset and are labelled as such',
+          'Pure functions: table lookup and offset math are dependency-free and deterministic, reproducible via fixed test vectors',
+        ],
+        howToUse: [
+          'Choose the conversion direction (Unix to TAI or TAI to Unix)',
+          'Enter a seconds-precision timestamp; fractional seconds are accepted',
+          'Read the four result cards: Unix, TAI, TAI-UTC offset and UTC date-time',
+          'An orange tag appears on leap-second days; the full historical table is at the bottom',
+        ],
+        useCases: [
+          'Aligning TAI/UTC/GPS time scales in astronomy, satellite and GNSS data pipelines',
+          'Understanding leap-second impact on timestamps in distributed systems and audit logs',
+          'Teaching atomic time, universal time and the leap-second mechanism',
+        ],
+        privacyNote:
+          'All conversion runs locally in the browser via dependency-free pure functions; entered timestamps are never uploaded and never leave the device.',
+        faqs: [
+          {
+            question: 'How is this different from the existing epoch-converter and gps-week-converter?',
+            answer:
+              'epoch-converter and similar tools convert Unix to calendar time at a fixed 86400 seconds/day with no leap-second awareness; gps-week-converter uses the fixed 19-second GPS epoch offset because GPS does not track leap seconds. This tool focuses on the historically varying TAI-UTC offset with the full IERS table and leap-day flags, which is a distinct problem.',
+          },
+          {
+            question: 'Why are dates before 1972 unsupported?',
+            answer:
+              'Before 1972, UTC tracked TAI through frequency steering and irregular smooth offsets rather than integer leap seconds, so the offset was not a whole number and the rules are complex. Coverage starts at 1972-01-01 (TAI-UTC = 10s); earlier input is rejected explicitly instead of returning a misleading answer.',
+          },
+          {
+            question: 'What happens when the IERS announces a new leap second?',
+            answer:
+              'Dates after the last entry (2017-01-01) extrapolate at the current 37-second offset, clearly noted on the page. Once the IERS announces a new leap second, update the LEAP_SECONDS table in code and add matching test vectors.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'cors-header-generator',
+    name: 'CORS 响应头配置生成器',
+    nameEn: 'CORS Response Header Generator',
+    description:
+      '通过表单配置允许来源（通配 / 反射 Origin / 白名单）、凭证、方法、请求头与预检缓存，自动拼装 Access-Control-Allow-* 响应头并生成可直接粘贴的 nginx 片段；内置 Fetch 标准硬性规则校验（如凭证与通配源互斥、反射源必须 Vary: Origin），错误与风险逐项提示。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Configure allowed origins (wildcard / reflected Origin / whitelist), credentials, methods, request headers and preflight cache through a form, then get assembled Access-Control-Allow-* response headers plus a ready-to-paste nginx snippet. Built-in Fetch-spec validation flags hard conflicts such as credentials with a wildcard origin and enforces Vary: Origin on reflected origins. Runs entirely in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/cors-header-generator',
+    iconName: 'Globe',
+    tags: ['CORS', '跨域', '响应头', 'nginx', '预检', 'Fetch'],
+    tagsEn: ['CORS', 'Cross-Origin', 'Response Headers', 'nginx', 'Preflight', 'Fetch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'CORS 响应头配置生成器是一款纯浏览器本地运行的跨域策略拼装与校验工具。跨源资源共享（CORS）依赖服务端返回的一组 Access-Control-Allow-* 响应头控制浏览器是否放行跨源请求，规则分散在 Fetch 标准中且容易配错。本工具把来源策略、凭证、方法、头部与预检缓存做成表单，实时输出标准响应头和 nginx 配置片段，并对违反标准硬性约束的组合直接报错。',
+        coreFeatures: [
+          '三种来源策略：通配 *、反射请求 Origin（自动补 Vary: Origin）、Origin 白名单（逐行校验语法）',
+          '标准规则校验：凭证与通配源互斥、白名单为空报错、Max-Age 负数报错、缺失 Allow-Headers 风险提示',
+          '区分实际响应头与预检 OPTIONS 追加头，表格化展示每个头的名称与值',
+          '一键生成 nginx add_header 片段，多白名单场景给出 map 动态匹配提示',
+          '纯函数实现：策略拼装与校验零依赖、确定性输出，规则用固定向量单测覆盖',
+        ],
+        howToUse: [
+          '选择允许来源策略；白名单模式下每行填写一个 http(s)://host[:port]',
+          '勾选是否允许凭证，选择允许的 HTTP 方法并填写 Allow-Headers / Expose-Headers',
+          '设置预检缓存 Max-Age（留空则不输出该头）',
+          '右侧实时查看响应头表格与 nginx 片段，修正红色错误后点击复制',
+        ],
+        useCases: [
+          '前后端分离项目中快速产出正确的跨域响应头配置',
+          '排查带 Cookie 的跨源请求被浏览器拦截的问题',
+          '为 nginx / 网关层生成可直接落地的 add_header 片段',
+        ],
+        privacyNote:
+          '全部配置与生成过程在浏览器本地完成，不发起任何网络请求，填写的域名不会离开设备。',
+        faqs: [
+          {
+            question: '为什么开了凭证之后通配 * 会报错？',
+            answer:
+              'Fetch 标准明确规定：Access-Control-Allow-Credentials 为 true 时，Allow-Origin 不能是 "*"，必须返回具体 Origin，同时建议带 Vary: Origin。浏览器会直接拦截违反该规则的响应，因此本工具在生成前就拦截并提示改用反射或白名单模式。',
+          },
+          {
+            question: '白名单填了多个 Origin，为什么结果只输出第一个？',
+            answer:
+              'Access-Control-Allow-Origin 是单值响应头，不支持逗号分隔多源。多源场景必须由服务端读取请求 Origin、与白名单比对后回显匹配项，并带 Vary: Origin。本工具会给出告警，nginx 片段中的 $http_origin 配合 map 指令可实现该动态匹配。',
+          },
+          {
+            question: '它和已有的 http-headers-inspector 有什么区别？',
+            answer:
+              'http-headers-inspector 是只读的「检查」工具，解析已有响应头并解释含义；本工具是「生成」工具，从策略表单正向产出响应头与服务器配置，并在生成时做标准合规校验。两者一查一建，互补而不重复。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CORS Response Header Generator is a fully browser-local tool for assembling and validating cross-origin policies. Cross-Origin Resource Sharing relies on a set of Access-Control-Allow-* response headers that tell the browser whether to permit a cross-origin request; the rules are spread across the Fetch standard and are easy to misconfigure. This tool turns origin policy, credentials, methods, headers and preflight caching into a form that emits standard response headers and an nginx snippet in real time, rejecting combinations that violate hard spec constraints.',
+        coreFeatures: [
+          'Three origin strategies: wildcard *, reflected request Origin (Vary: Origin added automatically), and an Origin whitelist with per-line syntax validation',
+          'Spec-rule validation: credentials cannot combine with wildcard, empty whitelist rejected, negative Max-Age rejected, missing Allow-Headers flagged as risky',
+          'Separates ordinary response headers from preflight OPTIONS-only headers in a name/value table',
+          'One-click nginx add_header snippet, with map-based dynamic matching guidance for multi-origin whitelists',
+          'Pure functions: policy assembly and validation are dependency-free and deterministic, with fixed-vector unit tests covering every rule',
+        ],
+        howToUse: [
+          'Pick an allowed-origin strategy; in whitelist mode enter one http(s)://host[:port] per line',
+          'Toggle credentials, choose allowed HTTP methods and fill in Allow-Headers / Expose-Headers',
+          'Set the preflight Max-Age in seconds (leave empty to omit the header)',
+          'Review the live header table and nginx snippet on the right, fix red errors, then copy',
+        ],
+        useCases: [
+          'Producing correct cross-origin header configuration for decoupled front-end/back-end projects',
+          'Debugging browser-blocked cross-origin requests that carry cookies',
+          'Generating ready-to-use add_header snippets for nginx or API gateways',
+        ],
+        privacyNote:
+          'All configuration and generation happens locally in the browser with no network requests; domains you enter never leave the device.',
+        faqs: [
+          {
+            question: 'Why does enabling credentials with a wildcard * produce an error?',
+            answer:
+              'The Fetch standard explicitly forbids "*" for Access-Control-Allow-Origin when Access-Control-Allow-Credentials is true; a specific Origin must be returned instead, ideally with Vary: Origin. Browsers block violating responses outright, so the tool rejects the combination up front and suggests reflect or whitelist mode.',
+          },
+          {
+            question: 'Why does a multi-Origin whitelist only emit the first entry?',
+            answer:
+              'Access-Control-Allow-Origin is a single-value header and cannot hold comma-separated origins. With multiple origins the server must read the request Origin, match it against the whitelist, echo the matched value and send Vary: Origin. The tool warns about this; the nginx snippet uses $http_origin with a map block to implement that dynamic match.',
+          },
+          {
+            question: 'How is this different from the existing http-headers-inspector?',
+            answer:
+              'http-headers-inspector is a read-only inspection tool that parses and explains existing response headers. This is a generation tool: it builds response headers and server configuration forward from a policy form and enforces spec compliance while doing so. One inspects, the other constructs — they complement rather than duplicate each other.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'dkim-record-generator',
+    name: 'DKIM DNS TXT 记录生成器',
+    nameEn: 'DKIM DNS TXT Record Generator',
+    description:
+      '填写选择器、签名域与公钥（PEM 或裸 Base64），按 RFC 6376 拼装 <selector>._domainkey.<domain> 的 DKIM TXT 记录，支持 k/g/n/t 标签与测试模式；内置选择器域名语法、tag-value 非法字符与 Base64 校验，弱 RSA 密钥告警，并自动按 RFC 1035 做 255 字符分段。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Enter a selector, signing domain and public key (PEM or raw Base64) to assemble the RFC 6376 DKIM TXT record at <selector>._domainkey.<domain>, with k/g/n/t tags and test-mode support. Built-in validation covers selector/domain syntax, illegal tag-value characters and Base64, warns on weak RSA keys, and splits the record into RFC 1035 255-character chunks. Runs entirely in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/dkim-record-generator',
+    iconName: 'KeyRound',
+    tags: ['DKIM', 'DNS', 'TXT记录', '邮件认证', 'RFC6376', '公钥'],
+    tagsEn: ['DKIM', 'DNS', 'TXT Record', 'Email Authentication', 'RFC 6376', 'Public Key'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'DKIM DNS TXT 记录生成器是一款纯浏览器本地运行的邮件域名密钥识别（DKIM）记录拼装工具。DKIM 通过在 DNS 发布签名域公钥，让收件方验证邮件签名是否合法、内容是否被篡改；公钥以 TXT 记录存放在 <selector>._domainkey.<domain>，由 v=DKIM1 等标签组成。本工具按 RFC 6376 规范把表单输入拼装成标准记录，并在发布前拦截语法错误。',
+        coreFeatures: [
+          'RFC 6376 标签拼装：v/k/p 必填，g/n 与 t=y（测试）、t=s（禁子域）可选，顺序与分隔符标准化',
+          'PEM 与裸 Base64 双输入：自动剥离 -----BEGIN/END----- 页眉与空白换行',
+          '语法校验：选择器 / 域名格式、tag-value 中的分号等号控制字符、Base64 合法性逐项报错',
+          '安全提醒：RSA 公钥低于 1024 位告警，超长记录自动按 RFC 1035 拆成 255 字符带引号分段',
+          '纯函数实现：拼装与校验零依赖、确定性输出，固定向量单测覆盖',
+        ],
+        howToUse: [
+          '填写选择器（如 s1）与签名域（如 example.com），选择 RSA 或 Ed25519',
+          '粘贴公钥，PEM 页眉与换行会被自动清洗',
+          '按需填写 granularity、备注或勾选测试模式 / 禁止子域',
+          '右侧查看记录名称、公钥字节数与分段后的 TXT 值，修正错误后一键复制到 DNS 控制台',
+        ],
+        useCases: [
+          '配置 Postfix、Sendmail 或第三方邮件服务的 DKIM 签名发布',
+          '密钥轮换时快速生成新选择器对应的 DNS 记录',
+          '排查 DKIM 验证失败（key too short、tag 语法、TXT 分段）问题',
+        ],
+        privacyNote:
+          '公钥与域名只在浏览器本地参与拼装，不发起任何网络请求；私钥从不需要输入，也不会离开设备。',
+        faqs: [
+          {
+            question: '为什么长记录要拆成多个带引号的字符串？',
+            answer:
+              'RFC 1035 规定单个 TXT 字符串最长 255 字节，2048 位 RSA 公钥的 DKIM 记录通常超长。DNS 发布时必须拆成多段带双引号的字符串，解析端会自动拼接；本工具按 255 字符切分并给出分段数提示。',
+          },
+          {
+            question: 'tag 值里为什么不能出现分号或等号？',
+            answer:
+              'RFC 6376 规定分号是标签分隔符、等号是 key/value 分隔符，出现在 value 中会让解析器错误断句。控制字符同样非法，工具会在生成前直接报错，避免发布一条收件方无法解析的记录。',
+          },
+          {
+            question: '它和 SPF、DMARC 生成器是什么关系？',
+            answer:
+              '三者同属邮件认证 DNS 记录系列：SPF 声明允许的发信 IP，DKIM 发布签名公钥，DMARC 声明对齐策略与反馈地址。本工具只负责 DKIM 的 TXT 记录拼装，不替代另外两者。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The DKIM DNS TXT Record Generator is a fully browser-local tool for assembling DomainKeys Identified Mail records. DKIM publishes a signing-domain public key in DNS so receivers can verify message signatures and detect tampering; the key lives in a TXT record at <selector>._domainkey.<domain> as tags such as v=DKIM1. This tool assembles form input into a standards-compliant record per RFC 6376 and rejects syntax errors before publication.',
+        coreFeatures: [
+          'RFC 6376 tag assembly: required v/k/p plus optional g/n and t=y (test) / t=s (subdomain strict), with normalized order and separators',
+          'Accepts both PEM and raw Base64 keys, automatically stripping -----BEGIN/END----- headers and whitespace',
+          'Syntax validation: selector/domain format, semicolons/equals/control characters in tag values, and Base64 legality are each reported separately',
+          'Security guidance: warns below 1024-bit RSA and splits over-long records into RFC 1035 255-character quoted chunks automatically',
+          'Pure functions: assembly and validation are dependency-free and deterministic, covered by fixed-vector unit tests',
+        ],
+        howToUse: [
+          'Fill in a selector (e.g. s1) and signing domain (e.g. example.com), then choose RSA or Ed25519',
+          'Paste the public key; PEM headers and line breaks are cleaned automatically',
+          'Optionally set granularity, a note, or enable test mode / subdomain strictness',
+          'Review the record name, decoded key size and chunked TXT value on the right, fix errors, then copy into your DNS console',
+        ],
+        useCases: [
+          'Publishing DKIM signing keys for Postfix, Sendmail or third-party email services',
+          'Generating DNS records for new selectors during key rotation',
+          'Debugging DKIM verification failures such as short keys, tag syntax or TXT chunking',
+        ],
+        privacyNote:
+          'Public keys and domains are assembled locally in the browser with no network requests; a private key is never requested and never leaves the device.',
+        faqs: [
+          {
+            question: 'Why are long records split into multiple quoted strings?',
+            answer:
+              'RFC 1035 limits a single TXT character string to 255 bytes, and a DKIM record with a 2048-bit RSA key usually exceeds that. It must be published as multiple double-quoted strings that resolvers concatenate automatically; the tool splits at 255 characters and reports the chunk count.',
+          },
+          {
+            question: 'Why are semicolons and equals signs forbidden in tag values?',
+            answer:
+              'RFC 6376 uses the semicolon as a tag separator and equals as the key/value separator, so embedding either in a value makes parsers split the record incorrectly. Control characters are illegal too; the tool rejects them up front rather than publishing a record receivers cannot parse.',
+          },
+          {
+            question: 'How does this relate to SPF and DMARC generators?',
+            answer:
+              'All three belong to the email-authentication DNS family: SPF declares permitted sending IPs, DKIM publishes signing public keys, and DMARC states alignment policy and reporting addresses. This tool handles only the DKIM TXT record and does not replace the other two.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'po-json-converter',
+    name: 'gettext PO/POT ↔ JSON 双向转换器',
+    nameEn: 'gettext PO/POT ↔ JSON Converter',
+    description:
+      '在浏览器本地解析 GNU gettext .po/.pot 消息目录并输出结构化 JSON，支持 msgctxt、msgid_plural 复数、msgstr[n]、跨行续行字符串、C 风格转义与 # 注释；也可从 JSON 反向生成合法 PO 文本。零依赖行状态机解析，错误带原文提示，适合本地化流程接入 JSON 工具链。',
+    descriptionEn:
+      'Parse GNU gettext .po/.pot catalogs into structured JSON entirely in the browser, with support for msgctxt, msgid_plural plurals, msgstr[n], multi-line continuation strings, C-style escapes and # comments; it also generates valid PO text back from JSON. A dependency-free line state machine with readable error messages, ideal for wiring localization catalogs into JSON toolchains.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/po-json-converter',
+    iconName: 'FileCode',
+    tags: ['gettext', 'PO', 'POT', '本地化', 'i18n', 'JSON'],
+    tagsEn: ['gettext', 'PO', 'POT', 'Localization', 'i18n', 'JSON'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'gettext PO/POT ↔ JSON 双向转换器是一款纯浏览器本地运行的本地化消息目录处理工具。PO（Portable Object）是 GNU gettext 定义的翻译文件格式，用 msgid/msgstr 配对承载原文与译文，并支持 msgctxt 上下文、msgid_plural/msgstr[n] 复数形式与跨行续行字符串。本工具用零依赖的行状态机解析 PO 子集并转为结构化 JSON，也能把 JSON 反向序列化为合法 PO，整个过程不发起任何网络请求。',
+        coreFeatures: [
+          '双向转换：PO/POT → JSON 与 JSON → PO 一键切换，方向切换时自动载入对应样例',
+          '完整 PO 子集：msgctxt、msgid、msgid_plural、msgstr[0..n] 与相邻引号字面量跨行拼接',
+          '转义与注释：支持 \\n、\\t、\\"、\\\\ 等 C 风格转义，# / #. / #: / #, / #| 注释原样保留',
+          '复数映射：PO 复数条目在 JSON 中表示为字符串数组，反向生成时自动补 msgid_plural',
+          '确定性纯函数：解析与序列化零依赖，错误信息附带无法识别的原文行，固定样本单测覆盖往返',
+        ],
+        howToUse: [
+          '选择转换方向：PO/POT → JSON 或 JSON → PO',
+          '在左侧编辑框粘贴消息目录文本或 JSON 对象（顶层必须是键值映射）',
+          '右侧实时显示转换结果；存在语法错误时展示红色告警与出错原文',
+          '点击「复制」获取结果，或点击「载入样例」查看包含 header、单复数与跨行字符串的完整示例',
+        ],
+        useCases: [
+          '把 gettext 翻译目录接入只接受 JSON 的 Web 本地化工具链或翻译管理平台',
+          '批量检视 PO 文件中的键值、复数形式与注释，无需安装 gettext 命令行',
+          '从 JSON 翻译稿反向生成可交给 msgfmt 编译的 PO 文本',
+        ],
+        privacyNote:
+          '所有解析、转义与序列化均在浏览器本地完成，不读取文件系统之外的数据，也不向任何服务器发送翻译内容，断网环境同样可用。',
+        faqs: [
+          {
+            question: '带 msgctxt 的条目在 JSON 里如何表示？',
+            answer:
+              '沿用 gettext 生态常用约定，以 SOH 控制字符（U+0001）连接 context 与 msgid 作为 JSON 键，形如 "context\u0001msgid"。反向转换时遇到该分隔符会自动拆回 msgctxt 与 msgid，普通译文键不含此字符因此不受影响。',
+          },
+          {
+            question: '复数条目在 JSON 中长什么样？',
+            answer:
+              '含 msgid_plural 的条目映射为字符串数组，键是 msgid，值按 msgstr[0]、msgstr[1] 的顺序排列；JSON → PO 时数组值会生成复数条目，并自动以「msgid plural」补一个 msgid_plural 占位，可按实际语言规则再调整。',
+          },
+          {
+            question: '它和 Apple .strings 转换器有什么区别？',
+            answer:
+              'strings-json-converter 面向 iOS/macOS 的 .strings 文件（C 注释加 "key" = "value"; 语法），本工具面向 GNU gettext 的 .po/.pot 目录，语法关键字、复数模型与转义规则均不同，两者互不替代。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The gettext PO/POT ↔ JSON Converter is a fully browser-local tool for working with localization message catalogs. PO (Portable Object) is the GNU gettext translation format that pairs msgid with msgstr, and adds msgctxt contexts, msgid_plural/msgstr[n] plurals and multi-line continuation strings. A dependency-free line state machine parses this PO subset into structured JSON and serializes JSON back into valid PO without any network requests.',
+        coreFeatures: [
+          'Bidirectional: switch between PO/POT → JSON and JSON → PO, with the matching sample loaded automatically',
+          'Full PO subset: msgctxt, msgid, msgid_plural, msgstr[0..n] and adjacent quoted literals joined across lines',
+          'Escapes and comments: C-style escapes such as \\n, \\t, \\" and \\\\, with # / #. / #: / #, / #| comments preserved',
+          'Plural mapping: plural entries become string arrays in JSON, and reverse generation fills in msgid_plural automatically',
+          'Deterministic pure functions: zero-dependency parsing and serialization, error messages quote the offending line, with fixed-vector round-trip unit tests',
+        ],
+        howToUse: [
+          'Pick a direction: PO/POT → JSON or JSON → PO',
+          'Paste a catalog or a JSON object (the top level must be a key/value map) into the left editor',
+          'The result appears live on the right; syntax errors show a red alert containing the offending text',
+          'Click "Copy" to grab the result, or "Load sample" to inspect a full example with header, singular/plural and multiline strings',
+        ],
+        useCases: [
+          'Feeding gettext catalogs into web localization pipelines or TMS platforms that only accept JSON',
+          'Reviewing keys, plurals and comments in a PO file without installing the gettext CLI',
+          'Generating PO text from JSON translations that can be compiled with msgfmt',
+        ],
+        privacyNote:
+          'All parsing, escaping and serialization run locally in the browser. Translation content is never sent to any server, and the tool works fully offline.',
+        faqs: [
+          {
+            question: 'How are entries with msgctxt represented in JSON?',
+            answer:
+              'Following a common gettext convention, the context and msgid are joined into one JSON key with the SOH control character (U+0001), as in "context\\u0001msgid". The reverse direction splits that separator back into msgctxt and msgid; ordinary keys never contain the character, so they are unaffected.',
+          },
+          {
+            question: 'What does a plural entry look like in JSON?',
+            answer:
+              'An entry with msgid_plural maps to a string array keyed by msgid, with values ordered as msgstr[0], msgstr[1] and so on. JSON → PO turns arrays into plural entries and adds a placeholder msgid_plural of "msgid plural", which you can adjust to the real language rule.',
+          },
+          {
+            question: 'How is this different from the Apple .strings converter?',
+            answer:
+              'The .strings converter targets iOS/macOS files using C comments plus "key" = "value"; syntax, while this tool targets GNU gettext .po/.pot catalogs with different keywords, plural model and escaping rules. The two formats are not interchangeable.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

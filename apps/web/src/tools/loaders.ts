@@ -290,4 +290,9 @@ export const toolLoaders: Record<
   'dice-roll-probability': () => import('./dice-roll-probability'),
   'syslog-parser': () => import('./syslog-parser'),
   'markdown-link-checker': () => import('./markdown-link-checker'),
+  'luhn-check-generator': () => import('./luhn-check-generator'),
+  'leap-second-tai-converter': () => import('./leap-second-tai-converter'),
+  'cors-header-generator': () => import('./cors-header-generator'),
+  'dkim-record-generator': () => import('./dkim-record-generator'),
+  'po-json-converter': () => import('./po-json-converter'),
 };
