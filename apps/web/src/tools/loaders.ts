@@ -292,4 +292,5 @@ export const toolLoaders: Record<
   'markdown-link-checker': () => import('./markdown-link-checker'),
   'luhn-check-generator': () => import('./luhn-check-generator'),
   'leap-second-tai-converter': () => import('./leap-second-tai-converter'),
+  'cors-header-generator': () => import('./cors-header-generator'),
 };

@@ -27321,6 +27321,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'cors-header-generator',
+    name: 'CORS 响应头配置生成器',
+    nameEn: 'CORS Response Header Generator',
+    description:
+      '通过表单配置允许来源（通配 / 反射 Origin / 白名单）、凭证、方法、请求头与预检缓存，自动拼装 Access-Control-Allow-* 响应头并生成可直接粘贴的 nginx 片段；内置 Fetch 标准硬性规则校验（如凭证与通配源互斥、反射源必须 Vary: Origin），错误与风险逐项提示。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Configure allowed origins (wildcard / reflected Origin / whitelist), credentials, methods, request headers and preflight cache through a form, then get assembled Access-Control-Allow-* response headers plus a ready-to-paste nginx snippet. Built-in Fetch-spec validation flags hard conflicts such as credentials with a wildcard origin and enforces Vary: Origin on reflected origins. Runs entirely in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/cors-header-generator',
+    iconName: 'Globe',
+    tags: ['CORS', '跨域', '响应头', 'nginx', '预检', 'Fetch'],
+    tagsEn: ['CORS', 'Cross-Origin', 'Response Headers', 'nginx', 'Preflight', 'Fetch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'CORS 响应头配置生成器是一款纯浏览器本地运行的跨域策略拼装与校验工具。跨源资源共享（CORS）依赖服务端返回的一组 Access-Control-Allow-* 响应头控制浏览器是否放行跨源请求，规则分散在 Fetch 标准中且容易配错。本工具把来源策略、凭证、方法、头部与预检缓存做成表单，实时输出标准响应头和 nginx 配置片段，并对违反标准硬性约束的组合直接报错。',
+        coreFeatures: [
+          '三种来源策略：通配 *、反射请求 Origin（自动补 Vary: Origin）、Origin 白名单（逐行校验语法）',
+          '标准规则校验：凭证与通配源互斥、白名单为空报错、Max-Age 负数报错、缺失 Allow-Headers 风险提示',
+          '区分实际响应头与预检 OPTIONS 追加头，表格化展示每个头的名称与值',
+          '一键生成 nginx add_header 片段，多白名单场景给出 map 动态匹配提示',
+          '纯函数实现：策略拼装与校验零依赖、确定性输出，规则用固定向量单测覆盖',
+        ],
+        howToUse: [
+          '选择允许来源策略；白名单模式下每行填写一个 http(s)://host[:port]',
+          '勾选是否允许凭证，选择允许的 HTTP 方法并填写 Allow-Headers / Expose-Headers',
+          '设置预检缓存 Max-Age（留空则不输出该头）',
+          '右侧实时查看响应头表格与 nginx 片段，修正红色错误后点击复制',
+        ],
+        useCases: [
+          '前后端分离项目中快速产出正确的跨域响应头配置',
+          '排查带 Cookie 的跨源请求被浏览器拦截的问题',
+          '为 nginx / 网关层生成可直接落地的 add_header 片段',
+        ],
+        privacyNote:
+          '全部配置与生成过程在浏览器本地完成，不发起任何网络请求，填写的域名不会离开设备。',
+        faqs: [
+          {
+            question: '为什么开了凭证之后通配 * 会报错？',
+            answer:
+              'Fetch 标准明确规定：Access-Control-Allow-Credentials 为 true 时，Allow-Origin 不能是 "*"，必须返回具体 Origin，同时建议带 Vary: Origin。浏览器会直接拦截违反该规则的响应，因此本工具在生成前就拦截并提示改用反射或白名单模式。',
+          },
+          {
+            question: '白名单填了多个 Origin，为什么结果只输出第一个？',
+            answer:
+              'Access-Control-Allow-Origin 是单值响应头，不支持逗号分隔多源。多源场景必须由服务端读取请求 Origin、与白名单比对后回显匹配项，并带 Vary: Origin。本工具会给出告警，nginx 片段中的 $http_origin 配合 map 指令可实现该动态匹配。',
+          },
+          {
+            question: '它和已有的 http-headers-inspector 有什么区别？',
+            answer:
+              'http-headers-inspector 是只读的「检查」工具，解析已有响应头并解释含义；本工具是「生成」工具，从策略表单正向产出响应头与服务器配置，并在生成时做标准合规校验。两者一查一建，互补而不重复。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CORS Response Header Generator is a fully browser-local tool for assembling and validating cross-origin policies. Cross-Origin Resource Sharing relies on a set of Access-Control-Allow-* response headers that tell the browser whether to permit a cross-origin request; the rules are spread across the Fetch standard and are easy to misconfigure. This tool turns origin policy, credentials, methods, headers and preflight caching into a form that emits standard response headers and an nginx snippet in real time, rejecting combinations that violate hard spec constraints.',
+        coreFeatures: [
+          'Three origin strategies: wildcard *, reflected request Origin (Vary: Origin added automatically), and an Origin whitelist with per-line syntax validation',
+          'Spec-rule validation: credentials cannot combine with wildcard, empty whitelist rejected, negative Max-Age rejected, missing Allow-Headers flagged as risky',
+          'Separates ordinary response headers from preflight OPTIONS-only headers in a name/value table',
+          'One-click nginx add_header snippet, with map-based dynamic matching guidance for multi-origin whitelists',
+          'Pure functions: policy assembly and validation are dependency-free and deterministic, with fixed-vector unit tests covering every rule',
+        ],
+        howToUse: [
+          'Pick an allowed-origin strategy; in whitelist mode enter one http(s)://host[:port] per line',
+          'Toggle credentials, choose allowed HTTP methods and fill in Allow-Headers / Expose-Headers',
+          'Set the preflight Max-Age in seconds (leave empty to omit the header)',
+          'Review the live header table and nginx snippet on the right, fix red errors, then copy',
+        ],
+        useCases: [
+          'Producing correct cross-origin header configuration for decoupled front-end/back-end projects',
+          'Debugging browser-blocked cross-origin requests that carry cookies',
+          'Generating ready-to-use add_header snippets for nginx or API gateways',
+        ],
+        privacyNote:
+          'All configuration and generation happens locally in the browser with no network requests; domains you enter never leave the device.',
+        faqs: [
+          {
+            question: 'Why does enabling credentials with a wildcard * produce an error?',
+            answer:
+              'The Fetch standard explicitly forbids "*" for Access-Control-Allow-Origin when Access-Control-Allow-Credentials is true; a specific Origin must be returned instead, ideally with Vary: Origin. Browsers block violating responses outright, so the tool rejects the combination up front and suggests reflect or whitelist mode.',
+          },
+          {
+            question: 'Why does a multi-Origin whitelist only emit the first entry?',
+            answer:
+              'Access-Control-Allow-Origin is a single-value header and cannot hold comma-separated origins. With multiple origins the server must read the request Origin, match it against the whitelist, echo the matched value and send Vary: Origin. The tool warns about this; the nginx snippet uses $http_origin with a map block to implement that dynamic match.',
+          },
+          {
+            question: 'How is this different from the existing http-headers-inspector?',
+            answer:
+              'http-headers-inspector is a read-only inspection tool that parses and explains existing response headers. This is a generation tool: it builds response headers and server configuration forward from a policy form and enforces spec compliance while doing so. One inspects, the other constructs — they complement rather than duplicate each other.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
