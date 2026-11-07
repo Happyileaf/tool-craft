@@ -27717,6 +27717,99 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'm3u-playlist-parser',
+    name: 'M3U / M3U8 播放列表生成与解析器',
+    nameEn: 'M3U / M3U8 Playlist Parser & Generator',
+    description:
+      '纯浏览器内双向处理 M3U/M3U8 播放列表：解析普通播放列表与 RFC 8216 HLS 媒体播放列表（VERSION、TARGETDURATION、MEDIA-SEQUENCE、PLAYLIST-TYPE、ENDLIST、分片时长），输出结构化表格与带行号的格式诊断，并可从表格反向生成规范文本，全程不请求任何远程切片。',
+    descriptionEn:
+      'Work with M3U/M3U8 playlists entirely in the browser: parse plain playlists and RFC 8216 HLS media playlists (VERSION, TARGETDURATION, MEDIA-SEQUENCE, PLAYLIST-TYPE, ENDLIST and segment durations) into a structured table with line-numbered diagnostics, or generate canonical text back from a table — no remote segment is ever fetched.',
+    category: ToolCategoryEnum.IMAGE_MEDIA,
+    path: '/tools/m3u-playlist-parser',
+    iconName: 'List',
+    tags: ['M3U', 'M3U8', 'HLS', '播放列表', 'RFC 8216', '视频'],
+    tagsEn: ['M3U', 'M3U8', 'HLS', 'Playlist', 'RFC 8216', 'Video'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '面向流媒体与本地媒体管理的纯客户端工具，支持把 M3U/M3U8 文本解析为结构化条目表格，识别 HLS 媒体播放列表的关键标签与分片时长，也支持从表格反向生成规范的播放列表文本，所有处理均在本地完成。',
+        coreFeatures: [
+          '解析普通播放列表的 #EXTINF 时长、标题与资源 URI，兼容 LF/CRLF 与裸 URI',
+          '识别 HLS 标签：#EXT-X-VERSION、TARGETDURATION、MEDIA-SEQUENCE、PLAYLIST-TYPE、ENDLIST',
+          '格式诊断带行号：缺失 #EXTM3U、EXTINF 未配对、非法取值、分片时长超 TARGETDURATION 等',
+          '统计条目数、总时长（时钟格式）与 HLS 头部参数，未知标签原样保留',
+          '反向生成：可视化表格编辑条目与 HLS 参数，输出可往返解析的规范文本',
+          '纯本地运行，不下载任何音视频切片或远程资源',
+        ],
+        howToUse: [
+          '解析模式：把 M3U/M3U8 内容粘贴到左侧输入框，右侧即时查看条目表格、HLS 参数与格式问题',
+          '需要机器处理时点击「复制 JSON」导出结构化条目',
+          '生成模式：在表格中填写时长（可空）、标题与资源 URI，按需开启 HLS 参数',
+          '设置 TARGETDURATION、MEDIA-SEQUENCE、PLAYLIST-TYPE 与 ENDLIST 后复制生成结果',
+        ],
+        useCases: [
+          '流媒体开发：检查 HLS 媒体播放列表的标签与分片时长是否合规',
+          '媒体库整理：把本地 M3U 歌单解析为表格核对时长与路径',
+          '测试造数：快速生成带 HLS 头部参数的 M3U8 样例',
+        ],
+        privacyNote:
+          '播放列表内容仅在浏览器本地解析与生成，工具不会请求列表中的任何 URI，也不会上传文本。',
+        faqs: [
+          {
+            question: '会真的去播放或下载视频切片吗？',
+            answer:
+              '不会。工具只做文本层面的解析与生成，列表中的 URI 被当作普通字符串处理，不发起任何网络请求。',
+          },
+          {
+            question: '主播放列表（master playlist）支持吗？',
+            answer:
+              '当前聚焦含 #EXTINF 分片的媒体播放列表；主播放列表中的 #EXT-X-STREAM-INF 等标签会作为未识别标签原样保留并提示，不会丢失内容。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A client-side tool for streaming and local media management that parses M3U/M3U8 text into structured entry tables, recognizes key HLS media-playlist tags and segment durations, and generates canonical playlist text back from a table — all locally.',
+        coreFeatures: [
+          'Parse #EXTINF duration, title and resource URI from plain playlists; tolerates LF/CRLF and bare URIs',
+          'Recognize HLS tags: #EXT-X-VERSION, TARGETDURATION, MEDIA-SEQUENCE, PLAYLIST-TYPE and ENDLIST',
+          'Line-numbered diagnostics for missing #EXTM3U, unpaired EXTINF, invalid values and segments exceeding TARGETDURATION',
+          'Stats for entry count, total duration (clock format) and HLS header values; unknown tags are preserved',
+          'Round-trip generation: edit entries and HLS parameters in a table to emit canonical text that reparses cleanly',
+          'Fully local — no audio/video segment or remote resource is ever downloaded',
+        ],
+        howToUse: [
+          'In parse mode, paste M3U/M3U8 content on the left to see the entry table, HLS parameters and format issues on the right',
+          'Click "Copy JSON" when you need structured entries for downstream processing',
+          'In generate mode, fill duration (optional), title and URI rows, then enable HLS parameters if needed',
+          'Set TARGETDURATION, MEDIA-SEQUENCE, PLAYLIST-TYPE and ENDLIST, then copy the generated text',
+        ],
+        useCases: [
+          'Streaming engineering: validate HLS media-playlist tags and segment durations',
+          'Media libraries: parse local M3U lists into a table to audit durations and paths',
+          'Test fixtures: quickly produce M3U8 samples with HLS header parameters',
+        ],
+        privacyNote:
+          'Playlist content is parsed and generated entirely in your browser; the tool never requests the listed URIs or uploads your text.',
+        faqs: [
+          {
+            question: 'Does it actually play or download video segments?',
+            answer:
+              'No. The tool works purely on text. URIs are treated as plain strings and no network request is ever made.',
+          },
+          {
+            question: 'Are HLS master playlists supported?',
+            answer:
+              'The focus is media playlists with #EXTINF segments. Master-playlist tags such as #EXT-X-STREAM-INF are retained verbatim as unrecognized tags with a notice, so no content is lost.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
