@@ -27422,6 +27422,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'dkim-record-generator',
+    name: 'DKIM DNS TXT 记录生成器',
+    nameEn: 'DKIM DNS TXT Record Generator',
+    description:
+      '填写选择器、签名域与公钥（PEM 或裸 Base64），按 RFC 6376 拼装 <selector>._domainkey.<domain> 的 DKIM TXT 记录，支持 k/g/n/t 标签与测试模式；内置选择器域名语法、tag-value 非法字符与 Base64 校验，弱 RSA 密钥告警，并自动按 RFC 1035 做 255 字符分段。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Enter a selector, signing domain and public key (PEM or raw Base64) to assemble the RFC 6376 DKIM TXT record at <selector>._domainkey.<domain>, with k/g/n/t tags and test-mode support. Built-in validation covers selector/domain syntax, illegal tag-value characters and Base64, warns on weak RSA keys, and splits the record into RFC 1035 255-character chunks. Runs entirely in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/dkim-record-generator',
+    iconName: 'KeyRound',
+    tags: ['DKIM', 'DNS', 'TXT记录', '邮件认证', 'RFC6376', '公钥'],
+    tagsEn: ['DKIM', 'DNS', 'TXT Record', 'Email Authentication', 'RFC 6376', 'Public Key'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'DKIM DNS TXT 记录生成器是一款纯浏览器本地运行的邮件域名密钥识别（DKIM）记录拼装工具。DKIM 通过在 DNS 发布签名域公钥，让收件方验证邮件签名是否合法、内容是否被篡改；公钥以 TXT 记录存放在 <selector>._domainkey.<domain>，由 v=DKIM1 等标签组成。本工具按 RFC 6376 规范把表单输入拼装成标准记录，并在发布前拦截语法错误。',
+        coreFeatures: [
+          'RFC 6376 标签拼装：v/k/p 必填，g/n 与 t=y（测试）、t=s（禁子域）可选，顺序与分隔符标准化',
+          'PEM 与裸 Base64 双输入：自动剥离 -----BEGIN/END----- 页眉与空白换行',
+          '语法校验：选择器 / 域名格式、tag-value 中的分号等号控制字符、Base64 合法性逐项报错',
+          '安全提醒：RSA 公钥低于 1024 位告警，超长记录自动按 RFC 1035 拆成 255 字符带引号分段',
+          '纯函数实现：拼装与校验零依赖、确定性输出，固定向量单测覆盖',
+        ],
+        howToUse: [
+          '填写选择器（如 s1）与签名域（如 example.com），选择 RSA 或 Ed25519',
+          '粘贴公钥，PEM 页眉与换行会被自动清洗',
+          '按需填写 granularity、备注或勾选测试模式 / 禁止子域',
+          '右侧查看记录名称、公钥字节数与分段后的 TXT 值，修正错误后一键复制到 DNS 控制台',
+        ],
+        useCases: [
+          '配置 Postfix、Sendmail 或第三方邮件服务的 DKIM 签名发布',
+          '密钥轮换时快速生成新选择器对应的 DNS 记录',
+          '排查 DKIM 验证失败（key too short、tag 语法、TXT 分段）问题',
+        ],
+        privacyNote:
+          '公钥与域名只在浏览器本地参与拼装，不发起任何网络请求；私钥从不需要输入，也不会离开设备。',
+        faqs: [
+          {
+            question: '为什么长记录要拆成多个带引号的字符串？',
+            answer:
+              'RFC 1035 规定单个 TXT 字符串最长 255 字节，2048 位 RSA 公钥的 DKIM 记录通常超长。DNS 发布时必须拆成多段带双引号的字符串，解析端会自动拼接；本工具按 255 字符切分并给出分段数提示。',
+          },
+          {
+            question: 'tag 值里为什么不能出现分号或等号？',
+            answer:
+              'RFC 6376 规定分号是标签分隔符、等号是 key/value 分隔符，出现在 value 中会让解析器错误断句。控制字符同样非法，工具会在生成前直接报错，避免发布一条收件方无法解析的记录。',
+          },
+          {
+            question: '它和 SPF、DMARC 生成器是什么关系？',
+            answer:
+              '三者同属邮件认证 DNS 记录系列：SPF 声明允许的发信 IP，DKIM 发布签名公钥，DMARC 声明对齐策略与反馈地址。本工具只负责 DKIM 的 TXT 记录拼装，不替代另外两者。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The DKIM DNS TXT Record Generator is a fully browser-local tool for assembling DomainKeys Identified Mail records. DKIM publishes a signing-domain public key in DNS so receivers can verify message signatures and detect tampering; the key lives in a TXT record at <selector>._domainkey.<domain> as tags such as v=DKIM1. This tool assembles form input into a standards-compliant record per RFC 6376 and rejects syntax errors before publication.',
+        coreFeatures: [
+          'RFC 6376 tag assembly: required v/k/p plus optional g/n and t=y (test) / t=s (subdomain strict), with normalized order and separators',
+          'Accepts both PEM and raw Base64 keys, automatically stripping -----BEGIN/END----- headers and whitespace',
+          'Syntax validation: selector/domain format, semicolons/equals/control characters in tag values, and Base64 legality are each reported separately',
+          'Security guidance: warns below 1024-bit RSA and splits over-long records into RFC 1035 255-character quoted chunks automatically',
+          'Pure functions: assembly and validation are dependency-free and deterministic, covered by fixed-vector unit tests',
+        ],
+        howToUse: [
+          'Fill in a selector (e.g. s1) and signing domain (e.g. example.com), then choose RSA or Ed25519',
+          'Paste the public key; PEM headers and line breaks are cleaned automatically',
+          'Optionally set granularity, a note, or enable test mode / subdomain strictness',
+          'Review the record name, decoded key size and chunked TXT value on the right, fix errors, then copy into your DNS console',
+        ],
+        useCases: [
+          'Publishing DKIM signing keys for Postfix, Sendmail or third-party email services',
+          'Generating DNS records for new selectors during key rotation',
+          'Debugging DKIM verification failures such as short keys, tag syntax or TXT chunking',
+        ],
+        privacyNote:
+          'Public keys and domains are assembled locally in the browser with no network requests; a private key is never requested and never leaves the device.',
+        faqs: [
+          {
+            question: 'Why are long records split into multiple quoted strings?',
+            answer:
+              'RFC 1035 limits a single TXT character string to 255 bytes, and a DKIM record with a 2048-bit RSA key usually exceeds that. It must be published as multiple double-quoted strings that resolvers concatenate automatically; the tool splits at 255 characters and reports the chunk count.',
+          },
+          {
+            question: 'Why are semicolons and equals signs forbidden in tag values?',
+            answer:
+              'RFC 6376 uses the semicolon as a tag separator and equals as the key/value separator, so embedding either in a value makes parsers split the record incorrectly. Control characters are illegal too; the tool rejects them up front rather than publishing a record receivers cannot parse.',
+          },
+          {
+            question: 'How does this relate to SPF and DMARC generators?',
+            answer:
+              'All three belong to the email-authentication DNS family: SPF declares permitted sending IPs, DKIM publishes signing public keys, and DMARC states alignment policy and reporting addresses. This tool handles only the DKIM TXT record and does not replace the other two.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

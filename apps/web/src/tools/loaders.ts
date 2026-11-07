@@ -293,4 +293,5 @@ export const toolLoaders: Record<
   'luhn-check-generator': () => import('./luhn-check-generator'),
   'leap-second-tai-converter': () => import('./leap-second-tai-converter'),
   'cors-header-generator': () => import('./cors-header-generator'),
+  'dkim-record-generator': () => import('./dkim-record-generator'),
 };
