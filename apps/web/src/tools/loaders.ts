@@ -295,4 +295,9 @@ export const toolLoaders: Record<
   'cors-header-generator': () => import('./cors-header-generator'),
   'dkim-record-generator': () => import('./dkim-record-generator'),
   'po-json-converter': () => import('./po-json-converter'),
+  'java-descriptor-converter': () => import('./java-descriptor-converter'),
+  'e123-phone-formatter': () => import('./e123-phone-formatter'),
+  'dmarc-record-generator': () => import('./dmarc-record-generator'),
+  'plus-code-codec': () => import('./plus-code-codec'),
+  'changelog-generator': () => import('./changelog-generator'),
 };

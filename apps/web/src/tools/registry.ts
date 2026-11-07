@@ -1,5 +1,6 @@
 import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
+import { DEFAULT_SAMPLE_INPUT as CHANGELOG_SAMPLE_INPUT } from './changelog-generator/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -27619,6 +27620,520 @@ sqrt(area) + 2 * r`,
             question: 'How is this different from the Apple .strings converter?',
             answer:
               'The .strings converter targets iOS/macOS files using C comments plus "key" = "value"; syntax, while this tool targets GNU gettext .po/.pot catalogs with different keywords, plural model and escaping rules. The two formats are not interchangeable.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'java-descriptor-converter',
+    name: 'Java 内部类名与描述符转换器',
+    nameEn: 'Java Descriptor & Binary Name Converter',
+    description:
+      '按 JVMS §4.2 / §4.3 / §4.3.3 在本地完成 Java 内部名（binary name）与源码类名互转、字段描述符与方法描述符的生成和解析，支持数组维度、原始类型与引用类型，非法描述符给出具体错误位置。',
+    descriptionEn:
+      'Convert Java binary names, field descriptors and method descriptors per JVMS §4.2 / §4.3 / §4.3.3 entirely in the browser, with array dimensions, primitives and reference types, and position-specific errors for malformed descriptors.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/java-descriptor-converter',
+    iconName: 'Code',
+    tags: ['Java', 'JVM', '字节码', '描述符', 'Descriptor', '内部类', 'JVMS'],
+    tagsEn: ['Java', 'JVM', 'Bytecode', 'Descriptor', 'Binary Name', 'Inner Class', 'JVMS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '([[Ljava/lang/String;I)V',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Java 内部类名与描述符转换器面向字节码调试场景，依据 Java 虚拟机规范在浏览器本地完成三类表示的双向转换：内部名（斜杠分隔、嵌套类以 $ 标记，如 java/util/Map$Entry）与源码全限定名（点号分隔）；字段描述符（如 [[Ljava/lang/String;、I、Z）；方法描述符（如 (Ljava/lang/String;I)V），并拆解参数列表与返回类型。',
+        coreFeatures: [
+          '内部名 ↔ 源码类名双向转换，正确处理包分隔斜杠与嵌套类 $ 标记',
+          '字段描述符解析与生成，覆盖八类原始类型（含 void）、引用类型与最多 255 维数组',
+          '方法描述符解析与生成，拆解参数类型列表与返回类型并渲染可读签名',
+          '严格语法校验：缺少分号、非法字符、void 数组、空段等错误均给出字符位置',
+          '零依赖纯 TypeScript 函数，主线程毫秒级完成，全部输入仅留在本机',
+        ],
+        howToUse: [
+          '在「字段描述符 / 方法描述符 / 内部名」标签中选择需要的转换方向',
+          '粘贴 JVM 描述符或 Java 源码类型，结果随输入实时更新',
+          '方法描述符可在解析视图查看参数与返回类型，或用逗号分隔的参数加返回类型反向生成',
+          '点击「复制」获取结果；非法输入会在红色提示框中看到具体错误位置',
+        ],
+        useCases: [
+          '阅读 javap -s 输出或字节码日志时，把描述符快速还原为可读 Java 类型',
+          '编写字节码生成库（ASM、ByteBuddy）时核对方法与字段描述符',
+          '排查 ClassFormatError、NoSuchMethodError 中的类型签名不匹配问题',
+        ],
+        privacyNote:
+          '所有解析与转换均在浏览器本地由纯函数完成，类名与描述符不会上传到任何服务器，断网环境同样可用。',
+        faqs: [
+          {
+            question: '为什么 java.util.Map.Entry 转内部名时嵌套类没有变成 $？',
+            answer:
+              '源码全限定名中的点号同时承担包分隔与嵌套类分隔，仅凭字符串无法区分二者，因此默认统一映射为 JVM 斜杠。若已知是嵌套类，请按 JVMS 二进制名显式书写「java.util.Map$Entry」，工具会保留 $ 标记。',
+          },
+          {
+            question: '字段描述符和方法描述符有什么区别？',
+            answer:
+              '字段描述符描述单个类型，如 I 表示 int、[Ljava/lang/String; 表示 String 数组；方法描述符以括号包裹参数描述符列表，括号后接返回类型，如 (Ljava/lang/String;I)V 表示接收 String 与 int、无返回值（void）的方法。',
+          },
+          {
+            question: '为什么 void[] 会报错？',
+            answer:
+              'JVMS 规定 void（描述符 V）只能作为方法返回类型，不能作为字段或数组元素类型，因此 void[] 与 [V 都会被拒绝并提示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Java Descriptor & Binary Name Converter supports bytecode debugging by converting three JVM representations locally: binary names (slash-separated, nested classes marked with $, e.g. java/util/Map$Entry) vs source fully-qualified names; field descriptors (e.g. [[Ljava/lang/String;, I, Z); and method descriptors (e.g. (Ljava/lang/String;I)V), with parameter and return type breakdown, following the JVM Specification.',
+        coreFeatures: [
+          'Bidirectional binary name ↔ source name conversion, handling package slashes and nested-class $ markers',
+          'Field descriptor parsing and generation across all eight primitives (incl. void), reference types and up to 255 array dimensions',
+          'Method descriptor parsing and generation with parameter list, return type and a readable signature view',
+          'Strict validation with character-position errors for missing semicolons, illegal characters, void arrays and empty segments',
+          'Zero-dependency pure TypeScript functions on the main thread; all input stays on the device',
+        ],
+        howToUse: [
+          'Pick the field descriptor, method descriptor or binary name tab for the direction you need',
+          'Paste a JVM descriptor or Java source type; the result updates live',
+          'Inspect method parameters and return types, or generate a descriptor from comma-separated parameters plus a return type',
+          'Click Copy to grab the result; malformed input shows a red alert with the exact error position',
+        ],
+        useCases: [
+          'Turning javap -s output or bytecode logs back into readable Java types',
+          'Verifying method and field descriptors when writing ASM or ByteBuddy bytecode generators',
+          'Diagnosing type-signature mismatches behind ClassFormatError or NoSuchMethodError',
+        ],
+        privacyNote:
+          'All parsing and conversion run locally in the browser through pure functions. Class names and descriptors are never uploaded, and the tool works fully offline.',
+        faqs: [
+          {
+            question: 'Why does java.util.Map.Entry not become a $ nested name?',
+            answer:
+              'Dots in a source fully-qualified name serve both package and nested-class separation, which cannot be distinguished from the string alone, so they map uniformly to JVM slashes. When you know it is a nested class, write the binary form explicitly as java.util.Map$Entry and the $ marker is preserved.',
+          },
+          {
+            question: 'What is the difference between field and method descriptors?',
+            answer:
+              'A field descriptor describes one type, e.g. I for int or [Ljava/lang/String; for a String array. A method descriptor wraps the parameter descriptor list in parentheses followed by the return type, e.g. (Ljava/lang/String;I)V for a method taking String and int with void return.',
+          },
+          {
+            question: 'Why is void[] rejected?',
+            answer:
+              'The JVMS allows void (descriptor V) only as a method return type, never as a field or array component, so both void[] and [V] are rejected with an explanatory error.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'e123-phone-formatter',
+    name: 'ITU E.123 电话号码格式化器',
+    nameEn: 'ITU E.123 Phone Number Formatter',
+    description:
+      '按 ITU-T E.123 在本地剥离空格、连字符、括号等可视分隔符，在 E.164 无分隔形式与人类可读分组形式之间双向转换，支持空格 / 点号 / 连字符、本地括号长途区号与批量处理，并标记非法字符。',
+    descriptionEn:
+      'Strip visual separators and convert phone numbers between plain E.164 and human-readable grouped E.123 notation entirely in the browser, with space/dot/hyphen separators, local parenthesized trunk prefixes, batch processing and invalid-character marking.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/e123-phone-formatter',
+    iconName: 'Smartphone',
+    tags: ['E.123', 'E.164', '电话号码', '格式化', '通讯', '分隔符'],
+    tagsEn: ['E.123', 'E.164', 'Phone Number', 'Formatter', 'Telecom', 'Separator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '+86 138-0013-8000',
+    doc: {
+      zh: {
+        whatIsIt:
+          'ITU E.123 电话号码格式化器面向需要统一号码书写的通讯与客服场景，在浏览器本地把任意粘贴的号码（含空格、连字符、括号、点号、斜杠等可视分隔符）重新排版：国际写法以 + 开头、国家码单独成组后按 3-3-4 分组（如 +86 138 001 38000、+1 555 123 4567），本地写法默认空格分组并可选括号长途区号（如 (042) 123 4567），同时输出无分隔的 E.164 形式。',
+        coreFeatures: [
+          '剥离空格、连字符、括号、点号、斜杠等可视分隔符并识别 + / 00 国际前缀',
+          'E.164 无分隔形式与 E.123 人类可读形式双向互转，支持往返一致',
+          '三种分隔符（空格 / 点号 / 连字符）与本地括号长途区号风格切换',
+          '内置常用国家呼叫码表，按最长前缀把国家码单独成组',
+          '标记清洗后残留的字母与特殊符号，支持多行批量处理并按行报告错误',
+        ],
+        howToUse: [
+          '在输入框粘贴号码，E.123 与 E.164 结果随输入实时更新',
+          '通过分隔符按钮切换空格、点号或连字符，打开开关启用本地括号区号',
+          '在批量卡片中每行输入一个号码，点击结果可一键复制',
+          '出现黄色警告表示含被忽略的非法字符，红色提示表示无法格式化',
+        ],
+        useCases: [
+          '把 CRM / 工单中格式混乱的客户号码统一为 E.123 标准排版',
+          '为短信网关、IVR 配置准备无分隔的 E.164 拨号串',
+          '清洗从文档或表格复制的带括号、连字符号码',
+        ],
+        privacyNote:
+          '所有号码仅在浏览器本地处理，不会上传到任何服务器，断网环境同样可用。',
+        faqs: [
+          {
+            question: '它和 E.164 规范化工具有什么区别？',
+            answer:
+              'E.164 工具聚焦号码合法性、国家码识别与长度区间校验；本工具聚焦 ITU-T E.123 规定的可视分隔与分组排版，以 E.164 作为无分隔中间表示，不做号段真实性判断，两者互补。',
+          },
+          {
+            question: '为什么本地号码没有自动加国家码？',
+            answer:
+              '本地号码缺少国际前缀时无法可靠判断所属国家，工具不会臆造国家码，只输出纯数字；需要 E.164 国际形式时请手动补充 + 与国家码。',
+          },
+          {
+            question: '分组规则可以自定义吗？',
+            answer:
+              '当前按 E.123 常见的 3-3-4 分组并让末组吸收余数，国家码依据内置呼叫码表单独成组；显式指定国家码长度可覆盖自动识别。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ITU E.123 Phone Number Formatter reorganizes pasted numbers containing spaces, hyphens, parentheses, dots or slashes entirely in the browser: international notation starts with +, keeps the country code as its own group and applies 3-3-4 grouping (e.g. +86 138 001 38000, +1 555 123 4567), while local notation uses spaced groups with optional parenthesized trunk prefix (e.g. (042) 123 4567), and also emits the separator-free E.164 form.',
+        coreFeatures: [
+          'Strips visual separators (spaces, hyphens, parentheses, dots, slashes) and recognizes + / 00 international prefixes',
+          'Bidirectional conversion between plain E.164 and grouped E.123 with consistent round-trips',
+          'Three separator styles (space / dot / hyphen) and a local parenthesized trunk-prefix mode',
+          'Built-in calling-code table matching the longest prefix to isolate the country code',
+          'Flags residual letters and symbols, and batch-processes multiple lines with per-line errors',
+        ],
+        howToUse: [
+          'Paste a number into the input; the E.123 and E.164 results update live',
+          'Switch separator style with the buttons and toggle the parenthesized local prefix',
+          'Enter one number per line in the batch card and click a result to copy it',
+          'A yellow warning means ignored invalid characters; a red alert means the number cannot be formatted',
+        ],
+        useCases: [
+          'Standardizing messy CRM or helpdesk numbers into E.123 notation',
+          'Preparing separator-free E.164 dial strings for SMS gateways and IVR configs',
+          'Cleaning parenthesized or hyphenated numbers copied from documents or spreadsheets',
+        ],
+        privacyNote:
+          'All numbers are processed locally in the browser and never uploaded; the tool works fully offline.',
+        faqs: [
+          {
+            question: 'How is this different from the E.164 normalizer?',
+            answer:
+              'The E.164 tool focuses on validity, country-code recognition and length ranges; this tool focuses on the visual separators and grouping defined by ITU-T E.123, using E.164 only as the separator-free intermediate representation and making no real-number validity claims. They complement each other.',
+          },
+          {
+            question: 'Why is no country code added automatically for local numbers?',
+            answer:
+              'A local number without an international prefix cannot be mapped to a country reliably, so the tool never invents a code and returns plain digits only. Add + and the country code manually when you need the international E.164 form.',
+          },
+          {
+            question: 'Can I customize the grouping rule?',
+            answer:
+              'The common E.123 3-3-4 grouping is used with the last group absorbing any remainder, and the country code is isolated via the built-in calling-code table. An explicit country-code length overrides automatic detection.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'dmarc-record-generator',
+    name: 'DMARC 记录生成与校验器',
+    nameEn: 'DMARC Record Generator & Validator',
+    description:
+      '按 RFC 7489 在本地拼装发信域的 _dmarc DNS TXT 记录，可视化配置 p / sp / rua / ruf / adkim / aspf / fo / pct / rf / ri 标签，并对粘贴的现有记录做语法校验、未知标签提示与冲突检查。',
+    descriptionEn:
+      'Build _dmarc DNS TXT records per RFC 7489 entirely in the browser with visual p/sp/rua/ruf/adkim/aspf/fo/pct/rf/ri tag controls, and validate pasted records for syntax, unknown tags and policy conflicts.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/dmarc-record-generator',
+    iconName: 'ShieldCheck',
+    tags: ['DMARC', 'DNS', '邮件认证', 'SPF', 'DKIM', '反钓鱼', 'TXT 记录'],
+    tagsEn: ['DMARC', 'DNS', 'Email Authentication', 'SPF', 'DKIM', 'Anti-phishing', 'TXT Record'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'v=DMARC1; p=quarantine; rua=mailto:dmarc@example.com; pct=50',
+    doc: {
+      zh: {
+        whatIsIt:
+          'DMARC 记录生成与校验器面向邮件域名运维，依据 RFC 7489 在浏览器本地完成两件事：通过表单配置策略（none / quarantine / reject）、子域策略 sp、聚合与取证报告邮箱 rua / ruf、对齐模式 adkim / aspf、取证选项 fo、策略百分比 pct、报告格式 rf 与间隔 ri，实时拼装 _dmarc 主机下的 TXT 记录；以及对粘贴的现有记录做标签语法校验、未知标签提示与策略冲突检查，避免配错导致 SPF / DKIM 仿冒防护失效。',
+        coreFeatures: [
+          '表单化配置全部 RFC 7489 正式标签，实时生成主机记录与 TXT 值',
+          '记录校验：版本标签、必填 p 策略、枚举值、pct 0–100 越界、重复标签等错误',
+          '未知标签告警、缺失 rua 提示、子域策略与主域冲突、监控模式提醒',
+          'mailto: 报告地址合法性检查与多地址规范化，超 255 字符自动分段',
+          '零依赖纯 TypeScript，主线程毫秒级完成，域名与邮箱仅留在本机',
+        ],
+        howToUse: [
+          '在「记录生成器」填写发信域并选择策略，按需展开报告邮箱与高级对齐选项',
+          '复制生成的主机记录（_dmarc.域名）与 TXT 值到 DNS 服务商',
+          '核对现有记录时切到「记录校验器」粘贴 TXT 内容，查看错误、警告与规范化结果',
+          '出现红色错误先修正再发布；黄色警告为最佳实践建议，可按实际情况处理',
+        ],
+        useCases: [
+          '新邮件域首次发布 DMARC，从 p=none 监控逐步灰度到 reject 强策略',
+          '排查仿冒钓鱼邮件时核对现有 _dmarc 记录的标签与百分比配置',
+          '为 rua / ruf 报告邮箱和子域策略生成可直接粘贴的 DNS TXT 记录',
+        ],
+        privacyNote:
+          '所有域名、邮箱与记录内容均在浏览器本地处理，不会发起任何网络请求或上传，断网环境同样可用。',
+        faqs: [
+          {
+            question: 'p=none、quarantine、reject 应该怎么选？',
+            answer:
+              '新域建议先 p=none 仅收集报告观察对齐情况，确认合法邮件都能通过 SPF / DKIM 后升级 quarantine（进入垃圾邮件），最终使用 reject 直接拒收；工具会在 p=none 与灰度 pct 下给出对应提醒。',
+          },
+          {
+            question: 'rua 和 ruf 有什么区别？',
+            answer:
+              'rua 接收聚合报告，按周期汇总通过与失败统计，是日常监控的主要来源；ruf 接收取证报告，针对单封失败邮件发送明细，数据量更大且涉及隐私，通常按需配置并配合 fo 选项。',
+          },
+          {
+            question: '为什么记录被拆成多段带引号字符串？',
+            answer:
+              'RFC 1035 规定单个 DNS 字符串最长 255 字符，较长的 DMARC 记录需要拆成多个引号字符串、以空格连接发布；工具在超限时自动给出 BIND 风格分段，直接整体粘贴即可。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The DMARC Record Generator & Validator helps email-domain operators work with RFC 7489 entirely in the browser: build the TXT record under _dmarc through form controls for policy (none/quarantine/reject), subdomain policy sp, aggregate and forensic report mailboxes rua/ruf, alignment adkim/aspf, forensic options fo, percentage pct, report format rf and interval ri; and validate pasted records for tag syntax, unknown tags and policy conflicts so that misconfiguration cannot silently break SPF/DKIM anti-spoofing protection.',
+        coreFeatures: [
+          'Form-based configuration of every formal RFC 7489 tag with live host record and TXT value generation',
+          'Validation of version tag, required p policy, enum values, pct 0–100 range and duplicate tags',
+          'Warnings for unknown tags, missing rua, subdomain-vs-parent policy conflicts and monitor mode',
+          'mailto: address checks, multi-address normalization and automatic 255-character chunking',
+          'Zero-dependency pure TypeScript on the main thread; domains and mailboxes stay on the device',
+        ],
+        howToUse: [
+          'Open the generator, enter the sending domain and pick a policy, then expand report mailboxes and advanced alignment as needed',
+          'Copy the generated host record (_dmarc.domain) and TXT value into your DNS provider',
+          'To audit an existing record, switch to the validator, paste the TXT content and review errors, warnings and normalized output',
+          'Fix red errors before publishing; yellow warnings are best-practice guidance you may address as appropriate',
+        ],
+        useCases: [
+          'Bootstrapping DMARC on a new mail domain from p=none monitoring toward a reject enforcement policy',
+          'Auditing tag and percentage configuration of an existing _dmarc record during phishing investigations',
+          'Generating paste-ready DNS TXT records for rua/ruf reporting and subdomain policies',
+        ],
+        privacyNote:
+          'All domains, mailboxes and record contents are processed locally in the browser with no network requests or uploads; the tool works fully offline.',
+        faqs: [
+          {
+            question: 'How do I choose between p=none, quarantine and reject?',
+            answer:
+              'Start new domains with p=none to collect reports and observe alignment, move to quarantine once legitimate mail passes SPF/DKIM, and finally use reject to bounce failures. The tool surfaces reminders for monitor mode and gray-release pct values.',
+          },
+          {
+            question: 'What is the difference between rua and ruf?',
+            answer:
+              'rua receives aggregate reports summarizing pass/fail statistics on a schedule and is the main monitoring channel; ruf receives forensic reports with per-message failure details, which are higher volume and privacy-sensitive, so they are usually enabled on demand together with fo options.',
+          },
+          {
+            question: 'Why is my record split into quoted chunks?',
+            answer:
+              'RFC 1035 limits a single DNS character string to 255 characters, so longer DMARC records must be published as multiple quoted strings joined by spaces. The tool emits BIND-style chunks automatically when the limit is exceeded; paste the whole block as-is.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'plus-code-codec',
+    name: 'Plus Codes 编解码器',
+    nameEn: 'Plus Codes (Open Location Code) Encoder & Decoder',
+    description:
+      '按 Google 官方 Open Location Code 算法在经纬度与 Plus Code 之间双向转换：编码支持 2–15 位码长，解码输出中心点、边界框与格子精度，并支持基于参考点的短码缩短（shorten）与恢复（recover），全部本地计算。',
+    descriptionEn:
+      'Convert between latitude/longitude and Plus Codes using the official Google Open Location Code algorithm: encode at code lengths 2–15, decode to center point, bounding box and cell precision, and shorten or recover short codes against a reference point. All local.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/plus-code-codec',
+    iconName: 'Map',
+    tags: ['Plus Codes', 'Open Location Code', 'OLC', '经纬度', '地理编码', '位置编码'],
+    tagsEn: ['Plus Codes', 'Open Location Code', 'OLC', 'Coordinates', 'Geocoding', 'Location Encoding'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '47.36559,8.52499',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Plus Codes（Open Location Code，OLC）是 Google 提出的开源位置编码，用 Base20 层次格网把经纬度压缩成可口头传递、无需门牌地址的短码（如 8FVC9G8F+6X）。本工具严格移植官方参考实现的整数化算法，在浏览器本地完成经纬度编码、完整码解码（边界框与中心点）、以及借助参考点的短码缩短与恢复，输出与官方测试向量逐位一致。',
+        coreFeatures: [
+          '经纬度 → Plus Code 编码，码长覆盖 2–15 位（10 位标准精度约 14m 格子）',
+          '完整码解码：西南/东北边界框、中心点、格子经纬度精度与有效码长',
+          '短码 shorten：按参考点距离剥离最长可省略前缀，最短可到 +XX 形式',
+          '短码 recover：用同一参考点把短码无歧义恢复为距离最近的完整码',
+          '语法校验区分非法字符、分隔符位置、零填充规则与首对越界，错误信息面向用户',
+          '零依赖纯 TypeScript 整数算法，主线程毫秒级，位置数据不出本机',
+        ],
+        howToUse: [
+          '编码：输入纬度（±90）与经度（±180），选择码长后实时得到含 + 的 Plus Code',
+          '解码：粘贴完整 Plus Code（+ 必须在第 9 个字符位置），查看中心点与边界框',
+          '短码：先填参考点经纬度，再把完整码缩短，或把短码恢复为完整码',
+          '短码本身不含全局位置，缩短与恢复必须使用同一区域的参考点',
+        ],
+        useCases: [
+          '在无门牌地址的地区生成可分享、可口头传递的位置短码',
+          '物流、应急救援、田野调查中标注与复核精确位置',
+          '把数据库中的经纬度转成短链友好的字符串，或反向解析回坐标区域',
+        ],
+        privacyNote:
+          '所有经纬度与 Plus Code 均在浏览器本地计算，不发起任何网络请求或位置上报，断网可用。',
+        faqs: [
+          {
+            question: 'Plus Code 和 Geohash 有什么区别？',
+            answer:
+              '两者都是层次格网编码。Geohash 使用 base32 并交替二分经纬度；Plus Code 使用排除元音与易混字符的 Base20 字母表，码长按字符对组织且不依赖外部数据集，短码可借助附近参考点恢复，更适合口头传递与无地址地区。',
+          },
+          {
+            question: '为什么短码恢复需要参考点？',
+            answer:
+              '短码剥离了全局前缀（如 8FVC9G），同一个后缀在全球不同区域会对应多个格子。参考点用于补齐前缀并在跨越格网边界时平移一个块，从而选出距离参考点最近的唯一完整码。',
+          },
+          {
+            question: '码长应该怎么选？',
+            answer:
+              '10 位是标准精度，赤道附近格子约 14m × 14m，覆盖绝大多数寻址场景；6 位约为街区级（0.05°），适合城市级聚合；11–15 位用于亚米级专业测量。10 位以下只支持偶数码长。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Plus Codes (Open Location Code, OLC) is an open location encoding published by Google that compresses latitude/longitude into a short, speakable code such as 8FVC9G8F+6X using a Base20 hierarchical grid, without requiring street addresses. This tool ports the integer-based reference algorithm to pure TypeScript and runs fully in the browser: encode coordinates, decode full codes to bounding boxes and centers, and shorten or recover short codes with a reference point, matching the official test vectors bit for bit.',
+        coreFeatures: [
+          'Encode latitude/longitude to Plus Codes at lengths 2–15 (10-digit standard precision is about a 14m cell)',
+          'Decode full codes to SW/NE bounding box, center point, cell precision and effective code length',
+          'Shorten full codes against a reference point, down to a +XX form',
+          'Recover short codes to the nearest unambiguous full code using the same reference point',
+          'Validation distinguishes illegal characters, separator placement, padding rules and out-of-range first pairs with user-facing messages',
+          'Zero-dependency integer algorithm in pure TypeScript on the main thread; location data never leaves the device',
+        ],
+        howToUse: [
+          'Encode: enter latitude (±90) and longitude (±180), pick a code length and read the live Plus Code with +',
+          'Decode: paste a full Plus Code (+ must be at the ninth character) to inspect the center and bounding box',
+          'Short codes: set the reference point first, then shorten a full code or recover a short one',
+          'A short code carries no global position, so shortening and recovery must share a reference point in the same area',
+        ],
+        useCases: [
+          'Generating shareable, speakable location codes where street addresses do not exist',
+          'Marking and verifying precise positions in logistics, emergency response and field surveys',
+          'Turning stored coordinates into short-link-friendly strings, or parsing them back into coordinate areas',
+        ],
+        privacyNote:
+          'All coordinates and Plus Codes are computed locally in the browser with no network requests or location reporting; the tool works offline.',
+        faqs: [
+          {
+            question: 'How do Plus Codes differ from Geohash?',
+            answer:
+              'Both are hierarchical grid encodings. Geohash uses base32 and alternates lat/lng bisection, while Plus Codes use a Base20 alphabet that excludes vowels and confusing characters, organize digits in pairs, need no external dataset and allow reference-based short codes, which makes them easier to speak and use in addressless regions.',
+          },
+          {
+            question: 'Why does recovering a short code need a reference point?',
+            answer:
+              'A short code drops the global prefix (e.g. 8FVC9G), so the same suffix maps to multiple cells worldwide. The reference point restores the prefix and shifts by one grid block when crossing a boundary, selecting the unique full code nearest to the reference.',
+          },
+          {
+            question: 'Which code length should I choose?',
+            answer:
+              'Ten digits is the standard precision, about a 14m × 14m cell near the equator and sufficient for most addressing; six digits is neighborhood level (0.05°) for city-scale aggregation; 11–15 digits are for sub-meter professional surveying. Below ten digits only even lengths are valid.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'changelog-generator',
+    name: 'CHANGELOG.md 生成器（Keep a Changelog）',
+    nameEn: 'Keep a Changelog Generator',
+    description:
+      '粘贴一批 Conventional Commits 提交信息，按 feat / fix / perf / docs 等类型自动分组，生成符合 Keep a Changelog 1.1.0 的变更日志片段，支持版本号与日期标题、作用域前缀、内部类型收录与 Breaking Change 置顶，可一键复制或下载 CHANGELOG.md。',
+    descriptionEn:
+      'Paste a batch of Conventional Commits messages and group them automatically into a Keep a Changelog 1.1.0 fragment, with version/date headings, scope prefixes, internal-type inclusion and breaking changes pinned to the top. Copy or download CHANGELOG.md in one click.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/changelog-generator',
+    iconName: 'ScrollText',
+    tags: ['CHANGELOG', 'Keep a Changelog', 'Conventional Commits', '发版', 'Git'],
+    tagsEn: ['CHANGELOG', 'Keep a Changelog', 'Conventional Commits', 'Release', 'Git'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: CHANGELOG_SAMPLE_INPUT,
+    doc: {
+      zh: {
+        whatIsIt:
+          'CHANGELOG.md 生成器是一款纯浏览器本地工具：把一批 Conventional Commits 风格的提交信息（含 git log --oneline 的短哈希前缀）解析为结构化条目，按 Keep a Changelog 1.1.0 的 Added / Changed / Deprecated / Removed / Fixed / Security 六组渲染成可直接粘贴的变更日志片段，破坏性变更自动置顶。',
+        coreFeatures: [
+          '解析 type(scope)!: subject 语法，自动剥离可选短哈希，Merge 合并提交跳过',
+          '六组标准分类：feat→Added、fix→Fixed、perf/refactor/docs/revert→Changed，并按主题语义识别安全、弃用与移除关键词',
+          '破坏性变更（! 标记）汇总到版本下的 BREAKING CHANGES 区块并在条目内标注',
+          '可选版本号与真实日历日期标题，留空分别回退 Unreleased 与无日期',
+          '开关控制作用域前缀、内部类型（style/test/build/ci/chore）收录与 Keep a Changelog 文档头',
+          '未识别行逐条告警且不写入文档，支持复制 Markdown 与下载 CHANGELOG.md，零依赖纯本地',
+        ],
+        howToUse: [
+          '把发版区间内的提交信息逐行粘贴到输入框（可直接贴 git log --oneline 输出）',
+          '填写版本号（如 1.2.0）与发布日期 YYYY-MM-DD，或留空使用 Unreleased',
+          '按需要切换作用域前缀、内部类型收录与文档头开关，结果区实时渲染',
+          '检查未识别行告警后，点击「复制」或「下载 CHANGELOG.md」取得最终片段',
+        ],
+        useCases: [
+          '发版前把一个迭代的数十条提交快速整理为规范变更日志',
+          '为开源项目生成符合 Keep a Changelog 与语义化版本习惯的 release 片段',
+          '在没有 conventional-changelog 工具链的轻量仓库中替代手工分组',
+        ],
+        privacyNote:
+          '提交信息的解析、分组与 Markdown 拼接全部在浏览器本地完成，不发起任何网络请求，代码仓库历史不会离开本机。',
+        faqs: [
+          {
+            question: '和 Conventional Commits 提交信息生成器有什么区别？',
+            answer:
+              '两者方向相反且互补：提交信息生成器由表单生成单条规范提交信息；本工具把已有的多条提交信息反向汇总为变更日志文档。前者的输出正好可以作为本工具的输入。',
+          },
+          {
+            question: '哪些行会被标记为未识别？',
+            answer:
+              '不符合 type(scope)!: subject 语法、且没有可剥离短哈希前缀的行会进入未识别列表，不会写入文档；Merge 合并提交属于正常跳过而非未识别。可改写为规范提交后重新粘贴。',
+          },
+          {
+            question: 'Security / Deprecated / Removed 分组如何判定？',
+            answer:
+              '在标准类型映射之外，工具会扫描主题中的安全（如 CVE、XSS、漏洞）、弃用（deprecate、弃用）与移除（remove、删除）关键词，命中后优先归入对应分组；security 类型提交直接进入 Security。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Keep a Changelog Generator is a fully in-browser tool that parses a batch of Conventional Commits messages (including git log --oneline hash prefixes) into structured entries and renders a ready-to-paste changelog fragment following the Keep a Changelog 1.1.0 groups Added / Changed / Deprecated / Removed / Fixed / Security, with breaking changes pinned to the top.',
+        coreFeatures: [
+          'Parses type(scope)!: subject syntax, strips optional short hashes and skips merge commits',
+          'Six standard groups: feat→Added, fix→Fixed, perf/refactor/docs/revert→Changed, plus keyword-based security, deprecation and removal detection',
+          'Breaking changes (! marker) are collected under a BREAKING CHANGES block and annotated inside entries',
+          'Optional version and real calendar-date headings, falling back to Unreleased and no date when empty',
+          'Toggles for scope prefixes, internal types (style/test/build/ci/chore) and the Keep a Changelog document header',
+          'Unrecognized lines are warned about and excluded from the document; copy Markdown or download CHANGELOG.md, zero dependencies and fully local',
+        ],
+        howToUse: [
+          'Paste the commits of a release range line by line (raw git log --oneline output works)',
+          'Fill in a version such as 1.2.0 and a YYYY-MM-DD release date, or leave them empty for Unreleased',
+          'Toggle scope prefixes, internal-type inclusion and the document header; the result renders live',
+          'Review the unrecognized-line warnings, then click Copy or download CHANGELOG.md',
+        ],
+        useCases: [
+          'Turning dozens of commits from an iteration into a structured release changelog',
+          'Producing Keep a Changelog and SemVer-style release fragments for open-source projects',
+          'Replacing manual grouping in lightweight repositories without a conventional-changelog toolchain',
+        ],
+        privacyNote:
+          'Parsing, grouping and Markdown assembly all run locally in the browser with no network requests; repository history never leaves the device.',
+        faqs: [
+          {
+            question: 'How is this different from the Conventional Commit Message Generator?',
+            answer:
+              'They work in opposite, complementary directions: the message generator builds one standardized commit message from a form, while this tool aggregates many existing commit messages into a changelog document. The output of the former is valid input for the latter.',
+          },
+          {
+            question: 'Which lines are reported as unrecognized?',
+            answer:
+              'Lines that do not match the type(scope)!: subject syntax and have no strippable hash prefix are listed as unrecognized and excluded from the document. Merge commits are skipped normally rather than treated as unrecognized. Rewrite them as conventional commits and paste again.',
+          },
+          {
+            question: 'How are the Security, Deprecated and Removed groups decided?',
+            answer:
+              'Beyond the standard type mapping, subject keywords for security (e.g. CVE, XSS), deprecation (deprecate) and removal (remove) take priority over the type mapping, and the security commit type always lands in Security.',
           },
         ],
       },
