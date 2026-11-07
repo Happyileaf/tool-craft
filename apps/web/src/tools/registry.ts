@@ -27931,6 +27931,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'markdown-frontmatter-editor',
+    name: 'Markdown Frontmatter 解析与编辑器',
+    nameEn: 'Markdown Frontmatter Parser & Editor',
+    description:
+      '识别 Markdown 文档开头的 YAML（---）与 TOML（+++）frontmatter 围栏并分离正文：解析标量、两级 map 与标量序列为结构化键值表格，支持字段增删改、YAML/TOML 双向切换与实时回写，正文原样保留；超子集语法（流式内联集合、锚点等）给出带行号告警而非静默错解。零依赖纯浏览器运算，支持 CRLF/BOM 归一化与 parse↔stringify 往返。',
+    descriptionEn:
+      'Detach the YAML (---) and TOML (+++) frontmatter fence at the top of a Markdown document from its body: parse scalars, two-level maps and scalar sequences into a structured key-value table, add/edit/delete fields, switch between YAML and TOML, and write the result back while keeping the body untouched. Syntax beyond the supported subset (inline flow collections, anchors) raises line-numbered warnings instead of being silently misread. Zero-dependency, fully in-browser, with CRLF/BOM normalization and parse-stringify round-tripping.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/markdown-frontmatter-editor',
+    iconName: 'FileText',
+    tags: ['Markdown', 'Frontmatter', 'YAML', 'TOML', '元数据', '静态站点'],
+    tagsEn: ['Markdown', 'Frontmatter', 'YAML', 'TOML', 'Metadata', 'Static Site'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Markdown Frontmatter 解析与编辑器是一款纯浏览器本地运行的文本工具，面向 Hugo、Hexo、Astro、Jekyll 等静态站点作者。它只识别文档开头的 --- 或 +++ 围栏，把元数据解析为可编辑的键值表格，正文始终原样保留，全程不引入 yaml/toml 第三方依赖。',
+        coreFeatures: [
+          '自动识别文档首行 YAML（---）与 TOML（+++）围栏，正文中部的 --- 分隔线不会被误判',
+          '支持标量（字符串 / 整数 / 浮点 / 布尔 / null）、两级缩进 map 与 - 标量序列，BOM 与 CRLF 自动归一化',
+          '键值表格内直接增删改字段，类型以标签标识，YAML/TOML 一键切换并实时重组完整文档',
+          '超子集语法（流式 [1,2] / {a:1} 内联、嵌套表、锚点等）产生带行号的 warning/error，绝不静默错解',
+          '字符串含冒号、井号等特殊字符时输出自动加双引号转义，parse → stringify → parse 深度相等',
+        ],
+        howToUse: [
+          '把含 frontmatter 的 Markdown 粘贴到左侧输入框（或点击「载入样例」），右侧即时展示结构化字段表',
+          '在表格中修改键名或值、删除字段，或在下方输入新字段名与字符串值后点击「添加字段」',
+          '通过右上角切换 YAML / TOML 输出格式，切换到「正文编辑与输出」标签编辑正文并复制完整文档',
+          '查看解析告警区：error 表示结构无法识别，warning 表示超出浅层子集、对应行未参与解析',
+        ],
+        useCases: [
+          '批量维护博客文章的 title、tags、draft、发布日期等元数据',
+          '把旧文档的 YAML frontmatter 转换为 TOML（或反向）写法',
+          '排查第三方模板生成的 frontmatter 中重复键、未闭合围栏等问题',
+        ],
+        privacyNote:
+          '所有解析与回写均在浏览器本地完成，文档内容不上传、不记录，断网环境可正常使用。',
+        faqs: [
+          {
+            question: '为什么我的流式写法 tags: [a, b] 没有被解析？',
+            answer:
+              '工具刻意只实现 frontmatter 常见浅层子集（缩进 map 与 - 序列），流式内联集合会触发带行号的 unsupported 告警且该行不参与解析，避免零依赖手写解析器静默错解。把它改写成两行缩进的 - 序列即可正常识别。',
+          },
+          {
+            question: '正文里的 --- 分隔线会被当成围栏吗？',
+            answer:
+              '不会。围栏必须从文档第一行开始（允许首行 BOM），正文中任意位置出现的 --- 都按普通正文保留；只有开头围栏缺少闭合围栏时才会报块级错误。',
+          },
+          {
+            question: '嵌套对象和数组在表格里能编辑吗？',
+            answer:
+              '两级 map 与标量数组可以正确解析并以只读 JSON 形式展示；表格内的直接编辑面向标量字段，复杂容器建议在原文中修改后重新解析，以保证输出语义确定。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Markdown Frontmatter Parser & Editor is a browser-local text tool for authors using Hugo, Hexo, Astro, Jekyll and similar static-site generators. It only recognizes the leading --- or +++ fence, parses metadata into an editable key-value table and always keeps the body untouched, without any third-party yaml/toml dependency.',
+        coreFeatures: [
+          'Auto-detects leading YAML (---) and TOML (+++) fences; a --- divider inside the body is never mistaken for a fence',
+          'Supports scalars (string/integer/float/boolean/null), two-level indented maps and - scalar sequences, with BOM and CRLF normalization',
+          'Add, edit and delete fields directly in the key-value table with type tags; switch YAML/TOML instantly and rebuild the full document live',
+          'Syntax beyond the subset (inline flow collections like [1,2] / {a:1}, nested tables, anchors) raises line-numbered warnings or errors instead of silent misreads',
+          'Strings containing special characters such as colons or hashes are auto-quoted and escaped; parse → stringify → parse stays deeply equal',
+        ],
+        howToUse: [
+          'Paste Markdown with frontmatter into the left editor (or load the sample); the structured field table appears on the right immediately',
+          'Rename keys or values, remove rows in the table, or enter a new field name with a string value and click "Add field"',
+          'Switch YAML/TOML output via the top-right toggle, then open the output tab to edit the body and copy the full document',
+          'Check the issue area: errors mean unrecognizable structure, warnings mean the line exceeds the shallow subset and was skipped',
+        ],
+        useCases: [
+          'Maintaining title, tags, draft flag and publication dates across blog posts in bulk',
+          'Converting legacy YAML frontmatter to TOML style (or back again)',
+          'Diagnosing duplicate keys and unclosed fences in frontmatter generated by third-party templates',
+        ],
+        privacyNote:
+          'All parsing and rewriting happens locally in the browser. Documents are never uploaded or logged, and the tool works offline.',
+        faqs: [
+          {
+            question: 'Why is my flow style "tags: [a, b]" not parsed?',
+            answer:
+              'The tool deliberately implements only the common shallow subset (indented maps and - sequences). Inline flow collections trigger a line-numbered unsupported warning and the line is skipped, so a zero-dependency hand-written parser never silently misreads it. Rewrite it as an indented two-line - sequence to make it recognizable.',
+          },
+          {
+            question: 'Can a --- divider inside the body be treated as a fence?',
+            answer:
+              'No. A fence must start on the very first line (a leading BOM is allowed); any --- inside the body is kept as ordinary content. A block-level error is only raised when the opening fence has no closing fence.',
+          },
+          {
+            question: 'Can nested objects and arrays be edited in the table?',
+            answer:
+              'Two-level maps and scalar arrays are parsed correctly and shown as read-only JSON. Direct in-table editing targets scalar fields; for complex containers, edit the source text and re-parse to keep the output semantics deterministic.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
