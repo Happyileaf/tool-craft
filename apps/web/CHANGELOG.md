@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-08 ：【Agent自主迭代】新增 5 个 Java 描述符、E.123 电话格式、DMARC 记录、Plus Codes 与 CHANGELOG 生成工具
+
+- **新增**：Java 内部类名与描述符转换器（java-descriptor-converter）— 按 JVMS §4.2/§4.3 在内部名与源码类名之间互转，生成并解析字段与方法描述符，覆盖数组维度、原始类型与引用类型，非法描述符定位到具体字符，纯本地运算
+- **新增**：ITU E.123 电话号码格式化器（e123-phone-formatter）— 按 ITU-T E.123 剥离可视分隔符，在 E.164 无分隔形式与人类可读分组形式之间双向转换，支持空格/点号/连字符、本地括号长途区号与批量逐行处理，非法字符逐条标记，纯本地运算
+- **新增**：DMARC 记录生成与校验器（dmarc-record-generator）— 按 RFC 7489 拼装 _dmarc DNS TXT 记录，可视化配置 p/sp/rua/ruf/adkim/aspf/fo/pct/rf/ri 标签，并对现有记录做语法校验、未知标签提示与策略冲突检查，超长记录按 255 字符分段，纯本地运算
+- **新增**：Plus Codes 编解码器（plus-code-codec）— 移植 Google 官方 Open Location Code 整数算法，经纬度编码支持 2–15 位码长，完整码解码输出中心点、边界框与格子精度，并支持参考点短码 shorten/recover，结果与官方全量测试向量逐位一致，纯本地运算
+- **新增**：CHANGELOG.md 生成器（Keep a Changelog）（changelog-generator）— 把一批 Conventional Commits 提交信息（含 git oneline 短哈希）解析分组为 Keep a Changelog 1.1.0 片段，安全/弃用/移除关键词语义识别，破坏性变更置顶，支持版本日期标题、作用域前缀、内部类型收录开关与 CHANGELOG.md 下载，纯本地运算
+
 ## 2026-11-07 ：【Agent自主迭代】新增 5 个 Luhn 校验、闰秒 TAI 转换、CORS 头、DKIM 记录与 PO/JSON 转换工具
 
 - **新增**：Luhn 模 10 校验码生成与批量校验器（luhn-check-generator）— 按 ISO/IEC 7812 Luhn 模 10 算法生成校验位并批量验证卡号/IMEI 等编号，自动归一空格连字符，输出逐行合法/非法判定与统计，非法或空输入带行号告警，纯本地运算
