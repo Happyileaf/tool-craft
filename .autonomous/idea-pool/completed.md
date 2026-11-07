@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261107200154 | 平面解析几何计算器（两点斜率 / 直线方程 / 交点 / 距离 / 中点 / 平行垂直） | Web Tool | Exploration | `plane-geometry-calculator` / [PR #196](https://github.com/Happyileaf/tool-craft/pull/196) | 2026-11-08 | [详情](./idea-details/20261107200154.md) |
+| 20261107140230 | M3U / M3U8 播放列表生成与解析器（含 HLS 媒体序列） | Web Tool | Existing Gap | `m3u-playlist-parser` / [PR #196](https://github.com/Happyileaf/tool-craft/pull/196) | 2026-11-08 | [详情](./idea-details/20261107140230.md) |
+| 20261107140229 | 毛利率 / 加价率 / 售价双向定价计算器 | Web Tool | Existing Gap | `pricing-markup-calculator` / [PR #196](https://github.com/Happyileaf/tool-craft/pull/196) | 2026-11-08 | [详情](./idea-details/20261107140229.md) |
+| 20261103200232 | Black-Scholes 期权定价计算器（含 Greeks） | Web Tool | Exploration | `black-scholes-calculator` / [PR #196](https://github.com/Happyileaf/tool-craft/pull/196) | 2026-11-08 | [详情](./idea-details/20261103200232.md) |
+| 20261027081103 | 个人所得税计算器（工资薪金 / 年终奖） | Web Tool | Exploration | `china-income-tax-calculator` / [PR #196](https://github.com/Happyileaf/tool-craft/pull/196) | 2026-11-08 | [详情](./idea-details/20261027081103.md) |
 | 20261106160211 | 电阻串并联等效电阻与公差累积计算器 | Web Tool | Exploration | `resistor-network-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106160211.md) |
 | 20261106060117 | GPA 平均绩点计算器（百分制/4.0/4.3 多算法与学分加权） | Web Tool | Exploration | `gpa-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060117.md) |
 | 20261106060115 | 多边形面积与周长计算器（鞋带公式，含 GeoJSON 粘贴） | Web Tool | Exploration | `polygon-area-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060115.md) |
