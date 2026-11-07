@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261105080302 | Java 内部类名与描述符（Descriptor / Signature）转换器 | Web Tool | Existing Gap | `java-descriptor-converter` / [PR #197](https://github.com/Happyileaf/tool-craft/pull/197) | 2026-11-08 | [详情](./idea-details/20261105080302.md) |
+| 20261105080301 | ITU E.123 电话号码格式化器（国际/本地分组、可视分隔与 E.164 互转） | Web Tool | Existing Gap | `e123-phone-formatter` / [PR #197](https://github.com/Happyileaf/tool-craft/pull/197) | 2026-11-08 | [详情](./idea-details/20261105080301.md) |
+| 20261027020214 | DMARC 记录生成与校验器 | Web Tool | Existing Gap | `dmarc-record-generator` / [PR #197](https://github.com/Happyileaf/tool-craft/pull/197) | 2026-11-08 | [详情](./idea-details/20261027020214.md) |
+| 20261029140204 | Plus Codes（Open Location Code）编解码器 | Web Tool | Exploration | `plus-code-codec` / [PR #197](https://github.com/Happyileaf/tool-craft/pull/197) | 2026-11-08 | [详情](./idea-details/20261029140204.md) |
+| 20261023081556 | CHANGELOG.md 生成器（Keep a Changelog） | Web Tool | Exploration | `changelog-generator` / [PR #197](https://github.com/Happyileaf/tool-craft/pull/197) | 2026-11-08 | [详情](./idea-details/20261023081556.md) |
 | 20261106160211 | 电阻串并联等效电阻与公差累积计算器 | Web Tool | Exploration | `resistor-network-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106160211.md) |
 | 20261106060117 | GPA 平均绩点计算器（百分制/4.0/4.3 多算法与学分加权） | Web Tool | Exploration | `gpa-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060117.md) |
 | 20261106060115 | 多边形面积与周长计算器（鞋带公式，含 GeoJSON 粘贴） | Web Tool | Exploration | `polygon-area-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060115.md) |
