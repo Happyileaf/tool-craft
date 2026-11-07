@@ -295,4 +295,9 @@ export const toolLoaders: Record<
   'cors-header-generator': () => import('./cors-header-generator'),
   'dkim-record-generator': () => import('./dkim-record-generator'),
   'po-json-converter': () => import('./po-json-converter'),
+  'pricing-margin-calculator': () => import('./pricing-margin-calculator'),
+  'm3u-playlist-codec': () => import('./m3u-playlist-codec'),
+  'lrc-lyrics-codec': () => import('./lrc-lyrics-codec'),
+  'markdown-frontmatter-editor': () => import('./markdown-frontmatter-editor'),
+  'gs1-check-digit-calculator': () => import('./gs1-check-digit-calculator'),
 };

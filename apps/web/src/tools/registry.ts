@@ -27624,6 +27624,515 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'pricing-margin-calculator',
+    name: '毛利率 / 加价率 / 售价双向定价计算器',
+    nameEn: 'Margin & Markup Pricing Calculator',
+    description:
+      '在成本价、售价、毛利率（分母为售价）与加价率（分母为成本）之间按已知量双向求解，实时算出毛利额；支持批量「成本,目标毛利率」生成售价 CSV、折扣场景保本价反推，以及毛利率与加价率互转对照。零依赖纯本地运算，明确区分两个极易混淆的定价口径。',
+    descriptionEn:
+      'Solve bidirectionally between cost, price, gross margin (profit divided by price) and markup (profit divided by cost), deriving the missing values and gross profit live. It also batches cost-plus-margin rows into a price CSV, computes the break-even price under a discount, and provides a margin-to-markup lookup table. Fully local, zero-dependency computation that keeps the two easily confused pricing definitions explicit.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/pricing-margin-calculator',
+    iconName: 'Gauge',
+    tags: ['毛利率', '加价率', '定价', '售价', '保本价', '零售'],
+    tagsEn: ['Margin', 'Markup', 'Pricing', 'Break-even', 'Retail', 'CSV'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '毛利率 / 加价率 / 售价双向定价计算器是一款纯浏览器本地运行的定价工具。它围绕两个分母不同的比率展开：毛利率 =（售价−成本）/售价，加价率 =（售价−成本）/成本。只要填入成本、售价、毛利率、加价率中的任意两个有效已知量，就能一次性解出其余全部数值，并额外提供批量定价、折扣保本价与两率互转对照。',
+        coreFeatures: [
+          '双向求解：成本+售价、成本+毛利率、成本+加价率、售价+毛利率、售价+加价率五种组合均可求解',
+          '口径分离：界面与结果同时标注毛利率（除售价）与加价率（除成本），避免混用导致定价错误',
+          '批量定价：粘贴「成本,毛利率%」多行文本，输出含表头的售价 CSV，非法行带行号告警且不中断其余行',
+          '折扣保本价：给定成本与让利折扣反推保本售价，并回算折后收入验算',
+          '两率对照表：常用毛利率档位对应的加价率与逆运算结果一表呈现',
+        ],
+        howToUse: [
+          '在「双向定价求解」标签页填入至少两个已知量（成本/售价之一搭配毛利率或加价率，或同时填成本与售价）',
+          '右侧卡片实时显示售价、成本、毛利率、加价率与毛利额；输入不足或非法时展示可读提示',
+          '批量场景切换到「批量按毛利率定价」，每行输入「成本,毛利率百分数」，复制结果 CSV',
+          '促销场景在「折扣保本价」输入成本与让利比例，查看不亏损所需的最低售价',
+        ],
+        useCases: [
+          '零售与电商商户根据目标毛利率快速反推商品售价',
+          '把供应商报价（成本+加价率口径）换算成自己的毛利率口径核对利润',
+          '大促打折前计算保本售价，避免折后价格低于成本',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地完成，不向任何服务器发送成本、售价或批量数据，断网环境同样可用。',
+        faqs: [
+          {
+            question: '毛利率和加价率到底差在哪？',
+            answer:
+              '两者分子都是售价−成本，但分母不同：毛利率除以售价，加价率除以成本。因此同一笔生意毛利率永远小于等于加价率，例如成本 80、售价 100 时毛利率为 20%，加价率为 25%。本工具在每个结果上都标注了对应口径。',
+          },
+          {
+            question: '为什么毛利率不能输入 100%？',
+            answer:
+              '毛利率 100% 意味着成本为零，由售价 = 成本 /（1−毛利率）可知此时售价无有限解；输入框限制在 100% 以下，纯函数也会对该边界返回明确错误。',
+          },
+          {
+            question: '批量模式支持什么分隔符？',
+            answer:
+              '每行一条记录，成本与毛利率之间用英文逗号或制表符分隔，毛利率按百分数填写（20 表示 20%）。空行自动跳过；列数不对、含非数字、负数或毛利率越界的行会带行号告警，其余行正常计算。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Margin & Markup Pricing Calculator runs entirely in the browser around two ratios with different denominators: gross margin = (price − cost) / price and markup = (price − cost) / cost. Given any two valid known values among cost, price, margin and markup, it solves all remaining values at once, and adds batch pricing, discount break-even price and a margin/markup lookup table.',
+        coreFeatures: [
+          'Bidirectional solving for five input combinations: cost+price, cost+margin, cost+markup, price+margin and price+markup',
+          'Explicit definitions: every result labels margin (over price) versus markup (over cost) to prevent mixing the two',
+          'Batch pricing: paste multiple "cost,margin%" lines and get a headered price CSV; bad lines report line numbers without stopping the rest',
+          'Break-even price: reverse-calculate the minimum price under a discount and verify the discounted revenue',
+          'Lookup table showing markup for common margin levels with the reverse conversion',
+        ],
+        howToUse: [
+          'On the "Bidirectional pricing" tab, fill at least two known values (cost or price paired with margin or markup, or both cost and price)',
+          'The result card updates live with price, cost, margin, markup and gross profit; invalid or insufficient input shows a readable message',
+          'For batch work, switch to the batch tab, enter one "cost,margin percent" pair per line, then copy the CSV output',
+          'For promotions, enter cost and discount on the break-even tab to see the lowest price that avoids a loss',
+        ],
+        useCases: [
+          'Retailers and e-commerce sellers deriving shelf price from a target gross margin',
+          'Converting supplier markup quotes into the margin definition used internally',
+          'Checking the break-even price before running a discount campaign',
+        ],
+        privacyNote:
+          'All computation happens locally in the browser. Cost, price and batch data never leave the device, and the tool works offline.',
+        faqs: [
+          {
+            question: 'What exactly is the difference between margin and markup?',
+            answer:
+              'Both use price − cost as the numerator, but the denominators differ: margin divides by price while markup divides by cost. For example, cost 80 and price 100 give a 20% margin but a 25% markup. Every result in this tool labels which definition it uses.',
+          },
+          {
+            question: 'Why can margin not be 100%?',
+            answer:
+              'A 100% margin implies zero cost, and since price = cost / (1 − margin), there is no finite price solution. The input is capped below 100%, and the pure function returns an explicit error at that boundary.',
+          },
+          {
+            question: 'What separators does the batch mode accept?',
+            answer:
+            'One record per line, with cost and margin separated by a comma or tab; margin is a percentage (20 means 20%). Blank lines are skipped, while malformed lines (wrong column count, non-numeric, negative, or out-of-range margin) produce line-numbered warnings and the remaining lines still compute.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'm3u-playlist-codec',
+    name: 'M3U / M3U8 播放列表生成与解析器（含 HLS 媒体序列）',
+    nameEn: 'M3U / M3U8 Playlist Parser & Builder (HLS)',
+    description:
+      '在浏览器本地解析与生成 M3U / M3U8 播放列表：识别 #EXTM3U 头、#EXTINF 时长标题、#EXT-X-STREAM-INF 变体流属性（带引号值正确处理）、#EXT-X-KEY 等 HLS 指令；提供结构化表格、带行号校验问题、parse↔stringify 往返序列化以及相对 URI 按 Base URL 转绝对。零依赖纯文本处理，支持 CRLF 与 BOM 归一化。',
+    descriptionEn:
+      'Parse and build M3U/M3U8 playlists locally in the browser: recognizes the #EXTM3U header, #EXTINF duration and title, #EXT-X-STREAM-INF variant attributes (including quoted values), and HLS directives such as #EXT-X-KEY. It offers a structured table, line-numbered validation issues, parse-to-stringify round-tripping, and resolving relative URIs against a base URL. Zero-dependency text processing with CRLF and BOM normalization.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/m3u-playlist-codec',
+    iconName: 'List',
+    tags: ['M3U', 'M3U8', 'HLS', '播放列表', '流媒体', '解析'],
+    tagsEn: ['M3U', 'M3U8', 'HLS', 'Playlist', 'Streaming', 'Parser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'M3U / M3U8 播放列表生成与解析器是一款纯浏览器本地运行的文本工具，面向音视频播放列表与 HLS（HTTP Live Streaming）媒体序列。它把以 # 开头的标签行与 URI 行解析为结构化条目，也能把结构化结果重新序列化为规范的 LF 文本，全程不依赖任何第三方解析库。',
+        coreFeatures: [
+          '解析 #EXTM3U、#EXTINF（含 -1 直播流）、#EXT-X-STREAM-INF、#EXT-X-KEY 等常见标签，独立指令按原顺序保留',
+          '属性列表解析支持带引号值与引号内逗号（如 CODECS="avc1,mp4a"），自动去外层引号',
+          '校验报告带行号：缺失文件头、EXTINF 后无 URI、时长非数字等问题分级展示',
+          'parse → stringify → parse 语义往返一致，输出统一 LF 换行',
+          '相对 URI 按 Base URL 一键转绝对，绝对地址与 data: URI 保持不变',
+          '自动剥离 UTF-8 BOM、归一化 CRLF/CR，空文件与纯注释不报错',
+        ],
+        howToUse: [
+          '把 M3U/M3U8 文本粘贴到左侧输入框（或点击「载入样例」），右侧即时显示条目表格与校验结果',
+          '在表格中查看每条目的时长、标题、URI 以及 STREAM-INF 属性标签',
+          '切换到「序列化与相对转绝对」标签查看往返文本，并填入 Base URL 生成绝对 URI 版本',
+          '使用复制按钮导出处理后的文本',
+        ],
+        useCases: [
+          '排查 HLS 直播 / 点播 m3u8 清单的标签配对与 URI 问题',
+          '把本地相对路径的播放列表转换为可分发的绝对 URL 版本',
+          '在接入播放器前快速核对 EXTINF 时长、变体流码率与分辨率属性',
+        ],
+        privacyNote:
+          '所有文本仅在浏览器本地解析与转换，不会请求播放列表中的任何 URI，也不上传内容，断网可用。',
+        faqs: [
+          {
+            question: '会真的去请求播放列表里的视频地址吗？',
+            answer:
+              '不会。工具只做文本层面的解析与改写，URI 行被当作普通字符串处理；相对转绝对也仅基于 Base URL 做字符串级 URL 解析，不发起任何网络请求。',
+          },
+          {
+            question: '#EXTINF 时长为 -1 是什么意思？',
+            answer:
+              '按常见播放列表约定，-1 表示直播流或时长未知的条目。解析器会原样保留并在表格中标注为「直播」，不会当作错误。',
+          },
+          {
+            question: '没有 #EXTM3U 头还能解析吗？',
+            answer:
+              '可以。解析器按宽松模式继续处理 URI 与标签行，同时在校验结果中给出「缺少 #EXTM3U 文件头」的警告，提示该文件可能不是规范的 M3U。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The M3U/M3U8 Playlist Parser & Builder is a browser-local text tool for audio/video playlists and HLS media sequences. It turns hash-prefixed tag lines and URI lines into structured entries and can serialize the result back into canonical LF text, all without third-party parsing libraries.',
+        coreFeatures: [
+          'Parses #EXTM3U, #EXTINF (including -1 live streams), #EXT-X-STREAM-INF, #EXT-X-KEY and other common tags while preserving standalone directives in order',
+          'Attribute parsing handles quoted values and commas inside quotes (e.g. CODECS="avc1,mp4a") and strips surrounding quotes',
+          'Line-numbered validation report for a missing header, EXTINF without a URI, non-numeric duration and more, with severity levels',
+          'Semantically stable parse → stringify → parse round trip with LF-normalized output',
+          'Resolves relative URIs against a base URL while leaving absolute and data: URIs untouched',
+          'Strips the UTF-8 BOM and normalizes CRLF/CR; empty or comment-only files do not error',
+        ],
+        howToUse: [
+          'Paste M3U/M3U8 text into the left editor (or load the sample) to see the entry table and validation result on the right',
+          'Inspect duration, title, URI and STREAM-INF attributes per entry',
+          'Open the serialization tab for round-trip text and enter a base URL to produce an absolute-URI version',
+          'Use the copy buttons to export the processed text',
+        ],
+        useCases: [
+          'Debugging tag pairing and URI problems in HLS live or VOD m3u8 manifests',
+          'Converting a playlist of relative paths into distributable absolute URLs',
+          'Quickly checking EXTINF durations, variant bandwidth and resolution attributes before player integration',
+        ],
+        privacyNote:
+          'All text is parsed and transformed locally in the browser. No URI in the playlist is ever requested, nothing is uploaded, and the tool works offline.',
+        faqs: [
+          {
+            question: 'Does it actually request the video URLs in the playlist?',
+            answer:
+              'No. The tool works purely on text. URI lines are treated as strings, and relative-to-absolute resolution only applies URL string logic against the base URL — no network requests are made.',
+          },
+          {
+            question: 'What does an #EXTINF duration of -1 mean?',
+            answer:
+              'By common playlist convention, -1 marks a live stream or an entry with unknown duration. The parser keeps it as-is and labels it "live" in the table instead of treating it as an error.',
+          },
+          {
+            question: 'Can it parse files without an #EXTM3U header?',
+            answer:
+              'Yes. It continues in lenient mode and still processes URI and tag lines, while the validation report warns that the #EXTM3U header is missing, which suggests the file may not be a standards-compliant M3U.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'lrc-lyrics-codec',
+    name: 'LRC 歌词时间戳生成与解析器',
+    nameEn: 'LRC Lyrics Timestamp Parser & Builder',
+    description:
+      '在浏览器本地解析与生成 LRC 歌词：识别 [ar]/[ti]/[al]/[offset] 等 ID 元数据标签、[mm:ss.xx] 与 [mm:ss.xxx] 时间标签，一行多时间标签自动展开；提供结构化时间轴表格、带行号校验、整体毫秒级平移（负平移钳位到 0）、parse↔stringify 往返与两位百分秒规范输出。零依赖纯文本处理，支持 CRLF 与 BOM 归一化。',
+    descriptionEn:
+      'Parse and build LRC lyrics locally in the browser: recognizes ID metadata tags such as [ar]/[ti]/[al]/[offset], [mm:ss.xx] and [mm:ss.xxx] time tags, and expands multiple time tags on one line. It offers a structured timeline table, line-numbered validation, millisecond-wide shifting with clamping at zero, parse-to-stringify round-tripping and canonical centisecond output. Zero-dependency text processing with CRLF and BOM normalization.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/lrc-lyrics-codec',
+    iconName: 'Music',
+    tags: ['LRC', '歌词', '时间戳', '字幕', '音乐', '解析'],
+    tagsEn: ['LRC', 'Lyrics', 'Timestamp', 'Subtitles', 'Music', 'Parser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'LRC 歌词时间戳生成与解析器是一款纯浏览器本地运行的文本工具，面向卡拉 OK 歌词、音乐播放器字幕与音频剪辑标注场景。它把 LRC 的 ID 元数据标签与 [mm:ss.xx] 时间标签解析为结构化时间轴，也支持把编辑后的结构重新序列化为规范 LRC 文本，全程零依赖。',
+        coreFeatures: [
+          '解析 [ar:歌手]、[ti:标题]、[al:专辑]、[offset] 等 ID 标签并以标签组展示',
+          '兼容两位百分秒 [00:12.50] 与三位毫秒 [01:05.250] 两种时间写法',
+          '一行多个时间标签（跟唱 / 合唱）自动展开为多条歌词记录',
+          '整体时间平移按毫秒计算，负平移越过 0 秒时自动钳位并提示受影响行数',
+          '校验带行号：分钟 / 秒越界、无法识别的标签、时间乱序、缺少歌词行等分级告警',
+          '序列化为两位百分秒规范格式，59.999 秒等边界正确进位，parse 往返语义一致',
+        ],
+        howToUse: [
+          '把 LRC 文本粘贴到左侧输入框（或点击「载入样例」），右侧即时显示元数据标签与时间轴表格',
+          '在校验区查看越界标签、乱序等问题，点击对应告警可定位行号',
+          '切换到「平移与序列化」标签，输入毫秒平移量（负值提前、正值延后）并预览结果',
+          '点击复制按钮导出规范化 LRC 文本',
+        ],
+        useCases: [
+          '把手工整理的歌词快速校对为播放器可识别的标准 LRC',
+          '音频重剪 / 加片头后整体平移歌词时间轴',
+          '排查第三方 LRC 文件中的乱序时间点与非法标签',
+        ],
+        privacyNote:
+          '歌词文本只在浏览器本地处理，不上传任何内容，也不访问音频文件本身，断网环境可用。',
+        faqs: [
+          {
+            question: '两位和三位毫秒写法有什么区别？',
+            answer:
+              'LRC 常见两种小数写法：[00:12.50] 的两位数字按百分秒解析（0.50 秒），[01:05.250] 的三位数字按毫秒解析（0.250 秒）。工具对两者都能正确识别；序列化输出统一为两位百分秒并做四舍五入。',
+          },
+          {
+            question: '一行里有两个时间标签会怎样？',
+            answer:
+              '这是 LRC 表示合唱或重复演唱的常见写法，例如 [00:10.00][00:20.00]合唱。解析器会把它展开成 time=10 与 time=20 两条记录、歌词文本相同，序列化时按时间升序重新输出。',
+          },
+          {
+            question: '负平移把歌词移到 0 秒以前怎么办？',
+            answer:
+              '工具会把这些行钳位到 [00:00.00] 而不是产生负时间标签，同时在界面提示被钳位的行数，便于判断平移量是否过大。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The LRC Lyrics Timestamp Parser & Builder is a browser-local text tool for karaoke lyrics, player subtitles and audio annotation. It turns LRC ID metadata tags and [mm:ss.xx] time tags into a structured timeline and serializes the edited structure back into canonical LRC text, with zero dependencies.',
+        coreFeatures: [
+          'Parses ID tags such as [ar:artist], [ti:title], [al:album] and [offset], shown as a tag group',
+          'Accepts both centisecond [00:12.50] and millisecond [01:05.250] fractions',
+          'Expands multiple time tags on one line (duet / repeated singing) into separate records',
+          'Shifts the whole timeline by milliseconds; negative shifts clamp at zero and report affected rows',
+          'Line-numbered validation for out-of-range minutes/seconds, unknown tags, disordered timestamps and empty lyrics',
+          'Serializes to canonical centisecond format with correct carry at boundaries such as 59.999s and stable parse round-tripping',
+        ],
+        howToUse: [
+          'Paste LRC text into the left editor (or load the sample) to see metadata tags and the timeline table on the right',
+          'Review out-of-range tags and ordering issues in the validation area with line numbers',
+          'Open the shift tab, enter a millisecond delta (negative to advance, positive to delay) and preview live',
+          'Use the copy button to export normalized LRC text',
+        ],
+        useCases: [
+          'Turning hand-written lyrics into player-ready standard LRC files',
+          'Shifting an entire lyric timeline after audio re-cutting or adding an intro',
+          'Diagnosing disordered timestamps and invalid tags in third-party LRC files',
+        ],
+        privacyNote:
+          'Lyrics are processed entirely in the browser. Nothing is uploaded, audio files are never accessed, and the tool works offline.',
+        faqs: [
+          {
+            question: 'What is the difference between two-digit and three-digit fractions?',
+            answer:
+              'LRC uses two conventions: two digits like [00:12.50] are centiseconds (0.50 s), while three digits like [01:05.250] are milliseconds (0.250 s). The parser accepts both; serialization always emits rounded two-digit centiseconds.',
+          },
+          {
+            question: 'What happens when one line has two time tags?',
+            answer:
+              'This is the standard LRC way to mark duets or repeated lines, e.g. [00:10.00][00:20.00]chorus. The parser expands it into two records at 10s and 20s with identical text, and serialization re-emits them in ascending time order.',
+          },
+          {
+            question: 'What if a negative shift moves lyrics before zero?',
+            answer:
+              'Those lines are clamped to [00:00.00] instead of producing negative time tags, and the UI reports how many rows were clamped so you can judge whether the shift amount is too large.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'markdown-frontmatter-editor',
+    name: 'Markdown Frontmatter 解析与编辑器',
+    nameEn: 'Markdown Frontmatter Parser & Editor',
+    description:
+      '识别 Markdown 文档开头的 YAML（---）与 TOML（+++）frontmatter 围栏并分离正文：解析标量、两级 map 与标量序列为结构化键值表格，支持字段增删改、YAML/TOML 双向切换与实时回写，正文原样保留；超子集语法（流式内联集合、锚点等）给出带行号告警而非静默错解。零依赖纯浏览器运算，支持 CRLF/BOM 归一化与 parse↔stringify 往返。',
+    descriptionEn:
+      'Detach the YAML (---) and TOML (+++) frontmatter fence at the top of a Markdown document from its body: parse scalars, two-level maps and scalar sequences into a structured key-value table, add/edit/delete fields, switch between YAML and TOML, and write the result back while keeping the body untouched. Syntax beyond the supported subset (inline flow collections, anchors) raises line-numbered warnings instead of being silently misread. Zero-dependency, fully in-browser, with CRLF/BOM normalization and parse-stringify round-tripping.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/markdown-frontmatter-editor',
+    iconName: 'FileText',
+    tags: ['Markdown', 'Frontmatter', 'YAML', 'TOML', '元数据', '静态站点'],
+    tagsEn: ['Markdown', 'Frontmatter', 'YAML', 'TOML', 'Metadata', 'Static Site'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Markdown Frontmatter 解析与编辑器是一款纯浏览器本地运行的文本工具，面向 Hugo、Hexo、Astro、Jekyll 等静态站点作者。它只识别文档开头的 --- 或 +++ 围栏，把元数据解析为可编辑的键值表格，正文始终原样保留，全程不引入 yaml/toml 第三方依赖。',
+        coreFeatures: [
+          '自动识别文档首行 YAML（---）与 TOML（+++）围栏，正文中部的 --- 分隔线不会被误判',
+          '支持标量（字符串 / 整数 / 浮点 / 布尔 / null）、两级缩进 map 与 - 标量序列，BOM 与 CRLF 自动归一化',
+          '键值表格内直接增删改字段，类型以标签标识，YAML/TOML 一键切换并实时重组完整文档',
+          '超子集语法（流式 [1,2] / {a:1} 内联、嵌套表、锚点等）产生带行号的 warning/error，绝不静默错解',
+          '字符串含冒号、井号等特殊字符时输出自动加双引号转义，parse → stringify → parse 深度相等',
+        ],
+        howToUse: [
+          '把含 frontmatter 的 Markdown 粘贴到左侧输入框（或点击「载入样例」），右侧即时展示结构化字段表',
+          '在表格中修改键名或值、删除字段，或在下方输入新字段名与字符串值后点击「添加字段」',
+          '通过右上角切换 YAML / TOML 输出格式，切换到「正文编辑与输出」标签编辑正文并复制完整文档',
+          '查看解析告警区：error 表示结构无法识别，warning 表示超出浅层子集、对应行未参与解析',
+        ],
+        useCases: [
+          '批量维护博客文章的 title、tags、draft、发布日期等元数据',
+          '把旧文档的 YAML frontmatter 转换为 TOML（或反向）写法',
+          '排查第三方模板生成的 frontmatter 中重复键、未闭合围栏等问题',
+        ],
+        privacyNote:
+          '所有解析与回写均在浏览器本地完成，文档内容不上传、不记录，断网环境可正常使用。',
+        faqs: [
+          {
+            question: '为什么我的流式写法 tags: [a, b] 没有被解析？',
+            answer:
+              '工具刻意只实现 frontmatter 常见浅层子集（缩进 map 与 - 序列），流式内联集合会触发带行号的 unsupported 告警且该行不参与解析，避免零依赖手写解析器静默错解。把它改写成两行缩进的 - 序列即可正常识别。',
+          },
+          {
+            question: '正文里的 --- 分隔线会被当成围栏吗？',
+            answer:
+              '不会。围栏必须从文档第一行开始（允许首行 BOM），正文中任意位置出现的 --- 都按普通正文保留；只有开头围栏缺少闭合围栏时才会报块级错误。',
+          },
+          {
+            question: '嵌套对象和数组在表格里能编辑吗？',
+            answer:
+              '两级 map 与标量数组可以正确解析并以只读 JSON 形式展示；表格内的直接编辑面向标量字段，复杂容器建议在原文中修改后重新解析，以保证输出语义确定。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Markdown Frontmatter Parser & Editor is a browser-local text tool for authors using Hugo, Hexo, Astro, Jekyll and similar static-site generators. It only recognizes the leading --- or +++ fence, parses metadata into an editable key-value table and always keeps the body untouched, without any third-party yaml/toml dependency.',
+        coreFeatures: [
+          'Auto-detects leading YAML (---) and TOML (+++) fences; a --- divider inside the body is never mistaken for a fence',
+          'Supports scalars (string/integer/float/boolean/null), two-level indented maps and - scalar sequences, with BOM and CRLF normalization',
+          'Add, edit and delete fields directly in the key-value table with type tags; switch YAML/TOML instantly and rebuild the full document live',
+          'Syntax beyond the subset (inline flow collections like [1,2] / {a:1}, nested tables, anchors) raises line-numbered warnings or errors instead of silent misreads',
+          'Strings containing special characters such as colons or hashes are auto-quoted and escaped; parse → stringify → parse stays deeply equal',
+        ],
+        howToUse: [
+          'Paste Markdown with frontmatter into the left editor (or load the sample); the structured field table appears on the right immediately',
+          'Rename keys or values, remove rows in the table, or enter a new field name with a string value and click "Add field"',
+          'Switch YAML/TOML output via the top-right toggle, then open the output tab to edit the body and copy the full document',
+          'Check the issue area: errors mean unrecognizable structure, warnings mean the line exceeds the shallow subset and was skipped',
+        ],
+        useCases: [
+          'Maintaining title, tags, draft flag and publication dates across blog posts in bulk',
+          'Converting legacy YAML frontmatter to TOML style (or back again)',
+          'Diagnosing duplicate keys and unclosed fences in frontmatter generated by third-party templates',
+        ],
+        privacyNote:
+          'All parsing and rewriting happens locally in the browser. Documents are never uploaded or logged, and the tool works offline.',
+        faqs: [
+          {
+            question: 'Why is my flow style "tags: [a, b]" not parsed?',
+            answer:
+              'The tool deliberately implements only the common shallow subset (indented maps and - sequences). Inline flow collections trigger a line-numbered unsupported warning and the line is skipped, so a zero-dependency hand-written parser never silently misreads it. Rewrite it as an indented two-line - sequence to make it recognizable.',
+          },
+          {
+            question: 'Can a --- divider inside the body be treated as a fence?',
+            answer:
+              'No. A fence must start on the very first line (a leading BOM is allowed); any --- inside the body is kept as ordinary content. A block-level error is only raised when the opening fence has no closing fence.',
+          },
+          {
+            question: 'Can nested objects and arrays be edited in the table?',
+            answer:
+              'Two-level maps and scalar arrays are parsed correctly and shown as read-only JSON. Direct in-table editing targets scalar fields; for complex containers, edit the source text and re-parse to keep the output semantics deterministic.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'gs1-check-digit-calculator',
+    name: 'GS1 校验位 / SSCC / ITF-14 计算器',
+    nameEn: 'GS1 Check Digit / SSCC / ITF-14 Calculator',
+    description:
+      '按 GS1 模 10 加权算法（自右向左权重 3、1 交替）计算与验证校验位，支持单条分步复算与批量验证；可生成 18 位 SSCC、14 位 ITF-14/GTIN-14，并把 GTIN-8/12/13 左侧补零转换为 GTIN-14。空格与连字符自动清洗，非法字符与长度越界返回带原因的错误，纯浏览器本地运算、不渲染条码图形。',
+    descriptionEn:
+      'Compute and verify GS1 modulo-10 check digits (weights 3 and 1 alternating from the right) with step-by-step single-code math and batch verification; generate 18-digit SSCC and 14-digit ITF-14/GTIN-14 codes, and left-pad GTIN-8/12/13 into GTIN-14. Spaces and hyphens are stripped automatically, illegal characters and length violations return reason-bearing errors, and everything runs locally in the browser without rendering barcode images.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/gs1-check-digit-calculator',
+    iconName: 'Barcode',
+    tags: ['GS1', '校验位', 'SSCC', 'ITF-14', 'GTIN-14', '供应链'],
+    tagsEn: ['GS1', 'Check Digit', 'SSCC', 'ITF-14', 'GTIN-14', 'Supply Chain'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'GS1 校验位计算器面向供应链与仓储标签核对场景，实现 GS1 General Specifications 规定的模 10 加权算法，并封装 SSCC（18 位系列货运包装箱代码）、ITF-14/GTIN-14（14 位外箱编码）的生成与短码补零转换，全程零依赖、纯浏览器本地运算。',
+        coreFeatures: [
+          '模 10 加权分步展示：逐位显示数字 × 权重（3/1 交替）的乘积、加权和与取模过程，结果可手工复算',
+          '单条补全与批量验证：payload 一键追加校验位；多行完整编码逐行标注通过 / 失败及期望值',
+          'SSCC 生成：扩展位 + 厂商识别代码与序列号自动左侧补零对齐 17 位 payload，输出 18 位完整编码',
+          'ITF-14/GTIN-14 生成：包装指示符 0-9 加 12 位内容组成 13 位 payload，再追加校验位形成 14 位编码',
+          'GTIN-8/12/13 补零转 GTIN-14：补零不改变模 10 加权结果，转换前后校验位保持一致，原码非法时拒绝转换',
+        ],
+        howToUse: [
+          '在「校验位计算 / 批量验证」标签输入不含校验位的 payload 查看分步过程，或在下方批量框每行粘贴一个完整编码',
+          '切换到「SSCC 生成」，填写 1 位扩展位与不超过 16 位的主体数字，得到 18 位 SSCC',
+          '在「ITF-14 生成」中填写包装指示符与不超过 12 位的内容码，生成 14 位外箱编码',
+          '在「GTIN 补零转换」中粘贴含校验位的 GTIN-8/12/13 数字串，校验通过后得到 GTIN-14',
+        ],
+        useCases: [
+          '物流入库前核对外箱标签 SSCC / ITF-14 的校验位是否打印正确',
+          'WMS / ERP 批量生成包装层级条码数字串并导出给标签打印系统',
+          '把零售单元 GTIN-13 转换为储运单元 GTIN-14 后再做供应链数据对接',
+        ],
+        privacyNote:
+          '所有编码计算与批量验证均在浏览器本地完成，数字串不离开设备、不上传服务器。',
+        faqs: [
+          {
+            question: '校验位的权重方向是怎样的？',
+            answer:
+              '从 payload 最右侧数字开始，权重按 3、1、3、1 交替向左；加权和对 10 取模后，校验位 = (10 − 模值) mod 10。工具会把每一位的乘积与求和过程完整展示，便于对照 GS1 规范手工复算。',
+          },
+          {
+            question: '为什么输入里的空格和连字符也能算？',
+            answer:
+              '条码常按分组排版（如 1-3-4-? 分段），工具会先剥离所有空白与连字符再校验；但若包含字母等非数字字符，或清洗后长度不符合码制规定，会返回带具体原因的错误而不是静默截断。',
+          },
+          {
+            question: 'GTIN-13 补零成 GTIN-14 后校验位会变吗？',
+            answer:
+              '不会。左侧补零增加的是高位，而模 10 权重自右向左交替，补入的 0 乘以任何权重仍为 0，因此加权和与校验位保持不变；工具仍会先验证原码校验位，原码非法时拒绝转换。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A GS1 check-digit calculator for supply-chain and warehouse label verification. It implements the modulo-10 weighted algorithm defined in the GS1 General Specifications and wraps SSCC (18-digit serial shipping container code), ITF-14/GTIN-14 generation and short-code zero-padding, all with zero dependencies and fully local browser computation.',
+        coreFeatures: [
+          'Step-by-step modulo-10 math: per-digit products with alternating 3/1 weights, the weighted sum and the modulo operation, all reproducible by hand',
+          'Single-code completion and batch verification: append the check digit to a payload with one click, or validate full codes line by line with pass/fail and expected values',
+          'SSCC generation: extension digit plus company prefix and serial number are zero-padded to a 17-digit payload, producing an 18-digit code',
+          'ITF-14/GTIN-14 generation: a 0-9 packaging indicator plus a 12-digit body forms a 13-digit payload, then the check digit yields a 14-digit code',
+          'GTIN-8/12/13 to GTIN-14 padding: leading zeros never change the modulo-10 weighted sum, so the check digit is preserved; invalid source codes are rejected',
+        ],
+        howToUse: [
+          'On the check-digit tab, enter a payload without its check digit for the step-by-step breakdown, or paste full codes one per line in the batch box',
+          'Open the SSCC tab, enter one extension digit and up to 16 body digits to obtain an 18-digit SSCC',
+          'On the ITF-14 tab, enter a packaging indicator and up to 12 body digits to generate a 14-digit carton code',
+          'On the GTIN padding tab, paste a GTIN-8/12/13 string including its check digit; after validation you get the GTIN-14 form',
+        ],
+        useCases: [
+          'Verifying SSCC / ITF-14 check digits on carton labels before warehouse receiving',
+          'Batch-generating packaging-level barcode number strings in WMS/ERP for label-printing systems',
+          'Converting retail-unit GTIN-13 codes into logistics-unit GTIN-14 codes for supply-chain data exchange',
+        ],
+        privacyNote:
+          'All code calculation and batch verification run locally in the browser; the digit strings never leave the device or reach a server.',
+        faqs: [
+          {
+            question: 'What is the weighting direction for the check digit?',
+            answer:
+              'Starting from the rightmost payload digit, weights alternate 3, 1, 3, 1 toward the left. The weighted sum is taken modulo 10, and the check digit equals (10 − modulo) mod 10. The tool shows every product and the summation so you can reproduce the math against the GS1 spec.',
+          },
+          {
+            question: 'Why do spaces and hyphens in the input still work?',
+            answer:
+              'Barcodes are often typeset in grouped segments, so the tool first strips all whitespace and hyphens before validating. However, letters or other non-digits, or lengths that violate the code format after cleaning, produce an explicit reason-bearing error instead of silent truncation.',
+          },
+          {
+            question: 'Does the check digit change when a GTIN-13 is padded to GTIN-14?',
+            answer:
+              'No. Leading zeros are added at the high-position side while weights are counted from the right, and zero multiplied by any weight stays zero, so the weighted sum and check digit are preserved. The tool still validates the source code first and rejects invalid ones.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
