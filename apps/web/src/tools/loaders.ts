@@ -294,4 +294,5 @@ export const toolLoaders: Record<
   'leap-second-tai-converter': () => import('./leap-second-tai-converter'),
   'cors-header-generator': () => import('./cors-header-generator'),
   'dkim-record-generator': () => import('./dkim-record-generator'),
+  'po-json-converter': () => import('./po-json-converter'),
 };

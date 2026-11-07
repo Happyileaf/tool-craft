@@ -27523,6 +27523,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'po-json-converter',
+    name: 'gettext PO/POT ↔ JSON 双向转换器',
+    nameEn: 'gettext PO/POT ↔ JSON Converter',
+    description:
+      '在浏览器本地解析 GNU gettext .po/.pot 消息目录并输出结构化 JSON，支持 msgctxt、msgid_plural 复数、msgstr[n]、跨行续行字符串、C 风格转义与 # 注释；也可从 JSON 反向生成合法 PO 文本。零依赖行状态机解析，错误带原文提示，适合本地化流程接入 JSON 工具链。',
+    descriptionEn:
+      'Parse GNU gettext .po/.pot catalogs into structured JSON entirely in the browser, with support for msgctxt, msgid_plural plurals, msgstr[n], multi-line continuation strings, C-style escapes and # comments; it also generates valid PO text back from JSON. A dependency-free line state machine with readable error messages, ideal for wiring localization catalogs into JSON toolchains.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/po-json-converter',
+    iconName: 'FileCode',
+    tags: ['gettext', 'PO', 'POT', '本地化', 'i18n', 'JSON'],
+    tagsEn: ['gettext', 'PO', 'POT', 'Localization', 'i18n', 'JSON'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'gettext PO/POT ↔ JSON 双向转换器是一款纯浏览器本地运行的本地化消息目录处理工具。PO（Portable Object）是 GNU gettext 定义的翻译文件格式，用 msgid/msgstr 配对承载原文与译文，并支持 msgctxt 上下文、msgid_plural/msgstr[n] 复数形式与跨行续行字符串。本工具用零依赖的行状态机解析 PO 子集并转为结构化 JSON，也能把 JSON 反向序列化为合法 PO，整个过程不发起任何网络请求。',
+        coreFeatures: [
+          '双向转换：PO/POT → JSON 与 JSON → PO 一键切换，方向切换时自动载入对应样例',
+          '完整 PO 子集：msgctxt、msgid、msgid_plural、msgstr[0..n] 与相邻引号字面量跨行拼接',
+          '转义与注释：支持 \\n、\\t、\\"、\\\\ 等 C 风格转义，# / #. / #: / #, / #| 注释原样保留',
+          '复数映射：PO 复数条目在 JSON 中表示为字符串数组，反向生成时自动补 msgid_plural',
+          '确定性纯函数：解析与序列化零依赖，错误信息附带无法识别的原文行，固定样本单测覆盖往返',
+        ],
+        howToUse: [
+          '选择转换方向：PO/POT → JSON 或 JSON → PO',
+          '在左侧编辑框粘贴消息目录文本或 JSON 对象（顶层必须是键值映射）',
+          '右侧实时显示转换结果；存在语法错误时展示红色告警与出错原文',
+          '点击「复制」获取结果，或点击「载入样例」查看包含 header、单复数与跨行字符串的完整示例',
+        ],
+        useCases: [
+          '把 gettext 翻译目录接入只接受 JSON 的 Web 本地化工具链或翻译管理平台',
+          '批量检视 PO 文件中的键值、复数形式与注释，无需安装 gettext 命令行',
+          '从 JSON 翻译稿反向生成可交给 msgfmt 编译的 PO 文本',
+        ],
+        privacyNote:
+          '所有解析、转义与序列化均在浏览器本地完成，不读取文件系统之外的数据，也不向任何服务器发送翻译内容，断网环境同样可用。',
+        faqs: [
+          {
+            question: '带 msgctxt 的条目在 JSON 里如何表示？',
+            answer:
+              '沿用 gettext 生态常用约定，以 SOH 控制字符（U+0001）连接 context 与 msgid 作为 JSON 键，形如 "context\u0001msgid"。反向转换时遇到该分隔符会自动拆回 msgctxt 与 msgid，普通译文键不含此字符因此不受影响。',
+          },
+          {
+            question: '复数条目在 JSON 中长什么样？',
+            answer:
+              '含 msgid_plural 的条目映射为字符串数组，键是 msgid，值按 msgstr[0]、msgstr[1] 的顺序排列；JSON → PO 时数组值会生成复数条目，并自动以「msgid plural」补一个 msgid_plural 占位，可按实际语言规则再调整。',
+          },
+          {
+            question: '它和 Apple .strings 转换器有什么区别？',
+            answer:
+              'strings-json-converter 面向 iOS/macOS 的 .strings 文件（C 注释加 "key" = "value"; 语法），本工具面向 GNU gettext 的 .po/.pot 目录，语法关键字、复数模型与转义规则均不同，两者互不替代。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The gettext PO/POT ↔ JSON Converter is a fully browser-local tool for working with localization message catalogs. PO (Portable Object) is the GNU gettext translation format that pairs msgid with msgstr, and adds msgctxt contexts, msgid_plural/msgstr[n] plurals and multi-line continuation strings. A dependency-free line state machine parses this PO subset into structured JSON and serializes JSON back into valid PO without any network requests.',
+        coreFeatures: [
+          'Bidirectional: switch between PO/POT → JSON and JSON → PO, with the matching sample loaded automatically',
+          'Full PO subset: msgctxt, msgid, msgid_plural, msgstr[0..n] and adjacent quoted literals joined across lines',
+          'Escapes and comments: C-style escapes such as \\n, \\t, \\" and \\\\, with # / #. / #: / #, / #| comments preserved',
+          'Plural mapping: plural entries become string arrays in JSON, and reverse generation fills in msgid_plural automatically',
+          'Deterministic pure functions: zero-dependency parsing and serialization, error messages quote the offending line, with fixed-vector round-trip unit tests',
+        ],
+        howToUse: [
+          'Pick a direction: PO/POT → JSON or JSON → PO',
+          'Paste a catalog or a JSON object (the top level must be a key/value map) into the left editor',
+          'The result appears live on the right; syntax errors show a red alert containing the offending text',
+          'Click "Copy" to grab the result, or "Load sample" to inspect a full example with header, singular/plural and multiline strings',
+        ],
+        useCases: [
+          'Feeding gettext catalogs into web localization pipelines or TMS platforms that only accept JSON',
+          'Reviewing keys, plurals and comments in a PO file without installing the gettext CLI',
+          'Generating PO text from JSON translations that can be compiled with msgfmt',
+        ],
+        privacyNote:
+          'All parsing, escaping and serialization run locally in the browser. Translation content is never sent to any server, and the tool works fully offline.',
+        faqs: [
+          {
+            question: 'How are entries with msgctxt represented in JSON?',
+            answer:
+              'Following a common gettext convention, the context and msgid are joined into one JSON key with the SOH control character (U+0001), as in "context\\u0001msgid". The reverse direction splits that separator back into msgctxt and msgid; ordinary keys never contain the character, so they are unaffected.',
+          },
+          {
+            question: 'What does a plural entry look like in JSON?',
+            answer:
+              'An entry with msgid_plural maps to a string array keyed by msgid, with values ordered as msgstr[0], msgstr[1] and so on. JSON → PO turns arrays into plural entries and adds a placeholder msgid_plural of "msgid plural", which you can adjust to the real language rule.',
+          },
+          {
+            question: 'How is this different from the Apple .strings converter?',
+            answer:
+              'The .strings converter targets iOS/macOS files using C comments plus "key" = "value"; syntax, while this tool targets GNU gettext .po/.pot catalogs with different keywords, plural model and escaping rules. The two formats are not interchangeable.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
