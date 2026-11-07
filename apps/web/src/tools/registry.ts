@@ -27624,6 +27624,99 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'pricing-markup-calculator',
+    name: '毛利率 / 加价率 / 售价双向定价计算器',
+    nameEn: 'Margin & Markup Pricing Calculator',
+    description:
+      '在成本价、售价、毛利率（÷售价）与加价率 markup（÷成本）之间任意已知量双向求解，支持批量售价表 CSV 导出、多档折扣保本价反推与两种利润率口径互转，明确区分极易混淆的分母口径。',
+    descriptionEn:
+      'Solve any unknown among cost, price, gross margin (divided by price) and markup (divided by cost) in both directions, with batch CSV pricing tables, break-even list price across discount tiers, and margin↔markup conversion that keeps the two denominators straight.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/pricing-markup-calculator',
+    iconName: 'Coins',
+    tags: ['毛利率', '加价率', '定价', '售价', '零售', 'CSV'],
+    tagsEn: ['Margin', 'Markup', 'Pricing', 'Retail', 'Break-even', 'CSV'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '面向零售、电商与小微商户的纯本地定价工具，围绕成本价、售价、毛利率、加价率与毛利额做任意已知量求未知量的双向换算，并提供批量售价表、折扣保本价与口径互转能力。',
+        coreFeatures: [
+          '三种求解模式：成本+售价推导利润率、成本+目标利润率求售价、售价+目标利润率反推成本',
+          '口径区分：毛利率分母为售价、加价率分母为成本，并提供二者实时互转提示',
+          '批量定价：粘贴「成本,毛利率」多行文本，逐行输出售价表并一键复制 CSV，非法行带错误不中断',
+          '保本反推：录入多档折扣率，按最深折扣计算不亏本的最低挂牌价',
+          '边界保护：毛利率 ≥100%、成本为 0 求加价率、负价等非法输入逐条报错而非除零',
+          '纯本地运行：所有运算在浏览器内完成，不发起任何网络请求',
+        ],
+        howToUse: [
+          '顶部按钮选择求解模式，并在需要时切换毛利率 / 加价率口径',
+          '单条换算区填入成本、售价或目标利润率（支持 20% 或 20 两种写法），结果即时更新',
+          '批量区每行填写「成本,毛利率」，缺省毛利率取上方统一设置，点击「复制 CSV」导出',
+          '折扣区填入成本与各档折扣率（0.8 表示 8 折），查看保本挂牌价',
+        ],
+        useCases: [
+          '零售与电商：按目标毛利率快速给商品定价并核算毛利额',
+          '批发报价：在习惯使用加价率的场景与毛利率口径之间换算',
+          '促销规划：评估多档打折活动后仍能保本的挂牌价',
+        ],
+        privacyNote:
+          '全部成本、售价与利润率数据仅在浏览器本地参与计算，不会被上传或记录。',
+        faqs: [
+          {
+            question: '毛利率和加价率有什么区别？',
+            answer:
+              '毛利率 =（售价−成本）÷售价，加价率 markup =（售价−成本）÷成本，二者分子相同但分母不同。例如成本 80、售价 100 时毛利率为 20%，加价率为 25%，工具会同时展示并支持互转。',
+          },
+          {
+            question: '为什么输入 100% 毛利率会报错？',
+            answer:
+              '由售价 = 成本 ÷（1−毛利率）可知，毛利率趋近 100% 时售价趋于无穷大，数学上不存在有限售价，因此工具要求毛利率严格小于 100%。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local pricing tool for retail, e-commerce and small merchants that solves any unknown among cost, price, gross margin, markup and gross profit in both directions, plus batch pricing tables, discount break-even prices and rate-basis conversion.',
+        coreFeatures: [
+          'Three modes: derive rates from cost+price, find price from cost+target rate, or reverse cost from price+target rate',
+          'Basis-aware: margin divides by price while markup divides by cost, with live margin↔markup conversion hints',
+          'Batch pricing: paste multi-line "cost,margin" text to get a price table and copy it as CSV; bad rows report errors without stopping the run',
+          'Break-even: enter several discount tiers and compute the minimum list price that stays profitable at the deepest discount',
+          'Guarded edges: margin ≥100%, markup on zero cost and negative prices each raise explicit errors instead of dividing by zero',
+          '100% local: every calculation runs in the browser with no network request',
+        ],
+        howToUse: [
+          'Pick a mode with the top buttons and switch between margin and markup basis when needed',
+          'Enter cost, price or target rate (both "20%" and "20" are accepted); results update instantly',
+          'In the batch panel, enter one "cost,margin" pair per line; the default margin applies when omitted, then copy CSV',
+          'Enter cost and discount rates (0.8 means 20% off) to see the break-even list price',
+        ],
+        useCases: [
+          'Retail and e-commerce: price products from a target margin and inspect gross profit',
+          'Wholesale quotes: convert between markup-based workflows and margin-based reporting',
+          'Promotions: find a list price that still breaks even after stacked discounts',
+        ],
+        privacyNote:
+          'All cost, price and rate data is computed locally in your browser and is never uploaded or logged.',
+        faqs: [
+          {
+            question: 'What is the difference between margin and markup?',
+            answer:
+              'Margin = (price − cost) ÷ price, while markup = (price − cost) ÷ cost. They share the same numerator but use different denominators: with cost 80 and price 100, margin is 20% but markup is 25%. The tool shows both and converts between them.',
+          },
+          {
+            question: 'Why does a 100% margin raise an error?',
+            answer:
+              'Since price = cost ÷ (1 − margin), a margin approaching 100% pushes price toward infinity, so no finite price exists. The tool therefore requires margin to be strictly below 100%.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
