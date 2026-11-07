@@ -27930,6 +27930,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'plus-code-codec',
+    name: 'Plus Codes 编解码器',
+    nameEn: 'Plus Codes (Open Location Code) Encoder & Decoder',
+    description:
+      '按 Google 官方 Open Location Code 算法在经纬度与 Plus Code 之间双向转换：编码支持 2–15 位码长，解码输出中心点、边界框与格子精度，并支持基于参考点的短码缩短（shorten）与恢复（recover），全部本地计算。',
+    descriptionEn:
+      'Convert between latitude/longitude and Plus Codes using the official Google Open Location Code algorithm: encode at code lengths 2–15, decode to center point, bounding box and cell precision, and shorten or recover short codes against a reference point. All local.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/plus-code-codec',
+    iconName: 'Map',
+    tags: ['Plus Codes', 'Open Location Code', 'OLC', '经纬度', '地理编码', '位置编码'],
+    tagsEn: ['Plus Codes', 'Open Location Code', 'OLC', 'Coordinates', 'Geocoding', 'Location Encoding'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '47.36559,8.52499',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Plus Codes（Open Location Code，OLC）是 Google 提出的开源位置编码，用 Base20 层次格网把经纬度压缩成可口头传递、无需门牌地址的短码（如 8FVC9G8F+6X）。本工具严格移植官方参考实现的整数化算法，在浏览器本地完成经纬度编码、完整码解码（边界框与中心点）、以及借助参考点的短码缩短与恢复，输出与官方测试向量逐位一致。',
+        coreFeatures: [
+          '经纬度 → Plus Code 编码，码长覆盖 2–15 位（10 位标准精度约 14m 格子）',
+          '完整码解码：西南/东北边界框、中心点、格子经纬度精度与有效码长',
+          '短码 shorten：按参考点距离剥离最长可省略前缀，最短可到 +XX 形式',
+          '短码 recover：用同一参考点把短码无歧义恢复为距离最近的完整码',
+          '语法校验区分非法字符、分隔符位置、零填充规则与首对越界，错误信息面向用户',
+          '零依赖纯 TypeScript 整数算法，主线程毫秒级，位置数据不出本机',
+        ],
+        howToUse: [
+          '编码：输入纬度（±90）与经度（±180），选择码长后实时得到含 + 的 Plus Code',
+          '解码：粘贴完整 Plus Code（+ 必须在第 9 个字符位置），查看中心点与边界框',
+          '短码：先填参考点经纬度，再把完整码缩短，或把短码恢复为完整码',
+          '短码本身不含全局位置，缩短与恢复必须使用同一区域的参考点',
+        ],
+        useCases: [
+          '在无门牌地址的地区生成可分享、可口头传递的位置短码',
+          '物流、应急救援、田野调查中标注与复核精确位置',
+          '把数据库中的经纬度转成短链友好的字符串，或反向解析回坐标区域',
+        ],
+        privacyNote:
+          '所有经纬度与 Plus Code 均在浏览器本地计算，不发起任何网络请求或位置上报，断网可用。',
+        faqs: [
+          {
+            question: 'Plus Code 和 Geohash 有什么区别？',
+            answer:
+              '两者都是层次格网编码。Geohash 使用 base32 并交替二分经纬度；Plus Code 使用排除元音与易混字符的 Base20 字母表，码长按字符对组织且不依赖外部数据集，短码可借助附近参考点恢复，更适合口头传递与无地址地区。',
+          },
+          {
+            question: '为什么短码恢复需要参考点？',
+            answer:
+              '短码剥离了全局前缀（如 8FVC9G），同一个后缀在全球不同区域会对应多个格子。参考点用于补齐前缀并在跨越格网边界时平移一个块，从而选出距离参考点最近的唯一完整码。',
+          },
+          {
+            question: '码长应该怎么选？',
+            answer:
+              '10 位是标准精度，赤道附近格子约 14m × 14m，覆盖绝大多数寻址场景；6 位约为街区级（0.05°），适合城市级聚合；11–15 位用于亚米级专业测量。10 位以下只支持偶数码长。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Plus Codes (Open Location Code, OLC) is an open location encoding published by Google that compresses latitude/longitude into a short, speakable code such as 8FVC9G8F+6X using a Base20 hierarchical grid, without requiring street addresses. This tool ports the integer-based reference algorithm to pure TypeScript and runs fully in the browser: encode coordinates, decode full codes to bounding boxes and centers, and shorten or recover short codes with a reference point, matching the official test vectors bit for bit.',
+        coreFeatures: [
+          'Encode latitude/longitude to Plus Codes at lengths 2–15 (10-digit standard precision is about a 14m cell)',
+          'Decode full codes to SW/NE bounding box, center point, cell precision and effective code length',
+          'Shorten full codes against a reference point, down to a +XX form',
+          'Recover short codes to the nearest unambiguous full code using the same reference point',
+          'Validation distinguishes illegal characters, separator placement, padding rules and out-of-range first pairs with user-facing messages',
+          'Zero-dependency integer algorithm in pure TypeScript on the main thread; location data never leaves the device',
+        ],
+        howToUse: [
+          'Encode: enter latitude (±90) and longitude (±180), pick a code length and read the live Plus Code with +',
+          'Decode: paste a full Plus Code (+ must be at the ninth character) to inspect the center and bounding box',
+          'Short codes: set the reference point first, then shorten a full code or recover a short one',
+          'A short code carries no global position, so shortening and recovery must share a reference point in the same area',
+        ],
+        useCases: [
+          'Generating shareable, speakable location codes where street addresses do not exist',
+          'Marking and verifying precise positions in logistics, emergency response and field surveys',
+          'Turning stored coordinates into short-link-friendly strings, or parsing them back into coordinate areas',
+        ],
+        privacyNote:
+          'All coordinates and Plus Codes are computed locally in the browser with no network requests or location reporting; the tool works offline.',
+        faqs: [
+          {
+            question: 'How do Plus Codes differ from Geohash?',
+            answer:
+              'Both are hierarchical grid encodings. Geohash uses base32 and alternates lat/lng bisection, while Plus Codes use a Base20 alphabet that excludes vowels and confusing characters, organize digits in pairs, need no external dataset and allow reference-based short codes, which makes them easier to speak and use in addressless regions.',
+          },
+          {
+            question: 'Why does recovering a short code need a reference point?',
+            answer:
+              'A short code drops the global prefix (e.g. 8FVC9G), so the same suffix maps to multiple cells worldwide. The reference point restores the prefix and shifts by one grid block when crossing a boundary, selecting the unique full code nearest to the reference.',
+          },
+          {
+            question: 'Which code length should I choose?',
+            answer:
+              'Ten digits is the standard precision, about a 14m × 14m cell near the equator and sufficient for most addressing; six digits is neighborhood level (0.05°) for city-scale aggregation; 11–15 digits are for sub-meter professional surveying. Below ten digits only even lengths are valid.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
