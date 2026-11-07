@@ -27828,6 +27828,109 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'lrc-lyrics-codec',
+    name: 'LRC 歌词时间戳生成与解析器',
+    nameEn: 'LRC Lyrics Timestamp Parser & Builder',
+    description:
+      '在浏览器本地解析与生成 LRC 歌词：识别 [ar]/[ti]/[al]/[offset] 等 ID 元数据标签、[mm:ss.xx] 与 [mm:ss.xxx] 时间标签，一行多时间标签自动展开；提供结构化时间轴表格、带行号校验、整体毫秒级平移（负平移钳位到 0）、parse↔stringify 往返与两位百分秒规范输出。零依赖纯文本处理，支持 CRLF 与 BOM 归一化。',
+    descriptionEn:
+      'Parse and build LRC lyrics locally in the browser: recognizes ID metadata tags such as [ar]/[ti]/[al]/[offset], [mm:ss.xx] and [mm:ss.xxx] time tags, and expands multiple time tags on one line. It offers a structured timeline table, line-numbered validation, millisecond-wide shifting with clamping at zero, parse-to-stringify round-tripping and canonical centisecond output. Zero-dependency text processing with CRLF and BOM normalization.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/lrc-lyrics-codec',
+    iconName: 'Music',
+    tags: ['LRC', '歌词', '时间戳', '字幕', '音乐', '解析'],
+    tagsEn: ['LRC', 'Lyrics', 'Timestamp', 'Subtitles', 'Music', 'Parser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'LRC 歌词时间戳生成与解析器是一款纯浏览器本地运行的文本工具，面向卡拉 OK 歌词、音乐播放器字幕与音频剪辑标注场景。它把 LRC 的 ID 元数据标签与 [mm:ss.xx] 时间标签解析为结构化时间轴，也支持把编辑后的结构重新序列化为规范 LRC 文本，全程零依赖。',
+        coreFeatures: [
+          '解析 [ar:歌手]、[ti:标题]、[al:专辑]、[offset] 等 ID 标签并以标签组展示',
+          '兼容两位百分秒 [00:12.50] 与三位毫秒 [01:05.250] 两种时间写法',
+          '一行多个时间标签（跟唱 / 合唱）自动展开为多条歌词记录',
+          '整体时间平移按毫秒计算，负平移越过 0 秒时自动钳位并提示受影响行数',
+          '校验带行号：分钟 / 秒越界、无法识别的标签、时间乱序、缺少歌词行等分级告警',
+          '序列化为两位百分秒规范格式，59.999 秒等边界正确进位，parse 往返语义一致',
+        ],
+        howToUse: [
+          '把 LRC 文本粘贴到左侧输入框（或点击「载入样例」），右侧即时显示元数据标签与时间轴表格',
+          '在校验区查看越界标签、乱序等问题，点击对应告警可定位行号',
+          '切换到「平移与序列化」标签，输入毫秒平移量（负值提前、正值延后）并预览结果',
+          '点击复制按钮导出规范化 LRC 文本',
+        ],
+        useCases: [
+          '把手工整理的歌词快速校对为播放器可识别的标准 LRC',
+          '音频重剪 / 加片头后整体平移歌词时间轴',
+          '排查第三方 LRC 文件中的乱序时间点与非法标签',
+        ],
+        privacyNote:
+          '歌词文本只在浏览器本地处理，不上传任何内容，也不访问音频文件本身，断网环境可用。',
+        faqs: [
+          {
+            question: '两位和三位毫秒写法有什么区别？',
+            answer:
+              'LRC 常见两种小数写法：[00:12.50] 的两位数字按百分秒解析（0.50 秒），[01:05.250] 的三位数字按毫秒解析（0.250 秒）。工具对两者都能正确识别；序列化输出统一为两位百分秒并做四舍五入。',
+          },
+          {
+            question: '一行里有两个时间标签会怎样？',
+            answer:
+              '这是 LRC 表示合唱或重复演唱的常见写法，例如 [00:10.00][00:20.00]合唱。解析器会把它展开成 time=10 与 time=20 两条记录、歌词文本相同，序列化时按时间升序重新输出。',
+          },
+          {
+            question: '负平移把歌词移到 0 秒以前怎么办？',
+            answer:
+              '工具会把这些行钳位到 [00:00.00] 而不是产生负时间标签，同时在界面提示被钳位的行数，便于判断平移量是否过大。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The LRC Lyrics Timestamp Parser & Builder is a browser-local text tool for karaoke lyrics, player subtitles and audio annotation. It turns LRC ID metadata tags and [mm:ss.xx] time tags into a structured timeline and serializes the edited structure back into canonical LRC text, with zero dependencies.',
+        coreFeatures: [
+          'Parses ID tags such as [ar:artist], [ti:title], [al:album] and [offset], shown as a tag group',
+          'Accepts both centisecond [00:12.50] and millisecond [01:05.250] fractions',
+          'Expands multiple time tags on one line (duet / repeated singing) into separate records',
+          'Shifts the whole timeline by milliseconds; negative shifts clamp at zero and report affected rows',
+          'Line-numbered validation for out-of-range minutes/seconds, unknown tags, disordered timestamps and empty lyrics',
+          'Serializes to canonical centisecond format with correct carry at boundaries such as 59.999s and stable parse round-tripping',
+        ],
+        howToUse: [
+          'Paste LRC text into the left editor (or load the sample) to see metadata tags and the timeline table on the right',
+          'Review out-of-range tags and ordering issues in the validation area with line numbers',
+          'Open the shift tab, enter a millisecond delta (negative to advance, positive to delay) and preview live',
+          'Use the copy button to export normalized LRC text',
+        ],
+        useCases: [
+          'Turning hand-written lyrics into player-ready standard LRC files',
+          'Shifting an entire lyric timeline after audio re-cutting or adding an intro',
+          'Diagnosing disordered timestamps and invalid tags in third-party LRC files',
+        ],
+        privacyNote:
+          'Lyrics are processed entirely in the browser. Nothing is uploaded, audio files are never accessed, and the tool works offline.',
+        faqs: [
+          {
+            question: 'What is the difference between two-digit and three-digit fractions?',
+            answer:
+              'LRC uses two conventions: two digits like [00:12.50] are centiseconds (0.50 s), while three digits like [01:05.250] are milliseconds (0.250 s). The parser accepts both; serialization always emits rounded two-digit centiseconds.',
+          },
+          {
+            question: 'What happens when one line has two time tags?',
+            answer:
+              'This is the standard LRC way to mark duets or repeated lines, e.g. [00:10.00][00:20.00]chorus. The parser expands it into two records at 10s and 20s with identical text, and serialization re-emits them in ascending time order.',
+          },
+          {
+            question: 'What if a negative shift moves lyrics before zero?',
+            answer:
+              'Those lines are clamped to [00:00.00] instead of producing negative time tags, and the UI reports how many rows were clamped so you can judge whether the shift amount is too large.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

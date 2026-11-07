@@ -262,7 +262,7 @@
 | 20261106160210 | 集合 Jaccard / 重叠系数 / Dice 相似度计算器 | Web Tool | Existing Gap | In Progress | 2026-11-06 | trae-agent | [详情](./idea-details/20261106160210.md) |
 | 20261107080340 | 信用卡 / IMEI 风格 Luhn 号码批量校验与校验位生成器 | Web Tool | Existing Gap | Claimed | 2026-11-07 | trae-agent | [详情](./idea-details/20261107080340.md) |
 | 20261107080341 | 闰秒感知的 TAI / UTC / Unix 时间互转器（含历史跳秒表） | Web Tool | Existing Gap | Claimed | 2026-11-07 | trae-agent | [详情](./idea-details/20261107080341.md) |
-| 20261107140225 | LRC 歌词时间戳生成与解析器 | Web Tool | Existing Gap | Claimed | 2026-11-07 | trae-agent | [详情](./idea-details/20261107140225.md) |
+| 20261107140225 | LRC 歌词时间戳生成与解析器 | Web Tool | Existing Gap | In Progress | 2026-11-07 | trae-agent | [详情](./idea-details/20261107140225.md) |
 | 20261107140226 | iCalendar VTODO / VJOURNAL 待办与日记组件生成器（RFC 5545） | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140226.md) |
 | 20261107140227 | 三相交流电路功率 / 功率因数 / 扭矩换算计算器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140227.md) |
 | 20261107140228 | Widmark 血液酒精浓度（BAC）估算与代谢时间计算器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140228.md) |

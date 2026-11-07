@@ -297,4 +297,5 @@ export const toolLoaders: Record<
   'po-json-converter': () => import('./po-json-converter'),
   'pricing-margin-calculator': () => import('./pricing-margin-calculator'),
   'm3u-playlist-codec': () => import('./m3u-playlist-codec'),
+  'lrc-lyrics-codec': () => import('./lrc-lyrics-codec'),
 };
