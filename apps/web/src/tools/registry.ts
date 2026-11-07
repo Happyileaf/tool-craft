@@ -27219,6 +27219,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'leap-second-tai-converter',
+    name: '闰秒感知 TAI / UTC / Unix 时间互转器',
+    nameEn: 'Leap-Second-Aware TAI / UTC / Unix Time Converter',
+    description:
+      '基于 IERS 历史闰秒表（1972 年起 27 次正闰秒）在 TAI 原子时、UTC 与 Unix 时间戳之间精确互转，自动计算对应时刻的 TAI−UTC 偏移，标记闰秒插入日并展示完整闰秒表；支持小数秒，1972 年前的平滑跳变年代明确报错。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert precisely between TAI atomic time, UTC and Unix timestamps using the IERS historical leap-second table (27 positive leap seconds since 1972), computing the TAI-UTC offset at each instant, flagging leap-second days and listing the full table. Fractional seconds are supported; pre-1972 smooth-offset dates are explicitly rejected. Runs entirely in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/leap-second-tai-converter',
+    iconName: 'Clock',
+    tags: ['TAI', 'UTC', '闰秒', 'Unix时间戳', 'IERS', '原子时'],
+    tagsEn: ['TAI', 'UTC', 'Leap Second', 'Unix Timestamp', 'IERS', 'Atomic Time'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1483228800',
+    doc: {
+      zh: {
+        whatIsIt:
+          '闰秒感知 TAI / UTC / Unix 时间互转器是一款纯浏览器本地运行的高精度时间换算工具。TAI（国际原子时）是连续均匀的时间尺度，而 UTC 通过不定期插入正闰秒与地球自转保持对齐，两者之差（TAI−UTC）已从 1972 年的 10 秒累积到 37 秒。普通 Unix 时间戳按「每天 86400 秒」平滑计数，无法表达闰秒；本工具内置 IERS 公告的完整历史闰秒表，在换算时逐时刻应用正确偏移。',
+        coreFeatures: [
+          '双向换算：Unix（UTC）→ TAI 与 TAI → Unix（UTC），自动给出 TAI−UTC 偏移与 UTC 可读时间',
+          '完整 IERS 闰秒表：1972-01-01 至 2017-01-01 共 28 行（基线 + 27 次正闰秒），页面可查',
+          '闰秒日标记：识别落在 23:59:60 插入日前后的时刻并高亮提示',
+          '边界安全：1972 年表覆盖范围之外的输入明确报错，最后闰秒之后按当前偏移外推并在页面说明',
+          '纯函数实现：查表与偏移计算零依赖、确定性输出，固定向量可单测复现',
+        ],
+        howToUse: [
+          '选择换算方向（Unix → TAI 或 TAI → Unix）',
+          '在输入框填入秒级时间戳，支持小数秒',
+          '查看四张结果卡片：Unix、TAI、TAI−UTC 偏移与 UTC 日期时间',
+          '遇到闰秒日会出现橙色标记；页面底部可浏览完整历史闰秒表',
+        ],
+        useCases: [
+          '天文、卫星与 GNSS 数据处理中 TAI/UTC/GPS 时间尺度对齐',
+          '分布式系统与日志审计中理解闰秒对时间戳的影响',
+          '教学演示原子时、世界时与闰秒机制',
+        ],
+        privacyNote:
+          '全部换算在浏览器本地由零依赖纯函数完成，输入的时间戳不会上传或离开设备。',
+        faqs: [
+          {
+            question: '它和已有的 epoch-converter、gps-week-converter 有什么区别？',
+            answer:
+              'epoch-converter 等工具按固定 86400 秒/天做 Unix 与日历时间互转，完全不感知闰秒；gps-week-converter 使用 GPS 时的固定 19 秒偏移（GPS 不跟踪闰秒）。本工具专注 TAI 与 UTC 之间随历史变化的偏移，内置完整 IERS 闰秒表并标记闰秒日，解决的是不同问题。',
+          },
+          {
+            question: '为什么不支持 1972 年之前的时间？',
+            answer:
+              '1972 年之前 UTC 采用频率微调 + 不定期平滑跳变（而非整数闰秒）与 TAI 对齐，偏移不是整秒且规则复杂。本表从 1972-01-01（TAI−UTC=10s）开始覆盖，更早的时间会明确报错而非给出误导性结果。',
+          },
+          {
+            question: '未来如果 IERS 公告新的闰秒怎么办？',
+            answer:
+              '最后一条闰秒（2017-01-01）之后的日期按当前 37 秒偏移外推，页面已显著说明。IERS 一旦公告新闰秒，更新代码中的 LEAP_SECONDS 表并补充对应测试向量即可。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Leap-Second-Aware TAI / UTC / Unix Time Converter is a high-precision, fully browser-local time-scale utility. TAI (International Atomic Time) is a continuous, uniform time scale, while UTC stays aligned with Earth rotation through occasional positive leap seconds; the TAI-UTC difference has accumulated from 10 seconds in 1972 to 37 seconds today. Ordinary Unix timestamps count a smooth 86400 seconds per day and cannot express leap seconds. This tool embeds the full IERS historical leap-second table and applies the correct offset at every instant.',
+        coreFeatures: [
+          'Bidirectional conversion: Unix (UTC) to TAI and TAI back to Unix (UTC), reporting the TAI-UTC offset and a human-readable UTC time',
+          'Complete IERS table: 28 rows from 1972-01-01 to 2017-01-01 (baseline plus 27 positive leap seconds), browsable on the page',
+          'Leap-day flag: highlights instants around a 23:59:60 insertion day',
+          'Safe boundaries: input before the 1972 coverage is explicitly rejected; dates after the last leap second extrapolate with the current offset and are labelled as such',
+          'Pure functions: table lookup and offset math are dependency-free and deterministic, reproducible via fixed test vectors',
+        ],
+        howToUse: [
+          'Choose the conversion direction (Unix to TAI or TAI to Unix)',
+          'Enter a seconds-precision timestamp; fractional seconds are accepted',
+          'Read the four result cards: Unix, TAI, TAI-UTC offset and UTC date-time',
+          'An orange tag appears on leap-second days; the full historical table is at the bottom',
+        ],
+        useCases: [
+          'Aligning TAI/UTC/GPS time scales in astronomy, satellite and GNSS data pipelines',
+          'Understanding leap-second impact on timestamps in distributed systems and audit logs',
+          'Teaching atomic time, universal time and the leap-second mechanism',
+        ],
+        privacyNote:
+          'All conversion runs locally in the browser via dependency-free pure functions; entered timestamps are never uploaded and never leave the device.',
+        faqs: [
+          {
+            question: 'How is this different from the existing epoch-converter and gps-week-converter?',
+            answer:
+              'epoch-converter and similar tools convert Unix to calendar time at a fixed 86400 seconds/day with no leap-second awareness; gps-week-converter uses the fixed 19-second GPS epoch offset because GPS does not track leap seconds. This tool focuses on the historically varying TAI-UTC offset with the full IERS table and leap-day flags, which is a distinct problem.',
+          },
+          {
+            question: 'Why are dates before 1972 unsupported?',
+            answer:
+              'Before 1972, UTC tracked TAI through frequency steering and irregular smooth offsets rather than integer leap seconds, so the offset was not a whole number and the rules are complex. Coverage starts at 1972-01-01 (TAI-UTC = 10s); earlier input is rejected explicitly instead of returning a misleading answer.',
+          },
+          {
+            question: 'What happens when the IERS announces a new leap second?',
+            answer:
+              'Dates after the last entry (2017-01-01) extrapolate at the current 37-second offset, clearly noted on the page. Once the IERS announces a new leap second, update the LEAP_SECONDS table in code and add matching test vectors.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
