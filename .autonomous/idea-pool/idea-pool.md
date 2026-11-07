@@ -264,4 +264,10 @@
 | 20261107080339 | 音乐音高与频率互算器（音符 ↔ Hz、半音音程与调音基准） | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107080339.md) |
 | 20261107080340 | 信用卡 / IMEI 风格 Luhn 号码批量校验与校验位生成器 | Web Tool | Existing Gap | Claimed | 2026-11-07 | trae-agent | [详情](./idea-details/20261107080340.md) |
 | 20261107080341 | 闰秒感知的 TAI / UTC / Unix 时间互转器（含历史跳秒表） | Web Tool | Existing Gap | Claimed | 2026-11-07 | trae-agent | [详情](./idea-details/20261107080341.md) |
+| 20261107140225 | LRC 歌词时间戳生成与解析器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140225.md) |
+| 20261107140226 | iCalendar VTODO / VJOURNAL 待办与日记组件生成器（RFC 5545） | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140226.md) |
+| 20261107140227 | 三相交流电路功率 / 功率因数 / 扭矩换算计算器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140227.md) |
+| 20261107140228 | Widmark 血液酒精浓度（BAC）估算与代谢时间计算器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140228.md) |
+| 20261107140229 | 毛利率 / 加价率 / 售价双向定价计算器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140229.md) |
+| 20261107140230 | M3U / M3U8 播放列表生成与解析器（含 HLS 媒体序列） | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140230.md) |
 
