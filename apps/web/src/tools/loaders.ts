@@ -296,4 +296,5 @@ export const toolLoaders: Record<
   'dkim-record-generator': () => import('./dkim-record-generator'),
   'po-json-converter': () => import('./po-json-converter'),
   'java-descriptor-converter': () => import('./java-descriptor-converter'),
+  'e123-phone-formatter': () => import('./e123-phone-formatter'),
 };

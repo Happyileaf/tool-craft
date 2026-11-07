@@ -27726,6 +27726,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'e123-phone-formatter',
+    name: 'ITU E.123 电话号码格式化器',
+    nameEn: 'ITU E.123 Phone Number Formatter',
+    description:
+      '按 ITU-T E.123 在本地剥离空格、连字符、括号等可视分隔符，在 E.164 无分隔形式与人类可读分组形式之间双向转换，支持空格 / 点号 / 连字符、本地括号长途区号与批量处理，并标记非法字符。',
+    descriptionEn:
+      'Strip visual separators and convert phone numbers between plain E.164 and human-readable grouped E.123 notation entirely in the browser, with space/dot/hyphen separators, local parenthesized trunk prefixes, batch processing and invalid-character marking.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/e123-phone-formatter',
+    iconName: 'Smartphone',
+    tags: ['E.123', 'E.164', '电话号码', '格式化', '通讯', '分隔符'],
+    tagsEn: ['E.123', 'E.164', 'Phone Number', 'Formatter', 'Telecom', 'Separator'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '+86 138-0013-8000',
+    doc: {
+      zh: {
+        whatIsIt:
+          'ITU E.123 电话号码格式化器面向需要统一号码书写的通讯与客服场景，在浏览器本地把任意粘贴的号码（含空格、连字符、括号、点号、斜杠等可视分隔符）重新排版：国际写法以 + 开头、国家码单独成组后按 3-3-4 分组（如 +86 138 001 38000、+1 555 123 4567），本地写法默认空格分组并可选括号长途区号（如 (042) 123 4567），同时输出无分隔的 E.164 形式。',
+        coreFeatures: [
+          '剥离空格、连字符、括号、点号、斜杠等可视分隔符并识别 + / 00 国际前缀',
+          'E.164 无分隔形式与 E.123 人类可读形式双向互转，支持往返一致',
+          '三种分隔符（空格 / 点号 / 连字符）与本地括号长途区号风格切换',
+          '内置常用国家呼叫码表，按最长前缀把国家码单独成组',
+          '标记清洗后残留的字母与特殊符号，支持多行批量处理并按行报告错误',
+        ],
+        howToUse: [
+          '在输入框粘贴号码，E.123 与 E.164 结果随输入实时更新',
+          '通过分隔符按钮切换空格、点号或连字符，打开开关启用本地括号区号',
+          '在批量卡片中每行输入一个号码，点击结果可一键复制',
+          '出现黄色警告表示含被忽略的非法字符，红色提示表示无法格式化',
+        ],
+        useCases: [
+          '把 CRM / 工单中格式混乱的客户号码统一为 E.123 标准排版',
+          '为短信网关、IVR 配置准备无分隔的 E.164 拨号串',
+          '清洗从文档或表格复制的带括号、连字符号码',
+        ],
+        privacyNote:
+          '所有号码仅在浏览器本地处理，不会上传到任何服务器，断网环境同样可用。',
+        faqs: [
+          {
+            question: '它和 E.164 规范化工具有什么区别？',
+            answer:
+              'E.164 工具聚焦号码合法性、国家码识别与长度区间校验；本工具聚焦 ITU-T E.123 规定的可视分隔与分组排版，以 E.164 作为无分隔中间表示，不做号段真实性判断，两者互补。',
+          },
+          {
+            question: '为什么本地号码没有自动加国家码？',
+            answer:
+              '本地号码缺少国际前缀时无法可靠判断所属国家，工具不会臆造国家码，只输出纯数字；需要 E.164 国际形式时请手动补充 + 与国家码。',
+          },
+          {
+            question: '分组规则可以自定义吗？',
+            answer:
+              '当前按 E.123 常见的 3-3-4 分组并让末组吸收余数，国家码依据内置呼叫码表单独成组；显式指定国家码长度可覆盖自动识别。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ITU E.123 Phone Number Formatter reorganizes pasted numbers containing spaces, hyphens, parentheses, dots or slashes entirely in the browser: international notation starts with +, keeps the country code as its own group and applies 3-3-4 grouping (e.g. +86 138 001 38000, +1 555 123 4567), while local notation uses spaced groups with optional parenthesized trunk prefix (e.g. (042) 123 4567), and also emits the separator-free E.164 form.',
+        coreFeatures: [
+          'Strips visual separators (spaces, hyphens, parentheses, dots, slashes) and recognizes + / 00 international prefixes',
+          'Bidirectional conversion between plain E.164 and grouped E.123 with consistent round-trips',
+          'Three separator styles (space / dot / hyphen) and a local parenthesized trunk-prefix mode',
+          'Built-in calling-code table matching the longest prefix to isolate the country code',
+          'Flags residual letters and symbols, and batch-processes multiple lines with per-line errors',
+        ],
+        howToUse: [
+          'Paste a number into the input; the E.123 and E.164 results update live',
+          'Switch separator style with the buttons and toggle the parenthesized local prefix',
+          'Enter one number per line in the batch card and click a result to copy it',
+          'A yellow warning means ignored invalid characters; a red alert means the number cannot be formatted',
+        ],
+        useCases: [
+          'Standardizing messy CRM or helpdesk numbers into E.123 notation',
+          'Preparing separator-free E.164 dial strings for SMS gateways and IVR configs',
+          'Cleaning parenthesized or hyphenated numbers copied from documents or spreadsheets',
+        ],
+        privacyNote:
+          'All numbers are processed locally in the browser and never uploaded; the tool works fully offline.',
+        faqs: [
+          {
+            question: 'How is this different from the E.164 normalizer?',
+            answer:
+              'The E.164 tool focuses on validity, country-code recognition and length ranges; this tool focuses on the visual separators and grouping defined by ITU-T E.123, using E.164 only as the separator-free intermediate representation and making no real-number validity claims. They complement each other.',
+          },
+          {
+            question: 'Why is no country code added automatically for local numbers?',
+            answer:
+              'A local number without an international prefix cannot be mapped to a country reliably, so the tool never invents a code and returns plain digits only. Add + and the country code manually when you need the international E.164 form.',
+          },
+          {
+            question: 'Can I customize the grouping rule?',
+            answer:
+              'The common E.123 3-3-4 grouping is used with the last group absorbing any remainder, and the country code is isolated via the built-in calling-code table. An explicit country-code length overrides automatic detection.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
