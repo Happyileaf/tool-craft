@@ -27828,6 +27828,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'dmarc-record-generator',
+    name: 'DMARC 记录生成与校验器',
+    nameEn: 'DMARC Record Generator & Validator',
+    description:
+      '按 RFC 7489 在本地拼装发信域的 _dmarc DNS TXT 记录，可视化配置 p / sp / rua / ruf / adkim / aspf / fo / pct / rf / ri 标签，并对粘贴的现有记录做语法校验、未知标签提示与冲突检查。',
+    descriptionEn:
+      'Build _dmarc DNS TXT records per RFC 7489 entirely in the browser with visual p/sp/rua/ruf/adkim/aspf/fo/pct/rf/ri tag controls, and validate pasted records for syntax, unknown tags and policy conflicts.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/dmarc-record-generator',
+    iconName: 'ShieldCheck',
+    tags: ['DMARC', 'DNS', '邮件认证', 'SPF', 'DKIM', '反钓鱼', 'TXT 记录'],
+    tagsEn: ['DMARC', 'DNS', 'Email Authentication', 'SPF', 'DKIM', 'Anti-phishing', 'TXT Record'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'v=DMARC1; p=quarantine; rua=mailto:dmarc@example.com; pct=50',
+    doc: {
+      zh: {
+        whatIsIt:
+          'DMARC 记录生成与校验器面向邮件域名运维，依据 RFC 7489 在浏览器本地完成两件事：通过表单配置策略（none / quarantine / reject）、子域策略 sp、聚合与取证报告邮箱 rua / ruf、对齐模式 adkim / aspf、取证选项 fo、策略百分比 pct、报告格式 rf 与间隔 ri，实时拼装 _dmarc 主机下的 TXT 记录；以及对粘贴的现有记录做标签语法校验、未知标签提示与策略冲突检查，避免配错导致 SPF / DKIM 仿冒防护失效。',
+        coreFeatures: [
+          '表单化配置全部 RFC 7489 正式标签，实时生成主机记录与 TXT 值',
+          '记录校验：版本标签、必填 p 策略、枚举值、pct 0–100 越界、重复标签等错误',
+          '未知标签告警、缺失 rua 提示、子域策略与主域冲突、监控模式提醒',
+          'mailto: 报告地址合法性检查与多地址规范化，超 255 字符自动分段',
+          '零依赖纯 TypeScript，主线程毫秒级完成，域名与邮箱仅留在本机',
+        ],
+        howToUse: [
+          '在「记录生成器」填写发信域并选择策略，按需展开报告邮箱与高级对齐选项',
+          '复制生成的主机记录（_dmarc.域名）与 TXT 值到 DNS 服务商',
+          '核对现有记录时切到「记录校验器」粘贴 TXT 内容，查看错误、警告与规范化结果',
+          '出现红色错误先修正再发布；黄色警告为最佳实践建议，可按实际情况处理',
+        ],
+        useCases: [
+          '新邮件域首次发布 DMARC，从 p=none 监控逐步灰度到 reject 强策略',
+          '排查仿冒钓鱼邮件时核对现有 _dmarc 记录的标签与百分比配置',
+          '为 rua / ruf 报告邮箱和子域策略生成可直接粘贴的 DNS TXT 记录',
+        ],
+        privacyNote:
+          '所有域名、邮箱与记录内容均在浏览器本地处理，不会发起任何网络请求或上传，断网环境同样可用。',
+        faqs: [
+          {
+            question: 'p=none、quarantine、reject 应该怎么选？',
+            answer:
+              '新域建议先 p=none 仅收集报告观察对齐情况，确认合法邮件都能通过 SPF / DKIM 后升级 quarantine（进入垃圾邮件），最终使用 reject 直接拒收；工具会在 p=none 与灰度 pct 下给出对应提醒。',
+          },
+          {
+            question: 'rua 和 ruf 有什么区别？',
+            answer:
+              'rua 接收聚合报告，按周期汇总通过与失败统计，是日常监控的主要来源；ruf 接收取证报告，针对单封失败邮件发送明细，数据量更大且涉及隐私，通常按需配置并配合 fo 选项。',
+          },
+          {
+            question: '为什么记录被拆成多段带引号字符串？',
+            answer:
+              'RFC 1035 规定单个 DNS 字符串最长 255 字符，较长的 DMARC 记录需要拆成多个引号字符串、以空格连接发布；工具在超限时自动给出 BIND 风格分段，直接整体粘贴即可。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The DMARC Record Generator & Validator helps email-domain operators work with RFC 7489 entirely in the browser: build the TXT record under _dmarc through form controls for policy (none/quarantine/reject), subdomain policy sp, aggregate and forensic report mailboxes rua/ruf, alignment adkim/aspf, forensic options fo, percentage pct, report format rf and interval ri; and validate pasted records for tag syntax, unknown tags and policy conflicts so that misconfiguration cannot silently break SPF/DKIM anti-spoofing protection.',
+        coreFeatures: [
+          'Form-based configuration of every formal RFC 7489 tag with live host record and TXT value generation',
+          'Validation of version tag, required p policy, enum values, pct 0–100 range and duplicate tags',
+          'Warnings for unknown tags, missing rua, subdomain-vs-parent policy conflicts and monitor mode',
+          'mailto: address checks, multi-address normalization and automatic 255-character chunking',
+          'Zero-dependency pure TypeScript on the main thread; domains and mailboxes stay on the device',
+        ],
+        howToUse: [
+          'Open the generator, enter the sending domain and pick a policy, then expand report mailboxes and advanced alignment as needed',
+          'Copy the generated host record (_dmarc.domain) and TXT value into your DNS provider',
+          'To audit an existing record, switch to the validator, paste the TXT content and review errors, warnings and normalized output',
+          'Fix red errors before publishing; yellow warnings are best-practice guidance you may address as appropriate',
+        ],
+        useCases: [
+          'Bootstrapping DMARC on a new mail domain from p=none monitoring toward a reject enforcement policy',
+          'Auditing tag and percentage configuration of an existing _dmarc record during phishing investigations',
+          'Generating paste-ready DNS TXT records for rua/ruf reporting and subdomain policies',
+        ],
+        privacyNote:
+          'All domains, mailboxes and record contents are processed locally in the browser with no network requests or uploads; the tool works fully offline.',
+        faqs: [
+          {
+            question: 'How do I choose between p=none, quarantine and reject?',
+            answer:
+              'Start new domains with p=none to collect reports and observe alignment, move to quarantine once legitimate mail passes SPF/DKIM, and finally use reject to bounce failures. The tool surfaces reminders for monitor mode and gray-release pct values.',
+          },
+          {
+            question: 'What is the difference between rua and ruf?',
+            answer:
+              'rua receives aggregate reports summarizing pass/fail statistics on a schedule and is the main monitoring channel; ruf receives forensic reports with per-message failure details, which are higher volume and privacy-sensitive, so they are usually enabled on demand together with fo options.',
+          },
+          {
+            question: 'Why is my record split into quoted chunks?',
+            answer:
+              'RFC 1035 limits a single DNS character string to 255 characters, so longer DMARC records must be published as multiple quoted strings joined by spaces. The tool emits BIND-style chunks automatically when the limit is exceeded; paste the whole block as-is.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

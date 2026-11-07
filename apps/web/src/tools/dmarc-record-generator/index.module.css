@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 960px;
+}
+
+.card {
+  width: 100%;
+}
+
+.mono {
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+}
+
+.recordValue {
+  font-family: var(--font-mono, monospace);
+  font-size: 14px;
+  font-weight: 600;
+  word-break: break-all;
+  line-height: 1.8;
+}
+
+.dnsName {
+  font-family: var(--font-mono, monospace);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.hint {
+  color: rgb(0 0 0 / 45%);
+  font-size: 12px;
+  line-height: 1.7;
+}

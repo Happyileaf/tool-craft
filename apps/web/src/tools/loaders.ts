@@ -297,4 +297,5 @@ export const toolLoaders: Record<
   'po-json-converter': () => import('./po-json-converter'),
   'java-descriptor-converter': () => import('./java-descriptor-converter'),
   'e123-phone-formatter': () => import('./e123-phone-formatter'),
+  'dmarc-record-generator': () => import('./dmarc-record-generator'),
 };
