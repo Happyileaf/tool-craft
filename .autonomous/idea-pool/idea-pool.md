@@ -279,5 +279,5 @@
 | 20261107200157 | Markdown 表格 ↔ CSV / JSON / HTML / LaTeX 多向转换器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200157.md) |
 | 20261107200158 | HSL / HSV 多色彩空间调色板生成与 CSS 设计令牌导出器 | Web Tool | Exploration | Pending | 2026-11-07 | | [详情](./idea-details/20261107200158.md) |
 | 20261107200159 | 罗马数字算术与日期 / 大纲编号解析器（1–3,999,999 扩展记法） | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200159.md) |
-| 20261108140204 | 调查抽样样本量与误差范围计算器（Cochran 公式 + 有限总体校正 FPC，正反双向） | Web Tool | External Reference | Claimed | 2026-11-08 | trae-agent | [详情](./idea-details/20261108140204.md) |
+| 20261108140204 | 调查抽样样本量与误差范围计算器（Cochran 公式 + 有限总体校正 FPC，正反双向） | Web Tool | External Reference | In Progress | 2026-11-08 | trae-agent | [详情](./idea-details/20261108140204.md) |
 

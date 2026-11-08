@@ -28648,6 +28648,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'survey-sample-size-calculator',
+    name: '调查抽样样本量与误差范围计算器（Cochran + FPC）',
+    nameEn: 'Survey Sample Size & Margin of Error Calculator (Cochran + FPC)',
+    description:
+      '基于 Cochran 公式与有限总体校正 FPC，由置信水平、误差幅度、预期比例与总体规模求所需样本量，或由既定样本量反推可达误差幅度，并支持设计效应与应答率校正。',
+    descriptionEn:
+      'Compute the required sample size from confidence level, margin of error, expected proportion and population size using the Cochran formula with finite population correction (FPC), or back-solve the achievable margin of error from a fixed sample size, with design-effect and response-rate adjustments.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/survey-sample-size-calculator',
+    iconName: 'Sigma',
+    tags: ['样本量', '抽样', 'Cochran', '置信区间', '误差幅度', '问卷调查', '统计'],
+    tagsEn: ['Sample Size', 'Sampling', 'Cochran', 'Confidence Interval', 'Margin of Error', 'Survey', 'Statistics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '95%, ±5%, p=50%',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具面向问卷调查、民意测验、用户研究与市场调研的抽样规划，基于 Cochran（1977）经典公式 n₀ = z²·p·(1−p)/e² 在浏览器本地完成样本量与误差幅度的双向计算，并在给定总体规模 N 时自动应用有限总体校正 n = n₀/(1+(n₀−1)/N)。',
+        coreFeatures: [
+          '正向求样本量：置信水平、误差幅度、预期比例 p、总体规模四参数联动，p=0.5 为最保守取值',
+          '反向求误差幅度：由计划样本量反推可达 ±e%，与正向公式互逆',
+          '有限总体校正：填写总体规模 N 后自动启用 FPC，小总体下显著降低所需样本量',
+          '招募量校正：按设计效应 deff 与预期应答率换算实际需接触 / 发放的问卷数量',
+          '公式透明：展示 z 分位数、Cochran 原始 n₀、校正中间值与完整代入过程',
+        ],
+        howToUse: [
+          '选择「由误差要求求样本量」模式，设置置信水平（常用 95%）、可接受误差幅度（如 ±5%）与预期比例',
+          '若总体规模有限（如企业全员 1000 人），填写总体规模以启用 FPC 校正',
+          '切换到「由样本量反推误差幅度」可评估既定预算下的精度水平',
+          '在底部面板填写设计效应与应答率，得到实际应发放的问卷份数',
+        ],
+        useCases: [
+          '规划 NPS / 满意度 / 民意调查问卷的最低有效样本量',
+          '企业内部全员调研时利用 FPC 减少发放量并论证统计合理性',
+          '评估 A/B 实验或用户访谈在固定预算下可达到的误差精度',
+          '结合整群抽样设计效应与历史应答率估算实际招募规模',
+        ],
+        privacyNote:
+          '所有参数与计算均在浏览器本地完成，不发起任何网络请求，调研方案数据不会被上传或留存。',
+        faqs: [
+          {
+            question: '为什么预期比例 p 默认是 50%？',
+            answer:
+              'p·(1−p) 在 p=0.5 时取得最大值 0.25，此时计算出的样本量最大、最保守。在缺乏先验信息时使用 50% 可以保证无论真实比例如何都能满足误差要求；若已有历史数据支持 p 偏离 0.5，可填入更精确的比例以降低样本量。',
+          },
+          {
+            question: '什么时候需要填写总体规模 N？',
+            answer:
+              '当抽样占总体比例不可忽略（经验阈值约 n/N > 5%）时应启用有限总体校正。例如总体仅 1000 人时，FPC 可把 95%/±5% 场景的样本量从 385 降至 278。面对全国级别的大总体时，FPC 影响极小，留空即可。',
+          },
+          {
+            question: '设计效应和应答率如何影响最终发放量？',
+            answer:
+              '设计效应 deff 反映整群、分层等复杂抽样相对简单随机抽样的方差膨胀，实际有效样本量需乘以 deff；应答率则决定要接触多少人才能拿到足够的有效问卷。最终发放量 = ceil(n × deff ÷ 应答率)，例如 n=385、deff=2、应答率 80% 时需发放 963 份。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A browser-local sampling planner for questionnaires, polls, UX research and market surveys. It implements the Cochran (1977) formula n₀ = z²·p·(1−p)/e² in both directions and applies the finite population correction n = n₀/(1+(n₀−1)/N) whenever a population size N is supplied.',
+        coreFeatures: [
+          'Forward sizing: confidence level, margin of error, expected proportion p and population size, with p=0.5 as the conservative default',
+          'Reverse solving: back-solve the achievable ±e% margin from a planned sample size, exactly inverse to the forward formula',
+          'Finite population correction: FPC activates automatically when N is provided, materially cutting sample size for small populations',
+          'Recruitment adjustment: convert the effective sample into contact/invitation counts via design effect and response rate',
+          'Transparent formulas: z score, raw Cochran n₀, corrected intermediate value and full substitution shown on screen',
+        ],
+        howToUse: [
+          'In "sample size from error target" mode, set confidence level (typically 95%), acceptable margin (e.g. ±5%) and expected proportion',
+          'Provide the population size for finite populations (e.g. 1,000 employees) to enable FPC',
+          'Switch to "margin from sample size" to assess the precision achievable under a fixed budget',
+          'Fill in design effect and response rate at the bottom to obtain the number of questionnaires to distribute',
+        ],
+        useCases: [
+          'Planning minimum valid sample sizes for NPS, satisfaction or opinion surveys',
+          'Reducing invitations with FPC for company-wide censuses and documenting statistical rationale',
+          'Evaluating precision of A/B tests or interview programs under fixed budgets',
+          'Estimating recruitment scale with cluster-sampling design effects and historical response rates',
+        ],
+        privacyNote:
+          'Every input and calculation stays in your browser. No network requests are made and survey planning data is never uploaded or retained.',
+        faqs: [
+          {
+            question: 'Why does the expected proportion default to 50%?',
+            answer:
+              'p·(1−p) peaks at p=0.5 with value 0.25, yielding the largest, most conservative sample size. With no prior information, 50% guarantees the error target regardless of the true proportion. If historical data supports a different p, entering it reduces the required sample size.',
+          },
+          {
+            question: 'When should I fill in the population size N?',
+            answer:
+              'Use FPC when the sampling fraction is non-negligible (rule of thumb n/N > 5%). For a population of 1,000, FPC reduces the 95%/±5% requirement from 385 to 278. For nationwide populations the effect is negligible and the field can be left empty.',
+          },
+          {
+            question: 'How do design effect and response rate change the invitation count?',
+            answer:
+              'The design effect inflates the effective sample for cluster or stratified designs, while the response rate accounts for non-response. Final invitations = ceil(n × deff ÷ response rate); for n=385, deff=2 and 80% response, 963 invitations are needed.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

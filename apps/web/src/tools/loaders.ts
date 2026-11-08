@@ -305,4 +305,5 @@ export const toolLoaders: Record<
   'lc-resonance-calculator': () => import('./lc-resonance-calculator'),
   'overtime-pay-calculator': () => import('./overtime-pay-calculator'),
   'pricing-margin-calculator': () => import('./pricing-margin-calculator'),
+  'survey-sample-size-calculator': () => import('./survey-sample-size-calculator'),
 };
