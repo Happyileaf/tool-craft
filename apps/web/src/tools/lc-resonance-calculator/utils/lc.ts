@@ -137,7 +137,7 @@ export function pickEngineeringUnit(
     // uH/uF 是 µ 的 ASCII 别名，展示时统一用 µ 形式
     .filter(([unit]) => !unit.startsWith('u'))
     .sort((a, b) => b[1] - a[1]);
-  const match = entries.find(([, factor]) => siValue >= factor) ?? entries[entries.length - 1];
+  const match = entries.find(([, factor]) => siValue >= factor) ?? entries[entries.length - 1]!;
   return { value: siValue / match[1], unit: match[0] };
 }
 

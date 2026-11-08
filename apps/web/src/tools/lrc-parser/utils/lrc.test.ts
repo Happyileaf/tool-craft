@@ -58,8 +58,8 @@ describe('parseLrc', () => {
     const input = '[00:20.00][00:40.00]重复段落\n[00:05.00]前奏';
     const result = parseLrc(input);
     expect(result.lines.map((line) => line.timeMs)).toEqual([5000, 20000, 40000]);
-    expect(result.lines[1].text).toBe('重复段落');
-    expect(result.lines[2].text).toBe('重复段落');
+    expect(result.lines[1]!.text).toBe('重复段落');
+    expect(result.lines[2]!.text).toBe('重复段落');
   });
 
   it('keeps empty-text accompaniment lines', () => {

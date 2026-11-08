@@ -103,7 +103,7 @@ export function parseLrc(input: string): LrcParseResult {
     if (timestamps.length === 0) {
       const tagMatch = TAG_PATTERN.exec(row);
       if (tagMatch) {
-        tags.push({ key: tagMatch[1].toLowerCase(), value: tagMatch[2].trim() });
+        tags.push({ key: tagMatch[1]!.toLowerCase(), value: tagMatch[2]!.trim() });
         return;
       }
       errors.push(`第 ${rowIndex + 1} 行无法识别：${rawRow}`);
@@ -189,7 +189,7 @@ export function parseTimestampedLyrics(input: string): LrcLine[] {
       fractionRaw === '' ? 0 : Number(fractionRaw.padEnd(3, '0').slice(0, 3));
     lines.push({
       timeMs: Number(match[1]) * 60000 + seconds * 1000 + fractionMs,
-      text: match[4].trim(),
+      text: match[4]!.trim(),
     });
   });
   return lines;

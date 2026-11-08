@@ -126,11 +126,11 @@ describe('batchPriceByMargin', () => {
     ]);
     expect(rows).toHaveLength(2);
     expect(rows[0]).toMatchObject({ index: 1, cost: 80, margin: 0.2 });
-    expect(rows[0].price).toBeCloseTo(100, 6);
-    expect(rows[0].grossProfit).toBeCloseTo(20, 6);
-    expect(rows[1].index).toBe(2);
-    expect(rows[1].price).toBeCloseTo(100, 6);
-    expect(rows[1].grossProfit).toBeCloseTo(50, 6);
+    expect(rows[0]!.price).toBeCloseTo(100, 6);
+    expect(rows[0]!.grossProfit).toBeCloseTo(20, 6);
+    expect(rows[1]!.index).toBe(2);
+    expect(rows[1]!.price).toBeCloseTo(100, 6);
+    expect(rows[1]!.grossProfit).toBeCloseTo(50, 6);
   });
 
   it('propagates validation errors', () => {
@@ -158,11 +158,11 @@ describe('breakEvenDiscounts', () => {
       profit: 40,
       breaksEven: true,
     });
-    expect(results[1].discountedPrice).toBeCloseTo(80, 6);
-    expect(results[1].breaksEven).toBe(true);
+    expect(results[1]!.discountedPrice).toBeCloseTo(80, 6);
+    expect(results[1]!.breaksEven).toBe(true);
     expect(results[2]).toMatchObject({ discountedPrice: 60, profit: 0, breaksEven: true });
-    expect(results[3].breaksEven).toBe(false);
-    expect(results[3].profit).toBeCloseTo(-10, 6);
+    expect(results[3]!.breaksEven).toBe(false);
+    expect(results[3]!.profit).toBeCloseTo(-10, 6);
   });
 
   it('rejects invalid list price, cost and discount rates', () => {

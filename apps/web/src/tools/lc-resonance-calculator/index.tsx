@@ -200,11 +200,11 @@ const LcResonanceCalculator: React.FC<ToolComponentProps> = () => {
               <>
                 <div className={styles.statCard}>
                   <div className={styles.statLabel}>谐振点感抗 Xl</div>
-                  <div className={styles.statValue mono}>{resonanceCheck.xl.toPrecision(5)} Ω</div>
+                  <div className={`${styles.statValue} ${styles.mono}`}>{resonanceCheck.xl.toPrecision(5)} Ω</div>
                 </div>
                 <div className={styles.statCard}>
                   <div className={styles.statLabel}>谐振点容抗 Xc</div>
-                  <div className={styles.statValue mono}>{resonanceCheck.xc.toPrecision(5)} Ω</div>
+                  <div className={`${styles.statValue} ${styles.mono}`}>{resonanceCheck.xc.toPrecision(5)} Ω</div>
                   <div className={styles.hint}>
                     <Tag color="green">Xl ≈ Xc，净电抗为 0</Tag>
                   </div>

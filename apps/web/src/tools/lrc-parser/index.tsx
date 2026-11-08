@@ -44,7 +44,7 @@ const LrcParser: React.FC<ToolComponentProps> = ({ defaultInput }) => {
       const lines = parseTimestampedLyrics(plainInput);
       const tags: LrcTag[] = TAG_KEYS.filter((key) => tagValues[key]?.trim()).map((key) => ({
         key,
-        value: tagValues[key].trim(),
+        value: tagValues[key]!.trim(),
       }));
       return { lines, output: serializeLrc(lines, { tags }) };
     } catch (error) {

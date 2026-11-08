@@ -127,9 +127,10 @@ const PricingMarginCalculator: React.FC<ToolComponentProps> = () => {
   }, [listPrice, discountCost, discountText]);
 
   const copyCsv = async () => {
-    if (!('rows' in batchRows)) return;
+    if (!('rows' in batchRows) || !batchRows.rows) return;
+    const rows = batchRows.rows;
     try {
-      await navigator.clipboard.writeText(batchRowsToCsv(batchRows.rows));
+      await navigator.clipboard.writeText(batchRowsToCsv(rows));
       message.success('CSV 已复制到剪贴板');
     } catch {
       message.error('复制失败，请手动选择表格结果复制');
@@ -338,20 +339,20 @@ const PricingMarginCalculator: React.FC<ToolComponentProps> = () => {
                     <div className={styles.statGrid}>
                       <div className={styles.statCard}>
                         <div className={styles.statLabel}>成本价</div>
-                        <div className={`${styles.statValue} mono`}>
+                        <div className={`${styles.statValue} ${styles.mono}`}>
                           {moneyFormatter(snapshot.cost)}
                         </div>
                       </div>
                       <div className={`${styles.statCard} ${styles.highlight}`}>
                         <div className={styles.statLabel}>售价</div>
-                        <div className={`${styles.statValue} mono`}>
+                        <div className={`${styles.statValue} ${styles.mono}`}>
                           {moneyFormatter(snapshot.price)}
                         </div>
                       </div>
                       <div className={styles.statCard}>
                         <div className={styles.statLabel}>毛利额</div>
                         <div
-                          className={`${styles.statValue} mono ${
+                          className={`${styles.statValue} ${styles.mono} ${
                             snapshot.grossProfit < 0 ? styles.danger : ''
                           }`}
                         >
@@ -360,7 +361,7 @@ const PricingMarginCalculator: React.FC<ToolComponentProps> = () => {
                       </div>
                       <div className={styles.statCard}>
                         <div className={styles.statLabel}>毛利率 / 加价率</div>
-                        <div className={`${styles.statValue} mono`}>
+                        <div className={`${styles.statValue} ${styles.mono}`}>
                           {percentFormatter(snapshot.margin)}
                         </div>
                         <div className={styles.hint}>

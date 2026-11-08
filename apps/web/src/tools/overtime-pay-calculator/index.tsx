@@ -120,17 +120,17 @@ const OvertimePayCalculator: React.FC<ToolComponentProps> = () => {
             <div className={styles.fieldGrid} style={{ marginBottom: 16 }}>
               <div className={styles.statCard}>
                 <div className={styles.statLabel}>折算日工资</div>
-                <div className={styles.statValue mono}>{roundCurrency(result.dailyWage).toFixed(2)} 元</div>
+                <div className={`${styles.statValue} ${styles.mono}`}>{roundCurrency(result.dailyWage).toFixed(2)} 元</div>
                 <div className={styles.hint}>月工资 ÷ {MONTHLY_PAY_DAYS} 天</div>
               </div>
               <div className={styles.statCard}>
                 <div className={styles.statLabel}>折算小时工资</div>
-                <div className={styles.statValue mono}>{roundCurrency(result.hourlyWage).toFixed(2)} 元</div>
+                <div className={`${styles.statValue} ${styles.mono}`}>{roundCurrency(result.hourlyWage).toFixed(2)} 元</div>
                 <div className={styles.hint}>日工资 ÷ {WORK_HOURS_PER_DAY} 小时</div>
               </div>
               <div className={styles.statCard}>
                 <div className={styles.statLabel}>加班总时长</div>
-                <div className={styles.statValue mono}>{result.totalHours} 小时</div>
+                <div className={`${styles.statValue} ${styles.mono}`}>{result.totalHours} 小时</div>
                 <div className={styles.hint}>三类加班合计</div>
               </div>
             </div>
@@ -146,17 +146,17 @@ const OvertimePayCalculator: React.FC<ToolComponentProps> = () => {
             <div className={styles.statGrid} style={{ marginTop: 16 }}>
               <div className={styles.statCard}>
                 <div className={styles.statLabel}>加班费合计</div>
-                <div className={styles.statValue mono}>
+                <div className={`${styles.statValue} ${styles.mono}`}>
                   {roundCurrency(result.totalOvertimePay).toFixed(2)} 元
                 </div>
               </div>
               <div className={`${styles.statCard} ${styles.highlight}`}>
                 <div className={styles.statLabel}>当月应发总额（基数 + 加班费）</div>
-                <div className={styles.statValue mono}>{roundCurrency(result.grossPay).toFixed(2)} 元</div>
+                <div className={`${styles.statValue} ${styles.mono}`}>{roundCurrency(result.grossPay).toFixed(2)} 元</div>
               </div>
               <div className={styles.statCard}>
                 <div className={styles.statLabel}>加班费占基数比例</div>
-                <div className={styles.statValue mono}>
+                <div className={`${styles.statValue} ${styles.mono}`}>
                   {result.monthlyBase > 0
                     ? `${((result.totalOvertimePay / result.monthlyBase) * 100).toFixed(2)}%`
                     : '—'}

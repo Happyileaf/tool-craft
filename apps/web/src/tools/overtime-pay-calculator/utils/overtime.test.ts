@@ -36,9 +36,9 @@ describe('calculateOvertimePay', () => {
 
     expect(result.breakdown).toHaveLength(3);
     expect(result.breakdown[0]).toMatchObject({ type: 'workday', rate: 1.5, hours: 10 });
-    expect(result.breakdown[0].pay).toBeCloseTo(workdayPay, 6);
-    expect(result.breakdown[1].pay).toBeCloseTo(restPay, 6);
-    expect(result.breakdown[2].pay).toBeCloseTo(holidayPay, 6);
+    expect(result.breakdown[0]!.pay).toBeCloseTo(workdayPay, 6);
+    expect(result.breakdown[1]!.pay).toBeCloseTo(restPay, 6);
+    expect(result.breakdown[2]!.pay).toBeCloseTo(holidayPay, 6);
     expect(result.totalOvertimePay).toBeCloseTo(workdayPay + restPay + holidayPay, 6);
     expect(result.grossPay).toBeCloseTo(8000 + result.totalOvertimePay, 6);
     expect(result.totalHours).toBe(22);

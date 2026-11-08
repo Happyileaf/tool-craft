@@ -70,7 +70,7 @@ describe('calculateBac', () => {
   it('counts standard drinks at 14g each', () => {
     const result = calculateBac(baseInput);
     expect(result.totalStandardDrinks).toBeCloseTo(53.652 / 14, 6);
-    expect(result.details[0].standardDrinks).toBeCloseTo(39.45 / 14, 6);
+    expect(result.details[0]!.standardDrinks).toBeCloseTo(39.45 / 14, 6);
   });
 
   it('rejects invalid weight, elapsed time and r factor', () => {
