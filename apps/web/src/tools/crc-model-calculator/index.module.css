@@ -1,0 +1,102 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary, #666);
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--color-text-tertiary, #999);
+}
+
+.resultCard {
+  padding: 20px;
+  border-radius: 12px;
+  background: var(--color-fill-quaternary, #fafafa);
+  border: 1px solid var(--color-border-secondary, #f0f0f0);
+}
+
+.heroValue {
+  font-family: 'Geist Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--color-primary, #1677ff);
+  word-break: break-all;
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metaLabel {
+  font-size: 12px;
+  color: var(--color-text-tertiary, #999);
+}
+
+.metaValue {
+  font-family: 'Geist Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Geist Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 13px;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-border-secondary, #f0f0f0);
+  white-space: nowrap;
+}
+
+.table th {
+  color: var(--color-text-tertiary, #999);
+  font-weight: 600;
+}
+
+.table td.valueCell {
+  font-weight: 600;
+}
+
+.checkRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}

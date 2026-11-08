@@ -28856,6 +28856,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'crc-model-calculator',
+    name: 'CRC-8/16/32/64 多参数模型计算器（12 种标准预设 + check 自检）',
+    nameEn: 'Multi-Model CRC Calculator (CRC-8/16/32/64 with Custom Parameters)',
+    description:
+      '基于通用 BigInt CRC 引擎与 Rocksoft™ 参数模型，内置 CRC-8/MAXIM、CRC-16/MODBUS、CRC-16/CCITT、CRC-32/ISO-HDLC、CRC-32C、CRC-64/XZ 等 12 种标准预设，支持文本与十六进制输入、全模型同跑对比，并对 "123456789" check 常量做参数自检。',
+    descriptionEn:
+      'A generic BigInt CRC engine implementing the Rocksoft™ parameter model with 12 standard presets including CRC-8/MAXIM, CRC-16/MODBUS, CRC-16/CCITT, CRC-32/ISO-HDLC, CRC-32C and CRC-64/XZ. Accepts text or hex input, runs every model side by side, and self-checks each parameter set against the canonical "123456789" check constant.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/crc-model-calculator',
+    iconName: 'Hash',
+    tags: ['CRC', 'CRC32', 'CRC16', 'Modbus', '校验和', '数据链路', '嵌入式', '协议'],
+    tagsEn: ['CRC', 'CRC32', 'CRC16', 'CRC64', 'Modbus', 'Checksum', 'Embedded', 'Protocol'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '123456789',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具实现参数化的通用循环冗余校验（CRC）引擎，width、poly、init、refIn、refOut、xorOut 六个参数完全对齐 catalogue/crc.com 的 Rocksoft™ 模型，借助 BigInt 精确覆盖 1–64 位宽。内置 12 个工业界常用标准模型，每个模型都附带 "123456789" 标准校验串的 check 常量，可一键验证参数实现是否正确。',
+        coreFeatures: [
+          '通用引擎：任意 width（1–64）、poly、init、refIn/refOut、xorOut 组合，BigInt 运算无精度损失',
+          '12 个标准预设：覆盖 CRC-8/MAXIM、CRC-16/ARC、MODBUS、CCITT-FALSE、XMODEM、GENIBUS、CRC-32/HDLC、BZIP2、CRC-32C、CRC-64/XZ 等',
+          '双输入模式：UTF-8 文本直接计算，或粘贴十六进制字节（兼容空格、逗号、0x 前缀）',
+          '全模型对比：同一输入同屏输出 12 个模型的 CRC 值，便于协议选型与交叉验证',
+          '参数自检：用标准 check 常量验证当前模型，正确时显示绿色通过标签',
+        ],
+        howToUse: [
+          '在下拉框选择目标 CRC 模型，下方即时展示 width/poly/init/refIn/refOut/xorOut 参数',
+          '选择 UTF-8 文本或十六进制字节输入模式并填入数据，结果区实时显示 CRC 十六进制值',
+          '需要核对协议帧时，把报文字节以十六进制粘贴，并参考结果区关于 Modbus 小端字节序的提示',
+          '在「全部模型对比」表中横向比较不同 CRC 的输出，或点击复制按钮取用单个结果',
+        ],
+        useCases: [
+          '嵌入式通信（UART / CAN / Modbus RTU）帧校验的开发与报文抓包核对',
+          '固件、Bootloader 与存储镜像的 CRC-32 / CRC-64 完整性校验对齐',
+          '自定义 CRC 参数（如私有多项式）的可行性验证与 check 向量生成',
+          '教学场景下演示反射算法、初始值与异或输出对 CRC 结果的影响',
+        ],
+        privacyNote:
+          '所有数据与 CRC 运算均在浏览器本地通过 BigInt 完成，不发起任何网络请求，报文内容不会被上传或留存。',
+        faqs: [
+          {
+            question: '它和站内已有的 crc32-checksum、crc16-checksum 有什么区别？',
+            answer:
+              '那两个工具是固定单模型（CRC-32/ISO-HDLC 与 CRC-16/CCITT）的快速校验器；本工具是参数化通用引擎，覆盖 8/16/32/64 四种位宽、12 个标准预设，支持反射方向切换、全模型同跑与 check 自检，面向协议开发与多模型选型场景。',
+          },
+          {
+            question: '为什么 Modbus 算出的 16 进制值和抓包字节顺序相反？',
+            answer:
+              'CRC-16/MODBUS 是 reflected 算法，工具输出的是寄存器中的整数十六进制值；而 Modbus RTU 线上规定校验码按小端（低字节在前）发送。例如寄存器值 0x2140 在线上的字节序列是 40 21，两者描述的是同一个 CRC。',
+          },
+          {
+            question: 'check 自检的原理是什么？',
+            answer:
+              'CRC 标准约定用 ASCII 字符串 "123456789" 作为统一校验输入，每个参数模型都有唯一对应的 check 常量（如 CRC-32/HDLC 为 0xCBF43926）。工具用当前参数实时计算该串并与内置 check 比对，一致即说明引擎与参数配置正确。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A parameterized, generic cyclic redundancy check engine whose width, poly, init, refIn, refOut and xorOut follow the catalogue/crc.com Rocksoft™ model exactly. BigInt arithmetic covers every width from 1 to 64 without precision loss. Twelve industry-standard presets ship with canonical "123456789" check constants for one-click implementation verification.',
+        coreFeatures: [
+          'Generic engine: any width (1-64), poly, init, refIn/refOut and xorOut combination with exact BigInt math',
+          '12 standard presets: CRC-8/MAXIM, CRC-16/ARC, MODBUS, CCITT-FALSE, XMODEM, GENIBUS, CRC-32/HDLC, BZIP2, CRC-32C, CRC-64/XZ and more',
+          'Dual input modes: compute directly from UTF-8 text or paste hex bytes (spaces, commas and 0x prefixes accepted)',
+          'Full-model comparison: all 12 CRCs for the same input on one screen for protocol selection and cross-checking',
+          'Self-check: validates the active model against the standard check constant with a green pass indicator',
+        ],
+        howToUse: [
+          'Pick the target CRC model from the dropdown; the width/poly/init/refIn/refOut/xorOut parameters appear immediately',
+          'Choose UTF-8 text or hex-byte input and enter the data; the CRC hex value updates live in the result panel',
+          'For protocol frames, paste packet bytes as hex and note the Modbus little-endian byte-order hint',
+          'Compare outputs across models in the comparison table, or copy a single result with the copy button',
+        ],
+        useCases: [
+          'Developing and verifying frame checks for embedded links (UART / CAN / Modbus RTU) against captured packets',
+          'Aligning CRC-32 / CRC-64 integrity checks for firmware, bootloaders and storage images',
+          'Validating custom CRC parameters such as private polynomials and generating check vectors',
+          'Teaching reflected algorithms and how initial values and output XOR shape the CRC result',
+        ],
+        privacyNote:
+          'All data and CRC operations run locally in your browser via BigInt. No network requests are made and packet content is never uploaded or retained.',
+        faqs: [
+          {
+            question: 'How does this differ from the existing crc32-checksum and crc16-checksum tools?',
+            answer:
+              'Those are fixed single-model quick checkers (CRC-32/ISO-HDLC and CRC-16/CCITT). This is a parameterized generic engine spanning 8/16/32/64-bit widths with 12 presets, configurable reflection, side-by-side model comparison and check self-verification, aimed at protocol development and model selection.',
+          },
+          {
+            question: 'Why does the Modbus hex value look byte-reversed compared with captured traffic?',
+            answer:
+              'CRC-16/MODBUS is a reflected algorithm, and the tool shows the integer register value in hex. Modbus RTU transmits the check field little-endian (low byte first): register 0x2140 appears on the wire as bytes 40 21. Both describe the same CRC.',
+          },
+          {
+            question: 'How does the check self-test work?',
+            answer:
+              'CRC standards define the ASCII string "123456789" as the common check input, and every parameter model has a unique check constant (e.g. 0xCBF43926 for CRC-32/HDLC). The tool computes that string with the active parameters and compares it against the built-in check; a match confirms both engine and configuration.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
