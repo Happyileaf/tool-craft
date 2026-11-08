@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261108140204 | 调查抽样样本量与误差范围计算器（Cochran 公式 + 有限总体校正 FPC，正反双向） | Web Tool | External Reference | `survey-sample-size-calculator` / [PR #201](https://github.com/Happyileaf/tool-craft/pull/201) | 2026-11-08 | [详情](./idea-details/20261108140204.md) |
+| 20261107200151 | CRC-8 / CRC-16 / CRC-32 / CRC-64 多参数模型计算器 | Web Tool | Existing Gap | `crc-model-calculator` / [PR #201](https://github.com/Happyileaf/tool-craft/pull/201) | 2026-11-08 | [详情](./idea-details/20261107200151.md) |
+| 20261107200150 | Base-N 任意进制整数互转器（radix 2–36 与自定义字母表） | Web Tool | Existing Gap | `base-n-radix-converter` / [PR #201](https://github.com/Happyileaf/tool-craft/pull/201) | 2026-11-08 | [详情](./idea-details/20261107200150.md) |
+| 20261107140227 | 三相交流电路功率 / 功率因数 / 扭矩换算计算器 | Web Tool | Existing Gap | `three-phase-power-calculator` / [PR #201](https://github.com/Happyileaf/tool-craft/pull/201) | 2026-11-08 | [详情](./idea-details/20261107140227.md) |
+| 20261107080339 | 音乐音高与频率互算器（音符 ↔ Hz、半音音程与调音基准） | Web Tool | Existing Gap | `music-pitch-converter` / [PR #201](https://github.com/Happyileaf/tool-craft/pull/201) | 2026-11-08 | [详情](./idea-details/20261107080339.md) |
 | 20261106160211 | 电阻串并联等效电阻与公差累积计算器 | Web Tool | Exploration | `resistor-network-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106160211.md) |
 | 20261106060117 | GPA 平均绩点计算器（百分制/4.0/4.3 多算法与学分加权） | Web Tool | Exploration | `gpa-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060117.md) |
 | 20261106060115 | 多边形面积与周长计算器（鞋带公式，含 GeoJSON 粘贴） | Web Tool | Exploration | `polygon-area-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060115.md) |
