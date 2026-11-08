@@ -28545,6 +28545,109 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'pricing-margin-calculator',
+    name: '毛利率 / 加价率 / 售价双向定价计算器',
+    nameEn: 'Gross Margin & Markup Pricing Calculator',
+    description:
+      '严格区分毛利率（分母为售价）与加价率 markup（分母为成本），在成本、售价、毛利率、加价率、毛利额之间双向求解，支持批量定价 CSV、折扣保本分析与口径互转对照。',
+    descriptionEn:
+      'Bidirectional pricing calculator that keeps gross margin (divided by price) and markup (divided by cost) strictly separate, with batch CSV pricing, discount break-even analysis and a margin-to-markup reference table.',
+    category: ToolCategoryEnum.FINANCE,
+    path: '/tools/pricing-margin-calculator',
+    iconName: 'Percent',
+    tags: ['毛利率', '加价率', '定价', '售价', '保本'],
+    tagsEn: ['Gross Margin', 'Markup', 'Pricing', 'Break-even', 'Retail'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '毛利率 / 加价率 / 售价双向定价计算器面向零售、电商与小微商户的定价场景，严格区分两个极易混淆的口径：毛利率 =（售价 − 成本）÷ 售价，加价率 markup =（售价 − 成本）÷ 成本。工具在成本价、售价、毛利率、加价率与毛利额之间做任意已知量求未知量的双向换算，并提供批量定价表导出、多档折扣保本分析与毛利率 / 加价率互转对照表，全部计算在浏览器本地完成。',
+        coreFeatures: [
+          '单笔双向求解：成本 + 售价核算毛利率与加价率，或由目标毛利率 / 加价率反推售价、由售价与毛利率反推最高成本',
+          '口径严格区分：毛利率分母为售价、加价率分母为成本，结果同时展示两个数值避免混用',
+          '批量定价 CSV：粘贴多行「成本,目标毛利率」即可批量生成售价与毛利额，一键复制 CSV',
+          '折扣保本分析：输入标价、成本与多档折扣率，逐档判断折后价是否保本并展示折后利润',
+          '互转对照表：内置常见毛利率档位与等价加价率的对照，附换算公式说明',
+        ],
+        howToUse: [
+          '在「单笔双向求解」中选择计算模式，填写已知的成本、售价、毛利率或加价率',
+          '需要给一批商品统一定价时，切换到「批量定价（CSV）」，每行输入成本与目标毛利率百分比',
+          '评估促销活动时，在「折扣保本分析」中填写标价、成本与待评估的让利档位',
+          '不确定毛利率与加价率如何换算时，查看「互转对照」标签页的对照表与公式',
+        ],
+        useCases: [
+          '电商卖家按目标毛利率快速反推商品标价与促销底价',
+          '采购与财务核算多 SKU 批量定价并导出表格',
+          '门店评估打折活动在各折扣档位下是否亏本',
+          '统一团队对毛利率与加价率两个口径的理解，避免报价错误',
+        ],
+        privacyNote:
+          '所有成本、售价与折扣数据仅在浏览器内存中参与本地计算，不发起任何网络请求、不写入持久化存储，刷新页面即清除。',
+        faqs: [
+          {
+            question: '毛利率和加价率到底有什么区别？',
+            answer:
+              '毛利率的分母是售价：毛利率 =（售价 − 成本）÷ 售价；加价率 markup 的分母是成本：加价率 =（售价 − 成本）÷ 成本。以成本 80、售价 100 为例，毛利额都是 20，但毛利率为 20%，加价率为 25%。同一价位下加价率在数值上始终大于毛利率。',
+          },
+          {
+            question: '为什么目标毛利率不能填 100% 或更高？',
+            answer:
+              '由售价公式 P = C ÷（1 − 毛利率）可知，毛利率趋近 100% 时售价趋于无穷大，100% 及以上在成本为正的情况下没有有限售价解，因此工具要求毛利率严格小于 100%；毛利率允许填负值，用于亏本引流等定价场景。',
+          },
+          {
+            question: '折扣保本分析里的「折扣」是打几折的意思吗？',
+            answer:
+              '这里的折扣率指让利幅度（off 比例）。例如输入 20 表示让利 20%，即按标价的 80% 出售（打 8 折）。保本临界让利幅度 = 1 − 成本 ÷ 标价，超过该档位即判定为亏本。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Gross Margin & Markup Pricing Calculator serves retail, e-commerce and small-merchant pricing while keeping two easily confused metrics strictly separate: gross margin = (price − cost) ÷ price, and markup = (price − cost) ÷ cost. It solves any unknown from cost, price, margin, markup or gross profit, and adds batch CSV pricing, multi-tier discount break-even analysis and a margin-to-markup reference table, all computed locally in the browser.',
+        coreFeatures: [
+          'Bidirectional single-item solving: derive margin and markup from cost and price, back-solve price from a target margin or markup, or find the maximum acceptable cost from price and margin',
+          'Strict metric separation: margin is divided by price while markup is divided by cost, with both values shown together',
+          'Batch CSV pricing: paste multiple "cost, target margin" lines to generate prices and gross profits, then copy the CSV in one click',
+          'Discount break-even analysis: enter list price, cost and several discount tiers to see whether each discounted price stays above cost',
+          'Conversion reference: common margin levels mapped to equivalent markup with the conversion formulas explained',
+        ],
+        howToUse: [
+          'Pick a mode in the single-item tab and fill the known cost, price, margin or markup',
+          'For mass SKU pricing, switch to the batch CSV tab and enter one cost plus target margin percentage per line',
+          'When planning promotions, use the discount tab with list price, cost and candidate discount tiers',
+          'Check the reference tab whenever you need to convert between margin and markup definitions',
+        ],
+        useCases: [
+          'E-commerce sellers back-solving list prices and promotion floors from target margins',
+          'Procurement and finance producing multi-SKU pricing sheets for export',
+          'Stores checking whether planned discount tiers would sell below cost',
+          'Aligning teams on the margin versus markup terminology to avoid quoting errors',
+        ],
+        privacyNote:
+          'All cost, price and discount figures stay in browser memory for local calculation only. No network requests or persistent storage are involved; data is cleared on refresh.',
+        faqs: [
+          {
+            question: 'What exactly is the difference between gross margin and markup?',
+            answer:
+              'Gross margin divides gross profit by price: (price − cost) ÷ price. Markup divides the same gross profit by cost: (price − cost) ÷ cost. With cost 80 and price 100, gross profit is 20 in both cases, but margin is 20% while markup is 25%. For the same price point, markup is always numerically larger than margin.',
+          },
+          {
+            question: 'Why can the target margin not be 100% or higher?',
+            answer:
+              'From P = C ÷ (1 − margin), as margin approaches 100% the required price tends toward infinity, so no finite price exists at or above 100% when cost is positive. The tool therefore requires margin to be strictly below 100%; negative margins are allowed for loss-leader pricing.',
+          },
+          {
+            question: 'Does the discount in the break-even tab mean the "X折" convention?',
+            answer:
+              'It represents the percentage knocked off (off rate). Entering 20 means a 20% reduction, i.e. selling at 80% of list price. The break-even threshold is 1 − cost ÷ list price; any tier beyond it is flagged as a loss.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

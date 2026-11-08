@@ -304,4 +304,5 @@ export const toolLoaders: Record<
   'bac-calculator': () => import('./bac-calculator'),
   'lc-resonance-calculator': () => import('./lc-resonance-calculator'),
   'overtime-pay-calculator': () => import('./overtime-pay-calculator'),
+  'pricing-margin-calculator': () => import('./pricing-margin-calculator'),
 };
