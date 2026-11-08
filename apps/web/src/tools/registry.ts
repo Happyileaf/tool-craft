@@ -29930,6 +29930,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'cn-income-tax-calculator',
+    name: '中国个人所得税计算器（累计预扣预缴 / 年度汇算 / 年终奖单独计税）',
+    nameEn: 'China Individual Income Tax Calculator',
+    description:
+      '按现行居民个人综合所得 7 级超额累进税率，计算工资薪金的按月累计预扣预缴税额、12 个月明细与税后到手，并支持工资/劳务报酬/稿酬/特许权使用费四项收入的年度汇算清缴（自动按 80%、56% 口径换算收入额）与全年一次性奖金单独计税，给出补税/退税结论，纯本地计算。',
+    descriptionEn:
+      'Compute China individual income tax for residents: month-by-month cumulative withholding on salaries with after-tax pay, the annual comprehensive-income reconciliation across salary, labor service, author remuneration and royalties (with 80%/56% inclusion rules), and separate annual-bonus taxation using the monthly bracket table, including top-up or refund conclusions. Fully local calculation.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/cn-income-tax-calculator',
+    iconName: 'CalculatorOutlined',
+    tags: ['个税', '个人所得税', '累计预扣', '汇算清缴', '年终奖', '税后工资', '财务'],
+    tagsEn: ['IIT', 'Income Tax', 'China', 'Withholding', 'Annual Reconciliation', 'Bonus', 'Finance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '中国个人所得税计算器在浏览器本地按现行税制完成三类计算。其一，工资薪金采用累计预扣预缴法：逐月累计收入、减除费用（每月 5000 元）、三险一金与专项附加扣除，对累计应纳税所得额套用年度 7 级超额累进税率表，再减去已预扣税额得到当月预扣税与到手工资。其二，年度汇算清缴把工资薪金、劳务报酬、稿酬、特许权使用费四项综合所得按法定口径换算为收入额（劳务与特许权按 80%、稿酬按 80% 再 70% 即 56% 计入），扣除 6 万元基本减除费用、社保、专项附加及其他扣除后算年度应纳税额，并与已预扣税额比较得出应补或应退。其三，全年一次性奖金可按除以 12 定档的月度税率表单独计税，方便与并入综合所得方案择优。',
+        coreFeatures: [
+          '工资累计预扣预缴：输出 12 个月累计收入/扣除/应税额、税率、当月预扣税与税后到手',
+          '专项附加扣除勾选即叠加（子女教育、房贷利息、住房租金、赡养老人等常见项）',
+          '年度汇算：四项收入自动按 80%/56% 口径换算，直接给出应补税或应退税金额',
+          '年终奖单独计税：奖金 ÷ 12 定档、月度税率表速算扣除，展示适用税率与税后奖金',
+          '内置年度 7 级税率表并高亮命中档位，纯函数核心配套 12 个固定数值单元测试',
+        ],
+        howToUse: [
+          '在「工资月度预扣」页填写税前月薪、三险一金，并勾选符合条件的专项附加扣除',
+          '查看右侧 12 个月明细表，关注跨档月份当月预扣税的阶梯式上升',
+          '切换到「年度汇算清缴」页，填写四项收入与全年扣除，已预扣税额自动带入月度结果',
+          '在同页录入年终奖，读取单独计税方案的税额，并可手动对比并入综合所得的差异',
+        ],
+        useCases: [
+          '谈 offer 或调薪时估算税前工资对应的真实到手收入',
+          '年中入职、离职或奖金发放后，预判累计预扣法下各月税负变化',
+          '汇算清缴季核算补退税，核对工资外劳务、稿酬收入的影响',
+          '比较年终奖「单独计税」与「并入综合所得」两种口径的税负择优',
+        ],
+        privacyNote:
+          '所有收入与扣除数据仅在浏览器本地参与计算，不发起网络请求、不被采集或存储。',
+        faqs: [
+          {
+            question: '为什么年中某个月的预扣税突然变多？',
+            answer:
+              '累计预扣法按「累计应纳税所得额」套用年度税率表。随着累计收入增加，累计应税额会在某个月跨入更高税率档，当月预扣税额 = 累计应纳税额 − 已预扣税额，因此跨档月份会出现税额跳升，这是税制本身的设计，并非计算错误。',
+          },
+          {
+            question: '劳务报酬、稿酬为什么不是全额计入？',
+            answer:
+              '综合所得汇算时，工资薪金按全额计入收入额；劳务报酬与特许权使用费按收入的 80% 计入；稿酬在 80% 的基础上再减按 70% 计入，即实际按 56% 计入。工具已自动套用这些法定换算比例。',
+          },
+          {
+            question: '年终奖单独计税和并入综合所得哪个更省税？',
+            answer:
+              '没有统一答案，取决于全年综合所得水平与奖金金额。高收入年份单独计税常可利用月度低税率档降低税负；综合所得较低（扣除后应税额为负或处于低档）时并入计税可能更优。建议用本工具分别试算两种口径后选择税额更低者，注意单独计税政策的适用期限以最新政策为准。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local calculator for China individual income tax under the current resident comprehensive-income regime. It handles three tasks: cumulative monthly withholding on salary (year-to-date income minus the 5,000 monthly basic deduction, social insurance and special deductions, taxed on the annual seven-bracket table with prior withholding credited); annual reconciliation across salary, labor service, author remuneration and royalties with the statutory 80%/56% inclusion rules, comparing final tax with prepaid amounts to report a top-up or refund; and separate taxation of the annual one-time bonus via the monthly bracket table after dividing by twelve.',
+        coreFeatures: [
+          'Cumulative salary withholding with a 12-month table of YTD income, deductions, taxable amount, rate, current tax and net pay',
+          'Checklist-style special additional deductions that stack automatically',
+          'Annual reconciliation with automatic 80%/56% inclusion and explicit top-up/refund verdict',
+          'Separate bonus taxation showing the bracket located via bonus/12, quick deduction and after-tax bonus',
+          'Built-in seven-bracket annual table with active-row highlight; pure-function core with 12 fixed-value unit tests',
+        ],
+        howToUse: [
+          'On the salary tab enter monthly gross pay and social insurance, then tick applicable special deductions',
+          'Review the 12-month table and watch the step change when cumulative taxable income crosses a bracket',
+          'Open the annual reconciliation tab, fill the four income types and yearly deductions; prepaid tax is carried over automatically',
+          'Enter a bonus to read its separate-taxation result and compare manually with the merged approach',
+        ],
+        useCases: [
+          'Estimating real take-home pay when negotiating offers or raises',
+          'Predicting mid-year withholding changes after job changes or bonus payouts',
+          'Checking top-up/refund during reconciliation season, including side income',
+          'Choosing between separate and merged bonus taxation',
+        ],
+        privacyNote:
+          'All income and deduction figures stay in your browser for local calculation only; nothing is uploaded, collected or stored.',
+        faqs: [
+          {
+            question: 'Why does withholding jump in a certain month?',
+            answer:
+              'Cumulative withholding applies the annual bracket table to year-to-date taxable income. When the cumulative amount crosses into a higher bracket, current-month tax (cumulative tax minus already-withheld tax) rises sharply; this is by design rather than an error.',
+          },
+          {
+            question: 'Why are labor service and author fees not counted at face value?',
+            answer:
+              'For comprehensive-income reconciliation, salary counts at 100%, labor service and royalties at 80%, and author remuneration at 80% times 70% (effectively 56%). The tool applies these statutory inclusion ratios automatically.',
+          },
+          {
+            question: 'Separate bonus tax or merged taxation — which is cheaper?',
+            answer:
+              'It depends on total comprehensive income and bonus size. Separate taxation often helps high earners by accessing low monthly brackets, while merging can win when annual taxable income is low. Run both scenarios here and pick the lower tax, noting the eligibility window of the separate-bonus policy follows the latest official rules.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
