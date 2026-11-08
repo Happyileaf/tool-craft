@@ -29722,6 +29722,526 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'css-transform-matrix-calculator',
+    name: 'CSS Transform 矩阵计算器（2D/3D 函数链合成与 unmatrix 分解）',
+    nameEn: 'CSS Transform Matrix Calculator',
+    description:
+      '把 translate / scale / rotate / skew 等 CSS 变换函数按书写顺序合成为 4×4 列主序矩阵，输出 matrix() 与 matrix3d() 字符串并实时预览，支持反向解析 matrix/matrix3d 并分解（unmatrix）为平移、缩放、旋转、斜切及任意点变换，纯函数零依赖、纯本地运算。',
+    descriptionEn:
+      'Compose CSS transform functions (translate, scale, rotate, skew) in document order into a column-major 4×4 matrix, emit matrix()/matrix3d() strings with a live preview, and parse existing matrix/matrix3d values back into translation, scale, rotation and skew components plus arbitrary point transforms. Pure functions, zero dependencies, fully local.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/css-transform-matrix-calculator',
+    iconName: 'BorderOuterOutlined',
+    tags: ['CSS', 'Transform', '矩阵', 'matrix3d', 'unmatrix', '动画', '前端'],
+    tagsEn: ['CSS', 'Transform', 'Matrix', 'matrix3d', 'unmatrix', 'Animation', 'Frontend'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'matrix(1.299, 0.75, -0.75, 1.299, 20, 10)',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS Transform 矩阵计算器在浏览器本地完成 CSS 变换与齐次坐标矩阵之间的双向换算。内部统一使用与 CSS matrix3d() 参数排列一致的 4×4 列主序矩阵（16 元素数组），把 translate、scale、rotate、rotateX/Y、skew 函数按 CSS 书写顺序做矩阵乘法合成，输出可直接粘贴的 matrix()/matrix3d() 字符串；也支持把已有 matrix()/matrix3d() 反向解析并通过 unmatrix 闭式分解还原为平移、缩放、旋转（2D 含 skewX）分量，并计算任意点经过该变换后的坐标。',
+        coreFeatures: [
+          '变换函数链按 CSS 书写顺序合成，支持上移/下移调整顺序，顺序不同结果不同可直观对比',
+          '4×4 列主序矩阵网格展示，同步输出 2D matrix() 与 3D matrix3d() 两种 CSS 字符串并一键复制',
+          '反向解析 matrix()/matrix3d()，非法参数带字段位置报错，自动识别 2D/3D',
+          'unmatrix 分解：2D 还原平移/缩放/旋转/skewX，3D 提取 ZYX 欧拉角与三轴缩放',
+          '任意点变换坐标计算与网格背景实时预览，纯函数核心配套固定向量单元测试',
+        ],
+        howToUse: [
+          '在左侧「添加变换」下拉中选择 translate/scale/rotate 等函数，逐项填写数值（角度用度）',
+          '用上下箭头调整函数顺序，右侧矩阵网格与 matrix()/matrix3d() 输出会实时更新',
+          '在「矩阵分解」卡片输入一个点的 x/y 坐标，查看变换后的坐标，或直接观察预览方块',
+          '在右下方粘贴已有的 matrix() 或 matrix3d() 字符串，查看其分解分量并复制规范化结果',
+        ],
+        useCases: [
+          '排查多段 transform 组合后的真实效果，理解 CSS 变换从右到左作用于点的矩阵语义',
+          '设计动画关键帧时在函数写法与矩阵写法之间互转，或对比不同顺序的差异',
+          '阅读 DevTools 计算样式中的 matrix3d，还原出可读的平移/旋转/缩放参数',
+          '教学演示齐次坐标、列主序排列与 unmatrix 分解过程',
+        ],
+        privacyNote:
+          '所有矩阵运算均在浏览器本地完成，不发起任何网络请求，输入的变换参数不会被上传或留存。',
+        faqs: [
+          {
+            question: '为什么调整变换函数顺序后结果会变？',
+            answer:
+              '矩阵乘法不满足交换律。CSS 中 transform: A B C 对点的作用是 A·B·C·p，即最右侧函数最先作用于点。本工具严格按书写顺序左乘累积，因此上下移动函数会得到不同矩阵，这与浏览器行为一致。',
+          },
+          {
+            question: '什么时候无法输出 2D matrix()？',
+            answer:
+              '当函数链包含 rotateX/rotateY 或任何 Z 轴分量时，矩阵不再是仿射 2D 形式（第三行/第三列偏离单位阵），CSS 也无法用 6 参数 matrix() 表达，此时工具会提示改用 16 参数 matrix3d()。',
+          },
+          {
+            question: 'unmatrix 分解的角度为什么可能和我输入的不一样？',
+            answer:
+              '分解是从最终合成矩阵反解的，旋转角被归一化到主值区间，且缩放为负时旋转与缩放存在等价表示（如 scaleX(-1) 与 rotate(180deg) 的组合）。分解给出的是数学上等价的一组规范分量，不保证与原始输入逐字相同。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local, two-way workbench between CSS transform functions and homogeneous-coordinate matrices. It keeps a column-major 4×4 matrix (the same 16-value layout as CSS matrix3d()), multiplies translate/scale/rotate/rotateX-Y/skew functions in CSS document order, emits copy-ready matrix()/matrix3d() strings, parses existing matrix values back, and runs unmatrix decomposition into translation, scale, rotation (plus skewX in 2D) while computing arbitrary point transforms.',
+        coreFeatures: [
+          'Compose a transform function chain in CSS order; reorder with up/down controls to see the non-commutative effect',
+          'Column-major 4×4 matrix grid with both 2D matrix() and 3D matrix3d() CSS strings, one-click copy',
+          'Reverse-parse matrix()/matrix3d() with field-positioned errors and automatic 2D/3D detection',
+          'unmatrix: 2D recovers translation/scale/rotation/skewX; 3D extracts ZYX Euler angles and per-axis scale',
+          'Arbitrary point transform plus a live grid preview; the pure-function core ships with fixed-vector unit tests',
+        ],
+        howToUse: [
+          'Pick translate/scale/rotate and other functions from the add dropdown, then fill values (angles in degrees)',
+          'Reorder functions with the arrow buttons; the matrix grid and matrix()/matrix3d() output update live',
+          'Enter a point x/y in the decomposition card to see its transformed coordinate, or watch the preview square',
+          'Paste an existing matrix()/matrix3d() string into the lower-right card to inspect components and copy normalized output',
+        ],
+        useCases: [
+          'Debugging the real effect of combined transforms and understanding right-to-left point application',
+          'Converting between function and matrix notation when designing animation keyframes',
+          'Turning DevTools computed matrix3d values back into readable translation/rotation/scale parameters',
+          'Teaching homogeneous coordinates, column-major layout and unmatrix decomposition',
+        ],
+        privacyNote:
+          'All matrix math runs locally in your browser. No network requests are made and transform parameters are never uploaded or retained.',
+        faqs: [
+          {
+            question: 'Why does reordering functions change the result?',
+            answer:
+              'Matrix multiplication is not commutative. CSS transform: A B C applies to a point as A·B·C·p, so the rightmost function acts first. The tool accumulates left multiplications in document order, matching browser behavior exactly.',
+          },
+          {
+            question: 'When is 2D matrix() unavailable?',
+            answer:
+              'When the chain contains rotateX/rotateY or any Z-axis component, the third row/column leave the identity form, so the six-parameter 2D matrix() cannot express it (and neither can CSS); the tool then directs you to the 16-parameter matrix3d().',
+          },
+          {
+            question: 'Why may the decomposed angle differ from my input?',
+            answer:
+              'Decomposition works backward from the composed matrix: angles are normalized to their principal range and negative scale has equivalent representations with rotation. The result is a mathematically equivalent canonical set, not necessarily a literal reconstruction of the original functions.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'multi-timezone-meeting-planner',
+    name: '多时区会议规划器（跨时区工作时间交集、DST 自适应热力图）',
+    nameEn: 'Multi-Timezone Meeting Planner',
+    description:
+      '添加多个 IANA 时区并设置各自工作时间窗，基于浏览器原生 Intl 时区能力自动处理夏令时，生成 24 小时可开会时段热力网格，并计算未来 7 天全员重叠的公共会议时段，按小时合并为各时区墙上时间区间，纯本地计算、无外部时区数据库依赖。',
+    descriptionEn:
+      'Add multiple IANA time zones with per-zone working-hour windows and get a 24-hour heatmap of meeting availability plus the next 7 days of common overlap ranges. Built on the native Intl timezone engine so DST transitions are handled automatically, with adjacent slots merged into per-zone wall-time ranges. Fully local, no external timezone database.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/multi-timezone-meeting-planner',
+    iconName: 'GlobalOutlined',
+    tags: ['时区', '会议', 'DST', '夏令时', 'IANA', '跨时区协作', '排班'],
+    tagsEn: ['Timezone', 'Meeting', 'DST', 'IANA', 'Scheduling', 'Remote Work'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '多时区会议规划器帮助分布式团队在不同城市的工作时间之间找交集。工具以 UTC 毫秒时间戳为唯一真源，时区仅负责展示换算，底层调用浏览器内置的 Intl.DateTimeFormat（内置完整 IANA 时区与历史 DST 规则），因此无需打包任何外部时区数据库即可正确处理夏令时切换、半小时/四十五分钟偏移（如印度 +5:30）等情况。你可以为每个参会时区单独配置工作起止小时（支持跨午夜窗口），工具会渲染锚定时区一天 24 小时的热力网格，并列出未来 7 天全员同时处于工作窗内的合并时段。',
+        coreFeatures: [
+          '内置 14 个常用 IANA 时区，支持自定义各自工作时间窗（含跨午夜，如 22:00–06:00）',
+          '基于原生 Intl 的 DST 自适应换算，同一时区在夏令时/标准时切换日自动取不同偏移',
+          '24 小时热力网格：绿色为当地工作时间、蓝色为全员可开会格子，悬停显示 UTC 与当地时间',
+          '自动计算未来 7 天公共时段，相邻整点合并为连续区间并逐时区给出 HH:MM – HH:MM',
+          '纯函数核心（偏移、墙上时间、交集、合并）配套 17 个固定时间戳单元测试',
+        ],
+        howToUse: [
+          '在「参会人与工作时间窗」卡片通过下拉添加时区，用起/止数字框调整各地可参会的本地小时',
+          '选择锚定日期（按浏览器本地时区计），中部热力网格即时刷新，蓝色列即全员重叠小时',
+          '查看底部「未来 7 天公共可开会时段」，按日期读取每个时区对应的墙上时间区间',
+          '删除不合适的时区或收窄工作窗，网格与公共时段会同步重算',
+        ],
+        useCases: [
+          '远程/跨国团队安排例会，快速定位北京、欧洲、美洲同时在线的小时',
+          '跨国客服或运维排班，评估各区域工作时间覆盖与缺口',
+          '验证某个会议邀请在对方当地是否落在工作时间，避免凌晨开会',
+          '教学演示夏令时、UTC 偏移与 IANA 时区概念',
+        ],
+        privacyNote:
+          '全部换算在浏览器本地通过内置 Intl 引擎完成，不发起网络请求，参会时区与时间窗不会离开设备。',
+        faqs: [
+          {
+            question: '为什么不需要加载 moment-timezone 之类的时区库？',
+            answer:
+              '现代浏览器与 Node 的 Intl API 已内置完整 IANA 时区数据库及历史 DST 规则。工具通过 formatToParts 读取任意时刻在指定时区的墙上时间并反算 UTC 偏移，精度与时区库一致，但零额外依赖、零网络请求。',
+          },
+          {
+            question: '工作时间窗为什么有时提示当天没有重叠？',
+            answer:
+              '公共时段要求所有参与时区在同一个 UTC 整点都处于各自工作窗内。当两地时差大于工作窗长度（例如北京与纽约相差 13 小时、各自只工作 9 小时），数学上就不存在交集，此时可扩大工作窗或增加中间时区的同事分担。',
+          },
+          {
+            question: '跨午夜的工作窗（如夜班 22:00–06:00）如何判断？',
+            answer:
+              '当起止小时满足 start ≥ end 时，工具按跨午夜处理：hour ≥ start 或 hour < end 都视为工作时间，因此夜班、值守排班可以直接录入。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A planner that finds the intersection of working hours across cities for distributed teams. It keeps UTC epoch milliseconds as the single source of truth and uses the built-in Intl.DateTimeFormat engine (full IANA database with historical DST rules) for display conversion, so no external timezone library is bundled. Each participant zone gets its own working-hour window, including overnight spans; the tool renders a 24-hour heatmap for the anchor day and lists merged common-overlap ranges for the next seven days in every zone’s wall time.',
+        coreFeatures: [
+          '14 common IANA zones with per-zone working windows, including overnight spans such as 22:00–06:00',
+          'Native Intl-based conversion that adapts automatically across DST transitions and fractional offsets',
+          '24-hour heatmap: green cells mark local working hours, blue cells mark all-hands availability, hover shows UTC and local time',
+          'Computes seven days of common slots and merges adjacent hours into continuous per-zone HH:MM ranges',
+          'Pure-function core (offset, wall time, intersection, merge) covered by 17 fixed-timestamp unit tests',
+        ],
+        howToUse: [
+          'Add zones from the dropdown and adjust each region’s local working start/end hours',
+          'Pick an anchor date (in your browser local zone); the heatmap refreshes instantly with blue overlap columns',
+          'Read the next-seven-days panel for per-zone wall-time ranges grouped by date',
+          'Remove zones or narrow windows to recompute the grid and common slots',
+        ],
+        useCases: [
+          'Scheduling recurring meetings across Asia, Europe and the Americas',
+          'Planning support or on-call coverage and spotting gaps',
+          'Checking whether an invitation lands at an acceptable local hour',
+          'Teaching DST, UTC offsets and IANA timezone concepts',
+        ],
+        privacyNote:
+          'All conversion runs locally via the built-in Intl engine. No network requests are made and zone or window data never leaves the device.',
+        faqs: [
+          {
+            question: 'Why is no timezone library such as moment-timezone needed?',
+            answer:
+              'Modern browsers and Node ship the full IANA database, including historical DST rules, inside the Intl API. Reading wall-time parts and deriving the UTC offset gives the same accuracy as a bundled library with zero extra dependencies and zero network calls.',
+          },
+          {
+            question: 'Why does a day sometimes show no overlap?',
+            answer:
+              'A common slot requires every zone to be inside its window at the same UTC hour. When the time difference exceeds the window length (e.g. Beijing vs New York is 13 hours with 9-hour windows), no intersection exists mathematically; widen windows or involve colleagues in intermediate zones.',
+          },
+          {
+            question: 'How are overnight windows like a 22:00–06:00 night shift handled?',
+            answer:
+              'When start ≥ end the window wraps past midnight: hours ≥ start or < end both count as working time, so night shifts and on-call schedules can be entered directly.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'cn-income-tax-calculator',
+    name: '中国个人所得税计算器（累计预扣预缴 / 年度汇算 / 年终奖单独计税）',
+    nameEn: 'China Individual Income Tax Calculator',
+    description:
+      '按现行居民个人综合所得 7 级超额累进税率，计算工资薪金的按月累计预扣预缴税额、12 个月明细与税后到手，并支持工资/劳务报酬/稿酬/特许权使用费四项收入的年度汇算清缴（自动按 80%、56% 口径换算收入额）与全年一次性奖金单独计税，给出补税/退税结论，纯本地计算。',
+    descriptionEn:
+      'Compute China individual income tax for residents: month-by-month cumulative withholding on salaries with after-tax pay, the annual comprehensive-income reconciliation across salary, labor service, author remuneration and royalties (with 80%/56% inclusion rules), and separate annual-bonus taxation using the monthly bracket table, including top-up or refund conclusions. Fully local calculation.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/cn-income-tax-calculator',
+    iconName: 'CalculatorOutlined',
+    tags: ['个税', '个人所得税', '累计预扣', '汇算清缴', '年终奖', '税后工资', '财务'],
+    tagsEn: ['IIT', 'Income Tax', 'China', 'Withholding', 'Annual Reconciliation', 'Bonus', 'Finance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '中国个人所得税计算器在浏览器本地按现行税制完成三类计算。其一，工资薪金采用累计预扣预缴法：逐月累计收入、减除费用（每月 5000 元）、三险一金与专项附加扣除，对累计应纳税所得额套用年度 7 级超额累进税率表，再减去已预扣税额得到当月预扣税与到手工资。其二，年度汇算清缴把工资薪金、劳务报酬、稿酬、特许权使用费四项综合所得按法定口径换算为收入额（劳务与特许权按 80%、稿酬按 80% 再 70% 即 56% 计入），扣除 6 万元基本减除费用、社保、专项附加及其他扣除后算年度应纳税额，并与已预扣税额比较得出应补或应退。其三，全年一次性奖金可按除以 12 定档的月度税率表单独计税，方便与并入综合所得方案择优。',
+        coreFeatures: [
+          '工资累计预扣预缴：输出 12 个月累计收入/扣除/应税额、税率、当月预扣税与税后到手',
+          '专项附加扣除勾选即叠加（子女教育、房贷利息、住房租金、赡养老人等常见项）',
+          '年度汇算：四项收入自动按 80%/56% 口径换算，直接给出应补税或应退税金额',
+          '年终奖单独计税：奖金 ÷ 12 定档、月度税率表速算扣除，展示适用税率与税后奖金',
+          '内置年度 7 级税率表并高亮命中档位，纯函数核心配套 12 个固定数值单元测试',
+        ],
+        howToUse: [
+          '在「工资月度预扣」页填写税前月薪、三险一金，并勾选符合条件的专项附加扣除',
+          '查看右侧 12 个月明细表，关注跨档月份当月预扣税的阶梯式上升',
+          '切换到「年度汇算清缴」页，填写四项收入与全年扣除，已预扣税额自动带入月度结果',
+          '在同页录入年终奖，读取单独计税方案的税额，并可手动对比并入综合所得的差异',
+        ],
+        useCases: [
+          '谈 offer 或调薪时估算税前工资对应的真实到手收入',
+          '年中入职、离职或奖金发放后，预判累计预扣法下各月税负变化',
+          '汇算清缴季核算补退税，核对工资外劳务、稿酬收入的影响',
+          '比较年终奖「单独计税」与「并入综合所得」两种口径的税负择优',
+        ],
+        privacyNote:
+          '所有收入与扣除数据仅在浏览器本地参与计算，不发起网络请求、不被采集或存储。',
+        faqs: [
+          {
+            question: '为什么年中某个月的预扣税突然变多？',
+            answer:
+              '累计预扣法按「累计应纳税所得额」套用年度税率表。随着累计收入增加，累计应税额会在某个月跨入更高税率档，当月预扣税额 = 累计应纳税额 − 已预扣税额，因此跨档月份会出现税额跳升，这是税制本身的设计，并非计算错误。',
+          },
+          {
+            question: '劳务报酬、稿酬为什么不是全额计入？',
+            answer:
+              '综合所得汇算时，工资薪金按全额计入收入额；劳务报酬与特许权使用费按收入的 80% 计入；稿酬在 80% 的基础上再减按 70% 计入，即实际按 56% 计入。工具已自动套用这些法定换算比例。',
+          },
+          {
+            question: '年终奖单独计税和并入综合所得哪个更省税？',
+            answer:
+              '没有统一答案，取决于全年综合所得水平与奖金金额。高收入年份单独计税常可利用月度低税率档降低税负；综合所得较低（扣除后应税额为负或处于低档）时并入计税可能更优。建议用本工具分别试算两种口径后选择税额更低者，注意单独计税政策的适用期限以最新政策为准。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local calculator for China individual income tax under the current resident comprehensive-income regime. It handles three tasks: cumulative monthly withholding on salary (year-to-date income minus the 5,000 monthly basic deduction, social insurance and special deductions, taxed on the annual seven-bracket table with prior withholding credited); annual reconciliation across salary, labor service, author remuneration and royalties with the statutory 80%/56% inclusion rules, comparing final tax with prepaid amounts to report a top-up or refund; and separate taxation of the annual one-time bonus via the monthly bracket table after dividing by twelve.',
+        coreFeatures: [
+          'Cumulative salary withholding with a 12-month table of YTD income, deductions, taxable amount, rate, current tax and net pay',
+          'Checklist-style special additional deductions that stack automatically',
+          'Annual reconciliation with automatic 80%/56% inclusion and explicit top-up/refund verdict',
+          'Separate bonus taxation showing the bracket located via bonus/12, quick deduction and after-tax bonus',
+          'Built-in seven-bracket annual table with active-row highlight; pure-function core with 12 fixed-value unit tests',
+        ],
+        howToUse: [
+          'On the salary tab enter monthly gross pay and social insurance, then tick applicable special deductions',
+          'Review the 12-month table and watch the step change when cumulative taxable income crosses a bracket',
+          'Open the annual reconciliation tab, fill the four income types and yearly deductions; prepaid tax is carried over automatically',
+          'Enter a bonus to read its separate-taxation result and compare manually with the merged approach',
+        ],
+        useCases: [
+          'Estimating real take-home pay when negotiating offers or raises',
+          'Predicting mid-year withholding changes after job changes or bonus payouts',
+          'Checking top-up/refund during reconciliation season, including side income',
+          'Choosing between separate and merged bonus taxation',
+        ],
+        privacyNote:
+          'All income and deduction figures stay in your browser for local calculation only; nothing is uploaded, collected or stored.',
+        faqs: [
+          {
+            question: 'Why does withholding jump in a certain month?',
+            answer:
+              'Cumulative withholding applies the annual bracket table to year-to-date taxable income. When the cumulative amount crosses into a higher bracket, current-month tax (cumulative tax minus already-withheld tax) rises sharply; this is by design rather than an error.',
+          },
+          {
+            question: 'Why are labor service and author fees not counted at face value?',
+            answer:
+              'For comprehensive-income reconciliation, salary counts at 100%, labor service and royalties at 80%, and author remuneration at 80% times 70% (effectively 56%). The tool applies these statutory inclusion ratios automatically.',
+          },
+          {
+            question: 'Separate bonus tax or merged taxation — which is cheaper?',
+            answer:
+              'It depends on total comprehensive income and bonus size. Separate taxation often helps high earners by accessing low monthly brackets, while merging can win when annual taxable income is low. Run both scenarios here and pick the lower tax, noting the eligibility window of the separate-bonus policy follows the latest official rules.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'markdown-frontmatter-editor',
+    name: 'Markdown Frontmatter 编辑器（YAML / TOML 解析与回写）',
+    nameEn: 'Markdown Frontmatter Editor',
+    description:
+      '识别 Markdown 文件顶部的 frontmatter 块，同时支持 --- YAML 与 +++ TOML 两种定界，自动切分元数据与正文，以键值表单编辑字段（增删改、类型切换、点路径单层嵌套键、行内与块式数组），实时回写为合法 frontmatter 且正文原样保留，并可在 YAML/TOML 两种输出间转换，无法解析的行会给出错误行号，纯本地运行。',
+    descriptionEn:
+      'Detect and split the frontmatter block at the top of Markdown files with both --- YAML and +++ TOML delimiters, edit metadata as key-value fields (add/remove, type switching, single-level dot-path nesting, inline and block arrays), and write back valid frontmatter while preserving the body byte-for-byte, with YAML/TOML output conversion and line-accurate syntax errors. Runs fully locally.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/markdown-frontmatter-editor',
+    iconName: 'FileTextOutlined',
+    tags: ['Markdown', 'Frontmatter', 'YAML', 'TOML', '元数据', 'Hugo', 'Astro'],
+    tagsEn: ['Markdown', 'Frontmatter', 'YAML', 'TOML', 'Metadata', 'Hugo', 'Astro'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Markdown Frontmatter 编辑器面向静态站点（Hugo / Hexo / Astro / Jekyll 等）作者，用来批量维护文章顶部的元数据块。它会识别文件首行的 ---（YAML）或 +++（TOML）定界，把元数据解析为可编辑的键值字段并与正文分离；你在表单中增删字段、切换标量类型或编辑数组后，工具实时把字段回写为合法的 frontmatter 文本，正文不做任何改动，还能一键在 YAML 与 TOML 两种写法之间转换。解析器刻意限定在浅层键值、单层嵌套对象与数组这一常用子集，遇到无法识别的行会跳过并报告行号，而不是猜测性改写。',
+        coreFeatures: [
+          '自动识别 YAML（---）与 TOML（+++）定界块，元数据与正文分区展示',
+          '标量类型推断与切换：字符串、数字、布尔、null，字符串在含特殊字符时自动加引号',
+          '数组支持行内 [a, b] 与 YAML 块式 - item 两种写法，表单中以逗号分隔编辑',
+          '单层嵌套对象以点路径键（author.name）编辑，回写时还原为缩进块或 [section] 表头',
+          '回写保证正文原样保留，并支持 YAML ↔ TOML 输出互转；非法行带行号提示',
+        ],
+        howToUse: [
+          '把含 frontmatter 的 Markdown 粘贴到左侧输入框，工具自动解析并在右侧生成字段表单',
+          '直接修改键名、类型或值，或点击「添加字段」「删除」调整元数据结构',
+          '数组字段用逗号分隔录入；布尔字段用开关切换；嵌套键填写形如 section.key 的点路径',
+          '在底部选择输出格式（YAML 或 TOML），复制完整 Markdown 即可替换原文',
+        ],
+        useCases: [
+          '为 Hugo / Astro / Hexo 文章批量补全 title、date、tags、draft 等元数据',
+          '把历史文章的 YAML frontmatter 统一转换为 TOML，或反向迁移',
+          '检查复制来的 frontmatter 是否存在语法错误行，快速定位修复',
+          '不熟悉 YAML/TOML 语法时，通过表单方式安全编辑而不破坏正文',
+        ],
+        privacyNote:
+          '全部解析与回写都在浏览器本地完成，文档内容不会上传或存储到任何服务器。',
+        faqs: [
+          {
+            question: '支持深层嵌套对象或复杂 YAML 语法吗？',
+            answer:
+              '不支持。本工具刻意限定为浅层键值、单层嵌套对象与数组的常用子集，锚点、多行字符串、复杂映射等完整 YAML 特性不在范围内；无法识别的行会跳过并在顶部给出错误行号，正文始终不会被破坏。',
+          },
+          {
+            question: '编辑后正文会被格式化或改动吗？',
+            answer:
+              '不会。回写时只替换 frontmatter 块，正文按解析时切分的内容原样拼接，换行与空白均保持不变。',
+          },
+          {
+            question: 'YAML 和 TOML 输出可以互转吗？',
+            answer:
+              '可以。字段被解析为统一的中间结构后，可在底部切换输出格式，YAML 的 --- 块与 TOML 的 +++ 块（含 [section] 表头）会按各自语法重新生成。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A frontmatter editor for static-site authors (Hugo, Hexo, Astro, Jekyll and similar). It detects the leading --- (YAML) or +++ (TOML) delimiter, splits metadata from the Markdown body, exposes metadata as editable key-value fields, and writes your edits back as valid frontmatter without touching the body. YAML/TOML output can be switched freely. The parser intentionally covers the common subset of shallow key-values, single-level nested objects and arrays; unrecognizable lines are skipped with a line number instead of being guessed.',
+        coreFeatures: [
+          'Detects both --- YAML and +++ TOML blocks and separates metadata from body',
+          'Scalar inference and explicit type switching: string, number, boolean, null, with automatic quoting',
+          'Arrays in inline [a, b] and YAML block - item forms, edited as comma-separated input',
+          'Single-level nesting via dot-path keys (author.name), restored as indented blocks or [section] headers',
+          'Body preserved byte-for-byte on write-back, YAML/TOML conversion, and line-accurate error reporting',
+        ],
+        howToUse: [
+          'Paste Markdown with frontmatter into the left panel; fields appear automatically in the right panel',
+          'Edit keys, types and values inline, or use add/remove buttons to restructure metadata',
+          'Enter arrays as comma-separated values, toggle booleans with the switch, use section.key for nesting',
+          'Pick YAML or TOML output at the bottom and copy the full Markdown to replace the original',
+        ],
+        useCases: [
+          'Filling title, date, tags and draft metadata across Hugo/Astro/Hexo posts',
+          'Migrating legacy YAML frontmatter to TOML or the reverse in one click',
+          'Locating broken frontmatter lines reported with precise line numbers',
+          'Editing metadata safely through a form without learning YAML/TOML syntax',
+        ],
+        privacyNote:
+          'All parsing and write-back happen locally in the browser; document content is never uploaded or stored.',
+        faqs: [
+          {
+            question: 'Does it support deeply nested objects or full YAML syntax?',
+            answer:
+              'No. The tool is deliberately limited to shallow key-values, single-level nesting and arrays. Anchors, multi-line strings and complex mappings are out of scope; unrecognized lines are skipped with a reported line number and the body is never modified.',
+          },
+          {
+            question: 'Will the Markdown body be reformatted?',
+            answer:
+              'No. Only the frontmatter block is replaced. The body captured during parsing is concatenated back unchanged, including whitespace and line endings.',
+          },
+          {
+            question: 'Can I convert between YAML and TOML?',
+            answer:
+              'Yes. Fields are parsed into one intermediate structure, so switching the output selector regenerates either --- YAML or +++ TOML (with [section] headers) from the same data.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'cron-systemd-timer-converter',
+    name: 'cron 表达式与 systemd OnCalendar 定时器互转工具',
+    nameEn: 'Cron ↔ systemd OnCalendar Converter',
+    description:
+      '在标准 5 段 cron 表达式与 systemd timer 的 OnCalendar 表达式之间双向转换，支持星号、逗号列表、范围、步进、英文星期/月份与 minutely/hourly/daily/weekly/monthly/yearly 命名快捷方式，自动提示日与星期同时受限的并集语义陷阱、秒级与年级降级，并基于本地时区逐分钟推演两侧未来触发时刻进行一致性对照，纯本地运行不依赖任何调度器。',
+    descriptionEn:
+      'Convert between standard 5-field cron expressions and systemd timer OnCalendar expressions in both directions, with stars, comma lists, ranges, steps, English weekday/month names and minutely/hourly/daily/weekly/monthly/yearly shortcuts. It warns about the day-and-weekday union pitfall and second/year granularity downgrades, and verifies equivalence by simulating future trigger times minute-by-minute in the local timezone, fully offline.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/cron-systemd-timer-converter',
+    iconName: 'ClockCircleOutlined',
+    tags: ['cron', 'systemd', 'OnCalendar', '定时器', '定时任务', '运维', 'DevOps'],
+    tagsEn: ['cron', 'systemd', 'OnCalendar', 'timer', 'scheduling', 'DevOps'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具面向编写 systemd timer 的开发者与运维人员，解决 cron 与 OnCalendar 两套调度语法的互转问题。cron 使用「分 时 日 月 周」5 段结构，而 OnCalendar 使用「星期 年-月-日 时:分:秒」结构，两者在通配符、范围写法、星期命名以及「日与星期同时受限」的组合语义上都有差异。工具内置零依赖解析引擎，把两侧表达式统一展开为时间字段集合后做等价转换，并通过逐分钟推演未来触发时刻来验证转换结果，而不是只做字符串替换。',
+        coreFeatures: [
+          'cron → OnCalendar：*/5 转为 *:0/5、1-5 转为 Mon..Fri、列表/范围/步进全部映射',
+          'OnCalendar → cron：命名快捷方式、英文星期月名、a..b/step 步进反向还原为标准 5 段',
+          '语义陷阱提示：日与星期同时受限时两侧均按「或（并集）」触发，并给出两条等价拆分表达式',
+          '降级告警：OnCalendar 的秒级与年份限制在 cron 中无对应字段，转换时明确标注丢弃',
+          '未来 8 次触发时刻双向对照表，逐分钟本地时区推演并给出一致性结论',
+        ],
+        howToUse: [
+          '选择转换方向（可点击「切换转换方向」按钮互换）',
+          '在左侧输入表达式，或点击示例标签快速填充常见写法',
+          '右侧即时给出转换结果，可一键复制；警告与等价方案会在下方卡片列出',
+          '查看底部触发时刻对照表，确认两侧未来执行时间完全一致后再写入 crontab 或 .timer 文件',
+        ],
+        useCases: [
+          '把历史 crontab 任务迁移为 systemd timer 的 OnCalendar 配置',
+          '把 systemd timer 文档中的 OnCalendar 表达式翻译回熟悉的 cron 写法以便核对',
+          '排查「每月 13 号且每周五」这类组合条件的真实触发日（并集而非交集）',
+          '在不接触服务器的情况下本地验证调度表达式的未来执行时刻',
+        ],
+        privacyNote:
+          '所有解析与触发时刻推演都在浏览器本地完成，表达式不会被发送到任何服务器或调度系统。',
+        faqs: [
+          {
+            question: '为什么「0 0 13 * 5」转换后提示并集语义？',
+            answer:
+              '标准 crontab 与 systemd OnCalendar 都规定：当「日（每月几号）」和「星期」同时被限制时，两者是「或」关系——满足任一条件即触发，而不是同时满足。工具会显式警告并给出只限制星期、只限制日期的两条等价拆分表达式，避免误以为是交集。',
+          },
+          {
+            question: 'OnCalendar 的秒和年份为什么转 cron 时丢失了？',
+            answer:
+              '标准 5 段 cron 的最小粒度是分钟，且没有年份字段。OnCalendar 中的秒级与年份限制无法在 cron 中表达，转换时会被丢弃并给出降级告警；若需要秒级精度，只能保留 systemd timer 或在脚本内部控制。',
+          },
+          {
+            question: '触发时刻对照是怎么计算的？',
+            answer:
+              '工具分别用两套独立解析引擎，从当前时间的下一分钟开始逐分钟扫描，各自找出未来 8 次命中时刻，再逐行比较时间戳是否相等。只要有一行不一致就会标记为「两侧不一致」，帮助发现字符串转换难以察觉的语义偏差。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A bidirectional converter for developers and operators writing systemd timers, bridging the five-field cron grammar (minute hour day month weekday) and the OnCalendar grammar (weekday year-month-day hour:minute:second). A zero-dependency engine expands both sides into time-field sets rather than doing naive string replacement, then verifies equivalence by simulating future trigger times minute by minute.',
+        coreFeatures: [
+          'cron to OnCalendar: */5 maps to *:0/5, 1-5 to Mon..Fri, with full list/range/step support',
+          'OnCalendar to cron: named shortcuts, English weekday/month names and a..b/step steps restored to five fields',
+          'Union-semantics warning when day-of-month and weekday are both restricted, plus two equivalent split expressions',
+          'Downgrade alerts for OnCalendar seconds and years, which have no cron counterpart',
+          'Side-by-side table of the next 8 trigger times simulated in the local timezone with an equivalence verdict',
+        ],
+        howToUse: [
+          'Pick a direction (or use the swap button to reverse it)',
+          'Type an expression on the left or click an example chip',
+          'Read the converted expression on the right, copy it, and review any warnings or alternative forms below',
+          'Confirm the next-run comparison table matches before writing to crontab or a .timer unit',
+        ],
+        useCases: [
+          'Migrating legacy crontab jobs into systemd timer OnCalendar units',
+          'Translating OnCalendar examples back to cron for sanity checking',
+          'Understanding combined day-of-month/weekday conditions that fire on union rather than intersection',
+          'Validating future run times locally without touching a server or scheduler',
+        ],
+        privacyNote:
+          'All parsing and run-time simulation happen locally in the browser; expressions are never sent to any server or scheduler.',
+        faqs: [
+          {
+            question: 'Why does "0 0 13 * 5" warn about union semantics?',
+            answer:
+              'Both standard crontab and systemd OnCalendar treat restricted day-of-month together with restricted weekday as an OR: a day matching either condition triggers the job. The tool warns explicitly and offers two equivalent expressions restricted by weekday only and by day only, so you do not mistake it for an intersection.',
+          },
+          {
+            question: 'Why are OnCalendar seconds and years dropped when converting to cron?',
+            answer:
+              'Standard five-field cron has minute-level granularity at best and no year field. Seconds and year constraints cannot be represented, so they are removed with a downgrade warning; keep systemd timer or handle seconds inside your script if you need that precision.',
+          },
+          {
+            question: 'How is the trigger-time comparison computed?',
+            answer:
+              'Two independent parser engines scan forward minute by minute from the next minute, collect the next 8 matching times each, and compare timestamps row by row. Any mismatch is flagged as non-equivalent, exposing semantic drift that plain string conversion would hide.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

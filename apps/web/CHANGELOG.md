@@ -4,8 +4,13 @@
 
 ## 日志
 
-## 2026-11-09 ：【Agent自主迭代】新增 5 个 Hamming 纠错、月相月龄、MessagePack 编解码、HTTP 报文解析与调度场可视化工具
+## 2026-11-09 ：【Agent自主迭代】新增 10 个 Hamming 纠错、月相月龄、MessagePack 编解码、HTTP 报文解析、调度场可视化、CSS Transform 矩阵、多时区会议、个税、Frontmatter 编辑与 cron/systemd 定时器互转工具
 
+- **新增**：CSS Transform 矩阵计算器（css-transform-matrix-calculator）— 按书写顺序把 translate/scale/rotate/skew 函数链合成为 4×4 列主序矩阵并输出 matrix()/matrix3d()，支持反向 unmatrix 分解与实时预览，纯函数零依赖，纯本地运算
+- **新增**：多时区会议规划器（multi-timezone-meeting-planner）— 基于浏览器原生 Intl 时区能力为多个 IANA 时区生成 24 小时可开会热力网格与未来 7 天全员工作时间重叠区间，DST 自适应、无外部时区数据库，纯本地运算
+- **新增**：中国个人所得税计算器（cn-income-tax-calculator）— 按 7 级超额累进税率计算工资薪金累计预扣预缴 12 个月明细与税后到手，支持四项收入年度汇算（80%/56% 口径）与全年一次性奖金单独计税并给出补退税结论，纯本地运算
+- **新增**：Markdown Frontmatter 编辑器（markdown-frontmatter-editor）— 识别 --- YAML 与 +++ TOML 两种定界并切分元数据与正文，键值表单增删改、单层嵌套键与数组编辑后实时回写且正文原样保留，支持 YAML/TOML 互转与错误行号定位，纯本地运算
+- **新增**：cron 表达式与 systemd OnCalendar 定时器互转工具（cron-systemd-timer-converter）— 标准 5 段 cron 与 OnCalendar 双向转换（列表/范围/步进/命名快捷方式），提示日与星期 OR/AND 语义陷阱及秒级年级降级，双引擎推演未来触发时刻对照，纯本地运算
 - **新增**：Hamming(7,4) 编解码与纠错演示（hamming-codec）— 对 4 位数据位生成 3 位校验位并支持单比特错误注入与自动纠错，逐位展示校验子（syndrome）定位过程，纯函数零依赖，纯本地运算
 - **新增**：月相查询与月龄计算器（moon-phase-calculator）— 基于 Julian Day 与朔望月 29.53059 天取模计算月龄、八相位分档、照亮比例与邻近新月/满月日期，CSS clip-path 绘制月相，纯本地运算
 - **新增**：MessagePack ↔ JSON 双向编解码器（messagepack-codec）— 按 msgpack 规范实现完整类型表与整数最紧凑宽度（含 BigInt 64 位路径），支持 HEX/Base64 输入、字节转储与带偏移错误，官方向量逐字节验证，纯本地运算
