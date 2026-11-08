@@ -305,4 +305,9 @@ export const toolLoaders: Record<
   'lc-resonance-calculator': () => import('./lc-resonance-calculator'),
   'overtime-pay-calculator': () => import('./overtime-pay-calculator'),
   'pricing-margin-calculator': () => import('./pricing-margin-calculator'),
+  'survey-sample-size-calculator': () => import('./survey-sample-size-calculator'),
+  'base-n-radix-converter': () => import('./base-n-radix-converter'),
+  'crc-model-calculator': () => import('./crc-model-calculator'),
+  'three-phase-power-calculator': () => import('./three-phase-power-calculator'),
+  'music-pitch-converter': () => import('./music-pitch-converter'),
 };

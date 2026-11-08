@@ -28648,6 +28648,526 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'survey-sample-size-calculator',
+    name: '调查抽样样本量与误差范围计算器（Cochran + FPC）',
+    nameEn: 'Survey Sample Size & Margin of Error Calculator (Cochran + FPC)',
+    description:
+      '基于 Cochran 公式与有限总体校正 FPC，由置信水平、误差幅度、预期比例与总体规模求所需样本量，或由既定样本量反推可达误差幅度，并支持设计效应与应答率校正。',
+    descriptionEn:
+      'Compute the required sample size from confidence level, margin of error, expected proportion and population size using the Cochran formula with finite population correction (FPC), or back-solve the achievable margin of error from a fixed sample size, with design-effect and response-rate adjustments.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/survey-sample-size-calculator',
+    iconName: 'Sigma',
+    tags: ['样本量', '抽样', 'Cochran', '置信区间', '误差幅度', '问卷调查', '统计'],
+    tagsEn: ['Sample Size', 'Sampling', 'Cochran', 'Confidence Interval', 'Margin of Error', 'Survey', 'Statistics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '95%, ±5%, p=50%',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具面向问卷调查、民意测验、用户研究与市场调研的抽样规划，基于 Cochran（1977）经典公式 n₀ = z²·p·(1−p)/e² 在浏览器本地完成样本量与误差幅度的双向计算，并在给定总体规模 N 时自动应用有限总体校正 n = n₀/(1+(n₀−1)/N)。',
+        coreFeatures: [
+          '正向求样本量：置信水平、误差幅度、预期比例 p、总体规模四参数联动，p=0.5 为最保守取值',
+          '反向求误差幅度：由计划样本量反推可达 ±e%，与正向公式互逆',
+          '有限总体校正：填写总体规模 N 后自动启用 FPC，小总体下显著降低所需样本量',
+          '招募量校正：按设计效应 deff 与预期应答率换算实际需接触 / 发放的问卷数量',
+          '公式透明：展示 z 分位数、Cochran 原始 n₀、校正中间值与完整代入过程',
+        ],
+        howToUse: [
+          '选择「由误差要求求样本量」模式，设置置信水平（常用 95%）、可接受误差幅度（如 ±5%）与预期比例',
+          '若总体规模有限（如企业全员 1000 人），填写总体规模以启用 FPC 校正',
+          '切换到「由样本量反推误差幅度」可评估既定预算下的精度水平',
+          '在底部面板填写设计效应与应答率，得到实际应发放的问卷份数',
+        ],
+        useCases: [
+          '规划 NPS / 满意度 / 民意调查问卷的最低有效样本量',
+          '企业内部全员调研时利用 FPC 减少发放量并论证统计合理性',
+          '评估 A/B 实验或用户访谈在固定预算下可达到的误差精度',
+          '结合整群抽样设计效应与历史应答率估算实际招募规模',
+        ],
+        privacyNote:
+          '所有参数与计算均在浏览器本地完成，不发起任何网络请求，调研方案数据不会被上传或留存。',
+        faqs: [
+          {
+            question: '为什么预期比例 p 默认是 50%？',
+            answer:
+              'p·(1−p) 在 p=0.5 时取得最大值 0.25，此时计算出的样本量最大、最保守。在缺乏先验信息时使用 50% 可以保证无论真实比例如何都能满足误差要求；若已有历史数据支持 p 偏离 0.5，可填入更精确的比例以降低样本量。',
+          },
+          {
+            question: '什么时候需要填写总体规模 N？',
+            answer:
+              '当抽样占总体比例不可忽略（经验阈值约 n/N > 5%）时应启用有限总体校正。例如总体仅 1000 人时，FPC 可把 95%/±5% 场景的样本量从 385 降至 278。面对全国级别的大总体时，FPC 影响极小，留空即可。',
+          },
+          {
+            question: '设计效应和应答率如何影响最终发放量？',
+            answer:
+              '设计效应 deff 反映整群、分层等复杂抽样相对简单随机抽样的方差膨胀，实际有效样本量需乘以 deff；应答率则决定要接触多少人才能拿到足够的有效问卷。最终发放量 = ceil(n × deff ÷ 应答率)，例如 n=385、deff=2、应答率 80% 时需发放 963 份。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A browser-local sampling planner for questionnaires, polls, UX research and market surveys. It implements the Cochran (1977) formula n₀ = z²·p·(1−p)/e² in both directions and applies the finite population correction n = n₀/(1+(n₀−1)/N) whenever a population size N is supplied.',
+        coreFeatures: [
+          'Forward sizing: confidence level, margin of error, expected proportion p and population size, with p=0.5 as the conservative default',
+          'Reverse solving: back-solve the achievable ±e% margin from a planned sample size, exactly inverse to the forward formula',
+          'Finite population correction: FPC activates automatically when N is provided, materially cutting sample size for small populations',
+          'Recruitment adjustment: convert the effective sample into contact/invitation counts via design effect and response rate',
+          'Transparent formulas: z score, raw Cochran n₀, corrected intermediate value and full substitution shown on screen',
+        ],
+        howToUse: [
+          'In "sample size from error target" mode, set confidence level (typically 95%), acceptable margin (e.g. ±5%) and expected proportion',
+          'Provide the population size for finite populations (e.g. 1,000 employees) to enable FPC',
+          'Switch to "margin from sample size" to assess the precision achievable under a fixed budget',
+          'Fill in design effect and response rate at the bottom to obtain the number of questionnaires to distribute',
+        ],
+        useCases: [
+          'Planning minimum valid sample sizes for NPS, satisfaction or opinion surveys',
+          'Reducing invitations with FPC for company-wide censuses and documenting statistical rationale',
+          'Evaluating precision of A/B tests or interview programs under fixed budgets',
+          'Estimating recruitment scale with cluster-sampling design effects and historical response rates',
+        ],
+        privacyNote:
+          'Every input and calculation stays in your browser. No network requests are made and survey planning data is never uploaded or retained.',
+        faqs: [
+          {
+            question: 'Why does the expected proportion default to 50%?',
+            answer:
+              'p·(1−p) peaks at p=0.5 with value 0.25, yielding the largest, most conservative sample size. With no prior information, 50% guarantees the error target regardless of the true proportion. If historical data supports a different p, entering it reduces the required sample size.',
+          },
+          {
+            question: 'When should I fill in the population size N?',
+            answer:
+              'Use FPC when the sampling fraction is non-negligible (rule of thumb n/N > 5%). For a population of 1,000, FPC reduces the 95%/±5% requirement from 385 to 278. For nationwide populations the effect is negligible and the field can be left empty.',
+          },
+          {
+            question: 'How do design effect and response rate change the invitation count?',
+            answer:
+              'The design effect inflates the effective sample for cluster or stratified designs, while the response rate accounts for non-response. Final invitations = ceil(n × deff ÷ response rate); for n=385, deff=2 and 80% response, 963 invitations are needed.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'base-n-radix-converter',
+    name: 'Base-N 任意进制整数互转器（radix 2–36 与自定义字母表）',
+    nameEn: 'Base-N Radix Converter (radix 2–36 with Custom Alphabets)',
+    description:
+      '基于 BigInt 的任意进制整数互转，支持 radix 2–36、0x/0o/0b 前缀自动识别、下划线分隔、负数与超出 2^53 的超大整数，并支持 Crockford Base32 等自定义字母表，一次输出二/八/十/十六进制一览。',
+    descriptionEn:
+      'BigInt-powered integer conversion between any radix from 2 to 36 with automatic 0x/0o/0b prefix detection, underscore separators, negatives and integers beyond 2^53, plus custom alphabets such as Crockford Base32 and a simultaneous BIN/OCT/DEC/HEX view.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/base-n-radix-converter',
+    iconName: 'Binary',
+    tags: ['进制转换', 'BigInt', 'Base32', 'Base36', 'Crockford', '二进制', '十六进制', '开发者'],
+    tagsEn: ['Radix', 'Base-N', 'BigInt', 'Base32', 'Base36', 'Crockford', 'Binary', 'Hex', 'Developer'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '255 (decimal)',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具在浏览器本地完成任意进制整数之间的精确互转。内部基于原生 BigInt 运算，即使是 64 位甚至更长的整数（如 2^64−1 = 18446744073709551615）也不会出现浮点精度损失；支持 2–36 全范围 radix、0x/0o/0b 前缀自动识别、下划线千分位风格分隔、负数以及自定义字母表（如 Crockford Base32）。',
+        coreFeatures: [
+          'radix 2–36 任意源进制与目标进制组合，双向自由转换',
+          'BigInt 精确运算：超出 Number.MAX_SAFE_INTEGER 的大整数不丢精度',
+          '前缀识别：0x 自动按 16 进制、0o 按 8 进制、0b 按 2 进制解析',
+          '自定义字母表：支持 Crockford Base32 防混淆字母表与任意 ≥2 字符的唯一字母表',
+          '常用进制一览：同屏输出 BIN / OCT / DEC / HEX 并提供位分组视图与一键复制',
+        ],
+        howToUse: [
+          '在输入框粘贴或键入整数，可携带 0x/0o/0b 前缀或下划线（如 1111_0000）',
+          '选择源进制（无前缀时生效）与目标进制，也可点击快捷按钮切换 2/8/10/16/32/36',
+          '需要 Crockford 等特殊编码时，在目标字母表中选择对应预设或输入自定义字母表',
+          '在结果区复制目标进制字符串，或在下方一览表中查看四种常用进制',
+        ],
+        useCases: [
+          '固件、协议与逆向工程中的二进制 / 十六进制地址和寄存器值换算',
+          '编码方案设计与验证：Base32、Base36、Crockford 等字母表映射',
+          '处理雪花 ID、uint64 时间戳等超出 JS 安全整数范围的大整数',
+          '教学场景下演示位权、进制前缀与负号在不同进制下的表示',
+        ],
+        privacyNote:
+          '所有输入与转换均在浏览器本地通过 BigInt 完成，不发起任何网络请求，数字内容不会被上传或留存。',
+        faqs: [
+          {
+            question: '它和站内已有的 number-base-converter 有什么区别？',
+            answer:
+              'number-base-converter 固定在二/八/十/十六进制之间切换，且基于 Number 运算，超过 2^53 会丢精度；本工具支持 2–36 任意 radix、自定义字母表（含 Crockford Base32）、前缀与下划线解析，并全程使用 BigInt 保证大整数精确。',
+          },
+          {
+            question: '为什么输入字母表以外的字符会报错？',
+            answer:
+              '每个字符在字母表中的下标就是它的位值，合法字符的下标必须落在 [0, radix) 区间。例如 radix=2 时只允许 0、1，出现 2 或字母都会被拒绝并提示具体非法字符，避免静默产生错误结果。',
+          },
+          {
+            question: '支持小数（浮点）进制转换吗？',
+            answer:
+              '不支持。本工具聚焦整数场景以保证 BigInt 精确性；小数的进制转换涉及有限 / 循环小数判定与舍入策略，与整数转换是不同的问题域，应使用专门的浮点格式化工具。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local, exact integer radix converter. All arithmetic uses native BigInt, so 64-bit or longer integers such as 2^64−1 = 18446744073709551615 convert without floating-point precision loss. It supports every radix from 2 to 36, automatic 0x/0o/0b prefix detection, underscore separators, negatives and custom alphabets including Crockford Base32.',
+        coreFeatures: [
+          'Any source/target radix combination from 2 to 36, converting freely in both directions',
+          'Exact BigInt arithmetic: no precision loss beyond Number.MAX_SAFE_INTEGER',
+          'Prefix detection: 0x parses as hex, 0o as octal and 0b as binary automatically',
+          'Custom alphabets: Crockford Base32 confusion-resistant set or any unique alphabet with ≥2 symbols',
+          'Common-base dashboard: simultaneous BIN/OCT/DEC/HEX output with grouped bit views and one-click copy',
+        ],
+        howToUse: [
+          'Type or paste an integer, optionally with a 0x/0o/0b prefix or underscores (e.g. 1111_0000)',
+          'Pick the source radix (used when no prefix is present) and target radix, or use the 2/8/10/16/32/36 quick buttons',
+          'For Crockford or similar encodings, select a preset alphabet or enter a custom one for the target',
+          'Copy the converted string from the result panel, or inspect all four common bases in the table below',
+        ],
+        useCases: [
+          'Binary/hex address and register conversion in firmware, protocol and reverse-engineering work',
+          'Designing and verifying encoding schemes such as Base32, Base36 and Crockford mappings',
+          'Handling snowflake IDs, uint64 timestamps and other integers beyond the JS safe-integer range',
+          'Teaching positional notation, radix prefixes and signed representations across bases',
+        ],
+        privacyNote:
+          'Every input and conversion runs locally in your browser via BigInt. No network requests are made and numeric content is never uploaded or retained.',
+        faqs: [
+          {
+            question: 'How is this different from the existing number-base-converter?',
+            answer:
+              'number-base-converter is limited to binary/octal/decimal/hex and uses Number arithmetic, which loses precision beyond 2^53. This tool covers any radix from 2 to 36, custom alphabets (including Crockford Base32), prefix and underscore parsing, and keeps every operation exact with BigInt.',
+          },
+          {
+            question: 'Why are characters outside the alphabet rejected?',
+            answer:
+              'A character\'s alphabet index is its positional value, and a valid digit must have an index in [0, radix). For radix 2 only 0 and 1 are legal, so a 2 or any letter is rejected with the offending character named, preventing silently incorrect results.',
+          },
+          {
+            question: 'Does it support fractional (floating-point) radix conversion?',
+            answer:
+              'No. The tool focuses on integers to preserve BigInt exactness. Fractional conversion requires finite/recurring expansion decisions and rounding policies — a separate problem domain better served by dedicated floating-point formatters.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'crc-model-calculator',
+    name: 'CRC-8/16/32/64 多参数模型计算器（12 种标准预设 + check 自检）',
+    nameEn: 'Multi-Model CRC Calculator (CRC-8/16/32/64 with Custom Parameters)',
+    description:
+      '基于通用 BigInt CRC 引擎与 Rocksoft™ 参数模型，内置 CRC-8/MAXIM、CRC-16/MODBUS、CRC-16/CCITT、CRC-32/ISO-HDLC、CRC-32C、CRC-64/XZ 等 12 种标准预设，支持文本与十六进制输入、全模型同跑对比，并对 "123456789" check 常量做参数自检。',
+    descriptionEn:
+      'A generic BigInt CRC engine implementing the Rocksoft™ parameter model with 12 standard presets including CRC-8/MAXIM, CRC-16/MODBUS, CRC-16/CCITT, CRC-32/ISO-HDLC, CRC-32C and CRC-64/XZ. Accepts text or hex input, runs every model side by side, and self-checks each parameter set against the canonical "123456789" check constant.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/crc-model-calculator',
+    iconName: 'Hash',
+    tags: ['CRC', 'CRC32', 'CRC16', 'Modbus', '校验和', '数据链路', '嵌入式', '协议'],
+    tagsEn: ['CRC', 'CRC32', 'CRC16', 'CRC64', 'Modbus', 'Checksum', 'Embedded', 'Protocol'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '123456789',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具实现参数化的通用循环冗余校验（CRC）引擎，width、poly、init、refIn、refOut、xorOut 六个参数完全对齐 catalogue/crc.com 的 Rocksoft™ 模型，借助 BigInt 精确覆盖 1–64 位宽。内置 12 个工业界常用标准模型，每个模型都附带 "123456789" 标准校验串的 check 常量，可一键验证参数实现是否正确。',
+        coreFeatures: [
+          '通用引擎：任意 width（1–64）、poly、init、refIn/refOut、xorOut 组合，BigInt 运算无精度损失',
+          '12 个标准预设：覆盖 CRC-8/MAXIM、CRC-16/ARC、MODBUS、CCITT-FALSE、XMODEM、GENIBUS、CRC-32/HDLC、BZIP2、CRC-32C、CRC-64/XZ 等',
+          '双输入模式：UTF-8 文本直接计算，或粘贴十六进制字节（兼容空格、逗号、0x 前缀）',
+          '全模型对比：同一输入同屏输出 12 个模型的 CRC 值，便于协议选型与交叉验证',
+          '参数自检：用标准 check 常量验证当前模型，正确时显示绿色通过标签',
+        ],
+        howToUse: [
+          '在下拉框选择目标 CRC 模型，下方即时展示 width/poly/init/refIn/refOut/xorOut 参数',
+          '选择 UTF-8 文本或十六进制字节输入模式并填入数据，结果区实时显示 CRC 十六进制值',
+          '需要核对协议帧时，把报文字节以十六进制粘贴，并参考结果区关于 Modbus 小端字节序的提示',
+          '在「全部模型对比」表中横向比较不同 CRC 的输出，或点击复制按钮取用单个结果',
+        ],
+        useCases: [
+          '嵌入式通信（UART / CAN / Modbus RTU）帧校验的开发与报文抓包核对',
+          '固件、Bootloader 与存储镜像的 CRC-32 / CRC-64 完整性校验对齐',
+          '自定义 CRC 参数（如私有多项式）的可行性验证与 check 向量生成',
+          '教学场景下演示反射算法、初始值与异或输出对 CRC 结果的影响',
+        ],
+        privacyNote:
+          '所有数据与 CRC 运算均在浏览器本地通过 BigInt 完成，不发起任何网络请求，报文内容不会被上传或留存。',
+        faqs: [
+          {
+            question: '它和站内已有的 crc32-checksum、crc16-checksum 有什么区别？',
+            answer:
+              '那两个工具是固定单模型（CRC-32/ISO-HDLC 与 CRC-16/CCITT）的快速校验器；本工具是参数化通用引擎，覆盖 8/16/32/64 四种位宽、12 个标准预设，支持反射方向切换、全模型同跑与 check 自检，面向协议开发与多模型选型场景。',
+          },
+          {
+            question: '为什么 Modbus 算出的 16 进制值和抓包字节顺序相反？',
+            answer:
+              'CRC-16/MODBUS 是 reflected 算法，工具输出的是寄存器中的整数十六进制值；而 Modbus RTU 线上规定校验码按小端（低字节在前）发送。例如寄存器值 0x2140 在线上的字节序列是 40 21，两者描述的是同一个 CRC。',
+          },
+          {
+            question: 'check 自检的原理是什么？',
+            answer:
+              'CRC 标准约定用 ASCII 字符串 "123456789" 作为统一校验输入，每个参数模型都有唯一对应的 check 常量（如 CRC-32/HDLC 为 0xCBF43926）。工具用当前参数实时计算该串并与内置 check 比对，一致即说明引擎与参数配置正确。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A parameterized, generic cyclic redundancy check engine whose width, poly, init, refIn, refOut and xorOut follow the catalogue/crc.com Rocksoft™ model exactly. BigInt arithmetic covers every width from 1 to 64 without precision loss. Twelve industry-standard presets ship with canonical "123456789" check constants for one-click implementation verification.',
+        coreFeatures: [
+          'Generic engine: any width (1-64), poly, init, refIn/refOut and xorOut combination with exact BigInt math',
+          '12 standard presets: CRC-8/MAXIM, CRC-16/ARC, MODBUS, CCITT-FALSE, XMODEM, GENIBUS, CRC-32/HDLC, BZIP2, CRC-32C, CRC-64/XZ and more',
+          'Dual input modes: compute directly from UTF-8 text or paste hex bytes (spaces, commas and 0x prefixes accepted)',
+          'Full-model comparison: all 12 CRCs for the same input on one screen for protocol selection and cross-checking',
+          'Self-check: validates the active model against the standard check constant with a green pass indicator',
+        ],
+        howToUse: [
+          'Pick the target CRC model from the dropdown; the width/poly/init/refIn/refOut/xorOut parameters appear immediately',
+          'Choose UTF-8 text or hex-byte input and enter the data; the CRC hex value updates live in the result panel',
+          'For protocol frames, paste packet bytes as hex and note the Modbus little-endian byte-order hint',
+          'Compare outputs across models in the comparison table, or copy a single result with the copy button',
+        ],
+        useCases: [
+          'Developing and verifying frame checks for embedded links (UART / CAN / Modbus RTU) against captured packets',
+          'Aligning CRC-32 / CRC-64 integrity checks for firmware, bootloaders and storage images',
+          'Validating custom CRC parameters such as private polynomials and generating check vectors',
+          'Teaching reflected algorithms and how initial values and output XOR shape the CRC result',
+        ],
+        privacyNote:
+          'All data and CRC operations run locally in your browser via BigInt. No network requests are made and packet content is never uploaded or retained.',
+        faqs: [
+          {
+            question: 'How does this differ from the existing crc32-checksum and crc16-checksum tools?',
+            answer:
+              'Those are fixed single-model quick checkers (CRC-32/ISO-HDLC and CRC-16/CCITT). This is a parameterized generic engine spanning 8/16/32/64-bit widths with 12 presets, configurable reflection, side-by-side model comparison and check self-verification, aimed at protocol development and model selection.',
+          },
+          {
+            question: 'Why does the Modbus hex value look byte-reversed compared with captured traffic?',
+            answer:
+              'CRC-16/MODBUS is a reflected algorithm, and the tool shows the integer register value in hex. Modbus RTU transmits the check field little-endian (low byte first): register 0x2140 appears on the wire as bytes 40 21. Both describe the same CRC.',
+          },
+          {
+            question: 'How does the check self-test work?',
+            answer:
+              'CRC standards define the ASCII string "123456789" as the common check input, and every parameter model has a unique check constant (e.g. 0xCBF43926 for CRC-32/HDLC). The tool computes that string with the active parameters and compares it against the built-in check; a match confirms both engine and configuration.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'three-phase-power-calculator',
+    name: '三相交流电路功率 / 功率因数 / 扭矩换算计算器',
+    nameEn: 'Three-Phase AC Power, Power Factor & Torque Calculator',
+    description:
+      '面向三相平衡交流电路，按星形（Y）或三角形（Δ）接法在线电压 / 线电流基准下计算有功 P、无功 Q、视在功率 S、阻抗角、相电压与相电流，支持由目标功率反推线电流以及电机轴扭矩 T=9550·P/n 换算。',
+    descriptionEn:
+      'For balanced three-phase AC circuits, compute active P, reactive Q, apparent power S, phase angle, phase voltage and phase current from line quantities under star (Y) or delta (Δ) connections, back-solve line current from a target power, and convert motor shaft torque via T = 9550·P/n.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/three-phase-power-calculator',
+    iconName: 'Zap',
+    tags: ['三相电', '有功功率', '无功功率', '视在功率', '功率因数', '电机扭矩', '星形三角形'],
+    tagsEn: ['Three-Phase', 'Active Power', 'Reactive Power', 'Apparent Power', 'Power Factor', 'Torque', 'Star Delta'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '400V, 10A, cosφ=0.8, Star',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具面向电气工程师、配电与电机选型场景，在浏览器本地完成三相平衡正弦稳态电路的功率计算。以线电压 V_L 与线电流 I_L 为统一输入基准，按 P=√3·V_L·I_L·cosφ、S=√3·V_L·I_L、Q=√(S²−P²) 计算，并根据星形 / 三角形接法换算相电压与相电流，另提供线电流反推与电机轴扭矩换算。',
+        coreFeatures: [
+          '三相功率三件套：有功 P（W/kW）、无功 Q（var/kvar）、视在功率 S（VA/kVA）同屏输出',
+          '双接法支持：星形 V_ph=V_L/√3、三角形 I_ph=I_L/√3，自动换算相电压 / 相电流',
+          '功率因数与阻抗角：由 cosφ 计算 φ=arccos(cosφ)，并给出常见 0.7–1.0 快捷预设',
+          '双向计算：既可由 V/I/cosφ 求功率，也可由目标有功功率反推所需线电流',
+          '电机扭矩：按 T=9550·P(kW)/n(rpm) 换算轴扭矩，并支持电机效率 η 折算轴功率',
+        ],
+        howToUse: [
+          '选择绕组接法（星形 Y 或三角形 Δ），输入线电压 V_L、线电流 I_L 与功率因数 cosφ',
+          '可点击场景预设快速填入 400V 配电、380V 电机柜或 10kV 高压侧参数',
+          '切换到「由目标功率反推电流」模式，输入目标有功功率即可得到所需线电流',
+          '在扭矩面板填写电机转速与效率，得到额定轴扭矩 N·m',
+        ],
+        useCases: [
+          '低压配电柜、开关柜与无功补偿容量的初步估算',
+          '三相异步电机、水泵风机的电流校核与电缆载流量预判',
+          '工厂配电设计中 cosφ 校正、电容补偿前后的无功功率对比',
+          '电机选型时由额定功率与同步 / 额定转速反推轴扭矩',
+        ],
+        privacyNote:
+          '所有电气参数均在浏览器本地计算，不发起任何网络请求，工程数据不会被上传或留存。',
+        faqs: [
+          {
+            question: '为什么统一用线电压 / 线电流而不是相值？',
+            answer:
+              '工程现场铭牌与仪表普遍标注线电压（如 380V/400V）与线电流，公式 P=√3·V_L·I_L·cosφ 对星形和三角形接法都成立。工具内部再按接法换算相值：星形 V_ph=V_L/√3、I_ph=I_L；三角形 V_ph=V_L、I_ph=I_L/√3，避免用户自行判断。',
+          },
+          {
+            question: '有功、无功、视在功率三者是什么关系？',
+            answer:
+              '视在功率 S=√3·V_L·I_L 单位 VA，描述容量；有功 P=S·cosφ 单位 W，是真正做功的部分；无功 Q=√(S²−P²) 单位 var，用于建立磁场。三者满足功率三角形 S²=P²+Q²，cosφ=P/S 即功率因数，越低意味着同等有功下占用的容量越大。',
+          },
+          {
+            question: '扭矩公式里的 9550 是怎么来的？',
+            answer:
+              '由功率与角速度关系 T=P/ω 推导：P 以 kW、转速 n 以 rpm 计时，ω=2πn/60，代入并换算单位得到 T(N·m)=9550·P(kW)/n(rpm)。考虑电机效率时，轴功率 = 输入有功 × η，因此面板默认提供效率折算。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A browser-local calculator for balanced three-phase sinusoidal steady-state circuits aimed at electrical engineers and power-distribution or motor-selection work. Using line voltage V_L and line current I_L as the unified basis, it applies P=√3·V_L·I_L·cosφ, S=√3·V_L·I_L and Q=√(S²−P²), derives phase quantities for star or delta connections, back-solves line current and converts motor shaft torque.',
+        coreFeatures: [
+          'Power trio: active P (W/kW), reactive Q (var/kvar) and apparent S (VA/kVA) on one screen',
+          'Dual connections: star V_ph=V_L/√3 and delta I_ph=I_L/√3, with automatic phase-quantity conversion',
+          'Power factor and impedance angle: φ=arccos(cosφ) with quick presets from 0.7 to 1.0',
+          'Bidirectional: solve power from V/I/cosφ, or back-solve the required line current from a target active power',
+          'Motor torque: shaft torque via T=9550·P(kW)/n(rpm), with efficiency η applied to shaft power',
+        ],
+        howToUse: [
+          'Choose the winding connection (star Y or delta Δ) and enter line voltage V_L, line current I_L and power factor cosφ',
+          'Use scenario presets to fill 400V distribution, 380V motor cabinet or 10kV high-side parameters quickly',
+          'Switch to "current from target power" mode and enter the desired active power to obtain the line current',
+          'Fill motor speed and efficiency in the torque panel to read the rated shaft torque in N·m',
+        ],
+        useCases: [
+          'Preliminary sizing of low-voltage switchgear and reactive-power compensation banks',
+          'Current checks and cable ampacity pre-assessment for three-phase induction motors, pumps and fans',
+          'Comparing reactive power before and after power-factor correction in factory distribution design',
+          'Deriving shaft torque from rated power and synchronous/rated speed during motor selection',
+        ],
+        privacyNote:
+          'All electrical parameters are computed locally in your browser. No network requests are made and engineering data is never uploaded or retained.',
+        faqs: [
+          {
+            question: 'Why use line voltage and line current instead of phase values?',
+            answer:
+              'Nameplates and instruments universally quote line quantities (e.g. 380V/400V) and line current, and P=√3·V_L·I_L·cosφ holds for both connections. The tool converts phase values internally: star V_ph=V_L/√3, I_ph=I_L; delta V_ph=V_L, I_ph=I_L/√3, removing the need to judge the wiring manually.',
+          },
+          {
+            question: 'How do active, reactive and apparent power relate?',
+            answer:
+              'Apparent power S=√3·V_L·I_L in VA describes capacity; active P=S·cosφ in W does real work; reactive Q=√(S²−P²) in var sustains magnetic fields. They form the power triangle S²=P²+Q², and cosφ=P/S is the power factor — a lower factor means more capacity consumed for the same useful power.',
+          },
+          {
+            question: 'Where does the 9550 constant in the torque formula come from?',
+            answer:
+              'From T=P/ω with ω=2πn/60. When P is expressed in kW and speed n in rpm, unit conversion yields T(N·m)=9550·P(kW)/n(rpm). With motor efficiency considered, shaft power equals input active power times η, which is why the panel provides an efficiency adjustment.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'music-pitch-converter',
+    name: '音乐音高与频率互算器（音符 ↔ Hz、半音音程与调音基准）',
+    nameEn: 'Music Pitch & Frequency Converter (Note ↔ Hz, Intervals & Tuning Reference)',
+    description:
+      '基于十二平均律在科学音高记法（A4、C#5）与声波频率（Hz）之间双向换算，支持自定义 A4 调音基准（440 / 432 / 442 / 415 Hz 等），计算任意两音的半音数、音程名称、频率比与音分距离，并输出整八度音名频率表。',
+    descriptionEn:
+      'Convert between scientific pitch notation (A4, C#5) and sound frequency in Hz under equal temperament with a customizable A4 tuning reference (440/432/442/415 Hz), compute semitone distance, interval names, frequency ratios and cents for any two notes, and generate full-octave pitch-frequency tables.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/music-pitch-converter',
+    iconName: 'Music',
+    tags: ['音高', '频率', '十二平均律', '音程', '调音', '音分', 'A4'],
+    tagsEn: ['Pitch', 'Frequency', 'Equal Temperament', 'Interval', 'Tuning', 'Cents', 'A4'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'A4',
+    doc: {
+      zh: {
+        whatIsIt:
+          '音乐音高与频率互算器是一款面向调音、声学实验与电子音乐参数查表的纯浏览器工具，基于十二平均律公式 f = f_A4 × 2^((n−69)/12) 在音名与频率之间双向换算。与仅支持 MIDI 序号视角的 midi-note-converter 不同，本工具以自定义调音基准、任意两音音程与整八度频率表为核心，支持 440 Hz 国际标准、432 Hz 自然调音、442 Hz 管弦乐与 415 Hz 巴洛克音高。',
+        coreFeatures: [
+          '音名 → 频率：解析 A4、C#5、Bb3 等科学音高记法（含 B#/Cb 跨界等音归一化），输出精确 Hz 与等价 MIDI 编号',
+          '频率 → 音名：反查最近音符并给出音分（cents）偏差与连续音高编号，便于调音误差判读',
+          '音程计算：任意两音的半音数、中英文音程名称（含跨八度复合音程）、频率比 f₂/f₁ 与音分距离',
+          '可调调音基准：A4 可在 415–442 Hz 等预设间切换或手动输入，整八度 12 半音频率表随基准实时重算',
+        ],
+        howToUse: [
+          '在顶部设置 A4 调音基准，或直接点击 440 / 432 / 442 / 415 Hz 预设',
+          '选择「音名 → 频率」并输入如 A4、C#5 的音名，立即得到频率与计算公式',
+          '选择「频率 → 音名」输入 Hz 数值，查看最近音符与正负音分偏差',
+          '选择「音程 / 频率比」输入两个音符，或点击常见音程预设，查看半音数、频率比与音分',
+          '选择「八度频率表」并切换八度编号，获取该八度全部 12 个半音的频率与相对 A4 的音分差',
+        ],
+        useCases: [
+          '乐器调音前核对目标频率，量化实测音高与标准音的音分偏差',
+          '电子音乐 / 合成器参数查表，将音名转换为振荡器频率',
+          '乐理学习中验证音程、频率比与十二平均律的数学关系',
+          '复古 / 巴洛克演奏场景下按 415 Hz 等非标准基准重新推算全部音高',
+        ],
+        privacyNote:
+          '全部换算均为确定性数学公式，在浏览器本地完成，不采集任何输入，也不向服务器发送数据。',
+        faqs: [
+          {
+            question: '和已有的 midi-note-converter 有什么区别？',
+            answer:
+              'midi-note-converter 以 MIDI 序号 0–127 为主视角做序号 / 音名 / 频率互转，A4 固定 440 Hz；本工具支持自定义 A4 基准（432/442/415 等）、任意两音的音程名称与频率比计算、音分偏差判读以及整八度频率表，面向调音与乐理分析而非 MIDI 工程。',
+          },
+          {
+            question: '音分（cents）是什么？',
+            answer:
+              '音分是对数音高单位，十二平均律中一个半音等于 100 音分，一个八度等于 1200 音分。频率反查时输出的音分偏差表示实测频率相对最近标准音偏高（正）或偏低（负）多少，调音中 ±5 音分以内通常已不易察觉。',
+          },
+          {
+            question: '为什么切换 A4 基准后所有频率都变了，音程却不变？',
+            answer:
+              '十二平均律中相邻半音的频率比恒为 2^(1/12)，音程由半音数决定，与整体移调无关；而每个音符的绝对频率与 A4 基准成正比，因此基准改变时频率表整体平移、音程关系保持不变。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully in-browser utility for tuning, acoustics and electronic-music lookup. Built on the equal-temperament formula f = f_A4 × 2^((n−69)/12), it converts both ways between scientific pitch notation and frequency. Unlike the MIDI-number-centric midi-note-converter, it focuses on a customizable tuning reference, intervals between arbitrary notes and full-octave frequency tables, supporting 440 Hz standard, 432 Hz natural tuning, 442 Hz orchestral pitch and 415 Hz Baroque pitch.',
+        coreFeatures: [
+          'Note to frequency: parse SPN such as A4, C#5 and Bb3 (with B#/Cb enharmonic normalization) and output exact Hz plus the equivalent MIDI number',
+          'Frequency to note: find the nearest note with cents deviation and continuous pitch number for tuning-error assessment',
+          'Interval analysis: semitone count, Chinese/English interval names (including compound intervals across octaves), frequency ratio f₂/f₁ and cents distance for any note pair',
+          'Adjustable reference: switch A4 among 415–442 Hz presets or type a custom value; the 12-tone octave table recalculates live',
+        ],
+        howToUse: [
+          'Set the A4 tuning reference at the top, or click a 440/432/442/415 Hz preset',
+          'Pick "Note → Frequency", enter a note like A4 or C#5, and read the frequency plus formula',
+          'Pick "Frequency → Note", type a Hz value, and inspect the nearest note with signed cents deviation',
+          'Pick "Interval / Ratio", enter two notes or use a common-interval preset to see semitones, ratio and cents',
+          'Pick "Octave Table" and switch octave numbers for all 12 pitches with frequencies and cents relative to A4',
+        ],
+        useCases: [
+          'Checking target frequencies while tuning instruments and quantifying cents error against the reference',
+          'Converting note names into oscillator frequencies for synths and electronic music',
+          'Verifying the math of intervals, frequency ratios and equal temperament in music-theory study',
+          'Re-deriving pitches under non-standard references such as 415 Hz for historical performance',
+        ],
+        privacyNote:
+          'Every conversion is a deterministic formula executed locally in your browser; no input is collected or transmitted.',
+        faqs: [
+          {
+            question: 'How is this different from the existing midi-note-converter?',
+            answer:
+              'midi-note-converter is centered on MIDI numbers 0–127 with A4 fixed at 440 Hz. This tool adds a customizable A4 reference (432/442/415 Hz etc.), interval names and frequency ratios between arbitrary notes, cents-deviation assessment and full-octave tables — aimed at tuning and theory rather than MIDI engineering.',
+          },
+          {
+            question: 'What is a cent?',
+            answer:
+              'A cent is a logarithmic pitch unit: one equal-tempered semitone equals 100 cents and an octave equals 1200 cents. The cents deviation shown in frequency lookup tells you how sharp (positive) or flat (negative) a measured frequency is relative to the nearest standard note; within ±5 cents is typically imperceptible.',
+          },
+          {
+            question: 'Why do frequencies change with the A4 reference but intervals do not?',
+            answer:
+              'In equal temperament the ratio of adjacent semitones is always 2^(1/12), so intervals depend only on semitone count and are independent of transposition. Absolute frequencies are proportional to the A4 reference, so changing the reference shifts the whole table while interval relationships stay identical.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
