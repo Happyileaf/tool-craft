@@ -269,7 +269,7 @@
 | 20261107140228 | Widmark 血液酒精浓度（BAC）估算与代谢时间计算器 | Web Tool | Existing Gap | In Progress | 2026-11-07 | trae-agent | [详情](./idea-details/20261107140228.md) |
 | 20261107140229 | 毛利率 / 加价率 / 售价双向定价计算器 | Web Tool | Existing Gap | In Progress | 2026-11-07 | trae-agent | [详情](./idea-details/20261107140229.md) |
 | 20261107140230 | M3U / M3U8 播放列表生成与解析器（含 HLS 媒体序列） | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140230.md) |
-| 20261107200150 | Base-N 任意进制整数互转器（radix 2–36 与自定义字母表） | Web Tool | Existing Gap | Claimed | 2026-11-07 | trae-agent | [详情](./idea-details/20261107200150.md) |
+| 20261107200150 | Base-N 任意进制整数互转器（radix 2–36 与自定义字母表） | Web Tool | Existing Gap | In Progress | 2026-11-07 | trae-agent | [详情](./idea-details/20261107200150.md) |
 | 20261107200151 | CRC-8 / CRC-16 / CRC-32 / CRC-64 多参数模型计算器 | Web Tool | Existing Gap | Claimed | 2026-11-07 | trae-agent | [详情](./idea-details/20261107200151.md) |
 | 20261107200152 | 培根 / 栅栏 / Playfair / Atbash 古典密码合集 | Web Tool | Exploration | Pending | 2026-11-07 | | [详情](./idea-details/20261107200152.md) |
 | 20261107200153 | HSV / HSL / HWB / Lab / LCH 多色彩空间互转器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200153.md) |

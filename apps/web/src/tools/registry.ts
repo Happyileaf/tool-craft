@@ -28752,6 +28752,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'base-n-radix-converter',
+    name: 'Base-N 任意进制整数互转器（radix 2–36 与自定义字母表）',
+    nameEn: 'Base-N Radix Converter (radix 2–36 with Custom Alphabets)',
+    description:
+      '基于 BigInt 的任意进制整数互转，支持 radix 2–36、0x/0o/0b 前缀自动识别、下划线分隔、负数与超出 2^53 的超大整数，并支持 Crockford Base32 等自定义字母表，一次输出二/八/十/十六进制一览。',
+    descriptionEn:
+      'BigInt-powered integer conversion between any radix from 2 to 36 with automatic 0x/0o/0b prefix detection, underscore separators, negatives and integers beyond 2^53, plus custom alphabets such as Crockford Base32 and a simultaneous BIN/OCT/DEC/HEX view.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/base-n-radix-converter',
+    iconName: 'Binary',
+    tags: ['进制转换', 'BigInt', 'Base32', 'Base36', 'Crockford', '二进制', '十六进制', '开发者'],
+    tagsEn: ['Radix', 'Base-N', 'BigInt', 'Base32', 'Base36', 'Crockford', 'Binary', 'Hex', 'Developer'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '255 (decimal)',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具在浏览器本地完成任意进制整数之间的精确互转。内部基于原生 BigInt 运算，即使是 64 位甚至更长的整数（如 2^64−1 = 18446744073709551615）也不会出现浮点精度损失；支持 2–36 全范围 radix、0x/0o/0b 前缀自动识别、下划线千分位风格分隔、负数以及自定义字母表（如 Crockford Base32）。',
+        coreFeatures: [
+          'radix 2–36 任意源进制与目标进制组合，双向自由转换',
+          'BigInt 精确运算：超出 Number.MAX_SAFE_INTEGER 的大整数不丢精度',
+          '前缀识别：0x 自动按 16 进制、0o 按 8 进制、0b 按 2 进制解析',
+          '自定义字母表：支持 Crockford Base32 防混淆字母表与任意 ≥2 字符的唯一字母表',
+          '常用进制一览：同屏输出 BIN / OCT / DEC / HEX 并提供位分组视图与一键复制',
+        ],
+        howToUse: [
+          '在输入框粘贴或键入整数，可携带 0x/0o/0b 前缀或下划线（如 1111_0000）',
+          '选择源进制（无前缀时生效）与目标进制，也可点击快捷按钮切换 2/8/10/16/32/36',
+          '需要 Crockford 等特殊编码时，在目标字母表中选择对应预设或输入自定义字母表',
+          '在结果区复制目标进制字符串，或在下方一览表中查看四种常用进制',
+        ],
+        useCases: [
+          '固件、协议与逆向工程中的二进制 / 十六进制地址和寄存器值换算',
+          '编码方案设计与验证：Base32、Base36、Crockford 等字母表映射',
+          '处理雪花 ID、uint64 时间戳等超出 JS 安全整数范围的大整数',
+          '教学场景下演示位权、进制前缀与负号在不同进制下的表示',
+        ],
+        privacyNote:
+          '所有输入与转换均在浏览器本地通过 BigInt 完成，不发起任何网络请求，数字内容不会被上传或留存。',
+        faqs: [
+          {
+            question: '它和站内已有的 number-base-converter 有什么区别？',
+            answer:
+              'number-base-converter 固定在二/八/十/十六进制之间切换，且基于 Number 运算，超过 2^53 会丢精度；本工具支持 2–36 任意 radix、自定义字母表（含 Crockford Base32）、前缀与下划线解析，并全程使用 BigInt 保证大整数精确。',
+          },
+          {
+            question: '为什么输入字母表以外的字符会报错？',
+            answer:
+              '每个字符在字母表中的下标就是它的位值，合法字符的下标必须落在 [0, radix) 区间。例如 radix=2 时只允许 0、1，出现 2 或字母都会被拒绝并提示具体非法字符，避免静默产生错误结果。',
+          },
+          {
+            question: '支持小数（浮点）进制转换吗？',
+            answer:
+              '不支持。本工具聚焦整数场景以保证 BigInt 精确性；小数的进制转换涉及有限 / 循环小数判定与舍入策略，与整数转换是不同的问题域，应使用专门的浮点格式化工具。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local, exact integer radix converter. All arithmetic uses native BigInt, so 64-bit or longer integers such as 2^64−1 = 18446744073709551615 convert without floating-point precision loss. It supports every radix from 2 to 36, automatic 0x/0o/0b prefix detection, underscore separators, negatives and custom alphabets including Crockford Base32.',
+        coreFeatures: [
+          'Any source/target radix combination from 2 to 36, converting freely in both directions',
+          'Exact BigInt arithmetic: no precision loss beyond Number.MAX_SAFE_INTEGER',
+          'Prefix detection: 0x parses as hex, 0o as octal and 0b as binary automatically',
+          'Custom alphabets: Crockford Base32 confusion-resistant set or any unique alphabet with ≥2 symbols',
+          'Common-base dashboard: simultaneous BIN/OCT/DEC/HEX output with grouped bit views and one-click copy',
+        ],
+        howToUse: [
+          'Type or paste an integer, optionally with a 0x/0o/0b prefix or underscores (e.g. 1111_0000)',
+          'Pick the source radix (used when no prefix is present) and target radix, or use the 2/8/10/16/32/36 quick buttons',
+          'For Crockford or similar encodings, select a preset alphabet or enter a custom one for the target',
+          'Copy the converted string from the result panel, or inspect all four common bases in the table below',
+        ],
+        useCases: [
+          'Binary/hex address and register conversion in firmware, protocol and reverse-engineering work',
+          'Designing and verifying encoding schemes such as Base32, Base36 and Crockford mappings',
+          'Handling snowflake IDs, uint64 timestamps and other integers beyond the JS safe-integer range',
+          'Teaching positional notation, radix prefixes and signed representations across bases',
+        ],
+        privacyNote:
+          'Every input and conversion runs locally in your browser via BigInt. No network requests are made and numeric content is never uploaded or retained.',
+        faqs: [
+          {
+            question: 'How is this different from the existing number-base-converter?',
+            answer:
+              'number-base-converter is limited to binary/octal/decimal/hex and uses Number arithmetic, which loses precision beyond 2^53. This tool covers any radix from 2 to 36, custom alphabets (including Crockford Base32), prefix and underscore parsing, and keeps every operation exact with BigInt.',
+          },
+          {
+            question: 'Why are characters outside the alphabet rejected?',
+            answer:
+              'A character\'s alphabet index is its positional value, and a valid digit must have an index in [0, radix). For radix 2 only 0 and 1 are legal, so a 2 or any letter is rejected with the offending character named, preventing silently incorrect results.',
+          },
+          {
+            question: 'Does it support fractional (floating-point) radix conversion?',
+            answer:
+              'No. The tool focuses on integers to preserve BigInt exactness. Fractional conversion requires finite/recurring expansion decisions and rounding policies — a separate problem domain better served by dedicated floating-point formatters.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

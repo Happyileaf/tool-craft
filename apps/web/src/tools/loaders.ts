@@ -306,4 +306,5 @@ export const toolLoaders: Record<
   'overtime-pay-calculator': () => import('./overtime-pay-calculator'),
   'pricing-margin-calculator': () => import('./pricing-margin-calculator'),
   'survey-sample-size-calculator': () => import('./survey-sample-size-calculator'),
+  'base-n-radix-converter': () => import('./base-n-radix-converter'),
 };
