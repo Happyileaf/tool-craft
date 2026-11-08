@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261108200230 | Hamming(7,4) 编解码与纠错演示器（含 syndrome 定位可视化） | Web Tool | Existing Gap | `hamming-codec` / [PR #203](https://github.com/Happyileaf/tool-craft/pull/203) | 2026-11-09 | [详情](./idea-details/20261108200230.md) |
+| 20261105140804 | 表达式调度场算法可视化器（中缀转后缀 RPN 与逐步求值过程演示） | Web Tool | Exploration | `shunting-yard-visualizer` / [PR #203](https://github.com/Happyileaf/tool-craft/pull/203) | 2026-11-09 | [详情](./idea-details/20261105140804.md) |
+| 20261103140202 | 月相查询与月龄计算器 | Web Tool | External Reference | `moon-phase-calculator` / [PR #203](https://github.com/Happyileaf/tool-craft/pull/203) | 2026-11-09 | [详情](./idea-details/20261103140202.md) |
+| 20261026200350 | 原始 HTTP 报文解析器（请求 / 响应） | Web Tool | Existing Gap | `http-message-parser` / [PR #203](https://github.com/Happyileaf/tool-craft/pull/203) | 2026-11-09 | [详情](./idea-details/20261026200350.md) |
+| 20261026140924 | MessagePack ↔ JSON 双向编解码器 | Web Tool | Existing Gap | `messagepack-codec` / [PR #203](https://github.com/Happyileaf/tool-craft/pull/203) | 2026-11-09 | [详情](./idea-details/20261026140924.md) |
 | 20261106160211 | 电阻串并联等效电阻与公差累积计算器 | Web Tool | Exploration | `resistor-network-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106160211.md) |
 | 20261106060117 | GPA 平均绩点计算器（百分制/4.0/4.3 多算法与学分加权） | Web Tool | Exploration | `gpa-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060117.md) |
 | 20261106060115 | 多边形面积与周长计算器（鞋带公式，含 GeoJSON 粘贴） | Web Tool | Exploration | `polygon-area-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060115.md) |
