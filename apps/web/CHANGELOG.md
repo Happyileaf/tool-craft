@@ -4,13 +4,18 @@
 
 ## 日志
 
-## 2026-11-08 ：【Agent自主迭代】新增 5 个 Java 描述符、E.123 电话格式、DMARC 记录、Plus Codes 与 CHANGELOG 生成工具
+## 2026-11-08 ：【Agent自主迭代】新增 10 个 Java 描述符、E.123 电话格式、DMARC 记录、Plus Codes、CHANGELOG 生成、LRC 歌词解析、BAC 估算、LC 谐振、加班工资与定价计算工具
 
 - **新增**：Java 内部类名与描述符转换器（java-descriptor-converter）— 按 JVMS §4.2/§4.3 在内部名与源码类名之间互转，生成并解析字段与方法描述符，覆盖数组维度、原始类型与引用类型，非法描述符定位到具体字符，纯本地运算
 - **新增**：ITU E.123 电话号码格式化器（e123-phone-formatter）— 按 ITU-T E.123 剥离可视分隔符，在 E.164 无分隔形式与人类可读分组形式之间双向转换，支持空格/点号/连字符、本地括号长途区号与批量逐行处理，非法字符逐条标记，纯本地运算
 - **新增**：DMARC 记录生成与校验器（dmarc-record-generator）— 按 RFC 7489 拼装 _dmarc DNS TXT 记录，可视化配置 p/sp/rua/ruf/adkim/aspf/fo/pct/rf/ri 标签，并对现有记录做语法校验、未知标签提示与策略冲突检查，超长记录按 255 字符分段，纯本地运算
 - **新增**：Plus Codes 编解码器（plus-code-codec）— 移植 Google 官方 Open Location Code 整数算法，经纬度编码支持 2–15 位码长，完整码解码输出中心点、边界框与格子精度，并支持参考点短码 shorten/recover，结果与官方全量测试向量逐位一致，纯本地运算
 - **新增**：CHANGELOG.md 生成器（Keep a Changelog）（changelog-generator）— 把一批 Conventional Commits 提交信息（含 git oneline 短哈希）解析分组为 Keep a Changelog 1.1.0 片段，安全/弃用/移除关键词语义识别，破坏性变更置顶，支持版本日期标题、作用域前缀、内部类型收录开关与 CHANGELOG.md 下载，纯本地运算
+- **新增**：LRC 歌词时间戳生成与解析器（lrc-parser）— 在 [mm:ss.xx] 时间戳与毫秒之间双向换算（支持百分秒四舍五入进位），解析多时间标签、元数据标签与重复段落并可重新序列化，纯函数零依赖，纯本地运算
+- **新增**：Widmark 血液酒精浓度（BAC）估算器（bac-calculator）— 按 Widmark 公式由性别、体重、饮酒明细（体积/酒精度/饮品数）与经过时间估算峰值与当前 BAC，区分男 0.68/女 0.55 水分系数、0.015/小时代谢率与 14g 标准杯，含清醒所需时间与安全提示，纯本地运算
+- **新增**：LC 谐振频率与电抗计算器（lc-resonance-calculator）— 按 f₀=1/(2π√(LC)) 双向求解谐振频率/电感/电容，自动换算 H/mH/µH/nH 与 F/µF/nF/pF 工程单位，并计算容抗 Xc、感抗 Xl 与常用标准 L/C 组合参考，纯本地运算
+- **新增**：加班工资计算器（中国大陆劳动法）（overtime-pay-calculator）— 依据劳动法第四十四条按 21.75 月计薪天数与 8 小时工时折算日薪/时薪，分项计算工作日延时 150%、休息日 200%、法定节假日 300% 加班费与当月应发总额，附倍率法规依据，纯本地运算
+- **新增**：毛利率 / 加价率 / 售价双向定价计算器（pricing-margin-calculator）— 严格区分毛利率（分母为售价）与加价率 markup（分母为成本），在成本/售价/毛利率/加价率/毛利额间双向求解，支持批量定价 CSV、多档折扣保本分析与口径互转对照表，纯本地运算
 
 ## 2026-11-07 ：【Agent自主迭代】新增 5 个 Luhn 校验、闰秒 TAI 转换、CORS 头、DKIM 记录与 PO/JSON 转换工具
 
