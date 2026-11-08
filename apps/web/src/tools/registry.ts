@@ -29064,6 +29064,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'music-pitch-converter',
+    name: '音乐音高与频率互算器（音符 ↔ Hz、半音音程与调音基准）',
+    nameEn: 'Music Pitch & Frequency Converter (Note ↔ Hz, Intervals & Tuning Reference)',
+    description:
+      '基于十二平均律在科学音高记法（A4、C#5）与声波频率（Hz）之间双向换算，支持自定义 A4 调音基准（440 / 432 / 442 / 415 Hz 等），计算任意两音的半音数、音程名称、频率比与音分距离，并输出整八度音名频率表。',
+    descriptionEn:
+      'Convert between scientific pitch notation (A4, C#5) and sound frequency in Hz under equal temperament with a customizable A4 tuning reference (440/432/442/415 Hz), compute semitone distance, interval names, frequency ratios and cents for any two notes, and generate full-octave pitch-frequency tables.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/music-pitch-converter',
+    iconName: 'Music',
+    tags: ['音高', '频率', '十二平均律', '音程', '调音', '音分', 'A4'],
+    tagsEn: ['Pitch', 'Frequency', 'Equal Temperament', 'Interval', 'Tuning', 'Cents', 'A4'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'A4',
+    doc: {
+      zh: {
+        whatIsIt:
+          '音乐音高与频率互算器是一款面向调音、声学实验与电子音乐参数查表的纯浏览器工具，基于十二平均律公式 f = f_A4 × 2^((n−69)/12) 在音名与频率之间双向换算。与仅支持 MIDI 序号视角的 midi-note-converter 不同，本工具以自定义调音基准、任意两音音程与整八度频率表为核心，支持 440 Hz 国际标准、432 Hz 自然调音、442 Hz 管弦乐与 415 Hz 巴洛克音高。',
+        coreFeatures: [
+          '音名 → 频率：解析 A4、C#5、Bb3 等科学音高记法（含 B#/Cb 跨界等音归一化），输出精确 Hz 与等价 MIDI 编号',
+          '频率 → 音名：反查最近音符并给出音分（cents）偏差与连续音高编号，便于调音误差判读',
+          '音程计算：任意两音的半音数、中英文音程名称（含跨八度复合音程）、频率比 f₂/f₁ 与音分距离',
+          '可调调音基准：A4 可在 415–442 Hz 等预设间切换或手动输入，整八度 12 半音频率表随基准实时重算',
+        ],
+        howToUse: [
+          '在顶部设置 A4 调音基准，或直接点击 440 / 432 / 442 / 415 Hz 预设',
+          '选择「音名 → 频率」并输入如 A4、C#5 的音名，立即得到频率与计算公式',
+          '选择「频率 → 音名」输入 Hz 数值，查看最近音符与正负音分偏差',
+          '选择「音程 / 频率比」输入两个音符，或点击常见音程预设，查看半音数、频率比与音分',
+          '选择「八度频率表」并切换八度编号，获取该八度全部 12 个半音的频率与相对 A4 的音分差',
+        ],
+        useCases: [
+          '乐器调音前核对目标频率，量化实测音高与标准音的音分偏差',
+          '电子音乐 / 合成器参数查表，将音名转换为振荡器频率',
+          '乐理学习中验证音程、频率比与十二平均律的数学关系',
+          '复古 / 巴洛克演奏场景下按 415 Hz 等非标准基准重新推算全部音高',
+        ],
+        privacyNote:
+          '全部换算均为确定性数学公式，在浏览器本地完成，不采集任何输入，也不向服务器发送数据。',
+        faqs: [
+          {
+            question: '和已有的 midi-note-converter 有什么区别？',
+            answer:
+              'midi-note-converter 以 MIDI 序号 0–127 为主视角做序号 / 音名 / 频率互转，A4 固定 440 Hz；本工具支持自定义 A4 基准（432/442/415 等）、任意两音的音程名称与频率比计算、音分偏差判读以及整八度频率表，面向调音与乐理分析而非 MIDI 工程。',
+          },
+          {
+            question: '音分（cents）是什么？',
+            answer:
+              '音分是对数音高单位，十二平均律中一个半音等于 100 音分，一个八度等于 1200 音分。频率反查时输出的音分偏差表示实测频率相对最近标准音偏高（正）或偏低（负）多少，调音中 ±5 音分以内通常已不易察觉。',
+          },
+          {
+            question: '为什么切换 A4 基准后所有频率都变了，音程却不变？',
+            answer:
+              '十二平均律中相邻半音的频率比恒为 2^(1/12)，音程由半音数决定，与整体移调无关；而每个音符的绝对频率与 A4 基准成正比，因此基准改变时频率表整体平移、音程关系保持不变。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully in-browser utility for tuning, acoustics and electronic-music lookup. Built on the equal-temperament formula f = f_A4 × 2^((n−69)/12), it converts both ways between scientific pitch notation and frequency. Unlike the MIDI-number-centric midi-note-converter, it focuses on a customizable tuning reference, intervals between arbitrary notes and full-octave frequency tables, supporting 440 Hz standard, 432 Hz natural tuning, 442 Hz orchestral pitch and 415 Hz Baroque pitch.',
+        coreFeatures: [
+          'Note to frequency: parse SPN such as A4, C#5 and Bb3 (with B#/Cb enharmonic normalization) and output exact Hz plus the equivalent MIDI number',
+          'Frequency to note: find the nearest note with cents deviation and continuous pitch number for tuning-error assessment',
+          'Interval analysis: semitone count, Chinese/English interval names (including compound intervals across octaves), frequency ratio f₂/f₁ and cents distance for any note pair',
+          'Adjustable reference: switch A4 among 415–442 Hz presets or type a custom value; the 12-tone octave table recalculates live',
+        ],
+        howToUse: [
+          'Set the A4 tuning reference at the top, or click a 440/432/442/415 Hz preset',
+          'Pick "Note → Frequency", enter a note like A4 or C#5, and read the frequency plus formula',
+          'Pick "Frequency → Note", type a Hz value, and inspect the nearest note with signed cents deviation',
+          'Pick "Interval / Ratio", enter two notes or use a common-interval preset to see semitones, ratio and cents',
+          'Pick "Octave Table" and switch octave numbers for all 12 pitches with frequencies and cents relative to A4',
+        ],
+        useCases: [
+          'Checking target frequencies while tuning instruments and quantifying cents error against the reference',
+          'Converting note names into oscillator frequencies for synths and electronic music',
+          'Verifying the math of intervals, frequency ratios and equal temperament in music-theory study',
+          'Re-deriving pitches under non-standard references such as 415 Hz for historical performance',
+        ],
+        privacyNote:
+          'Every conversion is a deterministic formula executed locally in your browser; no input is collected or transmitted.',
+        faqs: [
+          {
+            question: 'How is this different from the existing midi-note-converter?',
+            answer:
+              'midi-note-converter is centered on MIDI numbers 0–127 with A4 fixed at 440 Hz. This tool adds a customizable A4 reference (432/442/415 Hz etc.), interval names and frequency ratios between arbitrary notes, cents-deviation assessment and full-octave tables — aimed at tuning and theory rather than MIDI engineering.',
+          },
+          {
+            question: 'What is a cent?',
+            answer:
+              'A cent is a logarithmic pitch unit: one equal-tempered semitone equals 100 cents and an octave equals 1200 cents. The cents deviation shown in frequency lookup tells you how sharp (positive) or flat (negative) a measured frequency is relative to the nearest standard note; within ±5 cents is typically imperceptible.',
+          },
+          {
+            question: 'Why do frequencies change with the A4 reference but intervals do not?',
+            answer:
+              'In equal temperament the ratio of adjacent semitones is always 2^(1/12), so intervals depend only on semitone count and are independent of transposition. Absolute frequencies are proportional to the A4 reference, so changing the reference shifts the whole table while interval relationships stay identical.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -260,7 +260,7 @@
 | 20261106160208 | Netpbm（PPM / PGM / PBM）图像生成与解析器 | Web Tool | External Reference | Pending | 2026-11-06 | | [详情](./idea-details/20261106160208.md) |
 | 20261106160209 | Markdown Frontmatter（YAML / TOML）解析与编辑器 | Web Tool | Existing Gap | Pending | 2026-11-06 | | [详情](./idea-details/20261106160209.md) |
 | 20261106160210 | 集合 Jaccard / 重叠系数 / Dice 相似度计算器 | Web Tool | Existing Gap | In Progress | 2026-11-06 | trae-agent | [详情](./idea-details/20261106160210.md) |
-| 20261107080339 | 音乐音高与频率互算器（音符 ↔ Hz、半音音程与调音基准） | Web Tool | Existing Gap | Claimed | 2026-11-07 | trae-agent | [详情](./idea-details/20261107080339.md) |
+| 20261107080339 | 音乐音高与频率互算器（音符 ↔ Hz、半音音程与调音基准） | Web Tool | Existing Gap | In Progress | 2026-11-07 | trae-agent | [详情](./idea-details/20261107080339.md) |
 | 20261107080340 | 信用卡 / IMEI 风格 Luhn 号码批量校验与校验位生成器 | Web Tool | Existing Gap | Claimed | 2026-11-07 | trae-agent | [详情](./idea-details/20261107080340.md) |
 | 20261107080341 | 闰秒感知的 TAI / UTC / Unix 时间互转器（含历史跳秒表） | Web Tool | Existing Gap | Claimed | 2026-11-07 | trae-agent | [详情](./idea-details/20261107080341.md) |
 | 20261107140225 | LRC 歌词时间戳生成与解析器 | Web Tool | Existing Gap | In Progress | 2026-11-07 | trae-agent | [详情](./idea-details/20261107140225.md) |
