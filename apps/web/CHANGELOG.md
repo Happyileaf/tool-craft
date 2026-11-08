@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-09 ：【Agent自主迭代】新增 5 个 Hamming 纠错、月相月龄、MessagePack 编解码、HTTP 报文解析与调度场可视化工具
+
+- **新增**：Hamming(7,4) 编解码与纠错演示（hamming-codec）— 对 4 位数据位生成 3 位校验位并支持单比特错误注入与自动纠错，逐位展示校验子（syndrome）定位过程，纯函数零依赖，纯本地运算
+- **新增**：月相查询与月龄计算器（moon-phase-calculator）— 基于 Julian Day 与朔望月 29.53059 天取模计算月龄、八相位分档、照亮比例与邻近新月/满月日期，CSS clip-path 绘制月相，纯本地运算
+- **新增**：MessagePack ↔ JSON 双向编解码器（messagepack-codec）— 按 msgpack 规范实现完整类型表与整数最紧凑宽度（含 BigInt 64 位路径），支持 HEX/Base64 输入、字节转储与带偏移错误，官方向量逐字节验证，纯本地运算
+- **新增**：原始 HTTP 报文解析器（http-message-parser）— 自动识别请求/响应并结构化起始行、Query、Headers 与 Body，兼容 CRLF/裸 LF、折叠续行与重复头，展开 Cookie/Set-Cookie/Authorization/chunked 等并定位畸形报文，纯本地运算
+- **新增**：调度场算法可视化（shunting-yard-visualizer）— Dijkstra 调度场把中缀表达式转后缀 RPN 并逐步值栈求值，回放运算符栈/输出队列每步快照，支持一元负号、右结合幂、函数与常量及带定位错误，纯本地运算
+
 ## 2026-11-08 ：【Agent自主迭代】新增 15 个 Java 描述符、E.123 电话格式、DMARC 记录、Plus Codes、CHANGELOG 生成、LRC 歌词解析、BAC 估算、LC 谐振、加班工资、定价计算、抽样样本量、任意进制转换、CRC 模型、三相功率与音乐音高工具
 
 - **新增**：Java 内部类名与描述符转换器（java-descriptor-converter）— 按 JVMS §4.2/§4.3 在内部名与源码类名之间互转，生成并解析字段与方法描述符，覆盖数组维度、原始类型与引用类型，非法描述符定位到具体字符，纯本地运算
