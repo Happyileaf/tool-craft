@@ -281,7 +281,7 @@
 | 20261107200159 | 罗马数字算术与日期 / 大纲编号解析器（1–3,999,999 扩展记法） | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200159.md) |
 | 20261108140204 | 调查抽样样本量与误差范围计算器（Cochran 公式 + 有限总体校正 FPC，正反双向） | Web Tool | External Reference | In Progress | 2026-11-08 | trae-agent | [详情](./idea-details/20261108140204.md) |
 | 20261108200229 | Bloom Filter 交互式模拟器（多哈希策略 / 假阳性率可视化） | Web Tool | Existing Gap | Pending | 2026-11-08 | | [详情](./idea-details/20261108200229.md) |
-| 20261108200230 | Hamming(7,4) 编解码与纠错演示器（含 syndrome 定位可视化） | Web Tool | Existing Gap | Claimed | 2026-11-08 | trae-agent | [详情](./idea-details/20261108200230.md) |
+| 20261108200230 | Hamming(7,4) 编解码与纠错演示器（含 syndrome 定位可视化） | Web Tool | Existing Gap | In Progress | 2026-11-08 | trae-agent | [详情](./idea-details/20261108200230.md) |
 | 20261108200231 | LRU / LFU 缓存淘汰策略模拟器（命中率对比与淘汰过程回放） | Web Tool | Existing Gap | Pending | 2026-11-08 | | [详情](./idea-details/20261108200231.md) |
 | 20261108200232 | Cron 表达式 → systemd OnCalendar 定时器表达式双向转换器 | Web Tool | Existing Gap | Pending | 2026-11-08 | | [详情](./idea-details/20261108200232.md) |
 | 20261108200233 | 预产期与孕周计算器（末次月经 / 排卵日双模式 + 孕周时间线） | Web Tool | Exploration | Pending | 2026-11-08 | | [详情](./idea-details/20261108200233.md) |

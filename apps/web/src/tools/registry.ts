@@ -29168,6 +29168,120 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'hamming-codec',
+    name: 'Hamming(7,4) 编解码与纠错演示器',
+    nameEn: 'Hamming(7,4) Codec & Error Correction Demo',
+    description:
+      '在浏览器本地完成 Hamming(7,4) 纠错码的编码、解码与单比特纠错演示：4 位数据按偶校验生成 3 个校验位组成 7 位码字，接收端用校正子（syndrome）精确定位并翻转出错位；支持无错 / 单比特翻转 / 双比特翻转三种信道注入，单错自动纠正、双错检出并提示不可纠正，另提供任意长度比特流的批量编解码，纯本地运算、零新增依赖。',
+    descriptionEn:
+      'Encode, decode, and visualize Hamming(7,4) error-correction entirely in your browser. Four data bits are expanded into a 7-bit codeword with three even-parity check bits; the receiver computes the syndrome to locate and flip any single flipped bit. Three channel modes (clean, single-bit flip, double-bit flip) demonstrate automatic single-error correction versus detectable-but-uncorrectable double errors, plus batch codec for arbitrary bit streams. Fully local, zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/hamming-codec',
+    iconName: 'ShieldCheck',
+    tags: ['Hamming', '海明码', '纠错码', '校正子', 'ECC', '位运算'],
+    tagsEn: ['Hamming', 'Error Correction', 'Syndrome', 'ECC', 'Bitwise', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1011',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Hamming(7,4) 编解码与纠错演示器在浏览器本地把 4 位数据编码为带 3 个偶校验位的 7 位码字，并模拟信道传输中的比特翻转：接收端重新计算 P1/P2/P4 三组校验得到 3 位校正子，其十进制值直接指向出错位号（1–7），单比特错误可被精确定位并翻转纠正，双比特错误则只能检出而无法纠正。工具同时提供任意长度比特流的批量分组编解码。',
+        coreFeatures: [
+          '单组可视化：4 位数据 → 7 位码字，蓝色标注 P1/P2/P4 校验位、绿色标注 D1–D4 数据位，位置 1–7 与校验组关系一目了然',
+          '信道错误注入：无翻转、随机单比特翻转、随机双比特翻转三档，可反复随机重抽并高亮接收码字中的出错位',
+          '校正子解码：展示 P4 P2 P1 校正子二进制与十进制、错误位号、纠正后码字与还原数据，单错自动纠正、双错明确提示不可纠正',
+          '批量编解码：任意 0/1 比特流按 4 位分组编码（末组自动右侧补 0），码字流按 7 位分组解码并逐组列出校正子与状态',
+          '穷举确定性：16 种数据 × 7 个出错位共 112 个单错向量与全部 21 个双错组合均有纯函数单测覆盖',
+        ],
+        howToUse: [
+          '在「单组演示」页输入 4 位 0/1 数据，工具即时给出 7 位编码并按颜色区分校验位与数据位',
+          '在「信道传输」选择单比特或双比特翻转，点击「随机重新注入」可更换出错位置，接收码字中出错位以红色高亮',
+          '查看「接收端解码」卡片的校正子、错误位号、状态标签与还原数据，理解单错可纠正、双错只可检出的区别',
+          '切换到「批量编解码」页，选择编码或解码方向，粘贴空格分隔的比特流 / 码字流即可逐组处理并复制结果',
+        ],
+        useCases: [
+          '计算机组成原理、数字逻辑与通信原理课程中讲解汉明码、偶校验与前向纠错（FEC）',
+          '面试复习：手写 Hamming(7,4) 编解码、校正子定位与单比特纠错流程',
+          '理解 ECC 内存、RAID、二维码等现实纠错机制背后的最小可教学模型',
+          '验证批量比特流在分组编码、补零与解码还原时的行为',
+        ],
+        privacyNote:
+          '所有编解码与错误注入均为浏览器本地位运算，不发起任何网络请求、不引入第三方依赖，输入的比特流不会上传或存储，刷新页面即清空。',
+        faqs: [
+          {
+            question: '校正子（syndrome）为什么能直接当作错误位号？',
+            answer:
+              '三个校验位 P1/P2/P4 分别覆盖位置组 {1,3,5,7}、{2,3,6,7}、{4,5,6,7}。某一位翻转会恰好让包含它的校验组失配，把三个失配结果按 P4 P2 P1 拼成二进制，得到的值正好等于该位的 1 基位置编号，例如第 5 位出错时 P4 与 P1 失配、校正子为 101 = 5。',
+          },
+          {
+            question: '为什么双比特错误不能纠正？',
+            answer:
+              'Hamming(7,4) 的最小码距为 3，只能保证纠正任意 1 位错误或检出 2 位错误。两位同时翻转时校正子通常非零，但它指向的是第三个位置，按单错去翻转反而会破坏正确的比特，因此工具把双错标记为「检出但不可纠正」；需要纠正双错要使用码距更大的方案（如扩展汉明码或 SEC-DED）。',
+          },
+          {
+            question: '校验位为什么放在 1、2、4 这三个位置？',
+            answer:
+              '这是 2 的幂次位置（2⁰、2¹、2²），它们的二进制编号只有一个 1，天然对应一个独立校验组；其余位置 3、5、6、7 的编号含多个 1，会同时被多个校验组覆盖，从而让校正子能唯一编码任意出错位置。',
+          },
+          {
+            question: '批量编码时最后一组不足 4 位怎么办？',
+            answer:
+              '工具在最后一组右侧补 0 到 4 位再编码，并通过提示条告知补了几个 0；解码还原出的数据末尾会包含这些补齐位，调用方需按原始比特长度自行截断。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Hamming(7,4) codec expands four data bits into a seven-bit codeword with three even-parity check bits entirely in your browser, then simulates bit flips over a noisy channel. The receiver recomputes the P1/P2/P4 parity groups to obtain a 3-bit syndrome whose decimal value is exactly the 1-based position of the flipped bit. Single-bit errors are located and corrected automatically; double-bit errors are detected but reported as uncorrectable. Batch grouping for arbitrary bit streams is included.',
+        coreFeatures: [
+          'Single-block visualization: 4 data bits to a 7-bit codeword with P1/P2/P4 check bits in blue and D1–D4 data bits in green, positions 1–7 and parity groups clearly labeled',
+          'Channel injection: clean, random single-bit flip, or random double-bit flip, with re-roll and red highlighting of the flipped positions in the received codeword',
+          'Syndrome decoding: shows the P4 P2 P1 syndrome in binary and decimal, error position, corrected codeword, and recovered data, distinguishing correctable single errors from detectable double errors',
+          'Batch codec: arbitrary 0/1 streams grouped by 4 bits for encoding (right-padded with zeros) and 7-bit groups for decoding, each group listing its syndrome and status',
+          'Exhaustive determinism: all 112 single-error vectors (16 data values × 7 positions) and all 21 double-error pairs are covered by pure-function unit tests',
+        ],
+        howToUse: [
+          'On the Single Block tab, enter four 0/1 data bits; the 7-bit codeword appears instantly with check and data bits color-coded',
+          'Pick single- or double-bit flip under Channel, use Re-inject to draw new error positions, and watch the flipped bit(s) highlighted in red in the received codeword',
+          'Read the syndrome, error position, status tag, and recovered data in the Decode card to see why single errors are correctable but double errors are only detectable',
+          'Open the Batch tab, choose encode or decode, and paste space-separated bit streams or codeword streams for per-group processing with one-click copy',
+        ],
+        useCases: [
+          'Teaching Hamming codes, even parity, and forward error correction (FEC) in computer organization, digital logic, and communications courses',
+          'Interview prep: hand-writing Hamming(7,4) encode/decode, syndrome localization, and single-bit correction',
+          'Understanding the minimal teachable model behind ECC memory, RAID, and QR-code style error correction',
+          'Verifying grouping, zero padding, and round-trip behavior of batch bit-stream codec',
+        ],
+        privacyNote:
+          'All codec and error-injection logic runs locally as in-browser bitwise operations with no network requests and no third-party dependencies. Your bit streams are never uploaded or stored and are cleared on refresh.',
+        faqs: [
+          {
+            question: 'Why can the syndrome be used directly as the error position?',
+            answer:
+              'The check bits P1/P2/P4 cover position groups {1,3,5,7}, {2,3,6,7}, and {4,5,6,7}. A flipped bit fails exactly the groups that contain it; assembling the three pass/fail results as P4 P2 P1 yields a binary number equal to the 1-based position of that bit. For example, a flip at position 5 fails P4 and P1, giving syndrome 101 = 5.',
+          },
+          {
+            question: 'Why cannot double-bit errors be corrected?',
+            answer:
+              'Hamming(7,4) has minimum code distance 3, so it can correct any single-bit error or detect (but not correct) a two-bit error. With two flipped bits the syndrome is usually nonzero but points to a third, correct bit, so flipping it would introduce a new error. The tool flags this as detected-but-uncorrectable; correcting double errors requires a larger distance such as extended Hamming / SEC-DED.',
+          },
+          {
+            question: 'Why are check bits placed at positions 1, 2, and 4?',
+            answer:
+              'These are the powers of two (2⁰, 2¹, 2²), whose binary indices contain a single 1, so each maps to one independent parity group. The remaining positions 3, 5, 6, 7 have multi-bit indices and are covered by several groups at once, letting the syndrome uniquely encode any single error position.',
+          },
+          {
+            question: 'What happens when the last batch group has fewer than 4 bits?',
+            answer:
+              'The tool right-pads the last group with zeros to 4 bits before encoding and tells you how many padding bits were added via an info banner. The decoded data therefore contains those padding bits at the end; the caller must truncate to the original bit length.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
