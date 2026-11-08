@@ -1,0 +1,100 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mono {
+  font-family: var(--font-mono, monospace);
+}
+
+.resultLabel {
+  font-size: 13px;
+  color: var(--text-color-secondary, #6b7280);
+  margin-right: 4px;
+}
+
+.rpnTag {
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  padding: 4px 10px;
+  margin-inline-end: 8px;
+}
+
+.finalValue {
+  font-family: var(--font-mono, monospace);
+  font-size: 22px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.snapshotGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.stackBlock {
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 10px;
+  padding: 12px;
+  background: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 120px;
+}
+
+.stackTitle {
+  font-size: 12px;
+  color: var(--text-color-secondary, #6b7280);
+}
+
+.stackBody {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stackEmpty {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.stackChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 2px 12px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-family: var(--font-mono, monospace);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.chipBlue {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+.chipGreen {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #047857;
+}
+
+.stackTop {
+  outline: 2px solid #f59e0b;
+  outline-offset: 1px;
+}
+
+.activeRow {
+  background: #fffbeb;
+}
+
+.activeRow:hover td {
+  background: #fef3c7;
+}

@@ -29168,6 +29168,560 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'hamming-codec',
+    name: 'Hamming(7,4) 编解码与纠错演示器',
+    nameEn: 'Hamming(7,4) Codec & Error Correction Demo',
+    description:
+      '在浏览器本地完成 Hamming(7,4) 纠错码的编码、解码与单比特纠错演示：4 位数据按偶校验生成 3 个校验位组成 7 位码字，接收端用校正子（syndrome）精确定位并翻转出错位；支持无错 / 单比特翻转 / 双比特翻转三种信道注入，单错自动纠正、双错检出并提示不可纠正，另提供任意长度比特流的批量编解码，纯本地运算、零新增依赖。',
+    descriptionEn:
+      'Encode, decode, and visualize Hamming(7,4) error-correction entirely in your browser. Four data bits are expanded into a 7-bit codeword with three even-parity check bits; the receiver computes the syndrome to locate and flip any single flipped bit. Three channel modes (clean, single-bit flip, double-bit flip) demonstrate automatic single-error correction versus detectable-but-uncorrectable double errors, plus batch codec for arbitrary bit streams. Fully local, zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/hamming-codec',
+    iconName: 'ShieldCheck',
+    tags: ['Hamming', '海明码', '纠错码', '校正子', 'ECC', '位运算'],
+    tagsEn: ['Hamming', 'Error Correction', 'Syndrome', 'ECC', 'Bitwise', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1011',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Hamming(7,4) 编解码与纠错演示器在浏览器本地把 4 位数据编码为带 3 个偶校验位的 7 位码字，并模拟信道传输中的比特翻转：接收端重新计算 P1/P2/P4 三组校验得到 3 位校正子，其十进制值直接指向出错位号（1–7），单比特错误可被精确定位并翻转纠正，双比特错误则只能检出而无法纠正。工具同时提供任意长度比特流的批量分组编解码。',
+        coreFeatures: [
+          '单组可视化：4 位数据 → 7 位码字，蓝色标注 P1/P2/P4 校验位、绿色标注 D1–D4 数据位，位置 1–7 与校验组关系一目了然',
+          '信道错误注入：无翻转、随机单比特翻转、随机双比特翻转三档，可反复随机重抽并高亮接收码字中的出错位',
+          '校正子解码：展示 P4 P2 P1 校正子二进制与十进制、错误位号、纠正后码字与还原数据，单错自动纠正、双错明确提示不可纠正',
+          '批量编解码：任意 0/1 比特流按 4 位分组编码（末组自动右侧补 0），码字流按 7 位分组解码并逐组列出校正子与状态',
+          '穷举确定性：16 种数据 × 7 个出错位共 112 个单错向量与全部 21 个双错组合均有纯函数单测覆盖',
+        ],
+        howToUse: [
+          '在「单组演示」页输入 4 位 0/1 数据，工具即时给出 7 位编码并按颜色区分校验位与数据位',
+          '在「信道传输」选择单比特或双比特翻转，点击「随机重新注入」可更换出错位置，接收码字中出错位以红色高亮',
+          '查看「接收端解码」卡片的校正子、错误位号、状态标签与还原数据，理解单错可纠正、双错只可检出的区别',
+          '切换到「批量编解码」页，选择编码或解码方向，粘贴空格分隔的比特流 / 码字流即可逐组处理并复制结果',
+        ],
+        useCases: [
+          '计算机组成原理、数字逻辑与通信原理课程中讲解汉明码、偶校验与前向纠错（FEC）',
+          '面试复习：手写 Hamming(7,4) 编解码、校正子定位与单比特纠错流程',
+          '理解 ECC 内存、RAID、二维码等现实纠错机制背后的最小可教学模型',
+          '验证批量比特流在分组编码、补零与解码还原时的行为',
+        ],
+        privacyNote:
+          '所有编解码与错误注入均为浏览器本地位运算，不发起任何网络请求、不引入第三方依赖，输入的比特流不会上传或存储，刷新页面即清空。',
+        faqs: [
+          {
+            question: '校正子（syndrome）为什么能直接当作错误位号？',
+            answer:
+              '三个校验位 P1/P2/P4 分别覆盖位置组 {1,3,5,7}、{2,3,6,7}、{4,5,6,7}。某一位翻转会恰好让包含它的校验组失配，把三个失配结果按 P4 P2 P1 拼成二进制，得到的值正好等于该位的 1 基位置编号，例如第 5 位出错时 P4 与 P1 失配、校正子为 101 = 5。',
+          },
+          {
+            question: '为什么双比特错误不能纠正？',
+            answer:
+              'Hamming(7,4) 的最小码距为 3，只能保证纠正任意 1 位错误或检出 2 位错误。两位同时翻转时校正子通常非零，但它指向的是第三个位置，按单错去翻转反而会破坏正确的比特，因此工具把双错标记为「检出但不可纠正」；需要纠正双错要使用码距更大的方案（如扩展汉明码或 SEC-DED）。',
+          },
+          {
+            question: '校验位为什么放在 1、2、4 这三个位置？',
+            answer:
+              '这是 2 的幂次位置（2⁰、2¹、2²），它们的二进制编号只有一个 1，天然对应一个独立校验组；其余位置 3、5、6、7 的编号含多个 1，会同时被多个校验组覆盖，从而让校正子能唯一编码任意出错位置。',
+          },
+          {
+            question: '批量编码时最后一组不足 4 位怎么办？',
+            answer:
+              '工具在最后一组右侧补 0 到 4 位再编码，并通过提示条告知补了几个 0；解码还原出的数据末尾会包含这些补齐位，调用方需按原始比特长度自行截断。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Hamming(7,4) codec expands four data bits into a seven-bit codeword with three even-parity check bits entirely in your browser, then simulates bit flips over a noisy channel. The receiver recomputes the P1/P2/P4 parity groups to obtain a 3-bit syndrome whose decimal value is exactly the 1-based position of the flipped bit. Single-bit errors are located and corrected automatically; double-bit errors are detected but reported as uncorrectable. Batch grouping for arbitrary bit streams is included.',
+        coreFeatures: [
+          'Single-block visualization: 4 data bits to a 7-bit codeword with P1/P2/P4 check bits in blue and D1–D4 data bits in green, positions 1–7 and parity groups clearly labeled',
+          'Channel injection: clean, random single-bit flip, or random double-bit flip, with re-roll and red highlighting of the flipped positions in the received codeword',
+          'Syndrome decoding: shows the P4 P2 P1 syndrome in binary and decimal, error position, corrected codeword, and recovered data, distinguishing correctable single errors from detectable double errors',
+          'Batch codec: arbitrary 0/1 streams grouped by 4 bits for encoding (right-padded with zeros) and 7-bit groups for decoding, each group listing its syndrome and status',
+          'Exhaustive determinism: all 112 single-error vectors (16 data values × 7 positions) and all 21 double-error pairs are covered by pure-function unit tests',
+        ],
+        howToUse: [
+          'On the Single Block tab, enter four 0/1 data bits; the 7-bit codeword appears instantly with check and data bits color-coded',
+          'Pick single- or double-bit flip under Channel, use Re-inject to draw new error positions, and watch the flipped bit(s) highlighted in red in the received codeword',
+          'Read the syndrome, error position, status tag, and recovered data in the Decode card to see why single errors are correctable but double errors are only detectable',
+          'Open the Batch tab, choose encode or decode, and paste space-separated bit streams or codeword streams for per-group processing with one-click copy',
+        ],
+        useCases: [
+          'Teaching Hamming codes, even parity, and forward error correction (FEC) in computer organization, digital logic, and communications courses',
+          'Interview prep: hand-writing Hamming(7,4) encode/decode, syndrome localization, and single-bit correction',
+          'Understanding the minimal teachable model behind ECC memory, RAID, and QR-code style error correction',
+          'Verifying grouping, zero padding, and round-trip behavior of batch bit-stream codec',
+        ],
+        privacyNote:
+          'All codec and error-injection logic runs locally as in-browser bitwise operations with no network requests and no third-party dependencies. Your bit streams are never uploaded or stored and are cleared on refresh.',
+        faqs: [
+          {
+            question: 'Why can the syndrome be used directly as the error position?',
+            answer:
+              'The check bits P1/P2/P4 cover position groups {1,3,5,7}, {2,3,6,7}, and {4,5,6,7}. A flipped bit fails exactly the groups that contain it; assembling the three pass/fail results as P4 P2 P1 yields a binary number equal to the 1-based position of that bit. For example, a flip at position 5 fails P4 and P1, giving syndrome 101 = 5.',
+          },
+          {
+            question: 'Why cannot double-bit errors be corrected?',
+            answer:
+              'Hamming(7,4) has minimum code distance 3, so it can correct any single-bit error or detect (but not correct) a two-bit error. With two flipped bits the syndrome is usually nonzero but points to a third, correct bit, so flipping it would introduce a new error. The tool flags this as detected-but-uncorrectable; correcting double errors requires a larger distance such as extended Hamming / SEC-DED.',
+          },
+          {
+            question: 'Why are check bits placed at positions 1, 2, and 4?',
+            answer:
+              'These are the powers of two (2⁰, 2¹, 2²), whose binary indices contain a single 1, so each maps to one independent parity group. The remaining positions 3, 5, 6, 7 have multi-bit indices and are covered by several groups at once, letting the syndrome uniquely encode any single error position.',
+          },
+          {
+            question: 'What happens when the last batch group has fewer than 4 bits?',
+            answer:
+              'The tool right-pads the last group with zeros to 4 bits before encoding and tells you how many padding bits were added via an info banner. The decoded data therefore contains those padding bits at the end; the caller must truncate to the original bit length.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'moon-phase-calculator',
+    name: '月相月龄计算器',
+    nameEn: 'Moon Phase & Age Calculator',
+    description:
+      '在浏览器本地按公历日期推算月相：基于 Julian Day 与平均朔望月取模模型计算月龄、照亮比例与相位角，输出八相位名称（新月到残月）、CSS clip-path 月相示意、邻近新月 / 满月日期与八相位月龄分档，纯本地运算、零新增依赖。',
+    descriptionEn:
+      'Compute the moon phase for any Gregorian date entirely in your browser. A Julian-Day plus mean-synodic-month modulo model yields the moon age, illuminated fraction, and phase angle, with the eight-phase name (new moon through waning crescent), a CSS clip-path moon visual, nearest new/full moon dates, and an age-band lookup table. Fully local, zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/moon-phase-calculator',
+    iconName: 'MoonStar',
+    tags: ['月相', '月龄', '朔望月', 'Julian Day', '天文', '日历'],
+    tagsEn: ['Moon Phase', 'Moon Age', 'Synodic Month', 'Julian Day', 'Astronomy', 'Calendar'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '月相月龄计算器把用户选择的公历日期按 UTC 日历日归一到当日中午，先用 Fliegel–Van Flandern 整数公式换算为 Julian Day，再以已知新月基准点（JD 2451550，UTC 2000-01-06）与平均朔望月长度 29.530588853 天做取模运算得到月龄，并据此推导相位角、照亮比例（(1−cos θ)/2）与八相位分类，同时用 CSS clip-path 椭圆渲染月相亮区、推算邻近的新月与满月日期。模型不使用星历表，结果为日级近似（误差约 ±1 天），适合教学与一般查询。',
+        coreFeatures: [
+          '月龄计算：Julian Day 差值对平均朔望月双重取模，月龄稳定落在 [0, 29.53) 天并展示两位小数',
+          '月相可视化：照亮层使用 radial-gradient 金黄月盘，clip-path 椭圆横向半径随月龄线性变化，盈月锚定右缘、亏月锚定左缘',
+          '完整指标：月龄、照亮比例百分比、距上 / 下一次新月天数、相位角度数与朔望月周期一卡呈现',
+          '邻近朔望：按月龄回推上一次 / 下一次新月，并以半朔望月偏移推算上一次 / 下一次满月的 UTC 日期',
+          '八相位速查：新月、蛾眉月、上弦月、盈凸月、满月、亏凸月、下弦月、残月的月龄区间表，边界按朔望月八等分',
+        ],
+        howToUse: [
+          '顶部日期选择器默认填入当前 UTC 日历日，也可手动选择任意公历日期（输入按 UTC 12:00 归一，消除时区与夏令时影响）',
+          '查看月相示意图与相位标签，月盘亮区形状与标签颜色随月龄实时变化',
+          '在指标卡中读取月龄、照亮比例、相位角以及距邻近新月的天数',
+          '在「邻近朔望推算」卡片查看上一次 / 下一次新月与满月的具体 UTC 日期，底部表格可对照月龄所属相位区间',
+        ],
+        useCases: [
+          '天文通识与地理课堂讲解月相成因、朔望月周期与 Julian Day 记日法',
+          '摄影、露营、赏月等活动快速估算满月与新月的临近日期',
+          '历法与农历相关开发中验证平均朔望月取模模型的近似行为',
+          '作为 Fliegel–Van Flandern 公历 ↔ Julian Day 整数换算公式的可交互示例',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地完成，不发起任何网络请求、不引入第三方依赖，所选日期不会上传或存储，刷新页面即恢复为当天。',
+        faqs: [
+          {
+            question: '为什么算出的满月日期和真实满月可能差一天？',
+            answer:
+              '本工具采用平均朔望月（29.530588853 天）取模模型，没有使用月球星历表，也忽略了月球轨道偏心率与太阳引力扰动造成的朔望月长度波动（实际约 29.27–29.83 天），因此新月 / 满月时刻存在约 ±1 天的误差，界面中的算法说明已明确标注这一近似。',
+          },
+          {
+            question: '照亮比例是怎么算出来的？',
+            answer:
+              '先由月龄按相位角 θ = 2π × 月龄 / 朔望月 得到日–月–地夹角近似值，再用理想球形月相公式照亮比例 = (1 − cos θ) / 2：新月 θ≈0 时接近 0、满月 θ≈π 时接近 1、上下弦 θ≈π/2 时约为 0.5。',
+          },
+          {
+            question: '为什么选择日期时按 UTC 而不是本地时区处理？',
+            answer:
+              '月相是全球性现象，按 UTC 日历日中午 12:00 归一后，全球任意时区的用户查询同一日期都会得到相同的 Julian Day 与月龄，避免本地时区偏移或夏令时导致结果跨日不一致；界面所有输出日期也统一标注为 UTC。',
+          },
+          {
+            question: '月相图形为什么用 clip-path 而不是图片？',
+            answer:
+              '照亮层是一个固定的径向渐变圆，通过 CSS clip-path 的 ellipse() 动态裁剪可见区域：盈月时椭圆锚定右边缘、横向半径随月龄从 0 增长到 50%，亏月时锚定左边缘并缩回 0，纯 CSS 即可在无图片资源、无网络请求的情况下连续表达整个朔望月的月相变化。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Moon Phase & Age Calculator normalizes a picked Gregorian date to UTC noon, converts it to a Julian Day with the integer Fliegel–Van Flandern formula, and takes the difference from a known new-moon reference (JD 2451550, 2000-01-06 UTC) modulo the mean synodic month (29.530588853 days) to obtain the moon age. From the age it derives the phase angle, illuminated fraction ((1−cos θ)/2), and eight-phase classification, renders the lit limb with a CSS clip-path ellipse, and projects the nearest new and full moon dates. No ephemeris is used, so results are day-level approximations within about ±1 day, suited to teaching and casual lookup.',
+        coreFeatures: [
+          'Moon-age math: the Julian-Day difference is double-reduced modulo the mean synodic month, keeping the age within [0, 29.53) days with two-decimal display',
+          'Visual moon: a radial-gradient golden disc is clipped by a CSS ellipse whose horizontal radius grows linearly with age, anchored to the right limb while waxing and the left limb while waning',
+          'Full metrics: moon age, illuminated percentage, days since/until the nearest new moon, phase angle in degrees, and the synodic-month length on one card',
+          'Nearest syzygies: the age projects the last and next new moons, while a half-month offset gives the last and next full moons in UTC',
+          'Eight-phase lookup: age bands for new, waxing crescent, first quarter, waxing gibbous, full, waning gibbous, last quarter, and waning crescent, with boundaries at synodic-month eighths',
+        ],
+        howToUse: [
+          'The date picker starts on the current UTC calendar day; pick any Gregorian date and it is normalized to UTC 12:00 to remove timezone and DST effects',
+          'Watch the moon visual and phase tag update live, including the lit-limb shape and tag color',
+          'Read moon age, illumination, phase angle, and distance to the neighboring new moons from the metric cards',
+          'Use the Nearest Syzygies card for concrete UTC dates of the last/next new and full moons, and cross-check the age band in the bottom table',
+        ],
+        useCases: [
+          'Teaching lunar phases, the synodic month, and Julian Day numbering in astronomy and geography classes',
+          'Estimating full-moon and new-moon timing for photography, camping, and moon-watching plans',
+          'Validating mean-synodic-month modulo models in calendar or lunar-date software',
+          'An interactive example of the integer Fliegel–Van Flandern Gregorian-to-Julian-Day conversion',
+        ],
+        privacyNote:
+          'All computation runs locally in the browser with no network requests and no third-party dependencies. Selected dates are never uploaded or stored and the view resets to today on refresh.',
+        faqs: [
+          {
+            question: 'Why might the full-moon date differ by a day from the real event?',
+            answer:
+              'The tool uses a mean synodic month (29.530588853 days) modulo model without a lunar ephemeris, ignoring orbital eccentricity and solar perturbations that make real synodic months vary roughly between 29.27 and 29.83 days. New/full moon timing therefore carries an error of about ±1 day, which is stated explicitly in the in-app algorithm note.',
+          },
+          {
+            question: 'How is the illuminated fraction calculated?',
+            answer:
+              'The age gives the approximate Sun–Moon–Earth angle θ = 2π × age / synodic month, then the ideal spherical-moon formula illumination = (1 − cos θ) / 2 applies: near 0 at new moon (θ≈0), near 1 at full moon (θ≈π), and about 0.5 at the quarters (θ≈π/2).',
+          },
+          {
+            question: 'Why are dates handled in UTC instead of local time?',
+            answer:
+              'Moon phases are a global phenomenon. Normalizing every picked date to UTC noon means users in any timezone get the same Julian Day and age for the same calendar date, avoiding cross-day inconsistencies from local offsets or daylight saving; every displayed date is likewise labeled UTC.',
+          },
+          {
+            question: 'Why use clip-path instead of images for the moon graphic?',
+            answer:
+              'The lit layer is a fixed radial-gradient circle whose visible area is dynamically clipped by a CSS ellipse(): while waxing the ellipse anchors to the right edge and grows from 0 to 50% radius, while waning it anchors left and shrinks back to 0. Pure CSS therefore expresses the full synodic cycle continuously with no image assets and no network requests.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'messagepack-codec',
+    name: 'MessagePack ↔ JSON 双向编解码器',
+    nameEn: 'MessagePack ↔ JSON Codec',
+    description:
+      '在浏览器本地完成 MessagePack 二进制与 JSON 文本双向转换：整数自动选择最紧凑的 fixint / uint / int 宽度，支持 nil、布尔、浮点、字符串、bin、数组、Map 与 ext，HEX / Base64 双输入、逐字节错误定位与十六进制转储，零新增依赖。',
+    descriptionEn:
+      'Convert between MessagePack binaries and JSON text entirely in your browser. Integers auto-select the tightest fixint/uint/int width, with support for nil, booleans, floats, strings, bin, arrays, maps, and ext, plus HEX/Base64 inputs, byte-offset error reporting, and hex dumps. Zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/messagepack-codec',
+    iconName: 'Package',
+    tags: ['MessagePack', 'JSON', '二进制', '序列化', '编码', 'RPC'],
+    tagsEn: ['MessagePack', 'JSON', 'Binary', 'Serialization', 'Codec', 'RPC'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'MessagePack ↔ JSON 双向编解码器依据 msgpack.org 公开规范，用零依赖的 TypeScript 实现紧凑二进制序列化格式与 JSON 文本的互转。编码方向把 JSON 解析为 JS 值后按类型表输出 Uint8Array：nil、布尔、正负 fixint、uint/int 8/16/32/64、float32/64、fixstr/str、bin、fixarray/array、fixmap/map 与 ext；整数按非负走 uint、负数走 int 并自动选择最紧凑宽度，64 位经 BigInt 路径处理。解码方向接受 HEX（允许空格与 0x 前缀）或 Base64 负载，递归还原为格式化 JSON，非法首字节、长度越界与截断输入都抛出携带字节偏移的错误，并提供每行 16 字节的十六进制转储。',
+        coreFeatures: [
+          '最紧凑整数编码：0–127 与 -1–-32 走 fixint 单字节，128/256/65536 自动升级 uint8/16/32，负数对称选择 int8/16/32/64',
+          '完整类型表：nil、布尔、float64、UTF-8 字符串（fixstr/str8/16/32）、bin、嵌套数组与 Map，ext 解码保留 type 与数据',
+          '双格式二进制 IO：编码结果可在 HEX 与 Base64 间切换，解码同时接受两种输入并保证结果一致',
+          '逐字节错误定位：截断、非法首字节、非字符串 Map 键、尾随字节均返回带字节偏移的 MessagePackError',
+          '十六进制转储：输出带偏移量与 ASCII 列的 hexdump，便于对照后端 / Redis / RPC 原始负载',
+        ],
+        howToUse: [
+          '默认在「JSON → MessagePack」面板粘贴或编辑 JSON，编码结果区用分段控件切换 HEX / Base64 并可一键复制',
+          '切到「MessagePack → JSON」面板，选择输入格式后粘贴 HEX 或 Base64 负载，工具自动递归解码为缩进 JSON',
+          'JSON 语法错误或二进制非法时，错误条直接展示原因；解码错误还会给出具体字节偏移',
+          '查看字节数统计与十六进制转储，逐字节核对长度前缀、类型标注与多字节整数的大端布局',
+        ],
+        useCases: [
+          '调试使用 MessagePack 的后端 RPC 消息、Redis 缓存与消息队列负载，无需安装语言运行时',
+          '在对接二进制协议时快速验证 fixint 宽度选择、字符串 UTF-8 字节长度与嵌套容器编码',
+          '教学场景下对照 JSON 文本与类型标注、长度前缀的紧凑二进制表示的体积差异',
+          '把抓包得到的 HEX / Base64 负载还原为可读 JSON 进行接口排查',
+        ],
+        privacyNote:
+          '全部编解码均在浏览器本地完成，不发起任何网络请求、不引入第三方依赖，粘贴的 JSON 与二进制负载不会上传或持久化。',
+        faqs: [
+          {
+            question: '编码结果与官方规范示例一致吗？',
+            answer:
+              '一致。官方示例 {"compact":true,"schema":0} 的编码逐字节等于 82 a7 63 6f 6d 70 61 63 74 c3 a6 73 63 68 65 6d 61 00，该向量已固化在单元测试中作为回归基准。',
+          },
+          {
+            question: '64 位整数会有精度问题吗？',
+            answer:
+              '安全整数范围内的 64 位值正常以 number 往返；超过 Number.MAX_SAFE_INTEGER 的 uint64/int64 在解码时保留为 bigint，渲染 JSON 时转为字符串展示，避免精度丢失。',
+          },
+          {
+            question: 'bin 和 ext 解码后是什么形态？',
+            answer:
+              'bin 类型解码为其原始字节的 HEX 字符串，ext 类型保留为含 extType 与 dataHex 的对象，二者都不与普通文本字符串混淆；本轮编码不开放 ext 输入，因为 JSON 没有对应的原生类型。',
+          },
+          {
+            question: 'HEX 输入有什么格式要求？',
+            answer:
+              '非常宽松：允许空格、换行等空白，也允许 0x 前缀，工具会自动清洗后按两位一字节解析；字符数为奇数或包含非十六进制字符时会立即报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The MessagePack ↔ JSON Codec implements the compact binary serialization format published at msgpack.org in dependency-free TypeScript. Encoding parses JSON into JS values and emits a Uint8Array following the full type table — nil, booleans, signed/unsigned fixints, uint/int 8/16/32/64, float32/64, fixstr/str, bin, fixarray/array, fixmap/map, and ext — choosing the tightest width per value and routing 64-bit integers through BigInt. Decoding accepts HEX (whitespace and 0x tolerated) or Base64 payloads, recursively rebuilds indented JSON, and reports truncated input, illegal lead bytes, and length overruns with byte offsets, alongside a 16-bytes-per-line hex dump.',
+        coreFeatures: [
+          'Tightest integer encoding: 0–127 and -1–-32 use single-byte fixints, while 128/256/65536 promote to uint8/16/32 and negatives symmetrically pick int8/16/32/64',
+          'Full type table: nil, booleans, float64, UTF-8 strings (fixstr/str8/16/32), bin, nested arrays and maps, with ext decoded into type plus data',
+          'Dual binary IO: switch encoded output between HEX and Base64, and decode either input format with identical results',
+          'Byte-level error locations: truncation, illegal lead bytes, non-string map keys, and trailing bytes all raise a MessagePackError carrying the byte offset',
+          'Hex dumps: offset-plus-ASCII hexdump output for cross-checking raw backend, Redis, or RPC payloads',
+        ],
+        howToUse: [
+          'On the "JSON → MessagePack" panel, paste or edit JSON; toggle the result between HEX and Base64 and copy it in one click',
+          'Switch to "MessagePack → JSON", pick the input format, paste a HEX or Base64 payload, and get recursively decoded, indented JSON',
+          'JSON syntax errors and malformed binaries appear in an error banner; decode errors additionally show the exact byte offset',
+          'Inspect the byte count and hex dump to verify length prefixes, type tags, and big-endian multi-byte integers byte by byte',
+        ],
+        useCases: [
+          'Debugging MessagePack backend RPC messages, Redis caches, and queue payloads without installing a language runtime',
+          'Verifying fixint width selection, UTF-8 string byte lengths, and nested container encoding while integrating binary protocols',
+          'Teaching the size difference between textual JSON and a typed, length-prefixed compact binary format',
+          'Turning HEX/Base64 payloads from packet captures back into readable JSON for API troubleshooting',
+        ],
+        privacyNote:
+          'All encoding and decoding runs locally in the browser with no network requests and no third-party dependencies. Pasted JSON and binary payloads are never uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Does the output match the official spec example?',
+            answer:
+              'Yes. The official sample {"compact":true,"schema":0} encodes byte-for-byte to 82 a7 63 6f 6d 70 61 63 74 c3 a6 73 63 68 65 6d 61 00, and this vector is pinned in the unit tests as a regression baseline.',
+          },
+          {
+            question: 'Are 64-bit integers affected by precision loss?',
+            answer:
+              'Values within the safe-integer range round-trip as numbers; uint64/int64 beyond Number.MAX_SAFE_INTEGER are kept as bigint and rendered as strings in the JSON output to preserve precision.',
+          },
+          {
+            question: 'How are bin and ext values represented after decoding?',
+            answer:
+              'bin decodes to a HEX string of its raw bytes, while ext becomes an object with extType and dataHex, so neither is confused with ordinary text strings. Ext encoding is not exposed because JSON has no native counterpart type.',
+          },
+          {
+            question: 'What HEX input formatting is accepted?',
+            answer:
+              'Very permissive formatting: whitespace and line breaks are fine, 0x prefixes are tolerated, and the tool cleans the input before parsing two characters per byte. Odd character counts or non-hex characters fail immediately with an error.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'http-message-parser',
+    name: '原始 HTTP 报文解析器',
+    nameEn: 'Raw HTTP Message Parser',
+    description:
+      '在浏览器本地解析原始 HTTP 请求 / 响应文本：自动识别报文方向并结构化起始行、Headers 与 Body，展开 Query 参数、Cookie、Set-Cookie、Cache-Control 与 Authorization，检测裸 LF、Content-Length 不符、畸形起始行等问题，零新增依赖。',
+    descriptionEn:
+      'Parse raw HTTP request/response text entirely in your browser. It auto-detects the message direction and structures the start line, headers, and body, expands query params, cookies, Set-Cookie, Cache-Control, and Authorization, and flags bare LF, Content-Length mismatches, and malformed start lines. Zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/http-message-parser',
+    iconName: 'FileSearch',
+    tags: ['HTTP', '报文', 'Headers', '抓包', '调试', '网络'],
+    tagsEn: ['HTTP', 'Message', 'Headers', 'Packet Capture', 'Debugging', 'Network'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '原始 HTTP 报文解析器面向抓包排查与协议学习场景，把粘贴进来的原始 HTTP/1.x 文本解析为结构化视图。解析器兼容标准 CRLF 与裸 LF 行分隔（后者给出全局告警），通过起始行是否以 HTTP/ 开头自动区分请求与响应：请求侧拆分 Method、Path、Pathname 与 Query 参数表（含 URL 解码与重复键），响应侧拆分状态码、Reason Phrase 并匹配常见状态码含义。Header 按大小写不敏感聚合、重复同名头保留为数组，并对 Content-Type、Cookie、Set-Cookie、Cache-Control、Authorization、Transfer-Encoding、Content-Length 生成人类可读展开；Authorization 的 Basic 凭据会本地 Base64 解码预览并标注敏感，Bearer 仅展示方案与长度。所有畸形输入以带行号 / 字段定位的告警呈现而非崩溃。',
+        coreFeatures: [
+          '自动识别请求 / 响应，拆分起始行：Method-Path-Version 或 Version-Status-Reason，附常见状态码中英文含义',
+          'Query 参数表：保留重复键与空值、自动 URL 解码，参数与路径分开展示',
+          'Header 结构化：大小写不敏感聚合、重复头数组化、折叠续行合并，常见响应头逐字段展开明细',
+          '敏感头处理：Basic 认证本地 Base64 解码并提示敏感，Bearer / 其他令牌脱敏只显示长度',
+          '异常检测：裸 LF、缺冒号 header、路径非法空格、状态码越界、Content-Length 与实际 body 不符、chunked 识别',
+        ],
+        howToUse: [
+          '把抓包工具、curl -v 或日志中的原始 HTTP 报文粘贴到输入框，CRLF 与裸 LF 均可',
+          '使用顶部分段控件切换请求 / 响应示例，或保持自动识别直接粘贴任意方向报文',
+          '在概要卡查看起始行、状态码、Header 数与 Body 字节数，Query 参数与 Headers 分别在表格中展开',
+          '查看异常告警卡修正报文，或点击底部按钮复制完整结构化 JSON 摘要用于文档与工单',
+        ],
+        useCases: [
+          '后端联调时把抓包得到的原始请求 / 响应快速转成结构化字段，定位 Header 与 Body 问题',
+          '排查 Content-Length 不匹配、分块传输、重复头、折叠续行等协议层面的疑难杂症',
+          '教学场景中逐行讲解 HTTP/1.1 报文语法、常见 Header 语义与状态码含义',
+          '检查 Basic / Bearer 凭据结构（全程本地解码，不向任何服务发送报文）',
+        ],
+        privacyNote:
+          '所有解析均在浏览器本地完成，不发起任何网络请求、不引入第三方依赖。粘贴的报文可能包含 Cookie 与 Authorization 等敏感头，这些数据不会被上传、存储或写入日志。',
+        faqs: [
+          {
+            question: '为什么我的报文出现「裸 LF」告警？',
+            answer:
+              'RFC 9110 规定 HTTP 行分隔必须是 CRLF（\\r\\n），从浏览器文本框粘贴时 CR 常被剥离只剩 LF。解析器会兼容这种形态并给出全局警告，不影响字段解析，但发送真实请求时应恢复 CRLF。',
+          },
+          {
+            question: 'Content-Length 告警是怎么判定的？',
+            answer:
+              '工具用 TextEncoder 按 UTF-8 计算实际 Body 字节数并与 Content-Length 声明值比对，不一致时给出警告（常见于报文被截断或一个连接里拼了多个报文）；当 Transfer-Encoding: chunked 存在时按规范跳过该校验。',
+          },
+          {
+            question: 'Basic 认证的解码安全吗？',
+            answer:
+              'Base64 解码只在浏览器本地通过 atob 完成，解码出的 user:password 仅显示在当前页面并明确标注敏感，工具没有任何网络行为；分享截图前请自行抹除该字段。',
+          },
+          {
+            question: '重复的同名 Header 会丢失吗？',
+            answer:
+              '不会。逐行视图保留每次出现及序号，聚合视图按 RFC 的大小写不敏感规则把同名头合并为数组（例如多个 Set-Cookie 或 X-Forwarded-For），两种形态都可在表格中核对。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Raw HTTP Message Parser turns pasted HTTP/1.x text into a structured view for packet analysis and protocol learning. It accepts both standard CRLF and bare-LF line endings (with a global warning for the latter) and distinguishes requests from responses by whether the start line begins with HTTP/. Requests are split into method, path, pathname, and a decoded query table (including duplicate keys), while responses expose status code, reason phrase, and a built-in meaning table. Headers are aggregated case-insensitively, repeated names kept as arrays, and common headers such as Content-Type, Cookie, Set-Cookie, Cache-Control, Authorization, Transfer-Encoding, and Content-Length get human-readable breakdowns. Basic credentials are Base64-decoded locally with a sensitive flag, and Bearer tokens stay redacted. Malformed input produces located warnings instead of crashes.',
+        coreFeatures: [
+          'Auto request/response detection with start-line splitting: method-path-version or version-status-reason, plus common status-code meanings',
+          'Query table that keeps duplicate keys and empty values with automatic URL decoding',
+          'Structured headers: case-insensitive aggregation, repeated-header arrays, folded-line merging, and per-field breakdowns for common headers',
+          'Sensitive-header handling: local Basic Base64 decode with a sensitive warning; Bearer and other tokens redacted to length only',
+          'Anomaly detection: bare LF, missing-colon headers, illegal spaces in paths, out-of-range status codes, Content-Length mismatches, and chunked recognition',
+        ],
+        howToUse: [
+          'Paste raw HTTP text from packet captures, curl -v, or logs; both CRLF and bare LF are accepted',
+          'Use the top segmented control to load request/response samples, or stay on auto-detect for either direction',
+          'Review the start line, status, header count, and body bytes in the summary, then inspect query params and headers in their tables',
+          'Fix the message using the issue banner, or copy the full structured JSON summary for docs and tickets',
+        ],
+        useCases: [
+          'Turning captured raw requests/responses into structured fields during backend integration debugging',
+          'Diagnosing protocol-level issues such as Content-Length mismatch, chunked transfer, duplicate headers, and line folding',
+          'Teaching HTTP/1.1 message syntax, common header semantics, and status codes line by line',
+          'Inspecting Basic/Bearer credential structure with fully local decoding and no outbound traffic',
+        ],
+        privacyNote:
+          'All parsing happens locally in the browser with no network requests and no third-party dependencies. Pasted messages may contain sensitive headers such as Cookie and Authorization; none of this data is uploaded, stored, or logged.',
+        faqs: [
+          {
+            question: 'Why do I get a "bare LF" warning?',
+            answer:
+              'RFC 9110 requires CRLF (\\r\\n) line endings, but pasting through browser text fields often strips CR and leaves LF only. The parser tolerates this with a global warning and still extracts every field, though real requests should restore CRLF before being sent.',
+          },
+          {
+            question: 'How is the Content-Length warning decided?',
+            answer:
+              'The tool measures the actual body bytes with TextEncoder (UTF-8) and compares them against the declared Content-Length, warning on mismatch (typically truncation or multiple messages on one connection). The check is skipped when Transfer-Encoding: chunked is present, per spec.',
+          },
+          {
+            question: 'Is Basic-auth decoding safe?',
+            answer:
+              'Base64 decoding runs only locally via atob; the resulting user:password is displayed on the current page with an explicit sensitive marker, and the tool has no network behavior. Remove the field before sharing screenshots.',
+          },
+          {
+            question: 'Are repeated headers lost?',
+            answer:
+              'No. The row view keeps every occurrence with an index, while the aggregated view merges same-name headers case-insensitively into an array (for example multiple Set-Cookie or X-Forwarded-For values), so both forms remain verifiable.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'shunting-yard-visualizer',
+    name: '调度场算法可视化',
+    nameEn: 'Shunting-yard Algorithm Visualizer',
+    description:
+      '在浏览器本地把中缀表达式按 Dijkstra 调度场算法转换为后缀表达式（RPN）并逐步求值：可视化运算符栈与输出队列的每一步变化，支持一元负号、右结合幂、函数与常量，括号不匹配、除零等错误在对应步骤给出定位，零新增依赖。',
+    descriptionEn:
+      'Convert an infix expression to Reverse Polish Notation with Dijkstra’s shunting-yard algorithm and evaluate it step by step, entirely in your browser. It visualizes every change of the operator stack and output queue, supports unary minus, right-associative exponentiation, functions and constants, and locates errors such as mismatched parentheses or division by zero. Zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/shunting-yard-visualizer',
+    iconName: 'List',
+    tags: ['调度场', 'RPN', '后缀表达式', '算法可视化', '表达式求值', '教学'],
+    tagsEn: ['Shunting-yard', 'RPN', 'Postfix', 'Algorithm Visualizer', 'Expression', 'Learning'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '调度场算法可视化是一款面向数据结构教学与表达式解析学习的交互式工具。输入中缀表达式（如 3 + 4 * 2 / ( 1 - 5 ) ^ 2），工具先用 Dijkstra 调度场算法逐 token 转换为后缀表达式（RPN），完整记录每一步运算符栈与输出队列的快照及决策原因；再对 RPN 用值栈逐步求值，得到最终数值。支持加减乘除、右结合幂运算、一元负号、括号、sin/cos/sqrt/abs/max/min 函数与 pi/e 常量。括号不匹配、未知标识符、除零、参数个数错误等异常都会在对应步骤抛出带字符位置的错误，而不是直接崩溃。',
+        coreFeatures: [
+          '两阶段回放：调度场转 RPN 与 RPN 值栈求值，每步均有栈/队列快照和中文决策原因',
+          '完整运算符语义：优先级 1–4、左右结合性、一元负号 u- 自动识别、右结合幂运算',
+          '函数与常量：sin/cos/sqrt/abs、变长 max/min，以及 pi/e 常量，函数参数个数自动计数',
+          '错误定位：括号不匹配、尾随运算符、未知标识符、除零、sqrt 负数等在出错步骤给出位置',
+          '交互控制：上一步/下一步/自动播放/重置，步骤表点击跳转，RPN 一键复制',
+        ],
+        howToUse: [
+          '在输入框填写中缀表达式，或点击下方示例按钮载入预置向量',
+          '在「① 调度场转 RPN」阶段逐步查看运算符栈如何压入、弹出，输出队列如何累积为后缀表达式',
+          '切换到「② RPN 逐步求值」阶段，观察值栈如何压入操作数并在遇到运算符时弹栈计算',
+          '使用自动播放连续观看全过程，或点击步骤表任意一行跳转到对应快照',
+        ],
+        useCases: [
+          '数据结构与编译原理课程中讲解栈应用、中缀转后缀与表达式求值',
+          '刷题或面试前手工推导运算符优先级、结合性与一元负号的处理',
+          '实现计算器 / 公式引擎前，用固定向量对照自己的调度场实现是否正确',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地完成，不发起任何网络请求、不引入第三方依赖，输入的表达式不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么 2 ^ 3 ^ 2 的结果是 512 而不是 64？',
+            answer:
+              '幂运算符 ^ 按数学惯例定义为右结合，即 2 ^ 3 ^ 2 等价于 2 ^ (3 ^ 2) = 2 ^ 9 = 512；调度场在比较栈顶时对右结合运算符使用「严格大于」才弹出，因此会保留栈内的 ^。',
+          },
+          {
+            question: '一元负号是怎么识别的？',
+            answer:
+              "词法分析时，出现在表达式起始、左括号、逗号或另一个运算符之后的 '-' 会被识别为一元负号 u-（优先级 3、右结合），其余为减法运算符（优先级 1、左结合），因此 -2 + 3 与 2 + -3 都能正确解析。",
+          },
+          {
+            question: '支持哪些函数和常量？',
+            answer:
+              '函数支持 sin、cos、sqrt、abs（单参数）以及 max、min（变长参数，用逗号分隔）；常量支持 pi 与 e，在词法阶段直接内联为数值。使用未登记的标识符会在对应字符位置报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Shunting-yard Algorithm Visualizer is an interactive tool for learning data structures and expression parsing. Given an infix expression such as 3 + 4 * 2 / ( 1 - 5 ) ^ 2, it first converts it to Reverse Polish Notation with Dijkstra’s shunting-yard algorithm, recording a snapshot of the operator stack and output queue plus the decision reason at every token, then evaluates the RPN step by step on a value stack. It supports arithmetic operators, right-associative exponentiation, unary minus, parentheses, sin/cos/sqrt/abs/max/min functions, and pi/e constants. Mismatched parentheses, unknown identifiers, division by zero, and arity errors are reported at the exact step with a character position instead of crashing.',
+        coreFeatures: [
+          'Two-phase replay: shunting-yard to RPN and RPN value-stack evaluation, each step with stack/queue snapshots and explanations',
+          'Complete operator semantics: precedence 1–4, left/right associativity, automatic unary-minus (u-) detection, right-associative power',
+          'Functions and constants: sin/cos/sqrt/abs, variadic max/min, and pi/e with automatic argument counting',
+          'Located errors: mismatched parentheses, trailing operators, unknown identifiers, division by zero, and sqrt of negatives reported at the failing step',
+          'Controls: previous/next step, auto-play, reset, click-to-jump step table, and one-click RPN copy',
+        ],
+        howToUse: [
+          'Enter an infix expression or load one of the built-in sample vectors',
+          'In phase ①, watch how the operator stack pushes and pops while the output queue accumulates into postfix notation',
+          'Switch to phase ② to see the value stack push operands and compute whenever an operator arrives',
+          'Use auto-play for the full walkthrough, or click any row in the step table to jump to that snapshot',
+        ],
+        useCases: [
+          'Teaching stack applications, infix-to-postfix conversion, and expression evaluation in data-structure courses',
+          'Manually reasoning about precedence, associativity, and unary minus before interviews or exams',
+          'Validating your own shunting-yard implementation against fixed vectors before building a calculator engine',
+        ],
+        privacyNote:
+          'All computation runs locally in the browser with no network requests and no third-party dependencies; expressions are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why does 2 ^ 3 ^ 2 equal 512 instead of 64?',
+            answer:
+              'Exponentiation is right-associative by mathematical convention, so 2 ^ 3 ^ 2 means 2 ^ (3 ^ 2) = 2 ^ 9 = 512. The shunting-yard only pops a stack operator of equal precedence for left-associative incoming operators.',
+          },
+          {
+            question: 'How is unary minus recognized?',
+            answer:
+              "A '-' at the start of the expression or after a left parenthesis, comma, or another operator is tokenized as unary minus u- (precedence 3, right-associative); otherwise it is binary subtraction (precedence 1, left-associative).",
+          },
+          {
+            question: 'Which functions and constants are supported?',
+            answer:
+              'Functions: sin, cos, sqrt, abs (single argument) and variadic max/min with comma-separated arguments. Constants: pi and e, inlined at tokenization. Unknown identifiers raise an error at their character position.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

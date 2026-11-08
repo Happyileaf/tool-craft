@@ -310,4 +310,9 @@ export const toolLoaders: Record<
   'crc-model-calculator': () => import('./crc-model-calculator'),
   'three-phase-power-calculator': () => import('./three-phase-power-calculator'),
   'music-pitch-converter': () => import('./music-pitch-converter'),
+  'hamming-codec': () => import('./hamming-codec'),
+  'moon-phase-calculator': () => import('./moon-phase-calculator'),
+  'messagepack-codec': () => import('./messagepack-codec'),
+  'http-message-parser': () => import('./http-message-parser'),
+  'shunting-yard-visualizer': () => import('./shunting-yard-visualizer'),
 };
