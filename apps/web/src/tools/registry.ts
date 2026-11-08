@@ -30138,6 +30138,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'cron-systemd-timer-converter',
+    name: 'cron 表达式与 systemd OnCalendar 定时器互转工具',
+    nameEn: 'Cron ↔ systemd OnCalendar Converter',
+    description:
+      '在标准 5 段 cron 表达式与 systemd timer 的 OnCalendar 表达式之间双向转换，支持星号、逗号列表、范围、步进、英文星期/月份与 minutely/hourly/daily/weekly/monthly/yearly 命名快捷方式，自动提示日与星期同时受限的并集语义陷阱、秒级与年级降级，并基于本地时区逐分钟推演两侧未来触发时刻进行一致性对照，纯本地运行不依赖任何调度器。',
+    descriptionEn:
+      'Convert between standard 5-field cron expressions and systemd timer OnCalendar expressions in both directions, with stars, comma lists, ranges, steps, English weekday/month names and minutely/hourly/daily/weekly/monthly/yearly shortcuts. It warns about the day-and-weekday union pitfall and second/year granularity downgrades, and verifies equivalence by simulating future trigger times minute-by-minute in the local timezone, fully offline.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/cron-systemd-timer-converter',
+    iconName: 'ClockCircleOutlined',
+    tags: ['cron', 'systemd', 'OnCalendar', '定时器', '定时任务', '运维', 'DevOps'],
+    tagsEn: ['cron', 'systemd', 'OnCalendar', 'timer', 'scheduling', 'DevOps'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具面向编写 systemd timer 的开发者与运维人员，解决 cron 与 OnCalendar 两套调度语法的互转问题。cron 使用「分 时 日 月 周」5 段结构，而 OnCalendar 使用「星期 年-月-日 时:分:秒」结构，两者在通配符、范围写法、星期命名以及「日与星期同时受限」的组合语义上都有差异。工具内置零依赖解析引擎，把两侧表达式统一展开为时间字段集合后做等价转换，并通过逐分钟推演未来触发时刻来验证转换结果，而不是只做字符串替换。',
+        coreFeatures: [
+          'cron → OnCalendar：*/5 转为 *:0/5、1-5 转为 Mon..Fri、列表/范围/步进全部映射',
+          'OnCalendar → cron：命名快捷方式、英文星期月名、a..b/step 步进反向还原为标准 5 段',
+          '语义陷阱提示：日与星期同时受限时两侧均按「或（并集）」触发，并给出两条等价拆分表达式',
+          '降级告警：OnCalendar 的秒级与年份限制在 cron 中无对应字段，转换时明确标注丢弃',
+          '未来 8 次触发时刻双向对照表，逐分钟本地时区推演并给出一致性结论',
+        ],
+        howToUse: [
+          '选择转换方向（可点击「切换转换方向」按钮互换）',
+          '在左侧输入表达式，或点击示例标签快速填充常见写法',
+          '右侧即时给出转换结果，可一键复制；警告与等价方案会在下方卡片列出',
+          '查看底部触发时刻对照表，确认两侧未来执行时间完全一致后再写入 crontab 或 .timer 文件',
+        ],
+        useCases: [
+          '把历史 crontab 任务迁移为 systemd timer 的 OnCalendar 配置',
+          '把 systemd timer 文档中的 OnCalendar 表达式翻译回熟悉的 cron 写法以便核对',
+          '排查「每月 13 号且每周五」这类组合条件的真实触发日（并集而非交集）',
+          '在不接触服务器的情况下本地验证调度表达式的未来执行时刻',
+        ],
+        privacyNote:
+          '所有解析与触发时刻推演都在浏览器本地完成，表达式不会被发送到任何服务器或调度系统。',
+        faqs: [
+          {
+            question: '为什么「0 0 13 * 5」转换后提示并集语义？',
+            answer:
+              '标准 crontab 与 systemd OnCalendar 都规定：当「日（每月几号）」和「星期」同时被限制时，两者是「或」关系——满足任一条件即触发，而不是同时满足。工具会显式警告并给出只限制星期、只限制日期的两条等价拆分表达式，避免误以为是交集。',
+          },
+          {
+            question: 'OnCalendar 的秒和年份为什么转 cron 时丢失了？',
+            answer:
+              '标准 5 段 cron 的最小粒度是分钟，且没有年份字段。OnCalendar 中的秒级与年份限制无法在 cron 中表达，转换时会被丢弃并给出降级告警；若需要秒级精度，只能保留 systemd timer 或在脚本内部控制。',
+          },
+          {
+            question: '触发时刻对照是怎么计算的？',
+            answer:
+              '工具分别用两套独立解析引擎，从当前时间的下一分钟开始逐分钟扫描，各自找出未来 8 次命中时刻，再逐行比较时间戳是否相等。只要有一行不一致就会标记为「两侧不一致」，帮助发现字符串转换难以察觉的语义偏差。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A bidirectional converter for developers and operators writing systemd timers, bridging the five-field cron grammar (minute hour day month weekday) and the OnCalendar grammar (weekday year-month-day hour:minute:second). A zero-dependency engine expands both sides into time-field sets rather than doing naive string replacement, then verifies equivalence by simulating future trigger times minute by minute.',
+        coreFeatures: [
+          'cron to OnCalendar: */5 maps to *:0/5, 1-5 to Mon..Fri, with full list/range/step support',
+          'OnCalendar to cron: named shortcuts, English weekday/month names and a..b/step steps restored to five fields',
+          'Union-semantics warning when day-of-month and weekday are both restricted, plus two equivalent split expressions',
+          'Downgrade alerts for OnCalendar seconds and years, which have no cron counterpart',
+          'Side-by-side table of the next 8 trigger times simulated in the local timezone with an equivalence verdict',
+        ],
+        howToUse: [
+          'Pick a direction (or use the swap button to reverse it)',
+          'Type an expression on the left or click an example chip',
+          'Read the converted expression on the right, copy it, and review any warnings or alternative forms below',
+          'Confirm the next-run comparison table matches before writing to crontab or a .timer unit',
+        ],
+        useCases: [
+          'Migrating legacy crontab jobs into systemd timer OnCalendar units',
+          'Translating OnCalendar examples back to cron for sanity checking',
+          'Understanding combined day-of-month/weekday conditions that fire on union rather than intersection',
+          'Validating future run times locally without touching a server or scheduler',
+        ],
+        privacyNote:
+          'All parsing and run-time simulation happen locally in the browser; expressions are never sent to any server or scheduler.',
+        faqs: [
+          {
+            question: 'Why does "0 0 13 * 5" warn about union semantics?',
+            answer:
+              'Both standard crontab and systemd OnCalendar treat restricted day-of-month together with restricted weekday as an OR: a day matching either condition triggers the job. The tool warns explicitly and offers two equivalent expressions restricted by weekday only and by day only, so you do not mistake it for an intersection.',
+          },
+          {
+            question: 'Why are OnCalendar seconds and years dropped when converting to cron?',
+            answer:
+              'Standard five-field cron has minute-level granularity at best and no year field. Seconds and year constraints cannot be represented, so they are removed with a downgrade warning; keep systemd timer or handle seconds inside your script if you need that precision.',
+          },
+          {
+            question: 'How is the trigger-time comparison computed?',
+            answer:
+              'Two independent parser engines scan forward minute by minute from the next minute, collect the next 8 matching times each, and compare timestamps row by row. Any mismatch is flagged as non-equivalent, exposing semantic drift that plain string conversion would hide.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

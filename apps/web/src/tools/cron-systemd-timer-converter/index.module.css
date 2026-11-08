@@ -1,0 +1,52 @@
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.card {
+  min-width: 0;
+}
+
+.code {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, monospace);
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.resultBox {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, monospace);
+  font-size: 13px;
+  line-height: 1.7;
+  background: var(--color-fill-quaternary, rgba(0, 0, 0, 0.02));
+  border: 1px solid var(--color-border, rgba(0, 0, 0, 0.12));
+  border-radius: 8px;
+  padding: 12px;
+  word-break: break-all;
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.match {
+  color: var(--color-success, #52c41a);
+  font-weight: 600;
+}
+
+.mismatch {
+  color: var(--color-error, #ff4d4f);
+  font-weight: 600;
+}
