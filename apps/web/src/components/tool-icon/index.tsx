@@ -32,6 +32,7 @@ import {
   MoonStar,
   Music,
   Palette,
+  Percent,
   Pipette,
   QrCode,
   Radical,
@@ -50,6 +51,7 @@ import {
   Triangle,
   Type,
   Wifi,
+  Zap,
   type LucideProps,
 } from 'lucide-react';
 
@@ -108,6 +110,8 @@ const toolIconMap = {
   Timer,
   Video,
   Wifi,
+  Zap,
+  Percent,
 };
 
 /**

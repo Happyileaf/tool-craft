@@ -229,7 +229,7 @@
 | 20261104140125 | .gitattributes 文件生成器（换行符 / 二进制标记 / merge driver / linguist 规则） | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104140125.md) |
 | 20261104200903 | HOTP（RFC 4226）基于计数器的一次性密码生成与校验器 | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200903.md) |
 | 20261104200904 | 位掩码（Bitmask / 位标志）可视化计算器 | Web Tool | Exploration | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200904.md) |
-| 20261104200905 | LC 谐振频率与电抗计算器（谐振频率 / 容抗 / 感抗互求） | Web Tool | Existing Gap | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200905.md) |
+| 20261104200905 | LC 谐振频率与电抗计算器（谐振频率 / 容抗 / 感抗互求） | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200905.md) |
 | 20261104200906 | JSON 推断并生成 SQL CREATE TABLE 建表语句（DDL）生成器 | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200906.md) |
 | 20261104200907 | GIF（GIF87a / GIF89a）文件结构只读解析器（块树与帧时序展示） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104200907.md) |
 | 20261105020213 | 文本自动换行与行宽格式化器（hard wrap / unwrap，按宽度折行与还原） | Web Tool | Existing Gap | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105020213.md) |

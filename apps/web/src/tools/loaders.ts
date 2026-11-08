@@ -302,4 +302,5 @@ export const toolLoaders: Record<
   'changelog-generator': () => import('./changelog-generator'),
   'lrc-parser': () => import('./lrc-parser'),
   'bac-calculator': () => import('./bac-calculator'),
+  'lc-resonance-calculator': () => import('./lc-resonance-calculator'),
 };

@@ -28343,6 +28343,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'lc-resonance-calculator',
+    name: 'LC 谐振频率与电抗计算器',
+    nameEn: 'LC Resonance Frequency & Reactance Calculator',
+    description:
+      '理想 LC 电路的谐振频率、电感、电容三者互求，并核算谐振点感抗与容抗，覆盖 H/mH/µH/nH 与 F/µF/nF/pF 工程单位。',
+    descriptionEn:
+      'Solve resonance frequency, inductance or capacitance for ideal LC circuits and verify inductive/capacitive reactance at resonance, with full engineering unit support.',
+    category: ToolCategoryEnum.ELECTRONICS,
+    path: '/tools/lc-resonance-calculator',
+    iconName: 'Zap',
+    tags: ['LC谐振', '谐振频率', '感抗', '容抗', '电感', '电容'],
+    tagsEn: ['LC Resonance', 'Resonant Frequency', 'Reactance', 'Inductance', 'Capacitance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'LC 谐振频率与电抗计算器面向射频调谐、开关电源、滤波与振荡电路选型，基于理想元件模型实现 f₀ = 1/(2π√(LC)) 的三向互求：已知 L/C 求谐振频率，或已知目标频率反求所需电感、电容，并同步计算谐振点的感抗 Xl 与容抗 Xc。',
+        coreFeatures: [
+          '三向互求：L+C 求 f₀、f₀+C 求 L、f₀+L 求 C，公式切换即时生效',
+          '工程单位全覆盖：H/mH/µH/nH、F/mF/µF/nF/pF 与 Hz/kHz/MHz/GHz 自动换算',
+          '谐振点电抗核对：展示 Xl=2πfL 与 Xc=1/(2πfC)，验证二者在谐振点相等',
+          '常用组合参考：内置 100µH+100pF 等标准 L/C 组合的谐振频率速查表',
+          '一键预设：典型射频、开关电源参数直接载入，纯本地浮点运算',
+        ],
+        howToUse: [
+          '选择计算模式（求频率 / 求电感 / 求电容）',
+          '填写已知参数并通过下拉框选择匹配的工程单位',
+          '查看结果卡片中的目标值与科学计数法 SI 表示',
+          '在参考表中对照相近的标准 L/C 组合，评估实际选型',
+        ],
+        useCases: [
+          '射频调谐回路与天线匹配网络的谐振频率估算',
+          'DC-DC 开关电源输出 LC 滤波器的截止/谐振参数核对',
+          '振荡电路选型时由目标频率反推电感或电容数量级',
+        ],
+        privacyNote:
+          '所有参数与计算均在浏览器本地完成，不发起网络请求，也不存储任何输入。',
+        faqs: [
+          {
+            question: '100µH 与 100pF 的谐振频率是多少？',
+            answer:
+              '代入 f₀=1/(2π√(LC))：L=100µH=1×10⁻⁴ H、C=100pF=1×10⁻¹⁰ F，算得 f₀≈1.5915 MHz，与工具内置预设和参考表一致。',
+          },
+          {
+            question: '为什么谐振时感抗等于容抗？',
+            answer:
+              '谐振角频率 ω₀=1/√(LC) 下，Xl=ωL 与 Xc=1/(ωC) 代入 ω₀ 后都等于 √(L/C)，二者大小相等、相位相反，串联时净电抗为零，因此发生谐振。',
+          },
+          {
+            question: '计算结果与实际电路为什么会有偏差？',
+            answer:
+              '本工具采用理想模型，忽略了电感的 ESR 与寄生电容、电容的 ESL/ESR、PCB 分布参数以及元件容差。高频或高 Q 设计需要在估算值基础上结合数据手册与实测调整。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The LC Resonance Frequency & Reactance Calculator supports RF tuning, switching-power-supply, filtering and oscillator design. Built on the ideal-component relation f₀ = 1/(2π√(LC)), it solves any one of frequency, inductance or capacitance from the other two and reports the inductive reactance Xl and capacitive reactance Xc at resonance.',
+        coreFeatures: [
+          'Three-way solving: f₀ from L+C, L from f₀+C, or C from f₀+L with instant formula switching',
+          'Full engineering units: H/mH/µH/nH, F/mF/µF/nF/pF and Hz/kHz/MHz/GHz with automatic conversion',
+          'Resonance reactance check: shows Xl=2πfL and Xc=1/(2πfC) and verifies they match at resonance',
+          'Reference table: resonant frequencies of common standard L/C pairs such as 100µH+100pF',
+          'One-click presets for typical RF and power-supply values, all computed locally',
+        ],
+        howToUse: [
+          'Choose the calculation mode (frequency, inductance or capacitance)',
+          'Enter the known parameters and pick matching engineering units from the dropdowns',
+          'Read the target value and its scientific-notation SI form from the result cards',
+          'Compare against nearby standard L/C pairs in the reference table for real component selection',
+        ],
+        useCases: [
+          'Estimating resonance of RF tuning tanks and antenna matching networks',
+          'Checking LC output filters in DC-DC switching converters',
+          'Deriving the order of magnitude of L or C from a target oscillator frequency',
+        ],
+        privacyNote:
+          'Every parameter and calculation runs locally in the browser. No network requests are made and no input is stored.',
+        faqs: [
+          {
+            question: 'What is the resonant frequency of 100µH and 100pF?',
+            answer:
+              'With L=100µH=1×10⁻⁴ H and C=100pF=1×10⁻¹⁰ F, f₀=1/(2π√(LC)) ≈ 1.5915 MHz, matching the built-in preset and reference table.',
+          },
+          {
+            question: 'Why do inductive and capacitive reactance become equal at resonance?',
+            answer:
+              'At the resonant angular frequency ω₀=1/√(LC), both Xl=ωL and Xc=1/(ωC) evaluate to √(L/C). They are equal in magnitude and opposite in phase, so the net reactance of a series circuit is zero and resonance occurs.',
+          },
+          {
+            question: 'Why might real circuits deviate from these results?',
+            answer:
+              'The ideal model ignores inductor ESR and parasitic capacitance, capacitor ESL/ESR, PCB parasitics and component tolerances. High-frequency or high-Q designs require datasheet and measurement-based adjustments on top of these estimates.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
