@@ -300,4 +300,9 @@ export const toolLoaders: Record<
   'dmarc-record-generator': () => import('./dmarc-record-generator'),
   'plus-code-codec': () => import('./plus-code-codec'),
   'changelog-generator': () => import('./changelog-generator'),
+  'lrc-parser': () => import('./lrc-parser'),
+  'bac-calculator': () => import('./bac-calculator'),
+  'lc-resonance-calculator': () => import('./lc-resonance-calculator'),
+  'overtime-pay-calculator': () => import('./overtime-pay-calculator'),
+  'pricing-margin-calculator': () => import('./pricing-margin-calculator'),
 };

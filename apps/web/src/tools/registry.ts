@@ -1,6 +1,7 @@
 import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
 import { DEFAULT_SAMPLE_INPUT as CHANGELOG_SAMPLE_INPUT } from './changelog-generator/constants';
+import { SAMPLE_PLAIN_LYRICS } from './lrc-parser/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -28134,6 +28135,514 @@ sqrt(area) + 2 * r`,
             question: 'How are the Security, Deprecated and Removed groups decided?',
             answer:
               'Beyond the standard type mapping, subject keywords for security (e.g. CVE, XSS), deprecation (deprecate) and removal (remove) take priority over the type mapping, and the security commit type always lands in Security.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'lrc-parser',
+    name: 'LRC 歌词时间戳生成与解析器',
+    nameEn: 'LRC Lyrics Timestamp Generator & Parser',
+    description:
+      '在逐行时间戳歌词与标准 LRC 文本之间双向转换，支持 ID 标签、行内多时间戳展开与错误定位，全部本地运算。',
+    descriptionEn:
+      'Convert between timestamped lyric lines and standard LRC text, with ID tags, inline multi-timestamp expansion and error localization, fully in your browser.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/lrc-parser',
+    iconName: 'Music',
+    tags: ['LRC', '歌词', '时间戳', '字幕', '音乐'],
+    tagsEn: ['LRC', 'Lyrics', 'Timestamp', 'Subtitle', 'Music'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: SAMPLE_PLAIN_LYRICS,
+    doc: {
+      zh: {
+        whatIsIt:
+          'LRC 歌词时间戳生成与解析器是一款纯浏览器本地工具：生成模式把「mm:ss.cc 歌词」逐行文本拼装为带 ti/ar/al/by 标签的标准 .lrc 文件；解析模式把任意 LRC 文本还原为按时间排序的时间轴表格，并展开一行多时间戳、定位格式错误。',
+        coreFeatures: [
+          '双向转换：逐行时间戳歌词一键生成 CRLF 行尾的标准 LRC，LRC 文本一键还原为结构化时间轴',
+          '多时间戳支持：自动展开 [00:15.00][00:30.00] 这类行内重复标签并按毫秒排序',
+          'ID 标签管理：可编辑 ti/ar/al/by 标签，解析时自动识别 offset 等标签并展示中文名',
+          '错误定位：无法识别的裸文本、秒数越界等问题按行号列出，不中断整体解析',
+          '纯本地运算：不读取本地文件以外的任何数据，不发起网络请求',
+        ],
+        howToUse: [
+          '生成模式：在左侧逐行输入「mm:ss.cc 空格 歌词」，按需填写歌曲标题等 ID 标签',
+          '右侧实时生成标准 LRC 文本，点击「复制 LRC」即可保存为 .lrc 文件',
+          '解析模式：粘贴现有 LRC 文本，自动展示标签信息与按时间排序的歌词表格',
+          '如出现格式问题，查看顶部警告中的行号提示并修正对应行',
+        ],
+        useCases: [
+          '为自制歌曲、翻唱或播客片段制作可被播放器识别的同步歌词',
+          '核对下载到的 LRC 是否存在时间戳错位、缺失或非法行',
+          '把带重复副歌时间戳的 LRC 展开为完整时间轴用于字幕二次加工',
+        ],
+        privacyNote:
+          '所有歌词文本与时间戳均在浏览器本地解析和生成，不经过任何服务器，输入内容不会离开设备。',
+        faqs: [
+          {
+            question: '时间戳支持哪些格式？',
+            answer:
+              '支持标准 [mm:ss.cc]（分:秒.百分秒），同时兼容三位毫秒 [mm:ss.ccc] 与省略小数的 [mm:ss]。秒数必须小于 60，否则会被标记为错误行。',
+          },
+          {
+            question: '一行里有多个时间戳是怎么处理的？',
+            answer:
+              '解析时 [00:15.00][00:30.00]副歌 会展开为两条共享相同文本、时间分别为 15 秒和 30 秒的条目，再统一按时间升序排列，这是 LRC 表示重复段落的常见写法。',
+          },
+          {
+            question: 'offset 标签的单位是什么？',
+            answer:
+              'LRC 规范中 offset 单位是百分秒（1/100 秒），正值让歌词整体提前、负值延后。解析模式会原样展示该标签，生成模式如设置偏移会自动换算并写入 [offset:...]。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The LRC Lyrics Timestamp Generator & Parser runs fully in your browser. Generate mode turns plain "mm:ss.cc lyrics" lines into a standard .lrc file with ti/ar/al/by tags; parse mode restores any LRC text into a time-sorted timeline table, expands inline multi-timestamps and localizes formatting errors.',
+        coreFeatures: [
+          'Bidirectional conversion: plain timestamped lines into CRLF standard LRC, and LRC text back into a structured timeline',
+          'Multi-timestamp support: expands inline tags such as [00:15.00][00:30.00] and sorts entries by milliseconds',
+          'ID tag management: editable ti/ar/al/by tags, with automatic recognition of offset and similar tags',
+          'Error localization: unrecognized bare text and out-of-range seconds are reported with line numbers without aborting the parse',
+          'Pure local processing: no network requests are ever made',
+        ],
+        howToUse: [
+          'In generate mode, enter one "mm:ss.cc space lyrics" line per row on the left and optionally fill in ID tags',
+          'The standard LRC text appears on the right in real time; click "Copy LRC" to save it as a .lrc file',
+          'In parse mode, paste an existing LRC text to see its tags and a time-sorted lyric table',
+          'If formatting issues appear, follow the line numbers in the warning banner to fix the offending rows',
+        ],
+        useCases: [
+          'Authoring synchronized lyrics recognized by music players for covers, demos or podcasts',
+          'Auditing downloaded LRC files for misaligned, missing or illegal timestamps',
+          'Expanding repeated-chorus timestamps into a full timeline for subtitle rework',
+        ],
+        privacyNote:
+          'All lyric text and timestamps are parsed and generated locally in the browser. Nothing is sent to a server and your input never leaves the device.',
+        faqs: [
+          {
+            question: 'Which timestamp formats are supported?',
+            answer:
+              'Standard [mm:ss.cc] (minutes:seconds.centiseconds) is supported, along with three-digit milliseconds [mm:ss.ccc] and fraction-less [mm:ss]. Seconds must be below 60 or the row is flagged as an error.',
+          },
+          {
+            question: 'How are multiple timestamps on one line handled?',
+            answer:
+              'A line like [00:15.00][00:30.00]chorus expands into two entries sharing the same text at 15s and 30s, then all entries are sorted by time. This is the common LRC convention for repeated sections.',
+          },
+          {
+            question: 'What unit does the offset tag use?',
+            answer:
+              'Per the LRC specification, offset is measured in centiseconds (1/100 second): positive shifts lyrics earlier, negative later. Parse mode displays it as-is, and generate mode converts millisecond offsets automatically when writing [offset:...].',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'bac-calculator',
+    name: '血液酒精浓度（BAC）估算器',
+    nameEn: 'Blood Alcohol Content (BAC) Calculator',
+    description:
+      '基于 Widmark 公式按饮酒明细与体重估算峰值/当前 BAC、标准饮品份数与代谢到清醒所需时间，含法定阈值风险提示。',
+    descriptionEn:
+      'Estimate peak and current BAC, standard drinks and sobering time with the Widmark formula from drink details and body weight, with legal-threshold risk hints.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/bac-calculator',
+    iconName: 'Timer',
+    tags: ['BAC', '酒精', '酒驾', 'Widmark', '代谢'],
+    tagsEn: ['BAC', 'Alcohol', 'DUI', 'Widmark', 'Metabolism'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '血液酒精浓度估算器采用法医毒理学常用的 Widmark 公式，根据每份饮品的容量、酒精度（ABV）与份数累计纯乙醇质量，结合体重、性别分布因子 r 和经过时间，估算峰值 BAC、当前 BAC（按 NHTSA 平均 0.015/小时线性代谢）以及代谢到零所需的时间。',
+        coreFeatures: [
+          '饮品明细核算：逐行录入容量、ABV 与份数，自动按乙醇密度 0.789 g/mL 折算纯酒精克数',
+          'Widmark 公式：男性默认 r=0.68、女性 r=0.55，输出峰值与经代谢后的当前 BAC',
+          '标准饮品换算：按 NHTSA 每份 14g 纯酒精口径累计份数，便于横向比较饮酒量',
+          '清醒时间预测：按可配置代谢速率给出代谢到 BAC=0 的小时数与中文时长',
+          '阈值风险提示：对照 0.02%/0.05%/0.08%/0.20%/0.40% 区间给出醒目警告，全部本地运算',
+        ],
+        howToUse: [
+          '填写体重（kg）并选择生理性别以确定默认 Widmark r 因子',
+          '通过预设按钮或手动方式添加饮酒明细，调整容量、ABV 与份数',
+          '填写从开始饮酒到现在经过的小时数，结果区实时显示峰值与当前 BAC',
+          '查看阈值标签与清醒所需时间，任何含酒精摄入后均不应驾驶',
+        ],
+        useCases: [
+          '安全教育场景下理解饮酒量与 BAC 的数量级关系',
+          '聚会前估算不同饮品组合对应的标准饮品份数',
+          '科普写作或驾校课程中演示 Widmark 模型与代谢过程',
+        ],
+        privacyNote:
+          '体重、性别与饮酒明细仅保存在浏览器内存中参与本地计算，不发起任何网络请求，刷新页面即清除。',
+        faqs: [
+          {
+            question: '估算结果能用来判断我现在能不能开车吗？',
+            answer:
+              '不能。Widmark 是群体平均模型，真实 BAC 受进食、肝功能、药物、脱水、个体代谢率等显著影响，误差可能很大。本工具仅用于安全教育，任何饮酒后都不应驾驶。',
+          },
+          {
+            question: '为什么男女使用不同的 r 因子？',
+            answer:
+              'r 是 Widmark 分布因子，反映酒精在体内水相中的分布比例。女性平均体脂率更高、体液占比更低，经典研究给出的均值约为 0.55，男性约为 0.68；个体仍会围绕均值波动。',
+          },
+          {
+            question: '代谢速率 0.015 BAC/小时是怎么来的？',
+            answer:
+              '这是 NHTSA 等机构在安全教育材料中采用的人群平均线性代谢值，即每小时血液酒精浓度约下降 0.015 g/100mL。实际范围常见于 0.01–0.02，长期饮酒者可能更高，模型按固定值简化计算。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Blood Alcohol Content calculator uses the Widmark formula widely applied in forensic toxicology. It accumulates pure ethanol mass from each drink’s volume, ABV and quantity, then combines body weight, the gender distribution factor r and elapsed time to estimate peak BAC, current BAC (linear elimination at the NHTSA average of 0.015/hour) and time until sobriety.',
+        coreFeatures: [
+          'Drink-by-drink accounting: enter volume, ABV and quantity per row, with pure ethanol derived using density 0.789 g/mL',
+          'Widmark formula: default r=0.68 for males and 0.55 for females, producing peak and metabolized current BAC',
+          'Standard drink conversion: totals drinks using the NHTSA 14g pure ethanol definition for easy comparison',
+          'Sobering prediction: reports hours until BAC reaches zero with a configurable elimination rate',
+          'Threshold warnings: highlights 0.02%/0.05%/0.08%/0.20%/0.40% risk bands, all computed locally',
+        ],
+        howToUse: [
+          'Enter body weight in kg and choose a sex to select the default Widmark r factor',
+          'Add drinks via preset buttons or manual rows, adjusting volume, ABV and quantity',
+          'Set the hours elapsed since drinking started; peak and current BAC update in real time',
+          'Review threshold tags and sobering time, and never drive after any alcohol intake',
+        ],
+        useCases: [
+          'Safety education on the order-of-magnitude relationship between drinks and BAC',
+          'Estimating standard-drink equivalents of different drink combinations before a gathering',
+          'Demonstrating the Widmark model and elimination process in driving-school or science content',
+        ],
+        privacyNote:
+          'Weight, sex and drink details stay in browser memory for local calculation only. No network requests are made and all input is cleared on refresh.',
+        faqs: [
+          {
+            question: 'Can I use the result to decide whether I am fit to drive?',
+            answer:
+              'No. Widmark is a population-average model. Real BAC varies substantially with food intake, liver function, medication, hydration and individual metabolism. This tool is for safety education only; never drive after drinking.',
+          },
+          {
+            question: 'Why do men and women use different r factors?',
+            answer:
+              'The Widmark factor r describes alcohol distribution across body water. Women on average have higher body-fat ratios and lower water fraction, giving classical means around 0.55 versus 0.68 for men; individuals still vary around these means.',
+          },
+          {
+            question: 'Where does the 0.015 BAC/hour elimination rate come from?',
+            answer:
+              'It is the population-average linear elimination value used in NHTSA safety materials, meaning BAC falls by roughly 0.015 g/100mL per hour. Observed ranges are commonly 0.01–0.02 and can be higher in chronic drinkers; the model simplifies to a fixed rate.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'lc-resonance-calculator',
+    name: 'LC 谐振频率与电抗计算器',
+    nameEn: 'LC Resonance Frequency & Reactance Calculator',
+    description:
+      '理想 LC 电路的谐振频率、电感、电容三者互求，并核算谐振点感抗与容抗，覆盖 H/mH/µH/nH 与 F/µF/nF/pF 工程单位。',
+    descriptionEn:
+      'Solve resonance frequency, inductance or capacitance for ideal LC circuits and verify inductive/capacitive reactance at resonance, with full engineering unit support.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/lc-resonance-calculator',
+    iconName: 'Zap',
+    tags: ['LC谐振', '谐振频率', '感抗', '容抗', '电感', '电容'],
+    tagsEn: ['LC Resonance', 'Resonant Frequency', 'Reactance', 'Inductance', 'Capacitance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'LC 谐振频率与电抗计算器面向射频调谐、开关电源、滤波与振荡电路选型，基于理想元件模型实现 f₀ = 1/(2π√(LC)) 的三向互求：已知 L/C 求谐振频率，或已知目标频率反求所需电感、电容，并同步计算谐振点的感抗 Xl 与容抗 Xc。',
+        coreFeatures: [
+          '三向互求：L+C 求 f₀、f₀+C 求 L、f₀+L 求 C，公式切换即时生效',
+          '工程单位全覆盖：H/mH/µH/nH、F/mF/µF/nF/pF 与 Hz/kHz/MHz/GHz 自动换算',
+          '谐振点电抗核对：展示 Xl=2πfL 与 Xc=1/(2πfC)，验证二者在谐振点相等',
+          '常用组合参考：内置 100µH+100pF 等标准 L/C 组合的谐振频率速查表',
+          '一键预设：典型射频、开关电源参数直接载入，纯本地浮点运算',
+        ],
+        howToUse: [
+          '选择计算模式（求频率 / 求电感 / 求电容）',
+          '填写已知参数并通过下拉框选择匹配的工程单位',
+          '查看结果卡片中的目标值与科学计数法 SI 表示',
+          '在参考表中对照相近的标准 L/C 组合，评估实际选型',
+        ],
+        useCases: [
+          '射频调谐回路与天线匹配网络的谐振频率估算',
+          'DC-DC 开关电源输出 LC 滤波器的截止/谐振参数核对',
+          '振荡电路选型时由目标频率反推电感或电容数量级',
+        ],
+        privacyNote:
+          '所有参数与计算均在浏览器本地完成，不发起网络请求，也不存储任何输入。',
+        faqs: [
+          {
+            question: '100µH 与 100pF 的谐振频率是多少？',
+            answer:
+              '代入 f₀=1/(2π√(LC))：L=100µH=1×10⁻⁴ H、C=100pF=1×10⁻¹⁰ F，算得 f₀≈1.5915 MHz，与工具内置预设和参考表一致。',
+          },
+          {
+            question: '为什么谐振时感抗等于容抗？',
+            answer:
+              '谐振角频率 ω₀=1/√(LC) 下，Xl=ωL 与 Xc=1/(ωC) 代入 ω₀ 后都等于 √(L/C)，二者大小相等、相位相反，串联时净电抗为零，因此发生谐振。',
+          },
+          {
+            question: '计算结果与实际电路为什么会有偏差？',
+            answer:
+              '本工具采用理想模型，忽略了电感的 ESR 与寄生电容、电容的 ESL/ESR、PCB 分布参数以及元件容差。高频或高 Q 设计需要在估算值基础上结合数据手册与实测调整。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The LC Resonance Frequency & Reactance Calculator supports RF tuning, switching-power-supply, filtering and oscillator design. Built on the ideal-component relation f₀ = 1/(2π√(LC)), it solves any one of frequency, inductance or capacitance from the other two and reports the inductive reactance Xl and capacitive reactance Xc at resonance.',
+        coreFeatures: [
+          'Three-way solving: f₀ from L+C, L from f₀+C, or C from f₀+L with instant formula switching',
+          'Full engineering units: H/mH/µH/nH, F/mF/µF/nF/pF and Hz/kHz/MHz/GHz with automatic conversion',
+          'Resonance reactance check: shows Xl=2πfL and Xc=1/(2πfC) and verifies they match at resonance',
+          'Reference table: resonant frequencies of common standard L/C pairs such as 100µH+100pF',
+          'One-click presets for typical RF and power-supply values, all computed locally',
+        ],
+        howToUse: [
+          'Choose the calculation mode (frequency, inductance or capacitance)',
+          'Enter the known parameters and pick matching engineering units from the dropdowns',
+          'Read the target value and its scientific-notation SI form from the result cards',
+          'Compare against nearby standard L/C pairs in the reference table for real component selection',
+        ],
+        useCases: [
+          'Estimating resonance of RF tuning tanks and antenna matching networks',
+          'Checking LC output filters in DC-DC switching converters',
+          'Deriving the order of magnitude of L or C from a target oscillator frequency',
+        ],
+        privacyNote:
+          'Every parameter and calculation runs locally in the browser. No network requests are made and no input is stored.',
+        faqs: [
+          {
+            question: 'What is the resonant frequency of 100µH and 100pF?',
+            answer:
+              'With L=100µH=1×10⁻⁴ H and C=100pF=1×10⁻¹⁰ F, f₀=1/(2π√(LC)) ≈ 1.5915 MHz, matching the built-in preset and reference table.',
+          },
+          {
+            question: 'Why do inductive and capacitive reactance become equal at resonance?',
+            answer:
+              'At the resonant angular frequency ω₀=1/√(LC), both Xl=ωL and Xc=1/(ωC) evaluate to √(L/C). They are equal in magnitude and opposite in phase, so the net reactance of a series circuit is zero and resonance occurs.',
+          },
+          {
+            question: 'Why might real circuits deviate from these results?',
+            answer:
+              'The ideal model ignores inductor ESR and parasitic capacitance, capacitor ESL/ESR, PCB parasitics and component tolerances. High-frequency or high-Q designs require datasheet and measurement-based adjustments on top of these estimates.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'overtime-pay-calculator',
+    name: '加班工资计算器（中国大陆劳动法）',
+    nameEn: 'China Labor Law Overtime Pay Calculator',
+    description:
+      '按月工资基数与工作日/休息日/法定节假日三类加班小时，依 21.75 月计薪天数与 150%/200%/300% 法定倍率分项核算加班费与当月应发总额。',
+    descriptionEn:
+      'Compute Chinese statutory overtime pay from monthly base salary and workday/rest-day/holiday overtime hours, using the 21.75 pay days and 150%/200%/300% rates.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/overtime-pay-calculator',
+    iconName: 'Coins',
+    tags: ['加班费', '劳动法', '21.75', '薪资', 'HR'],
+    tagsEn: ['Overtime Pay', 'Labor Law', 'Salary', 'HR', 'China'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '加班工资计算器依据《中华人民共和国劳动法》第四十四条与劳社部发〔2008〕3 号文，把月工资基数按 21.75 个计薪天数、每日 8 小时折算为小时工资，再分别按工作日延时 150%、休息日（不能补休）200%、法定节假日 300% 三档倍率计算三类加班费，输出分项明细、加班费合计与当月应发总额。',
+        coreFeatures: [
+          '三档法定倍率：工作日延时 150%、休息日 200%、法定节假日 300%，每档附法条依据',
+          '标准折算链：月工资 ÷ 21.75 = 日工资，日工资 ÷ 8 = 小时工资，口径与官方文件一致',
+          '分项与汇总：逐类展示小时数、倍率与金额，并给出加班费合计、应发总额与占基数比例',
+          '补休规则提示：明确休息日可补休、法定节假日不得用补休替代加班工资',
+          '纯本地计算：薪资数据不离开浏览器，适合劳动者与 HR 快速自查',
+        ],
+        howToUse: [
+          '输入月工资计薪基数（劳动合同约定的正常工作时间工资，非到手工资）',
+          '在表格中分别填写工作日延时、休息日、法定节假日的加班小时数',
+          '查看折算日工资、小时工资与三类加班费明细',
+          '以应发总额卡片作为当月工资条中加班项目的核对参考',
+        ],
+        useCases: [
+          '劳动者核对工资条中的加班费是否达到法定最低标准',
+          'HR 与财务在薪资核算前快速测算三档加班成本',
+          '劳动仲裁或咨询场景中量化加班报酬请求金额',
+        ],
+        privacyNote:
+          '工资基数与加班小时仅保存在浏览器内存中参与本地计算，不发起网络请求、不写入存储，刷新即清除。',
+        faqs: [
+          {
+            question: '21.75 天是怎么来的？',
+            answer:
+              '依据劳社部发〔2008〕3 号，月计薪天数 =（365 天 - 104 个休息日）÷ 12 个月 = 21.75 天。法定节假日用人单位仍需依法支付工资，因此不从计薪天数中扣除。',
+          },
+          {
+            question: '休息日加班一定能拿 200% 吗？',
+            answer:
+              '不一定。第四十四条第（二）项规定休息日加班且“不能安排补休”时才支付不低于 200% 的报酬；如果单位安排了同等时长补休，则可以不支付该笔加班费。法定节假日则不同，300% 加班工资不能以补休替代。',
+          },
+          {
+            question: '计算基数应该填应发工资还是到手工资？',
+            answer:
+              '应填劳动合同约定的、劳动者在正常工作时间内提供正常劳动所得的工资报酬（常见口径为基本工资或岗位工资），不含加班费、补贴等浮动项目；各地司法口径可能略有差异，具体以当地规定与合同约定为准。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The China Labor Law Overtime Pay Calculator follows Article 44 of the PRC Labor Law and Ministry of Human Resources document No. 3 (2008). It converts the monthly base salary into an hourly wage using 21.75 pay days and an 8-hour workday, then applies the three statutory rates — 150% for extended workday hours, 200% for rest days without compensatory leave, and 300% for statutory holidays — producing line items, total overtime pay and gross monthly pay.',
+        coreFeatures: [
+          'Three statutory rates: 150% workday, 200% rest day, 300% holiday, each with its legal citation',
+          'Official conversion chain: monthly salary ÷ 21.75 = daily wage, daily wage ÷ 8 = hourly wage',
+          'Line items and summary: hours, rate and amount per category plus total overtime, gross pay and ratio to base',
+          'Compensatory-leave guidance: rest-day overtime may be offset by leave, holiday overtime may not',
+          'Fully local: salary data never leaves the browser, suitable for employees and HR self-checks',
+        ],
+        howToUse: [
+          'Enter the contractual base salary for normal working hours (not take-home pay)',
+          'Fill overtime hours for workday extension, rest days and statutory holidays in the table',
+          'Review the derived daily and hourly wages plus the three overtime line items',
+          'Use the gross pay card as a reference when checking the overtime section of a payslip',
+        ],
+        useCases: [
+          'Employees verifying that payslip overtime meets statutory minimums',
+          'HR and finance estimating three-tier overtime cost before payroll run',
+          'Quantifying overtime claims in labor arbitration or advisory scenarios',
+        ],
+        privacyNote:
+          'Salary and overtime hours remain in browser memory for local calculation only. No network requests or persistent storage are used; everything is cleared on refresh.',
+        faqs: [
+          {
+            question: 'Where does the 21.75-day figure come from?',
+            answer:
+              'Per MOHRSS document No. 3 (2008), monthly pay days = (365 - 104 rest days) ÷ 12 = 21.75. Statutory holidays remain paid days and are not deducted from the count.',
+          },
+          {
+            question: 'Is rest-day overtime always paid at 200%?',
+            answer:
+              'Not always. Article 44(2) requires 200% only when the employer cannot arrange compensatory leave. Equal-time leave can replace the payment for rest days, but the 300% holiday premium can never be replaced by leave.',
+          },
+          {
+            question: 'Should I enter gross salary or take-home pay as the base?',
+            answer:
+              'Use the contractual wage for normal working hours (typically basic or position salary), excluding overtime and variable allowances. Local judicial interpretations may differ slightly, so follow local rules and the labor contract.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'pricing-margin-calculator',
+    name: '毛利率 / 加价率 / 售价双向定价计算器',
+    nameEn: 'Gross Margin & Markup Pricing Calculator',
+    description:
+      '严格区分毛利率（分母为售价）与加价率 markup（分母为成本），在成本、售价、毛利率、加价率、毛利额之间双向求解，支持批量定价 CSV、折扣保本分析与口径互转对照。',
+    descriptionEn:
+      'Bidirectional pricing calculator that keeps gross margin (divided by price) and markup (divided by cost) strictly separate, with batch CSV pricing, discount break-even analysis and a margin-to-markup reference table.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/pricing-margin-calculator',
+    iconName: 'Percent',
+    tags: ['毛利率', '加价率', '定价', '售价', '保本'],
+    tagsEn: ['Gross Margin', 'Markup', 'Pricing', 'Break-even', 'Retail'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '毛利率 / 加价率 / 售价双向定价计算器面向零售、电商与小微商户的定价场景，严格区分两个极易混淆的口径：毛利率 =（售价 − 成本）÷ 售价，加价率 markup =（售价 − 成本）÷ 成本。工具在成本价、售价、毛利率、加价率与毛利额之间做任意已知量求未知量的双向换算，并提供批量定价表导出、多档折扣保本分析与毛利率 / 加价率互转对照表，全部计算在浏览器本地完成。',
+        coreFeatures: [
+          '单笔双向求解：成本 + 售价核算毛利率与加价率，或由目标毛利率 / 加价率反推售价、由售价与毛利率反推最高成本',
+          '口径严格区分：毛利率分母为售价、加价率分母为成本，结果同时展示两个数值避免混用',
+          '批量定价 CSV：粘贴多行「成本,目标毛利率」即可批量生成售价与毛利额，一键复制 CSV',
+          '折扣保本分析：输入标价、成本与多档折扣率，逐档判断折后价是否保本并展示折后利润',
+          '互转对照表：内置常见毛利率档位与等价加价率的对照，附换算公式说明',
+        ],
+        howToUse: [
+          '在「单笔双向求解」中选择计算模式，填写已知的成本、售价、毛利率或加价率',
+          '需要给一批商品统一定价时，切换到「批量定价（CSV）」，每行输入成本与目标毛利率百分比',
+          '评估促销活动时，在「折扣保本分析」中填写标价、成本与待评估的让利档位',
+          '不确定毛利率与加价率如何换算时，查看「互转对照」标签页的对照表与公式',
+        ],
+        useCases: [
+          '电商卖家按目标毛利率快速反推商品标价与促销底价',
+          '采购与财务核算多 SKU 批量定价并导出表格',
+          '门店评估打折活动在各折扣档位下是否亏本',
+          '统一团队对毛利率与加价率两个口径的理解，避免报价错误',
+        ],
+        privacyNote:
+          '所有成本、售价与折扣数据仅在浏览器内存中参与本地计算，不发起任何网络请求、不写入持久化存储，刷新页面即清除。',
+        faqs: [
+          {
+            question: '毛利率和加价率到底有什么区别？',
+            answer:
+              '毛利率的分母是售价：毛利率 =（售价 − 成本）÷ 售价；加价率 markup 的分母是成本：加价率 =（售价 − 成本）÷ 成本。以成本 80、售价 100 为例，毛利额都是 20，但毛利率为 20%，加价率为 25%。同一价位下加价率在数值上始终大于毛利率。',
+          },
+          {
+            question: '为什么目标毛利率不能填 100% 或更高？',
+            answer:
+              '由售价公式 P = C ÷（1 − 毛利率）可知，毛利率趋近 100% 时售价趋于无穷大，100% 及以上在成本为正的情况下没有有限售价解，因此工具要求毛利率严格小于 100%；毛利率允许填负值，用于亏本引流等定价场景。',
+          },
+          {
+            question: '折扣保本分析里的「折扣」是打几折的意思吗？',
+            answer:
+              '这里的折扣率指让利幅度（off 比例）。例如输入 20 表示让利 20%，即按标价的 80% 出售（打 8 折）。保本临界让利幅度 = 1 − 成本 ÷ 标价，超过该档位即判定为亏本。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Gross Margin & Markup Pricing Calculator serves retail, e-commerce and small-merchant pricing while keeping two easily confused metrics strictly separate: gross margin = (price − cost) ÷ price, and markup = (price − cost) ÷ cost. It solves any unknown from cost, price, margin, markup or gross profit, and adds batch CSV pricing, multi-tier discount break-even analysis and a margin-to-markup reference table, all computed locally in the browser.',
+        coreFeatures: [
+          'Bidirectional single-item solving: derive margin and markup from cost and price, back-solve price from a target margin or markup, or find the maximum acceptable cost from price and margin',
+          'Strict metric separation: margin is divided by price while markup is divided by cost, with both values shown together',
+          'Batch CSV pricing: paste multiple "cost, target margin" lines to generate prices and gross profits, then copy the CSV in one click',
+          'Discount break-even analysis: enter list price, cost and several discount tiers to see whether each discounted price stays above cost',
+          'Conversion reference: common margin levels mapped to equivalent markup with the conversion formulas explained',
+        ],
+        howToUse: [
+          'Pick a mode in the single-item tab and fill the known cost, price, margin or markup',
+          'For mass SKU pricing, switch to the batch CSV tab and enter one cost plus target margin percentage per line',
+          'When planning promotions, use the discount tab with list price, cost and candidate discount tiers',
+          'Check the reference tab whenever you need to convert between margin and markup definitions',
+        ],
+        useCases: [
+          'E-commerce sellers back-solving list prices and promotion floors from target margins',
+          'Procurement and finance producing multi-SKU pricing sheets for export',
+          'Stores checking whether planned discount tiers would sell below cost',
+          'Aligning teams on the margin versus markup terminology to avoid quoting errors',
+        ],
+        privacyNote:
+          'All cost, price and discount figures stay in browser memory for local calculation only. No network requests or persistent storage are involved; data is cleared on refresh.',
+        faqs: [
+          {
+            question: 'What exactly is the difference between gross margin and markup?',
+            answer:
+              'Gross margin divides gross profit by price: (price − cost) ÷ price. Markup divides the same gross profit by cost: (price − cost) ÷ cost. With cost 80 and price 100, gross profit is 20 in both cases, but margin is 20% while markup is 25%. For the same price point, markup is always numerically larger than margin.',
+          },
+          {
+            question: 'Why can the target margin not be 100% or higher?',
+            answer:
+              'From P = C ÷ (1 − margin), as margin approaches 100% the required price tends toward infinity, so no finite price exists at or above 100% when cost is positive. The tool therefore requires margin to be strictly below 100%; negative margins are allowed for loss-leader pricing.',
+          },
+          {
+            question: 'Does the discount in the break-even tab mean the "X折" convention?',
+            answer:
+              'It represents the percentage knocked off (off rate). Entering 20 means a 20% reduction, i.e. selling at 80% of list price. The break-even threshold is 1 − cost ÷ list price; any tier beyond it is flagged as a loss.',
           },
         ],
       },
