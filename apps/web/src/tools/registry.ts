@@ -30034,6 +30034,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'markdown-frontmatter-editor',
+    name: 'Markdown Frontmatter 编辑器（YAML / TOML 解析与回写）',
+    nameEn: 'Markdown Frontmatter Editor',
+    description:
+      '识别 Markdown 文件顶部的 frontmatter 块，同时支持 --- YAML 与 +++ TOML 两种定界，自动切分元数据与正文，以键值表单编辑字段（增删改、类型切换、点路径单层嵌套键、行内与块式数组），实时回写为合法 frontmatter 且正文原样保留，并可在 YAML/TOML 两种输出间转换，无法解析的行会给出错误行号，纯本地运行。',
+    descriptionEn:
+      'Detect and split the frontmatter block at the top of Markdown files with both --- YAML and +++ TOML delimiters, edit metadata as key-value fields (add/remove, type switching, single-level dot-path nesting, inline and block arrays), and write back valid frontmatter while preserving the body byte-for-byte, with YAML/TOML output conversion and line-accurate syntax errors. Runs fully locally.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/markdown-frontmatter-editor',
+    iconName: 'FileTextOutlined',
+    tags: ['Markdown', 'Frontmatter', 'YAML', 'TOML', '元数据', 'Hugo', 'Astro'],
+    tagsEn: ['Markdown', 'Frontmatter', 'YAML', 'TOML', 'Metadata', 'Hugo', 'Astro'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Markdown Frontmatter 编辑器面向静态站点（Hugo / Hexo / Astro / Jekyll 等）作者，用来批量维护文章顶部的元数据块。它会识别文件首行的 ---（YAML）或 +++（TOML）定界，把元数据解析为可编辑的键值字段并与正文分离；你在表单中增删字段、切换标量类型或编辑数组后，工具实时把字段回写为合法的 frontmatter 文本，正文不做任何改动，还能一键在 YAML 与 TOML 两种写法之间转换。解析器刻意限定在浅层键值、单层嵌套对象与数组这一常用子集，遇到无法识别的行会跳过并报告行号，而不是猜测性改写。',
+        coreFeatures: [
+          '自动识别 YAML（---）与 TOML（+++）定界块，元数据与正文分区展示',
+          '标量类型推断与切换：字符串、数字、布尔、null，字符串在含特殊字符时自动加引号',
+          '数组支持行内 [a, b] 与 YAML 块式 - item 两种写法，表单中以逗号分隔编辑',
+          '单层嵌套对象以点路径键（author.name）编辑，回写时还原为缩进块或 [section] 表头',
+          '回写保证正文原样保留，并支持 YAML ↔ TOML 输出互转；非法行带行号提示',
+        ],
+        howToUse: [
+          '把含 frontmatter 的 Markdown 粘贴到左侧输入框，工具自动解析并在右侧生成字段表单',
+          '直接修改键名、类型或值，或点击「添加字段」「删除」调整元数据结构',
+          '数组字段用逗号分隔录入；布尔字段用开关切换；嵌套键填写形如 section.key 的点路径',
+          '在底部选择输出格式（YAML 或 TOML），复制完整 Markdown 即可替换原文',
+        ],
+        useCases: [
+          '为 Hugo / Astro / Hexo 文章批量补全 title、date、tags、draft 等元数据',
+          '把历史文章的 YAML frontmatter 统一转换为 TOML，或反向迁移',
+          '检查复制来的 frontmatter 是否存在语法错误行，快速定位修复',
+          '不熟悉 YAML/TOML 语法时，通过表单方式安全编辑而不破坏正文',
+        ],
+        privacyNote:
+          '全部解析与回写都在浏览器本地完成，文档内容不会上传或存储到任何服务器。',
+        faqs: [
+          {
+            question: '支持深层嵌套对象或复杂 YAML 语法吗？',
+            answer:
+              '不支持。本工具刻意限定为浅层键值、单层嵌套对象与数组的常用子集，锚点、多行字符串、复杂映射等完整 YAML 特性不在范围内；无法识别的行会跳过并在顶部给出错误行号，正文始终不会被破坏。',
+          },
+          {
+            question: '编辑后正文会被格式化或改动吗？',
+            answer:
+              '不会。回写时只替换 frontmatter 块，正文按解析时切分的内容原样拼接，换行与空白均保持不变。',
+          },
+          {
+            question: 'YAML 和 TOML 输出可以互转吗？',
+            answer:
+              '可以。字段被解析为统一的中间结构后，可在底部切换输出格式，YAML 的 --- 块与 TOML 的 +++ 块（含 [section] 表头）会按各自语法重新生成。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A frontmatter editor for static-site authors (Hugo, Hexo, Astro, Jekyll and similar). It detects the leading --- (YAML) or +++ (TOML) delimiter, splits metadata from the Markdown body, exposes metadata as editable key-value fields, and writes your edits back as valid frontmatter without touching the body. YAML/TOML output can be switched freely. The parser intentionally covers the common subset of shallow key-values, single-level nested objects and arrays; unrecognizable lines are skipped with a line number instead of being guessed.',
+        coreFeatures: [
+          'Detects both --- YAML and +++ TOML blocks and separates metadata from body',
+          'Scalar inference and explicit type switching: string, number, boolean, null, with automatic quoting',
+          'Arrays in inline [a, b] and YAML block - item forms, edited as comma-separated input',
+          'Single-level nesting via dot-path keys (author.name), restored as indented blocks or [section] headers',
+          'Body preserved byte-for-byte on write-back, YAML/TOML conversion, and line-accurate error reporting',
+        ],
+        howToUse: [
+          'Paste Markdown with frontmatter into the left panel; fields appear automatically in the right panel',
+          'Edit keys, types and values inline, or use add/remove buttons to restructure metadata',
+          'Enter arrays as comma-separated values, toggle booleans with the switch, use section.key for nesting',
+          'Pick YAML or TOML output at the bottom and copy the full Markdown to replace the original',
+        ],
+        useCases: [
+          'Filling title, date, tags and draft metadata across Hugo/Astro/Hexo posts',
+          'Migrating legacy YAML frontmatter to TOML or the reverse in one click',
+          'Locating broken frontmatter lines reported with precise line numbers',
+          'Editing metadata safely through a form without learning YAML/TOML syntax',
+        ],
+        privacyNote:
+          'All parsing and write-back happen locally in the browser; document content is never uploaded or stored.',
+        faqs: [
+          {
+            question: 'Does it support deeply nested objects or full YAML syntax?',
+            answer:
+              'No. The tool is deliberately limited to shallow key-values, single-level nesting and arrays. Anchors, multi-line strings and complex mappings are out of scope; unrecognized lines are skipped with a reported line number and the body is never modified.',
+          },
+          {
+            question: 'Will the Markdown body be reformatted?',
+            answer:
+              'No. Only the frontmatter block is replaced. The body captured during parsing is concatenated back unchanged, including whitespace and line endings.',
+          },
+          {
+            question: 'Can I convert between YAML and TOML?',
+            answer:
+              'Yes. Fields are parsed into one intermediate structure, so switching the output selector regenerates either --- YAML or +++ TOML (with [section] headers) from the same data.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
