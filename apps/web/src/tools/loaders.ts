@@ -315,4 +315,11 @@ export const toolLoaders: Record<
   'messagepack-codec': () => import('./messagepack-codec'),
   'http-message-parser': () => import('./http-message-parser'),
   'shunting-yard-visualizer': () => import('./shunting-yard-visualizer'),
+  'css-transform-matrix-calculator': () =>
+    import('./css-transform-matrix-calculator'),
+  'multi-timezone-meeting-planner': () =>
+    import('./multi-timezone-meeting-planner'),
+  'cn-income-tax-calculator': () => import('./cn-income-tax-calculator'),
+  'markdown-frontmatter-editor': () => import('./markdown-frontmatter-editor'),
+  'cron-systemd-timer-converter': () => import('./cron-systemd-timer-converter'),
 };

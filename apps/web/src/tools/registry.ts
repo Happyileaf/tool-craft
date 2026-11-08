@@ -29722,6 +29722,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'css-transform-matrix-calculator',
+    name: 'CSS Transform 矩阵计算器（2D/3D 函数链合成与 unmatrix 分解）',
+    nameEn: 'CSS Transform Matrix Calculator',
+    description:
+      '把 translate / scale / rotate / skew 等 CSS 变换函数按书写顺序合成为 4×4 列主序矩阵，输出 matrix() 与 matrix3d() 字符串并实时预览，支持反向解析 matrix/matrix3d 并分解（unmatrix）为平移、缩放、旋转、斜切及任意点变换，纯函数零依赖、纯本地运算。',
+    descriptionEn:
+      'Compose CSS transform functions (translate, scale, rotate, skew) in document order into a column-major 4×4 matrix, emit matrix()/matrix3d() strings with a live preview, and parse existing matrix/matrix3d values back into translation, scale, rotation and skew components plus arbitrary point transforms. Pure functions, zero dependencies, fully local.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/css-transform-matrix-calculator',
+    iconName: 'BorderOuterOutlined',
+    tags: ['CSS', 'Transform', '矩阵', 'matrix3d', 'unmatrix', '动画', '前端'],
+    tagsEn: ['CSS', 'Transform', 'Matrix', 'matrix3d', 'unmatrix', 'Animation', 'Frontend'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'matrix(1.299, 0.75, -0.75, 1.299, 20, 10)',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS Transform 矩阵计算器在浏览器本地完成 CSS 变换与齐次坐标矩阵之间的双向换算。内部统一使用与 CSS matrix3d() 参数排列一致的 4×4 列主序矩阵（16 元素数组），把 translate、scale、rotate、rotateX/Y、skew 函数按 CSS 书写顺序做矩阵乘法合成，输出可直接粘贴的 matrix()/matrix3d() 字符串；也支持把已有 matrix()/matrix3d() 反向解析并通过 unmatrix 闭式分解还原为平移、缩放、旋转（2D 含 skewX）分量，并计算任意点经过该变换后的坐标。',
+        coreFeatures: [
+          '变换函数链按 CSS 书写顺序合成，支持上移/下移调整顺序，顺序不同结果不同可直观对比',
+          '4×4 列主序矩阵网格展示，同步输出 2D matrix() 与 3D matrix3d() 两种 CSS 字符串并一键复制',
+          '反向解析 matrix()/matrix3d()，非法参数带字段位置报错，自动识别 2D/3D',
+          'unmatrix 分解：2D 还原平移/缩放/旋转/skewX，3D 提取 ZYX 欧拉角与三轴缩放',
+          '任意点变换坐标计算与网格背景实时预览，纯函数核心配套固定向量单元测试',
+        ],
+        howToUse: [
+          '在左侧「添加变换」下拉中选择 translate/scale/rotate 等函数，逐项填写数值（角度用度）',
+          '用上下箭头调整函数顺序，右侧矩阵网格与 matrix()/matrix3d() 输出会实时更新',
+          '在「矩阵分解」卡片输入一个点的 x/y 坐标，查看变换后的坐标，或直接观察预览方块',
+          '在右下方粘贴已有的 matrix() 或 matrix3d() 字符串，查看其分解分量并复制规范化结果',
+        ],
+        useCases: [
+          '排查多段 transform 组合后的真实效果，理解 CSS 变换从右到左作用于点的矩阵语义',
+          '设计动画关键帧时在函数写法与矩阵写法之间互转，或对比不同顺序的差异',
+          '阅读 DevTools 计算样式中的 matrix3d，还原出可读的平移/旋转/缩放参数',
+          '教学演示齐次坐标、列主序排列与 unmatrix 分解过程',
+        ],
+        privacyNote:
+          '所有矩阵运算均在浏览器本地完成，不发起任何网络请求，输入的变换参数不会被上传或留存。',
+        faqs: [
+          {
+            question: '为什么调整变换函数顺序后结果会变？',
+            answer:
+              '矩阵乘法不满足交换律。CSS 中 transform: A B C 对点的作用是 A·B·C·p，即最右侧函数最先作用于点。本工具严格按书写顺序左乘累积，因此上下移动函数会得到不同矩阵，这与浏览器行为一致。',
+          },
+          {
+            question: '什么时候无法输出 2D matrix()？',
+            answer:
+              '当函数链包含 rotateX/rotateY 或任何 Z 轴分量时，矩阵不再是仿射 2D 形式（第三行/第三列偏离单位阵），CSS 也无法用 6 参数 matrix() 表达，此时工具会提示改用 16 参数 matrix3d()。',
+          },
+          {
+            question: 'unmatrix 分解的角度为什么可能和我输入的不一样？',
+            answer:
+              '分解是从最终合成矩阵反解的，旋转角被归一化到主值区间，且缩放为负时旋转与缩放存在等价表示（如 scaleX(-1) 与 rotate(180deg) 的组合）。分解给出的是数学上等价的一组规范分量，不保证与原始输入逐字相同。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A local, two-way workbench between CSS transform functions and homogeneous-coordinate matrices. It keeps a column-major 4×4 matrix (the same 16-value layout as CSS matrix3d()), multiplies translate/scale/rotate/rotateX-Y/skew functions in CSS document order, emits copy-ready matrix()/matrix3d() strings, parses existing matrix values back, and runs unmatrix decomposition into translation, scale, rotation (plus skewX in 2D) while computing arbitrary point transforms.',
+        coreFeatures: [
+          'Compose a transform function chain in CSS order; reorder with up/down controls to see the non-commutative effect',
+          'Column-major 4×4 matrix grid with both 2D matrix() and 3D matrix3d() CSS strings, one-click copy',
+          'Reverse-parse matrix()/matrix3d() with field-positioned errors and automatic 2D/3D detection',
+          'unmatrix: 2D recovers translation/scale/rotation/skewX; 3D extracts ZYX Euler angles and per-axis scale',
+          'Arbitrary point transform plus a live grid preview; the pure-function core ships with fixed-vector unit tests',
+        ],
+        howToUse: [
+          'Pick translate/scale/rotate and other functions from the add dropdown, then fill values (angles in degrees)',
+          'Reorder functions with the arrow buttons; the matrix grid and matrix()/matrix3d() output update live',
+          'Enter a point x/y in the decomposition card to see its transformed coordinate, or watch the preview square',
+          'Paste an existing matrix()/matrix3d() string into the lower-right card to inspect components and copy normalized output',
+        ],
+        useCases: [
+          'Debugging the real effect of combined transforms and understanding right-to-left point application',
+          'Converting between function and matrix notation when designing animation keyframes',
+          'Turning DevTools computed matrix3d values back into readable translation/rotation/scale parameters',
+          'Teaching homogeneous coordinates, column-major layout and unmatrix decomposition',
+        ],
+        privacyNote:
+          'All matrix math runs locally in your browser. No network requests are made and transform parameters are never uploaded or retained.',
+        faqs: [
+          {
+            question: 'Why does reordering functions change the result?',
+            answer:
+              'Matrix multiplication is not commutative. CSS transform: A B C applies to a point as A·B·C·p, so the rightmost function acts first. The tool accumulates left multiplications in document order, matching browser behavior exactly.',
+          },
+          {
+            question: 'When is 2D matrix() unavailable?',
+            answer:
+              'When the chain contains rotateX/rotateY or any Z-axis component, the third row/column leave the identity form, so the six-parameter 2D matrix() cannot express it (and neither can CSS); the tool then directs you to the 16-parameter matrix3d().',
+          },
+          {
+            question: 'Why may the decomposed angle differ from my input?',
+            answer:
+              'Decomposition works backward from the composed matrix: angles are normalized to their principal range and negative scale has equivalent representations with rotation. The result is a mathematically equivalent canonical set, not necessarily a literal reconstruction of the original functions.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
