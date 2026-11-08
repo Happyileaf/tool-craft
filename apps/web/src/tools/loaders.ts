@@ -303,4 +303,5 @@ export const toolLoaders: Record<
   'lrc-parser': () => import('./lrc-parser'),
   'bac-calculator': () => import('./bac-calculator'),
   'lc-resonance-calculator': () => import('./lc-resonance-calculator'),
+  'overtime-pay-calculator': () => import('./overtime-pay-calculator'),
 };

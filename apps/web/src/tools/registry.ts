@@ -28444,6 +28444,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'overtime-pay-calculator',
+    name: '加班工资计算器（中国大陆劳动法）',
+    nameEn: 'China Labor Law Overtime Pay Calculator',
+    description:
+      '按月工资基数与工作日/休息日/法定节假日三类加班小时，依 21.75 月计薪天数与 150%/200%/300% 法定倍率分项核算加班费与当月应发总额。',
+    descriptionEn:
+      'Compute Chinese statutory overtime pay from monthly base salary and workday/rest-day/holiday overtime hours, using the 21.75 pay days and 150%/200%/300% rates.',
+    category: ToolCategoryEnum.FINANCE,
+    path: '/tools/overtime-pay-calculator',
+    iconName: 'Coins',
+    tags: ['加班费', '劳动法', '21.75', '薪资', 'HR'],
+    tagsEn: ['Overtime Pay', 'Labor Law', 'Salary', 'HR', 'China'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '加班工资计算器依据《中华人民共和国劳动法》第四十四条与劳社部发〔2008〕3 号文，把月工资基数按 21.75 个计薪天数、每日 8 小时折算为小时工资，再分别按工作日延时 150%、休息日（不能补休）200%、法定节假日 300% 三档倍率计算三类加班费，输出分项明细、加班费合计与当月应发总额。',
+        coreFeatures: [
+          '三档法定倍率：工作日延时 150%、休息日 200%、法定节假日 300%，每档附法条依据',
+          '标准折算链：月工资 ÷ 21.75 = 日工资，日工资 ÷ 8 = 小时工资，口径与官方文件一致',
+          '分项与汇总：逐类展示小时数、倍率与金额，并给出加班费合计、应发总额与占基数比例',
+          '补休规则提示：明确休息日可补休、法定节假日不得用补休替代加班工资',
+          '纯本地计算：薪资数据不离开浏览器，适合劳动者与 HR 快速自查',
+        ],
+        howToUse: [
+          '输入月工资计薪基数（劳动合同约定的正常工作时间工资，非到手工资）',
+          '在表格中分别填写工作日延时、休息日、法定节假日的加班小时数',
+          '查看折算日工资、小时工资与三类加班费明细',
+          '以应发总额卡片作为当月工资条中加班项目的核对参考',
+        ],
+        useCases: [
+          '劳动者核对工资条中的加班费是否达到法定最低标准',
+          'HR 与财务在薪资核算前快速测算三档加班成本',
+          '劳动仲裁或咨询场景中量化加班报酬请求金额',
+        ],
+        privacyNote:
+          '工资基数与加班小时仅保存在浏览器内存中参与本地计算，不发起网络请求、不写入存储，刷新即清除。',
+        faqs: [
+          {
+            question: '21.75 天是怎么来的？',
+            answer:
+              '依据劳社部发〔2008〕3 号，月计薪天数 =（365 天 - 104 个休息日）÷ 12 个月 = 21.75 天。法定节假日用人单位仍需依法支付工资，因此不从计薪天数中扣除。',
+          },
+          {
+            question: '休息日加班一定能拿 200% 吗？',
+            answer:
+              '不一定。第四十四条第（二）项规定休息日加班且“不能安排补休”时才支付不低于 200% 的报酬；如果单位安排了同等时长补休，则可以不支付该笔加班费。法定节假日则不同，300% 加班工资不能以补休替代。',
+          },
+          {
+            question: '计算基数应该填应发工资还是到手工资？',
+            answer:
+              '应填劳动合同约定的、劳动者在正常工作时间内提供正常劳动所得的工资报酬（常见口径为基本工资或岗位工资），不含加班费、补贴等浮动项目；各地司法口径可能略有差异，具体以当地规定与合同约定为准。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The China Labor Law Overtime Pay Calculator follows Article 44 of the PRC Labor Law and Ministry of Human Resources document No. 3 (2008). It converts the monthly base salary into an hourly wage using 21.75 pay days and an 8-hour workday, then applies the three statutory rates — 150% for extended workday hours, 200% for rest days without compensatory leave, and 300% for statutory holidays — producing line items, total overtime pay and gross monthly pay.',
+        coreFeatures: [
+          'Three statutory rates: 150% workday, 200% rest day, 300% holiday, each with its legal citation',
+          'Official conversion chain: monthly salary ÷ 21.75 = daily wage, daily wage ÷ 8 = hourly wage',
+          'Line items and summary: hours, rate and amount per category plus total overtime, gross pay and ratio to base',
+          'Compensatory-leave guidance: rest-day overtime may be offset by leave, holiday overtime may not',
+          'Fully local: salary data never leaves the browser, suitable for employees and HR self-checks',
+        ],
+        howToUse: [
+          'Enter the contractual base salary for normal working hours (not take-home pay)',
+          'Fill overtime hours for workday extension, rest days and statutory holidays in the table',
+          'Review the derived daily and hourly wages plus the three overtime line items',
+          'Use the gross pay card as a reference when checking the overtime section of a payslip',
+        ],
+        useCases: [
+          'Employees verifying that payslip overtime meets statutory minimums',
+          'HR and finance estimating three-tier overtime cost before payroll run',
+          'Quantifying overtime claims in labor arbitration or advisory scenarios',
+        ],
+        privacyNote:
+          'Salary and overtime hours remain in browser memory for local calculation only. No network requests or persistent storage are used; everything is cleared on refresh.',
+        faqs: [
+          {
+            question: 'Where does the 21.75-day figure come from?',
+            answer:
+              'Per MOHRSS document No. 3 (2008), monthly pay days = (365 - 104 rest days) ÷ 12 = 21.75. Statutory holidays remain paid days and are not deducted from the count.',
+          },
+          {
+            question: 'Is rest-day overtime always paid at 200%?',
+            answer:
+              'Not always. Article 44(2) requires 200% only when the employer cannot arrange compensatory leave. Equal-time leave can replace the payment for rest days, but the 300% holiday premium can never be replaced by leave.',
+          },
+          {
+            question: 'Should I enter gross salary or take-home pay as the base?',
+            answer:
+              'Use the contractual wage for normal working hours (typically basic or position salary), excluding overtime and variable allowances. Local judicial interpretations may differ slightly, so follow local rules and the labor contract.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
