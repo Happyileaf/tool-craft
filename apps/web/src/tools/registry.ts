@@ -1,6 +1,7 @@
 import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
 import { DEFAULT_SAMPLE_INPUT as CHANGELOG_SAMPLE_INPUT } from './changelog-generator/constants';
+import { SAMPLE_PLAIN_LYRICS } from './lrc-parser/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -28134,6 +28135,108 @@ sqrt(area) + 2 * r`,
             question: 'How are the Security, Deprecated and Removed groups decided?',
             answer:
               'Beyond the standard type mapping, subject keywords for security (e.g. CVE, XSS), deprecation (deprecate) and removal (remove) take priority over the type mapping, and the security commit type always lands in Security.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'lrc-parser',
+    name: 'LRC 歌词时间戳生成与解析器',
+    nameEn: 'LRC Lyrics Timestamp Generator & Parser',
+    description:
+      '在逐行时间戳歌词与标准 LRC 文本之间双向转换，支持 ID 标签、行内多时间戳展开与错误定位，全部本地运算。',
+    descriptionEn:
+      'Convert between timestamped lyric lines and standard LRC text, with ID tags, inline multi-timestamp expansion and error localization, fully in your browser.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/lrc-parser',
+    iconName: 'Music',
+    tags: ['LRC', '歌词', '时间戳', '字幕', '音乐'],
+    tagsEn: ['LRC', 'Lyrics', 'Timestamp', 'Subtitle', 'Music'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: SAMPLE_PLAIN_LYRICS,
+    doc: {
+      zh: {
+        whatIsIt:
+          'LRC 歌词时间戳生成与解析器是一款纯浏览器本地工具：生成模式把「mm:ss.cc 歌词」逐行文本拼装为带 ti/ar/al/by 标签的标准 .lrc 文件；解析模式把任意 LRC 文本还原为按时间排序的时间轴表格，并展开一行多时间戳、定位格式错误。',
+        coreFeatures: [
+          '双向转换：逐行时间戳歌词一键生成 CRLF 行尾的标准 LRC，LRC 文本一键还原为结构化时间轴',
+          '多时间戳支持：自动展开 [00:15.00][00:30.00] 这类行内重复标签并按毫秒排序',
+          'ID 标签管理：可编辑 ti/ar/al/by 标签，解析时自动识别 offset 等标签并展示中文名',
+          '错误定位：无法识别的裸文本、秒数越界等问题按行号列出，不中断整体解析',
+          '纯本地运算：不读取本地文件以外的任何数据，不发起网络请求',
+        ],
+        howToUse: [
+          '生成模式：在左侧逐行输入「mm:ss.cc 空格 歌词」，按需填写歌曲标题等 ID 标签',
+          '右侧实时生成标准 LRC 文本，点击「复制 LRC」即可保存为 .lrc 文件',
+          '解析模式：粘贴现有 LRC 文本，自动展示标签信息与按时间排序的歌词表格',
+          '如出现格式问题，查看顶部警告中的行号提示并修正对应行',
+        ],
+        useCases: [
+          '为自制歌曲、翻唱或播客片段制作可被播放器识别的同步歌词',
+          '核对下载到的 LRC 是否存在时间戳错位、缺失或非法行',
+          '把带重复副歌时间戳的 LRC 展开为完整时间轴用于字幕二次加工',
+        ],
+        privacyNote:
+          '所有歌词文本与时间戳均在浏览器本地解析和生成，不经过任何服务器，输入内容不会离开设备。',
+        faqs: [
+          {
+            question: '时间戳支持哪些格式？',
+            answer:
+              '支持标准 [mm:ss.cc]（分:秒.百分秒），同时兼容三位毫秒 [mm:ss.ccc] 与省略小数的 [mm:ss]。秒数必须小于 60，否则会被标记为错误行。',
+          },
+          {
+            question: '一行里有多个时间戳是怎么处理的？',
+            answer:
+              '解析时 [00:15.00][00:30.00]副歌 会展开为两条共享相同文本、时间分别为 15 秒和 30 秒的条目，再统一按时间升序排列，这是 LRC 表示重复段落的常见写法。',
+          },
+          {
+            question: 'offset 标签的单位是什么？',
+            answer:
+              'LRC 规范中 offset 单位是百分秒（1/100 秒），正值让歌词整体提前、负值延后。解析模式会原样展示该标签，生成模式如设置偏移会自动换算并写入 [offset:...]。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The LRC Lyrics Timestamp Generator & Parser runs fully in your browser. Generate mode turns plain "mm:ss.cc lyrics" lines into a standard .lrc file with ti/ar/al/by tags; parse mode restores any LRC text into a time-sorted timeline table, expands inline multi-timestamps and localizes formatting errors.',
+        coreFeatures: [
+          'Bidirectional conversion: plain timestamped lines into CRLF standard LRC, and LRC text back into a structured timeline',
+          'Multi-timestamp support: expands inline tags such as [00:15.00][00:30.00] and sorts entries by milliseconds',
+          'ID tag management: editable ti/ar/al/by tags, with automatic recognition of offset and similar tags',
+          'Error localization: unrecognized bare text and out-of-range seconds are reported with line numbers without aborting the parse',
+          'Pure local processing: no network requests are ever made',
+        ],
+        howToUse: [
+          'In generate mode, enter one "mm:ss.cc space lyrics" line per row on the left and optionally fill in ID tags',
+          'The standard LRC text appears on the right in real time; click "Copy LRC" to save it as a .lrc file',
+          'In parse mode, paste an existing LRC text to see its tags and a time-sorted lyric table',
+          'If formatting issues appear, follow the line numbers in the warning banner to fix the offending rows',
+        ],
+        useCases: [
+          'Authoring synchronized lyrics recognized by music players for covers, demos or podcasts',
+          'Auditing downloaded LRC files for misaligned, missing or illegal timestamps',
+          'Expanding repeated-chorus timestamps into a full timeline for subtitle rework',
+        ],
+        privacyNote:
+          'All lyric text and timestamps are parsed and generated locally in the browser. Nothing is sent to a server and your input never leaves the device.',
+        faqs: [
+          {
+            question: 'Which timestamp formats are supported?',
+            answer:
+              'Standard [mm:ss.cc] (minutes:seconds.centiseconds) is supported, along with three-digit milliseconds [mm:ss.ccc] and fraction-less [mm:ss]. Seconds must be below 60 or the row is flagged as an error.',
+          },
+          {
+            question: 'How are multiple timestamps on one line handled?',
+            answer:
+              'A line like [00:15.00][00:30.00]chorus expands into two entries sharing the same text at 15s and 30s, then all entries are sorted by time. This is the common LRC convention for repeated sections.',
+          },
+          {
+            question: 'What unit does the offset tag use?',
+            answer:
+              'Per the LRC specification, offset is measured in centiseconds (1/100 second): positive shifts lyrics earlier, negative later. Parse mode displays it as-is, and generate mode converts millisecond offsets automatically when writing [offset:...].',
           },
         ],
       },
