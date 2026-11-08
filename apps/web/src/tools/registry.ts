@@ -29621,6 +29621,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'shunting-yard-visualizer',
+    name: '调度场算法可视化',
+    nameEn: 'Shunting-yard Algorithm Visualizer',
+    description:
+      '在浏览器本地把中缀表达式按 Dijkstra 调度场算法转换为后缀表达式（RPN）并逐步求值：可视化运算符栈与输出队列的每一步变化，支持一元负号、右结合幂、函数与常量，括号不匹配、除零等错误在对应步骤给出定位，零新增依赖。',
+    descriptionEn:
+      'Convert an infix expression to Reverse Polish Notation with Dijkstra’s shunting-yard algorithm and evaluate it step by step, entirely in your browser. It visualizes every change of the operator stack and output queue, supports unary minus, right-associative exponentiation, functions and constants, and locates errors such as mismatched parentheses or division by zero. Zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/shunting-yard-visualizer',
+    iconName: 'List',
+    tags: ['调度场', 'RPN', '后缀表达式', '算法可视化', '表达式求值', '教学'],
+    tagsEn: ['Shunting-yard', 'RPN', 'Postfix', 'Algorithm Visualizer', 'Expression', 'Learning'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '调度场算法可视化是一款面向数据结构教学与表达式解析学习的交互式工具。输入中缀表达式（如 3 + 4 * 2 / ( 1 - 5 ) ^ 2），工具先用 Dijkstra 调度场算法逐 token 转换为后缀表达式（RPN），完整记录每一步运算符栈与输出队列的快照及决策原因；再对 RPN 用值栈逐步求值，得到最终数值。支持加减乘除、右结合幂运算、一元负号、括号、sin/cos/sqrt/abs/max/min 函数与 pi/e 常量。括号不匹配、未知标识符、除零、参数个数错误等异常都会在对应步骤抛出带字符位置的错误，而不是直接崩溃。',
+        coreFeatures: [
+          '两阶段回放：调度场转 RPN 与 RPN 值栈求值，每步均有栈/队列快照和中文决策原因',
+          '完整运算符语义：优先级 1–4、左右结合性、一元负号 u- 自动识别、右结合幂运算',
+          '函数与常量：sin/cos/sqrt/abs、变长 max/min，以及 pi/e 常量，函数参数个数自动计数',
+          '错误定位：括号不匹配、尾随运算符、未知标识符、除零、sqrt 负数等在出错步骤给出位置',
+          '交互控制：上一步/下一步/自动播放/重置，步骤表点击跳转，RPN 一键复制',
+        ],
+        howToUse: [
+          '在输入框填写中缀表达式，或点击下方示例按钮载入预置向量',
+          '在「① 调度场转 RPN」阶段逐步查看运算符栈如何压入、弹出，输出队列如何累积为后缀表达式',
+          '切换到「② RPN 逐步求值」阶段，观察值栈如何压入操作数并在遇到运算符时弹栈计算',
+          '使用自动播放连续观看全过程，或点击步骤表任意一行跳转到对应快照',
+        ],
+        useCases: [
+          '数据结构与编译原理课程中讲解栈应用、中缀转后缀与表达式求值',
+          '刷题或面试前手工推导运算符优先级、结合性与一元负号的处理',
+          '实现计算器 / 公式引擎前，用固定向量对照自己的调度场实现是否正确',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地完成，不发起任何网络请求、不引入第三方依赖，输入的表达式不会被上传或记录。',
+        faqs: [
+          {
+            question: '为什么 2 ^ 3 ^ 2 的结果是 512 而不是 64？',
+            answer:
+              '幂运算符 ^ 按数学惯例定义为右结合，即 2 ^ 3 ^ 2 等价于 2 ^ (3 ^ 2) = 2 ^ 9 = 512；调度场在比较栈顶时对右结合运算符使用「严格大于」才弹出，因此会保留栈内的 ^。',
+          },
+          {
+            question: '一元负号是怎么识别的？',
+            answer:
+              "词法分析时，出现在表达式起始、左括号、逗号或另一个运算符之后的 '-' 会被识别为一元负号 u-（优先级 3、右结合），其余为减法运算符（优先级 1、左结合），因此 -2 + 3 与 2 + -3 都能正确解析。",
+          },
+          {
+            question: '支持哪些函数和常量？',
+            answer:
+              '函数支持 sin、cos、sqrt、abs（单参数）以及 max、min（变长参数，用逗号分隔）；常量支持 pi 与 e，在词法阶段直接内联为数值。使用未登记的标识符会在对应字符位置报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Shunting-yard Algorithm Visualizer is an interactive tool for learning data structures and expression parsing. Given an infix expression such as 3 + 4 * 2 / ( 1 - 5 ) ^ 2, it first converts it to Reverse Polish Notation with Dijkstra’s shunting-yard algorithm, recording a snapshot of the operator stack and output queue plus the decision reason at every token, then evaluates the RPN step by step on a value stack. It supports arithmetic operators, right-associative exponentiation, unary minus, parentheses, sin/cos/sqrt/abs/max/min functions, and pi/e constants. Mismatched parentheses, unknown identifiers, division by zero, and arity errors are reported at the exact step with a character position instead of crashing.',
+        coreFeatures: [
+          'Two-phase replay: shunting-yard to RPN and RPN value-stack evaluation, each step with stack/queue snapshots and explanations',
+          'Complete operator semantics: precedence 1–4, left/right associativity, automatic unary-minus (u-) detection, right-associative power',
+          'Functions and constants: sin/cos/sqrt/abs, variadic max/min, and pi/e with automatic argument counting',
+          'Located errors: mismatched parentheses, trailing operators, unknown identifiers, division by zero, and sqrt of negatives reported at the failing step',
+          'Controls: previous/next step, auto-play, reset, click-to-jump step table, and one-click RPN copy',
+        ],
+        howToUse: [
+          'Enter an infix expression or load one of the built-in sample vectors',
+          'In phase ①, watch how the operator stack pushes and pops while the output queue accumulates into postfix notation',
+          'Switch to phase ② to see the value stack push operands and compute whenever an operator arrives',
+          'Use auto-play for the full walkthrough, or click any row in the step table to jump to that snapshot',
+        ],
+        useCases: [
+          'Teaching stack applications, infix-to-postfix conversion, and expression evaluation in data-structure courses',
+          'Manually reasoning about precedence, associativity, and unary minus before interviews or exams',
+          'Validating your own shunting-yard implementation against fixed vectors before building a calculator engine',
+        ],
+        privacyNote:
+          'All computation runs locally in the browser with no network requests and no third-party dependencies; expressions are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why does 2 ^ 3 ^ 2 equal 512 instead of 64?',
+            answer:
+              'Exponentiation is right-associative by mathematical convention, so 2 ^ 3 ^ 2 means 2 ^ (3 ^ 2) = 2 ^ 9 = 512. The shunting-yard only pops a stack operator of equal precedence for left-associative incoming operators.',
+          },
+          {
+            question: 'How is unary minus recognized?',
+            answer:
+              "A '-' at the start of the expression or after a left parenthesis, comma, or another operator is tokenized as unary minus u- (precedence 3, right-associative); otherwise it is binary subtraction (precedence 1, left-associative).",
+          },
+          {
+            question: 'Which functions and constants are supported?',
+            answer:
+              'Functions: sin, cos, sqrt, abs (single argument) and variadic max/min with comma-separated arguments. Constants: pi and e, inlined at tokenization. Unknown identifiers raise an error at their character position.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

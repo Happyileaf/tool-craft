@@ -314,4 +314,5 @@ export const toolLoaders: Record<
   'moon-phase-calculator': () => import('./moon-phase-calculator'),
   'messagepack-codec': () => import('./messagepack-codec'),
   'http-message-parser': () => import('./http-message-parser'),
+  'shunting-yard-visualizer': () => import('./shunting-yard-visualizer'),
 };
