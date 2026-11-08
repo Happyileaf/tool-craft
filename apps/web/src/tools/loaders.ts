@@ -311,4 +311,5 @@ export const toolLoaders: Record<
   'three-phase-power-calculator': () => import('./three-phase-power-calculator'),
   'music-pitch-converter': () => import('./music-pitch-converter'),
   'hamming-codec': () => import('./hamming-codec'),
+  'moon-phase-calculator': () => import('./moon-phase-calculator'),
 };

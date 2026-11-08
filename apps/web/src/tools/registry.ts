@@ -29282,6 +29282,119 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'moon-phase-calculator',
+    name: '月相月龄计算器',
+    nameEn: 'Moon Phase & Age Calculator',
+    description:
+      '在浏览器本地按公历日期推算月相：基于 Julian Day 与平均朔望月取模模型计算月龄、照亮比例与相位角，输出八相位名称（新月到残月）、CSS clip-path 月相示意、邻近新月 / 满月日期与八相位月龄分档，纯本地运算、零新增依赖。',
+    descriptionEn:
+      'Compute the moon phase for any Gregorian date entirely in your browser. A Julian-Day plus mean-synodic-month modulo model yields the moon age, illuminated fraction, and phase angle, with the eight-phase name (new moon through waning crescent), a CSS clip-path moon visual, nearest new/full moon dates, and an age-band lookup table. Fully local, zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/moon-phase-calculator',
+    iconName: 'MoonStar',
+    tags: ['月相', '月龄', '朔望月', 'Julian Day', '天文', '日历'],
+    tagsEn: ['Moon Phase', 'Moon Age', 'Synodic Month', 'Julian Day', 'Astronomy', 'Calendar'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '月相月龄计算器把用户选择的公历日期按 UTC 日历日归一到当日中午，先用 Fliegel–Van Flandern 整数公式换算为 Julian Day，再以已知新月基准点（JD 2451550，UTC 2000-01-06）与平均朔望月长度 29.530588853 天做取模运算得到月龄，并据此推导相位角、照亮比例（(1−cos θ)/2）与八相位分类，同时用 CSS clip-path 椭圆渲染月相亮区、推算邻近的新月与满月日期。模型不使用星历表，结果为日级近似（误差约 ±1 天），适合教学与一般查询。',
+        coreFeatures: [
+          '月龄计算：Julian Day 差值对平均朔望月双重取模，月龄稳定落在 [0, 29.53) 天并展示两位小数',
+          '月相可视化：照亮层使用 radial-gradient 金黄月盘，clip-path 椭圆横向半径随月龄线性变化，盈月锚定右缘、亏月锚定左缘',
+          '完整指标：月龄、照亮比例百分比、距上 / 下一次新月天数、相位角度数与朔望月周期一卡呈现',
+          '邻近朔望：按月龄回推上一次 / 下一次新月，并以半朔望月偏移推算上一次 / 下一次满月的 UTC 日期',
+          '八相位速查：新月、蛾眉月、上弦月、盈凸月、满月、亏凸月、下弦月、残月的月龄区间表，边界按朔望月八等分',
+        ],
+        howToUse: [
+          '顶部日期选择器默认填入当前 UTC 日历日，也可手动选择任意公历日期（输入按 UTC 12:00 归一，消除时区与夏令时影响）',
+          '查看月相示意图与相位标签，月盘亮区形状与标签颜色随月龄实时变化',
+          '在指标卡中读取月龄、照亮比例、相位角以及距邻近新月的天数',
+          '在「邻近朔望推算」卡片查看上一次 / 下一次新月与满月的具体 UTC 日期，底部表格可对照月龄所属相位区间',
+        ],
+        useCases: [
+          '天文通识与地理课堂讲解月相成因、朔望月周期与 Julian Day 记日法',
+          '摄影、露营、赏月等活动快速估算满月与新月的临近日期',
+          '历法与农历相关开发中验证平均朔望月取模模型的近似行为',
+          '作为 Fliegel–Van Flandern 公历 ↔ Julian Day 整数换算公式的可交互示例',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地完成，不发起任何网络请求、不引入第三方依赖，所选日期不会上传或存储，刷新页面即恢复为当天。',
+        faqs: [
+          {
+            question: '为什么算出的满月日期和真实满月可能差一天？',
+            answer:
+              '本工具采用平均朔望月（29.530588853 天）取模模型，没有使用月球星历表，也忽略了月球轨道偏心率与太阳引力扰动造成的朔望月长度波动（实际约 29.27–29.83 天），因此新月 / 满月时刻存在约 ±1 天的误差，界面中的算法说明已明确标注这一近似。',
+          },
+          {
+            question: '照亮比例是怎么算出来的？',
+            answer:
+              '先由月龄按相位角 θ = 2π × 月龄 / 朔望月 得到日–月–地夹角近似值，再用理想球形月相公式照亮比例 = (1 − cos θ) / 2：新月 θ≈0 时接近 0、满月 θ≈π 时接近 1、上下弦 θ≈π/2 时约为 0.5。',
+          },
+          {
+            question: '为什么选择日期时按 UTC 而不是本地时区处理？',
+            answer:
+              '月相是全球性现象，按 UTC 日历日中午 12:00 归一后，全球任意时区的用户查询同一日期都会得到相同的 Julian Day 与月龄，避免本地时区偏移或夏令时导致结果跨日不一致；界面所有输出日期也统一标注为 UTC。',
+          },
+          {
+            question: '月相图形为什么用 clip-path 而不是图片？',
+            answer:
+              '照亮层是一个固定的径向渐变圆，通过 CSS clip-path 的 ellipse() 动态裁剪可见区域：盈月时椭圆锚定右边缘、横向半径随月龄从 0 增长到 50%，亏月时锚定左边缘并缩回 0，纯 CSS 即可在无图片资源、无网络请求的情况下连续表达整个朔望月的月相变化。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Moon Phase & Age Calculator normalizes a picked Gregorian date to UTC noon, converts it to a Julian Day with the integer Fliegel–Van Flandern formula, and takes the difference from a known new-moon reference (JD 2451550, 2000-01-06 UTC) modulo the mean synodic month (29.530588853 days) to obtain the moon age. From the age it derives the phase angle, illuminated fraction ((1−cos θ)/2), and eight-phase classification, renders the lit limb with a CSS clip-path ellipse, and projects the nearest new and full moon dates. No ephemeris is used, so results are day-level approximations within about ±1 day, suited to teaching and casual lookup.',
+        coreFeatures: [
+          'Moon-age math: the Julian-Day difference is double-reduced modulo the mean synodic month, keeping the age within [0, 29.53) days with two-decimal display',
+          'Visual moon: a radial-gradient golden disc is clipped by a CSS ellipse whose horizontal radius grows linearly with age, anchored to the right limb while waxing and the left limb while waning',
+          'Full metrics: moon age, illuminated percentage, days since/until the nearest new moon, phase angle in degrees, and the synodic-month length on one card',
+          'Nearest syzygies: the age projects the last and next new moons, while a half-month offset gives the last and next full moons in UTC',
+          'Eight-phase lookup: age bands for new, waxing crescent, first quarter, waxing gibbous, full, waning gibbous, last quarter, and waning crescent, with boundaries at synodic-month eighths',
+        ],
+        howToUse: [
+          'The date picker starts on the current UTC calendar day; pick any Gregorian date and it is normalized to UTC 12:00 to remove timezone and DST effects',
+          'Watch the moon visual and phase tag update live, including the lit-limb shape and tag color',
+          'Read moon age, illumination, phase angle, and distance to the neighboring new moons from the metric cards',
+          'Use the Nearest Syzygies card for concrete UTC dates of the last/next new and full moons, and cross-check the age band in the bottom table',
+        ],
+        useCases: [
+          'Teaching lunar phases, the synodic month, and Julian Day numbering in astronomy and geography classes',
+          'Estimating full-moon and new-moon timing for photography, camping, and moon-watching plans',
+          'Validating mean-synodic-month modulo models in calendar or lunar-date software',
+          'An interactive example of the integer Fliegel–Van Flandern Gregorian-to-Julian-Day conversion',
+        ],
+        privacyNote:
+          'All computation runs locally in the browser with no network requests and no third-party dependencies. Selected dates are never uploaded or stored and the view resets to today on refresh.',
+        faqs: [
+          {
+            question: 'Why might the full-moon date differ by a day from the real event?',
+            answer:
+              'The tool uses a mean synodic month (29.530588853 days) modulo model without a lunar ephemeris, ignoring orbital eccentricity and solar perturbations that make real synodic months vary roughly between 29.27 and 29.83 days. New/full moon timing therefore carries an error of about ±1 day, which is stated explicitly in the in-app algorithm note.',
+          },
+          {
+            question: 'How is the illuminated fraction calculated?',
+            answer:
+              'The age gives the approximate Sun–Moon–Earth angle θ = 2π × age / synodic month, then the ideal spherical-moon formula illumination = (1 − cos θ) / 2 applies: near 0 at new moon (θ≈0), near 1 at full moon (θ≈π), and about 0.5 at the quarters (θ≈π/2).',
+          },
+          {
+            question: 'Why are dates handled in UTC instead of local time?',
+            answer:
+              'Moon phases are a global phenomenon. Normalizing every picked date to UTC noon means users in any timezone get the same Julian Day and age for the same calendar date, avoiding cross-day inconsistencies from local offsets or daylight saving; every displayed date is likewise labeled UTC.',
+          },
+          {
+            question: 'Why use clip-path instead of images for the moon graphic?',
+            answer:
+              'The lit layer is a fixed radial-gradient circle whose visible area is dynamically clipped by a CSS ellipse(): while waxing the ellipse anchors to the right edge and grows from 0 to 50% radius, while waning it anchors left and shrinks back to 0. Pure CSS therefore expresses the full synodic cycle continuously with no image assets and no network requests.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
