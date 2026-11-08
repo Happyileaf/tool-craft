@@ -28960,6 +28960,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'three-phase-power-calculator',
+    name: '三相交流电路功率 / 功率因数 / 扭矩换算计算器',
+    nameEn: 'Three-Phase AC Power, Power Factor & Torque Calculator',
+    description:
+      '面向三相平衡交流电路，按星形（Y）或三角形（Δ）接法在线电压 / 线电流基准下计算有功 P、无功 Q、视在功率 S、阻抗角、相电压与相电流，支持由目标功率反推线电流以及电机轴扭矩 T=9550·P/n 换算。',
+    descriptionEn:
+      'For balanced three-phase AC circuits, compute active P, reactive Q, apparent power S, phase angle, phase voltage and phase current from line quantities under star (Y) or delta (Δ) connections, back-solve line current from a target power, and convert motor shaft torque via T = 9550·P/n.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/three-phase-power-calculator',
+    iconName: 'Zap',
+    tags: ['三相电', '有功功率', '无功功率', '视在功率', '功率因数', '电机扭矩', '星形三角形'],
+    tagsEn: ['Three-Phase', 'Active Power', 'Reactive Power', 'Apparent Power', 'Power Factor', 'Torque', 'Star Delta'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '400V, 10A, cosφ=0.8, Star',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具面向电气工程师、配电与电机选型场景，在浏览器本地完成三相平衡正弦稳态电路的功率计算。以线电压 V_L 与线电流 I_L 为统一输入基准，按 P=√3·V_L·I_L·cosφ、S=√3·V_L·I_L、Q=√(S²−P²) 计算，并根据星形 / 三角形接法换算相电压与相电流，另提供线电流反推与电机轴扭矩换算。',
+        coreFeatures: [
+          '三相功率三件套：有功 P（W/kW）、无功 Q（var/kvar）、视在功率 S（VA/kVA）同屏输出',
+          '双接法支持：星形 V_ph=V_L/√3、三角形 I_ph=I_L/√3，自动换算相电压 / 相电流',
+          '功率因数与阻抗角：由 cosφ 计算 φ=arccos(cosφ)，并给出常见 0.7–1.0 快捷预设',
+          '双向计算：既可由 V/I/cosφ 求功率，也可由目标有功功率反推所需线电流',
+          '电机扭矩：按 T=9550·P(kW)/n(rpm) 换算轴扭矩，并支持电机效率 η 折算轴功率',
+        ],
+        howToUse: [
+          '选择绕组接法（星形 Y 或三角形 Δ），输入线电压 V_L、线电流 I_L 与功率因数 cosφ',
+          '可点击场景预设快速填入 400V 配电、380V 电机柜或 10kV 高压侧参数',
+          '切换到「由目标功率反推电流」模式，输入目标有功功率即可得到所需线电流',
+          '在扭矩面板填写电机转速与效率，得到额定轴扭矩 N·m',
+        ],
+        useCases: [
+          '低压配电柜、开关柜与无功补偿容量的初步估算',
+          '三相异步电机、水泵风机的电流校核与电缆载流量预判',
+          '工厂配电设计中 cosφ 校正、电容补偿前后的无功功率对比',
+          '电机选型时由额定功率与同步 / 额定转速反推轴扭矩',
+        ],
+        privacyNote:
+          '所有电气参数均在浏览器本地计算，不发起任何网络请求，工程数据不会被上传或留存。',
+        faqs: [
+          {
+            question: '为什么统一用线电压 / 线电流而不是相值？',
+            answer:
+              '工程现场铭牌与仪表普遍标注线电压（如 380V/400V）与线电流，公式 P=√3·V_L·I_L·cosφ 对星形和三角形接法都成立。工具内部再按接法换算相值：星形 V_ph=V_L/√3、I_ph=I_L；三角形 V_ph=V_L、I_ph=I_L/√3，避免用户自行判断。',
+          },
+          {
+            question: '有功、无功、视在功率三者是什么关系？',
+            answer:
+              '视在功率 S=√3·V_L·I_L 单位 VA，描述容量；有功 P=S·cosφ 单位 W，是真正做功的部分；无功 Q=√(S²−P²) 单位 var，用于建立磁场。三者满足功率三角形 S²=P²+Q²，cosφ=P/S 即功率因数，越低意味着同等有功下占用的容量越大。',
+          },
+          {
+            question: '扭矩公式里的 9550 是怎么来的？',
+            answer:
+              '由功率与角速度关系 T=P/ω 推导：P 以 kW、转速 n 以 rpm 计时，ω=2πn/60，代入并换算单位得到 T(N·m)=9550·P(kW)/n(rpm)。考虑电机效率时，轴功率 = 输入有功 × η，因此面板默认提供效率折算。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A browser-local calculator for balanced three-phase sinusoidal steady-state circuits aimed at electrical engineers and power-distribution or motor-selection work. Using line voltage V_L and line current I_L as the unified basis, it applies P=√3·V_L·I_L·cosφ, S=√3·V_L·I_L and Q=√(S²−P²), derives phase quantities for star or delta connections, back-solves line current and converts motor shaft torque.',
+        coreFeatures: [
+          'Power trio: active P (W/kW), reactive Q (var/kvar) and apparent S (VA/kVA) on one screen',
+          'Dual connections: star V_ph=V_L/√3 and delta I_ph=I_L/√3, with automatic phase-quantity conversion',
+          'Power factor and impedance angle: φ=arccos(cosφ) with quick presets from 0.7 to 1.0',
+          'Bidirectional: solve power from V/I/cosφ, or back-solve the required line current from a target active power',
+          'Motor torque: shaft torque via T=9550·P(kW)/n(rpm), with efficiency η applied to shaft power',
+        ],
+        howToUse: [
+          'Choose the winding connection (star Y or delta Δ) and enter line voltage V_L, line current I_L and power factor cosφ',
+          'Use scenario presets to fill 400V distribution, 380V motor cabinet or 10kV high-side parameters quickly',
+          'Switch to "current from target power" mode and enter the desired active power to obtain the line current',
+          'Fill motor speed and efficiency in the torque panel to read the rated shaft torque in N·m',
+        ],
+        useCases: [
+          'Preliminary sizing of low-voltage switchgear and reactive-power compensation banks',
+          'Current checks and cable ampacity pre-assessment for three-phase induction motors, pumps and fans',
+          'Comparing reactive power before and after power-factor correction in factory distribution design',
+          'Deriving shaft torque from rated power and synchronous/rated speed during motor selection',
+        ],
+        privacyNote:
+          'All electrical parameters are computed locally in your browser. No network requests are made and engineering data is never uploaded or retained.',
+        faqs: [
+          {
+            question: 'Why use line voltage and line current instead of phase values?',
+            answer:
+              'Nameplates and instruments universally quote line quantities (e.g. 380V/400V) and line current, and P=√3·V_L·I_L·cosφ holds for both connections. The tool converts phase values internally: star V_ph=V_L/√3, I_ph=I_L; delta V_ph=V_L, I_ph=I_L/√3, removing the need to judge the wiring manually.',
+          },
+          {
+            question: 'How do active, reactive and apparent power relate?',
+            answer:
+              'Apparent power S=√3·V_L·I_L in VA describes capacity; active P=S·cosφ in W does real work; reactive Q=√(S²−P²) in var sustains magnetic fields. They form the power triangle S²=P²+Q², and cosφ=P/S is the power factor — a lower factor means more capacity consumed for the same useful power.',
+          },
+          {
+            question: 'Where does the 9550 constant in the torque formula come from?',
+            answer:
+              'From T=P/ω with ω=2πn/60. When P is expressed in kW and speed n in rpm, unit conversion yields T(N·m)=9550·P(kW)/n(rpm). With motor efficiency considered, shaft power equals input active power times η, which is why the panel provides an efficiency adjustment.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

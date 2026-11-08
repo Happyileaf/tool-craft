@@ -308,4 +308,5 @@ export const toolLoaders: Record<
   'survey-sample-size-calculator': () => import('./survey-sample-size-calculator'),
   'base-n-radix-converter': () => import('./base-n-radix-converter'),
   'crc-model-calculator': () => import('./crc-model-calculator'),
+  'three-phase-power-calculator': () => import('./three-phase-power-calculator'),
 };
