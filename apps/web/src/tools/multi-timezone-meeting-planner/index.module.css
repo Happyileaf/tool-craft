@@ -1,0 +1,161 @@
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  min-width: 0;
+}
+
+.participantRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border, rgba(0, 0, 0, 0.12));
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.participantMeta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.gridWrap {
+  overflow-x: auto;
+}
+
+.grid {
+  border-collapse: separate;
+  border-spacing: 2px;
+  font-size: 12px;
+  min-width: 900px;
+  width: 100%;
+}
+
+.grid th {
+  position: sticky;
+  top: 0;
+  background: var(--color-fill-quaternary, #fafafa);
+  padding: 6px 4px;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.zoneCell {
+  position: sticky;
+  left: 0;
+  background: var(--color-bg-container, #fff);
+  z-index: 2;
+  padding: 6px 8px;
+  white-space: nowrap;
+  min-width: 180px;
+  text-align: left;
+}
+
+.zoneLabel {
+  font-weight: 500;
+}
+
+.zoneOffset {
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+  font-variant-numeric: tabular-nums;
+  margin-left: 6px;
+}
+
+.cell {
+  width: 36px;
+  height: 34px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 5px;
+  font-variant-numeric: tabular-nums;
+  padding: 0;
+}
+
+.cellRest {
+  background: #f5f5f5;
+  color: var(--color-text-tertiary, rgba(0, 0, 0, 0.25));
+}
+
+.cellWork {
+  background: #d6f2e0;
+  color: #1d7a47;
+}
+
+.cellMatch {
+  background: #1677ff;
+  color: #fff;
+  font-weight: 600;
+}
+
+.cellToday {
+  outline: 2px solid var(--ant-color-primary, #1677ff);
+  outline-offset: -2px;
+}
+
+.hourHead {
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+}
+
+.slotList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.slotCard {
+  border: 1px solid var(--color-border, rgba(0, 0, 0, 0.12));
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.slotTitle {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.slotLine {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  padding: 2px 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.dayNav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  display: inline-block;
+}

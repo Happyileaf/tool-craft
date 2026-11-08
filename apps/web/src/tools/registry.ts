@@ -29826,6 +29826,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'multi-timezone-meeting-planner',
+    name: '多时区会议规划器（跨时区工作时间交集、DST 自适应热力图）',
+    nameEn: 'Multi-Timezone Meeting Planner',
+    description:
+      '添加多个 IANA 时区并设置各自工作时间窗，基于浏览器原生 Intl 时区能力自动处理夏令时，生成 24 小时可开会时段热力网格，并计算未来 7 天全员重叠的公共会议时段，按小时合并为各时区墙上时间区间，纯本地计算、无外部时区数据库依赖。',
+    descriptionEn:
+      'Add multiple IANA time zones with per-zone working-hour windows and get a 24-hour heatmap of meeting availability plus the next 7 days of common overlap ranges. Built on the native Intl timezone engine so DST transitions are handled automatically, with adjacent slots merged into per-zone wall-time ranges. Fully local, no external timezone database.',
+    category: ToolCategoryEnum.TIME_DATE,
+    path: '/tools/multi-timezone-meeting-planner',
+    iconName: 'GlobalOutlined',
+    tags: ['时区', '会议', 'DST', '夏令时', 'IANA', '跨时区协作', '排班'],
+    tagsEn: ['Timezone', 'Meeting', 'DST', 'IANA', 'Scheduling', 'Remote Work'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '多时区会议规划器帮助分布式团队在不同城市的工作时间之间找交集。工具以 UTC 毫秒时间戳为唯一真源，时区仅负责展示换算，底层调用浏览器内置的 Intl.DateTimeFormat（内置完整 IANA 时区与历史 DST 规则），因此无需打包任何外部时区数据库即可正确处理夏令时切换、半小时/四十五分钟偏移（如印度 +5:30）等情况。你可以为每个参会时区单独配置工作起止小时（支持跨午夜窗口），工具会渲染锚定时区一天 24 小时的热力网格，并列出未来 7 天全员同时处于工作窗内的合并时段。',
+        coreFeatures: [
+          '内置 14 个常用 IANA 时区，支持自定义各自工作时间窗（含跨午夜，如 22:00–06:00）',
+          '基于原生 Intl 的 DST 自适应换算，同一时区在夏令时/标准时切换日自动取不同偏移',
+          '24 小时热力网格：绿色为当地工作时间、蓝色为全员可开会格子，悬停显示 UTC 与当地时间',
+          '自动计算未来 7 天公共时段，相邻整点合并为连续区间并逐时区给出 HH:MM – HH:MM',
+          '纯函数核心（偏移、墙上时间、交集、合并）配套 17 个固定时间戳单元测试',
+        ],
+        howToUse: [
+          '在「参会人与工作时间窗」卡片通过下拉添加时区，用起/止数字框调整各地可参会的本地小时',
+          '选择锚定日期（按浏览器本地时区计），中部热力网格即时刷新，蓝色列即全员重叠小时',
+          '查看底部「未来 7 天公共可开会时段」，按日期读取每个时区对应的墙上时间区间',
+          '删除不合适的时区或收窄工作窗，网格与公共时段会同步重算',
+        ],
+        useCases: [
+          '远程/跨国团队安排例会，快速定位北京、欧洲、美洲同时在线的小时',
+          '跨国客服或运维排班，评估各区域工作时间覆盖与缺口',
+          '验证某个会议邀请在对方当地是否落在工作时间，避免凌晨开会',
+          '教学演示夏令时、UTC 偏移与 IANA 时区概念',
+        ],
+        privacyNote:
+          '全部换算在浏览器本地通过内置 Intl 引擎完成，不发起网络请求，参会时区与时间窗不会离开设备。',
+        faqs: [
+          {
+            question: '为什么不需要加载 moment-timezone 之类的时区库？',
+            answer:
+              '现代浏览器与 Node 的 Intl API 已内置完整 IANA 时区数据库及历史 DST 规则。工具通过 formatToParts 读取任意时刻在指定时区的墙上时间并反算 UTC 偏移，精度与时区库一致，但零额外依赖、零网络请求。',
+          },
+          {
+            question: '工作时间窗为什么有时提示当天没有重叠？',
+            answer:
+              '公共时段要求所有参与时区在同一个 UTC 整点都处于各自工作窗内。当两地时差大于工作窗长度（例如北京与纽约相差 13 小时、各自只工作 9 小时），数学上就不存在交集，此时可扩大工作窗或增加中间时区的同事分担。',
+          },
+          {
+            question: '跨午夜的工作窗（如夜班 22:00–06:00）如何判断？',
+            answer:
+              '当起止小时满足 start ≥ end 时，工具按跨午夜处理：hour ≥ start 或 hour < end 都视为工作时间，因此夜班、值守排班可以直接录入。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A planner that finds the intersection of working hours across cities for distributed teams. It keeps UTC epoch milliseconds as the single source of truth and uses the built-in Intl.DateTimeFormat engine (full IANA database with historical DST rules) for display conversion, so no external timezone library is bundled. Each participant zone gets its own working-hour window, including overnight spans; the tool renders a 24-hour heatmap for the anchor day and lists merged common-overlap ranges for the next seven days in every zone’s wall time.',
+        coreFeatures: [
+          '14 common IANA zones with per-zone working windows, including overnight spans such as 22:00–06:00',
+          'Native Intl-based conversion that adapts automatically across DST transitions and fractional offsets',
+          '24-hour heatmap: green cells mark local working hours, blue cells mark all-hands availability, hover shows UTC and local time',
+          'Computes seven days of common slots and merges adjacent hours into continuous per-zone HH:MM ranges',
+          'Pure-function core (offset, wall time, intersection, merge) covered by 17 fixed-timestamp unit tests',
+        ],
+        howToUse: [
+          'Add zones from the dropdown and adjust each region’s local working start/end hours',
+          'Pick an anchor date (in your browser local zone); the heatmap refreshes instantly with blue overlap columns',
+          'Read the next-seven-days panel for per-zone wall-time ranges grouped by date',
+          'Remove zones or narrow windows to recompute the grid and common slots',
+        ],
+        useCases: [
+          'Scheduling recurring meetings across Asia, Europe and the Americas',
+          'Planning support or on-call coverage and spotting gaps',
+          'Checking whether an invitation lands at an acceptable local hour',
+          'Teaching DST, UTC offsets and IANA timezone concepts',
+        ],
+        privacyNote:
+          'All conversion runs locally via the built-in Intl engine. No network requests are made and zone or window data never leaves the device.',
+        faqs: [
+          {
+            question: 'Why is no timezone library such as moment-timezone needed?',
+            answer:
+              'Modern browsers and Node ship the full IANA database, including historical DST rules, inside the Intl API. Reading wall-time parts and deriving the UTC offset gives the same accuracy as a bundled library with zero extra dependencies and zero network calls.',
+          },
+          {
+            question: 'Why does a day sometimes show no overlap?',
+            answer:
+              'A common slot requires every zone to be inside its window at the same UTC hour. When the time difference exceeds the window length (e.g. Beijing vs New York is 13 hours with 9-hour windows), no intersection exists mathematically; widen windows or involve colleagues in intermediate zones.',
+          },
+          {
+            question: 'How are overnight windows like a 22:00–06:00 night shift handled?',
+            answer:
+              'When start ≥ end the window wraps past midnight: hours ≥ start or < end both count as working time, so night shifts and on-call schedules can be entered directly.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
