@@ -29834,7 +29834,7 @@ sqrt(area) + 2 * r`,
       '添加多个 IANA 时区并设置各自工作时间窗，基于浏览器原生 Intl 时区能力自动处理夏令时，生成 24 小时可开会时段热力网格，并计算未来 7 天全员重叠的公共会议时段，按小时合并为各时区墙上时间区间，纯本地计算、无外部时区数据库依赖。',
     descriptionEn:
       'Add multiple IANA time zones with per-zone working-hour windows and get a 24-hour heatmap of meeting availability plus the next 7 days of common overlap ranges. Built on the native Intl timezone engine so DST transitions are handled automatically, with adjacent slots merged into per-zone wall-time ranges. Fully local, no external timezone database.',
-    category: ToolCategoryEnum.TIME_DATE,
+    category: ToolCategoryEnum.TIME_MATH,
     path: '/tools/multi-timezone-meeting-planner',
     iconName: 'GlobalOutlined',
     tags: ['时区', '会议', 'DST', '夏令时', 'IANA', '跨时区协作', '排班'],

@@ -40,8 +40,8 @@ describe("identity and multiply", () => {
     const rt = multiply(translate(10, 0), rotateZ(Math.PI / 2));
     const tr = multiply(rotateZ(Math.PI / 2), translate(10, 0));
     // 先旋转后平移：平移向量被旋转
-    expect(approx(tr[12], 0)).toBe(true);
-    expect(approx(tr[13], 10)).toBe(true);
+    expect(approx(tr[12] ?? 0, 0)).toBe(true);
+    expect(approx(tr[13] ?? 0, 10)).toBe(true);
     // 先平移后旋转：平移保持
     expect(rt[12]).toBe(10);
     expect(rt[13]).toBe(0);
@@ -59,7 +59,7 @@ describe("2D transform builders", () => {
   it("skew matches CSS matrix(1, tanY, tanX, 1, 0, 0)", () => {
     const m = skew(degToRad(20), 0);
     // skewX 20° → 第一列下方元素 tan(20°)
-    expect(approx(m[4], Math.tan(degToRad(20)))).toBe(true);
+    expect(approx(m[4] ?? 0, Math.tan(degToRad(20)))).toBe(true);
     expect(m[1]).toBe(0);
   });
 

@@ -17,7 +17,7 @@ export function identity(): Mat4 {
 
 /** 读取矩阵第 row 行、第 col 列（均 0 起始） */
 export function at(m: Mat4, row: number, col: number): number {
-  return m[col * 4 + row];
+  return m[col * 4 + row] ?? 0;
 }
 
 /** 矩阵乘法 C = A × B（几何意义：先应用 B 再应用 A） */
@@ -206,12 +206,12 @@ export function is2D(m: Mat4): boolean {
 /** 输出 2D matrix(a, b, c, d, e, f) 字符串；非 2D 时返回 null */
 export function toCssMatrix2d(m: Mat4): string | null {
   if (!is2D(m)) return null;
-  const a = m[0];
-  const b = m[1];
-  const c = m[4];
-  const d = m[5];
-  const e = m[12];
-  const f = m[13];
+  const a = m[0] ?? 0;
+  const b = m[1] ?? 0;
+  const c = m[4] ?? 0;
+  const d = m[5] ?? 0;
+  const e = m[12] ?? 0;
+  const f = m[13] ?? 0;
   return `matrix(${[a, b, c, d, e, f].map((n) => formatNumber(n)).join(", ")})`;
 }
 
@@ -236,7 +236,7 @@ export function parseMatrix(input: string): ParseResult {
   if (!match) {
     throw new Error("无法识别：输入必须是 matrix(...) 或 matrix3d(...) 形式");
   }
-  const nums = match[2]
+  const nums = (match[2] ?? "")
     .split(",")
     .map((s) => s.trim())
     .filter((s) => s !== "")
@@ -258,7 +258,7 @@ export function parseMatrix(input: string): ParseResult {
   if (nums.length !== 6) {
     throw new Error(`matrix 需要 6 个参数，实际收到 ${nums.length} 个`);
   }
-  const [a, b, c, d, e, f] = nums;
+  const [a = 0, b = 0, c = 0, d = 0, e = 0, f = 0] = nums;
   // 2D matrix(a,b,c,d,e,f) 展开为列主序 4x4
   return {
     matrix: [a, b, 0, 0, c, d, 0, 0, 0, 0, 1, 0, e, f, 0, 1],
@@ -327,30 +327,31 @@ export function decompose(m: Mat4): Decomposed {
     at(m, 2, c),
     at(m, 3, c),
   ]);
-  const translate = cols[3].slice(0, 3);
+  const translate = (cols[3] ?? [0, 0, 0, 1]).slice(0, 3);
 
-  const norm = (v: number[]) => Math.hypot(v[0], v[1], v[2]);
-  const dot = (u: number[], v: number[]) => u[0] * v[0] + u[1] * v[1] + u[2] * v[2];
+  const norm = (v: number[]) => Math.hypot(v[0] ?? 0, v[1] ?? 0, v[2] ?? 0);
+  const dot = (u: number[], v: number[]) =>
+    (u[0] ?? 0) * (v[0] ?? 0) + (u[1] ?? 0) * (v[1] ?? 0) + (u[2] ?? 0) * (v[2] ?? 0);
   const subScaled = (u: number[], v: number[], k: number) =>
-    u.map((x, i) => x - k * v[i]);
+    u.map((x, i) => x - k * (v[i] ?? 0));
 
-  const sx = norm(cols[0]);
-  const r0 = cols[0].map((x) => x / sx);
-  const shearXY = dot(r0, cols[1]);
-  const col1 = subScaled(cols[1], r0, shearXY);
+  const sx = norm(cols[0] ?? [0, 0, 0]);
+  const r0 = (cols[0] ?? [1, 0, 0]).map((x) => x / sx);
+  const shearXY = dot(r0, cols[1] ?? [0, 1, 0]);
+  const col1 = subScaled(cols[1] ?? [0, 1, 0], r0, shearXY);
   const sy = norm(col1);
   const r1 = col1.map((x) => x / sy);
-  const shearXZ = dot(r0, cols[2]);
-  const shearYZ = dot(r1, cols[2]);
-  const col2 = subScaled(subScaled(cols[2], r0, shearXZ), r1, shearYZ);
+  const shearXZ = dot(r0, cols[2] ?? [0, 0, 1]);
+  const shearYZ = dot(r1, cols[2] ?? [0, 0, 1]);
+  const col2 = subScaled(subScaled(cols[2] ?? [0, 0, 1], r0, shearXZ), r1, shearYZ);
   const sz = norm(col2);
   const r2 = col2.map((x) => x / sz);
 
   // ZYX 欧拉角：R = Rz · Ry · Rx，按标准矩阵元素
   // R[2][0] = -sin(Ry)，R[1][0]/R[0][0] = tan(Rz)，R[2][1]/R[2][2] = tan(Rx)
-  const ry = Math.asin(Math.max(-1, Math.min(1, -r0[2])));
-  const rz = Math.atan2(r0[1], r0[0]);
-  const rx = Math.atan2(r1[2], r2[2]);
+  const ry = Math.asin(Math.max(-1, Math.min(1, -(r0[2] ?? 0))));
+  const rz = Math.atan2(r0[1] ?? 0, r0[0] ?? 1);
+  const rx = Math.atan2(r1[2] ?? 0, r2[2] ?? 1);
 
   const [tx = 0, ty = 0, tz = 0] = translate;
   return {

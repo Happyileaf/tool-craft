@@ -68,7 +68,7 @@ const MultiTimezoneMeetingPlanner: React.FC<ToolComponentProps> = () => {
   // 锚定日 UTC 午夜：把本地日期的 00:00 当作锚定时区墙上时间反推
   const dayStartUtc = React.useMemo(() => {
     const [y, m, d] = anchorDate.split("-").map(Number);
-    const localMidnight = new Date(y, (m ?? 1) - 1, d ?? 1, 0, 0, 0).getTime();
+    const localMidnight = new Date(y ?? 1970, (m ?? 1) - 1, d ?? 1, 0, 0, 0).getTime();
     return anchorDayStartUtc(localMidnight, anchorZone);
   }, [anchorDate, anchorZone]);
 

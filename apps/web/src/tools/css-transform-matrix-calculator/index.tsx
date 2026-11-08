@@ -141,7 +141,9 @@ const CssTransformMatrixCalculator: React.FC<ToolComponentProps> = ({
       const target = index + delta;
       if (target < 0 || target >= prev.length) return prev;
       const next = [...prev];
-      [next[index], next[target]] = [next[target], next[index]];
+      const tmp = next[index];
+      next[index] = next[target] as UiStep;
+      next[target] = tmp as UiStep;
       return next;
     });
   };
