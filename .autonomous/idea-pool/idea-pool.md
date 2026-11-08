@@ -100,10 +100,10 @@
 | 20261026082027 | 非加密哈希计算器（FNV / MurmurHash3 / djb2 等） | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026082027.md) |
 | 20261026082028 | 复利与定投收益计算器 | Web Tool | Exploration | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026082028.md) |
 | 20261026140923 | 数字英文读法转换器（Number to English Words） | Web Tool | Exploration | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026140923.md) |
-| 20261026140924 | MessagePack ↔ JSON 双向编解码器 | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026140924.md) |
+| 20261026140924 | MessagePack ↔ JSON 双向编解码器 | Web Tool | Existing Gap | Claimed | 2026-10-26 | trae-agent | [详情](./idea-details/20261026140924.md) |
 | 20261026140926 | 换行符检测与批量转换器（LF / CRLF / CR） | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026140926.md) |
 | 20261026140927 | 知名 TCP/UDP 端口号速查表 | Web Tool | External Reference | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026140927.md) |
-| 20261026200350 | 原始 HTTP 报文解析器（请求 / 响应） | Web Tool | Existing Gap | Pending | 2026-10-26 | | [详情](./idea-details/20261026200350.md) |
+| 20261026200350 | 原始 HTTP 报文解析器（请求 / 响应） | Web Tool | Existing Gap | Claimed | 2026-10-26 | trae-agent | [详情](./idea-details/20261026200350.md) |
 | 20261027020214 | DMARC 记录生成与校验器 | Web Tool | Existing Gap | Claimed | 2026-10-27 | trae-agent | [详情](./idea-details/20261027020214.md) |
 | 20261027020216 | 多时区会议时间规划器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027020216.md) |
 | 20261027020217 | CSS clip-path 可视化生成器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027020217.md) |
@@ -205,7 +205,7 @@
 | 20261103081157 | JSON5 ↔ JSON 双向转换器 | Web Tool | Existing Gap | In Progress | 2026-11-03 | trae-agent @ 2026-11-03 18:05 CST | [详情](./idea-details/20261103081157.md) |
 | 20261103081158 | BibTeX 条目解析器（.bib ↔ JSON / 格式化引用） | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103081158.md) |
 | 20261103140201 | 假设检验计算器（t 检验 / 卡方检验） | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103140201.md) |
-| 20261103140202 | 月相查询与月龄计算器 | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103140202.md) |
+| 20261103140202 | 月相查询与月龄计算器 | Web Tool | External Reference | Claimed | 2026-11-03 | trae-agent | [详情](./idea-details/20261103140202.md) |
 | 20261103140203 | VLSM 可变长子网划分规划器 | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103140203.md) |
 | 20261103140204 | Syslog 日志行解析与字段拆分器 | Web Tool | External Reference | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103140204.md) |
 | 20261103140205 | 加班工资计算器（中国大陆劳动法） | Web Tool | External Reference | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103140205.md) |
@@ -246,7 +246,7 @@
 | 20261105140801 | 摄影景深与超焦距计算器（弥散圆 / 光圈 / 焦距 / 对焦距离互求） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105140801.md) |
 | 20261105140802 | CORS 响应头配置生成器（Allow-Origin / Credentials / 预检缓存策略拼装与校验） | Web Tool | External Reference | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105140802.md) |
 | 20261105140803 | SSE（Server-Sent Events）消息格式编码 / 解码器（event/data/id/retry 字段与多行 data） | Web Tool | External Reference | In Progress | 2026-11-05 | trae-agent | [详情](./idea-details/20261105140803.md) |
-| 20261105140804 | 表达式调度场算法可视化器（中缀转后缀 RPN 与逐步求值过程演示） | Web Tool | Exploration | Pending | 2026-11-05 | | [详情](./idea-details/20261105140804.md) |
+| 20261105140804 | 表达式调度场算法可视化器（中缀转后缀 RPN 与逐步求值过程演示） | Web Tool | Exploration | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105140804.md) |
 | 20261106020725 | BCP 47 语言标签解析器 | Web Tool | Exploration | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106020725.md) |
 | 20261106020726 | CSS 命名颜色速查 | Web Tool | Exploration | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106020726.md) |
 | 20261106020727 | 正则表达式语法速查 | Web Tool | Exploration | Claimed | 2026-11-06 | trae-agent | [详情](./idea-details/20261106020727.md) |
@@ -281,7 +281,7 @@
 | 20261107200159 | 罗马数字算术与日期 / 大纲编号解析器（1–3,999,999 扩展记法） | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200159.md) |
 | 20261108140204 | 调查抽样样本量与误差范围计算器（Cochran 公式 + 有限总体校正 FPC，正反双向） | Web Tool | External Reference | In Progress | 2026-11-08 | trae-agent | [详情](./idea-details/20261108140204.md) |
 | 20261108200229 | Bloom Filter 交互式模拟器（多哈希策略 / 假阳性率可视化） | Web Tool | Existing Gap | Pending | 2026-11-08 | | [详情](./idea-details/20261108200229.md) |
-| 20261108200230 | Hamming(7,4) 编解码与纠错演示器（含 syndrome 定位可视化） | Web Tool | Existing Gap | Pending | 2026-11-08 | | [详情](./idea-details/20261108200230.md) |
+| 20261108200230 | Hamming(7,4) 编解码与纠错演示器（含 syndrome 定位可视化） | Web Tool | Existing Gap | Claimed | 2026-11-08 | trae-agent | [详情](./idea-details/20261108200230.md) |
 | 20261108200231 | LRU / LFU 缓存淘汰策略模拟器（命中率对比与淘汰过程回放） | Web Tool | Existing Gap | Pending | 2026-11-08 | | [详情](./idea-details/20261108200231.md) |
 | 20261108200232 | Cron 表达式 → systemd OnCalendar 定时器表达式双向转换器 | Web Tool | Existing Gap | Pending | 2026-11-08 | | [详情](./idea-details/20261108200232.md) |
 | 20261108200233 | 预产期与孕周计算器（末次月经 / 排卵日双模式 + 孕周时间线） | Web Tool | Exploration | Pending | 2026-11-08 | | [详情](./idea-details/20261108200233.md) |
