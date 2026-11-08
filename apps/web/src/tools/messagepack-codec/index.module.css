@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.controlGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.label {
+  color: var(--text-color-secondary, #6b7280);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.editor {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 13px;
+}
+
+.resultBox {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 13px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+  max-height: 360px;
+  overflow: auto;
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metaLabel {
+  color: var(--text-color-secondary, #6b7280);
+  font-size: 12px;
+}
+
+.metaValue {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.dump {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 12px;
+  white-space: pre;
+  overflow: auto;
+  margin: 0;
+  line-height: 1.6;
+}

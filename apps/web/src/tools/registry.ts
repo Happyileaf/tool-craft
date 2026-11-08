@@ -29395,6 +29395,119 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'messagepack-codec',
+    name: 'MessagePack ↔ JSON 双向编解码器',
+    nameEn: 'MessagePack ↔ JSON Codec',
+    description:
+      '在浏览器本地完成 MessagePack 二进制与 JSON 文本双向转换：整数自动选择最紧凑的 fixint / uint / int 宽度，支持 nil、布尔、浮点、字符串、bin、数组、Map 与 ext，HEX / Base64 双输入、逐字节错误定位与十六进制转储，零新增依赖。',
+    descriptionEn:
+      'Convert between MessagePack binaries and JSON text entirely in your browser. Integers auto-select the tightest fixint/uint/int width, with support for nil, booleans, floats, strings, bin, arrays, maps, and ext, plus HEX/Base64 inputs, byte-offset error reporting, and hex dumps. Zero new dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/messagepack-codec',
+    iconName: 'Package',
+    tags: ['MessagePack', 'JSON', '二进制', '序列化', '编码', 'RPC'],
+    tagsEn: ['MessagePack', 'JSON', 'Binary', 'Serialization', 'Codec', 'RPC'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'MessagePack ↔ JSON 双向编解码器依据 msgpack.org 公开规范，用零依赖的 TypeScript 实现紧凑二进制序列化格式与 JSON 文本的互转。编码方向把 JSON 解析为 JS 值后按类型表输出 Uint8Array：nil、布尔、正负 fixint、uint/int 8/16/32/64、float32/64、fixstr/str、bin、fixarray/array、fixmap/map 与 ext；整数按非负走 uint、负数走 int 并自动选择最紧凑宽度，64 位经 BigInt 路径处理。解码方向接受 HEX（允许空格与 0x 前缀）或 Base64 负载，递归还原为格式化 JSON，非法首字节、长度越界与截断输入都抛出携带字节偏移的错误，并提供每行 16 字节的十六进制转储。',
+        coreFeatures: [
+          '最紧凑整数编码：0–127 与 -1–-32 走 fixint 单字节，128/256/65536 自动升级 uint8/16/32，负数对称选择 int8/16/32/64',
+          '完整类型表：nil、布尔、float64、UTF-8 字符串（fixstr/str8/16/32）、bin、嵌套数组与 Map，ext 解码保留 type 与数据',
+          '双格式二进制 IO：编码结果可在 HEX 与 Base64 间切换，解码同时接受两种输入并保证结果一致',
+          '逐字节错误定位：截断、非法首字节、非字符串 Map 键、尾随字节均返回带字节偏移的 MessagePackError',
+          '十六进制转储：输出带偏移量与 ASCII 列的 hexdump，便于对照后端 / Redis / RPC 原始负载',
+        ],
+        howToUse: [
+          '默认在「JSON → MessagePack」面板粘贴或编辑 JSON，编码结果区用分段控件切换 HEX / Base64 并可一键复制',
+          '切到「MessagePack → JSON」面板，选择输入格式后粘贴 HEX 或 Base64 负载，工具自动递归解码为缩进 JSON',
+          'JSON 语法错误或二进制非法时，错误条直接展示原因；解码错误还会给出具体字节偏移',
+          '查看字节数统计与十六进制转储，逐字节核对长度前缀、类型标注与多字节整数的大端布局',
+        ],
+        useCases: [
+          '调试使用 MessagePack 的后端 RPC 消息、Redis 缓存与消息队列负载，无需安装语言运行时',
+          '在对接二进制协议时快速验证 fixint 宽度选择、字符串 UTF-8 字节长度与嵌套容器编码',
+          '教学场景下对照 JSON 文本与类型标注、长度前缀的紧凑二进制表示的体积差异',
+          '把抓包得到的 HEX / Base64 负载还原为可读 JSON 进行接口排查',
+        ],
+        privacyNote:
+          '全部编解码均在浏览器本地完成，不发起任何网络请求、不引入第三方依赖，粘贴的 JSON 与二进制负载不会上传或持久化。',
+        faqs: [
+          {
+            question: '编码结果与官方规范示例一致吗？',
+            answer:
+              '一致。官方示例 {"compact":true,"schema":0} 的编码逐字节等于 82 a7 63 6f 6d 70 61 63 74 c3 a6 73 63 68 65 6d 61 00，该向量已固化在单元测试中作为回归基准。',
+          },
+          {
+            question: '64 位整数会有精度问题吗？',
+            answer:
+              '安全整数范围内的 64 位值正常以 number 往返；超过 Number.MAX_SAFE_INTEGER 的 uint64/int64 在解码时保留为 bigint，渲染 JSON 时转为字符串展示，避免精度丢失。',
+          },
+          {
+            question: 'bin 和 ext 解码后是什么形态？',
+            answer:
+              'bin 类型解码为其原始字节的 HEX 字符串，ext 类型保留为含 extType 与 dataHex 的对象，二者都不与普通文本字符串混淆；本轮编码不开放 ext 输入，因为 JSON 没有对应的原生类型。',
+          },
+          {
+            question: 'HEX 输入有什么格式要求？',
+            answer:
+              '非常宽松：允许空格、换行等空白，也允许 0x 前缀，工具会自动清洗后按两位一字节解析；字符数为奇数或包含非十六进制字符时会立即报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The MessagePack ↔ JSON Codec implements the compact binary serialization format published at msgpack.org in dependency-free TypeScript. Encoding parses JSON into JS values and emits a Uint8Array following the full type table — nil, booleans, signed/unsigned fixints, uint/int 8/16/32/64, float32/64, fixstr/str, bin, fixarray/array, fixmap/map, and ext — choosing the tightest width per value and routing 64-bit integers through BigInt. Decoding accepts HEX (whitespace and 0x tolerated) or Base64 payloads, recursively rebuilds indented JSON, and reports truncated input, illegal lead bytes, and length overruns with byte offsets, alongside a 16-bytes-per-line hex dump.',
+        coreFeatures: [
+          'Tightest integer encoding: 0–127 and -1–-32 use single-byte fixints, while 128/256/65536 promote to uint8/16/32 and negatives symmetrically pick int8/16/32/64',
+          'Full type table: nil, booleans, float64, UTF-8 strings (fixstr/str8/16/32), bin, nested arrays and maps, with ext decoded into type plus data',
+          'Dual binary IO: switch encoded output between HEX and Base64, and decode either input format with identical results',
+          'Byte-level error locations: truncation, illegal lead bytes, non-string map keys, and trailing bytes all raise a MessagePackError carrying the byte offset',
+          'Hex dumps: offset-plus-ASCII hexdump output for cross-checking raw backend, Redis, or RPC payloads',
+        ],
+        howToUse: [
+          'On the "JSON → MessagePack" panel, paste or edit JSON; toggle the result between HEX and Base64 and copy it in one click',
+          'Switch to "MessagePack → JSON", pick the input format, paste a HEX or Base64 payload, and get recursively decoded, indented JSON',
+          'JSON syntax errors and malformed binaries appear in an error banner; decode errors additionally show the exact byte offset',
+          'Inspect the byte count and hex dump to verify length prefixes, type tags, and big-endian multi-byte integers byte by byte',
+        ],
+        useCases: [
+          'Debugging MessagePack backend RPC messages, Redis caches, and queue payloads without installing a language runtime',
+          'Verifying fixint width selection, UTF-8 string byte lengths, and nested container encoding while integrating binary protocols',
+          'Teaching the size difference between textual JSON and a typed, length-prefixed compact binary format',
+          'Turning HEX/Base64 payloads from packet captures back into readable JSON for API troubleshooting',
+        ],
+        privacyNote:
+          'All encoding and decoding runs locally in the browser with no network requests and no third-party dependencies. Pasted JSON and binary payloads are never uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Does the output match the official spec example?',
+            answer:
+              'Yes. The official sample {"compact":true,"schema":0} encodes byte-for-byte to 82 a7 63 6f 6d 70 61 63 74 c3 a6 73 63 68 65 6d 61 00, and this vector is pinned in the unit tests as a regression baseline.',
+          },
+          {
+            question: 'Are 64-bit integers affected by precision loss?',
+            answer:
+              'Values within the safe-integer range round-trip as numbers; uint64/int64 beyond Number.MAX_SAFE_INTEGER are kept as bigint and rendered as strings in the JSON output to preserve precision.',
+          },
+          {
+            question: 'How are bin and ext values represented after decoding?',
+            answer:
+              'bin decodes to a HEX string of its raw bytes, while ext becomes an object with extType and dataHex, so neither is confused with ordinary text strings. Ext encoding is not exposed because JSON has no native counterpart type.',
+          },
+          {
+            question: 'What HEX input formatting is accepted?',
+            answer:
+              'Very permissive formatting: whitespace and line breaks are fine, 0x prefixes are tolerated, and the tool cleans the input before parsing two characters per byte. Odd character counts or non-hex characters fail immediately with an error.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
