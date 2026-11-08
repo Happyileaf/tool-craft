@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261108200232 | Cron 表达式 → systemd OnCalendar 定时器表达式双向转换器 | Web Tool | Existing Gap | `cron-systemd-timer-converter` / [PR #205](https://github.com/Happyileaf/tool-craft/pull/205) | 2026-11-09 | [详情](./idea-details/20261108200232.md) |
+| 20261106160209 | Markdown Frontmatter（YAML / TOML）解析与编辑器 | Web Tool | Existing Gap | `markdown-frontmatter-editor` / [PR #205](https://github.com/Happyileaf/tool-craft/pull/205) | 2026-11-09 | [详情](./idea-details/20261106160209.md) |
+| 20261027081103 | 个人所得税计算器（工资薪金 / 年终奖） | Web Tool | Exploration | `cn-income-tax-calculator` / [PR #205](https://github.com/Happyileaf/tool-craft/pull/205) | 2026-11-09 | [详情](./idea-details/20261027081103.md) |
+| 20261027020216 | 多时区会议时间规划器 | Web Tool | Exploration | `multi-timezone-meeting-planner` / [PR #205](https://github.com/Happyileaf/tool-craft/pull/205) | 2026-11-09 | [详情](./idea-details/20261027020216.md) |
+| 20261023141142 | CSS transform 矩阵计算器 | Web Tool | Existing Gap | `css-transform-matrix-calculator` / [PR #205](https://github.com/Happyileaf/tool-craft/pull/205) | 2026-11-09 | [详情](./idea-details/20261023141142.md) |
 | 20261106160211 | 电阻串并联等效电阻与公差累积计算器 | Web Tool | Exploration | `resistor-network-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106160211.md) |
 | 20261106060117 | GPA 平均绩点计算器（百分制/4.0/4.3 多算法与学分加权） | Web Tool | Exploration | `gpa-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060117.md) |
 | 20261106060115 | 多边形面积与周长计算器（鞋带公式，含 GeoJSON 粘贴） | Web Tool | Exploration | `polygon-area-calculator` / [PR #187](https://github.com/Happyileaf/tool-craft/pull/187) | 2026-11-07 | [详情](./idea-details/20261106060115.md) |
