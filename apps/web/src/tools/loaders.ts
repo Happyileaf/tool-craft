@@ -301,4 +301,5 @@ export const toolLoaders: Record<
   'plus-code-codec': () => import('./plus-code-codec'),
   'changelog-generator': () => import('./changelog-generator'),
   'lrc-parser': () => import('./lrc-parser'),
+  'bac-calculator': () => import('./bac-calculator'),
 };

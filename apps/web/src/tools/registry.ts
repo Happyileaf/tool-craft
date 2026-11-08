@@ -28242,6 +28242,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'bac-calculator',
+    name: '血液酒精浓度（BAC）估算器',
+    nameEn: 'Blood Alcohol Content (BAC) Calculator',
+    description:
+      '基于 Widmark 公式按饮酒明细与体重估算峰值/当前 BAC、标准饮品份数与代谢到清醒所需时间，含法定阈值风险提示。',
+    descriptionEn:
+      'Estimate peak and current BAC, standard drinks and sobering time with the Widmark formula from drink details and body weight, with legal-threshold risk hints.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/bac-calculator',
+    iconName: 'Timer',
+    tags: ['BAC', '酒精', '酒驾', 'Widmark', '代谢'],
+    tagsEn: ['BAC', 'Alcohol', 'DUI', 'Widmark', 'Metabolism'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '血液酒精浓度估算器采用法医毒理学常用的 Widmark 公式，根据每份饮品的容量、酒精度（ABV）与份数累计纯乙醇质量，结合体重、性别分布因子 r 和经过时间，估算峰值 BAC、当前 BAC（按 NHTSA 平均 0.015/小时线性代谢）以及代谢到零所需的时间。',
+        coreFeatures: [
+          '饮品明细核算：逐行录入容量、ABV 与份数，自动按乙醇密度 0.789 g/mL 折算纯酒精克数',
+          'Widmark 公式：男性默认 r=0.68、女性 r=0.55，输出峰值与经代谢后的当前 BAC',
+          '标准饮品换算：按 NHTSA 每份 14g 纯酒精口径累计份数，便于横向比较饮酒量',
+          '清醒时间预测：按可配置代谢速率给出代谢到 BAC=0 的小时数与中文时长',
+          '阈值风险提示：对照 0.02%/0.05%/0.08%/0.20%/0.40% 区间给出醒目警告，全部本地运算',
+        ],
+        howToUse: [
+          '填写体重（kg）并选择生理性别以确定默认 Widmark r 因子',
+          '通过预设按钮或手动方式添加饮酒明细，调整容量、ABV 与份数',
+          '填写从开始饮酒到现在经过的小时数，结果区实时显示峰值与当前 BAC',
+          '查看阈值标签与清醒所需时间，任何含酒精摄入后均不应驾驶',
+        ],
+        useCases: [
+          '安全教育场景下理解饮酒量与 BAC 的数量级关系',
+          '聚会前估算不同饮品组合对应的标准饮品份数',
+          '科普写作或驾校课程中演示 Widmark 模型与代谢过程',
+        ],
+        privacyNote:
+          '体重、性别与饮酒明细仅保存在浏览器内存中参与本地计算，不发起任何网络请求，刷新页面即清除。',
+        faqs: [
+          {
+            question: '估算结果能用来判断我现在能不能开车吗？',
+            answer:
+              '不能。Widmark 是群体平均模型，真实 BAC 受进食、肝功能、药物、脱水、个体代谢率等显著影响，误差可能很大。本工具仅用于安全教育，任何饮酒后都不应驾驶。',
+          },
+          {
+            question: '为什么男女使用不同的 r 因子？',
+            answer:
+              'r 是 Widmark 分布因子，反映酒精在体内水相中的分布比例。女性平均体脂率更高、体液占比更低，经典研究给出的均值约为 0.55，男性约为 0.68；个体仍会围绕均值波动。',
+          },
+          {
+            question: '代谢速率 0.015 BAC/小时是怎么来的？',
+            answer:
+              '这是 NHTSA 等机构在安全教育材料中采用的人群平均线性代谢值，即每小时血液酒精浓度约下降 0.015 g/100mL。实际范围常见于 0.01–0.02，长期饮酒者可能更高，模型按固定值简化计算。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Blood Alcohol Content calculator uses the Widmark formula widely applied in forensic toxicology. It accumulates pure ethanol mass from each drink’s volume, ABV and quantity, then combines body weight, the gender distribution factor r and elapsed time to estimate peak BAC, current BAC (linear elimination at the NHTSA average of 0.015/hour) and time until sobriety.',
+        coreFeatures: [
+          'Drink-by-drink accounting: enter volume, ABV and quantity per row, with pure ethanol derived using density 0.789 g/mL',
+          'Widmark formula: default r=0.68 for males and 0.55 for females, producing peak and metabolized current BAC',
+          'Standard drink conversion: totals drinks using the NHTSA 14g pure ethanol definition for easy comparison',
+          'Sobering prediction: reports hours until BAC reaches zero with a configurable elimination rate',
+          'Threshold warnings: highlights 0.02%/0.05%/0.08%/0.20%/0.40% risk bands, all computed locally',
+        ],
+        howToUse: [
+          'Enter body weight in kg and choose a sex to select the default Widmark r factor',
+          'Add drinks via preset buttons or manual rows, adjusting volume, ABV and quantity',
+          'Set the hours elapsed since drinking started; peak and current BAC update in real time',
+          'Review threshold tags and sobering time, and never drive after any alcohol intake',
+        ],
+        useCases: [
+          'Safety education on the order-of-magnitude relationship between drinks and BAC',
+          'Estimating standard-drink equivalents of different drink combinations before a gathering',
+          'Demonstrating the Widmark model and elimination process in driving-school or science content',
+        ],
+        privacyNote:
+          'Weight, sex and drink details stay in browser memory for local calculation only. No network requests are made and all input is cleared on refresh.',
+        faqs: [
+          {
+            question: 'Can I use the result to decide whether I am fit to drive?',
+            answer:
+              'No. Widmark is a population-average model. Real BAC varies substantially with food intake, liver function, medication, hydration and individual metabolism. This tool is for safety education only; never drive after drinking.',
+          },
+          {
+            question: 'Why do men and women use different r factors?',
+            answer:
+              'The Widmark factor r describes alcohol distribution across body water. Women on average have higher body-fat ratios and lower water fraction, giving classical means around 0.55 versus 0.68 for men; individuals still vary around these means.',
+          },
+          {
+            question: 'Where does the 0.015 BAC/hour elimination rate come from?',
+            answer:
+              'It is the population-average linear elimination value used in NHTSA safety materials, meaning BAC falls by roughly 0.015 g/100mL per hour. Observed ranges are commonly 0.01–0.02 and can be higher in chronic drinkers; the model simplifies to a fixed rate.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
