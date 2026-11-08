@@ -29508,6 +29508,119 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'http-message-parser',
+    name: '原始 HTTP 报文解析器',
+    nameEn: 'Raw HTTP Message Parser',
+    description:
+      '在浏览器本地解析原始 HTTP 请求 / 响应文本：自动识别报文方向并结构化起始行、Headers 与 Body，展开 Query 参数、Cookie、Set-Cookie、Cache-Control 与 Authorization，检测裸 LF、Content-Length 不符、畸形起始行等问题，零新增依赖。',
+    descriptionEn:
+      'Parse raw HTTP request/response text entirely in your browser. It auto-detects the message direction and structures the start line, headers, and body, expands query params, cookies, Set-Cookie, Cache-Control, and Authorization, and flags bare LF, Content-Length mismatches, and malformed start lines. Zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/http-message-parser',
+    iconName: 'FileSearch',
+    tags: ['HTTP', '报文', 'Headers', '抓包', '调试', '网络'],
+    tagsEn: ['HTTP', 'Message', 'Headers', 'Packet Capture', 'Debugging', 'Network'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '原始 HTTP 报文解析器面向抓包排查与协议学习场景，把粘贴进来的原始 HTTP/1.x 文本解析为结构化视图。解析器兼容标准 CRLF 与裸 LF 行分隔（后者给出全局告警），通过起始行是否以 HTTP/ 开头自动区分请求与响应：请求侧拆分 Method、Path、Pathname 与 Query 参数表（含 URL 解码与重复键），响应侧拆分状态码、Reason Phrase 并匹配常见状态码含义。Header 按大小写不敏感聚合、重复同名头保留为数组，并对 Content-Type、Cookie、Set-Cookie、Cache-Control、Authorization、Transfer-Encoding、Content-Length 生成人类可读展开；Authorization 的 Basic 凭据会本地 Base64 解码预览并标注敏感，Bearer 仅展示方案与长度。所有畸形输入以带行号 / 字段定位的告警呈现而非崩溃。',
+        coreFeatures: [
+          '自动识别请求 / 响应，拆分起始行：Method-Path-Version 或 Version-Status-Reason，附常见状态码中英文含义',
+          'Query 参数表：保留重复键与空值、自动 URL 解码，参数与路径分开展示',
+          'Header 结构化：大小写不敏感聚合、重复头数组化、折叠续行合并，常见响应头逐字段展开明细',
+          '敏感头处理：Basic 认证本地 Base64 解码并提示敏感，Bearer / 其他令牌脱敏只显示长度',
+          '异常检测：裸 LF、缺冒号 header、路径非法空格、状态码越界、Content-Length 与实际 body 不符、chunked 识别',
+        ],
+        howToUse: [
+          '把抓包工具、curl -v 或日志中的原始 HTTP 报文粘贴到输入框，CRLF 与裸 LF 均可',
+          '使用顶部分段控件切换请求 / 响应示例，或保持自动识别直接粘贴任意方向报文',
+          '在概要卡查看起始行、状态码、Header 数与 Body 字节数，Query 参数与 Headers 分别在表格中展开',
+          '查看异常告警卡修正报文，或点击底部按钮复制完整结构化 JSON 摘要用于文档与工单',
+        ],
+        useCases: [
+          '后端联调时把抓包得到的原始请求 / 响应快速转成结构化字段，定位 Header 与 Body 问题',
+          '排查 Content-Length 不匹配、分块传输、重复头、折叠续行等协议层面的疑难杂症',
+          '教学场景中逐行讲解 HTTP/1.1 报文语法、常见 Header 语义与状态码含义',
+          '检查 Basic / Bearer 凭据结构（全程本地解码，不向任何服务发送报文）',
+        ],
+        privacyNote:
+          '所有解析均在浏览器本地完成，不发起任何网络请求、不引入第三方依赖。粘贴的报文可能包含 Cookie 与 Authorization 等敏感头，这些数据不会被上传、存储或写入日志。',
+        faqs: [
+          {
+            question: '为什么我的报文出现「裸 LF」告警？',
+            answer:
+              'RFC 9110 规定 HTTP 行分隔必须是 CRLF（\\r\\n），从浏览器文本框粘贴时 CR 常被剥离只剩 LF。解析器会兼容这种形态并给出全局警告，不影响字段解析，但发送真实请求时应恢复 CRLF。',
+          },
+          {
+            question: 'Content-Length 告警是怎么判定的？',
+            answer:
+              '工具用 TextEncoder 按 UTF-8 计算实际 Body 字节数并与 Content-Length 声明值比对，不一致时给出警告（常见于报文被截断或一个连接里拼了多个报文）；当 Transfer-Encoding: chunked 存在时按规范跳过该校验。',
+          },
+          {
+            question: 'Basic 认证的解码安全吗？',
+            answer:
+              'Base64 解码只在浏览器本地通过 atob 完成，解码出的 user:password 仅显示在当前页面并明确标注敏感，工具没有任何网络行为；分享截图前请自行抹除该字段。',
+          },
+          {
+            question: '重复的同名 Header 会丢失吗？',
+            answer:
+              '不会。逐行视图保留每次出现及序号，聚合视图按 RFC 的大小写不敏感规则把同名头合并为数组（例如多个 Set-Cookie 或 X-Forwarded-For），两种形态都可在表格中核对。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Raw HTTP Message Parser turns pasted HTTP/1.x text into a structured view for packet analysis and protocol learning. It accepts both standard CRLF and bare-LF line endings (with a global warning for the latter) and distinguishes requests from responses by whether the start line begins with HTTP/. Requests are split into method, path, pathname, and a decoded query table (including duplicate keys), while responses expose status code, reason phrase, and a built-in meaning table. Headers are aggregated case-insensitively, repeated names kept as arrays, and common headers such as Content-Type, Cookie, Set-Cookie, Cache-Control, Authorization, Transfer-Encoding, and Content-Length get human-readable breakdowns. Basic credentials are Base64-decoded locally with a sensitive flag, and Bearer tokens stay redacted. Malformed input produces located warnings instead of crashes.',
+        coreFeatures: [
+          'Auto request/response detection with start-line splitting: method-path-version or version-status-reason, plus common status-code meanings',
+          'Query table that keeps duplicate keys and empty values with automatic URL decoding',
+          'Structured headers: case-insensitive aggregation, repeated-header arrays, folded-line merging, and per-field breakdowns for common headers',
+          'Sensitive-header handling: local Basic Base64 decode with a sensitive warning; Bearer and other tokens redacted to length only',
+          'Anomaly detection: bare LF, missing-colon headers, illegal spaces in paths, out-of-range status codes, Content-Length mismatches, and chunked recognition',
+        ],
+        howToUse: [
+          'Paste raw HTTP text from packet captures, curl -v, or logs; both CRLF and bare LF are accepted',
+          'Use the top segmented control to load request/response samples, or stay on auto-detect for either direction',
+          'Review the start line, status, header count, and body bytes in the summary, then inspect query params and headers in their tables',
+          'Fix the message using the issue banner, or copy the full structured JSON summary for docs and tickets',
+        ],
+        useCases: [
+          'Turning captured raw requests/responses into structured fields during backend integration debugging',
+          'Diagnosing protocol-level issues such as Content-Length mismatch, chunked transfer, duplicate headers, and line folding',
+          'Teaching HTTP/1.1 message syntax, common header semantics, and status codes line by line',
+          'Inspecting Basic/Bearer credential structure with fully local decoding and no outbound traffic',
+        ],
+        privacyNote:
+          'All parsing happens locally in the browser with no network requests and no third-party dependencies. Pasted messages may contain sensitive headers such as Cookie and Authorization; none of this data is uploaded, stored, or logged.',
+        faqs: [
+          {
+            question: 'Why do I get a "bare LF" warning?',
+            answer:
+              'RFC 9110 requires CRLF (\\r\\n) line endings, but pasting through browser text fields often strips CR and leaves LF only. The parser tolerates this with a global warning and still extracts every field, though real requests should restore CRLF before being sent.',
+          },
+          {
+            question: 'How is the Content-Length warning decided?',
+            answer:
+              'The tool measures the actual body bytes with TextEncoder (UTF-8) and compares them against the declared Content-Length, warning on mismatch (typically truncation or multiple messages on one connection). The check is skipped when Transfer-Encoding: chunked is present, per spec.',
+          },
+          {
+            question: 'Is Basic-auth decoding safe?',
+            answer:
+              'Base64 decoding runs only locally via atob; the resulting user:password is displayed on the current page with an explicit sensitive marker, and the tool has no network behavior. Remove the field before sharing screenshots.',
+          },
+          {
+            question: 'Are repeated headers lost?',
+            answer:
+              'No. The row view keeps every occurrence with an index, while the aggregated view merges same-name headers case-insensitively into an array (for example multiple Set-Cookie or X-Forwarded-For values), so both forms remain verifiable.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

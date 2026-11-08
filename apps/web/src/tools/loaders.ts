@@ -313,4 +313,5 @@ export const toolLoaders: Record<
   'hamming-codec': () => import('./hamming-codec'),
   'moon-phase-calculator': () => import('./moon-phase-calculator'),
   'messagepack-codec': () => import('./messagepack-codec'),
+  'http-message-parser': () => import('./http-message-parser'),
 };

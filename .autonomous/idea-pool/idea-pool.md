@@ -103,7 +103,7 @@
 | 20261026140924 | MessagePack ↔ JSON 双向编解码器 | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026140924.md) |
 | 20261026140926 | 换行符检测与批量转换器（LF / CRLF / CR） | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026140926.md) |
 | 20261026140927 | 知名 TCP/UDP 端口号速查表 | Web Tool | External Reference | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026140927.md) |
-| 20261026200350 | 原始 HTTP 报文解析器（请求 / 响应） | Web Tool | Existing Gap | Claimed | 2026-10-26 | trae-agent | [详情](./idea-details/20261026200350.md) |
+| 20261026200350 | 原始 HTTP 报文解析器（请求 / 响应） | Web Tool | Existing Gap | In Progress | 2026-10-26 | trae-agent | [详情](./idea-details/20261026200350.md) |
 | 20261027020214 | DMARC 记录生成与校验器 | Web Tool | Existing Gap | Claimed | 2026-10-27 | trae-agent | [详情](./idea-details/20261027020214.md) |
 | 20261027020216 | 多时区会议时间规划器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027020216.md) |
 | 20261027020217 | CSS clip-path 可视化生成器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027020217.md) |
