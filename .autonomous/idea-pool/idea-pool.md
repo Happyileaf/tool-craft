@@ -208,7 +208,6 @@
 | 20261103140202 | 月相查询与月龄计算器 | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103140202.md) |
 | 20261103140203 | VLSM 可变长子网划分规划器 | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103140203.md) |
 | 20261103140204 | Syslog 日志行解析与字段拆分器 | Web Tool | External Reference | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103140204.md) |
-| 20261103140205 | 加班工资计算器（中国大陆劳动法） | Web Tool | External Reference | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103140205.md) |
 | 20261103200232 | Black-Scholes 期权定价计算器（含 Greeks） | Web Tool | Exploration | Pending | 2026-11-03 | | [详情](./idea-details/20261103200232.md) |
 | 20261103200233 | Apache / Nginx Combined Log Format 访问日志解析器 | Web Tool | Existing Gap | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103200233.md) |
 | 20261103200234 | IPv4 数据报头解析与校验和验证器（RFC 791） | Web Tool | Existing Gap | Pending | 2026-11-03 | | [详情](./idea-details/20261103200234.md) |
@@ -229,7 +228,6 @@
 | 20261104140125 | .gitattributes 文件生成器（换行符 / 二进制标记 / merge driver / linguist 规则） | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104140125.md) |
 | 20261104200903 | HOTP（RFC 4226）基于计数器的一次性密码生成与校验器 | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200903.md) |
 | 20261104200904 | 位掩码（Bitmask / 位标志）可视化计算器 | Web Tool | Exploration | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200904.md) |
-| 20261104200905 | LC 谐振频率与电抗计算器（谐振频率 / 容抗 / 感抗互求） | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200905.md) |
 | 20261104200906 | JSON 推断并生成 SQL CREATE TABLE 建表语句（DDL）生成器 | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104200906.md) |
 | 20261104200907 | GIF（GIF87a / GIF89a）文件结构只读解析器（块树与帧时序展示） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104200907.md) |
 | 20261105020213 | 文本自动换行与行宽格式化器（hard wrap / unwrap，按宽度折行与还原） | Web Tool | Existing Gap | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105020213.md) |
@@ -263,11 +261,8 @@
 | 20261107080339 | 音乐音高与频率互算器（音符 ↔ Hz、半音音程与调音基准） | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107080339.md) |
 | 20261107080340 | 信用卡 / IMEI 风格 Luhn 号码批量校验与校验位生成器 | Web Tool | Existing Gap | Claimed | 2026-11-07 | trae-agent | [详情](./idea-details/20261107080340.md) |
 | 20261107080341 | 闰秒感知的 TAI / UTC / Unix 时间互转器（含历史跳秒表） | Web Tool | Existing Gap | Claimed | 2026-11-07 | trae-agent | [详情](./idea-details/20261107080341.md) |
-| 20261107140225 | LRC 歌词时间戳生成与解析器 | Web Tool | Existing Gap | In Progress | 2026-11-07 | trae-agent | [详情](./idea-details/20261107140225.md) |
 | 20261107140226 | iCalendar VTODO / VJOURNAL 待办与日记组件生成器（RFC 5545） | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140226.md) |
 | 20261107140227 | 三相交流电路功率 / 功率因数 / 扭矩换算计算器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140227.md) |
-| 20261107140228 | Widmark 血液酒精浓度（BAC）估算与代谢时间计算器 | Web Tool | Existing Gap | In Progress | 2026-11-07 | trae-agent | [详情](./idea-details/20261107140228.md) |
-| 20261107140229 | 毛利率 / 加价率 / 售价双向定价计算器 | Web Tool | Existing Gap | In Progress | 2026-11-07 | trae-agent | [详情](./idea-details/20261107140229.md) |
 | 20261107140230 | M3U / M3U8 播放列表生成与解析器（含 HLS 媒体序列） | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107140230.md) |
 | 20261107200150 | Base-N 任意进制整数互转器（radix 2–36 与自定义字母表） | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200150.md) |
 | 20261107200151 | CRC-8 / CRC-16 / CRC-32 / CRC-64 多参数模型计算器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200151.md) |
