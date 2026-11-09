@@ -1,0 +1,78 @@
+.container {
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.editor {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.statCard {
+  border-radius: 10px;
+  padding: 12px 16px;
+  background: rgba(22, 119, 255, 0.06);
+}
+
+.hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+}
+
+.warnings {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.warningItem {
+  align-items: flex-start;
+}
+
+.rawText {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  word-break: break-all;
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+.fieldKey {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.fieldValue {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+.filterBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
