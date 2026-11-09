@@ -30450,6 +30450,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'issn-validator',
+    name: 'ISSN 校验位计算器与规范化工具（含连字符定位与批量校验）',
+    nameEn: 'ISSN Check Digit Calculator & Validator',
+    description:
+      '按 ISO 3297 规则对 8 位国际标准连续出版物号做 mod-11 校验位验证、为 7 位前缀自动补全校验位（余数 10 记为 X、余数 0 记为 0），并支持每行一个号码的批量校验与标准格式 NNNN-NNNC 规范化；自动剥离空格连字符、兼容小写 x，错误输入给出期望校验位与原因，纯本地确定性计算零依赖。',
+    descriptionEn:
+      'Validate 8-digit International Standard Serial Numbers under the ISO 3297 mod-11 rule, auto-complete a check digit for a 7-digit prefix (remainder 10 becomes X, remainder 0 becomes 0), and batch-validate one number per line with canonical NNNN-NNNC normalization. Spaces and hyphens are stripped, lowercase x is accepted, and bad input reports the expected digit and reason — all offline as deterministic zero-dependency code.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/issn-validator',
+    iconName: 'FileSearchOutlined',
+    tags: ['ISSN', '校验位', 'mod-11', '期刊号', '批量校验', '规范化', 'ISO 3297'],
+    tagsEn: ['ISSN', 'check digit', 'mod-11', 'serial number', 'batch validation', 'normalization', 'ISO 3297'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0378-5955',
+    doc: {
+      zh: {
+        whatIsIt:
+          'ISSN（International Standard Serial Number）是分配给期刊、报纸、年刊等连续出版物的 8 位标识。本工具实现 ISO 3297 规定的 mod-11 校验位算法：对前 7 位数字按权重 8、7、…、2 加权求和，r = 11 − (sum mod 11)；r=10 时校验位记为 X，r=11（即 mod 为 0）时记为 0。工具支持单条校验、7 位补全与批量校验三种模式，并输出带连字符的标准格式。',
+        coreFeatures: [
+          '单条校验：剥离空格与连字符后验证 8 位号码，失败时同时给出实际值与期望校验位',
+          '补全模式：输入 7 位数字前缀自动计算第 8 位，输出完整标准号 NNNN-NNNC',
+          '批量模式：每行一个号码，逐条标注合法/非法、标准格式或失败原因，并汇总合法与非法计数',
+          '规范化：合法号码统一在第 4 位后插入连字符，末位小写 x 自动转大写 X',
+          '严格边界：非数字字符（末位 X 除外）、长度不符、空输入均给出明确中文错误，不抛异常',
+        ],
+        howToUse: [
+          '在顶部选择「单条校验」「补全校验位」或「批量校验」模式',
+          '单条模式粘贴或输入号码（带不带连字符均可），即时查看通过/失败结论',
+          '补全模式输入 7 位前缀，获得完整标准号',
+          '批量模式每行一个 ISSN，查看表格中的逐条结果与汇总统计',
+        ],
+        useCases: [
+          '图书馆、出版与发行系统中核验期刊号录入的正确性',
+          '数据清洗时批量发现错误 ISSN 并给出修正建议',
+          '表单开发中参考 mod-11 校验位的确定性实现',
+          '编辑与编目人员快速补全或规范化连续出版物号',
+        ],
+        privacyNote:
+          '所有号码仅在浏览器本地参与运算，不会上传服务器，也不写入任何本地存储。',
+        faqs: [
+          {
+            question: '为什么有的 ISSN 最后一位是 X？',
+            answer:
+              '当加权和 mod 11 得到 r=10 时，单个十进制数字无法表示，按 ISO 3297 规定用大写字母 X 表示；r=11（mod 为 0）时则记为 0。',
+          },
+          {
+            question: '连字符的位置有规定吗？',
+            answer:
+              '标准印刷格式为 NNNN-NNNC，即前 4 位与后 4 位（含校验位）之间加一个连字符。工具在校验时会先剥离连字符与空格，合法后再按标准位置重新插入。',
+          },
+          {
+            question: 'ISSN 和 ISBN 是一回事吗？',
+            answer:
+              '不是。ISSN 标识连续出版物（期刊、报纸等），固定 8 位且采用 mod-11；ISBN 标识图书，ISBN-13 为 13 位并采用 mod-10 加权。两者校验算法与长度都不同，不能混用。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ISSN (International Standard Serial Number) is an 8-digit identifier for serial publications such as journals, newspapers and annuals. This tool implements the ISO 3297 mod-11 check-digit algorithm: weight the first seven digits by 8, 7, ..., 2, then r = 11 − (sum mod 11); r=10 is written as X and r=11 (mod zero) as 0. It offers single validation, 7-digit completion and batch validation, emitting the hyphenated canonical form.',
+        coreFeatures: [
+          'Single validation strips spaces and hyphens, verifies eight digits and reports actual vs expected check digit on failure',
+          'Completion mode computes the eighth digit from a 7-digit prefix and returns the full NNNN-NNNC number',
+          'Batch mode takes one ISSN per line, labels each valid/invalid with canonical form or reason, and aggregates counts',
+          'Normalization inserts the hyphen after the fourth digit and uppercases a trailing x',
+          'Strict edge handling with clear Chinese errors for non-digits (except trailing X), bad length and empty input',
+        ],
+        howToUse: [
+          'Choose single validation, check-digit completion or batch validation at the top',
+          'In single mode paste a number with or without hyphens and read the instant verdict',
+          'In completion mode enter a 7-digit prefix to obtain the full canonical number',
+          'In batch mode put one ISSN per line and inspect the per-row table and totals',
+        ],
+        useCases: [
+          'Verifying journal identifiers in library, publishing and distribution systems',
+          'Batch data cleaning that flags bad ISSNs and suggests corrections',
+          'A deterministic mod-11 reference when building validation forms',
+          'Quick completion or normalization for editors and cataloguers',
+        ],
+        privacyNote:
+          'All numbers are processed locally in the browser and are never uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Why does an ISSN sometimes end in X?',
+            answer:
+              'When the weighted sum mod 11 yields r=10, no single decimal digit can represent it, so ISO 3297 mandates the uppercase letter X; r=11 (mod zero) is written as 0.',
+          },
+          {
+            question: 'Where does the hyphen go?',
+            answer:
+              'The printed canonical form is NNNN-NNNC — one hyphen between the first four and last four characters including the check digit. Validation first strips hyphens and spaces, then re-inserts them at the standard position when valid.',
+          },
+          {
+            question: 'Are ISSN and ISBN the same?',
+            answer:
+              'No. ISSN identifies serial publications (journals, newspapers) with a fixed 8-digit mod-11 scheme, while ISBN identifies books — ISBN-13 has 13 digits with a mod-10 weighting. Lengths and check algorithms differ and must not be mixed.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
