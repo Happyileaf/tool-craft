@@ -30660,6 +30660,109 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'logfmt-parser',
+    name: 'logfmt 日志解析与格式化工具（key=value 双向转换与类型推断）',
+    nameEn: 'logfmt Parser & Serializer',
+    description:
+      '解析 Heroku、Promtail 与 Go 服务常用的 logfmt 行（key=value 空格分隔，双引号值支持反斜杠转义，裸键视为布尔 true），按行对齐为字段表、JSON 视图与字段类型清单，自动推断整数/浮点/布尔/null/字符串；支持反向序列化为合规 logfmt（含空格、引号、等号的值自动加引号转义，true 输出裸键），畸形行带行号告警不中断，纯本地状态机零依赖。',
+    descriptionEn:
+      'Parse logfmt lines used by Heroku, Promtail and Go services (space-separated key=value pairs, quoted values with backslash escapes, bare keys as boolean true) into aligned field tables, JSON views and per-field type lists with integer/float/boolean/null/string inference. It also serializes back to compliant logfmt — quoting and escaping values that contain spaces, quotes or equals signs, and emitting bare keys for true — while malformed lines produce line-numbered warnings without aborting. A fully local zero-dependency state machine.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/logfmt-parser',
+    iconName: 'FileTextOutlined',
+    tags: ['logfmt', '日志解析', 'key=value', '类型推断', '序列化', 'Go', 'Promtail'],
+    tagsEn: ['logfmt', 'log parser', 'key=value', 'type inference', 'serializer', 'Go', 'Promtail'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'logfmt 是 Heroku、Promtail、Loki 及大量 Go 服务使用的结构化日志行格式：每行由空格分隔的 key=value 对组成，值含空格时用双引号包裹并支持反斜杠转义，没有等号的裸键约定为布尔 true。本工具用逐字符状态机解析单行或多行日志，输出按行对齐的字段表、聚合 JSON 与字段类型清单，并可把键值对象反向序列化为合规 logfmt。',
+        coreFeatures: [
+          '状态机解析：正确处理双引号、\\"、\\\\、\\n、\\t 转义，裸键自动识别为布尔 true，兼容 = 后空值',
+          '类型推断：整数、浮点（含指数）、布尔、null 与字符串五类，展示原始值与转换值',
+          '多行对齐：按行号对齐字段，重复键全部保留，支持按字段名筛选与去重字段清单',
+          '反向序列化：含空格/引号/等号/反斜杠的值自动加引号并转义，布尔 true 输出裸键，支持往返一致',
+          '容错告警：未闭合引号等畸形行带行号告警且不中断其余行；空输入、空行安全跳过',
+        ],
+        howToUse: [
+          '在输入框粘贴一行或多行 logfmt 日志，解析结果即时刷新',
+          '用「按字段名筛选」下拉框聚焦关心的键，在字段表 / JSON 视图 / 类型清单之间切换',
+          '切到「序列化为 logfmt」模式可查看规范化后的合规输出，并一键复制',
+          '出现黄色告警时按提示行号检查引号闭合，其余行仍可正常解析',
+        ],
+        useCases: [
+          '排查 Go / Heroku / Promtail 管道中的 key=value 日志，快速对齐多行字段',
+          '把临时键值数据规范化为合规 logfmt 后写回日志或测试夹具',
+          '核对日志字段类型分布（端口为整数、耗时为浮点、开关为布尔）',
+          '作为 logfmt 转义规则与类型推断的确定性参考实现',
+        ],
+        privacyNote:
+          '解析与序列化全部在浏览器本地完成，日志内容不上传、不落盘，含敏感信息的生产日志也可放心粘贴。',
+        faqs: [
+          {
+            question: '裸键（没有等号）怎么处理？',
+            answer:
+              '按 logfmt 社区约定，没有 = 的独立单词视为布尔标志，解析为 key=true；反向序列化时布尔 true 也会输出为裸键，保证往返一致。',
+          },
+          {
+            question: '不带引号的值里有空格会怎样？',
+            answer:
+              '裸值在第一个空格处结束，这是 logfmt 的标准分词规则。若值本身包含空格，应在源日志中用双引号包裹，解析器会完整保留引号内内容并处理转义。',
+          },
+          {
+            question: '重复出现的键会被覆盖吗？',
+            answer:
+              '不会。字段表按出现顺序保留全部重复键，仅在「去重字段清单」中列出唯一键名；JSON 视图按单行对象语义以后出现的值覆盖同名键，与标准 JSON 对象行为一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'logfmt is the structured logging line format used by Heroku, Promtail, Loki and many Go services: each line holds space-separated key=value pairs, values with spaces are double-quoted with backslash escapes, and a bare key without an equals sign conventionally means boolean true. This tool parses single or multiple lines with a character-by-character state machine into aligned field tables, aggregated JSON and field-type lists, and can serialize key-value objects back into compliant logfmt.',
+        coreFeatures: [
+          'State-machine parser handling double quotes, \\" , \\\\, \\n and \\t escapes, treating bare keys as boolean true and accepting empty values after =',
+          'Type inference across integer, float (including exponents), boolean, null and string, showing both raw and converted values',
+          'Multi-line alignment by line number, duplicate keys fully retained, plus field-name filtering and a de-duplicated field list',
+          'Reverse serialization that quotes and escapes values containing spaces, quotes, equals signs or backslashes, emits bare keys for true, and round-trips cleanly',
+          'Fault-tolerant warnings: malformed lines such as unclosed quotes raise line-numbered warnings without aborting other lines; empty input and blank lines are skipped safely',
+        ],
+        howToUse: [
+          'Paste one or more logfmt lines into the editor and watch the results refresh instantly',
+          'Use the field-name filter to focus on a key and switch between the field table, JSON view and type list',
+          'Switch to "serialize to logfmt" to inspect canonical output and copy it in one click',
+          'When a yellow warning appears, check quote closure at the cited line number; other lines still parse normally',
+        ],
+        useCases: [
+          'Debugging key=value logs from Go, Heroku or Promtail pipelines with multi-line field alignment',
+          'Canonicalizing ad-hoc key-value data into compliant logfmt for logs or test fixtures',
+          'Auditing field types (integer ports, float latency, boolean toggles) across log lines',
+          'A deterministic reference for logfmt escaping rules and type inference',
+        ],
+        privacyNote:
+          'All parsing and serialization happens locally in the browser. Log content is never uploaded or persisted, so sensitive production logs can be pasted safely.',
+        faqs: [
+          {
+            question: 'What happens to a bare key without an equals sign?',
+            answer:
+              'Following logfmt community conventions, a standalone word is treated as a boolean flag and parsed as key=true; serialization likewise emits boolean true as a bare key, keeping round trips consistent.',
+          },
+          {
+            question: 'What if an unquoted value contains spaces?',
+            answer:
+              'A bare value ends at the first space — the standard logfmt tokenization rule. Values containing spaces must be wrapped in double quotes at the source; the parser then preserves the full quoted content and applies escapes.',
+          },
+          {
+            question: 'Are repeated keys overwritten?',
+            answer:
+              'No. The field table keeps every duplicate key in occurrence order; only the de-duplicated field list shows unique names. The JSON view follows standard single-line object semantics, where a later occurrence overwrites an earlier same-name key.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

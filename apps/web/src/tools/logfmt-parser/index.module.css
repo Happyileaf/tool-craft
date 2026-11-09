@@ -1,0 +1,51 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  width: 100%;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.hint {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 13px;
+}
+
+.mono {
+  font-family: var(--font-family-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-size: 13px;
+}
+
+.editor {
+  font-family: var(--font-family-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-size: 13px;
+}
+
+.statsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.rawCell {
+  max-width: 360px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
