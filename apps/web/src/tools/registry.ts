@@ -30242,6 +30242,527 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'porter-stemmer',
+    name: '英文 Porter 词干提取器与词形归并批处理',
+    nameEn: 'Porter Stemmer & Word Form Merging',
+    description:
+      '基于 Porter 1980 经典五阶段后缀剥离规则，对英文文本逐词提取词干（stem），输出原词到词干的明细、按词干归并的词形分组与出现次数、总词数/词干数/归并压缩比统计；按非字母字符分词，大小写与标点不影响结果，纯本地确定性计算零依赖。',
+    descriptionEn:
+      'Stem English text with the classic Porter 1980 five-phase suffix-stripping algorithm, producing per-word original-to-stem mappings, stem-grouped word forms with counts, and totals for token count, unique stems and merge ratio. It tokenizes on non-letter characters, is immune to case and punctuation, and runs fully offline as deterministic zero-dependency code.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/porter-stemmer',
+    iconName: 'FontSizeOutlined',
+    tags: ['Porter', '词干提取', 'Stemmer', '词形归并', 'NLP', '文本分析', '英文'],
+    tagsEn: ['Porter', 'stemmer', 'stemming', 'word merging', 'NLP', 'text analysis', 'English'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具实现 M.F. Porter 于 1980 年提出的经典英文词干提取算法，通过 1a/1b/1c、2、3、4、5a/5b 五个阶段的后缀规则，把同根的屈折与派生形式（如 run/runs/running）归并到同一词干。算法基于元音-辅音（VC）序列度量 m 做条件判定，固定输入必有固定输出，不依赖词典或网络服务。',
+        coreFeatures: [
+          '完整 Porter 五阶段规则：步骤 1a/1b/1c 处理复数、进行时与 y 变换，步骤 2/3 处理派生词缀，步骤 4 清理名词/形容词后缀，步骤 5 收尾去 e 与双写辅音',
+          'VC 形式串与度量 m 的确定性判定，正确处理词首 y、双辅音结尾与 CVC 短词干等边界',
+          '逐词明细表保留原始词形与出现顺序，词形归并视图按词干聚合变体并统计总出现次数',
+          '汇总总词数、唯一词干数与归并压缩比，帮助快速评估文本词汇密度',
+          '按非字母字符分词，数字与标点自动忽略，空输入返回零值统计不报错',
+        ],
+        howToUse: [
+          '把英文段落粘贴到文本框，或直接使用预置示例',
+          '查看「汇总统计」卡片了解总词数、词干数与压缩比',
+          '在「词形归并」标签页按词干查看归并的原始词形与出现次数',
+          '切换「逐词明细」标签页核对每个单词的提取结果',
+        ],
+        useCases: [
+          '搜索引擎与倒排索引构建前的英文查询/文档归一化预处理',
+          '文本分类、聚类或情感分析中降低特征维度、合并同根词',
+          '学习与验证 Porter 词干提取规则的教学场景',
+          '对比不同词干算法或检查语料词汇归并效果',
+        ],
+        privacyNote:
+          '全部分词与词干提取都在浏览器本地完成，文本不会被上传到任何服务器，也不写入本地存储。',
+        faqs: [
+          {
+            question: '提取出的词干为什么有时不是真实单词？',
+            answer:
+              'Porter 算法输出的是词干（stem）而非词典词根（root），它只按后缀规则机械剥离，例如 ponies→poni、relational→relat。词干不要求是合法单词，只要同根词归并到同一形式即可满足检索与统计用途。',
+          },
+          {
+            question: '为什么 agreement 没有被去掉 ment？',
+            answer:
+              '步骤 4 要求剩余词干的 VC 度量 m>1 才删除后缀。agreement 去掉 ment 后词干 agree 的 m=1，不满足条件，因此保留原样，这是 Porter 1980 规范的确定性行为。',
+          },
+          {
+            question: '会过滤停用词或做小写归一化吗？',
+            answer:
+              '工具会统一转小写后再提取，但不做停用词过滤（该职责属于词频类工具），所有字母词都会参与分词与统计；数字、标点和空白仅作为分词边界。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool implements the classic English stemming algorithm published by M.F. Porter in 1980. Through five suffix-rule phases (1a/1b/1c, 2, 3, 4, 5a/5b), inflected and derived forms sharing a root (e.g. run/runs/running) merge into one stem. Conditions rely on the vowel-consonant (VC) measure m, so the same input always yields the same output without dictionaries or network calls.',
+        coreFeatures: [
+          'Full five-phase Porter rules: plurals/participles/y in step 1, derivational suffixes in steps 2 and 3, nominal/adjectival cleanup in step 4, final e and double-consonant handling in step 5',
+          'Deterministic VC form strings and measure m, correctly covering initial y, double consonants and CVC short stems',
+          'Per-word detail table preserving original forms and order, plus a merge view grouping variants under each stem with counts',
+          'Summary of total tokens, unique stems and merge ratio for quick lexical-density assessment',
+          'Tokenizes on non-letter characters, ignores digits and punctuation, and returns zeroed stats for empty input',
+        ],
+        howToUse: [
+          'Paste English text into the textarea or keep the built-in sample',
+          'Review the summary card for token count, stem count and merge ratio',
+          'Open the merge tab to inspect variants grouped by stem with occurrence counts',
+          'Switch to the per-word tab to verify each word individually',
+        ],
+        useCases: [
+          'Normalizing English queries and documents before search indexing',
+          'Reducing feature dimensions in classification, clustering or sentiment analysis',
+          'Teaching and verifying Porter suffix-stripping rules',
+          'Comparing stemmers or inspecting lexical merging on a corpus',
+        ],
+        privacyNote:
+          'All tokenization and stemming run locally in the browser; text is never uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Why is the output sometimes not a real English word?',
+            answer:
+              'Porter produces stems rather than dictionary roots. It mechanically strips suffixes (ponies→poni, relational→relat); stems need not be valid words as long as related forms merge consistently for retrieval and statistics.',
+          },
+          {
+            question: 'Why does agreement keep its ment suffix?',
+            answer:
+              'Step 4 removes a suffix only when the remaining stem has VC measure m>1. After dropping ment, the stem agree has m=1, so the rule does not fire — deterministic behavior defined by the 1980 Porter specification.',
+          },
+          {
+            question: 'Does it remove stop words or normalize case?',
+            answer:
+              'Input is lowercased before stemming, but stop words are not filtered (that belongs to word-frequency tooling). Every letter sequence participates; digits, punctuation and whitespace only act as token boundaries.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'rle-codec',
+    name: '游程编码（RLE）编解码器（含 PackBits 变体与压缩率统计）',
+    nameEn: 'Run-Length Encoding Codec (RLE & PackBits)',
+    description:
+      '对文本或 HEX 字节数据做游程编码双向转换：基础 RLE 以 count/byte 成对输出并按 255 截断超长游程，PackBits 用有符号标记头区分字面段与重复段；提供字节级解码校验、错误定位、原始/编码字节数与压缩率统计，膨胀场景红色告警，纯本地确定性计算零依赖。',
+    descriptionEn:
+      'Bidirectional run-length encoding for text or hex byte streams: basic RLE emits count/byte pairs and splits runs at 255, while PackBits uses signed header bytes to distinguish literal and repeat blocks. It offers byte-level decode validation with error offsets, original/encoded byte counts and compression ratio, red warnings for expansion, and runs fully offline as deterministic zero-dependency code.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/rle-codec',
+    iconName: 'CompressOutlined',
+    tags: ['RLE', '游程编码', 'PackBits', '压缩', '编解码', 'HEX', '字节'],
+    tagsEn: ['RLE', 'run-length encoding', 'PackBits', 'compression', 'codec', 'hex', 'bytes'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'AAAAABBBCCCCCCCCCCDEEEEEEEEEEFF',
+    doc: {
+      zh: {
+        whatIsIt:
+          '游程编码（Run-Length Encoding）把连续重复的字节压缩为「重复次数 + 字节值」。本工具同时实现最基础的字节 RLE（count/byte 成对，count 范围 1..255，超长游程自动拆分）与苹果经典 PackBits 变体（用有符号标记头 n 区分 n+1 个字面字节与 1-n 次重复字节，0x80 为无操作填充），并支持文本与 HEX 两种输入形态的双向转换。',
+        coreFeatures: [
+          '基础 RLE 编码输出 count/byte 字节对，超过 255 的游程自动拆成多组，解码严格校验 count 范围与偶数长度',
+          'PackBits 编码自动选择字面段（标记头 0..127，单段至多 128 字节）与重复段（标记头 -1..-127，重复 2..128 次），兼容 0x80 NOP',
+          '文本按 UTF-8 转字节、HEX 输入兼容空格/逗号/0x 前缀，非法字符与奇数长度给出定位错误',
+          '压缩统计展示原始字节数、编码后字节数与压缩率，编码后反而变大时明确红色膨胀告警',
+          '解码端对截断的字面段/重复段带偏移量报错，所有往返用例保证编解码一致',
+        ],
+        howToUse: [
+          '选择「编码」或「解码」方向，再选择基础 RLE 或 PackBits 变体',
+          '编码时可用文本或 HEX 输入；解码时请粘贴空格分隔的 HEX 字节',
+          '查看编码结果 HEX、字节统计与压缩率；解码时同时给出 UTF-8 文本预览',
+          '出现红色错误提示时按偏移量检查输入数据的完整性',
+        ],
+        useCases: [
+          '理解和调试 BMP、TIFF、PSD 等格式中的 PackBits/RLE 压缩数据',
+          '教学演示无损压缩原理与「数据膨胀」现象',
+          '嵌入式或协议场景下手算/核对游程编码字节流',
+          '评估重复型数据与随机型数据的压缩率差异',
+        ],
+        privacyNote:
+          '所有编解码均在浏览器本地完成，输入数据不会上传服务器，也不写入任何本地存储。',
+        faqs: [
+          {
+            question: '为什么有时编码后数据反而变长？',
+            answer:
+              'RLE 只对连续重复字节有效。随机或低重复数据中每个游程长度都接近 1，基础 RLE 还需额外的 count 字节，因此必然膨胀；工具会在统计区用红色告警明确提示该数据不适合 RLE。',
+          },
+          {
+            question: 'PackBits 的标记头如何区分字面与重复？',
+            answer:
+              '标记头按有符号字节解释：0..127 表示后面紧跟 n+1 个字面字节；-1..-127（存储为 0xFF..0x81）表示后面 1 个字节重复 1-n 次；-128（0x80）保留为无操作，解码时直接跳过。',
+          },
+          {
+            question: '基础 RLE 的 255 上限是什么意思？',
+            answer:
+              'count 字段只有 1 字节，最大只能表示 255。更长的连续游程会被拆成多组，例如 300 个相同字节编码为 [255, byte, 45, byte]，解码时再无损还原。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Run-Length Encoding compresses consecutive repeated bytes into a count plus a value. This tool implements both plain byte RLE (count/byte pairs with counts from 1 to 255 and automatic splitting of overlong runs) and the classic Apple PackBits variant, whose signed header byte distinguishes literal blocks (0..127) from repeat blocks (-1..-127) with 0x80 reserved as a no-op. Text and hex inputs are both supported in either direction.',
+        coreFeatures: [
+          'Basic RLE emits count/byte pairs, splits runs beyond 255 and validates count range plus even payload length on decode',
+          'PackBits automatically chooses literal blocks (header 0..127, up to 128 bytes) or repeat blocks (header -1..-127, 2..128 repeats) and tolerates 0x80 NOP markers',
+          'UTF-8 text-to-byte conversion and tolerant hex parsing (spaces, commas, 0x prefix) with located errors for illegal characters or odd length',
+          'Stats for original bytes, encoded bytes and compression ratio, with a red expansion warning when encoding enlarges the data',
+          'Decode reports offsets for truncated literal/repeat blocks; round-trip tests guarantee lossless conversion',
+        ],
+        howToUse: [
+          'Pick encode or decode, then choose basic RLE or PackBits',
+          'Use text or hex input for encoding; paste space-separated hex bytes for decoding',
+          'Review the output hex, byte statistics and ratio; decode also shows a UTF-8 text preview',
+          'On red errors, use the reported offset to inspect payload integrity',
+        ],
+        useCases: [
+          'Inspecting PackBits/RLE streams inside BMP, TIFF or PSD files',
+          'Teaching lossless compression and the data-expansion phenomenon',
+          'Verifying run-length byte streams in embedded or protocol work',
+          'Comparing compression ratios between repetitive and random data',
+        ],
+        privacyNote:
+          'All encoding and decoding happen locally in the browser; input is never uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Why does encoding sometimes produce more bytes?',
+            answer:
+              'RLE only helps with consecutive repeats. Random data has runs of length close to one, and basic RLE still adds a count byte per run, so it expands. The stats panel shows a red warning when the payload is unsuitable for RLE.',
+          },
+          {
+            question: 'How does the PackBits header distinguish literals from repeats?',
+            answer:
+              'The header is interpreted as a signed byte: 0..127 means n+1 literal bytes follow; -1..-127 (stored as 0xFF..0x81) means one following byte repeats 1-n times; -128 (0x80) is a reserved no-op skipped during decode.',
+          },
+          {
+            question: 'What is the 255 limit in basic RLE?',
+            answer:
+              'The count field is a single byte capped at 255. Longer runs split into multiple pairs — 300 identical bytes become [255, byte, 45, byte] — and decode restores them losslessly.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'issn-validator',
+    name: 'ISSN 校验位计算器与规范化工具（含连字符定位与批量校验）',
+    nameEn: 'ISSN Check Digit Calculator & Validator',
+    description:
+      '按 ISO 3297 规则对 8 位国际标准连续出版物号做 mod-11 校验位验证、为 7 位前缀自动补全校验位（余数 10 记为 X、余数 0 记为 0），并支持每行一个号码的批量校验与标准格式 NNNN-NNNC 规范化；自动剥离空格连字符、兼容小写 x，错误输入给出期望校验位与原因，纯本地确定性计算零依赖。',
+    descriptionEn:
+      'Validate 8-digit International Standard Serial Numbers under the ISO 3297 mod-11 rule, auto-complete a check digit for a 7-digit prefix (remainder 10 becomes X, remainder 0 becomes 0), and batch-validate one number per line with canonical NNNN-NNNC normalization. Spaces and hyphens are stripped, lowercase x is accepted, and bad input reports the expected digit and reason — all offline as deterministic zero-dependency code.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/issn-validator',
+    iconName: 'FileSearchOutlined',
+    tags: ['ISSN', '校验位', 'mod-11', '期刊号', '批量校验', '规范化', 'ISO 3297'],
+    tagsEn: ['ISSN', 'check digit', 'mod-11', 'serial number', 'batch validation', 'normalization', 'ISO 3297'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0378-5955',
+    doc: {
+      zh: {
+        whatIsIt:
+          'ISSN（International Standard Serial Number）是分配给期刊、报纸、年刊等连续出版物的 8 位标识。本工具实现 ISO 3297 规定的 mod-11 校验位算法：对前 7 位数字按权重 8、7、…、2 加权求和，r = 11 − (sum mod 11)；r=10 时校验位记为 X，r=11（即 mod 为 0）时记为 0。工具支持单条校验、7 位补全与批量校验三种模式，并输出带连字符的标准格式。',
+        coreFeatures: [
+          '单条校验：剥离空格与连字符后验证 8 位号码，失败时同时给出实际值与期望校验位',
+          '补全模式：输入 7 位数字前缀自动计算第 8 位，输出完整标准号 NNNN-NNNC',
+          '批量模式：每行一个号码，逐条标注合法/非法、标准格式或失败原因，并汇总合法与非法计数',
+          '规范化：合法号码统一在第 4 位后插入连字符，末位小写 x 自动转大写 X',
+          '严格边界：非数字字符（末位 X 除外）、长度不符、空输入均给出明确中文错误，不抛异常',
+        ],
+        howToUse: [
+          '在顶部选择「单条校验」「补全校验位」或「批量校验」模式',
+          '单条模式粘贴或输入号码（带不带连字符均可），即时查看通过/失败结论',
+          '补全模式输入 7 位前缀，获得完整标准号',
+          '批量模式每行一个 ISSN，查看表格中的逐条结果与汇总统计',
+        ],
+        useCases: [
+          '图书馆、出版与发行系统中核验期刊号录入的正确性',
+          '数据清洗时批量发现错误 ISSN 并给出修正建议',
+          '表单开发中参考 mod-11 校验位的确定性实现',
+          '编辑与编目人员快速补全或规范化连续出版物号',
+        ],
+        privacyNote:
+          '所有号码仅在浏览器本地参与运算，不会上传服务器，也不写入任何本地存储。',
+        faqs: [
+          {
+            question: '为什么有的 ISSN 最后一位是 X？',
+            answer:
+              '当加权和 mod 11 得到 r=10 时，单个十进制数字无法表示，按 ISO 3297 规定用大写字母 X 表示；r=11（mod 为 0）时则记为 0。',
+          },
+          {
+            question: '连字符的位置有规定吗？',
+            answer:
+              '标准印刷格式为 NNNN-NNNC，即前 4 位与后 4 位（含校验位）之间加一个连字符。工具在校验时会先剥离连字符与空格，合法后再按标准位置重新插入。',
+          },
+          {
+            question: 'ISSN 和 ISBN 是一回事吗？',
+            answer:
+              '不是。ISSN 标识连续出版物（期刊、报纸等），固定 8 位且采用 mod-11；ISBN 标识图书，ISBN-13 为 13 位并采用 mod-10 加权。两者校验算法与长度都不同，不能混用。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ISSN (International Standard Serial Number) is an 8-digit identifier for serial publications such as journals, newspapers and annuals. This tool implements the ISO 3297 mod-11 check-digit algorithm: weight the first seven digits by 8, 7, ..., 2, then r = 11 − (sum mod 11); r=10 is written as X and r=11 (mod zero) as 0. It offers single validation, 7-digit completion and batch validation, emitting the hyphenated canonical form.',
+        coreFeatures: [
+          'Single validation strips spaces and hyphens, verifies eight digits and reports actual vs expected check digit on failure',
+          'Completion mode computes the eighth digit from a 7-digit prefix and returns the full NNNN-NNNC number',
+          'Batch mode takes one ISSN per line, labels each valid/invalid with canonical form or reason, and aggregates counts',
+          'Normalization inserts the hyphen after the fourth digit and uppercases a trailing x',
+          'Strict edge handling with clear Chinese errors for non-digits (except trailing X), bad length and empty input',
+        ],
+        howToUse: [
+          'Choose single validation, check-digit completion or batch validation at the top',
+          'In single mode paste a number with or without hyphens and read the instant verdict',
+          'In completion mode enter a 7-digit prefix to obtain the full canonical number',
+          'In batch mode put one ISSN per line and inspect the per-row table and totals',
+        ],
+        useCases: [
+          'Verifying journal identifiers in library, publishing and distribution systems',
+          'Batch data cleaning that flags bad ISSNs and suggests corrections',
+          'A deterministic mod-11 reference when building validation forms',
+          'Quick completion or normalization for editors and cataloguers',
+        ],
+        privacyNote:
+          'All numbers are processed locally in the browser and are never uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Why does an ISSN sometimes end in X?',
+            answer:
+              'When the weighted sum mod 11 yields r=10, no single decimal digit can represent it, so ISO 3297 mandates the uppercase letter X; r=11 (mod zero) is written as 0.',
+          },
+          {
+            question: 'Where does the hyphen go?',
+            answer:
+              'The printed canonical form is NNNN-NNNC — one hyphen between the first four and last four characters including the check digit. Validation first strips hyphens and spaces, then re-inserts them at the standard position when valid.',
+          },
+          {
+            question: 'Are ISSN and ISBN the same?',
+            answer:
+              'No. ISSN identifies serial publications (journals, newspapers) with a fixed 8-digit mod-11 scheme, while ISBN identifies books — ISBN-13 has 13 digits with a mod-10 weighting. Lengths and check algorithms differ and must not be mixed.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'led-resistor-calculator',
+    name: 'LED 限流电阻计算器（E24 选型与功耗估算）',
+    nameEn: 'LED Resistor Calculator with E24 Selection',
+    description:
+      '按欧姆定律 R=(Vs−Vf)/If 计算 LED 限流电阻，在 E24 标称系列中向上选取最接近且不小于理论值的阻值（优先防过流），回算实际电流、偏差百分比与电阻功耗，并按 2 倍冗余给出额定功率建议；支持单颗、N 颗串联与 N 条并联拓扑，内置红/黄/绿/蓝/白常用 LED 压降预设，纯本地确定性计算零依赖。',
+    descriptionEn:
+      'Compute an LED current-limiting resistor from R=(Vs−Vf)/If, pick the nearest E24 nominal value at or above the theoretical resistance (rounding up to avoid overcurrent), then derive the real current, deviation and resistor power, with a 2x safety-margin power rating. Supports single, series and parallel topologies with red/yellow/green/blue/white Vf presets — fully local and deterministic.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/led-resistor-calculator',
+    iconName: 'ThunderboltOutlined',
+    tags: ['LED', '限流电阻', '欧姆定律', 'E24', '功耗', '串联并联', '电子'],
+    tagsEn: ['LED', 'current-limiting resistor', 'Ohm law', 'E24', 'power', 'series parallel', 'electronics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Vs=5V, Vf=2V, If=20mA',
+    doc: {
+      zh: {
+        whatIsIt:
+          'LED 限流电阻计算器面向电子入门与元件选型场景：给定电源电压 Vs、LED 正向压降 Vf 与期望工作电流 If，按欧姆定律 R=(Vs−Vf)/If 求出理论电阻，再从内置的 E24 标称系列（24 个基础值配合十进制倍率）中选取不小于理论值的最小标称阻值，向上选型可保证实际电流不超过设计值；随后回算实际电流、相对偏差与电阻功耗 P=I²R，并按至少 2 倍冗余给出额定功率建议。',
+        coreFeatures: [
+          '欧姆定律求解：单颗、N 颗串联（总压降 N·Vf）与 N 条并联（总电流 N·If）三种拓扑自动换算',
+          'E24 向上选型：在全量程标称值中选不小于理论值的最小阻值，避免过流烧毁 LED',
+          '回算实际电流与偏差百分比，负值即偏保守、不过流，结果一目了然',
+          '功耗与额定功率：P=I²R 估算电阻发热，并按 2 倍冗余向上对齐 1/8W~5W 常用额定档',
+          '红 2.0V / 黄 2.1V / 绿 2.2V / 蓝 3.2V / 白 3.2V 快捷预设，也可完全手填',
+          '严格边界：Vs 不大于总压降、电流或电压非正时给出中文错误，不抛异常',
+        ],
+        howToUse: [
+          '填写电源电压 Vs（V）、LED 正向压降 Vf（V，可点颜色预设）与期望电流 If（mA）',
+          '选择拓扑：单颗、N 颗串联或 N 条并联；串联/并联模式下填写颗数或支路数',
+          '即时查看理论电阻、推荐 E24 标称值、实际电流与偏差、电阻功耗与额定功率建议',
+          '点击「复制结果」可把完整选型结论复制到剪贴板，用于 BOM 或实验记录',
+        ],
+        useCases: [
+          '单片机、Arduino 等 5V/3.3V 电路中为指示灯快速选限流电阻',
+          '多颗 LED 灯带或阵列的串并联参数核算与供电能力评估',
+          '电子教学中演示欧姆定律、标准阻值系列与功率降额设计',
+          '采购前确认 E24 易购物料的阻值与额定功率封装',
+        ],
+        privacyNote:
+          '全部计算只在浏览器本地进行，参数不上传、不落盘，断网亦可正常使用。',
+        faqs: [
+          {
+            question: '为什么选型要向上取而不是选最接近的标称值？',
+            answer:
+              '电阻偏小会使实际电流超过设计值，加速 LED 光衰甚至烧毁。向上选取不小于理论值的最小 E24 阻值，可保证实际电流 ≤ 期望电流，偏差为负即处于安全侧；工具同时给出偏差百分比，便于评估亮度损失。',
+          },
+          {
+            question: '串联和并联分别怎么换算？',
+            answer:
+              'N 颗串联时总正向压降为 N·Vf，支路电流不变；N 条支路并联且共用同一限流电阻时，压降仍为 Vf，但电阻上流过的总电流为 N·If。工具按所选拓扑自动代入公式，并在电源电压不足以覆盖总压降时报错。',
+          },
+          {
+            question: '建议的额定功率是怎么来的？',
+            answer:
+              '先按 P=I²R 计算电阻实际耗散功率，再乘以 2 作为降额冗余，并向上对齐 1/8W、1/4W、1/2W、1W、2W、5W 等常用额定档。留足余量可降低表面温度、延长电阻寿命。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A calculator for electronics beginners and component selection: given supply voltage Vs, LED forward voltage Vf and target current If, it derives the theoretical resistor from R=(Vs−Vf)/If, then selects the smallest E24 nominal value not below it (24 base values across all decades). Rounding up guarantees the real current never exceeds the design value; the tool then back-calculates actual current, deviation and resistor power P=I²R, and recommends a power rating with at least a 2x safety margin.',
+        coreFeatures: [
+          'Ohm-law solving with automatic conversion for single, N-in-series (total drop N·Vf) and N-parallel-branch (total current N·If) topologies',
+          'E24 round-up selection across the full decade range so the chosen resistor can never over-drive the LED',
+          'Back-calculated real current and deviation percentage — a negative value means a safe, conservative choice',
+          'Resistor dissipation P=I²R plus a 2x-margin rating aligned to standard 1/8W–5W parts',
+          'One-click Vf presets for red 2.0V / yellow 2.1V / green 2.2V / blue 3.2V / white 3.2V, all freely overridable',
+          'Strict edge handling with clear Chinese errors when Vs ≤ total Vf or when voltages/currents are non-positive',
+        ],
+        howToUse: [
+          'Enter supply voltage Vs (V), LED forward voltage Vf (V — a color preset can fill it) and target current If (mA)',
+          'Pick a topology: single LED, N in series, or N parallel branches; enter the count when applicable',
+          'Instantly read the theoretical resistance, recommended E24 value, real current and deviation, dissipation and power rating',
+          'Use "Copy result" to move the full selection into a BOM or lab notebook',
+        ],
+        useCases: [
+          'Quickly sizing indicator resistors in 5V/3.3V MCU and Arduino circuits',
+          'Checking series/parallel LED strips and arrays against supply capability',
+          'Teaching Ohm’s law, standard resistor series and power derating',
+          'Confirming readily available E24 resistance and power packages before ordering',
+        ],
+        privacyNote:
+          'Every calculation runs locally in the browser. Inputs are neither uploaded nor persisted, and the tool works offline.',
+        faqs: [
+          {
+            question: 'Why round up instead of taking the nearest nominal value?',
+            answer:
+              'An undersized resistor pushes the real current above the design target, accelerating LED degradation or causing failure. Choosing the smallest E24 value at or above the theoretical resistance keeps the actual current at or below the target — a negative deviation is the safe side — while the displayed deviation shows the brightness trade-off.',
+          },
+          {
+            question: 'How are series and parallel topologies converted?',
+            answer:
+              'With N LEDs in series the total forward drop is N·Vf and the branch current is unchanged; with N parallel branches sharing one resistor the drop stays Vf but the resistor carries N·If in total. The tool applies the right formula automatically and errors when the supply cannot cover the total drop.',
+          },
+          {
+            question: 'How is the recommended power rating derived?',
+            answer:
+              'It first computes dissipation via P=I²R, doubles it as a derating margin, then rounds up to the nearest standard rating of 1/8W, 1/4W, 1/2W, 1W, 2W or 5W. The headroom keeps surface temperature down and extends resistor life.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'logfmt-parser',
+    name: 'logfmt 日志解析与格式化工具（key=value 双向转换与类型推断）',
+    nameEn: 'logfmt Parser & Serializer',
+    description:
+      '解析 Heroku、Promtail 与 Go 服务常用的 logfmt 行（key=value 空格分隔，双引号值支持反斜杠转义，裸键视为布尔 true），按行对齐为字段表、JSON 视图与字段类型清单，自动推断整数/浮点/布尔/null/字符串；支持反向序列化为合规 logfmt（含空格、引号、等号的值自动加引号转义，true 输出裸键），畸形行带行号告警不中断，纯本地状态机零依赖。',
+    descriptionEn:
+      'Parse logfmt lines used by Heroku, Promtail and Go services (space-separated key=value pairs, quoted values with backslash escapes, bare keys as boolean true) into aligned field tables, JSON views and per-field type lists with integer/float/boolean/null/string inference. It also serializes back to compliant logfmt — quoting and escaping values that contain spaces, quotes or equals signs, and emitting bare keys for true — while malformed lines produce line-numbered warnings without aborting. A fully local zero-dependency state machine.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/logfmt-parser',
+    iconName: 'FileTextOutlined',
+    tags: ['logfmt', '日志解析', 'key=value', '类型推断', '序列化', 'Go', 'Promtail'],
+    tagsEn: ['logfmt', 'log parser', 'key=value', 'type inference', 'serializer', 'Go', 'Promtail'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'logfmt 是 Heroku、Promtail、Loki 及大量 Go 服务使用的结构化日志行格式：每行由空格分隔的 key=value 对组成，值含空格时用双引号包裹并支持反斜杠转义，没有等号的裸键约定为布尔 true。本工具用逐字符状态机解析单行或多行日志，输出按行对齐的字段表、聚合 JSON 与字段类型清单，并可把键值对象反向序列化为合规 logfmt。',
+        coreFeatures: [
+          '状态机解析：正确处理双引号、\\"、\\\\、\\n、\\t 转义，裸键自动识别为布尔 true，兼容 = 后空值',
+          '类型推断：整数、浮点（含指数）、布尔、null 与字符串五类，展示原始值与转换值',
+          '多行对齐：按行号对齐字段，重复键全部保留，支持按字段名筛选与去重字段清单',
+          '反向序列化：含空格/引号/等号/反斜杠的值自动加引号并转义，布尔 true 输出裸键，支持往返一致',
+          '容错告警：未闭合引号等畸形行带行号告警且不中断其余行；空输入、空行安全跳过',
+        ],
+        howToUse: [
+          '在输入框粘贴一行或多行 logfmt 日志，解析结果即时刷新',
+          '用「按字段名筛选」下拉框聚焦关心的键，在字段表 / JSON 视图 / 类型清单之间切换',
+          '切到「序列化为 logfmt」模式可查看规范化后的合规输出，并一键复制',
+          '出现黄色告警时按提示行号检查引号闭合，其余行仍可正常解析',
+        ],
+        useCases: [
+          '排查 Go / Heroku / Promtail 管道中的 key=value 日志，快速对齐多行字段',
+          '把临时键值数据规范化为合规 logfmt 后写回日志或测试夹具',
+          '核对日志字段类型分布（端口为整数、耗时为浮点、开关为布尔）',
+          '作为 logfmt 转义规则与类型推断的确定性参考实现',
+        ],
+        privacyNote:
+          '解析与序列化全部在浏览器本地完成，日志内容不上传、不落盘，含敏感信息的生产日志也可放心粘贴。',
+        faqs: [
+          {
+            question: '裸键（没有等号）怎么处理？',
+            answer:
+              '按 logfmt 社区约定，没有 = 的独立单词视为布尔标志，解析为 key=true；反向序列化时布尔 true 也会输出为裸键，保证往返一致。',
+          },
+          {
+            question: '不带引号的值里有空格会怎样？',
+            answer:
+              '裸值在第一个空格处结束，这是 logfmt 的标准分词规则。若值本身包含空格，应在源日志中用双引号包裹，解析器会完整保留引号内内容并处理转义。',
+          },
+          {
+            question: '重复出现的键会被覆盖吗？',
+            answer:
+              '不会。字段表按出现顺序保留全部重复键，仅在「去重字段清单」中列出唯一键名；JSON 视图按单行对象语义以后出现的值覆盖同名键，与标准 JSON 对象行为一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'logfmt is the structured logging line format used by Heroku, Promtail, Loki and many Go services: each line holds space-separated key=value pairs, values with spaces are double-quoted with backslash escapes, and a bare key without an equals sign conventionally means boolean true. This tool parses single or multiple lines with a character-by-character state machine into aligned field tables, aggregated JSON and field-type lists, and can serialize key-value objects back into compliant logfmt.',
+        coreFeatures: [
+          'State-machine parser handling double quotes, \\" , \\\\, \\n and \\t escapes, treating bare keys as boolean true and accepting empty values after =',
+          'Type inference across integer, float (including exponents), boolean, null and string, showing both raw and converted values',
+          'Multi-line alignment by line number, duplicate keys fully retained, plus field-name filtering and a de-duplicated field list',
+          'Reverse serialization that quotes and escapes values containing spaces, quotes, equals signs or backslashes, emits bare keys for true, and round-trips cleanly',
+          'Fault-tolerant warnings: malformed lines such as unclosed quotes raise line-numbered warnings without aborting other lines; empty input and blank lines are skipped safely',
+        ],
+        howToUse: [
+          'Paste one or more logfmt lines into the editor and watch the results refresh instantly',
+          'Use the field-name filter to focus on a key and switch between the field table, JSON view and type list',
+          'Switch to "serialize to logfmt" to inspect canonical output and copy it in one click',
+          'When a yellow warning appears, check quote closure at the cited line number; other lines still parse normally',
+        ],
+        useCases: [
+          'Debugging key=value logs from Go, Heroku or Promtail pipelines with multi-line field alignment',
+          'Canonicalizing ad-hoc key-value data into compliant logfmt for logs or test fixtures',
+          'Auditing field types (integer ports, float latency, boolean toggles) across log lines',
+          'A deterministic reference for logfmt escaping rules and type inference',
+        ],
+        privacyNote:
+          'All parsing and serialization happens locally in the browser. Log content is never uploaded or persisted, so sensitive production logs can be pasted safely.',
+        faqs: [
+          {
+            question: 'What happens to a bare key without an equals sign?',
+            answer:
+              'Following logfmt community conventions, a standalone word is treated as a boolean flag and parsed as key=true; serialization likewise emits boolean true as a bare key, keeping round trips consistent.',
+          },
+          {
+            question: 'What if an unquoted value contains spaces?',
+            answer:
+              'A bare value ends at the first space — the standard logfmt tokenization rule. Values containing spaces must be wrapped in double quotes at the source; the parser then preserves the full quoted content and applies escapes.',
+          },
+          {
+            question: 'Are repeated keys overwritten?',
+            answer:
+              'No. The field table keeps every duplicate key in occurrence order; only the de-duplicated field list shows unique names. The JSON view follows standard single-line object semantics, where a later occurrence overwrites an earlier same-name key.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

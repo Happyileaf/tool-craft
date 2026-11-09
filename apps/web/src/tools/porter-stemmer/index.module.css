@@ -1,0 +1,59 @@
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  width: 100%;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.hint {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 13px;
+}
+
+.textarea {
+  font-family: var(--font-family-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-size: 13px;
+}
+
+.resultGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.resultItem {
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.resultLabel {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.resultValue {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.mono {
+  font-family: var(--font-family-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+}
