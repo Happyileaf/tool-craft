@@ -30554,6 +30554,112 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'led-resistor-calculator',
+    name: 'LED 限流电阻计算器（E24 选型与功耗估算）',
+    nameEn: 'LED Resistor Calculator with E24 Selection',
+    description:
+      '按欧姆定律 R=(Vs−Vf)/If 计算 LED 限流电阻，在 E24 标称系列中向上选取最接近且不小于理论值的阻值（优先防过流），回算实际电流、偏差百分比与电阻功耗，并按 2 倍冗余给出额定功率建议；支持单颗、N 颗串联与 N 条并联拓扑，内置红/黄/绿/蓝/白常用 LED 压降预设，纯本地确定性计算零依赖。',
+    descriptionEn:
+      'Compute an LED current-limiting resistor from R=(Vs−Vf)/If, pick the nearest E24 nominal value at or above the theoretical resistance (rounding up to avoid overcurrent), then derive the real current, deviation and resistor power, with a 2x safety-margin power rating. Supports single, series and parallel topologies with red/yellow/green/blue/white Vf presets — fully local and deterministic.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/led-resistor-calculator',
+    iconName: 'ThunderboltOutlined',
+    tags: ['LED', '限流电阻', '欧姆定律', 'E24', '功耗', '串联并联', '电子'],
+    tagsEn: ['LED', 'current-limiting resistor', 'Ohm law', 'E24', 'power', 'series parallel', 'electronics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Vs=5V, Vf=2V, If=20mA',
+    doc: {
+      zh: {
+        whatIsIt:
+          'LED 限流电阻计算器面向电子入门与元件选型场景：给定电源电压 Vs、LED 正向压降 Vf 与期望工作电流 If，按欧姆定律 R=(Vs−Vf)/If 求出理论电阻，再从内置的 E24 标称系列（24 个基础值配合十进制倍率）中选取不小于理论值的最小标称阻值，向上选型可保证实际电流不超过设计值；随后回算实际电流、相对偏差与电阻功耗 P=I²R，并按至少 2 倍冗余给出额定功率建议。',
+        coreFeatures: [
+          '欧姆定律求解：单颗、N 颗串联（总压降 N·Vf）与 N 条并联（总电流 N·If）三种拓扑自动换算',
+          'E24 向上选型：在全量程标称值中选不小于理论值的最小阻值，避免过流烧毁 LED',
+          '回算实际电流与偏差百分比，负值即偏保守、不过流，结果一目了然',
+          '功耗与额定功率：P=I²R 估算电阻发热，并按 2 倍冗余向上对齐 1/8W~5W 常用额定档',
+          '红 2.0V / 黄 2.1V / 绿 2.2V / 蓝 3.2V / 白 3.2V 快捷预设，也可完全手填',
+          '严格边界：Vs 不大于总压降、电流或电压非正时给出中文错误，不抛异常',
+        ],
+        howToUse: [
+          '填写电源电压 Vs（V）、LED 正向压降 Vf（V，可点颜色预设）与期望电流 If（mA）',
+          '选择拓扑：单颗、N 颗串联或 N 条并联；串联/并联模式下填写颗数或支路数',
+          '即时查看理论电阻、推荐 E24 标称值、实际电流与偏差、电阻功耗与额定功率建议',
+          '点击「复制结果」可把完整选型结论复制到剪贴板，用于 BOM 或实验记录',
+        ],
+        useCases: [
+          '单片机、Arduino 等 5V/3.3V 电路中为指示灯快速选限流电阻',
+          '多颗 LED 灯带或阵列的串并联参数核算与供电能力评估',
+          '电子教学中演示欧姆定律、标准阻值系列与功率降额设计',
+          '采购前确认 E24 易购物料的阻值与额定功率封装',
+        ],
+        privacyNote:
+          '全部计算只在浏览器本地进行，参数不上传、不落盘，断网亦可正常使用。',
+        faqs: [
+          {
+            question: '为什么选型要向上取而不是选最接近的标称值？',
+            answer:
+              '电阻偏小会使实际电流超过设计值，加速 LED 光衰甚至烧毁。向上选取不小于理论值的最小 E24 阻值，可保证实际电流 ≤ 期望电流，偏差为负即处于安全侧；工具同时给出偏差百分比，便于评估亮度损失。',
+          },
+          {
+            question: '串联和并联分别怎么换算？',
+            answer:
+              'N 颗串联时总正向压降为 N·Vf，支路电流不变；N 条支路并联且共用同一限流电阻时，压降仍为 Vf，但电阻上流过的总电流为 N·If。工具按所选拓扑自动代入公式，并在电源电压不足以覆盖总压降时报错。',
+          },
+          {
+            question: '建议的额定功率是怎么来的？',
+            answer:
+              '先按 P=I²R 计算电阻实际耗散功率，再乘以 2 作为降额冗余，并向上对齐 1/8W、1/4W、1/2W、1W、2W、5W 等常用额定档。留足余量可降低表面温度、延长电阻寿命。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A calculator for electronics beginners and component selection: given supply voltage Vs, LED forward voltage Vf and target current If, it derives the theoretical resistor from R=(Vs−Vf)/If, then selects the smallest E24 nominal value not below it (24 base values across all decades). Rounding up guarantees the real current never exceeds the design value; the tool then back-calculates actual current, deviation and resistor power P=I²R, and recommends a power rating with at least a 2x safety margin.',
+        coreFeatures: [
+          'Ohm-law solving with automatic conversion for single, N-in-series (total drop N·Vf) and N-parallel-branch (total current N·If) topologies',
+          'E24 round-up selection across the full decade range so the chosen resistor can never over-drive the LED',
+          'Back-calculated real current and deviation percentage — a negative value means a safe, conservative choice',
+          'Resistor dissipation P=I²R plus a 2x-margin rating aligned to standard 1/8W–5W parts',
+          'One-click Vf presets for red 2.0V / yellow 2.1V / green 2.2V / blue 3.2V / white 3.2V, all freely overridable',
+          'Strict edge handling with clear Chinese errors when Vs ≤ total Vf or when voltages/currents are non-positive',
+        ],
+        howToUse: [
+          'Enter supply voltage Vs (V), LED forward voltage Vf (V — a color preset can fill it) and target current If (mA)',
+          'Pick a topology: single LED, N in series, or N parallel branches; enter the count when applicable',
+          'Instantly read the theoretical resistance, recommended E24 value, real current and deviation, dissipation and power rating',
+          'Use "Copy result" to move the full selection into a BOM or lab notebook',
+        ],
+        useCases: [
+          'Quickly sizing indicator resistors in 5V/3.3V MCU and Arduino circuits',
+          'Checking series/parallel LED strips and arrays against supply capability',
+          'Teaching Ohm’s law, standard resistor series and power derating',
+          'Confirming readily available E24 resistance and power packages before ordering',
+        ],
+        privacyNote:
+          'Every calculation runs locally in the browser. Inputs are neither uploaded nor persisted, and the tool works offline.',
+        faqs: [
+          {
+            question: 'Why round up instead of taking the nearest nominal value?',
+            answer:
+              'An undersized resistor pushes the real current above the design target, accelerating LED degradation or causing failure. Choosing the smallest E24 value at or above the theoretical resistance keeps the actual current at or below the target — a negative deviation is the safe side — while the displayed deviation shows the brightness trade-off.',
+          },
+          {
+            question: 'How are series and parallel topologies converted?',
+            answer:
+              'With N LEDs in series the total forward drop is N·Vf and the branch current is unchanged; with N parallel branches sharing one resistor the drop stays Vf but the resistor carries N·If in total. The tool applies the right formula automatically and errors when the supply cannot cover the total drop.',
+          },
+          {
+            question: 'How is the recommended power rating derived?',
+            answer:
+              'It first computes dissipation via P=I²R, doubles it as a derating margin, then rounds up to the nearest standard rating of 1/8W, 1/4W, 1/2W, 1W, 2W or 5W. The headroom keeps surface temperature down and extends resistor life.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
