@@ -30346,6 +30346,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'rle-codec',
+    name: '游程编码（RLE）编解码器（含 PackBits 变体与压缩率统计）',
+    nameEn: 'Run-Length Encoding Codec (RLE & PackBits)',
+    description:
+      '对文本或 HEX 字节数据做游程编码双向转换：基础 RLE 以 count/byte 成对输出并按 255 截断超长游程，PackBits 用有符号标记头区分字面段与重复段；提供字节级解码校验、错误定位、原始/编码字节数与压缩率统计，膨胀场景红色告警，纯本地确定性计算零依赖。',
+    descriptionEn:
+      'Bidirectional run-length encoding for text or hex byte streams: basic RLE emits count/byte pairs and splits runs at 255, while PackBits uses signed header bytes to distinguish literal and repeat blocks. It offers byte-level decode validation with error offsets, original/encoded byte counts and compression ratio, red warnings for expansion, and runs fully offline as deterministic zero-dependency code.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/rle-codec',
+    iconName: 'CompressOutlined',
+    tags: ['RLE', '游程编码', 'PackBits', '压缩', '编解码', 'HEX', '字节'],
+    tagsEn: ['RLE', 'run-length encoding', 'PackBits', 'compression', 'codec', 'hex', 'bytes'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'AAAAABBBCCCCCCCCCCDEEEEEEEEEEFF',
+    doc: {
+      zh: {
+        whatIsIt:
+          '游程编码（Run-Length Encoding）把连续重复的字节压缩为「重复次数 + 字节值」。本工具同时实现最基础的字节 RLE（count/byte 成对，count 范围 1..255，超长游程自动拆分）与苹果经典 PackBits 变体（用有符号标记头 n 区分 n+1 个字面字节与 1-n 次重复字节，0x80 为无操作填充），并支持文本与 HEX 两种输入形态的双向转换。',
+        coreFeatures: [
+          '基础 RLE 编码输出 count/byte 字节对，超过 255 的游程自动拆成多组，解码严格校验 count 范围与偶数长度',
+          'PackBits 编码自动选择字面段（标记头 0..127，单段至多 128 字节）与重复段（标记头 -1..-127，重复 2..128 次），兼容 0x80 NOP',
+          '文本按 UTF-8 转字节、HEX 输入兼容空格/逗号/0x 前缀，非法字符与奇数长度给出定位错误',
+          '压缩统计展示原始字节数、编码后字节数与压缩率，编码后反而变大时明确红色膨胀告警',
+          '解码端对截断的字面段/重复段带偏移量报错，所有往返用例保证编解码一致',
+        ],
+        howToUse: [
+          '选择「编码」或「解码」方向，再选择基础 RLE 或 PackBits 变体',
+          '编码时可用文本或 HEX 输入；解码时请粘贴空格分隔的 HEX 字节',
+          '查看编码结果 HEX、字节统计与压缩率；解码时同时给出 UTF-8 文本预览',
+          '出现红色错误提示时按偏移量检查输入数据的完整性',
+        ],
+        useCases: [
+          '理解和调试 BMP、TIFF、PSD 等格式中的 PackBits/RLE 压缩数据',
+          '教学演示无损压缩原理与「数据膨胀」现象',
+          '嵌入式或协议场景下手算/核对游程编码字节流',
+          '评估重复型数据与随机型数据的压缩率差异',
+        ],
+        privacyNote:
+          '所有编解码均在浏览器本地完成，输入数据不会上传服务器，也不写入任何本地存储。',
+        faqs: [
+          {
+            question: '为什么有时编码后数据反而变长？',
+            answer:
+              'RLE 只对连续重复字节有效。随机或低重复数据中每个游程长度都接近 1，基础 RLE 还需额外的 count 字节，因此必然膨胀；工具会在统计区用红色告警明确提示该数据不适合 RLE。',
+          },
+          {
+            question: 'PackBits 的标记头如何区分字面与重复？',
+            answer:
+              '标记头按有符号字节解释：0..127 表示后面紧跟 n+1 个字面字节；-1..-127（存储为 0xFF..0x81）表示后面 1 个字节重复 1-n 次；-128（0x80）保留为无操作，解码时直接跳过。',
+          },
+          {
+            question: '基础 RLE 的 255 上限是什么意思？',
+            answer:
+              'count 字段只有 1 字节，最大只能表示 255。更长的连续游程会被拆成多组，例如 300 个相同字节编码为 [255, byte, 45, byte]，解码时再无损还原。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Run-Length Encoding compresses consecutive repeated bytes into a count plus a value. This tool implements both plain byte RLE (count/byte pairs with counts from 1 to 255 and automatic splitting of overlong runs) and the classic Apple PackBits variant, whose signed header byte distinguishes literal blocks (0..127) from repeat blocks (-1..-127) with 0x80 reserved as a no-op. Text and hex inputs are both supported in either direction.',
+        coreFeatures: [
+          'Basic RLE emits count/byte pairs, splits runs beyond 255 and validates count range plus even payload length on decode',
+          'PackBits automatically chooses literal blocks (header 0..127, up to 128 bytes) or repeat blocks (header -1..-127, 2..128 repeats) and tolerates 0x80 NOP markers',
+          'UTF-8 text-to-byte conversion and tolerant hex parsing (spaces, commas, 0x prefix) with located errors for illegal characters or odd length',
+          'Stats for original bytes, encoded bytes and compression ratio, with a red expansion warning when encoding enlarges the data',
+          'Decode reports offsets for truncated literal/repeat blocks; round-trip tests guarantee lossless conversion',
+        ],
+        howToUse: [
+          'Pick encode or decode, then choose basic RLE or PackBits',
+          'Use text or hex input for encoding; paste space-separated hex bytes for decoding',
+          'Review the output hex, byte statistics and ratio; decode also shows a UTF-8 text preview',
+          'On red errors, use the reported offset to inspect payload integrity',
+        ],
+        useCases: [
+          'Inspecting PackBits/RLE streams inside BMP, TIFF or PSD files',
+          'Teaching lossless compression and the data-expansion phenomenon',
+          'Verifying run-length byte streams in embedded or protocol work',
+          'Comparing compression ratios between repetitive and random data',
+        ],
+        privacyNote:
+          'All encoding and decoding happen locally in the browser; input is never uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Why does encoding sometimes produce more bytes?',
+            answer:
+              'RLE only helps with consecutive repeats. Random data has runs of length close to one, and basic RLE still adds a count byte per run, so it expands. The stats panel shows a red warning when the payload is unsuitable for RLE.',
+          },
+          {
+            question: 'How does the PackBits header distinguish literals from repeats?',
+            answer:
+              'The header is interpreted as a signed byte: 0..127 means n+1 literal bytes follow; -1..-127 (stored as 0xFF..0x81) means one following byte repeats 1-n times; -128 (0x80) is a reserved no-op skipped during decode.',
+          },
+          {
+            question: 'What is the 255 limit in basic RLE?',
+            answer:
+              'The count field is a single byte capped at 255. Longer runs split into multiple pairs — 300 identical bytes become [255, byte, 45, byte] — and decode restores them losslessly.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
