@@ -290,9 +290,4 @@
 | 20261109020216 | 加权网格最短路径求解器（Dijkstra / A* 逐步演示） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109020216.md) |
 | 20261109020217 | 英文 Porter 词干提取器（Stemmer）与词形归并批处理 | Web Tool | External Reference | Pending | 2026-11-09 | | [详情](./idea-details/20261109020217.md) |
 | 20261109020218 | IPv4 网络地址与二进制位掩码教学可视化器（逐位 AND 演算） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109020218.md) |
-| 20261109081153 | 游程编码（RLE）编解码器（含 PackBits 变体与压缩率统计） | Web Tool | Exploration | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109081153.md) |
-| 20261109081154 | 哈夫曼（Huffman）编码教学可视化器（建树、码表与加权路径长度） | Web Tool | Exploration | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109081154.md) |
-| 20261109081155 | ISSN 校验位计算器与规范化工具（含连字符定位与批量校验） | Web Tool | Existing Gap | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109081155.md) |
-| 20261109081156 | LED 限流电阻计算器（欧姆定律与功耗、E24 标称阻值选型） | Web Tool | Existing Gap | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109081156.md) |
-| 20261109081157 | logfmt 日志解析与格式化工具（key=value 双向转换与类型推断） | Web Tool | Existing Gap | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109081157.md) |
 
