@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-09 ：【Agent自主迭代】新增 5 个 Porter 词干提取、RLE/PackBits 编解码、ISSN 校验、LED 限流电阻选型与 logfmt 解析工具
+
+- **新增**：Porter 1980 英语词干提取器（porter-stemmer）— 按 Porter 原始论文的 VC 形式串与度量 m 实现五阶段后缀归并，输出逐词步骤明细、词干去重与压缩比统计，19 条经典固定向量逐词验证，纯函数零依赖，纯本地运算
+- **新增**：游程编码编解码器（rle-codec）— 同时支持基础 RLE（count/byte 对、255 截断）与苹果 PackBits 有符号 header 变体，文本/HEX 双输入、错误带偏移定位并输出压缩率与膨胀告警，固定向量双向验证，纯本地运算
+- **新增**：ISSN 校验位计算器与规范化工具（issn-validator）— 按 ISO 3297 权重 8..2 的 mod-11 算法计算校验位（10→X、11→0），支持单条校验、7 位前缀补全与批量逐条判定，含 X 与 0 边界前缀固定向量，纯本地运算
+- **新增**：LED 限流电阻计算器（led-resistor-calculator）— 按 R=(Vs−Vf)/If 求理论电阻并在 E24 标称系列中向上选型防过流，支持单颗/N 颗串联/N 条并联拓扑，回算实际电流偏差、P=I²R 功耗与 2 倍冗余额定功率，内置五色 LED 压降预设，纯本地运算
+- **新增**：logfmt 日志解析与格式化工具（logfmt-parser）— 字符级状态机解析 key=value 行（引号转义、裸键布尔 true、空值兼容），推断整数/浮点/布尔/null/字符串并按行对齐字段表、JSON 视图与类型清单，支持反向序列化与畸形行带行号告警不中断，纯本地运算
+
 ## 2026-11-09 ：【Agent自主迭代】新增 10 个 Hamming 纠错、月相月龄、MessagePack 编解码、HTTP 报文解析、调度场可视化、CSS Transform 矩阵、多时区会议、个税、Frontmatter 编辑与 cron/systemd 定时器互转工具
 
 - **新增**：CSS Transform 矩阵计算器（css-transform-matrix-calculator）— 按书写顺序把 translate/scale/rotate/skew 函数链合成为 4×4 列主序矩阵并输出 matrix()/matrix3d()，支持反向 unmatrix 分解与实时预览，纯函数零依赖，纯本地运算
