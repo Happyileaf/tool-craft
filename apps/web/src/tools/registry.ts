@@ -30242,6 +30242,511 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'rle-packbits-codec',
+    name: 'RLE 游程编码与 PackBits 编解码器',
+    nameEn: 'RLE & PackBits Run-Length Codec',
+    description:
+      '对文本或 UTF-8 字节序列做游程编码（RLE）双向转换，并支持 Apple PackBits 变体；输出原始大小、压缩后大小与压缩率统计，膨胀时如实标注，全部本地运算。',
+    descriptionEn:
+      'Encode and decode run-length encoded text or UTF-8 byte sequences, including the Apple PackBits variant, with raw size, packed size and compression-ratio stats; expansion is reported honestly, fully in your browser.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/rle-packbits-codec',
+    iconName: 'Binary',
+    tags: ['RLE', '游程编码', 'PackBits', '压缩', '编解码'],
+    tagsEn: ['RLE', 'Run-Length', 'PackBits', 'Compression', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'RLE 游程编码与 PackBits 编解码器是一款纯浏览器本地工具：把连续重复的字符或字节压缩为「计数 + 符号」序列，支持文本 RLE、字节级 RLE（十六进制输入输出）与 Apple PackBits 三种模式，并可反向解码还原，同时给出压缩率统计。',
+        coreFeatures: [
+          '三种模式：文本 RLE（计数前缀格式）、UTF-8 字节级 RLE（Hex 展示）、Apple PackBits 有符号标记变体',
+          '双向转换：编码后可同引擎解码还原，字节模式支持超长游程自动分块',
+          '压缩率统计：展示原始字节数、产物字节数与压缩率，数据膨胀时如实显示负收益',
+          '容错处理：非法 Hex、截断编码、零计数等错误逐条给出可读提示，不中断整体处理',
+          '纯本地运算：不发起任何网络请求，不引入新的第三方依赖',
+        ],
+        howToUse: [
+          '在顶部选择模式（文本 RLE / 字节 RLE / PackBits）与方向（编码 / 解码）',
+          '左侧粘贴文本或十六进制数据，右侧实时输出结果',
+          '查看统计卡片中的原始大小、产物大小与压缩率',
+          '出现警告时按提示检查输入格式（如 Hex 非法字符或编码被截断）',
+        ],
+        useCases: [
+          '学习数据压缩原理，对比 RLE 与 PackBits 在重复数据上的压缩效果',
+          '解析 BMP、TIFF 等采用 PackBits/RLE 压缩的文件片段',
+          '验证自制游程编码输出的正确性与往返一致性',
+        ],
+        privacyNote:
+          '所有文本与字节数据均在浏览器本地编解码，不经过任何服务器，输入内容不会离开设备。',
+        faqs: [
+          {
+            question: '为什么文本 RLE 不建议处理含数字的内容？',
+            answer:
+              '文本模式采用「计数 + 字符」（如 4A）格式，计数字段与正文中的阿拉伯数字存在天然歧义，解码时无法区分数字是数据还是计数。含数字或需要通用压缩的场景请使用字节级 RLE 或 PackBits 模式。',
+          },
+          {
+            question: 'PackBits 的标记字节是什么含义？',
+            answer:
+              'PackBits 用有符号标记：标记 n 在 0..127 时表示随后 n+1 个字节为字面量；标记在 -127..-1 时表示下一个字节重复 1-n 次。0x80（-128）为 nop 填充，解码时跳过。',
+          },
+          {
+            question: '压缩率为负数是出错了吗？',
+            answer:
+              '不是。当输入数据随机性强、几乎没有连续重复时，游程编码的控制字节会让产物比原始数据更大，此时压缩率为负（即膨胀）。这如实反映了 RLE 只适合高重复数据的特性。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The RLE & PackBits Run-Length Codec runs fully in your browser. It compresses runs of repeated characters or bytes into count-plus-symbol sequences, offering text RLE, byte-level RLE over UTF-8 with hex input and output, and the Apple PackBits variant, with matching decoders and compression-ratio statistics.',
+        coreFeatures: [
+          'Three modes: text RLE with count prefix, byte-level RLE over UTF-8 shown in hex, and signed-marker Apple PackBits',
+          'Bidirectional: every encoding can be decoded by the same engine, with automatic chunking for over-long byte runs',
+          'Compression stats: raw byte count, packed byte count and ratio, honestly showing negative ratios when data expands',
+          'Resilient parsing: invalid hex, truncated streams and zero counts produce readable per-item errors without aborting',
+          'Pure local processing with no network requests and no new third-party dependencies',
+        ],
+        howToUse: [
+          'Pick a mode (text RLE / byte RLE / PackBits) and a direction (encode / decode) at the top',
+          'Paste text or hexadecimal data on the left; the result appears on the right in real time',
+          'Review the raw size, packed size and compression ratio in the stats cards',
+          'If a warning appears, follow the message to fix malformed hex or truncated encodings',
+        ],
+        useCases: [
+          'Learning compression fundamentals by comparing RLE and PackBits on repetitive data',
+          'Inspecting fragments of BMP, TIFF and other files that use PackBits or RLE compression',
+          'Verifying the correctness and round-trip behavior of hand-written run-length output',
+        ],
+        privacyNote:
+          'All text and byte data is encoded and decoded locally in the browser; nothing is sent to any server and input never leaves the device.',
+        faqs: [
+          {
+            question: 'Why is text RLE unsuitable for content containing digits?',
+            answer:
+              'Text mode uses a count-prefix format such as 4A, so count digits are ambiguous with literal digits in the data: the decoder cannot tell whether a digit is data or a run count. For numeric or general-purpose data, use byte-level RLE or PackBits instead.',
+          },
+          {
+            question: 'What do PackBits marker bytes mean?',
+            answer:
+              'PackBits uses signed markers: a marker n from 0 to 127 means the next n+1 bytes are literals; a marker from -127 to -1 means the following byte is repeated 1-n times. 0x80 (-128) is a nop pad and is skipped while decoding.',
+          },
+          {
+            question: 'Is a negative compression ratio an error?',
+            answer:
+              'No. When the input is nearly random with few repeated runs, the control bytes make the output larger than the input, so the ratio is negative (expansion). This honestly reflects that run-length encoding only pays off on highly repetitive data.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'huffman-coding-visualizer',
+    name: '哈夫曼编码教学可视化器',
+    nameEn: 'Huffman Coding Visualizer',
+    description:
+      '按频次贪心构建哈夫曼树，逐步展示最小两节点合并过程，输出前缀码表、编码比特串、对齐十六进制、平均码长与加权路径长度（WPL），并与等长编码对比节省比例。',
+    descriptionEn:
+      'Build a Huffman tree greedily from symbol frequencies with step-by-step merge visualization, then output the prefix code table, encoded bitstring, aligned hex, average code length and weighted path length (WPL), alongside savings versus fixed-length coding.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/huffman-coding-visualizer',
+    iconName: 'Shuffle',
+    tags: ['哈夫曼', 'Huffman', '前缀码', '数据压缩', '教学可视化'],
+    tagsEn: ['Huffman', 'Prefix Code', 'Data Compression', 'WPL', 'Visualization'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '哈夫曼编码教学可视化器是一款面向数据结构与压缩原理教学的纯本地工具：输入文本或自定义「符号—频次」表，按贪心策略每轮合并权重最小的两个节点构建最优前缀码树，完整展示每一步合并、最终码表、编码结果与 WPL 等量化指标。',
+        coreFeatures: [
+          '双输入模式：直接统计文本字符频次，或手动编辑每行一个「符号,频次」的频次表',
+          '建树过程可视化：逐轮列出最小两节点的选取与合并，配合缩进树视图理解结构',
+          '完整码表：每个符号的二进制前缀码、码长与频次，便于核对前缀性质',
+          '量化指标：编码比特串、8 位对齐十六进制（含填充位数）、平均码长、WPL 与等长编码节省比例',
+          '确定性 tie-break 与边界处理：同权重按插入序合并，单符号输入赋予码 0，非法频次给出可读错误',
+        ],
+        howToUse: [
+          '选择「文本输入」或「频次表」模式并填入数据',
+          '查看合并步骤列表与树形结构，理解每轮贪心选择',
+          '在码表中核对各符号前缀码，在统计区查看 WPL、平均码长与节省比例',
+          '复制比特串或十六进制结果；频次表模式下注意每行格式为「符号,频次」',
+        ],
+        useCases: [
+          '数据结构课程中演示最优前缀码的构建与贪心正确性',
+          '对比不同频次分布下码长与 WPL 的变化，理解熵与压缩率的关系',
+          '为 DEFLATE、JPEG 等基于哈夫曼码的格式打基础',
+        ],
+        privacyNote:
+          '所有文本与频次数据仅在浏览器内存中参与建树和编码，不发起网络请求，刷新即清除。',
+        faqs: [
+          {
+            question: '相同权重的节点为什么合并结果可能和教材不同？',
+            answer:
+              '哈夫曼算法只规定每轮取权重最小的两个节点，并未规定同权重时的次序。本工具采用「权重相同按插入顺序」的确定性 tie-break，因此只要输入一致，输出可复现；不同 tie-break 会得到不同但同样最优、WPL 相同的码树。',
+          },
+          {
+            question: 'WPL 是怎么计算的？',
+            answer:
+              '加权路径长度 WPL = Σ（符号频次 × 该符号码长），它等于整段文本编码后的总比特数（不含对齐填充）。WPL 越小说明前缀码越优，哈夫曼贪心构造保证在该频次分布下 WPL 最小。',
+          },
+          {
+            question: '只有一个字符时编码结果是什么？',
+            answer:
+              '单符号场景没有可区分的第二路径，工具约定该符号的码为 "0"，从而仍能完成编码与解码演示。真实工程中单符号流通常直接用特殊约定或 RLE 处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Huffman Coding Visualizer is a fully local teaching tool for data-structures and compression courses. Feed it text or a custom symbol-frequency table and it greedily merges the two lowest-weight nodes each round to build an optimal prefix-code tree, showing every merge step, the final code table, encoded output and metrics such as WPL.',
+        coreFeatures: [
+          'Two input modes: automatic frequency counting from text, or a hand-edited symbol,frequency table',
+          'Tree-build visualization: per-round minimum-node merges plus an indented tree view',
+          'Full code table with binary prefix code, code length and frequency for every symbol',
+          'Quantitative metrics: encoded bitstring, byte-aligned hex with padding bits, average code length, WPL and savings versus fixed-length coding',
+          'Deterministic tie-break by insertion order, code "0" for single-symbol input, and readable errors for invalid frequencies',
+        ],
+        howToUse: [
+          'Choose text input or frequency-table mode and enter your data',
+          'Follow the merge-step list and tree view to see each greedy choice',
+          'Check prefix codes in the table and review WPL, average length and savings in the stats area',
+          'Copy the bitstring or hex output; in table mode use one "symbol,frequency" pair per line',
+        ],
+        useCases: [
+          'Demonstrating optimal prefix codes and greedy correctness in data-structure classes',
+          'Exploring how frequency distributions change code lengths and WPL, linking entropy to compression',
+          'Building intuition for Huffman-based formats such as DEFLATE and JPEG',
+        ],
+        privacyNote:
+          'All text and frequency data stays in browser memory for tree building and encoding; no network requests are made and everything is cleared on refresh.',
+        faqs: [
+          {
+            question: 'Why can equal-weight nodes merge differently than in a textbook?',
+            answer:
+              'Huffman only requires picking the two minimum-weight nodes each round; it does not define their order on ties. This tool breaks ties deterministically by insertion order, so identical input always reproduces identical output. Other tie rules yield different but equally optimal trees with the same WPL.',
+          },
+          {
+            question: 'How is WPL calculated?',
+            answer:
+              'Weighted path length is the sum of each symbol frequency multiplied by its code length, which equals the total encoded bit count before alignment padding. A smaller WPL means a better prefix code, and the greedy Huffman construction minimizes WPL for the given frequencies.',
+          },
+          {
+            question: 'What happens with a single distinct character?',
+            answer:
+              'With one symbol there is no second path to distinguish, so the tool assigns it the code "0" to keep encoding and decoding demonstrable. Real-world single-symbol streams are usually handled with special conventions or RLE.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'issn-checksum-calculator',
+    name: 'ISSN 校验位计算器与规范化工具',
+    nameEn: 'ISSN Check Digit Calculator & Normalizer',
+    description:
+      '按 ISO 3297 规则计算与校验 8 位国际标准连续出版物号：7 位前缀自动补全校验位（含 X），8 位号码校验合法性并纠正错误，输出 NNNN-NNNN 标准格式，支持多行批量校验。',
+    descriptionEn:
+      'Compute and verify 8-digit International Standard Serial Numbers per ISO 3297: complete a 7-digit prefix with its check digit (including X), validate or correct an 8-digit ISSN, render the canonical NNNN-NNNN format, and process batches line by line.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/issn-checksum-calculator',
+    iconName: 'Barcode',
+    tags: ['ISSN', '校验位', 'ISO 3297', '期刊', '模11'],
+    tagsEn: ['ISSN', 'Check Digit', 'ISO 3297', 'Serial Publication', 'Modulo 11'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'ISSN 校验位计算器与规范化工具是一款纯浏览器本地工具：依据 ISO 3297，用权重 8 到 2 对前 7 位数字加权求和并按模 11 取补码计算校验位（余数 10 对应 X），支持补全、校验、规范化与批量处理。',
+        coreFeatures: [
+          '7 位补全：输入前 7 位数字自动计算并追加校验位',
+          '8 位校验：核对完整 ISSN，错误时给出正确校验位与纠正后的合法号码',
+          '标准规范化：自动忽略空格与连字符，按 NNNN-NNNN 格式输出，X 统一大写',
+          '批量处理：每行一个号码，空行保留，非法行原样保留并按行号给出中文原因',
+          '零依赖纯本地运算，不发起网络请求',
+        ],
+        howToUse: [
+          '在左侧每行输入一个 7 位前缀（补全）或 8 位 ISSN（校验），可带空格或连字符',
+          '右侧实时输出规范化后的标准格式结果',
+          '校验失败的行会在警告区按「第 N 行」列出原因与正确号码',
+          '点击复制按钮导出全部结果',
+        ],
+        useCases: [
+          '期刊编辑部或图书馆核对出版物 ISSN 的合法性',
+          '为数据库中缺失校验位的 7 位记录批量补全标准 ISSN',
+          '教学场景演示模 11 加权校验与 X 校验位规则',
+        ],
+        privacyNote:
+          '所有号码均在浏览器本地计算，不上传任何服务器，输入内容不会离开设备。',
+        faqs: [
+          {
+            question: 'ISSN 的校验位是怎么算出来的？',
+            answer:
+              '前 7 位数字依次乘以权重 8、7、6、5、4、3、2 后求和 S，取 r = 11 − (S mod 11)。r 为 11 时校验位是 0，r 为 10 时校验位是大写 X，其余情况校验位就是 r 本身。',
+          },
+          {
+            question: '输入里的连字符和空格会影响结果吗？',
+            answer:
+              '不会。工具先剥离所有空白与连字符再计算，输出时统一按标准格式在第 4 位后插入连字符，例如 03785955 规范化为 0378-5955。',
+          },
+          {
+            question: 'ISSN 和 ISBN 校验规则有什么区别？',
+            answer:
+              'ISSN 是 8 位号码、权重 8…2 的模 11 体系，只有末位可能出现 X；ISBN-10 也是模 11 但权重为 10…2 且长度为 10 位，ISBN-13 则采用模 10 交替权重。二者不能混用校验。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ISSN Check Digit Calculator & Normalizer runs fully in your browser. Following ISO 3297, it weights the first seven digits by 8 through 2 and derives the modulo-11 complement check digit (remainder 10 becomes X), supporting completion, validation, canonical formatting and batch processing.',
+        coreFeatures: [
+          '7-digit completion: append the computed check digit to a prefix automatically',
+          '8-digit validation: verify a full ISSN and, when wrong, show the correct digit and corrected number',
+          'Canonical normalization: spaces and hyphens are ignored, output uses NNNN-NNNN with uppercase X',
+          'Batch mode: one number per line, blank lines preserved, invalid lines retained with line-numbered explanations',
+          'Zero-dependency local processing with no network requests',
+        ],
+        howToUse: [
+          'Enter one 7-digit prefix (for completion) or 8-digit ISSN (for validation) per line on the left, spaces and hyphens allowed',
+          'Read the canonical formatted output on the right in real time',
+          'Failed lines appear in the warning area with line numbers, reasons and the correct number',
+          'Use the copy button to export all results',
+        ],
+        useCases: [
+          'Publishers and libraries checking the validity of publication ISSNs',
+          'Batch-completing standard ISSNs for 7-digit records missing check digits in databases',
+          'Teaching modulo-11 weighted checksums and the X check-digit convention',
+        ],
+        privacyNote:
+          'All numbers are computed locally in the browser; nothing is uploaded and input never leaves the device.',
+        faqs: [
+          {
+            question: 'How is the ISSN check digit derived?',
+            answer:
+              'Multiply the first seven digits by weights 8, 7, 6, 5, 4, 3 and 2, sum them as S, and compute r = 11 - (S mod 11). When r is 11 the check digit is 0; when r is 10 it is an uppercase X; otherwise the check digit is r itself.',
+          },
+          {
+            question: 'Do hyphens and spaces in the input matter?',
+            answer:
+              'No. All whitespace and hyphens are stripped before calculation, and output always inserts the canonical hyphen after the fourth digit, so 03785955 becomes 0378-5955.',
+          },
+          {
+            question: 'How do ISSN and ISBN check rules differ?',
+            answer:
+              'ISSN is an 8-digit modulo-11 scheme with weights 8 down to 2 and only the last digit may be X. ISBN-10 is also modulo 11 but has 10 digits with weights 10 down to 2, while ISBN-13 uses modulo 10 with alternating weights. Their checks cannot be interchanged.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'led-resistor-calculator',
+    name: 'LED 限流电阻计算器',
+    nameEn: 'LED Current-Limiting Resistor Calculator',
+    description:
+      '按电源电压、LED 正向压降与目标电流计算限流电阻阻值与功耗，内置常用颜色 Vf 预设与 E24 标称阻值选型，支持多颗串联/并联拓扑并给出实际电流偏差。',
+    descriptionEn:
+      'Compute the current-limiting resistor value and power dissipation from supply voltage, LED forward voltage and target current, with common color Vf presets, E24 nominal selection, series/parallel topologies and real-current deviation.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/led-resistor-calculator',
+    iconName: 'Zap',
+    tags: ['LED', '限流电阻', '欧姆定律', 'E24', '电子电路'],
+    tagsEn: ['LED', 'Current-Limiting Resistor', "Ohm's Law", 'E24', 'Electronics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'LED 限流电阻计算器是一款面向电子入门与选型的纯本地工具：依据欧姆定律 R = (Vs − Vf) / If 计算所需限流电阻与电阻功耗，按红/黄/绿/蓝/白常用颜色给出正向压降预设，并在 E24 标称系列中推荐不小于理论值的最接近阻值，支持串联与并联拓扑换算。',
+        coreFeatures: [
+          '颜色 Vf 预设：红 2.0V、黄 2.1V、绿 2.2V、蓝/白 3.2V，选中后仍可手填覆盖',
+          '拓扑支持：单路、N 颗串联（总压降 N×Vf）、N 路独立电阻并联（含总电流）',
+          'E24 选型：在全系列标称值中选择不小于理论阻值的最接近项，避免过流，并给出实际电流与偏差百分比',
+          '功耗校核：输出电阻功耗 P = I²R，帮助选择合适额定功率的电阻',
+          '完整边界校验：电源电压不足、电流非正、数量非法等情况给出可读错误',
+        ],
+        howToUse: [
+          '选择 LED 颜色预设或手动输入正向压降 Vf',
+          '填写电源电压 Vs、目标电流 If 与 LED 数量、拓扑方式',
+          '查看理论电阻、推荐 E24 标称阻值、实际电流偏差与功耗',
+          '按推荐阻值与功耗额定值选购电阻，留足功率余量',
+        ],
+        useCases: [
+          '单片机或 Arduino 项目中为指示 LED 选取限流电阻',
+          '多颗 LED 串并联灯带设计时核算电阻与总电流',
+          '电子教学中演示欧姆定律在实际器件选型中的应用',
+        ],
+        privacyNote:
+          '所有参数均在浏览器本地计算，不涉及网络请求，输入数据不会离开设备。',
+        faqs: [
+          {
+            question: '为什么推荐阻值要向上取最接近的 E24 值？',
+            answer:
+              '电阻偏小会使实际电流超过 LED 的目标电流，缩短寿命甚至烧毁。因此工具在 E24 系列中选择不小于理论值的最接近标称阻值，代价是电流略小、亮度略低，这在工程上更安全。',
+          },
+          {
+            question: '多颗 LED 串联和并联在计算上有什么区别？',
+            answer:
+              '串联时电流不变，总正向压降为 N×Vf，要求电源电压高于该值；并联且每路独立电阻时，每路按单路公式选电阻，总电流为 N×If。直接多颗 LED 共用一颗电阻会因 Vf 离散导致电流不均，本工具不推荐该接法。',
+          },
+          {
+            question: '电阻功耗怎么用来选电阻？',
+            answer:
+              '工具输出 P = I²R 的实际耗散功率。实际选型时电阻额定功率应显著大于该值（常见做法是留 1.5–2 倍余量），例如 0.06W 功耗可选 1/8W 或 1/4W 电阻以控制温升。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The LED Current-Limiting Resistor Calculator is a fully local tool for electronics beginners and component selection. Applying Ohm’s law R = (Vs - Vf) / If, it derives the required resistor and its power dissipation, offers forward-voltage presets for common LED colors, recommends the nearest E24 nominal value at or above the theoretical value, and handles series and parallel topologies.',
+        coreFeatures: [
+          'Color Vf presets: red 2.0V, amber 2.1V, green 2.2V, blue/white 3.2V, all manually overridable',
+          'Topologies: single LED, N in series with total drop N×Vf, and N parallel branches with independent resistors including total current',
+          'E24 selection: nearest nominal value not below the theoretical value to prevent overcurrent, with real current and deviation percent',
+          'Power check: reports resistor dissipation P = I²R to guide power-rating choice',
+          'Thorough validation with readable errors for insufficient supply voltage, non-positive current or invalid counts',
+        ],
+        howToUse: [
+          'Pick an LED color preset or type the forward voltage Vf manually',
+          'Enter supply voltage Vs, target current If, LED count and topology',
+          'Review the theoretical resistor, recommended E24 value, real-current deviation and power',
+          'Buy the resistor using the recommended value with an adequate power-rating margin',
+        ],
+        useCases: [
+          'Choosing current-limiting resistors for indicator LEDs in MCU or Arduino projects',
+          'Calculating resistors and total current for series/parallel LED strips',
+          'Teaching how Ohm’s law drives real component selection',
+        ],
+        privacyNote:
+          'All parameters are computed locally in the browser with no network requests; input data never leaves the device.',
+        faqs: [
+          {
+            question: 'Why round up to the nearest E24 value instead of rounding to nearest?',
+            answer:
+              'A smaller resistor pushes real current above the LED target, shortening its life or destroying it. The tool therefore chooses the nearest E24 nominal value that is not below the theoretical resistance, trading a slightly lower current and brightness for safety.',
+          },
+          {
+            question: 'How do series and parallel LED calculations differ?',
+            answer:
+              'In series the current stays the same and total forward drop is N×Vf, requiring a supply above that drop. In parallel with one resistor per branch, each branch uses the single-LED formula and total current is N×If. Sharing one resistor across parallel LEDs is discouraged because Vf spread causes uneven currents.',
+          },
+          {
+            question: 'How does resistor dissipation guide component choice?',
+            answer:
+              'The tool reports the actual dissipation P = I²R. A resistor’s rated power should comfortably exceed it—commonly with a 1.5× to 2× margin—so 0.06W of dissipation would call for a 1/8W or 1/4W resistor to keep temperature rise in check.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'logfmt-parser-formatter',
+    name: 'logfmt 日志解析与格式化工具',
+    nameEn: 'logfmt Log Parser & Formatter',
+    description:
+      '解析 key=value 形式的 logfmt 日志行（支持引号转义与裸布尔键），输出键值表与 JSON 并做轻量类型推断；反向把 JSON 序列化为合规 logfmt，支持字段筛选与多行批量处理。',
+    descriptionEn:
+      'Parse key=value logfmt lines with quoted escapes and bare boolean keys into key-value tables and JSON with lightweight type inference, or serialize JSON back into compliant logfmt, with field filtering and multi-line batch processing.',
+    category: ToolCategoryEnum.DATA_JSON,
+    path: '/tools/logfmt-parser-formatter',
+    iconName: 'ScrollText',
+    tags: ['logfmt', '日志解析', 'key=value', 'JSON', '类型推断'],
+    tagsEn: ['logfmt', 'Log Parsing', 'key=value', 'JSON', 'Type Inference'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'logfmt 日志解析与格式化工具是一款纯浏览器本地工具：用字符级状态机解析 Heroku、Promtail 与大量 Go 服务采用的 logfmt（key=value 空格分隔）语法，支持双引号、反斜杠转义与裸布尔键，输出结构化键值表和 JSON，并可把 JSON 反向序列化为合规 logfmt。',
+        coreFeatures: [
+          '完整语法：空格分隔的 key=value、含空格引号值、反斜杠转义、裸键视为 true、空值与多余空白容忍',
+          '类型推断：自动识别整数、浮点、布尔与字符串，同时保留原始值',
+          '多视图：逐行键值表、缩进 JSON 输出与按字段名筛选',
+          '反向格式化：JSON 对象或数组序列化为 logfmt，自动判断何时加引号与转义',
+          '容错与隐私：坏行按行号告警且不中断解析，全程零网络请求、零新依赖',
+        ],
+        howToUse: [
+          '解析模式：在左侧粘贴一行或多行 logfmt，右侧查看键值表与 JSON',
+          '用筛选框输入字段名，只显示包含该键的记录或字段',
+          '格式化模式：粘贴 JSON 对象或数组，自动生成合规 logfmt 行',
+          '警告区按行号定位无法解析的内容并修正',
+        ],
+        useCases: [
+          '排查 Go 服务、Heroku/Loki 管道中的 logfmt 日志字段',
+          '把半结构化 key=value 日志转为 JSON 接入其他分析工具',
+          '为日志采集器编写或核对符合 logfmt 规范的输出',
+        ],
+        privacyNote:
+          '所有日志内容均在浏览器本地解析与序列化，不发送到任何服务器，刷新页面即清除。',
+        faqs: [
+          {
+            question: '值里带空格怎么办？',
+            answer:
+              '用双引号包裹即可，例如 msg="hello world"。引号内支持反斜杠转义（\\"、\\\\、\\n、\\t），解析时会还原为对应字符；序列化方向也会自动为含空格、等号或引号的值加上引号。',
+          },
+          {
+            question: '裸键（没有等号）代表什么？',
+            answer:
+              'logfmt 惯例中没有 =value 的裸键等价于布尔真，例如 error 行解析为 error=true。反向格式化时，布尔 true 输出裸键、false 输出 key=false，与主流库的默认行为一致。',
+          },
+          {
+            question: '类型推断会不会修改原始数据？',
+            answer:
+              '不会。每个字段同时保留原始字符串值和推断类型（整数、浮点、布尔、字符串），JSON 视图按推断类型输出以便下游使用，键值表仍展示原文，数字超过安全整数范围时保留字符串避免精度丢失。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The logfmt Log Parser & Formatter runs fully in your browser. A character-level state machine parses the logfmt syntax used by Heroku, Promtail and many Go services—space-separated key=value pairs with double quotes, backslash escapes and bare boolean keys—into structured tables and JSON, and can serialize JSON back into compliant logfmt.',
+        coreFeatures: [
+          'Full grammar: space-separated key=value pairs, quoted values with spaces, backslash escapes, bare keys as true, empty values and tolerant whitespace handling',
+          'Type inference for integers, floats, booleans and strings while retaining raw values',
+          'Multiple views: per-line key-value table, indented JSON output and field-name filtering',
+          'Reverse formatting: JSON objects or arrays serialized to logfmt with automatic quoting and escaping decisions',
+          'Resilient and private: bad lines raise line-numbered warnings without aborting; no network calls or new dependencies',
+        ],
+        howToUse: [
+          'In parse mode, paste one or more logfmt lines on the left and inspect the table and JSON on the right',
+          'Type a field name in the filter box to show only records containing that key',
+          'In format mode, paste a JSON object or array to generate compliant logfmt lines',
+          'Use line numbers in the warning area to locate and fix unparsable content',
+        ],
+        useCases: [
+          'Inspecting logfmt fields from Go services and Heroku/Loki pipelines',
+          'Converting semi-structured key=value logs into JSON for other analysis tools',
+          'Writing or validating logfmt-compliant output for log collectors',
+        ],
+        privacyNote:
+          'All log content is parsed and serialized locally in the browser, never sent to a server, and cleared when the page refreshes.',
+        faqs: [
+          {
+            question: 'How do I include spaces in a value?',
+            answer:
+              'Wrap it in double quotes, as in msg="hello world". Inside quotes, backslash escapes such as \\" , \\\\ , \\n and \\t are decoded to their characters; the serializer likewise quotes any value containing spaces, equals signs or quotes automatically.',
+          },
+          {
+            question: 'What does a bare key without an equals sign mean?',
+            answer:
+              'By logfmt convention a bare key is equivalent to boolean true, so a line containing error parses as error=true. In reverse, boolean true is emitted as a bare key and false as key=false, matching the default behavior of mainstream libraries.',
+          },
+          {
+            question: 'Does type inference alter the original data?',
+            answer:
+              'No. Every field keeps both its raw string value and an inferred type (integer, float, boolean, string). The JSON view uses inferred types for downstream tools while the table shows the original text; numbers beyond the safe-integer range stay strings to avoid precision loss.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-09 ：【Agent自主迭代】新增 5 个 RLE/PackBits 编解码、哈夫曼可视化、ISSN 校验、LED 限流电阻与 logfmt 解析工具
+
+- **新增**：RLE 游程编码与 PackBits 编解码器（rle-packbits-codec）— 支持文本 RLE、UTF-8 字节级 RLE（Hex）与 Apple PackBits 有符号标记三种模式双向转换，输出原始/产物大小与压缩率（膨胀如实显示负值），非法 Hex、截断编码逐条告警，纯函数零依赖，纯本地运算
+- **新增**：哈夫曼编码教学可视化器（huffman-coding-visualizer）— 文本或自定义频次表贪心建树，逐轮展示最小两节点合并步骤与缩进树视图，输出前缀码表、编码比特串、8 位对齐十六进制、平均码长、WPL 与等长编码节省比例，确定性 tie-break，单符号边界可处理，纯本地运算
+- **新增**：ISSN 校验位计算器与规范化工具（issn-checksum-calculator）— 按 ISO 3297 权重 8…2 模 11 规则完成 7 位补全（含 X 校验位）、8 位校验与纠正，自动剥离空格连字符并输出 NNNN-NNNN 标准格式，支持多行批量与行号告警，纯本地运算
+- **新增**：LED 限流电阻计算器（led-resistor-calculator）— 按 R=(Vs−Vf)/If 计算限流电阻与 I²R 功耗，内置红/黄/绿/蓝/白 Vf 预设与单路/串联/并联拓扑，在 E24 全系列中向上选最接近标称阻值并给出实际电流偏差，边界条件逐条报错，纯本地运算
+- **新增**：logfmt 日志解析与格式化工具（logfmt-parser-formatter）— 字符级状态机解析 key=value（引号转义、裸布尔键、空值容忍），输出键值表与 JSON 并做整数/浮点/布尔类型推断，支持字段筛选、坏行行号告警与 JSON 反向序列化为合规 logfmt，纯函数零依赖，纯本地运算
+
 ## 2026-11-09 ：【Agent自主迭代】新增 10 个 Hamming 纠错、月相月龄、MessagePack 编解码、HTTP 报文解析、调度场可视化、CSS Transform 矩阵、多时区会议、个税、Frontmatter 编辑与 cron/systemd 定时器互转工具
 
 - **新增**：CSS Transform 矩阵计算器（css-transform-matrix-calculator）— 按书写顺序把 translate/scale/rotate/skew 函数链合成为 4×4 列主序矩阵并输出 matrix()/matrix3d()，支持反向 unmatrix 分解与实时预览，纯函数零依赖，纯本地运算

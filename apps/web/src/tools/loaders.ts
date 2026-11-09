@@ -322,4 +322,9 @@ export const toolLoaders: Record<
   'cn-income-tax-calculator': () => import('./cn-income-tax-calculator'),
   'markdown-frontmatter-editor': () => import('./markdown-frontmatter-editor'),
   'cron-systemd-timer-converter': () => import('./cron-systemd-timer-converter'),
+  'rle-packbits-codec': () => import('./rle-packbits-codec'),
+  'huffman-coding-visualizer': () => import('./huffman-coding-visualizer'),
+  'issn-checksum-calculator': () => import('./issn-checksum-calculator'),
+  'led-resistor-calculator': () => import('./led-resistor-calculator'),
+  'logfmt-parser-formatter': () => import('./logfmt-parser-formatter'),
 };
