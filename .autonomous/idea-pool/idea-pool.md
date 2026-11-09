@@ -290,4 +290,9 @@
 | 20261109020216 | 加权网格最短路径求解器（Dijkstra / A* 逐步演示） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109020216.md) |
 | 20261109020217 | 英文 Porter 词干提取器（Stemmer）与词形归并批处理 | Web Tool | External Reference | Pending | 2026-11-09 | | [详情](./idea-details/20261109020217.md) |
 | 20261109020218 | IPv4 网络地址与二进制位掩码教学可视化器（逐位 AND 演算） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109020218.md) |
+| 20261109200616 | BBCode ↔ HTML 双向转换器（论坛标记语言与富文本互转） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200616.md) |
+| 20261109200617 | FLAC 音频元数据块只读解析器（STREAMINFO / VORBIS_COMMENT / 图片块结构展示） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200617.md) |
+| 20261109200618 | Ogg 容器页（page）结构只读解析器（OggS 页头 / 段表 / 编解码流分帧展示） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200618.md) |
+| 20261109200619 | 可见光波长 → RGB/HEX 颜色转换器（380–750nm 光谱色与近紫外/近红外越界提示） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109200619.md) |
+| 20261109200620 | 标准 MIDI 文件（SMF）结构只读解析器（MThd/MTrk 块、轨道事件与 running status 展示） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200620.md) |
 
