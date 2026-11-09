@@ -320,6 +320,11 @@ export const toolLoaders: Record<
   'multi-timezone-meeting-planner': () =>
     import('./multi-timezone-meeting-planner'),
   'cn-income-tax-calculator': () => import('./cn-income-tax-calculator'),
+  'porter-stemmer': () => import('./porter-stemmer'),
+  'rle-codec': () => import('./rle-codec'),
+  'issn-validator': () => import('./issn-validator'),
+  'led-resistor-calculator': () => import('./led-resistor-calculator'),
+  'logfmt-parser': () => import('./logfmt-parser'),
   'markdown-frontmatter-editor': () => import('./markdown-frontmatter-editor'),
   'cron-systemd-timer-converter': () => import('./cron-systemd-timer-converter'),
 };

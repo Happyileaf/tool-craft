@@ -288,7 +288,7 @@
 | 20261109020214 | APR 实际年利率计算器（EAR 等效年费率与贷款成本对比） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109020214.md) |
 | 20261109020215 | 有向图拓扑排序与环检测可视化器（Kahn / DFS 双算法） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109020215.md) |
 | 20261109020216 | 加权网格最短路径求解器（Dijkstra / A* 逐步演示） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109020216.md) |
-| 20261109020217 | 英文 Porter 词干提取器（Stemmer）与词形归并批处理 | Web Tool | External Reference | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109020217.md) |
+| 20261109020217 | 英文 Porter 词干提取器（Stemmer）与词形归并批处理 | Web Tool | External Reference | In Progress | 2026-11-09 | trae-agent | [详情](./idea-details/20261109020217.md) |
 | 20261109020218 | IPv4 网络地址与二进制位掩码教学可视化器（逐位 AND 演算） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109020218.md) |
 | 20261109081153 | 游程编码（RLE）编解码器（含 PackBits 变体与压缩率统计） | Web Tool | Exploration | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109081153.md) |
 | 20261109081154 | 哈夫曼（Huffman）编码教学可视化器（建树、码表与加权路径长度） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109081154.md) |

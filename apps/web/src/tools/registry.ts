@@ -30242,6 +30242,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'porter-stemmer',
+    name: '英文 Porter 词干提取器与词形归并批处理',
+    nameEn: 'Porter Stemmer & Word Form Merging',
+    description:
+      '基于 Porter 1980 经典五阶段后缀剥离规则，对英文文本逐词提取词干（stem），输出原词到词干的明细、按词干归并的词形分组与出现次数、总词数/词干数/归并压缩比统计；按非字母字符分词，大小写与标点不影响结果，纯本地确定性计算零依赖。',
+    descriptionEn:
+      'Stem English text with the classic Porter 1980 five-phase suffix-stripping algorithm, producing per-word original-to-stem mappings, stem-grouped word forms with counts, and totals for token count, unique stems and merge ratio. It tokenizes on non-letter characters, is immune to case and punctuation, and runs fully offline as deterministic zero-dependency code.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/porter-stemmer',
+    iconName: 'FontSizeOutlined',
+    tags: ['Porter', '词干提取', 'Stemmer', '词形归并', 'NLP', '文本分析', '英文'],
+    tagsEn: ['Porter', 'stemmer', 'stemming', 'word merging', 'NLP', 'text analysis', 'English'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具实现 M.F. Porter 于 1980 年提出的经典英文词干提取算法，通过 1a/1b/1c、2、3、4、5a/5b 五个阶段的后缀规则，把同根的屈折与派生形式（如 run/runs/running）归并到同一词干。算法基于元音-辅音（VC）序列度量 m 做条件判定，固定输入必有固定输出，不依赖词典或网络服务。',
+        coreFeatures: [
+          '完整 Porter 五阶段规则：步骤 1a/1b/1c 处理复数、进行时与 y 变换，步骤 2/3 处理派生词缀，步骤 4 清理名词/形容词后缀，步骤 5 收尾去 e 与双写辅音',
+          'VC 形式串与度量 m 的确定性判定，正确处理词首 y、双辅音结尾与 CVC 短词干等边界',
+          '逐词明细表保留原始词形与出现顺序，词形归并视图按词干聚合变体并统计总出现次数',
+          '汇总总词数、唯一词干数与归并压缩比，帮助快速评估文本词汇密度',
+          '按非字母字符分词，数字与标点自动忽略，空输入返回零值统计不报错',
+        ],
+        howToUse: [
+          '把英文段落粘贴到文本框，或直接使用预置示例',
+          '查看「汇总统计」卡片了解总词数、词干数与压缩比',
+          '在「词形归并」标签页按词干查看归并的原始词形与出现次数',
+          '切换「逐词明细」标签页核对每个单词的提取结果',
+        ],
+        useCases: [
+          '搜索引擎与倒排索引构建前的英文查询/文档归一化预处理',
+          '文本分类、聚类或情感分析中降低特征维度、合并同根词',
+          '学习与验证 Porter 词干提取规则的教学场景',
+          '对比不同词干算法或检查语料词汇归并效果',
+        ],
+        privacyNote:
+          '全部分词与词干提取都在浏览器本地完成，文本不会被上传到任何服务器，也不写入本地存储。',
+        faqs: [
+          {
+            question: '提取出的词干为什么有时不是真实单词？',
+            answer:
+              'Porter 算法输出的是词干（stem）而非词典词根（root），它只按后缀规则机械剥离，例如 ponies→poni、relational→relat。词干不要求是合法单词，只要同根词归并到同一形式即可满足检索与统计用途。',
+          },
+          {
+            question: '为什么 agreement 没有被去掉 ment？',
+            answer:
+              '步骤 4 要求剩余词干的 VC 度量 m>1 才删除后缀。agreement 去掉 ment 后词干 agree 的 m=1，不满足条件，因此保留原样，这是 Porter 1980 规范的确定性行为。',
+          },
+          {
+            question: '会过滤停用词或做小写归一化吗？',
+            answer:
+              '工具会统一转小写后再提取，但不做停用词过滤（该职责属于词频类工具），所有字母词都会参与分词与统计；数字、标点和空白仅作为分词边界。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool implements the classic English stemming algorithm published by M.F. Porter in 1980. Through five suffix-rule phases (1a/1b/1c, 2, 3, 4, 5a/5b), inflected and derived forms sharing a root (e.g. run/runs/running) merge into one stem. Conditions rely on the vowel-consonant (VC) measure m, so the same input always yields the same output without dictionaries or network calls.',
+        coreFeatures: [
+          'Full five-phase Porter rules: plurals/participles/y in step 1, derivational suffixes in steps 2 and 3, nominal/adjectival cleanup in step 4, final e and double-consonant handling in step 5',
+          'Deterministic VC form strings and measure m, correctly covering initial y, double consonants and CVC short stems',
+          'Per-word detail table preserving original forms and order, plus a merge view grouping variants under each stem with counts',
+          'Summary of total tokens, unique stems and merge ratio for quick lexical-density assessment',
+          'Tokenizes on non-letter characters, ignores digits and punctuation, and returns zeroed stats for empty input',
+        ],
+        howToUse: [
+          'Paste English text into the textarea or keep the built-in sample',
+          'Review the summary card for token count, stem count and merge ratio',
+          'Open the merge tab to inspect variants grouped by stem with occurrence counts',
+          'Switch to the per-word tab to verify each word individually',
+        ],
+        useCases: [
+          'Normalizing English queries and documents before search indexing',
+          'Reducing feature dimensions in classification, clustering or sentiment analysis',
+          'Teaching and verifying Porter suffix-stripping rules',
+          'Comparing stemmers or inspecting lexical merging on a corpus',
+        ],
+        privacyNote:
+          'All tokenization and stemming run locally in the browser; text is never uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Why is the output sometimes not a real English word?',
+            answer:
+              'Porter produces stems rather than dictionary roots. It mechanically strips suffixes (ponies→poni, relational→relat); stems need not be valid words as long as related forms merge consistently for retrieval and statistics.',
+          },
+          {
+            question: 'Why does agreement keep its ment suffix?',
+            answer:
+              'Step 4 removes a suffix only when the remaining stem has VC measure m>1. After dropping ment, the stem agree has m=1, so the rule does not fire — deterministic behavior defined by the 1980 Porter specification.',
+          },
+          {
+            question: 'Does it remove stop words or normalize case?',
+            answer:
+              'Input is lowercased before stemming, but stop words are not filtered (that belongs to word-frequency tooling). Every letter sequence participates; digits, punctuation and whitespace only act as token boundaries.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
