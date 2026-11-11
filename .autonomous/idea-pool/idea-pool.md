@@ -209,7 +209,6 @@
 | 20261103140203 | VLSM 可变长子网划分规划器 | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103140203.md) |
 | 20261103140204 | Syslog 日志行解析与字段拆分器 | Web Tool | External Reference | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103140204.md) |
 | 20261103140205 | 加班工资计算器（中国大陆劳动法） | Web Tool | External Reference | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103140205.md) |
-| 20261103200232 | Black-Scholes 期权定价计算器（含 Greeks） | Web Tool | Exploration | Claimed | 2026-11-03 | trae-agent | [详情](./idea-details/20261103200232.md) |
 | 20261103200233 | Apache / Nginx Combined Log Format 访问日志解析器 | Web Tool | Existing Gap | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103200233.md) |
 | 20261103200234 | IPv4 数据报头解析与校验和验证器（RFC 791） | Web Tool | Existing Gap | Pending | 2026-11-03 | | [详情](./idea-details/20261103200234.md) |
 | 20261103200235 | 化学方程式配平器与摩尔计量计算器 | Web Tool | Exploration | Pending | 2026-11-03 | | [详情](./idea-details/20261103200235.md) |
@@ -292,16 +291,12 @@
 | 20261109200616 | BBCode ↔ HTML 双向转换器（论坛标记语言与富文本互转） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200616.md) |
 | 20261109200617 | FLAC 音频元数据块只读解析器（STREAMINFO / VORBIS_COMMENT / 图片块结构展示） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200617.md) |
 | 20261109200618 | Ogg 容器页（page）结构只读解析器（OggS 页头 / 段表 / 编解码流分帧展示） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200618.md) |
-| 20261109200619 | 可见光波长 → RGB/HEX 颜色转换器（380–750nm 光谱色与近紫外/近红外越界提示） | Web Tool | Exploration | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109200619.md) |
 | 20261109200620 | 标准 MIDI 文件（SMF）结构只读解析器（MThd/MTrk 块、轨道事件与 running status 展示） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200620.md) |
 | 20261112020111 | 以太网 II 帧结构解析与构造器（含 FCS 校验和、字节布局教学视图） | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112020111.md) |
 | 20261112020112 | QOI（Quite OK Image）无损图片编解码器（RGBA 像素 ↔ .qoi 双向转换） | Web Tool | External Reference | Pending | 2026-11-12 | | [详情](./idea-details/20261112020112.md) |
 | 20261112020113 | 摩托罗拉 S-Record（S19/S28/S37）固件镜像格式解析与校验器 | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112020113.md) |
 | 20261112020114 | Windows ICO/CUR 图标容器结构只读解析器（ICONDIR/目录条目/图像数据块展示） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112020114.md) |
 | 20261112020115 | 指数退避与抖动重试策略计算器（Exponential Backoff + Jitter 时序推演） | Web Tool | External Reference | Pending | 2026-11-12 | | [详情](./idea-details/20261112020115.md) |
-| 20261112020116 | SLA 可用性与允许停机时间换算器（99.9% 等指标 ↔ 日/周/月/年停机预算） | Web Tool | Exploration | Claimed | 2026-11-12 | trae-agent | [详情](./idea-details/20261112020116.md) |
-| 20261112020117 | RAID 磁盘阵列容量与容错规划计算器（RAID 0/1/5/6/10 容量、可用率与故障容忍度） | Web Tool | Exploration | Claimed | 2026-11-12 | trae-agent | [详情](./idea-details/20261112020117.md) |
-| 20261112020118 | 卡诺图（Karnaugh Map）化简器与 SOP/POS 表达式生成（2–4 变量） | Web Tool | Exploration | Claimed | 2026-11-12 | trae-agent | [详情](./idea-details/20261112020118.md) |
 | 20261112020119 | 抛体运动计算器与轨迹可视化（斜抛/平抛/自由落体，含空气阻力可选模型） | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112020119.md) |
 | 20261112020120 | 图片转 ASCII 字符画生成器（灰度/彩色字符映射、可调宽度与对比度，本地导出） | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112020120.md) |
 

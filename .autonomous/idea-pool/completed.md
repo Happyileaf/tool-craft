@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261112020118 | 卡诺图（Karnaugh Map）化简器与 SOP/POS 表达式生成（2–4 变量） | Web Tool | Exploration | `karnaugh-map-simplifier` / [PR #213](https://github.com/Happyileaf/tool-craft/pull/213) | 2026-11-12 | [详情](./idea-details/20261112020118.md) |
+| 20261112020117 | RAID 磁盘阵列容量与容错规划计算器（RAID 0/1/5/6/10 容量、可用率与故障容忍度） | Web Tool | Exploration | `raid-capacity-calculator` / [PR #213](https://github.com/Happyileaf/tool-craft/pull/213) | 2026-11-12 | [详情](./idea-details/20261112020117.md) |
+| 20261112020116 | SLA 可用性与允许停机时间换算器（99.9% 等指标 ↔ 日/周/月/年停机预算） | Web Tool | Exploration | `sla-uptime-calculator` / [PR #213](https://github.com/Happyileaf/tool-craft/pull/213) | 2026-11-12 | [详情](./idea-details/20261112020116.md) |
+| 20261109200619 | 可见光波长 → RGB/HEX 颜色转换器（380–750nm 光谱色与近紫外/近红外越界提示） | Web Tool | Exploration | `wavelength-rgb-converter` / [PR #213](https://github.com/Happyileaf/tool-craft/pull/213) | 2026-11-12 | [详情](./idea-details/20261109200619.md) |
+| 20261103200232 | Black-Scholes 期权定价计算器（含 Greeks） | Web Tool | Exploration | `black-scholes-calculator` / [PR #213](https://github.com/Happyileaf/tool-craft/pull/213) | 2026-11-12 | [详情](./idea-details/20261103200232.md) |
 | 20261109081157 | logfmt 日志解析与格式化工具（key=value 双向转换与类型推断） | Web Tool | Existing Gap | `logfmt-parser-formatter` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081157.md) |
 | 20261109081156 | LED 限流电阻计算器（欧姆定律与功耗、E24 标称阻值选型） | Web Tool | Existing Gap | `led-resistor-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081156.md) |
 | 20261109081155 | ISSN 校验位计算器与规范化工具（含连字符定位与批量校验） | Web Tool | Existing Gap | `issn-checksum-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081155.md) |
