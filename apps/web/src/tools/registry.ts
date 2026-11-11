@@ -31151,6 +31151,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'apr-ear-calculator',
+    name: 'APR 实际年利率计算器',
+    nameEn: 'APR / EAR Effective Annual Rate Calculator',
+    description:
+      '在名义年利率 APR 与实际年利率 EAR（APY）之间双向换算，支持按月/季/半年/日离散复利与连续复利，把一次性开户手续费摊入贷款真实年化成本，并可将最多三个贷款方案并排对比、自动高亮最低与最高成本，全程本地纯函数运算零依赖。',
+    descriptionEn:
+      'Convert between nominal APR and effective annual rate EAR (APY) under monthly, quarterly, semi-annual, daily or continuous compounding, fold one-time origination fees into the true annualized cost of a loan, and compare up to three plans side by side with automatic lowest/highest cost highlighting — all via local pure-function math with zero dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/apr-ear-calculator',
+    iconName: 'Percent',
+    tags: ['APR', 'EAR', '实际年利率', '复利', '贷款成本'],
+    tagsEn: ['APR', 'EAR', 'Effective Annual Rate', 'Compound Interest', 'Loan Cost'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'APR 实际年利率计算器面向需要比较真实借贷成本的个人与财务人员。名义年利率 APR 只标明合同利率，而实际年利率 EAR（又称 APY）把一年内的复利效应计入：离散复利满足 EAR=(1+r/n)^n−1，连续复利满足 EAR=e^r−1，复利频次越高 EAR 越高于 APR。工具还把一次性开户费/手续费摊薄到净到手本金上反推有效年化成本，并支持多方案并排对比，所有计算仅用 Math.pow/log/exp 在浏览器本地完成。',
+        coreFeatures: [
+          'APR→EAR 正向换算：按月（n=12）、按季（n=4）、按半年（n=2）、按日（n=365）与连续复利五种频次',
+          'EAR→APR 反求：给定目标实际年化与频次，反推所需名义利率，与正算严格互逆可往返',
+          '含手续费贷款真实成本：净到手本金=本金−手续费，按一年后总偿付除以净到手本金减一得到有效年化',
+          '最多三个方案并排对比表，本金/手续费/APR/频次均可行内编辑，自动高亮成本最低与最高方案',
+          '非法利率、负本金或手续费≥本金时给出明确错误提示，绝不输出 NaN，结果统一保留 4 位小数',
+        ],
+        howToUse: [
+          '在第一张卡片输入名义年利率 APR 并选择复利频次，即时查看 EAR 与名义/实际利差',
+          '在第二张卡片输入目标 EAR 与频次，反求达到该实际年化所需的名义 APR',
+          '在第三张卡片填写贷款本金、一次性手续费、合同 APR 与频次，查看含费有效年化成本',
+          '在底部对比表中直接编辑各方案参数，绿色标签为最优（最低成本）、红色标签为最高成本方案',
+        ],
+        useCases: [
+          '比较不同复利频次或计息方式下名义利率相同的贷款实际成本差异',
+          '评估含开户费、服务费的消费贷/经营贷真实年化利率，识别低利率高费用陷阱',
+          '在多个贷款报价之间做并排量化对比，为借款决策提供可核验的数据依据',
+        ],
+        privacyNote:
+          '所有利率换算与方案对比均在浏览器本地通过纯函数完成，不发起任何网络请求、不新增 npm 依赖，输入的金额与利率离开页面即消失。',
+        faqs: [
+          {
+            question: 'APR 和 EAR（APY）到底有什么区别？',
+            answer:
+              'APR 是名义年利率，只反映合同上的利率数字，不考虑一年内多次计息的复利效应；EAR（实际年利率，美国常称 APY）把复利计入，离散复利 EAR=(1+r/n)^n−1，连续复利 EAR=e^r−1。因此同一 APR 下复利频次越高，EAR 越高，比较贷款真实成本应看 EAR 而非 APR。',
+          },
+          {
+            question: '为什么含手续费后的有效年化一定高于普通 EAR？',
+            answer:
+              '借款人实际净到手只有本金−手续费，却仍按完整合同本金和 APR 偿还一年复利本息。有效年化=一年后总偿付÷净到手本金−1，分母因手续费变小而分子不变，所以结果必然不低于无手续费的 EAR；手续费越接近本金，有效年化成本越高。',
+          },
+          {
+            question: '连续复利是怎么计算的，现实中存在吗？',
+            answer:
+              '连续复利把计息期数 n 推向无穷大，离散公式 (1+r/n)^n 的极限为 e^r，因此 EAR=e^r−1，反求时 APR=ln(1+EAR)。它是金融建模（如衍生品定价、连续增长模型）的理论基准，现实贷款多用按月/按日离散复利，工具同时提供两类口径便于对照。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The APR / EAR Effective Annual Rate Calculator serves individuals and finance professionals who need to compare true borrowing costs. The nominal APR states only the contractual rate, while the effective annual rate EAR (also called APY) accounts for intra-year compounding: discrete compounding follows EAR=(1+r/n)^n−1 and continuous compounding follows EAR=e^r−1, so the higher the compounding frequency, the more EAR exceeds APR. The tool also amortizes one-time origination fees against the net proceeds to derive an effective annualized cost and supports side-by-side plan comparison. Every computation runs locally in the browser using only Math.pow/log/exp.',
+        coreFeatures: [
+          'Forward APR→EAR conversion across five frequencies: monthly (n=12), quarterly (n=4), semi-annual (n=2), daily (n=365) and continuous',
+          'Reverse EAR→APR solver: given a target effective rate and frequency, derive the required nominal rate, strictly invertible with the forward direction',
+          'Fee-adjusted true loan cost: net proceeds equal principal minus fee, and effective cost equals total one-year repayment divided by net proceeds minus one',
+          'Comparison table of up to three plans with inline-editable principal, fee, APR and frequency, auto-highlighting the lowest- and highest-cost plans',
+          'Explicit error messages for invalid rates, negative principal or fee≥principal — never emits NaN; all results are formatted to 4 decimal places',
+        ],
+        howToUse: [
+          'Enter a nominal APR and pick a compounding frequency in the first card to see the EAR and the nominal-to-effective spread instantly',
+          'Enter a target EAR and frequency in the second card to reverse-solve the nominal APR needed to reach that effective rate',
+          'Fill in loan principal, one-time fee, contractual APR and frequency in the third card to review the fee-adjusted effective annual cost',
+          'Edit plan parameters directly in the bottom comparison table; the green tag marks the best (lowest-cost) plan and the red tag the highest-cost one',
+        ],
+        useCases: [
+          'Comparing effective costs of loans with the same nominal rate but different compounding frequencies or conventions',
+          'Evaluating the true APR of consumer/business loans carrying origination or service fees to spot low-rate-high-fee traps',
+          'Running quantitative side-by-side comparisons of multiple loan quotes to support verifiable borrowing decisions',
+        ],
+        privacyNote:
+          'All rate conversions and plan comparisons run locally in the browser as pure functions. No network requests are made, no extra npm dependencies are added, and entered amounts and rates disappear when the page is closed.',
+        faqs: [
+          {
+            question: 'What exactly is the difference between APR and EAR (APY)?',
+            answer:
+              'APR is the nominal annual rate reflecting only the contractual figure, ignoring intra-year compounding. EAR (effective annual rate, often called APY in the US) includes compounding: discrete EAR=(1+r/n)^n−1, continuous EAR=e^r−1. At the same APR, higher compounding frequency means a higher EAR, so loan comparisons should rely on EAR rather than APR.',
+          },
+          {
+            question: 'Why is the fee-adjusted effective rate always higher than the plain EAR?',
+            answer:
+              'The borrower actually receives only principal minus fee, yet repays one year of compounded principal and interest calculated on the full contractual principal. Effective cost equals total one-year repayment divided by net proceeds minus one; the denominator shrinks because of the fee while the numerator stays, so the result is never below the no-fee EAR — and it rises as the fee approaches the principal.',
+          },
+          {
+            question: 'How is continuous compounding computed, and does it exist in practice?',
+            answer:
+              'Continuous compounding takes the number of periods n to infinity, and the limit of (1+r/n)^n is e^r, giving EAR=e^r−1; the reverse solves APR=ln(1+EAR). It is the theoretical baseline in financial modeling such as derivatives pricing and continuous-growth models, while real-world loans mostly use discrete monthly/daily compounding. The tool offers both conventions for direct comparison.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

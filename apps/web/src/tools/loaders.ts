@@ -331,4 +331,5 @@ export const toolLoaders: Record<
   'mrz-checksum-validator': () => import('./mrz-checksum-validator'),
   'typeid-codec': () => import('./typeid-codec'),
   'fixed-point-q-converter': () => import('./fixed-point-q-converter'),
+  'apr-ear-calculator': () => import('./apr-ear-calculator'),
 };

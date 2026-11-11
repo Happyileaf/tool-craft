@@ -1,0 +1,48 @@
+.container {
+  padding: 16px;
+  max-width: 1050px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  margin-bottom: 0;
+}
+
+.field {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.label {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+}
+
+.numberInput {
+  width: 160px;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.highlightBest {
+  color: #389e0d;
+  font-weight: 600;
+}
+
+.highlightWorst {
+  color: #cf1322;
+  font-weight: 600;
+}
+
+.hint {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 13px;
+}
