@@ -31252,6 +31252,521 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'sla-uptime-calculator',
+    name: 'SLA 可用性与允许停机时间换算器',
+    nameEn: 'SLA Uptime & Downtime Budget Calculator',
+    description:
+      '在可用性百分比（99.9% 等）与日/周/月/年允许停机时长之间双向换算，支持「几个 9」互转、实际故障反推可用性与达标等级，辅助 SLA 合同评估与值班复盘。',
+    descriptionEn:
+      'Convert availability percentages (e.g. 99.9%) into allowed downtime budgets per day/week/month/year and back, with nines conversion, reverse calculation from real incidents, and matched SLA tier for contract review and on-call postmortems.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/sla-uptime-calculator',
+    iconName: 'Percentage',
+    tags: ['SLA', '可用性', '停机时间', '几个9', '运维', '复盘'],
+    tagsEn: ['SLA', 'Uptime', 'Downtime', 'Nines', 'DevOps', 'Postmortem'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 SLA 可用性换算工具。服务等级协议（SLA）通常承诺 99.9%、99.99% 等可用性指标，但运维与客服更关心「这等于一年允许停机多久」。本工具把可用性百分比直接换算为日、周、月（按 30 天）、年（按 365 天）四个统计周期的允许停机秒数，也支持输入实际故障时长反推真实可用性、所达「几个 9」与对应等级。',
+        coreFeatures: [
+          '正向换算：可用性百分比 → 日/周/月/年允许停机预算，秒数与 d/h/m/s 可读时长同时展示',
+          '「几个 9」互转：99.9% 与 3 个 9 一键互换，覆盖 99.0%–99.999% 六档常见等级',
+          '反向计算：故障时长 + 统计周期 → 实际可用性百分比、9 的个数与达标等级 Tag',
+          '常见等级参考表：内置 99.0/99.5/99.9/99.95/99.99/99.999 六档及参考性服务补偿档位说明',
+          '严格边界：100%、负数、故障时长超过周期等非法输入明确报错，不产出 NaN',
+          '纯本地运行：全部为确定性数值计算，不发起网络请求、零新增依赖',
+        ],
+        howToUse: [
+          '在上半区输入 SLA 承诺的可用性百分比（如 99.9），或点击「3 个 9」等预设按钮',
+          '查看四个周期卡片中的允许停机时长，例如 99.9% 对应每年 8h 45m 36s',
+          '故障复盘时在下半区选择统计周期并输入实际故障时长（可切换秒/分/时单位）',
+          '读取反推出的实际可用性、9 的个数以及达到的最高 SLA 等级',
+        ],
+        useCases: [
+          '合同评审：把供应商承诺的 99.95% 翻译成具体停机预算，评估补偿条款是否合理',
+          '值班复盘：根据月度故障时长反推真实可用性，判断是否触发 SLA 赔付',
+          '容量与高可用设计：按目标等级（如四个 9）倒推可接受的年度故障窗口',
+        ],
+        privacyNote:
+          '所有换算均在浏览器本地完成，输入的可用性指标与故障数据不会被上传或记录。',
+        faqs: [
+          {
+            question: '月和年的周期按多少天计算？',
+            answer:
+              '月统一按 30 天（2,592,000 秒）、年统一按 365 天（31,536,000 秒）计算，这是 SLA 换算工具的通用口径；实际合同若另有约定（如自然月、365.25 天），应以合同文本为准。',
+          },
+          {
+            question: '「几个 9」是什么意思？',
+            answer:
+              '即可用性百分比中数字 9 的个数：99.9% 是 3 个 9、99.99% 是 4 个 9、99.999% 是 5 个 9。每增加一个 9，允许停机时间缩小到原来的十分之一。100% 可用性理论上对应无穷多个 9，工具显示为「≥6 个 9」。',
+          },
+          {
+            question: '结果里的服务补偿档位可以直接用于索赔吗？',
+            answer:
+              '不能。补偿档位仅为行业常见做法的参考说明，工具已明确标注「以合同为准」。真实赔付取决于合同中的统计口径、免责条款与申诉流程。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local SLA calculator. Service Level Agreements promise availability figures such as 99.9% or 99.99%, but operations teams need the concrete question answered: how much downtime does that allow per day, week, month, or year? The tool converts availability percentages into downtime budgets across four periods, converts between percentages and "number of nines", and works backwards from real incident duration to actual availability and the tier achieved.',
+        coreFeatures: [
+          'Forward conversion: availability percentage -> downtime budget per day/week/month(30d)/year(365d), shown in both seconds and human-readable d/h/m/s',
+          'Nines conversion: swap between 99.9% and "three nines" with one click; six common tiers from 99.0% to 99.999%',
+          'Reverse calculation: incident duration plus period -> actual availability, number of nines, and matched SLA tier',
+          'Reference tier table covering 99.0/99.5/99.9/99.95/99.99/99.999 with indicative service-credit notes',
+          'Strict validation: 100%, negatives, and incidents longer than the period raise explicit errors instead of NaN',
+          '100% local: deterministic arithmetic, no network requests, no new dependencies',
+        ],
+        howToUse: [
+          'Enter the contracted availability percentage (e.g. 99.9) in the upper panel, or click a preset such as "3 nines"',
+          'Read the four period cards — for example 99.9% allows 8h 45m 36s of downtime per year',
+          'For postmortems, pick a statistical period and enter the actual incident duration (switchable seconds/minutes/hours) in the lower panel',
+          'Read the reverse-calculated real availability, nines count, and highest SLA tier achieved',
+        ],
+        useCases: [
+          'Contract review: translate a vendor promise of 99.95% into concrete downtime budgets before accepting credit terms',
+          'On-call postmortems: derive real monthly availability from incident logs and check whether SLA credits are triggered',
+          'HA architecture planning: derive the acceptable annual failure window from a target such as four nines',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser. Availability figures and incident data you enter are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'How many days do the month and year periods use?',
+            answer:
+              'A month is fixed at 30 days (2,592,000 seconds) and a year at 365 days (31,536,000 seconds), the conventional basis for SLA calculators. If your contract specifies calendar months or 365.25 days, the contract text takes precedence.',
+          },
+          {
+            question: 'What does "number of nines" mean?',
+            answer:
+              'It counts the digit 9 in the availability percentage: 99.9% is three nines, 99.99% four nines, and 99.999% five nines. Each extra nine cuts the allowed downtime by a factor of ten. Perfect 100% availability implies infinitely many nines, shown as "≥6 nines".',
+          },
+          {
+            question: 'Can the service-credit tiers be used to file a claim directly?',
+            answer:
+              'No. The credit tiers are indicative references to common industry practice and are explicitly marked "subject to contract". Real payouts depend on the measurement rules, exclusions, and appeal process written into your agreement.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'raid-capacity-calculator',
+    name: 'RAID 磁盘阵列容量与容错规划计算器',
+    nameEn: 'RAID Capacity & Fault Tolerance Calculator',
+    description:
+      '计算 RAID 0/1/5/6/10 的原始容量、可用容量、校验开销、利用率与可容忍故障盘数，支持五级别同屏对比与 TB/TiB 双口径，盘数不满足级别要求时明确提示原因。',
+    descriptionEn:
+      'Calculate raw capacity, usable capacity, parity overhead, utilization, and fault tolerance for RAID 0/1/5/6/10, with a five-level comparison table and TB/TiB units; infeasible disk counts are reported with explicit reasons.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/raid-capacity-calculator',
+    iconName: 'Layers',
+    tags: ['RAID', '磁盘阵列', '存储', '容错', '容量规划', 'NAS'],
+    tagsEn: ['RAID', 'Storage', 'Capacity Planning', 'Fault Tolerance', 'NAS', 'Parity'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的 RAID 规划工具。组建磁盘阵列时，同样数量与容量的硬盘在不同 RAID 级别下可用容量与容错能力差异巨大：4 块 4TB 硬盘做 RAID5 可用 12TB 且允许坏 1 块盘，做 RAID6 只剩 8TB 但允许坏 2 块。本工具按标准容量公式计算 RAID 0/1/5/6/10 的原始容量、可用容量、开销、利用率与容错盘数，并一次性给出五个级别的可行性对比。',
+        coreFeatures: [
+          '五级别支持：RAID 0/1/5/6/10，内置最小盘数与容量公式说明',
+          '完整结果：原始容量、可用容量、校验/镜像开销、利用率百分比、可容忍故障盘数',
+          '同屏对比：当前盘数容量下五个级别并排展示，不可行级别显示具体原因而非空白',
+          'TB/TiB 双口径：十进制（10¹²）与二进制（2⁴⁰）单位切换，避免厂商标称容量歧义',
+          '严格校验：盘数不足、奇数盘做 RAID10、容量非正等输入明确报错',
+          '纯本地运行：确定性数值计算，不发起网络请求、零新增依赖',
+        ],
+        howToUse: [
+          '选择目标 RAID 级别（或直接查看下方五级别对比表）',
+          '输入硬盘数量与单盘容量，并选择 TB 或 TiB 口径',
+          '在结果区读取可用容量、开销占比与容错盘数',
+          '盘数不满足级别要求时，对比表对应行会标注原因（如「RAID5 至少需要 3 块盘」）',
+        ],
+        useCases: [
+          'NAS / 家庭存储选型：在容量利用率与数据安全之间权衡 RAID5 与 RAID6/10',
+          '服务器采购规划：根据目标可用容量反推所需盘位与单盘容量',
+          '运维知识学习：理解各级别校验开销公式与故障容忍边界',
+        ],
+        privacyNote:
+          '所有计算均在浏览器本地完成，不涉及任何真实磁盘数据，也不会发起网络请求。',
+        faqs: [
+          {
+            question: 'TB 和 TiB 有什么区别？',
+            answer:
+              'TB 是十进制单位，1 TB = 10¹² 字节；TiB 是二进制单位，1 TiB = 2⁴⁰ ≈ 1.0995 TB。硬盘厂商通常按 TB 标称，而操作系统常按 TiB 显示，所以一块「4TB」硬盘在系统中约显示为 3.64 TiB，工具可在两种口径间切换对照。',
+          },
+          {
+            question: 'RAID10 为什么要求偶数块盘？',
+            answer:
+              'RAID10 是先镜像（RAID1）再条带（RAID0）：磁盘必须两两组成镜像对，因此盘数必须为偶数且不少于 4 块。其可用容量为总容量的一半，每个镜像对可容忍 1 块盘故障。',
+          },
+          {
+            question: '容错盘数等于数据安全性的全部吗？',
+            answer:
+              '不是。容错盘数只描述阵列在多少块盘同时故障时仍可运行，未涵盖重建期间再次故障、URE 不可恢复读错误、控制器故障、火灾误删等风险。RAID 不是备份，重要数据仍需独立备份与异地副本。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local RAID planning tool. With the same disks, different RAID levels deliver very different usable capacity and fault tolerance: four 4TB drives yield 12TB usable with one-drive tolerance in RAID5, but only 8TB with two-drive tolerance in RAID6. The tool applies the standard capacity formulas for RAID 0/1/5/6/10 — raw capacity, usable capacity, overhead, utilization, and tolerated disk failures — and compares all five levels at once.',
+        coreFeatures: [
+          'Five levels: RAID 0/1/5/6/10 with built-in minimum-disk and formula references',
+          'Full results: raw, usable, parity/mirror overhead, utilization percentage, tolerated failures',
+          'Side-by-side comparison: infeasible levels show an explicit reason instead of blank cells',
+          'TB/TiB units: decimal (10^12) and binary (2^40) conventions to resolve vendor-label ambiguity',
+          'Strict validation: insufficient disks, odd-disk RAID10, and non-positive capacity raise clear errors',
+          '100% local: deterministic arithmetic, no network requests, no new dependencies',
+        ],
+        howToUse: [
+          'Pick a target RAID level (or just read the five-level comparison table)',
+          'Enter the disk count and per-disk capacity, then choose TB or TiB',
+          'Read usable capacity, overhead ratio, and fault tolerance in the result panel',
+          'When a level is infeasible, its comparison row states the reason (e.g. "RAID5 needs at least 3 disks")',
+        ],
+        useCases: [
+          'NAS/home storage selection: trade utilization against safety when choosing RAID5, RAID6, or RAID10',
+          'Server procurement: work backwards from a usable-capacity target to required bays and disk size',
+          'Ops learning: understand parity overhead formulas and failure boundaries of each level',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser. No real disk data is involved and no network requests are made.',
+        faqs: [
+          {
+            question: 'What is the difference between TB and TiB?',
+            answer:
+              'TB is decimal: 1 TB = 10^12 bytes. TiB is binary: 1 TiB = 2^40 ≈ 1.0995 TB. Drive vendors label capacity in TB while operating systems often show TiB, so a "4TB" drive appears as about 3.64 TiB. The tool switches between both conventions.',
+          },
+          {
+            question: 'Why does RAID10 require an even number of disks?',
+            answer:
+              'RAID10 mirrors first (RAID1) then stripes (RAID0): disks must be paired into mirror sets, so the count must be even and at least four. Usable capacity is half the raw total, and each mirror pair tolerates one failed disk.',
+          },
+          {
+            question: 'Does tolerated-failure count fully describe data safety?',
+            answer:
+              'No. It only states how many disks can fail while the array stays online. It ignores rebuild-window failures, unrecoverable read errors (URE), controller failure, fire, and accidental deletion. RAID is not backup — critical data still needs independent, ideally off-site backups.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'karnaugh-map-simplifier',
+    name: '卡诺图化简器与 SOP/POS 表达式生成',
+    nameEn: 'Karnaugh Map Simplifier with SOP/POS Generation',
+    description:
+      '对 2–4 变量布尔函数做卡诺图化简，基于 Quine–McCluskey 算法输出最简与或式（SOP）、或与式（POS）与门电路统计，支持无关项 X、Σm 语法解析与乘积项网格高亮。',
+    descriptionEn:
+      'Simplify 2–4 variable Boolean functions with a Karnaugh map. A Quine–McCluskey engine produces minimal SOP and POS expressions plus gate statistics, with don’t-care cells, Σm notation parsing, and product-term grid highlighting.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/karnaugh-map-simplifier',
+    iconName: 'Binary',
+    tags: ['卡诺图', '布尔代数', '数字电路', '逻辑化简', 'Quine-McCluskey', 'SOP'],
+    tagsEn: ['Karnaugh Map', 'Boolean Algebra', 'Digital Logic', 'Quine-McCluskey', 'SOP', 'POS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的卡诺图（Karnaugh Map）化简工具，面向数字电路与布尔代数学习。把真值表中的最小项填入格雷码网格（0、1 或无关项 X），工具用 Quine–McCluskey 列表化简算法在最小项集合上求全部质蕴涵项与最小覆盖，输出最简与或式（SOP）、或与式（POS）、AND/OR/NOT 门数量与字面量总数，并把每个乘积项对应的网格单元格同色高亮，包含环绕相邻的圈组。',
+        coreFeatures: [
+          '2/3/4 变量：2×2、2×4、4×4 格雷码网格，单元格点击循环 0 → 1 → X → 0',
+          'QM 算法引擎：质蕴涵项合并、本质质蕴涵项优先、确定性贪心最小覆盖，重复运行结果一致',
+          '双表达式输出：最简 SOP（积之和）与 POS（和之积），并经穷举真值表验证等价',
+          '无关项支持：X 单元格参与圈组但不要求被覆盖，Σm(...)+d(...) 语法可直接解析',
+          '可视化圈组：点击乘积项即在网格高亮其覆盖的全部单元格（含边缘环绕）',
+          '门数统计：AND/OR/NOT 门数量与字面量总数，辅助评估电路成本',
+        ],
+        howToUse: [
+          '用顶部切换选择变量个数（2、3 或 4）',
+          '直接点击网格单元格循环设置 0、1、X（无关项），或在输入框填写 Σm(1,3,5,7)+d(4) 后点「解析填充」',
+          '结果区自动显示最简 SOP、POS 表达式与门电路统计',
+          '点击任一乘积项，网格中同组单元格会同色高亮，直观核对圈组是否正确',
+        ],
+        useCases: [
+          '数字逻辑课程作业：核对四变量卡诺图化简结果与圈组方式',
+          '组合逻辑设计：在写 Verilog/VHDL 前先求最简表达式，减少门电路数量',
+          '布尔代数训练：通过 SOP/POS 对照与真值表穷举验证加深理解',
+        ],
+        privacyNote:
+          '所有化简均在浏览器本地由确定性算法完成，不发起网络请求，输入的逻辑函数不会离开设备。',
+        faqs: [
+          {
+            question: '为什么不用肉眼圈格子而用 Quine–McCluskey 算法？',
+            answer:
+              '卡诺图的人工圈组依赖视觉直觉，四变量时容易漏掉本质质蕴涵项或圈出非最大组。Quine–McCluskey 把网格问题转化为最小项的系统化合并与集合覆盖，结果可复现、可测试，工具再把算法结果映射回网格高亮，兼顾准确与直观。',
+          },
+          {
+            question: '无关项（X）是怎么处理的？',
+            answer:
+              '无关项代表输出可取 0 或 1 的输入组合（如未使用的编码状态）。算法允许质蕴涵项圈入 X 以获得更简表达式，但 X 本身不要求被任何乘积项覆盖；没有 X 能被单独用来决定输出。',
+          },
+          {
+            question: 'SOP 和 POS 结果为什么看起来不一样？',
+            answer:
+              'SOP（与或式）用乘积项之和描述输出为 1 的条件，POS（或与式）用和项之积描述输出为 0 的条件。两者形式不同但逻辑等价，工具通过穷举全部 2ⁿ 个输入组合验证两张真值表完全一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local Karnaugh map simplifier for digital-logic and Boolean-algebra learning. Fill minterms into a Gray-code grid as 0, 1, or don’t-care X; a Quine–McCluskey tabular engine finds all prime implicants and a minimum cover, emitting the minimal sum-of-products (SOP), product-of-sums (POS), AND/OR/NOT gate counts, and literal totals. Each product term highlights its grid cells, including wrap-around adjacency groups.',
+        coreFeatures: [
+          '2/3/4 variables: 2×2, 2×4, and 4×4 Gray-code grids; cells cycle 0 → 1 → X → 0 on click',
+          'QM engine: prime-implicant merging, essential primes first, deterministic greedy minimum cover with identical output on repeated runs',
+          'Twin expressions: minimal SOP and POS, cross-checked by exhaustive truth-table evaluation',
+          'Don’t cares: X cells may join groups but never require coverage; Σm(...)+d(...) notation parses directly',
+          'Visual grouping: click a product term to highlight every covered cell, including edge wrap-around',
+          'Gate statistics: AND/OR/NOT gate counts and literal totals for circuit-cost comparison',
+        ],
+        howToUse: [
+          'Choose the variable count (2, 3, or 4) from the top switch',
+          'Click grid cells to cycle 0/1/X, or type Σm(1,3,5,7)+d(4) and press "Parse & Fill"',
+          'Read the minimal SOP, POS, and gate statistics in the result panel',
+          'Click any product term to highlight its full cell group on the grid and verify the grouping',
+        ],
+        useCases: [
+          'Digital-logic coursework: verify four-variable K-map answers and grouping choices',
+          'Combinational design: derive minimal expressions before writing Verilog/VHDL to cut gate count',
+          'Boolean-algebra training: compare SOP and POS forms with exhaustive equivalence checks',
+        ],
+        privacyNote:
+          'All simplification runs locally in your browser via deterministic algorithms. No network requests are made and your logic functions never leave the device.',
+        faqs: [
+          {
+            question: 'Why use Quine–McCluskey instead of visually looping cells?',
+            answer:
+              'Manual K-map looping relies on visual intuition and easily misses essential prime implicants at four variables. Quine–McCluskey turns the grid into systematic minterm merging and set cover, giving reproducible, testable results; the tool then maps those results back onto grid highlights for intuition.',
+          },
+          {
+            question: 'How are don’t-care (X) cells handled?',
+            answer:
+              'Don’t cares represent input combinations whose output may be either 0 or 1 (such as unused encoding states). Prime implicants may include them to form simpler groups, but X cells never require coverage, and no don’t-care alone can determine the output.',
+          },
+          {
+            question: 'Why do SOP and POS look different?',
+            answer:
+              'SOP describes the conditions where output is 1 as a sum of product terms, while POS describes where output is 0 as a product of sum terms. The forms differ but are logically equivalent; the tool exhaustively evaluates all 2^n input combinations to confirm identical truth tables.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'wavelength-rgb-converter',
+    name: '可见光波长转 RGB/HEX 颜色转换器',
+    nameEn: 'Visible Wavelength to RGB/HEX Color Converter',
+    description:
+      '把 380–750nm 可见光波长转换为 sRGB 与 HEX 色值，基于 Bruton 六段线性插值与边缘衰减算法，标注紫/蓝/青/绿/黄/橙/红区间，近紫外与近红外输入给出越界提示，支持批量转换。',
+    descriptionEn:
+      'Convert visible-light wavelengths (380–750nm) to sRGB and HEX using the Bruton six-segment linear interpolation with edge attenuation. Bands are labeled violet through red; near-UV and near-IR inputs are flagged as out of range, with batch conversion supported.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/wavelength-rgb-converter',
+    iconName: 'Pipette',
+    tags: ['波长', 'RGB', 'HEX', '光谱', '可见光', '颜色转换'],
+    tagsEn: ['Wavelength', 'RGB', 'HEX', 'Spectrum', 'Visible Light', 'Color'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的光谱颜色工具。不同波长的可见光对应不同颜色：450nm 偏蓝、532nm 是典型激光绿、700nm 接近纯红。本工具移植 Dan Bruton 经典的可见光近似算法，在 380–750nm 上做六段线性插值得到线性 RGB，再施加光谱两端的边缘衰减与 gamma 校正，输出 0–255 整数 RGB 与大写 HEX；380nm 以下（近紫外）与 750nm 以上（近红外）人眼不可见，工具明确提示越界而不伪造颜色。',
+        coreFeatures: [
+          '标准算法：Bruton 六段线性插值 + 边缘衰减因子（0.3–1）+ 0.8 gamma 校正，参数固定可复现',
+          '完整输出：RGB 三通道、#RRGGBB HEX（一键复制）、衰减因子与光谱区间 Tag',
+          '越界处理：<380nm 近紫外、>750nm 近红外返回提示与灰色占位，不生成虚假色值',
+          '批量模式：多行/逗号分隔波长一次转换，非法行带行号报错且不影响合法行',
+          '光谱色带：380–750nm 按 10nm 采样生成 CSS 渐变色带，直观展示连续光谱',
+          '纯本地运行：确定性数值计算，不发起网络请求、零新增依赖',
+        ],
+        howToUse: [
+          '拖动滑块或直接输入波长（300–850nm，含越界演示区间）',
+          '查看色卡预览、RGB 数值与 HEX，点击复制按钮取用色值',
+          '输入落在 380–750nm 之外时阅读近紫外/近红外 Alert 提示',
+          '批量场景下在文本域每行输入一个波长，结果表格逐行展示，非法行会标注行号',
+        ],
+        useCases: [
+          '灯光与 LED 选型：把器件标称波长（如 470nm、630nm）换算为设计稿可用的 HEX 色值',
+          '数据可视化：为光谱、波长类图表生成物理含义正确的颜色刻度',
+          '光学教学演示：直观感受人眼可见区间与两端衰减、越界概念',
+        ],
+        privacyNote:
+          '所有颜色计算均在浏览器本地完成，输入的波长数据不会被上传或记录。',
+        faqs: [
+          {
+            question: '转换出的 RGB 和真实光色完全一致吗？',
+            answer:
+              '不能做到完全一致。Bruton 算法是广泛使用的工程近似，用于屏幕可视化足够可靠，但真实感知还受光源强度、环境、显示器色域与个体差异影响；且 sRGB 无法表达全部光谱色，高饱和单色光会被裁剪到色域边界。',
+          },
+          {
+            question: '为什么 380nm 附近的颜色那么暗？',
+            answer:
+              '人眼视网膜对光谱两端极不敏感，算法用边缘衰减因子模拟这一特性：380–420nm 因子从 0.3 升到 1，700–750nm 从 1 降回 0.3，因此两端色值明显偏暗，这是物理与生理特性的近似表达。',
+          },
+          {
+            question: '近紫外和近红外为什么不显示颜色？',
+            answer:
+              '人眼可见范围约为 380–750nm，之外的电磁波没有「颜色」可言。工具对越界输入返回明确标记与空色值，而不是凭空编造一个 RGB，避免在工程设计中误用。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local spectral-color tool. Visible wavelengths map to distinct colors: 450nm looks blue, 532nm is typical laser green, 700nm near pure red. The tool ports Dan Bruton’s classic approximation — six-segment linear interpolation over 380–750nm for linear RGB, edge attenuation at both spectrum ends, and gamma correction — producing 0–255 integer RGB and uppercase HEX. Inputs below 380nm (near-UV) or above 750nm (near-IR) are invisible to humans and flagged as out of range rather than assigned fake colors.',
+        coreFeatures: [
+          'Standard algorithm: Bruton six-segment interpolation, edge attenuation (0.3–1), and 0.8 gamma correction with fixed reproducible parameters',
+          'Full output: RGB channels, #RRGGBB HEX with copy button, attenuation factor, and spectral-band tag',
+          'Out-of-range handling: near-UV and near-IR return an explicit marker and gray placeholder instead of fabricated values',
+          'Batch mode: convert newline/comma-separated wavelengths at once; invalid rows report line numbers without aborting valid ones',
+          'Spectrum ribbon: a CSS gradient sampled every 10nm across 380–750nm visualizes the continuous spectrum',
+          '100% local: deterministic arithmetic, no network requests, no new dependencies',
+        ],
+        howToUse: [
+          'Drag the slider or type a wavelength (300–850nm, including out-of-range demo values)',
+          'Read the swatch, RGB numbers, and HEX, then use the copy button',
+          'Outside 380–750nm, follow the near-UV/near-IR alert',
+          'For batch work, enter one wavelength per line in the text area; each result appears as a table row and invalid rows are flagged by line number',
+        ],
+        useCases: [
+          'Lighting/LED selection: turn datasheet wavelengths (470nm, 630nm) into HEX values usable in design files',
+          'Data visualization: build physically meaningful color scales for spectrum and wavelength charts',
+          'Optics teaching: demonstrate the visible band, edge attenuation, and out-of-range concepts',
+        ],
+        privacyNote:
+          'All color calculations run locally in your browser. Wavelength inputs are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Does the RGB output perfectly match real light color?',
+            answer:
+              'No. The Bruton algorithm is a widely used engineering approximation good enough for screen visualization, but real perception depends on intensity, environment, display gamut, and individual variation. Also, sRGB cannot represent every spectral color, so highly saturated monochromatic light is clipped to the gamut boundary.',
+          },
+          {
+            question: 'Why are colors near 380nm so dark?',
+            answer:
+              'The retina is insensitive at both spectrum ends. The edge-attenuation factor models this: it rises from 0.3 to 1 over 380–420nm and falls from 1 to 0.3 over 700–750nm, so end colors are notably dim — an approximation of physical and physiological behavior.',
+          },
+          {
+            question: 'Why no color for near-UV and near-IR?',
+            answer:
+              'Human vision spans roughly 380–750nm; electromagnetic waves outside it have no "color". The tool marks such inputs explicitly with null color values instead of inventing RGB numbers that could be misused in engineering work.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'black-scholes-calculator',
+    name: 'Black-Scholes 期权定价计算器（含 Greeks）',
+    nameEn: 'Black-Scholes Option Pricing Calculator with Greeks',
+    description:
+      '按 Black-Scholes-Merton 闭式解计算欧式看涨/看跌期权价格与 Delta/Gamma/Vega/Theta/Rho 全套 Greeks，支持连续股息率、期限年/月/日切换与买卖权平价校验，零依赖正态分布近似。',
+    descriptionEn:
+      'Price European calls and puts with the Black-Scholes-Merton closed form and compute the full Greeks (Delta, Gamma, Vega, Theta, Rho), with continuous dividend yield, year/month/day tenor switching, put-call parity check, and a dependency-free normal CDF approximation.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/black-scholes-calculator',
+    iconName: 'Calculator',
+    tags: ['Black-Scholes', '期权定价', 'Greeks', '欧式期权', '波动率', '金融工程'],
+    tagsEn: ['Black-Scholes', 'Option Pricing', 'Greeks', 'European Options', 'Volatility', 'Quant Finance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '一款纯浏览器本地运行的欧式期权定价工具，实现 Black-Scholes-Merton（BSM）模型闭式解。输入标的价、行权价、无风险利率、波动率、期限与连续股息率，即可得到看涨（Call）与看跌（Put）期权理论价格，以及 Delta、Gamma、Vega、Theta、Rho 全套风险指标（Greeks）。正态分布函数采用 Abramowitz & Stegun 7.1.26 多项式近似（误差小于 1.5×10⁻⁷），并内置买卖权平价关系校验用于自查数值正确性。',
+        coreFeatures: [
+          'BSM 闭式解：含连续股息率 q 的 Call/Put 完整定价公式，支持平值、实值、虚值各类场景',
+          '全套 Greeks：Delta（Call/Put）、共用 Gamma 与 Vega、年化与日历日 Theta、每 1% 口径 Rho',
+          '平价校验：自动计算 C−P 与 S·e^(−qT)−K·e^(−rT) 的残差，正常应小于 10⁻⁹',
+          '灵活期限：T 支持年/月/日三种单位输入，内部统一换算为年',
+          '零依赖数值库：正态 CDF/PDF 由经典多项式近似实现，无新增 npm 依赖',
+          '严格校验：价格、波动率、期限非正或利率为负时抛出含字段名的错误，不产出 NaN',
+        ],
+        howToUse: [
+          '点击「示例填充」载入教科书基准：S=K=100、r=5%、σ=20%、T=1 年、q=0',
+          '按实际场景修改六个输入，利率与波动率按百分比填写、期限选择年/月/日单位',
+          '读取 Call/Put 价格卡片与 Greeks 表格，Theta 已换算为日历日口径',
+          '查看平价校验残差，残差接近零说明定价数值自洽',
+        ],
+        useCases: [
+          '金融工程学习：对照教材例（100/100/5%/20%/1 年 → Call≈10.45、Put≈5.57）验证理解',
+          '期权策略测算：快速估计不同行权价与波动率下的理论价格与风险敞口',
+          '面试与考试准备：手工推导后用工具核对 d1、d2 与各 Greek 的数值',
+        ],
+        privacyNote:
+          '所有定价计算均在浏览器本地完成，输入的参数不会被上传或记录；工具仅供学习研究，不构成投资建议。',
+        faqs: [
+          {
+            question: 'Black-Scholes 的结果可以直接用于真实交易吗？',
+            answer:
+              '不建议。BSM 假设波动率恒定、对数正态收益、连续交易且无交易成本，与真实市场存在系统性偏差（波动率微笑、跳空、流动性等）。工具结果适用于教学、基准核对与直觉建立，实盘应结合隐含波动率曲面与更完善的模型。',
+          },
+          {
+            question: '买卖权平价关系是什么，为什么要校验？',
+            answer:
+              '对同一标的、行权价与到期日的欧式期权，平价关系要求 C − P = S·e^(−qT) − K·e^(−rT)。它是无套利恒等式，与模型无关；用它检验定价结果，残差应接近浮点精度零（本工具阈值 10⁻⁹），若明显偏离说明实现或输入有误。',
+          },
+          {
+            question: 'Theta 为什么有年化和日历日两个口径？',
+            answer:
+              'BSM 公式直接给出的 Theta 是每经过一年的价值衰减，数字很大且不直观；实际交易中更关心「每天损耗多少时间价值」，因此工具同时给出年化值与除以 365 的日历日值，行业终端通常默认展示日历日口径。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local European option pricer implementing the Black-Scholes-Merton closed form. Given spot, strike, risk-free rate, volatility, tenor, and continuous dividend yield, it returns theoretical call and put prices plus the full Greeks — Delta, Gamma, Vega, Theta, and Rho. The normal distribution uses the Abramowitz & Stegun 7.1.26 polynomial approximation (error below 1.5e-7), and a put-call parity check provides a built-in numerical sanity test.',
+        coreFeatures: [
+          'BSM closed form: full call/put formulas with continuous dividend yield q, covering ATM/ITM/OTM scenarios',
+          'Full Greeks: call/put Delta, shared Gamma and Vega, annualized and per-calendar-day Theta, per-1% Rho',
+          'Parity check: residual between C−P and S·e^(−qT)−K·e^(−rT), expected below 1e-9',
+          'Flexible tenor: T entered in years, months, or days and normalized internally',
+          'No numeric libraries: normal CDF/PDF from a classic polynomial approximation, zero new dependencies',
+          'Strict validation: non-positive price/volatility/tenor or negative rates raise field-named errors instead of NaN',
+        ],
+        howToUse: [
+          'Click "Load Example" for the textbook benchmark: S=K=100, r=5%, σ=20%, T=1y, q=0',
+          'Adjust the six inputs; rates and volatility are percentages and the tenor unit is selectable',
+          'Read the call/put price cards and Greeks table; Theta is shown per calendar day',
+          'Check the parity residual — a value near zero confirms numerical consistency',
+        ],
+        useCases: [
+          'Quant-finance learning: verify the textbook case (100/100/5%/20%/1y → Call≈10.45, Put≈5.57)',
+          'Strategy estimation: quickly gauge theoretical prices and risk exposure across strikes and volatilities',
+          'Interview and exam prep: cross-check hand-derived d1, d2, and Greek values',
+        ],
+        privacyNote:
+          'All pricing runs locally in your browser. Inputs are never uploaded or logged. For education and research only — not investment advice.',
+        faqs: [
+          {
+            question: 'Can Black-Scholes output be used directly for live trading?',
+            answer:
+              'Not recommended. BSM assumes constant volatility, log-normal returns, continuous trading, and zero transaction costs — real markets show volatility smiles, jumps, and liquidity effects. Use the tool for teaching, benchmarks, and intuition; live pricing needs implied-vol surfaces and richer models.',
+          },
+          {
+            question: 'What is put-call parity and why check it?',
+            answer:
+              'For European options with the same underlying, strike, and expiry, no-arbitrage requires C − P = S·e^(−qT) − K·e^(−rT), an identity independent of any model. The residual should be near floating-point zero (threshold 1e-9 here); a notable deviation signals an implementation or input error.',
+          },
+          {
+            question: 'Why show both annualized and daily Theta?',
+            answer:
+              'The raw BSM Theta is value decay per year, a large and unintuitive number. Traders care about daily time-value erosion, so the tool shows both the annual figure and a per-calendar-day value divided by 365, the convention used by most market terminals.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

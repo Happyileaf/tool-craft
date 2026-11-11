@@ -332,4 +332,9 @@ export const toolLoaders: Record<
   'typeid-codec': () => import('./typeid-codec'),
   'fixed-point-q-converter': () => import('./fixed-point-q-converter'),
   'apr-ear-calculator': () => import('./apr-ear-calculator'),
+  'sla-uptime-calculator': () => import('./sla-uptime-calculator'),
+  'raid-capacity-calculator': () => import('./raid-capacity-calculator'),
+  'karnaugh-map-simplifier': () => import('./karnaugh-map-simplifier'),
+  'wavelength-rgb-converter': () => import('./wavelength-rgb-converter'),
+  'black-scholes-calculator': () => import('./black-scholes-calculator'),
 };
