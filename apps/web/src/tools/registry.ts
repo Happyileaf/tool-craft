@@ -30949,6 +30949,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'typeid-codec',
+    name: 'TypeID 编解码与生成器（UUIDv7 + Crockford Base32）',
+    nameEn: 'TypeID Codec & Generator (UUIDv7 + Crockford Base32)',
+    description:
+      '按 jetify TypeID 规范批量生成「类型前缀 + 26 字符 Base32 后缀」标识符，内嵌 UUIDv7 可按时间字典序排序；支持把标准 UUID 编码为 TypeID、反解前缀与内嵌 UUID、提取 v7 毫秒时间戳与版本/变体信息，严格校验前缀与非法字符，全程浏览器本地运算。',
+    descriptionEn:
+      'Generate type-safe identifiers of "type prefix + 26-char Base32 suffix" following the jetify TypeID spec, embedding sortable UUIDv7 values; encode standard UUIDs into TypeIDs, decode prefixes and inner UUIDs, extract v7 millisecond timestamps and version/variant metadata with strict prefix and alphabet validation, entirely in your browser.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/typeid-codec',
+    iconName: 'Fingerprint',
+    tags: ['TypeID', 'UUIDv7', 'Crockford Base32', '标识符', '编码'],
+    tagsEn: ['TypeID', 'UUIDv7', 'Crockford Base32', 'Identifier', 'Encoding'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'TypeID 编解码与生成器实现 jetify-com/typeid 规范：TypeID 由可选的小写蛇形类型前缀、下划线分隔符与 26 字符 Crockford Base32 后缀组成，后缀把 128 位 UUID 前置两个零位后按每 5 位一组编码。生成时内嵌 UUIDv7（前 48 位为毫秒时间戳），因此 ID 天然按创建时间字典序排列，同时保留类型信息与全局唯一性。',
+        coreFeatures: [
+          '批量生成 UUIDv7 型 TypeID，随机字节来自 Web Crypto getRandomValues',
+          '严格 Crockford Base32 字母表（0123456789abcdefghjkmnpqrstvwxyz），拒绝 I/L/O/U 等非法字符',
+          '解析任意 TypeID：还原类型前缀、标准 UUID、版本号、RFC 4122 variant 与 v7 毫秒时间戳',
+          '把标准 8-4-4-4-12 UUID 按指定前缀编码为 TypeID，支持空前缀裸后缀',
+          '前缀规则校验：小写字母开头、仅含小写字母/数字/下划线、长度不超过 63 字符',
+        ],
+        howToUse: [
+          '在生成卡片输入类型前缀（如 user、order_item，留空则生成裸后缀）并选择数量，点击重新生成',
+          '点击复制全部即可拿到换行分隔的 TypeID 列表，适合直接粘贴到数据脚本或测试夹具',
+          '切换到「解析 TypeID」页签粘贴任意 TypeID，查看内嵌 UUID、版本与本地时间',
+          '在「UUID 编码为 TypeID」页签填入标准 UUID 与前缀，实时得到规范 TypeID 并一键复制',
+        ],
+        useCases: [
+          '数据库主键、事件 ID、消息追踪 ID 等需要时间排序且带类型语义的标识生成',
+          '前后端联调时核对 TypeID 与内嵌 UUIDv7 的对应关系、排查 ID 生成时间',
+          '用规范 valid.yml 向量理解 130 位 Base32 编码与 UUID 版本/变体位布局',
+        ],
+        privacyNote:
+          '全部编解码与随机数生成均在浏览器本地完成，不发起任何网络请求、不写入服务端存储，刷新页面后输入与结果立即清除。',
+        faqs: [
+          {
+            question: 'TypeID 和 UUID、ULID 有什么区别？',
+            answer:
+              'UUIDv7 是 128 位二进制/36 字符十六进制标识；ULID 用 26 字符 Crockford Base32 直接编码 48 位毫秒时间戳加 80 位随机段；TypeID 同样使用 26 字符 Base32，但编码的是一个完整标准 UUID（默认 UUIDv7），并额外支持类型前缀（如 user_、order_），让 ID 自带实体类型信息且与 UUID 生态互通。',
+          },
+          {
+            question: '为什么后缀首字符必须是 0 到 7？',
+            answer:
+              '128 位 UUID 编码前会前置两个零位形成 130 位，恰好分成 26 个 5 位组；最高一组的前两位恒为零，所以首字符数值不超过 7（二进制 00111）。首字符大于 7 意味着数值超过 128 位，属于溢出，工具会直接拒绝。',
+          },
+          {
+            question: '生成的 TypeID 能保证全局唯一吗？',
+            answer:
+              'UUIDv7 在 48 位毫秒时间戳之外还包含 74 位密码学安全随机位，碰撞概率可忽略，适合分布式系统独立生成而无需中心协调。工具使用浏览器原生 crypto.getRandomValues 产生随机字节，但唯一性仍依赖各节点时钟基本准确，极端时钟回拨场景需在业务层另行防护。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The TypeID Codec & Generator implements the jetify-com/typeid spec: a TypeID consists of an optional lowercase snake_case type prefix, an underscore separator and a 26-character Crockford Base32 suffix that encodes a 128-bit UUID with two leading zero bits as 26 groups of 5 bits. Generated values embed UUIDv7 (whose first 48 bits are a millisecond timestamp), so IDs sort lexicographically by creation time while carrying type information and global uniqueness.',
+        coreFeatures: [
+          'Batch-generate UUIDv7-based TypeIDs with random bytes from Web Crypto getRandomValues',
+          'Strict Crockford Base32 alphabet (0123456789abcdefghjkmnpqrstvwxyz), rejecting illegal characters such as I/L/O/U',
+          'Decode any TypeID into its type prefix, standard UUID, version, RFC 4122 variant and v7 millisecond timestamp',
+          'Encode a canonical 8-4-4-4-12 UUID into a TypeID with a chosen prefix, including empty-prefix bare suffixes',
+          'Prefix validation: starts with a lowercase letter, only lowercase letters/digits/underscores, at most 63 characters',
+        ],
+        howToUse: [
+          'Enter a type prefix (e.g. user, order_item; leave empty for a bare suffix) and pick a count, then click Regenerate',
+          'Use Copy All to obtain a newline-separated TypeID list ready for data scripts or test fixtures',
+          'Switch to the Decode tab, paste any TypeID and inspect its inner UUID, version and local time',
+          'On the Encode tab, fill in a standard UUID and prefix to get the canonical TypeID and copy it in one click',
+        ],
+        useCases: [
+          'Generating time-sortable, type-aware identifiers for primary keys, event IDs and trace IDs',
+          'Reconciling TypeIDs with embedded UUIDv7 values during frontend-backend integration and tracing creation times',
+          'Studying the 130-bit Base32 encoding and UUID version/variant bit layout with official spec vectors',
+        ],
+        privacyNote:
+          'All encoding, decoding and random generation run locally in the browser. No network requests are made and nothing is stored server-side; inputs and results are cleared when the page is refreshed.',
+        faqs: [
+          {
+            question: 'How do TypeIDs differ from UUIDs and ULIDs?',
+            answer:
+            'UUIDv7 is a 128-bit / 36-character hex identifier; ULID uses 26 Crockford Base32 characters encoding a 48-bit millisecond timestamp plus 80 random bits directly; TypeID also uses 26 Base32 characters but encodes a full standard UUID (UUIDv7 by default) and additionally supports type prefixes such as user_ or order_, giving the ID entity-type semantics while staying interoperable with the UUID ecosystem.',
+          },
+          {
+            question: 'Why must the first suffix character be between 0 and 7?',
+            answer:
+            'Before encoding, two zero bits are prepended to the 128-bit UUID to form 130 bits split into 26 five-bit groups. The top two bits of the highest group are always zero, so the first character never exceeds 7 (binary 00111). A first character greater than 7 would represent a value beyond 128 bits (overflow) and is rejected outright.',
+          },
+          {
+            question: 'Are generated TypeIDs guaranteed to be globally unique?',
+            answer:
+            'UUIDv7 combines a 48-bit millisecond timestamp with 74 cryptographically secure random bits, making collisions negligible and letting distributed nodes generate IDs without central coordination. The tool uses the native crypto.getRandomValues API; uniqueness still assumes reasonably accurate clocks, and extreme clock rollback should be guarded at the application layer.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
