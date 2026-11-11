@@ -30747,6 +30747,511 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'eip55-address-checksum',
+    name: 'EIP-55 以太坊地址校验和编码与校验器',
+    nameEn: 'EIP-55 Ethereum Address Checksum Encoder & Validator',
+    description:
+      '对 0x 开头的 40 位十六进制以太坊地址做 EIP-55 混合大小写校验和编码与合法性校验，内置零依赖 Keccak-256（原始 Keccak，非 NIST SHA3-256），可定位首个被篡改的字符，全程浏览器本地计算。',
+    descriptionEn:
+      'Apply and validate the EIP-55 mixed-case checksum on 0x-prefixed 40-hex Ethereum addresses using a dependency-free built-in Keccak-256 (original Keccak, not NIST SHA3-256), locating the first tampered character, entirely in your browser.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/eip55-address-checksum',
+    iconName: 'ShieldCheck',
+    tags: ['以太坊', 'EIP-55', '校验和', 'Keccak-256', 'Web3'],
+    tagsEn: ['Ethereum', 'EIP-55', 'Checksum', 'Keccak-256', 'Web3'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'EIP-55 地址校验和工具是一款纯浏览器本地工具：对去掉 0x 前缀的小写 hex 地址求 Keccak-256 摘要，按哈希每一位是否 ≥ 8 决定地址字母的大小写，在不增加地址长度的前提下赋予其单字符篡改检测能力，并可校验任意输入地址是否符合该规则。',
+        coreFeatures: [
+          'EIP-55 编码：任意大小写输入归一后输出标准混合大小写校验和地址，一键复制',
+          '合法性校验：判定 valid/invalid，纯数字无字母地址按规范天然通过并明确标注',
+          '篡改定位：指出首个与 EIP-55 不符的字符下标，并重算标准地址供对照',
+          '内置零依赖 Keccak-256：采用 0x01 域分隔符的原始 Keccak，区别于 NIST SHA3-256',
+          '隐私安全：全部运算在浏览器本地完成，无网络请求、无新增 npm 依赖',
+        ],
+        howToUse: [
+          '在输入框粘贴 0x 开头（或不带前缀）的 40 位十六进制地址',
+          '查看校验结论标签与重算的 EIP-55 标准地址',
+          'invalid 时根据提示的字符位置核对原始地址，或直接复制标准地址替换',
+          '展开哈希区可查看小写地址对应的 Keccak-256 摘要以核对推导过程',
+        ],
+        useCases: [
+          '转账前核对以太坊地址是否存在 OCR/手抄导致的大小写或字符错误',
+          '钱包、浏览器插件与后端服务开发时对照 EIP-55 规范测试地址处理逻辑',
+          '教学演示 Keccak-256 与 SHA3-256 的填充差异及校验和编码原理',
+        ],
+        privacyNote:
+          '地址仅在浏览器内存中参与哈希与字符串运算，不会被上传或持久化，刷新页面即清除。',
+        faqs: [
+          {
+            question: '为什么不能直接用 SHA3-256 算校验和？',
+            answer:
+              'Ethereum 在 NIST 标准化之前就采用了原始 Keccak，其海绵填充域分隔符为 0x01；NIST SHA3-256 改为 0x06，二者对同一输入的摘要完全不同。本工具严格使用原始 Keccak-256，空串摘要为 c5d24601…d85a470，可据此与 SHA3-256 区分。',
+          },
+          {
+            question: '全是数字的地址为什么显示合法？',
+            answer:
+              'EIP-55 只对地址中的 a–f 字母施加大小写规则，数字没有大小写之分。若 40 位 hex 中不含任何字母，则不存在可被篡改的字母位，校验和天然通过，工具会额外标注“无字母地址”。',
+          },
+          {
+            question: '校验和合法是否代表地址一定属于目标收款人？',
+            answer:
+              '不是。EIP-55 只能检测地址字符串的意外损坏或单字符篡改，无法证明地址归属。转账前仍需通过可信渠道核对完整地址或使用 ENS 等命名方案。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The EIP-55 Address Checksum tool runs entirely in your browser. It hashes the lowercased hex address (without the 0x prefix) with Keccak-256 and uppercases each alphabetic character when the matching hash nibble is at least 8, giving the address single-character tamper detection without changing its length, and validates whether any input follows that rule.',
+        coreFeatures: [
+          'EIP-55 encoding: normalizes any-case input into the canonical mixed-case checksum address with one-click copy',
+          'Validity check: reports valid/invalid; all-digit addresses pass by definition and are explicitly flagged',
+          'Tamper localization: points to the first character violating EIP-55 and recomputes the canonical address for comparison',
+          'Built-in dependency-free Keccak-256 using the original 0x01 domain suffix, distinct from NIST SHA3-256',
+          'Private by design: all computation stays local in the browser with no network calls and no new npm dependencies',
+        ],
+        howToUse: [
+          'Paste a 40-hex address, with or without the 0x prefix, into the input box',
+          'Review the validity tag and the recomputed canonical EIP-55 address',
+          'When invalid, use the indicated character position to inspect the source or copy the canonical address',
+          'Inspect the Keccak-256 digest of the lowercased address in the hash block to trace the derivation',
+        ],
+        useCases: [
+          'Checking an Ethereum address for OCR or transcription errors before transferring funds',
+          'Testing address-handling logic in wallets, browser extensions and backends against EIP-55',
+          'Teaching the padding difference between Keccak-256 and SHA3-256 and how checksum encoding works',
+        ],
+        privacyNote:
+          'Addresses only participate in hashing and string operations in browser memory; they are never uploaded or persisted and are cleared on refresh.',
+        faqs: [
+          {
+            question: 'Why not just use SHA3-256 for the checksum?',
+            answer:
+              'Ethereum adopted the original Keccak before NIST standardization, using the 0x01 domain suffix, whereas NIST SHA3-256 uses 0x06, producing completely different digests. This tool strictly implements original Keccak-256; its empty-string digest is c5d24601…d85a470, which distinguishes it from SHA3-256.',
+          },
+          {
+            question: 'Why does an all-digit address show as valid?',
+            answer:
+              'EIP-55 only applies case rules to the letters a–f; digits have no case. If the 40 hex characters contain no letters, there is no letter position to tamper with, so the checksum passes by definition and the tool flags it as a no-letter address.',
+          },
+          {
+            question: 'Does a valid checksum prove the address belongs to the intended recipient?',
+            answer:
+              'No. EIP-55 only detects accidental corruption or single-character tampering of the address string; it cannot prove ownership. Always verify the full address through a trusted channel or use a naming scheme such as ENS before transferring funds.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'mrz-checksum-validator',
+    name: 'MRZ 机读旅行证件校验器（TD1 / TD2 / TD3）',
+    nameEn: 'MRZ Machine Readable Travel Document Checksum Validator (TD1 / TD2 / TD3)',
+    description:
+      '粘贴护照或旅行证件底部的机读码，按 ICAO 9303 自动识别 TD1/TD2/TD3 格式，解析姓名、证件号、国籍、出生日期、有效期等字段并逐项核验模 10 校验位（权重 7、3、1）与复合校验位，定位非法字符与失败字段，全程浏览器本地运算。',
+    descriptionEn:
+      'Paste the Machine Readable Zone of a passport or travel document to auto-detect TD1/TD2/TD3 layouts per ICAO 9303, parse name, document number, nationality, birth and expiry dates, and verify every mod-10 check digit (weights 7, 3, 1) plus the composite check, locating illegal characters and failed fields entirely in your browser.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/mrz-checksum-validator',
+    iconName: 'Barcode',
+    tags: ['MRZ', 'ICAO 9303', '护照', '机读码', '校验位'],
+    tagsEn: ['MRZ', 'ICAO 9303', 'Passport', 'Machine Readable Zone', 'Check Digit'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'MRZ 校验器是一款遵循 ICAO 9303 规范的纯浏览器工具：把护照/证件底部的两行或三行机读码拆分为结构化字段，对证件号码、出生日期、有效期、个人号码及复合字段分别计算模 10 校验位，与印出的校验位比对并给出通过/失败结论，帮助快速确认机读码是否自洽。',
+        coreFeatures: [
+          '自动识别 TD1（3×30）、TD2（2×36）、TD3（2×44）三种标准格式',
+          '解析证件类型、签发国、姓名（<< 分段、< 转空格）、国籍、日期、性别与个人号码',
+          '逐项模 10 校验：字母 A–Z 映射 10–35、填充符 < 按 0，权重循环 7、3、1',
+          '复合校验位按各格式规定的字段拼接顺序整体复算，失败时同步标红',
+          '错误定位：行宽不符、非法字符（含行列位置）、非法 YYMMDD 日期均给出明确提示',
+        ],
+        howToUse: [
+          '把证件底部机读码完整粘贴到文本框，保留换行，工具会自动忽略多余空白',
+          '查看顶部格式识别结论与字段解析表，核对姓名、证件号、国籍等信息',
+          '在校验结果表中逐项查看实际值、期望值与通过/失败标签',
+          '任一校验位失败时按字段名回到原始证件核对，常见原因为 OCR 误识别或抄录错误',
+        ],
+        useCases: [
+          '证件录入、自助填表与 OCR 结果复核时快速判断 MRZ 是否被正确识别',
+          '边检/航旅/身份核验系统开发中用 ICAO 官方向量回归测试解析逻辑',
+          '教学演示模 10 加权校验位与机读旅行证件的数据组织方式',
+        ],
+        privacyNote:
+          '机读码仅在浏览器内存中做字符串与整数运算，不会被上传、存储或发送到任何服务器，刷新页面即清除。',
+        faqs: [
+          {
+            question: 'TD1、TD2、TD3 有什么区别？',
+            answer:
+              'TD3 是普通护照，两行各 44 字符；TD2 是较小的两行列式证件，每行 36 字符；TD1 是身份证/通行证等卡片式证件，三行各 30 字符。工具按行数与行宽自动识别，三者的字段位置和复合校验位拼接顺序不同，已分别实现。',
+          },
+          {
+            question: '填充符 < 在姓名和校验中如何处理？',
+            answer:
+              '姓名主字段用 << 分隔姓与名、单个 < 连接多个 given name，尾部连续 < 只是占位填充，展示时转为空格并裁剪。校验位计算时 < 按数值 0 参与加权；若某可选字段整体为填充（如部分个人号码），按 ICAO 规则该校验项标记为跳过。',
+          },
+          {
+            question: '校验全部通过能否证明证件真实有效？',
+            answer:
+              '不能。模 10 校验只能证明机读码内部数字自洽、没有抄写或 OCR 错误，无法验证证件真伪、是否挂失或签证状态。真实性核验必须通过官方证件查验渠道与物理防伪特征完成。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The MRZ Validator is a browser-only tool implementing ICAO 9303. It splits the two or three machine readable lines of a passport or travel document into structured fields, recomputes the mod-10 check digits of the document number, birth date, expiry date, personal number and composite field, and compares them against the printed digits to show pass/fail results so you can quickly confirm whether an MRZ is self-consistent.',
+        coreFeatures: [
+          'Auto-detects the three standard layouts TD1 (3×30), TD2 (2×36) and TD3 (2×44)',
+          'Parses document type, issuing country, name (<< segments, < as space), nationality, dates, sex and personal number',
+          'Per-field mod-10 checks: letters A–Z map to 10–35, filler < counts as 0, weights cycle 7, 3, 1',
+          'Recomputes the composite check digit using the field concatenation order defined for each layout',
+          'Localized errors for wrong line widths, illegal characters (with row/column) and invalid YYMMDD dates',
+        ],
+        howToUse: [
+          'Paste the full machine readable zone into the text box, keeping the line breaks; extra whitespace is ignored',
+          'Review the detected layout and the parsed field table (name, document number, nationality, etc.)',
+          'Inspect actual vs expected check digits and the pass/fail tags in the check table',
+          'When a check fails, compare the named field against the physical document; OCR misreads and transcription errors are the usual cause',
+        ],
+        useCases: [
+          'Confirming whether an MRZ was captured correctly during data entry, self-service forms or OCR review',
+          'Regression-testing parsing logic in border, travel and identity verification systems with official ICAO vectors',
+          'Teaching weighted mod-10 check digits and the data layout of machine readable travel documents',
+        ],
+        privacyNote:
+          'The machine readable zone only undergoes string and integer arithmetic in browser memory; it is never uploaded, stored or sent to any server and is cleared on refresh.',
+        faqs: [
+          {
+            question: 'What is the difference between TD1, TD2 and TD3?',
+            answer:
+              'TD3 is the ordinary passport with two 44-character lines; TD2 is a compact two-line document with 36 characters per line; TD1 is a card-style document such as an identity card with three 30-character lines. The tool detects the layout by line count and width; field positions and composite-check concatenation differ and are implemented separately.',
+          },
+          {
+            question: 'How is the filler character < handled in names and checks?',
+            answer:
+              'In the name field, << separates surname from given names, a single < joins multiple given names, and trailing < characters are padding converted to spaces and trimmed. For check digits, < contributes the value 0; when an optional field such as a personal number is entirely filler, that check is marked as skipped per ICAO rules.',
+          },
+          {
+            question: 'Does passing every check prove the document is genuine and valid?',
+            answer:
+              'No. Mod-10 checks only prove the machine readable zone is internally consistent and free of transcription or OCR errors. They cannot verify authenticity, lost/stolen status or visas. Genuine verification requires official document inspection channels and physical security features.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'typeid-codec',
+    name: 'TypeID 编解码与生成器（UUIDv7 + Crockford Base32）',
+    nameEn: 'TypeID Codec & Generator (UUIDv7 + Crockford Base32)',
+    description:
+      '按 jetify TypeID 规范批量生成「类型前缀 + 26 字符 Base32 后缀」标识符，内嵌 UUIDv7 可按时间字典序排序；支持把标准 UUID 编码为 TypeID、反解前缀与内嵌 UUID、提取 v7 毫秒时间戳与版本/变体信息，严格校验前缀与非法字符，全程浏览器本地运算。',
+    descriptionEn:
+      'Generate type-safe identifiers of "type prefix + 26-char Base32 suffix" following the jetify TypeID spec, embedding sortable UUIDv7 values; encode standard UUIDs into TypeIDs, decode prefixes and inner UUIDs, extract v7 millisecond timestamps and version/variant metadata with strict prefix and alphabet validation, entirely in your browser.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/typeid-codec',
+    iconName: 'Fingerprint',
+    tags: ['TypeID', 'UUIDv7', 'Crockford Base32', '标识符', '编码'],
+    tagsEn: ['TypeID', 'UUIDv7', 'Crockford Base32', 'Identifier', 'Encoding'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'TypeID 编解码与生成器实现 jetify-com/typeid 规范：TypeID 由可选的小写蛇形类型前缀、下划线分隔符与 26 字符 Crockford Base32 后缀组成，后缀把 128 位 UUID 前置两个零位后按每 5 位一组编码。生成时内嵌 UUIDv7（前 48 位为毫秒时间戳），因此 ID 天然按创建时间字典序排列，同时保留类型信息与全局唯一性。',
+        coreFeatures: [
+          '批量生成 UUIDv7 型 TypeID，随机字节来自 Web Crypto getRandomValues',
+          '严格 Crockford Base32 字母表（0123456789abcdefghjkmnpqrstvwxyz），拒绝 I/L/O/U 等非法字符',
+          '解析任意 TypeID：还原类型前缀、标准 UUID、版本号、RFC 4122 variant 与 v7 毫秒时间戳',
+          '把标准 8-4-4-4-12 UUID 按指定前缀编码为 TypeID，支持空前缀裸后缀',
+          '前缀规则校验：小写字母开头、仅含小写字母/数字/下划线、长度不超过 63 字符',
+        ],
+        howToUse: [
+          '在生成卡片输入类型前缀（如 user、order_item，留空则生成裸后缀）并选择数量，点击重新生成',
+          '点击复制全部即可拿到换行分隔的 TypeID 列表，适合直接粘贴到数据脚本或测试夹具',
+          '切换到「解析 TypeID」页签粘贴任意 TypeID，查看内嵌 UUID、版本与本地时间',
+          '在「UUID 编码为 TypeID」页签填入标准 UUID 与前缀，实时得到规范 TypeID 并一键复制',
+        ],
+        useCases: [
+          '数据库主键、事件 ID、消息追踪 ID 等需要时间排序且带类型语义的标识生成',
+          '前后端联调时核对 TypeID 与内嵌 UUIDv7 的对应关系、排查 ID 生成时间',
+          '用规范 valid.yml 向量理解 130 位 Base32 编码与 UUID 版本/变体位布局',
+        ],
+        privacyNote:
+          '全部编解码与随机数生成均在浏览器本地完成，不发起任何网络请求、不写入服务端存储，刷新页面后输入与结果立即清除。',
+        faqs: [
+          {
+            question: 'TypeID 和 UUID、ULID 有什么区别？',
+            answer:
+              'UUIDv7 是 128 位二进制/36 字符十六进制标识；ULID 用 26 字符 Crockford Base32 直接编码 48 位毫秒时间戳加 80 位随机段；TypeID 同样使用 26 字符 Base32，但编码的是一个完整标准 UUID（默认 UUIDv7），并额外支持类型前缀（如 user_、order_），让 ID 自带实体类型信息且与 UUID 生态互通。',
+          },
+          {
+            question: '为什么后缀首字符必须是 0 到 7？',
+            answer:
+              '128 位 UUID 编码前会前置两个零位形成 130 位，恰好分成 26 个 5 位组；最高一组的前两位恒为零，所以首字符数值不超过 7（二进制 00111）。首字符大于 7 意味着数值超过 128 位，属于溢出，工具会直接拒绝。',
+          },
+          {
+            question: '生成的 TypeID 能保证全局唯一吗？',
+            answer:
+              'UUIDv7 在 48 位毫秒时间戳之外还包含 74 位密码学安全随机位，碰撞概率可忽略，适合分布式系统独立生成而无需中心协调。工具使用浏览器原生 crypto.getRandomValues 产生随机字节，但唯一性仍依赖各节点时钟基本准确，极端时钟回拨场景需在业务层另行防护。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The TypeID Codec & Generator implements the jetify-com/typeid spec: a TypeID consists of an optional lowercase snake_case type prefix, an underscore separator and a 26-character Crockford Base32 suffix that encodes a 128-bit UUID with two leading zero bits as 26 groups of 5 bits. Generated values embed UUIDv7 (whose first 48 bits are a millisecond timestamp), so IDs sort lexicographically by creation time while carrying type information and global uniqueness.',
+        coreFeatures: [
+          'Batch-generate UUIDv7-based TypeIDs with random bytes from Web Crypto getRandomValues',
+          'Strict Crockford Base32 alphabet (0123456789abcdefghjkmnpqrstvwxyz), rejecting illegal characters such as I/L/O/U',
+          'Decode any TypeID into its type prefix, standard UUID, version, RFC 4122 variant and v7 millisecond timestamp',
+          'Encode a canonical 8-4-4-4-12 UUID into a TypeID with a chosen prefix, including empty-prefix bare suffixes',
+          'Prefix validation: starts with a lowercase letter, only lowercase letters/digits/underscores, at most 63 characters',
+        ],
+        howToUse: [
+          'Enter a type prefix (e.g. user, order_item; leave empty for a bare suffix) and pick a count, then click Regenerate',
+          'Use Copy All to obtain a newline-separated TypeID list ready for data scripts or test fixtures',
+          'Switch to the Decode tab, paste any TypeID and inspect its inner UUID, version and local time',
+          'On the Encode tab, fill in a standard UUID and prefix to get the canonical TypeID and copy it in one click',
+        ],
+        useCases: [
+          'Generating time-sortable, type-aware identifiers for primary keys, event IDs and trace IDs',
+          'Reconciling TypeIDs with embedded UUIDv7 values during frontend-backend integration and tracing creation times',
+          'Studying the 130-bit Base32 encoding and UUID version/variant bit layout with official spec vectors',
+        ],
+        privacyNote:
+          'All encoding, decoding and random generation run locally in the browser. No network requests are made and nothing is stored server-side; inputs and results are cleared when the page is refreshed.',
+        faqs: [
+          {
+            question: 'How do TypeIDs differ from UUIDs and ULIDs?',
+            answer:
+            'UUIDv7 is a 128-bit / 36-character hex identifier; ULID uses 26 Crockford Base32 characters encoding a 48-bit millisecond timestamp plus 80 random bits directly; TypeID also uses 26 Base32 characters but encodes a full standard UUID (UUIDv7 by default) and additionally supports type prefixes such as user_ or order_, giving the ID entity-type semantics while staying interoperable with the UUID ecosystem.',
+          },
+          {
+            question: 'Why must the first suffix character be between 0 and 7?',
+            answer:
+            'Before encoding, two zero bits are prepended to the 128-bit UUID to form 130 bits split into 26 five-bit groups. The top two bits of the highest group are always zero, so the first character never exceeds 7 (binary 00111). A first character greater than 7 would represent a value beyond 128 bits (overflow) and is rejected outright.',
+          },
+          {
+            question: 'Are generated TypeIDs guaranteed to be globally unique?',
+            answer:
+            'UUIDv7 combines a 48-bit millisecond timestamp with 74 cryptographically secure random bits, making collisions negligible and letting distributed nodes generate IDs without central coordination. The tool uses the native crypto.getRandomValues API; uniqueness still assumes reasonably accurate clocks, and extreme clock rollback should be guarded at the application layer.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'fixed-point-q-converter',
+    name: '定点数 Qm.n 转换与运算可视化器',
+    nameEn: 'Fixed-Point Qm.n Converter & Arithmetic Visualizer',
+    description:
+      '在十进制小数与有符号 Qm.n 二进制定点补码之间双向转换，支持 8/16/32 位宽与可调小数位，输出补码二/十六进制、量化误差、精度 2^-n 与可表示范围，并演示定点加法/乘法的整数定标、舍入与饱和溢出，全程本地 BigInt 运算零依赖。',
+    descriptionEn:
+      'Convert between decimal numbers and signed Qm.n two-complement fixed-point values with selectable 8/16/32-bit widths and adjustable fractional bits, showing complement binary/hex, quantization error, 2^-n precision and representable range, plus add/multiply scaling, rounding and saturation — all via local BigInt arithmetic with zero dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/fixed-point-q-converter',
+    iconName: 'Binary',
+    tags: ['定点数', 'Q格式', '补码', '嵌入式', '信号处理'],
+    tagsEn: ['Fixed-Point', 'Q Format', "Two's Complement", 'Embedded', 'DSP'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '定点数 Qm.n 转换与运算可视化器面向嵌入式固件与数字信号处理（DSP）开发者：Qm.n 用总位宽 bits=m+n+1 的有符号整数表示小数，定标因子为 2^n，真实值等于补码整数 raw 除以 2^n。工具基于 BigInt 精确完成小数量化、补码编解码与定标加减乘，避免浮点硬件依赖，并把每一步的整数运算、舍入误差与饱和边界完整展示出来。',
+        coreFeatures: [
+          '8/16/32 位宽与 0 到 bits-1 的小数位 n 自由组合，自动给出整数位 m 与 Q 格式名称',
+          '小数转补码：输出 raw 十进制、二进制补码与无符号十六进制，并标注量化误差',
+          '精度 2^-n、可表示范围 [-2^m, 2^m-2^-n] 与饱和边界实时计算',
+          '定点加法与乘法演示：乘法按 2×位宽乘积右移 n 位定标，支持截断/四舍五入两种舍入',
+          '越界输入与运算溢出自动饱和到边界值并给出醒目告警，绝不静默回绕',
+        ],
+        howToUse: [
+          '在配置卡片选择总位宽、小数位数 n 与舍入模式，查看当前 Qm.n 的精度和取值范围',
+          '在转换卡片输入十进制小数（支持负数），即时查看补码表示、反解存储值与量化误差',
+          '在运算卡片填入两个操作数并选择加法或乘法，查看 raw 整数过程、定标结果与溢出标记',
+          '需要复制硬件寄存器值时，点击十六进制补码旁的复制按钮即可',
+        ],
+        useCases: [
+          'MCU/DSP 上无 FPU 场景的算法系数量化与寄存器值核对',
+          '音频滤波器、电机控制等 Q15/Q31 定点代码的手工验算与教学演示',
+          '排查定点乘法定标移位位数、舍入模式与饱和溢出导致的数值异常',
+        ],
+        privacyNote:
+          '所有转换与运算均在浏览器本地通过 BigInt 整数算术完成，不发起网络请求、不引入额外 npm 依赖，输入数据离开页面即消失。',
+        faqs: [
+          {
+            question: 'Q15 下为什么 -1 能表示而 +1 不能？',
+            answer:
+              '16 位有符号补码范围是 -32768 到 32767，Q15 定标因子为 2^15=32768，因此最小 raw -32768 恰好表示 -1，而最大 raw 32767 只能表示 (32767/32768)=0.999969…，+1 会被饱和处理。这是二补码定点格式的固有不对称性。',
+          },
+          {
+            question: '定点乘法为什么还要右移 n 位？',
+            answer:
+              '两个 Qm.n 数的 raw 相乘后，乘积的定标因子变成 2^(2n)，即 Q(2m+1).2n 格式且位宽翻倍。要恢复成原始 Qm.n，需要把整数乘积右移 n 位（除以 2^n）；右移丢位时按选择的截断或四舍五入模式处理，这也是定点乘法舍入误差的来源。',
+          },
+          {
+            question: '饱和（saturation）和整数回绕有什么区别？',
+            answer:
+              '普通补码整数溢出会回绕，例如 16 位 32767+1 变成 -32768，符号瞬间反转，在控制算法中非常危险。饱和运算把结果钳制在最大/最小可表示值并置溢出标志，行为可预测，是 ARM Q 指令与多数 DSP 硬件的默认策略，本工具与该策略保持一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Fixed-Point Qm.n Converter & Arithmetic Visualizer targets embedded firmware and DSP developers. A Qm.n value is a signed integer of width bits=m+n+1 with scaling factor 2^n, so the real value equals the complement integer raw divided by 2^n. The tool performs decimal quantization, complement codec and scaled add/multiply precisely with BigInt, removing any floating-point hardware dependency while exposing every integer step, rounding error and saturation boundary.',
+        coreFeatures: [
+          'Free combination of 8/16/32-bit width and fractional bits n from 0 to bits-1, deriving integer bits m and the Q format name automatically',
+          'Decimal-to-complement conversion showing raw decimal, binary complement and unsigned hex, plus quantization error',
+          'Live computation of 2^-n precision, the [-2^m, 2^m-2^-n] representable range and saturation bounds',
+          'Fixed-point add and multiply demos: multiplication scales the double-width product by shifting right n bits, with truncate or nearest rounding',
+          'Out-of-range inputs and arithmetic overflow saturate to the boundary value with a prominent alert instead of silently wrapping',
+        ],
+        howToUse: [
+          'Pick the total width, fractional bits n and rounding mode in the config card, then review the precision and range of the current Qm.n format',
+          'Enter a decimal number (negatives supported) in the converter card to see its complement representation, stored value and quantization error',
+          'Fill two operands in the arithmetic card and choose add or multiply to inspect the raw integer process, scaled result and overflow flag',
+          'Use the copy button next to the hex complement when you need the hardware register value',
+        ],
+        useCases: [
+          'Quantizing algorithm coefficients and verifying register values on MCUs/DSPs without an FPU',
+          'Manual verification and teaching of Q15/Q31 fixed-point code for audio filters and motor control',
+          'Debugging numerical anomalies caused by multiply scaling shifts, rounding modes and saturation overflow',
+        ],
+        privacyNote:
+          'Every conversion and operation runs locally in the browser through BigInt integer arithmetic. No network requests are made, no extra npm dependencies are added, and inputs disappear when the page is closed.',
+        faqs: [
+          {
+            question: 'Why can Q15 represent -1 but not +1?',
+            answer:
+              'A 16-bit signed complement integer ranges from -32768 to 32767, and the Q15 scaling factor is 2^15=32768. The minimum raw -32768 therefore represents exactly -1, while the maximum raw 32767 can only represent 32767/32768=0.999969…; +1 is saturated instead. This asymmetry is inherent to two-complement fixed-point formats.',
+          },
+          {
+            question: 'Why does fixed-point multiplication need a right shift by n bits?',
+            answer:
+              'Multiplying two Qm.n raw integers produces a product with scaling factor 2^(2n), i.e. a double-width Q(2m+1).2n value. To restore the original Qm.n format, the integer product must be shifted right by n bits (divided by 2^n); the dropped bits are handled by the selected truncation or rounding mode, which is exactly where fixed-point multiply rounding error comes from.',
+          },
+          {
+            question: 'What is the difference between saturation and integer wrap-around?',
+            answer:
+              'Plain complement integers wrap on overflow — for example 32767+1 becomes -32768 in 16 bits, flipping the sign and endangering control algorithms. Saturation clamps the result to the maximum/minimum representable value and sets an overflow flag, giving predictable behavior; this is the default strategy of ARM Q instructions and most DSP hardware, and the tool follows the same strategy.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'apr-ear-calculator',
+    name: 'APR 实际年利率计算器',
+    nameEn: 'APR / EAR Effective Annual Rate Calculator',
+    description:
+      '在名义年利率 APR 与实际年利率 EAR（APY）之间双向换算，支持按月/季/半年/日离散复利与连续复利，把一次性开户手续费摊入贷款真实年化成本，并可将最多三个贷款方案并排对比、自动高亮最低与最高成本，全程本地纯函数运算零依赖。',
+    descriptionEn:
+      'Convert between nominal APR and effective annual rate EAR (APY) under monthly, quarterly, semi-annual, daily or continuous compounding, fold one-time origination fees into the true annualized cost of a loan, and compare up to three plans side by side with automatic lowest/highest cost highlighting — all via local pure-function math with zero dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/apr-ear-calculator',
+    iconName: 'Percent',
+    tags: ['APR', 'EAR', '实际年利率', '复利', '贷款成本'],
+    tagsEn: ['APR', 'EAR', 'Effective Annual Rate', 'Compound Interest', 'Loan Cost'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'APR 实际年利率计算器面向需要比较真实借贷成本的个人与财务人员。名义年利率 APR 只标明合同利率，而实际年利率 EAR（又称 APY）把一年内的复利效应计入：离散复利满足 EAR=(1+r/n)^n−1，连续复利满足 EAR=e^r−1，复利频次越高 EAR 越高于 APR。工具还把一次性开户费/手续费摊薄到净到手本金上反推有效年化成本，并支持多方案并排对比，所有计算仅用 Math.pow/log/exp 在浏览器本地完成。',
+        coreFeatures: [
+          'APR→EAR 正向换算：按月（n=12）、按季（n=4）、按半年（n=2）、按日（n=365）与连续复利五种频次',
+          'EAR→APR 反求：给定目标实际年化与频次，反推所需名义利率，与正算严格互逆可往返',
+          '含手续费贷款真实成本：净到手本金=本金−手续费，按一年后总偿付除以净到手本金减一得到有效年化',
+          '最多三个方案并排对比表，本金/手续费/APR/频次均可行内编辑，自动高亮成本最低与最高方案',
+          '非法利率、负本金或手续费≥本金时给出明确错误提示，绝不输出 NaN，结果统一保留 4 位小数',
+        ],
+        howToUse: [
+          '在第一张卡片输入名义年利率 APR 并选择复利频次，即时查看 EAR 与名义/实际利差',
+          '在第二张卡片输入目标 EAR 与频次，反求达到该实际年化所需的名义 APR',
+          '在第三张卡片填写贷款本金、一次性手续费、合同 APR 与频次，查看含费有效年化成本',
+          '在底部对比表中直接编辑各方案参数，绿色标签为最优（最低成本）、红色标签为最高成本方案',
+        ],
+        useCases: [
+          '比较不同复利频次或计息方式下名义利率相同的贷款实际成本差异',
+          '评估含开户费、服务费的消费贷/经营贷真实年化利率，识别低利率高费用陷阱',
+          '在多个贷款报价之间做并排量化对比，为借款决策提供可核验的数据依据',
+        ],
+        privacyNote:
+          '所有利率换算与方案对比均在浏览器本地通过纯函数完成，不发起任何网络请求、不新增 npm 依赖，输入的金额与利率离开页面即消失。',
+        faqs: [
+          {
+            question: 'APR 和 EAR（APY）到底有什么区别？',
+            answer:
+              'APR 是名义年利率，只反映合同上的利率数字，不考虑一年内多次计息的复利效应；EAR（实际年利率，美国常称 APY）把复利计入，离散复利 EAR=(1+r/n)^n−1，连续复利 EAR=e^r−1。因此同一 APR 下复利频次越高，EAR 越高，比较贷款真实成本应看 EAR 而非 APR。',
+          },
+          {
+            question: '为什么含手续费后的有效年化一定高于普通 EAR？',
+            answer:
+              '借款人实际净到手只有本金−手续费，却仍按完整合同本金和 APR 偿还一年复利本息。有效年化=一年后总偿付÷净到手本金−1，分母因手续费变小而分子不变，所以结果必然不低于无手续费的 EAR；手续费越接近本金，有效年化成本越高。',
+          },
+          {
+            question: '连续复利是怎么计算的，现实中存在吗？',
+            answer:
+              '连续复利把计息期数 n 推向无穷大，离散公式 (1+r/n)^n 的极限为 e^r，因此 EAR=e^r−1，反求时 APR=ln(1+EAR)。它是金融建模（如衍生品定价、连续增长模型）的理论基准，现实贷款多用按月/按日离散复利，工具同时提供两类口径便于对照。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The APR / EAR Effective Annual Rate Calculator serves individuals and finance professionals who need to compare true borrowing costs. The nominal APR states only the contractual rate, while the effective annual rate EAR (also called APY) accounts for intra-year compounding: discrete compounding follows EAR=(1+r/n)^n−1 and continuous compounding follows EAR=e^r−1, so the higher the compounding frequency, the more EAR exceeds APR. The tool also amortizes one-time origination fees against the net proceeds to derive an effective annualized cost and supports side-by-side plan comparison. Every computation runs locally in the browser using only Math.pow/log/exp.',
+        coreFeatures: [
+          'Forward APR→EAR conversion across five frequencies: monthly (n=12), quarterly (n=4), semi-annual (n=2), daily (n=365) and continuous',
+          'Reverse EAR→APR solver: given a target effective rate and frequency, derive the required nominal rate, strictly invertible with the forward direction',
+          'Fee-adjusted true loan cost: net proceeds equal principal minus fee, and effective cost equals total one-year repayment divided by net proceeds minus one',
+          'Comparison table of up to three plans with inline-editable principal, fee, APR and frequency, auto-highlighting the lowest- and highest-cost plans',
+          'Explicit error messages for invalid rates, negative principal or fee≥principal — never emits NaN; all results are formatted to 4 decimal places',
+        ],
+        howToUse: [
+          'Enter a nominal APR and pick a compounding frequency in the first card to see the EAR and the nominal-to-effective spread instantly',
+          'Enter a target EAR and frequency in the second card to reverse-solve the nominal APR needed to reach that effective rate',
+          'Fill in loan principal, one-time fee, contractual APR and frequency in the third card to review the fee-adjusted effective annual cost',
+          'Edit plan parameters directly in the bottom comparison table; the green tag marks the best (lowest-cost) plan and the red tag the highest-cost one',
+        ],
+        useCases: [
+          'Comparing effective costs of loans with the same nominal rate but different compounding frequencies or conventions',
+          'Evaluating the true APR of consumer/business loans carrying origination or service fees to spot low-rate-high-fee traps',
+          'Running quantitative side-by-side comparisons of multiple loan quotes to support verifiable borrowing decisions',
+        ],
+        privacyNote:
+          'All rate conversions and plan comparisons run locally in the browser as pure functions. No network requests are made, no extra npm dependencies are added, and entered amounts and rates disappear when the page is closed.',
+        faqs: [
+          {
+            question: 'What exactly is the difference between APR and EAR (APY)?',
+            answer:
+              'APR is the nominal annual rate reflecting only the contractual figure, ignoring intra-year compounding. EAR (effective annual rate, often called APY in the US) includes compounding: discrete EAR=(1+r/n)^n−1, continuous EAR=e^r−1. At the same APR, higher compounding frequency means a higher EAR, so loan comparisons should rely on EAR rather than APR.',
+          },
+          {
+            question: 'Why is the fee-adjusted effective rate always higher than the plain EAR?',
+            answer:
+              'The borrower actually receives only principal minus fee, yet repays one year of compounded principal and interest calculated on the full contractual principal. Effective cost equals total one-year repayment divided by net proceeds minus one; the denominator shrinks because of the fee while the numerator stays, so the result is never below the no-fee EAR — and it rises as the fee approaches the principal.',
+          },
+          {
+            question: 'How is continuous compounding computed, and does it exist in practice?',
+            answer:
+              'Continuous compounding takes the number of periods n to infinity, and the limit of (1+r/n)^n is e^r, giving EAR=e^r−1; the reverse solves APR=ln(1+EAR). It is the theoretical baseline in financial modeling such as derivatives pricing and continuous-growth models, while real-world loans mostly use discrete monthly/daily compounding. The tool offers both conventions for direct comparison.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -327,4 +327,9 @@ export const toolLoaders: Record<
   'issn-checksum-calculator': () => import('./issn-checksum-calculator'),
   'led-resistor-calculator': () => import('./led-resistor-calculator'),
   'logfmt-parser-formatter': () => import('./logfmt-parser-formatter'),
+  'eip55-address-checksum': () => import('./eip55-address-checksum'),
+  'mrz-checksum-validator': () => import('./mrz-checksum-validator'),
+  'typeid-codec': () => import('./typeid-codec'),
+  'fixed-point-q-converter': () => import('./fixed-point-q-converter'),
+  'apr-ear-calculator': () => import('./apr-ear-calculator'),
 };

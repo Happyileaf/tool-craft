@@ -121,7 +121,7 @@
 | 20261028020202 | Sqids / Hashids 短 ID 编解码器 | Web Tool | External Reference | Pending | 2026-10-28 | | [详情](./idea-details/20261028020202.md) |
 | 20261028020204 | BIP-39 助记词生成与校验器 | Web Tool | External Reference | Pending | 2026-10-28 | | [详情](./idea-details/20261028020204.md) |
 | 20261028020206 | Java .properties 配置与 JSON 双向转换器 | Web Tool | Existing Gap | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028020206.md) |
-| 20261028081033 | 以太坊地址 EIP-55 校验和编码与校验器 | Web Tool | Existing Gap | Pending | 2026-10-28 | | [详情](./idea-details/20261028081033.md) |
+| 20261028081033 | 以太坊地址 EIP-55 校验和编码与校验器 | Web Tool | Existing Gap | Claimed | 2026-10-28 | trae-agent | [详情](./idea-details/20261028081033.md) |
 | 20261028081035 | BMI 身体质量指数计算器（中国 / WHO 双标准分级） | Web Tool | Exploration | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028081035.md) |
 | 20261028140205 | JSONC / 宽松 JSON 转标准 JSON（注释与尾随逗号剥离） | Web Tool | Existing Gap | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028140205.md) |
 | 20261028140206 | 二进制 ↔ Gray 码（格雷码）双向转换器 | Web Tool | Exploration | In Progress | 2026-10-28 | trae-agent | [详情](./idea-details/20261028140206.md) |
@@ -164,7 +164,7 @@
 | 20261031020752 | ELF 文件头解析器 | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031020752.md) |
 | 20261031020753 | C 结构体位域打包 / 解包器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031020753.md) |
 | 20261031080655 | ZIP 归档结构解析器（只读列目录与元数据展示） | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031080655.md) |
-| 20261031080656 | MRZ 机读旅行证件校验器（TD1 / TD2 / TD3 护照机读码校验） | Web Tool | External Reference | Pending | 2026-10-31 | | [详情](./idea-details/20261031080656.md) |
+| 20261031080656 | MRZ 机读旅行证件校验器（TD1 / TD2 / TD3 护照机读码校验） | Web Tool | External Reference | Claimed | 2026-10-31 | trae-agent | [详情](./idea-details/20261031080656.md) |
 | 20261031080657 | AA 分账计算器（多人费用分摊与最小转账结算） | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031080657.md) |
 | 20261031080659 | CBOR (RFC 8949) ↔ JSON 编解码器（含诊断记法与十六进制互转） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031080659.md) |
 | 20261031080660 | 数独（Sudoku）求解器与题目生成器（9×9，含多解/无解检测） | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031080660.md) |
@@ -175,14 +175,14 @@
 | 20261031201036 | WAV（RIFF）音频文件头与 chunk 解析器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201036.md) |
 | 20261031201037 | SQLite 数据库文件头解析器（前 100 字节只读） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201037.md) |
 | 20261031201038 | 无 schema 的 Protobuf 线格式原始解码器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201038.md) |
-| 20261031201039 | 定点数 Qm.n / Q 格式转换与运算可视化器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201039.md) |
+| 20261031201039 | 定点数 Qm.n / Q 格式转换与运算可视化器 | Web Tool | Existing Gap | Claimed | 2026-10-31 | trae-agent | [详情](./idea-details/20261031201039.md) |
 | 20261031201040 | HTTP Digest 认证响应计算器（RFC 2617 / RFC 7616） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201040.md) |
 | 20261101020825 | MP4 / ISO-BMFF atom（box）结构解析器（只读树） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101020825.md) |
 | 20261101020826 | MP3 ID3v2 标签解析器与剥离器 | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101020826.md) |
 | 20261101020827 | Shamir 秘密分片与恢复工具（GF(2⁸)，Shamir's Secret Sharing） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101020827.md) |
 | 20261101080346 | CIE Lab 色差计算器（ΔE76 / ΔE94 / ΔE2000，sRGB ↔ Lab） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101080346.md) |
 | 20261101140214 | RFC 2047 邮件头编码字解码器（=?…?= encoded-word） | Web Tool | Existing Gap | In Progress | 2026-11-01 | trae-agent | [详情](./idea-details/20261101140214.md) |
-| 20261101140216 | TypeID 标识符生成与解析器（typeid 规范） | Web Tool | External Reference | Pending | 2026-11-01 | | [详情](./idea-details/20261101140216.md) |
+| 20261101140216 | TypeID 标识符生成与解析器（typeid 规范） | Web Tool | External Reference | Claimed | 2026-11-01 | trae-agent | [详情](./idea-details/20261101140216.md) |
 | 20261101140217 | PHP serialize ↔ JSON 双向转换器 | Web Tool | Existing Gap | In Progress | 2026-11-01 | trae-agent @ 2026-11-03 18:05 CST | [详情](./idea-details/20261101140217.md) |
 | 20261101140218 | HTTP Cache-Control 指令解析与缓存新鲜度计算器（RFC 9111） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101140218.md) |
 | 20261101201002 | Encoded Polyline Algorithm Format 折线编解码器（Google 精度 5 / 精度 6） | Web Tool | External Reference | In Progress | 2026-11-01 | trae-agent @ 2026-11-03 18:05 CST | [详情](./idea-details/20261101201002.md) |
@@ -285,7 +285,7 @@
 | 20261108200231 | LRU / LFU 缓存淘汰策略模拟器（命中率对比与淘汰过程回放） | Web Tool | Existing Gap | Pending | 2026-11-08 | | [详情](./idea-details/20261108200231.md) |
 | 20261108200232 | Cron 表达式 → systemd OnCalendar 定时器表达式双向转换器 | Web Tool | Existing Gap | In Progress | 2026-11-08 | trae-agent | [详情](./idea-details/20261108200232.md) |
 | 20261108200233 | 预产期与孕周计算器（末次月经 / 排卵日双模式 + 孕周时间线） | Web Tool | Exploration | Pending | 2026-11-08 | | [详情](./idea-details/20261108200233.md) |
-| 20261109020214 | APR 实际年利率计算器（EAR 等效年费率与贷款成本对比） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109020214.md) |
+| 20261109020214 | APR 实际年利率计算器（EAR 等效年费率与贷款成本对比） | Web Tool | Existing Gap | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109020214.md) |
 | 20261109020215 | 有向图拓扑排序与环检测可视化器（Kahn / DFS 双算法） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109020215.md) |
 | 20261109020216 | 加权网格最短路径求解器（Dijkstra / A* 逐步演示） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109020216.md) |
 | 20261109020217 | 英文 Porter 词干提取器（Stemmer）与词形归并批处理 | Web Tool | External Reference | Pending | 2026-11-09 | | [详情](./idea-details/20261109020217.md) |
