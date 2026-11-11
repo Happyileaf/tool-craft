@@ -330,4 +330,5 @@ export const toolLoaders: Record<
   'eip55-address-checksum': () => import('./eip55-address-checksum'),
   'mrz-checksum-validator': () => import('./mrz-checksum-validator'),
   'typeid-codec': () => import('./typeid-codec'),
+  'fixed-point-q-converter': () => import('./fixed-point-q-converter'),
 };

@@ -31050,6 +31050,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'fixed-point-q-converter',
+    name: '定点数 Qm.n 转换与运算可视化器',
+    nameEn: 'Fixed-Point Qm.n Converter & Arithmetic Visualizer',
+    description:
+      '在十进制小数与有符号 Qm.n 二进制定点补码之间双向转换，支持 8/16/32 位宽与可调小数位，输出补码二/十六进制、量化误差、精度 2^-n 与可表示范围，并演示定点加法/乘法的整数定标、舍入与饱和溢出，全程本地 BigInt 运算零依赖。',
+    descriptionEn:
+      'Convert between decimal numbers and signed Qm.n two-complement fixed-point values with selectable 8/16/32-bit widths and adjustable fractional bits, showing complement binary/hex, quantization error, 2^-n precision and representable range, plus add/multiply scaling, rounding and saturation — all via local BigInt arithmetic with zero dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/fixed-point-q-converter',
+    iconName: 'Binary',
+    tags: ['定点数', 'Q格式', '补码', '嵌入式', '信号处理'],
+    tagsEn: ['Fixed-Point', 'Q Format', "Two's Complement", 'Embedded', 'DSP'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '定点数 Qm.n 转换与运算可视化器面向嵌入式固件与数字信号处理（DSP）开发者：Qm.n 用总位宽 bits=m+n+1 的有符号整数表示小数，定标因子为 2^n，真实值等于补码整数 raw 除以 2^n。工具基于 BigInt 精确完成小数量化、补码编解码与定标加减乘，避免浮点硬件依赖，并把每一步的整数运算、舍入误差与饱和边界完整展示出来。',
+        coreFeatures: [
+          '8/16/32 位宽与 0 到 bits-1 的小数位 n 自由组合，自动给出整数位 m 与 Q 格式名称',
+          '小数转补码：输出 raw 十进制、二进制补码与无符号十六进制，并标注量化误差',
+          '精度 2^-n、可表示范围 [-2^m, 2^m-2^-n] 与饱和边界实时计算',
+          '定点加法与乘法演示：乘法按 2×位宽乘积右移 n 位定标，支持截断/四舍五入两种舍入',
+          '越界输入与运算溢出自动饱和到边界值并给出醒目告警，绝不静默回绕',
+        ],
+        howToUse: [
+          '在配置卡片选择总位宽、小数位数 n 与舍入模式，查看当前 Qm.n 的精度和取值范围',
+          '在转换卡片输入十进制小数（支持负数），即时查看补码表示、反解存储值与量化误差',
+          '在运算卡片填入两个操作数并选择加法或乘法，查看 raw 整数过程、定标结果与溢出标记',
+          '需要复制硬件寄存器值时，点击十六进制补码旁的复制按钮即可',
+        ],
+        useCases: [
+          'MCU/DSP 上无 FPU 场景的算法系数量化与寄存器值核对',
+          '音频滤波器、电机控制等 Q15/Q31 定点代码的手工验算与教学演示',
+          '排查定点乘法定标移位位数、舍入模式与饱和溢出导致的数值异常',
+        ],
+        privacyNote:
+          '所有转换与运算均在浏览器本地通过 BigInt 整数算术完成，不发起网络请求、不引入额外 npm 依赖，输入数据离开页面即消失。',
+        faqs: [
+          {
+            question: 'Q15 下为什么 -1 能表示而 +1 不能？',
+            answer:
+              '16 位有符号补码范围是 -32768 到 32767，Q15 定标因子为 2^15=32768，因此最小 raw -32768 恰好表示 -1，而最大 raw 32767 只能表示 (32767/32768)=0.999969…，+1 会被饱和处理。这是二补码定点格式的固有不对称性。',
+          },
+          {
+            question: '定点乘法为什么还要右移 n 位？',
+            answer:
+              '两个 Qm.n 数的 raw 相乘后，乘积的定标因子变成 2^(2n)，即 Q(2m+1).2n 格式且位宽翻倍。要恢复成原始 Qm.n，需要把整数乘积右移 n 位（除以 2^n）；右移丢位时按选择的截断或四舍五入模式处理，这也是定点乘法舍入误差的来源。',
+          },
+          {
+            question: '饱和（saturation）和整数回绕有什么区别？',
+            answer:
+              '普通补码整数溢出会回绕，例如 16 位 32767+1 变成 -32768，符号瞬间反转，在控制算法中非常危险。饱和运算把结果钳制在最大/最小可表示值并置溢出标志，行为可预测，是 ARM Q 指令与多数 DSP 硬件的默认策略，本工具与该策略保持一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Fixed-Point Qm.n Converter & Arithmetic Visualizer targets embedded firmware and DSP developers. A Qm.n value is a signed integer of width bits=m+n+1 with scaling factor 2^n, so the real value equals the complement integer raw divided by 2^n. The tool performs decimal quantization, complement codec and scaled add/multiply precisely with BigInt, removing any floating-point hardware dependency while exposing every integer step, rounding error and saturation boundary.',
+        coreFeatures: [
+          'Free combination of 8/16/32-bit width and fractional bits n from 0 to bits-1, deriving integer bits m and the Q format name automatically',
+          'Decimal-to-complement conversion showing raw decimal, binary complement and unsigned hex, plus quantization error',
+          'Live computation of 2^-n precision, the [-2^m, 2^m-2^-n] representable range and saturation bounds',
+          'Fixed-point add and multiply demos: multiplication scales the double-width product by shifting right n bits, with truncate or nearest rounding',
+          'Out-of-range inputs and arithmetic overflow saturate to the boundary value with a prominent alert instead of silently wrapping',
+        ],
+        howToUse: [
+          'Pick the total width, fractional bits n and rounding mode in the config card, then review the precision and range of the current Qm.n format',
+          'Enter a decimal number (negatives supported) in the converter card to see its complement representation, stored value and quantization error',
+          'Fill two operands in the arithmetic card and choose add or multiply to inspect the raw integer process, scaled result and overflow flag',
+          'Use the copy button next to the hex complement when you need the hardware register value',
+        ],
+        useCases: [
+          'Quantizing algorithm coefficients and verifying register values on MCUs/DSPs without an FPU',
+          'Manual verification and teaching of Q15/Q31 fixed-point code for audio filters and motor control',
+          'Debugging numerical anomalies caused by multiply scaling shifts, rounding modes and saturation overflow',
+        ],
+        privacyNote:
+          'Every conversion and operation runs locally in the browser through BigInt integer arithmetic. No network requests are made, no extra npm dependencies are added, and inputs disappear when the page is closed.',
+        faqs: [
+          {
+            question: 'Why can Q15 represent -1 but not +1?',
+            answer:
+              'A 16-bit signed complement integer ranges from -32768 to 32767, and the Q15 scaling factor is 2^15=32768. The minimum raw -32768 therefore represents exactly -1, while the maximum raw 32767 can only represent 32767/32768=0.999969…; +1 is saturated instead. This asymmetry is inherent to two-complement fixed-point formats.',
+          },
+          {
+            question: 'Why does fixed-point multiplication need a right shift by n bits?',
+            answer:
+              'Multiplying two Qm.n raw integers produces a product with scaling factor 2^(2n), i.e. a double-width Q(2m+1).2n value. To restore the original Qm.n format, the integer product must be shifted right by n bits (divided by 2^n); the dropped bits are handled by the selected truncation or rounding mode, which is exactly where fixed-point multiply rounding error comes from.',
+          },
+          {
+            question: 'What is the difference between saturation and integer wrap-around?',
+            answer:
+              'Plain complement integers wrap on overflow — for example 32767+1 becomes -32768 in 16 bits, flipping the sign and endangering control algorithms. Saturation clamps the result to the maximum/minimum representable value and sets an overflow flag, giving predictable behavior; this is the default strategy of ARM Q instructions and most DSP hardware, and the tool follows the same strategy.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
