@@ -1,0 +1,194 @@
+.container {
+  padding: 16px;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hint {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.label {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mintermRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.mintermInput {
+  flex: 1;
+  min-width: 220px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* 卡诺图网格：首行/首列为格雷码头，其余为单元格 */
+.mapGrid {
+  display: grid;
+  gap: 6px;
+  width: fit-content;
+}
+
+.grid2 {
+  grid-template-columns: 56px repeat(2, minmax(72px, 1fr));
+}
+
+.grid3 {
+  grid-template-columns: 56px repeat(4, minmax(72px, 1fr));
+}
+
+.grid4 {
+  grid-template-columns: 56px repeat(4, minmax(72px, 1fr));
+}
+
+.corner,
+.colHeader,
+.rowHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 6px;
+  min-height: 32px;
+}
+
+.rowHeader {
+  min-height: 56px;
+}
+
+.cell {
+  position: relative;
+  min-height: 56px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  padding: 0;
+}
+
+.cell:hover {
+  border-color: #1677ff;
+}
+
+.cellIndex {
+  position: absolute;
+  left: 6px;
+  top: 4px;
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.cellZero {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.cellOne {
+  color: #0958d9;
+  background: #e6f4ff;
+  border-color: #91caff;
+}
+
+.cellDontCare {
+  color: #d46b08;
+  background: #fff7e6;
+  border-color: #ffd591;
+}
+
+/* 乘积项分组高亮（同组同色，半透明叠加保留 0/1/X 底色信息） */
+.group0 {
+  background: rgba(22, 119, 255, 0.22);
+  border-color: #1677ff;
+  box-shadow: inset 0 0 0 2px rgba(22, 119, 255, 0.55);
+}
+
+.group1 {
+  background: rgba(82, 196, 26, 0.22);
+  border-color: #52c41a;
+  box-shadow: inset 0 0 0 2px rgba(82, 196, 26, 0.55);
+}
+
+.group2 {
+  background: rgba(250, 140, 22, 0.24);
+  border-color: #fa8c16;
+  box-shadow: inset 0 0 0 2px rgba(250, 140, 22, 0.55);
+}
+
+.group3 {
+  background: rgba(114, 46, 209, 0.2);
+  border-color: #722ed1;
+  box-shadow: inset 0 0 0 2px rgba(114, 46, 209, 0.55);
+}
+
+.group4 {
+  background: rgba(235, 47, 150, 0.2);
+  border-color: #eb2f96;
+  box-shadow: inset 0 0 0 2px rgba(235, 47, 150, 0.55);
+}
+
+.group5 {
+  background: rgba(19, 194, 194, 0.22);
+  border-color: #13c2c2;
+  box-shadow: inset 0 0 0 2px rgba(19, 194, 194, 0.55);
+}
+
+.termTag {
+  cursor: pointer;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  padding: 2px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+}
+
+.termTagActive {
+  border-color: #1677ff;
+  background: #e6f4ff;
+  color: #0958d9;
+  font-weight: 600;
+}
+
+.termList {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.expressionBlock {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px 12px;
+  word-break: break-all;
+}
