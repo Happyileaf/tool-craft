@@ -327,4 +327,5 @@ export const toolLoaders: Record<
   'issn-checksum-calculator': () => import('./issn-checksum-calculator'),
   'led-resistor-calculator': () => import('./led-resistor-calculator'),
   'logfmt-parser-formatter': () => import('./logfmt-parser-formatter'),
+  'eip55-address-checksum': () => import('./eip55-address-checksum'),
 };

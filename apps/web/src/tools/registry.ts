@@ -30747,6 +30747,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'eip55-address-checksum',
+    name: 'EIP-55 以太坊地址校验和编码与校验器',
+    nameEn: 'EIP-55 Ethereum Address Checksum Encoder & Validator',
+    description:
+      '对 0x 开头的 40 位十六进制以太坊地址做 EIP-55 混合大小写校验和编码与合法性校验，内置零依赖 Keccak-256（原始 Keccak，非 NIST SHA3-256），可定位首个被篡改的字符，全程浏览器本地计算。',
+    descriptionEn:
+      'Apply and validate the EIP-55 mixed-case checksum on 0x-prefixed 40-hex Ethereum addresses using a dependency-free built-in Keccak-256 (original Keccak, not NIST SHA3-256), locating the first tampered character, entirely in your browser.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/eip55-address-checksum',
+    iconName: 'ShieldCheck',
+    tags: ['以太坊', 'EIP-55', '校验和', 'Keccak-256', 'Web3'],
+    tagsEn: ['Ethereum', 'EIP-55', 'Checksum', 'Keccak-256', 'Web3'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'EIP-55 地址校验和工具是一款纯浏览器本地工具：对去掉 0x 前缀的小写 hex 地址求 Keccak-256 摘要，按哈希每一位是否 ≥ 8 决定地址字母的大小写，在不增加地址长度的前提下赋予其单字符篡改检测能力，并可校验任意输入地址是否符合该规则。',
+        coreFeatures: [
+          'EIP-55 编码：任意大小写输入归一后输出标准混合大小写校验和地址，一键复制',
+          '合法性校验：判定 valid/invalid，纯数字无字母地址按规范天然通过并明确标注',
+          '篡改定位：指出首个与 EIP-55 不符的字符下标，并重算标准地址供对照',
+          '内置零依赖 Keccak-256：采用 0x01 域分隔符的原始 Keccak，区别于 NIST SHA3-256',
+          '隐私安全：全部运算在浏览器本地完成，无网络请求、无新增 npm 依赖',
+        ],
+        howToUse: [
+          '在输入框粘贴 0x 开头（或不带前缀）的 40 位十六进制地址',
+          '查看校验结论标签与重算的 EIP-55 标准地址',
+          'invalid 时根据提示的字符位置核对原始地址，或直接复制标准地址替换',
+          '展开哈希区可查看小写地址对应的 Keccak-256 摘要以核对推导过程',
+        ],
+        useCases: [
+          '转账前核对以太坊地址是否存在 OCR/手抄导致的大小写或字符错误',
+          '钱包、浏览器插件与后端服务开发时对照 EIP-55 规范测试地址处理逻辑',
+          '教学演示 Keccak-256 与 SHA3-256 的填充差异及校验和编码原理',
+        ],
+        privacyNote:
+          '地址仅在浏览器内存中参与哈希与字符串运算，不会被上传或持久化，刷新页面即清除。',
+        faqs: [
+          {
+            question: '为什么不能直接用 SHA3-256 算校验和？',
+            answer:
+              'Ethereum 在 NIST 标准化之前就采用了原始 Keccak，其海绵填充域分隔符为 0x01；NIST SHA3-256 改为 0x06，二者对同一输入的摘要完全不同。本工具严格使用原始 Keccak-256，空串摘要为 c5d24601…d85a470，可据此与 SHA3-256 区分。',
+          },
+          {
+            question: '全是数字的地址为什么显示合法？',
+            answer:
+              'EIP-55 只对地址中的 a–f 字母施加大小写规则，数字没有大小写之分。若 40 位 hex 中不含任何字母，则不存在可被篡改的字母位，校验和天然通过，工具会额外标注“无字母地址”。',
+          },
+          {
+            question: '校验和合法是否代表地址一定属于目标收款人？',
+            answer:
+              '不是。EIP-55 只能检测地址字符串的意外损坏或单字符篡改，无法证明地址归属。转账前仍需通过可信渠道核对完整地址或使用 ENS 等命名方案。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The EIP-55 Address Checksum tool runs entirely in your browser. It hashes the lowercased hex address (without the 0x prefix) with Keccak-256 and uppercases each alphabetic character when the matching hash nibble is at least 8, giving the address single-character tamper detection without changing its length, and validates whether any input follows that rule.',
+        coreFeatures: [
+          'EIP-55 encoding: normalizes any-case input into the canonical mixed-case checksum address with one-click copy',
+          'Validity check: reports valid/invalid; all-digit addresses pass by definition and are explicitly flagged',
+          'Tamper localization: points to the first character violating EIP-55 and recomputes the canonical address for comparison',
+          'Built-in dependency-free Keccak-256 using the original 0x01 domain suffix, distinct from NIST SHA3-256',
+          'Private by design: all computation stays local in the browser with no network calls and no new npm dependencies',
+        ],
+        howToUse: [
+          'Paste a 40-hex address, with or without the 0x prefix, into the input box',
+          'Review the validity tag and the recomputed canonical EIP-55 address',
+          'When invalid, use the indicated character position to inspect the source or copy the canonical address',
+          'Inspect the Keccak-256 digest of the lowercased address in the hash block to trace the derivation',
+        ],
+        useCases: [
+          'Checking an Ethereum address for OCR or transcription errors before transferring funds',
+          'Testing address-handling logic in wallets, browser extensions and backends against EIP-55',
+          'Teaching the padding difference between Keccak-256 and SHA3-256 and how checksum encoding works',
+        ],
+        privacyNote:
+          'Addresses only participate in hashing and string operations in browser memory; they are never uploaded or persisted and are cleared on refresh.',
+        faqs: [
+          {
+            question: 'Why not just use SHA3-256 for the checksum?',
+            answer:
+              'Ethereum adopted the original Keccak before NIST standardization, using the 0x01 domain suffix, whereas NIST SHA3-256 uses 0x06, producing completely different digests. This tool strictly implements original Keccak-256; its empty-string digest is c5d24601…d85a470, which distinguishes it from SHA3-256.',
+          },
+          {
+            question: 'Why does an all-digit address show as valid?',
+            answer:
+              'EIP-55 only applies case rules to the letters a–f; digits have no case. If the 40 hex characters contain no letters, there is no letter position to tamper with, so the checksum passes by definition and the tool flags it as a no-letter address.',
+          },
+          {
+            question: 'Does a valid checksum prove the address belongs to the intended recipient?',
+            answer:
+              'No. EIP-55 only detects accidental corruption or single-character tampering of the address string; it cannot prove ownership. Always verify the full address through a trusted channel or use a naming scheme such as ENS before transferring funds.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
