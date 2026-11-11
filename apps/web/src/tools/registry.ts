@@ -30848,6 +30848,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'mrz-checksum-validator',
+    name: 'MRZ 机读旅行证件校验器（TD1 / TD2 / TD3）',
+    nameEn: 'MRZ Machine Readable Travel Document Checksum Validator (TD1 / TD2 / TD3)',
+    description:
+      '粘贴护照或旅行证件底部的机读码，按 ICAO 9303 自动识别 TD1/TD2/TD3 格式，解析姓名、证件号、国籍、出生日期、有效期等字段并逐项核验模 10 校验位（权重 7、3、1）与复合校验位，定位非法字符与失败字段，全程浏览器本地运算。',
+    descriptionEn:
+      'Paste the Machine Readable Zone of a passport or travel document to auto-detect TD1/TD2/TD3 layouts per ICAO 9303, parse name, document number, nationality, birth and expiry dates, and verify every mod-10 check digit (weights 7, 3, 1) plus the composite check, locating illegal characters and failed fields entirely in your browser.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/mrz-checksum-validator',
+    iconName: 'Barcode',
+    tags: ['MRZ', 'ICAO 9303', '护照', '机读码', '校验位'],
+    tagsEn: ['MRZ', 'ICAO 9303', 'Passport', 'Machine Readable Zone', 'Check Digit'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'MRZ 校验器是一款遵循 ICAO 9303 规范的纯浏览器工具：把护照/证件底部的两行或三行机读码拆分为结构化字段，对证件号码、出生日期、有效期、个人号码及复合字段分别计算模 10 校验位，与印出的校验位比对并给出通过/失败结论，帮助快速确认机读码是否自洽。',
+        coreFeatures: [
+          '自动识别 TD1（3×30）、TD2（2×36）、TD3（2×44）三种标准格式',
+          '解析证件类型、签发国、姓名（<< 分段、< 转空格）、国籍、日期、性别与个人号码',
+          '逐项模 10 校验：字母 A–Z 映射 10–35、填充符 < 按 0，权重循环 7、3、1',
+          '复合校验位按各格式规定的字段拼接顺序整体复算，失败时同步标红',
+          '错误定位：行宽不符、非法字符（含行列位置）、非法 YYMMDD 日期均给出明确提示',
+        ],
+        howToUse: [
+          '把证件底部机读码完整粘贴到文本框，保留换行，工具会自动忽略多余空白',
+          '查看顶部格式识别结论与字段解析表，核对姓名、证件号、国籍等信息',
+          '在校验结果表中逐项查看实际值、期望值与通过/失败标签',
+          '任一校验位失败时按字段名回到原始证件核对，常见原因为 OCR 误识别或抄录错误',
+        ],
+        useCases: [
+          '证件录入、自助填表与 OCR 结果复核时快速判断 MRZ 是否被正确识别',
+          '边检/航旅/身份核验系统开发中用 ICAO 官方向量回归测试解析逻辑',
+          '教学演示模 10 加权校验位与机读旅行证件的数据组织方式',
+        ],
+        privacyNote:
+          '机读码仅在浏览器内存中做字符串与整数运算，不会被上传、存储或发送到任何服务器，刷新页面即清除。',
+        faqs: [
+          {
+            question: 'TD1、TD2、TD3 有什么区别？',
+            answer:
+              'TD3 是普通护照，两行各 44 字符；TD2 是较小的两行列式证件，每行 36 字符；TD1 是身份证/通行证等卡片式证件，三行各 30 字符。工具按行数与行宽自动识别，三者的字段位置和复合校验位拼接顺序不同，已分别实现。',
+          },
+          {
+            question: '填充符 < 在姓名和校验中如何处理？',
+            answer:
+              '姓名主字段用 << 分隔姓与名、单个 < 连接多个 given name，尾部连续 < 只是占位填充，展示时转为空格并裁剪。校验位计算时 < 按数值 0 参与加权；若某可选字段整体为填充（如部分个人号码），按 ICAO 规则该校验项标记为跳过。',
+          },
+          {
+            question: '校验全部通过能否证明证件真实有效？',
+            answer:
+              '不能。模 10 校验只能证明机读码内部数字自洽、没有抄写或 OCR 错误，无法验证证件真伪、是否挂失或签证状态。真实性核验必须通过官方证件查验渠道与物理防伪特征完成。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The MRZ Validator is a browser-only tool implementing ICAO 9303. It splits the two or three machine readable lines of a passport or travel document into structured fields, recomputes the mod-10 check digits of the document number, birth date, expiry date, personal number and composite field, and compares them against the printed digits to show pass/fail results so you can quickly confirm whether an MRZ is self-consistent.',
+        coreFeatures: [
+          'Auto-detects the three standard layouts TD1 (3×30), TD2 (2×36) and TD3 (2×44)',
+          'Parses document type, issuing country, name (<< segments, < as space), nationality, dates, sex and personal number',
+          'Per-field mod-10 checks: letters A–Z map to 10–35, filler < counts as 0, weights cycle 7, 3, 1',
+          'Recomputes the composite check digit using the field concatenation order defined for each layout',
+          'Localized errors for wrong line widths, illegal characters (with row/column) and invalid YYMMDD dates',
+        ],
+        howToUse: [
+          'Paste the full machine readable zone into the text box, keeping the line breaks; extra whitespace is ignored',
+          'Review the detected layout and the parsed field table (name, document number, nationality, etc.)',
+          'Inspect actual vs expected check digits and the pass/fail tags in the check table',
+          'When a check fails, compare the named field against the physical document; OCR misreads and transcription errors are the usual cause',
+        ],
+        useCases: [
+          'Confirming whether an MRZ was captured correctly during data entry, self-service forms or OCR review',
+          'Regression-testing parsing logic in border, travel and identity verification systems with official ICAO vectors',
+          'Teaching weighted mod-10 check digits and the data layout of machine readable travel documents',
+        ],
+        privacyNote:
+          'The machine readable zone only undergoes string and integer arithmetic in browser memory; it is never uploaded, stored or sent to any server and is cleared on refresh.',
+        faqs: [
+          {
+            question: 'What is the difference between TD1, TD2 and TD3?',
+            answer:
+              'TD3 is the ordinary passport with two 44-character lines; TD2 is a compact two-line document with 36 characters per line; TD1 is a card-style document such as an identity card with three 30-character lines. The tool detects the layout by line count and width; field positions and composite-check concatenation differ and are implemented separately.',
+          },
+          {
+            question: 'How is the filler character < handled in names and checks?',
+            answer:
+              'In the name field, << separates surname from given names, a single < joins multiple given names, and trailing < characters are padding converted to spaces and trimmed. For check digits, < contributes the value 0; when an optional field such as a personal number is entirely filler, that check is marked as skipped per ICAO rules.',
+          },
+          {
+            question: 'Does passing every check prove the document is genuine and valid?',
+            answer:
+              'No. Mod-10 checks only prove the machine readable zone is internally consistent and free of transcription or OCR errors. They cannot verify authenticity, lost/stolen status or visas. Genuine verification requires official document inspection channels and physical security features.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -1,0 +1,34 @@
+.container {
+  padding: 16px;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  margin-bottom: 0;
+}
+
+.mrzInput {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  word-break: break-all;
+}
+
+.hint {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 13px;
+}
+
+.passTag {
+  color: #389e0d;
+}
+
+.failTag {
+  color: #cf1322;
+}
