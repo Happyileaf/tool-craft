@@ -17,6 +17,15 @@ export interface RaidLevelOption {
   useCase: string;
 }
 
+/** 各 RAID 级别的典型用途 */
+const RAID_USE_CASES: Record<RaidLevel, string> = {
+  raid0: '视频剪辑缓存、临时数据等高吞吐、可重建场景',
+  raid1: '系统盘、小规模关键业务的简单镜像冗余',
+  raid5: 'NAS、文件服务器等兼顾容量与单盘容错的通用场景',
+  raid6: '大容量归档盘柜、重建周期长、需容忍双盘故障的存储',
+  raid10: '数据库、虚拟化等高 IOPS 且要求高可用的业务',
+};
+
 /** 五个 RAID 级别的选择项，顺序与对比表保持一致 */
 export const RAID_LEVEL_OPTIONS: RaidLevelOption[] = (
   ['raid0', 'raid1', 'raid5', 'raid6', 'raid10'] as RaidLevel[]
@@ -31,15 +40,6 @@ export const RAID_LEVEL_OPTIONS: RaidLevelOption[] = (
     useCase: RAID_USE_CASES[level],
   };
 });
-
-/** 各 RAID 级别的典型用途 */
-const RAID_USE_CASES: Record<RaidLevel, string> = {
-  raid0: '视频剪辑缓存、临时数据等高吞吐、可重建场景',
-  raid1: '系统盘、小规模关键业务的简单镜像冗余',
-  raid5: 'NAS、文件服务器等兼顾容量与单盘容错的通用场景',
-  raid6: '大容量归档盘柜、重建周期长、需容忍双盘故障的存储',
-  raid10: '数据库、虚拟化等高 IOPS 且要求高可用的业务',
-};
 
 /** 容量单位选项：TB 为十进制口径，TiB 为二进制口径 */
 export interface CapacityUnitOption {
