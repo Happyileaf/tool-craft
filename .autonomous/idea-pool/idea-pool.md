@@ -186,7 +186,7 @@
 | 20261101140217 | PHP serialize ↔ JSON 双向转换器 | Web Tool | Existing Gap | In Progress | 2026-11-01 | trae-agent @ 2026-11-03 18:05 CST | [详情](./idea-details/20261101140217.md) |
 | 20261101140218 | HTTP Cache-Control 指令解析与缓存新鲜度计算器（RFC 9111） | Web Tool | Existing Gap | In Progress | 2026-11-01 | trae-agent | [详情](./idea-details/20261101140218.md) |
 | 20261101201002 | Encoded Polyline Algorithm Format 折线编解码器（Google 精度 5 / 精度 6） | Web Tool | External Reference | In Progress | 2026-11-01 | trae-agent @ 2026-11-03 18:05 CST | [详情](./idea-details/20261101201002.md) |
-| 20261101201003 | Redis RESP2/RESP3 协议编解码器（含 inline 与 RESP3 类型） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201003.md) |
+| 20261101201003 | Redis RESP2/RESP3 协议编解码器（含 inline 与 RESP3 类型） | Web Tool | Existing Gap | Claimed | 2026-11-01 | 2026-11-13 · feat/tool-development-20261113060152-trae-agent | [详情](./idea-details/20261101201003.md) |
 | 20261101201004 | HAR 1.2 / 1.3 归档文件解析与请求摘要查看器（JSON 安全解析） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101201004.md) |
 | 20261102020124 | Git 底层对象哈希计算器（blob / tree / commit / tag，git hash-object 等价） | Web Tool | Exploration | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102020124.md) |
 | 20261102020125 | Java .class 字节码文件头解析器（魔数 / 版本 / 常量池计数与条目只读树） | Web Tool | Exploration | Pending | 2026-11-02 | | [详情](./idea-details/20261102020125.md) |
@@ -211,7 +211,7 @@
 | 20261103140205 | 加班工资计算器（中国大陆劳动法） | Web Tool | External Reference | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103140205.md) |
 | 20261103200232 | Black-Scholes 期权定价计算器（含 Greeks） | Web Tool | Exploration | Claimed | 2026-11-03 | trae-agent | [详情](./idea-details/20261103200232.md) |
 | 20261103200233 | Apache / Nginx Combined Log Format 访问日志解析器 | Web Tool | Existing Gap | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103200233.md) |
-| 20261103200234 | IPv4 数据报头解析与校验和验证器（RFC 791） | Web Tool | Existing Gap | Pending | 2026-11-03 | | [详情](./idea-details/20261103200234.md) |
+| 20261103200234 | IPv4 数据报头解析与校验和验证器（RFC 791） | Web Tool | Existing Gap | Claimed | 2026-11-03 | 2026-11-13 · feat/tool-development-20261113060152-trae-agent | [详情](./idea-details/20261103200234.md) |
 | 20261103200235 | 化学方程式配平器与摩尔计量计算器 | Web Tool | Exploration | Pending | 2026-11-03 | | [详情](./idea-details/20261103200235.md) |
 | 20261104020112 | SMD 电阻阻值码计算器（3 位数字码与 EIA-96 字母码双向） | Web Tool | Exploration | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104020112.md) |
 | 20261104020113 | AWG 美国线规计算器（线号 ↔ 直径 / 截面积 / 电阻 / 载流量） | Web Tool | Exploration | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104020113.md) |
@@ -308,11 +308,11 @@
 | 20261112140147 | RFC 7239 Forwarded HTTP 头解析与生成器（代理链 for/by/proto/host 编解码） | Web Tool | Exploration | In Progress | 2026-11-12 | 20261112180415 (trae-agent) | [详情](./idea-details/20261112140147.md) |
 | 20261112140148 | RFC 6570 URI Template 展开器（Level 1–4 表达式与变量值编解码） | Web Tool | Exploration | In Progress | 2026-11-12 | 20261112180415 (trae-agent) | [详情](./idea-details/20261112140148.md) |
 | 20261112140149 | IPC-2221 PCB 走线宽度/载流量计算器（内外层、铜厚与温升） | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112140149.md) |
-| 20261112140150 | OID 点分十进制对象标识符编解码与 BER 压缩弧工具 | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112140150.md) |
+| 20261112140150 | OID 点分十进制对象标识符编解码与 BER 压缩弧工具 | Web Tool | Exploration | Claimed | 2026-11-12 | 2026-11-13 · feat/tool-development-20261113060152-trae-agent | [详情](./idea-details/20261112140150.md) |
 | 20261112140151 | Clojure EDN 与 JSON 双向转换器（extensible data notation 解析生成） | Web Tool | Exploration | In Progress | 2026-11-12 | 20261112180415 (trae-agent) | [详情](./idea-details/20261112140151.md) |
 | 20261112200206 | Modbus RTU/TCP 协议帧解析与构造器（功能码 / 寄存器地址 / CRC-16 校验） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112200206.md) |
-| 20261112200207 | BER-TLV 嵌套标签长度值解析与构造器（EMV / SIM 卡 APDU 数据格式） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112200207.md) |
+| 20261112200207 | BER-TLV 嵌套标签长度值解析与构造器（EMV / SIM 卡 APDU 数据格式） | Web Tool | Existing Gap | Claimed | 2026-11-12 | 2026-11-13 · feat/tool-development-20261113060152-trae-agent | [详情](./idea-details/20261112200207.md) |
 | 20261112200208 | 经典字符串模式匹配算法逐轮可视化器（KMP / BM / 暴力，next 表与坏字符好后缀表） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112200208.md) |
 | 20261112200209 | 二叉堆与优先队列操作可视化器（插入 / 弹出 / 建堆 / 堆排序，sift-up 与 sift-down 全过程） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112200209.md) |
-| 20261112200210 | LDAP 搜索过滤器解析与校验器（RFC 4515 语法树可视化与转义处理） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112200210.md) |
+| 20261112200210 | LDAP 搜索过滤器解析与校验器（RFC 4515 语法树可视化与转义处理） | Web Tool | Existing Gap | Claimed | 2026-11-12 | 2026-11-13 · feat/tool-development-20261113060152-trae-agent | [详情](./idea-details/20261112200210.md) |
 
