@@ -310,4 +310,9 @@
 | 20261112140149 | IPC-2221 PCB 走线宽度/载流量计算器（内外层、铜厚与温升） | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112140149.md) |
 | 20261112140150 | OID 点分十进制对象标识符编解码与 BER 压缩弧工具 | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112140150.md) |
 | 20261112140151 | Clojure EDN 与 JSON 双向转换器（extensible data notation 解析生成） | Web Tool | Exploration | In Progress | 2026-11-12 | 20261112180415 (trae-agent) | [详情](./idea-details/20261112140151.md) |
+| 20261112200206 | Modbus RTU/TCP 协议帧解析与构造器（功能码 / 寄存器地址 / CRC-16 校验） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112200206.md) |
+| 20261112200207 | BER-TLV 嵌套标签长度值解析与构造器（EMV / SIM 卡 APDU 数据格式） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112200207.md) |
+| 20261112200208 | 经典字符串模式匹配算法逐轮可视化器（KMP / BM / 暴力，next 表与坏字符好后缀表） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112200208.md) |
+| 20261112200209 | 二叉堆与优先队列操作可视化器（插入 / 弹出 / 建堆 / 堆排序，sift-up 与 sift-down 全过程） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112200209.md) |
+| 20261112200210 | LDAP 搜索过滤器解析与校验器（RFC 4515 语法树可视化与转义处理） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112200210.md) |
 
