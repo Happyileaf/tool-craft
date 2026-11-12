@@ -298,7 +298,7 @@
 | 20261112020112 | QOI（Quite OK Image）无损图片编解码器（RGBA 像素 ↔ .qoi 双向转换） | Web Tool | External Reference | Pending | 2026-11-12 | | [详情](./idea-details/20261112020112.md) |
 | 20261112020113 | 摩托罗拉 S-Record（S19/S28/S37）固件镜像格式解析与校验器 | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112020113.md) |
 | 20261112020114 | Windows ICO/CUR 图标容器结构只读解析器（ICONDIR/目录条目/图像数据块展示） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112020114.md) |
-| 20261112020115 | 指数退避与抖动重试策略计算器（Exponential Backoff + Jitter 时序推演） | Web Tool | External Reference | Claimed | 2026-11-12 | trae-agent | [详情](./idea-details/20261112020115.md) |
+| 20261112020115 | 指数退避与抖动重试策略计算器（Exponential Backoff + Jitter 时序推演） | Web Tool | External Reference | In Progress | 2026-11-12 | trae-agent | [详情](./idea-details/20261112020115.md) |
 | 20261112020116 | SLA 可用性与允许停机时间换算器（99.9% 等指标 ↔ 日/周/月/年停机预算） | Web Tool | Exploration | Claimed | 2026-11-12 | trae-agent | [详情](./idea-details/20261112020116.md) |
 | 20261112020117 | RAID 磁盘阵列容量与容错规划计算器（RAID 0/1/5/6/10 容量、可用率与故障容忍度） | Web Tool | Exploration | Claimed | 2026-11-12 | trae-agent | [详情](./idea-details/20261112020117.md) |
 | 20261112020118 | 卡诺图（Karnaugh Map）化简器与 SOP/POS 表达式生成（2–4 变量） | Web Tool | Exploration | Claimed | 2026-11-12 | trae-agent | [详情](./idea-details/20261112020118.md) |

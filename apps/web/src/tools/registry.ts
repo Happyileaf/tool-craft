@@ -31458,6 +31458,108 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'backoff-retry-calculator',
+    name: '指数退避与抖动重试策略计算器',
+    nameEn: 'Exponential Backoff & Jitter Retry Calculator',
+    description:
+      '按 base、乘数、cap 与重试次数推演指数退避时序，支持无抖动、Full Jitter、Equal Jitter 三种模式，展示逐次延迟区间、期望值与累计耗时，辅助重试参数选型与惊群评估。',
+    descriptionEn:
+      'Plan exponential backoff timelines from base delay, multiplier, cap and retry count, with no-jitter, Full Jitter and Equal Jitter modes, showing per-attempt delay ranges, expected values and cumulative time for retry tuning and thundering-herd analysis.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/backoff-retry-calculator',
+    iconName: 'Zap',
+    tags: ['指数退避', '重试', 'Jitter', '抖动', '限流', '分布式'],
+    tagsEn: ['Exponential Backoff', 'Retry', 'Jitter', 'Rate Limiting', 'Distributed'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '100',
+    doc: {
+      zh: {
+        whatIsIt:
+          '指数退避与抖动重试策略计算器是一款纯浏览器本地工具：输入初始延迟 base、退避乘数、单次延迟上限 cap 与最大重试次数，按无抖动、Full Jitter、Equal Jitter 三种模式推演每一次重试的延迟区间、期望延迟与累计耗时，帮助工程师在编写 SDK、网关或任务调度重试逻辑时选参数、评估惊群效应。',
+        coreFeatures: [
+          '无抖动确定性时序：delay = min(base × multiplier^(n-1), cap)，cap 截断行为一目了然',
+          'Full Jitter：random(0, 上限)，打散最彻底，展示区间 [0, 上限] 与期望',
+          'Equal Jitter：上限/2 + random(0, 上限/2)，保留延迟下限并分散并发',
+          '逐次表格：退避上限、延迟区间、实际采样、期望、累计实际与累计期望七列同屏',
+          '严格参数校验：base/cap 非正、乘数≤1、重试次数越界等非法输入明确报错',
+        ],
+        howToUse: [
+          '填写初始延迟 base（毫秒）、乘数 multiplier、上限 cap 与重试次数',
+          '选择抖动模式，表格实时刷新逐次延迟与累计耗时',
+          '抖动模式下参考「延迟区间」与「期望延迟」做容量评估，实际列为一次随机采样',
+          '对照底部策略说明理解惊群效应与三种模式的取舍',
+        ],
+        useCases: [
+          '为 HTTP/RPC 客户端的重试中间件选择 base 与 cap 参数',
+          '评估消息消费失败后的重投节奏，避免故障恢复时打爆下游',
+          '教学与代码评审中解释 Full Jitter / Equal Jitter 的数学差异',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地完成，参数不会上传或离开设备。',
+        faqs: [
+          {
+            question: '为什么需要抖动（Jitter）？',
+            answer:
+              '纯指数退避下，大量同时失败的客户端会在相同时刻再次发起请求，形成惊群，可能再次压垮正在恢复的下游。抖动在退避上限内引入随机性，把重试时间错开，Full Jitter 打散最彻底，AWS 等架构指南将其作为默认推荐。',
+          },
+          {
+            question: 'Full Jitter 和 Equal Jitter 怎么选？',
+            answer:
+              'Full Jitter 的延迟分布在 [0, 上限]，并发分散最好但单次可能立即重试；Equal Jitter 保证至少等待上限的一半，延迟下限更可控，适合对最小等待有要求的场景。期望延迟分别为上限的 1/2 与 3/4。',
+          },
+          {
+            question: 'cap 截断后累计耗时怎么理解？',
+            answer:
+              '当 base × multiplier^(n-1) 超过 cap 后，后续每次退避都按 cap 计，累计耗时近似线性增长，避免无限指数膨胀。表格的累计列直接给出全部重试的等待总和，可用于设置整体超时预算。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Exponential Backoff & Jitter Retry Calculator runs entirely in your browser. Given a base delay, multiplier, per-attempt cap and maximum retry count, it plans the retry timeline under no-jitter, Full Jitter and Equal Jitter modes, exposing per-attempt delay ranges, expected delays and cumulative totals to help engineers tune SDK, gateway and scheduler retry logic and assess thundering-herd risk.',
+        coreFeatures: [
+          'Deterministic no-jitter timeline: delay = min(base * multiplier^(n-1), cap) with visible cap clamping',
+          'Full Jitter: random(0, bound) for maximum decorrelation, with [0, bound] range and expectation',
+          'Equal Jitter: bound/2 + random(0, bound/2), preserving a minimum wait while spreading load',
+          'Per-attempt table covering upper bound, delay range, sampled delay, expectation, cumulative actual and expected totals',
+          'Strict validation with explicit errors for non-positive base/cap, multiplier <= 1 and out-of-range retry counts',
+        ],
+        howToUse: [
+          'Enter the base delay in milliseconds, multiplier, cap and retry count',
+          'Pick a jitter mode; the table refreshes with per-attempt delays and cumulative time',
+          'Use the range and expected-delay columns for capacity planning; the actual column is one random sample',
+          'Read the strategy notes for the thundering-herd trade-offs of each mode',
+        ],
+        useCases: [
+          'Choosing base and cap parameters for HTTP/RPC client retry middleware',
+          'Scheduling message redelivery so a recovering downstream is not overwhelmed',
+          'Explaining the math behind Full Jitter and Equal Jitter in reviews and training',
+        ],
+        privacyNote:
+          'All computation stays in your browser; parameters are never uploaded.',
+        faqs: [
+          {
+            question: 'Why add jitter at all?',
+            answer:
+              'Without jitter, many clients that failed together retry at the same instants, creating a thundering herd that can re-overwhelm a recovering service. Jitter randomizes waits within the backoff bound; Full Jitter decorrelates most aggressively and is the default recommendation in AWS architecture guidance.',
+          },
+          {
+            question: 'How do I choose between Full and Equal Jitter?',
+            answer:
+              'Full Jitter spans [0, bound] and spreads load best, but an attempt may retry almost immediately. Equal Jitter guarantees at least half the bound, giving a controllable minimum wait. Their expected delays are one half and three quarters of the bound respectively.',
+          },
+          {
+            question: 'What happens to cumulative time after the cap kicks in?',
+            answer:
+              'Once base * multiplier^(n-1) exceeds the cap, every later attempt waits exactly the cap, so cumulative time grows roughly linearly instead of exploding exponentially. The cumulative column gives the total wait budget for all retries.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'raid-capacity-calculator',
     name: 'RAID 磁盘阵列容量与容错规划计算器',
     nameEn: 'RAID Capacity & Fault Tolerance Calculator',

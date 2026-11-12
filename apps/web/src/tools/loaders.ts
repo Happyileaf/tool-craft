@@ -154,6 +154,7 @@ export const toolLoaders: Record<
   'conventional-commit-generator': () => import('./conventional-commit-generator'),
   'crc16-checksum': () => import('./crc16-checksum'),
   'fletcher-checksum': () => import('./fletcher-checksum'),
+  'backoff-retry-calculator': () => import('./backoff-retry-calculator'),
   'pangu-spacing': () => import('./pangu-spacing'),
   'dns-ptr-builder': () => import('./dns-ptr-builder'),
   'gitignore-generator': () => import('./gitignore-generator'),
