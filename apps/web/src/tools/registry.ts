@@ -31662,6 +31662,110 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'topological-sort-visualizer',
+    name: '有向图拓扑排序与环检测可视化器',
+    nameEn: 'Topological Sort & Cycle Detection Visualizer',
+    description:
+      '以边列表输入有向图，输出 Kahn 入度与 DFS 后序两种拓扑序、逐步记录、入度表与邻接表；有环时给出环上节点路径与闭合边，支持自环、重复边去重与孤立节点。',
+    descriptionEn:
+      'Enter a directed graph as an edge list to get Kahn and DFS topological orders, step traces, indegree and adjacency tables; cycles are reported with the exact ring path and closing edge, including self-loops, duplicate-edge dedup and isolated nodes.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/topological-sort-visualizer',
+    iconName: 'List',
+    tags: ['拓扑排序', '有向图', 'DAG', '环检测', 'Kahn', 'DFS'],
+    tagsEn: ['Topological Sort', 'Directed Graph', 'DAG', 'Cycle Detection', 'Kahn', 'DFS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'A -> B\nA -> C\nB -> D\nC -> D',
+    doc: {
+      zh: {
+        whatIsIt:
+          '有向图拓扑排序与环检测可视化器是一款纯浏览器本地运行的图算法工具。按每行一条 A -> B 依赖边的方式输入有向图（兼容中文箭头、胖箭头与逗号分隔，裸节点名表示孤立节点），工具同时运行 Kahn 入度算法与 DFS 后序算法，输出两条合法拓扑序、逐步执行记录、初始入度表与邻接表；当图中存在环时，不仅提示失败，还给出环上的具体节点路径与闭合环边。',
+        coreFeatures: [
+          '双算法对照：Kahn 入度 FIFO 与 DFS 逆后序，同输入输出确定可复现',
+          '环检测给出环路径与闭合边，覆盖自环与多环场景，Kahn 同时保留环外节点的部分序列',
+          '容错解析：支持 ->、→、=>、逗号分隔与多余空白，重复边自动去重并提示',
+          '孤立节点保留在节点集合并参与排序，非法行返回精确行号错误',
+          '节点上限 200，防止大图卡顿，全部计算主线程瞬时完成',
+        ],
+        howToUse: [
+          '在文本框每行输入一条有向边，如 A -> B，表示 A 必须排在 B 之前',
+          '单独一行写节点名可声明无边的孤立节点；点击预设按钮快速填充示例',
+          '查看结构结论徽标、节点/边统计与重复边提示',
+          '对照 Kahn 与 DFS 两张结果卡片的拓扑链，并在入度表/邻接表中核对图结构',
+          '有环时阅读红色告警中的环路径与闭合边，定位需要打断的依赖',
+        ],
+        useCases: [
+          '校验课程先修关系、编译依赖与任务编排 DAG 的合法性',
+          '教学演示 Kahn 入度变化与 DFS 三色着色过程',
+          '排查流水线配置中的循环依赖并定位具体环节',
+        ],
+        privacyNote:
+          '图数据仅在浏览器本地解析与计算，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '为什么 Kahn 和 DFS 给出的顺序不一样？',
+            answer:
+              '拓扑序只要求满足每条边的偏序约束，合法序列通常不唯一。Kahn 按零入度节点的首次出现顺序 FIFO 出队，DFS 输出完成节点的逆后序，两者都是合法拓扑序；同层无依赖关系的节点可以互换位置。',
+          },
+          {
+            question: '存在环时还能得到排序结果吗？',
+            answer:
+              '含环图不存在完整拓扑序。工具会给出环上节点路径与闭合环边帮助定位问题，同时 Kahn 仍输出环外可排序节点的部分序列；删除环上任意一条边后重新输入即可得到完整结果。',
+          },
+          {
+            question: '节点名和边的写法有什么限制？',
+            answer:
+              '节点名不可包含空白；边支持 A -> B、A → B、A => B、A,B 四种写法，箭头两侧空白随意。重复边会被去重并提示，空行忽略，无法识别的行会报出从 1 开始的行号。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Topological Sort & Cycle Detection Visualizer is a fully in-browser graph-algorithm tool. Enter a directed graph as one A -> B dependency edge per line (Chinese arrows, fat arrows and commas are accepted, and a bare node name declares an isolated node). It runs both Kahn indegree and DFS postorder algorithms, returning two valid topological orders, step traces, the initial indegree table and the adjacency list; when the graph contains a cycle, it reports the exact ring path and closing edge instead of a generic failure.',
+        coreFeatures: [
+          'Side-by-side Kahn FIFO and DFS reverse-postorder algorithms with deterministic, reproducible output',
+          'Cycle detection returns the ring path and closing edge, including self-loops, while Kahn keeps a partial order for nodes outside the cycle',
+          'Lenient parsing for ->, Chinese arrows, => and comma separators with whitespace tolerance; duplicate edges are deduped with a notice',
+          'Isolated nodes stay in the node set and participate in ordering; malformed lines produce precise line-number errors',
+          'Capped at 200 nodes to stay responsive, with every computation finishing instantly on the main thread',
+        ],
+        howToUse: [
+          'Enter one directed edge per line, e.g. A -> B, meaning A must come before B',
+          'Use a bare node name on its own line for an isolated node, or click a preset to fill an example',
+          'Read the verdict badge, node/edge statistics and duplicate-edge notices',
+          'Compare the Kahn and DFS order chains, then cross-check the graph in the indegree/adjacency table',
+          'When a cycle exists, follow the ring path and closing edge in the red alert to find the dependency that must be broken',
+        ],
+        useCases: [
+          'Validating course prerequisites, build dependencies and workflow DAGs',
+          'Teaching Kahn indegree updates and DFS three-color marking',
+          'Diagnosing circular dependencies in pipeline configurations and locating the exact stage',
+        ],
+        privacyNote:
+          'Graph data is parsed and computed entirely in your local browser and is never uploaded.',
+        faqs: [
+          {
+            question: 'Why do Kahn and DFS produce different orders?',
+            answer:
+              'A topological order only has to satisfy the partial order of every edge, so multiple valid orders usually exist. Kahn dequeues zero-indegree nodes in first-appearance FIFO order, while DFS emits the reverse postorder of finished nodes; both are valid, and sibling nodes without dependencies are interchangeable.',
+          },
+          {
+            question: 'Can I still get an order when the graph has a cycle?',
+            answer:
+              'No complete topological order exists for a cyclic graph. The tool reports the ring path and closing edge to help locate the problem, and Kahn still returns a partial order for nodes outside the cycle. Removing any edge on the cycle and re-entering the graph yields a complete result.',
+          },
+          {
+            question: 'What are the naming and edge syntax limits?',
+            answer:
+              'Node names cannot contain whitespace. Edges accept A -> B, Chinese arrows, A => B and A,B with arbitrary spacing around the separator. Duplicate edges are deduped with a notice, blank lines are ignored, and unrecognizable lines raise an error with a 1-based line number.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'raid-capacity-calculator',
     name: 'RAID 磁盘阵列容量与容错规划计算器',
     nameEn: 'RAID Capacity & Fault Tolerance Calculator',

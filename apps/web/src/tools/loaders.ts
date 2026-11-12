@@ -157,6 +157,8 @@ export const toolLoaders: Record<
   'backoff-retry-calculator': () => import('./backoff-retry-calculator'),
   'cache-control-freshness-calculator': () =>
     import('./cache-control-freshness-calculator'),
+  'topological-sort-visualizer': () =>
+    import('./topological-sort-visualizer'),
   'pangu-spacing': () => import('./pangu-spacing'),
   'dns-ptr-builder': () => import('./dns-ptr-builder'),
   'gitignore-generator': () => import('./gitignore-generator'),
