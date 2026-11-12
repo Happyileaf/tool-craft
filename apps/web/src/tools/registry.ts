@@ -31560,6 +31560,108 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'cache-control-freshness-calculator',
+    name: 'HTTP Cache-Control 新鲜度计算器（RFC 9111）',
+    nameEn: 'HTTP Cache-Control Freshness Calculator (RFC 9111)',
+    description:
+      '解析响应头 Cache-Control、Age、Date、Expires，按 RFC 9111 计算新鲜度寿命、corrected current age、剩余新鲜时间与 fresh/stale/revalidate 结论，并标注冲突与未知指令。',
+    descriptionEn:
+      'Parse Cache-Control, Age, Date and Expires response headers and compute freshness lifetime, corrected current age, remaining freshness and fresh/stale/revalidate status per RFC 9111, with conflict and unknown-directive annotations.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/cache-control-freshness-calculator',
+    iconName: 'Global',
+    tags: ['HTTP', 'Cache-Control', '缓存', 'RFC 9111', 'CDN', '响应头'],
+    tagsEn: ['HTTP', 'Cache-Control', 'Caching', 'RFC 9111', 'CDN', 'Headers'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Cache-Control: public, max-age=60',
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP Cache-Control 新鲜度计算器是一款纯浏览器本地工具：粘贴响应头即可解析全部 Cache-Control 指令，按 RFC 9111 的优先级（s-maxage → max-age → Expires−Date → 启发式）计算新鲜度寿命，结合 Age 与 Date 求 corrected current age，给出 fresh、stale、no-cache 协商验证或 no-store 禁止存储的明确结论。',
+        coreFeatures: [
+          '完整解析 public/private/no-cache/no-store/max-age/s-maxage/must-revalidate/immutable/stale-while-revalidate 等指令，未知指令保留并标记',
+          'RFC 9111 corrected current age：Age 头、表观年龄与驻留时间取大',
+          '新鲜度寿命三级回退：s-maxage、max-age、Expires 减 Date，缺失时明确标注启发式而非臆测',
+          '冲突提示：no-cache 与 max-age 共存、private 与 s-maxage 共存等逐条说明',
+          '协商缓存提示：检测 ETag / Last-Modified，说明过期后的条件请求路径',
+        ],
+        howToUse: [
+          '从浏览器 DevTools 或 curl -I 复制完整响应头粘贴到文本框（起始行可保留）',
+          '查看顶部结论徽标与新鲜度寿命、当前年龄、剩余新鲜时间三项指标',
+          '在指令区核对每个指令的解析结果，未知指令会以浅色标签标出',
+          '阅读「提示与冲突」区了解存储限制、SWR 窗口与协商缓存行为',
+        ],
+        useCases: [
+          '排查 CDN 命中率异常、资源过早或过晚过期的问题',
+          '调试网关与源站的 Cache-Control / Expires 组合策略',
+          '教学与代码评审中讲解 RFC 9111 新鲜度模型',
+        ],
+        privacyNote:
+          '响应头仅在浏览器本地解析，不会被上传或发送到任何服务器。',
+        faqs: [
+          {
+            question: 'max-age 和 Expires 同时存在时听谁的？',
+            answer:
+              '按 RFC 9111，显式的 max-age 优先于 Expires；共享缓存场景下 s-maxage 又优先于 max-age。本工具按该优先级计算寿命，并在 s-maxage 与 max-age 不一致时注明各自的生效语境。',
+          },
+          {
+            question: 'no-cache 是不是表示不缓存？',
+            answer:
+              '不是。no-cache 允许缓存存储响应，但每次使用前必须向源站协商验证（配合 ETag/Last-Modified 走 304）。真正禁止存储的是 no-store，工具会直接给出「禁止存储」结论并短路其他新鲜度计算。',
+          },
+          {
+            question: '为什么当前年龄比 Age 头更大？',
+            answer:
+              'RFC 9111 要求当前年龄取 Age 头与表观年龄（当前时间减 Date）的较大值，再与驻留时间取大。响应在缓存中停留或本地时钟推移都会让年龄增长，因此结果不会小于 Age 头。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The HTTP Cache-Control Freshness Calculator runs fully in your browser. Paste response headers to parse every Cache-Control directive, derive the freshness lifetime using the RFC 9111 precedence (s-maxage, max-age, Expires minus Date, then heuristic), compute corrected current age from Age and Date, and obtain a clear fresh, stale, no-cache revalidation or no-store verdict.',
+        coreFeatures: [
+          'Parses public/private/no-cache/no-store/max-age/s-maxage/must-revalidate/immutable/stale-while-revalidate and keeps unknown directives flagged',
+          'RFC 9111 corrected current age: max of Age header, apparent age and resident time',
+          'Three-level lifetime fallback: s-maxage, max-age, Expires minus Date, with explicit heuristic labeling instead of guessing',
+          'Conflict notes for no-cache plus max-age, private plus s-maxage and similar combinations',
+          'Conditional-request hints when ETag or Last-Modified is present',
+        ],
+        howToUse: [
+          'Copy full response headers from DevTools or curl -I into the text area (status line allowed)',
+          'Read the verdict badge plus lifetime, current age and remaining-freshness statistics',
+          'Verify each parsed directive in the tag list; unknown ones are highlighted',
+          'Review the notices panel for storage limits, SWR windows and revalidation behavior',
+        ],
+        useCases: [
+          'Debugging unexpected CDN hit ratios and early or late resource expiry',
+          'Validating gateway and origin Cache-Control/Expires strategies',
+          'Teaching and reviewing the RFC 9111 freshness model',
+        ],
+        privacyNote:
+          'Headers are parsed locally in your browser and are never uploaded.',
+        faqs: [
+          {
+            question: 'Which wins when max-age and Expires coexist?',
+            answer:
+              'Per RFC 9111, an explicit max-age overrides Expires, and s-maxage overrides max-age for shared caches. The calculator follows this precedence and notes the two values when they differ.',
+          },
+          {
+            question: 'Does no-cache mean "do not cache"?',
+            answer:
+              'No. no-cache allows storage but requires revalidation with the origin before every reuse, typically via ETag/Last-Modified and 304 responses. no-store is the directive that forbids storage entirely, and the calculator short-circuits to that verdict.',
+          },
+          {
+            question: 'Why can current age exceed the Age header?',
+            answer:
+              'RFC 9111 defines current age as the maximum of the Age header, apparent age (now minus Date) and resident time. Time spent in cache and local clock progression both increase age, so the result is never smaller than the Age header.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'raid-capacity-calculator',
     name: 'RAID 磁盘阵列容量与容错规划计算器',
     nameEn: 'RAID Capacity & Fault Tolerance Calculator',
