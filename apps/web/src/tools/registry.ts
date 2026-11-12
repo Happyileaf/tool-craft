@@ -31766,6 +31766,110 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'pregnancy-due-date-calculator',
+    name: '预产期与孕周计算器',
+    nameEn: 'Pregnancy Due Date & Gestational Age Calculator',
+    description:
+      '按末次月经（Naegele +280 天）或排卵日（+266 天）双模式推算预产期，输出孕周孕天、三月期、倒计时与进度，支持 21–35 天周期修正和 40 周产检节点时间线。',
+    descriptionEn:
+      'Estimate the due date from LMP via the Naegele rule (+280 days) or from ovulation (+266 days), with gestational week/day, trimester, countdown and progress, 21-35 day cycle correction and a 40-week checkup timeline.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/pregnancy-due-date-calculator',
+    iconName: 'Timer',
+    tags: ['预产期', '孕周', 'Naegele', '产检', '孕期计算', '健康'],
+    tagsEn: ['Due Date', 'Gestational Age', 'Naegele', 'Pregnancy', 'Checkup', 'Health'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '2026-01-01',
+    doc: {
+      zh: {
+        whatIsIt:
+          '预产期与孕周计算器是一款纯浏览器本地运行的孕期日期工具。输入末次月经第一天（LMP）按 Naegele 规则加 280 天推算预产期，或输入已知排卵/受孕日按加 266 天推算并自动反推 LMP；再选择参考日期即可得到「孕 X 周 Y 天」、三月期、距预产期倒计时与 40 周进度百分比，同时按 21–35 天月经周期对预产期做天数修正，并给出 NT、大排畸、OGTT、胎心监护等关键产检节点的孕周时间窗。',
+        coreFeatures: [
+          '双模式推算：LMP +280 天 Naegele 规则与排卵日 +266 天，两模式在同一受孕基准下孕周一致',
+          '孕周仪表盘：孕 X 周 Y 天、三月期（1–13⁺⁶ / 14–27⁺⁶ / 28 周起）、倒计时与进度条',
+          '周期修正：21–35 天周期按偏离 28 天的差值平移预产期，并展示修正前后对照',
+          '40 周产检时间线：NT、唐氏筛查、大排畸、OGTT、胎心监护等节点按孕周窗口标注，当前周高亮',
+          '本地日历日运算：UTC 正午整日差规避夏令时与时区跨日误差，零网络请求',
+        ],
+        howToUse: [
+          '选择推算模式并填写末次月经第一天或排卵日期',
+          '参考日期默认取今天，可改为任意历史或未来日期查看对应孕周',
+          '月经周期非 28 天时调整周期天数，预产期与修正对照会即时更新',
+          '在仪表盘读取预产期、孕周、三月期与倒计时',
+          '在时间线表格查看当前所处的产检窗口，具体日期以医院医嘱为准',
+        ],
+        useCases: [
+          '孕期中快速核对当前孕周、孕天与距预产期天数',
+          '备孕或辅助生殖场景下按排卵日反推末次月经与预产期',
+          '规划 NT、大排畸、糖耐量等产检的大致时间窗',
+        ],
+        privacyNote:
+          '经期与孕产数据仅在浏览器本地参与日期运算，不会上传、存储或发送到任何服务器，页面不接入任何统计 SDK。',
+        faqs: [
+          {
+            question: '为什么排卵日模式也要反推一个末次月经？',
+            answer:
+              '临床孕周统一按末次月经起算，标准周期下排卵发生在 LMP 后第 14 天，因此工具用排卵日减 14 天得到等效 LMP，再按同一套 40 周日历输出孕周，保证两种模式在同一受孕基准下结果一致。',
+          },
+          {
+            question: '月经周期不是 28 天怎么修正？',
+            answer:
+              '周期每比 28 天多 1 天，预产期相应延后 1 天；每少 1 天则提前 1 天。工具允许 21–35 天的整数周期，并在结果中同时展示 28 天基准预产期与修正后预产期。',
+          },
+          {
+            question: '计算结果可以当作医生诊断吗？',
+            answer:
+              '不可以。本工具只做标准日期算术，实际排卵、着床与胎儿发育存在个体差异，月经不规律时临床通常结合早孕 B 超核对孕周。所有产检与预产期安排请以产检医院和专业医生的医嘱为准。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Pregnancy Due Date & Gestational Age Calculator runs entirely in your browser. Enter the first day of the last menstrual period (LMP) for the Naegele +280-day rule, or a known ovulation/conception date for the +266-day rule with automatic LMP backdating. Pick a reference date to obtain the gestational week and day, trimester, countdown to the due date and 40-week progress, adjust for 21-35 day cycle lengths, and review checkup windows such as NT, anatomy scan, OGTT and fetal monitoring.',
+        coreFeatures: [
+          'Dual modes: Naegele LMP +280 days and ovulation +266 days, yielding identical gestational age for the same conception basis',
+          'Dashboard with week+day, trimester boundaries (1-13+6, 14-27+6, 28+), countdown and progress bar',
+          'Cycle correction for 21-35 day cycles, shifting the due date day-for-day from the 28-day baseline with before/after comparison',
+          '40-week checkup timeline covering NT, Down screening, anatomy scan, OGTT and fetal monitoring windows, highlighting the current week',
+          'Local calendar-day math using UTC noon timestamps to avoid DST and timezone off-by-one errors, with zero network requests',
+        ],
+        howToUse: [
+          'Choose a mode and enter the LMP date or the ovulation/conception date',
+          'The reference date defaults to today and can be changed to inspect any past or future gestational age',
+          'Adjust the cycle length when it differs from 28 days; the due date and correction comparison update instantly',
+          'Read the due date, gestational age, trimester and countdown from the dashboard',
+          'Check the timeline table for the active checkup window, always confirming exact dates with your clinic',
+        ],
+        useCases: [
+          'Quickly checking the current gestational week, day and time remaining during pregnancy',
+          'Backdating an LMP and due date from a known ovulation date in conception or assisted-reproduction planning',
+          'Planning approximate windows for NT, anatomy and glucose-tolerance checkups',
+        ],
+        privacyNote:
+          'Menstrual and pregnancy data only participates in local date arithmetic in your browser. It is never uploaded, stored or sent to any server, and no analytics SDK is loaded.',
+        faqs: [
+          {
+            question: 'Why does ovulation mode backdate an LMP?',
+            answer:
+              'Clinical gestational age is always counted from the LMP. With a standard cycle, ovulation occurs 14 days after the LMP, so the tool subtracts 14 days from the ovulation date to derive an equivalent LMP and then applies the same 40-week calendar, keeping both modes consistent for one conception date.',
+          },
+          {
+            question: 'How is a non-28-day cycle corrected?',
+            answer:
+              'Each day beyond 28 pushes the due date one day later; each day below 28 brings it one day earlier. The tool accepts integer cycles from 21 to 35 days and shows both the 28-day baseline due date and the corrected due date.',
+          },
+          {
+            question: 'Can the result replace a medical diagnosis?',
+            answer:
+              'No. The tool performs standard date arithmetic only. Real ovulation, implantation and fetal development vary individually, and irregular cycles are typically reconciled with an early-pregnancy ultrasound. Always follow the guidance of your prenatal clinic and qualified clinicians for checkups and the due date.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'raid-capacity-calculator',
     name: 'RAID 磁盘阵列容量与容错规划计算器',
     nameEn: 'RAID Capacity & Fault Tolerance Calculator',

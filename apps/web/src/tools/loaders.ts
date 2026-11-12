@@ -159,6 +159,8 @@ export const toolLoaders: Record<
     import('./cache-control-freshness-calculator'),
   'topological-sort-visualizer': () =>
     import('./topological-sort-visualizer'),
+  'pregnancy-due-date-calculator': () =>
+    import('./pregnancy-due-date-calculator'),
   'pangu-spacing': () => import('./pangu-spacing'),
   'dns-ptr-builder': () => import('./dns-ptr-builder'),
   'gitignore-generator': () => import('./gitignore-generator'),
