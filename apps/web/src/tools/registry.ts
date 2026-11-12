@@ -12968,6 +12968,108 @@ info: request finished`,
     },
   },
   {
+    slug: 'fletcher-checksum',
+    name: 'Fletcher 校验和计算器（Fletcher-16 / 32 / 64）',
+    nameEn: 'Fletcher Checksum Calculator (16/32/64)',
+    description:
+      '对 UTF-8 文本或十六进制字节流计算 Fletcher-16、Fletcher-32、Fletcher-64 校验和，输出定长十六进制与十进制，并支持 appended checksum 自校验。',
+    descriptionEn:
+      'Compute Fletcher-16, Fletcher-32 and Fletcher-64 checksums over UTF-8 text or hex byte streams, with fixed-width hex and decimal output and appended-checksum verification.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/fletcher-checksum',
+    iconName: 'Barcode',
+    tags: ['Fletcher', '校验和', 'Checksum', '完整性校验', '嵌入式'],
+    tagsEn: ['Fletcher', 'Checksum', 'Integrity', 'Embedded', 'Hex'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'abcdefgh',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Fletcher 校验和计算器是一款纯浏览器本地工具：实现 Fletcher-16、Fletcher-32、Fletcher-64 三种变体，通过两个累加和 S1、S2 在对应字宽上求模，输出定长十六进制与十进制结果，并提供 appended checksum 模式验证已追加校验字节的数据完整性。',
+        coreFeatures: [
+          '一次计算 Fletcher-16（8 位字模 255）、Fletcher-32（16 位字模 65535）、Fletcher-64（32 位字模 2³²−1）',
+          '支持 UTF-8 文本与十六进制字节流（空格/逗号/0x 前缀分隔）两种输入',
+          '展示每个变体的 S1、S2 中间累加值，便于与固件实现逐行对齐',
+          'Appended checksum 自校验：整体重算并判定两个累加和是否归零',
+          '定长小写十六进制与 BigInt 十进制双格式输出，64 位结果不丢精度',
+        ],
+        howToUse: [
+          '选择输入模式：文本（自动按 UTF-8 编码）或十六进制字节流',
+          '结果卡片实时展示三种变体的 0x 十六进制、十进制与 S1/S2',
+          '切换到「Appended 校验」并选择变体，可验证数据连同校验字节是否完整',
+          '点击对应行的「复制」获取十六进制结果',
+        ],
+        useCases: [
+          '存储与通信协议中 Fletcher 校验字段的开发与调试',
+          '与 C / 固件侧 Fletcher 实现做标准向量对齐',
+          '教学场景理解双累加和校验与 CRC 多项式校验的差异',
+        ],
+        privacyNote:
+          '所有字节运算均在浏览器本地完成，输入数据不会上传或离开设备。',
+        faqs: [
+          {
+            question: 'Fletcher 和 CRC 有什么区别？',
+            answer:
+              'Fletcher 只用加法与取模，计算量小、速度快；CRC 使用多项式除法，检错能力（尤其对突发错误）更强但实现更复杂。Fletcher-16 检错能力接近 CRC-16，适合资源受限的嵌入式场景。',
+          },
+          {
+            question: 'Appended 校验为什么要求两个累加和归零？',
+            answer:
+              '按标准算法构造的校验字节会让「原数据 + 校验字节」整体的 S1、S2 同时对模数取模为零；接收方整体重算后若两者均为零即通过，任一非零说明数据被改动或截断。',
+          },
+          {
+            question: '输入字节数不足整字时如何处理？',
+            answer:
+              'Fletcher-32 按 16 位字处理，奇数长度时末字高字节补零；Fletcher-64 按 32 位字处理，字节数不是 4 的倍数时末字补零。补零仅发生在计算过程中，不会修改原始输入。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Fletcher Checksum Calculator is a fully in-browser tool implementing Fletcher-16, Fletcher-32 and Fletcher-64. It maintains two running sums (S1, S2) modulo the word-width modulus, emits fixed-width hex and decimal values, and offers an appended-checksum mode that verifies data already carrying check bytes.',
+        coreFeatures: [
+          'Fletcher-16 (8-bit words, mod 255), Fletcher-32 (16-bit words, mod 65535) and Fletcher-64 (32-bit words, mod 2^32-1) in one run',
+          'Both UTF-8 text and hex byte-stream input (space/comma separated, 0x prefix)',
+          'Intermediate S1/S2 sums shown for every variant to align with firmware implementations',
+          'Appended-checksum verification via zero-sum re-computation',
+          'Fixed-width lowercase hex and BigInt decimal output without precision loss',
+        ],
+        howToUse: [
+          'Choose text (auto UTF-8 encoded) or hex byte-stream input',
+          'Read the three variants with 0x hex, decimal and S1/S2 values in the result card',
+          'Switch to "Appended" mode and pick a variant to verify data plus check bytes',
+          'Click "Copy" on a row to grab its hex result',
+        ],
+        useCases: [
+          'Developing and debugging Fletcher check fields in storage and communication protocols',
+          'Cross-checking C/firmware Fletcher implementations against known vectors',
+          'Teaching the difference between dual-sum checksums and polynomial CRC',
+        ],
+        privacyNote:
+          'All byte arithmetic runs locally in your browser; input never leaves your device.',
+        faqs: [
+          {
+            question: 'How does Fletcher differ from CRC?',
+            answer:
+              'Fletcher uses only addition and modulo, so it is small and fast. CRC uses polynomial division and offers stronger burst-error detection at higher cost. Fletcher-16 approaches CRC-16 detection quality and fits resource-constrained embedded systems.',
+          },
+          {
+            question: 'Why must both sums be zero in appended mode?',
+            answer:
+              'Standard check bytes are constructed so that re-running the algorithm over "data + check bytes" drives S1 and S2 to zero modulo the modulus. Any non-zero sum indicates tampering or truncation.',
+          },
+          {
+            question: 'How are inputs shorter than a full word handled?',
+            answer:
+              'Fletcher-32 zero-pads the final 16-bit word for odd-length inputs, and Fletcher-64 zero-pads the final 32-bit word when the byte count is not a multiple of four. Padding only affects computation, never the original input.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'pangu-spacing',
     name: '中英文混排自动留白（盘古之白）格式化器',
     nameEn: 'Pangu Spacing Formatter',

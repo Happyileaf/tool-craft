@@ -153,6 +153,7 @@ export const toolLoaders: Record<
   'pii-mask': () => import('./pii-mask'),
   'conventional-commit-generator': () => import('./conventional-commit-generator'),
   'crc16-checksum': () => import('./crc16-checksum'),
+  'fletcher-checksum': () => import('./fletcher-checksum'),
   'pangu-spacing': () => import('./pangu-spacing'),
   'dns-ptr-builder': () => import('./dns-ptr-builder'),
   'gitignore-generator': () => import('./gitignore-generator'),

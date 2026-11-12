@@ -304,5 +304,5 @@
 | 20261112020118 | 卡诺图（Karnaugh Map）化简器与 SOP/POS 表达式生成（2–4 变量） | Web Tool | Exploration | Claimed | 2026-11-12 | trae-agent | [详情](./idea-details/20261112020118.md) |
 | 20261112020119 | 抛体运动计算器与轨迹可视化（斜抛/平抛/自由落体，含空气阻力可选模型） | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112020119.md) |
 | 20261112020120 | 图片转 ASCII 字符画生成器（灰度/彩色字符映射、可调宽度与对比度，本地导出） | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112020120.md) |
-| 20261112080434 | Fletcher 校验和计算器（Fletcher-16 / Fletcher-32 / Fletcher-64） | Web Tool | Existing Gap | Claimed | 2026-11-12 | trae-agent | [详情](./idea-details/20261112080434.md) |
+| 20261112080434 | Fletcher 校验和计算器（Fletcher-16 / Fletcher-32 / Fletcher-64） | Web Tool | Existing Gap | In Progress | 2026-11-12 | trae-agent | [详情](./idea-details/20261112080434.md) |
 
