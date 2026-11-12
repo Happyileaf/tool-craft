@@ -32804,6 +32804,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'oid-ber-codec',
+    name: 'OID 对象标识符 BER 编解码器',
+    nameEn: 'OID BER Encoder & Decoder',
+    description:
+      '在点分十进制 OID（如 1.2.840.113549.1.1.11）与 ITU-T X.690 BER OBJECT IDENTIFIER 十六进制 TLV 之间双向转换，自动处理前两弧 40×X+Y 合并、base-128 变长弧编码与短/长形式长度八位组，内置常见证书与 SNMP OID 速查。',
+    descriptionEn:
+      'Convert between dotted-decimal OIDs (e.g. 1.2.840.113549.1.1.11) and ITU-T X.690 BER OBJECT IDENTIFIER hex TLV, handling the 40*X+Y first-arcs merge, base-128 variable-length arcs and short/long length octets, with common certificate and SNMP OID presets.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/oid-ber-codec',
+    iconName: 'Binary',
+    tags: ['OID', 'BER', 'X.690', 'ASN.1', 'X.509 证书'],
+    tagsEn: ['OID', 'BER', 'X.690', 'ASN.1', 'X.509 Certificate'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1.2.840.113549.1.1.11',
+    doc: {
+      zh: {
+        whatIsIt:
+          'OID BER 编解码器是一款纯浏览器本地工具。它在人类可读的点分十进制对象标识符（OID）与 ASN.1 BER 编码的 OBJECT IDENTIFIER 十六进制字节之间双向转换，覆盖 X.690 规定的前两弧合并、base-128 变长弧编码以及短形式与长形式长度八位组，帮助研发与安全人员核对证书、SNMP MIB 与协议报文中的 OID 编码。',
+        coreFeatures: [
+          '双向转换：点分十进制编码为完整 TLV（Tag 0x06 + 长度 + 内容），或从十六进制 TLV 还原弧序列',
+          '规范编码：前两弧按 40×X+Y 合并（首弧 0/1 时次弧小于 40，首弧 2 时次弧任意），其余弧 base-128 变长编码',
+          '长度处理：内容小于 128 字节用短形式，否则自动输出长形式长度八位组，解码端同样兼容两种形式',
+          '严格校验：拒绝非数字弧、负号、首弧大于 2、错误 Tag、长度不一致与悬挂的续位字节并给出明确报错',
+          '常见 OID 速查：RSA、SHA-256、EC 公钥、P-256、X.500 CN、SNMP sysDescr 一键填充',
+        ],
+        howToUse: [
+          '选择转换方向：点分十进制 → BER，或 BER → 点分十进制',
+          '编码模式下输入如 1.2.840.113549.1.1.11 的 OID，或点击蓝色标签快速填充常见 OID',
+          '解码模式下粘贴含 Tag 与长度的完整十六进制 TLV，空格、逗号与 0x 前缀均可',
+          '查看结果区的 TLV、内容字节、总长度与逐弧表格，使用复制按钮取走十六进制或点分串',
+        ],
+        useCases: [
+          '核对 X.509 证书、PKCS#7/CMS 与 CSR 中算法标识符的 OID 编码是否正确',
+          '调试 SNMP MIB、LDAP 目录与其他 ASN.1 协议中的 OBJECT IDENTIFIER 字段',
+          '学习 ITU-T X.690 BER 规则与 base-128 变长整数编码原理',
+          '为协议文档或单元测试构造已知 OID 的期望字节序列',
+        ],
+        privacyNote:
+          '所有 OID 与十六进制数据均在浏览器本地解析与编码，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '为什么 OID 的前两个弧要合并成一个字节开始？',
+            answer:
+              'X.690 规定 OID 编码时把第一弧 X 与第二弧 Y 合并为 40×X+Y 一个基值，以节省空间。由于首弧只有 0、1、2 三种取值，且前两种情况下次弧小于 40，该映射可以无歧义地还原：值小于 40 还原为 (0, 值)，40–79 还原为 (1, 值−40)，80 及以上还原为 (2, 值−80)。',
+          },
+          {
+            question: 'base-128 变长编码是怎么工作的？',
+            answer:
+              '每个弧值按 7 位一组拆分，从最低有效组向前排列。除最后一个字节外，每个字节最高位置 1 作为续位标志，最后一个字节最高位清零表示结束。例如 840 拆为 0x86、0x48 两个字节；小于 128 的弧只需要一个字节。',
+          },
+          {
+            question: '短形式和长形式长度有什么区别？',
+            answer:
+              '内容长度小于 128 时长度八位组直接存数值（短形式，如 0x06）。长度达到 128 及以上时，首字节高位置 1、低 7 位表示后续长度字节数，其后再按大端存放真实长度，例如 300 编码为 82 01 2c。OID 不使用 0x80 不定长形式，工具遇到会明确报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The OID BER codec runs entirely in your browser. It converts between human-readable dotted-decimal Object Identifiers and ASN.1 BER OBJECT IDENTIFIER hex bytes, covering the X.690 first-two-arcs merge, base-128 variable-length arcs and short/long length octets, so developers and security engineers can verify OID encodings in certificates, SNMP MIBs and protocol packets.',
+        coreFeatures: [
+          'Bidirectional: dotted OID to full TLV (Tag 0x06 + length + content), or hex TLV back to the arc sequence',
+          'Spec encoding: first two arcs merged as 40*X+Y (second arc < 40 for first arc 0/1, unrestricted for 2), remaining arcs use base-128 variable-length encoding',
+          'Length handling: short form below 128 content bytes, automatic long-form length octets otherwise; the decoder accepts both forms',
+          'Strict validation: non-numeric arcs, negatives, first arc > 2, wrong tag, length mismatch and dangling continuation bytes all produce explicit errors',
+          'Presets for common OIDs: RSA, SHA-256, EC public key, P-256, X.500 CN and SNMP sysDescr with one click',
+        ],
+        howToUse: [
+          'Choose the direction: dotted OID to BER, or BER to dotted OID',
+          'In encode mode enter an OID such as 1.2.840.113549.1.1.11, or click a blue tag to fill a common OID',
+          'In decode mode paste the full hex TLV including tag and length; spaces, commas and 0x prefixes are accepted',
+          'Inspect the TLV, content bytes, total length and per-arc table in the result area, then copy the hex or dotted string',
+        ],
+        useCases: [
+          'Verifying algorithm-identifier OID encodings in X.509 certificates, PKCS#7/CMS and CSRs',
+          'Debugging OBJECT IDENTIFIER fields in SNMP MIBs, LDAP directories and other ASN.1 protocols',
+          'Learning ITU-T X.690 BER rules and base-128 variable-length integer encoding',
+          'Building expected byte sequences for protocol documentation or unit tests',
+        ],
+        privacyNote:
+          'All OID and hex data is parsed and encoded locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'Why are the first two arcs merged into one starting value?',
+            answer:
+              'X.690 merges the first arc X and second arc Y into the base value 40*X+Y to save space. Because the first arc is only 0, 1 or 2 and the second arc stays below 40 for the first two cases, the mapping is unambiguous: values below 40 decode as (0, value), 40-79 as (1, value-40), and 80+ as (2, value-80).',
+          },
+          {
+            question: 'How does base-128 variable-length encoding work?',
+            answer:
+              'Each arc is split into 7-bit groups ordered from least to most significant. Every byte except the last sets its high bit as a continuation marker, while the final byte clears it. For example 840 becomes the two bytes 0x86, 0x48; arcs below 128 need only a single byte.',
+          },
+          {
+            question: 'What is the difference between short and long length forms?',
+            answer:
+              'Below 128 content bytes the length octet holds the value directly (short form, e.g. 0x06). At 128 and above, the first octet sets the high bit and uses its low 7 bits to count the following length bytes, which store the real length big-endian — 300 is encoded as 82 01 2c. OIDs never use the 0x80 indefinite form, which the tool rejects explicitly.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

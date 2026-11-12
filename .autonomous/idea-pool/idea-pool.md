@@ -308,7 +308,7 @@
 | 20261112140147 | RFC 7239 Forwarded HTTP 头解析与生成器（代理链 for/by/proto/host 编解码） | Web Tool | Exploration | In Progress | 2026-11-12 | 20261112180415 (trae-agent) | [详情](./idea-details/20261112140147.md) |
 | 20261112140148 | RFC 6570 URI Template 展开器（Level 1–4 表达式与变量值编解码） | Web Tool | Exploration | In Progress | 2026-11-12 | 20261112180415 (trae-agent) | [详情](./idea-details/20261112140148.md) |
 | 20261112140149 | IPC-2221 PCB 走线宽度/载流量计算器（内外层、铜厚与温升） | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112140149.md) |
-| 20261112140150 | OID 点分十进制对象标识符编解码与 BER 压缩弧工具 | Web Tool | Exploration | Claimed | 2026-11-12 | 2026-11-13 · feat/tool-development-20261113060152-trae-agent | [详情](./idea-details/20261112140150.md) |
+| 20261112140150 | OID 点分十进制对象标识符编解码与 BER 压缩弧工具 | Web Tool | Exploration | In Progress | 2026-11-12 | 2026-11-13 · feat/tool-development-20261113060152-trae-agent | [详情](./idea-details/20261112140150.md) |
 | 20261112140151 | Clojure EDN 与 JSON 双向转换器（extensible data notation 解析生成） | Web Tool | Exploration | In Progress | 2026-11-12 | 20261112180415 (trae-agent) | [详情](./idea-details/20261112140151.md) |
 | 20261112200206 | Modbus RTU/TCP 协议帧解析与构造器（功能码 / 寄存器地址 / CRC-16 校验） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112200206.md) |
 | 20261112200207 | BER-TLV 嵌套标签长度值解析与构造器（EMV / SIM 卡 APDU 数据格式） | Web Tool | Existing Gap | Claimed | 2026-11-12 | 2026-11-13 · feat/tool-development-20261113060152-trae-agent | [详情](./idea-details/20261112200207.md) |
