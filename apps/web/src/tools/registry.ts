@@ -32805,6 +32805,110 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'ber-tlv-codec',
+    name: 'BER-TLV 嵌套标签长度值解析与构造器',
+    nameEn: 'BER-TLV Nested Parser & Builder',
+    description:
+      '解析与构造 EMV、SIM 卡 APDU 等场景的 BER-TLV 数据，支持单/多字节 Tag、构造位与四类 Tag 类别识别、短形式/长形式/不定长 Length、递归嵌套子 TLV，提供树形可视化、层级表格与 JSON 到十六进制的双向转换。',
+    descriptionEn:
+      'Parse and build BER-TLV data used in EMV and SIM APDU, supporting single/multi-byte tags, constructed bit and four tag classes, short/long/indefinite lengths, recursive nested children, tree visualization, a depth table and bidirectional JSON-to-hex conversion.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ber-tlv-codec',
+    iconName: 'Boxes',
+    tags: ['BER-TLV', 'EMV', 'APDU', '智能卡', '字节解析'],
+    tagsEn: ['BER-TLV', 'EMV', 'APDU', 'Smart Card', 'Byte Parsing'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '6F 0B A0 05 5A 03 01 02 03 5F 2A 01 AA',
+    doc: {
+      zh: {
+        whatIsIt:
+          'BER-TLV 解析与构造器是一款纯浏览器本地工具。BER-TLV 用 Tag（标签）、Length（长度）、Value（值）三段描述数据，广泛用于 EMV 银行卡、SIM/UIM 卡 APDU、电子证件等领域。本工具按 ISO/IEC 7816-4 与 X.690 规则递归解析嵌套 TLV，识别多字节 Tag、构造位、Tag 类别与各种长度形式，也支持从结构化 JSON 反向构造字节流。',
+        coreFeatures: [
+          '完整 Tag 解析：单字节与多字节 Tag（首字节低 5 位为 0x1F 触发续读），识别 universal/application/context-specific/private 四种类别与构造位',
+          '三种 Length：短形式（<128）、长形式（首字节低 7 位指示后续长度字节数）与不定长（0x80，以 00 00 结束）',
+          '递归嵌套：构造型节点自动展开子 TLV，提供可折叠语法树与带层级缩进的表格',
+          '双向转换：十六进制解析为树，或从 JSON（tag + value / children）构造合法字节流并自动计算长度',
+          '严格校验：Tag 截断、长度越界、原始型误用不定长、缺失结束符等均给出明确报错',
+        ],
+        howToUse: [
+          '选择“十六进制 → 解析树”模式，粘贴 BER-TLV 数据或点击预设标签载入 EMV/不定长样例',
+          '在语法树中展开构造型节点查看嵌套子 TLV，表格同步展示层级、Tag、类型、长度与值',
+          '切换到“结构化 JSON → 十六进制”模式，编辑 tag、value 或 children 数组，工具实时构造并计算长度',
+          '使用复制按钮取走构造结果，错误信息会指出具体 Tag 与字节位置',
+        ],
+        useCases: [
+          '解析银行卡 EMV FCI、AFL、应用模板等 TLV 数据，核对支付报文结构',
+          '调试 SIM/eSIM 卡 APDU 响应、USIM 应用与电信智能卡的 EFK/EF 数据',
+          '为嵌入式与协议测试构造带正确长度字段的嵌套 TLV 字节流',
+          '学习 X.690/7816-4 的 Tag 类别、构造位与变长 Length 编码',
+        ],
+        privacyNote:
+          '所有 TLV 数据均在浏览器本地解析与构造，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '构造型（constructed）和原始型（primitive）TLV 有什么区别？',
+            answer:
+              'Tag 首字节的 bit6 是构造位：为 1 时该 TLV 的 Value 本身由若干完整子 TLV 组成，可以递归展开；为 0 时 Value 是不透明的原始字节，按十六进制展示。例如 EMV 模板 6F 是构造型，而卡号 5A 是原始型。',
+          },
+          {
+            question: '多字节 Tag 如何判断读取到什么时候结束？',
+            answer:
+              '当 Tag 首字节低 5 位全为 1（即 0x1F）时表示标签号无法用 5 位容纳，后续字节继续编码标签号。每个后续字节最高位为续位标志：为 1 表示还有下一字节，为 0 表示该 Tag 结束，例如 9F 38 是一个完整的双字节 Tag。',
+          },
+          {
+            question: '不定长形式的 00 00 结束符是怎么回事？',
+            answer:
+              'Length 首字节为 0x80 时不直接给出长度，而是约定构造型 Value 一直延续到连续两个零字节（End-of-Contents Octets，00 00）出现为止。它只能用于构造型 TLV，原始型使用不定长会被工具拒绝。定长形式在智能卡场景更常见，不定长多见于通用 BER 编码。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The BER-TLV parser and builder runs entirely in your browser. BER-TLV describes data with Tag, Length and Value fields and is widely used in EMV bank cards, SIM/UIM APDUs and electronic IDs. Following ISO/IEC 7816-4 and X.690, the tool recursively parses nested TLVs, recognizes multi-byte tags, the constructed bit, tag classes and every length form, and can also build byte streams back from structured JSON.',
+        coreFeatures: [
+          'Full tag parsing: single and multi-byte tags (low 5 bits equal to 0x1F trigger continuation), with universal/application/context-specific/private classes and the constructed bit',
+          'Three length forms: short (below 128), long (low 7 bits count following length bytes) and indefinite (0x80 terminated by 00 00)',
+          'Recursive nesting: constructed nodes expand child TLVs automatically, shown as a collapsible tree and a depth-indented table',
+          'Bidirectional: hex to tree, or JSON (tag + value / children) to a valid byte stream with lengths computed automatically',
+          'Strict validation: truncated tags, out-of-range lengths, indefinite length on primitives and missing terminators all produce explicit errors',
+        ],
+        howToUse: [
+          'Choose “hex to tree” mode and paste BER-TLV data, or click a preset to load EMV or indefinite-length samples',
+          'Expand constructed nodes in the tree to inspect nested children; the table shows depth, tag, kind, length and value in sync',
+          'Switch to “JSON to hex” mode, edit tag/value/children arrays and get an instantly constructed byte stream',
+          'Copy the built output; error messages identify the specific tag and byte position',
+        ],
+        useCases: [
+          'Decoding EMV FCI, AFL and application template TLVs in bank card payment messages',
+          'Debugging SIM/eSIM APDU responses, USIM applications and telecom smart-card EF data',
+          'Building correctly lengthed nested TLV byte streams for embedded and protocol tests',
+          'Learning X.690/7816-4 tag classes, the constructed bit and variable-length encoding',
+        ],
+        privacyNote:
+          'All TLV data is parsed and built locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'What is the difference between constructed and primitive TLVs?',
+            answer:
+              'Bit 6 of the first tag byte is the constructed bit: when set to 1 the Value itself consists of complete child TLVs that can be recursively expanded; when 0 the Value is opaque raw bytes shown as hex. For example the EMV template 6F is constructed while the card number tag 5A is primitive.',
+          },
+          {
+            question: 'How does a multi-byte tag know where it ends?',
+            answer:
+              'When the low 5 bits of the first tag byte are all ones (0x1F), the tag number needs more bytes. Each following byte uses its high bit as a continuation marker: 1 means another byte follows, 0 ends the tag. For example 9F 38 is one complete two-byte tag.',
+          },
+          {
+            question: 'What is the 00 00 terminator in indefinite-length form?',
+            answer:
+              'When the first length byte is 0x80 the length is not given directly; instead a constructed Value continues until two zero bytes (End-of-Contents Octets, 00 00) appear. It is only valid for constructed TLVs, and the tool rejects indefinite length on primitive tags. Definite lengths are more common in smart cards while indefinite form appears in generic BER encoding.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'ipv4-header-parser',
     name: 'IPv4 数据报头解析与校验和验证器',
     nameEn: 'IPv4 Header Parser & Checksum Validator',
