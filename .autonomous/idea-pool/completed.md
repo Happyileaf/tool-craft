@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261112200210 | LDAP 搜索过滤器解析与校验器（RFC 4515 语法树可视化与转义处理） | Web Tool | Existing Gap | `ldap-filter-parser` / [PR #221](https://github.com/Happyileaf/tool-craft/pull/221) | 2026-11-13 | [详情](./idea-details/20261112200210.md) |
+| 20261112200207 | BER-TLV 嵌套标签长度值解析与构造器（EMV / SIM 卡 APDU 数据格式） | Web Tool | Existing Gap | `ber-tlv-codec` / [PR #221](https://github.com/Happyileaf/tool-craft/pull/221) | 2026-11-13 | [详情](./idea-details/20261112200207.md) |
+| 20261112140150 | OID 点分十进制对象标识符编解码与 BER 压缩弧工具 | Web Tool | Exploration | `oid-ber-codec` / [PR #221](https://github.com/Happyileaf/tool-craft/pull/221) | 2026-11-13 | [详情](./idea-details/20261112140150.md) |
+| 20261103200234 | IPv4 数据报头解析与校验和验证器（RFC 791） | Web Tool | Existing Gap | `ipv4-header-parser` / [PR #221](https://github.com/Happyileaf/tool-craft/pull/221) | 2026-11-13 | [详情](./idea-details/20261103200234.md) |
+| 20261101201003 | Redis RESP2/RESP3 协议编解码器（含 inline 与 RESP3 类型） | Web Tool | Existing Gap | `resp-codec` / [PR #221](https://github.com/Happyileaf/tool-craft/pull/221) | 2026-11-13 | [详情](./idea-details/20261101201003.md) |
 | 20261109081157 | logfmt 日志解析与格式化工具（key=value 双向转换与类型推断） | Web Tool | Existing Gap | `logfmt-parser-formatter` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081157.md) |
 | 20261109081156 | LED 限流电阻计算器（欧姆定律与功耗、E24 标称阻值选型） | Web Tool | Existing Gap | `led-resistor-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081156.md) |
 | 20261109081155 | ISSN 校验位计算器与规范化工具（含连字符定位与批量校验） | Web Tool | Existing Gap | `issn-checksum-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081155.md) |
