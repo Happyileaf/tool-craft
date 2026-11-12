@@ -1,0 +1,86 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  color: rgb(107 114 128);
+}
+
+.inputArea {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+
+.presetTag {
+  cursor: pointer;
+  user-select: none;
+}
+
+.resultCard {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.normalizedRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.resultName {
+  flex: 0 0 110px;
+  font-weight: 600;
+}
+
+.normalizedText {
+  flex: 1;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  color: rgb(37 99 235);
+  word-break: break-all;
+}
+
+.treeSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tree {
+  background: rgb(249 250 251);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.attrName {
+  color: rgb(5 150 105);
+  font-weight: 600;
+}
+
+.attrValue {
+  color: rgb(180 83 9);
+}
+
+.logicTag {
+  font-weight: 600;
+}
+
+.hint {
+  color: rgb(107 114 128);
+  font-size: 13px;
+  line-height: 1.6;
+}

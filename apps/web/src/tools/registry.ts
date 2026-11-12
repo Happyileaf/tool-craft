@@ -32805,6 +32805,110 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'ldap-filter-parser',
+    name: 'LDAP 搜索过滤器解析与校验器',
+    nameEn: 'LDAP Search Filter Parser & Validator',
+    description:
+      '按 RFC 4515 解析 LDAP 搜索过滤器，校验括号配对、& | ! 逻辑组合与 = >= <= ~= 比较操作符，处理 \\HH 十六进制转义与 * 子串断言，输出规范化文本、叶子断言统计与可展开的语法树。',
+    descriptionEn:
+      'Parse and validate LDAP search filters per RFC 4515, checking balanced parentheses, & | ! logical groups and = >= <= ~= operators, handling \\HH hex escapes and * substring assertions, with normalized text, leaf counts and an expandable syntax tree.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ldap-filter-parser',
+    iconName: 'Braces',
+    tags: ['LDAP', 'RFC 4515', '过滤器', 'AST 语法树', '目录服务'],
+    tagsEn: ['LDAP', 'RFC 4515', 'Filter', 'AST', 'Directory Service'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '(&(ou=Sales)(|(title=Manager)(!(status=Archived)))(mail=*@example.com))',
+    doc: {
+      zh: {
+        whatIsIt:
+          'LDAP 过滤器解析与校验器是一款纯浏览器本地工具。它实现 RFC 4515 递归下降解析器，把 (&(cn=John)(objectClass=person)) 这类搜索过滤器转换为抽象语法树（AST），校验括号配对、逻辑组合与比较操作符是否合法，并可视化展示嵌套结构，帮助目录服务研发与运维人员快速定位过滤器语法问题。',
+        coreFeatures: [
+          '完整语法校验：括号配对、属性名、=、>=、<=、~= 操作符及 & | ! 组合的严格递归下降解析',
+          '转义处理：识别并还原 \\HH 两位十六进制转义，序列化时对保留字符与非 ASCII（按 UTF-8）重新转义',
+          '子串断言：识别 attr=前缀*包含*后缀 形式，拆分 initial、any、final 三段',
+          '语法树可视化：以可展开树形组件展示 AND/OR/NOT 与叶子断言，另附层级表格与规范化文本',
+          '统计信息：输出叶子断言数量与最大嵌套深度，一键复制规范化过滤器',
+        ],
+        howToUse: [
+          '在文本框中粘贴或输入 RFC 4515 过滤器，或点击蓝色标签载入预设',
+          '工具实时解析：语法非法时显示具体位置与原因，合法时展示统计与语法树',
+          '展开或折叠语法树节点，查看每个 AND/OR/NOT 组合及叶子属性、操作符与断言值',
+          '复制规范化文本用于客户端代码或服务端查询，错误信息直接指向出错位置',
+        ],
+        useCases: [
+          '调试 OpenLDAP、Active Directory 等目录服务的搜索过滤器',
+          '在编写目录同步、登录认证或组织架构查询代码前验证过滤器语法',
+          '学习 LDAP 过滤器的嵌套逻辑、子串匹配与十六进制转义规则',
+          '为单元测试生成规范化过滤器字符串与 AST 结构参考',
+        ],
+        privacyNote:
+          '所有过滤器文本仅在浏览器本地解析，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: 'LDAP 过滤器里的 &、|、! 分别表示什么？',
+            answer:
+              '它们是前缀式逻辑操作符：& 表示与（AND，所有子条件都满足）、| 表示或（OR，任一子条件满足）、! 表示非（NOT，恰好包裹一个子条件并取反）。例如 (&(a=1)(b=2)) 要求两个条件同时成立，(!(c=3)) 表示 c 不等于 3。',
+          },
+          {
+            question: '为什么有些值写成 \\28、\\29 这样的形式？',
+            answer:
+              'RFC 4515 规定断言值中的 *、(、)、反斜杠与空字节必须用反斜杠加两位十六进制转义，避免与过滤器结构字符冲突。例如左括号 ( 写成 \\28、右括号 ) 写成 \\29。非 ASCII 字符按 UTF-8 字节逐个转义，如中文“中”转成 \\e4\\b8\\ad。',
+          },
+          {
+            question: '(cn=*admin*) 这类带星号的表达式如何解析？',
+            answer:
+              '星号构成子串断言。单个 *（attr=*）是存在性过滤，表示属性存在且有值；带文本的 * 把值拆成前缀、若干包含片段与后缀。(cn=*admin*) 表示 cn 属性包含 admin；(cn=Jo*) 表示以 Jo 开头；(cn=*Doe) 表示以 Doe 结尾。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The LDAP filter parser runs entirely in your browser. It implements an RFC 4515 recursive-descent parser that turns search filters such as (&(cn=John)(objectClass=person)) into an abstract syntax tree, validates balanced parentheses, logical groups and comparison operators, and visualizes the nested structure so directory-service engineers can pinpoint syntax problems quickly.',
+        coreFeatures: [
+          'Full validation: strict recursive-descent parsing of parentheses, attribute names, = >= <= ~= operators and & | ! groups',
+          'Escape handling: decodes \\HH two-digit hex escapes and re-escapes reserved characters plus non-ASCII text (as UTF-8) during serialization',
+          'Substring assertions: recognizes attr=initial*any*final and splits it into initial, any and final segments',
+          'Tree visualization: expandable tree for AND/OR/NOT nodes and leaf assertions, plus a depth table and normalized text',
+          'Statistics: leaf assertion count and maximum nesting depth, with one-click copy of the normalized filter',
+        ],
+        howToUse: [
+          'Paste or type an RFC 4515 filter, or click a blue tag to load a preset',
+          'The tool parses live: invalid syntax shows the exact position and reason, valid input shows statistics and a syntax tree',
+          'Expand or collapse tree nodes to inspect each AND/OR/NOT group and leaf attribute, operator and assertion value',
+          'Copy the normalized text for client code or server queries; error messages point directly at the failure position',
+        ],
+        useCases: [
+          'Debugging search filters for OpenLDAP, Active Directory and other directory services',
+          'Validating filters before writing directory sync, authentication or org-chart query code',
+          'Learning LDAP filter nesting, substring matching and hex escape rules',
+          'Producing normalized filter strings and AST references for unit tests',
+        ],
+        privacyNote:
+          'All filter text is parsed locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'What do the &, | and ! symbols mean in an LDAP filter?',
+            answer:
+              'They are prefix logical operators: & is AND (all child conditions must hold), | is OR (any child condition holds), and ! is NOT (wraps exactly one child and negates it). For example (&(a=1)(b=2)) requires both conditions, while (!(c=3)) means c is not 3.',
+          },
+          {
+            question: 'Why do some values look like \\28 or \\29?',
+            answer:
+              'RFC 4515 requires *, (, ), backslash and the null byte inside assertion values to be escaped as a backslash plus two hex digits so they cannot collide with filter structure characters. For example opening parenthesis ( is \\28 and closing parenthesis ) is \\29. Non-ASCII characters are escaped byte-by-byte as UTF-8.',
+          },
+          {
+            question: 'How are star patterns such as (cn=*admin*) parsed?',
+            answer:
+              'A star forms a substring assertion. A lone star (attr=*) is a presence filter meaning the attribute exists with a value; stars with text split the value into an initial prefix, any number of contains fragments and a final suffix. (cn=*admin*) means cn contains admin, (cn=Jo*) starts with Jo, and (cn=*Doe) ends with Doe.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'oid-ber-codec',
     name: 'OID 对象标识符 BER 编解码器',
     nameEn: 'OID BER Encoder & Decoder',
