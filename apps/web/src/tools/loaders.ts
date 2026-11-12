@@ -354,4 +354,5 @@ export const toolLoaders: Record<
   'ldap-filter-parser': () => import('./ldap-filter-parser'),
   'ipv4-header-parser': () => import('./ipv4-header-parser'),
   'ber-tlv-codec': () => import('./ber-tlv-codec'),
+  'resp-codec': () => import('./resp-codec'),
 };

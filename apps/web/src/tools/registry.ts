@@ -33220,6 +33220,112 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'resp-codec',
+    name: 'Redis RESP2 / RESP3 协议解析与编码器',
+    nameEn: 'Redis RESP2 / RESP3 Parser & Encoder',
+    description:
+      '解析与构造 Redis 序列化协议 RESP2/RESP3 报文，覆盖简单字符串、错误、整数、批量字符串、数组、null、双精度浮点、布尔、大整数、集合、字典、Push 与逐字字符串等类型，提供语法树、类型表格与 inline 命令/JSON 到协议文本的双向转换。',
+    descriptionEn:
+      'Parse and build Redis Serialization Protocol RESP2/RESP3 messages, covering simple strings, errors, integers, bulk strings, arrays, null, doubles, booleans, big numbers, sets, maps, push and verbatim strings, with a syntax tree, type table and inline-command/JSON to protocol conversion.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/resp-codec',
+    iconName: 'HardDrive',
+    tags: ['Redis', 'RESP', 'RESP3', '协议解析', '编解码'],
+    tagsEn: ['Redis', 'RESP', 'RESP3', 'Protocol Parsing', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '*2\r\n$4\r\nINFO\r\n$11\r\nreplication\r\n',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Redis RESP2/RESP3 解析与编码器是一款纯浏览器本地工具。RESP（REdis Serialization Protocol）是 Redis 客户端与服务端之间的线协议，用类型前缀加 CRLF 组织数据。本工具按 RESP2 与 RESP3 规范解析协议文本，递归还原数组、集合与字典等嵌套结构，并支持把 telnet inline 命令或任意 JSON 值反向编码为合法的协议报文。',
+        coreFeatures: [
+          'RESP2 五类型：+ 简单字符串、- 错误、: 整数、$ 批量字符串（含 $-1 null）与 * 数组（含 *-1 null）',
+          'RESP3 全类型：_ null、, 双精度浮点、# 布尔、! 批量错误、= 逐字字符串（自动提取 txt: 等编码提示）、( 大整数、~ 集合、| 字典、> Push',
+          '递归解析嵌套容器，输出可折叠语法树与带层级、前缀、类型、载荷的表格，并统计顶层消息数与节点总数',
+          '双向编码：inline 命令（支持双引号分词）转 RESP2 数组，任意 JSON 值转 RESP3 协议文本，结果可往返解析',
+          '严格校验：缺失 CRLF、非法前缀、长度越界、布尔值非 t/f、verbatim 编码提示缺失等均给出明确报错',
+        ],
+        howToUse: [
+          '在“RESP 文本 → 解析树”模式粘贴协议报文，或点击预设标签载入 RESP2 命令、null、RESP3 Map 等样例',
+          '在语法树中展开数组、集合、字典查看嵌套节点，下方表格同步展示每个节点的层级与载荷',
+          '切换到“Inline 命令 → RESP”模式，输入 telnet 风格命令即可生成等价的 RESP2 批量字符串数组',
+          '切换到“JSON 值 → RESP3”模式，粘贴对象或数组，工具按类型映射为 Map、数组、布尔、整数等协议节点',
+          '使用复制按钮取走协议文本，所有处理均在本机浏览器完成',
+        ],
+        useCases: [
+          '学习 Redis 客户端与服务端通信的线协议格式，理解命令与回复如何序列化',
+          '调试 Redis 代理、客户端 SDK 或抓包得到的 RESP2/RESP3 原始报文',
+          '把 inline 命令快速转换为标准 RESP 报文，用于构造测试用例或 mock 响应',
+          '验证 RESP3 的 Map、Set、Push、布尔与大整数等富类型在网络上的实际编码',
+        ],
+        privacyNote:
+          '所有协议文本均在浏览器本地解析与编码，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: 'RESP2 和 RESP3 的主要区别是什么？',
+            answer:
+              'RESP2 只有简单字符串、错误、整数、批量字符串和数组五种类型，集合、字典等结构只能用数组平铺表达；RESP3 增加了 null（_）、双精度浮点（,）、布尔（#）、批量错误（!）、逐字字符串（=）、大整数（(）、集合（~）、字典（|）和 Push（>）等类型，能直接表达富数据结构并减少客户端二次推断。',
+          },
+          {
+            question: '批量字符串（$）里的 CRLF 会不会被误认为结束符？',
+            answer:
+              '不会。批量字符串先给出精确字节长度，解析器按长度读取载荷而不是按行分割，因此载荷内部可以包含任意二进制安全内容（包括 \\r\\n 与空字节），读完声明的字节后才要求紧跟一个 CRLF。长度不足或缺少该 CRLF 时工具会报错。',
+          },
+          {
+            question: 'inline 命令和 RESP 数组命令有什么关系？',
+            answer:
+              'telnet 风格的 inline 命令用空格分词（支持双引号包裹含空格的参数），适合人工输入；正式客户端通常把同样的参数编码为 * 数组加多个 $ 批量字符串。本工具的 inline 模式就是把前者自动转换成后者，例如 GET key 转为 *2\\r\\n$3\\r\\nGET\\r\\n$3\\r\\nkey\\r\\n。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Redis RESP2/RESP3 parser and encoder runs entirely in your browser. RESP (REdis Serialization Protocol) is the wire protocol between Redis clients and servers, organizing data with type prefixes and CRLF. Following the RESP2 and RESP3 specifications, the tool parses protocol text, recursively restores nested arrays, sets and maps, and can also encode telnet inline commands or arbitrary JSON values back into valid protocol messages.',
+        coreFeatures: [
+          'All five RESP2 types: + simple string, - error, : integer, $ bulk string (including $-1 null) and * array (including *-1 null)',
+          'Full RESP3 support: _ null, , double, # boolean, ! bulk error, = verbatim string (extracting hints such as txt:), ( big number, ~ set, | map and > push',
+          'Recursive parsing of nested containers into a collapsible syntax tree plus a table with depth, prefix, type and payload, with top-level message and total node counts',
+          'Bidirectional encoding: inline commands (with quoted token support) to RESP2 arrays, or any JSON value to RESP3 text, both round-trippable through the parser',
+          'Strict validation: missing CRLF, unknown prefixes, out-of-range lengths, non t/f booleans and missing verbatim hints all produce explicit errors',
+        ],
+        howToUse: [
+          'In “RESP text to tree” mode paste a protocol message, or click a preset to load RESP2 command, null or RESP3 map samples',
+          'Expand arrays, sets and maps in the syntax tree; the table below shows every node’s depth and payload in sync',
+          'Switch to “inline command to RESP” mode and type a telnet-style command to get the equivalent RESP2 bulk-string array',
+          'Switch to “JSON value to RESP3” mode and paste an object or array to map it into protocol nodes such as maps, arrays, booleans and integers',
+          'Use the copy button to take the protocol text; everything runs locally in your browser',
+        ],
+        useCases: [
+          'Learning the Redis client-server wire protocol and how commands and replies are serialized',
+          'Debugging raw RESP2/RESP3 messages captured from Redis proxies, client SDKs or network traces',
+          'Converting inline commands into standard RESP messages for test cases or mock responses',
+          'Verifying how RESP3 rich types such as maps, sets, push, booleans and big numbers are encoded on the wire',
+        ],
+        privacyNote:
+          'All protocol text is parsed and encoded locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'What is the main difference between RESP2 and RESP3?',
+            answer:
+              'RESP2 has only five types — simple strings, errors, integers, bulk strings and arrays — so sets and maps must be flattened into arrays. RESP3 adds null (_), double (,), boolean (#), bulk error (!), verbatim string (=), big number ((), set (~), map (|) and push (>) types, expressing rich data structures directly and removing client-side guesswork.',
+          },
+          {
+            question: 'Can a CRLF inside a bulk string ($) be mistaken for a terminator?',
+            answer:
+              'No. A bulk string first declares its exact byte length, and the parser reads the payload by length instead of splitting by lines. The payload is therefore binary-safe and may contain \\r\\n or null bytes; only after the declared bytes does it require a trailing CRLF. A short payload or missing CRLF raises an error.',
+          },
+          {
+            question: 'How do inline commands relate to RESP array commands?',
+            answer:
+              'Telnet-style inline commands split arguments on spaces (with double quotes for arguments containing spaces) and suit manual input, while real clients encode the same arguments as an * array of $ bulk strings. The inline mode converts one into the other — GET key becomes *2\\r\\n$3\\r\\nGET\\r\\n$3\\r\\nkey\\r\\n.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
