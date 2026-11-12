@@ -33236,6 +33236,114 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'projectile-motion-calculator',
+    name: '抛体运动计算器与轨迹可视化',
+    nameEn: 'Projectile Motion Calculator & Trajectory Visualizer',
+    description:
+      '在浏览器本地计算抛体运动：支持自由落体、平抛与斜抛三种模式，输入初速度（m/s、km/h、ft/s）、发射角度、初始高度与重力加速度（9.8/9.81/自定义），输出飞行时间、水平射程、最大高度、最高点坐标与落地速度，并在 SVG 上绘制带等时间隔标记的轨迹曲线。真空模式为闭合解析公式；可选线性空气阻力（F=-k·v）由 RK4 数值积分求解，并与真空轨迹同图对比。',
+    descriptionEn:
+      'Computes projectile motion locally in the browser across free-fall, horizontal-launch and oblique-launch modes. Given initial speed (m/s, km/h, ft/s), launch angle, initial height and gravity (9.8/9.81/custom), it reports flight time, horizontal range, maximum height, apex coordinates and landing speed, and draws an SVG trajectory with equal-time-interval markers. The vacuum model uses closed-form analytic equations; an optional linear drag model (F=-k·v) is integrated with the RK4 method and overlaid against the vacuum path for comparison.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/projectile-motion-calculator',
+    iconName: 'Satellite',
+    tags: ['物理', '抛体运动', '运动学', '轨迹', '空气阻力', 'RK4'],
+    tagsEn: ['Physics', 'Projectile Motion', 'Kinematics', 'Trajectory', 'Air Drag', 'RK4'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'v=20 m/s, 45°, h0=0, g=9.8',
+    doc: {
+      zh: {
+        whatIsIt:
+          '抛体运动计算器把抛体分解为水平与竖直两个独立方向：真空模式下水平方向匀速、竖直方向匀加速，飞行时间由 ½gt²−vy₀t−h₀=0 的正根给出，射程、最高点与落地速度全部由闭合公式直接求解，可作为物理教学的标准答案。开启线性空气阻力后，运动方程加入与速度成正比的阻力项 F=−k·v，不再有初等解析解，工具改用四阶 Runge–Kutta 定步长积分直到首次触地，并对触地时刻做线性插值，两条轨迹在同一张 SVG 上对比。',
+        coreFeatures: [
+          '三种发射模式：自由落体（v₀=0）、平抛（水平初速度）、斜抛（带 0–90° 发射角）',
+          '多单位输入：初速度支持 m/s、km/h、ft/s 实时换算，g 支持 9.8、9.81 与自定义值',
+          '真空解析解：飞行时间、水平射程、最大高度、到达最高点时刻与坐标、落地速度均为闭合公式',
+          'SVG 轨迹可视化：自适应坐标范围、网格与坐标轴，圆点标注等时间隔采样位置',
+          '线性空气阻力模型：F=−k·v 的 RK4 数值积分，阻力轨迹虚线叠加并给出相对真空解的偏差百分比',
+          '逐点数据表：等时间隔输出 t、x、y、vx、vy 与合速度，20 个 Vitest 用例固定经典向量与阻力性质',
+        ],
+        howToUse: [
+          '用顶部分段控件选择自由落体、平抛或斜抛模式',
+          '填写初速度与单位、发射角度（仅斜抛）、初始高度，并选择重力加速度预设或自定义 g',
+          '需要考虑空气阻力时打开开关并填写阻力系数 k（单位 1/s）',
+          '查看运动学结果卡片中的飞行时间、射程、最大高度、最高点坐标与落地速度',
+          '在轨迹图中对照蓝色真空实线与橙色阻力虚线，圆点为等时间隔标记；下方表格给出逐点数据',
+        ],
+        useCases: [
+          '中学与大学物理作业中核对斜抛、平抛与自由落体的标准答案',
+          '工程估算中快速评估发射角度、初速度与高度对射程的影响',
+          '教学演示数值积分（RK4）与解析解的差异，以及空气阻力如何压缩射程与飞行时间',
+          '球类、投掷、消防水炮等场景的理想弹道快速估算',
+        ],
+        privacyNote:
+          '所有运动学计算与数值积分均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '真空模式与空气阻力模式的结果为什么不同？',
+            answer:
+              '真空模式只受恒定重力，存在闭合解析公式，轨迹是标准抛物线。线性阻力模式额外受到与速度成正比、方向相反的阻力 F=−k·v，水平速度持续衰减、上升与下落也受到阻尼，因此射程、飞行时间与落地速度都不大于真空解，只能通过 RK4 数值积分逐步求解。',
+          },
+          {
+            question: '阻力系数 k 的单位与物理含义是什么？',
+            answer:
+              '线性阻力模型写作加速度形式 a=−g·ŷ−k·v，因此 k 的单位是 1/s。k=0 即真空；k 越大阻尼越强，自由落体时终端速度趋近 g/k。该模型适用于低速、小雷诺数场景（如密介质或微小物体），高速弹道通常需要与速度平方成正比的二次阻力模型。',
+          },
+          {
+            question: '轨迹上的圆点代表什么？',
+            answer:
+              '圆点是等时间隔采样标记：相邻圆点之间的时间差相同。真空轨迹按飞行时间均匀取 41 个点，阻力轨迹按相同时间间隔由积分网格插值生成，因此圆点疏密可以直观对比两种模型在相同时刻的位置差异。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This calculator decomposes projectile motion into independent horizontal and vertical components. In vacuum the horizontal motion is uniform and the vertical motion uniformly accelerated; flight time is the positive root of ½gt²−vy₀t−h₀=0, while range, apex and landing speed follow directly from closed-form equations suitable as textbook reference answers. With linear air drag enabled, the equations gain a velocity-proportional term F=−k·v that has no elementary solution, so a fixed-step fourth-order Runge–Kutta integration runs until first ground contact with linear interpolation at impact, and both trajectories are overlaid on one SVG chart.',
+        coreFeatures: [
+          'Three launch modes: free fall (zero initial speed), horizontal launch and oblique launch with a 0–90° angle',
+          'Multi-unit input: initial speed in m/s, km/h or ft/s with live conversion; gravity presets 9.8, 9.81 or custom',
+          'Vacuum analytic solution: flight time, range, maximum height, apex time and coordinates, and landing speed from closed formulas',
+          'SVG trajectory visualization with auto-scaled axes, grid lines and equal-time-interval dot markers',
+          'Linear drag model: RK4 integration of F=−k·v, dashed drag path overlaid on the vacuum curve with relative-difference percentages',
+          'Point-by-point data table of t, x, y, vx, vy and speed at equal time steps; 20 Vitest cases pin classic vectors and drag properties',
+        ],
+        howToUse: [
+          'Choose free-fall, horizontal or oblique mode with the segmented control at the top',
+          'Enter initial speed and its unit, launch angle (oblique mode only), initial height, and pick a gravity preset or a custom g',
+          'Turn on the switch and set the drag coefficient k (in 1/s) to include linear air resistance',
+          'Read flight time, range, maximum height, apex coordinates and landing speed from the result cards',
+          'Compare the blue solid vacuum path with the orange dashed drag path; dots mark equal time intervals, and the table below lists per-point data',
+        ],
+        useCases: [
+          'Checking standard answers for oblique, horizontal and free-fall problems in school and university physics',
+          'Quick engineering estimates of how angle, speed and height affect range',
+          'Teaching the difference between numerical integration (RK4) and analytic solutions, and how drag shrinks range and flight time',
+          'Idealized ballistic estimates for ball sports, throwing and water-jet scenarios',
+        ],
+        privacyNote:
+          'All kinematic calculations and numerical integration run locally in the browser; no network requests are made.',
+        faqs: [
+          {
+            question: 'Why do the vacuum and air-drag results differ?',
+            answer:
+              'The vacuum model experiences only constant gravity and has closed-form equations producing a perfect parabola. The linear-drag model adds a velocity-proportional opposing force F=−k·v that continuously decays horizontal speed and damps both ascent and descent, so range, flight time and landing speed never exceed the vacuum values; the motion can only be obtained step by step via RK4 integration.',
+          },
+          {
+            question: 'What does the drag coefficient k mean and what are its units?',
+            answer:
+              'Written in acceleration form, the model is a=−g·ŷ−k·v, so k has units of 1/s. k=0 is vacuum; larger k means stronger damping, and in free fall the terminal speed approaches g/k. This linear model fits low-speed, low-Reynolds-number situations such as dense fluids or tiny objects; high-speed ballistics typically require quadratic drag proportional to speed squared.',
+          },
+          {
+            question: 'What do the dots on the trajectory represent?',
+            answer:
+              'The dots are equal-time-interval sample markers: adjacent dots are separated by the same time difference. The vacuum path uses 41 uniformly spaced points over flight time, while the drag path is interpolated from the integration grid at the same interval, so dot spacing visually contrasts where each model is at identical moments.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

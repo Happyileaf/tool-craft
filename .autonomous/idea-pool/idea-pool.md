@@ -302,7 +302,7 @@
 | 20261112020116 | SLA 可用性与允许停机时间换算器（99.9% 等指标 ↔ 日/周/月/年停机预算） | Web Tool | Exploration | Claimed | 2026-11-12 | trae-agent | [详情](./idea-details/20261112020116.md) |
 | 20261112020117 | RAID 磁盘阵列容量与容错规划计算器（RAID 0/1/5/6/10 容量、可用率与故障容忍度） | Web Tool | Exploration | Claimed | 2026-11-12 | trae-agent | [详情](./idea-details/20261112020117.md) |
 | 20261112020118 | 卡诺图（Karnaugh Map）化简器与 SOP/POS 表达式生成（2–4 变量） | Web Tool | Exploration | Claimed | 2026-11-12 | trae-agent | [详情](./idea-details/20261112020118.md) |
-| 20261112020119 | 抛体运动计算器与轨迹可视化（斜抛/平抛/自由落体，含空气阻力可选模型） | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112020119.md) |
+| 20261112020119 | 抛体运动计算器与轨迹可视化（斜抛/平抛/自由落体，含空气阻力可选模型） | Web Tool | Exploration | Done | 2026-11-12 | projectile-motion-calculator | [详情](./idea-details/20261112020119.md) |
 | 20261112020120 | 图片转 ASCII 字符画生成器（灰度/彩色字符映射、可调宽度与对比度，本地导出） | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112020120.md) |
 | 20261112080434 | Fletcher 校验和计算器（Fletcher-16 / Fletcher-32 / Fletcher-64） | Web Tool | Existing Gap | In Progress | 2026-11-12 | trae-agent | [详情](./idea-details/20261112080434.md) |
 | 20261112140147 | RFC 7239 Forwarded HTTP 头解析与生成器（代理链 for/by/proto/host 编解码） | Web Tool | Exploration | In Progress | 2026-11-12 | 20261112180415 (trae-agent) | [详情](./idea-details/20261112140147.md) |

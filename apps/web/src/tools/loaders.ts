@@ -354,4 +354,5 @@ export const toolLoaders: Record<
   'oid-codec': () => import('./oid-codec'),
   'apca-contrast-calculator': () => import('./apca-contrast-calculator'),
   'chemical-equation-balancer': () => import('./chemical-equation-balancer'),
+  'projectile-motion-calculator': () => import('./projectile-motion-calculator'),
 };
