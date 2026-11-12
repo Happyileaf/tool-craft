@@ -33128,6 +33128,114 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'chemical-equation-balancer',
+    name: '化学方程式配平器与摩尔计量计算器',
+    nameEn: 'Chemical Equation Balancer & Stoichiometry Calculator',
+    description:
+      '在浏览器本地配平化学方程式：解析括号嵌套（Ca(OH)2）、多层下标与水合点（CuSO4·5H2O），通过 BigInt 分数高斯-约当消元求元素守恒齐次方程组的最小正整数解，并基于配平系数做摩尔计量换算（物质的量、质量、标况气体体积 22.4 L/mol）。欠定体系与单侧元素会明确报错而非猜测系数。',
+    descriptionEn:
+      'Balances chemical equations entirely in the browser: parses nested parentheses (Ca(OH)2), multi-level subscripts and hydration dots (CuSO4·5H2O), then solves the element-conservation homogeneous system with BigInt-fraction Gauss-Jordan elimination to obtain the smallest positive integer coefficients. A stoichiometry tab converts moles, mass and STP gas volume (22.4 L/mol) across all species. Under-determined systems and one-sided elements raise explicit errors instead of guessing.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/chemical-equation-balancer',
+    iconName: 'Sigma',
+    tags: ['化学', '方程式配平', '摩尔', '化学计量', '高斯消元'],
+    tagsEn: ['Chemistry', 'Equation Balancing', 'Mole', 'Stoichiometry', 'Gaussian Elimination'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Fe + O2 -> Fe2O3',
+    doc: {
+      zh: {
+        whatIsIt:
+          '化学方程式配平器把未配平的方程式（如 Fe + O2 -> Fe2O3）转化为元素守恒的线性齐次方程组：每个元素对应一行，反应物取正号、生成物取负号，未知量是各物种的系数。工具用 BigInt 分数做高斯-约当消元求零空间，只有零空间维数恰好为 1 时才整数化并约分为最小正整数系数，全程无浮点误差。配平后可进一步按系数比做摩尔质量、物质的量与标况气体体积换算。',
+        coreFeatures: [
+          '完整化学式解析：元素符号、下标、圆括号嵌套（含 Ca3(PO4)2 多层结构）与水合点 ·/•/*（CuSO4·5H2O）',
+          '精确配平：BigInt 分数高斯-约当消元，零空间维数为 1 才输出，结果恒为最小正整数系数',
+          '健壮校验：括号不匹配、未知元素、缺箭头、重复物种、元素只出现在一侧、欠定体系均明确报错',
+          '元素组成与摩尔质量：逐物种展示元素原子数与基于 IUPAC 常用原子量的摩尔质量',
+          '摩尔计量：指定任一物种的物质的量或质量，按系数比换算全部物种的 mol、g 与标况体积',
+          '9 组经典方程式向量（含 C2H6 燃烧、Al+HCl、Ca(OH)2+H3PO4 等）在 27 个 Vitest 用例中固定验收',
+        ],
+        howToUse: [
+          '在「方程式配平」页输入未配平方程式，用 ->、= 或 → 分隔两侧，物种间用 + 连接',
+          '点击预设标签可快速载入经典反应；输入框在无法解析时会标红并给出原因',
+          '查看配平结果框中的完整方程式，以及下方每个物种的系数、元素组成与摩尔质量',
+          '切换到「摩尔计量换算」页，选择已知物种、输入方式（mol 或 g）与数值',
+          '表格按配平系数比给出所有物种的物质的量、质量与标况气体体积',
+        ],
+        useCases: [
+          '中学与大学化学作业中快速核对配平系数与计量比',
+          '实验投料计算：由目标产物质量反推反应物用量',
+          '教学演示元素守恒线性方程组与零空间求解过程',
+          '水合盐、含括号复盐等复杂化学式的元素组成与摩尔质量查询',
+        ],
+        privacyNote:
+          '所有化学式解析、线性代数求解与计量换算均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么有的方程式提示「无法唯一配平」？',
+            answer:
+              '配平本质是求齐次线性方程组的零空间。当独立方程数少于未知物种数（零空间维数大于 1）时存在无穷多组系数，例如 C + O2 -> CO + CO2 同时生成两种产物且缺少比例约束；当元素只出现在箭头一侧时则无解。这类情况工具不会猜测，而是要求补充约束或修正方程式。',
+          },
+          {
+            question: '配平系数为什么一定是最小正整数？',
+            answer:
+              '零空间基向量由 BigInt 分数表示，先取所有分母的最小公倍数整数化，再除以全部系数的最大公约数约分。BigInt 运算避免了浮点消元的舍入误差，因此即使系数很大也能得到精确的最小整数解。',
+          },
+          {
+            question: '输入里已经写了系数怎么办？',
+            answer:
+              '解析时会自动剥离每个物种前的前导数字（如 2H2O 视为 H2O），统一由配平算法重新求系数，避免人工系数干扰守恒方程。水合点后的倍数（如 5H2O 中的 5）属于化学式的一部分，会正常参与元素计数。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This balancer converts an unbalanced equation (e.g. Fe + O2 -> Fe2O3) into a homogeneous linear system of element-conservation equations: one row per element, positive signs for reactants and negative for products, with the species coefficients as unknowns. BigInt-fraction Gauss-Jordan elimination finds the null space; only when its dimension is exactly one are the fractions integerized and reduced to the smallest positive integer coefficients, with no floating-point error. Stoichiometry conversion then maps moles, mass and STP gas volume across species using the coefficient ratios.',
+        coreFeatures: [
+          'Full formula parsing: element symbols, subscripts, nested parentheses (including multi-level Ca3(PO4)2) and hydration dots ·/•/* (CuSO4·5H2O)',
+          'Exact balancing: BigInt-fraction Gauss-Jordan elimination that emits output only for a one-dimensional null space, always yielding smallest positive integer coefficients',
+          'Robust validation: explicit errors for mismatched parentheses, unknown elements, missing arrows, duplicate species, one-sided elements and under-determined systems',
+          'Composition and molar mass: per-species atom counts and molar masses from common IUPAC atomic weights',
+          'Stoichiometry: given the moles or mass of any species, derives mol, grams and STP volume for every species via coefficient ratios',
+          'Nine classic equation vectors (C2H6 combustion, Al+HCl, Ca(OH)2+H3PO4 and more) pinned across 27 Vitest cases',
+        ],
+        howToUse: [
+          'On the balancing tab, enter an unbalanced equation using ->, = or → between sides and + between species',
+          'Use preset tags to load classic reactions; the input turns red with an explanatory message when parsing fails',
+          'Read the fully balanced equation in the result box and the per-species coefficients, composition and molar masses below',
+          'Switch to the stoichiometry tab, pick the reference species and choose moles or mass input',
+          'The table reports moles, mass and STP gas volume for every species according to the coefficient ratios',
+        ],
+        useCases: [
+          'Checking balancing coefficients and mole ratios for school and university chemistry homework',
+          'Planning reagent quantities from a target product mass in lab work',
+          'Teaching element conservation as a linear system and null-space solving',
+          'Inspecting composition and molar mass of complex formulas with parentheses and hydrates',
+        ],
+        privacyNote:
+          'All formula parsing, linear algebra and stoichiometry run locally in the browser; no network requests are made.',
+        faqs: [
+          {
+            question: 'Why do some equations report that they cannot be balanced uniquely?',
+            answer:
+              'Balancing is equivalent to finding the null space of a homogeneous linear system. When independent equations are fewer than unknown species (null-space dimension above one), infinitely many coefficient sets exist — for example C + O2 -> CO + CO2 produces two products without a ratio constraint. Elements appearing on only one side make the system unsolvable. Rather than guessing, the tool asks for extra constraints or a corrected equation.',
+          },
+          {
+            question: 'Why are the coefficients guaranteed to be the smallest positive integers?',
+            answer:
+              'The null-space basis is expressed in BigInt fractions: all denominators are cleared via their least common multiple, then the greatest common divisor is removed. BigInt arithmetic eliminates the rounding errors of floating-point elimination, so exact minimal integer solutions are produced even for large coefficients.',
+          },
+          {
+            question: 'What if I already typed coefficients in the equation?',
+            answer:
+              'Leading numbers before each species (e.g. 2H2O) are stripped during parsing and treated as H2O, because coefficients are re-derived by the solver to avoid corrupting the conservation equations. Multipliers after a hydration dot (the 5 in 5H2O) are part of the chemical formula and are counted normally.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

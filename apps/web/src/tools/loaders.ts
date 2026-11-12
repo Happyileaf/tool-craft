@@ -353,4 +353,5 @@ export const toolLoaders: Record<
   'redis-protocol-codec': () => import('./redis-protocol-codec'),
   'oid-codec': () => import('./oid-codec'),
   'apca-contrast-calculator': () => import('./apca-contrast-calculator'),
+  'chemical-equation-balancer': () => import('./chemical-equation-balancer'),
 };
