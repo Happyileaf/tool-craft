@@ -1,0 +1,58 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mono {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 13px;
+}
+
+.hexBox {
+  margin: 0;
+  padding: 12px;
+  overflow: auto;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 15px;
+  font-weight: 600;
+  word-break: break-all;
+  background: rgb(0 0 0 / 4%);
+  border-radius: 6px;
+}
+
+.stepTable {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 13px;
+}
+
+.nameTag {
+  font-size: 13px;
+}
+
+.batchRow {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 12px;
+}
+
+.hint {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgb(107 114 128);
+}

@@ -32912,6 +32912,114 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'oid-codec',
+    name: 'OID 编解码工具（点分十进制 ↔ BER 十六进制）',
+    nameEn: 'OID Codec (Dotted Notation ↔ BER Hex)',
+    description:
+      '针对 ASN.1 对象标识符（OID）的本地双向编解码：把点分十进制弧序列（如 1.2.840.113549.1.1.11）按首弧 40·X+Y 合并、后续弧 base-128 变长压缩规则编码为 BER/DER 内容字节十六进制，或把十六进制（容忍空格、冒号、0x 前缀）还原为点分 OID；逐弧展示 7 位分组与输出字节，校验首两弧取值范围，生成完整 DER TLV，内置 30 个常见密码学/X.500 OID 名称标注，并支持每行一条的批量转换。',
+    descriptionEn:
+      'Local bidirectional codec for ASN.1 Object Identifiers: encode dotted-decimal arcs (e.g. 1.2.840.113549.1.1.11) into BER/DER content bytes using the 40·X+Y first-arc merge and base-128 variable-length compression, or decode hex (tolerating spaces, colons and 0x prefixes) back to dotted OID. Visualizes per-arc 7-bit groups and output bytes, validates first-two-arc ranges, emits a full DER TLV, ships an inline table of 30 common crypto/X.500 OID names, and supports line-by-line batch conversion.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/oid-codec',
+    iconName: 'Fingerprint',
+    tags: ['OID', 'ASN.1', 'BER', 'DER', 'X.509'],
+    tagsEn: ['OID', 'ASN.1', 'BER', 'DER', 'X.509'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1.2.840.113549.1.1.11',
+    doc: {
+      zh: {
+        whatIsIt:
+          'OID 编解码工具是一款纯浏览器本地的 ASN.1 对象标识符转换工具。OID 是 X.509 证书、PKCS、SNMP、LDAP 等体系中广泛使用的层级化数字命名方式，点分十进制形式便于阅读，而 BER/DER 编码后的十六进制字节则出现在证书转储与协议报文中。本工具在两种表示之间双向转换，并把 base-128 压缩弧的每一步透明展示出来。',
+        coreFeatures: [
+          '双向转换：点分十进制 OID ↔ BER/DER 内容字节十六进制，标准向量 1.2.840.113549.1.1.11 ↔ 2A864886F70D01010B',
+          '规则透明：逐弧展示 40·X+Y 合并值、7 位分组与最终输出字节，理解多字节压缩弧不再靠猜',
+          '完整 TLV：一键生成带 Tag 06 与短/长形式 Length 的完整 DER TLV，可直接对照证书转储',
+          '严格校验：第一弧限定 0/1/2、前两弧越界、非数字、未结束的 base-128 整数等均明确报错',
+          '常见名称：内置 30 个密码学与 X.500 目录 OID 名称（如 sha256WithRSAEncryption、CN、SAN），无需外部数据库',
+          '批量模式：每行一条自动识别方向，适合处理抓包或文档中的多条 OID',
+        ],
+        howToUse: [
+          '在「OID → HEX 编码」页输入点分十进制 OID，即时得到内容字节与完整 TLV',
+          '查看逐弧表格理解 base-128 分组与高位续位标记的生成过程',
+          '切换到「HEX → OID 解码」页粘贴十六进制，支持空格、冒号或 0x 前缀分隔',
+          '在「批量转换」页每行粘贴一条 OID 或十六进制，自动识别方向并标注常见名称',
+          '用复制按钮把结果带入证书分析、文档或单元测试',
+        ],
+        useCases: [
+          '阅读 X.509 证书、CSR、CRL 的 openssl asn1parse 转储时快速还原 OID 含义',
+          '开发 ASN.1/DER 编解码器时用标准向量对照验证 base-128 实现',
+          '编写 SNMP MIB、LDAP schema 或 PKCS#7/#9 相关测试数据',
+          '学习 OID 首弧合并规则与 BER 变长整数编码原理',
+        ],
+        privacyNote:
+          '所有转换均为浏览器本地整数与位运算，不访问任何 OID 在线数据库或网络服务。',
+        faqs: [
+          {
+            question: '为什么前两个弧要合并成一个字节？',
+            answer:
+              'BER 规定 OID 内容的首字节承载前两个弧：值为 40·X+Y。由于第一弧只有 0、1、2 三种取值且前两种情况下第二弧小于 40，该组合可以无歧义还原；第一弧为 2（ISO）时第二弧不受 40 限制，超出部分自然进入 base-128 多字节编码。',
+          },
+          {
+            question: 'base-128 变长压缩是怎么工作的？',
+            answer:
+              '把弧值按每 7 位一组从高位到低位拆分，除最后一组外每组最高位（第 8 位）置 1 表示后续还有字节，最后一组最高位置 0 表示结束。例如 840 拆为 6、72 两组，输出 86 48。',
+          },
+          {
+            question: '为什么我粘贴的完整 TLV 解码失败？',
+            answer:
+              '本工具的解码输入只接受 OID 的内容字节（Value）。完整 TLV 以 06 开头并跟随 Length 字节，需要先去掉这两部分（长形式 Length 可能占多字节）。编码页则提供了反向的完整 TLV 生成能力。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The OID codec is a fully local browser tool for ASN.1 Object Identifiers. OIDs are hierarchical numeric names used across X.509 certificates, PKCS, SNMP and LDAP: dotted notation is human-readable while BER/DER hex bytes appear in certificate dumps and protocol messages. This tool converts between the two representations and exposes every step of the base-128 arc compression.',
+        coreFeatures: [
+          'Bidirectional conversion: dotted OID ↔ BER/DER content hex, with the standard vector 1.2.840.113549.1.1.11 ↔ 2A864886F70D01010B',
+          'Transparent rules: per-arc table of the 40·X+Y merge, 7-bit groups and final output bytes demystifies multibyte compressed arcs',
+          'Full TLV: generate a complete DER TLV with Tag 06 and short/long form Length for direct comparison with certificate dumps',
+          'Strict validation: first arc limited to 0/1/2, explicit errors for out-of-range second arcs, non-numeric input and unterminated base-128 integers',
+          'Inline names: 30 common crypto and X.500 directory OIDs (sha256WithRSAEncryption, CN, SAN and more) without any external database',
+          'Batch mode: one entry per line with automatic direction detection for packet captures and documents',
+        ],
+        howToUse: [
+          'Enter a dotted OID on the OID → HEX tab to get content bytes and the full TLV instantly',
+          'Study the per-arc table to see how 7-bit groups and continuation bits are produced',
+          'Switch to the HEX → OID tab and paste hex with spaces, colons or 0x prefixes',
+          'Use the Batch tab with one OID or hex string per line; direction is detected and common names are annotated automatically',
+          'Copy results into certificate analysis, documents or unit tests',
+        ],
+        useCases: [
+          'Restoring OID meaning while reading openssl asn1parse dumps of X.509 certificates, CSRs and CRLs',
+          'Validating base-128 implementations against standard vectors while building ASN.1/DER codecs',
+          'Preparing test data for SNMP MIBs, LDAP schemas or PKCS#7/#9 workflows',
+          'Learning the OID first-arc merge rule and BER variable-length integer encoding',
+        ],
+        privacyNote:
+          'Every conversion is local integer and bit arithmetic in your browser; no online OID database or network service is contacted.',
+        faqs: [
+          {
+            question: 'Why are the first two arcs merged into one byte?',
+            answer:
+              'BER encodes the first two arcs in the first content byte as 40·X+Y. Because the first arc is only 0, 1 or 2 and the second arc is below 40 in the first two cases, the combination is unambiguous; when the first arc is 2 (ISO) the second arc is unbounded and naturally flows into multibyte base-128 encoding.',
+          },
+          {
+            question: 'How does base-128 variable-length compression work?',
+            answer:
+              'The arc value is split into 7-bit groups from high to low. Every group except the last sets the high (8th) bit to signal more bytes; the final group clears it to mark the end. For example 840 splits into groups 6 and 72, emitting bytes 86 48.',
+          },
+          {
+            question: 'Why does pasting a complete TLV fail to decode?',
+            answer:
+              'The decoder accepts OID content bytes (Value) only. A complete TLV starts with 06 followed by Length octets that must be stripped first (long-form Length may span multiple bytes). The encode tab offers the reverse operation and generates the full TLV for you.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
