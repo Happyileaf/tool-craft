@@ -32281,6 +32281,529 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'forwarded-header-codec',
+    name: 'RFC 7239 Forwarded HTTP 头解析与生成器',
+    nameEn: 'RFC 7239 Forwarded Header Parser & Builder',
+    description:
+      '解析与构造 RFC 7239 Forwarded 头，支持多跳代理链的 for/by/host/proto 参数、IPv4/IPv6（含端口）、unknown 与混淆节点，自动处理引号转义与节点合法性校验，解析结果可一键载入构造器再编辑。',
+    descriptionEn:
+      'Parse and build RFC 7239 Forwarded headers across multi-hop proxy chains, covering for/by/host/proto parameters, IPv4/IPv6 nodes with ports, unknown and obfuscated identifiers, with automatic quoting/escaping and node validation; parsed results can be loaded into the builder for editing.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/forwarded-header-codec',
+    iconName: 'Globe',
+    tags: ['RFC 7239', 'Forwarded', 'HTTP 头', '代理', '反向代理', 'IPv6'],
+    tagsEn: ['RFC 7239', 'Forwarded', 'HTTP Header', 'Proxy', 'Reverse Proxy', 'IPv6'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'for=192.0.2.60;proto=http;by=203.0.113.43, for="[2001:db8:cafe::17]:4711";proto=https;host=example.com',
+    doc: {
+      zh: {
+        whatIsIt:
+          'RFC 7239 Forwarded HTTP 头解析与生成器是一款纯浏览器本地工具：把代理链上逐跳记录的 Forwarded 头字段解析为结构化表格，或通过表单逐跳构造合规的头值。它处理 for/by/host/proto 四个标准参数、节点标识（IPv4、带端口 IPv6、unknown、_obfuscated）的合法性校验，以及引号包裹与反斜杠转义细节。',
+        coreFeatures: [
+          '多跳解析：逗号分隔的转发元素逐跳拆分为表格，引号内逗号不会误切分',
+          '节点校验：IPv4/IPv4:port、裸 IPv6 与 [IPv6]:port、unknown、_obfuscated 全覆盖，错误带跳数定位',
+          '双向工作流：解析结果一键载入构造器，表单增删跳数后重新生成',
+          '合规生成：参数名统一小写、固定 for→by→host→proto 顺序，必要时自动加引号并转义',
+          '容错解析：容忍空白与大小写差异，非标准参数与空值逐条告警',
+        ],
+        howToUse: [
+          '在「解析」模式粘贴 Forwarded 头字段值，查看逐跳参数表格与告警',
+          '切换到「构造」模式，逐跳填写 for/by/host/proto，可随时新增或删除跳数',
+          '复制生成结果直接写入网关或应用的响应/请求头配置',
+          '解析后点击「载入构造器」可在现有代理链基础上修改再生成',
+        ],
+        useCases: [
+          '排查经过 CDN、负载均衡与多级反向代理后的真实客户端地址',
+          '为 Nginx/Envoy/Cloudflare 等代理编写或核对 Forwarded 头规则',
+          '对照 X-Forwarded-For 理解标准化 Forwarded 头的信息模型',
+          '教学演示代理链中节点标识、引号与转义的 RFC 合规写法',
+        ],
+        privacyNote:
+          '全部解析与生成均在浏览器本地完成，头字段内容不会上传或离开设备。',
+        faqs: [
+          {
+            question: 'Forwarded 和 X-Forwarded-For 有什么区别？',
+            answer:
+              'X-Forwarded-For 是非标准事实约定，只记录客户端 IP 链；RFC 7239 Forwarded 是标准化头，每一跳都可以同时携带 for（发起节点）、by（代理节点）、proto（原始协议）与 host（原始 Host），并定义了 unknown 与混淆节点的规范写法。',
+          },
+          {
+            question: '为什么 IPv6 节点外面有方括号和引号？',
+            answer:
+              'IPv6 地址本身含冒号，与端口分隔符冲突，因此带端口时必须用方括号包裹地址，如 [2001:db8::17]:4711；又因为该值不再是合法 token，RFC 7239 要求整体再加引号，写成 for="[2001:db8::17]:4711"。',
+          },
+          {
+            question: 'unknown 和 _obfuscated 分别什么时候用？',
+            answer:
+              '当代理无法或不应披露节点身份时使用 unknown，表示信息缺失；_obfuscated（下划线开头的自定义标识）用于在日志间关联同一节点又不暴露真实 IP，例如 by=_proxyA。两者都会通过本工具的节点合法性校验。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The RFC 7239 Forwarded Header Parser & Builder runs entirely in your browser. It turns per-hop Forwarded header fields recorded along a proxy chain into a structured table, or builds compliant header values through a hop-by-hop form. It handles the four standard parameters for/by/host/proto, validates node identifiers (IPv4, IPv6 with port, unknown, _obfuscated), and manages quoting and backslash escaping correctly.',
+        coreFeatures: [
+          'Multi-hop parsing: comma-separated forwarded elements become a per-hop table; commas inside quotes never split elements',
+          'Node validation covering IPv4/IPv4:port, bare IPv6 and [IPv6]:port, unknown and _obfuscated, with hop-indexed errors',
+          'Bidirectional workflow: load parsed results into the builder, add or remove hops, then regenerate',
+          'Compliant generation: lowercase parameter names, fixed for-by-host-proto order, automatic quoting and escaping when needed',
+          'Lenient parsing tolerating whitespace and case differences, with per-item warnings for non-standard parameters and empty values',
+        ],
+        howToUse: [
+          'Paste a Forwarded header value in Parse mode to inspect the per-hop table and warnings',
+          'Switch to Build mode, fill for/by/host/proto for each hop, and add or remove hops freely',
+          'Copy the generated value into gateway or application header configuration',
+          'Use "Load into builder" after parsing to modify an existing proxy chain before regenerating',
+        ],
+        useCases: [
+          'Tracing the real client address through CDNs, load balancers and multi-level reverse proxies',
+          'Writing or verifying Forwarded rules for Nginx, Envoy, Cloudflare and similar proxies',
+          'Understanding the standardized Forwarded model alongside the legacy X-Forwarded-For header',
+          'Teaching RFC-compliant node identifiers, quoting and escaping in proxy chains',
+        ],
+        privacyNote:
+          'All parsing and generation happen locally in your browser; header content is never uploaded.',
+        faqs: [
+          {
+            question: 'How is Forwarded different from X-Forwarded-For?',
+            answer:
+              'X-Forwarded-For is a non-standard de-facto convention carrying only a client IP chain. The RFC 7239 Forwarded header is standardized: every hop can carry for (initiating node), by (proxy node), proto (original scheme) and host (original Host), with defined spelling for unknown and obfuscated nodes.',
+          },
+          {
+            question: 'Why do IPv6 nodes have brackets and quotes?',
+            answer:
+              'IPv6 addresses contain colons, which clash with the port separator, so an address with a port must be bracketed as [2001:db8::17]:4711. Because the result is no longer a valid token, RFC 7239 requires the whole value to be quoted as well, e.g. for="[2001:db8::17]:4711".',
+          },
+          {
+            question: 'When should I use unknown versus _obfuscated?',
+            answer:
+              'Use unknown when a proxy cannot or must not disclose a node identity, indicating missing information. Use an _obfuscated identifier (an underscore-prefixed token such as by=_proxyA) to correlate the same node across logs without revealing its real IP. Both pass the tool’s node validation.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'uri-template-expander',
+    name: 'RFC 6570 URI Template 展开器',
+    nameEn: 'RFC 6570 URI Template Expander',
+    description:
+      '按 RFC 6570 Level 1–4 规则展开 URI 模板：支持简单替换、+ 保留展开、# 片段、. / ; ? & 路径与查询操作符，以及 explode（*）复合值和 :maxlen 前缀截断；自动百分号编码（含 UTF-8 多字节）、校验未配对花括号与缺失变量，实时输出可复制的完整 URI。',
+    descriptionEn:
+      'Expands URI templates per RFC 6570 Level 1–4: simple, reserved (+), fragment (#), label (.), path (/), parameter (;) and query (?/&) operators, plus explode (*) for composites and :maxlen prefix truncation. Handles percent-encoding including UTF-8 multibyte, validates unbalanced braces and missing variables, and outputs a ready-to-copy URI in real time.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/uri-template-expander',
+    iconName: 'Link2',
+    tags: ['RFC 6570', 'URI Template', 'URL', 'REST API', '模板展开'],
+    tagsEn: ['RFC 6570', 'URI Template', 'URL', 'REST API', 'Template Expansion'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'https://api.example.com/{+version}/users/{userId}{?fields*,limit}{#section}',
+    doc: {
+      zh: {
+        whatIsIt:
+          'RFC 6570 URI Template 展开器是一款纯浏览器本地工具。它把含 {var} 表达式的 URI 模板与 JSON 变量集结合，按 RFC 6570 规范的四个级别展开为真实 URI，覆盖简单替换、保留字符展开、片段、标签、路径、路径参数与查询串等全部操作符，并正确处理数组/对象复合值、explode 修饰与前缀截断。',
+        coreFeatures: [
+          'Level 1–4 全覆盖：无操作符、+、#、.、/、;、?、& 八种表达式形式',
+          '复合值展开：数组与对象支持普通逗号拼接与 explode（*）两种形式',
+          '精确编码：按 RFC 3986 unreserved 规则做百分号编码，UTF-8 多字节字符逐字节编码，+/# 保留合法保留字符',
+          '修饰符支持：:maxlen 按 Unicode 码点前缀截断，避免切断代理对',
+          '实时校验：未配对花括号、非法截断长度、缺失变量与变量 JSON 语法错误即时提示',
+        ],
+        howToUse: [
+          '在「URI 模板」卡片输入含 {…} 表达式的模板，工具会自动列出引用的变量名',
+          '在「变量集」卡片用 JSON 对象提供变量值，支持字符串、数字、布尔、数组与对象',
+          '查看「展开结果」卡片中的完整 URI，点击「复制 URI」直接使用',
+          '红色变量标签表示该变量未提供，对应表达式会按规范省略',
+        ],
+        useCases: [
+          '为 REST API 客户端生成带查询参数、路径参数与片段的请求 URL',
+          '验证 HATEOAS / HAL 文档中 URI 模板的实际展开结果',
+          '对照 RFC 6570 官方示例学习各操作符与 explode、前缀截断的差异',
+          '在网关或 SDK 设计阶段快速核对 URL 编码行为',
+        ],
+        privacyNote:
+          '模板与变量全部在浏览器本地处理，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '{+var} 和 {var} 有什么区别？',
+            answer:
+              '普通 {var} 会把所有非 unreserved 字符（包括 / : ? 等）做百分号编码；{+var} 是保留展开，RFC 3986 保留字符保持原样，适合变量本身已经是路径或 URL 片段（如 /v2、http://example.com）的场景。',
+          },
+          {
+            question: 'explode（*）对数组和对象分别做什么？',
+            answer:
+              '不加 * 时，数组展开为逗号分隔的单段（如 list=red,green,blue），对象展开为键值交替的逗号列表；加 * 后，复合值按当前操作符的分隔符打散，例如 {?list*} 变成 ?list=red&list=green&list=blue，{?keys*} 变成 ?semi=%3B&dot=. 这样的独立键值对。',
+          },
+          {
+            question: '变量没提供时会怎样？',
+            answer:
+              '按 RFC 6570，未提供（undefined）的变量整体省略，不产生任何片段，连操作符前缀也不会输出；但空字符串是已定义值，仍会触发操作符前缀（例如 {#empty} 展开为 #）。工具会用红色标签标出未提供的变量。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The RFC 6570 URI Template Expander runs entirely in your browser. It combines a URI template containing {var} expressions with a JSON variable set and expands it into a concrete URI following all four RFC 6570 levels, covering simple, reserved, fragment, label, path, parameter and query operators, including array/object composite values, the explode modifier and prefix truncation.',
+        coreFeatures: [
+          'Full Level 1–4 support: the eight expression forms "", +, #, ., /, ;, ? and &',
+          'Composite expansion for arrays and objects, both comma-joined and exploded (*)',
+          'Precise RFC 3986 percent-encoding, byte-wise for UTF-8 multibyte characters, with reserved characters preserved under + and #',
+          ':maxlen prefix truncation by Unicode code point, never splitting surrogate pairs',
+          'Live validation for unbalanced braces, illegal truncation lengths, missing variables and malformed variable JSON',
+        ],
+        howToUse: [
+          'Enter a template with {…} expressions in the URI Template card; referenced variable names are listed automatically',
+          'Provide values as a JSON object in the Variables card using strings, numbers, booleans, arrays or objects',
+          'Read the full URI in the Expansion Result card and copy it with one click',
+          'Red variable tags mark missing variables whose expressions are omitted per spec',
+        ],
+        useCases: [
+          'Building request URLs with query, path parameters and fragments for REST API clients',
+          'Verifying the concrete expansion of URI templates in HATEOAS/HAL documents',
+          'Learning operator, explode and truncation semantics against RFC 6570 official examples',
+          'Checking URL-encoding behavior while designing gateways or SDKs',
+        ],
+        privacyNote:
+          'Templates and variables are processed locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'What is the difference between {+var} and {var}?',
+            answer:
+              'Plain {var} percent-encodes every character outside the unreserved set, including / : and ?. {+var} is reserved expansion: RFC 3986 reserved characters stay intact, which is correct when the variable already holds a path or URL fragment such as /v2 or http://example.com.',
+          },
+          {
+            question: 'What does explode (*) do for arrays and objects?',
+            answer:
+              'Without *, an array becomes one comma-separated segment (e.g. list=red,green,blue) and an object becomes alternating key,value pairs. With *, composites are split using the operator separator: {?list*} yields ?list=red&list=green&list=blue, while {?keys*} yields independent key-value pairs such as ?semi=%3B&dot=.',
+          },
+          {
+            question: 'What happens when a variable is not supplied?',
+            answer:
+              'Per RFC 6570, undefined variables are omitted entirely, including the operator prefix. An empty string, however, is a defined value and still triggers the prefix (for example {#empty} expands to #). The tool flags missing variables with red tags.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'edn-json-converter',
+    name: 'Clojure EDN 与 JSON 双向转换器',
+    nameEn: 'Clojure EDN ↔ JSON Converter',
+    description:
+      '在 Clojure EDN（Extensible Data Notation）与 JSON 之间无损双向转换：支持 nil/布尔/数字/字符串、关键字 :keyword、符号、列表、向量、集合 #{}、映射，以及 #inst/#uuid 标签值；JSON 侧用 ___edn_type 标记承载 EDN 独有类型，解析错误带字符位置定位，可实时换向往返。',
+    descriptionEn:
+      'Lossless two-way conversion between Clojure EDN (Extensible Data Notation) and JSON. Supports nil, booleans, numbers, strings, :keyword keywords, symbols, lists, vectors, #{} sets, maps and #inst/#uuid tagged values. EDN-only types are carried in JSON via ___edn_type markers; parse errors report character positions and directions can be swapped for round-trip editing.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/edn-json-converter',
+    iconName: 'Braces',
+    tags: ['EDN', 'Clojure', 'JSON', '数据转换', '序列化'],
+    tagsEn: ['EDN', 'Clojure', 'JSON', 'Data Conversion', 'Serialization'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '{:person/name "Alice" :person/tags #{:admin} :person/login-history (1024 2048)}',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Clojure EDN 与 JSON 双向转换器是一款纯浏览器本地工具。EDN 是 Clojure 生态通用的数据表示格式，比 JSON 多了关键字、符号、集合、有序列表与标签值等形式。工具内置零依赖的 EDN 词法分析与递归下降解析器，把 EDN 转为 JSON，或把 JSON 还原为 EDN，并通过 ___edn_type 类型标记实现无损往返。',
+        coreFeatures: [
+          '完整 EDN 元素：nil、布尔、整数/浮点/指数、字符串转义（含 \\uXXXX）、关键字、命名空间符号',
+          '四类集合：列表 (…)、向量 […]、集合 #{…}、映射 {…}，映射键支持关键字',
+          '标签值：#inst 时间戳与 #uuid UUID 自动识别并保留标签',
+          '无损 JSON 映射：keyword/symbol/set/list/inst/uuid 用 ___edn_type 标记对象承载',
+          '工程化体验：分号注释、逗号空白容忍、字符位置级错误提示、紧凑/缩进切换、一键换向',
+        ],
+        howToUse: [
+          '选择 EDN → JSON 或 JSON → EDN 方向，在左侧输入数据，右侧实时输出',
+          '用「紧凑/缩进」开关切换单行或美化输出，点击「复制」取用结果',
+          '点击「换向并载入输出」可把当前结果作为新方向输入，验证往返一致性',
+          'JSON 侧如需保留 EDN 类型，按帮助表格书写 ___edn_type 标记对象',
+        ],
+        useCases: [
+          '调试 Clojure/ClojureScript 后端与 JSON API 之间的数据交换',
+          '把 Datomic/XTM 等 EDN 配置或查询结果迁移到 JSON 工具链',
+          '学习 EDN 与 JSON 的类型系统差异及标签字面量写法',
+          '在前端联调时快速核对 EDN 配置序列化后的结构',
+        ],
+        privacyNote:
+          '所有解析与序列化均在浏览器本地完成，EDN/JSON 内容不会上传。',
+        faqs: [
+          {
+            question: '为什么 JSON 输出里有 ___edn_type 字段？',
+            answer:
+              'JSON 规范无法表达 EDN 的关键字、符号、集合、有序列表和 #inst/#uuid 标签。工具用带 ___edn_type 的对象标记这些类型（例如集合变成 {"___edn_type":"set","items":[...]}），这样 JSON → EDN 时才能无损还原；普通向量和字符串则直接映射，无需标记。',
+          },
+          {
+            question: 'EDN 的列表和向量在 JSON 里怎么区分？',
+            answer:
+              '向量 [...] 直接序列化为 JSON 数组；列表 (...) 序列化为 {"___edn_type":"list","items":[...]} 标记对象，集合 #{...} 同理使用 set 标记。反向转换时标记对象分别还原为圆括号列表与 #{} 集合，普通数组还原为方括号向量。',
+          },
+          {
+            question: '支持哪些 EDN 标签？不支持的标签怎么办？',
+            answer:
+              '内置支持规范中最常用的 #inst（时间戳）与 #uuid（UUID），二者以字符串载荷保留。其他自定义标签（如 #my/Tag "..."）会以符号标记形式保留原文，不会丢失数据；注释（分号到行尾）与作为空白的逗号在解析时自动忽略。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Clojure EDN ↔ JSON Converter runs entirely in your browser. EDN is the common data notation of the Clojure ecosystem and adds keywords, symbols, sets, ordered lists and tagged values on top of JSON. A dependency-free tokenizer and recursive-descent parser converts EDN to JSON and back, using ___edn_type markers for lossless round-trips.',
+        coreFeatures: [
+          'Full EDN elements: nil, booleans, integer/float/exponent numbers, string escapes including \\uXXXX, keywords and namespaced symbols',
+          'Four collection forms: lists (…), vectors […], #{…} sets and {…} maps with keyword keys',
+          'Tagged values: #inst timestamps and #uuid identifiers are recognized and preserved',
+          'Lossless JSON mapping for keyword/symbol/set/list/inst/uuid through ___edn_type marker objects',
+          'Developer experience: semicolon comments, commas treated as whitespace, position-aware errors, compact/pretty toggle and one-click direction swap',
+        ],
+        howToUse: [
+          'Pick EDN → JSON or JSON → EDN, type on the left and read live output on the right',
+          'Toggle compact versus indented output and copy the result with one click',
+          'Use "Swap and load output" to feed the result back as input and verify round-trips',
+          'On the JSON side, write ___edn_type marker objects as shown in the help table to keep EDN types',
+        ],
+        useCases: [
+          'Debugging data exchange between Clojure/ClojureScript backends and JSON APIs',
+          'Moving EDN configuration or query results from Datomic-like systems into JSON toolchains',
+          'Learning the differences between EDN and JSON type systems and tagged literals',
+          'Checking serialized EDN configuration structures during frontend integration',
+        ],
+        privacyNote:
+          'All parsing and serialization happen locally in your browser; EDN/JSON content is never uploaded.',
+        faqs: [
+          {
+            question: 'Why does the JSON output contain ___edn_type fields?',
+            answer:
+              'JSON cannot express EDN keywords, symbols, sets, ordered lists or #inst/#uuid tags. The tool marks such types with objects carrying ___edn_type (for example a set becomes {"___edn_type":"set","items":[...]}) so JSON → EDN can restore them losslessly. Plain vectors and strings map directly without markers.',
+          },
+          {
+            question: 'How are EDN lists and vectors distinguished in JSON?',
+            answer:
+              'Vectors [...] serialize directly to JSON arrays. Lists (...) become {"___edn_type":"list","items":[...]} marker objects and #{...} sets use the set marker similarly. On the way back, markers restore parenthesized lists and #{} sets, while plain arrays become bracketed vectors.',
+          },
+          {
+            question: 'Which EDN tags are supported, and what about custom tags?',
+            answer:
+              'The standard #inst timestamp and #uuid tags are built in and preserved with their string payloads. Other custom tags such as #my/Tag "..." are retained as symbol markers so no data is lost. Semicolon comments and commas (whitespace in EDN) are ignored during parsing.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ics-generator',
+    name: 'iCalendar (.ics) 日历事件生成器',
+    nameEn: 'iCalendar (.ics) Event Generator',
+    description:
+      '填写标题、起止时间、全天/时区、地点、描述、组织者与提醒后，生成符合 RFC 5545 的单事件 .ics 文件，可直接导入 Google、Outlook 与 Apple 日历；自动处理 TEXT 转义、UTC/TZID 时间、VALARM 提醒与 75 八位组折行。',
+    descriptionEn:
+      'Build an RFC 5545 single-event .ics file from title, start/end, all-day/timezone, location, description, organizer and reminder, ready to import into Google, Outlook or Apple Calendar. Handles TEXT escaping, UTC/TZID times, VALARM alarms and 75-octet line folding automatically.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ics-generator',
+    iconName: 'Clock',
+    tags: ['iCalendar', 'ICS', '日历', 'RFC 5545', '会议邀请'],
+    tagsEn: ['iCalendar', 'ICS', 'Calendar', 'RFC 5545', 'Meeting Invite'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'SUMMARY:v2.0 发版评审会',
+    doc: {
+      zh: {
+        whatIsIt:
+          'iCalendar (.ics) 日历事件生成器是一款纯浏览器本地工具。它把表单中的事件信息组装为 RFC 5545 规范的 VCALENDAR/VEVENT 文本，覆盖定时事件、全天事件、时区、地点、描述、组织者与提前提醒，生成的 .ics 可被 Google Calendar、Outlook、Apple 日历等主流日历直接导入。',
+        coreFeatures: [
+          '三种时间形式：UTC（Z 后缀）、带 TZID 的 IANA 时区本地时间、全天事件 VALUE=DATE（DTEND 自动取排他性次日）',
+          '规范文本转义：标题、地点、描述中的反斜杠、分号、逗号与换行按 RFC 5545 自动转义',
+          'VALARM 提醒：支持分钟/小时/天提前量，输出标准 TRIGGER 时长并附快捷预设',
+          '严格折行：逻辑行按 75 个八位组折叠，按 UTF-8 字节计数，多字节字符不会被截断',
+          'UID 与 DTSTAMP 自动生成，CRLF 行尾，一键复制或下载 event.ics',
+        ],
+        howToUse: [
+          '填写必填的事件标题，并设置开始与结束时间（全天事件切换开关后选择日期）',
+          '定时事件可选择 IANA 时区；留空时时间按 UTC 输出，导入后由日历按本地时区展示',
+          '可选填写地点、描述、组织者邮箱，并打开提醒开关设置提前量',
+          '右侧实时预览 ICS 文本，校验通过后点击「复制 ICS」或「下载 .ics」',
+        ],
+        useCases: [
+          '为线上活动、发布会、发版排期生成「一键加日历」附件',
+          '在会议邀请邮件中附上可被任意日历客户端识别的 .ics 文件',
+          '学习或核对 RFC 5545 的转义、折行、TZID 与 VALARM 写法',
+          '在不依赖第三方日历服务的情况下离线生成标准日历文件',
+        ],
+        privacyNote:
+          '所有事件信息均在浏览器本地组装为文本，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '时区留空和选择 Asia/Shanghai 有什么区别？',
+            answer:
+              '留空时工具把你输入的时间视为 UTC，输出 DTSTART:…Z 形式，日历会按读者所在时区换算显示；选择 Asia/Shanghai 后输出 DTSTART;TZID=Asia/Shanghai:…，明确声明该时间是北京时间，跨时区读者看到的绝对时刻由日历按 TZID 换算。全天事件不涉及时区，统一使用 VALUE=DATE。',
+          },
+          {
+            question: '为什么全天事件的结束日期会多出一天？',
+            answer:
+              'RFC 5545 规定 DTEND 是排他性边界：全天事件按日期存储，若事件覆盖 12 月 31 日至 1 月 1 日两天，DTEND 必须写为 1 月 2 日，日历才会把这两天都渲染为事件日。工具自动完成这一换算，表单中只需选择实际的最后一天。',
+          },
+          {
+            question: '生成的文件能被哪些日历导入？',
+            answer:
+              '输出遵循 RFC 5545 的常用子集（VERSION:2.0、VEVENT、VALARM），Google Calendar、Microsoft Outlook、Apple 日历以及多数支持 .ics 的客户端均可导入。文本转义、CRLF 行尾与 75 八位组折行均按规范处理，长描述与中文等多字节内容也不会破坏行折叠。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The iCalendar (.ics) Event Generator runs entirely in your browser. It turns form input into RFC 5545 VCALENDAR/VEVENT text covering timed events, all-day events, time zones, location, description, organizer and advance reminders, producing an .ics file that Google Calendar, Outlook and Apple Calendar can import directly.',
+        coreFeatures: [
+          'Three time forms: UTC (Z suffix), IANA TZID local time, and all-day VALUE=DATE with an exclusive next-day DTEND',
+          'RFC 5545 TEXT escaping for backslashes, semicolons, commas and newlines in summary, location and description',
+          'VALARM reminders with minute/hour/day lead times emitted as standard TRIGGER durations, plus quick presets',
+          'Strict 75-octet line folding counted by UTF-8 bytes so multibyte characters are never split',
+          'Auto-generated UID and DTSTAMP, CRLF line endings, one-click copy or event.ics download',
+        ],
+        howToUse: [
+          'Fill in the required title and set start and end (toggle all-day to pick dates instead)',
+          'For timed events choose an IANA time zone; leave it empty to emit UTC and let calendars render local time',
+          'Optionally add location, description, organizer email and enable a reminder with a lead time',
+          'Preview the ICS text on the right in real time, then copy it or download the .ics file once validation passes',
+        ],
+        useCases: [
+          'Creating "add to calendar" attachments for online events, launches and release schedules',
+          'Attaching a portable .ics meeting invitation that any calendar client understands',
+          'Learning or verifying RFC 5545 escaping, folding, TZID and VALARM syntax',
+          'Generating standard calendar files offline without third-party calendar services',
+        ],
+        privacyNote:
+          'All event details are assembled into text locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'What is the difference between leaving time zone empty and choosing Asia/Shanghai?',
+            answer:
+              'With an empty time zone the input is treated as UTC and emitted as DTSTART:…Z, so readers see it converted to their local zone. Choosing Asia/Shanghai emits DTSTART;TZID=Asia/Shanghai:…, explicitly declaring Beijing time; calendars then convert the absolute instant via the TZID. All-day events are time-zone agnostic and always use VALUE=DATE.',
+          },
+          {
+            question: 'Why does the all-day DTEND move one day later?',
+            answer:
+              'RFC 5545 defines DTEND as an exclusive boundary. All-day events are stored by date, so an event covering December 31 through January 1 needs DTEND on January 2 for both days to render. The tool performs this conversion automatically; just pick the actual last day in the form.',
+          },
+          {
+            question: 'Which calendars can import the generated file?',
+            answer:
+              'The output follows the common RFC 5545 subset (VERSION:2.0, VEVENT, VALARM) and imports into Google Calendar, Microsoft Outlook, Apple Calendar and most .ics-aware clients. Text escaping, CRLF endings and 75-octet folding follow the spec, so long descriptions and multibyte content such as Chinese will not break the file.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'docker-run-to-compose',
+    name: 'docker run 转 docker-compose.yml 转换器',
+    nameEn: 'docker run to docker-compose.yml Converter',
+    description:
+      '粘贴一条完整的 docker run 命令，自动完成 shell 词法切分并把端口、卷、环境变量、网络、重启策略、能力、健康检查、日志等选项映射为单个 compose 服务，输出缩进合法的 docker-compose.yml；未识别选项以告警列出，支持引号、转义与行尾续行。',
+    descriptionEn:
+      'Paste a full docker run command and get a single docker-compose service: shell-aware tokenization maps ports, volumes, env vars, networks, restart policy, capabilities, health checks and logging options into properly indented YAML. Unrecognized options are reported as warnings; quotes, escapes and line continuations are supported.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/docker-run-to-compose',
+    iconName: 'Layers',
+    tags: ['Docker', 'docker-compose', '容器', 'YAML', 'DevOps'],
+    tagsEn: ['Docker', 'docker-compose', 'Container', 'YAML', 'DevOps'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'docker run -d --name webapp -p 8080:80 nginx:1.27-alpine',
+    doc: {
+      zh: {
+        whatIsIt:
+          'docker run 转 docker-compose.yml 转换器是一款纯浏览器本地工具。它先按 shell 规则对命令做词法切分（正确处理单双引号、反斜杠转义与行尾反斜杠续行），再把 docker run 的各类选项归一化映射为 Compose 规范中的服务字段，手工生成缩进合法的 YAML 文本，帮助你把临时命令沉淀为可版本管理的 compose 文件。',
+        coreFeatures: [
+          'Shell 词法切分：支持单引号、双引号、反斜杠转义与行尾 \\ 续行，带空格的参数不会被错误拆开',
+          '全面选项映射：-p/-v/-e、--name、--restart、--network、--memory/--cpus、--cap-add/drop、--sysctl、--ulimit、--health-*、--log-* 等',
+          '集合与键值处理：端口、卷、DNS、tmpfs 等输出为 YAML 列表；环境变量、标签、sysctl 输出为映射，透传变量（-e FOO）保留空值',
+          'YAML 安全输出：含冒号空格、井号或布尔歧义的值自动加引号，环境变量名等标识符保持裸键',
+          '容错设计：一条命令映射一个服务，未识别选项不中断转换而以告警列出，--rm、--label-file 等无等价字段的选项明确提示',
+        ],
+        howToUse: [
+          '把完整的 docker run 命令粘贴到左侧输入框，可包含行尾反斜杠换行',
+          '右侧实时生成 docker-compose.yml，服务名取 --name，缺省时由镜像名派生',
+          '若出现橙色告警，按提示手动补充 compose 不直接支持的选项',
+          '点击「复制 YAML」把结果保存为 docker-compose.yml，用 docker compose up -d 启动',
+        ],
+        useCases: [
+          '把历史运维脚本里散落的 docker run 命令迁移到 docker-compose 版本化管理',
+          '在编写部署文档或 IaC 仓库时快速生成服务定义骨架',
+          '学习 docker run 选项与 compose 服务字段之间的对应关系',
+          '排查手写 YAML 的缩进与引号问题，以生成结果作为对照',
+        ],
+        privacyNote:
+          '命令仅在浏览器本地解析与生成 YAML，不会发送到任何服务器，也不会执行其中的任何容器操作。',
+        faqs: [
+          {
+            question: '为什么 -d 没有出现在生成的 YAML 里？',
+            answer:
+              'docker compose up -d 本身就负责后台运行，compose 服务模型没有与 docker run -d 对应的字段，因此工具对 -d/--detach 静默忽略。同理 --sig-proxy 等只对前台 docker run 有意义的选项也会被忽略。',
+          },
+          {
+            question: '一条命令里的多个容器会生成多个服务吗？',
+            answer:
+              '不会。一条 docker run 只描述一个容器，工具将其映射为一个服务。多服务应用请分别转换每条命令，再把生成的服务合并到同一个 services: 映射下，或使用 extends/依赖关系手工编排。',
+          },
+          {
+            question: '带空格或特殊字符的参数能正确处理吗？',
+            answer:
+              '可以。词法分析遵循 shell 引号规则：双引号与单引号内的空格不切分，反斜杠可转义引号，行尾反斜杠视为续行。输出 YAML 时，包含冒号空格、# 注释符或 yes/no/on/off 等布尔歧义词的值会自动加双引号，避免生成非法或语义被改变的 YAML。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The docker run to docker-compose.yml converter runs entirely in your browser. It tokenizes the command with shell-aware rules (single/double quotes, backslash escapes and line continuations), normalizes docker run options into Compose service fields, and emits correctly indented YAML so ad-hoc commands become version-controlled compose files.',
+        coreFeatures: [
+          'Shell-aware tokenization: quotes, escapes and trailing backslash line continuations keep spaced arguments intact',
+          'Broad option coverage: -p/-v/-e, --name, --restart, --network, --memory/--cpus, --cap-add/drop, --sysctl, --ulimit, --health-* and --log-*',
+          'Lists vs maps: ports, volumes, DNS and tmpfs become YAML sequences; env vars, labels and sysctls become mappings, with pass-through variables (-e FOO) keeping empty values',
+          'Safe YAML output: values containing colon-space, hash marks or boolean-like words are quoted automatically while identifier keys stay bare',
+          'Resilient by design: one command becomes one service; unknown options produce warnings instead of failing, and options without compose equivalents such as --rm are called out explicitly',
+        ],
+        howToUse: [
+          'Paste the full docker run command into the left editor, including backslash-wrapped line breaks if any',
+          'Read the generated docker-compose.yml on the right; the service name comes from --name or is derived from the image',
+          'Resolve orange warnings manually for options that have no direct compose equivalent',
+          'Click "Copy YAML", save it as docker-compose.yml and start with docker compose up -d',
+        ],
+        useCases: [
+          'Migrating scattered docker run commands in ops scripts into versioned docker-compose files',
+          'Scaffolding service definitions for deployment docs or IaC repositories',
+          'Learning how docker run flags map onto compose service fields',
+          'Cross-checking indentation and quoting issues in hand-written YAML',
+        ],
+        privacyNote:
+          'Commands are parsed and rendered into YAML locally in your browser; nothing is uploaded and no container action is executed.',
+        faqs: [
+          {
+            question: 'Why does -d not appear in the generated YAML?',
+            answer:
+              'docker compose up -d already handles detached execution, so the compose service model has no field equivalent to docker run -d. The tool silently ignores -d/--detach and similarly foreground-only flags such as --sig-proxy.',
+          },
+          {
+            question: 'Will multiple containers in one command produce multiple services?',
+            answer:
+              'No. A single docker run describes one container and maps to one service. For multi-container applications, convert each command separately and merge the generated services under the same services: map, then wire dependencies by hand.',
+          },
+          {
+            question: 'Are arguments with spaces or special characters handled correctly?',
+            answer:
+              'Yes. Tokenization follows shell quoting rules: spaces inside quotes are preserved, backslashes escape quotes, and trailing backslashes continue lines. During YAML emission, values containing colon-space, comment hashes or boolean-like words such as yes/no/on/off are double-quoted automatically to keep the output valid and semantically unchanged.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

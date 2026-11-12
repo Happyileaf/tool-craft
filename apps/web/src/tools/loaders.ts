@@ -345,4 +345,9 @@ export const toolLoaders: Record<
   'karnaugh-map-simplifier': () => import('./karnaugh-map-simplifier'),
   'wavelength-rgb-converter': () => import('./wavelength-rgb-converter'),
   'black-scholes-calculator': () => import('./black-scholes-calculator'),
+  'forwarded-header-codec': () => import('./forwarded-header-codec'),
+  'uri-template-expander': () => import('./uri-template-expander'),
+  'edn-json-converter': () => import('./edn-json-converter'),
+  'ics-generator': () => import('./ics-generator'),
+  'docker-run-to-compose': () => import('./docker-run-to-compose'),
 };
