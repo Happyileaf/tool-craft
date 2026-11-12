@@ -346,4 +346,5 @@ export const toolLoaders: Record<
   'wavelength-rgb-converter': () => import('./wavelength-rgb-converter'),
   'black-scholes-calculator': () => import('./black-scholes-calculator'),
   'forwarded-header-codec': () => import('./forwarded-header-codec'),
+  'uri-template-expander': () => import('./uri-template-expander'),
 };

@@ -32386,6 +32386,111 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'uri-template-expander',
+    name: 'RFC 6570 URI Template 展开器',
+    nameEn: 'RFC 6570 URI Template Expander',
+    description:
+      '按 RFC 6570 Level 1–4 规则展开 URI 模板：支持简单替换、+ 保留展开、# 片段、. / ; ? & 路径与查询操作符，以及 explode（*）复合值和 :maxlen 前缀截断；自动百分号编码（含 UTF-8 多字节）、校验未配对花括号与缺失变量，实时输出可复制的完整 URI。',
+    descriptionEn:
+      'Expands URI templates per RFC 6570 Level 1–4: simple, reserved (+), fragment (#), label (.), path (/), parameter (;) and query (?/&) operators, plus explode (*) for composites and :maxlen prefix truncation. Handles percent-encoding including UTF-8 multibyte, validates unbalanced braces and missing variables, and outputs a ready-to-copy URI in real time.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/uri-template-expander',
+    iconName: 'Link2',
+    tags: ['RFC 6570', 'URI Template', 'URL', 'REST API', '模板展开'],
+    tagsEn: ['RFC 6570', 'URI Template', 'URL', 'REST API', 'Template Expansion'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'https://api.example.com/{+version}/users/{userId}{?fields*,limit}{#section}',
+    doc: {
+      zh: {
+        whatIsIt:
+          'RFC 6570 URI Template 展开器是一款纯浏览器本地工具。它把含 {var} 表达式的 URI 模板与 JSON 变量集结合，按 RFC 6570 规范的四个级别展开为真实 URI，覆盖简单替换、保留字符展开、片段、标签、路径、路径参数与查询串等全部操作符，并正确处理数组/对象复合值、explode 修饰与前缀截断。',
+        coreFeatures: [
+          'Level 1–4 全覆盖：无操作符、+、#、.、/、;、?、& 八种表达式形式',
+          '复合值展开：数组与对象支持普通逗号拼接与 explode（*）两种形式',
+          '精确编码：按 RFC 3986 unreserved 规则做百分号编码，UTF-8 多字节字符逐字节编码，+/# 保留合法保留字符',
+          '修饰符支持：:maxlen 按 Unicode 码点前缀截断，避免切断代理对',
+          '实时校验：未配对花括号、非法截断长度、缺失变量与变量 JSON 语法错误即时提示',
+        ],
+        howToUse: [
+          '在「URI 模板」卡片输入含 {…} 表达式的模板，工具会自动列出引用的变量名',
+          '在「变量集」卡片用 JSON 对象提供变量值，支持字符串、数字、布尔、数组与对象',
+          '查看「展开结果」卡片中的完整 URI，点击「复制 URI」直接使用',
+          '红色变量标签表示该变量未提供，对应表达式会按规范省略',
+        ],
+        useCases: [
+          '为 REST API 客户端生成带查询参数、路径参数与片段的请求 URL',
+          '验证 HATEOAS / HAL 文档中 URI 模板的实际展开结果',
+          '对照 RFC 6570 官方示例学习各操作符与 explode、前缀截断的差异',
+          '在网关或 SDK 设计阶段快速核对 URL 编码行为',
+        ],
+        privacyNote:
+          '模板与变量全部在浏览器本地处理，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '{+var} 和 {var} 有什么区别？',
+            answer:
+              '普通 {var} 会把所有非 unreserved 字符（包括 / : ? 等）做百分号编码；{+var} 是保留展开，RFC 3986 保留字符保持原样，适合变量本身已经是路径或 URL 片段（如 /v2、http://example.com）的场景。',
+          },
+          {
+            question: 'explode（*）对数组和对象分别做什么？',
+            answer:
+              '不加 * 时，数组展开为逗号分隔的单段（如 list=red,green,blue），对象展开为键值交替的逗号列表；加 * 后，复合值按当前操作符的分隔符打散，例如 {?list*} 变成 ?list=red&list=green&list=blue，{?keys*} 变成 ?semi=%3B&dot=. 这样的独立键值对。',
+          },
+          {
+            question: '变量没提供时会怎样？',
+            answer:
+              '按 RFC 6570，未提供（undefined）的变量整体省略，不产生任何片段，连操作符前缀也不会输出；但空字符串是已定义值，仍会触发操作符前缀（例如 {#empty} 展开为 #）。工具会用红色标签标出未提供的变量。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The RFC 6570 URI Template Expander runs entirely in your browser. It combines a URI template containing {var} expressions with a JSON variable set and expands it into a concrete URI following all four RFC 6570 levels, covering simple, reserved, fragment, label, path, parameter and query operators, including array/object composite values, the explode modifier and prefix truncation.',
+        coreFeatures: [
+          'Full Level 1–4 support: the eight expression forms "", +, #, ., /, ;, ? and &',
+          'Composite expansion for arrays and objects, both comma-joined and exploded (*)',
+          'Precise RFC 3986 percent-encoding, byte-wise for UTF-8 multibyte characters, with reserved characters preserved under + and #',
+          ':maxlen prefix truncation by Unicode code point, never splitting surrogate pairs',
+          'Live validation for unbalanced braces, illegal truncation lengths, missing variables and malformed variable JSON',
+        ],
+        howToUse: [
+          'Enter a template with {…} expressions in the URI Template card; referenced variable names are listed automatically',
+          'Provide values as a JSON object in the Variables card using strings, numbers, booleans, arrays or objects',
+          'Read the full URI in the Expansion Result card and copy it with one click',
+          'Red variable tags mark missing variables whose expressions are omitted per spec',
+        ],
+        useCases: [
+          'Building request URLs with query, path parameters and fragments for REST API clients',
+          'Verifying the concrete expansion of URI templates in HATEOAS/HAL documents',
+          'Learning operator, explode and truncation semantics against RFC 6570 official examples',
+          'Checking URL-encoding behavior while designing gateways or SDKs',
+        ],
+        privacyNote:
+          'Templates and variables are processed locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'What is the difference between {+var} and {var}?',
+            answer:
+              'Plain {var} percent-encodes every character outside the unreserved set, including / : and ?. {+var} is reserved expansion: RFC 3986 reserved characters stay intact, which is correct when the variable already holds a path or URL fragment such as /v2 or http://example.com.',
+          },
+          {
+            question: 'What does explode (*) do for arrays and objects?',
+            answer:
+              'Without *, an array becomes one comma-separated segment (e.g. list=red,green,blue) and an object becomes alternating key,value pairs. With *, composites are split using the operator separator: {?list*} yields ?list=red&list=green&list=blue, while {?keys*} yields independent key-value pairs such as ?semi=%3B&dot=.',
+          },
+          {
+            question: 'What happens when a variable is not supplied?',
+            answer:
+              'Per RFC 6570, undefined variables are omitted entirely, including the operator prefix. An empty string, however, is a defined value and still triggers the prefix (for example {#empty} expands to #). The tool flags missing variables with red tags.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
