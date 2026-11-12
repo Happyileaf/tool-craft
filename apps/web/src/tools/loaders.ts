@@ -153,6 +153,14 @@ export const toolLoaders: Record<
   'pii-mask': () => import('./pii-mask'),
   'conventional-commit-generator': () => import('./conventional-commit-generator'),
   'crc16-checksum': () => import('./crc16-checksum'),
+  'fletcher-checksum': () => import('./fletcher-checksum'),
+  'backoff-retry-calculator': () => import('./backoff-retry-calculator'),
+  'cache-control-freshness-calculator': () =>
+    import('./cache-control-freshness-calculator'),
+  'topological-sort-visualizer': () =>
+    import('./topological-sort-visualizer'),
+  'pregnancy-due-date-calculator': () =>
+    import('./pregnancy-due-date-calculator'),
   'pangu-spacing': () => import('./pangu-spacing'),
   'dns-ptr-builder': () => import('./dns-ptr-builder'),
   'gitignore-generator': () => import('./gitignore-generator'),

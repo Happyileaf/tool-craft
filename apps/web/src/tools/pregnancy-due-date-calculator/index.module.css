@@ -1,0 +1,106 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fieldRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.hint {
+  margin: 0;
+  color: rgb(107 114 128);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.weekBadge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.weekNumber {
+  font-size: 30px;
+  font-weight: 600;
+  color: rgb(219 39 119);
+}
+
+.weekUnit {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.mono {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 13px;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.weekRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.weekRowCurrent {
+  border-color: rgb(219 39 119);
+  background: rgb(253 242 248);
+}
+
+.weekIndex {
+  width: 72px;
+  flex: none;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  color: rgb(75 85 99);
+}
+
+.weekMilestones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}

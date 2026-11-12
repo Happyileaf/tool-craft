@@ -1,0 +1,59 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.label {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.textArea {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 13px;
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.directiveTag {
+  margin: 2px;
+}
+
+.noticeList {
+  margin: 0;
+  padding-left: 18px;
+  color: rgb(75 85 99);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.hint {
+  color: rgb(107 114 128);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.mono {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}

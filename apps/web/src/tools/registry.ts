@@ -12968,6 +12968,108 @@ info: request finished`,
     },
   },
   {
+    slug: 'fletcher-checksum',
+    name: 'Fletcher 校验和计算器（Fletcher-16 / 32 / 64）',
+    nameEn: 'Fletcher Checksum Calculator (16/32/64)',
+    description:
+      '对 UTF-8 文本或十六进制字节流计算 Fletcher-16、Fletcher-32、Fletcher-64 校验和，输出定长十六进制与十进制，并支持 appended checksum 自校验。',
+    descriptionEn:
+      'Compute Fletcher-16, Fletcher-32 and Fletcher-64 checksums over UTF-8 text or hex byte streams, with fixed-width hex and decimal output and appended-checksum verification.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/fletcher-checksum',
+    iconName: 'Barcode',
+    tags: ['Fletcher', '校验和', 'Checksum', '完整性校验', '嵌入式'],
+    tagsEn: ['Fletcher', 'Checksum', 'Integrity', 'Embedded', 'Hex'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'abcdefgh',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Fletcher 校验和计算器是一款纯浏览器本地工具：实现 Fletcher-16、Fletcher-32、Fletcher-64 三种变体，通过两个累加和 S1、S2 在对应字宽上求模，输出定长十六进制与十进制结果，并提供 appended checksum 模式验证已追加校验字节的数据完整性。',
+        coreFeatures: [
+          '一次计算 Fletcher-16（8 位字模 255）、Fletcher-32（16 位字模 65535）、Fletcher-64（32 位字模 2³²−1）',
+          '支持 UTF-8 文本与十六进制字节流（空格/逗号/0x 前缀分隔）两种输入',
+          '展示每个变体的 S1、S2 中间累加值，便于与固件实现逐行对齐',
+          'Appended checksum 自校验：整体重算并判定两个累加和是否归零',
+          '定长小写十六进制与 BigInt 十进制双格式输出，64 位结果不丢精度',
+        ],
+        howToUse: [
+          '选择输入模式：文本（自动按 UTF-8 编码）或十六进制字节流',
+          '结果卡片实时展示三种变体的 0x 十六进制、十进制与 S1/S2',
+          '切换到「Appended 校验」并选择变体，可验证数据连同校验字节是否完整',
+          '点击对应行的「复制」获取十六进制结果',
+        ],
+        useCases: [
+          '存储与通信协议中 Fletcher 校验字段的开发与调试',
+          '与 C / 固件侧 Fletcher 实现做标准向量对齐',
+          '教学场景理解双累加和校验与 CRC 多项式校验的差异',
+        ],
+        privacyNote:
+          '所有字节运算均在浏览器本地完成，输入数据不会上传或离开设备。',
+        faqs: [
+          {
+            question: 'Fletcher 和 CRC 有什么区别？',
+            answer:
+              'Fletcher 只用加法与取模，计算量小、速度快；CRC 使用多项式除法，检错能力（尤其对突发错误）更强但实现更复杂。Fletcher-16 检错能力接近 CRC-16，适合资源受限的嵌入式场景。',
+          },
+          {
+            question: 'Appended 校验为什么要求两个累加和归零？',
+            answer:
+              '按标准算法构造的校验字节会让「原数据 + 校验字节」整体的 S1、S2 同时对模数取模为零；接收方整体重算后若两者均为零即通过，任一非零说明数据被改动或截断。',
+          },
+          {
+            question: '输入字节数不足整字时如何处理？',
+            answer:
+              'Fletcher-32 按 16 位字处理，奇数长度时末字高字节补零；Fletcher-64 按 32 位字处理，字节数不是 4 的倍数时末字补零。补零仅发生在计算过程中，不会修改原始输入。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Fletcher Checksum Calculator is a fully in-browser tool implementing Fletcher-16, Fletcher-32 and Fletcher-64. It maintains two running sums (S1, S2) modulo the word-width modulus, emits fixed-width hex and decimal values, and offers an appended-checksum mode that verifies data already carrying check bytes.',
+        coreFeatures: [
+          'Fletcher-16 (8-bit words, mod 255), Fletcher-32 (16-bit words, mod 65535) and Fletcher-64 (32-bit words, mod 2^32-1) in one run',
+          'Both UTF-8 text and hex byte-stream input (space/comma separated, 0x prefix)',
+          'Intermediate S1/S2 sums shown for every variant to align with firmware implementations',
+          'Appended-checksum verification via zero-sum re-computation',
+          'Fixed-width lowercase hex and BigInt decimal output without precision loss',
+        ],
+        howToUse: [
+          'Choose text (auto UTF-8 encoded) or hex byte-stream input',
+          'Read the three variants with 0x hex, decimal and S1/S2 values in the result card',
+          'Switch to "Appended" mode and pick a variant to verify data plus check bytes',
+          'Click "Copy" on a row to grab its hex result',
+        ],
+        useCases: [
+          'Developing and debugging Fletcher check fields in storage and communication protocols',
+          'Cross-checking C/firmware Fletcher implementations against known vectors',
+          'Teaching the difference between dual-sum checksums and polynomial CRC',
+        ],
+        privacyNote:
+          'All byte arithmetic runs locally in your browser; input never leaves your device.',
+        faqs: [
+          {
+            question: 'How does Fletcher differ from CRC?',
+            answer:
+              'Fletcher uses only addition and modulo, so it is small and fast. CRC uses polynomial division and offers stronger burst-error detection at higher cost. Fletcher-16 approaches CRC-16 detection quality and fits resource-constrained embedded systems.',
+          },
+          {
+            question: 'Why must both sums be zero in appended mode?',
+            answer:
+              'Standard check bytes are constructed so that re-running the algorithm over "data + check bytes" drives S1 and S2 to zero modulo the modulus. Any non-zero sum indicates tampering or truncation.',
+          },
+          {
+            question: 'How are inputs shorter than a full word handled?',
+            answer:
+              'Fletcher-32 zero-pads the final 16-bit word for odd-length inputs, and Fletcher-64 zero-pads the final 32-bit word when the byte count is not a multiple of four. Padding only affects computation, never the original input.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'pangu-spacing',
     name: '中英文混排自动留白（盘古之白）格式化器',
     nameEn: 'Pangu Spacing Formatter',
@@ -31350,6 +31452,418 @@ sqrt(area) + 2 * r`,
             question: 'Can the service-credit tiers be used to file a claim directly?',
             answer:
               'No. The credit tiers are indicative references to common industry practice and are explicitly marked "subject to contract". Real payouts depend on the measurement rules, exclusions, and appeal process written into your agreement.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'backoff-retry-calculator',
+    name: '指数退避与抖动重试策略计算器',
+    nameEn: 'Exponential Backoff & Jitter Retry Calculator',
+    description:
+      '按 base、乘数、cap 与重试次数推演指数退避时序，支持无抖动、Full Jitter、Equal Jitter 三种模式，展示逐次延迟区间、期望值与累计耗时，辅助重试参数选型与惊群评估。',
+    descriptionEn:
+      'Plan exponential backoff timelines from base delay, multiplier, cap and retry count, with no-jitter, Full Jitter and Equal Jitter modes, showing per-attempt delay ranges, expected values and cumulative time for retry tuning and thundering-herd analysis.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/backoff-retry-calculator',
+    iconName: 'Zap',
+    tags: ['指数退避', '重试', 'Jitter', '抖动', '限流', '分布式'],
+    tagsEn: ['Exponential Backoff', 'Retry', 'Jitter', 'Rate Limiting', 'Distributed'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '100',
+    doc: {
+      zh: {
+        whatIsIt:
+          '指数退避与抖动重试策略计算器是一款纯浏览器本地工具：输入初始延迟 base、退避乘数、单次延迟上限 cap 与最大重试次数，按无抖动、Full Jitter、Equal Jitter 三种模式推演每一次重试的延迟区间、期望延迟与累计耗时，帮助工程师在编写 SDK、网关或任务调度重试逻辑时选参数、评估惊群效应。',
+        coreFeatures: [
+          '无抖动确定性时序：delay = min(base × multiplier^(n-1), cap)，cap 截断行为一目了然',
+          'Full Jitter：random(0, 上限)，打散最彻底，展示区间 [0, 上限] 与期望',
+          'Equal Jitter：上限/2 + random(0, 上限/2)，保留延迟下限并分散并发',
+          '逐次表格：退避上限、延迟区间、实际采样、期望、累计实际与累计期望七列同屏',
+          '严格参数校验：base/cap 非正、乘数≤1、重试次数越界等非法输入明确报错',
+        ],
+        howToUse: [
+          '填写初始延迟 base（毫秒）、乘数 multiplier、上限 cap 与重试次数',
+          '选择抖动模式，表格实时刷新逐次延迟与累计耗时',
+          '抖动模式下参考「延迟区间」与「期望延迟」做容量评估，实际列为一次随机采样',
+          '对照底部策略说明理解惊群效应与三种模式的取舍',
+        ],
+        useCases: [
+          '为 HTTP/RPC 客户端的重试中间件选择 base 与 cap 参数',
+          '评估消息消费失败后的重投节奏，避免故障恢复时打爆下游',
+          '教学与代码评审中解释 Full Jitter / Equal Jitter 的数学差异',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地完成，参数不会上传或离开设备。',
+        faqs: [
+          {
+            question: '为什么需要抖动（Jitter）？',
+            answer:
+              '纯指数退避下，大量同时失败的客户端会在相同时刻再次发起请求，形成惊群，可能再次压垮正在恢复的下游。抖动在退避上限内引入随机性，把重试时间错开，Full Jitter 打散最彻底，AWS 等架构指南将其作为默认推荐。',
+          },
+          {
+            question: 'Full Jitter 和 Equal Jitter 怎么选？',
+            answer:
+              'Full Jitter 的延迟分布在 [0, 上限]，并发分散最好但单次可能立即重试；Equal Jitter 保证至少等待上限的一半，延迟下限更可控，适合对最小等待有要求的场景。期望延迟分别为上限的 1/2 与 3/4。',
+          },
+          {
+            question: 'cap 截断后累计耗时怎么理解？',
+            answer:
+              '当 base × multiplier^(n-1) 超过 cap 后，后续每次退避都按 cap 计，累计耗时近似线性增长，避免无限指数膨胀。表格的累计列直接给出全部重试的等待总和，可用于设置整体超时预算。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Exponential Backoff & Jitter Retry Calculator runs entirely in your browser. Given a base delay, multiplier, per-attempt cap and maximum retry count, it plans the retry timeline under no-jitter, Full Jitter and Equal Jitter modes, exposing per-attempt delay ranges, expected delays and cumulative totals to help engineers tune SDK, gateway and scheduler retry logic and assess thundering-herd risk.',
+        coreFeatures: [
+          'Deterministic no-jitter timeline: delay = min(base * multiplier^(n-1), cap) with visible cap clamping',
+          'Full Jitter: random(0, bound) for maximum decorrelation, with [0, bound] range and expectation',
+          'Equal Jitter: bound/2 + random(0, bound/2), preserving a minimum wait while spreading load',
+          'Per-attempt table covering upper bound, delay range, sampled delay, expectation, cumulative actual and expected totals',
+          'Strict validation with explicit errors for non-positive base/cap, multiplier <= 1 and out-of-range retry counts',
+        ],
+        howToUse: [
+          'Enter the base delay in milliseconds, multiplier, cap and retry count',
+          'Pick a jitter mode; the table refreshes with per-attempt delays and cumulative time',
+          'Use the range and expected-delay columns for capacity planning; the actual column is one random sample',
+          'Read the strategy notes for the thundering-herd trade-offs of each mode',
+        ],
+        useCases: [
+          'Choosing base and cap parameters for HTTP/RPC client retry middleware',
+          'Scheduling message redelivery so a recovering downstream is not overwhelmed',
+          'Explaining the math behind Full Jitter and Equal Jitter in reviews and training',
+        ],
+        privacyNote:
+          'All computation stays in your browser; parameters are never uploaded.',
+        faqs: [
+          {
+            question: 'Why add jitter at all?',
+            answer:
+              'Without jitter, many clients that failed together retry at the same instants, creating a thundering herd that can re-overwhelm a recovering service. Jitter randomizes waits within the backoff bound; Full Jitter decorrelates most aggressively and is the default recommendation in AWS architecture guidance.',
+          },
+          {
+            question: 'How do I choose between Full and Equal Jitter?',
+            answer:
+              'Full Jitter spans [0, bound] and spreads load best, but an attempt may retry almost immediately. Equal Jitter guarantees at least half the bound, giving a controllable minimum wait. Their expected delays are one half and three quarters of the bound respectively.',
+          },
+          {
+            question: 'What happens to cumulative time after the cap kicks in?',
+            answer:
+              'Once base * multiplier^(n-1) exceeds the cap, every later attempt waits exactly the cap, so cumulative time grows roughly linearly instead of exploding exponentially. The cumulative column gives the total wait budget for all retries.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'cache-control-freshness-calculator',
+    name: 'HTTP Cache-Control 新鲜度计算器（RFC 9111）',
+    nameEn: 'HTTP Cache-Control Freshness Calculator (RFC 9111)',
+    description:
+      '解析响应头 Cache-Control、Age、Date、Expires，按 RFC 9111 计算新鲜度寿命、corrected current age、剩余新鲜时间与 fresh/stale/revalidate 结论，并标注冲突与未知指令。',
+    descriptionEn:
+      'Parse Cache-Control, Age, Date and Expires response headers and compute freshness lifetime, corrected current age, remaining freshness and fresh/stale/revalidate status per RFC 9111, with conflict and unknown-directive annotations.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/cache-control-freshness-calculator',
+    iconName: 'Global',
+    tags: ['HTTP', 'Cache-Control', '缓存', 'RFC 9111', 'CDN', '响应头'],
+    tagsEn: ['HTTP', 'Cache-Control', 'Caching', 'RFC 9111', 'CDN', 'Headers'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Cache-Control: public, max-age=60',
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP Cache-Control 新鲜度计算器是一款纯浏览器本地工具：粘贴响应头即可解析全部 Cache-Control 指令，按 RFC 9111 的优先级（s-maxage → max-age → Expires−Date → 启发式）计算新鲜度寿命，结合 Age 与 Date 求 corrected current age，给出 fresh、stale、no-cache 协商验证或 no-store 禁止存储的明确结论。',
+        coreFeatures: [
+          '完整解析 public/private/no-cache/no-store/max-age/s-maxage/must-revalidate/immutable/stale-while-revalidate 等指令，未知指令保留并标记',
+          'RFC 9111 corrected current age：Age 头、表观年龄与驻留时间取大',
+          '新鲜度寿命三级回退：s-maxage、max-age、Expires 减 Date，缺失时明确标注启发式而非臆测',
+          '冲突提示：no-cache 与 max-age 共存、private 与 s-maxage 共存等逐条说明',
+          '协商缓存提示：检测 ETag / Last-Modified，说明过期后的条件请求路径',
+        ],
+        howToUse: [
+          '从浏览器 DevTools 或 curl -I 复制完整响应头粘贴到文本框（起始行可保留）',
+          '查看顶部结论徽标与新鲜度寿命、当前年龄、剩余新鲜时间三项指标',
+          '在指令区核对每个指令的解析结果，未知指令会以浅色标签标出',
+          '阅读「提示与冲突」区了解存储限制、SWR 窗口与协商缓存行为',
+        ],
+        useCases: [
+          '排查 CDN 命中率异常、资源过早或过晚过期的问题',
+          '调试网关与源站的 Cache-Control / Expires 组合策略',
+          '教学与代码评审中讲解 RFC 9111 新鲜度模型',
+        ],
+        privacyNote:
+          '响应头仅在浏览器本地解析，不会被上传或发送到任何服务器。',
+        faqs: [
+          {
+            question: 'max-age 和 Expires 同时存在时听谁的？',
+            answer:
+              '按 RFC 9111，显式的 max-age 优先于 Expires；共享缓存场景下 s-maxage 又优先于 max-age。本工具按该优先级计算寿命，并在 s-maxage 与 max-age 不一致时注明各自的生效语境。',
+          },
+          {
+            question: 'no-cache 是不是表示不缓存？',
+            answer:
+              '不是。no-cache 允许缓存存储响应，但每次使用前必须向源站协商验证（配合 ETag/Last-Modified 走 304）。真正禁止存储的是 no-store，工具会直接给出「禁止存储」结论并短路其他新鲜度计算。',
+          },
+          {
+            question: '为什么当前年龄比 Age 头更大？',
+            answer:
+              'RFC 9111 要求当前年龄取 Age 头与表观年龄（当前时间减 Date）的较大值，再与驻留时间取大。响应在缓存中停留或本地时钟推移都会让年龄增长，因此结果不会小于 Age 头。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The HTTP Cache-Control Freshness Calculator runs fully in your browser. Paste response headers to parse every Cache-Control directive, derive the freshness lifetime using the RFC 9111 precedence (s-maxage, max-age, Expires minus Date, then heuristic), compute corrected current age from Age and Date, and obtain a clear fresh, stale, no-cache revalidation or no-store verdict.',
+        coreFeatures: [
+          'Parses public/private/no-cache/no-store/max-age/s-maxage/must-revalidate/immutable/stale-while-revalidate and keeps unknown directives flagged',
+          'RFC 9111 corrected current age: max of Age header, apparent age and resident time',
+          'Three-level lifetime fallback: s-maxage, max-age, Expires minus Date, with explicit heuristic labeling instead of guessing',
+          'Conflict notes for no-cache plus max-age, private plus s-maxage and similar combinations',
+          'Conditional-request hints when ETag or Last-Modified is present',
+        ],
+        howToUse: [
+          'Copy full response headers from DevTools or curl -I into the text area (status line allowed)',
+          'Read the verdict badge plus lifetime, current age and remaining-freshness statistics',
+          'Verify each parsed directive in the tag list; unknown ones are highlighted',
+          'Review the notices panel for storage limits, SWR windows and revalidation behavior',
+        ],
+        useCases: [
+          'Debugging unexpected CDN hit ratios and early or late resource expiry',
+          'Validating gateway and origin Cache-Control/Expires strategies',
+          'Teaching and reviewing the RFC 9111 freshness model',
+        ],
+        privacyNote:
+          'Headers are parsed locally in your browser and are never uploaded.',
+        faqs: [
+          {
+            question: 'Which wins when max-age and Expires coexist?',
+            answer:
+              'Per RFC 9111, an explicit max-age overrides Expires, and s-maxage overrides max-age for shared caches. The calculator follows this precedence and notes the two values when they differ.',
+          },
+          {
+            question: 'Does no-cache mean "do not cache"?',
+            answer:
+              'No. no-cache allows storage but requires revalidation with the origin before every reuse, typically via ETag/Last-Modified and 304 responses. no-store is the directive that forbids storage entirely, and the calculator short-circuits to that verdict.',
+          },
+          {
+            question: 'Why can current age exceed the Age header?',
+            answer:
+              'RFC 9111 defines current age as the maximum of the Age header, apparent age (now minus Date) and resident time. Time spent in cache and local clock progression both increase age, so the result is never smaller than the Age header.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'topological-sort-visualizer',
+    name: '有向图拓扑排序与环检测可视化器',
+    nameEn: 'Topological Sort & Cycle Detection Visualizer',
+    description:
+      '以边列表输入有向图，输出 Kahn 入度与 DFS 后序两种拓扑序、逐步记录、入度表与邻接表；有环时给出环上节点路径与闭合边，支持自环、重复边去重与孤立节点。',
+    descriptionEn:
+      'Enter a directed graph as an edge list to get Kahn and DFS topological orders, step traces, indegree and adjacency tables; cycles are reported with the exact ring path and closing edge, including self-loops, duplicate-edge dedup and isolated nodes.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/topological-sort-visualizer',
+    iconName: 'List',
+    tags: ['拓扑排序', '有向图', 'DAG', '环检测', 'Kahn', 'DFS'],
+    tagsEn: ['Topological Sort', 'Directed Graph', 'DAG', 'Cycle Detection', 'Kahn', 'DFS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'A -> B\nA -> C\nB -> D\nC -> D',
+    doc: {
+      zh: {
+        whatIsIt:
+          '有向图拓扑排序与环检测可视化器是一款纯浏览器本地运行的图算法工具。按每行一条 A -> B 依赖边的方式输入有向图（兼容中文箭头、胖箭头与逗号分隔，裸节点名表示孤立节点），工具同时运行 Kahn 入度算法与 DFS 后序算法，输出两条合法拓扑序、逐步执行记录、初始入度表与邻接表；当图中存在环时，不仅提示失败，还给出环上的具体节点路径与闭合环边。',
+        coreFeatures: [
+          '双算法对照：Kahn 入度 FIFO 与 DFS 逆后序，同输入输出确定可复现',
+          '环检测给出环路径与闭合边，覆盖自环与多环场景，Kahn 同时保留环外节点的部分序列',
+          '容错解析：支持 ->、→、=>、逗号分隔与多余空白，重复边自动去重并提示',
+          '孤立节点保留在节点集合并参与排序，非法行返回精确行号错误',
+          '节点上限 200，防止大图卡顿，全部计算主线程瞬时完成',
+        ],
+        howToUse: [
+          '在文本框每行输入一条有向边，如 A -> B，表示 A 必须排在 B 之前',
+          '单独一行写节点名可声明无边的孤立节点；点击预设按钮快速填充示例',
+          '查看结构结论徽标、节点/边统计与重复边提示',
+          '对照 Kahn 与 DFS 两张结果卡片的拓扑链，并在入度表/邻接表中核对图结构',
+          '有环时阅读红色告警中的环路径与闭合边，定位需要打断的依赖',
+        ],
+        useCases: [
+          '校验课程先修关系、编译依赖与任务编排 DAG 的合法性',
+          '教学演示 Kahn 入度变化与 DFS 三色着色过程',
+          '排查流水线配置中的循环依赖并定位具体环节',
+        ],
+        privacyNote:
+          '图数据仅在浏览器本地解析与计算，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '为什么 Kahn 和 DFS 给出的顺序不一样？',
+            answer:
+              '拓扑序只要求满足每条边的偏序约束，合法序列通常不唯一。Kahn 按零入度节点的首次出现顺序 FIFO 出队，DFS 输出完成节点的逆后序，两者都是合法拓扑序；同层无依赖关系的节点可以互换位置。',
+          },
+          {
+            question: '存在环时还能得到排序结果吗？',
+            answer:
+              '含环图不存在完整拓扑序。工具会给出环上节点路径与闭合环边帮助定位问题，同时 Kahn 仍输出环外可排序节点的部分序列；删除环上任意一条边后重新输入即可得到完整结果。',
+          },
+          {
+            question: '节点名和边的写法有什么限制？',
+            answer:
+              '节点名不可包含空白；边支持 A -> B、A → B、A => B、A,B 四种写法，箭头两侧空白随意。重复边会被去重并提示，空行忽略，无法识别的行会报出从 1 开始的行号。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Topological Sort & Cycle Detection Visualizer is a fully in-browser graph-algorithm tool. Enter a directed graph as one A -> B dependency edge per line (Chinese arrows, fat arrows and commas are accepted, and a bare node name declares an isolated node). It runs both Kahn indegree and DFS postorder algorithms, returning two valid topological orders, step traces, the initial indegree table and the adjacency list; when the graph contains a cycle, it reports the exact ring path and closing edge instead of a generic failure.',
+        coreFeatures: [
+          'Side-by-side Kahn FIFO and DFS reverse-postorder algorithms with deterministic, reproducible output',
+          'Cycle detection returns the ring path and closing edge, including self-loops, while Kahn keeps a partial order for nodes outside the cycle',
+          'Lenient parsing for ->, Chinese arrows, => and comma separators with whitespace tolerance; duplicate edges are deduped with a notice',
+          'Isolated nodes stay in the node set and participate in ordering; malformed lines produce precise line-number errors',
+          'Capped at 200 nodes to stay responsive, with every computation finishing instantly on the main thread',
+        ],
+        howToUse: [
+          'Enter one directed edge per line, e.g. A -> B, meaning A must come before B',
+          'Use a bare node name on its own line for an isolated node, or click a preset to fill an example',
+          'Read the verdict badge, node/edge statistics and duplicate-edge notices',
+          'Compare the Kahn and DFS order chains, then cross-check the graph in the indegree/adjacency table',
+          'When a cycle exists, follow the ring path and closing edge in the red alert to find the dependency that must be broken',
+        ],
+        useCases: [
+          'Validating course prerequisites, build dependencies and workflow DAGs',
+          'Teaching Kahn indegree updates and DFS three-color marking',
+          'Diagnosing circular dependencies in pipeline configurations and locating the exact stage',
+        ],
+        privacyNote:
+          'Graph data is parsed and computed entirely in your local browser and is never uploaded.',
+        faqs: [
+          {
+            question: 'Why do Kahn and DFS produce different orders?',
+            answer:
+              'A topological order only has to satisfy the partial order of every edge, so multiple valid orders usually exist. Kahn dequeues zero-indegree nodes in first-appearance FIFO order, while DFS emits the reverse postorder of finished nodes; both are valid, and sibling nodes without dependencies are interchangeable.',
+          },
+          {
+            question: 'Can I still get an order when the graph has a cycle?',
+            answer:
+              'No complete topological order exists for a cyclic graph. The tool reports the ring path and closing edge to help locate the problem, and Kahn still returns a partial order for nodes outside the cycle. Removing any edge on the cycle and re-entering the graph yields a complete result.',
+          },
+          {
+            question: 'What are the naming and edge syntax limits?',
+            answer:
+              'Node names cannot contain whitespace. Edges accept A -> B, Chinese arrows, A => B and A,B with arbitrary spacing around the separator. Duplicate edges are deduped with a notice, blank lines are ignored, and unrecognizable lines raise an error with a 1-based line number.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'pregnancy-due-date-calculator',
+    name: '预产期与孕周计算器',
+    nameEn: 'Pregnancy Due Date & Gestational Age Calculator',
+    description:
+      '按末次月经（Naegele +280 天）或排卵日（+266 天）双模式推算预产期，输出孕周孕天、三月期、倒计时与进度，支持 21–35 天周期修正和 40 周产检节点时间线。',
+    descriptionEn:
+      'Estimate the due date from LMP via the Naegele rule (+280 days) or from ovulation (+266 days), with gestational week/day, trimester, countdown and progress, 21-35 day cycle correction and a 40-week checkup timeline.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/pregnancy-due-date-calculator',
+    iconName: 'Timer',
+    tags: ['预产期', '孕周', 'Naegele', '产检', '孕期计算', '健康'],
+    tagsEn: ['Due Date', 'Gestational Age', 'Naegele', 'Pregnancy', 'Checkup', 'Health'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '2026-01-01',
+    doc: {
+      zh: {
+        whatIsIt:
+          '预产期与孕周计算器是一款纯浏览器本地运行的孕期日期工具。输入末次月经第一天（LMP）按 Naegele 规则加 280 天推算预产期，或输入已知排卵/受孕日按加 266 天推算并自动反推 LMP；再选择参考日期即可得到「孕 X 周 Y 天」、三月期、距预产期倒计时与 40 周进度百分比，同时按 21–35 天月经周期对预产期做天数修正，并给出 NT、大排畸、OGTT、胎心监护等关键产检节点的孕周时间窗。',
+        coreFeatures: [
+          '双模式推算：LMP +280 天 Naegele 规则与排卵日 +266 天，两模式在同一受孕基准下孕周一致',
+          '孕周仪表盘：孕 X 周 Y 天、三月期（1–13⁺⁶ / 14–27⁺⁶ / 28 周起）、倒计时与进度条',
+          '周期修正：21–35 天周期按偏离 28 天的差值平移预产期，并展示修正前后对照',
+          '40 周产检时间线：NT、唐氏筛查、大排畸、OGTT、胎心监护等节点按孕周窗口标注，当前周高亮',
+          '本地日历日运算：UTC 正午整日差规避夏令时与时区跨日误差，零网络请求',
+        ],
+        howToUse: [
+          '选择推算模式并填写末次月经第一天或排卵日期',
+          '参考日期默认取今天，可改为任意历史或未来日期查看对应孕周',
+          '月经周期非 28 天时调整周期天数，预产期与修正对照会即时更新',
+          '在仪表盘读取预产期、孕周、三月期与倒计时',
+          '在时间线表格查看当前所处的产检窗口，具体日期以医院医嘱为准',
+        ],
+        useCases: [
+          '孕期中快速核对当前孕周、孕天与距预产期天数',
+          '备孕或辅助生殖场景下按排卵日反推末次月经与预产期',
+          '规划 NT、大排畸、糖耐量等产检的大致时间窗',
+        ],
+        privacyNote:
+          '经期与孕产数据仅在浏览器本地参与日期运算，不会上传、存储或发送到任何服务器，页面不接入任何统计 SDK。',
+        faqs: [
+          {
+            question: '为什么排卵日模式也要反推一个末次月经？',
+            answer:
+              '临床孕周统一按末次月经起算，标准周期下排卵发生在 LMP 后第 14 天，因此工具用排卵日减 14 天得到等效 LMP，再按同一套 40 周日历输出孕周，保证两种模式在同一受孕基准下结果一致。',
+          },
+          {
+            question: '月经周期不是 28 天怎么修正？',
+            answer:
+              '周期每比 28 天多 1 天，预产期相应延后 1 天；每少 1 天则提前 1 天。工具允许 21–35 天的整数周期，并在结果中同时展示 28 天基准预产期与修正后预产期。',
+          },
+          {
+            question: '计算结果可以当作医生诊断吗？',
+            answer:
+              '不可以。本工具只做标准日期算术，实际排卵、着床与胎儿发育存在个体差异，月经不规律时临床通常结合早孕 B 超核对孕周。所有产检与预产期安排请以产检医院和专业医生的医嘱为准。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Pregnancy Due Date & Gestational Age Calculator runs entirely in your browser. Enter the first day of the last menstrual period (LMP) for the Naegele +280-day rule, or a known ovulation/conception date for the +266-day rule with automatic LMP backdating. Pick a reference date to obtain the gestational week and day, trimester, countdown to the due date and 40-week progress, adjust for 21-35 day cycle lengths, and review checkup windows such as NT, anatomy scan, OGTT and fetal monitoring.',
+        coreFeatures: [
+          'Dual modes: Naegele LMP +280 days and ovulation +266 days, yielding identical gestational age for the same conception basis',
+          'Dashboard with week+day, trimester boundaries (1-13+6, 14-27+6, 28+), countdown and progress bar',
+          'Cycle correction for 21-35 day cycles, shifting the due date day-for-day from the 28-day baseline with before/after comparison',
+          '40-week checkup timeline covering NT, Down screening, anatomy scan, OGTT and fetal monitoring windows, highlighting the current week',
+          'Local calendar-day math using UTC noon timestamps to avoid DST and timezone off-by-one errors, with zero network requests',
+        ],
+        howToUse: [
+          'Choose a mode and enter the LMP date or the ovulation/conception date',
+          'The reference date defaults to today and can be changed to inspect any past or future gestational age',
+          'Adjust the cycle length when it differs from 28 days; the due date and correction comparison update instantly',
+          'Read the due date, gestational age, trimester and countdown from the dashboard',
+          'Check the timeline table for the active checkup window, always confirming exact dates with your clinic',
+        ],
+        useCases: [
+          'Quickly checking the current gestational week, day and time remaining during pregnancy',
+          'Backdating an LMP and due date from a known ovulation date in conception or assisted-reproduction planning',
+          'Planning approximate windows for NT, anatomy and glucose-tolerance checkups',
+        ],
+        privacyNote:
+          'Menstrual and pregnancy data only participates in local date arithmetic in your browser. It is never uploaded, stored or sent to any server, and no analytics SDK is loaded.',
+        faqs: [
+          {
+            question: 'Why does ovulation mode backdate an LMP?',
+            answer:
+              'Clinical gestational age is always counted from the LMP. With a standard cycle, ovulation occurs 14 days after the LMP, so the tool subtracts 14 days from the ovulation date to derive an equivalent LMP and then applies the same 40-week calendar, keeping both modes consistent for one conception date.',
+          },
+          {
+            question: 'How is a non-28-day cycle corrected?',
+            answer:
+              'Each day beyond 28 pushes the due date one day later; each day below 28 brings it one day earlier. The tool accepts integer cycles from 21 to 35 days and shows both the 28-day baseline due date and the corrected due date.',
+          },
+          {
+            question: 'Can the result replace a medical diagnosis?',
+            answer:
+              'No. The tool performs standard date arithmetic only. Real ovulation, implantation and fetal development vary individually, and irregular cycles are typically reconciled with an early-pregnancy ultrasound. Always follow the guidance of your prenatal clinic and qualified clinicians for checkups and the due date.',
           },
         ],
       },
