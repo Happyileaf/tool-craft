@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-12 ：【Agent自主迭代】新增 5 个 RFC 7239 Forwarded、RFC 6570 URI Template、EDN↔JSON、iCalendar 与 docker-compose 转换工具
+
+- **新增**：RFC 7239 Forwarded HTTP 头解析与生成器（forwarded-header-codec）— 引号感知的逗号/分号两级切分解析多跳代理链 for/by/host/proto，覆盖裸 IPv4、IPv4:port、IPv6 与 [IPv6]:port、unknown 与 _obfuscated 节点校验，构造器固定 for→by→host→proto 顺序并自动引号转义，解析结果可一键载入构造器再编辑，13 个 Vitest 用例，纯本地运算零依赖
+- **新增**：RFC 6570 URI Template 展开器（uri-template-expander）— 支持 Level 1–4 全部 8 种操作符（简单 / + / # / . / / / ; / ? / &）、explode 与前缀截断，按 RFC 3986 unreserved 逐 UTF-8 字节百分号编码，未定义变量与空值按规范省略，以 RFC 6570 §3.2 官方变量集 15 个用例固定验证，非法花括号与截断长度明确报错，纯本地运算零依赖
+- **新增**：Clojure EDN ↔ JSON 双向转换器（edn-json-converter）— 手写词法分析与递归下降解析器支持 nil/布尔/字符串/数字、keyword/symbol（含命名空间）、list/vector/set/map、#inst/#uuid 标签与注释，类型标记（___edn_type）保证集合与关键字在 JSON 侧无损往返，EdnError 携带字符位置，12 个 Vitest 用例，纯本地运算零依赖
+- **新增**：iCalendar (.ics) 日历事件生成器（ics-generator）— 表单生成 RFC 5545 单事件 VEVENT，支持 UTC/TZID/全天（VALUE=DATE，DTEND 排他性次日）三种时间形式、TEXT 反斜杠/分号/逗号/换行转义、VALARM 分钟/小时/天提醒、按 UTF-8 字节计数的 75 八位组折行与 CRLF，自动生成 UID/DTSTAMP，一键复制或下载 event.ics，13 个 Vitest 用例，纯本地运算零依赖
+- **新增**：docker run 转 docker-compose.yml 转换器（docker-run-to-compose）— shell 词法切分支持引号、反斜杠转义与行尾续行，把端口/卷/环境变量/网络/重启/能力/健康检查/日志等选项映射为单个 compose 服务并手工生成缩进合法的 YAML（风险纯量自动加引号），未识别选项告警不中断，14 个 Vitest 用例，纯本地运算零依赖
+
 ## 2026-11-12 ：【Agent自主迭代】新增 5 个 Fletcher 校验和、指数退避、缓存新鲜度、拓扑排序可视化与预产期孕周工具
 
 - **新增**：Fletcher 系列校验和计算器（fletcher-checksum）— 实现 Fletcher-16/32/64 双累加和算法，64 位路径全程 BigInt 运算兼容 ES2017 目标，支持文本/UTF-8 与 HEX 双输入、三种位宽同屏计算及 appended 校验字节求解（追加后双累加和归零的代数求解），官方向量固定验证，非法 HEX 带定位报错，纯本地运算零依赖
