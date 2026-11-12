@@ -349,4 +349,5 @@ export const toolLoaders: Record<
   'uri-template-expander': () => import('./uri-template-expander'),
   'edn-json-converter': () => import('./edn-json-converter'),
   'ics-generator': () => import('./ics-generator'),
+  'docker-run-to-compose': () => import('./docker-run-to-compose'),
 };

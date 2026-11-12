@@ -32291,7 +32291,7 @@ sqrt(area) + 2 * r`,
       'Parse and build RFC 7239 Forwarded headers across multi-hop proxy chains, covering for/by/host/proto parameters, IPv4/IPv6 nodes with ports, unknown and obfuscated identifiers, with automatic quoting/escaping and node validation; parsed results can be loaded into the builder for editing.',
     category: ToolCategoryEnum.DEV_CODE,
     path: '/tools/forwarded-header-codec',
-    iconName: 'Share2',
+    iconName: 'Globe',
     tags: ['RFC 7239', 'Forwarded', 'HTTP 头', '代理', '反向代理', 'IPv6'],
     tagsEn: ['RFC 7239', 'Forwarded', 'HTTP Header', 'Proxy', 'Reverse Proxy', 'IPv6'],
     isPopular: false,
@@ -32695,6 +32695,110 @@ sqrt(area) + 2 * r`,
             question: 'Which calendars can import the generated file?',
             answer:
               'The output follows the common RFC 5545 subset (VERSION:2.0, VEVENT, VALARM) and imports into Google Calendar, Microsoft Outlook, Apple Calendar and most .ics-aware clients. Text escaping, CRLF endings and 75-octet folding follow the spec, so long descriptions and multibyte content such as Chinese will not break the file.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'docker-run-to-compose',
+    name: 'docker run 转 docker-compose.yml 转换器',
+    nameEn: 'docker run to docker-compose.yml Converter',
+    description:
+      '粘贴一条完整的 docker run 命令，自动完成 shell 词法切分并把端口、卷、环境变量、网络、重启策略、能力、健康检查、日志等选项映射为单个 compose 服务，输出缩进合法的 docker-compose.yml；未识别选项以告警列出，支持引号、转义与行尾续行。',
+    descriptionEn:
+      'Paste a full docker run command and get a single docker-compose service: shell-aware tokenization maps ports, volumes, env vars, networks, restart policy, capabilities, health checks and logging options into properly indented YAML. Unrecognized options are reported as warnings; quotes, escapes and line continuations are supported.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/docker-run-to-compose',
+    iconName: 'Layers',
+    tags: ['Docker', 'docker-compose', '容器', 'YAML', 'DevOps'],
+    tagsEn: ['Docker', 'docker-compose', 'Container', 'YAML', 'DevOps'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'docker run -d --name webapp -p 8080:80 nginx:1.27-alpine',
+    doc: {
+      zh: {
+        whatIsIt:
+          'docker run 转 docker-compose.yml 转换器是一款纯浏览器本地工具。它先按 shell 规则对命令做词法切分（正确处理单双引号、反斜杠转义与行尾反斜杠续行），再把 docker run 的各类选项归一化映射为 Compose 规范中的服务字段，手工生成缩进合法的 YAML 文本，帮助你把临时命令沉淀为可版本管理的 compose 文件。',
+        coreFeatures: [
+          'Shell 词法切分：支持单引号、双引号、反斜杠转义与行尾 \\ 续行，带空格的参数不会被错误拆开',
+          '全面选项映射：-p/-v/-e、--name、--restart、--network、--memory/--cpus、--cap-add/drop、--sysctl、--ulimit、--health-*、--log-* 等',
+          '集合与键值处理：端口、卷、DNS、tmpfs 等输出为 YAML 列表；环境变量、标签、sysctl 输出为映射，透传变量（-e FOO）保留空值',
+          'YAML 安全输出：含冒号空格、井号或布尔歧义的值自动加引号，环境变量名等标识符保持裸键',
+          '容错设计：一条命令映射一个服务，未识别选项不中断转换而以告警列出，--rm、--label-file 等无等价字段的选项明确提示',
+        ],
+        howToUse: [
+          '把完整的 docker run 命令粘贴到左侧输入框，可包含行尾反斜杠换行',
+          '右侧实时生成 docker-compose.yml，服务名取 --name，缺省时由镜像名派生',
+          '若出现橙色告警，按提示手动补充 compose 不直接支持的选项',
+          '点击「复制 YAML」把结果保存为 docker-compose.yml，用 docker compose up -d 启动',
+        ],
+        useCases: [
+          '把历史运维脚本里散落的 docker run 命令迁移到 docker-compose 版本化管理',
+          '在编写部署文档或 IaC 仓库时快速生成服务定义骨架',
+          '学习 docker run 选项与 compose 服务字段之间的对应关系',
+          '排查手写 YAML 的缩进与引号问题，以生成结果作为对照',
+        ],
+        privacyNote:
+          '命令仅在浏览器本地解析与生成 YAML，不会发送到任何服务器，也不会执行其中的任何容器操作。',
+        faqs: [
+          {
+            question: '为什么 -d 没有出现在生成的 YAML 里？',
+            answer:
+              'docker compose up -d 本身就负责后台运行，compose 服务模型没有与 docker run -d 对应的字段，因此工具对 -d/--detach 静默忽略。同理 --sig-proxy 等只对前台 docker run 有意义的选项也会被忽略。',
+          },
+          {
+            question: '一条命令里的多个容器会生成多个服务吗？',
+            answer:
+              '不会。一条 docker run 只描述一个容器，工具将其映射为一个服务。多服务应用请分别转换每条命令，再把生成的服务合并到同一个 services: 映射下，或使用 extends/依赖关系手工编排。',
+          },
+          {
+            question: '带空格或特殊字符的参数能正确处理吗？',
+            answer:
+              '可以。词法分析遵循 shell 引号规则：双引号与单引号内的空格不切分，反斜杠可转义引号，行尾反斜杠视为续行。输出 YAML 时，包含冒号空格、# 注释符或 yes/no/on/off 等布尔歧义词的值会自动加双引号，避免生成非法或语义被改变的 YAML。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The docker run to docker-compose.yml converter runs entirely in your browser. It tokenizes the command with shell-aware rules (single/double quotes, backslash escapes and line continuations), normalizes docker run options into Compose service fields, and emits correctly indented YAML so ad-hoc commands become version-controlled compose files.',
+        coreFeatures: [
+          'Shell-aware tokenization: quotes, escapes and trailing backslash line continuations keep spaced arguments intact',
+          'Broad option coverage: -p/-v/-e, --name, --restart, --network, --memory/--cpus, --cap-add/drop, --sysctl, --ulimit, --health-* and --log-*',
+          'Lists vs maps: ports, volumes, DNS and tmpfs become YAML sequences; env vars, labels and sysctls become mappings, with pass-through variables (-e FOO) keeping empty values',
+          'Safe YAML output: values containing colon-space, hash marks or boolean-like words are quoted automatically while identifier keys stay bare',
+          'Resilient by design: one command becomes one service; unknown options produce warnings instead of failing, and options without compose equivalents such as --rm are called out explicitly',
+        ],
+        howToUse: [
+          'Paste the full docker run command into the left editor, including backslash-wrapped line breaks if any',
+          'Read the generated docker-compose.yml on the right; the service name comes from --name or is derived from the image',
+          'Resolve orange warnings manually for options that have no direct compose equivalent',
+          'Click "Copy YAML", save it as docker-compose.yml and start with docker compose up -d',
+        ],
+        useCases: [
+          'Migrating scattered docker run commands in ops scripts into versioned docker-compose files',
+          'Scaffolding service definitions for deployment docs or IaC repositories',
+          'Learning how docker run flags map onto compose service fields',
+          'Cross-checking indentation and quoting issues in hand-written YAML',
+        ],
+        privacyNote:
+          'Commands are parsed and rendered into YAML locally in your browser; nothing is uploaded and no container action is executed.',
+        faqs: [
+          {
+            question: 'Why does -d not appear in the generated YAML?',
+            answer:
+              'docker compose up -d already handles detached execution, so the compose service model has no field equivalent to docker run -d. The tool silently ignores -d/--detach and similarly foreground-only flags such as --sig-proxy.',
+          },
+          {
+            question: 'Will multiple containers in one command produce multiple services?',
+            answer:
+              'No. A single docker run describes one container and maps to one service. For multi-container applications, convert each command separately and merge the generated services under the same services: map, then wire dependencies by hand.',
+          },
+          {
+            question: 'Are arguments with spaces or special characters handled correctly?',
+            answer:
+              'Yes. Tokenization follows shell quoting rules: spaces inside quotes are preserved, backslashes escape quotes, and trailing backslashes continue lines. During YAML emission, values containing colon-space, comment hashes or boolean-like words such as yes/no/on/off are double-quoted automatically to keep the output valid and semantically unchanged.',
           },
         ],
       },
