@@ -32805,6 +32805,110 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'ipv4-header-parser',
+    name: 'IPv4 数据报头解析与校验和验证器',
+    nameEn: 'IPv4 Header Parser & Checksum Validator',
+    description:
+      '按 RFC 791 解析 IPv4 数据报头部十六进制，拆解版本、IHL、DSCP/ECN、总长度、标识、DF/MF 标志与片偏移、TTL、协议、源目的地址和选项，并按 RFC 1071 重算互联网首部校验和判定数据是否损坏。',
+    descriptionEn:
+      'Parse IPv4 datagram header hex per RFC 791, decoding version, IHL, DSCP/ECN, total length, identification, DF/MF flags and fragment offset, TTL, protocol, source/destination addresses and options, then recompute the RFC 1071 internet header checksum to detect corruption.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ipv4-header-parser',
+    iconName: 'Wifi',
+    tags: ['IPv4', 'RFC 791', 'RFC 1071', '校验和', '报文解析'],
+    tagsEn: ['IPv4', 'RFC 791', 'RFC 1071', 'Checksum', 'Packet Parsing'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '45 00 00 3c 1c 46 40 00 40 06 00 00 c0 a8 01 0a c0 a8 01 01',
+    doc: {
+      zh: {
+        whatIsIt:
+          'IPv4 数据报头解析器是一款纯浏览器本地的网络报文分析工具。它按 RFC 791 把十六进制 IPv4 头部拆解为版本、首部长度、区分服务、总长度、标识、标志与片偏移、TTL、协议、校验和、源/目的地址及选项等字段，并依据 RFC 1071 重新计算互联网首部校验和，帮助网络工程与安全人员快速读懂抓包数据并判断报文是否在传输中损坏。',
+        coreFeatures: [
+          '完整字段解析：版本、IHL、DSCP/ECN、总长度、标识、DF/MF/保留标志、片偏移、TTL、协议号与名称、源目的地址、选项',
+          'RFC 1071 校验和验证：对整个头部按 16 位字求和回卷取反，重算结果为 0x0000 即校验通过，否则标红并给出重算值',
+          '协议号识别：内置 ICMP、IGMP、TCP、UDP、GRE、ESP、AH、ICMPv6、OSPF、SCTP 等常见协议号映射',
+          '合法性校验：拒绝非 IPv4 版本、IHL 小于 5、输入短于 20 字节以及与 IHL 不一致的截断头部',
+          '内置构造器：可一键生成带正确校验和的合法 UDP 头部样例，便于教学与对照测试',
+        ],
+        howToUse: [
+          '在文本框粘贴 IPv4 数据报头部十六进制，空格、逗号与 0x 前缀均可，至少包含 20 字节',
+          '点击“载入合法示例”可生成一个自动计算好校验和的 UDP 头部',
+          '查看顶部校验和验证标签：绿色表示通过，红色表示头部被篡改或传输损坏',
+          '在字段表格中逐项核对解析结果，并复制按 4 字节分组的头部十六进制',
+        ],
+        useCases: [
+          '分析 Wireshark/tcpdump 抓包导出的 IPv4 头部字节，理解每个字段含义',
+          '验证手写或构造的 IP 头部校验和是否正确，排查 TTL 改写后的校验和问题',
+          '网络协议教学：演示 IHL、分片标志、片偏移与 DSCP/ECN 的位级布局',
+          '安全分析：识别异常 TTL、协议号或损坏校验和的可疑报文',
+        ],
+        privacyNote:
+          '所有报文数据仅在浏览器本地解析，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '为什么校验和验证是把整个头部重新算一遍看是否等于 0？',
+            answer:
+              'RFC 1071 校验和在发送端计算时，先把校验和字段置 0，对头部按 16 位字求和、回卷进位后取反填入。接收端把包含该校验和在内的整个头部再做同样运算：若数据未变化，原校验和与其余字段的求和取反恰好抵消，结果为 0x0000；任何字节改动都会导致非零结果。',
+          },
+          {
+            question: 'IHL 字段和首部长度是什么关系？',
+            answer:
+              'IHL（Internet Header Length）是头部第一个字节的低 4 位，以 32 位字（4 字节）为单位。最小值 5 对应 20 字节的无选项头部；当存在选项时 IHL 大于 5，实际首部字节数为 IHL×4，最大 15 即 60 字节。载荷长度等于总长度减去首部字节数。',
+          },
+          {
+            question: 'DF、MF 标志和片偏移如何配合分片？',
+            answer:
+              'DF（Don’t Fragment）置 1 表示路由器不允许分片，遇到 MTU 不足会丢弃并回 ICMP；MF（More Fragments）置 1 表示后面还有分片，最后一个分片清零。片偏移以 8 字节为单位指示当前分片数据在原始数据报中的位置，重组端据此把各分片拼回原始数据。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The IPv4 header parser is a browser-local packet analysis tool. Following RFC 791, it decodes hexadecimal IPv4 headers into version, IHL, differentiated services, total length, identification, flags and fragment offset, TTL, protocol, checksum, source/destination addresses and options, then recomputes the RFC 1071 internet header checksum so network and security engineers can read captures and detect in-transit corruption.',
+        coreFeatures: [
+          'Full field decoding: version, IHL, DSCP/ECN, total length, identification, DF/MF/reserved flags, fragment offset, TTL, protocol number and name, addresses and options',
+          'RFC 1071 checksum validation: sums the whole header in 16-bit words with carry wrap and one’s complement; a recomputed 0x0000 means valid, otherwise the mismatch is highlighted with the actual value',
+          'Protocol recognition: built-in mapping for ICMP, IGMP, TCP, UDP, GRE, ESP, AH, ICMPv6, OSPF, SCTP and more',
+          'Validity checks: rejects non-IPv4 versions, IHL below 5, input shorter than 20 bytes and truncated headers inconsistent with IHL',
+          'Built-in builder: generates a valid UDP header sample with a correct checksum in one click for teaching and comparison',
+        ],
+        howToUse: [
+          'Paste IPv4 header hex into the text area; spaces, commas and 0x prefixes are accepted and at least 20 bytes are required',
+          'Click “load valid sample” to generate a UDP header whose checksum is computed automatically',
+          'Check the top checksum tag: green means valid, red means the header was altered or corrupted',
+          'Review each decoded field in the table and copy the header hex grouped into 4-byte words',
+        ],
+        useCases: [
+          'Interpreting IPv4 header bytes exported from Wireshark/tcpdump captures field by field',
+          'Verifying checksums of hand-crafted IP headers and debugging checksum issues after TTL rewrites',
+          'Teaching network protocols: demonstrating the bit layout of IHL, fragmentation flags, offset and DSCP/ECN',
+          'Security analysis: spotting suspicious packets with abnormal TTL, protocol numbers or broken checksums',
+        ],
+        privacyNote:
+          'All packet data is parsed locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'Why does validation recompute the whole header and expect zero?',
+            answer:
+              'Under RFC 1071 the sender first zeroes the checksum field, sums the header in 16-bit words with carry wrap, and stores the one’s complement. On receipt the same operation over the entire header including that checksum cancels out exactly when nothing changed, yielding 0x0000; any changed byte produces a non-zero result.',
+          },
+          {
+            question: 'How does IHL relate to header length?',
+            answer:
+              'IHL is the low 4 bits of the first header byte and counts 32-bit words (4 bytes each). Its minimum value 5 means a 20-byte header with no options; with options IHL exceeds 5, the real header size is IHL×4, capped at 15 words or 60 bytes. Payload length equals total length minus header length.',
+          },
+          {
+            question: 'How do DF, MF flags and fragment offset work together?',
+            answer:
+              'DF (Don’t Fragment) set to 1 forbids routers from fragmenting; they drop oversized packets and return ICMP instead. MF (More Fragments) set to 1 means further fragments follow and is cleared on the last one. The fragment offset, measured in 8-byte units, tells the reassembler where each fragment’s data sits in the original datagram.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'ldap-filter-parser',
     name: 'LDAP 搜索过滤器解析与校验器',
     nameEn: 'LDAP Search Filter Parser & Validator',

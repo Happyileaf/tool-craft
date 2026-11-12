@@ -211,7 +211,7 @@
 | 20261103140205 | 加班工资计算器（中国大陆劳动法） | Web Tool | External Reference | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103140205.md) |
 | 20261103200232 | Black-Scholes 期权定价计算器（含 Greeks） | Web Tool | Exploration | Claimed | 2026-11-03 | trae-agent | [详情](./idea-details/20261103200232.md) |
 | 20261103200233 | Apache / Nginx Combined Log Format 访问日志解析器 | Web Tool | Existing Gap | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103200233.md) |
-| 20261103200234 | IPv4 数据报头解析与校验和验证器（RFC 791） | Web Tool | Existing Gap | Claimed | 2026-11-03 | 2026-11-13 · feat/tool-development-20261113060152-trae-agent | [详情](./idea-details/20261103200234.md) |
+| 20261103200234 | IPv4 数据报头解析与校验和验证器（RFC 791） | Web Tool | Existing Gap | In Progress | 2026-11-03 | 2026-11-13 · feat/tool-development-20261113060152-trae-agent | [详情](./idea-details/20261103200234.md) |
 | 20261103200235 | 化学方程式配平器与摩尔计量计算器 | Web Tool | Exploration | Pending | 2026-11-03 | | [详情](./idea-details/20261103200235.md) |
 | 20261104020112 | SMD 电阻阻值码计算器（3 位数字码与 EIA-96 字母码双向） | Web Tool | Exploration | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104020112.md) |
 | 20261104020113 | AWG 美国线规计算器（线号 ↔ 直径 / 截面积 / 电阻 / 载流量） | Web Tool | Exploration | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104020113.md) |
