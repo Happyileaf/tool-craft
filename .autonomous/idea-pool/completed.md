@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261112140150 | OID 点分十进制对象标识符编解码与 BER 压缩弧工具 | Web Tool | Exploration | `oid-codec` / [PR #220](https://github.com/Happyileaf/tool-craft/pull/220) | 2026-11-13 | [详情](./idea-details/20261112140150.md) |
+| 20261112020119 | 抛体运动计算器与轨迹可视化（斜抛/平抛/自由落体，含空气阻力可选模型） | Web Tool | Exploration | `projectile-motion-calculator` / [PR #220](https://github.com/Happyileaf/tool-craft/pull/220) | 2026-11-13 | [详情](./idea-details/20261112020119.md) |
+| 20261104081012 | APCA（WCAG 3）感知对比度计算器 | Web Tool | Existing Gap | `apca-contrast-calculator` / [PR #220](https://github.com/Happyileaf/tool-craft/pull/220) | 2026-11-13 | [详情](./idea-details/20261104081012.md) |
+| 20261103200235 | 化学方程式配平器与摩尔计量计算器 | Web Tool | Exploration | `chemical-equation-balancer` / [PR #220](https://github.com/Happyileaf/tool-craft/pull/220) | 2026-11-13 | [详情](./idea-details/20261103200235.md) |
+| 20261101201003 | Redis RESP2/RESP3 协议编解码器（含 inline 与 RESP3 类型） | Web Tool | Existing Gap | `redis-protocol-codec` / [PR #220](https://github.com/Happyileaf/tool-craft/pull/220) | 2026-11-13 | [详情](./idea-details/20261101201003.md) |
 | 20261109081157 | logfmt 日志解析与格式化工具（key=value 双向转换与类型推断） | Web Tool | Existing Gap | `logfmt-parser-formatter` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081157.md) |
 | 20261109081156 | LED 限流电阻计算器（欧姆定律与功耗、E24 标称阻值选型） | Web Tool | Existing Gap | `led-resistor-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081156.md) |
 | 20261109081155 | ISSN 校验位计算器与规范化工具（含连字符定位与批量校验） | Web Tool | Existing Gap | `issn-checksum-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081155.md) |
