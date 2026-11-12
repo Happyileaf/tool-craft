@@ -67,11 +67,9 @@
 | 20261021221303 | Favicon 生成器（图片导出多尺寸 PNG 与 .ico） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021221303.md) |
 | 20261021221304 | Flexbox 布局可视化生成器（输出 CSS） | Web Tool | Exploration | Pending | 2026-10-21 | | [详情](./idea-details/20261021221304.md) |
 | 20261021221306 | IBAN 银行账号校验与格式化（校验位算法） | Web Tool | External Reference | In Progress | 2026-10-21 | trae-agent | [详情](./idea-details/20261021221306.md) |
-| 20261021221308 | docker run 命令转 docker-compose.yml | Web Tool | External Reference | In Progress | 2026-10-21 | 20261112180415 (trae-agent) | [详情](./idea-details/20261021221308.md) |
 | 20261022221403 | 全角/半角字符批量转换器 | Web Tool | Existing Gap | In Progress | 2026-10-22 | trae-agent | [详情](./idea-details/20261022221403.md) |
 | 20261022221408 | ASCII 文件树生成器 | Web Tool | Exploration | In Progress | 2026-10-22 | trae-agent | [详情](./idea-details/20261022221408.md) |
 | 20261022221409 | ANSI 终端颜色码生成器 | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261022221409.md) |
-| 20261023020508 | iCalendar (.ics) 日历事件文件生成器 | Web Tool | Exploration | In Progress | 2026-10-23 | 20261112180415 (trae-agent) | [详情](./idea-details/20261023020508.md) |
 | 20261023020509 | Web App Manifest 生成器 | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023020509.md) |
 | 20261023020510 | CSS 形状生成器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023020510.md) |
 | 20261023020513 | sitemap.xml 生成器 | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023020513.md) |
@@ -305,9 +303,6 @@
 | 20261112020119 | 抛体运动计算器与轨迹可视化（斜抛/平抛/自由落体，含空气阻力可选模型） | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112020119.md) |
 | 20261112020120 | 图片转 ASCII 字符画生成器（灰度/彩色字符映射、可调宽度与对比度，本地导出） | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112020120.md) |
 | 20261112080434 | Fletcher 校验和计算器（Fletcher-16 / Fletcher-32 / Fletcher-64） | Web Tool | Existing Gap | In Progress | 2026-11-12 | trae-agent | [详情](./idea-details/20261112080434.md) |
-| 20261112140147 | RFC 7239 Forwarded HTTP 头解析与生成器（代理链 for/by/proto/host 编解码） | Web Tool | Exploration | In Progress | 2026-11-12 | 20261112180415 (trae-agent) | [详情](./idea-details/20261112140147.md) |
-| 20261112140148 | RFC 6570 URI Template 展开器（Level 1–4 表达式与变量值编解码） | Web Tool | Exploration | In Progress | 2026-11-12 | 20261112180415 (trae-agent) | [详情](./idea-details/20261112140148.md) |
 | 20261112140149 | IPC-2221 PCB 走线宽度/载流量计算器（内外层、铜厚与温升） | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112140149.md) |
 | 20261112140150 | OID 点分十进制对象标识符编解码与 BER 压缩弧工具 | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112140150.md) |
-| 20261112140151 | Clojure EDN 与 JSON 双向转换器（extensible data notation 解析生成） | Web Tool | Exploration | In Progress | 2026-11-12 | 20261112180415 (trae-agent) | [详情](./idea-details/20261112140151.md) |
 

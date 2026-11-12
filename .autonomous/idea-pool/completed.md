@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261112140151 | Clojure EDN 与 JSON 双向转换器（extensible data notation 解析生成） | Web Tool | Exploration | `edn-json-converter` / [PR #217](https://github.com/Happyileaf/tool-craft/pull/217) | 2026-11-12 | [详情](./idea-details/20261112140151.md) |
+| 20261112140148 | RFC 6570 URI Template 展开器（Level 1–4 表达式与变量值编解码） | Web Tool | Exploration | `uri-template-expander` / [PR #217](https://github.com/Happyileaf/tool-craft/pull/217) | 2026-11-12 | [详情](./idea-details/20261112140148.md) |
+| 20261112140147 | RFC 7239 Forwarded HTTP 头解析与生成器（代理链 for/by/proto/host 编解码） | Web Tool | Exploration | `forwarded-header-codec` / [PR #217](https://github.com/Happyileaf/tool-craft/pull/217) | 2026-11-12 | [详情](./idea-details/20261112140147.md) |
+| 20261023020508 | iCalendar (.ics) 日历事件文件生成器 | Web Tool | Exploration | `ics-generator` / [PR #217](https://github.com/Happyileaf/tool-craft/pull/217) | 2026-11-12 | [详情](./idea-details/20261023020508.md) |
+| 20261021221308 | docker run 命令转 docker-compose.yml | Web Tool | External Reference | `docker-run-to-compose` / [PR #217](https://github.com/Happyileaf/tool-craft/pull/217) | 2026-11-12 | [详情](./idea-details/20261021221308.md) |
 | 20261109081157 | logfmt 日志解析与格式化工具（key=value 双向转换与类型推断） | Web Tool | Existing Gap | `logfmt-parser-formatter` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081157.md) |
 | 20261109081156 | LED 限流电阻计算器（欧姆定律与功耗、E24 标称阻值选型） | Web Tool | Existing Gap | `led-resistor-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081156.md) |
 | 20261109081155 | ISSN 校验位计算器与规范化工具（含连字符定位与批量校验） | Web Tool | Existing Gap | `issn-checksum-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081155.md) |
