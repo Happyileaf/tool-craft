@@ -32281,6 +32281,111 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'forwarded-header-codec',
+    name: 'RFC 7239 Forwarded HTTP 头解析与生成器',
+    nameEn: 'RFC 7239 Forwarded Header Parser & Builder',
+    description:
+      '解析与构造 RFC 7239 Forwarded 头，支持多跳代理链的 for/by/host/proto 参数、IPv4/IPv6（含端口）、unknown 与混淆节点，自动处理引号转义与节点合法性校验，解析结果可一键载入构造器再编辑。',
+    descriptionEn:
+      'Parse and build RFC 7239 Forwarded headers across multi-hop proxy chains, covering for/by/host/proto parameters, IPv4/IPv6 nodes with ports, unknown and obfuscated identifiers, with automatic quoting/escaping and node validation; parsed results can be loaded into the builder for editing.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/forwarded-header-codec',
+    iconName: 'Share2',
+    tags: ['RFC 7239', 'Forwarded', 'HTTP 头', '代理', '反向代理', 'IPv6'],
+    tagsEn: ['RFC 7239', 'Forwarded', 'HTTP Header', 'Proxy', 'Reverse Proxy', 'IPv6'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'for=192.0.2.60;proto=http;by=203.0.113.43, for="[2001:db8:cafe::17]:4711";proto=https;host=example.com',
+    doc: {
+      zh: {
+        whatIsIt:
+          'RFC 7239 Forwarded HTTP 头解析与生成器是一款纯浏览器本地工具：把代理链上逐跳记录的 Forwarded 头字段解析为结构化表格，或通过表单逐跳构造合规的头值。它处理 for/by/host/proto 四个标准参数、节点标识（IPv4、带端口 IPv6、unknown、_obfuscated）的合法性校验，以及引号包裹与反斜杠转义细节。',
+        coreFeatures: [
+          '多跳解析：逗号分隔的转发元素逐跳拆分为表格，引号内逗号不会误切分',
+          '节点校验：IPv4/IPv4:port、裸 IPv6 与 [IPv6]:port、unknown、_obfuscated 全覆盖，错误带跳数定位',
+          '双向工作流：解析结果一键载入构造器，表单增删跳数后重新生成',
+          '合规生成：参数名统一小写、固定 for→by→host→proto 顺序，必要时自动加引号并转义',
+          '容错解析：容忍空白与大小写差异，非标准参数与空值逐条告警',
+        ],
+        howToUse: [
+          '在「解析」模式粘贴 Forwarded 头字段值，查看逐跳参数表格与告警',
+          '切换到「构造」模式，逐跳填写 for/by/host/proto，可随时新增或删除跳数',
+          '复制生成结果直接写入网关或应用的响应/请求头配置',
+          '解析后点击「载入构造器」可在现有代理链基础上修改再生成',
+        ],
+        useCases: [
+          '排查经过 CDN、负载均衡与多级反向代理后的真实客户端地址',
+          '为 Nginx/Envoy/Cloudflare 等代理编写或核对 Forwarded 头规则',
+          '对照 X-Forwarded-For 理解标准化 Forwarded 头的信息模型',
+          '教学演示代理链中节点标识、引号与转义的 RFC 合规写法',
+        ],
+        privacyNote:
+          '全部解析与生成均在浏览器本地完成，头字段内容不会上传或离开设备。',
+        faqs: [
+          {
+            question: 'Forwarded 和 X-Forwarded-For 有什么区别？',
+            answer:
+              'X-Forwarded-For 是非标准事实约定，只记录客户端 IP 链；RFC 7239 Forwarded 是标准化头，每一跳都可以同时携带 for（发起节点）、by（代理节点）、proto（原始协议）与 host（原始 Host），并定义了 unknown 与混淆节点的规范写法。',
+          },
+          {
+            question: '为什么 IPv6 节点外面有方括号和引号？',
+            answer:
+              'IPv6 地址本身含冒号，与端口分隔符冲突，因此带端口时必须用方括号包裹地址，如 [2001:db8::17]:4711；又因为该值不再是合法 token，RFC 7239 要求整体再加引号，写成 for="[2001:db8::17]:4711"。',
+          },
+          {
+            question: 'unknown 和 _obfuscated 分别什么时候用？',
+            answer:
+              '当代理无法或不应披露节点身份时使用 unknown，表示信息缺失；_obfuscated（下划线开头的自定义标识）用于在日志间关联同一节点又不暴露真实 IP，例如 by=_proxyA。两者都会通过本工具的节点合法性校验。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The RFC 7239 Forwarded Header Parser & Builder runs entirely in your browser. It turns per-hop Forwarded header fields recorded along a proxy chain into a structured table, or builds compliant header values through a hop-by-hop form. It handles the four standard parameters for/by/host/proto, validates node identifiers (IPv4, IPv6 with port, unknown, _obfuscated), and manages quoting and backslash escaping correctly.',
+        coreFeatures: [
+          'Multi-hop parsing: comma-separated forwarded elements become a per-hop table; commas inside quotes never split elements',
+          'Node validation covering IPv4/IPv4:port, bare IPv6 and [IPv6]:port, unknown and _obfuscated, with hop-indexed errors',
+          'Bidirectional workflow: load parsed results into the builder, add or remove hops, then regenerate',
+          'Compliant generation: lowercase parameter names, fixed for-by-host-proto order, automatic quoting and escaping when needed',
+          'Lenient parsing tolerating whitespace and case differences, with per-item warnings for non-standard parameters and empty values',
+        ],
+        howToUse: [
+          'Paste a Forwarded header value in Parse mode to inspect the per-hop table and warnings',
+          'Switch to Build mode, fill for/by/host/proto for each hop, and add or remove hops freely',
+          'Copy the generated value into gateway or application header configuration',
+          'Use "Load into builder" after parsing to modify an existing proxy chain before regenerating',
+        ],
+        useCases: [
+          'Tracing the real client address through CDNs, load balancers and multi-level reverse proxies',
+          'Writing or verifying Forwarded rules for Nginx, Envoy, Cloudflare and similar proxies',
+          'Understanding the standardized Forwarded model alongside the legacy X-Forwarded-For header',
+          'Teaching RFC-compliant node identifiers, quoting and escaping in proxy chains',
+        ],
+        privacyNote:
+          'All parsing and generation happen locally in your browser; header content is never uploaded.',
+        faqs: [
+          {
+            question: 'How is Forwarded different from X-Forwarded-For?',
+            answer:
+              'X-Forwarded-For is a non-standard de-facto convention carrying only a client IP chain. The RFC 7239 Forwarded header is standardized: every hop can carry for (initiating node), by (proxy node), proto (original scheme) and host (original Host), with defined spelling for unknown and obfuscated nodes.',
+          },
+          {
+            question: 'Why do IPv6 nodes have brackets and quotes?',
+            answer:
+              'IPv6 addresses contain colons, which clash with the port separator, so an address with a port must be bracketed as [2001:db8::17]:4711. Because the result is no longer a valid token, RFC 7239 requires the whole value to be quoted as well, e.g. for="[2001:db8::17]:4711".',
+          },
+          {
+            question: 'When should I use unknown versus _obfuscated?',
+            answer:
+              'Use unknown when a proxy cannot or must not disclose a node identity, indicating missing information. Use an _obfuscated identifier (an underscore-prefixed token such as by=_proxyA) to correlate the same node across logs without revealing its real IP. Both pass the tool’s node validation.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

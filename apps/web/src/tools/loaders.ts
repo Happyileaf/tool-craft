@@ -345,4 +345,5 @@ export const toolLoaders: Record<
   'karnaugh-map-simplifier': () => import('./karnaugh-map-simplifier'),
   'wavelength-rgb-converter': () => import('./wavelength-rgb-converter'),
   'black-scholes-calculator': () => import('./black-scholes-calculator'),
+  'forwarded-header-codec': () => import('./forwarded-header-codec'),
 };
