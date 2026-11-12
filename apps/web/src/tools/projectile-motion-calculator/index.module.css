@@ -1,0 +1,116 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mono {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 14px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: rgb(75 85 99);
+}
+
+.field :global(.ant-input-number),
+.field :global(.ant-select) {
+  width: 100%;
+}
+
+.dragRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.statCard {
+  text-align: center;
+}
+
+.statValue {
+  font-size: 22px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.statUnit {
+  font-size: 12px;
+  color: rgb(107 114 128);
+  margin-left: 2px;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: rgb(107 114 128);
+  margin-top: 2px;
+}
+
+.compareTag {
+  font-size: 12px;
+  margin-left: 6px;
+}
+
+.chartCard {
+  width: 100%;
+}
+
+.chartSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legendLine {
+  width: 26px;
+  height: 0;
+  border-top-width: 3px;
+  border-top-style: solid;
+}
+
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.hint {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgb(107 114 128);
+}

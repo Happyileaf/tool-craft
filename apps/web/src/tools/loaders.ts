@@ -350,4 +350,9 @@ export const toolLoaders: Record<
   'edn-json-converter': () => import('./edn-json-converter'),
   'ics-generator': () => import('./ics-generator'),
   'docker-run-to-compose': () => import('./docker-run-to-compose'),
+  'redis-protocol-codec': () => import('./redis-protocol-codec'),
+  'oid-codec': () => import('./oid-codec'),
+  'apca-contrast-calculator': () => import('./apca-contrast-calculator'),
+  'chemical-equation-balancer': () => import('./chemical-equation-balancer'),
+  'projectile-motion-calculator': () => import('./projectile-motion-calculator'),
 };

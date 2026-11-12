@@ -32804,6 +32804,546 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'redis-protocol-codec',
+    name: 'Redis RESP 协议编解码调试器',
+    nameEn: 'Redis RESP Protocol Codec & Debugger',
+    description:
+      '在 RESP2 与 RESP3 两种线上格式之间双向转换：把带 CRLF 的 RESP 字节流解析为带类型标签的结构化消息树（覆盖简单串、错误、整数、Bulk、数组、Null、Double、Boolean、BigNumber、Map、Set、Push 与 Verbatim String），并支持表单构造结构化消息后输出标准线格式，自动按 UTF-8 字节计数，识别半包残片，可一键降级为 RESP2 兼容表示。',
+    descriptionEn:
+      'Bidirectional converter between Redis RESP2 and RESP3 wire formats. Parse CRLF-delimited RESP byte streams into a typed message tree covering simple strings, errors, integers, bulks, arrays, null, double, boolean, big numbers, maps, sets, push and verbatim strings, or build structured messages with a form and emit standard wire text with correct UTF-8 byte lengths. Detects half-packet remainders and can downgrade RESP3 types to RESP2 equivalents.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/redis-protocol-codec',
+    iconName: 'HardDrive',
+    tags: ['Redis', 'RESP', '协议', '编解码', '调试'],
+    tagsEn: ['Redis', 'RESP', 'Protocol', 'Codec', 'Debugging'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '*2\r\n$3\r\nGET\r\n$5\r\nmykey\r\n',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Redis RESP 协议编解码调试器是一款纯浏览器本地工具。它在 Redis 序列化协议（RESP）的线格式文本与结构化消息之间做双向转换，完整覆盖 RESP2 的五种基础类型与 RESP3 新增的 Null、Double、Boolean、BigNumber、Bulk Error、Verbatim String、Map、Set、Push 等类型。解析在 UTF-8 字节缓冲区上进行，bulk 长度严格按字节计数，半包数据保留为残片而不会误报错误。',
+        coreFeatures: [
+          '完整类型覆盖：RESP2 五种基础类型 + RESP3 全部 13 种首字节类型，含嵌套数组与 Map',
+          '字节级解析：bulk 长度按 UTF-8 字节计数，正确处理中文等多字节数据，支持多消息流与半包残片',
+          '结构化树：每条消息按类型渲染标签与层级树，Map 按键值相邻平铺，可导出 JSON',
+          '编码构造器：表单选择类型与值，输出带 CRLF 的标准线格式，BigInt 安全处理超大整数',
+          'RESP2 降级：RESP3 专属类型一键映射为 RESP2 等价结构（布尔转 0/1、Map 转数组、null 转 $-1）',
+          '严格校验：非法首字节、坏整数、奇长度 Map、含换行的 simple string 等均给出明确错误',
+        ],
+        howToUse: [
+          '在「解码解析」页粘贴 RESP 文本（CRLF 行结束），或点击「载入示例」快速体验',
+          '查看带类型标签的结构化树；若末尾数据不完整，会提示半包残片而非报错',
+          '在「编码构造」页逐条添加元素并选择类型、填写值，底部实时生成线格式',
+          '用「切换到 RESP2」开关把 RESP3 类型降级后再复制，用于兼容旧版客户端',
+          '点击复制按钮把线格式或结构化 JSON 粘贴到抓包工具、单元测试或文档中',
+        ],
+        useCases: [
+          '调试 Redis 代理、客户端 SDK 或服务端 mock 的抓包数据，快速确认线上字节含义',
+          '为 RESP 解析器编写单元测试时批量构造标准输入与期望输出',
+          '学习 RESP2 与 RESP3 的类型差异及降级兼容策略',
+          '排查中文等多字节 bulk 的长度计算与粘包/半包问题',
+        ],
+        privacyNote:
+          '所有解析与编码均在浏览器本地完成，数据不会发送到任何服务器，也不会建立任何 Redis 连接。',
+        faqs: [
+          {
+            question: '为什么 bulk 长度和我看到的字符数不一样？',
+            answer:
+              'RESP 长度行按字节而非字符计数。中文等多字节字符在 UTF-8 下占用 3 个字节，工具使用 TextEncoder 按 UTF-8 精确计算长度，解析时也在字节缓冲区上切片，因此与 Redis 服务端行为一致。',
+          },
+          {
+            question: '半包残片是如何处理的？',
+            answer:
+              '当末尾数据不足以构成完整消息时（例如 bulk 声明 10 字节但只收到 3 字节），解析器停止并把未消费部分原样放入 remainder，已完整解析的消息不受影响。后续数据到达后把残片拼接到头部再次解析即可。',
+          },
+          {
+            question: 'RESP3 降级到 RESP2 时具体发生了什么？',
+            answer:
+              'Null 变为 $-1 空 bulk，Boolean 变为 :1/:0 整数，Double/BigNumber/Verbatim 变为 bulk string，Map/Set/Push 变为数组并递归降级子元素。降级是有损的语义映射，类型标签信息不再保留在字节流中。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Redis RESP codec & debugger runs entirely in your browser. It converts between Redis Serialization Protocol wire text and structured messages, covering all five RESP2 base types plus RESP3 additions such as null, double, boolean, big number, bulk error, verbatim string, map, set and push. Parsing works on a UTF-8 byte buffer so bulk lengths are counted in bytes, and incomplete trailing data is reported as a remainder instead of an error.',
+        coreFeatures: [
+          'Full type coverage: five RESP2 base types plus all 13 RESP3 prefixes, including nested arrays and maps',
+          'Byte-accurate parsing: bulk lengths counted in UTF-8 bytes, correct handling of multilingual data, multi-message streams and half-packet remainders',
+          'Structured tree: typed tags and hierarchy for every message, maps flattened as adjacent key/value pairs, exportable to JSON',
+          'Encode builder: pick types and values in a form to emit standard CRLF wire text, with BigInt-safe large integers',
+          'RESP2 downgrade: RESP3-only types map to RESP2 equivalents in one click (boolean to 0/1, map to array, null to $-1)',
+          'Strict validation: unknown prefixes, malformed integers, odd-length maps and newlines in simple strings produce explicit errors',
+        ],
+        howToUse: [
+          'Paste RESP text (CRLF line endings) on the Decode tab, or click Load sample for a quick demo',
+          'Inspect the typed tree; incomplete trailing data is flagged as a half-packet remainder rather than an error',
+          'On the Encode tab, add elements with types and values; wire text is generated live at the bottom',
+          'Toggle RESP2 mode to downgrade RESP3 types before copying, for legacy client compatibility',
+          'Use the copy buttons to paste wire text or structured JSON into packet captures, unit tests or docs',
+        ],
+        useCases: [
+          'Debugging captures from Redis proxies, client SDKs or server mocks to understand raw bytes quickly',
+          'Generating standard inputs and expected outputs in bulk for RESP parser unit tests',
+          'Learning the differences between RESP2 and RESP3 types and downgrade compatibility',
+          'Troubleshooting length calculation and sticky/half-packet issues with multibyte bulk data',
+        ],
+        privacyNote:
+          'All parsing and encoding happen locally in your browser. No data is sent to any server and no Redis connection is opened.',
+        faqs: [
+          {
+            question: 'Why does the bulk length differ from the character count I see?',
+            answer:
+              'RESP length lines count bytes, not characters. Multibyte characters such as Chinese take 3 bytes in UTF-8. The tool computes lengths precisely with TextEncoder and slices on a byte buffer while parsing, matching real Redis server behavior.',
+          },
+          {
+            question: 'How are half-packet remainders handled?',
+            answer:
+              'When the trailing data cannot form a complete message (for example a bulk declares 10 bytes but only 3 arrived), the parser stops and keeps the unconsumed part in remainder while fully parsed messages stay intact. Prepend the remainder to the next chunk and parse again when more data arrives.',
+          },
+          {
+            question: 'What exactly happens when downgrading RESP3 to RESP2?',
+            answer:
+              'Null becomes a $-1 null bulk, boolean becomes :1/:0 integers, double/big number/verbatim become bulk strings, and map/set/push become arrays with children downgraded recursively. The downgrade is a lossy semantic mapping: type-tag information is no longer preserved in the byte stream.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'oid-codec',
+    name: 'OID 编解码工具（点分十进制 ↔ BER 十六进制）',
+    nameEn: 'OID Codec (Dotted Notation ↔ BER Hex)',
+    description:
+      '针对 ASN.1 对象标识符（OID）的本地双向编解码：把点分十进制弧序列（如 1.2.840.113549.1.1.11）按首弧 40·X+Y 合并、后续弧 base-128 变长压缩规则编码为 BER/DER 内容字节十六进制，或把十六进制（容忍空格、冒号、0x 前缀）还原为点分 OID；逐弧展示 7 位分组与输出字节，校验首两弧取值范围，生成完整 DER TLV，内置 30 个常见密码学/X.500 OID 名称标注，并支持每行一条的批量转换。',
+    descriptionEn:
+      'Local bidirectional codec for ASN.1 Object Identifiers: encode dotted-decimal arcs (e.g. 1.2.840.113549.1.1.11) into BER/DER content bytes using the 40·X+Y first-arc merge and base-128 variable-length compression, or decode hex (tolerating spaces, colons and 0x prefixes) back to dotted OID. Visualizes per-arc 7-bit groups and output bytes, validates first-two-arc ranges, emits a full DER TLV, ships an inline table of 30 common crypto/X.500 OID names, and supports line-by-line batch conversion.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/oid-codec',
+    iconName: 'Fingerprint',
+    tags: ['OID', 'ASN.1', 'BER', 'DER', 'X.509'],
+    tagsEn: ['OID', 'ASN.1', 'BER', 'DER', 'X.509'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1.2.840.113549.1.1.11',
+    doc: {
+      zh: {
+        whatIsIt:
+          'OID 编解码工具是一款纯浏览器本地的 ASN.1 对象标识符转换工具。OID 是 X.509 证书、PKCS、SNMP、LDAP 等体系中广泛使用的层级化数字命名方式，点分十进制形式便于阅读，而 BER/DER 编码后的十六进制字节则出现在证书转储与协议报文中。本工具在两种表示之间双向转换，并把 base-128 压缩弧的每一步透明展示出来。',
+        coreFeatures: [
+          '双向转换：点分十进制 OID ↔ BER/DER 内容字节十六进制，标准向量 1.2.840.113549.1.1.11 ↔ 2A864886F70D01010B',
+          '规则透明：逐弧展示 40·X+Y 合并值、7 位分组与最终输出字节，理解多字节压缩弧不再靠猜',
+          '完整 TLV：一键生成带 Tag 06 与短/长形式 Length 的完整 DER TLV，可直接对照证书转储',
+          '严格校验：第一弧限定 0/1/2、前两弧越界、非数字、未结束的 base-128 整数等均明确报错',
+          '常见名称：内置 30 个密码学与 X.500 目录 OID 名称（如 sha256WithRSAEncryption、CN、SAN），无需外部数据库',
+          '批量模式：每行一条自动识别方向，适合处理抓包或文档中的多条 OID',
+        ],
+        howToUse: [
+          '在「OID → HEX 编码」页输入点分十进制 OID，即时得到内容字节与完整 TLV',
+          '查看逐弧表格理解 base-128 分组与高位续位标记的生成过程',
+          '切换到「HEX → OID 解码」页粘贴十六进制，支持空格、冒号或 0x 前缀分隔',
+          '在「批量转换」页每行粘贴一条 OID 或十六进制，自动识别方向并标注常见名称',
+          '用复制按钮把结果带入证书分析、文档或单元测试',
+        ],
+        useCases: [
+          '阅读 X.509 证书、CSR、CRL 的 openssl asn1parse 转储时快速还原 OID 含义',
+          '开发 ASN.1/DER 编解码器时用标准向量对照验证 base-128 实现',
+          '编写 SNMP MIB、LDAP schema 或 PKCS#7/#9 相关测试数据',
+          '学习 OID 首弧合并规则与 BER 变长整数编码原理',
+        ],
+        privacyNote:
+          '所有转换均为浏览器本地整数与位运算，不访问任何 OID 在线数据库或网络服务。',
+        faqs: [
+          {
+            question: '为什么前两个弧要合并成一个字节？',
+            answer:
+              'BER 规定 OID 内容的首字节承载前两个弧：值为 40·X+Y。由于第一弧只有 0、1、2 三种取值且前两种情况下第二弧小于 40，该组合可以无歧义还原；第一弧为 2（ISO）时第二弧不受 40 限制，超出部分自然进入 base-128 多字节编码。',
+          },
+          {
+            question: 'base-128 变长压缩是怎么工作的？',
+            answer:
+              '把弧值按每 7 位一组从高位到低位拆分，除最后一组外每组最高位（第 8 位）置 1 表示后续还有字节，最后一组最高位置 0 表示结束。例如 840 拆为 6、72 两组，输出 86 48。',
+          },
+          {
+            question: '为什么我粘贴的完整 TLV 解码失败？',
+            answer:
+              '本工具的解码输入只接受 OID 的内容字节（Value）。完整 TLV 以 06 开头并跟随 Length 字节，需要先去掉这两部分（长形式 Length 可能占多字节）。编码页则提供了反向的完整 TLV 生成能力。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The OID codec is a fully local browser tool for ASN.1 Object Identifiers. OIDs are hierarchical numeric names used across X.509 certificates, PKCS, SNMP and LDAP: dotted notation is human-readable while BER/DER hex bytes appear in certificate dumps and protocol messages. This tool converts between the two representations and exposes every step of the base-128 arc compression.',
+        coreFeatures: [
+          'Bidirectional conversion: dotted OID ↔ BER/DER content hex, with the standard vector 1.2.840.113549.1.1.11 ↔ 2A864886F70D01010B',
+          'Transparent rules: per-arc table of the 40·X+Y merge, 7-bit groups and final output bytes demystifies multibyte compressed arcs',
+          'Full TLV: generate a complete DER TLV with Tag 06 and short/long form Length for direct comparison with certificate dumps',
+          'Strict validation: first arc limited to 0/1/2, explicit errors for out-of-range second arcs, non-numeric input and unterminated base-128 integers',
+          'Inline names: 30 common crypto and X.500 directory OIDs (sha256WithRSAEncryption, CN, SAN and more) without any external database',
+          'Batch mode: one entry per line with automatic direction detection for packet captures and documents',
+        ],
+        howToUse: [
+          'Enter a dotted OID on the OID → HEX tab to get content bytes and the full TLV instantly',
+          'Study the per-arc table to see how 7-bit groups and continuation bits are produced',
+          'Switch to the HEX → OID tab and paste hex with spaces, colons or 0x prefixes',
+          'Use the Batch tab with one OID or hex string per line; direction is detected and common names are annotated automatically',
+          'Copy results into certificate analysis, documents or unit tests',
+        ],
+        useCases: [
+          'Restoring OID meaning while reading openssl asn1parse dumps of X.509 certificates, CSRs and CRLs',
+          'Validating base-128 implementations against standard vectors while building ASN.1/DER codecs',
+          'Preparing test data for SNMP MIBs, LDAP schemas or PKCS#7/#9 workflows',
+          'Learning the OID first-arc merge rule and BER variable-length integer encoding',
+        ],
+        privacyNote:
+          'Every conversion is local integer and bit arithmetic in your browser; no online OID database or network service is contacted.',
+        faqs: [
+          {
+            question: 'Why are the first two arcs merged into one byte?',
+            answer:
+              'BER encodes the first two arcs in the first content byte as 40·X+Y. Because the first arc is only 0, 1 or 2 and the second arc is below 40 in the first two cases, the combination is unambiguous; when the first arc is 2 (ISO) the second arc is unbounded and naturally flows into multibyte base-128 encoding.',
+          },
+          {
+            question: 'How does base-128 variable-length compression work?',
+            answer:
+              'The arc value is split into 7-bit groups from high to low. Every group except the last sets the high (8th) bit to signal more bytes; the final group clears it to mark the end. For example 840 splits into groups 6 and 72, emitting bytes 86 48.',
+          },
+          {
+            question: 'Why does pasting a complete TLV fail to decode?',
+            answer:
+              'The decoder accepts OID content bytes (Value) only. A complete TLV starts with 06 followed by Length octets that must be stripped first (long-form Length may span multiple bytes). The encode tab offers the reverse operation and generates the full TLV for you.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'apca-contrast-calculator',
+    name: 'APCA（WCAG 3）感知对比度计算器',
+    nameEn: 'APCA Perceptual Contrast Calculator (WCAG 3 Candidate)',
+    description:
+      '按 APCA 0.0.98G-4g 规范在浏览器本地计算前景与背景色的感知对比度 Lc（约 -108 至 +108），支持 #hex（含 8 位 alpha）与 rgb()/rgba() 输入；展示极性（深字浅底为正、浅字深底为负）、Lc90/Lc75/Lc60/Lc45/Lc30/Lc15 六级字号字重推荐、实时配色预览，并对照输出 WCAG 2.1 相对亮度比值。实现与 apca-w3@0.1.9 官方参考向量逐一对齐。',
+    descriptionEn:
+      'Computes the APCA 0.0.98G-4g perceptual contrast Lc (roughly -108 to +108) between foreground and background colors entirely in the browser. Accepts #hex (including 8-digit alpha) and rgb()/rgba() input, reports polarity (positive for dark-on-light, negative for light-on-dark), six Lc90/Lc75/Lc60/Lc45/Lc30/Lc15 font-size and weight tiers, a live color preview, and a WCAG 2.1 luminance-ratio comparison. The implementation is verified against the official apca-w3@0.1.9 reference vectors.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/apca-contrast-calculator',
+    iconName: 'Eye',
+    tags: ['APCA', '对比度', '无障碍', 'WCAG', '颜色'],
+    tagsEn: ['APCA', 'Contrast', 'Accessibility', 'WCAG', 'Color'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '#1a365d on #edf2f7',
+    doc: {
+      zh: {
+        whatIsIt:
+          'APCA（Advanced Perceptual Contrast Algorithm，高级感知对比度算法）是 WCAG 3 的候选对比度模型，用带符号的 Lc（Lightness Contrast，约 -108 至 +108）替代 WCAG 2.1 那种与字号无关的 1–21 比值。本工具严格实现 SAPC-8 / APCA 0.0.98G-4g：对 sRGB 通道做 2.4 次幂亮度转换、黑端 soft-clamp，并按深字浅底（BoW）与浅字深底（WoB）两种极性使用不同的感知指数。',
+        coreFeatures: [
+          '官方对齐：常量与流程对照 apca-w3@0.1.9 参考实现，15 组参考向量（含黑/白 Lc≈±108）在单元测试中固定验收',
+          '多格式输入：#rgb、#rrggbb、#rrggbbaa、rgb()、rgba()，前景带 alpha 时先在背景上混合再计算',
+          '极性可视化：正常极性（BoW，Lc 为正）、反向极性（WoB，Lc 为负）与无对比（Lc=0）以不同颜色标签呈现',
+          '等级推荐：按 Lc90/Lc75/Lc60/Lc45/Lc30/Lc15 六级给出最小字号与字重建议，当前等级高亮',
+          '实时预览：用实际前景/背景渲染中英文样例文本，所见即所得',
+          'WCAG 对照：同时计算 WCAG 2.1 分段线性化的 1–21 对比度比值，方便两代标准对比',
+        ],
+        howToUse: [
+          '在前景色与背景色卡片中用取色器选择颜色，或直接在输入框键入 hex/rgb()/rgba()',
+          '查看大号 Lc 数值与极性标签，确认对比方向与强度',
+          '在「推荐等级」卡片查看当前 Lc 所处档位及字号/字重建议，等级列表会高亮当前档',
+          '观察实时配色预览，判断实际阅读效果；右侧 WCAG 2.1 比值可用于对照旧标准',
+          '点击预设标签快速载入经典黑白、深蓝浅底、半透明黑与同色等场景',
+        ],
+        useCases: [
+          '设计系统与前端团队按 WCAG 3 候选模型评估新一代文本可读性',
+          '为浅色/深色主题分别挑选满足目标 Lc 等级的前景背景配色',
+          '处理带透明度的文字颜色（如 #00000066 遮罩层）时获得混合后的真实对比',
+          '教学演示 APCA 极性、soft-clamp 与 WCAG 2.1 线性模型的差异',
+        ],
+        privacyNote:
+          '所有颜色解析与数值计算均在浏览器本地完成，不发起任何网络请求，颜色数据不会离开设备。',
+        faqs: [
+          {
+            question: 'Lc 的正负号代表什么？',
+            answer:
+              'APCA 是带符号的对比度：深字浅底（Black-on-White，BoW）输出正 Lc，浅字深底（White-on-Black，WoB）输出负 Lc。两种极性使用不同的感知指数，因此同一对颜色交换前后景时，绝对值通常并不相等（如纯黑/纯白分别约为 +106.0 与 -107.9）。决定可读性的是 |Lc|。',
+          },
+          {
+            question: '为什么 APCA 结果和 WCAG 2.1 比值对不上？',
+            answer:
+              '两者数学模型不同：WCAG 2.1 用分段 sRGB 线性化后求 (L1+0.05)/(L2+0.05) 的对称比值，与字号、极性无关；APCA 直接对归一化通道取 2.4 次幂，做黑端 soft-clamp，并按极性使用 0.56/0.57（BoW）或 0.65/0.62（WoB）指数。二者没有固定换算关系，本工具同时给出两个数值仅作对照。',
+          },
+          {
+            question: 'Lc 达到多少才够用？',
+            answer:
+              '取决于字号与字重：正文小字建议 Lc90 及以上（Lc75 可用于 14px 常规或 12px 粗体），Lc60 适合 16px 常规/14px 粗体，Lc45 用于 18–24px 标题，Lc30 仅限 24px 以上大标题，Lc15 只适合图标、图表等非文本元素；低于 Lc15 不建议用于任何关键内容。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'APCA (Advanced Perceptual Contrast Algorithm) is the candidate contrast model for WCAG 3, expressing contrast as a signed Lc (Lightness Contrast, roughly -108 to +108) instead of the font-size-agnostic 1–21 ratio of WCAG 2.1. This tool implements SAPC-8 / APCA 0.0.98G-4g exactly: a 2.4-power luminance transform of sRGB channels, black-end soft clipping, and distinct perceptual exponents for dark-on-light (BoW) and light-on-dark (WoB) polarity.',
+        coreFeatures: [
+          'Official parity: constants and flow match the apca-w3@0.1.9 reference; 15 reference vectors (including black/white Lc around ±108) are pinned in unit tests',
+          'Flexible input: #rgb, #rrggbb, #rrggbbaa, rgb() and rgba(); translucent foreground is alpha-blended over the background first',
+          'Polarity at a glance: normal (BoW, positive Lc), reverse (WoB, negative Lc) and no-contrast (Lc 0) shown with distinct tags',
+          'Tiered guidance: six Lc90/Lc75/Lc60/Lc45/Lc30/Lc15 levels with minimum font-size and weight advice, current tier highlighted',
+          'Live preview: Chinese and English sample text rendered with the actual foreground and background',
+          'WCAG comparison: the segmented-linearization WCAG 2.1 ratio (1–21) is computed alongside for cross-standard evaluation',
+        ],
+        howToUse: [
+          'Pick colors with the pickers in the foreground and background cards, or type hex/rgb()/rgba() directly',
+          'Read the large Lc number and polarity tag to understand contrast direction and strength',
+          'Open the recommendation card to see the active Lc tier and its font-size/weight thresholds',
+          'Judge real readability in the live preview; use the WCAG 2.1 ratio to compare against the legacy standard',
+          'Use preset tags to load classic black-and-white, deep-blue-on-light, translucent-black and same-color scenarios',
+        ],
+        useCases: [
+          'Design systems and frontend teams evaluating text readability under the WCAG 3 candidate model',
+          'Choosing foreground/background pairs that meet a target Lc tier for light and dark themes',
+          'Getting the true contrast of translucent text colors (e.g. #00000066 overlay) after alpha blending',
+          'Teaching APCA polarity, soft clipping and the differences from the WCAG 2.1 linear model',
+        ],
+        privacyNote:
+          'All color parsing and numeric computation run locally in your browser; no network requests are made and color data never leaves the device.',
+        faqs: [
+          {
+            question: 'What does the sign of Lc mean?',
+            answer:
+              'APCA contrast is signed: dark-on-light (BoW) yields a positive Lc while light-on-dark (WoB) yields a negative Lc. The two polarities use different perceptual exponents, so swapping foreground and background generally gives different magnitudes (pure black/white is about +106.0 vs -107.9). Readability is determined by |Lc|.',
+          },
+          {
+            question: 'Why do APCA and the WCAG 2.1 ratio disagree?',
+            answer:
+              'The math differs: WCAG 2.1 applies segmented sRGB linearization and a symmetric (L1+0.05)/(L2+0.05) ratio independent of font size and polarity; APCA raises normalized channels to the 2.4 power, applies black-end soft clipping, and uses 0.56/0.57 (BoW) or 0.65/0.62 (WoB) exponents per polarity. There is no fixed conversion between the two.',
+          },
+          {
+            question: 'What Lc value is good enough?',
+            answer:
+              'It depends on font size and weight: small body text should target Lc90 (Lc75 works for 14px regular or 12px bold), Lc60 suits 16px regular or 14px bold, Lc45 is for 18–24px headings, Lc30 only for headings above 24px, Lc15 is reserved for non-text elements such as icons and charts, and anything below Lc15 should not carry critical content.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'chemical-equation-balancer',
+    name: '化学方程式配平器与摩尔计量计算器',
+    nameEn: 'Chemical Equation Balancer & Stoichiometry Calculator',
+    description:
+      '在浏览器本地配平化学方程式：解析括号嵌套（Ca(OH)2）、多层下标与水合点（CuSO4·5H2O），通过 BigInt 分数高斯-约当消元求元素守恒齐次方程组的最小正整数解，并基于配平系数做摩尔计量换算（物质的量、质量、标况气体体积 22.4 L/mol）。欠定体系与单侧元素会明确报错而非猜测系数。',
+    descriptionEn:
+      'Balances chemical equations entirely in the browser: parses nested parentheses (Ca(OH)2), multi-level subscripts and hydration dots (CuSO4·5H2O), then solves the element-conservation homogeneous system with BigInt-fraction Gauss-Jordan elimination to obtain the smallest positive integer coefficients. A stoichiometry tab converts moles, mass and STP gas volume (22.4 L/mol) across all species. Under-determined systems and one-sided elements raise explicit errors instead of guessing.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/chemical-equation-balancer',
+    iconName: 'Sigma',
+    tags: ['化学', '方程式配平', '摩尔', '化学计量', '高斯消元'],
+    tagsEn: ['Chemistry', 'Equation Balancing', 'Mole', 'Stoichiometry', 'Gaussian Elimination'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Fe + O2 -> Fe2O3',
+    doc: {
+      zh: {
+        whatIsIt:
+          '化学方程式配平器把未配平的方程式（如 Fe + O2 -> Fe2O3）转化为元素守恒的线性齐次方程组：每个元素对应一行，反应物取正号、生成物取负号，未知量是各物种的系数。工具用 BigInt 分数做高斯-约当消元求零空间，只有零空间维数恰好为 1 时才整数化并约分为最小正整数系数，全程无浮点误差。配平后可进一步按系数比做摩尔质量、物质的量与标况气体体积换算。',
+        coreFeatures: [
+          '完整化学式解析：元素符号、下标、圆括号嵌套（含 Ca3(PO4)2 多层结构）与水合点 ·/•/*（CuSO4·5H2O）',
+          '精确配平：BigInt 分数高斯-约当消元，零空间维数为 1 才输出，结果恒为最小正整数系数',
+          '健壮校验：括号不匹配、未知元素、缺箭头、重复物种、元素只出现在一侧、欠定体系均明确报错',
+          '元素组成与摩尔质量：逐物种展示元素原子数与基于 IUPAC 常用原子量的摩尔质量',
+          '摩尔计量：指定任一物种的物质的量或质量，按系数比换算全部物种的 mol、g 与标况体积',
+          '9 组经典方程式向量（含 C2H6 燃烧、Al+HCl、Ca(OH)2+H3PO4 等）在 27 个 Vitest 用例中固定验收',
+        ],
+        howToUse: [
+          '在「方程式配平」页输入未配平方程式，用 ->、= 或 → 分隔两侧，物种间用 + 连接',
+          '点击预设标签可快速载入经典反应；输入框在无法解析时会标红并给出原因',
+          '查看配平结果框中的完整方程式，以及下方每个物种的系数、元素组成与摩尔质量',
+          '切换到「摩尔计量换算」页，选择已知物种、输入方式（mol 或 g）与数值',
+          '表格按配平系数比给出所有物种的物质的量、质量与标况气体体积',
+        ],
+        useCases: [
+          '中学与大学化学作业中快速核对配平系数与计量比',
+          '实验投料计算：由目标产物质量反推反应物用量',
+          '教学演示元素守恒线性方程组与零空间求解过程',
+          '水合盐、含括号复盐等复杂化学式的元素组成与摩尔质量查询',
+        ],
+        privacyNote:
+          '所有化学式解析、线性代数求解与计量换算均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么有的方程式提示「无法唯一配平」？',
+            answer:
+              '配平本质是求齐次线性方程组的零空间。当独立方程数少于未知物种数（零空间维数大于 1）时存在无穷多组系数，例如 C + O2 -> CO + CO2 同时生成两种产物且缺少比例约束；当元素只出现在箭头一侧时则无解。这类情况工具不会猜测，而是要求补充约束或修正方程式。',
+          },
+          {
+            question: '配平系数为什么一定是最小正整数？',
+            answer:
+              '零空间基向量由 BigInt 分数表示，先取所有分母的最小公倍数整数化，再除以全部系数的最大公约数约分。BigInt 运算避免了浮点消元的舍入误差，因此即使系数很大也能得到精确的最小整数解。',
+          },
+          {
+            question: '输入里已经写了系数怎么办？',
+            answer:
+              '解析时会自动剥离每个物种前的前导数字（如 2H2O 视为 H2O），统一由配平算法重新求系数，避免人工系数干扰守恒方程。水合点后的倍数（如 5H2O 中的 5）属于化学式的一部分，会正常参与元素计数。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This balancer converts an unbalanced equation (e.g. Fe + O2 -> Fe2O3) into a homogeneous linear system of element-conservation equations: one row per element, positive signs for reactants and negative for products, with the species coefficients as unknowns. BigInt-fraction Gauss-Jordan elimination finds the null space; only when its dimension is exactly one are the fractions integerized and reduced to the smallest positive integer coefficients, with no floating-point error. Stoichiometry conversion then maps moles, mass and STP gas volume across species using the coefficient ratios.',
+        coreFeatures: [
+          'Full formula parsing: element symbols, subscripts, nested parentheses (including multi-level Ca3(PO4)2) and hydration dots ·/•/* (CuSO4·5H2O)',
+          'Exact balancing: BigInt-fraction Gauss-Jordan elimination that emits output only for a one-dimensional null space, always yielding smallest positive integer coefficients',
+          'Robust validation: explicit errors for mismatched parentheses, unknown elements, missing arrows, duplicate species, one-sided elements and under-determined systems',
+          'Composition and molar mass: per-species atom counts and molar masses from common IUPAC atomic weights',
+          'Stoichiometry: given the moles or mass of any species, derives mol, grams and STP volume for every species via coefficient ratios',
+          'Nine classic equation vectors (C2H6 combustion, Al+HCl, Ca(OH)2+H3PO4 and more) pinned across 27 Vitest cases',
+        ],
+        howToUse: [
+          'On the balancing tab, enter an unbalanced equation using ->, = or → between sides and + between species',
+          'Use preset tags to load classic reactions; the input turns red with an explanatory message when parsing fails',
+          'Read the fully balanced equation in the result box and the per-species coefficients, composition and molar masses below',
+          'Switch to the stoichiometry tab, pick the reference species and choose moles or mass input',
+          'The table reports moles, mass and STP gas volume for every species according to the coefficient ratios',
+        ],
+        useCases: [
+          'Checking balancing coefficients and mole ratios for school and university chemistry homework',
+          'Planning reagent quantities from a target product mass in lab work',
+          'Teaching element conservation as a linear system and null-space solving',
+          'Inspecting composition and molar mass of complex formulas with parentheses and hydrates',
+        ],
+        privacyNote:
+          'All formula parsing, linear algebra and stoichiometry run locally in the browser; no network requests are made.',
+        faqs: [
+          {
+            question: 'Why do some equations report that they cannot be balanced uniquely?',
+            answer:
+              'Balancing is equivalent to finding the null space of a homogeneous linear system. When independent equations are fewer than unknown species (null-space dimension above one), infinitely many coefficient sets exist — for example C + O2 -> CO + CO2 produces two products without a ratio constraint. Elements appearing on only one side make the system unsolvable. Rather than guessing, the tool asks for extra constraints or a corrected equation.',
+          },
+          {
+            question: 'Why are the coefficients guaranteed to be the smallest positive integers?',
+            answer:
+              'The null-space basis is expressed in BigInt fractions: all denominators are cleared via their least common multiple, then the greatest common divisor is removed. BigInt arithmetic eliminates the rounding errors of floating-point elimination, so exact minimal integer solutions are produced even for large coefficients.',
+          },
+          {
+            question: 'What if I already typed coefficients in the equation?',
+            answer:
+              'Leading numbers before each species (e.g. 2H2O) are stripped during parsing and treated as H2O, because coefficients are re-derived by the solver to avoid corrupting the conservation equations. Multipliers after a hydration dot (the 5 in 5H2O) are part of the chemical formula and are counted normally.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'projectile-motion-calculator',
+    name: '抛体运动计算器与轨迹可视化',
+    nameEn: 'Projectile Motion Calculator & Trajectory Visualizer',
+    description:
+      '在浏览器本地计算抛体运动：支持自由落体、平抛与斜抛三种模式，输入初速度（m/s、km/h、ft/s）、发射角度、初始高度与重力加速度（9.8/9.81/自定义），输出飞行时间、水平射程、最大高度、最高点坐标与落地速度，并在 SVG 上绘制带等时间隔标记的轨迹曲线。真空模式为闭合解析公式；可选线性空气阻力（F=-k·v）由 RK4 数值积分求解，并与真空轨迹同图对比。',
+    descriptionEn:
+      'Computes projectile motion locally in the browser across free-fall, horizontal-launch and oblique-launch modes. Given initial speed (m/s, km/h, ft/s), launch angle, initial height and gravity (9.8/9.81/custom), it reports flight time, horizontal range, maximum height, apex coordinates and landing speed, and draws an SVG trajectory with equal-time-interval markers. The vacuum model uses closed-form analytic equations; an optional linear drag model (F=-k·v) is integrated with the RK4 method and overlaid against the vacuum path for comparison.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/projectile-motion-calculator',
+    iconName: 'Satellite',
+    tags: ['物理', '抛体运动', '运动学', '轨迹', '空气阻力', 'RK4'],
+    tagsEn: ['Physics', 'Projectile Motion', 'Kinematics', 'Trajectory', 'Air Drag', 'RK4'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'v=20 m/s, 45°, h0=0, g=9.8',
+    doc: {
+      zh: {
+        whatIsIt:
+          '抛体运动计算器把抛体分解为水平与竖直两个独立方向：真空模式下水平方向匀速、竖直方向匀加速，飞行时间由 ½gt²−vy₀t−h₀=0 的正根给出，射程、最高点与落地速度全部由闭合公式直接求解，可作为物理教学的标准答案。开启线性空气阻力后，运动方程加入与速度成正比的阻力项 F=−k·v，不再有初等解析解，工具改用四阶 Runge–Kutta 定步长积分直到首次触地，并对触地时刻做线性插值，两条轨迹在同一张 SVG 上对比。',
+        coreFeatures: [
+          '三种发射模式：自由落体（v₀=0）、平抛（水平初速度）、斜抛（带 0–90° 发射角）',
+          '多单位输入：初速度支持 m/s、km/h、ft/s 实时换算，g 支持 9.8、9.81 与自定义值',
+          '真空解析解：飞行时间、水平射程、最大高度、到达最高点时刻与坐标、落地速度均为闭合公式',
+          'SVG 轨迹可视化：自适应坐标范围、网格与坐标轴，圆点标注等时间隔采样位置',
+          '线性空气阻力模型：F=−k·v 的 RK4 数值积分，阻力轨迹虚线叠加并给出相对真空解的偏差百分比',
+          '逐点数据表：等时间隔输出 t、x、y、vx、vy 与合速度，20 个 Vitest 用例固定经典向量与阻力性质',
+        ],
+        howToUse: [
+          '用顶部分段控件选择自由落体、平抛或斜抛模式',
+          '填写初速度与单位、发射角度（仅斜抛）、初始高度，并选择重力加速度预设或自定义 g',
+          '需要考虑空气阻力时打开开关并填写阻力系数 k（单位 1/s）',
+          '查看运动学结果卡片中的飞行时间、射程、最大高度、最高点坐标与落地速度',
+          '在轨迹图中对照蓝色真空实线与橙色阻力虚线，圆点为等时间隔标记；下方表格给出逐点数据',
+        ],
+        useCases: [
+          '中学与大学物理作业中核对斜抛、平抛与自由落体的标准答案',
+          '工程估算中快速评估发射角度、初速度与高度对射程的影响',
+          '教学演示数值积分（RK4）与解析解的差异，以及空气阻力如何压缩射程与飞行时间',
+          '球类、投掷、消防水炮等场景的理想弹道快速估算',
+        ],
+        privacyNote:
+          '所有运动学计算与数值积分均在浏览器本地完成，不发起任何网络请求。',
+        faqs: [
+          {
+            question: '真空模式与空气阻力模式的结果为什么不同？',
+            answer:
+              '真空模式只受恒定重力，存在闭合解析公式，轨迹是标准抛物线。线性阻力模式额外受到与速度成正比、方向相反的阻力 F=−k·v，水平速度持续衰减、上升与下落也受到阻尼，因此射程、飞行时间与落地速度都不大于真空解，只能通过 RK4 数值积分逐步求解。',
+          },
+          {
+            question: '阻力系数 k 的单位与物理含义是什么？',
+            answer:
+              '线性阻力模型写作加速度形式 a=−g·ŷ−k·v，因此 k 的单位是 1/s。k=0 即真空；k 越大阻尼越强，自由落体时终端速度趋近 g/k。该模型适用于低速、小雷诺数场景（如密介质或微小物体），高速弹道通常需要与速度平方成正比的二次阻力模型。',
+          },
+          {
+            question: '轨迹上的圆点代表什么？',
+            answer:
+              '圆点是等时间隔采样标记：相邻圆点之间的时间差相同。真空轨迹按飞行时间均匀取 41 个点，阻力轨迹按相同时间间隔由积分网格插值生成，因此圆点疏密可以直观对比两种模型在相同时刻的位置差异。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This calculator decomposes projectile motion into independent horizontal and vertical components. In vacuum the horizontal motion is uniform and the vertical motion uniformly accelerated; flight time is the positive root of ½gt²−vy₀t−h₀=0, while range, apex and landing speed follow directly from closed-form equations suitable as textbook reference answers. With linear air drag enabled, the equations gain a velocity-proportional term F=−k·v that has no elementary solution, so a fixed-step fourth-order Runge–Kutta integration runs until first ground contact with linear interpolation at impact, and both trajectories are overlaid on one SVG chart.',
+        coreFeatures: [
+          'Three launch modes: free fall (zero initial speed), horizontal launch and oblique launch with a 0–90° angle',
+          'Multi-unit input: initial speed in m/s, km/h or ft/s with live conversion; gravity presets 9.8, 9.81 or custom',
+          'Vacuum analytic solution: flight time, range, maximum height, apex time and coordinates, and landing speed from closed formulas',
+          'SVG trajectory visualization with auto-scaled axes, grid lines and equal-time-interval dot markers',
+          'Linear drag model: RK4 integration of F=−k·v, dashed drag path overlaid on the vacuum curve with relative-difference percentages',
+          'Point-by-point data table of t, x, y, vx, vy and speed at equal time steps; 20 Vitest cases pin classic vectors and drag properties',
+        ],
+        howToUse: [
+          'Choose free-fall, horizontal or oblique mode with the segmented control at the top',
+          'Enter initial speed and its unit, launch angle (oblique mode only), initial height, and pick a gravity preset or a custom g',
+          'Turn on the switch and set the drag coefficient k (in 1/s) to include linear air resistance',
+          'Read flight time, range, maximum height, apex coordinates and landing speed from the result cards',
+          'Compare the blue solid vacuum path with the orange dashed drag path; dots mark equal time intervals, and the table below lists per-point data',
+        ],
+        useCases: [
+          'Checking standard answers for oblique, horizontal and free-fall problems in school and university physics',
+          'Quick engineering estimates of how angle, speed and height affect range',
+          'Teaching the difference between numerical integration (RK4) and analytic solutions, and how drag shrinks range and flight time',
+          'Idealized ballistic estimates for ball sports, throwing and water-jet scenarios',
+        ],
+        privacyNote:
+          'All kinematic calculations and numerical integration run locally in the browser; no network requests are made.',
+        faqs: [
+          {
+            question: 'Why do the vacuum and air-drag results differ?',
+            answer:
+              'The vacuum model experiences only constant gravity and has closed-form equations producing a perfect parabola. The linear-drag model adds a velocity-proportional opposing force F=−k·v that continuously decays horizontal speed and damps both ascent and descent, so range, flight time and landing speed never exceed the vacuum values; the motion can only be obtained step by step via RK4 integration.',
+          },
+          {
+            question: 'What does the drag coefficient k mean and what are its units?',
+            answer:
+              'Written in acceleration form, the model is a=−g·ŷ−k·v, so k has units of 1/s. k=0 is vacuum; larger k means stronger damping, and in free fall the terminal speed approaches g/k. This linear model fits low-speed, low-Reynolds-number situations such as dense fluids or tiny objects; high-speed ballistics typically require quadratic drag proportional to speed squared.',
+          },
+          {
+            question: 'What do the dots on the trajectory represent?',
+            answer:
+              'The dots are equal-time-interval sample markers: adjacent dots are separated by the same time difference. The vacuum path uses 41 uniformly spaced points over flight time, while the drag path is interpolated from the integration grid at the same interval, so dot spacing visually contrasts where each model is at identical moments.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -1,0 +1,116 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.label {
+  font-size: 13px;
+  color: rgb(0 0 0 / 65%);
+}
+
+.mono {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 13px;
+}
+
+.streamInput {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 13px;
+}
+
+.output {
+  margin: 0;
+  padding: 12px;
+  overflow: auto;
+  max-height: 360px;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: rgb(0 0 0 / 4%);
+  border-radius: 6px;
+}
+
+.tree {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.treeNode {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgb(0 0 0 / 3%);
+  font-size: 13px;
+}
+
+.treeChildren {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-left: 20px;
+  padding-left: 12px;
+  border-left: 2px solid rgb(0 0 0 / 10%);
+}
+
+.typeTag {
+  flex: 0 0 auto;
+}
+
+.valueText {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  word-break: break-all;
+}
+
+.alertList {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.hint {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgb(107 114 128);
+}
+
+.builderRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.builderField {
+  display: flex;
+  flex: 1 1 180px;
+  flex-direction: column;
+  gap: 4px;
+}

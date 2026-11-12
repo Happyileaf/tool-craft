@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-13 ：【Agent自主迭代】新增 5 个 Redis RESP、OID、APCA、化学配平与抛体运动工具
+
+- **新增**：Redis RESP 协议编解码调试器（redis-protocol-codec）— 在 RESP2/RESP3 线格式与结构化消息树之间双向转换，覆盖 13 种首字节类型（简单串/错误/整数/Bulk/数组/Null/Double/Boolean/BigNumber/Bulk Error/Verbatim/Map/Set/Push），UTF-8 字节缓冲解析使 bulk 长度按字节精确计数、正确处理多字节数据与半包残片，编码构造器带严格校验并支持一键 RESP2 降级，13 个 Vitest 用例，纯本地运算零依赖
+- **新增**：OID 编解码工具（oid-codec）— 点分十进制 OID 与 BER/DER 内容字节十六进制双向转换，首弧 40·X+Y 合并 + base-128 变长压缩逐弧可视化，生成完整 DER TLV（含长形式 Length），内置 30 个常见密码学/X.500 OID 名称标注与每行一条的批量转换，标准 DER 向量验收，18 个 Vitest 用例，纯位运算零依赖
+- **新增**：APCA（WCAG 3）感知对比度计算器（apca-contrast-calculator）— 严格实现 APCA 0.0.98G-4g（apca-w3@0.1.9 参考向量固定验收），支持 #hex（含 8 位 alpha）与 rgb()/rgba() 输入、透明前景 alpha 混合、BoW/WoB 极性标签、Lc90–Lc15 六级字号字重推荐、实时配色预览与 WCAG 2.1 比值对照，31 个 Vitest 用例，纯本地数值运算零依赖
+- **新增**：化学方程式配平器与摩尔计量计算器（chemical-equation-balancer）— 支持括号嵌套与水合点化学式解析，BigInt 分数高斯-约当消元求最小正整数系数（欠定/无解明确报错），配平后按系数比换算全部物种的物质的量、质量与标况气体体积（22.4 L/mol），27 个 Vitest 用例固定 9 组经典反应向量，零依赖
+- **新增**：抛体运动计算器与轨迹可视化（projectile-motion-calculator）— 支持自由落体/平抛/斜抛三模式与 m/s、km/h、ft/s 单位及 9.8/9.81/自定义 g，真空模式闭合解析公式输出飞行时间、射程、最大高度、最高点坐标与落地速度，SVG 绘制带等时间隔标记的轨迹；可选线性空气阻力 F=−k·v 由 RK4 数值积分求解并与真空轨迹同图对比，20 个 Vitest 用例固定经典向量与阻力性质，纯本地运算零依赖
+
 ## 2026-11-12 ：【Agent自主迭代】新增 5 个 RFC 7239 Forwarded、RFC 6570 URI Template、EDN↔JSON、iCalendar 与 docker-compose 转换工具
 
 - **新增**：RFC 7239 Forwarded HTTP 头解析与生成器（forwarded-header-codec）— 引号感知的逗号/分号两级切分解析多跳代理链 for/by/host/proto，覆盖裸 IPv4、IPv4:port、IPv6 与 [IPv6]:port、unknown 与 _obfuscated 节点校验，构造器固定 for→by→host→proto 顺序并自动引号转义，解析结果可一键载入构造器再编辑，13 个 Vitest 用例，纯本地运算零依赖

@@ -1,0 +1,116 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mono {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 13px;
+}
+
+.pickerRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.pickerCard :global(.ant-card-head-title) {
+  font-size: 14px;
+}
+
+.preview {
+  padding: 32px 24px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 140px;
+  transition: background-color 0.2s ease;
+}
+
+.previewHeading {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.previewBody {
+  font-size: 15px;
+  margin: 0;
+  max-width: 480px;
+  text-align: center;
+}
+
+.previewMono {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.lcGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.lcHero {
+  text-align: center;
+  padding: 8px 0;
+}
+
+.lcValue {
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.lcUnit {
+  font-size: 14px;
+  color: rgb(107 114 128);
+  margin-top: 4px;
+}
+
+.hint {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgb(107 114 128);
+}
+
+.levelList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.levelItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgb(0 0 0 / 3%);
+  font-size: 13px;
+}
+
+.levelItemActive {
+  background: rgb(22 119 255 / 10%);
+  outline: 1px solid rgb(22 119 255 / 40%);
+  font-weight: 600;
+}
+
+.levelBadge {
+  min-width: 64px;
+  text-align: center;
+}
