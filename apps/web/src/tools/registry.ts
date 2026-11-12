@@ -32491,6 +32491,111 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'edn-json-converter',
+    name: 'Clojure EDN 与 JSON 双向转换器',
+    nameEn: 'Clojure EDN ↔ JSON Converter',
+    description:
+      '在 Clojure EDN（Extensible Data Notation）与 JSON 之间无损双向转换：支持 nil/布尔/数字/字符串、关键字 :keyword、符号、列表、向量、集合 #{}、映射，以及 #inst/#uuid 标签值；JSON 侧用 ___edn_type 标记承载 EDN 独有类型，解析错误带字符位置定位，可实时换向往返。',
+    descriptionEn:
+      'Lossless two-way conversion between Clojure EDN (Extensible Data Notation) and JSON. Supports nil, booleans, numbers, strings, :keyword keywords, symbols, lists, vectors, #{} sets, maps and #inst/#uuid tagged values. EDN-only types are carried in JSON via ___edn_type markers; parse errors report character positions and directions can be swapped for round-trip editing.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/edn-json-converter',
+    iconName: 'Braces',
+    tags: ['EDN', 'Clojure', 'JSON', '数据转换', '序列化'],
+    tagsEn: ['EDN', 'Clojure', 'JSON', 'Data Conversion', 'Serialization'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '{:person/name "Alice" :person/tags #{:admin} :person/login-history (1024 2048)}',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Clojure EDN 与 JSON 双向转换器是一款纯浏览器本地工具。EDN 是 Clojure 生态通用的数据表示格式，比 JSON 多了关键字、符号、集合、有序列表与标签值等形式。工具内置零依赖的 EDN 词法分析与递归下降解析器，把 EDN 转为 JSON，或把 JSON 还原为 EDN，并通过 ___edn_type 类型标记实现无损往返。',
+        coreFeatures: [
+          '完整 EDN 元素：nil、布尔、整数/浮点/指数、字符串转义（含 \\uXXXX）、关键字、命名空间符号',
+          '四类集合：列表 (…)、向量 […]、集合 #{…}、映射 {…}，映射键支持关键字',
+          '标签值：#inst 时间戳与 #uuid UUID 自动识别并保留标签',
+          '无损 JSON 映射：keyword/symbol/set/list/inst/uuid 用 ___edn_type 标记对象承载',
+          '工程化体验：分号注释、逗号空白容忍、字符位置级错误提示、紧凑/缩进切换、一键换向',
+        ],
+        howToUse: [
+          '选择 EDN → JSON 或 JSON → EDN 方向，在左侧输入数据，右侧实时输出',
+          '用「紧凑/缩进」开关切换单行或美化输出，点击「复制」取用结果',
+          '点击「换向并载入输出」可把当前结果作为新方向输入，验证往返一致性',
+          'JSON 侧如需保留 EDN 类型，按帮助表格书写 ___edn_type 标记对象',
+        ],
+        useCases: [
+          '调试 Clojure/ClojureScript 后端与 JSON API 之间的数据交换',
+          '把 Datomic/XTM 等 EDN 配置或查询结果迁移到 JSON 工具链',
+          '学习 EDN 与 JSON 的类型系统差异及标签字面量写法',
+          '在前端联调时快速核对 EDN 配置序列化后的结构',
+        ],
+        privacyNote:
+          '所有解析与序列化均在浏览器本地完成，EDN/JSON 内容不会上传。',
+        faqs: [
+          {
+            question: '为什么 JSON 输出里有 ___edn_type 字段？',
+            answer:
+              'JSON 规范无法表达 EDN 的关键字、符号、集合、有序列表和 #inst/#uuid 标签。工具用带 ___edn_type 的对象标记这些类型（例如集合变成 {"___edn_type":"set","items":[...]}），这样 JSON → EDN 时才能无损还原；普通向量和字符串则直接映射，无需标记。',
+          },
+          {
+            question: 'EDN 的列表和向量在 JSON 里怎么区分？',
+            answer:
+              '向量 [...] 直接序列化为 JSON 数组；列表 (...) 序列化为 {"___edn_type":"list","items":[...]} 标记对象，集合 #{...} 同理使用 set 标记。反向转换时标记对象分别还原为圆括号列表与 #{} 集合，普通数组还原为方括号向量。',
+          },
+          {
+            question: '支持哪些 EDN 标签？不支持的标签怎么办？',
+            answer:
+              '内置支持规范中最常用的 #inst（时间戳）与 #uuid（UUID），二者以字符串载荷保留。其他自定义标签（如 #my/Tag "..."）会以符号标记形式保留原文，不会丢失数据；注释（分号到行尾）与作为空白的逗号在解析时自动忽略。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Clojure EDN ↔ JSON Converter runs entirely in your browser. EDN is the common data notation of the Clojure ecosystem and adds keywords, symbols, sets, ordered lists and tagged values on top of JSON. A dependency-free tokenizer and recursive-descent parser converts EDN to JSON and back, using ___edn_type markers for lossless round-trips.',
+        coreFeatures: [
+          'Full EDN elements: nil, booleans, integer/float/exponent numbers, string escapes including \\uXXXX, keywords and namespaced symbols',
+          'Four collection forms: lists (…), vectors […], #{…} sets and {…} maps with keyword keys',
+          'Tagged values: #inst timestamps and #uuid identifiers are recognized and preserved',
+          'Lossless JSON mapping for keyword/symbol/set/list/inst/uuid through ___edn_type marker objects',
+          'Developer experience: semicolon comments, commas treated as whitespace, position-aware errors, compact/pretty toggle and one-click direction swap',
+        ],
+        howToUse: [
+          'Pick EDN → JSON or JSON → EDN, type on the left and read live output on the right',
+          'Toggle compact versus indented output and copy the result with one click',
+          'Use "Swap and load output" to feed the result back as input and verify round-trips',
+          'On the JSON side, write ___edn_type marker objects as shown in the help table to keep EDN types',
+        ],
+        useCases: [
+          'Debugging data exchange between Clojure/ClojureScript backends and JSON APIs',
+          'Moving EDN configuration or query results from Datomic-like systems into JSON toolchains',
+          'Learning the differences between EDN and JSON type systems and tagged literals',
+          'Checking serialized EDN configuration structures during frontend integration',
+        ],
+        privacyNote:
+          'All parsing and serialization happen locally in your browser; EDN/JSON content is never uploaded.',
+        faqs: [
+          {
+            question: 'Why does the JSON output contain ___edn_type fields?',
+            answer:
+              'JSON cannot express EDN keywords, symbols, sets, ordered lists or #inst/#uuid tags. The tool marks such types with objects carrying ___edn_type (for example a set becomes {"___edn_type":"set","items":[...]}) so JSON → EDN can restore them losslessly. Plain vectors and strings map directly without markers.',
+          },
+          {
+            question: 'How are EDN lists and vectors distinguished in JSON?',
+            answer:
+              'Vectors [...] serialize directly to JSON arrays. Lists (...) become {"___edn_type":"list","items":[...]} marker objects and #{...} sets use the set marker similarly. On the way back, markers restore parenthesized lists and #{} sets, while plain arrays become bracketed vectors.',
+          },
+          {
+            question: 'Which EDN tags are supported, and what about custom tags?',
+            answer:
+              'The standard #inst timestamp and #uuid tags are built in and preserved with their string payloads. Other custom tags such as #my/Tag "..." are retained as symbol markers so no data is lost. Semicolon comments and commas (whitespace in EDN) are ignored during parsing.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

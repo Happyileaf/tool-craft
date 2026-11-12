@@ -347,4 +347,5 @@ export const toolLoaders: Record<
   'black-scholes-calculator': () => import('./black-scholes-calculator'),
   'forwarded-header-codec': () => import('./forwarded-header-codec'),
   'uri-template-expander': () => import('./uri-template-expander'),
+  'edn-json-converter': () => import('./edn-json-converter'),
 };
