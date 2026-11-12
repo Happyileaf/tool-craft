@@ -32596,6 +32596,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'ics-generator',
+    name: 'iCalendar (.ics) 日历事件生成器',
+    nameEn: 'iCalendar (.ics) Event Generator',
+    description:
+      '填写标题、起止时间、全天/时区、地点、描述、组织者与提醒后，生成符合 RFC 5545 的单事件 .ics 文件，可直接导入 Google、Outlook 与 Apple 日历；自动处理 TEXT 转义、UTC/TZID 时间、VALARM 提醒与 75 八位组折行。',
+    descriptionEn:
+      'Build an RFC 5545 single-event .ics file from title, start/end, all-day/timezone, location, description, organizer and reminder, ready to import into Google, Outlook or Apple Calendar. Handles TEXT escaping, UTC/TZID times, VALARM alarms and 75-octet line folding automatically.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ics-generator',
+    iconName: 'Clock',
+    tags: ['iCalendar', 'ICS', '日历', 'RFC 5545', '会议邀请'],
+    tagsEn: ['iCalendar', 'ICS', 'Calendar', 'RFC 5545', 'Meeting Invite'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'SUMMARY:v2.0 发版评审会',
+    doc: {
+      zh: {
+        whatIsIt:
+          'iCalendar (.ics) 日历事件生成器是一款纯浏览器本地工具。它把表单中的事件信息组装为 RFC 5545 规范的 VCALENDAR/VEVENT 文本，覆盖定时事件、全天事件、时区、地点、描述、组织者与提前提醒，生成的 .ics 可被 Google Calendar、Outlook、Apple 日历等主流日历直接导入。',
+        coreFeatures: [
+          '三种时间形式：UTC（Z 后缀）、带 TZID 的 IANA 时区本地时间、全天事件 VALUE=DATE（DTEND 自动取排他性次日）',
+          '规范文本转义：标题、地点、描述中的反斜杠、分号、逗号与换行按 RFC 5545 自动转义',
+          'VALARM 提醒：支持分钟/小时/天提前量，输出标准 TRIGGER 时长并附快捷预设',
+          '严格折行：逻辑行按 75 个八位组折叠，按 UTF-8 字节计数，多字节字符不会被截断',
+          'UID 与 DTSTAMP 自动生成，CRLF 行尾，一键复制或下载 event.ics',
+        ],
+        howToUse: [
+          '填写必填的事件标题，并设置开始与结束时间（全天事件切换开关后选择日期）',
+          '定时事件可选择 IANA 时区；留空时时间按 UTC 输出，导入后由日历按本地时区展示',
+          '可选填写地点、描述、组织者邮箱，并打开提醒开关设置提前量',
+          '右侧实时预览 ICS 文本，校验通过后点击「复制 ICS」或「下载 .ics」',
+        ],
+        useCases: [
+          '为线上活动、发布会、发版排期生成「一键加日历」附件',
+          '在会议邀请邮件中附上可被任意日历客户端识别的 .ics 文件',
+          '学习或核对 RFC 5545 的转义、折行、TZID 与 VALARM 写法',
+          '在不依赖第三方日历服务的情况下离线生成标准日历文件',
+        ],
+        privacyNote:
+          '所有事件信息均在浏览器本地组装为文本，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '时区留空和选择 Asia/Shanghai 有什么区别？',
+            answer:
+              '留空时工具把你输入的时间视为 UTC，输出 DTSTART:…Z 形式，日历会按读者所在时区换算显示；选择 Asia/Shanghai 后输出 DTSTART;TZID=Asia/Shanghai:…，明确声明该时间是北京时间，跨时区读者看到的绝对时刻由日历按 TZID 换算。全天事件不涉及时区，统一使用 VALUE=DATE。',
+          },
+          {
+            question: '为什么全天事件的结束日期会多出一天？',
+            answer:
+              'RFC 5545 规定 DTEND 是排他性边界：全天事件按日期存储，若事件覆盖 12 月 31 日至 1 月 1 日两天，DTEND 必须写为 1 月 2 日，日历才会把这两天都渲染为事件日。工具自动完成这一换算，表单中只需选择实际的最后一天。',
+          },
+          {
+            question: '生成的文件能被哪些日历导入？',
+            answer:
+              '输出遵循 RFC 5545 的常用子集（VERSION:2.0、VEVENT、VALARM），Google Calendar、Microsoft Outlook、Apple 日历以及多数支持 .ics 的客户端均可导入。文本转义、CRLF 行尾与 75 八位组折行均按规范处理，长描述与中文等多字节内容也不会破坏行折叠。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The iCalendar (.ics) Event Generator runs entirely in your browser. It turns form input into RFC 5545 VCALENDAR/VEVENT text covering timed events, all-day events, time zones, location, description, organizer and advance reminders, producing an .ics file that Google Calendar, Outlook and Apple Calendar can import directly.',
+        coreFeatures: [
+          'Three time forms: UTC (Z suffix), IANA TZID local time, and all-day VALUE=DATE with an exclusive next-day DTEND',
+          'RFC 5545 TEXT escaping for backslashes, semicolons, commas and newlines in summary, location and description',
+          'VALARM reminders with minute/hour/day lead times emitted as standard TRIGGER durations, plus quick presets',
+          'Strict 75-octet line folding counted by UTF-8 bytes so multibyte characters are never split',
+          'Auto-generated UID and DTSTAMP, CRLF line endings, one-click copy or event.ics download',
+        ],
+        howToUse: [
+          'Fill in the required title and set start and end (toggle all-day to pick dates instead)',
+          'For timed events choose an IANA time zone; leave it empty to emit UTC and let calendars render local time',
+          'Optionally add location, description, organizer email and enable a reminder with a lead time',
+          'Preview the ICS text on the right in real time, then copy it or download the .ics file once validation passes',
+        ],
+        useCases: [
+          'Creating "add to calendar" attachments for online events, launches and release schedules',
+          'Attaching a portable .ics meeting invitation that any calendar client understands',
+          'Learning or verifying RFC 5545 escaping, folding, TZID and VALARM syntax',
+          'Generating standard calendar files offline without third-party calendar services',
+        ],
+        privacyNote:
+          'All event details are assembled into text locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'What is the difference between leaving time zone empty and choosing Asia/Shanghai?',
+            answer:
+              'With an empty time zone the input is treated as UTC and emitted as DTSTART:…Z, so readers see it converted to their local zone. Choosing Asia/Shanghai emits DTSTART;TZID=Asia/Shanghai:…, explicitly declaring Beijing time; calendars then convert the absolute instant via the TZID. All-day events are time-zone agnostic and always use VALUE=DATE.',
+          },
+          {
+            question: 'Why does the all-day DTEND move one day later?',
+            answer:
+              'RFC 5545 defines DTEND as an exclusive boundary. All-day events are stored by date, so an event covering December 31 through January 1 needs DTEND on January 2 for both days to render. The tool performs this conversion automatically; just pick the actual last day in the form.',
+          },
+          {
+            question: 'Which calendars can import the generated file?',
+            answer:
+              'The output follows the common RFC 5545 subset (VERSION:2.0, VEVENT, VALARM) and imports into Google Calendar, Microsoft Outlook, Apple Calendar and most .ics-aware clients. Text escaping, CRLF endings and 75-octet folding follow the spec, so long descriptions and multibyte content such as Chinese will not break the file.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
