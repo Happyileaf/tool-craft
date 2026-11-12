@@ -350,4 +350,5 @@ export const toolLoaders: Record<
   'edn-json-converter': () => import('./edn-json-converter'),
   'ics-generator': () => import('./ics-generator'),
   'docker-run-to-compose': () => import('./docker-run-to-compose'),
+  'redis-protocol-codec': () => import('./redis-protocol-codec'),
 };

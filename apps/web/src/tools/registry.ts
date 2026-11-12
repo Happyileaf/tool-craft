@@ -32804,6 +32804,114 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'redis-protocol-codec',
+    name: 'Redis RESP 协议编解码调试器',
+    nameEn: 'Redis RESP Protocol Codec & Debugger',
+    description:
+      '在 RESP2 与 RESP3 两种线上格式之间双向转换：把带 CRLF 的 RESP 字节流解析为带类型标签的结构化消息树（覆盖简单串、错误、整数、Bulk、数组、Null、Double、Boolean、BigNumber、Map、Set、Push 与 Verbatim String），并支持表单构造结构化消息后输出标准线格式，自动按 UTF-8 字节计数，识别半包残片，可一键降级为 RESP2 兼容表示。',
+    descriptionEn:
+      'Bidirectional converter between Redis RESP2 and RESP3 wire formats. Parse CRLF-delimited RESP byte streams into a typed message tree covering simple strings, errors, integers, bulks, arrays, null, double, boolean, big numbers, maps, sets, push and verbatim strings, or build structured messages with a form and emit standard wire text with correct UTF-8 byte lengths. Detects half-packet remainders and can downgrade RESP3 types to RESP2 equivalents.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/redis-protocol-codec',
+    iconName: 'HardDrive',
+    tags: ['Redis', 'RESP', '协议', '编解码', '调试'],
+    tagsEn: ['Redis', 'RESP', 'Protocol', 'Codec', 'Debugging'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '*2\r\n$3\r\nGET\r\n$5\r\nmykey\r\n',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Redis RESP 协议编解码调试器是一款纯浏览器本地工具。它在 Redis 序列化协议（RESP）的线格式文本与结构化消息之间做双向转换，完整覆盖 RESP2 的五种基础类型与 RESP3 新增的 Null、Double、Boolean、BigNumber、Bulk Error、Verbatim String、Map、Set、Push 等类型。解析在 UTF-8 字节缓冲区上进行，bulk 长度严格按字节计数，半包数据保留为残片而不会误报错误。',
+        coreFeatures: [
+          '完整类型覆盖：RESP2 五种基础类型 + RESP3 全部 13 种首字节类型，含嵌套数组与 Map',
+          '字节级解析：bulk 长度按 UTF-8 字节计数，正确处理中文等多字节数据，支持多消息流与半包残片',
+          '结构化树：每条消息按类型渲染标签与层级树，Map 按键值相邻平铺，可导出 JSON',
+          '编码构造器：表单选择类型与值，输出带 CRLF 的标准线格式，BigInt 安全处理超大整数',
+          'RESP2 降级：RESP3 专属类型一键映射为 RESP2 等价结构（布尔转 0/1、Map 转数组、null 转 $-1）',
+          '严格校验：非法首字节、坏整数、奇长度 Map、含换行的 simple string 等均给出明确错误',
+        ],
+        howToUse: [
+          '在「解码解析」页粘贴 RESP 文本（CRLF 行结束），或点击「载入示例」快速体验',
+          '查看带类型标签的结构化树；若末尾数据不完整，会提示半包残片而非报错',
+          '在「编码构造」页逐条添加元素并选择类型、填写值，底部实时生成线格式',
+          '用「切换到 RESP2」开关把 RESP3 类型降级后再复制，用于兼容旧版客户端',
+          '点击复制按钮把线格式或结构化 JSON 粘贴到抓包工具、单元测试或文档中',
+        ],
+        useCases: [
+          '调试 Redis 代理、客户端 SDK 或服务端 mock 的抓包数据，快速确认线上字节含义',
+          '为 RESP 解析器编写单元测试时批量构造标准输入与期望输出',
+          '学习 RESP2 与 RESP3 的类型差异及降级兼容策略',
+          '排查中文等多字节 bulk 的长度计算与粘包/半包问题',
+        ],
+        privacyNote:
+          '所有解析与编码均在浏览器本地完成，数据不会发送到任何服务器，也不会建立任何 Redis 连接。',
+        faqs: [
+          {
+            question: '为什么 bulk 长度和我看到的字符数不一样？',
+            answer:
+              'RESP 长度行按字节而非字符计数。中文等多字节字符在 UTF-8 下占用 3 个字节，工具使用 TextEncoder 按 UTF-8 精确计算长度，解析时也在字节缓冲区上切片，因此与 Redis 服务端行为一致。',
+          },
+          {
+            question: '半包残片是如何处理的？',
+            answer:
+              '当末尾数据不足以构成完整消息时（例如 bulk 声明 10 字节但只收到 3 字节），解析器停止并把未消费部分原样放入 remainder，已完整解析的消息不受影响。后续数据到达后把残片拼接到头部再次解析即可。',
+          },
+          {
+            question: 'RESP3 降级到 RESP2 时具体发生了什么？',
+            answer:
+              'Null 变为 $-1 空 bulk，Boolean 变为 :1/:0 整数，Double/BigNumber/Verbatim 变为 bulk string，Map/Set/Push 变为数组并递归降级子元素。降级是有损的语义映射，类型标签信息不再保留在字节流中。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Redis RESP codec & debugger runs entirely in your browser. It converts between Redis Serialization Protocol wire text and structured messages, covering all five RESP2 base types plus RESP3 additions such as null, double, boolean, big number, bulk error, verbatim string, map, set and push. Parsing works on a UTF-8 byte buffer so bulk lengths are counted in bytes, and incomplete trailing data is reported as a remainder instead of an error.',
+        coreFeatures: [
+          'Full type coverage: five RESP2 base types plus all 13 RESP3 prefixes, including nested arrays and maps',
+          'Byte-accurate parsing: bulk lengths counted in UTF-8 bytes, correct handling of multilingual data, multi-message streams and half-packet remainders',
+          'Structured tree: typed tags and hierarchy for every message, maps flattened as adjacent key/value pairs, exportable to JSON',
+          'Encode builder: pick types and values in a form to emit standard CRLF wire text, with BigInt-safe large integers',
+          'RESP2 downgrade: RESP3-only types map to RESP2 equivalents in one click (boolean to 0/1, map to array, null to $-1)',
+          'Strict validation: unknown prefixes, malformed integers, odd-length maps and newlines in simple strings produce explicit errors',
+        ],
+        howToUse: [
+          'Paste RESP text (CRLF line endings) on the Decode tab, or click Load sample for a quick demo',
+          'Inspect the typed tree; incomplete trailing data is flagged as a half-packet remainder rather than an error',
+          'On the Encode tab, add elements with types and values; wire text is generated live at the bottom',
+          'Toggle RESP2 mode to downgrade RESP3 types before copying, for legacy client compatibility',
+          'Use the copy buttons to paste wire text or structured JSON into packet captures, unit tests or docs',
+        ],
+        useCases: [
+          'Debugging captures from Redis proxies, client SDKs or server mocks to understand raw bytes quickly',
+          'Generating standard inputs and expected outputs in bulk for RESP parser unit tests',
+          'Learning the differences between RESP2 and RESP3 types and downgrade compatibility',
+          'Troubleshooting length calculation and sticky/half-packet issues with multibyte bulk data',
+        ],
+        privacyNote:
+          'All parsing and encoding happen locally in your browser. No data is sent to any server and no Redis connection is opened.',
+        faqs: [
+          {
+            question: 'Why does the bulk length differ from the character count I see?',
+            answer:
+              'RESP length lines count bytes, not characters. Multibyte characters such as Chinese take 3 bytes in UTF-8. The tool computes lengths precisely with TextEncoder and slices on a byte buffer while parsing, matching real Redis server behavior.',
+          },
+          {
+            question: 'How are half-packet remainders handled?',
+            answer:
+              'When the trailing data cannot form a complete message (for example a bulk declares 10 bytes but only 3 arrived), the parser stops and keeps the unconsumed part in remainder while fully parsed messages stay intact. Prepend the remainder to the next chunk and parse again when more data arrives.',
+          },
+          {
+            question: 'What exactly happens when downgrading RESP3 to RESP2?',
+            answer:
+              'Null becomes a $-1 null bulk, boolean becomes :1/:0 integers, double/big number/verbatim become bulk strings, and map/set/push become arrays with children downgraded recursively. The downgrade is a lossy semantic mapping: type-tag information is no longer preserved in the byte stream.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

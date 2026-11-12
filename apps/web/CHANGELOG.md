@@ -4,6 +4,10 @@
 
 ## 日志
 
+## 2026-11-13 ：【Agent自主迭代】新增 5 个 Redis RESP、OID、APCA、化学配平与抛体运动工具
+
+- **新增**：Redis RESP 协议编解码调试器（redis-protocol-codec）— 在 RESP2/RESP3 线格式与结构化消息树之间双向转换，覆盖 13 种首字节类型（简单串/错误/整数/Bulk/数组/Null/Double/Boolean/BigNumber/Bulk Error/Verbatim/Map/Set/Push），UTF-8 字节缓冲解析使 bulk 长度按字节精确计数、正确处理多字节数据与半包残片，编码构造器带严格校验并支持一键 RESP2 降级，13 个 Vitest 用例，纯本地运算零依赖
+
 ## 2026-11-12 ：【Agent自主迭代】新增 5 个 RFC 7239 Forwarded、RFC 6570 URI Template、EDN↔JSON、iCalendar 与 docker-compose 转换工具
 
 - **新增**：RFC 7239 Forwarded HTTP 头解析与生成器（forwarded-header-codec）— 引号感知的逗号/分号两级切分解析多跳代理链 for/by/host/proto，覆盖裸 IPv4、IPv4:port、IPv6 与 [IPv6]:port、unknown 与 _obfuscated 节点校验，构造器固定 for→by→host→proto 顺序并自动引号转义，解析结果可一键载入构造器再编辑，13 个 Vitest 用例，纯本地运算零依赖
