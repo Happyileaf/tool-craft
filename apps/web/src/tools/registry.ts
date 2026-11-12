@@ -32804,6 +32804,528 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'ber-tlv-codec',
+    name: 'BER-TLV 嵌套标签长度值解析与构造器',
+    nameEn: 'BER-TLV Nested Parser & Builder',
+    description:
+      '解析与构造 EMV、SIM 卡 APDU 等场景的 BER-TLV 数据，支持单/多字节 Tag、构造位与四类 Tag 类别识别、短形式/长形式/不定长 Length、递归嵌套子 TLV，提供树形可视化、层级表格与 JSON 到十六进制的双向转换。',
+    descriptionEn:
+      'Parse and build BER-TLV data used in EMV and SIM APDU, supporting single/multi-byte tags, constructed bit and four tag classes, short/long/indefinite lengths, recursive nested children, tree visualization, a depth table and bidirectional JSON-to-hex conversion.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ber-tlv-codec',
+    iconName: 'Boxes',
+    tags: ['BER-TLV', 'EMV', 'APDU', '智能卡', '字节解析'],
+    tagsEn: ['BER-TLV', 'EMV', 'APDU', 'Smart Card', 'Byte Parsing'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '6F 0B A0 05 5A 03 01 02 03 5F 2A 01 AA',
+    doc: {
+      zh: {
+        whatIsIt:
+          'BER-TLV 解析与构造器是一款纯浏览器本地工具。BER-TLV 用 Tag（标签）、Length（长度）、Value（值）三段描述数据，广泛用于 EMV 银行卡、SIM/UIM 卡 APDU、电子证件等领域。本工具按 ISO/IEC 7816-4 与 X.690 规则递归解析嵌套 TLV，识别多字节 Tag、构造位、Tag 类别与各种长度形式，也支持从结构化 JSON 反向构造字节流。',
+        coreFeatures: [
+          '完整 Tag 解析：单字节与多字节 Tag（首字节低 5 位为 0x1F 触发续读），识别 universal/application/context-specific/private 四种类别与构造位',
+          '三种 Length：短形式（<128）、长形式（首字节低 7 位指示后续长度字节数）与不定长（0x80，以 00 00 结束）',
+          '递归嵌套：构造型节点自动展开子 TLV，提供可折叠语法树与带层级缩进的表格',
+          '双向转换：十六进制解析为树，或从 JSON（tag + value / children）构造合法字节流并自动计算长度',
+          '严格校验：Tag 截断、长度越界、原始型误用不定长、缺失结束符等均给出明确报错',
+        ],
+        howToUse: [
+          '选择“十六进制 → 解析树”模式，粘贴 BER-TLV 数据或点击预设标签载入 EMV/不定长样例',
+          '在语法树中展开构造型节点查看嵌套子 TLV，表格同步展示层级、Tag、类型、长度与值',
+          '切换到“结构化 JSON → 十六进制”模式，编辑 tag、value 或 children 数组，工具实时构造并计算长度',
+          '使用复制按钮取走构造结果，错误信息会指出具体 Tag 与字节位置',
+        ],
+        useCases: [
+          '解析银行卡 EMV FCI、AFL、应用模板等 TLV 数据，核对支付报文结构',
+          '调试 SIM/eSIM 卡 APDU 响应、USIM 应用与电信智能卡的 EFK/EF 数据',
+          '为嵌入式与协议测试构造带正确长度字段的嵌套 TLV 字节流',
+          '学习 X.690/7816-4 的 Tag 类别、构造位与变长 Length 编码',
+        ],
+        privacyNote:
+          '所有 TLV 数据均在浏览器本地解析与构造，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '构造型（constructed）和原始型（primitive）TLV 有什么区别？',
+            answer:
+              'Tag 首字节的 bit6 是构造位：为 1 时该 TLV 的 Value 本身由若干完整子 TLV 组成，可以递归展开；为 0 时 Value 是不透明的原始字节，按十六进制展示。例如 EMV 模板 6F 是构造型，而卡号 5A 是原始型。',
+          },
+          {
+            question: '多字节 Tag 如何判断读取到什么时候结束？',
+            answer:
+              '当 Tag 首字节低 5 位全为 1（即 0x1F）时表示标签号无法用 5 位容纳，后续字节继续编码标签号。每个后续字节最高位为续位标志：为 1 表示还有下一字节，为 0 表示该 Tag 结束，例如 9F 38 是一个完整的双字节 Tag。',
+          },
+          {
+            question: '不定长形式的 00 00 结束符是怎么回事？',
+            answer:
+              'Length 首字节为 0x80 时不直接给出长度，而是约定构造型 Value 一直延续到连续两个零字节（End-of-Contents Octets，00 00）出现为止。它只能用于构造型 TLV，原始型使用不定长会被工具拒绝。定长形式在智能卡场景更常见，不定长多见于通用 BER 编码。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The BER-TLV parser and builder runs entirely in your browser. BER-TLV describes data with Tag, Length and Value fields and is widely used in EMV bank cards, SIM/UIM APDUs and electronic IDs. Following ISO/IEC 7816-4 and X.690, the tool recursively parses nested TLVs, recognizes multi-byte tags, the constructed bit, tag classes and every length form, and can also build byte streams back from structured JSON.',
+        coreFeatures: [
+          'Full tag parsing: single and multi-byte tags (low 5 bits equal to 0x1F trigger continuation), with universal/application/context-specific/private classes and the constructed bit',
+          'Three length forms: short (below 128), long (low 7 bits count following length bytes) and indefinite (0x80 terminated by 00 00)',
+          'Recursive nesting: constructed nodes expand child TLVs automatically, shown as a collapsible tree and a depth-indented table',
+          'Bidirectional: hex to tree, or JSON (tag + value / children) to a valid byte stream with lengths computed automatically',
+          'Strict validation: truncated tags, out-of-range lengths, indefinite length on primitives and missing terminators all produce explicit errors',
+        ],
+        howToUse: [
+          'Choose “hex to tree” mode and paste BER-TLV data, or click a preset to load EMV or indefinite-length samples',
+          'Expand constructed nodes in the tree to inspect nested children; the table shows depth, tag, kind, length and value in sync',
+          'Switch to “JSON to hex” mode, edit tag/value/children arrays and get an instantly constructed byte stream',
+          'Copy the built output; error messages identify the specific tag and byte position',
+        ],
+        useCases: [
+          'Decoding EMV FCI, AFL and application template TLVs in bank card payment messages',
+          'Debugging SIM/eSIM APDU responses, USIM applications and telecom smart-card EF data',
+          'Building correctly lengthed nested TLV byte streams for embedded and protocol tests',
+          'Learning X.690/7816-4 tag classes, the constructed bit and variable-length encoding',
+        ],
+        privacyNote:
+          'All TLV data is parsed and built locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'What is the difference between constructed and primitive TLVs?',
+            answer:
+              'Bit 6 of the first tag byte is the constructed bit: when set to 1 the Value itself consists of complete child TLVs that can be recursively expanded; when 0 the Value is opaque raw bytes shown as hex. For example the EMV template 6F is constructed while the card number tag 5A is primitive.',
+          },
+          {
+            question: 'How does a multi-byte tag know where it ends?',
+            answer:
+              'When the low 5 bits of the first tag byte are all ones (0x1F), the tag number needs more bytes. Each following byte uses its high bit as a continuation marker: 1 means another byte follows, 0 ends the tag. For example 9F 38 is one complete two-byte tag.',
+          },
+          {
+            question: 'What is the 00 00 terminator in indefinite-length form?',
+            answer:
+              'When the first length byte is 0x80 the length is not given directly; instead a constructed Value continues until two zero bytes (End-of-Contents Octets, 00 00) appear. It is only valid for constructed TLVs, and the tool rejects indefinite length on primitive tags. Definite lengths are more common in smart cards while indefinite form appears in generic BER encoding.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ipv4-header-parser',
+    name: 'IPv4 数据报头解析与校验和验证器',
+    nameEn: 'IPv4 Header Parser & Checksum Validator',
+    description:
+      '按 RFC 791 解析 IPv4 数据报头部十六进制，拆解版本、IHL、DSCP/ECN、总长度、标识、DF/MF 标志与片偏移、TTL、协议、源目的地址和选项，并按 RFC 1071 重算互联网首部校验和判定数据是否损坏。',
+    descriptionEn:
+      'Parse IPv4 datagram header hex per RFC 791, decoding version, IHL, DSCP/ECN, total length, identification, DF/MF flags and fragment offset, TTL, protocol, source/destination addresses and options, then recompute the RFC 1071 internet header checksum to detect corruption.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ipv4-header-parser',
+    iconName: 'Wifi',
+    tags: ['IPv4', 'RFC 791', 'RFC 1071', '校验和', '报文解析'],
+    tagsEn: ['IPv4', 'RFC 791', 'RFC 1071', 'Checksum', 'Packet Parsing'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '45 00 00 3c 1c 46 40 00 40 06 00 00 c0 a8 01 0a c0 a8 01 01',
+    doc: {
+      zh: {
+        whatIsIt:
+          'IPv4 数据报头解析器是一款纯浏览器本地的网络报文分析工具。它按 RFC 791 把十六进制 IPv4 头部拆解为版本、首部长度、区分服务、总长度、标识、标志与片偏移、TTL、协议、校验和、源/目的地址及选项等字段，并依据 RFC 1071 重新计算互联网首部校验和，帮助网络工程与安全人员快速读懂抓包数据并判断报文是否在传输中损坏。',
+        coreFeatures: [
+          '完整字段解析：版本、IHL、DSCP/ECN、总长度、标识、DF/MF/保留标志、片偏移、TTL、协议号与名称、源目的地址、选项',
+          'RFC 1071 校验和验证：对整个头部按 16 位字求和回卷取反，重算结果为 0x0000 即校验通过，否则标红并给出重算值',
+          '协议号识别：内置 ICMP、IGMP、TCP、UDP、GRE、ESP、AH、ICMPv6、OSPF、SCTP 等常见协议号映射',
+          '合法性校验：拒绝非 IPv4 版本、IHL 小于 5、输入短于 20 字节以及与 IHL 不一致的截断头部',
+          '内置构造器：可一键生成带正确校验和的合法 UDP 头部样例，便于教学与对照测试',
+        ],
+        howToUse: [
+          '在文本框粘贴 IPv4 数据报头部十六进制，空格、逗号与 0x 前缀均可，至少包含 20 字节',
+          '点击“载入合法示例”可生成一个自动计算好校验和的 UDP 头部',
+          '查看顶部校验和验证标签：绿色表示通过，红色表示头部被篡改或传输损坏',
+          '在字段表格中逐项核对解析结果，并复制按 4 字节分组的头部十六进制',
+        ],
+        useCases: [
+          '分析 Wireshark/tcpdump 抓包导出的 IPv4 头部字节，理解每个字段含义',
+          '验证手写或构造的 IP 头部校验和是否正确，排查 TTL 改写后的校验和问题',
+          '网络协议教学：演示 IHL、分片标志、片偏移与 DSCP/ECN 的位级布局',
+          '安全分析：识别异常 TTL、协议号或损坏校验和的可疑报文',
+        ],
+        privacyNote:
+          '所有报文数据仅在浏览器本地解析，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '为什么校验和验证是把整个头部重新算一遍看是否等于 0？',
+            answer:
+              'RFC 1071 校验和在发送端计算时，先把校验和字段置 0，对头部按 16 位字求和、回卷进位后取反填入。接收端把包含该校验和在内的整个头部再做同样运算：若数据未变化，原校验和与其余字段的求和取反恰好抵消，结果为 0x0000；任何字节改动都会导致非零结果。',
+          },
+          {
+            question: 'IHL 字段和首部长度是什么关系？',
+            answer:
+              'IHL（Internet Header Length）是头部第一个字节的低 4 位，以 32 位字（4 字节）为单位。最小值 5 对应 20 字节的无选项头部；当存在选项时 IHL 大于 5，实际首部字节数为 IHL×4，最大 15 即 60 字节。载荷长度等于总长度减去首部字节数。',
+          },
+          {
+            question: 'DF、MF 标志和片偏移如何配合分片？',
+            answer:
+              'DF（Don’t Fragment）置 1 表示路由器不允许分片，遇到 MTU 不足会丢弃并回 ICMP；MF（More Fragments）置 1 表示后面还有分片，最后一个分片清零。片偏移以 8 字节为单位指示当前分片数据在原始数据报中的位置，重组端据此把各分片拼回原始数据。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The IPv4 header parser is a browser-local packet analysis tool. Following RFC 791, it decodes hexadecimal IPv4 headers into version, IHL, differentiated services, total length, identification, flags and fragment offset, TTL, protocol, checksum, source/destination addresses and options, then recomputes the RFC 1071 internet header checksum so network and security engineers can read captures and detect in-transit corruption.',
+        coreFeatures: [
+          'Full field decoding: version, IHL, DSCP/ECN, total length, identification, DF/MF/reserved flags, fragment offset, TTL, protocol number and name, addresses and options',
+          'RFC 1071 checksum validation: sums the whole header in 16-bit words with carry wrap and one’s complement; a recomputed 0x0000 means valid, otherwise the mismatch is highlighted with the actual value',
+          'Protocol recognition: built-in mapping for ICMP, IGMP, TCP, UDP, GRE, ESP, AH, ICMPv6, OSPF, SCTP and more',
+          'Validity checks: rejects non-IPv4 versions, IHL below 5, input shorter than 20 bytes and truncated headers inconsistent with IHL',
+          'Built-in builder: generates a valid UDP header sample with a correct checksum in one click for teaching and comparison',
+        ],
+        howToUse: [
+          'Paste IPv4 header hex into the text area; spaces, commas and 0x prefixes are accepted and at least 20 bytes are required',
+          'Click “load valid sample” to generate a UDP header whose checksum is computed automatically',
+          'Check the top checksum tag: green means valid, red means the header was altered or corrupted',
+          'Review each decoded field in the table and copy the header hex grouped into 4-byte words',
+        ],
+        useCases: [
+          'Interpreting IPv4 header bytes exported from Wireshark/tcpdump captures field by field',
+          'Verifying checksums of hand-crafted IP headers and debugging checksum issues after TTL rewrites',
+          'Teaching network protocols: demonstrating the bit layout of IHL, fragmentation flags, offset and DSCP/ECN',
+          'Security analysis: spotting suspicious packets with abnormal TTL, protocol numbers or broken checksums',
+        ],
+        privacyNote:
+          'All packet data is parsed locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'Why does validation recompute the whole header and expect zero?',
+            answer:
+              'Under RFC 1071 the sender first zeroes the checksum field, sums the header in 16-bit words with carry wrap, and stores the one’s complement. On receipt the same operation over the entire header including that checksum cancels out exactly when nothing changed, yielding 0x0000; any changed byte produces a non-zero result.',
+          },
+          {
+            question: 'How does IHL relate to header length?',
+            answer:
+              'IHL is the low 4 bits of the first header byte and counts 32-bit words (4 bytes each). Its minimum value 5 means a 20-byte header with no options; with options IHL exceeds 5, the real header size is IHL×4, capped at 15 words or 60 bytes. Payload length equals total length minus header length.',
+          },
+          {
+            question: 'How do DF, MF flags and fragment offset work together?',
+            answer:
+              'DF (Don’t Fragment) set to 1 forbids routers from fragmenting; they drop oversized packets and return ICMP instead. MF (More Fragments) set to 1 means further fragments follow and is cleared on the last one. The fragment offset, measured in 8-byte units, tells the reassembler where each fragment’s data sits in the original datagram.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ldap-filter-parser',
+    name: 'LDAP 搜索过滤器解析与校验器',
+    nameEn: 'LDAP Search Filter Parser & Validator',
+    description:
+      '按 RFC 4515 解析 LDAP 搜索过滤器，校验括号配对、& | ! 逻辑组合与 = >= <= ~= 比较操作符，处理 \\HH 十六进制转义与 * 子串断言，输出规范化文本、叶子断言统计与可展开的语法树。',
+    descriptionEn:
+      'Parse and validate LDAP search filters per RFC 4515, checking balanced parentheses, & | ! logical groups and = >= <= ~= operators, handling \\HH hex escapes and * substring assertions, with normalized text, leaf counts and an expandable syntax tree.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ldap-filter-parser',
+    iconName: 'Braces',
+    tags: ['LDAP', 'RFC 4515', '过滤器', 'AST 语法树', '目录服务'],
+    tagsEn: ['LDAP', 'RFC 4515', 'Filter', 'AST', 'Directory Service'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '(&(ou=Sales)(|(title=Manager)(!(status=Archived)))(mail=*@example.com))',
+    doc: {
+      zh: {
+        whatIsIt:
+          'LDAP 过滤器解析与校验器是一款纯浏览器本地工具。它实现 RFC 4515 递归下降解析器，把 (&(cn=John)(objectClass=person)) 这类搜索过滤器转换为抽象语法树（AST），校验括号配对、逻辑组合与比较操作符是否合法，并可视化展示嵌套结构，帮助目录服务研发与运维人员快速定位过滤器语法问题。',
+        coreFeatures: [
+          '完整语法校验：括号配对、属性名、=、>=、<=、~= 操作符及 & | ! 组合的严格递归下降解析',
+          '转义处理：识别并还原 \\HH 两位十六进制转义，序列化时对保留字符与非 ASCII（按 UTF-8）重新转义',
+          '子串断言：识别 attr=前缀*包含*后缀 形式，拆分 initial、any、final 三段',
+          '语法树可视化：以可展开树形组件展示 AND/OR/NOT 与叶子断言，另附层级表格与规范化文本',
+          '统计信息：输出叶子断言数量与最大嵌套深度，一键复制规范化过滤器',
+        ],
+        howToUse: [
+          '在文本框中粘贴或输入 RFC 4515 过滤器，或点击蓝色标签载入预设',
+          '工具实时解析：语法非法时显示具体位置与原因，合法时展示统计与语法树',
+          '展开或折叠语法树节点，查看每个 AND/OR/NOT 组合及叶子属性、操作符与断言值',
+          '复制规范化文本用于客户端代码或服务端查询，错误信息直接指向出错位置',
+        ],
+        useCases: [
+          '调试 OpenLDAP、Active Directory 等目录服务的搜索过滤器',
+          '在编写目录同步、登录认证或组织架构查询代码前验证过滤器语法',
+          '学习 LDAP 过滤器的嵌套逻辑、子串匹配与十六进制转义规则',
+          '为单元测试生成规范化过滤器字符串与 AST 结构参考',
+        ],
+        privacyNote:
+          '所有过滤器文本仅在浏览器本地解析，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: 'LDAP 过滤器里的 &、|、! 分别表示什么？',
+            answer:
+              '它们是前缀式逻辑操作符：& 表示与（AND，所有子条件都满足）、| 表示或（OR，任一子条件满足）、! 表示非（NOT，恰好包裹一个子条件并取反）。例如 (&(a=1)(b=2)) 要求两个条件同时成立，(!(c=3)) 表示 c 不等于 3。',
+          },
+          {
+            question: '为什么有些值写成 \\28、\\29 这样的形式？',
+            answer:
+              'RFC 4515 规定断言值中的 *、(、)、反斜杠与空字节必须用反斜杠加两位十六进制转义，避免与过滤器结构字符冲突。例如左括号 ( 写成 \\28、右括号 ) 写成 \\29。非 ASCII 字符按 UTF-8 字节逐个转义，如中文“中”转成 \\e4\\b8\\ad。',
+          },
+          {
+            question: '(cn=*admin*) 这类带星号的表达式如何解析？',
+            answer:
+              '星号构成子串断言。单个 *（attr=*）是存在性过滤，表示属性存在且有值；带文本的 * 把值拆成前缀、若干包含片段与后缀。(cn=*admin*) 表示 cn 属性包含 admin；(cn=Jo*) 表示以 Jo 开头；(cn=*Doe) 表示以 Doe 结尾。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The LDAP filter parser runs entirely in your browser. It implements an RFC 4515 recursive-descent parser that turns search filters such as (&(cn=John)(objectClass=person)) into an abstract syntax tree, validates balanced parentheses, logical groups and comparison operators, and visualizes the nested structure so directory-service engineers can pinpoint syntax problems quickly.',
+        coreFeatures: [
+          'Full validation: strict recursive-descent parsing of parentheses, attribute names, = >= <= ~= operators and & | ! groups',
+          'Escape handling: decodes \\HH two-digit hex escapes and re-escapes reserved characters plus non-ASCII text (as UTF-8) during serialization',
+          'Substring assertions: recognizes attr=initial*any*final and splits it into initial, any and final segments',
+          'Tree visualization: expandable tree for AND/OR/NOT nodes and leaf assertions, plus a depth table and normalized text',
+          'Statistics: leaf assertion count and maximum nesting depth, with one-click copy of the normalized filter',
+        ],
+        howToUse: [
+          'Paste or type an RFC 4515 filter, or click a blue tag to load a preset',
+          'The tool parses live: invalid syntax shows the exact position and reason, valid input shows statistics and a syntax tree',
+          'Expand or collapse tree nodes to inspect each AND/OR/NOT group and leaf attribute, operator and assertion value',
+          'Copy the normalized text for client code or server queries; error messages point directly at the failure position',
+        ],
+        useCases: [
+          'Debugging search filters for OpenLDAP, Active Directory and other directory services',
+          'Validating filters before writing directory sync, authentication or org-chart query code',
+          'Learning LDAP filter nesting, substring matching and hex escape rules',
+          'Producing normalized filter strings and AST references for unit tests',
+        ],
+        privacyNote:
+          'All filter text is parsed locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'What do the &, | and ! symbols mean in an LDAP filter?',
+            answer:
+              'They are prefix logical operators: & is AND (all child conditions must hold), | is OR (any child condition holds), and ! is NOT (wraps exactly one child and negates it). For example (&(a=1)(b=2)) requires both conditions, while (!(c=3)) means c is not 3.',
+          },
+          {
+            question: 'Why do some values look like \\28 or \\29?',
+            answer:
+              'RFC 4515 requires *, (, ), backslash and the null byte inside assertion values to be escaped as a backslash plus two hex digits so they cannot collide with filter structure characters. For example opening parenthesis ( is \\28 and closing parenthesis ) is \\29. Non-ASCII characters are escaped byte-by-byte as UTF-8.',
+          },
+          {
+            question: 'How are star patterns such as (cn=*admin*) parsed?',
+            answer:
+              'A star forms a substring assertion. A lone star (attr=*) is a presence filter meaning the attribute exists with a value; stars with text split the value into an initial prefix, any number of contains fragments and a final suffix. (cn=*admin*) means cn contains admin, (cn=Jo*) starts with Jo, and (cn=*Doe) ends with Doe.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'oid-ber-codec',
+    name: 'OID 对象标识符 BER 编解码器',
+    nameEn: 'OID BER Encoder & Decoder',
+    description:
+      '在点分十进制 OID（如 1.2.840.113549.1.1.11）与 ITU-T X.690 BER OBJECT IDENTIFIER 十六进制 TLV 之间双向转换，自动处理前两弧 40×X+Y 合并、base-128 变长弧编码与短/长形式长度八位组，内置常见证书与 SNMP OID 速查。',
+    descriptionEn:
+      'Convert between dotted-decimal OIDs (e.g. 1.2.840.113549.1.1.11) and ITU-T X.690 BER OBJECT IDENTIFIER hex TLV, handling the 40*X+Y first-arcs merge, base-128 variable-length arcs and short/long length octets, with common certificate and SNMP OID presets.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/oid-ber-codec',
+    iconName: 'Binary',
+    tags: ['OID', 'BER', 'X.690', 'ASN.1', 'X.509 证书'],
+    tagsEn: ['OID', 'BER', 'X.690', 'ASN.1', 'X.509 Certificate'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1.2.840.113549.1.1.11',
+    doc: {
+      zh: {
+        whatIsIt:
+          'OID BER 编解码器是一款纯浏览器本地工具。它在人类可读的点分十进制对象标识符（OID）与 ASN.1 BER 编码的 OBJECT IDENTIFIER 十六进制字节之间双向转换，覆盖 X.690 规定的前两弧合并、base-128 变长弧编码以及短形式与长形式长度八位组，帮助研发与安全人员核对证书、SNMP MIB 与协议报文中的 OID 编码。',
+        coreFeatures: [
+          '双向转换：点分十进制编码为完整 TLV（Tag 0x06 + 长度 + 内容），或从十六进制 TLV 还原弧序列',
+          '规范编码：前两弧按 40×X+Y 合并（首弧 0/1 时次弧小于 40，首弧 2 时次弧任意），其余弧 base-128 变长编码',
+          '长度处理：内容小于 128 字节用短形式，否则自动输出长形式长度八位组，解码端同样兼容两种形式',
+          '严格校验：拒绝非数字弧、负号、首弧大于 2、错误 Tag、长度不一致与悬挂的续位字节并给出明确报错',
+          '常见 OID 速查：RSA、SHA-256、EC 公钥、P-256、X.500 CN、SNMP sysDescr 一键填充',
+        ],
+        howToUse: [
+          '选择转换方向：点分十进制 → BER，或 BER → 点分十进制',
+          '编码模式下输入如 1.2.840.113549.1.1.11 的 OID，或点击蓝色标签快速填充常见 OID',
+          '解码模式下粘贴含 Tag 与长度的完整十六进制 TLV，空格、逗号与 0x 前缀均可',
+          '查看结果区的 TLV、内容字节、总长度与逐弧表格，使用复制按钮取走十六进制或点分串',
+        ],
+        useCases: [
+          '核对 X.509 证书、PKCS#7/CMS 与 CSR 中算法标识符的 OID 编码是否正确',
+          '调试 SNMP MIB、LDAP 目录与其他 ASN.1 协议中的 OBJECT IDENTIFIER 字段',
+          '学习 ITU-T X.690 BER 规则与 base-128 变长整数编码原理',
+          '为协议文档或单元测试构造已知 OID 的期望字节序列',
+        ],
+        privacyNote:
+          '所有 OID 与十六进制数据均在浏览器本地解析与编码，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '为什么 OID 的前两个弧要合并成一个字节开始？',
+            answer:
+              'X.690 规定 OID 编码时把第一弧 X 与第二弧 Y 合并为 40×X+Y 一个基值，以节省空间。由于首弧只有 0、1、2 三种取值，且前两种情况下次弧小于 40，该映射可以无歧义地还原：值小于 40 还原为 (0, 值)，40–79 还原为 (1, 值−40)，80 及以上还原为 (2, 值−80)。',
+          },
+          {
+            question: 'base-128 变长编码是怎么工作的？',
+            answer:
+              '每个弧值按 7 位一组拆分，从最低有效组向前排列。除最后一个字节外，每个字节最高位置 1 作为续位标志，最后一个字节最高位清零表示结束。例如 840 拆为 0x86、0x48 两个字节；小于 128 的弧只需要一个字节。',
+          },
+          {
+            question: '短形式和长形式长度有什么区别？',
+            answer:
+              '内容长度小于 128 时长度八位组直接存数值（短形式，如 0x06）。长度达到 128 及以上时，首字节高位置 1、低 7 位表示后续长度字节数，其后再按大端存放真实长度，例如 300 编码为 82 01 2c。OID 不使用 0x80 不定长形式，工具遇到会明确报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The OID BER codec runs entirely in your browser. It converts between human-readable dotted-decimal Object Identifiers and ASN.1 BER OBJECT IDENTIFIER hex bytes, covering the X.690 first-two-arcs merge, base-128 variable-length arcs and short/long length octets, so developers and security engineers can verify OID encodings in certificates, SNMP MIBs and protocol packets.',
+        coreFeatures: [
+          'Bidirectional: dotted OID to full TLV (Tag 0x06 + length + content), or hex TLV back to the arc sequence',
+          'Spec encoding: first two arcs merged as 40*X+Y (second arc < 40 for first arc 0/1, unrestricted for 2), remaining arcs use base-128 variable-length encoding',
+          'Length handling: short form below 128 content bytes, automatic long-form length octets otherwise; the decoder accepts both forms',
+          'Strict validation: non-numeric arcs, negatives, first arc > 2, wrong tag, length mismatch and dangling continuation bytes all produce explicit errors',
+          'Presets for common OIDs: RSA, SHA-256, EC public key, P-256, X.500 CN and SNMP sysDescr with one click',
+        ],
+        howToUse: [
+          'Choose the direction: dotted OID to BER, or BER to dotted OID',
+          'In encode mode enter an OID such as 1.2.840.113549.1.1.11, or click a blue tag to fill a common OID',
+          'In decode mode paste the full hex TLV including tag and length; spaces, commas and 0x prefixes are accepted',
+          'Inspect the TLV, content bytes, total length and per-arc table in the result area, then copy the hex or dotted string',
+        ],
+        useCases: [
+          'Verifying algorithm-identifier OID encodings in X.509 certificates, PKCS#7/CMS and CSRs',
+          'Debugging OBJECT IDENTIFIER fields in SNMP MIBs, LDAP directories and other ASN.1 protocols',
+          'Learning ITU-T X.690 BER rules and base-128 variable-length integer encoding',
+          'Building expected byte sequences for protocol documentation or unit tests',
+        ],
+        privacyNote:
+          'All OID and hex data is parsed and encoded locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'Why are the first two arcs merged into one starting value?',
+            answer:
+              'X.690 merges the first arc X and second arc Y into the base value 40*X+Y to save space. Because the first arc is only 0, 1 or 2 and the second arc stays below 40 for the first two cases, the mapping is unambiguous: values below 40 decode as (0, value), 40-79 as (1, value-40), and 80+ as (2, value-80).',
+          },
+          {
+            question: 'How does base-128 variable-length encoding work?',
+            answer:
+              'Each arc is split into 7-bit groups ordered from least to most significant. Every byte except the last sets its high bit as a continuation marker, while the final byte clears it. For example 840 becomes the two bytes 0x86, 0x48; arcs below 128 need only a single byte.',
+          },
+          {
+            question: 'What is the difference between short and long length forms?',
+            answer:
+              'Below 128 content bytes the length octet holds the value directly (short form, e.g. 0x06). At 128 and above, the first octet sets the high bit and uses its low 7 bits to count the following length bytes, which store the real length big-endian — 300 is encoded as 82 01 2c. OIDs never use the 0x80 indefinite form, which the tool rejects explicitly.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'resp-codec',
+    name: 'Redis RESP2 / RESP3 协议解析与编码器',
+    nameEn: 'Redis RESP2 / RESP3 Parser & Encoder',
+    description:
+      '解析与构造 Redis 序列化协议 RESP2/RESP3 报文，覆盖简单字符串、错误、整数、批量字符串、数组、null、双精度浮点、布尔、大整数、集合、字典、Push 与逐字字符串等类型，提供语法树、类型表格与 inline 命令/JSON 到协议文本的双向转换。',
+    descriptionEn:
+      'Parse and build Redis Serialization Protocol RESP2/RESP3 messages, covering simple strings, errors, integers, bulk strings, arrays, null, doubles, booleans, big numbers, sets, maps, push and verbatim strings, with a syntax tree, type table and inline-command/JSON to protocol conversion.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/resp-codec',
+    iconName: 'HardDrive',
+    tags: ['Redis', 'RESP', 'RESP3', '协议解析', '编解码'],
+    tagsEn: ['Redis', 'RESP', 'RESP3', 'Protocol Parsing', 'Codec'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '*2\r\n$4\r\nINFO\r\n$11\r\nreplication\r\n',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Redis RESP2/RESP3 解析与编码器是一款纯浏览器本地工具。RESP（REdis Serialization Protocol）是 Redis 客户端与服务端之间的线协议，用类型前缀加 CRLF 组织数据。本工具按 RESP2 与 RESP3 规范解析协议文本，递归还原数组、集合与字典等嵌套结构，并支持把 telnet inline 命令或任意 JSON 值反向编码为合法的协议报文。',
+        coreFeatures: [
+          'RESP2 五类型：+ 简单字符串、- 错误、: 整数、$ 批量字符串（含 $-1 null）与 * 数组（含 *-1 null）',
+          'RESP3 全类型：_ null、, 双精度浮点、# 布尔、! 批量错误、= 逐字字符串（自动提取 txt: 等编码提示）、( 大整数、~ 集合、| 字典、> Push',
+          '递归解析嵌套容器，输出可折叠语法树与带层级、前缀、类型、载荷的表格，并统计顶层消息数与节点总数',
+          '双向编码：inline 命令（支持双引号分词）转 RESP2 数组，任意 JSON 值转 RESP3 协议文本，结果可往返解析',
+          '严格校验：缺失 CRLF、非法前缀、长度越界、布尔值非 t/f、verbatim 编码提示缺失等均给出明确报错',
+        ],
+        howToUse: [
+          '在“RESP 文本 → 解析树”模式粘贴协议报文，或点击预设标签载入 RESP2 命令、null、RESP3 Map 等样例',
+          '在语法树中展开数组、集合、字典查看嵌套节点，下方表格同步展示每个节点的层级与载荷',
+          '切换到“Inline 命令 → RESP”模式，输入 telnet 风格命令即可生成等价的 RESP2 批量字符串数组',
+          '切换到“JSON 值 → RESP3”模式，粘贴对象或数组，工具按类型映射为 Map、数组、布尔、整数等协议节点',
+          '使用复制按钮取走协议文本，所有处理均在本机浏览器完成',
+        ],
+        useCases: [
+          '学习 Redis 客户端与服务端通信的线协议格式，理解命令与回复如何序列化',
+          '调试 Redis 代理、客户端 SDK 或抓包得到的 RESP2/RESP3 原始报文',
+          '把 inline 命令快速转换为标准 RESP 报文，用于构造测试用例或 mock 响应',
+          '验证 RESP3 的 Map、Set、Push、布尔与大整数等富类型在网络上的实际编码',
+        ],
+        privacyNote:
+          '所有协议文本均在浏览器本地解析与编码，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: 'RESP2 和 RESP3 的主要区别是什么？',
+            answer:
+              'RESP2 只有简单字符串、错误、整数、批量字符串和数组五种类型，集合、字典等结构只能用数组平铺表达；RESP3 增加了 null（_）、双精度浮点（,）、布尔（#）、批量错误（!）、逐字字符串（=）、大整数（(）、集合（~）、字典（|）和 Push（>）等类型，能直接表达富数据结构并减少客户端二次推断。',
+          },
+          {
+            question: '批量字符串（$）里的 CRLF 会不会被误认为结束符？',
+            answer:
+              '不会。批量字符串先给出精确字节长度，解析器按长度读取载荷而不是按行分割，因此载荷内部可以包含任意二进制安全内容（包括 \\r\\n 与空字节），读完声明的字节后才要求紧跟一个 CRLF。长度不足或缺少该 CRLF 时工具会报错。',
+          },
+          {
+            question: 'inline 命令和 RESP 数组命令有什么关系？',
+            answer:
+              'telnet 风格的 inline 命令用空格分词（支持双引号包裹含空格的参数），适合人工输入；正式客户端通常把同样的参数编码为 * 数组加多个 $ 批量字符串。本工具的 inline 模式就是把前者自动转换成后者，例如 GET key 转为 *2\\r\\n$3\\r\\nGET\\r\\n$3\\r\\nkey\\r\\n。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Redis RESP2/RESP3 parser and encoder runs entirely in your browser. RESP (REdis Serialization Protocol) is the wire protocol between Redis clients and servers, organizing data with type prefixes and CRLF. Following the RESP2 and RESP3 specifications, the tool parses protocol text, recursively restores nested arrays, sets and maps, and can also encode telnet inline commands or arbitrary JSON values back into valid protocol messages.',
+        coreFeatures: [
+          'All five RESP2 types: + simple string, - error, : integer, $ bulk string (including $-1 null) and * array (including *-1 null)',
+          'Full RESP3 support: _ null, , double, # boolean, ! bulk error, = verbatim string (extracting hints such as txt:), ( big number, ~ set, | map and > push',
+          'Recursive parsing of nested containers into a collapsible syntax tree plus a table with depth, prefix, type and payload, with top-level message and total node counts',
+          'Bidirectional encoding: inline commands (with quoted token support) to RESP2 arrays, or any JSON value to RESP3 text, both round-trippable through the parser',
+          'Strict validation: missing CRLF, unknown prefixes, out-of-range lengths, non t/f booleans and missing verbatim hints all produce explicit errors',
+        ],
+        howToUse: [
+          'In “RESP text to tree” mode paste a protocol message, or click a preset to load RESP2 command, null or RESP3 map samples',
+          'Expand arrays, sets and maps in the syntax tree; the table below shows every node’s depth and payload in sync',
+          'Switch to “inline command to RESP” mode and type a telnet-style command to get the equivalent RESP2 bulk-string array',
+          'Switch to “JSON value to RESP3” mode and paste an object or array to map it into protocol nodes such as maps, arrays, booleans and integers',
+          'Use the copy button to take the protocol text; everything runs locally in your browser',
+        ],
+        useCases: [
+          'Learning the Redis client-server wire protocol and how commands and replies are serialized',
+          'Debugging raw RESP2/RESP3 messages captured from Redis proxies, client SDKs or network traces',
+          'Converting inline commands into standard RESP messages for test cases or mock responses',
+          'Verifying how RESP3 rich types such as maps, sets, push, booleans and big numbers are encoded on the wire',
+        ],
+        privacyNote:
+          'All protocol text is parsed and encoded locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'What is the main difference between RESP2 and RESP3?',
+            answer:
+              'RESP2 has only five types — simple strings, errors, integers, bulk strings and arrays — so sets and maps must be flattened into arrays. RESP3 adds null (_), double (,), boolean (#), bulk error (!), verbatim string (=), big number ((), set (~), map (|) and push (>) types, expressing rich data structures directly and removing client-side guesswork.',
+          },
+          {
+            question: 'Can a CRLF inside a bulk string ($) be mistaken for a terminator?',
+            answer:
+              'No. A bulk string first declares its exact byte length, and the parser reads the payload by length instead of splitting by lines. The payload is therefore binary-safe and may contain \\r\\n or null bytes; only after the declared bytes does it require a trailing CRLF. A short payload or missing CRLF raises an error.',
+          },
+          {
+            question: 'How do inline commands relate to RESP array commands?',
+            answer:
+              'Telnet-style inline commands split arguments on spaces (with double quotes for arguments containing spaces) and suit manual input, while real clients encode the same arguments as an * array of $ bulk strings. The inline mode converts one into the other — GET key becomes *2\\r\\n$3\\r\\nGET\\r\\n$3\\r\\nkey\\r\\n.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

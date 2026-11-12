@@ -350,4 +350,9 @@ export const toolLoaders: Record<
   'edn-json-converter': () => import('./edn-json-converter'),
   'ics-generator': () => import('./ics-generator'),
   'docker-run-to-compose': () => import('./docker-run-to-compose'),
+  'oid-ber-codec': () => import('./oid-ber-codec'),
+  'ldap-filter-parser': () => import('./ldap-filter-parser'),
+  'ipv4-header-parser': () => import('./ipv4-header-parser'),
+  'ber-tlv-codec': () => import('./ber-tlv-codec'),
+  'resp-codec': () => import('./resp-codec'),
 };

@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-13 ：【Agent自主迭代】新增 5 个 OID BER、LDAP 过滤器、IPv4 头部、BER-TLV 与 Redis RESP 协议编解码工具
+
+- **新增**：OID 点分表示 ↔ BER TLV 编解码器（oid-ber-codec）— 按 ITU-T X.690 实现 OID 首两弧 40X+Y 合并规则与 base-128 变长内容编码，支持点分串与 hex TLV 双向转换、短/长长度形式、弧值表格与预设样例，越界与非法 hex 带定位报错，27 个 Vitest 用例，纯本地运算零依赖
+- **新增**：LDAP 搜索过滤器解析与规范化器（ldap-filter-parser）— 按 RFC 4515 手写递归下降解析器支持 & / | / ! 逻辑组合、present、substrings 与 attr=value 断言，按 UTF-8 字节处理 \HH 转义，输出可折叠语法树、条目统计与规范化文本，括号不匹配等错误带定位，20 个 Vitest 用例，纯本地运算零依赖
+- **新增**：IPv4 数据报头部解析与构造器（ipv4-header-parser）— 按 RFC 791 解析版本/IHL/DSCP/ECN/总长/标识/分片位/TTL/协议/校验和等字段，RFC 1071 互联网校验和自动回卷计算与校验，支持 hex 与 4 字节分组视图、JSON 构造往返及 IHL 选项数据校验，14 个 Vitest 用例，纯本地运算零依赖
+- **新增**：BER-TLV 嵌套解析与构造器（ber-tlv-codec）— 按 ISO/IEC 7816-4 与 X.690 支持多字节 Tag、构造位与 Tag 类别识别、短/长/不定长长度形式、递归嵌套与 End-of-Contents 结束符，输出语法树与层级表格，JSON 到 hex 构造器支持 value/children 互斥校验，19 个 Vitest 用例，纯本地运算零依赖
+- **新增**：Redis RESP2 / RESP3 协议解析与编码器（resp-codec）— 覆盖 RESP2 五类型与 RESP3 的 null、双精度浮点、布尔、批量错误、逐字字符串、大整数、集合、字典、Push 全类型，二进制安全批量字符串按长度读取，递归还原嵌套容器并输出语法树与类型表格，inline 命令与任意 JSON 值可反向编码为协议报文并往返解析，33 个 Vitest 用例，纯本地运算零依赖
+
 ## 2026-11-12 ：【Agent自主迭代】新增 5 个 RFC 7239 Forwarded、RFC 6570 URI Template、EDN↔JSON、iCalendar 与 docker-compose 转换工具
 
 - **新增**：RFC 7239 Forwarded HTTP 头解析与生成器（forwarded-header-codec）— 引号感知的逗号/分号两级切分解析多跳代理链 for/by/host/proto，覆盖裸 IPv4、IPv4:port、IPv6 与 [IPv6]:port、unknown 与 _obfuscated 节点校验，构造器固定 for→by→host→proto 顺序并自动引号转义，解析结果可一键载入构造器再编辑，13 个 Vitest 用例，纯本地运算零依赖
