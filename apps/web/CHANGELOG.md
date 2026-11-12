@@ -8,6 +8,7 @@
 
 - **新增**：Redis RESP 协议编解码调试器（redis-protocol-codec）— 在 RESP2/RESP3 线格式与结构化消息树之间双向转换，覆盖 13 种首字节类型（简单串/错误/整数/Bulk/数组/Null/Double/Boolean/BigNumber/Bulk Error/Verbatim/Map/Set/Push），UTF-8 字节缓冲解析使 bulk 长度按字节精确计数、正确处理多字节数据与半包残片，编码构造器带严格校验并支持一键 RESP2 降级，13 个 Vitest 用例，纯本地运算零依赖
 - **新增**：OID 编解码工具（oid-codec）— 点分十进制 OID 与 BER/DER 内容字节十六进制双向转换，首弧 40·X+Y 合并 + base-128 变长压缩逐弧可视化，生成完整 DER TLV（含长形式 Length），内置 30 个常见密码学/X.500 OID 名称标注与每行一条的批量转换，标准 DER 向量验收，18 个 Vitest 用例，纯位运算零依赖
+- **新增**：APCA（WCAG 3）感知对比度计算器（apca-contrast-calculator）— 严格实现 APCA 0.0.98G-4g（apca-w3@0.1.9 参考向量固定验收），支持 #hex（含 8 位 alpha）与 rgb()/rgba() 输入、透明前景 alpha 混合、BoW/WoB 极性标签、Lc90–Lc15 六级字号字重推荐、实时配色预览与 WCAG 2.1 比值对照，31 个 Vitest 用例，纯本地数值运算零依赖
 
 ## 2026-11-12 ：【Agent自主迭代】新增 5 个 RFC 7239 Forwarded、RFC 6570 URI Template、EDN↔JSON、iCalendar 与 docker-compose 转换工具
 

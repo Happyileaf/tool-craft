@@ -352,4 +352,5 @@ export const toolLoaders: Record<
   'docker-run-to-compose': () => import('./docker-run-to-compose'),
   'redis-protocol-codec': () => import('./redis-protocol-codec'),
   'oid-codec': () => import('./oid-codec'),
+  'apca-contrast-calculator': () => import('./apca-contrast-calculator'),
 };

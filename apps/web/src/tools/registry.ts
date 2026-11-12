@@ -33020,6 +33020,114 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'apca-contrast-calculator',
+    name: 'APCA（WCAG 3）感知对比度计算器',
+    nameEn: 'APCA Perceptual Contrast Calculator (WCAG 3 Candidate)',
+    description:
+      '按 APCA 0.0.98G-4g 规范在浏览器本地计算前景与背景色的感知对比度 Lc（约 -108 至 +108），支持 #hex（含 8 位 alpha）与 rgb()/rgba() 输入；展示极性（深字浅底为正、浅字深底为负）、Lc90/Lc75/Lc60/Lc45/Lc30/Lc15 六级字号字重推荐、实时配色预览，并对照输出 WCAG 2.1 相对亮度比值。实现与 apca-w3@0.1.9 官方参考向量逐一对齐。',
+    descriptionEn:
+      'Computes the APCA 0.0.98G-4g perceptual contrast Lc (roughly -108 to +108) between foreground and background colors entirely in the browser. Accepts #hex (including 8-digit alpha) and rgb()/rgba() input, reports polarity (positive for dark-on-light, negative for light-on-dark), six Lc90/Lc75/Lc60/Lc45/Lc30/Lc15 font-size and weight tiers, a live color preview, and a WCAG 2.1 luminance-ratio comparison. The implementation is verified against the official apca-w3@0.1.9 reference vectors.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/apca-contrast-calculator',
+    iconName: 'Eye',
+    tags: ['APCA', '对比度', '无障碍', 'WCAG', '颜色'],
+    tagsEn: ['APCA', 'Contrast', 'Accessibility', 'WCAG', 'Color'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '#1a365d on #edf2f7',
+    doc: {
+      zh: {
+        whatIsIt:
+          'APCA（Advanced Perceptual Contrast Algorithm，高级感知对比度算法）是 WCAG 3 的候选对比度模型，用带符号的 Lc（Lightness Contrast，约 -108 至 +108）替代 WCAG 2.1 那种与字号无关的 1–21 比值。本工具严格实现 SAPC-8 / APCA 0.0.98G-4g：对 sRGB 通道做 2.4 次幂亮度转换、黑端 soft-clamp，并按深字浅底（BoW）与浅字深底（WoB）两种极性使用不同的感知指数。',
+        coreFeatures: [
+          '官方对齐：常量与流程对照 apca-w3@0.1.9 参考实现，15 组参考向量（含黑/白 Lc≈±108）在单元测试中固定验收',
+          '多格式输入：#rgb、#rrggbb、#rrggbbaa、rgb()、rgba()，前景带 alpha 时先在背景上混合再计算',
+          '极性可视化：正常极性（BoW，Lc 为正）、反向极性（WoB，Lc 为负）与无对比（Lc=0）以不同颜色标签呈现',
+          '等级推荐：按 Lc90/Lc75/Lc60/Lc45/Lc30/Lc15 六级给出最小字号与字重建议，当前等级高亮',
+          '实时预览：用实际前景/背景渲染中英文样例文本，所见即所得',
+          'WCAG 对照：同时计算 WCAG 2.1 分段线性化的 1–21 对比度比值，方便两代标准对比',
+        ],
+        howToUse: [
+          '在前景色与背景色卡片中用取色器选择颜色，或直接在输入框键入 hex/rgb()/rgba()',
+          '查看大号 Lc 数值与极性标签，确认对比方向与强度',
+          '在「推荐等级」卡片查看当前 Lc 所处档位及字号/字重建议，等级列表会高亮当前档',
+          '观察实时配色预览，判断实际阅读效果；右侧 WCAG 2.1 比值可用于对照旧标准',
+          '点击预设标签快速载入经典黑白、深蓝浅底、半透明黑与同色等场景',
+        ],
+        useCases: [
+          '设计系统与前端团队按 WCAG 3 候选模型评估新一代文本可读性',
+          '为浅色/深色主题分别挑选满足目标 Lc 等级的前景背景配色',
+          '处理带透明度的文字颜色（如 #00000066 遮罩层）时获得混合后的真实对比',
+          '教学演示 APCA 极性、soft-clamp 与 WCAG 2.1 线性模型的差异',
+        ],
+        privacyNote:
+          '所有颜色解析与数值计算均在浏览器本地完成，不发起任何网络请求，颜色数据不会离开设备。',
+        faqs: [
+          {
+            question: 'Lc 的正负号代表什么？',
+            answer:
+              'APCA 是带符号的对比度：深字浅底（Black-on-White，BoW）输出正 Lc，浅字深底（White-on-Black，WoB）输出负 Lc。两种极性使用不同的感知指数，因此同一对颜色交换前后景时，绝对值通常并不相等（如纯黑/纯白分别约为 +106.0 与 -107.9）。决定可读性的是 |Lc|。',
+          },
+          {
+            question: '为什么 APCA 结果和 WCAG 2.1 比值对不上？',
+            answer:
+              '两者数学模型不同：WCAG 2.1 用分段 sRGB 线性化后求 (L1+0.05)/(L2+0.05) 的对称比值，与字号、极性无关；APCA 直接对归一化通道取 2.4 次幂，做黑端 soft-clamp，并按极性使用 0.56/0.57（BoW）或 0.65/0.62（WoB）指数。二者没有固定换算关系，本工具同时给出两个数值仅作对照。',
+          },
+          {
+            question: 'Lc 达到多少才够用？',
+            answer:
+              '取决于字号与字重：正文小字建议 Lc90 及以上（Lc75 可用于 14px 常规或 12px 粗体），Lc60 适合 16px 常规/14px 粗体，Lc45 用于 18–24px 标题，Lc30 仅限 24px 以上大标题，Lc15 只适合图标、图表等非文本元素；低于 Lc15 不建议用于任何关键内容。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'APCA (Advanced Perceptual Contrast Algorithm) is the candidate contrast model for WCAG 3, expressing contrast as a signed Lc (Lightness Contrast, roughly -108 to +108) instead of the font-size-agnostic 1–21 ratio of WCAG 2.1. This tool implements SAPC-8 / APCA 0.0.98G-4g exactly: a 2.4-power luminance transform of sRGB channels, black-end soft clipping, and distinct perceptual exponents for dark-on-light (BoW) and light-on-dark (WoB) polarity.',
+        coreFeatures: [
+          'Official parity: constants and flow match the apca-w3@0.1.9 reference; 15 reference vectors (including black/white Lc around ±108) are pinned in unit tests',
+          'Flexible input: #rgb, #rrggbb, #rrggbbaa, rgb() and rgba(); translucent foreground is alpha-blended over the background first',
+          'Polarity at a glance: normal (BoW, positive Lc), reverse (WoB, negative Lc) and no-contrast (Lc 0) shown with distinct tags',
+          'Tiered guidance: six Lc90/Lc75/Lc60/Lc45/Lc30/Lc15 levels with minimum font-size and weight advice, current tier highlighted',
+          'Live preview: Chinese and English sample text rendered with the actual foreground and background',
+          'WCAG comparison: the segmented-linearization WCAG 2.1 ratio (1–21) is computed alongside for cross-standard evaluation',
+        ],
+        howToUse: [
+          'Pick colors with the pickers in the foreground and background cards, or type hex/rgb()/rgba() directly',
+          'Read the large Lc number and polarity tag to understand contrast direction and strength',
+          'Open the recommendation card to see the active Lc tier and its font-size/weight thresholds',
+          'Judge real readability in the live preview; use the WCAG 2.1 ratio to compare against the legacy standard',
+          'Use preset tags to load classic black-and-white, deep-blue-on-light, translucent-black and same-color scenarios',
+        ],
+        useCases: [
+          'Design systems and frontend teams evaluating text readability under the WCAG 3 candidate model',
+          'Choosing foreground/background pairs that meet a target Lc tier for light and dark themes',
+          'Getting the true contrast of translucent text colors (e.g. #00000066 overlay) after alpha blending',
+          'Teaching APCA polarity, soft clipping and the differences from the WCAG 2.1 linear model',
+        ],
+        privacyNote:
+          'All color parsing and numeric computation run locally in your browser; no network requests are made and color data never leaves the device.',
+        faqs: [
+          {
+            question: 'What does the sign of Lc mean?',
+            answer:
+              'APCA contrast is signed: dark-on-light (BoW) yields a positive Lc while light-on-dark (WoB) yields a negative Lc. The two polarities use different perceptual exponents, so swapping foreground and background generally gives different magnitudes (pure black/white is about +106.0 vs -107.9). Readability is determined by |Lc|.',
+          },
+          {
+            question: 'Why do APCA and the WCAG 2.1 ratio disagree?',
+            answer:
+              'The math differs: WCAG 2.1 applies segmented sRGB linearization and a symmetric (L1+0.05)/(L2+0.05) ratio independent of font size and polarity; APCA raises normalized channels to the 2.4 power, applies black-end soft clipping, and uses 0.56/0.57 (BoW) or 0.65/0.62 (WoB) exponents per polarity. There is no fixed conversion between the two.',
+          },
+          {
+            question: 'What Lc value is good enough?',
+            answer:
+              'It depends on font size and weight: small body text should target Lc90 (Lc75 works for 14px regular or 12px bold), Lc60 suits 16px regular or 14px bold, Lc45 is for 18–24px headings, Lc30 only for headings above 24px, Lc15 is reserved for non-text elements such as icons and charts, and anything below Lc15 should not carry critical content.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
