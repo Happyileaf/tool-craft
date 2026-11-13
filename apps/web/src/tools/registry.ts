@@ -33848,6 +33848,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'elo-rating-calculator',
+    name: 'Elo 等级分计算器',
+    nameEn: 'Elo Rating Calculator',
+    description:
+      '基于 Elo 公式计算期望胜率与赛后评分，支持 FIDE/USCF K 因子预设、W/D/L 序列逐场批量推演与目标评分所需连胜场数估算。',
+    descriptionEn:
+      'Compute expected win probability and post-game ratings with the Elo formula, featuring FIDE/USCF K-factor presets, batch W/D/L sequence simulation, and an estimate of consecutive wins needed to reach a target rating.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/elo-rating-calculator',
+    iconName: 'Calculator',
+    tags: ['Elo', '等级分', '期望胜率', 'K 因子', '棋类评分'],
+    tagsEn: ['Elo', 'Rating', 'Expected Score', 'K-factor', 'Chess Rating'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'W,D,W,L,D,W',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Elo 等级分计算器在浏览器本地实现 Arpad Elo 提出的等级分模型：依据双方评分差计算期望胜率 E = 1/(1+10^((Rb−Ra)/400))，并按 R′ = R + K×(S−E) 更新赛后评分，同时提供 W/D/L 比赛序列的逐场推演与达到目标评分所需连胜场数估算。',
+        coreFeatures: [
+          '单场计算：双方评分与 K 因子驱动的期望胜率，以及胜/和/负三种结果下的新评分与变动',
+          'K 因子预设：FIDE 新棋手 40、2400 以下 20、2400+ 为 10、通用/USCF 32，也支持自定义 1-200',
+          '序列推演：粘贴 W/D/L 序列（逗号或空白分隔，兼容 1/0.5/0 词法），逐场重算期望并输出明细表',
+          '目标估算：假设每场连胜，逐场递推达到目标评分所需的胜场数，不可行时给出明确原因',
+          '严格输入校验：评分范围、K 因子、空序列、非法记号与超长序列均给出中文错误提示',
+        ],
+        howToUse: [
+          '在「单场计算」区填写棋手 A、B 评分并选择 K 因子预设或自定义数值',
+          '查看期望胜率百分比，以及胜、和、负后棋手 A 的评分与红绿灰变动标签',
+          '在「序列推演」区填写起始评分、固定对手评分与 W/D/L 序列，查看逐场明细表与总变动',
+          '在「目标胜场估算」区填写当前评分、目标评分与对手评分，获取所需连胜场数',
+        ],
+        useCases: [
+          '棋类俱乐部与在线对战平台核算选手赛后等级分变化',
+          '赛前评估双方实力差距与爆冷概率',
+          '制定冲分计划，估算达到目标评分需要的连胜场数',
+          '理解 FIDE/USCF 不同 K 因子规则对评分波动的影响',
+        ],
+        privacyNote:
+          '全部评分运算均在浏览器本地完成，不发起任何网络请求，输入的评分与比赛序列不会被上传或留存。',
+        faqs: [
+          {
+            question: '期望胜率是怎么算出来的？',
+            answer:
+              '采用标准 Elo 公式 Ea = 1/(1+10^((Rb−Ra)/400))。双方评分相同时期望胜率为 50%，评分相差 400 分时弱方期望胜率约为 9.09%、强方约为 90.91%。',
+          },
+          {
+            question: 'K 因子应该选哪个预设？',
+            answer:
+              'FIDE 规定对局未满 30 场的新棋手 K=40，等级分低于 2400 的在册棋手 K=20，达到 2400 及以上 K=10；USCF 与多数在线平台常用 K=32。K 越大，单场结果对评分的影响越强。工具也允许在 1-200 之间自定义。',
+          },
+          {
+            question: '序列推演的评分为什么每场都在变？',
+            answer:
+              '每场比赛后评分按 R′ = R + K×(S−E) 四舍五入更新，下一场的期望胜率基于更新后的评分重新计算，因此即使对手评分固定，连胜带来的积分增益也会逐场递减。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Elo Rating Calculator implements Arpad Elo’s rating model entirely in the browser: it derives the expected score E = 1/(1+10^((Rb−Ra)/400)) from the rating difference, updates ratings with R′ = R + K×(S−E), simulates W/D/L match sequences game by game, and estimates how many consecutive wins are needed to reach a target rating.',
+        coreFeatures: [
+          'Single-match mode: expected score from both ratings and K-factor, plus new ratings and deltas for win, draw, and loss',
+          'K-factor presets: FIDE newcomer 40, below 2400 rated 20, 2400+ rated 10, generic/USCF 32, with custom values from 1 to 200',
+          'Sequence simulation: paste W/D/L tokens (comma or whitespace separated, 1/0.5/0 accepted) for a per-game detail table with recomputed expectations',
+          'Target estimation: iterates consecutive wins against a fixed opponent to count the wins needed for a target rating, with an explicit reason when infeasible',
+          'Strict validation with Chinese/English-friendly error messages for rating range, K-factor, empty sequences, invalid tokens, and overlong input',
+        ],
+        howToUse: [
+          'Enter player A and player B ratings in the single-match section and pick a K-factor preset or a custom value',
+          'Read the expected win percentage and the new rating with colored delta tags for win, draw, and loss',
+          'Fill the start rating, fixed opponent rating, and a W/D/L sequence in the simulation section to inspect the per-game table and total delta',
+          'Provide current rating, target rating, and opponent rating in the target section to obtain the required winning streak',
+        ],
+        useCases: [
+          'Calculating post-game rating changes for chess clubs and online competitive platforms',
+          'Assessing the strength gap and upset probability before a match',
+          'Planning a rating climb by estimating the winning streak needed for a target score',
+          'Understanding how FIDE/USCF K-factor rules change rating volatility',
+        ],
+        privacyNote:
+          'All rating math runs locally in the browser. No network requests are made, and the ratings or match sequences you enter are never uploaded or retained.',
+        faqs: [
+          {
+            question: 'How is the expected score calculated?',
+            answer:
+              'With the standard Elo formula Ea = 1/(1+10^((Rb−Ra)/400)). Equal ratings give a 50% expected score; a 400-point gap means the weaker player has roughly a 9.09% expected score versus about 90.91% for the stronger player.',
+          },
+          {
+            question: 'Which K-factor preset should I choose?',
+            answer:
+              'FIDE uses K=40 for players with fewer than 30 rated games, K=20 for rated players below 2400, and K=10 at 2400 and above. USCF and many online platforms default to K=32. A larger K makes each game move the rating more strongly; custom values between 1 and 200 are also supported.',
+          },
+          {
+            question: 'Why does the rating change every game during sequence simulation?',
+            answer:
+              'After each game the rating is updated with R′ = R + K×(S−E) rounded to an integer, and the next expected score is recomputed from that updated rating. Even against a fixed opponent, the points gained from consecutive wins therefore shrink game by game.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
