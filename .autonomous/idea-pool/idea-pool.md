@@ -148,7 +148,6 @@
 | 20261029200826 | JWK Thumbprint 指纹计算器（RFC 7638） | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261029200826.md) |
 | 20261030021004 | AWS SigV4 请求签名生成器 | Web Tool | Exploration | Pending | 2026-10-30 | | [详情](./idea-details/20261030021004.md) |
 | 20261030021006 | JSON 转 Zod schema 生成器 | Web Tool | Existing Gap | Claimed | 2026-10-30 | trae-agent | [详情](./idea-details/20261030021006.md) |
-| 20261030021007 | multipart/form-data 请求体构造器 | Web Tool | Existing Gap | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030021007.md) |
 | 20261030021008 | SHA-3 / Keccak 哈希计算器（FIPS 202） | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030021008.md) |
 | 20261030080719 | Intel HEX 解析与校验和工具 | Web Tool | Existing Gap | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030080719.md) |
 | 20261030080720 | UTM ↔ WGS84 经纬度坐标互转器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030080720.md) |
@@ -162,7 +161,6 @@
 | 20261030200911 | systemd .service 单元文件生成器 | Web Tool | Exploration | Pending | 2026-10-30 | | [详情](./idea-details/20261030200911.md) |
 | 20261031020750 | Unified Diff / Patch 解析与统计查看器 | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031020750.md) |
 | 20261031020752 | ELF 文件头解析器 | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031020752.md) |
-| 20261031020753 | C 结构体位域打包 / 解包器 | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031020753.md) |
 | 20261031080655 | ZIP 归档结构解析器（只读列目录与元数据展示） | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031080655.md) |
 | 20261031080656 | MRZ 机读旅行证件校验器（TD1 / TD2 / TD3 护照机读码校验） | Web Tool | External Reference | Claimed | 2026-10-31 | trae-agent | [详情](./idea-details/20261031080656.md) |
 | 20261031080657 | AA 分账计算器（多人费用分摊与最小转账结算） | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031080657.md) |
@@ -298,10 +296,7 @@
 | 20261113140200 | TCP 报文段解析与构造器（含标志位/选项/校验和，字节布局教学视图） | Web Tool | Exploration | Pending | 2026-11-13 | | [详情](./idea-details/20261113140200.md) |
 | 20261113140201 | HTTP/2 帧编解码器（9 种帧类型、HPACK 头部压缩、流状态教学视图） | Web Tool | Exploration | Pending | 2026-11-13 | | [详情](./idea-details/20261113140201.md) |
 | 20261113140202 | PCAP 抓包文件解析器（全局头/分组头/链路层类型，字节布局视图） | Web Tool | Exploration | Pending | 2026-11-13 | | [详情](./idea-details/20261113140202.md) |
-| 20261113140203 | Elo 等级分计算器（期望胜率/K 因子/对战模拟，批量序列推演） | Web Tool | Existing Gap | In Progress | 2026-11-13 | trae-agent | [详情](./idea-details/20261113140203.md) |
-| 20261113140204 | 固定资产折旧计算器（直线法/工作量法/双倍余额递减/年数总和，逐年明细表） | Web Tool | Existing Gap | In Progress | 2026-11-13 | trae-agent | [详情](./idea-details/20261113140204.md) |
 | 20261112020112 | QOI（Quite OK Image）无损图片编解码器（RGBA 像素 ↔ .qoi 双向转换） | Web Tool | External Reference | Pending | 2026-11-12 | | [详情](./idea-details/20261112020112.md) |
-| 20261112020113 | 摩托罗拉 S-Record（S19/S28/S37）固件镜像格式解析与校验器 | Web Tool | Existing Gap | In Progress | 2026-11-12 | trae-agent | [详情](./idea-details/20261112020113.md) |
 | 20261112020114 | Windows ICO/CUR 图标容器结构只读解析器（ICONDIR/目录条目/图像数据块展示） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112020114.md) |
 | 20261112020115 | 指数退避与抖动重试策略计算器（Exponential Backoff + Jitter 时序推演） | Web Tool | External Reference | In Progress | 2026-11-12 | trae-agent | [详情](./idea-details/20261112020115.md) |
 | 20261112020116 | SLA 可用性与允许停机时间换算器（99.9% 等指标 ↔ 日/周/月/年停机预算） | Web Tool | Exploration | Claimed | 2026-11-12 | trae-agent | [详情](./idea-details/20261112020116.md) |
