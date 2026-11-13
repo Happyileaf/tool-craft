@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261113140204 | 固定资产折旧计算器（直线法/工作量法/双倍余额递减/年数总和，逐年明细表） | Web Tool | Existing Gap | `fixed-asset-depreciation-calculator` / [PR #227](https://github.com/Happyileaf/tool-craft/pull/227) | 2026-11-13 | [详情](./idea-details/20261113140204.md) |
+| 20261113140203 | Elo 等级分计算器（期望胜率/K 因子/对战模拟，批量序列推演） | Web Tool | Existing Gap | `elo-rating-calculator` / [PR #227](https://github.com/Happyileaf/tool-craft/pull/227) | 2026-11-13 | [详情](./idea-details/20261113140203.md) |
+| 20261109020217 | 英文 Porter 词干提取器（Stemmer）与词形归并批处理 | Web Tool | External Reference | `porter-stemmer` / [PR #227](https://github.com/Happyileaf/tool-craft/pull/227) | 2026-11-13 | [详情](./idea-details/20261109020217.md) |
+| 20261105140801 | 摄影景深与超焦距计算器（弥散圆 / 光圈 / 焦距 / 对焦距离互求） | Web Tool | Existing Gap | `depth-of-field-calculator` / [PR #227](https://github.com/Happyileaf/tool-craft/pull/227) | 2026-11-13 | [详情](./idea-details/20261105140801.md) |
+| 20261104081012 | APCA（WCAG 3）感知对比度计算器 | Web Tool | Existing Gap | `apca-contrast-calculator` / [PR #227](https://github.com/Happyileaf/tool-craft/pull/227) | 2026-11-13 | [详情](./idea-details/20261104081012.md) |
 | 20261109081157 | logfmt 日志解析与格式化工具（key=value 双向转换与类型推断） | Web Tool | Existing Gap | `logfmt-parser-formatter` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081157.md) |
 | 20261109081156 | LED 限流电阻计算器（欧姆定律与功耗、E24 标称阻值选型） | Web Tool | Existing Gap | `led-resistor-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081156.md) |
 | 20261109081155 | ISSN 校验位计算器与规范化工具（含连字符定位与批量校验） | Web Tool | Existing Gap | `issn-checksum-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081155.md) |
