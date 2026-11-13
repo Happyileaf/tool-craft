@@ -365,4 +365,5 @@ export const toolLoaders: Record<
     import('./fixed-asset-depreciation-calculator'),
   'apca-contrast-calculator': () => import('./apca-contrast-calculator'),
   'depth-of-field-calculator': () => import('./depth-of-field-calculator'),
+  'porter-stemmer': () => import('./porter-stemmer'),
 };

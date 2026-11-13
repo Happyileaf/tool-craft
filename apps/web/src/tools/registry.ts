@@ -34266,6 +34266,113 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'porter-stemmer',
+    name: '英文 Porter 词干提取器与词形归并批处理',
+    nameEn: 'Porter Stemmer & Word Form Grouper',
+    description:
+      '实现 Porter 1980 后缀剥离算法（步骤 1a–5b），对英文文本批量提取词干并归并 run/runs/running 等同族词形，输出词干、出现次数与原始词形分组，支持一键复制或下载 CSV。',
+    descriptionEn:
+      'A faithful Porter 1980 suffix-stripping implementation (steps 1a–5b) that stems English text in bulk, grouping inflected forms such as run/runs/running under one stem with counts and original forms, and exports the grouping to CSV.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/porter-stemmer',
+    iconName: 'Type',
+    tags: ['词干提取', 'Porter', '词形归并', 'NLP', '文本分析', '英文'],
+    tagsEn: ['Stemming', 'Porter Stemmer', 'Lemmatization', 'NLP', 'Text Analysis', 'English'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'The runners were running quickly across the park. They had run together every morning.',
+    doc: {
+      zh: {
+        whatIsIt:
+          '英文 Porter 词干提取器是一款纯浏览器本地运行的自然语言处理小工具，忠实实现 Porter（1980）经典后缀剥离算法的全部六个步骤，将同一词族的屈折变化（复数、时态、派生后缀等）归并到统一语干，便于检索、关键词聚合与文本统计。',
+        coreFeatures: [
+          '完整实现 Porter 1980 步骤 1a/1b/1c、2、3、4、5a/5b，基于 C/VC 音节度量 m 与约 60 条后缀规则',
+          '批处理词形归并：run、runs、running 自动聚合到同一词干并分别记录原始词形',
+          '输出总词次、不同词干数与可排序分组表格，每组显示词干、次数与全部词形标签',
+          '内置分词器按字母与撇号切词，数字、标点、换行自动作为分隔符',
+          '一键复制或下载 CSV（词干 / 次数 / 词形），便于导入表格或检索系统',
+          '零依赖、零网络请求，所有文本仅在浏览器内存中处理',
+        ],
+        howToUse: [
+          '将英文文本粘贴到输入框，或点击「载入示例」查看演示语料',
+          '工具实时分词、提取词干并按词干归并，无需点击计算按钮',
+          '在结果表格中按出现次数排序，查看每个词干归并了哪些原始词形',
+          '点击「复制 CSV」或「下载 CSV」导出归并结果',
+        ],
+        useCases: [
+          '搜索引擎与信息检索中的查询词与文档词归一化，提升召回率',
+          '关键词频次统计、词云与文本聚类前的词形降维预处理',
+          'NLP / 信息检索课程中演示 Porter 后缀剥离算法的每步效果',
+          '批量分析用户评论、问卷英文开放题的核心概念分布',
+        ],
+        privacyNote:
+          '所有分词与词干提取均在浏览器本地完成，不发起任何网络请求，输入文本不会被上传、记录或持久化。',
+        faqs: [
+          {
+            question: '词干（stem）和词元（lemma）有什么区别？',
+            answer:
+              'Porter 词干提取是基于规则的后缀剥离，输出的是语干而非词典词形，因此可能得到 relational → relat、agreed → agre 这类并非真实单词的结果；而词形还原（lemmatization）依赖词典与词性，会还原出 relation、agree 这样的规范词元。词干提取更快、零数据依赖，适合检索与归并场景。',
+          },
+          {
+            question: '为什么不同的词可能被归并到同一个词干？',
+            answer:
+              'Porter 算法刻意追求「过度归并」：只要后缀剥离后语干相同就合并，例如 universal、university 等词可能共享前缀语干。这提升了检索召回，但不保证语义完全等价；若需要精确区分，应结合词典或词性标注做词形还原。',
+          },
+          {
+            question: '支持哪些字符与语言？',
+            answer:
+              '工具面向英文文本，按连续的英文字母与撇号切词（如 don\'t 视为一个词），数字、标点与空白作为分隔符。输入会统一转小写后再提取词干；中文、日文等非拉丁字母文本不会被当作英文单词处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Porter Stemmer is a fully local natural-language utility that faithfully implements the classic Porter (1980) suffix-stripping algorithm across all six steps, merging inflected forms of the same word family (plurals, tenses, derivational suffixes) onto a single stem for retrieval, keyword aggregation and text statistics.',
+        coreFeatures: [
+          'Complete Porter 1980 steps 1a/1b/1c, 2, 3, 4 and 5a/5b driven by the C/VC measure m and roughly 60 suffix rules',
+          'Batch grouping: run, runs and running are merged under one stem while every original form is retained',
+          'Reports total tokens, unique stems and a sortable table of stem, count and word-form tags',
+          'Built-in tokenizer splits on letters and apostrophes while treating digits, punctuation and newlines as separators',
+          'One-click copy or CSV download (stem / count / forms) for spreadsheets and retrieval pipelines',
+          'Zero dependencies and zero network requests; text is processed only in browser memory',
+        ],
+        howToUse: [
+          'Paste English text into the input box or click the sample button to load demo content',
+          'Tokenization, stemming and grouping run live with no compute button required',
+          'Sort the result table by frequency and inspect which original forms each stem absorbed',
+          'Use "Copy CSV" or "Download CSV" to export the grouping',
+        ],
+        useCases: [
+          'Normalizing query and document terms in search and information retrieval to improve recall',
+          'Reducing word forms before keyword frequency, word-cloud and text-clustering analysis',
+          'Demonstrating each Porter suffix-stripping step in NLP and IR coursework',
+          'Analyzing the core concepts inside English open-ended reviews and survey answers',
+        ],
+        privacyNote:
+          'All tokenization and stemming happens locally in your browser with no network request; input text is never uploaded, logged or persisted.',
+        faqs: [
+          {
+            question: 'What is the difference between a stem and a lemma?',
+            answer:
+              'Porter stemming is rule-based suffix stripping and produces a word stem rather than a dictionary form, so it can yield non-words such as relational → relat or agreed → agre. Lemmatization relies on a dictionary and part-of-speech tags to return canonical words like relation and agree. Stemming is faster and data-free, which suits retrieval and grouping tasks.',
+          },
+          {
+            question: 'Why can different words be merged onto one stem?',
+            answer:
+              'The Porter algorithm intentionally over-groups: words are merged whenever their stems coincide after suffix removal, so words such as universal and university may share a prefix stem. This boosts retrieval recall without guaranteeing semantic equivalence; for precise distinctions, use dictionary-based lemmatization with POS tags instead.',
+          },
+          {
+            question: 'Which characters and languages are supported?',
+            answer:
+              'The tool targets English text and tokenizes runs of letters and apostrophes (so don\'t stays one token), treating digits, punctuation and whitespace as separators. Input is lowercased before stemming; non-Latin scripts such as Chinese or Japanese are not treated as English words.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
