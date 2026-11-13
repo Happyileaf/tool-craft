@@ -34639,6 +34639,96 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'regex-escape-tool',
+    name: '正则表达式元字符转义/反转义工具',
+    nameEn: 'Regex Metacharacter Escape / Unescape Tool',
+    description:
+      '把普通文本安全转义为正则字面量片段，输出 new RegExp 构造源码与 /.../ 字面量，并支持反转义还原。',
+    descriptionEn:
+      'Escape plain text into a safe regex literal fragment, emit new RegExp source and a /.../ literal, and unescape back to the original.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/regex-escape-tool',
+    iconName: 'Braces',
+    tags: ['正则', '转义', 'RegExp', 'escape', '元字符'],
+    tagsEn: ['Regex', 'Escape', 'RegExp', 'escape', 'Metacharacter'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '正则表达式元字符转义/反转义工具把任意普通文本（含 . * + ? ^ $ { } ( ) | [ ] \\ / 等特殊字符）转换为可安全嵌入正则表达式的字面量片段。它按 ECMA-262 RegExp.escape 语义对元字符、正斜杠、连字符与换行符做反斜杠转义，同时输出 new RegExp(...) 构造源码与 /.../ 字面量两种形式，并能把已转义片段还原为原始文本。核心为自研确定性实现，不依赖运行时是否提供原生 RegExp.escape。',
+        coreFeatures: [
+          '字面量安全转义：覆盖 ECMA-262 SyntaxCharacter 及 /、-、换行符',
+          '双形式输出：new RegExp 构造源码（字符串内反斜杠正确翻倍）与 /.../ 字面量',
+          '可选 flags：点击切换 d/g/i/m/s/u/v/y，自动按字母序排列',
+          '反转义还原：支持控制序列与 \\uXXXX、\\xXX 码点，可与转义做往返校验',
+        ],
+        howToUse: [
+          '在“转义”模式粘贴需要作为字面量匹配的普通文本',
+          '按需点击 flags 开关，右侧即时得到字面量与构造源码',
+          '点击复制按钮把结果粘贴到代码中，即可精确匹配原始文本',
+          '切换到“反转义”模式可把已转义片段还原为原始文本',
+        ],
+        useCases: [
+          '把用户输入、日志片段安全地拼进动态构造的 RegExp，防止注入与误匹配',
+          '生成测试用例中需要字面量匹配特殊字符的正则',
+          '还原他人代码里被转义的正则片段，便于阅读原始文本',
+        ],
+        privacyNote:
+          '所有文本处理均在浏览器本地完成，不会上传输入内容或转义结果。',
+        faqs: [
+          {
+            question: '它和 string-escape 工具有什么区别？',
+            answer:
+              'string-escape 面向 JavaScript/Python/Java 等编程语言的字符串字面量，处理 \\n、\\uXXXX 等字符串转义；本工具面向正则表达式，只对正则元字符做转义，目标是让文本在正则中按字面量匹配，两者用途不同。',
+          },
+          {
+            question: '为什么不直接用原生 RegExp.escape？',
+            answer:
+              'RegExp.escape 是较新的标准，并非所有运行时都已实现。工具采用语义对齐的自研纯函数作为确定性实现，行为可预测且可在 Vitest 中稳定验收，不依赖浏览器或 Node 版本是否支持该 API。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Regex Metacharacter Escape / Unescape Tool converts arbitrary plain text containing characters such as . * + ? ^ $ { } ( ) | [ ] \\ / into a fragment that can be safely embedded in a regular expression as a literal. Following ECMA-262 RegExp.escape semantics, it backslash-escapes syntax characters, the slash, hyphen, and line terminators, emits both a new RegExp(...) constructor source and a /.../ literal, and can unescape a fragment back to the original text. The core is a self-contained deterministic implementation that does not rely on native RegExp.escape being available.',
+        coreFeatures: [
+          'Literal-safe escaping covering ECMA-262 SyntaxCharacter plus /, -, and line terminators',
+          'Two output forms: new RegExp source (with backslashes correctly doubled inside the string) and a /.../ literal',
+          'Optional d/g/i/m/s/u/v/y flags, toggled by click and sorted alphabetically',
+          'Unescape that restores control sequences and \\uXXXX / \\xXX code points, enabling round-trip checks',
+        ],
+        howToUse: [
+          'In escape mode, paste the plain text you need to match as a literal',
+          'Toggle flags as needed; the literal and constructor source update on the right',
+          'Copy a result into your code to match the original text exactly',
+          'Switch to unescape mode to restore an escaped fragment back to plain text',
+        ],
+        useCases: [
+          'Safely building a dynamic RegExp from user input or log snippets without injection or accidental matching',
+          'Generating regexes in tests that must literally match special characters',
+          'Decoding escaped regex fragments found in other code back to readable text',
+        ],
+        privacyNote:
+          'All text processing runs locally in your browser; neither the input nor the escaped result is uploaded.',
+        faqs: [
+          {
+            question: 'How is this different from the string-escape tool?',
+            answer:
+              'string-escape targets programming-language string literals (JavaScript, Python, Java) and handles string escapes such as \\n and \\uXXXX. This tool targets regular expressions and escapes regex metacharacters so text matches literally inside a pattern—they serve different purposes.',
+          },
+          {
+            question: 'Why not just use the native RegExp.escape?',
+            answer:
+              'RegExp.escape is a relatively recent standard and is not implemented in every runtime. The tool uses a self-contained pure function with aligned semantics that behaves predictably and is verifiable in Vitest, independent of whether the browser or Node version supports the API.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

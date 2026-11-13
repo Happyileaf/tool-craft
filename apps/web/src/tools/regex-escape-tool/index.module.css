@@ -1,0 +1,76 @@
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 4px;
+}
+
+.flagChip {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, monospace);
+}
+
+.outputBlock {
+  margin-bottom: 14px;
+}
+
+.outputLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+  margin-bottom: 6px;
+}
+
+.codeBox {
+  position: relative;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.92);
+  padding: 14px;
+  overflow: auto;
+}
+
+.codeText {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, monospace);
+  font-size: 13px;
+  line-height: 1.6;
+  color: #a7f3d0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.metaList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.metaChar {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, monospace);
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(99, 102, 241, 0.12);
+  color: #4f46e5;
+}
+
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
