@@ -1,0 +1,59 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mono {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 4px;
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.samples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.resultBox {
+  border: 1px solid rgb(229 231 235);
+  border-radius: 8px;
+  padding: 12px 16px;
+  background: rgb(249 250 251);
+  word-break: break-all;
+  font-size: 16px;
+}
+
+.componentGrid {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 6px 12px;
+  margin-top: 12px;
+  font-size: 13px;
+}
+
+.componentGrid dt {
+  color: rgb(107 114 128);
+}
+
+.componentGrid dd {
+  margin: 0;
+  word-break: break-all;
+}
+
+.hint {
+  color: rgb(107 114 128);
+  font-size: 13px;
+  line-height: 1.6;
+}

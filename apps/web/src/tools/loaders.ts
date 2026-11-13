@@ -356,4 +356,5 @@ export const toolLoaders: Record<
   'ber-tlv-codec': () => import('./ber-tlv-codec'),
   'resp-codec': () => import('./resp-codec'),
   'hexfloat-converter': () => import('./hexfloat-converter'),
+  'relative-url-resolver': () => import('./relative-url-resolver'),
 };

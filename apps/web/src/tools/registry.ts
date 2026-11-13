@@ -33430,6 +33430,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'relative-url-resolver',
+    name: 'RFC 3986 相对引用解析器',
+    nameEn: 'RFC 3986 Relative Reference Resolver',
+    description:
+      '给定 Base URI 与相对引用，按 RFC 3986 §5.2.2 transform references 与 §5.2.4 remove_dot_segments 逐步求目标 URI，手写组件拆分、路径合并与点段归一化，不依赖 new URL()，完整通过 §5.4.1 正常与 §5.4.2 异常官方案例。',
+    descriptionEn:
+      'Resolves a URI reference against a base URI by implementing RFC 3986 §5.2.2 transform references and the §5.2.4 remove_dot_segments algorithm directly — component split, path merge and dot-segment normalization without relying on new URL(). Passes every §5.4.1 normal and §5.4.2 abnormal official example.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/relative-url-resolver',
+    iconName: 'Globe',
+    tags: ['RFC 3986', 'URL 解析', '相对路径', '点段归一化', 'URI', '引用解析'],
+    tagsEn: ['RFC 3986', 'URL Resolver', 'Relative Path', 'Dot Segments', 'URI', 'Reference Resolution'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: './g',
+    doc: {
+      zh: {
+        whatIsIt:
+          'RFC 3986 相对引用解析器是一款纯浏览器本地工具，输入一个绝对 Base URI 与任意 URI reference（可相对、可绝对、可仅含 query/fragment），严格按 RFC 3986 第 5.2.2 节的 transform references 流程计算目标 URI。它手写五组件拆分（scheme/authority/path/query/fragment）、§5.2.3 路径合并与 §5.2.4 基于输入缓冲/输出栈的 remove_dot_segments，不调用 WHATWG URL 构造器，因此对空 authority、保留点段等边界与规范保持逐字符一致。',
+        coreFeatures: [
+          '完整 RFC 3986 §5.2.2 解析：scheme 优先、network-path、绝对/相对路径、空路径继承、query/fragment 覆盖',
+          '手写 remove_dot_segments 输入缓冲/输出栈算法，正确处理 . 与 .. 越界回退',
+          '不依赖 new URL()，跨环境行为一致且可解释，避免 WHATWG 与 RFC 3986 的语义差异',
+          '输出目标 URI 并展示拆分后的五个组件，便于教学与排障',
+          '非法 Base（缺 scheme）与空输入返回可读错误而非抛异常',
+        ],
+        howToUse: [
+          '在 Base URI 框填入绝对 URI，例如 http://a/b/c/d;p?q',
+          '在相对引用框填入如 ./g、../../g、//g、g?y#s 等引用',
+          '查看实时计算的目标 URI 与 scheme/authority/path/query/fragment 组件',
+          '点击示例标签快速载入 RFC 官方案例，点击复制按钮获取结果',
+        ],
+        useCases: [
+          '后端/网关拼接重定向 Location、Link 或资源相对链接时核对结果',
+          '教学演示 RFC 3986 引用解析与点段归一化的完整状态机',
+          '排查 WHATWG URL 与 RFC 3986 在边缘输入上的行为差异',
+          '静态站点生成器、爬虫或代理在合并相对链接时做单元级验证',
+        ],
+        privacyNote:
+          '所有解析均在浏览器本地基于纯函数完成，不发起任何网络请求，不发送或持久化输入。',
+        faqs: [
+          {
+            question: '为什么不直接用浏览器的 new URL()？',
+            answer:
+              'WHATWG URL 与 RFC 3986 在空 authority、反斜杠处理、点段保留、默认端口等边缘情形上语义不同，且 new URL() 是黑盒、不便展示中间组件。本工具严格按 RFC 3986 手写实现，能逐字符复现 §5.4 的全部官方案例并解释每一步。',
+          },
+          {
+            question: 'http:g 为什么解析成 http:g 而不是补全路径？',
+            answer:
+              '这是 RFC 3986 §5.4.2 的异常案例：引用自带 scheme 时按规则整体采用引用的组件，而 http:g 属于省略 authority 的相对路径 URI（path 为 g），规范要求保留其字面形式，因此结果就是 http:g。',
+          },
+          {
+            question: '.. 超出根目录后为什么没有报错？',
+            answer:
+              'remove_dot_segments 在输出栈为空时遇到 .. 只是丢弃该段而不上抛，因此 ../../../../g 对只有单层路径的 Base 会归一到根 /g，这正是 §5.4.2 规定的越界回退行为。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The RFC 3986 Relative Reference Resolver runs entirely in your browser. Given an absolute base URI and any URI reference (relative, absolute, query- or fragment-only), it computes the target URI following the §5.2.2 transform references procedure. It hand-implements the five-component split (scheme/authority/path/query/fragment), §5.2.3 path merge and the §5.2.4 input-buffer/output-stack remove_dot_segments algorithm, without the WHATWG URL constructor, matching the specification character-for-character on edge cases such as empty authority and retained dot segments.',
+        coreFeatures: [
+          'Full RFC 3986 §5.2.2 resolution: scheme precedence, network-path, absolute/relative paths, empty-path inheritance, query/fragment override',
+          'Hand-written remove_dot_segments buffer/stack algorithm handling . and out-of-range .. correctly',
+          'No new URL() dependency: consistent, explainable cross-environment behaviour without WHATWG-vs-RFC differences',
+          'Shows the target URI plus all five split components for teaching and debugging',
+          'Readable errors instead of exceptions for an empty base or a base missing a scheme',
+        ],
+        howToUse: [
+          'Enter an absolute base URI such as http://a/b/c/d;p?q in the base field',
+          'Enter a reference such as ./g, ../../g, //g or g?y#s in the reference field',
+          'Read the live target URI and its scheme/authority/path/query/fragment components',
+          'Click a sample tag to load an official RFC case, then copy the result with the button',
+        ],
+        useCases: [
+          'Verifying redirect Location, Link or resource URL joining in backends and gateways',
+          'Teaching the full RFC 3986 reference-resolution and dot-segment state machine',
+          'Investigating edge-case differences between WHATWG URL and RFC 3986',
+          'Unit-level validation of relative-link merging in static site generators, crawlers and proxies',
+        ],
+        privacyNote:
+          'All resolution runs locally in your browser as pure functions; no network request is made and no input is sent or persisted.',
+        faqs: [
+          {
+            question: 'Why not just use the browser new URL()?',
+            answer:
+              'WHATWG URL and RFC 3986 differ on edge cases such as empty authority, backslash handling, retained dot segments and default ports, and new URL() is a black box that hides intermediate components. This tool follows RFC 3986 directly and reproduces every §5.4 official example character-for-character with an explainable process.',
+          },
+          {
+            question: 'Why does http:g resolve to http:g instead of a completed path?',
+            answer:
+              'This is the §5.4.2 abnormal example: when the reference carries its own scheme, all its components are adopted. http:g is a URI with no authority and a relative-looking path (g), and the spec keeps that literal form, so the result is exactly http:g.',
+          },
+          {
+            question: 'Why does .. beyond the root not raise an error?',
+            answer:
+              'When remove_dot_segments meets .. with an empty output stack it simply discards the segment instead of throwing, so ../../../../g against a single-level base normalizes to root /g — the out-of-range rollback behaviour required by §5.4.2.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
