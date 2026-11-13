@@ -294,6 +294,7 @@ export const toolLoaders: Record<
   'intel-hex-parser': () => import('./intel-hex-parser'),
   'elo-rating-calculator': () => import('./elo-rating-calculator'),
   'depreciation-calculator': () => import('./depreciation-calculator'),
+  'srecord-parser': () => import('./srecord-parser'),
   'diff-patch-parser': () => import('./diff-patch-parser'),
   'set-similarity-calculator': () => import('./set-similarity-calculator'),
   'email-syntax-validator': () => import('./email-syntax-validator'),

@@ -34056,6 +34056,111 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'srecord-parser',
+    name: 'Motorola S-Record 解析校验器',
+    nameEn: 'Motorola S-Record Parser & Checksum Verifier',
+    description:
+      '在浏览器本地解析 S19/S28/S37 固件镜像（S0-S9 全类型记录），逐行校验校验和、识别地址范围与记录分布，并支持一键重算修复全部校验和。',
+    descriptionEn:
+      'Parse S19/S28/S37 firmware images (all S0–S9 record types) locally in the browser, verify every checksum line by line, inspect address ranges and record-type distribution, and recompute or repair all checksums in one click.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/srecord-parser',
+    iconName: 'FileCode',
+    tags: ['S-Record', 'S19', 'S28', 'S37', '固件', '校验和', '嵌入式'],
+    tagsEn: ['S-Record', 'S19', 'S28', 'S37', 'Firmware', 'Checksum', 'Embedded'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'S00C000068656C6C6F5F533139C3\nS1130000214601360121470136007EFE09D219013D\nS1130010214601360121470136007EFE09D219022D\nS9030000FC',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Motorola S-Record 解析校验器在浏览器本地解析 S19/S28/S37 固件镜像文本：识别 S0 头部、S1/S2/S3 数据、S5/S6 计数、S7/S8/S9 终止等全部记录类型，逐行按「字节和取反低 8 位」规则校验校验和，自动识别文件格式、地址范围与记录类型分布，并可一键重算修复全部错误校验和。',
+        coreFeatures: [
+          '全类型解析：S0-S9 记录（含保留类型 S4 警告），自动识别 S19/S28/S37 格式与地址宽度（16/24/32 位）',
+          '逐行校验和：按 (~sum) & 0xFF 规则核对，错误行给出实际值与期望值且不中断后续解析',
+          '结构校验：终止记录缺失/重复/不在末尾、S5/S6 声明计数与实际数据记录数不符等警告',
+          '地址统计：数据记录绝对地址范围、载荷总字节数、S0 头部 ASCII 解码与数据行十六进制预览',
+          '一键修复：重算全部结构合法记录的校验和，输出可直接刷回固件工具链的修正文本',
+        ],
+        howToUse: [
+          '将 S-Record 文本粘贴到输入框，或点击「载入示例」查看含一条校验和错误的样例',
+          '查看统计卡片、记录类型分布与错误/警告列表定位问题行',
+          '在明细表中核对每条记录的类型、地址、数据预览与校验和状态',
+          '点击「一键修复全部校验和」后，在输出区复制修正后的 S-Record 文本',
+        ],
+        useCases: [
+          '嵌入式开发中核对烧录镜像（S19/S28/S37）的完整性与校验和',
+          '固件传输、格式转换后排查损坏记录与地址越界问题',
+          '教学演示 Motorola S-Record 行结构、地址宽度与校验和算法',
+          '为自研烧录/链接工具链准备校验和正确的测试固件文本',
+        ],
+        privacyNote:
+          '全部解析与校验和运算均在浏览器本地完成，不发起任何网络请求，固件内容不会被上传或留存。',
+        faqs: [
+          {
+            question: 'S19、S28、S37 是如何区分的？',
+            answer:
+              '按数据记录使用的地址宽度区分：只出现 S1/S9（16 位地址）为 S19；出现 S2/S8（24 位地址）为 S28；出现 S3/S7（32 位地址）为 S37。混合出现时以最高地址宽度的数据记录为准。',
+          },
+          {
+            question: '校验和是怎么计算的？',
+            answer:
+              '把 byteCount、地址字段与数据字段的全部字节求和，取低 8 位后按位取反，即 (~sum) & 0xFF。校验时把行尾的校验和字节也计入总和，低 8 位结果应为 0xFF，否则该行校验和错误。',
+          },
+          {
+            question: '修复校验和会不会改动我的数据字节？',
+            answer:
+              '不会。修复只替换每条结构合法记录末尾的校验和字节，地址与数据载荷原样保留；结构畸形（字节数不符、非法十六进制等）的行无法确定字段边界，会原样保留并继续在错误列表中提示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Motorola S-Record Parser & Checksum Verifier parses S19/S28/S37 firmware images entirely in the browser. It understands every record type from S0 through S9, verifies each line’s checksum using the one’s-complement of the byte sum, detects the file format and address range, and can recompute and repair all checksums in one action.',
+        coreFeatures: [
+          'Full record support: S0–S9 including a warning for reserved S4, with automatic S19/S28/S37 detection and 16/24/32-bit address widths',
+          'Per-line checksum verification with (~sum) & 0xFF; bad lines report actual versus expected values without stopping the parse',
+          'Structural warnings for missing, duplicated, or misplaced termination records and mismatched S5/S6 declared counts',
+          'Address statistics: absolute data range, total payload bytes, S0 ASCII header decoding, and hex data previews',
+          'One-click repair that recomputes checksums for every structurally valid line and emits text ready for firmware tooling',
+        ],
+        howToUse: [
+          'Paste S-Record text into the input box, or click Load Sample to inspect a sample containing one bad checksum',
+          'Use the statistics cards, record-type distribution, and error/warning lists to locate problematic lines',
+          'Check each record’s type, address, data preview, and checksum status in the detail table',
+          'Click Fix All Checksums and copy the corrected S-Record text from the output area',
+        ],
+        useCases: [
+          'Verifying integrity and checksums of S19/S28/S37 images in embedded development',
+          'Diagnosing corrupted records and address issues after firmware transfer or format conversion',
+          'Teaching the S-Record line structure, address widths, and checksum algorithm',
+          'Preparing checksum-correct firmware fixtures for custom flasher or linker toolchains',
+        ],
+        privacyNote:
+          'All parsing and checksum math runs locally in the browser. No network requests are made, and firmware contents are never uploaded or retained.',
+        faqs: [
+          {
+            question: 'How are S19, S28, and S37 distinguished?',
+            answer:
+              'By the address width of the data records: only S1/S9 (16-bit addresses) means S19; S2/S8 (24-bit) means S28; S3/S7 (32-bit) means S37. When widths are mixed, the widest data record determines the format.',
+          },
+          {
+            question: 'How is the checksum computed?',
+            answer:
+              'Sum the byte count, address, and data bytes, keep the low 8 bits, and take the one’s complement: (~sum) & 0xFF. During verification, adding the trailing checksum byte should make the low byte of the total equal 0xFF.',
+          },
+          {
+            question: 'Does repairing checksums modify my data bytes?',
+            answer:
+              'No. Repair only replaces the final checksum byte of structurally valid records; addresses and payloads are preserved. Malformed lines (bad byte counts, invalid hex, and so on) cannot have reliable field boundaries, so they are left untouched and remain listed as errors.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
