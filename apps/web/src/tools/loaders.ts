@@ -361,4 +361,6 @@ export const toolLoaders: Record<
   'content-disposition-codec': () => import('./content-disposition-codec'),
   'link-header-codec': () => import('./link-header-codec'),
   'elo-rating-calculator': () => import('./elo-rating-calculator'),
+  'fixed-asset-depreciation-calculator': () =>
+    import('./fixed-asset-depreciation-calculator'),
 };

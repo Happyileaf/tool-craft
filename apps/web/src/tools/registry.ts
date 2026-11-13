@@ -33952,6 +33952,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'fixed-asset-depreciation-calculator',
+    name: '固定资产折旧计算器（直线法 / 工作量法 / 双倍余额递减 / 年数总和）',
+    nameEn: 'Fixed Asset Depreciation Calculator',
+    description:
+      '支持直线法、工作量法、双倍余额递减法与年数总和法四种折旧方法，输入原值、净残值与年限 / 工作量即可输出逐期折旧额、累计折旧与期末账面净值明细表，末期自动承接舍入尾差。',
+    descriptionEn:
+      'Calculate fixed-asset depreciation with straight-line, units-of-activity, double-declining-balance and sum-of-years-digits methods, producing a per-period table of depreciation expense, accumulated depreciation and ending book value, with rounding differences absorbed in the final period.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/fixed-asset-depreciation-calculator',
+    iconName: 'Calculator',
+    tags: ['折旧', '固定资产', '直线法', '双倍余额递减', '年数总和', '财务'],
+    tagsEn: ['Depreciation', 'Fixed Asset', 'Straight Line', 'DDB', 'SYD', 'Finance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '原值 100000；净残值 10000；5 年；直线法每期 18000',
+    doc: {
+      zh: {
+        whatIsIt:
+          '固定资产折旧计算器是一款纯浏览器本地运行的财务工具，覆盖中国企业会计准则与常见财务管理教材中的四种折旧方法，输出逐年或逐期的折旧额、累计折旧与账面净值明细，可直接用于资产台账与教学验算。',
+        coreFeatures: [
+          '直线法：每期折旧 =（原值 − 净残值）/ 期数，金额完全相等',
+          '工作量法：按各期实际工作量占总工作量的比例计提，适合车辆、设备等损耗与使用强度挂钩的资产',
+          '双倍余额递减法：年率 2/n 按期初净值加速计提，最后两年自动切换直线法摊余',
+          '年数总和法：按剩余使用年数 / 年数总和 n(n+1)/2 计算加速折旧',
+          '明细表展示当期折旧、累计折旧、期末账面净值，末期承接四舍五入尾差，净值恒等于净残值',
+          '残值大于等于原值、期数越界、工作量超总预计量等非法输入均有明确中文报错',
+        ],
+        howToUse: [
+          '选择折旧方法（默认直线法）',
+          '填写资产原值、预计净残值；年限法填折旧年限，工作量法填总工作量与各期工作量',
+          '查看统计卡片与逐期明细表，金额以千分位元展示并保留两位小数',
+          '切换方法时参数保留，可直接对比同一资产在不同方法下的折旧节奏',
+        ],
+        useCases: [
+          '会计、财务人员编制固定资产折旧台账与纳税申报辅助测算',
+          '设备采购评估与资产全生命周期成本分析',
+          '财会教学与考试中四种折旧方法的手算结果验算',
+        ],
+        privacyNote:
+          '所有资产数据与折旧计算均在浏览器本地完成，不发起任何网络请求，财务数据不会被上传或持久化。',
+        faqs: [
+          {
+            question: '为什么最后一期折旧额有时和前面不一样？',
+            answer:
+              '每期金额按两位小数四舍五入，除不尽时会产生舍入尾差。工具把累计尾差统一放入最后一期，保证累计折旧恰好等于「原值 − 净残值」、期末账面净值恰好等于净残值，避免台账对不平。',
+          },
+          {
+            question: '双倍余额递减法最后两年为什么变成直线法？',
+            answer:
+              '双倍余额递减法若始终按固定比率计提，账面净值永远无法折到预计净残值。通行做法（也是我国准则允许的处理）是在最后两年改用直线法，将当时账面净值与净残值之差平均摊完，工具自动完成这一切换。',
+          },
+          {
+            question: '工作量法的各期工作量怎么填？',
+            answer:
+              '以逗号或换行分隔，数组长度即为折旧期数，例如「30000,20000,40000」表示三期。各期工作量之和不能超过预计总工作量，否则会报错；末期同样承接尾差确保折足可折旧总额。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Fixed Asset Depreciation Calculator runs entirely in your browser and covers the four depreciation methods commonly taught and used in financial management, outputting per-period depreciation expense, accumulated depreciation and book value for asset ledgers and textbook verification.',
+        coreFeatures: [
+          'Straight-line: (cost − salvage) / periods, identical expense every period',
+          'Units-of-activity: expense proportional to actual usage per period, ideal for vehicles and equipment',
+          'Double-declining-balance: accelerated 2/n rate on opening book value, switching to straight-line in the final two years',
+          'Sum-of-years-digits: accelerated expense based on remaining life over n(n+1)/2',
+          'Detail table with period expense, accumulated depreciation and ending book value; the final period absorbs rounding so book value ends exactly at salvage',
+          'Clear Chinese error messages for invalid salvage, period range or over-allocated activity units',
+        ],
+        howToUse: [
+          'Pick a depreciation method (straight-line by default)',
+          'Enter cost and estimated salvage; for time-based methods enter useful life, for activity method enter total and per-period units',
+          'Review the summary cards and per-period table; amounts are shown with thousands separators and two decimals',
+          'Switch methods while keeping the same inputs to compare depreciation schedules side by side',
+        ],
+        useCases: [
+          'Building fixed-asset depreciation ledgers and supporting tax filings for accounting teams',
+          'Equipment purchase evaluation and life-cycle cost analysis',
+          'Verifying hand calculations of all four methods in accounting courses and exams',
+        ],
+        privacyNote:
+          'All asset data and depreciation math stay in your browser with no network request; financial figures are never uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Why does the final period sometimes differ from earlier periods?',
+            answer:
+              'Each amount is rounded to two decimals, which creates small rounding differences when the base does not divide evenly. The tool absorbs the accumulated difference in the final period so accumulated depreciation equals cost minus salvage and ending book value equals salvage exactly.',
+          },
+          {
+            question: 'Why does double-declining-balance switch to straight-line near the end?',
+            answer:
+              'A fixed declining rate would never reach the estimated salvage value. The standard treatment — permitted under Chinese GAAP as well — is to switch to straight-line for the final two years, spreading the remaining depreciable amount evenly so the asset is depreciated down to salvage.',
+          },
+          {
+            question: 'How do I enter activity units per period?',
+            answer:
+              'Separate values with commas or newlines, e.g. "30000,20000,40000" for three periods; the array length defines the number of periods. The sum cannot exceed the estimated total units, and the final period absorbs any rounding difference.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
