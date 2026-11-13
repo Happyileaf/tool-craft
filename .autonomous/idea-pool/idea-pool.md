@@ -315,9 +315,9 @@
 | 20261112200208 | 经典字符串模式匹配算法逐轮可视化器（KMP / BM / 暴力，next 表与坏字符好后缀表） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112200208.md) |
 | 20261112200209 | 二叉堆与优先队列操作可视化器（插入 / 弹出 / 建堆 / 堆排序，sift-up 与 sift-down 全过程） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112200209.md) |
 | 20261112200210 | LDAP 搜索过滤器解析与校验器（RFC 4515 语法树可视化与转义处理） | Web Tool | Existing Gap | In Progress | 2026-11-12 | 2026-11-13 · feat/tool-development-20261113060152-trae-agent | [详情](./idea-details/20261112200210.md) |
-| 20261113080544 | C99 十六进制浮点（hexfloat）字符串与十进制数双向转换器 | Web Tool | Existing Gap | Pending | 2026-11-13 | | [详情](./idea-details/20261113080544.md) |
-| 20261113080545 | RFC 3986 相对引用解析器（Base URL + relative-ref → 目标 URL，含点段归一化） | Web Tool | Existing Gap | Pending | 2026-11-13 | | [详情](./idea-details/20261113080545.md) |
-| 20261113080546 | HTTP 日期头解析与格式化器（IMF-fixdate / RFC 850 / asctime，RFC 9110） | Web Tool | Existing Gap | Pending | 2026-11-13 | | [详情](./idea-details/20261113080546.md) |
-| 20261113080547 | Content-Disposition 响应头解析与构造器（RFC 6266，含 filename* 扩展编码） | Web Tool | Existing Gap | Pending | 2026-11-13 | | [详情](./idea-details/20261113080547.md) |
-| 20261113080548 | RFC 8288 HTTP Link 头解析与构造器（多 link-value、rel/anchor/hreflang 参数） | Web Tool | Existing Gap | Pending | 2026-1113 | | [详情](./idea-details/20261113080548.md) |
+| 20261113080544 | C99 十六进制浮点（hexfloat）字符串与十进制数双向转换器 | Web Tool | Existing Gap | Claimed | 2026-11-13 | trae-agent | [详情](./idea-details/20261113080544.md) |
+| 20261113080545 | RFC 3986 相对引用解析器（Base URL + relative-ref → 目标 URL，含点段归一化） | Web Tool | Existing Gap | Claimed | 2026-11-13 | trae-agent | [详情](./idea-details/20261113080545.md) |
+| 20261113080546 | HTTP 日期头解析与格式化器（IMF-fixdate / RFC 850 / asctime，RFC 9110） | Web Tool | Existing Gap | Claimed | 2026-11-13 | trae-agent | [详情](./idea-details/20261113080546.md) |
+| 20261113080547 | Content-Disposition 响应头解析与构造器（RFC 6266，含 filename* 扩展编码） | Web Tool | Existing Gap | Claimed | 2026-11-13 | trae-agent | [详情](./idea-details/20261113080547.md) |
+| 20261113080548 | RFC 8288 HTTP Link 头解析与构造器（多 link-value、rel/anchor/hreflang 参数） | Web Tool | Existing Gap | Claimed | 2026-1113 | trae-agent | [详情](./idea-details/20261113080548.md) |
 
