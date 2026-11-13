@@ -4,7 +4,13 @@
 
 ## 日志
 
-## 2026-11-14 ：【Agent自主迭代】新增 Elo 等级分、固定资产折旧、S-Record 解析、multipart 构造与 C 位域打包 5 个工具
+## 2026-11-14 ：【Agent自主迭代】新增 @font-face、滚动条、文字阴影、正则转义与工时累加 5 个工具；同日另新增 Elo 等级分、固定资产折旧、S-Record 解析、multipart 构造与 C 位域打包 5 个工具
+
+- **新增**：@font-face 生成器（font-face-generator）— 表单化管理多字重/多格式字体源，自动拼装含 font-family、font-weight、font-style、font-display、src 多格式回退与 unicode-range 的 @font-face CSS 规则，并提供实时字体预览，14 个 Vitest 用例，纯本地运算零依赖
+- **新增**：CSS Scrollbar 滚动条样式生成器（css-scrollbar-generator）— 颜色选择器与滑块定制轨道/滑块外观，同时输出 WebKit 私有伪元素组与 Firefox 标准 scrollbar-width/color 两套 CSS，可滚动容器实时预览，13 个 Vitest 用例，纯本地运算零依赖
+- **新增**：CSS 文字阴影生成器（text-shadow-generator）— 多层阴影的偏移/模糊/颜色可视化编辑与启停控制，实时拼装多层 text-shadow 声明并提供多背景文字预览与预设，14 个 Vitest 用例，纯本地运算零依赖
+- **新增**：正则表达式元字符转义/反转义工具（regex-escape-tool）— 自研确定性实现对齐 ECMA-262 RegExp.escape 语义，输出 new RegExp 构造源码与 /.../ 字面量双形式，支持 d/g/i/m/s/u/v/y flags 与反转义往返，15 个 Vitest 用例，纯本地运算零依赖
+- **新增**：工时时长累加器（work-hours-calculator）— 多段上下班打卡录入，自动扣除休息、跨午夜班次 +1 天处理与逐行异常提示，汇总总工时/总休息/日均并按小时费率估算工资，支持复制 TSV 表格文本，17 个 Vitest 用例，纯本地运算零依赖
 
 - **新增**：Elo 等级分计算器（elo-rating-calculator）— 按 E=1/(1+10^((Rb−Ra)/400)) 计算期望胜率与赛后评分，内置 FIDE/USCF K 因子预设（40/20/10/32），支持 W/D/L 序列逐场批量推演与目标评分所需连胜场数严格逐场估算，20 个 Vitest 用例，纯本地运算零依赖
 - **新增**：固定资产折旧计算器（depreciation-calculator）— 按中国企业会计准则实现直线法、工作量法、双倍余额递减法（末两年转直线）与年数总和法四种方法，输出逐年明细表与 RFC4180 兼容（CRLF）可复制 CSV，26 个 Vitest 用例，纯本地运算零依赖
