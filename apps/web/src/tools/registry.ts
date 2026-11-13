@@ -33952,6 +33952,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'depreciation-calculator',
+    name: '固定资产折旧计算器',
+    nameEn: 'Fixed Asset Depreciation Calculator',
+    description:
+      '按中国企业会计准则计算固定资产折旧，支持直线法、工作量法、双倍余额递减法与年数总和法，输出逐年明细表与可复制的 CSV。',
+    descriptionEn:
+      'Calculate fixed-asset depreciation under Chinese GAAP with straight-line, units-of-production, double-declining-balance, and sum-of-years-digits methods, producing a year-by-year schedule and copy-ready CSV.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/depreciation-calculator',
+    iconName: 'Calculator',
+    tags: ['折旧', '固定资产', '会计准则', '双倍余额递减', '年数总和'],
+    tagsEn: ['Depreciation', 'Fixed Asset', 'Accounting', 'Double Declining', 'SYD'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '100000, 5000, 5',
+    doc: {
+      zh: {
+        whatIsIt:
+          '固定资产折旧计算器在浏览器本地按中国企业会计准则完成四种折旧方法的逐年测算：年限平均法（直线法）、工作量法、双倍余额递减法（最后两年转直线法）与年数总和法，输出每年折旧额、累计折旧、年末账面净值与年折旧率，并可导出 CRLF 换行的 CSV 明细表。',
+        coreFeatures: [
+          '直线法：年折旧额 =（原值−净残值）/ 使用年限，每年等额',
+          '工作量法：按单位折旧额与各年度实际工作量计提，年度数量即折旧年数',
+          '双倍余额递减法：前期按 2/年限 对年初账面净值计提，最后两年改直线法并保证账面净值不低于净残值',
+          '年数总和法：按剩余使用年数占年数总和的比例逐年递减计提',
+          '逐年明细表与统计卡片：金额千分位两位小数，CSV 可直接粘贴到 Excel/WPS',
+        ],
+        howToUse: [
+          '填写固定资产原值、预计净残值与预计使用年限（1-50 的整数）',
+          '在折旧方法下拉框中选择四种方法之一',
+          '选择工作量法时，补充预计总工作量与各年度实际工作量（逗号分隔）',
+          '查看逐年明细表与统计卡片，点击「复制」导出 CSV',
+        ],
+        useCases: [
+          '会计与财务人员编制固定资产折旧测算表',
+          '对比不同折旧方法对各期利润与资产账面价值的影响',
+          '教学演示中国会计准则下四种折旧方法的计算过程',
+          '资产报废、处置前快速核算账面净值与累计折旧',
+        ],
+        privacyNote:
+          '全部折旧测算均在浏览器本地完成，不发起任何网络请求，输入的资产数据不会被上传或留存。',
+        faqs: [
+          {
+            question: '双倍余额递减法为什么最后两年改成直线法？',
+            answer:
+              '这是中国企业会计准则的规定：双倍余额递减法在折旧期限届满前两年，将固定资产账面净值扣除预计净残值后的余额在最后两年内平均摊销，保证折旧期满时账面净值恰好等于预计净残值。',
+          },
+          {
+            question: '各年折旧额相加为什么有时与应计折旧额差几分钱？',
+            answer:
+              '每年折旧额先四舍五入保留两位小数，历年舍入差会累积。工具在最后一年统一把累计折旧钳制到「原值−净残值」，由末年折旧吸收全部舍入差，因此五年合计与应计折旧额完全一致。',
+          },
+          {
+            question: '工作量法的折旧年数由什么决定？',
+            answer:
+              '由填写的年度工作量个数决定，每个数值代表一个会计年度的实际工作量。单位折旧额 =（原值−净残值）/ 预计总工作量，各年度折旧 = 单位额 × 当年工作量，年度工作量合计不得超过预计总工作量。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Fixed Asset Depreciation Calculator runs entirely in the browser and applies four methods prescribed by Chinese GAAP: straight-line, units-of-production, double-declining-balance (switching to straight-line in the final two years), and sum-of-years-digits. It returns annual depreciation, accumulated depreciation, ending book value, and depreciation rate, with CRLF CSV export.',
+        coreFeatures: [
+          'Straight-line: equal annual charge of (cost − salvage) divided by useful life',
+          'Units-of-production: per-unit rate multiplied by each year’s actual output, with the number of entries defining the schedule length',
+          'Double-declining-balance: 2/life applied to opening book value, switching to straight-line for the final two years so book value never falls below salvage',
+          'Sum-of-years-digits: declining charges based on remaining life over the sum of years’ digits',
+          'Year-by-year table, summary cards, locale-formatted money values, and CSV export ready for Excel',
+        ],
+        howToUse: [
+          'Enter asset cost, estimated salvage value, and useful life in whole years (1–50)',
+          'Pick one of the four depreciation methods from the dropdown',
+          'For units-of-production, provide total estimated units and comma-separated yearly output',
+          'Review the schedule and statistics, then click Copy to export the CSV',
+        ],
+        useCases: [
+          'Preparing fixed-asset depreciation schedules in accounting and finance teams',
+          'Comparing how depreciation methods affect periodic profit and carrying amount',
+          'Teaching the four Chinese GAAP depreciation methods with worked numbers',
+          'Quickly deriving book value and accumulated depreciation before asset disposal',
+        ],
+        privacyNote:
+          'All depreciation math runs locally in the browser. No network requests are made, and the asset figures you enter are never uploaded or retained.',
+        faqs: [
+          {
+            question: 'Why does double-declining-balance switch to straight-line in the final two years?',
+            answer:
+              'Chinese GAAP requires the switch: during the last two years, the book value at the start of that period minus salvage is amortized evenly, guaranteeing that ending book value equals the estimated salvage value at the end of the useful life.',
+          },
+          {
+            question: 'Why might annual charges differ by a few cents from the depreciable base?',
+            answer:
+              'Each annual charge is rounded to two decimals and rounding errors accumulate. The final year clamps accumulated depreciation to cost minus salvage, absorbing all rounding differences so the schedule totals exactly the depreciable base.',
+          },
+          {
+            question: 'What determines the number of years under units-of-production?',
+            answer:
+              'The count of yearly output entries: each value is one accounting period. The per-unit rate is (cost − salvage) divided by total estimated units, and each period’s charge is that rate times actual output; total output cannot exceed the estimated total.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
