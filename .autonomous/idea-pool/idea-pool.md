@@ -295,6 +295,11 @@
 | 20261109200619 | 可见光波长 → RGB/HEX 颜色转换器（380–750nm 光谱色与近紫外/近红外越界提示） | Web Tool | Exploration | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109200619.md) |
 | 20261109200620 | 标准 MIDI 文件（SMF）结构只读解析器（MThd/MTrk 块、轨道事件与 running status 展示） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200620.md) |
 | 20261112020111 | 以太网 II 帧结构解析与构造器（含 FCS 校验和、字节布局教学视图） | Web Tool | Exploration | Pending | 2026-11-12 | | [详情](./idea-details/20261112020111.md) |
+| 20261113140200 | TCP 报文段解析与构造器（含标志位/选项/校验和，字节布局教学视图） | Web Tool | Exploration | Pending | 2026-11-13 | | [详情](./idea-details/20261113140200.md) |
+| 20261113140201 | HTTP/2 帧编解码器（9 种帧类型、HPACK 头部压缩、流状态教学视图） | Web Tool | Exploration | Pending | 2026-11-13 | | [详情](./idea-details/20261113140201.md) |
+| 20261113140202 | PCAP 抓包文件解析器（全局头/分组头/链路层类型，字节布局视图） | Web Tool | Exploration | Pending | 2026-11-13 | | [详情](./idea-details/20261113140202.md) |
+| 20261113140203 | Elo 等级分计算器（期望胜率/K 因子/对战模拟，批量序列推演） | Web Tool | Existing Gap | Pending | 2026-11-13 | | [详情](./idea-details/20261113140203.md) |
+| 20261113140204 | 固定资产折旧计算器（直线法/工作量法/双倍余额递减/年数总和，逐年明细表） | Web Tool | Existing Gap | Pending | 2026-11-13 | | [详情](./idea-details/20261113140204.md) |
 | 20261112020112 | QOI（Quite OK Image）无损图片编解码器（RGBA 像素 ↔ .qoi 双向转换） | Web Tool | External Reference | Pending | 2026-11-12 | | [详情](./idea-details/20261112020112.md) |
 | 20261112020113 | 摩托罗拉 S-Record（S19/S28/S37）固件镜像格式解析与校验器 | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112020113.md) |
 | 20261112020114 | Windows ICO/CUR 图标容器结构只读解析器（ICONDIR/目录条目/图像数据块展示） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112020114.md) |
