@@ -34160,6 +34160,112 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'depth-of-field-calculator',
+    name: '摄影景深与超焦距计算器（弥散圆 / 光圈 / 焦距 / 对焦距离互求）',
+    nameEn: 'Depth of Field & Hyperfocal Calculator',
+    description:
+      '基于薄透镜几何光学模型，输入焦距、光圈 f 值、弥散圆与对焦距离，计算超焦距 H、近界、远界、景深与前 / 后景深；支持七种画幅弥散圆预设与光圈档位，并可由目标近界反推应对焦的距离。',
+    descriptionEn:
+      'Compute hyperfocal distance H, near/far limits, total depth of field and front/rear depth from focal length, f-number, circle of confusion and focus distance using the thin-lens optical model, with seven sensor-format CoC presets, aperture stops and a reverse solver that derives focus distance from a target near limit.',
+    category: ToolCategoryEnum.IMAGE_MEDIA,
+    path: '/tools/depth-of-field-calculator',
+    iconName: 'Camera',
+    tags: ['景深', '超焦距', '弥散圆', '光圈', '焦距', '摄影'],
+    tagsEn: ['Depth of Field', 'Hyperfocal', 'Circle of Confusion', 'Aperture', 'Focal Length', 'Photography'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '50mm f/2.8 全画幅（c=0.03）对焦 3m',
+    doc: {
+      zh: {
+        whatIsIt:
+          '摄影景深与超焦距计算器是一款纯浏览器本地运行的光学计算工具，基于薄透镜几何光学模型，帮助摄影者在拍摄前预判画面清晰范围、规划超焦距对焦，并支持由期望近界反推对焦距离，适配风光、街拍与微距等场景。',
+        coreFeatures: [
+          '超焦距 H = f² / (N × c)，对焦在 H 处时远界达无穷远、近界恰为 H/2',
+          '近界 Dn = Hs/(H+s)、远界 Df = Hs/(H−s)，s ≥ H 时远界自动判为无穷',
+          '输出超焦距、近界、远界、景深总深度、前景深与后景深六项指标，毫米 / 米自适应展示',
+          '全画幅、APS-H、APS-C、M4/3、1 英寸等七种画幅弥散圆预设，f/1.4–f/32 光圈档位快捷选择',
+          '反推模式：给定目标近界，由 s = Dn·H/(H−Dn) 求应对焦距离，并提示超焦距上限',
+          '焦距、光圈、弥散圆、对焦距离越界均有明确中文报错，零依赖纯本地运算',
+        ],
+        howToUse: [
+          '选择画幅预设或手动填写弥散圆，再设置焦距与光圈（可点档位快捷输入）',
+          '正向模式：选择距离单位并填写对焦距离，即时查看六项景深指标',
+          '反推模式：切换后填写期望近界，工具给出应对焦的距离与超焦距上限',
+          '远界显示 ∞（无穷远）时表示从近界到无限远均在清晰范围内',
+        ],
+        useCases: [
+          '风光摄影超焦距对焦规划，保证前景到无穷远全部清晰',
+          '街拍、活动拍摄预估固定对焦距离下的清晰区间（区域对焦法）',
+          '微距与人像拍摄中权衡光圈、景深与衍射，选择合适 f 值',
+          '摄影教学演示焦距、光圈、拍摄距离与传感器画幅对景深的影响',
+        ],
+        privacyNote:
+          '所有光学参数与景深计算均在浏览器本地完成，不发起任何网络请求，拍摄参数不会被上传或持久化。',
+        faqs: [
+          {
+            question: '为什么后景深总是比前景深大？',
+            answer:
+              '由薄透镜公式 Dn = Hs/(H+s)、Df = Hs/(H−s) 可知，远界分母更小、数值更大，因此清晰范围向对焦平面后方延伸得更多。随着对焦距离接近超焦距，后景深迅速增长并最终达到无穷，而前景深始终约为对焦距离的一小部分。',
+          },
+          {
+            question: '超焦距到底应该对焦在哪里？',
+            answer:
+              '超焦距 H = f²/(Nc) 是让远界恰好达到无穷远的最近对焦距离。把镜头对焦在 H 处时，清晰范围从 H/2 一直延伸到无穷远，这是风光摄影中「前景尽量近、远景仍清晰」的最优对焦点；工具的反推模式也会在近界目标超过 H 时给出提示。',
+          },
+          {
+            question: '弥散圆（CoC）数值怎么选？',
+            answer:
+              '弥散圆描述人眼在标准观看距离下可接受的最大模糊斑直径，与传感器尺寸挂钩：全画幅常用 0.03mm，APS-C 约 0.02mm，M4/3 约 0.015mm。工具内置七种画幅预设；若追求更高放大率或更严苛的像素级清晰，可手动取更小的数值，景深结果会相应变浅。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Depth of Field & Hyperfocal Calculator runs entirely in your browser using the thin-lens geometric optics model. It helps photographers preview the sharp zone before shooting, plan hyperfocal focusing and reverse-solve a focus distance from a desired near limit, covering landscape, street and macro workflows.',
+        coreFeatures: [
+          'Hyperfocal H = f² / (N × c); focusing at H sends the far limit to infinity while the near limit equals H/2',
+          'Near Dn = Hs/(H+s) and far Df = Hs/(H−s) limits, with infinity detected automatically once s ≥ H',
+          'Six outputs: hyperfocal, near/far limits, total DoF, front and rear depth, with adaptive mm/m formatting',
+          'Seven circle-of-confusion presets from full-frame to 1/2.3-inch compact sensors and f/1.4–f/32 aperture stops',
+          'Reverse mode solves s = Dn·H/(H−Dn) for the required focus distance and flags the hyperfocal ceiling',
+          'Explicit Chinese validation errors for out-of-range focal length, aperture, CoC or focus distance; zero-dependency local math',
+        ],
+        howToUse: [
+          'Pick a sensor-format preset (or enter the CoC manually), then set focal length and aperture, optionally via the stop buttons',
+          'In forward mode, choose a distance unit and enter the focus distance to see all six DoF metrics instantly',
+          'In reverse mode, enter the desired near limit to obtain the required focus distance and hyperfocal ceiling',
+          'A far limit shown as ∞ means everything from the near limit to infinity is acceptably sharp',
+        ],
+        useCases: [
+          'Planning hyperfodal focus in landscape work to keep foreground and infinity sharp',
+          'Estimating the sharp zone for zone-focusing in street and event photography',
+          'Balancing aperture, depth of field and diffraction for macro and portrait shots',
+          'Teaching how focal length, aperture, focus distance and sensor format affect depth of field',
+        ],
+        privacyNote:
+          'All optical parameters and DoF calculations run locally in your browser with no network request; shooting parameters are never uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Why is rear depth of field always larger than front depth?',
+            answer:
+              'From the thin-lens formulas Dn = Hs/(H+s) and Df = Hs/(H−s), the far-limit denominator is smaller, so the sharp zone always extends further behind the focus plane. As focus approaches the hyperfocal distance, rear depth grows rapidly and eventually reaches infinity, while front depth remains a fraction of the focus distance.',
+          },
+          {
+            question: 'Where exactly should I focus for hyperfocal distance?',
+            answer:
+              'The hyperfocal H = f²/(Nc) is the closest focus distance that still keeps infinity sharp. Focusing at H yields a sharp zone from H/2 to infinity — the optimal point for landscape work that needs both a near foreground and a sharp background. The reverse mode warns you when the requested near limit would exceed H.',
+          },
+          {
+            question: 'Which circle-of-confusion value should I use?',
+            answer:
+              'The CoC is the largest blur disk the eye accepts at a standard viewing distance and scales with sensor size: roughly 0.03mm for full-frame, 0.02mm for APS-C and 0.015mm for Micro Four Thirds. The tool ships seven format presets; for pixel-level sharpness or heavy cropping, enter a smaller CoC and the computed depth of field becomes shallower accordingly.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
