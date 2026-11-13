@@ -365,4 +365,9 @@ export const toolLoaders: Record<
   'http-date-codec': () => import('./http-date-codec'),
   'content-disposition-codec': () => import('./content-disposition-codec'),
   'link-header-codec': () => import('./link-header-codec'),
+  'font-face-generator': () => import('./font-face-generator'),
+  'css-scrollbar-generator': () => import('./css-scrollbar-generator'),
+  'text-shadow-generator': () => import('./text-shadow-generator'),
+  'regex-escape-tool': () => import('./regex-escape-tool'),
+  'work-hours-calculator': () => import('./work-hours-calculator'),
 };

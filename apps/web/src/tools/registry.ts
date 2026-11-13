@@ -34369,6 +34369,456 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'font-face-generator',
+    name: '@font-face 声明生成器',
+    nameEn: '@font-face Declaration Generator',
+    description:
+      '为同一字体家族配置多个字重与 woff2/woff/ttf 等多格式资源，拼装带 font-display 的 @font-face CSS。',
+    descriptionEn:
+      'Configure multiple weights and woff2/woff/ttf sources for a font family and assemble @font-face CSS with font-display.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/font-face-generator',
+    iconName: 'Type',
+    tags: ['@font-face', '字体', 'CSS', 'woff2', 'font-display'],
+    tagsEn: ['@font-face', 'Font', 'CSS', 'woff2', 'font-display'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '@font-face 声明生成器帮助你为自定义字体拼装可直接使用的 CSS：按字重（font-weight）组织多条规则，每条规则聚合 woff2、woff、truetype 等多种格式的 src，并统一配置 font-style、font-display 与可选的 unicode-range。',
+        coreFeatures: [
+          '多字重管理：为同一 font-family 添加、删除多个字重规则',
+          '多格式 src：每条规则聚合 woff2/woff/ttf/otf 等资源，自动按顺序拼装 url() 与 format()',
+          'font-display 配置：内置 auto/block/swap/fallback/optional 并附说明',
+          '实时输出：参数变化即时生成完整 @font-face CSS，一键复制',
+        ],
+        howToUse: [
+          '在每个字重卡片填写 font-family、font-weight、font-style 与 font-display',
+          '在 src 区域添加该字重的字体资源地址并选择对应 format，建议 woff2 放在最前',
+          '需要子集化时填写可选的 unicode-range，留空则不输出该描述符',
+          '在右侧查看生成的 CSS，确认无误后点击复制',
+        ],
+        useCases: [
+          '为网站引入品牌自定义字体并生成跨浏览器兼容的 @font-face',
+          '统一管理同一字体家族的 Regular/Bold 等多字重声明',
+          '快速输出符合性能最佳实践（font-display: swap）的字体加载代码',
+        ],
+        privacyNote:
+          '所有配置与 CSS 拼装均在浏览器本地完成，不会上传任何字体路径或内容。',
+        faqs: [
+          {
+            question: 'src 中多个格式的顺序有要求吗？',
+            answer:
+              '有。浏览器会从上到下选择第一个它支持的格式，因此应把压缩率最高、最现代的 woff2 放在最前，依次降级到 woff、ttf，工具按你列出的顺序原样拼装。',
+          },
+          {
+            question: 'font-display 应该选哪个？',
+            answer:
+              '绝大多数内容字体推荐 swap：先用回退字体立即显示文字，自定义字体加载完成后再交换，避免文字不可见（FOIT）。optional 适合非关键的装饰字体。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The @font-face Declaration Generator assembles ready-to-use CSS for custom fonts. It organizes one rule per font-weight, aggregates multiple source formats such as woff2, woff, and truetype in each rule, and lets you configure font-style, font-display, and an optional unicode-range.',
+        coreFeatures: [
+          'Multi-weight management: add and remove several weight rules for one font-family',
+          'Multi-format src: combine woff2/woff/ttf/otf sources with url() and format() in order',
+          'font-display presets: auto, block, swap, fallback, and optional with explanations',
+          'Live output: complete @font-face CSS regenerates instantly and copies in one click',
+        ],
+        howToUse: [
+          'Fill in font-family, font-weight, font-style, and font-display in each weight card',
+          'Add font source URLs and pick the matching format in the src area, keeping woff2 first',
+          'Set an optional unicode-range for subsetting, or leave it blank to omit the descriptor',
+          'Review the generated CSS on the right and copy it when ready',
+        ],
+        useCases: [
+          'Embedding a brand custom font with cross-browser @font-face declarations',
+          'Managing Regular/Bold and other weights of one font family in one place',
+          'Producing performant font-loading code using font-display: swap',
+        ],
+        privacyNote:
+          'All configuration and CSS assembly happen locally in your browser; no font paths or files are uploaded.',
+        faqs: [
+          {
+            question: 'Does the order of the source formats matter?',
+            answer:
+              'Yes. Browsers pick the first supported format from top to bottom, so put the most compressed modern format (woff2) first and degrade toward woff and ttf. The tool preserves the order you list.',
+          },
+          {
+            question: 'Which font-display should I choose?',
+            answer:
+              'For most content fonts, use swap: text renders immediately with a fallback and switches once the custom font loads, avoiding invisible text (FOIT). Use optional for non-essential decorative fonts.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'css-scrollbar-generator',
+    name: 'CSS 滚动条样式生成器',
+    nameEn: 'CSS Scrollbar Style Generator',
+    description:
+      '可视化定制滚动条颜色、宽度与圆角，同时输出 WebKit 伪元素与标准 scrollbar-width/color 两套 CSS。',
+    descriptionEn:
+      'Customize scrollbar colors, width, and radius visually and output both WebKit pseudo-element and standard scrollbar-width/color CSS.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/css-scrollbar-generator',
+    iconName: 'ScrollText',
+    tags: ['滚动条', 'scrollbar', 'CSS', 'WebKit', 'Firefox'],
+    tagsEn: ['Scrollbar', 'scrollbar', 'CSS', 'WebKit', 'Firefox'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS 滚动条样式生成器让你通过颜色选择器、宽度滑块与圆角控件定制滚动条外观，并在一个可滚动容器中实时预览。它同时生成传统 WebKit 私有伪元素（::-webkit-scrollbar 系列）与 W3C 标准属性（scrollbar-width、scrollbar-color）两套代码，覆盖 Chrome/Edge/Safari 与 Firefox。',
+        coreFeatures: [
+          '双轨输出：WebKit 伪元素组 + 标准 scrollbar-width/color 组',
+          '完整控件：宽度、轨道/滑块/hover 颜色、滑块与轨道圆角、按钮开关',
+          '实时预览：在真实可滚动容器中查看滚动条效果',
+          '配色预设：内置石板灰、靛蓝、翡翠绿、深色、玫瑰红等方案',
+        ],
+        howToUse: [
+          '选择一个配色预设或分别设置轨道、滑块、hover 颜色',
+          '拖动宽度滑块调整滚动条粗细，并设置滑块/轨道圆角',
+          '需要兼容老式 WebKit 按钮时勾选 scrollbar-button',
+          '在预览区滚动确认效果后，复制右侧两套 CSS',
+        ],
+        useCases: [
+          '为网站或 Web 应用打造与品牌色一致的自定义滚动条',
+          '为深色模式设计协调的滚动条配色',
+          '快速产出同时兼容 Chromium 与 Firefox 的滚动条样式',
+        ],
+        privacyNote:
+          '所有颜色与尺寸调整、CSS 拼装和预览均在浏览器本地完成，不上传任何数据。',
+        faqs: [
+          {
+            question: '为什么要同时输出两套 CSS？',
+            answer:
+              '::-webkit-scrollbar 系列是 WebKit/Blink 私有属性，被 Chrome、Edge、Safari 支持；而 scrollbar-width、scrollbar-color 是 W3C 标准，主要由 Firefox 支持。两套一起输出才能在主流浏览器获得一致外观。',
+          },
+          {
+            question: '标准属性能否实现圆角和 hover？',
+            answer:
+              '不能。标准 scrollbar-width 只有 auto/thin/none 三个关键字，scrollbar-color 仅接受滑块与轨道两个颜色，无法控制圆角或 hover 态；这些精细效果只能通过 WebKit 伪元素实现。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CSS Scrollbar Style Generator lets you customize scrollbar appearance with color pickers, a width slider, and radius controls, previewed live in a scrollable container. It emits both the legacy WebKit pseudo-elements (::-webkit-scrollbar family) and the W3C standard properties (scrollbar-width, scrollbar-color), covering Chrome/Edge/Safari and Firefox.',
+        coreFeatures: [
+          'Dual output: WebKit pseudo-element group plus standard scrollbar-width/color group',
+          'Full controls: width, track/thumb/hover colors, thumb and track radius, button toggle',
+          'Live preview in a real scrollable container',
+          'Color presets including slate, indigo, emerald, dark, and rose',
+        ],
+        howToUse: [
+          'Pick a color preset or set track, thumb, and hover colors separately',
+          'Drag the width slider to set thickness and adjust thumb/track radius',
+          'Enable scrollbar-button if legacy WebKit buttons are required',
+          'Scroll the preview to confirm the look, then copy the two CSS blocks',
+        ],
+        useCases: [
+          'Branding website or web-app scrollbars to match a color system',
+          'Designing scrollbar colors that fit dark mode',
+          'Producing scrollbar CSS compatible with both Chromium and Firefox',
+        ],
+        privacyNote:
+          'All color and size adjustments, CSS assembly, and previews run locally in your browser; nothing is uploaded.',
+        faqs: [
+          {
+            question: 'Why output two sets of CSS?',
+            answer:
+              'The ::-webkit-scrollbar family is a WebKit/Blink proprietary feature supported by Chrome, Edge, and Safari, while scrollbar-width and scrollbar-color are W3C standard properties supported mainly by Firefox. Shipping both gives a consistent look across major browsers.',
+          },
+          {
+            question: 'Can the standard properties do radius or hover?',
+            answer:
+              'No. Standard scrollbar-width only accepts auto/thin/none and scrollbar-color takes just thumb and track colors, with no radius or hover control. Those finer effects are only possible through the WebKit pseudo-elements.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'text-shadow-generator',
+    name: 'CSS text-shadow 多层文字阴影生成器',
+    nameEn: 'CSS text-shadow Generator',
+    description:
+      '叠加多层文字阴影，分别调节偏移、模糊与颜色并实时预览，输出可复制的 text-shadow CSS。',
+    descriptionEn:
+      'Layer multiple text shadows with per-layer offset, blur, and color, preview live, and copy the text-shadow CSS.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/text-shadow-generator',
+    iconName: 'Wand2',
+    tags: ['text-shadow', '文字阴影', 'CSS', '发光', '文字特效'],
+    tagsEn: ['text-shadow', 'Text Shadow', 'CSS', 'Glow', 'Text Effect'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS text-shadow 多层文字阴影生成器允许你为文字叠加任意数量的阴影层，每层独立设置水平偏移（offset-x）、垂直偏移（offset-y）、模糊半径与颜色，层与层之间用逗号分隔。工具在预览区实时渲染最终效果并输出可直接复制的 text-shadow 声明。',
+        coreFeatures: [
+          '多层叠加：添加、删除、启停多个阴影层，按顺序合并输出',
+          '独立控制：每层单独调节 X/Y 偏移、模糊半径与颜色',
+          '实时预览：支持浅色/深色/靛蓝背景切换，所见即所得',
+          '内置预设：柔和投影、霓虹发光、复古立体、浮雕凸起',
+        ],
+        howToUse: [
+          '选择一个预设快速开始，或点击“添加阴影层”从空白层搭建',
+          '拖动每层的 X/Y 偏移与模糊滑块，并用取色器设置颜色',
+          '通过复选框临时启停某层，对比叠加效果',
+          '切换预览背景确认可读性后，复制生成的 text-shadow 声明',
+        ],
+        useCases: [
+          '制作标题文字的霓虹发光、立体浮雕等视觉效果',
+          '为深色背景上的文字添加柔和投影提升可读性',
+          '快速调试多层 text-shadow 的层级与颜色搭配',
+        ],
+        privacyNote:
+          '所有参数调整、阴影计算与预览均在浏览器本地完成，不上传任何数据。',
+        faqs: [
+          {
+            question: 'text-shadow 和 box-shadow 有什么区别？',
+            answer:
+              'text-shadow 作用于文字字形，语法为 offset-x offset-y blur color，不支持扩散半径（spread）也不支持 inset；box-shadow 作用于盒模型，支持 spread 与 inset。本工具专注文字阴影，盒阴影请使用 box-shadow 生成器。',
+          },
+          {
+            question: '多层阴影的叠加顺序如何决定？',
+            answer:
+              'text-shadow 列表中靠前的阴影绘制在更上层。工具严格按你列出的层顺序输出，第一层在最上方，因此可通过调整层的上下顺序控制谁覆盖谁。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CSS text-shadow Generator lets you stack any number of shadow layers on text. Each layer has its own offset-x, offset-y, blur radius, and color, and the layers are joined with commas. The preview renders the final result live and emits a copy-ready text-shadow declaration.',
+        coreFeatures: [
+          'Multi-layer stacking: add, remove, enable, or disable shadow layers merged in order',
+          'Per-layer control of X/Y offset, blur radius, and color',
+          'Live preview with light, dark, and indigo backgrounds',
+          'Built-in presets: soft shadow, neon glow, retro 3D, and emboss',
+        ],
+        howToUse: [
+          'Start from a preset or add a blank shadow layer to build from scratch',
+          'Drag the X/Y offset and blur sliders per layer and pick a color',
+          'Toggle layers with the checkbox to compare stacking results',
+          'Switch preview backgrounds to check readability, then copy the declaration',
+        ],
+        useCases: [
+          'Creating neon glow or embossed 3D effects for headings',
+          'Adding soft shadows to text on dark backgrounds for readability',
+          'Experimenting with layered text-shadow ordering and color schemes',
+        ],
+        privacyNote:
+          'All parameter changes, shadow calculations, and previews run locally in your browser; nothing is uploaded.',
+        faqs: [
+          {
+            question: 'How is text-shadow different from box-shadow?',
+            answer:
+              'text-shadow applies to glyphs and uses offset-x offset-y blur color, with no spread radius and no inset keyword; box-shadow applies to the box model and supports both spread and inset. This tool focuses on text shadows—use the box-shadow generator for element boxes.',
+          },
+          {
+            question: 'How is the stacking order of multiple shadows decided?',
+            answer:
+              'Earlier shadows in the text-shadow list are painted on top. The tool outputs layers in exactly the order you list them, with the first layer uppermost, so reordering layers changes which one covers the others.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'regex-escape-tool',
+    name: '正则表达式元字符转义/反转义工具',
+    nameEn: 'Regex Metacharacter Escape / Unescape Tool',
+    description:
+      '把普通文本安全转义为正则字面量片段，输出 new RegExp 构造源码与 /.../ 字面量，并支持反转义还原。',
+    descriptionEn:
+      'Escape plain text into a safe regex literal fragment, emit new RegExp source and a /.../ literal, and unescape back to the original.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/regex-escape-tool',
+    iconName: 'Braces',
+    tags: ['正则', '转义', 'RegExp', 'escape', '元字符'],
+    tagsEn: ['Regex', 'Escape', 'RegExp', 'escape', 'Metacharacter'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '正则表达式元字符转义/反转义工具把任意普通文本（含 . * + ? ^ $ { } ( ) | [ ] \\ / 等特殊字符）转换为可安全嵌入正则表达式的字面量片段。它按 ECMA-262 RegExp.escape 语义对元字符、正斜杠、连字符与换行符做反斜杠转义，同时输出 new RegExp(...) 构造源码与 /.../ 字面量两种形式，并能把已转义片段还原为原始文本。核心为自研确定性实现，不依赖运行时是否提供原生 RegExp.escape。',
+        coreFeatures: [
+          '字面量安全转义：覆盖 ECMA-262 SyntaxCharacter 及 /、-、换行符',
+          '双形式输出：new RegExp 构造源码（字符串内反斜杠正确翻倍）与 /.../ 字面量',
+          '可选 flags：点击切换 d/g/i/m/s/u/v/y，自动按字母序排列',
+          '反转义还原：支持控制序列与 \\uXXXX、\\xXX 码点，可与转义做往返校验',
+        ],
+        howToUse: [
+          '在“转义”模式粘贴需要作为字面量匹配的普通文本',
+          '按需点击 flags 开关，右侧即时得到字面量与构造源码',
+          '点击复制按钮把结果粘贴到代码中，即可精确匹配原始文本',
+          '切换到“反转义”模式可把已转义片段还原为原始文本',
+        ],
+        useCases: [
+          '把用户输入、日志片段安全地拼进动态构造的 RegExp，防止注入与误匹配',
+          '生成测试用例中需要字面量匹配特殊字符的正则',
+          '还原他人代码里被转义的正则片段，便于阅读原始文本',
+        ],
+        privacyNote:
+          '所有文本处理均在浏览器本地完成，不会上传输入内容或转义结果。',
+        faqs: [
+          {
+            question: '它和 string-escape 工具有什么区别？',
+            answer:
+              'string-escape 面向 JavaScript/Python/Java 等编程语言的字符串字面量，处理 \\n、\\uXXXX 等字符串转义；本工具面向正则表达式，只对正则元字符做转义，目标是让文本在正则中按字面量匹配，两者用途不同。',
+          },
+          {
+            question: '为什么不直接用原生 RegExp.escape？',
+            answer:
+              'RegExp.escape 是较新的标准，并非所有运行时都已实现。工具采用语义对齐的自研纯函数作为确定性实现，行为可预测且可在 Vitest 中稳定验收，不依赖浏览器或 Node 版本是否支持该 API。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Regex Metacharacter Escape / Unescape Tool converts arbitrary plain text containing characters such as . * + ? ^ $ { } ( ) | [ ] \\ / into a fragment that can be safely embedded in a regular expression as a literal. Following ECMA-262 RegExp.escape semantics, it backslash-escapes syntax characters, the slash, hyphen, and line terminators, emits both a new RegExp(...) constructor source and a /.../ literal, and can unescape a fragment back to the original text. The core is a self-contained deterministic implementation that does not rely on native RegExp.escape being available.',
+        coreFeatures: [
+          'Literal-safe escaping covering ECMA-262 SyntaxCharacter plus /, -, and line terminators',
+          'Two output forms: new RegExp source (with backslashes correctly doubled inside the string) and a /.../ literal',
+          'Optional d/g/i/m/s/u/v/y flags, toggled by click and sorted alphabetically',
+          'Unescape that restores control sequences and \\uXXXX / \\xXX code points, enabling round-trip checks',
+        ],
+        howToUse: [
+          'In escape mode, paste the plain text you need to match as a literal',
+          'Toggle flags as needed; the literal and constructor source update on the right',
+          'Copy a result into your code to match the original text exactly',
+          'Switch to unescape mode to restore an escaped fragment back to plain text',
+        ],
+        useCases: [
+          'Safely building a dynamic RegExp from user input or log snippets without injection or accidental matching',
+          'Generating regexes in tests that must literally match special characters',
+          'Decoding escaped regex fragments found in other code back to readable text',
+        ],
+        privacyNote:
+          'All text processing runs locally in your browser; neither the input nor the escaped result is uploaded.',
+        faqs: [
+          {
+            question: 'How is this different from the string-escape tool?',
+            answer:
+              'string-escape targets programming-language string literals (JavaScript, Python, Java) and handles string escapes such as \\n and \\uXXXX. This tool targets regular expressions and escapes regex metacharacters so text matches literally inside a pattern—they serve different purposes.',
+          },
+          {
+            question: 'Why not just use the native RegExp.escape?',
+            answer:
+              'RegExp.escape is a relatively recent standard and is not implemented in every runtime. The tool uses a self-contained pure function with aligned semantics that behaves predictably and is verifiable in Vitest, independent of whether the browser or Node version supports the API.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'work-hours-calculator',
+    name: '工时时长累加器',
+    nameEn: 'Work Hours Calculator',
+    description:
+      '录入多段上下班打卡时间，自动扣除休息、处理跨午夜班次，逐行提示异常并汇总总工时、日均与工资估算。',
+    descriptionEn:
+      'Enter multiple clock-in/clock-out pairs, deduct breaks, handle overnight shifts, and summarize total hours, daily average, and estimated pay.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/work-hours-calculator',
+    iconName: 'Clock',
+    tags: ['工时', '打卡', '考勤', '加班', '工资'],
+    tagsEn: ['Work Hours', 'Timesheet', 'Attendance', 'Overtime', 'Payroll'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '工时时长累加器用于按行录入多组“上班时间–下班时间”打卡对（HH:mm），自动计算每段扣除休息后的净工时，支持跨午夜班次（下班时间早于上班时间时自动 +1 天），对缺失或非法时间给出逐行提示，并汇总总工时、总休息时长、日均工时以及按小时费率估算的工资，结果可一键复制为表格文本。',
+        coreFeatures: [
+          '多段打卡录入：动态增删上下班记录，逐段独立计算在岗与净工时',
+          '跨午夜处理：下班早于上班时自动按次日处理，起止相同时按 24 小时班次',
+          '逐行异常提示：时间缺失、格式非法、休息超在岗等情况即时标红且不计入汇总',
+          '汇总与工资：总净工时、总休息、日均工时与小时费率工资估算，支持复制 TSV 表格',
+        ],
+        howToUse: [
+          '在每一行填写上班时间、下班时间（HH:mm）与该段休息分钟数',
+          '需要更多记录时点击“添加一段”，夜班等跨天场景无需手动调整日期',
+          '查看每行净工时与“跨午夜 +1 天”标记，按提示修正异常行',
+          '在汇总区设置小时费率查看工资估算，点击“复制表格”粘贴到 Excel 或表格软件',
+        ],
+        useCases: [
+          '兼职、自由职业者按打卡记录统计当月实际工时与应得报酬',
+          '轮班/夜班员工核对考勤系统中的跨天班次时长',
+          '团队负责人汇总多人多段工作记录，快速核算总投入工时',
+        ],
+        privacyNote:
+          '所有时间数据仅在浏览器本地参与计算，不会上传或存储到任何服务器。',
+        faqs: [
+          {
+            question: '下班时间早于上班时间会怎么算？',
+            answer:
+              '自动识别为跨午夜班次，下班时间按次日处理（+1440 分钟）。例如 22:00 到 06:00 计为 8 小时在岗；上下班时间完全相同时按 24 小时班次处理。',
+          },
+          {
+            question: '休息时间比在岗时间还长怎么办？',
+            answer:
+              '该段净工时会归零而不会出现负数，同时页面会给出提示；存在格式错误的打卡段不参与总工时、日均与工资汇总。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Work Hours Calculator lets you enter multiple clock-in/clock-out pairs (HH:mm) row by row. It computes the net working time of each segment after deducting breaks, handles overnight shifts automatically (adding one day when clock-out is earlier than clock-in), flags missing or invalid times per row, and summarizes total hours, total break time, daily average, and pay estimated from an hourly rate. Results can be copied as tab-separated table text.',
+        coreFeatures: [
+          'Multi-segment entry: add or remove clock records dynamically, with gross and net time computed per row',
+          'Overnight handling: clock-out earlier than clock-in is treated as the next day; equal times count as a 24-hour shift',
+          'Per-row validation: missing times, bad formats, and breaks longer than the shift are highlighted and excluded from totals',
+          'Summary and pay: total net hours, total breaks, daily average, and hourly-rate pay estimate, copyable as TSV',
+        ],
+        howToUse: [
+          'Fill in clock-in time, clock-out time (HH:mm), and break minutes for each row',
+          'Click "Add segment" for more records; overnight shifts need no manual date adjustment',
+          'Check each row’s net time and the "cross-midnight +1 day" badge, fixing rows flagged as invalid',
+          'Set the hourly rate in the summary area to estimate pay, then click "Copy table" to paste into Excel or a spreadsheet',
+        ],
+        useCases: [
+          'Part-time workers and freelancers tallying monthly actual hours and expected pay from clock records',
+          'Shift and night-shift employees verifying overnight shift durations in attendance systems',
+          'Team leads consolidating multi-person, multi-segment work records to estimate total effort',
+        ],
+        privacyNote:
+          'All time data is processed locally in your browser and is never uploaded to or stored on any server.',
+        faqs: [
+          {
+            question: 'What happens when clock-out is earlier than clock-in?',
+            answer:
+              'It is treated as an overnight shift: clock-out is moved to the next day (+1440 minutes). For example, 22:00 to 06:00 counts as 8 gross hours; identical clock-in and clock-out times count as a 24-hour shift.',
+          },
+          {
+            question: 'What if the break is longer than the shift itself?',
+            answer:
+              'That segment’s net time is clamped to zero rather than going negative, and an inline hint is shown. Rows with format errors are excluded from total hours, average, and pay calculations.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
