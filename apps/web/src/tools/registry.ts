@@ -34369,6 +34369,96 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'font-face-generator',
+    name: '@font-face 声明生成器',
+    nameEn: '@font-face Declaration Generator',
+    description:
+      '为同一字体家族配置多个字重与 woff2/woff/ttf 等多格式资源，拼装带 font-display 的 @font-face CSS。',
+    descriptionEn:
+      'Configure multiple weights and woff2/woff/ttf sources for a font family and assemble @font-face CSS with font-display.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/font-face-generator',
+    iconName: 'Type',
+    tags: ['@font-face', '字体', 'CSS', 'woff2', 'font-display'],
+    tagsEn: ['@font-face', 'Font', 'CSS', 'woff2', 'font-display'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '@font-face 声明生成器帮助你为自定义字体拼装可直接使用的 CSS：按字重（font-weight）组织多条规则，每条规则聚合 woff2、woff、truetype 等多种格式的 src，并统一配置 font-style、font-display 与可选的 unicode-range。',
+        coreFeatures: [
+          '多字重管理：为同一 font-family 添加、删除多个字重规则',
+          '多格式 src：每条规则聚合 woff2/woff/ttf/otf 等资源，自动按顺序拼装 url() 与 format()',
+          'font-display 配置：内置 auto/block/swap/fallback/optional 并附说明',
+          '实时输出：参数变化即时生成完整 @font-face CSS，一键复制',
+        ],
+        howToUse: [
+          '在每个字重卡片填写 font-family、font-weight、font-style 与 font-display',
+          '在 src 区域添加该字重的字体资源地址并选择对应 format，建议 woff2 放在最前',
+          '需要子集化时填写可选的 unicode-range，留空则不输出该描述符',
+          '在右侧查看生成的 CSS，确认无误后点击复制',
+        ],
+        useCases: [
+          '为网站引入品牌自定义字体并生成跨浏览器兼容的 @font-face',
+          '统一管理同一字体家族的 Regular/Bold 等多字重声明',
+          '快速输出符合性能最佳实践（font-display: swap）的字体加载代码',
+        ],
+        privacyNote:
+          '所有配置与 CSS 拼装均在浏览器本地完成，不会上传任何字体路径或内容。',
+        faqs: [
+          {
+            question: 'src 中多个格式的顺序有要求吗？',
+            answer:
+              '有。浏览器会从上到下选择第一个它支持的格式，因此应把压缩率最高、最现代的 woff2 放在最前，依次降级到 woff、ttf，工具按你列出的顺序原样拼装。',
+          },
+          {
+            question: 'font-display 应该选哪个？',
+            answer:
+              '绝大多数内容字体推荐 swap：先用回退字体立即显示文字，自定义字体加载完成后再交换，避免文字不可见（FOIT）。optional 适合非关键的装饰字体。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The @font-face Declaration Generator assembles ready-to-use CSS for custom fonts. It organizes one rule per font-weight, aggregates multiple source formats such as woff2, woff, and truetype in each rule, and lets you configure font-style, font-display, and an optional unicode-range.',
+        coreFeatures: [
+          'Multi-weight management: add and remove several weight rules for one font-family',
+          'Multi-format src: combine woff2/woff/ttf/otf sources with url() and format() in order',
+          'font-display presets: auto, block, swap, fallback, and optional with explanations',
+          'Live output: complete @font-face CSS regenerates instantly and copies in one click',
+        ],
+        howToUse: [
+          'Fill in font-family, font-weight, font-style, and font-display in each weight card',
+          'Add font source URLs and pick the matching format in the src area, keeping woff2 first',
+          'Set an optional unicode-range for subsetting, or leave it blank to omit the descriptor',
+          'Review the generated CSS on the right and copy it when ready',
+        ],
+        useCases: [
+          'Embedding a brand custom font with cross-browser @font-face declarations',
+          'Managing Regular/Bold and other weights of one font family in one place',
+          'Producing performant font-loading code using font-display: swap',
+        ],
+        privacyNote:
+          'All configuration and CSS assembly happen locally in your browser; no font paths or files are uploaded.',
+        faqs: [
+          {
+            question: 'Does the order of the source formats matter?',
+            answer:
+              'Yes. Browsers pick the first supported format from top to bottom, so put the most compressed modern format (woff2) first and degrade toward woff and ttf. The tool preserves the order you list.',
+          },
+          {
+            question: 'Which font-display should I choose?',
+            answer:
+              'For most content fonts, use swap: text renders immediately with a fallback and switches once the custom font loads, avoiding invisible text (FOIT). Use optional for non-essential decorative fonts.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
