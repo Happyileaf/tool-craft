@@ -363,4 +363,5 @@ export const toolLoaders: Record<
   'elo-rating-calculator': () => import('./elo-rating-calculator'),
   'fixed-asset-depreciation-calculator': () =>
     import('./fixed-asset-depreciation-calculator'),
+  'apca-contrast-calculator': () => import('./apca-contrast-calculator'),
 };

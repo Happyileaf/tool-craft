@@ -34056,6 +34056,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'apca-contrast-calculator',
+    name: 'APCA（WCAG 3）感知对比度计算器（Lc 极性 / 可读性分级）',
+    nameEn: 'APCA Perceptual Contrast Calculator',
+    description:
+      '实现 WCAG 3 候选的 APCA 0.1.9 算法：sRGB 线性化后按感知加权计算亮度，输出带符号 L^c 对比度（正=深字浅底、负=浅字深底），并依据 Lc 90/75/60/45/30/15 阈值给出正文、标题与图形元素的可读性分级。',
+    descriptionEn:
+      'Implements the APCA 0.1.9 candidate algorithm for WCAG 3: sRGB linearization followed by perceptually weighted luminance, returning a signed L^c contrast (positive = dark text on light, negative = light text on dark) with readability grades at the Lc 90/75/60/45/30/15 thresholds for body text, headings and graphics.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/apca-contrast-calculator',
+    iconName: 'BgColors',
+    tags: ['APCA', 'WCAG 3', '对比度', '可访问性', '色彩', 'Lc'],
+    tagsEn: ['APCA', 'WCAG 3', 'Contrast', 'Accessibility', 'Color', 'Lc'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '文字 #1F2329；背景 #FFFFFF',
+    doc: {
+      zh: {
+        whatIsIt:
+          'APCA 对比度计算器是一款纯浏览器本地运行的可访问性工具，实现 W3C 银任务组为 WCAG 3 设计的 Advanced Perceptual Contrast Algorithm。相比 WCAG 2 的线性比值，APCA 基于人眼对明暗的非线性感知建模，输出带极性的 L^c 分数，更贴近真实阅读体验。',
+        coreFeatures: [
+          'sRGB 反伽马线性化 + 感知亮度加权（0.2126729 / 0.7151522 / 0.072175），含软黑位与软白位裁剪',
+          '带符号 L^c：正值表示深色文字配浅色背景，负值表示浅色文字配深色背景',
+          '黑字白底约 Lc 106、白字黑底约 Lc −100 的标准量级，同色对为 0',
+          '依据 Lc 90/75/60/45/30/15 阈值自动判定正文、中号字、标题、装饰文字或图形元素分级',
+          '支持 #RGB、#RRGGBB、#RRGGBBAA（alpha 低于 50% 报错），原生取色器与十六进制输入双通道',
+          '内置常见配色预设与前后景交换，实时预览实际文字渲染效果',
+        ],
+        howToUse: [
+          '通过取色器或十六进制文本框分别设置文字颜色与背景颜色',
+          '查看 L^c 数值、极性说明与可读性分级，分级颜色越绿可读性越好',
+          '用「交换前景 / 背景」观察 APCA 极性不对称特性，或点击预设快速对比常见配色',
+          '底部等级参考表可对照设计规范选择字号与字重',
+        ],
+        useCases: [
+          '设计系统与组件库制定 WCAG 3 方向的颜色可访问性规范',
+          '前端与设计评审中验证正文、按钮、表单文字的感知对比度',
+          '教学演示 APCA 与 WCAG 2 对比度比值的建模差异',
+        ],
+        privacyNote:
+          '所有颜色解析与对比度计算均在浏览器本地完成，不发起任何网络请求，颜色数据不会被上传或持久化。',
+        faqs: [
+          {
+            question: '为什么 Lc 有正负号，而 WCAG 2 的对比度比值没有？',
+            answer:
+              'APCA 以文字相对于背景的极性输出结果：背景更亮（深字浅底）时为正，背景更暗（浅字深底）时为负。人眼对两种极性的感知并不对称，因此同一对颜色交换前后景后，Lc 的绝对值也会略有差异，这是算法刻意建模的结果。',
+          },
+          {
+            question: 'Lc 达到多少才算合格？',
+            answer:
+              'APCA 按用途分级而非单一及格线：常规正文建议 |Lc| ≥ 75，大段小字建议 ≥ 90，中号文字与表单 ≥ 60，大号标题或粗体 ≥ 45；30–45 仅限超大标题，15–30 只适合非文字图形，低于 15 不适合承载文字。',
+          },
+          {
+            question: '为什么半透明颜色会报错？',
+            answer:
+              '对比度描述的是两个不透明颜色在固定背景上的感知差异。alpha 低于 50% 时实际呈现颜色强烈依赖其下方叠底，单一 Lc 数值没有确定意义，因此工具直接拒绝计算并提示，避免给出误导性结论。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The APCA Contrast Calculator runs entirely in your browser and implements the Advanced Perceptual Contrast Algorithm developed by the W3C Silver Task Force for WCAG 3. Unlike the linear ratio of WCAG 2, APCA models the human eye’s nonlinear lightness perception and returns a polarity-aware L^c score that better matches real reading experience.',
+        coreFeatures: [
+          'sRGB inverse-gamma linearization with perceptual luminance weights (0.2126729 / 0.7151522 / 0.072175), plus soft black and white clipping',
+          'Signed L^c: positive for dark text on light backgrounds, negative for light text on dark backgrounds',
+          'Canonical magnitudes around Lc 106 for black-on-white and Lc −100 for white-on-black; identical colors yield 0',
+          'Automatic readability grading at Lc 90/75/60/45/30/15 for body text, mid-size text, headings, decorative type and graphics',
+          'Accepts #RGB, #RRGGBB and #RRGGBBAA (alpha below 50% rejected), with native picker and hex input',
+          'Built-in common palette presets, foreground/background swap and live text preview',
+        ],
+        howToUse: [
+          'Set the text and background colors via the color picker or hex text fields',
+          'Read the L^c value, polarity explanation and readability grade — greener means more readable',
+          'Use "Swap foreground/background" to observe APCA polarity asymmetry, or try the built-in presets',
+          'Consult the grade reference table at the bottom when choosing font size and weight in design specs',
+        ],
+        useCases: [
+          'Defining WCAG 3-oriented color accessibility rules for design systems and component libraries',
+          'Verifying perceptual contrast of body copy, buttons and form text in design and frontend reviews',
+          'Teaching the modeling differences between APCA and the WCAG 2 contrast ratio',
+        ],
+        privacyNote:
+          'All color parsing and contrast math run locally in your browser with no network request; color data is never uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Why is Lc signed while the WCAG 2 ratio is not?',
+            answer:
+              'APCA reports the polarity of text relative to its background: positive when the background is lighter (dark text on light) and negative when it is darker (light text on dark). Human perception is asymmetric across the two polarities, so swapping foreground and background does not yield identical absolute Lc values — a deliberate feature of the model.',
+          },
+          {
+            question: 'What Lc value counts as passing?',
+            answer:
+              'APCA grades by use case rather than a single pass/fail line: body text should reach |Lc| ≥ 75 (≥ 90 for dense small text), mid-size text and forms ≥ 60, large or bold headings ≥ 45; 30–45 is only for oversized headings, 15–30 for non-text graphics, and below 15 is unsuitable for any text.',
+          },
+          {
+            question: 'Why are translucent colors rejected?',
+            answer:
+              'Contrast describes the perceptual difference between two opaque colors on a fixed backdrop. Below 50% alpha the rendered color depends heavily on whatever is composited underneath, so a single Lc figure would be ambiguous; the tool rejects such input instead of producing a misleading result.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
