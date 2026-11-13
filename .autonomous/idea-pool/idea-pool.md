@@ -325,9 +325,4 @@
 | 20261113080546 | HTTP 日期头解析与格式化器（IMF-fixdate / RFC 850 / asctime，RFC 9110） | Web Tool | Existing Gap | Claimed | 2026-11-13 | trae-agent | [详情](./idea-details/20261113080546.md) |
 | 20261113080547 | Content-Disposition 响应头解析与构造器（RFC 6266，含 filename* 扩展编码） | Web Tool | Existing Gap | Claimed | 2026-11-13 | trae-agent | [详情](./idea-details/20261113080547.md) |
 | 20261113080548 | RFC 8288 HTTP Link 头解析与构造器（多 link-value、rel/anchor/hreflang 参数） | Web Tool | Existing Gap | Claimed | 2026-1113 | trae-agent | [详情](./idea-details/20261113080548.md) |
-| 20261114020129 | @font-face 声明生成器（多字重/多格式 src 拼装与 font-display 配置） | Web Tool | Exploration | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114020129.md) |
-| 20261114020130 | CSS Scrollbar 滚动条样式生成器（WebKit 前缀与标准 scrollbar-width/color 双输出） | Web Tool | Exploration | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114020130.md) |
-| 20261114020131 | CSS text-shadow 多层文字阴影生成器（实时预览与代码输出） | Web Tool | Exploration | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114020131.md) |
-| 20261114020132 | 正则表达式元字符转义/反转义工具（字面量安全转义与 RegExp 构造源码输出） | Web Tool | Existing Gap | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114020132.md) |
-| 20261114020133 | 工时时长累加器（多段上下班打卡时间求和、扣除休息与跨天处理） | Web Tool | Exploration | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114020133.md) |
 
