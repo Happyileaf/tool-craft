@@ -360,4 +360,5 @@ export const toolLoaders: Record<
   'http-date-codec': () => import('./http-date-codec'),
   'content-disposition-codec': () => import('./content-disposition-codec'),
   'link-header-codec': () => import('./link-header-codec'),
+  'elo-rating-calculator': () => import('./elo-rating-calculator'),
 };

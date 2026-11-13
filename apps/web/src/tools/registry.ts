@@ -33848,6 +33848,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'elo-rating-calculator',
+    name: 'Elo 等级分计算器（期望胜率 / K 因子 / 批量对战推演）',
+    nameEn: 'Elo Rating Calculator',
+    description:
+      '按 Arpad Elo 评分体系计算期望胜率 E 与赛后等级分变化 Δ=K×(S−E)，支持单场对战演算与 W/D/L 批量序列逐步推演，输出每场赛前分、期望胜率、增减分与赛后分明细表。',
+    descriptionEn:
+      'Compute Elo expected score E and rating change Δ=K×(S−E) per the Arpad Elo system, with a single-match calculator and a step-by-step W/D/L batch simulation showing pre-rating, expected score, delta and post-rating for every game.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/elo-rating-calculator',
+    iconName: 'Gauge',
+    tags: ['Elo', '等级分', '期望胜率', 'K 因子', '棋类评分'],
+    tagsEn: ['Elo', 'Rating', 'Expected Score', 'K-factor', 'Chess'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1480,W\n1535,D\n1602,L\n1450,W\n1575,W',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Elo 等级分计算器是一款纯浏览器本地运算的评分工具，实现 Arpad Elo 为国际象棋设计、现被围棋、电竞与各类竞技排名广泛采用的相对技能评分体系，支持单场演算与批量对局序列推演。',
+        coreFeatures: [
+          '期望胜率 E = 1 / (1 + 10^((R对手 − R自己) / 400))，双方期望互补为 1',
+          '单场演算：选择胜 / 平 / 负即时给出期望胜率、分数变化与赛后等级分',
+          '批量推演：每行「对手分,结果」（W/D/L 或 1/0.5/0），逐场基于上一场新分继续计算',
+          '明细表展示每场赛前分、期望胜率、K 因子、带符号增减分与赛后分，并汇总累计变化',
+          'K 因子 40/32/24/16 快捷预设，适配新手到大师不同人群',
+          '非法行带行号报错，等级分与 K 因子越界明确提示，全程零依赖纯本地运算',
+        ],
+        howToUse: [
+          '填写当前等级分与 K 因子（不确定时使用 32 公开级预设）',
+          '单场演算：输入对手等级分并选择胜 / 平 / 负，结果即时更新',
+          '批量推演：在文本框每行录入一场对局，或点击「填充示例」查看完整序列',
+          '查看明细表与最终等级分，正分变化以绿色标识、负分以红色标识',
+        ],
+        useCases: [
+          '棋类俱乐部与线上对战平台预测胜率、复盘等级分波动',
+          '电竞、桌游赛事设计积分规则与 K 因子取值',
+          '教学演示 Elo 期望值公式与「爆冷加分多、碾压加分少」的调节机制',
+        ],
+        privacyNote:
+          '所有等级分计算与对局推演均在浏览器本地完成，不发起任何网络请求，对战记录不会被上传或持久化。',
+        faqs: [
+          {
+            question: 'K 因子应该选多少？',
+            answer:
+              'K 决定每场对局后分数变动的幅度。新手或对局数少的账号通常取 40，FIDE 公开级标准为 32，等级分低于 2400 的注册棋手取 24，2400 分以上的大师取 16。对局越多、水平越稳定，K 值越小。',
+          },
+          {
+            question: '为什么赢了比自己分低的对手只加很少的分？',
+            answer:
+              '赛后变化 Δ=K×(S−E)。面对低分对手时期望胜率 E 接近 1，获胜的实际得分 S=1 与期望差距很小，因此加分少；反之爆冷击败高分对手时 E 很低，加分显著，这正是 Elo 体系向均值回归的调节机制。',
+          },
+          {
+            question: '批量推演的分数是怎么逐场传递的？',
+            answer:
+              '每一场都以上一场的赛后等级分作为新的赛前分重新计算期望胜率与变化量，因此顺序会影响中间过程，但同一批对局的总净变化不受排列顺序之外的参数影响；每一步都保留两位小数以防浮点尾差累积。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Elo Rating Calculator runs entirely in your browser and implements the relative skill rating system designed by Arpad Elo for chess and now widely used in Go, esports and competitive rankings, with both a single-match mode and a batch series simulation.',
+        coreFeatures: [
+          'Expected score E = 1 / (1 + 10^((Ropponent − Ryou) / 400)); the two sides’ expectations sum to 1',
+          'Single-match mode: pick win/draw/loss to see expected score, delta and post-match rating instantly',
+          'Batch simulation: one "opponent,result" (W/D/L or 1/0.5/0) per line, each game computed from the previous post-rating',
+          'Detail table with pre-rating, expected score, K-factor, signed delta and post-rating per game, plus total delta',
+          'K-factor presets 40/32/24/16 covering juniors through grandmasters',
+          'Line-numbered parse errors and explicit range validation; zero-dependency local math',
+        ],
+        howToUse: [
+          'Enter your current rating and a K-factor (use the 32 open-level preset if unsure)',
+          'For one game, enter the opponent rating and choose win, draw or loss; results update live',
+          'For a series, enter one match per line or click "Fill sample" for a full sequence',
+          'Review the table and final rating; positive deltas are green and negative deltas red',
+        ],
+        useCases: [
+          'Predicting win probability and reviewing rating swings for chess clubs and online arenas',
+          'Designing ranking rules and K-factors for esports and board-game tournaments',
+          'Teaching the Elo expectation formula and its regression-to-the-mean behavior',
+        ],
+        privacyNote:
+          'All rating math and match simulations run locally in your browser with no network request; match records are never uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Which K-factor should I choose?',
+            answer:
+              'K controls how much each game moves the rating. New or low-activity accounts typically use 40, the FIDE open-level standard is 32, rated players below 2400 use 24, and grandmasters above 2400 use 16. The more games and the more stable the level, the smaller K becomes.',
+          },
+          {
+            question: 'Why do I gain so little when beating a lower-rated player?',
+            answer:
+              'The delta is Δ=K×(S−E). Against a much weaker opponent the expected score E is near 1, so winning (S=1) barely exceeds expectation and yields few points. Beating a much stronger opponent is an upset with a low E and therefore a large gain — the regression-to-the-mean mechanism at the heart of Elo.',
+          },
+          {
+            question: 'How does rating carry over across a batch?',
+            answer:
+              'Each game uses the previous game’s post-rating as its new pre-rating when recomputing expectation and delta, so order affects the intermediate steps. Every step is rounded to two decimals to prevent floating-point drift from accumulating.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
