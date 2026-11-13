@@ -109,3 +109,8 @@
 | 20261103081201 | SMPTE 时间码（LTC）与帧/真实时间互转器（29.97DF/25/24） | Web Tool | External Reference | `smpte-timecode-converter` / [PR #151](https://github.com/Happyileaf/tool-craft/pull/151) | 2026-11-03 | [详情](./idea-details/20261103081201.md) |
 | 20261102080703 | GPS 周数与周内秒（TOW）↔ UTC 时间互转器 | Web Tool | External Reference | `gps-week-converter` / [PR #151](https://github.com/Happyileaf/tool-craft/pull/151) | 2026-11-03 | [详情](./idea-details/20261102080703.md) |
 | 20261101201001 | SMS 短信长度与分片（UDH concat）计算器（GSM 7-bit / UCS-2） | Web Tool | Existing Gap | `sms-segment-calculator` / [PR #151](https://github.com/Happyileaf/tool-craft/pull/151) | 2026-11-03 | [详情](./idea-details/20261101201001.md) |
+| 20261113080544 | C99 十六进制浮点（hexfloat）字符串与十进制数双向转换器 | Web Tool | Existing Gap | Completed | 2026-11-13 | trae-agent | [详情](./idea-details/20261113080544.md) |
+| 20261113080545 | RFC 3986 相对引用解析器（Base URL + relative-ref → 目标 URL，含点段归一化） | Web Tool | Existing Gap | Completed | 2026-11-13 | trae-agent | [详情](./idea-details/20261113080545.md) |
+| 20261113080546 | HTTP 日期头解析与格式化器（IMF-fixdate / RFC 850 / asctime，RFC 9110） | Web Tool | Existing Gap | Completed | 2026-11-13 | trae-agent | [详情](./idea-details/20261113080546.md) |
+| 20261113080547 | Content-Disposition 响应头解析与构造器（RFC 6266，含 filename* 扩展编码） | Web Tool | Existing Gap | Completed | 2026-11-13 | trae-agent | [详情](./idea-details/20261113080547.md) |
+| 20261113080548 | RFC 8288 HTTP Link 头解析与构造器（多 link-value、rel/anchor/hreflang 参数） | Web Tool | Existing Gap | Completed | 2026-1113 | trae-agent | [详情](./idea-details/20261113080548.md) |
