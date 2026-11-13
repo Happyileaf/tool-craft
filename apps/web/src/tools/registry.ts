@@ -34459,6 +34459,96 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'css-scrollbar-generator',
+    name: 'CSS 滚动条样式生成器',
+    nameEn: 'CSS Scrollbar Style Generator',
+    description:
+      '可视化定制滚动条颜色、宽度与圆角，同时输出 WebKit 伪元素与标准 scrollbar-width/color 两套 CSS。',
+    descriptionEn:
+      'Customize scrollbar colors, width, and radius visually and output both WebKit pseudo-element and standard scrollbar-width/color CSS.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/css-scrollbar-generator',
+    iconName: 'ScrollText',
+    tags: ['滚动条', 'scrollbar', 'CSS', 'WebKit', 'Firefox'],
+    tagsEn: ['Scrollbar', 'scrollbar', 'CSS', 'WebKit', 'Firefox'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS 滚动条样式生成器让你通过颜色选择器、宽度滑块与圆角控件定制滚动条外观，并在一个可滚动容器中实时预览。它同时生成传统 WebKit 私有伪元素（::-webkit-scrollbar 系列）与 W3C 标准属性（scrollbar-width、scrollbar-color）两套代码，覆盖 Chrome/Edge/Safari 与 Firefox。',
+        coreFeatures: [
+          '双轨输出：WebKit 伪元素组 + 标准 scrollbar-width/color 组',
+          '完整控件：宽度、轨道/滑块/hover 颜色、滑块与轨道圆角、按钮开关',
+          '实时预览：在真实可滚动容器中查看滚动条效果',
+          '配色预设：内置石板灰、靛蓝、翡翠绿、深色、玫瑰红等方案',
+        ],
+        howToUse: [
+          '选择一个配色预设或分别设置轨道、滑块、hover 颜色',
+          '拖动宽度滑块调整滚动条粗细，并设置滑块/轨道圆角',
+          '需要兼容老式 WebKit 按钮时勾选 scrollbar-button',
+          '在预览区滚动确认效果后，复制右侧两套 CSS',
+        ],
+        useCases: [
+          '为网站或 Web 应用打造与品牌色一致的自定义滚动条',
+          '为深色模式设计协调的滚动条配色',
+          '快速产出同时兼容 Chromium 与 Firefox 的滚动条样式',
+        ],
+        privacyNote:
+          '所有颜色与尺寸调整、CSS 拼装和预览均在浏览器本地完成，不上传任何数据。',
+        faqs: [
+          {
+            question: '为什么要同时输出两套 CSS？',
+            answer:
+              '::-webkit-scrollbar 系列是 WebKit/Blink 私有属性，被 Chrome、Edge、Safari 支持；而 scrollbar-width、scrollbar-color 是 W3C 标准，主要由 Firefox 支持。两套一起输出才能在主流浏览器获得一致外观。',
+          },
+          {
+            question: '标准属性能否实现圆角和 hover？',
+            answer:
+              '不能。标准 scrollbar-width 只有 auto/thin/none 三个关键字，scrollbar-color 仅接受滑块与轨道两个颜色，无法控制圆角或 hover 态；这些精细效果只能通过 WebKit 伪元素实现。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CSS Scrollbar Style Generator lets you customize scrollbar appearance with color pickers, a width slider, and radius controls, previewed live in a scrollable container. It emits both the legacy WebKit pseudo-elements (::-webkit-scrollbar family) and the W3C standard properties (scrollbar-width, scrollbar-color), covering Chrome/Edge/Safari and Firefox.',
+        coreFeatures: [
+          'Dual output: WebKit pseudo-element group plus standard scrollbar-width/color group',
+          'Full controls: width, track/thumb/hover colors, thumb and track radius, button toggle',
+          'Live preview in a real scrollable container',
+          'Color presets including slate, indigo, emerald, dark, and rose',
+        ],
+        howToUse: [
+          'Pick a color preset or set track, thumb, and hover colors separately',
+          'Drag the width slider to set thickness and adjust thumb/track radius',
+          'Enable scrollbar-button if legacy WebKit buttons are required',
+          'Scroll the preview to confirm the look, then copy the two CSS blocks',
+        ],
+        useCases: [
+          'Branding website or web-app scrollbars to match a color system',
+          'Designing scrollbar colors that fit dark mode',
+          'Producing scrollbar CSS compatible with both Chromium and Firefox',
+        ],
+        privacyNote:
+          'All color and size adjustments, CSS assembly, and previews run locally in your browser; nothing is uploaded.',
+        faqs: [
+          {
+            question: 'Why output two sets of CSS?',
+            answer:
+              'The ::-webkit-scrollbar family is a WebKit/Blink proprietary feature supported by Chrome, Edge, and Safari, while scrollbar-width and scrollbar-color are W3C standard properties supported mainly by Firefox. Shipping both gives a consistent look across major browsers.',
+          },
+          {
+            question: 'Can the standard properties do radius or hover?',
+            answer:
+              'No. Standard scrollbar-width only accepts auto/thin/none and scrollbar-color takes just thumb and track colors, with no radius or hover control. Those finer effects are only possible through the WebKit pseudo-elements.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

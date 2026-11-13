@@ -366,4 +366,5 @@ export const toolLoaders: Record<
   'content-disposition-codec': () => import('./content-disposition-codec'),
   'link-header-codec': () => import('./link-header-codec'),
   'font-face-generator': () => import('./font-face-generator'),
+  'css-scrollbar-generator': () => import('./css-scrollbar-generator'),
 };
