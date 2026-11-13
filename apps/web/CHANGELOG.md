@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-13 ：【Agent自主迭代】新增 5 个 Elo 评分、固定资产折旧、APCA 对比度、摄影景深与 Porter 词干提取计算工具
+
+- **新增**：Elo 评分计算器（elo-rating-calculator）— 按 E=1/(1+10^ΔR/400) 与 Δ=K(S−E) 计算期望胜率与单场积分变动，支持 K 值/主客场让分参数、W/D/L 文本批量解析（带行号报错）与多场系列赛模拟轨迹，21 个 Vitest 用例，纯本地运算零依赖
+- **新增**：固定资产折旧计算器（fixed-asset-depreciation-calculator）— 实现直线法、工作量法、双倍余额递减法（末两年转直线）与年数总和法四种折旧模型，末期自动承接尾差保证账面净值等于净残值，输出逐年明细表与月度均摊，14 个 Vitest 用例，纯本地运算零依赖
+- **新增**：APCA 对比度计算器（apca-contrast-calculator）— 按 APCA 0.1.9 实现 sRGB 线性化、带符号感知亮度 Lc（L^0.6 软黑钳制）与 90/75/60/45/30/15 六级可读性分级，支持 #RGB/#RRGGBB/#RRGGBBAA 取色与半透明拒绝校验，原生取色器实时预览，13 个 Vitest 用例，纯本地运算零依赖
+- **新增**：摄影景深计算器（depth-of-field-calculator）— 基于薄透镜公式 H=f²/(Nc) 计算超焦距、近界 Dn=Hs/(H+s)、远界 Df=Hs/(H−s)（超焦距外为 ∞）与前后景深，内置 7 种画幅弥散圆预设与光圈档位，支持由目标近界反推对焦距离的逆向模式及 mm/m 单位切换，13 个 Vitest 用例，纯本地运算零依赖
+- **新增**：英文 Porter 词干提取器（porter-stemmer）— 忠实实现 Porter 1980 步骤 1a–5b 后缀剥离（C/VC 音节度量 m、严格 CVC 短词干规则与约 60 条后缀规则），内置英文分词器与词形归并批处理，输出词干/次数/原始词形分组并支持 CSV 复制与下载，81 个 Vitest 用例覆盖论文各步骤标准向量，纯本地运算零依赖
+
 ## 2026-11-13 ：【Agent自主迭代】新增 5 个 C99 hexfloat、RFC 3986 相对 URL、RFC 9110 HTTP-date、RFC 6266 Content-Disposition 与 RFC 8288 Link 头编解码工具
 
 - **新增**：C99 十六进制浮点（hexfloat）双向转换器（hexfloat-converter）— 手写扫描器解析 0x1.8p+1 这类 C99 §6.4.4.2 字面量（符号/十六进制尾数/二进制 p 指数/fFlL 后缀），极端指数分阶段缩放防止 subnormal 下溢，构造侧经 DataView 读取 IEEE-754 binary64 位并以 BigInt 常量（ES2017 兼容）归一化输出 0x1.xxxp±n，正确处理 ±0/Infinity/NaN/subnormal 与 MIN_VALUE 往返，9 个 Vitest 用例，纯本地运算零依赖

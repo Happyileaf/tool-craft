@@ -218,7 +218,6 @@
 | 20261104020114 | CUSIP / SEDOL 证券识别码校验器（模 10 加权校验位与模 10 双倍加权） | Web Tool | Exploration | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104020114.md) |
 | 20261104020115 | ABA 银行路由号码（RTN / Routing Number）校验器 | Web Tool | Exploration | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104020115.md) |
 | 20261104020116 | IPFS CID 解析器与格式转换器（CIDv0/CIDv1、multibase 与 multihash 拆解） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104020116.md) |
-| 20261104081012 | APCA（WCAG 3）感知对比度计算器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104081012.md) |
 | 20261104081013 | 555 定时器（Astable / Monostable）参数计算器 | Web Tool | Exploration | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104081013.md) |
 | 20261104081014 | EPC QR Code（SEPA 转账）负载生成与解析器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104081014.md) |
 | 20261104081015 | BMP / DIB 位图文件头结构只读解析器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104081015.md) |
@@ -243,7 +242,6 @@
 | 20261105080305 | gettext PO / POT 消息目录 ↔ JSON 双向转换器 | Web Tool | Existing Gap | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105080305.md) |
 | 20261105080308 | SQL 字符串字面量转义 / 反转义工具（标准单引号与 LIKE 通配符转义） | Web Tool | Existing Gap | In Progress | 2026-11-05 | trae-agent | [详情](./idea-details/20261105080308.md) |
 | 20261105140800 | DKIM DNS TXT 记录生成器（选择器公钥记录拼装与标签语法校验） | Web Tool | Existing Gap | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105140800.md) |
-| 20261105140801 | 摄影景深与超焦距计算器（弥散圆 / 光圈 / 焦距 / 对焦距离互求） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105140801.md) |
 | 20261105140802 | CORS 响应头配置生成器（Allow-Origin / Credentials / 预检缓存策略拼装与校验） | Web Tool | External Reference | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105140802.md) |
 | 20261105140803 | SSE（Server-Sent Events）消息格式编码 / 解码器（event/data/id/retry 字段与多行 data） | Web Tool | External Reference | In Progress | 2026-11-05 | trae-agent | [详情](./idea-details/20261105140803.md) |
 | 20261105140804 | 表达式调度场算法可视化器（中缀转后缀 RPN 与逐步求值过程演示） | Web Tool | Exploration | In Progress | 2026-11-05 | trae-agent | [详情](./idea-details/20261105140804.md) |
@@ -287,7 +285,6 @@
 | 20261109020214 | APR 实际年利率计算器（EAR 等效年费率与贷款成本对比） | Web Tool | Existing Gap | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109020214.md) |
 | 20261109020215 | 有向图拓扑排序与环检测可视化器（Kahn / DFS 双算法） | Web Tool | Exploration | In Progress | 2026-11-09 | trae-agent | [详情](./idea-details/20261109020215.md) |
 | 20261109020216 | 加权网格最短路径求解器（Dijkstra / A* 逐步演示） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109020216.md) |
-| 20261109020217 | 英文 Porter 词干提取器（Stemmer）与词形归并批处理 | Web Tool | External Reference | Pending | 2026-11-09 | | [详情](./idea-details/20261109020217.md) |
 | 20261109020218 | IPv4 网络地址与二进制位掩码教学可视化器（逐位 AND 演算） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109020218.md) |
 | 20261109200616 | BBCode ↔ HTML 双向转换器（论坛标记语言与富文本互转） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200616.md) |
 | 20261109200617 | FLAC 音频元数据块只读解析器（STREAMINFO / VORBIS_COMMENT / 图片块结构展示） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200617.md) |
@@ -298,8 +295,6 @@
 | 20261113140200 | TCP 报文段解析与构造器（含标志位/选项/校验和，字节布局教学视图） | Web Tool | Exploration | Pending | 2026-11-13 | | [详情](./idea-details/20261113140200.md) |
 | 20261113140201 | HTTP/2 帧编解码器（9 种帧类型、HPACK 头部压缩、流状态教学视图） | Web Tool | Exploration | Pending | 2026-11-13 | | [详情](./idea-details/20261113140201.md) |
 | 20261113140202 | PCAP 抓包文件解析器（全局头/分组头/链路层类型，字节布局视图） | Web Tool | Exploration | Pending | 2026-11-13 | | [详情](./idea-details/20261113140202.md) |
-| 20261113140203 | Elo 等级分计算器（期望胜率/K 因子/对战模拟，批量序列推演） | Web Tool | Existing Gap | Pending | 2026-11-13 | | [详情](./idea-details/20261113140203.md) |
-| 20261113140204 | 固定资产折旧计算器（直线法/工作量法/双倍余额递减/年数总和，逐年明细表） | Web Tool | Existing Gap | Pending | 2026-11-13 | | [详情](./idea-details/20261113140204.md) |
 | 20261112020112 | QOI（Quite OK Image）无损图片编解码器（RGBA 像素 ↔ .qoi 双向转换） | Web Tool | External Reference | Pending | 2026-11-12 | | [详情](./idea-details/20261112020112.md) |
 | 20261112020113 | 摩托罗拉 S-Record（S19/S28/S37）固件镜像格式解析与校验器 | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112020113.md) |
 | 20261112020114 | Windows ICO/CUR 图标容器结构只读解析器（ICONDIR/目录条目/图像数据块展示） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112020114.md) |

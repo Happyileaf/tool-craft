@@ -33848,6 +33848,531 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'elo-rating-calculator',
+    name: 'Elo 等级分计算器（期望胜率 / K 因子 / 批量对战推演）',
+    nameEn: 'Elo Rating Calculator',
+    description:
+      '按 Arpad Elo 评分体系计算期望胜率 E 与赛后等级分变化 Δ=K×(S−E)，支持单场对战演算与 W/D/L 批量序列逐步推演，输出每场赛前分、期望胜率、增减分与赛后分明细表。',
+    descriptionEn:
+      'Compute Elo expected score E and rating change Δ=K×(S−E) per the Arpad Elo system, with a single-match calculator and a step-by-step W/D/L batch simulation showing pre-rating, expected score, delta and post-rating for every game.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/elo-rating-calculator',
+    iconName: 'Gauge',
+    tags: ['Elo', '等级分', '期望胜率', 'K 因子', '棋类评分'],
+    tagsEn: ['Elo', 'Rating', 'Expected Score', 'K-factor', 'Chess'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1480,W\n1535,D\n1602,L\n1450,W\n1575,W',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Elo 等级分计算器是一款纯浏览器本地运算的评分工具，实现 Arpad Elo 为国际象棋设计、现被围棋、电竞与各类竞技排名广泛采用的相对技能评分体系，支持单场演算与批量对局序列推演。',
+        coreFeatures: [
+          '期望胜率 E = 1 / (1 + 10^((R对手 − R自己) / 400))，双方期望互补为 1',
+          '单场演算：选择胜 / 平 / 负即时给出期望胜率、分数变化与赛后等级分',
+          '批量推演：每行「对手分,结果」（W/D/L 或 1/0.5/0），逐场基于上一场新分继续计算',
+          '明细表展示每场赛前分、期望胜率、K 因子、带符号增减分与赛后分，并汇总累计变化',
+          'K 因子 40/32/24/16 快捷预设，适配新手到大师不同人群',
+          '非法行带行号报错，等级分与 K 因子越界明确提示，全程零依赖纯本地运算',
+        ],
+        howToUse: [
+          '填写当前等级分与 K 因子（不确定时使用 32 公开级预设）',
+          '单场演算：输入对手等级分并选择胜 / 平 / 负，结果即时更新',
+          '批量推演：在文本框每行录入一场对局，或点击「填充示例」查看完整序列',
+          '查看明细表与最终等级分，正分变化以绿色标识、负分以红色标识',
+        ],
+        useCases: [
+          '棋类俱乐部与线上对战平台预测胜率、复盘等级分波动',
+          '电竞、桌游赛事设计积分规则与 K 因子取值',
+          '教学演示 Elo 期望值公式与「爆冷加分多、碾压加分少」的调节机制',
+        ],
+        privacyNote:
+          '所有等级分计算与对局推演均在浏览器本地完成，不发起任何网络请求，对战记录不会被上传或持久化。',
+        faqs: [
+          {
+            question: 'K 因子应该选多少？',
+            answer:
+              'K 决定每场对局后分数变动的幅度。新手或对局数少的账号通常取 40，FIDE 公开级标准为 32，等级分低于 2400 的注册棋手取 24，2400 分以上的大师取 16。对局越多、水平越稳定，K 值越小。',
+          },
+          {
+            question: '为什么赢了比自己分低的对手只加很少的分？',
+            answer:
+              '赛后变化 Δ=K×(S−E)。面对低分对手时期望胜率 E 接近 1，获胜的实际得分 S=1 与期望差距很小，因此加分少；反之爆冷击败高分对手时 E 很低，加分显著，这正是 Elo 体系向均值回归的调节机制。',
+          },
+          {
+            question: '批量推演的分数是怎么逐场传递的？',
+            answer:
+              '每一场都以上一场的赛后等级分作为新的赛前分重新计算期望胜率与变化量，因此顺序会影响中间过程，但同一批对局的总净变化不受排列顺序之外的参数影响；每一步都保留两位小数以防浮点尾差累积。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Elo Rating Calculator runs entirely in your browser and implements the relative skill rating system designed by Arpad Elo for chess and now widely used in Go, esports and competitive rankings, with both a single-match mode and a batch series simulation.',
+        coreFeatures: [
+          'Expected score E = 1 / (1 + 10^((Ropponent − Ryou) / 400)); the two sides’ expectations sum to 1',
+          'Single-match mode: pick win/draw/loss to see expected score, delta and post-match rating instantly',
+          'Batch simulation: one "opponent,result" (W/D/L or 1/0.5/0) per line, each game computed from the previous post-rating',
+          'Detail table with pre-rating, expected score, K-factor, signed delta and post-rating per game, plus total delta',
+          'K-factor presets 40/32/24/16 covering juniors through grandmasters',
+          'Line-numbered parse errors and explicit range validation; zero-dependency local math',
+        ],
+        howToUse: [
+          'Enter your current rating and a K-factor (use the 32 open-level preset if unsure)',
+          'For one game, enter the opponent rating and choose win, draw or loss; results update live',
+          'For a series, enter one match per line or click "Fill sample" for a full sequence',
+          'Review the table and final rating; positive deltas are green and negative deltas red',
+        ],
+        useCases: [
+          'Predicting win probability and reviewing rating swings for chess clubs and online arenas',
+          'Designing ranking rules and K-factors for esports and board-game tournaments',
+          'Teaching the Elo expectation formula and its regression-to-the-mean behavior',
+        ],
+        privacyNote:
+          'All rating math and match simulations run locally in your browser with no network request; match records are never uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Which K-factor should I choose?',
+            answer:
+              'K controls how much each game moves the rating. New or low-activity accounts typically use 40, the FIDE open-level standard is 32, rated players below 2400 use 24, and grandmasters above 2400 use 16. The more games and the more stable the level, the smaller K becomes.',
+          },
+          {
+            question: 'Why do I gain so little when beating a lower-rated player?',
+            answer:
+              'The delta is Δ=K×(S−E). Against a much weaker opponent the expected score E is near 1, so winning (S=1) barely exceeds expectation and yields few points. Beating a much stronger opponent is an upset with a low E and therefore a large gain — the regression-to-the-mean mechanism at the heart of Elo.',
+          },
+          {
+            question: 'How does rating carry over across a batch?',
+            answer:
+              'Each game uses the previous game’s post-rating as its new pre-rating when recomputing expectation and delta, so order affects the intermediate steps. Every step is rounded to two decimals to prevent floating-point drift from accumulating.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'fixed-asset-depreciation-calculator',
+    name: '固定资产折旧计算器（直线法 / 工作量法 / 双倍余额递减 / 年数总和）',
+    nameEn: 'Fixed Asset Depreciation Calculator',
+    description:
+      '支持直线法、工作量法、双倍余额递减法与年数总和法四种折旧方法，输入原值、净残值与年限 / 工作量即可输出逐期折旧额、累计折旧与期末账面净值明细表，末期自动承接舍入尾差。',
+    descriptionEn:
+      'Calculate fixed-asset depreciation with straight-line, units-of-activity, double-declining-balance and sum-of-years-digits methods, producing a per-period table of depreciation expense, accumulated depreciation and ending book value, with rounding differences absorbed in the final period.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/fixed-asset-depreciation-calculator',
+    iconName: 'Calculator',
+    tags: ['折旧', '固定资产', '直线法', '双倍余额递减', '年数总和', '财务'],
+    tagsEn: ['Depreciation', 'Fixed Asset', 'Straight Line', 'DDB', 'SYD', 'Finance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '原值 100000；净残值 10000；5 年；直线法每期 18000',
+    doc: {
+      zh: {
+        whatIsIt:
+          '固定资产折旧计算器是一款纯浏览器本地运行的财务工具，覆盖中国企业会计准则与常见财务管理教材中的四种折旧方法，输出逐年或逐期的折旧额、累计折旧与账面净值明细，可直接用于资产台账与教学验算。',
+        coreFeatures: [
+          '直线法：每期折旧 =（原值 − 净残值）/ 期数，金额完全相等',
+          '工作量法：按各期实际工作量占总工作量的比例计提，适合车辆、设备等损耗与使用强度挂钩的资产',
+          '双倍余额递减法：年率 2/n 按期初净值加速计提，最后两年自动切换直线法摊余',
+          '年数总和法：按剩余使用年数 / 年数总和 n(n+1)/2 计算加速折旧',
+          '明细表展示当期折旧、累计折旧、期末账面净值，末期承接四舍五入尾差，净值恒等于净残值',
+          '残值大于等于原值、期数越界、工作量超总预计量等非法输入均有明确中文报错',
+        ],
+        howToUse: [
+          '选择折旧方法（默认直线法）',
+          '填写资产原值、预计净残值；年限法填折旧年限，工作量法填总工作量与各期工作量',
+          '查看统计卡片与逐期明细表，金额以千分位元展示并保留两位小数',
+          '切换方法时参数保留，可直接对比同一资产在不同方法下的折旧节奏',
+        ],
+        useCases: [
+          '会计、财务人员编制固定资产折旧台账与纳税申报辅助测算',
+          '设备采购评估与资产全生命周期成本分析',
+          '财会教学与考试中四种折旧方法的手算结果验算',
+        ],
+        privacyNote:
+          '所有资产数据与折旧计算均在浏览器本地完成，不发起任何网络请求，财务数据不会被上传或持久化。',
+        faqs: [
+          {
+            question: '为什么最后一期折旧额有时和前面不一样？',
+            answer:
+              '每期金额按两位小数四舍五入，除不尽时会产生舍入尾差。工具把累计尾差统一放入最后一期，保证累计折旧恰好等于「原值 − 净残值」、期末账面净值恰好等于净残值，避免台账对不平。',
+          },
+          {
+            question: '双倍余额递减法最后两年为什么变成直线法？',
+            answer:
+              '双倍余额递减法若始终按固定比率计提，账面净值永远无法折到预计净残值。通行做法（也是我国准则允许的处理）是在最后两年改用直线法，将当时账面净值与净残值之差平均摊完，工具自动完成这一切换。',
+          },
+          {
+            question: '工作量法的各期工作量怎么填？',
+            answer:
+              '以逗号或换行分隔，数组长度即为折旧期数，例如「30000,20000,40000」表示三期。各期工作量之和不能超过预计总工作量，否则会报错；末期同样承接尾差确保折足可折旧总额。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Fixed Asset Depreciation Calculator runs entirely in your browser and covers the four depreciation methods commonly taught and used in financial management, outputting per-period depreciation expense, accumulated depreciation and book value for asset ledgers and textbook verification.',
+        coreFeatures: [
+          'Straight-line: (cost − salvage) / periods, identical expense every period',
+          'Units-of-activity: expense proportional to actual usage per period, ideal for vehicles and equipment',
+          'Double-declining-balance: accelerated 2/n rate on opening book value, switching to straight-line in the final two years',
+          'Sum-of-years-digits: accelerated expense based on remaining life over n(n+1)/2',
+          'Detail table with period expense, accumulated depreciation and ending book value; the final period absorbs rounding so book value ends exactly at salvage',
+          'Clear Chinese error messages for invalid salvage, period range or over-allocated activity units',
+        ],
+        howToUse: [
+          'Pick a depreciation method (straight-line by default)',
+          'Enter cost and estimated salvage; for time-based methods enter useful life, for activity method enter total and per-period units',
+          'Review the summary cards and per-period table; amounts are shown with thousands separators and two decimals',
+          'Switch methods while keeping the same inputs to compare depreciation schedules side by side',
+        ],
+        useCases: [
+          'Building fixed-asset depreciation ledgers and supporting tax filings for accounting teams',
+          'Equipment purchase evaluation and life-cycle cost analysis',
+          'Verifying hand calculations of all four methods in accounting courses and exams',
+        ],
+        privacyNote:
+          'All asset data and depreciation math stay in your browser with no network request; financial figures are never uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Why does the final period sometimes differ from earlier periods?',
+            answer:
+              'Each amount is rounded to two decimals, which creates small rounding differences when the base does not divide evenly. The tool absorbs the accumulated difference in the final period so accumulated depreciation equals cost minus salvage and ending book value equals salvage exactly.',
+          },
+          {
+            question: 'Why does double-declining-balance switch to straight-line near the end?',
+            answer:
+              'A fixed declining rate would never reach the estimated salvage value. The standard treatment — permitted under Chinese GAAP as well — is to switch to straight-line for the final two years, spreading the remaining depreciable amount evenly so the asset is depreciated down to salvage.',
+          },
+          {
+            question: 'How do I enter activity units per period?',
+            answer:
+              'Separate values with commas or newlines, e.g. "30000,20000,40000" for three periods; the array length defines the number of periods. The sum cannot exceed the estimated total units, and the final period absorbs any rounding difference.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'apca-contrast-calculator',
+    name: 'APCA（WCAG 3）感知对比度计算器（Lc 极性 / 可读性分级）',
+    nameEn: 'APCA Perceptual Contrast Calculator',
+    description:
+      '实现 WCAG 3 候选的 APCA 0.1.9 算法：sRGB 线性化后按感知加权计算亮度，输出带符号 L^c 对比度（正=深字浅底、负=浅字深底），并依据 Lc 90/75/60/45/30/15 阈值给出正文、标题与图形元素的可读性分级。',
+    descriptionEn:
+      'Implements the APCA 0.1.9 candidate algorithm for WCAG 3: sRGB linearization followed by perceptually weighted luminance, returning a signed L^c contrast (positive = dark text on light, negative = light text on dark) with readability grades at the Lc 90/75/60/45/30/15 thresholds for body text, headings and graphics.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/apca-contrast-calculator',
+    iconName: 'BgColors',
+    tags: ['APCA', 'WCAG 3', '对比度', '可访问性', '色彩', 'Lc'],
+    tagsEn: ['APCA', 'WCAG 3', 'Contrast', 'Accessibility', 'Color', 'Lc'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '文字 #1F2329；背景 #FFFFFF',
+    doc: {
+      zh: {
+        whatIsIt:
+          'APCA 对比度计算器是一款纯浏览器本地运行的可访问性工具，实现 W3C 银任务组为 WCAG 3 设计的 Advanced Perceptual Contrast Algorithm。相比 WCAG 2 的线性比值，APCA 基于人眼对明暗的非线性感知建模，输出带极性的 L^c 分数，更贴近真实阅读体验。',
+        coreFeatures: [
+          'sRGB 反伽马线性化 + 感知亮度加权（0.2126729 / 0.7151522 / 0.072175），含软黑位与软白位裁剪',
+          '带符号 L^c：正值表示深色文字配浅色背景，负值表示浅色文字配深色背景',
+          '黑字白底约 Lc 106、白字黑底约 Lc −100 的标准量级，同色对为 0',
+          '依据 Lc 90/75/60/45/30/15 阈值自动判定正文、中号字、标题、装饰文字或图形元素分级',
+          '支持 #RGB、#RRGGBB、#RRGGBBAA（alpha 低于 50% 报错），原生取色器与十六进制输入双通道',
+          '内置常见配色预设与前后景交换，实时预览实际文字渲染效果',
+        ],
+        howToUse: [
+          '通过取色器或十六进制文本框分别设置文字颜色与背景颜色',
+          '查看 L^c 数值、极性说明与可读性分级，分级颜色越绿可读性越好',
+          '用「交换前景 / 背景」观察 APCA 极性不对称特性，或点击预设快速对比常见配色',
+          '底部等级参考表可对照设计规范选择字号与字重',
+        ],
+        useCases: [
+          '设计系统与组件库制定 WCAG 3 方向的颜色可访问性规范',
+          '前端与设计评审中验证正文、按钮、表单文字的感知对比度',
+          '教学演示 APCA 与 WCAG 2 对比度比值的建模差异',
+        ],
+        privacyNote:
+          '所有颜色解析与对比度计算均在浏览器本地完成，不发起任何网络请求，颜色数据不会被上传或持久化。',
+        faqs: [
+          {
+            question: '为什么 Lc 有正负号，而 WCAG 2 的对比度比值没有？',
+            answer:
+              'APCA 以文字相对于背景的极性输出结果：背景更亮（深字浅底）时为正，背景更暗（浅字深底）时为负。人眼对两种极性的感知并不对称，因此同一对颜色交换前后景后，Lc 的绝对值也会略有差异，这是算法刻意建模的结果。',
+          },
+          {
+            question: 'Lc 达到多少才算合格？',
+            answer:
+              'APCA 按用途分级而非单一及格线：常规正文建议 |Lc| ≥ 75，大段小字建议 ≥ 90，中号文字与表单 ≥ 60，大号标题或粗体 ≥ 45；30–45 仅限超大标题，15–30 只适合非文字图形，低于 15 不适合承载文字。',
+          },
+          {
+            question: '为什么半透明颜色会报错？',
+            answer:
+              '对比度描述的是两个不透明颜色在固定背景上的感知差异。alpha 低于 50% 时实际呈现颜色强烈依赖其下方叠底，单一 Lc 数值没有确定意义，因此工具直接拒绝计算并提示，避免给出误导性结论。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The APCA Contrast Calculator runs entirely in your browser and implements the Advanced Perceptual Contrast Algorithm developed by the W3C Silver Task Force for WCAG 3. Unlike the linear ratio of WCAG 2, APCA models the human eye’s nonlinear lightness perception and returns a polarity-aware L^c score that better matches real reading experience.',
+        coreFeatures: [
+          'sRGB inverse-gamma linearization with perceptual luminance weights (0.2126729 / 0.7151522 / 0.072175), plus soft black and white clipping',
+          'Signed L^c: positive for dark text on light backgrounds, negative for light text on dark backgrounds',
+          'Canonical magnitudes around Lc 106 for black-on-white and Lc −100 for white-on-black; identical colors yield 0',
+          'Automatic readability grading at Lc 90/75/60/45/30/15 for body text, mid-size text, headings, decorative type and graphics',
+          'Accepts #RGB, #RRGGBB and #RRGGBBAA (alpha below 50% rejected), with native picker and hex input',
+          'Built-in common palette presets, foreground/background swap and live text preview',
+        ],
+        howToUse: [
+          'Set the text and background colors via the color picker or hex text fields',
+          'Read the L^c value, polarity explanation and readability grade — greener means more readable',
+          'Use "Swap foreground/background" to observe APCA polarity asymmetry, or try the built-in presets',
+          'Consult the grade reference table at the bottom when choosing font size and weight in design specs',
+        ],
+        useCases: [
+          'Defining WCAG 3-oriented color accessibility rules for design systems and component libraries',
+          'Verifying perceptual contrast of body copy, buttons and form text in design and frontend reviews',
+          'Teaching the modeling differences between APCA and the WCAG 2 contrast ratio',
+        ],
+        privacyNote:
+          'All color parsing and contrast math run locally in your browser with no network request; color data is never uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Why is Lc signed while the WCAG 2 ratio is not?',
+            answer:
+              'APCA reports the polarity of text relative to its background: positive when the background is lighter (dark text on light) and negative when it is darker (light text on dark). Human perception is asymmetric across the two polarities, so swapping foreground and background does not yield identical absolute Lc values — a deliberate feature of the model.',
+          },
+          {
+            question: 'What Lc value counts as passing?',
+            answer:
+              'APCA grades by use case rather than a single pass/fail line: body text should reach |Lc| ≥ 75 (≥ 90 for dense small text), mid-size text and forms ≥ 60, large or bold headings ≥ 45; 30–45 is only for oversized headings, 15–30 for non-text graphics, and below 15 is unsuitable for any text.',
+          },
+          {
+            question: 'Why are translucent colors rejected?',
+            answer:
+              'Contrast describes the perceptual difference between two opaque colors on a fixed backdrop. Below 50% alpha the rendered color depends heavily on whatever is composited underneath, so a single Lc figure would be ambiguous; the tool rejects such input instead of producing a misleading result.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'depth-of-field-calculator',
+    name: '摄影景深与超焦距计算器（弥散圆 / 光圈 / 焦距 / 对焦距离互求）',
+    nameEn: 'Depth of Field & Hyperfocal Calculator',
+    description:
+      '基于薄透镜几何光学模型，输入焦距、光圈 f 值、弥散圆与对焦距离，计算超焦距 H、近界、远界、景深与前 / 后景深；支持七种画幅弥散圆预设与光圈档位，并可由目标近界反推应对焦的距离。',
+    descriptionEn:
+      'Compute hyperfocal distance H, near/far limits, total depth of field and front/rear depth from focal length, f-number, circle of confusion and focus distance using the thin-lens optical model, with seven sensor-format CoC presets, aperture stops and a reverse solver that derives focus distance from a target near limit.',
+    category: ToolCategoryEnum.IMAGE_MEDIA,
+    path: '/tools/depth-of-field-calculator',
+    iconName: 'Camera',
+    tags: ['景深', '超焦距', '弥散圆', '光圈', '焦距', '摄影'],
+    tagsEn: ['Depth of Field', 'Hyperfocal', 'Circle of Confusion', 'Aperture', 'Focal Length', 'Photography'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '50mm f/2.8 全画幅（c=0.03）对焦 3m',
+    doc: {
+      zh: {
+        whatIsIt:
+          '摄影景深与超焦距计算器是一款纯浏览器本地运行的光学计算工具，基于薄透镜几何光学模型，帮助摄影者在拍摄前预判画面清晰范围、规划超焦距对焦，并支持由期望近界反推对焦距离，适配风光、街拍与微距等场景。',
+        coreFeatures: [
+          '超焦距 H = f² / (N × c)，对焦在 H 处时远界达无穷远、近界恰为 H/2',
+          '近界 Dn = Hs/(H+s)、远界 Df = Hs/(H−s)，s ≥ H 时远界自动判为无穷',
+          '输出超焦距、近界、远界、景深总深度、前景深与后景深六项指标，毫米 / 米自适应展示',
+          '全画幅、APS-H、APS-C、M4/3、1 英寸等七种画幅弥散圆预设，f/1.4–f/32 光圈档位快捷选择',
+          '反推模式：给定目标近界，由 s = Dn·H/(H−Dn) 求应对焦距离，并提示超焦距上限',
+          '焦距、光圈、弥散圆、对焦距离越界均有明确中文报错，零依赖纯本地运算',
+        ],
+        howToUse: [
+          '选择画幅预设或手动填写弥散圆，再设置焦距与光圈（可点档位快捷输入）',
+          '正向模式：选择距离单位并填写对焦距离，即时查看六项景深指标',
+          '反推模式：切换后填写期望近界，工具给出应对焦的距离与超焦距上限',
+          '远界显示 ∞（无穷远）时表示从近界到无限远均在清晰范围内',
+        ],
+        useCases: [
+          '风光摄影超焦距对焦规划，保证前景到无穷远全部清晰',
+          '街拍、活动拍摄预估固定对焦距离下的清晰区间（区域对焦法）',
+          '微距与人像拍摄中权衡光圈、景深与衍射，选择合适 f 值',
+          '摄影教学演示焦距、光圈、拍摄距离与传感器画幅对景深的影响',
+        ],
+        privacyNote:
+          '所有光学参数与景深计算均在浏览器本地完成，不发起任何网络请求，拍摄参数不会被上传或持久化。',
+        faqs: [
+          {
+            question: '为什么后景深总是比前景深大？',
+            answer:
+              '由薄透镜公式 Dn = Hs/(H+s)、Df = Hs/(H−s) 可知，远界分母更小、数值更大，因此清晰范围向对焦平面后方延伸得更多。随着对焦距离接近超焦距，后景深迅速增长并最终达到无穷，而前景深始终约为对焦距离的一小部分。',
+          },
+          {
+            question: '超焦距到底应该对焦在哪里？',
+            answer:
+              '超焦距 H = f²/(Nc) 是让远界恰好达到无穷远的最近对焦距离。把镜头对焦在 H 处时，清晰范围从 H/2 一直延伸到无穷远，这是风光摄影中「前景尽量近、远景仍清晰」的最优对焦点；工具的反推模式也会在近界目标超过 H 时给出提示。',
+          },
+          {
+            question: '弥散圆（CoC）数值怎么选？',
+            answer:
+              '弥散圆描述人眼在标准观看距离下可接受的最大模糊斑直径，与传感器尺寸挂钩：全画幅常用 0.03mm，APS-C 约 0.02mm，M4/3 约 0.015mm。工具内置七种画幅预设；若追求更高放大率或更严苛的像素级清晰，可手动取更小的数值，景深结果会相应变浅。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Depth of Field & Hyperfocal Calculator runs entirely in your browser using the thin-lens geometric optics model. It helps photographers preview the sharp zone before shooting, plan hyperfocal focusing and reverse-solve a focus distance from a desired near limit, covering landscape, street and macro workflows.',
+        coreFeatures: [
+          'Hyperfocal H = f² / (N × c); focusing at H sends the far limit to infinity while the near limit equals H/2',
+          'Near Dn = Hs/(H+s) and far Df = Hs/(H−s) limits, with infinity detected automatically once s ≥ H',
+          'Six outputs: hyperfocal, near/far limits, total DoF, front and rear depth, with adaptive mm/m formatting',
+          'Seven circle-of-confusion presets from full-frame to 1/2.3-inch compact sensors and f/1.4–f/32 aperture stops',
+          'Reverse mode solves s = Dn·H/(H−Dn) for the required focus distance and flags the hyperfocal ceiling',
+          'Explicit Chinese validation errors for out-of-range focal length, aperture, CoC or focus distance; zero-dependency local math',
+        ],
+        howToUse: [
+          'Pick a sensor-format preset (or enter the CoC manually), then set focal length and aperture, optionally via the stop buttons',
+          'In forward mode, choose a distance unit and enter the focus distance to see all six DoF metrics instantly',
+          'In reverse mode, enter the desired near limit to obtain the required focus distance and hyperfocal ceiling',
+          'A far limit shown as ∞ means everything from the near limit to infinity is acceptably sharp',
+        ],
+        useCases: [
+          'Planning hyperfodal focus in landscape work to keep foreground and infinity sharp',
+          'Estimating the sharp zone for zone-focusing in street and event photography',
+          'Balancing aperture, depth of field and diffraction for macro and portrait shots',
+          'Teaching how focal length, aperture, focus distance and sensor format affect depth of field',
+        ],
+        privacyNote:
+          'All optical parameters and DoF calculations run locally in your browser with no network request; shooting parameters are never uploaded or persisted.',
+        faqs: [
+          {
+            question: 'Why is rear depth of field always larger than front depth?',
+            answer:
+              'From the thin-lens formulas Dn = Hs/(H+s) and Df = Hs/(H−s), the far-limit denominator is smaller, so the sharp zone always extends further behind the focus plane. As focus approaches the hyperfocal distance, rear depth grows rapidly and eventually reaches infinity, while front depth remains a fraction of the focus distance.',
+          },
+          {
+            question: 'Where exactly should I focus for hyperfocal distance?',
+            answer:
+              'The hyperfocal H = f²/(Nc) is the closest focus distance that still keeps infinity sharp. Focusing at H yields a sharp zone from H/2 to infinity — the optimal point for landscape work that needs both a near foreground and a sharp background. The reverse mode warns you when the requested near limit would exceed H.',
+          },
+          {
+            question: 'Which circle-of-confusion value should I use?',
+            answer:
+              'The CoC is the largest blur disk the eye accepts at a standard viewing distance and scales with sensor size: roughly 0.03mm for full-frame, 0.02mm for APS-C and 0.015mm for Micro Four Thirds. The tool ships seven format presets; for pixel-level sharpness or heavy cropping, enter a smaller CoC and the computed depth of field becomes shallower accordingly.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'porter-stemmer',
+    name: '英文 Porter 词干提取器与词形归并批处理',
+    nameEn: 'Porter Stemmer & Word Form Grouper',
+    description:
+      '实现 Porter 1980 后缀剥离算法（步骤 1a–5b），对英文文本批量提取词干并归并 run/runs/running 等同族词形，输出词干、出现次数与原始词形分组，支持一键复制或下载 CSV。',
+    descriptionEn:
+      'A faithful Porter 1980 suffix-stripping implementation (steps 1a–5b) that stems English text in bulk, grouping inflected forms such as run/runs/running under one stem with counts and original forms, and exports the grouping to CSV.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/porter-stemmer',
+    iconName: 'Type',
+    tags: ['词干提取', 'Porter', '词形归并', 'NLP', '文本分析', '英文'],
+    tagsEn: ['Stemming', 'Porter Stemmer', 'Lemmatization', 'NLP', 'Text Analysis', 'English'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'The runners were running quickly across the park. They had run together every morning.',
+    doc: {
+      zh: {
+        whatIsIt:
+          '英文 Porter 词干提取器是一款纯浏览器本地运行的自然语言处理小工具，忠实实现 Porter（1980）经典后缀剥离算法的全部六个步骤，将同一词族的屈折变化（复数、时态、派生后缀等）归并到统一语干，便于检索、关键词聚合与文本统计。',
+        coreFeatures: [
+          '完整实现 Porter 1980 步骤 1a/1b/1c、2、3、4、5a/5b，基于 C/VC 音节度量 m 与约 60 条后缀规则',
+          '批处理词形归并：run、runs、running 自动聚合到同一词干并分别记录原始词形',
+          '输出总词次、不同词干数与可排序分组表格，每组显示词干、次数与全部词形标签',
+          '内置分词器按字母与撇号切词，数字、标点、换行自动作为分隔符',
+          '一键复制或下载 CSV（词干 / 次数 / 词形），便于导入表格或检索系统',
+          '零依赖、零网络请求，所有文本仅在浏览器内存中处理',
+        ],
+        howToUse: [
+          '将英文文本粘贴到输入框，或点击「载入示例」查看演示语料',
+          '工具实时分词、提取词干并按词干归并，无需点击计算按钮',
+          '在结果表格中按出现次数排序，查看每个词干归并了哪些原始词形',
+          '点击「复制 CSV」或「下载 CSV」导出归并结果',
+        ],
+        useCases: [
+          '搜索引擎与信息检索中的查询词与文档词归一化，提升召回率',
+          '关键词频次统计、词云与文本聚类前的词形降维预处理',
+          'NLP / 信息检索课程中演示 Porter 后缀剥离算法的每步效果',
+          '批量分析用户评论、问卷英文开放题的核心概念分布',
+        ],
+        privacyNote:
+          '所有分词与词干提取均在浏览器本地完成，不发起任何网络请求，输入文本不会被上传、记录或持久化。',
+        faqs: [
+          {
+            question: '词干（stem）和词元（lemma）有什么区别？',
+            answer:
+              'Porter 词干提取是基于规则的后缀剥离，输出的是语干而非词典词形，因此可能得到 relational → relat、agreed → agre 这类并非真实单词的结果；而词形还原（lemmatization）依赖词典与词性，会还原出 relation、agree 这样的规范词元。词干提取更快、零数据依赖，适合检索与归并场景。',
+          },
+          {
+            question: '为什么不同的词可能被归并到同一个词干？',
+            answer:
+              'Porter 算法刻意追求「过度归并」：只要后缀剥离后语干相同就合并，例如 universal、university 等词可能共享前缀语干。这提升了检索召回，但不保证语义完全等价；若需要精确区分，应结合词典或词性标注做词形还原。',
+          },
+          {
+            question: '支持哪些字符与语言？',
+            answer:
+              '工具面向英文文本，按连续的英文字母与撇号切词（如 don\'t 视为一个词），数字、标点与空白作为分隔符。输入会统一转小写后再提取词干；中文、日文等非拉丁字母文本不会被当作英文单词处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Porter Stemmer is a fully local natural-language utility that faithfully implements the classic Porter (1980) suffix-stripping algorithm across all six steps, merging inflected forms of the same word family (plurals, tenses, derivational suffixes) onto a single stem for retrieval, keyword aggregation and text statistics.',
+        coreFeatures: [
+          'Complete Porter 1980 steps 1a/1b/1c, 2, 3, 4 and 5a/5b driven by the C/VC measure m and roughly 60 suffix rules',
+          'Batch grouping: run, runs and running are merged under one stem while every original form is retained',
+          'Reports total tokens, unique stems and a sortable table of stem, count and word-form tags',
+          'Built-in tokenizer splits on letters and apostrophes while treating digits, punctuation and newlines as separators',
+          'One-click copy or CSV download (stem / count / forms) for spreadsheets and retrieval pipelines',
+          'Zero dependencies and zero network requests; text is processed only in browser memory',
+        ],
+        howToUse: [
+          'Paste English text into the input box or click the sample button to load demo content',
+          'Tokenization, stemming and grouping run live with no compute button required',
+          'Sort the result table by frequency and inspect which original forms each stem absorbed',
+          'Use "Copy CSV" or "Download CSV" to export the grouping',
+        ],
+        useCases: [
+          'Normalizing query and document terms in search and information retrieval to improve recall',
+          'Reducing word forms before keyword frequency, word-cloud and text-clustering analysis',
+          'Demonstrating each Porter suffix-stripping step in NLP and IR coursework',
+          'Analyzing the core concepts inside English open-ended reviews and survey answers',
+        ],
+        privacyNote:
+          'All tokenization and stemming happens locally in your browser with no network request; input text is never uploaded, logged or persisted.',
+        faqs: [
+          {
+            question: 'What is the difference between a stem and a lemma?',
+            answer:
+              'Porter stemming is rule-based suffix stripping and produces a word stem rather than a dictionary form, so it can yield non-words such as relational → relat or agreed → agre. Lemmatization relies on a dictionary and part-of-speech tags to return canonical words like relation and agree. Stemming is faster and data-free, which suits retrieval and grouping tasks.',
+          },
+          {
+            question: 'Why can different words be merged onto one stem?',
+            answer:
+              'The Porter algorithm intentionally over-groups: words are merged whenever their stems coincide after suffix removal, so words such as universal and university may share a prefix stem. This boosts retrieval recall without guaranteeing semantic equivalence; for precise distinctions, use dictionary-based lemmatization with POS tags instead.',
+          },
+          {
+            question: 'Which characters and languages are supported?',
+            answer:
+              'The tool targets English text and tokenizes runs of letters and apostrophes (so don\'t stays one token), treating digits, punctuation and whitespace as separators. Input is lowercased before stemming; non-Latin scripts such as Chinese or Japanese are not treated as English words.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
