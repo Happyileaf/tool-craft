@@ -34549,6 +34549,96 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'text-shadow-generator',
+    name: 'CSS text-shadow 多层文字阴影生成器',
+    nameEn: 'CSS text-shadow Generator',
+    description:
+      '叠加多层文字阴影，分别调节偏移、模糊与颜色并实时预览，输出可复制的 text-shadow CSS。',
+    descriptionEn:
+      'Layer multiple text shadows with per-layer offset, blur, and color, preview live, and copy the text-shadow CSS.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/text-shadow-generator',
+    iconName: 'Wand2',
+    tags: ['text-shadow', '文字阴影', 'CSS', '发光', '文字特效'],
+    tagsEn: ['text-shadow', 'Text Shadow', 'CSS', 'Glow', 'Text Effect'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS text-shadow 多层文字阴影生成器允许你为文字叠加任意数量的阴影层，每层独立设置水平偏移（offset-x）、垂直偏移（offset-y）、模糊半径与颜色，层与层之间用逗号分隔。工具在预览区实时渲染最终效果并输出可直接复制的 text-shadow 声明。',
+        coreFeatures: [
+          '多层叠加：添加、删除、启停多个阴影层，按顺序合并输出',
+          '独立控制：每层单独调节 X/Y 偏移、模糊半径与颜色',
+          '实时预览：支持浅色/深色/靛蓝背景切换，所见即所得',
+          '内置预设：柔和投影、霓虹发光、复古立体、浮雕凸起',
+        ],
+        howToUse: [
+          '选择一个预设快速开始，或点击“添加阴影层”从空白层搭建',
+          '拖动每层的 X/Y 偏移与模糊滑块，并用取色器设置颜色',
+          '通过复选框临时启停某层，对比叠加效果',
+          '切换预览背景确认可读性后，复制生成的 text-shadow 声明',
+        ],
+        useCases: [
+          '制作标题文字的霓虹发光、立体浮雕等视觉效果',
+          '为深色背景上的文字添加柔和投影提升可读性',
+          '快速调试多层 text-shadow 的层级与颜色搭配',
+        ],
+        privacyNote:
+          '所有参数调整、阴影计算与预览均在浏览器本地完成，不上传任何数据。',
+        faqs: [
+          {
+            question: 'text-shadow 和 box-shadow 有什么区别？',
+            answer:
+              'text-shadow 作用于文字字形，语法为 offset-x offset-y blur color，不支持扩散半径（spread）也不支持 inset；box-shadow 作用于盒模型，支持 spread 与 inset。本工具专注文字阴影，盒阴影请使用 box-shadow 生成器。',
+          },
+          {
+            question: '多层阴影的叠加顺序如何决定？',
+            answer:
+              'text-shadow 列表中靠前的阴影绘制在更上层。工具严格按你列出的层顺序输出，第一层在最上方，因此可通过调整层的上下顺序控制谁覆盖谁。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CSS text-shadow Generator lets you stack any number of shadow layers on text. Each layer has its own offset-x, offset-y, blur radius, and color, and the layers are joined with commas. The preview renders the final result live and emits a copy-ready text-shadow declaration.',
+        coreFeatures: [
+          'Multi-layer stacking: add, remove, enable, or disable shadow layers merged in order',
+          'Per-layer control of X/Y offset, blur radius, and color',
+          'Live preview with light, dark, and indigo backgrounds',
+          'Built-in presets: soft shadow, neon glow, retro 3D, and emboss',
+        ],
+        howToUse: [
+          'Start from a preset or add a blank shadow layer to build from scratch',
+          'Drag the X/Y offset and blur sliders per layer and pick a color',
+          'Toggle layers with the checkbox to compare stacking results',
+          'Switch preview backgrounds to check readability, then copy the declaration',
+        ],
+        useCases: [
+          'Creating neon glow or embossed 3D effects for headings',
+          'Adding soft shadows to text on dark backgrounds for readability',
+          'Experimenting with layered text-shadow ordering and color schemes',
+        ],
+        privacyNote:
+          'All parameter changes, shadow calculations, and previews run locally in your browser; nothing is uploaded.',
+        faqs: [
+          {
+            question: 'How is text-shadow different from box-shadow?',
+            answer:
+              'text-shadow applies to glyphs and uses offset-x offset-y blur color, with no spread radius and no inset keyword; box-shadow applies to the box model and supports both spread and inset. This tool focuses on text shadows—use the box-shadow generator for element boxes.',
+          },
+          {
+            question: 'How is the stacking order of multiple shadows decided?',
+            answer:
+              'Earlier shadows in the text-shadow list are painted on top. The tool outputs layers in exactly the order you list them, with the first layer uppermost, so reordering layers changes which one covers the others.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

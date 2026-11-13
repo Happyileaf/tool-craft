@@ -367,4 +367,5 @@ export const toolLoaders: Record<
   'link-header-codec': () => import('./link-header-codec'),
   'font-face-generator': () => import('./font-face-generator'),
   'css-scrollbar-generator': () => import('./css-scrollbar-generator'),
+  'text-shadow-generator': () => import('./text-shadow-generator'),
 };
