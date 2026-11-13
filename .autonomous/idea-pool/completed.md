@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261114020133 | 工时时长累加器（多段上下班打卡时间求和、扣除休息与跨天处理） | Web Tool | Exploration | `work-hours-calculator` / [PR #231](https://github.com/Happyileaf/tool-craft/pull/231) | 2026-11-14 | [详情](./idea-details/20261114020133.md) |
+| 20261114020132 | 正则表达式元字符转义/反转义工具（字面量安全转义与 RegExp 构造源码输出） | Web Tool | Existing Gap | `regex-escape-tool` / [PR #231](https://github.com/Happyileaf/tool-craft/pull/231) | 2026-11-14 | [详情](./idea-details/20261114020132.md) |
+| 20261114020131 | CSS text-shadow 多层文字阴影生成器（实时预览与代码输出） | Web Tool | Exploration | `text-shadow-generator` / [PR #231](https://github.com/Happyileaf/tool-craft/pull/231) | 2026-11-14 | [详情](./idea-details/20261114020131.md) |
+| 20261114020130 | CSS Scrollbar 滚动条样式生成器（WebKit 前缀与标准 scrollbar-width/color 双输出） | Web Tool | Exploration | `css-scrollbar-generator` / [PR #231](https://github.com/Happyileaf/tool-craft/pull/231) | 2026-11-14 | [详情](./idea-details/20261114020130.md) |
+| 20261114020129 | @font-face 声明生成器（多字重/多格式 src 拼装与 font-display 配置） | Web Tool | Exploration | `font-face-generator` / [PR #231](https://github.com/Happyileaf/tool-craft/pull/231) | 2026-11-14 | [详情](./idea-details/20261114020129.md) |
 | 20261109081157 | logfmt 日志解析与格式化工具（key=value 双向转换与类型推断） | Web Tool | Existing Gap | `logfmt-parser-formatter` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081157.md) |
 | 20261109081156 | LED 限流电阻计算器（欧姆定律与功耗、E24 标称阻值选型） | Web Tool | Existing Gap | `led-resistor-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081156.md) |
 | 20261109081155 | ISSN 校验位计算器与规范化工具（含连字符定位与批量校验） | Web Tool | Existing Gap | `issn-checksum-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081155.md) |
