@@ -33534,6 +33534,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'http-date-codec',
+    name: 'HTTP 日期头解析与格式化器',
+    nameEn: 'HTTP Date Header Parser & Formatter',
+    description:
+      '解析 RFC 9110 定义的三种 HTTP-date 历史格式（IMF-fixdate、RFC 850 两位年份、asctime）为 UTC epoch 秒，并把 epoch 统一格式化为首选 IMF-fixdate，手写确定性解析器，交叉校验星期与日历日期，缺 GMT 或非法日期可读报错。',
+    descriptionEn:
+      'Parses the three historical HTTP-date formats of RFC 9110 (IMF-fixdate, two-digit-year RFC 850 and asctime) into UTC epoch seconds, and formats epoch back to the preferred IMF-fixdate. A hand-written deterministic parser cross-checks weekday and calendar date and reports readable errors for a missing GMT suffix or invalid date.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/http-date-codec',
+    iconName: 'Clock',
+    tags: ['HTTP 日期', 'RFC 9110', 'IMF-fixdate', 'RFC 850', 'asctime', 'GMT'],
+    tagsEn: ['HTTP Date', 'RFC 9110', 'IMF-fixdate', 'RFC 850', 'asctime', 'GMT'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Sun, 06 Nov 1994 08:49:37 GMT',
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP 日期头解析与格式化器是一款纯浏览器本地工具，实现 RFC 9110 §5.6.7 的 HTTP-date 语法。解析侧手写三个确定性解析器，分别识别首选的 IMF-fixdate（Sun, 06 Nov 1994 08:49:37 GMT）、过时的 RFC 850 格式（两位年份按世纪规则推断）与 asctime 格式（单日号前两个空格），统一换算为 UTC epoch 秒并标注识别到的格式；格式化侧把任意 epoch 秒按 UTC 生成规范 IMF-fixdate，并自动填充正确星期。',
+        coreFeatures: [
+          '三种格式全解析：IMF-fixdate、RFC 850、asctime 归一到同一 epoch 秒',
+          'RFC 850 两位年份按“大于当前年份后两位则归入上一世纪”规则推断',
+          '星期与日历日期交叉校验，矛盾时明确报出实际星期',
+          'epoch → IMF-fixdate 构造，自动补齐两位日号与正确星期，UTC 处理',
+          '缺 GMT 后缀、非法月份、不存在的日历日、越界时间字段均可读报错',
+        ],
+        howToUse: [
+          '选择「解析 HTTP-date → epoch」，粘贴 Date/Last-Modified/Expires 头值',
+          '查看识别格式、epoch 秒、ISO 8601 与归一化 IMF-fixdate',
+          '或选择「构造 epoch → IMF-fixdate」，输入 Unix epoch 秒得到规范头值',
+          '点击示例标签可载入 RFC 9110 §5.6.7 的三个等价官方示例',
+        ],
+        useCases: [
+          '调试 Last-Modified、If-Modified-Since、Expires、Retry-After 等日期头',
+          '排查旧服务返回的 RFC 850 / asctime 遗留格式',
+          '构造符合规范、可直接放入响应头的 IMF-fixdate 字符串',
+          '教学演示三种 HTTP 日期格式与 UTC/epoch 的换算关系',
+        ],
+        privacyNote:
+          '所有解析与格式化均在浏览器本地基于纯函数完成，不发起网络请求，不发送或持久化输入。',
+        faqs: [
+          {
+            question: '为什么三种不同写法会解析成同一个时间？',
+            answer:
+              'RFC 9110 保留 IMF-fixdate、RFC 850、asctime 三种历史语法仅为兼容接收方，它们表达的是同一时刻 1994-11-06T08:49:37Z，因此归一后 epoch 秒完全相同；发送时规范要求只使用 IMF-fixdate。',
+          },
+          {
+            question: 'RFC 850 的两位年份怎么确定是 19xx 还是 20xx？',
+            answer:
+              '按 RFC 9110 的指导，两位年份若大于当前年份的后两位，则视为上一世纪（1900+），否则视为本世纪（2000+）。本工具据此推断，并建议对超过约 50 年跨度的场景改用四位年份的 IMF-fixdate。',
+          },
+          {
+            question: '为什么星期写错会报错？',
+            answer:
+              '星期在 HTTP-date 中是冗余信息，可由年月日唯一确定。解析器会用日历重新计算星期并与头中声明值比对，不一致（如把 1994-11-06 标成 Mon）说明头值被篡改或生成有误，因此明确报错而不是静默接受。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The HTTP Date Header Parser & Formatter runs entirely in your browser and implements the HTTP-date grammar of RFC 9110 §5.6.7. The parsing side uses three hand-written deterministic parsers for the preferred IMF-fixdate (Sun, 06 Nov 1994 08:49:37 GMT), the obsolete RFC 850 form (two-digit year resolved by a century rule) and the asctime form (two spaces before a single-digit day), normalizing all to UTC epoch seconds and reporting the detected format. The formatting side turns any epoch second into a canonical UTC IMF-fixdate with the correct weekday filled in automatically.',
+        coreFeatures: [
+          'Parse all three formats — IMF-fixdate, RFC 850 and asctime — into the same epoch second',
+          'RFC 850 two-digit year resolved as the previous century when it exceeds the current year’s last two digits',
+          'Weekday and calendar date cross-checked, naming the actual weekday on contradiction',
+          'Build epoch to IMF-fixdate with zero-padded day and correct weekday, all in UTC',
+          'Readable errors for a missing GMT suffix, illegal month, impossible calendar day or out-of-range time field',
+        ],
+        howToUse: [
+          'Pick "Parse HTTP-date to epoch" and paste a Date/Last-Modified/Expires header value',
+          'Inspect the detected format, epoch second, ISO 8601 and normalized IMF-fixdate',
+          'Or pick "Build epoch to IMF-fixdate", enter a Unix epoch second and get a canonical header value',
+          'Click a sample tag to load the three equivalent official examples from RFC 9110 §5.6.7',
+        ],
+        useCases: [
+          'Debugging Date, Last-Modified, If-Modified-Since, Expires and Retry-After headers',
+          'Investigating legacy RFC 850 / asctime output from old servers',
+          'Generating spec-compliant IMF-fixdate strings ready to put in response headers',
+          'Teaching the relationship between the three HTTP date forms and UTC/epoch',
+        ],
+        privacyNote:
+          'All parsing and formatting run locally in your browser as pure functions; no network request is made and no input is sent or persisted.',
+        faqs: [
+          {
+            question: 'Why do three different spellings parse to the same instant?',
+            answer:
+              'RFC 9110 keeps IMF-fixdate, RFC 850 and asctime only for compatibility with receivers; they express the same instant 1994-11-06T08:49:37Z, so the normalized epoch second is identical. Senders are required to use IMF-fixdate only.',
+          },
+          {
+            question: 'How is an RFC 850 two-digit year assigned to 19xx versus 20xx?',
+            answer:
+              'Following RFC 9110 guidance, a two-digit year greater than the last two digits of the current year is treated as the previous century (1900+), otherwise as the current century (2000+). For spans beyond roughly 50 years, prefer the four-digit-year IMF-fixdate.',
+          },
+          {
+            question: 'Why does a wrong weekday trigger an error?',
+            answer:
+              'The weekday in an HTTP-date is redundant: it is uniquely determined by the calendar date. The parser recomputes it and compares it with the declared value; a mismatch (e.g. labeling 1994-11-06 as Mon) indicates a corrupted or incorrectly generated header, so it is reported rather than silently accepted.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
