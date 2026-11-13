@@ -369,4 +369,5 @@ export const toolLoaders: Record<
   'css-scrollbar-generator': () => import('./css-scrollbar-generator'),
   'text-shadow-generator': () => import('./text-shadow-generator'),
   'regex-escape-tool': () => import('./regex-escape-tool'),
+  'work-hours-calculator': () => import('./work-hours-calculator'),
 };

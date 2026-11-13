@@ -34729,6 +34729,96 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'work-hours-calculator',
+    name: '工时时长累加器',
+    nameEn: 'Work Hours Calculator',
+    description:
+      '录入多段上下班打卡时间，自动扣除休息、处理跨午夜班次，逐行提示异常并汇总总工时、日均与工资估算。',
+    descriptionEn:
+      'Enter multiple clock-in/clock-out pairs, deduct breaks, handle overnight shifts, and summarize total hours, daily average, and estimated pay.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/work-hours-calculator',
+    iconName: 'Clock',
+    tags: ['工时', '打卡', '考勤', '加班', '工资'],
+    tagsEn: ['Work Hours', 'Timesheet', 'Attendance', 'Overtime', 'Payroll'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '',
+    doc: {
+      zh: {
+        whatIsIt:
+          '工时时长累加器用于按行录入多组“上班时间–下班时间”打卡对（HH:mm），自动计算每段扣除休息后的净工时，支持跨午夜班次（下班时间早于上班时间时自动 +1 天），对缺失或非法时间给出逐行提示，并汇总总工时、总休息时长、日均工时以及按小时费率估算的工资，结果可一键复制为表格文本。',
+        coreFeatures: [
+          '多段打卡录入：动态增删上下班记录，逐段独立计算在岗与净工时',
+          '跨午夜处理：下班早于上班时自动按次日处理，起止相同时按 24 小时班次',
+          '逐行异常提示：时间缺失、格式非法、休息超在岗等情况即时标红且不计入汇总',
+          '汇总与工资：总净工时、总休息、日均工时与小时费率工资估算，支持复制 TSV 表格',
+        ],
+        howToUse: [
+          '在每一行填写上班时间、下班时间（HH:mm）与该段休息分钟数',
+          '需要更多记录时点击“添加一段”，夜班等跨天场景无需手动调整日期',
+          '查看每行净工时与“跨午夜 +1 天”标记，按提示修正异常行',
+          '在汇总区设置小时费率查看工资估算，点击“复制表格”粘贴到 Excel 或表格软件',
+        ],
+        useCases: [
+          '兼职、自由职业者按打卡记录统计当月实际工时与应得报酬',
+          '轮班/夜班员工核对考勤系统中的跨天班次时长',
+          '团队负责人汇总多人多段工作记录，快速核算总投入工时',
+        ],
+        privacyNote:
+          '所有时间数据仅在浏览器本地参与计算，不会上传或存储到任何服务器。',
+        faqs: [
+          {
+            question: '下班时间早于上班时间会怎么算？',
+            answer:
+              '自动识别为跨午夜班次，下班时间按次日处理（+1440 分钟）。例如 22:00 到 06:00 计为 8 小时在岗；上下班时间完全相同时按 24 小时班次处理。',
+          },
+          {
+            question: '休息时间比在岗时间还长怎么办？',
+            answer:
+              '该段净工时会归零而不会出现负数，同时页面会给出提示；存在格式错误的打卡段不参与总工时、日均与工资汇总。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Work Hours Calculator lets you enter multiple clock-in/clock-out pairs (HH:mm) row by row. It computes the net working time of each segment after deducting breaks, handles overnight shifts automatically (adding one day when clock-out is earlier than clock-in), flags missing or invalid times per row, and summarizes total hours, total break time, daily average, and pay estimated from an hourly rate. Results can be copied as tab-separated table text.',
+        coreFeatures: [
+          'Multi-segment entry: add or remove clock records dynamically, with gross and net time computed per row',
+          'Overnight handling: clock-out earlier than clock-in is treated as the next day; equal times count as a 24-hour shift',
+          'Per-row validation: missing times, bad formats, and breaks longer than the shift are highlighted and excluded from totals',
+          'Summary and pay: total net hours, total breaks, daily average, and hourly-rate pay estimate, copyable as TSV',
+        ],
+        howToUse: [
+          'Fill in clock-in time, clock-out time (HH:mm), and break minutes for each row',
+          'Click "Add segment" for more records; overnight shifts need no manual date adjustment',
+          'Check each row’s net time and the "cross-midnight +1 day" badge, fixing rows flagged as invalid',
+          'Set the hourly rate in the summary area to estimate pay, then click "Copy table" to paste into Excel or a spreadsheet',
+        ],
+        useCases: [
+          'Part-time workers and freelancers tallying monthly actual hours and expected pay from clock records',
+          'Shift and night-shift employees verifying overnight shift durations in attendance systems',
+          'Team leads consolidating multi-person, multi-segment work records to estimate total effort',
+        ],
+        privacyNote:
+          'All time data is processed locally in your browser and is never uploaded to or stored on any server.',
+        faqs: [
+          {
+            question: 'What happens when clock-out is earlier than clock-in?',
+            answer:
+              'It is treated as an overnight shift: clock-out is moved to the next day (+1440 minutes). For example, 22:00 to 06:00 counts as 8 gross hours; identical clock-in and clock-out times count as a 24-hour shift.',
+          },
+          {
+            question: 'What if the break is longer than the shift itself?',
+            answer:
+              'That segment’s net time is clamped to zero rather than going negative, and an inline hint is shown. Rows with format errors are excluded from total hours, average, and pay calculations.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
