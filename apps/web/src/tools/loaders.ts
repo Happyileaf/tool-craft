@@ -358,4 +358,5 @@ export const toolLoaders: Record<
   'hexfloat-converter': () => import('./hexfloat-converter'),
   'relative-url-resolver': () => import('./relative-url-resolver'),
   'http-date-codec': () => import('./http-date-codec'),
+  'content-disposition-codec': () => import('./content-disposition-codec'),
 };

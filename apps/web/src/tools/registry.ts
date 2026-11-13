@@ -33638,6 +33638,111 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'content-disposition-codec',
+    name: 'Content-Disposition 头解析与构造器',
+    nameEn: 'Content-Disposition Header Parser & Builder',
+    description:
+      '按 RFC 6266 与 RFC 8187 解析 Content-Disposition 响应头，词法切分 disposition-type 与参数，filename* 按 ext-value 三段结构解码 UTF-8/ISO-8859-1 文件名并按 §4.2 确定生效文件名；构造侧同时生成 ASCII 降级 filename 与百分号编码的 filename*，兼容旧客户端与现代浏览器。',
+    descriptionEn:
+      'Parses Content-Disposition response headers per RFC 6266 and RFC 8187, tokenizing the disposition type and parameters, decoding filename* ext-values (UTF-8/ISO-8859-1) and applying the §4.2 precedence to pick the effective filename. The builder emits both an ASCII fallback filename and a percent-encoded filename* so legacy clients and modern browsers are both covered.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/content-disposition-codec',
+    iconName: 'FileText',
+    tags: ['Content-Disposition', 'RFC 6266', 'RFC 8187', '文件名', 'HTTP 头', '下载'],
+    tagsEn: ['Content-Disposition', 'RFC 6266', 'RFC 8187', 'Filename', 'HTTP Header', 'Download'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      "attachment; filename=\"fallback.pdf\"; filename*=UTF-8''%E6%8A%A5%E5%91%8A.pdf",
+    doc: {
+      zh: {
+        whatIsIt:
+          'Content-Disposition 头解析与构造器是一款纯浏览器本地工具，实现 RFC 6266 定义的 Content-Disposition 响应头语法与 RFC 8187 的 ext-value 编码。解析侧手写词法分析器切分 disposition-type（attachment/inline 等）与 name=value 参数，支持双引号字符串与反斜杠转义，并把 filename* 的 charset\'language\'pct-encoded 三段结构解码为真实 Unicode 文件名；当 filename 与 filename* 同时存在时，严格按 §4.2 优先采用扩展参数。构造侧为任意文件名同时生成 ASCII 降级 filename 与精确的 UTF-8 filename*，可直接放入响应头。',
+        coreFeatures: [
+          '词法级解析 disposition-type 与全部参数，支持引号字符串、quoted-pair 转义',
+          "RFC 8187 ext-value 三段解码：charset'language'百分号编码，支持 UTF-8 与 ISO-8859-1",
+          '§4.2 生效文件名判定：filename* 优先于 filename，并标注取值来源',
+          '构造侧双写 ASCII 降级 filename 与 filename*，非 ASCII 字符按 UTF-8 大写百分号编码',
+          '畸形 ext-value、未闭合引号、缺分号/等号等错误均给出可读报错',
+        ],
+        howToUse: [
+          '选择「解析 Content-Disposition」，粘贴完整响应头值',
+          '查看 disposition-type、生效文件名及其来源（filename / filename*）与全部参数表',
+          '或选择「构造 Content-Disposition」，选择 attachment/inline 并输入文件名（可含中文、空格）',
+          '复制生成的响应头，或点击示例标签载入官方风格样例',
+        ],
+        useCases: [
+          '调试文件下载接口的 Content-Disposition 响应头与中文文件名乱码问题',
+          '验证服务端是否正确双写 filename 与 filename* 以兼容旧客户端',
+          '构造符合 RFC 6266、可直接返回给浏览器的下载头',
+          '教学演示 ext-value 编码与 §4.2 参数优先级规则',
+        ],
+        privacyNote:
+          '所有词法解析、百分号编解码与头构造均在浏览器本地以纯函数完成，不发起任何网络请求，也不发送或持久化输入内容。',
+        faqs: [
+          {
+            question: 'filename 和 filename* 同时存在时以哪个为准？',
+            answer:
+              '按 RFC 6266 §4.2，扩展参数 filename* 优先级高于普通 filename。现代浏览器识别 filename* 中的精确 Unicode 文件名，不支持扩展参数的旧客户端则回退使用 ASCII 的 filename，因此构造时本工具会同时生成两者。',
+          },
+          {
+            question: "filename* 的值为什么是 UTF-8''%E6%8A%A5... 这种形式？",
+            answer:
+              '这是 RFC 8187 规定的 ext-value 结构：charset、language、百分号编码的值，中间用两个单引号分隔。文件名先按 UTF-8 编码为字节，再对非 attr-char 字节做百分号编码（大写十六进制），解码时反向还原即可得到原始 Unicode 文件名。',
+          },
+          {
+            question: '为什么 ASCII 降级文件名里的中文变成了下划线？',
+            answer:
+              '普通 filename 参数历史上只能可靠承载 ASCII 字符，直接放入非 ASCII 字节在不同浏览器下会出现乱码。构造器把非 ASCII 字符替换为下划线生成安全降级名，精确文件名则由 filename* 承载，两者各司其职。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Content-Disposition Header Parser & Builder runs entirely in your browser and implements the Content-Disposition response header grammar of RFC 6266 together with the RFC 8187 ext-value encoding. The parsing side uses a hand-written tokenizer for the disposition type (attachment/inline, etc.) and name=value parameters, supports quoted strings with backslash escapes, and decodes the charset\'language\'percent-encoded three-part filename* into the real Unicode filename. When both filename and filename* are present, the extended parameter wins strictly per §4.2. The builder produces both an ASCII fallback filename and a precise UTF-8 filename* ready to be placed in a response header.',
+        coreFeatures: [
+          'Lexical parsing of the disposition type and every parameter, including quoted strings and quoted-pair escapes',
+          "RFC 8187 ext-value decoding of charset'language'percent-encoded values in UTF-8 and ISO-8859-1",
+          '§4.2 effective-filename resolution: filename* wins over filename, with the source labeled',
+          'Builder writes both an ASCII fallback filename and a filename* with uppercase UTF-8 percent-encoding for non-ASCII bytes',
+          'Readable errors for malformed ext-values, unterminated quotes, and missing semicolons or equals signs',
+        ],
+        howToUse: [
+          'Pick "Parse Content-Disposition" and paste a complete response header value',
+          'Inspect the disposition type, the effective filename and its source (filename / filename*) plus the full parameter table',
+          'Or pick "Build Content-Disposition", choose attachment/inline and enter a filename (Chinese and spaces allowed)',
+          'Copy the generated header, or click a sample tag to load an official-style example',
+        ],
+        useCases: [
+          'Debugging download endpoints and garbled non-ASCII filenames in Content-Disposition headers',
+          'Verifying that a server writes both filename and filename* for legacy-client compatibility',
+          'Producing RFC 6266 compliant download headers ready to return to browsers',
+          'Teaching ext-value encoding and the §4.2 parameter precedence rule',
+        ],
+        privacyNote:
+          'All tokenizing, percent-encoding/decoding and header construction run locally in your browser as pure functions; no network request is made and no input is sent or persisted.',
+        faqs: [
+          {
+            question: 'When both filename and filename* exist, which one wins?',
+            answer:
+              'Per RFC 6266 §4.2 the extended filename* parameter takes precedence over the plain filename. Modern browsers use the precise Unicode name from filename*, while older clients that do not understand extended parameters fall back to the ASCII filename, which is why the builder emits both.',
+          },
+          {
+            question: "Why does filename* look like UTF-8''%E6%8A%A5...?",
+            answer:
+              'That is the RFC 8187 ext-value structure: charset, language and a percent-encoded value separated by two single quotes. The filename is first encoded to UTF-8 bytes, then every byte outside the attr-char set is percent-encoded with uppercase hexadecimal; decoding reverses the process to recover the original Unicode name.',
+          },
+          {
+            question: 'Why do Chinese characters become underscores in the ASCII fallback filename?',
+            answer:
+              'Historically the plain filename parameter can only carry ASCII reliably; putting raw non-ASCII bytes there leads to mojibake across browsers. The builder replaces non-ASCII characters with underscores for a safe fallback, while the exact name travels in filename*, so the two parameters serve distinct roles.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
