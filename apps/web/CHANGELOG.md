@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-13 ：【Agent自主迭代】新增 5 个 C99 hexfloat、RFC 3986 相对 URL、RFC 9110 HTTP-date、RFC 6266 Content-Disposition 与 RFC 8288 Link 头编解码工具
+
+- **新增**：C99 十六进制浮点（hexfloat）双向转换器（hexfloat-converter）— 手写扫描器解析 0x1.8p+1 这类 C99 §6.4.4.2 字面量（符号/十六进制尾数/二进制 p 指数/fFlL 后缀），极端指数分阶段缩放防止 subnormal 下溢，构造侧经 DataView 读取 IEEE-754 binary64 位并以 BigInt 常量（ES2017 兼容）归一化输出 0x1.xxxp±n，正确处理 ±0/Infinity/NaN/subnormal 与 MIN_VALUE 往返，9 个 Vitest 用例，纯本地运算零依赖
+- **新增**：RFC 3986 相对 URL 引用解析器（relative-url-resolver）— 不依赖 `new URL()`，按附录 B 正则拆分 scheme/authority/path/query/fragment 五组件，完整实现 §5.2.4 输入缓冲/输出栈点段移除算法与 §5.3 路径合并，覆盖 §5.4.1 正常示例 22 例与 §5.4.2 异常示例 19 例及点段工作示例，base 缺 scheme 等校验失败明确报错，46 个 Vitest 用例，纯本地运算零依赖
+- **新增**：RFC 9110 HTTP-date 解析与格式化器（http-date-codec）— 三条正则分别识别 IMF-fixdate、RFC 850 与 asctime 三种历史格式，统一转换为 epoch 秒与 ISO 字符串，日历范围与星期交叉校验（Date.UTC 回算年月日拦截 Feb 30 类非法日），RFC850 两位年份按世纪规则归 1900/2000，强制 GMT 后缀，格式化侧输出规范 IMF-fixdate，9 个 Vitest 用例，纯本地运算零依赖
+- **新增**：RFC 6266/8187 Content-Disposition 头解析与构造器（content-disposition-codec）— 手写词法分析器切分 disposition-type 与参数，支持引号字符串与 quoted-pair 转义，filename* 按 charset'language'pct-encoded 三段结构解码 UTF-8/ISO-8859-1 文件名，§4.2 优先级 filename* > filename 并标注生效来源；构造侧同时生成 ASCII 降级 filename（非 ASCII 替换下划线）与大写百分号编码的 filename*，畸形 ext-value、未闭合引号均可读报错，16 个 Vitest 用例，纯本地运算零依赖
+- **新增**：RFC 8288 HTTP Link 头解析与构造器（link-header-codec）— 引号与尖括号感知的顶层逗号/分号词法切分，rel 按空白拆为关系类型集合并小写归一，结构化提取 anchor/hreflang/type/media/title 及任意扩展参数，可选 base 按 RFC 3986 归一相对引用（仅展示不改原值），构造侧按需加引号并支持解析器往返，缺尖括号/空 URI/未闭合引号明确报错，14 个 Vitest 用例，纯本地运算零依赖
+
 ## 2026-11-13 ：【Agent自主迭代】新增 5 个 OID BER、LDAP 过滤器、IPv4 头部、BER-TLV 与 Redis RESP 协议编解码工具
 
 - **新增**：OID 点分表示 ↔ BER TLV 编解码器（oid-ber-codec）— 按 ITU-T X.690 实现 OID 首两弧 40X+Y 合并规则与 base-128 变长内容编码，支持点分串与 hex TLV 双向转换、短/长长度形式、弧值表格与预设样例，越界与非法 hex 带定位报错，27 个 Vitest 用例，纯本地运算零依赖
