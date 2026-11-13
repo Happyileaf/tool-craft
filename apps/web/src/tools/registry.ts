@@ -34161,6 +34161,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'multipart-form-builder',
+    name: 'multipart/form-data 请求体构造器',
+    nameEn: 'multipart/form-data Body Builder',
+    description:
+      '按 RFC 7578 在浏览器本地拼装 multipart/form-data 请求体，支持文本与文件字段、boundary 管理、Content-Type 头、curl 示例生成及原始报文反向解析。',
+    descriptionEn:
+      'Build multipart/form-data request bodies locally per RFC 7578, with text and file fields, boundary management, Content-Type headers, curl samples, and reverse parsing of raw payloads.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/multipart-form-builder',
+    iconName: 'Braces',
+    tags: ['multipart', 'form-data', 'RFC 7578', 'curl', 'HTTP', '文件上传'],
+    tagsEn: ['multipart', 'form-data', 'RFC 7578', 'curl', 'HTTP', 'File Upload'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'title=hello&tags=web&file=report.txt',
+    doc: {
+      zh: {
+        whatIsIt:
+          'multipart/form-data 请求体构造器在浏览器本地按 RFC 7578 / RFC 2046 手工拼装文件上传常用的 multipart 报文：管理 boundary 分隔符、文本与文件字段的 Content-Disposition 头部、可选 Content-Type 与 CRLF 字节布局，输出完整请求体、Content-Type 请求头与可直接执行的 curl 命令，并支持把原始报文反向解析回字段列表。',
+        coreFeatures: [
+          '字段编辑器：动态增删文本/文件字段，文件字段支持 filename 与 Content-Type',
+          'boundary 管理：自动生成 WebKit 风格 boundary，也可自定义或一键重新生成',
+          '完整输出：Content-Type 头、含 CRLF 的原始请求体与 UTF-8 字节长度、curl --data-binary 示例',
+          '头部转义：name/filename 中的反斜杠与双引号按 quoted-string 规则转义，CR/LF 输入被拦截',
+          '反向解析：从 Content-Type 提取或自动探测 boundary，将报文还原为字段表格，损坏结构给出结构化错误',
+        ],
+        howToUse: [
+          '在「构造请求」页签添加字段，填写字段名、内容；切换为文件字段时补充文件名与内容类型',
+          '使用自动生成的 boundary 或自定义后，查看 Content-Type 头、请求体与 curl 示例并分别复制',
+          '切换到「反向解析」页签，粘贴原始报文（可带 Content-Type 头），查看还原后的字段',
+          '点击「载入构造结果」可把当前构造的报文直接送入解析区做往返自测',
+        ],
+        useCases: [
+          '调试后端文件上传接口，核对 multipart 报文的字节级布局',
+          '为 curl、Postman 或自研 HTTP 客户端生成可复制的请求样例',
+          '教学演示 RFC 7578 下 boundary、Content-Disposition 与 quoted-string 转义',
+          '排查上传失败时对原始 multipart 报文做反向解析与字段核对',
+        ],
+        privacyNote:
+          '全部拼装与解析均在浏览器本地完成，不发起任何网络请求，字段内容与文件文本不会被上传或留存。',
+        faqs: [
+          {
+            question: '为什么输出里有那么多 \\r\\n？',
+            answer:
+              'RFC 2046 规定 multipart 报文的行结束序列必须是 CRLF（\\r\\n），每个分段以 --boundary 行开始，头部后需要一个空行，段体结束后再跟 CRLF，最后以 --boundary-- 收尾。工具严格按该字节布局拼装，可直接被服务端解析。',
+          },
+          {
+            question: '字段名或文件名里有双引号怎么办？',
+            answer:
+              'Content-Disposition 的参数采用 quoted-string 形式，工具会先把反斜杠转义为 \\\\，再把双引号转义为 \\"，保证报文可逆解析；CR 与 LF 不允许出现在参数中，会在校验阶段直接报错。',
+          },
+          {
+            question: '反向解析时一定要填 Content-Type 头吗？',
+            answer:
+              '不需要。提供 Content-Type 头时工具从中提取 boundary 参数（兼容带引号写法）；留空时会从报文首个 -- 行自动探测 boundary。两种方式都失败或分段结构损坏时，会在错误列表中给出具体原因。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The multipart/form-data Body Builder assembles the multipart payloads commonly used for file uploads entirely in the browser following RFC 7578 / RFC 2046. It manages boundaries, Content-Disposition headers for text and file fields, optional Content-Type values, and exact CRLF byte layout, then emits the full body, Content-Type header, a ready-to-run curl command, and can parse raw payloads back into field lists.',
+        coreFeatures: [
+          'Field editor: add or remove text/file fields, with filename and Content-Type for file parts',
+          'Boundary management: auto-generated WebKit-style boundary, custom values, or one-click regeneration',
+          'Complete output: Content-Type header, raw CRLF body with UTF-8 byte length, and a curl --data-binary sample',
+          'Header escaping: backslashes and double quotes in name/filename follow quoted-string rules; CR/LF input is rejected',
+          'Reverse parsing: extract boundary from Content-Type or auto-detect it, restoring payloads into a field table with structured errors for malformed input',
+        ],
+        howToUse: [
+          'Add fields in the Build tab, fill names and values, and supply filename plus content type for file fields',
+          'Keep the generated boundary or customize it, then copy the Content-Type header, body, and curl sample',
+          'Switch to the Parse tab, paste a raw payload (optionally with its Content-Type header), and inspect the restored fields',
+          'Use Load Built Payload to send the current body straight into the parser for a round-trip self-check',
+        ],
+        useCases: [
+          'Debugging backend upload endpoints by inspecting byte-level multipart layout',
+          'Generating copy-ready request samples for curl, Postman, or custom HTTP clients',
+          'Teaching RFC 7578 boundaries, Content-Disposition, and quoted-string escaping',
+          'Reverse-engineering raw multipart payloads when uploads fail',
+        ],
+        privacyNote:
+          'All building and parsing runs locally in the browser. No network requests are made, and field values or file text are never uploaded or retained.',
+        faqs: [
+          {
+            question: 'Why does the output contain so many CRLF sequences?',
+            answer:
+              'RFC 2046 mandates CRLF line endings in multipart messages: each part starts with a --boundary line, headers are followed by a blank line, the body ends with CRLF, and the message closes with --boundary--. The tool follows that exact byte layout so servers can parse it directly.',
+          },
+          {
+            question: 'What if a field or file name contains double quotes?',
+            answer:
+              'Content-Disposition parameters use quoted-string syntax. The tool escapes backslashes first and then double quotes, keeping the payload reversible; CR and LF characters are not allowed in parameters and are rejected during validation.',
+          },
+          {
+            question: 'Is the Content-Type header required for reverse parsing?',
+            answer:
+              'No. With a Content-Type header, the boundary parameter is extracted (quoted forms included). Without one, the boundary is auto-detected from the first -- line. If both approaches fail or the structure is corrupted, concrete reasons appear in the error list.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

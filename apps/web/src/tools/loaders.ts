@@ -295,6 +295,7 @@ export const toolLoaders: Record<
   'elo-rating-calculator': () => import('./elo-rating-calculator'),
   'depreciation-calculator': () => import('./depreciation-calculator'),
   'srecord-parser': () => import('./srecord-parser'),
+  'multipart-form-builder': () => import('./multipart-form-builder'),
   'diff-patch-parser': () => import('./diff-patch-parser'),
   'set-similarity-calculator': () => import('./set-similarity-calculator'),
   'email-syntax-validator': () => import('./email-syntax-validator'),
