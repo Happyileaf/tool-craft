@@ -355,4 +355,9 @@ export const toolLoaders: Record<
   'ipv4-header-parser': () => import('./ipv4-header-parser'),
   'ber-tlv-codec': () => import('./ber-tlv-codec'),
   'resp-codec': () => import('./resp-codec'),
+  'hexfloat-converter': () => import('./hexfloat-converter'),
+  'relative-url-resolver': () => import('./relative-url-resolver'),
+  'http-date-codec': () => import('./http-date-codec'),
+  'content-disposition-codec': () => import('./content-disposition-codec'),
+  'link-header-codec': () => import('./link-header-codec'),
 };

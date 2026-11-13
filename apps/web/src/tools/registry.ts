@@ -33326,6 +33326,528 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'hexfloat-converter',
+    name: 'C99 十六进制浮点（hexfloat）转换器',
+    nameEn: 'C99 Hexadecimal Float (Hexfloat) Converter',
+    description:
+      '在 C99 hexfloat 字面量（如 0x1.8p+1）与十进制数之间双向转换，手写扫描器解析符号、0x 前缀、十六进制尾数与 p 二进制指数，构造方向按 binary64 位还原规范化 0x1.xxxp±n，正确处理 ±0、Infinity、NaN 与 subnormal，全程本地运算。',
+    descriptionEn:
+      'Converts between C99 hexfloat literals (e.g. 0x1.8p+1) and decimal numbers. A hand-written scanner parses sign, 0x prefix, hexadecimal mantissa and the p binary exponent, while generation reconstructs the canonical 0x1.xxxp±n form from binary64 bits, correctly handling ±0, Infinity, NaN and subnormals — all computed locally.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/hexfloat-converter',
+    iconName: 'Binary',
+    tags: ['hexfloat', '十六进制浮点', 'C99', 'IEEE 754', '二进制指数', '数值'],
+    tagsEn: ['hexfloat', 'Hexadecimal Float', 'C99', 'IEEE 754', 'Binary Exponent', 'Number'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0x1.8p+1',
+    doc: {
+      zh: {
+        whatIsIt:
+          'C99 十六进制浮点转换器是一款纯浏览器本地工具，在 C99/C++17 标准引入的 hexfloat 字面量与普通十进制数之间双向转换。解析器手写词法扫描，逐字符识别符号、0x 前缀、十六进制尾数（含小数点）与 p/P 引导的二进制指数，按 (-1)^s × 尾数 × 2^指数 求值；构造器读取 number 的 64 位 IEEE-754 位模式，还原规范化的 0x1.xxxp±n 文本。',
+        coreFeatures: [
+          '双向转换：hexfloat 字面量解析为十进制数，十进制数构造为规范化 hexfloat',
+          '完整语法：支持符号、0x/0X 前缀、整数与小数尾数、p 二进制指数及 f/F/l/L 后缀',
+          '边界全覆盖：±0、Infinity、-Infinity、NaN 与 subnormal 非常规数均正确处理',
+          '精确往返：任意有限数经构造再解析结果严格相等，极端指数分阶段缩放避免下溢',
+          '容错报错：缺前缀、缺尾数、缺指数数字、非法字符等返回可读错误而非抛异常',
+        ],
+        howToUse: [
+          '选择「解析 hexfloat → 十进制」，粘贴如 0x1.8p+1 的字面量查看十进制与科学计数法结果',
+          '或选择「构造 十进制 → hexfloat」，输入十进制数得到规范化 0x1.xxxp±n 文本',
+          '点击示例标签可快速载入官方测试向量，点击复制按钮获取结果',
+          '将生成的 hexfloat 粘贴到 C/C++ 源码或调试器中，用于精确保存二进制浮点值',
+        ],
+        useCases: [
+          '在 C/C++ 中以最短且无舍入歧义的方式书写二进制浮点常量',
+          '调试器、反汇编或内存分析中解读 hexfloat 形式的数值',
+          '教学演示 IEEE-754 binary64 的尾数、指数与十六进制表示关系',
+          '核对编译器对浮点字面量的舍入与 subnormal 处理是否符合预期',
+        ],
+        privacyNote:
+          '所有解析与构造均在浏览器本地基于纯函数完成，不发送任何输入到服务器，也不持久化数据。',
+        faqs: [
+          {
+            question: 'hexfloat 里的 p 指数为什么是 2 的幂而不是 16 的幂？',
+            answer:
+              'C99 规定 p/P 后面的指数是二进制指数（以 2 为底）。整个数值等于符号 × 十六进制尾数 × 2^指数；而小数点后每一位十六进制数字本身权重是 16⁻¹，等价于 2⁻⁴，因此小数位数会折算进最终的 2 的幂。',
+          },
+          {
+            question: '它和普通十六进制整数、内存位级 hex 有什么区别？',
+            answer:
+              '普通十六进制整数只表示整数且没有小数与指数；内存位级 hex（如 4008000000000000）是 IEEE-754 的原始二进制编码。hexfloat 是可读的数值字面量，用十六进制尾数配合二进制指数直接表达浮点数值，三者不能混用。',
+          },
+          {
+            question: '为什么 0.1 构造出来是 0x1.999...ap-4 而不是精确的 0.1？',
+            answer:
+              '十进制 0.1 在 binary64 中本就无法精确表示，最接近的可表示值正是 0x1.999999999999ap-4。本工具如实还原该二进制近似值，因此 hexfloat 能无歧义地表达这个最接近值，而十进制写法反而隐含一次十进制到二进制的舍入。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The C99 Hexadecimal Float Converter runs entirely in your browser, converting between the hexfloat literals introduced in C99/C++17 and ordinary decimal numbers. The parser uses a hand-written scanner to recognize the sign, 0x prefix, hexadecimal mantissa (including the decimal point) and the p/P binary exponent, evaluating (-1)^s × mantissa × 2^exponent; the builder reads the 64-bit IEEE-754 bit pattern of a number to reconstruct canonical 0x1.xxxp±n text.',
+        coreFeatures: [
+          'Bidirectional conversion: parse a hexfloat literal to decimal, or build canonical hexfloat from a decimal number',
+          'Full grammar: sign, 0x/0X prefix, integer and fractional mantissa, p binary exponent, and f/F/l/L suffixes',
+          'Edge cases covered: ±0, Infinity, -Infinity, NaN and subnormal values',
+          'Exact round-trip: any finite number rebuilt then parsed is strictly equal; staged scaling avoids underflow at extreme exponents',
+          'Lenient errors: missing prefix, mantissa or exponent digits, and illegal characters produce readable messages instead of throwing',
+        ],
+        howToUse: [
+          'Pick "Parse hexfloat to decimal" and paste a literal such as 0x1.8p+1 to see decimal and scientific-notation results',
+          'Or pick "Build decimal to hexfloat", enter a decimal number and obtain canonical 0x1.xxxp±n text',
+          'Click a sample tag to load an official test vector, then use the copy button for the result',
+          'Paste the generated hexfloat into C/C++ source or a debugger to preserve a binary floating-point value exactly',
+        ],
+        useCases: [
+          'Writing binary floating-point constants in C/C++ with the shortest, rounding-unambiguous spelling',
+          'Reading hexfloat-formatted values in debuggers, disassembly or memory analysis',
+          'Teaching the relationship between binary64 mantissa, exponent and hexadecimal notation',
+          'Verifying compiler rounding and subnormal handling of floating-point literals',
+        ],
+        privacyNote:
+          'All parsing and generation run locally in your browser as pure functions; no input is sent to a server or persisted.',
+        faqs: [
+          {
+            question: 'Why is the p exponent a power of 2 rather than a power of 16?',
+            answer:
+              'C99 defines the exponent after p/P as a binary exponent (base 2). The full value equals sign × hexadecimal mantissa × 2^exponent; each fractional hexadecimal digit already carries weight 16⁻¹, equivalent to 2⁻⁴, so the number of fractional digits folds into the final power of two.',
+          },
+          {
+            question: 'How is this different from a plain hex integer or a memory-level hex value?',
+            answer:
+              'A plain hex integer only represents integers with no fraction or exponent, while a memory-level hex (e.g. 4008000000000000) is the raw IEEE-754 binary encoding. A hexfloat is a human-readable numeric literal expressing a floating-point value through a hex mantissa and binary exponent; the three are not interchangeable.',
+          },
+          {
+            question: 'Why does 0.1 build to 0x1.999...ap-4 instead of an exact 0.1?',
+            answer:
+              'Decimal 0.1 cannot be represented exactly in binary64; its nearest representable value is precisely 0x1.999999999999ap-4. The tool faithfully reconstructs that binary approximation, so hexfloat expresses the nearest value unambiguously, whereas the decimal spelling hides an implicit decimal-to-binary rounding step.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'relative-url-resolver',
+    name: 'RFC 3986 相对引用解析器',
+    nameEn: 'RFC 3986 Relative Reference Resolver',
+    description:
+      '给定 Base URI 与相对引用，按 RFC 3986 §5.2.2 transform references 与 §5.2.4 remove_dot_segments 逐步求目标 URI，手写组件拆分、路径合并与点段归一化，不依赖 new URL()，完整通过 §5.4.1 正常与 §5.4.2 异常官方案例。',
+    descriptionEn:
+      'Resolves a URI reference against a base URI by implementing RFC 3986 §5.2.2 transform references and the §5.2.4 remove_dot_segments algorithm directly — component split, path merge and dot-segment normalization without relying on new URL(). Passes every §5.4.1 normal and §5.4.2 abnormal official example.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/relative-url-resolver',
+    iconName: 'Globe',
+    tags: ['RFC 3986', 'URL 解析', '相对路径', '点段归一化', 'URI', '引用解析'],
+    tagsEn: ['RFC 3986', 'URL Resolver', 'Relative Path', 'Dot Segments', 'URI', 'Reference Resolution'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: './g',
+    doc: {
+      zh: {
+        whatIsIt:
+          'RFC 3986 相对引用解析器是一款纯浏览器本地工具，输入一个绝对 Base URI 与任意 URI reference（可相对、可绝对、可仅含 query/fragment），严格按 RFC 3986 第 5.2.2 节的 transform references 流程计算目标 URI。它手写五组件拆分（scheme/authority/path/query/fragment）、§5.2.3 路径合并与 §5.2.4 基于输入缓冲/输出栈的 remove_dot_segments，不调用 WHATWG URL 构造器，因此对空 authority、保留点段等边界与规范保持逐字符一致。',
+        coreFeatures: [
+          '完整 RFC 3986 §5.2.2 解析：scheme 优先、network-path、绝对/相对路径、空路径继承、query/fragment 覆盖',
+          '手写 remove_dot_segments 输入缓冲/输出栈算法，正确处理 . 与 .. 越界回退',
+          '不依赖 new URL()，跨环境行为一致且可解释，避免 WHATWG 与 RFC 3986 的语义差异',
+          '输出目标 URI 并展示拆分后的五个组件，便于教学与排障',
+          '非法 Base（缺 scheme）与空输入返回可读错误而非抛异常',
+        ],
+        howToUse: [
+          '在 Base URI 框填入绝对 URI，例如 http://a/b/c/d;p?q',
+          '在相对引用框填入如 ./g、../../g、//g、g?y#s 等引用',
+          '查看实时计算的目标 URI 与 scheme/authority/path/query/fragment 组件',
+          '点击示例标签快速载入 RFC 官方案例，点击复制按钮获取结果',
+        ],
+        useCases: [
+          '后端/网关拼接重定向 Location、Link 或资源相对链接时核对结果',
+          '教学演示 RFC 3986 引用解析与点段归一化的完整状态机',
+          '排查 WHATWG URL 与 RFC 3986 在边缘输入上的行为差异',
+          '静态站点生成器、爬虫或代理在合并相对链接时做单元级验证',
+        ],
+        privacyNote:
+          '所有解析均在浏览器本地基于纯函数完成，不发起任何网络请求，不发送或持久化输入。',
+        faqs: [
+          {
+            question: '为什么不直接用浏览器的 new URL()？',
+            answer:
+              'WHATWG URL 与 RFC 3986 在空 authority、反斜杠处理、点段保留、默认端口等边缘情形上语义不同，且 new URL() 是黑盒、不便展示中间组件。本工具严格按 RFC 3986 手写实现，能逐字符复现 §5.4 的全部官方案例并解释每一步。',
+          },
+          {
+            question: 'http:g 为什么解析成 http:g 而不是补全路径？',
+            answer:
+              '这是 RFC 3986 §5.4.2 的异常案例：引用自带 scheme 时按规则整体采用引用的组件，而 http:g 属于省略 authority 的相对路径 URI（path 为 g），规范要求保留其字面形式，因此结果就是 http:g。',
+          },
+          {
+            question: '.. 超出根目录后为什么没有报错？',
+            answer:
+              'remove_dot_segments 在输出栈为空时遇到 .. 只是丢弃该段而不上抛，因此 ../../../../g 对只有单层路径的 Base 会归一到根 /g，这正是 §5.4.2 规定的越界回退行为。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The RFC 3986 Relative Reference Resolver runs entirely in your browser. Given an absolute base URI and any URI reference (relative, absolute, query- or fragment-only), it computes the target URI following the §5.2.2 transform references procedure. It hand-implements the five-component split (scheme/authority/path/query/fragment), §5.2.3 path merge and the §5.2.4 input-buffer/output-stack remove_dot_segments algorithm, without the WHATWG URL constructor, matching the specification character-for-character on edge cases such as empty authority and retained dot segments.',
+        coreFeatures: [
+          'Full RFC 3986 §5.2.2 resolution: scheme precedence, network-path, absolute/relative paths, empty-path inheritance, query/fragment override',
+          'Hand-written remove_dot_segments buffer/stack algorithm handling . and out-of-range .. correctly',
+          'No new URL() dependency: consistent, explainable cross-environment behaviour without WHATWG-vs-RFC differences',
+          'Shows the target URI plus all five split components for teaching and debugging',
+          'Readable errors instead of exceptions for an empty base or a base missing a scheme',
+        ],
+        howToUse: [
+          'Enter an absolute base URI such as http://a/b/c/d;p?q in the base field',
+          'Enter a reference such as ./g, ../../g, //g or g?y#s in the reference field',
+          'Read the live target URI and its scheme/authority/path/query/fragment components',
+          'Click a sample tag to load an official RFC case, then copy the result with the button',
+        ],
+        useCases: [
+          'Verifying redirect Location, Link or resource URL joining in backends and gateways',
+          'Teaching the full RFC 3986 reference-resolution and dot-segment state machine',
+          'Investigating edge-case differences between WHATWG URL and RFC 3986',
+          'Unit-level validation of relative-link merging in static site generators, crawlers and proxies',
+        ],
+        privacyNote:
+          'All resolution runs locally in your browser as pure functions; no network request is made and no input is sent or persisted.',
+        faqs: [
+          {
+            question: 'Why not just use the browser new URL()?',
+            answer:
+              'WHATWG URL and RFC 3986 differ on edge cases such as empty authority, backslash handling, retained dot segments and default ports, and new URL() is a black box that hides intermediate components. This tool follows RFC 3986 directly and reproduces every §5.4 official example character-for-character with an explainable process.',
+          },
+          {
+            question: 'Why does http:g resolve to http:g instead of a completed path?',
+            answer:
+              'This is the §5.4.2 abnormal example: when the reference carries its own scheme, all its components are adopted. http:g is a URI with no authority and a relative-looking path (g), and the spec keeps that literal form, so the result is exactly http:g.',
+          },
+          {
+            question: 'Why does .. beyond the root not raise an error?',
+            answer:
+              'When remove_dot_segments meets .. with an empty output stack it simply discards the segment instead of throwing, so ../../../../g against a single-level base normalizes to root /g — the out-of-range rollback behaviour required by §5.4.2.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'http-date-codec',
+    name: 'HTTP 日期头解析与格式化器',
+    nameEn: 'HTTP Date Header Parser & Formatter',
+    description:
+      '解析 RFC 9110 定义的三种 HTTP-date 历史格式（IMF-fixdate、RFC 850 两位年份、asctime）为 UTC epoch 秒，并把 epoch 统一格式化为首选 IMF-fixdate，手写确定性解析器，交叉校验星期与日历日期，缺 GMT 或非法日期可读报错。',
+    descriptionEn:
+      'Parses the three historical HTTP-date formats of RFC 9110 (IMF-fixdate, two-digit-year RFC 850 and asctime) into UTC epoch seconds, and formats epoch back to the preferred IMF-fixdate. A hand-written deterministic parser cross-checks weekday and calendar date and reports readable errors for a missing GMT suffix or invalid date.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/http-date-codec',
+    iconName: 'Clock',
+    tags: ['HTTP 日期', 'RFC 9110', 'IMF-fixdate', 'RFC 850', 'asctime', 'GMT'],
+    tagsEn: ['HTTP Date', 'RFC 9110', 'IMF-fixdate', 'RFC 850', 'asctime', 'GMT'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Sun, 06 Nov 1994 08:49:37 GMT',
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP 日期头解析与格式化器是一款纯浏览器本地工具，实现 RFC 9110 §5.6.7 的 HTTP-date 语法。解析侧手写三个确定性解析器，分别识别首选的 IMF-fixdate（Sun, 06 Nov 1994 08:49:37 GMT）、过时的 RFC 850 格式（两位年份按世纪规则推断）与 asctime 格式（单日号前两个空格），统一换算为 UTC epoch 秒并标注识别到的格式；格式化侧把任意 epoch 秒按 UTC 生成规范 IMF-fixdate，并自动填充正确星期。',
+        coreFeatures: [
+          '三种格式全解析：IMF-fixdate、RFC 850、asctime 归一到同一 epoch 秒',
+          'RFC 850 两位年份按“大于当前年份后两位则归入上一世纪”规则推断',
+          '星期与日历日期交叉校验，矛盾时明确报出实际星期',
+          'epoch → IMF-fixdate 构造，自动补齐两位日号与正确星期，UTC 处理',
+          '缺 GMT 后缀、非法月份、不存在的日历日、越界时间字段均可读报错',
+        ],
+        howToUse: [
+          '选择「解析 HTTP-date → epoch」，粘贴 Date/Last-Modified/Expires 头值',
+          '查看识别格式、epoch 秒、ISO 8601 与归一化 IMF-fixdate',
+          '或选择「构造 epoch → IMF-fixdate」，输入 Unix epoch 秒得到规范头值',
+          '点击示例标签可载入 RFC 9110 §5.6.7 的三个等价官方示例',
+        ],
+        useCases: [
+          '调试 Last-Modified、If-Modified-Since、Expires、Retry-After 等日期头',
+          '排查旧服务返回的 RFC 850 / asctime 遗留格式',
+          '构造符合规范、可直接放入响应头的 IMF-fixdate 字符串',
+          '教学演示三种 HTTP 日期格式与 UTC/epoch 的换算关系',
+        ],
+        privacyNote:
+          '所有解析与格式化均在浏览器本地基于纯函数完成，不发起网络请求，不发送或持久化输入。',
+        faqs: [
+          {
+            question: '为什么三种不同写法会解析成同一个时间？',
+            answer:
+              'RFC 9110 保留 IMF-fixdate、RFC 850、asctime 三种历史语法仅为兼容接收方，它们表达的是同一时刻 1994-11-06T08:49:37Z，因此归一后 epoch 秒完全相同；发送时规范要求只使用 IMF-fixdate。',
+          },
+          {
+            question: 'RFC 850 的两位年份怎么确定是 19xx 还是 20xx？',
+            answer:
+              '按 RFC 9110 的指导，两位年份若大于当前年份的后两位，则视为上一世纪（1900+），否则视为本世纪（2000+）。本工具据此推断，并建议对超过约 50 年跨度的场景改用四位年份的 IMF-fixdate。',
+          },
+          {
+            question: '为什么星期写错会报错？',
+            answer:
+              '星期在 HTTP-date 中是冗余信息，可由年月日唯一确定。解析器会用日历重新计算星期并与头中声明值比对，不一致（如把 1994-11-06 标成 Mon）说明头值被篡改或生成有误，因此明确报错而不是静默接受。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The HTTP Date Header Parser & Formatter runs entirely in your browser and implements the HTTP-date grammar of RFC 9110 §5.6.7. The parsing side uses three hand-written deterministic parsers for the preferred IMF-fixdate (Sun, 06 Nov 1994 08:49:37 GMT), the obsolete RFC 850 form (two-digit year resolved by a century rule) and the asctime form (two spaces before a single-digit day), normalizing all to UTC epoch seconds and reporting the detected format. The formatting side turns any epoch second into a canonical UTC IMF-fixdate with the correct weekday filled in automatically.',
+        coreFeatures: [
+          'Parse all three formats — IMF-fixdate, RFC 850 and asctime — into the same epoch second',
+          'RFC 850 two-digit year resolved as the previous century when it exceeds the current year’s last two digits',
+          'Weekday and calendar date cross-checked, naming the actual weekday on contradiction',
+          'Build epoch to IMF-fixdate with zero-padded day and correct weekday, all in UTC',
+          'Readable errors for a missing GMT suffix, illegal month, impossible calendar day or out-of-range time field',
+        ],
+        howToUse: [
+          'Pick "Parse HTTP-date to epoch" and paste a Date/Last-Modified/Expires header value',
+          'Inspect the detected format, epoch second, ISO 8601 and normalized IMF-fixdate',
+          'Or pick "Build epoch to IMF-fixdate", enter a Unix epoch second and get a canonical header value',
+          'Click a sample tag to load the three equivalent official examples from RFC 9110 §5.6.7',
+        ],
+        useCases: [
+          'Debugging Date, Last-Modified, If-Modified-Since, Expires and Retry-After headers',
+          'Investigating legacy RFC 850 / asctime output from old servers',
+          'Generating spec-compliant IMF-fixdate strings ready to put in response headers',
+          'Teaching the relationship between the three HTTP date forms and UTC/epoch',
+        ],
+        privacyNote:
+          'All parsing and formatting run locally in your browser as pure functions; no network request is made and no input is sent or persisted.',
+        faqs: [
+          {
+            question: 'Why do three different spellings parse to the same instant?',
+            answer:
+              'RFC 9110 keeps IMF-fixdate, RFC 850 and asctime only for compatibility with receivers; they express the same instant 1994-11-06T08:49:37Z, so the normalized epoch second is identical. Senders are required to use IMF-fixdate only.',
+          },
+          {
+            question: 'How is an RFC 850 two-digit year assigned to 19xx versus 20xx?',
+            answer:
+              'Following RFC 9110 guidance, a two-digit year greater than the last two digits of the current year is treated as the previous century (1900+), otherwise as the current century (2000+). For spans beyond roughly 50 years, prefer the four-digit-year IMF-fixdate.',
+          },
+          {
+            question: 'Why does a wrong weekday trigger an error?',
+            answer:
+              'The weekday in an HTTP-date is redundant: it is uniquely determined by the calendar date. The parser recomputes it and compares it with the declared value; a mismatch (e.g. labeling 1994-11-06 as Mon) indicates a corrupted or incorrectly generated header, so it is reported rather than silently accepted.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'content-disposition-codec',
+    name: 'Content-Disposition 头解析与构造器',
+    nameEn: 'Content-Disposition Header Parser & Builder',
+    description:
+      '按 RFC 6266 与 RFC 8187 解析 Content-Disposition 响应头，词法切分 disposition-type 与参数，filename* 按 ext-value 三段结构解码 UTF-8/ISO-8859-1 文件名并按 §4.2 确定生效文件名；构造侧同时生成 ASCII 降级 filename 与百分号编码的 filename*，兼容旧客户端与现代浏览器。',
+    descriptionEn:
+      'Parses Content-Disposition response headers per RFC 6266 and RFC 8187, tokenizing the disposition type and parameters, decoding filename* ext-values (UTF-8/ISO-8859-1) and applying the §4.2 precedence to pick the effective filename. The builder emits both an ASCII fallback filename and a percent-encoded filename* so legacy clients and modern browsers are both covered.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/content-disposition-codec',
+    iconName: 'FileText',
+    tags: ['Content-Disposition', 'RFC 6266', 'RFC 8187', '文件名', 'HTTP 头', '下载'],
+    tagsEn: ['Content-Disposition', 'RFC 6266', 'RFC 8187', 'Filename', 'HTTP Header', 'Download'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      "attachment; filename=\"fallback.pdf\"; filename*=UTF-8''%E6%8A%A5%E5%91%8A.pdf",
+    doc: {
+      zh: {
+        whatIsIt:
+          'Content-Disposition 头解析与构造器是一款纯浏览器本地工具，实现 RFC 6266 定义的 Content-Disposition 响应头语法与 RFC 8187 的 ext-value 编码。解析侧手写词法分析器切分 disposition-type（attachment/inline 等）与 name=value 参数，支持双引号字符串与反斜杠转义，并把 filename* 的 charset\'language\'pct-encoded 三段结构解码为真实 Unicode 文件名；当 filename 与 filename* 同时存在时，严格按 §4.2 优先采用扩展参数。构造侧为任意文件名同时生成 ASCII 降级 filename 与精确的 UTF-8 filename*，可直接放入响应头。',
+        coreFeatures: [
+          '词法级解析 disposition-type 与全部参数，支持引号字符串、quoted-pair 转义',
+          "RFC 8187 ext-value 三段解码：charset'language'百分号编码，支持 UTF-8 与 ISO-8859-1",
+          '§4.2 生效文件名判定：filename* 优先于 filename，并标注取值来源',
+          '构造侧双写 ASCII 降级 filename 与 filename*，非 ASCII 字符按 UTF-8 大写百分号编码',
+          '畸形 ext-value、未闭合引号、缺分号/等号等错误均给出可读报错',
+        ],
+        howToUse: [
+          '选择「解析 Content-Disposition」，粘贴完整响应头值',
+          '查看 disposition-type、生效文件名及其来源（filename / filename*）与全部参数表',
+          '或选择「构造 Content-Disposition」，选择 attachment/inline 并输入文件名（可含中文、空格）',
+          '复制生成的响应头，或点击示例标签载入官方风格样例',
+        ],
+        useCases: [
+          '调试文件下载接口的 Content-Disposition 响应头与中文文件名乱码问题',
+          '验证服务端是否正确双写 filename 与 filename* 以兼容旧客户端',
+          '构造符合 RFC 6266、可直接返回给浏览器的下载头',
+          '教学演示 ext-value 编码与 §4.2 参数优先级规则',
+        ],
+        privacyNote:
+          '所有词法解析、百分号编解码与头构造均在浏览器本地以纯函数完成，不发起任何网络请求，也不发送或持久化输入内容。',
+        faqs: [
+          {
+            question: 'filename 和 filename* 同时存在时以哪个为准？',
+            answer:
+              '按 RFC 6266 §4.2，扩展参数 filename* 优先级高于普通 filename。现代浏览器识别 filename* 中的精确 Unicode 文件名，不支持扩展参数的旧客户端则回退使用 ASCII 的 filename，因此构造时本工具会同时生成两者。',
+          },
+          {
+            question: "filename* 的值为什么是 UTF-8''%E6%8A%A5... 这种形式？",
+            answer:
+              '这是 RFC 8187 规定的 ext-value 结构：charset、language、百分号编码的值，中间用两个单引号分隔。文件名先按 UTF-8 编码为字节，再对非 attr-char 字节做百分号编码（大写十六进制），解码时反向还原即可得到原始 Unicode 文件名。',
+          },
+          {
+            question: '为什么 ASCII 降级文件名里的中文变成了下划线？',
+            answer:
+              '普通 filename 参数历史上只能可靠承载 ASCII 字符，直接放入非 ASCII 字节在不同浏览器下会出现乱码。构造器把非 ASCII 字符替换为下划线生成安全降级名，精确文件名则由 filename* 承载，两者各司其职。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Content-Disposition Header Parser & Builder runs entirely in your browser and implements the Content-Disposition response header grammar of RFC 6266 together with the RFC 8187 ext-value encoding. The parsing side uses a hand-written tokenizer for the disposition type (attachment/inline, etc.) and name=value parameters, supports quoted strings with backslash escapes, and decodes the charset\'language\'percent-encoded three-part filename* into the real Unicode filename. When both filename and filename* are present, the extended parameter wins strictly per §4.2. The builder produces both an ASCII fallback filename and a precise UTF-8 filename* ready to be placed in a response header.',
+        coreFeatures: [
+          'Lexical parsing of the disposition type and every parameter, including quoted strings and quoted-pair escapes',
+          "RFC 8187 ext-value decoding of charset'language'percent-encoded values in UTF-8 and ISO-8859-1",
+          '§4.2 effective-filename resolution: filename* wins over filename, with the source labeled',
+          'Builder writes both an ASCII fallback filename and a filename* with uppercase UTF-8 percent-encoding for non-ASCII bytes',
+          'Readable errors for malformed ext-values, unterminated quotes, and missing semicolons or equals signs',
+        ],
+        howToUse: [
+          'Pick "Parse Content-Disposition" and paste a complete response header value',
+          'Inspect the disposition type, the effective filename and its source (filename / filename*) plus the full parameter table',
+          'Or pick "Build Content-Disposition", choose attachment/inline and enter a filename (Chinese and spaces allowed)',
+          'Copy the generated header, or click a sample tag to load an official-style example',
+        ],
+        useCases: [
+          'Debugging download endpoints and garbled non-ASCII filenames in Content-Disposition headers',
+          'Verifying that a server writes both filename and filename* for legacy-client compatibility',
+          'Producing RFC 6266 compliant download headers ready to return to browsers',
+          'Teaching ext-value encoding and the §4.2 parameter precedence rule',
+        ],
+        privacyNote:
+          'All tokenizing, percent-encoding/decoding and header construction run locally in your browser as pure functions; no network request is made and no input is sent or persisted.',
+        faqs: [
+          {
+            question: 'When both filename and filename* exist, which one wins?',
+            answer:
+              'Per RFC 6266 §4.2 the extended filename* parameter takes precedence over the plain filename. Modern browsers use the precise Unicode name from filename*, while older clients that do not understand extended parameters fall back to the ASCII filename, which is why the builder emits both.',
+          },
+          {
+            question: "Why does filename* look like UTF-8''%E6%8A%A5...?",
+            answer:
+              'That is the RFC 8187 ext-value structure: charset, language and a percent-encoded value separated by two single quotes. The filename is first encoded to UTF-8 bytes, then every byte outside the attr-char set is percent-encoded with uppercase hexadecimal; decoding reverses the process to recover the original Unicode name.',
+          },
+          {
+            question: 'Why do Chinese characters become underscores in the ASCII fallback filename?',
+            answer:
+              'Historically the plain filename parameter can only carry ASCII reliably; putting raw non-ASCII bytes there leads to mojibake across browsers. The builder replaces non-ASCII characters with underscores for a safe fallback, while the exact name travels in filename*, so the two parameters serve distinct roles.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'link-header-codec',
+    name: 'Link 头解析与构造器',
+    nameEn: 'HTTP Link Header Parser & Builder',
+    description:
+      '按 RFC 8288 解析一个或多个逗号分隔的 link-value，在尊重尖括号与引号字符串的前提下切分 URI-Reference 及 rel/anchor/hreflang/type/media/title 等参数，rel 按空白拆为关系类型集合并小写归一，可选 base 按 RFC 3986 归一相对引用；反向支持由结构化条目构造合规 Link 头并往返还原。',
+    descriptionEn:
+      'Parses one or more comma-separated link-values per RFC 8288, splitting each URI-Reference and its rel/anchor/hreflang/type/media/title parameters while respecting angle brackets and quoted strings. The rel value is split into a lowercased relation-type set, relative references can be resolved against an optional RFC 3986 base, and the builder reconstructs a compliant Link header that round-trips through the parser.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/link-header-codec',
+    iconName: 'Link2',
+    tags: ['Link 头', 'RFC 8288', 'Web Linking', 'rel', '分页', 'HTTP 头'],
+    tagsEn: ['Link Header', 'RFC 8288', 'Web Linking', 'rel', 'Pagination', 'HTTP Header'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '<https://a.test/next>; rel="next"; hreflang=en, </feed>; rel="alternate"; type="application/atom+xml"',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Link 头解析与构造器是一款纯浏览器本地工具，实现 RFC 8288 定义的 HTTP Link 头字段语法。解析侧在尊重尖括号 <...> 与引号字符串 "..." 的前提下，按顶层逗号把字段值切分为多个 link-value，再按分号提取每个 URI-Reference 的 link-param：rel 按空白拆为关系类型集合并统一小写，anchor、hreflang、type、media、title 等目标属性结构化展示，其余扩展参数原样保留；提供可选 base URI 时，相对引用按 RFC 3986 归一为绝对 URI（仅展示）。构造侧把结构化条目数组反向生成符合 ABNF 的 Link 头，参数值按需加引号，并可被本解析器往返还原。',
+        coreFeatures: [
+          '顶层逗号/分号词法切分，引号字符串与尖括号内部的逗号、分号不会被误切',
+          'rel 多值按空白拆分并小写归一，支持 next preload 这类关系集合',
+          '提取 anchor/hreflang/type/media/title 及任意扩展参数，保留来源顺序',
+          '可选 base 按 RFC 3986 归一相对 URI-Reference，未提供 base 时原样保留',
+          '构造方向按需加引号并支持解析器往返；缺尖括号、空 URI、未闭合引号均可读报错',
+        ],
+        howToUse: [
+          '选择「解析 Link 头」，粘贴完整 Link 字段值，多个 link-value 用逗号分隔',
+          '可选填入 base URI，查看相对引用归一后的绝对 URI',
+          '逐条目查看 URI-Reference、rel 标签、目标属性与完整参数表',
+          '或切换到「构造 Link 头」，维护条目数组后复制生成的合规头值',
+        ],
+        useCases: [
+          '调试分页接口的 rel=next/prev 链接与 HATEOAS 响应',
+          '核对 preload/preconnect 等资源提示 Link 头及 media 查询条件',
+          '解析 WebFinger 等场景下带多参数的复杂 Link 字段',
+          '教学演示 RFC 8288 link-value 列表语法与 rel 关系类型语义',
+        ],
+        privacyNote:
+          '所有词法切分、参数提取、RFC 3986 归一与头构造均在浏览器本地以纯函数完成，不发起任何网络请求，也不发送或持久化输入内容。',
+        faqs: [
+          {
+            question: '引号里的逗号为什么不会把条目切断？',
+            answer:
+              'RFC 8288 的 link-value 允许参数值使用引号字符串，字符串内部的逗号与分号只是普通字符。解析器在扫描时维护引号与尖括号状态，只在两者之外的顶层遇到逗号时才切分 link-value，因此 title="a; b, c" 这类值会被完整保留。',
+          },
+          {
+            question: 'rel 为什么要拆成数组而不是当成一个字符串？',
+            answer:
+              'RFC 8288 规定 rel 参数是空白分隔的关系类型集合，一个 link-value 可同时携带多个关系（如 rel="next preload"）。解析器按空白拆分、小写归一后输出数组，便于程序化判断是否包含某个关系，也避免大小写或重复空格带来的比较误差。',
+          },
+          {
+            question: '填了 base URI 之后原始引用会被修改吗？',
+            answer:
+              '不会。base 仅用于按 RFC 3986 计算并展示归一后的绝对 URI，原始 URI-Reference 始终原样保留在解析结果中；不填 base 时则不进行任何归一，相对引用保持输入时的写法。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The HTTP Link Header Parser & Builder runs entirely in your browser and implements the Link header field grammar of RFC 8288. The parsing side splits the field into link-values on top-level commas while honoring angle brackets <...> and quoted strings "...", then extracts each URI-Reference and its link-params: rel is split into a lowercased relation-type set, anchor/hreflang/type/media/title target attributes are structured, and extension parameters are preserved in order. With an optional base URI, relative references are resolved to absolute URIs per RFC 3986 for display only. The builder turns structured entries back into an ABNF-compliant Link header that round-trips through the parser.',
+        coreFeatures: [
+          'Top-level comma/semicolon tokenization that never splits on commas or semicolons inside quoted strings or angle brackets',
+          'Multi-value rel split on whitespace and lowercased, supporting relation sets such as "next preload"',
+          'Extracts anchor/hreflang/type/media/title plus arbitrary extension parameters in source order',
+          'Optional RFC 3986 base resolves relative URI-References; without a base they are kept verbatim',
+          'Builder quotes values as needed and round-trips through the parser; missing brackets, empty URIs and unterminated quotes yield readable errors',
+        ],
+        howToUse: [
+          'Pick "Parse Link header" and paste a complete Link field value with comma-separated link-values',
+          'Optionally enter a base URI to see relative references resolved to absolute URIs',
+          'Inspect each entry’s URI-Reference, rel tags, target attributes and full parameter table',
+          'Or switch to "Build Link header", maintain the entry list and copy the generated compliant header',
+        ],
+        useCases: [
+          'Debugging rel=next/prev pagination links and HATEOAS responses',
+          'Checking resource-hint Link headers such as preload/preconnect and their media queries',
+          'Parsing complex Link fields with many parameters in scenarios like WebFinger',
+          'Teaching the RFC 8288 link-value list grammar and rel relation-type semantics',
+        ],
+        privacyNote:
+          'All tokenizing, parameter extraction, RFC 3986 resolution and header construction run locally in your browser as pure functions; no network request is made and no input is sent or persisted.',
+        faqs: [
+          {
+            question: 'Why does a comma inside quotes not split an entry?',
+            answer:
+              'RFC 8288 allows parameter values to use quoted strings, in which commas and semicolons are ordinary characters. The scanner tracks quote and angle-bracket state and only splits link-values on commas at the top level outside both, so a value like title="a; b, c" is preserved intact.',
+          },
+          {
+            question: 'Why is rel parsed into an array instead of one string?',
+            answer:
+              'RFC 8288 defines rel as a whitespace-separated set of relation types, so one link-value may carry several relations such as rel="next preload". The parser splits on whitespace and lowercases the result into an array, making membership checks straightforward and avoiding comparison noise from case or repeated spaces.',
+          },
+          {
+            question: 'Does supplying a base URI modify the original reference?',
+            answer:
+              'No. The base is used only to compute and display the RFC 3986 resolved absolute URI; the original URI-Reference is always kept verbatim in the result. Without a base, no resolution happens and relative references stay exactly as entered.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
