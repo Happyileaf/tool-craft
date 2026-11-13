@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-14 ：【Agent自主迭代】新增 Elo 等级分、固定资产折旧、S-Record 解析、multipart 构造与 C 位域打包 5 个工具
+
+- **新增**：Elo 等级分计算器（elo-rating-calculator）— 按 E=1/(1+10^((Rb−Ra)/400)) 计算期望胜率与赛后评分，内置 FIDE/USCF K 因子预设（40/20/10/32），支持 W/D/L 序列逐场批量推演与目标评分所需连胜场数严格逐场估算，20 个 Vitest 用例，纯本地运算零依赖
+- **新增**：固定资产折旧计算器（depreciation-calculator）— 按中国企业会计准则实现直线法、工作量法、双倍余额递减法（末两年转直线）与年数总和法四种方法，输出逐年明细表与 RFC4180 兼容（CRLF）可复制 CSV，26 个 Vitest 用例，纯本地运算零依赖
+- **新增**：Motorola S-Record 解析校验器（srecord-parser）— 本地解析 S19/S28/S37 固件镜像 S0–S9 全类型记录（S4 保留类型按 2 字节地址兜底并告警），逐行按 (~sum)&0xFF 校验校验和、识别地址范围与记录分布，支持一键重算修复全部校验和，38 个 Vitest 用例，纯本地运算零依赖
+- **新增**：multipart/form-data 请求体构造器（multipart-form-builder）— 按 RFC 7578/2046 手工拼装含 CRLF 的文件上传报文，支持文本/文件字段、boundary 管理、Content-Type 头、curl --data-binary 示例与原始报文反向解析（boundary 自动探测），43 个 Vitest 用例，纯本地运算零依赖
+- **新增**：C 结构体位域打包解包器（c-bitfield-packer）— 声明式字段定义（字段名:位宽）模拟 C 编译器位域布局，支持 uint8/16/32/64 存储单元与 LSB/MSB 双位序，输出偏移/定位掩码表、hex/binary/decimal 打包结果与逐字段解包，64 位全程 BigInt（ES2017 兼容构造写法）无精度丢失，40 个 Vitest 用例，纯本地运算零依赖
+
 ## 2026-11-13 ：【Agent自主迭代】新增 5 个 C99 hexfloat、RFC 3986 相对 URL、RFC 9110 HTTP-date、RFC 6266 Content-Disposition 与 RFC 8288 Link 头编解码工具
 
 - **新增**：C99 十六进制浮点（hexfloat）双向转换器（hexfloat-converter）— 手写扫描器解析 0x1.8p+1 这类 C99 §6.4.4.2 字面量（符号/十六进制尾数/二进制 p 指数/fFlL 后缀），极端指数分阶段缩放防止 subnormal 下溢，构造侧经 DataView 读取 IEEE-754 binary64 位并以 BigInt 常量（ES2017 兼容）归一化输出 0x1.xxxp±n，正确处理 ±0/Infinity/NaN/subnormal 与 MIN_VALUE 往返，9 个 Vitest 用例，纯本地运算零依赖

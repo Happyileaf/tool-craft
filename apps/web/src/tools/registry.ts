@@ -33848,6 +33848,527 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'elo-rating-calculator',
+    name: 'Elo 等级分计算器',
+    nameEn: 'Elo Rating Calculator',
+    description:
+      '基于 Elo 公式计算期望胜率与赛后评分，支持 FIDE/USCF K 因子预设、W/D/L 序列逐场批量推演与目标评分所需连胜场数估算。',
+    descriptionEn:
+      'Compute expected win probability and post-game ratings with the Elo formula, featuring FIDE/USCF K-factor presets, batch W/D/L sequence simulation, and an estimate of consecutive wins needed to reach a target rating.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/elo-rating-calculator',
+    iconName: 'Calculator',
+    tags: ['Elo', '等级分', '期望胜率', 'K 因子', '棋类评分'],
+    tagsEn: ['Elo', 'Rating', 'Expected Score', 'K-factor', 'Chess Rating'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'W,D,W,L,D,W',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Elo 等级分计算器在浏览器本地实现 Arpad Elo 提出的等级分模型：依据双方评分差计算期望胜率 E = 1/(1+10^((Rb−Ra)/400))，并按 R′ = R + K×(S−E) 更新赛后评分，同时提供 W/D/L 比赛序列的逐场推演与达到目标评分所需连胜场数估算。',
+        coreFeatures: [
+          '单场计算：双方评分与 K 因子驱动的期望胜率，以及胜/和/负三种结果下的新评分与变动',
+          'K 因子预设：FIDE 新棋手 40、2400 以下 20、2400+ 为 10、通用/USCF 32，也支持自定义 1-200',
+          '序列推演：粘贴 W/D/L 序列（逗号或空白分隔，兼容 1/0.5/0 词法），逐场重算期望并输出明细表',
+          '目标估算：假设每场连胜，逐场递推达到目标评分所需的胜场数，不可行时给出明确原因',
+          '严格输入校验：评分范围、K 因子、空序列、非法记号与超长序列均给出中文错误提示',
+        ],
+        howToUse: [
+          '在「单场计算」区填写棋手 A、B 评分并选择 K 因子预设或自定义数值',
+          '查看期望胜率百分比，以及胜、和、负后棋手 A 的评分与红绿灰变动标签',
+          '在「序列推演」区填写起始评分、固定对手评分与 W/D/L 序列，查看逐场明细表与总变动',
+          '在「目标胜场估算」区填写当前评分、目标评分与对手评分，获取所需连胜场数',
+        ],
+        useCases: [
+          '棋类俱乐部与在线对战平台核算选手赛后等级分变化',
+          '赛前评估双方实力差距与爆冷概率',
+          '制定冲分计划，估算达到目标评分需要的连胜场数',
+          '理解 FIDE/USCF 不同 K 因子规则对评分波动的影响',
+        ],
+        privacyNote:
+          '全部评分运算均在浏览器本地完成，不发起任何网络请求，输入的评分与比赛序列不会被上传或留存。',
+        faqs: [
+          {
+            question: '期望胜率是怎么算出来的？',
+            answer:
+              '采用标准 Elo 公式 Ea = 1/(1+10^((Rb−Ra)/400))。双方评分相同时期望胜率为 50%，评分相差 400 分时弱方期望胜率约为 9.09%、强方约为 90.91%。',
+          },
+          {
+            question: 'K 因子应该选哪个预设？',
+            answer:
+              'FIDE 规定对局未满 30 场的新棋手 K=40，等级分低于 2400 的在册棋手 K=20，达到 2400 及以上 K=10；USCF 与多数在线平台常用 K=32。K 越大，单场结果对评分的影响越强。工具也允许在 1-200 之间自定义。',
+          },
+          {
+            question: '序列推演的评分为什么每场都在变？',
+            answer:
+              '每场比赛后评分按 R′ = R + K×(S−E) 四舍五入更新，下一场的期望胜率基于更新后的评分重新计算，因此即使对手评分固定，连胜带来的积分增益也会逐场递减。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Elo Rating Calculator implements Arpad Elo’s rating model entirely in the browser: it derives the expected score E = 1/(1+10^((Rb−Ra)/400)) from the rating difference, updates ratings with R′ = R + K×(S−E), simulates W/D/L match sequences game by game, and estimates how many consecutive wins are needed to reach a target rating.',
+        coreFeatures: [
+          'Single-match mode: expected score from both ratings and K-factor, plus new ratings and deltas for win, draw, and loss',
+          'K-factor presets: FIDE newcomer 40, below 2400 rated 20, 2400+ rated 10, generic/USCF 32, with custom values from 1 to 200',
+          'Sequence simulation: paste W/D/L tokens (comma or whitespace separated, 1/0.5/0 accepted) for a per-game detail table with recomputed expectations',
+          'Target estimation: iterates consecutive wins against a fixed opponent to count the wins needed for a target rating, with an explicit reason when infeasible',
+          'Strict validation with Chinese/English-friendly error messages for rating range, K-factor, empty sequences, invalid tokens, and overlong input',
+        ],
+        howToUse: [
+          'Enter player A and player B ratings in the single-match section and pick a K-factor preset or a custom value',
+          'Read the expected win percentage and the new rating with colored delta tags for win, draw, and loss',
+          'Fill the start rating, fixed opponent rating, and a W/D/L sequence in the simulation section to inspect the per-game table and total delta',
+          'Provide current rating, target rating, and opponent rating in the target section to obtain the required winning streak',
+        ],
+        useCases: [
+          'Calculating post-game rating changes for chess clubs and online competitive platforms',
+          'Assessing the strength gap and upset probability before a match',
+          'Planning a rating climb by estimating the winning streak needed for a target score',
+          'Understanding how FIDE/USCF K-factor rules change rating volatility',
+        ],
+        privacyNote:
+          'All rating math runs locally in the browser. No network requests are made, and the ratings or match sequences you enter are never uploaded or retained.',
+        faqs: [
+          {
+            question: 'How is the expected score calculated?',
+            answer:
+              'With the standard Elo formula Ea = 1/(1+10^((Rb−Ra)/400)). Equal ratings give a 50% expected score; a 400-point gap means the weaker player has roughly a 9.09% expected score versus about 90.91% for the stronger player.',
+          },
+          {
+            question: 'Which K-factor preset should I choose?',
+            answer:
+              'FIDE uses K=40 for players with fewer than 30 rated games, K=20 for rated players below 2400, and K=10 at 2400 and above. USCF and many online platforms default to K=32. A larger K makes each game move the rating more strongly; custom values between 1 and 200 are also supported.',
+          },
+          {
+            question: 'Why does the rating change every game during sequence simulation?',
+            answer:
+              'After each game the rating is updated with R′ = R + K×(S−E) rounded to an integer, and the next expected score is recomputed from that updated rating. Even against a fixed opponent, the points gained from consecutive wins therefore shrink game by game.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'depreciation-calculator',
+    name: '固定资产折旧计算器',
+    nameEn: 'Fixed Asset Depreciation Calculator',
+    description:
+      '按中国企业会计准则计算固定资产折旧，支持直线法、工作量法、双倍余额递减法与年数总和法，输出逐年明细表与可复制的 CSV。',
+    descriptionEn:
+      'Calculate fixed-asset depreciation under Chinese GAAP with straight-line, units-of-production, double-declining-balance, and sum-of-years-digits methods, producing a year-by-year schedule and copy-ready CSV.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/depreciation-calculator',
+    iconName: 'Calculator',
+    tags: ['折旧', '固定资产', '会计准则', '双倍余额递减', '年数总和'],
+    tagsEn: ['Depreciation', 'Fixed Asset', 'Accounting', 'Double Declining', 'SYD'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '100000, 5000, 5',
+    doc: {
+      zh: {
+        whatIsIt:
+          '固定资产折旧计算器在浏览器本地按中国企业会计准则完成四种折旧方法的逐年测算：年限平均法（直线法）、工作量法、双倍余额递减法（最后两年转直线法）与年数总和法，输出每年折旧额、累计折旧、年末账面净值与年折旧率，并可导出 CRLF 换行的 CSV 明细表。',
+        coreFeatures: [
+          '直线法：年折旧额 =（原值−净残值）/ 使用年限，每年等额',
+          '工作量法：按单位折旧额与各年度实际工作量计提，年度数量即折旧年数',
+          '双倍余额递减法：前期按 2/年限 对年初账面净值计提，最后两年改直线法并保证账面净值不低于净残值',
+          '年数总和法：按剩余使用年数占年数总和的比例逐年递减计提',
+          '逐年明细表与统计卡片：金额千分位两位小数，CSV 可直接粘贴到 Excel/WPS',
+        ],
+        howToUse: [
+          '填写固定资产原值、预计净残值与预计使用年限（1-50 的整数）',
+          '在折旧方法下拉框中选择四种方法之一',
+          '选择工作量法时，补充预计总工作量与各年度实际工作量（逗号分隔）',
+          '查看逐年明细表与统计卡片，点击「复制」导出 CSV',
+        ],
+        useCases: [
+          '会计与财务人员编制固定资产折旧测算表',
+          '对比不同折旧方法对各期利润与资产账面价值的影响',
+          '教学演示中国会计准则下四种折旧方法的计算过程',
+          '资产报废、处置前快速核算账面净值与累计折旧',
+        ],
+        privacyNote:
+          '全部折旧测算均在浏览器本地完成，不发起任何网络请求，输入的资产数据不会被上传或留存。',
+        faqs: [
+          {
+            question: '双倍余额递减法为什么最后两年改成直线法？',
+            answer:
+              '这是中国企业会计准则的规定：双倍余额递减法在折旧期限届满前两年，将固定资产账面净值扣除预计净残值后的余额在最后两年内平均摊销，保证折旧期满时账面净值恰好等于预计净残值。',
+          },
+          {
+            question: '各年折旧额相加为什么有时与应计折旧额差几分钱？',
+            answer:
+              '每年折旧额先四舍五入保留两位小数，历年舍入差会累积。工具在最后一年统一把累计折旧钳制到「原值−净残值」，由末年折旧吸收全部舍入差，因此五年合计与应计折旧额完全一致。',
+          },
+          {
+            question: '工作量法的折旧年数由什么决定？',
+            answer:
+              '由填写的年度工作量个数决定，每个数值代表一个会计年度的实际工作量。单位折旧额 =（原值−净残值）/ 预计总工作量，各年度折旧 = 单位额 × 当年工作量，年度工作量合计不得超过预计总工作量。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Fixed Asset Depreciation Calculator runs entirely in the browser and applies four methods prescribed by Chinese GAAP: straight-line, units-of-production, double-declining-balance (switching to straight-line in the final two years), and sum-of-years-digits. It returns annual depreciation, accumulated depreciation, ending book value, and depreciation rate, with CRLF CSV export.',
+        coreFeatures: [
+          'Straight-line: equal annual charge of (cost − salvage) divided by useful life',
+          'Units-of-production: per-unit rate multiplied by each year’s actual output, with the number of entries defining the schedule length',
+          'Double-declining-balance: 2/life applied to opening book value, switching to straight-line for the final two years so book value never falls below salvage',
+          'Sum-of-years-digits: declining charges based on remaining life over the sum of years’ digits',
+          'Year-by-year table, summary cards, locale-formatted money values, and CSV export ready for Excel',
+        ],
+        howToUse: [
+          'Enter asset cost, estimated salvage value, and useful life in whole years (1–50)',
+          'Pick one of the four depreciation methods from the dropdown',
+          'For units-of-production, provide total estimated units and comma-separated yearly output',
+          'Review the schedule and statistics, then click Copy to export the CSV',
+        ],
+        useCases: [
+          'Preparing fixed-asset depreciation schedules in accounting and finance teams',
+          'Comparing how depreciation methods affect periodic profit and carrying amount',
+          'Teaching the four Chinese GAAP depreciation methods with worked numbers',
+          'Quickly deriving book value and accumulated depreciation before asset disposal',
+        ],
+        privacyNote:
+          'All depreciation math runs locally in the browser. No network requests are made, and the asset figures you enter are never uploaded or retained.',
+        faqs: [
+          {
+            question: 'Why does double-declining-balance switch to straight-line in the final two years?',
+            answer:
+              'Chinese GAAP requires the switch: during the last two years, the book value at the start of that period minus salvage is amortized evenly, guaranteeing that ending book value equals the estimated salvage value at the end of the useful life.',
+          },
+          {
+            question: 'Why might annual charges differ by a few cents from the depreciable base?',
+            answer:
+              'Each annual charge is rounded to two decimals and rounding errors accumulate. The final year clamps accumulated depreciation to cost minus salvage, absorbing all rounding differences so the schedule totals exactly the depreciable base.',
+          },
+          {
+            question: 'What determines the number of years under units-of-production?',
+            answer:
+              'The count of yearly output entries: each value is one accounting period. The per-unit rate is (cost − salvage) divided by total estimated units, and each period’s charge is that rate times actual output; total output cannot exceed the estimated total.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'srecord-parser',
+    name: 'Motorola S-Record 解析校验器',
+    nameEn: 'Motorola S-Record Parser & Checksum Verifier',
+    description:
+      '在浏览器本地解析 S19/S28/S37 固件镜像（S0-S9 全类型记录），逐行校验校验和、识别地址范围与记录分布，并支持一键重算修复全部校验和。',
+    descriptionEn:
+      'Parse S19/S28/S37 firmware images (all S0–S9 record types) locally in the browser, verify every checksum line by line, inspect address ranges and record-type distribution, and recompute or repair all checksums in one click.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/srecord-parser',
+    iconName: 'FileCode',
+    tags: ['S-Record', 'S19', 'S28', 'S37', '固件', '校验和', '嵌入式'],
+    tagsEn: ['S-Record', 'S19', 'S28', 'S37', 'Firmware', 'Checksum', 'Embedded'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      'S00C000068656C6C6F5F533139C3\nS1130000214601360121470136007EFE09D219013D\nS1130010214601360121470136007EFE09D219022D\nS9030000FC',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Motorola S-Record 解析校验器在浏览器本地解析 S19/S28/S37 固件镜像文本：识别 S0 头部、S1/S2/S3 数据、S5/S6 计数、S7/S8/S9 终止等全部记录类型，逐行按「字节和取反低 8 位」规则校验校验和，自动识别文件格式、地址范围与记录类型分布，并可一键重算修复全部错误校验和。',
+        coreFeatures: [
+          '全类型解析：S0-S9 记录（含保留类型 S4 警告），自动识别 S19/S28/S37 格式与地址宽度（16/24/32 位）',
+          '逐行校验和：按 (~sum) & 0xFF 规则核对，错误行给出实际值与期望值且不中断后续解析',
+          '结构校验：终止记录缺失/重复/不在末尾、S5/S6 声明计数与实际数据记录数不符等警告',
+          '地址统计：数据记录绝对地址范围、载荷总字节数、S0 头部 ASCII 解码与数据行十六进制预览',
+          '一键修复：重算全部结构合法记录的校验和，输出可直接刷回固件工具链的修正文本',
+        ],
+        howToUse: [
+          '将 S-Record 文本粘贴到输入框，或点击「载入示例」查看含一条校验和错误的样例',
+          '查看统计卡片、记录类型分布与错误/警告列表定位问题行',
+          '在明细表中核对每条记录的类型、地址、数据预览与校验和状态',
+          '点击「一键修复全部校验和」后，在输出区复制修正后的 S-Record 文本',
+        ],
+        useCases: [
+          '嵌入式开发中核对烧录镜像（S19/S28/S37）的完整性与校验和',
+          '固件传输、格式转换后排查损坏记录与地址越界问题',
+          '教学演示 Motorola S-Record 行结构、地址宽度与校验和算法',
+          '为自研烧录/链接工具链准备校验和正确的测试固件文本',
+        ],
+        privacyNote:
+          '全部解析与校验和运算均在浏览器本地完成，不发起任何网络请求，固件内容不会被上传或留存。',
+        faqs: [
+          {
+            question: 'S19、S28、S37 是如何区分的？',
+            answer:
+              '按数据记录使用的地址宽度区分：只出现 S1/S9（16 位地址）为 S19；出现 S2/S8（24 位地址）为 S28；出现 S3/S7（32 位地址）为 S37。混合出现时以最高地址宽度的数据记录为准。',
+          },
+          {
+            question: '校验和是怎么计算的？',
+            answer:
+              '把 byteCount、地址字段与数据字段的全部字节求和，取低 8 位后按位取反，即 (~sum) & 0xFF。校验时把行尾的校验和字节也计入总和，低 8 位结果应为 0xFF，否则该行校验和错误。',
+          },
+          {
+            question: '修复校验和会不会改动我的数据字节？',
+            answer:
+              '不会。修复只替换每条结构合法记录末尾的校验和字节，地址与数据载荷原样保留；结构畸形（字节数不符、非法十六进制等）的行无法确定字段边界，会原样保留并继续在错误列表中提示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Motorola S-Record Parser & Checksum Verifier parses S19/S28/S37 firmware images entirely in the browser. It understands every record type from S0 through S9, verifies each line’s checksum using the one’s-complement of the byte sum, detects the file format and address range, and can recompute and repair all checksums in one action.',
+        coreFeatures: [
+          'Full record support: S0–S9 including a warning for reserved S4, with automatic S19/S28/S37 detection and 16/24/32-bit address widths',
+          'Per-line checksum verification with (~sum) & 0xFF; bad lines report actual versus expected values without stopping the parse',
+          'Structural warnings for missing, duplicated, or misplaced termination records and mismatched S5/S6 declared counts',
+          'Address statistics: absolute data range, total payload bytes, S0 ASCII header decoding, and hex data previews',
+          'One-click repair that recomputes checksums for every structurally valid line and emits text ready for firmware tooling',
+        ],
+        howToUse: [
+          'Paste S-Record text into the input box, or click Load Sample to inspect a sample containing one bad checksum',
+          'Use the statistics cards, record-type distribution, and error/warning lists to locate problematic lines',
+          'Check each record’s type, address, data preview, and checksum status in the detail table',
+          'Click Fix All Checksums and copy the corrected S-Record text from the output area',
+        ],
+        useCases: [
+          'Verifying integrity and checksums of S19/S28/S37 images in embedded development',
+          'Diagnosing corrupted records and address issues after firmware transfer or format conversion',
+          'Teaching the S-Record line structure, address widths, and checksum algorithm',
+          'Preparing checksum-correct firmware fixtures for custom flasher or linker toolchains',
+        ],
+        privacyNote:
+          'All parsing and checksum math runs locally in the browser. No network requests are made, and firmware contents are never uploaded or retained.',
+        faqs: [
+          {
+            question: 'How are S19, S28, and S37 distinguished?',
+            answer:
+              'By the address width of the data records: only S1/S9 (16-bit addresses) means S19; S2/S8 (24-bit) means S28; S3/S7 (32-bit) means S37. When widths are mixed, the widest data record determines the format.',
+          },
+          {
+            question: 'How is the checksum computed?',
+            answer:
+              'Sum the byte count, address, and data bytes, keep the low 8 bits, and take the one’s complement: (~sum) & 0xFF. During verification, adding the trailing checksum byte should make the low byte of the total equal 0xFF.',
+          },
+          {
+            question: 'Does repairing checksums modify my data bytes?',
+            answer:
+              'No. Repair only replaces the final checksum byte of structurally valid records; addresses and payloads are preserved. Malformed lines (bad byte counts, invalid hex, and so on) cannot have reliable field boundaries, so they are left untouched and remain listed as errors.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'multipart-form-builder',
+    name: 'multipart/form-data 请求体构造器',
+    nameEn: 'multipart/form-data Body Builder',
+    description:
+      '按 RFC 7578 在浏览器本地拼装 multipart/form-data 请求体，支持文本与文件字段、boundary 管理、Content-Type 头、curl 示例生成及原始报文反向解析。',
+    descriptionEn:
+      'Build multipart/form-data request bodies locally per RFC 7578, with text and file fields, boundary management, Content-Type headers, curl samples, and reverse parsing of raw payloads.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/multipart-form-builder',
+    iconName: 'Braces',
+    tags: ['multipart', 'form-data', 'RFC 7578', 'curl', 'HTTP', '文件上传'],
+    tagsEn: ['multipart', 'form-data', 'RFC 7578', 'curl', 'HTTP', 'File Upload'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'title=hello&tags=web&file=report.txt',
+    doc: {
+      zh: {
+        whatIsIt:
+          'multipart/form-data 请求体构造器在浏览器本地按 RFC 7578 / RFC 2046 手工拼装文件上传常用的 multipart 报文：管理 boundary 分隔符、文本与文件字段的 Content-Disposition 头部、可选 Content-Type 与 CRLF 字节布局，输出完整请求体、Content-Type 请求头与可直接执行的 curl 命令，并支持把原始报文反向解析回字段列表。',
+        coreFeatures: [
+          '字段编辑器：动态增删文本/文件字段，文件字段支持 filename 与 Content-Type',
+          'boundary 管理：自动生成 WebKit 风格 boundary，也可自定义或一键重新生成',
+          '完整输出：Content-Type 头、含 CRLF 的原始请求体与 UTF-8 字节长度、curl --data-binary 示例',
+          '头部转义：name/filename 中的反斜杠与双引号按 quoted-string 规则转义，CR/LF 输入被拦截',
+          '反向解析：从 Content-Type 提取或自动探测 boundary，将报文还原为字段表格，损坏结构给出结构化错误',
+        ],
+        howToUse: [
+          '在「构造请求」页签添加字段，填写字段名、内容；切换为文件字段时补充文件名与内容类型',
+          '使用自动生成的 boundary 或自定义后，查看 Content-Type 头、请求体与 curl 示例并分别复制',
+          '切换到「反向解析」页签，粘贴原始报文（可带 Content-Type 头），查看还原后的字段',
+          '点击「载入构造结果」可把当前构造的报文直接送入解析区做往返自测',
+        ],
+        useCases: [
+          '调试后端文件上传接口，核对 multipart 报文的字节级布局',
+          '为 curl、Postman 或自研 HTTP 客户端生成可复制的请求样例',
+          '教学演示 RFC 7578 下 boundary、Content-Disposition 与 quoted-string 转义',
+          '排查上传失败时对原始 multipart 报文做反向解析与字段核对',
+        ],
+        privacyNote:
+          '全部拼装与解析均在浏览器本地完成，不发起任何网络请求，字段内容与文件文本不会被上传或留存。',
+        faqs: [
+          {
+            question: '为什么输出里有那么多 \\r\\n？',
+            answer:
+              'RFC 2046 规定 multipart 报文的行结束序列必须是 CRLF（\\r\\n），每个分段以 --boundary 行开始，头部后需要一个空行，段体结束后再跟 CRLF，最后以 --boundary-- 收尾。工具严格按该字节布局拼装，可直接被服务端解析。',
+          },
+          {
+            question: '字段名或文件名里有双引号怎么办？',
+            answer:
+              'Content-Disposition 的参数采用 quoted-string 形式，工具会先把反斜杠转义为 \\\\，再把双引号转义为 \\"，保证报文可逆解析；CR 与 LF 不允许出现在参数中，会在校验阶段直接报错。',
+          },
+          {
+            question: '反向解析时一定要填 Content-Type 头吗？',
+            answer:
+              '不需要。提供 Content-Type 头时工具从中提取 boundary 参数（兼容带引号写法）；留空时会从报文首个 -- 行自动探测 boundary。两种方式都失败或分段结构损坏时，会在错误列表中给出具体原因。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The multipart/form-data Body Builder assembles the multipart payloads commonly used for file uploads entirely in the browser following RFC 7578 / RFC 2046. It manages boundaries, Content-Disposition headers for text and file fields, optional Content-Type values, and exact CRLF byte layout, then emits the full body, Content-Type header, a ready-to-run curl command, and can parse raw payloads back into field lists.',
+        coreFeatures: [
+          'Field editor: add or remove text/file fields, with filename and Content-Type for file parts',
+          'Boundary management: auto-generated WebKit-style boundary, custom values, or one-click regeneration',
+          'Complete output: Content-Type header, raw CRLF body with UTF-8 byte length, and a curl --data-binary sample',
+          'Header escaping: backslashes and double quotes in name/filename follow quoted-string rules; CR/LF input is rejected',
+          'Reverse parsing: extract boundary from Content-Type or auto-detect it, restoring payloads into a field table with structured errors for malformed input',
+        ],
+        howToUse: [
+          'Add fields in the Build tab, fill names and values, and supply filename plus content type for file fields',
+          'Keep the generated boundary or customize it, then copy the Content-Type header, body, and curl sample',
+          'Switch to the Parse tab, paste a raw payload (optionally with its Content-Type header), and inspect the restored fields',
+          'Use Load Built Payload to send the current body straight into the parser for a round-trip self-check',
+        ],
+        useCases: [
+          'Debugging backend upload endpoints by inspecting byte-level multipart layout',
+          'Generating copy-ready request samples for curl, Postman, or custom HTTP clients',
+          'Teaching RFC 7578 boundaries, Content-Disposition, and quoted-string escaping',
+          'Reverse-engineering raw multipart payloads when uploads fail',
+        ],
+        privacyNote:
+          'All building and parsing runs locally in the browser. No network requests are made, and field values or file text are never uploaded or retained.',
+        faqs: [
+          {
+            question: 'Why does the output contain so many CRLF sequences?',
+            answer:
+              'RFC 2046 mandates CRLF line endings in multipart messages: each part starts with a --boundary line, headers are followed by a blank line, the body ends with CRLF, and the message closes with --boundary--. The tool follows that exact byte layout so servers can parse it directly.',
+          },
+          {
+            question: 'What if a field or file name contains double quotes?',
+            answer:
+              'Content-Disposition parameters use quoted-string syntax. The tool escapes backslashes first and then double quotes, keeping the payload reversible; CR and LF characters are not allowed in parameters and are rejected during validation.',
+          },
+          {
+            question: 'Is the Content-Type header required for reverse parsing?',
+            answer:
+              'No. With a Content-Type header, the boundary parameter is extracted (quoted forms included). Without one, the boundary is auto-detected from the first -- line. If both approaches fail or the structure is corrupted, concrete reasons appear in the error list.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'c-bitfield-packer',
+    name: 'C 结构体位域打包解包器',
+    nameEn: 'C Struct Bit-Field Packer',
+    description:
+      '在浏览器本地按声明式字段定义（字段名:位宽）模拟 C 结构体位域布局，支持 uint8/16/32/64 存储单元与 LSB/MSB 两种位序，完成打包、解包、位移表与掩码计算，64 位运算基于 BigInt 无精度丢失。',
+    descriptionEn:
+      'Simulate C struct bit-field layouts locally from declarative field definitions (name:width), with uint8/16/32/64 storage and LSB/MSB bit ordering, offering packing, unpacking, offset tables, and mask math; 64-bit values use BigInt without precision loss.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/c-bitfield-packer',
+    iconName: 'Binary',
+    tags: ['位域', 'bit-field', 'C 语言', '寄存器', 'BigInt', '嵌入式'],
+    tagsEn: ['Bit-Field', 'C Language', 'Register', 'BigInt', 'Embedded', 'Packing'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'flag:1\nmode:3\naddr:12\n# pack: flag=1, mode=5, addr=0x123 -> 0x123B',
+    doc: {
+      zh: {
+        whatIsIt:
+          'C 结构体位域打包解包器在浏览器本地模拟常见 C 编译器对结构体位域（bit-field）的位分配规则：用「字段名:位宽」文本声明字段，选择 uint8/uint16/uint32/uint64 存储单元与 LSB-first（低位优先）或 MSB-first（高位优先）位序后，工具计算每个字段的位偏移与定位掩码，把各字段值打包为整体 hex/binary/decimal，并支持把原始整数反向解包为逐字段值；超过 32 位的运算全部基于 BigInt，无精度丢失。',
+        coreFeatures: [
+          '声明式定义：每行「字段名:位宽」，# 注释与 # @order 位序指令，字段名/位宽/重名/溢出逐条校验',
+          '双位序布局：LSB-first 从 bit0 向高位排列，MSB-first 首个字段占据最高位，输出偏移与定位掩码表',
+          '四种存储单元：uint8/uint16/uint32/uint64，总位宽超限给出结构化错误，不产出错误结果',
+          '打包与解包：赋值支持十进制与 0x 十六进制，输出补零 hex、定宽二进制与十进制字符串，并可往返自测',
+          'BigInt 安全：64 位掩码、移位与格式化全程使用 BigInt，十进制字符串输出避免 Number 精度问题',
+        ],
+        howToUse: [
+          '在字段定义框中按「字段名:位宽」逐行声明字段，可在首行用 # @order lsb-first 或 msb-first 指定位序',
+          '选择存储单元类型与位序（定义中的 @order 指令优先于单选按钮），查看字段位移表中的偏移与掩码',
+          '在「打包 Pack」页签按「字段名=值」逐行赋值（支持 0x 前缀），复制整体 hex/binary/decimal 结果',
+          '在「解包 Unpack」页签粘贴原始整数（hex 或十进制），查看每个字段还原出的十进制与 hex 值',
+        ],
+        useCases: [
+          '嵌入式寄存器映射开发：核对硬件手册中多字段寄存器的位偏移、掩码与复位值',
+          'C 语言位域教学：演示 LSB/MSB 两种编译器布局下同一组字段的打包差异',
+          '协议报文调试：把多个小位宽标志位拼装为单整数，或从通信原始值中拆出各字段',
+          '64 位描述符解析：借助 BigInt 安全处理超过 32 位安全整数范围的位域结构',
+        ],
+        privacyNote:
+          '全部字段定义、打包与解包运算均在浏览器本地完成，不发起任何网络请求，寄存器数据与字段值不会被上传或留存。',
+        faqs: [
+          {
+            question: 'LSB-first 和 MSB-first 有什么区别？',
+            answer:
+              'LSB-first（常见小端 C 编译器默认行为）按字段声明顺序从存储单元的 bit0 向高位依次分配；MSB-first 下第一个字段占据存储单元的最高位，后续字段向低位排列。同一组赋值在两种位序下会得到不同的打包结果，工具会在位移表中明确给出每个字段的偏移与掩码。',
+          },
+          {
+            question: '为什么 uint64 的结果用字符串而不是数字展示？',
+            answer:
+              'JavaScript 的 Number 只能安全表示到 2^53-1，而 uint64 字段最大可达 2^64-1。工具内部全程使用 BigInt 完成移位、掩码与格式化，并以十进制字符串和补零 hex 字符串输出，保证 64 位结果逐位精确、无精度丢失。',
+          },
+          {
+            question: '字段总位宽超过存储单元会怎样？',
+            answer:
+              '布局阶段会在错误列表中指出具体是哪个字段放不下以及总位宽超限的差值，此时不会生成位移表，打包与解包也不会产出结果，避免给出截断后的错误数值。请减少字段位宽或切换到更宽的存储单元后重试。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The C Struct Bit-Field Packer simulates the bit-allocation rules of common C compilers entirely in the browser. Declare fields with "name:width" lines, pick a uint8/uint16/uint32/uint64 storage unit and LSB-first or MSB-first ordering, and the tool computes each field’s bit offset and positioned mask, packs field values into a whole hex/binary/decimal number, and unpacks a raw integer back into per-field values. Anything beyond 32 bits is handled with BigInt, so there is no precision loss.',
+        coreFeatures: [
+          'Declarative definitions: one "name:width" field per line, # comments and an # @order directive, with per-line validation of names, widths, duplicates, and overflow',
+          'Two layout orders: LSB-first grows from bit0 upward, while MSB-first places the first field at the highest bit; offset and positioned-mask tables are shown for both',
+          'Four storage units: uint8/uint16/uint32/uint64, with structured errors when the total field width exceeds the unit and no misleading output',
+          'Pack and unpack: values accept decimal and 0x hexadecimal input, producing zero-padded hex, fixed-width binary, and decimal strings, with round-trip self-checks',
+          'BigInt safety: 64-bit masks, shifts, and formatting run entirely on BigInt, and decimal strings avoid Number precision issues',
+        ],
+        howToUse: [
+          'Declare fields line by line as "name:width"; optionally put # @order lsb-first or msb-first on the first line',
+          'Choose the storage unit and bit order (the @order directive in the editor takes precedence over the radio buttons) and inspect offsets and masks in the layout table',
+          'On the Pack tab, assign values line by line as "name=value" (0x prefix supported), then copy the overall hex/binary/decimal result',
+          'On the Unpack tab, paste a raw integer (hex or decimal) to see each field restored as decimal and hex values',
+        ],
+        useCases: [
+          'Embedded register-map development: verifying offsets, masks, and reset values of multi-field hardware registers',
+          'Teaching C bit-fields: demonstrating how the same fields pack differently under LSB and MSB compiler layouts',
+          'Protocol message debugging: combining narrow flag bits into one integer or splitting a raw communication value into fields',
+          '64-bit descriptor parsing: handling bit-field structures beyond the 32-bit safe-integer range thanks to BigInt',
+        ],
+        privacyNote:
+          'All field definitions, packing, and unpacking run locally in the browser. No network requests are made, and register data or field values are never uploaded or retained.',
+        faqs: [
+          {
+            question: 'What is the difference between LSB-first and MSB-first?',
+            answer:
+              'LSB-first (the common default of little-endian C compilers) allocates fields in declaration order from bit0 toward higher bits. Under MSB-first, the first field occupies the highest bit of the storage unit and later fields grow downward. The same assignments therefore pack to different results; the layout table always shows each field’s exact offset and mask.',
+          },
+          {
+            question: 'Why are uint64 results shown as strings instead of numbers?',
+            answer:
+              'JavaScript Number can only represent integers safely up to 2^53-1, while a uint64 field may reach 2^64-1. The tool performs all shifts, masking, and formatting with BigInt and outputs decimal strings plus zero-padded hex strings, keeping 64-bit results bit-exact with no precision loss.',
+          },
+          {
+            question: 'What happens when the total field width exceeds the storage unit?',
+            answer:
+              'The layout step reports which field does not fit and how far the total width exceeds the unit. No layout table is generated and neither packing nor unpacking produces output, preventing truncated or misleading values. Reduce field widths or switch to a wider storage unit and try again.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
