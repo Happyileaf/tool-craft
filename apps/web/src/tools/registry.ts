@@ -34265,6 +34265,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'c-bitfield-packer',
+    name: 'C 结构体位域打包解包器',
+    nameEn: 'C Struct Bit-Field Packer',
+    description:
+      '在浏览器本地按声明式字段定义（字段名:位宽）模拟 C 结构体位域布局，支持 uint8/16/32/64 存储单元与 LSB/MSB 两种位序，完成打包、解包、位移表与掩码计算，64 位运算基于 BigInt 无精度丢失。',
+    descriptionEn:
+      'Simulate C struct bit-field layouts locally from declarative field definitions (name:width), with uint8/16/32/64 storage and LSB/MSB bit ordering, offering packing, unpacking, offset tables, and mask math; 64-bit values use BigInt without precision loss.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/c-bitfield-packer',
+    iconName: 'Binary',
+    tags: ['位域', 'bit-field', 'C 语言', '寄存器', 'BigInt', '嵌入式'],
+    tagsEn: ['Bit-Field', 'C Language', 'Register', 'BigInt', 'Embedded', 'Packing'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'flag:1\nmode:3\naddr:12\n# pack: flag=1, mode=5, addr=0x123 -> 0x123B',
+    doc: {
+      zh: {
+        whatIsIt:
+          'C 结构体位域打包解包器在浏览器本地模拟常见 C 编译器对结构体位域（bit-field）的位分配规则：用「字段名:位宽」文本声明字段，选择 uint8/uint16/uint32/uint64 存储单元与 LSB-first（低位优先）或 MSB-first（高位优先）位序后，工具计算每个字段的位偏移与定位掩码，把各字段值打包为整体 hex/binary/decimal，并支持把原始整数反向解包为逐字段值；超过 32 位的运算全部基于 BigInt，无精度丢失。',
+        coreFeatures: [
+          '声明式定义：每行「字段名:位宽」，# 注释与 # @order 位序指令，字段名/位宽/重名/溢出逐条校验',
+          '双位序布局：LSB-first 从 bit0 向高位排列，MSB-first 首个字段占据最高位，输出偏移与定位掩码表',
+          '四种存储单元：uint8/uint16/uint32/uint64，总位宽超限给出结构化错误，不产出错误结果',
+          '打包与解包：赋值支持十进制与 0x 十六进制，输出补零 hex、定宽二进制与十进制字符串，并可往返自测',
+          'BigInt 安全：64 位掩码、移位与格式化全程使用 BigInt，十进制字符串输出避免 Number 精度问题',
+        ],
+        howToUse: [
+          '在字段定义框中按「字段名:位宽」逐行声明字段，可在首行用 # @order lsb-first 或 msb-first 指定位序',
+          '选择存储单元类型与位序（定义中的 @order 指令优先于单选按钮），查看字段位移表中的偏移与掩码',
+          '在「打包 Pack」页签按「字段名=值」逐行赋值（支持 0x 前缀），复制整体 hex/binary/decimal 结果',
+          '在「解包 Unpack」页签粘贴原始整数（hex 或十进制），查看每个字段还原出的十进制与 hex 值',
+        ],
+        useCases: [
+          '嵌入式寄存器映射开发：核对硬件手册中多字段寄存器的位偏移、掩码与复位值',
+          'C 语言位域教学：演示 LSB/MSB 两种编译器布局下同一组字段的打包差异',
+          '协议报文调试：把多个小位宽标志位拼装为单整数，或从通信原始值中拆出各字段',
+          '64 位描述符解析：借助 BigInt 安全处理超过 32 位安全整数范围的位域结构',
+        ],
+        privacyNote:
+          '全部字段定义、打包与解包运算均在浏览器本地完成，不发起任何网络请求，寄存器数据与字段值不会被上传或留存。',
+        faqs: [
+          {
+            question: 'LSB-first 和 MSB-first 有什么区别？',
+            answer:
+              'LSB-first（常见小端 C 编译器默认行为）按字段声明顺序从存储单元的 bit0 向高位依次分配；MSB-first 下第一个字段占据存储单元的最高位，后续字段向低位排列。同一组赋值在两种位序下会得到不同的打包结果，工具会在位移表中明确给出每个字段的偏移与掩码。',
+          },
+          {
+            question: '为什么 uint64 的结果用字符串而不是数字展示？',
+            answer:
+              'JavaScript 的 Number 只能安全表示到 2^53-1，而 uint64 字段最大可达 2^64-1。工具内部全程使用 BigInt 完成移位、掩码与格式化，并以十进制字符串和补零 hex 字符串输出，保证 64 位结果逐位精确、无精度丢失。',
+          },
+          {
+            question: '字段总位宽超过存储单元会怎样？',
+            answer:
+              '布局阶段会在错误列表中指出具体是哪个字段放不下以及总位宽超限的差值，此时不会生成位移表，打包与解包也不会产出结果，避免给出截断后的错误数值。请减少字段位宽或切换到更宽的存储单元后重试。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The C Struct Bit-Field Packer simulates the bit-allocation rules of common C compilers entirely in the browser. Declare fields with "name:width" lines, pick a uint8/uint16/uint32/uint64 storage unit and LSB-first or MSB-first ordering, and the tool computes each field’s bit offset and positioned mask, packs field values into a whole hex/binary/decimal number, and unpacks a raw integer back into per-field values. Anything beyond 32 bits is handled with BigInt, so there is no precision loss.',
+        coreFeatures: [
+          'Declarative definitions: one "name:width" field per line, # comments and an # @order directive, with per-line validation of names, widths, duplicates, and overflow',
+          'Two layout orders: LSB-first grows from bit0 upward, while MSB-first places the first field at the highest bit; offset and positioned-mask tables are shown for both',
+          'Four storage units: uint8/uint16/uint32/uint64, with structured errors when the total field width exceeds the unit and no misleading output',
+          'Pack and unpack: values accept decimal and 0x hexadecimal input, producing zero-padded hex, fixed-width binary, and decimal strings, with round-trip self-checks',
+          'BigInt safety: 64-bit masks, shifts, and formatting run entirely on BigInt, and decimal strings avoid Number precision issues',
+        ],
+        howToUse: [
+          'Declare fields line by line as "name:width"; optionally put # @order lsb-first or msb-first on the first line',
+          'Choose the storage unit and bit order (the @order directive in the editor takes precedence over the radio buttons) and inspect offsets and masks in the layout table',
+          'On the Pack tab, assign values line by line as "name=value" (0x prefix supported), then copy the overall hex/binary/decimal result',
+          'On the Unpack tab, paste a raw integer (hex or decimal) to see each field restored as decimal and hex values',
+        ],
+        useCases: [
+          'Embedded register-map development: verifying offsets, masks, and reset values of multi-field hardware registers',
+          'Teaching C bit-fields: demonstrating how the same fields pack differently under LSB and MSB compiler layouts',
+          'Protocol message debugging: combining narrow flag bits into one integer or splitting a raw communication value into fields',
+          '64-bit descriptor parsing: handling bit-field structures beyond the 32-bit safe-integer range thanks to BigInt',
+        ],
+        privacyNote:
+          'All field definitions, packing, and unpacking run locally in the browser. No network requests are made, and register data or field values are never uploaded or retained.',
+        faqs: [
+          {
+            question: 'What is the difference between LSB-first and MSB-first?',
+            answer:
+              'LSB-first (the common default of little-endian C compilers) allocates fields in declaration order from bit0 toward higher bits. Under MSB-first, the first field occupies the highest bit of the storage unit and later fields grow downward. The same assignments therefore pack to different results; the layout table always shows each field’s exact offset and mask.',
+          },
+          {
+            question: 'Why are uint64 results shown as strings instead of numbers?',
+            answer:
+              'JavaScript Number can only represent integers safely up to 2^53-1, while a uint64 field may reach 2^64-1. The tool performs all shifts, masking, and formatting with BigInt and outputs decimal strings plus zero-padded hex strings, keeping 64-bit results bit-exact with no precision loss.',
+          },
+          {
+            question: 'What happens when the total field width exceeds the storage unit?',
+            answer:
+              'The layout step reports which field does not fit and how far the total width exceeds the unit. No layout table is generated and neither packing nor unpacking produces output, preventing truncated or misleading values. Reduce field widths or switch to a wider storage unit and try again.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -296,6 +296,7 @@ export const toolLoaders: Record<
   'depreciation-calculator': () => import('./depreciation-calculator'),
   'srecord-parser': () => import('./srecord-parser'),
   'multipart-form-builder': () => import('./multipart-form-builder'),
+  'c-bitfield-packer': () => import('./c-bitfield-packer'),
   'diff-patch-parser': () => import('./diff-patch-parser'),
   'set-similarity-calculator': () => import('./set-similarity-calculator'),
   'email-syntax-validator': () => import('./email-syntax-validator'),
