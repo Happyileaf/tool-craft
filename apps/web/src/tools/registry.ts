@@ -33326,6 +33326,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'hexfloat-converter',
+    name: 'C99 十六进制浮点（hexfloat）转换器',
+    nameEn: 'C99 Hexadecimal Float (Hexfloat) Converter',
+    description:
+      '在 C99 hexfloat 字面量（如 0x1.8p+1）与十进制数之间双向转换，手写扫描器解析符号、0x 前缀、十六进制尾数与 p 二进制指数，构造方向按 binary64 位还原规范化 0x1.xxxp±n，正确处理 ±0、Infinity、NaN 与 subnormal，全程本地运算。',
+    descriptionEn:
+      'Converts between C99 hexfloat literals (e.g. 0x1.8p+1) and decimal numbers. A hand-written scanner parses sign, 0x prefix, hexadecimal mantissa and the p binary exponent, while generation reconstructs the canonical 0x1.xxxp±n form from binary64 bits, correctly handling ±0, Infinity, NaN and subnormals — all computed locally.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/hexfloat-converter',
+    iconName: 'Binary',
+    tags: ['hexfloat', '十六进制浮点', 'C99', 'IEEE 754', '二进制指数', '数值'],
+    tagsEn: ['hexfloat', 'Hexadecimal Float', 'C99', 'IEEE 754', 'Binary Exponent', 'Number'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0x1.8p+1',
+    doc: {
+      zh: {
+        whatIsIt:
+          'C99 十六进制浮点转换器是一款纯浏览器本地工具，在 C99/C++17 标准引入的 hexfloat 字面量与普通十进制数之间双向转换。解析器手写词法扫描，逐字符识别符号、0x 前缀、十六进制尾数（含小数点）与 p/P 引导的二进制指数，按 (-1)^s × 尾数 × 2^指数 求值；构造器读取 number 的 64 位 IEEE-754 位模式，还原规范化的 0x1.xxxp±n 文本。',
+        coreFeatures: [
+          '双向转换：hexfloat 字面量解析为十进制数，十进制数构造为规范化 hexfloat',
+          '完整语法：支持符号、0x/0X 前缀、整数与小数尾数、p 二进制指数及 f/F/l/L 后缀',
+          '边界全覆盖：±0、Infinity、-Infinity、NaN 与 subnormal 非常规数均正确处理',
+          '精确往返：任意有限数经构造再解析结果严格相等，极端指数分阶段缩放避免下溢',
+          '容错报错：缺前缀、缺尾数、缺指数数字、非法字符等返回可读错误而非抛异常',
+        ],
+        howToUse: [
+          '选择「解析 hexfloat → 十进制」，粘贴如 0x1.8p+1 的字面量查看十进制与科学计数法结果',
+          '或选择「构造 十进制 → hexfloat」，输入十进制数得到规范化 0x1.xxxp±n 文本',
+          '点击示例标签可快速载入官方测试向量，点击复制按钮获取结果',
+          '将生成的 hexfloat 粘贴到 C/C++ 源码或调试器中，用于精确保存二进制浮点值',
+        ],
+        useCases: [
+          '在 C/C++ 中以最短且无舍入歧义的方式书写二进制浮点常量',
+          '调试器、反汇编或内存分析中解读 hexfloat 形式的数值',
+          '教学演示 IEEE-754 binary64 的尾数、指数与十六进制表示关系',
+          '核对编译器对浮点字面量的舍入与 subnormal 处理是否符合预期',
+        ],
+        privacyNote:
+          '所有解析与构造均在浏览器本地基于纯函数完成，不发送任何输入到服务器，也不持久化数据。',
+        faqs: [
+          {
+            question: 'hexfloat 里的 p 指数为什么是 2 的幂而不是 16 的幂？',
+            answer:
+              'C99 规定 p/P 后面的指数是二进制指数（以 2 为底）。整个数值等于符号 × 十六进制尾数 × 2^指数；而小数点后每一位十六进制数字本身权重是 16⁻¹，等价于 2⁻⁴，因此小数位数会折算进最终的 2 的幂。',
+          },
+          {
+            question: '它和普通十六进制整数、内存位级 hex 有什么区别？',
+            answer:
+              '普通十六进制整数只表示整数且没有小数与指数；内存位级 hex（如 4008000000000000）是 IEEE-754 的原始二进制编码。hexfloat 是可读的数值字面量，用十六进制尾数配合二进制指数直接表达浮点数值，三者不能混用。',
+          },
+          {
+            question: '为什么 0.1 构造出来是 0x1.999...ap-4 而不是精确的 0.1？',
+            answer:
+              '十进制 0.1 在 binary64 中本就无法精确表示，最接近的可表示值正是 0x1.999999999999ap-4。本工具如实还原该二进制近似值，因此 hexfloat 能无歧义地表达这个最接近值，而十进制写法反而隐含一次十进制到二进制的舍入。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The C99 Hexadecimal Float Converter runs entirely in your browser, converting between the hexfloat literals introduced in C99/C++17 and ordinary decimal numbers. The parser uses a hand-written scanner to recognize the sign, 0x prefix, hexadecimal mantissa (including the decimal point) and the p/P binary exponent, evaluating (-1)^s × mantissa × 2^exponent; the builder reads the 64-bit IEEE-754 bit pattern of a number to reconstruct canonical 0x1.xxxp±n text.',
+        coreFeatures: [
+          'Bidirectional conversion: parse a hexfloat literal to decimal, or build canonical hexfloat from a decimal number',
+          'Full grammar: sign, 0x/0X prefix, integer and fractional mantissa, p binary exponent, and f/F/l/L suffixes',
+          'Edge cases covered: ±0, Infinity, -Infinity, NaN and subnormal values',
+          'Exact round-trip: any finite number rebuilt then parsed is strictly equal; staged scaling avoids underflow at extreme exponents',
+          'Lenient errors: missing prefix, mantissa or exponent digits, and illegal characters produce readable messages instead of throwing',
+        ],
+        howToUse: [
+          'Pick "Parse hexfloat to decimal" and paste a literal such as 0x1.8p+1 to see decimal and scientific-notation results',
+          'Or pick "Build decimal to hexfloat", enter a decimal number and obtain canonical 0x1.xxxp±n text',
+          'Click a sample tag to load an official test vector, then use the copy button for the result',
+          'Paste the generated hexfloat into C/C++ source or a debugger to preserve a binary floating-point value exactly',
+        ],
+        useCases: [
+          'Writing binary floating-point constants in C/C++ with the shortest, rounding-unambiguous spelling',
+          'Reading hexfloat-formatted values in debuggers, disassembly or memory analysis',
+          'Teaching the relationship between binary64 mantissa, exponent and hexadecimal notation',
+          'Verifying compiler rounding and subnormal handling of floating-point literals',
+        ],
+        privacyNote:
+          'All parsing and generation run locally in your browser as pure functions; no input is sent to a server or persisted.',
+        faqs: [
+          {
+            question: 'Why is the p exponent a power of 2 rather than a power of 16?',
+            answer:
+              'C99 defines the exponent after p/P as a binary exponent (base 2). The full value equals sign × hexadecimal mantissa × 2^exponent; each fractional hexadecimal digit already carries weight 16⁻¹, equivalent to 2⁻⁴, so the number of fractional digits folds into the final power of two.',
+          },
+          {
+            question: 'How is this different from a plain hex integer or a memory-level hex value?',
+            answer:
+              'A plain hex integer only represents integers with no fraction or exponent, while a memory-level hex (e.g. 4008000000000000) is the raw IEEE-754 binary encoding. A hexfloat is a human-readable numeric literal expressing a floating-point value through a hex mantissa and binary exponent; the three are not interchangeable.',
+          },
+          {
+            question: 'Why does 0.1 build to 0x1.999...ap-4 instead of an exact 0.1?',
+            answer:
+              'Decimal 0.1 cannot be represented exactly in binary64; its nearest representable value is precisely 0x1.999999999999ap-4. The tool faithfully reconstructs that binary approximation, so hexfloat expresses the nearest value unambiguously, whereas the decimal spelling hides an implicit decimal-to-binary rounding step.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
