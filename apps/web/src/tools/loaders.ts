@@ -359,4 +359,5 @@ export const toolLoaders: Record<
   'relative-url-resolver': () => import('./relative-url-resolver'),
   'http-date-codec': () => import('./http-date-codec'),
   'content-disposition-codec': () => import('./content-disposition-codec'),
+  'link-header-codec': () => import('./link-header-codec'),
 };

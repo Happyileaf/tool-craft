@@ -33743,6 +33743,111 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'link-header-codec',
+    name: 'Link 头解析与构造器',
+    nameEn: 'HTTP Link Header Parser & Builder',
+    description:
+      '按 RFC 8288 解析一个或多个逗号分隔的 link-value，在尊重尖括号与引号字符串的前提下切分 URI-Reference 及 rel/anchor/hreflang/type/media/title 等参数，rel 按空白拆为关系类型集合并小写归一，可选 base 按 RFC 3986 归一相对引用；反向支持由结构化条目构造合规 Link 头并往返还原。',
+    descriptionEn:
+      'Parses one or more comma-separated link-values per RFC 8288, splitting each URI-Reference and its rel/anchor/hreflang/type/media/title parameters while respecting angle brackets and quoted strings. The rel value is split into a lowercased relation-type set, relative references can be resolved against an optional RFC 3986 base, and the builder reconstructs a compliant Link header that round-trips through the parser.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/link-header-codec',
+    iconName: 'Link2',
+    tags: ['Link 头', 'RFC 8288', 'Web Linking', 'rel', '分页', 'HTTP 头'],
+    tagsEn: ['Link Header', 'RFC 8288', 'Web Linking', 'rel', 'Pagination', 'HTTP Header'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '<https://a.test/next>; rel="next"; hreflang=en, </feed>; rel="alternate"; type="application/atom+xml"',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Link 头解析与构造器是一款纯浏览器本地工具，实现 RFC 8288 定义的 HTTP Link 头字段语法。解析侧在尊重尖括号 <...> 与引号字符串 "..." 的前提下，按顶层逗号把字段值切分为多个 link-value，再按分号提取每个 URI-Reference 的 link-param：rel 按空白拆为关系类型集合并统一小写，anchor、hreflang、type、media、title 等目标属性结构化展示，其余扩展参数原样保留；提供可选 base URI 时，相对引用按 RFC 3986 归一为绝对 URI（仅展示）。构造侧把结构化条目数组反向生成符合 ABNF 的 Link 头，参数值按需加引号，并可被本解析器往返还原。',
+        coreFeatures: [
+          '顶层逗号/分号词法切分，引号字符串与尖括号内部的逗号、分号不会被误切',
+          'rel 多值按空白拆分并小写归一，支持 next preload 这类关系集合',
+          '提取 anchor/hreflang/type/media/title 及任意扩展参数，保留来源顺序',
+          '可选 base 按 RFC 3986 归一相对 URI-Reference，未提供 base 时原样保留',
+          '构造方向按需加引号并支持解析器往返；缺尖括号、空 URI、未闭合引号均可读报错',
+        ],
+        howToUse: [
+          '选择「解析 Link 头」，粘贴完整 Link 字段值，多个 link-value 用逗号分隔',
+          '可选填入 base URI，查看相对引用归一后的绝对 URI',
+          '逐条目查看 URI-Reference、rel 标签、目标属性与完整参数表',
+          '或切换到「构造 Link 头」，维护条目数组后复制生成的合规头值',
+        ],
+        useCases: [
+          '调试分页接口的 rel=next/prev 链接与 HATEOAS 响应',
+          '核对 preload/preconnect 等资源提示 Link 头及 media 查询条件',
+          '解析 WebFinger 等场景下带多参数的复杂 Link 字段',
+          '教学演示 RFC 8288 link-value 列表语法与 rel 关系类型语义',
+        ],
+        privacyNote:
+          '所有词法切分、参数提取、RFC 3986 归一与头构造均在浏览器本地以纯函数完成，不发起任何网络请求，也不发送或持久化输入内容。',
+        faqs: [
+          {
+            question: '引号里的逗号为什么不会把条目切断？',
+            answer:
+              'RFC 8288 的 link-value 允许参数值使用引号字符串，字符串内部的逗号与分号只是普通字符。解析器在扫描时维护引号与尖括号状态，只在两者之外的顶层遇到逗号时才切分 link-value，因此 title="a; b, c" 这类值会被完整保留。',
+          },
+          {
+            question: 'rel 为什么要拆成数组而不是当成一个字符串？',
+            answer:
+              'RFC 8288 规定 rel 参数是空白分隔的关系类型集合，一个 link-value 可同时携带多个关系（如 rel="next preload"）。解析器按空白拆分、小写归一后输出数组，便于程序化判断是否包含某个关系，也避免大小写或重复空格带来的比较误差。',
+          },
+          {
+            question: '填了 base URI 之后原始引用会被修改吗？',
+            answer:
+              '不会。base 仅用于按 RFC 3986 计算并展示归一后的绝对 URI，原始 URI-Reference 始终原样保留在解析结果中；不填 base 时则不进行任何归一，相对引用保持输入时的写法。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The HTTP Link Header Parser & Builder runs entirely in your browser and implements the Link header field grammar of RFC 8288. The parsing side splits the field into link-values on top-level commas while honoring angle brackets <...> and quoted strings "...", then extracts each URI-Reference and its link-params: rel is split into a lowercased relation-type set, anchor/hreflang/type/media/title target attributes are structured, and extension parameters are preserved in order. With an optional base URI, relative references are resolved to absolute URIs per RFC 3986 for display only. The builder turns structured entries back into an ABNF-compliant Link header that round-trips through the parser.',
+        coreFeatures: [
+          'Top-level comma/semicolon tokenization that never splits on commas or semicolons inside quoted strings or angle brackets',
+          'Multi-value rel split on whitespace and lowercased, supporting relation sets such as "next preload"',
+          'Extracts anchor/hreflang/type/media/title plus arbitrary extension parameters in source order',
+          'Optional RFC 3986 base resolves relative URI-References; without a base they are kept verbatim',
+          'Builder quotes values as needed and round-trips through the parser; missing brackets, empty URIs and unterminated quotes yield readable errors',
+        ],
+        howToUse: [
+          'Pick "Parse Link header" and paste a complete Link field value with comma-separated link-values',
+          'Optionally enter a base URI to see relative references resolved to absolute URIs',
+          'Inspect each entry’s URI-Reference, rel tags, target attributes and full parameter table',
+          'Or switch to "Build Link header", maintain the entry list and copy the generated compliant header',
+        ],
+        useCases: [
+          'Debugging rel=next/prev pagination links and HATEOAS responses',
+          'Checking resource-hint Link headers such as preload/preconnect and their media queries',
+          'Parsing complex Link fields with many parameters in scenarios like WebFinger',
+          'Teaching the RFC 8288 link-value list grammar and rel relation-type semantics',
+        ],
+        privacyNote:
+          'All tokenizing, parameter extraction, RFC 3986 resolution and header construction run locally in your browser as pure functions; no network request is made and no input is sent or persisted.',
+        faqs: [
+          {
+            question: 'Why does a comma inside quotes not split an entry?',
+            answer:
+              'RFC 8288 allows parameter values to use quoted strings, in which commas and semicolons are ordinary characters. The scanner tracks quote and angle-bracket state and only splits link-values on commas at the top level outside both, so a value like title="a; b, c" is preserved intact.',
+          },
+          {
+            question: 'Why is rel parsed into an array instead of one string?',
+            answer:
+              'RFC 8288 defines rel as a whitespace-separated set of relation types, so one link-value may carry several relations such as rel="next preload". The parser splits on whitespace and lowercases the result into an array, making membership checks straightforward and avoiding comparison noise from case or repeated spaces.',
+          },
+          {
+            question: 'Does supplying a base URI modify the original reference?',
+            answer:
+              'No. The base is used only to compute and display the RFC 3986 resolved absolute URI; the original URI-Reference is always kept verbatim in the result. Without a base, no resolution happens and relative references stay exactly as entered.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
