@@ -339,10 +339,5 @@
 | 20261114200459 | 曝光值（EV）与 ND 滤镜等效曝光计算器 | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200459.md) |
 | 20261114200501 | 电池续航时间计算器（容量 / 负载 / 效率 / Peukert 与串并联组包） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114200501.md) |
 | 20261114200502 | 经济补偿金与代通知金计算器（N / N+1 / 2N，含月工资上限与年限折算） | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200502.md) |
-| 20261115020301 | 电容标码解析与容值计算器（三位数字码 / R 记法 / 容差字母） | Web Tool | Existing Gap | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115020301.md) |
-| 20261115020302 | 七段数码管字形编解码器（字符 ↔ a–g/dp 段码，共阴/共阳） | Web Tool | Existing Gap | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115020302.md) |
 | 20261115020303 | 睡眠周期与就寝 / 起床时间计算器（90 分钟周期 + 入睡缓冲） | Web Tool | Exploration | Pending | 2026-11-15 | | [详情](./idea-details/20261115020303.md) |
-| 20261115020304 | 轮胎规格解析与速度表误差计算器（205/55R16 ↔ 直径 / 周长 / 速度偏差） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115020304.md) |
-| 20261115020305 | 燃油经济性与行程油费计算器（MPG ↔ L/100km ↔ km/L） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115020305.md) |
-| 20261115020306 | 二进制补码与有符号整数运算计算器（8/16/32/64 位，含溢出检测） | Web Tool | Existing Gap | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115020306.md) |
 
