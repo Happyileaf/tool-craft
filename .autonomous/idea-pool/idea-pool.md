@@ -293,9 +293,6 @@
 | 20261109200618 | Ogg 容器页（page）结构只读解析器（OggS 页头 / 段表 / 编解码流分帧展示） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200618.md) |
 | 20261109200619 | 可见光波长 → RGB/HEX 颜色转换器（380–750nm 光谱色与近紫外/近红外越界提示） | Web Tool | Exploration | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109200619.md) |
 | 20261109200620 | 标准 MIDI 文件（SMF）结构只读解析器（MThd/MTrk 块、轨道事件与 running status 展示） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200620.md) |
-| 20261112020111 | 以太网 II 帧结构解析与构造器（含 FCS 校验和、字节布局教学视图） | Web Tool | Exploration | Claimed | 2026-11-12 | trae-agent | [详情](./idea-details/20261112020111.md) |
-| 20261113140200 | TCP 报文段解析与构造器（含标志位/选项/校验和，字节布局教学视图） | Web Tool | Exploration | Claimed | 2026-11-13 | trae-agent | [详情](./idea-details/20261113140200.md) |
-| 20261113140202 | PCAP 抓包文件解析器（全局头/分组头/链路层类型，字节布局视图） | Web Tool | Exploration | Claimed | 2026-11-13 | trae-agent | [详情](./idea-details/20261113140202.md) |
 | 20261113140203 | Elo 等级分计算器（期望胜率/K 因子/对战模拟，批量序列推演） | Web Tool | Existing Gap | In Progress | 2026-11-13 | trae-agent | [详情](./idea-details/20261113140203.md) |
 | 20261113140204 | 固定资产折旧计算器（直线法/工作量法/双倍余额递减/年数总和，逐年明细表） | Web Tool | Existing Gap | In Progress | 2026-11-13 | trae-agent | [详情](./idea-details/20261113140204.md) |
 | 20261112020112 | QOI（Quite OK Image）无损图片编解码器（RGBA 像素 ↔ .qoi 双向转换） | Web Tool | External Reference | Pending | 2026-11-12 | | [详情](./idea-details/20261112020112.md) |
@@ -310,10 +307,8 @@
 | 20261112080434 | Fletcher 校验和计算器（Fletcher-16 / Fletcher-32 / Fletcher-64） | Web Tool | Existing Gap | In Progress | 2026-11-12 | trae-agent | [详情](./idea-details/20261112080434.md) |
 | 20261112140147 | RFC 7239 Forwarded HTTP 头解析与生成器（代理链 for/by/proto/host 编解码） | Web Tool | Exploration | In Progress | 2026-11-12 | 20261112180415 (trae-agent) | [详情](./idea-details/20261112140147.md) |
 | 20261112140148 | RFC 6570 URI Template 展开器（Level 1–4 表达式与变量值编解码） | Web Tool | Exploration | In Progress | 2026-11-12 | 20261112180415 (trae-agent) | [详情](./idea-details/20261112140148.md) |
-| 20261112140149 | IPC-2221 PCB 走线宽度/载流量计算器（内外层、铜厚与温升） | Web Tool | Exploration | Claimed | 2026-11-12 | trae-agent | [详情](./idea-details/20261112140149.md) |
 | 20261112140150 | OID 点分十进制对象标识符编解码与 BER 压缩弧工具 | Web Tool | Exploration | In Progress | 2026-11-12 | 2026-11-13 · feat/tool-development-20261113060152-trae-agent | [详情](./idea-details/20261112140150.md) |
 | 20261112140151 | Clojure EDN 与 JSON 双向转换器（extensible data notation 解析生成） | Web Tool | Exploration | In Progress | 2026-11-12 | 20261112180415 (trae-agent) | [详情](./idea-details/20261112140151.md) |
-| 20261112200206 | Modbus RTU/TCP 协议帧解析与构造器（功能码 / 寄存器地址 / CRC-16 校验） | Web Tool | Existing Gap | Claimed | 2026-11-12 | trae-agent | [详情](./idea-details/20261112200206.md) |
 | 20261112200207 | BER-TLV 嵌套标签长度值解析与构造器（EMV / SIM 卡 APDU 数据格式） | Web Tool | Existing Gap | In Progress | 2026-11-12 | 2026-11-13 · feat/tool-development-20261113060152-trae-agent | [详情](./idea-details/20261112200207.md) |
 | 20261112200208 | 经典字符串模式匹配算法逐轮可视化器（KMP / BM / 暴力，next 表与坏字符好后缀表） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112200208.md) |
 | 20261112200209 | 二叉堆与优先队列操作可视化器（插入 / 弹出 / 建堆 / 堆排序，sift-up 与 sift-down 全过程） | Web Tool | Existing Gap | Pending | 2026-11-12 | | [详情](./idea-details/20261112200209.md) |

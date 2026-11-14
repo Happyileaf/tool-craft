@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261112020111 | 以太网 II 帧结构解析与构造器（含 FCS 校验和、字节布局教学视图） | Web Tool | Exploration | `ethernet-frame-codec` / [PR #235](https://github.com/Happyileaf/tool-craft/pull/235) | 2026-11-14 | [详情](./idea-details/20261112020111.md) |
+| 20261113140200 | TCP 报文段解析与构造器（含标志位/选项/校验和，字节布局教学视图） | Web Tool | Exploration | `tcp-segment-codec` / [PR #235](https://github.com/Happyileaf/tool-craft/pull/235) | 2026-11-14 | [详情](./idea-details/20261113140200.md) |
+| 20261113140202 | PCAP 抓包文件解析器（全局头/分组头/链路层类型，字节布局视图） | Web Tool | Exploration | `pcap-parser` / [PR #235](https://github.com/Happyileaf/tool-craft/pull/235) | 2026-11-14 | [详情](./idea-details/20261113140202.md) |
+| 20261112200206 | Modbus RTU/TCP 协议帧解析与构造器（功能码 / 寄存器地址 / CRC-16 校验） | Web Tool | Existing Gap | `modbus-frame-codec` / [PR #235](https://github.com/Happyileaf/tool-craft/pull/235) | 2026-11-14 | [详情](./idea-details/20261112200206.md) |
+| 20261112140149 | IPC-2221 PCB 走线宽度/载流量计算器（内外层、铜厚与温升） | Web Tool | Exploration | `pcb-trace-width-calculator` / [PR #235](https://github.com/Happyileaf/tool-craft/pull/235) | 2026-11-14 | [详情](./idea-details/20261112140149.md) |
 | 20261109081157 | logfmt 日志解析与格式化工具（key=value 双向转换与类型推断） | Web Tool | Existing Gap | `logfmt-parser-formatter` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081157.md) |
 | 20261109081156 | LED 限流电阻计算器（欧姆定律与功耗、E24 标称阻值选型） | Web Tool | Existing Gap | `led-resistor-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081156.md) |
 | 20261109081155 | ISSN 校验位计算器与规范化工具（含连字符定位与批量校验） | Web Tool | Existing Gap | `issn-checksum-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081155.md) |
