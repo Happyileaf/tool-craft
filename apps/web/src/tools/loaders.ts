@@ -378,4 +378,5 @@ export const toolLoaders: Record<
   'line-numberer': () => import('./line-numberer'),
   'rss-atom-generator': () => import('./rss-atom-generator'),
   'sunrise-sunset-calculator': () => import('./sunrise-sunset-calculator'),
+  'http-digest-auth': () => import('./http-digest-auth'),
 };

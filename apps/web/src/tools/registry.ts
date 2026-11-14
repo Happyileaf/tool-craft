@@ -35624,6 +35624,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'http-digest-auth',
+    name: 'HTTP Digest 认证响应计算器',
+    nameEn: 'HTTP Digest Auth Calculator',
+    description:
+      '按 RFC 2617 / RFC 7616 计算 HTTP Digest 认证的 HA1、HA2 与 response，并生成可直接使用的 Authorization 请求头，支持 MD5 / SHA-256 与 qop auth / auth-int。',
+    descriptionEn:
+      'Compute HA1, HA2, and the response for HTTP Digest authentication per RFC 2617 and RFC 7616, then build a ready-to-use Authorization header with MD5 or SHA-256 and qop auth or auth-int.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/http-digest-auth',
+    iconName: 'ShieldCheck',
+    tags: ['HTTP', 'Digest', '认证', 'RFC 2617', 'Authorization'],
+    tagsEn: ['HTTP', 'Digest', 'Auth', 'RFC 2617', 'Authorization'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP Digest 认证响应计算器根据用户名、密码、realm、nonce、请求方法与 URI，计算摘要认证所需的 HA1、HA2 与 response，并生成完整的 Authorization 请求头，便于调试或联调 Digest 认证接口。',
+        coreFeatures: [
+          '多算法支持：MD5、MD5-sess、SHA-256 与 SHA-256-sess',
+          '三种 qop 模式：不带 qop（RFC 2069 兼容）、auth 与 auth-int（实体体参与摘要）',
+          'userhash 支持：按 RFC 7616 对用户名做哈希后写入请求头',
+          '请求头生成：直接输出 Digest 开头的 Authorization 值，可一键复制',
+          '纯本地计算：密码与随机数不离开浏览器，不发起任何网络请求',
+        ],
+        howToUse: [
+          '填写用户名、密码、realm、nonce、请求 URI 与请求方法',
+          '选择摘要算法与 qop 模式；auth-int 时补充实体请求体',
+          '按需填写 nonce-count、cnonce、opaque，或启用 userhash',
+          '查看 HA1、HA2 与 response，并复制生成的 Authorization 请求头',
+        ],
+        useCases: [
+          '调试需要 HTTP Digest 认证的接口或反向代理',
+          '验证服务端返回的 WWW-Authenticate 摘要参数是否被正确响应',
+          '编写自动化测试时快速构造合法 Authorization 请求头',
+        ],
+        privacyNote:
+          '用户名、密码与 nonce 只在浏览器本地参与摘要运算，不会上传或记录到服务器。',
+        faqs: [
+          {
+            question: 'MD5 与 SHA-256 的结果长度为什么不同？',
+            answer:
+              'MD5 输出 128 位（32 个十六进制字符），SHA-256 输出 256 位（64 个十六进制字符），两者都由算法本身的摘要长度决定。',
+          },
+          {
+            question: 'nonce-count 为什么要补零到 8 位？',
+            answer:
+              'RFC 2617 要求 nonce-count 以 8 位十六进制表示。工具会自动把 1 转换为 00000001，并在输入非法时给出提示。',
+          },
+          {
+            question: 'auth-int 与 auth 有什么区别？',
+            answer:
+              'auth 只对请求方法和 URI 做摘要；auth-int 还会把实体请求体纳入 HA2 计算，因此能校验请求体完整性。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The HTTP Digest Auth Calculator derives HA1, HA2, and the response from username, password, realm, nonce, request method, and URI, then assembles a complete Authorization header for debugging Digest-protected endpoints.',
+        coreFeatures: [
+          'Multiple algorithms: MD5, MD5-sess, SHA-256, and SHA-256-sess',
+          'Three qop modes: no qop (RFC 2069 compatible), auth, and auth-int with entity body hashing',
+          'userhash support per RFC 7616, hashing the username in the header',
+          'Header generation: outputs a Digest Authorization value ready to copy',
+          'Fully local: passwords and nonces never leave your browser and no network request is made',
+        ],
+        howToUse: [
+          'Fill in username, password, realm, nonce, request URI, and method',
+          'Choose the digest algorithm and qop mode; provide an entity body for auth-int',
+          'Enter nonce-count, cnonce, and opaque as needed, or enable userhash',
+          'Review HA1, HA2, and response, then copy the generated Authorization header',
+        ],
+        useCases: [
+          'Debugging endpoints or reverse proxies protected by HTTP Digest auth',
+          'Checking that WWW-Authenticate parameters are answered correctly',
+          'Building valid Authorization headers for automated tests',
+        ],
+        privacyNote:
+          'Usernames, passwords, and nonces are used only for local digest computation and are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why do MD5 and SHA-256 produce different lengths?',
+            answer:
+              'MD5 outputs 128 bits (32 hex characters) while SHA-256 outputs 256 bits (64 hex characters), based on the native digest size of each algorithm.',
+          },
+          {
+            question: 'Why is nonce-count padded to eight digits?',
+            answer:
+              'RFC 2617 requires nonce-count in 8-digit hexadecimal. The tool converts 1 to 00000001 automatically and reports invalid input.',
+          },
+          {
+            question: 'What is the difference between auth and auth-int?',
+            answer:
+              'auth hashes only the method and URI; auth-int also includes the entity body in HA2, which verifies request body integrity.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

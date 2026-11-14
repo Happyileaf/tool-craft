@@ -1,0 +1,72 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.fieldFull {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.label {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.digestGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.digestItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  word-break: break-all;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgb(248 250 252);
+  color: rgb(17 24 39);
+}
+
+.authorization {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.authorizationCode {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  word-break: break-all;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgb(229 231 235);
+  background: rgb(249 250 251);
+  color: rgb(17 24 39);
+}
