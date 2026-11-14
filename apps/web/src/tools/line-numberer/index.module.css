@@ -1,0 +1,63 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  align-items: flex-end;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fieldLabel {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.switchField {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  color: rgb(55 65 81);
+}
+
+.editors {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.editorCard {
+  min-width: 0;
+}
+
+.mono :global(textarea) {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+
+.stats {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}

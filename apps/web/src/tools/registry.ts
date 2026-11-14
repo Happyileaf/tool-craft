@@ -35338,6 +35338,104 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'line-numberer',
+    name: '文本行号添加与剥离器',
+    nameEn: 'Text Line Numberer',
+    description:
+      '为多行文本批量添加可配置行号，或一键剥离已有编号；支持起始值、步长、分隔符与零填充对齐。',
+    descriptionEn:
+      'Add configurable line numbers to multi-line text or strip existing numbering in one click, with start, step, separator, and zero-padding controls.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/line-numberer',
+    iconName: 'List',
+    tags: ['行号', '编号', '文本处理', '对齐', '批量'],
+    tagsEn: ['Line Numbers', 'Numbering', 'Text', 'Align', 'Batch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `第一行内容
+第二行内容
+
+第四行保持为空行
+第五行是结尾`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '文本行号添加与剥离器用于给日志、清单、代码片段或文档批量添加连续编号，也能把从别处复制来的已有行号干净移除，恢复原始文本。',
+        coreFeatures: [
+          '添加模式：可设置起始编号、步长、六种常用分隔符与零填充对齐宽度',
+          '智能对齐：宽度设为 0 时自动按最大编号补零，保证左侧整齐',
+          '空行控制：可选择跳过空行不编号，或让空行也占用编号',
+          '剥离模式：自动识别行首「数字 + : . ) | Tab」前缀并移除，无前缀行保持原样',
+          '纯浏览器本地运算：文本不离开设备，不上传任何服务器',
+        ],
+        howToUse: [
+          '选择「添加行号」或「剥离行号」模式',
+          '添加模式下设置起始编号、步长、分隔符与对齐宽度，并按需开启空行编号',
+          '在左侧输入框粘贴多行文本，右侧会实时显示处理结果',
+          '确认结果后点击复制或下载 .txt 文件',
+        ],
+        useCases: [
+          '为会议纪要、需求清单或测试用例批量添加序号',
+          '给日志片段编号后方便在沟通中定位具体行',
+          '移除从网页或文档复制内容时附带的行号前缀',
+          '将带编号的清单还原为可直接粘贴的纯文本',
+        ],
+        privacyNote:
+          '所有行号计算均在浏览器本地完成，输入文本不会被记录或上传到任何服务器。',
+        faqs: [
+          {
+            question: '剥离行号会误删日期或小数吗？',
+            answer:
+              '不会。剥离规则要求数字后跟 : . ) | 或 Tab，且标点后需有空格，因此 2026.11.15、版本 1.2.3 这类内容不会被当作行号移除。',
+          },
+          {
+            question: '空行会占用编号吗？',
+            answer:
+              '默认不占用：空行保持为空且不消耗步长。开启「空行也编号」后，空行会获得当前编号并参与后续编号递增。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Text Line Numberer adds sequential numbers to logs, lists, code snippets, or documents in bulk, and removes existing numbering copied from other sources to restore the original text.',
+        coreFeatures: [
+          'Add mode: configurable start number, step, six common separators, and zero-padding width',
+          'Smart alignment: width 0 auto-pads to the largest number so the left edge stays aligned',
+          'Blank line control: skip blank lines or number them and let them consume a step',
+          'Strip mode: detects leading "number + : . ) | Tab" prefixes and keeps unprefixed lines intact',
+          'Runs entirely in your browser without uploading any text',
+        ],
+        howToUse: [
+          'Choose Add or Strip mode',
+          'In Add mode, set the start number, step, separator, padding width, and blank-line behavior',
+          'Paste multi-line text into the input; the result updates in real time on the right',
+          'Copy the result or download it as a .txt file',
+        ],
+        useCases: [
+          'Numbering meeting notes, requirement lists, or test cases in bulk',
+          'Adding line numbers to log excerpts for precise references in discussions',
+          'Removing numbering prefixes copied from web pages or documents',
+          'Restoring numbered lists back into clean plain text',
+        ],
+        privacyNote:
+          'All numbering logic runs locally in your browser. Input text is never logged or uploaded to a server.',
+        faqs: [
+          {
+            question: 'Will stripping remove dates or decimals?',
+            answer:
+              'No. A prefix must be a number followed by : . ) | or a tab, with whitespace after punctuation, so values such as 2026.11.15 or version 1.2.3 are preserved.',
+          },
+          {
+            question: 'Do blank lines consume a number?',
+            answer:
+              'By default they do not: blank lines stay empty and do not advance the step. Enable "number blank lines" to assign the current number and advance as usual.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
