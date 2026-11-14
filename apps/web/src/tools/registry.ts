@@ -10256,6 +10256,112 @@ info: request finished`,
     },
   },
   {
+    slug: 'subnet-wildcard-mask',
+    name: 'IPv4 子网掩码 ↔ 反掩码（Wildcard）双向转换器',
+    nameEn: 'IPv4 Subnet Mask ↔ Wildcard Mask Converter',
+    description:
+      '在 IPv4 点分十进制子网掩码（如 255.255.255.0）与 Cisco ACL/OSPF 反掩码（wildcard mask，如 0.0.0.255）之间自动识别方向并双向转换，校验掩码必须由连续 1 后接连续 0 构成，输出前缀长度（/24）、主机位、子网掩码与反掩码；给定 IP 时进一步计算网络地址、广播地址与可用主机范围。纯位运算、多行批量逐行标注错误、纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Converts between dotted-decimal IPv4 subnet masks (e.g. 255.255.255.0) and Cisco ACL/OSPF wildcard masks (e.g. 0.0.0.255), auto-detecting the direction. It validates that a mask is a run of 1s followed by a run of 0s, reports the prefix length (/24), host bits and both mask forms, and—given an IP—computes the network address, broadcast address and usable host range. Pure bitwise logic, multi-line batch mode with line-numbered errors, fully local execution and zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/subnet-wildcard-mask',
+    iconName: 'Wifi',
+    tags: ['子网掩码', '反掩码', 'Wildcard', 'IPv4', 'ACL', 'OSPF'],
+    tagsEn: ['Subnet Mask', 'Wildcard Mask', 'IPv4', 'ACL', 'OSPF', 'CIDR'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '255.255.255.0',
+    doc: {
+      zh: {
+        whatIsIt:
+          'IPv4 子网掩码 ↔ 反掩码转换器是一款纯浏览器本地运行的网络运维工具，在子网掩码与 Cisco 风格通配符（反）掩码之间逐位取反双向转换，并校验掩码合法性、推导前缀长度与网络/广播地址。',
+        coreFeatures: [
+          '自动识别方向：合法连续掩码判为子网掩码，其取反判为反掩码，无需手动切换',
+          '合法性校验：掩码必须由连续 1 后接连续 0 构成，非连续掩码（如 255.0.255.0）明确报错',
+          '前缀与主机位：输出 /前缀长度、主机位数与两种掩码形式',
+          '网络推导：给定 IP 计算网络地址、广播地址、首个/末尾可用主机与可用主机数',
+          '极端与特殊：支持 /0、/32，/31 按 RFC 3021 点对点链路、/32 按单主机地址处理',
+          '纯本地计算：零新增依赖，位运算完成，输入内容不发起任何网络请求',
+        ],
+        howToUse: [
+          '在左侧输入一个点分十进制掩码（子网掩码或反掩码均可），每行一个可批量处理',
+          '右侧实时输出对侧掩码；首行的前缀长度、主机位与两种掩码展示在推导卡片中',
+          '在「网络地址推导」卡片填入一个 IPv4 地址，即可查看网络地址、广播地址与可用主机范围',
+          '非法行（非连续掩码、八位组越界、段数错误）原样保留并以黄色警告逐行标注原因',
+          '点击「复制」获取批量转换结果',
+        ],
+        useCases: [
+          '配置 Cisco ACL / OSPF 时快速把手写子网掩码换成反掩码，避免逐位取反出错',
+          '网络排障与子网规划：核对前缀长度、网络地址与广播地址',
+          '教学与认证备考：理解子网掩码、反掩码与 CIDR 前缀之间的位运算关系',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；输入的掩码与 IP 不会离开设备。',
+        faqs: [
+          {
+            question: '反掩码（wildcard mask）和子网掩码是什么关系？',
+            answer:
+              '反掩码是子网掩码按位取反的结果：子网掩码中为 1 的位表示网络位，反掩码中为 1 的位表示需要忽略（主机位）。例如 255.255.255.0 取反得到 0.0.0.255，Cisco ACL 与 OSPF  network 命令使用反掩码。',
+          },
+          {
+            question: '为什么 255.0.255.0 会被判为非法？',
+            answer:
+              '合法子网掩码的 32 个比特必须是连续的若干个 1 再接连续的若干个 0，不能出现 1、0 交替。255.0.255.0 的二进制中 1 被 0 隔断，既不是合法子网掩码，其取反也不连续，因此工具会报「非法掩码」。',
+          },
+          {
+            question: '/31 和 /32 是怎么处理可用主机的？',
+            answer:
+              '/32 只有一个地址，网络地址与广播地址相同，按单主机地址处理；/31 仅含 2 个地址，按 RFC 3021 用作点对点链路，不再保留传统的网络号与广播号，因此可用主机区间显示为「—」并在数量中说明。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The IPv4 Subnet Mask ↔ Wildcard Mask Converter is a fully browser-local networking tool that bit-complements between subnet masks and Cisco-style wildcard masks, validates mask contiguity, and derives the prefix length plus network/broadcast addresses.',
+        coreFeatures: [
+          'Auto-detects direction: a contiguous mask is treated as a subnet mask and its complement as a wildcard, no manual toggle',
+          'Contiguity validation: a mask must be a run of 1s then a run of 0s; non-contiguous values such as 255.0.255.0 are rejected',
+          'Prefix and host bits: reports the /prefix length, host-bit count and both mask forms',
+          'Network derivation: from an IP, computes network address, broadcast address, first/last usable hosts and host count',
+          'Edge cases: supports /0 and /32; treats /31 as an RFC 3021 point-to-point link and /32 as a single-host address',
+          '100% local computation with zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'Enter a dotted-decimal mask (subnet or wildcard) on the left, one per line for batch processing',
+          'The opposite mask appears live on the right; the prefix length, host bits and both forms of the first line show in the derivation card',
+          'Fill an IPv4 address in the network derivation card to see network, broadcast and usable host range',
+          'Invalid rows (non-contiguous mask, octet out of range, wrong segment count) are kept verbatim with yellow line-numbered warnings',
+          'Click Copy to grab the batch conversion result',
+        ],
+        useCases: [
+          'Turning hand-written subnet masks into wildcard masks for Cisco ACL / OSPF without bit-flipping mistakes',
+          'Subnet planning and troubleshooting: verifying prefix length, network and broadcast addresses',
+          'Study and certification prep: understanding the bitwise relationship among subnet masks, wildcards and CIDR prefixes',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser via zero-dependency pure functions. No network requests are made, so the masks and IPs you enter never leave your device.',
+        faqs: [
+          {
+            question: 'What is the relationship between a wildcard mask and a subnet mask?',
+            answer:
+              'A wildcard mask is the bitwise complement of the subnet mask: subnet-mask 1 bits mark network bits, while wildcard 1 bits mark ignored (host) bits. For example, 255.255.255.0 complements to 0.0.0.255, which Cisco ACL and OSPF network commands use.',
+          },
+          {
+            question: 'Why is 255.0.255.0 rejected as invalid?',
+            answer:
+              'A valid subnet mask must be a contiguous run of 1s followed by a run of 0s across all 32 bits—1s and 0s cannot alternate. The bits of 255.0.255.0 are interrupted by zeros, so it is neither a valid subnet mask nor a contiguous complement, and the tool reports an illegal mask.',
+          },
+          {
+            question: 'How are /31 and /32 usable hosts handled?',
+            answer:
+              'A /32 has a single address whose network and broadcast addresses coincide, treated as a single host; a /31 contains only two addresses and per RFC 3021 serves a point-to-point link without traditional network/broadcast reservations, so the usable range shows “—” with an explanatory count.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'websocket-accept',
     name: 'WebSocket Sec-WebSocket-Accept 握手头计算器',
     nameEn: 'WebSocket Sec-WebSocket-Accept Handshake Calculator',

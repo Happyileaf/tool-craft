@@ -126,6 +126,7 @@ export const toolLoaders: Record<
   'file-size-converter': () => import('./file-size-converter'),
   'ean13-checksum': () => import('./ean13-checksum'),
   'gray-code-converter': () => import('./gray-code-converter'),
+  'subnet-wildcard-mask': () => import('./subnet-wildcard-mask'),
   'websocket-accept': () => import('./websocket-accept'),
   'mongodb-objectid': () => import('./mongodb-objectid'),
   'jsonc-to-json': () => import('./jsonc-to-json'),
