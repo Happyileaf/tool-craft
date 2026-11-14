@@ -372,4 +372,5 @@ export const toolLoaders: Record<
   'work-hours-calculator': () => import('./work-hours-calculator'),
   'ethernet-frame-codec': () => import('./ethernet-frame-codec'),
   'tcp-segment-codec': () => import('./tcp-segment-codec'),
+  'pcap-parser': () => import('./pcap-parser'),
 };

@@ -2,6 +2,7 @@ import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
 import { DEFAULT_SAMPLE_INPUT as CHANGELOG_SAMPLE_INPUT } from './changelog-generator/constants';
 import { SAMPLE_PLAIN_LYRICS } from './lrc-parser/constants';
+import { DEFAULT_PCAP_HEX } from './pcap-parser/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -35020,6 +35021,110 @@ sqrt(area) + 2 * r`,
             question: 'Why does the builder add NOP padding?',
             answer:
               'TCP header length must be a multiple of 4 bytes. If adding MSS, SACK or other options leaves the option area at an invalid length, the builder inserts NOP (kind 1) bytes so the data offset stays correct and parsers can skip the padding.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'pcap-parser',
+    name: 'PCAP 抓包文件解析器',
+    nameEn: 'PCAP Capture Parser',
+    description:
+      '解析经典 libpcap 抓包文件，读取全局头与每个分组记录，校验 magic、字节序与截断信息。',
+    descriptionEn:
+      'Parse classic libpcap capture files, inspect the global header and every packet record with magic, endianness and truncation checks.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/pcap-parser',
+    iconName: 'HardDrive',
+    tags: ['PCAP', '抓包', 'Wireshark', 'libpcap', '网络分析', '十六进制'],
+    tagsEn: ['PCAP', 'Packet Capture', 'Wireshark', 'libpcap', 'Network Analysis', 'Hex'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DEFAULT_PCAP_HEX,
+    doc: {
+      zh: {
+        whatIsIt:
+          'PCAP 抓包文件解析器是一款纯浏览器本地运算的网络分析工具，可读取经典 libpcap（.pcap）文件的二进制结构，展示全局头字段与每个分组的捕获长度、原始长度和时间戳，无需安装 Wireshark 即可快速核对抓包内容。',
+        coreFeatures: [
+          '自动识别 magic 与字节序：支持 0xA1B2C3D4 微秒与 0xA1B23C4D 纳秒两种精度，并区分大端与小端',
+          '逐条解析分组记录：展示时间戳、捕获长度、原始长度，自动标记被 snaplen 截断的分组',
+          '原始字节查看：点击任意分组即可查看其完整十六进制内容并一键复制',
+          '解析告警：对尾部残缺分组头、超出 snaplen、缺失数据等情况给出明确提示',
+          '本地文件读取：可直接选择 .pcap 文件在浏览器内解析，文件不会上传到任何服务器',
+        ],
+        howToUse: [
+          '点击「选择 .pcap 文件」读取本地抓包文件，或把文件内容的十六进制粘贴到输入框',
+          '工具会立即解析 24 字节全局头并展示 magic、版本、snaplen、链路类型等字段',
+          '在下方的分组列表中点击任意一行，查看该分组的时间戳与原始字节',
+          '如出现告警，可结合捕获 / 原始长度判断数据包是否在抓包阶段被截断',
+        ],
+        useCases: [
+          '排查抓包文件为何无法在分析工具中打开，快速确认 magic 与版本是否正确',
+          '核对 snaplen 设置是否导致业务报文被截断、关键字段缺失',
+          '从导出的 .pcap 中快速提取某个分组的原始字节用于复现问题',
+          '网络协议教学中演示 PCAP 全局头与分组记录的二进制布局',
+        ],
+        privacyNote:
+          '所有解析与字节计算均在本机浏览器完成，抓包文件与网络数据绝不会上传或传向任何远端服务器。',
+        faqs: [
+          {
+            question: '为什么提示检测到 pcapng？',
+            answer:
+              'pcapng（PCAP Next Generation）是 Wireshark 的默认新格式，magic 为 0x0A0D0D0A，结构与本工具支持的经典 libpcap 完全不同。可在 Wireshark 中使用「另存为 → Wireshark/tcpdump pcap」转换为经典格式后再解析。',
+          },
+          {
+            question: '捕获长度与原始长度有什么区别？',
+            answer:
+              '原始长度是数据包在网络上的真实大小；捕获长度是实际写入文件的字节数。当抓包时设置了 snaplen（快照长度），超出部分会被截断，此时原始长度大于捕获长度，工具会标记为「截断」。',
+          },
+          {
+            question: '为什么大文件只展示了前 500 个分组？',
+            answer:
+              '为避免超大抓包文件阻塞浏览器渲染，工具最多展示前 500 个分组的明细，但全局信息与分组总数仍按整个文件统计。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'PCAP Capture Parser is a fully browser-based network analysis tool that reads the binary structure of classic libpcap (.pcap) files, showing the global header plus each packet record’s capture length, original length and timestamp — no Wireshark installation required.',
+        coreFeatures: [
+          'Automatic magic and endianness detection: supports microsecond 0xA1B2C3D4 and nanosecond 0xA1B23C4D, in both little- and big-endian files',
+          'Per-record parsing: shows timestamps, captured and original lengths, and flags packets truncated by snaplen',
+          'Raw byte inspection: click any packet to view its full hex content and copy it in one click',
+          'Parsing warnings: clear messages for trailing partial record headers, snaplen overflows and missing data',
+          'Local file reading: open a .pcap file directly in the browser; the file is never uploaded',
+        ],
+        howToUse: [
+          'Click “Choose .pcap file” to read a local capture, or paste the file content as hex into the input box',
+          'The tool immediately parses the 24-byte global header and shows magic, version, snaplen and link type',
+          'Click any row in the packet table to inspect that packet’s timestamp and raw bytes',
+          'Use the captured vs original lengths in warnings to tell whether packets were truncated during capture',
+        ],
+        useCases: [
+          'Diagnosing why a capture file will not open in other analyzers by checking magic and version',
+          'Verifying whether a snaplen setting truncated business packets and dropped key fields',
+          'Extracting the raw bytes of a specific packet from an exported .pcap for reproduction',
+          'Teaching the binary layout of PCAP global headers and record headers in networking courses',
+        ],
+        privacyNote:
+          'All parsing and byte calculations run locally in your browser. Capture files and network data are never uploaded or sent to any remote server.',
+        faqs: [
+          {
+            question: 'Why does it say pcapng was detected?',
+            answer:
+              'pcapng (PCAP Next Generation) is Wireshark’s default new format with magic 0x0A0D0D0A, whose structure differs completely from classic libpcap. Save as “Wireshark/tcpdump pcap” in Wireshark to convert, then parse it here.',
+          },
+          {
+            question: 'What is the difference between captured and original length?',
+            answer:
+              'Original length is the real packet size on the wire; captured length is how many bytes were actually written to the file. When snaplen limits capture, the excess is truncated, original length exceeds captured length, and the tool marks the packet as truncated.',
+          },
+          {
+            question: 'Why are only the first 500 packets shown for large files?',
+            answer:
+              'To keep browser rendering responsive with huge captures, the tool lists at most the first 500 packet details, while the global information and total packet count still cover the entire file.',
           },
         ],
       },
