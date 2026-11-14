@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-14 ：【Agent自主迭代】新增以太网帧、TCP 段、PCAP 抓包、Modbus 报文与 PCB 线宽 5 个工具
+
+- **新增**：以太网 II 帧解析与构造器（ethernet-frame-codec）— 解析目标/源 MAC、EtherType 与载荷，按 0xEDB88320 反射多项式计算 CRC-32 FCS，自动识别末尾 4 字节 FCS 并校验、支持构造侧自动补 FCS 与常见 EtherType 预设，14 个 Vitest 用例，纯本地运算零依赖
+- **新增**：TCP 段解析与构造器（tcp-segment-codec）— 解析端口、序号/确认号、数据偏移、9 个控制标志、窗口、校验和与紧急指针，按 IPv4 伪首部（源/目的 IP + 协议号 + TCP 长度）计算校验和，解码 MSS/SACK/窗口缩放/时间戳等选项，构造侧支持自动计算校验和，11 个 Vitest 用例，纯本地运算零依赖
+- **新增**：经典 PCAP 抓包文件解析器（pcap-parser）— 识别 0xA1B2C3D4 微秒与 0xA1B23C4D 纳秒两种 magic 及大小端，解析 24 字节全局头（版本、thiszone、sigfigs、snaplen、链路类型）与逐条分组记录，标记 snaplen 截断、尾部残缺头等告警并支持点击查看分组原始字节，13 个 Vitest 用例，纯本地运算零依赖
+- **新增**：Modbus 报文解析与构造器（modbus-frame-codec）— 按 MBAP 协议 ID 与长度字段自动识别 RTU/TCP，RTU 按反射多项式 0xA001 与线上低字节在前校验 CRC16，解读 01–06/0F/10 功能码与异常码，解析起始地址、数量、写入值等 PDU 字段，构造侧 RTU 自动补 CRC、TCP 自动写 MBAP 长度，14 个 Vitest 用例，纯本地运算零依赖
+- **新增**：PCB 导线宽度计算器（IPC-2221）（pcb-trace-width-calculator）— 按 IPC-2221 公式 A=(I/(k·ΔT^0.44))^(1/0.725) 计算最小线宽，外层 k=0.048、内层 k=0.024，支持 0.5/1/2/3 oz 铜厚与 mil/mm 双单位输出、内外层同条件对比及由线宽反推载流能力，10 个 Vitest 用例，纯本地运算零依赖
+
 ## 2026-11-14 ：【Agent自主迭代】新增 @font-face、滚动条、文字阴影、正则转义与工时累加 5 个工具；同日另新增 Elo 等级分、固定资产折旧、S-Record 解析、multipart 构造与 C 位域打包 5 个工具
 
 - **新增**：@font-face 生成器（font-face-generator）— 表单化管理多字重/多格式字体源，自动拼装含 font-family、font-weight、font-style、font-display、src 多格式回退与 unicode-range 的 @font-face CSS 规则，并提供实时字体预览，14 个 Vitest 用例，纯本地运算零依赖

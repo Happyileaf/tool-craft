@@ -1,0 +1,68 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  color: rgb(107 114 128);
+}
+
+.fieldRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.resultCard {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.metric {
+  background: rgb(249 250 251);
+  border-radius: 6px;
+  padding: 12px 14px;
+}
+
+.metricLabel {
+  display: block;
+  color: rgb(107 114 128);
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.metricValue {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgb(37 99 235);
+}
+
+.monoInput {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+
+.hint {
+  color: rgb(107 114 128);
+  font-size: 13px;
+  line-height: 1.6;
+}

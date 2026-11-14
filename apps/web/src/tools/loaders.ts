@@ -370,4 +370,9 @@ export const toolLoaders: Record<
   'text-shadow-generator': () => import('./text-shadow-generator'),
   'regex-escape-tool': () => import('./regex-escape-tool'),
   'work-hours-calculator': () => import('./work-hours-calculator'),
+  'ethernet-frame-codec': () => import('./ethernet-frame-codec'),
+  'tcp-segment-codec': () => import('./tcp-segment-codec'),
+  'pcap-parser': () => import('./pcap-parser'),
+  'modbus-frame-codec': () => import('./modbus-frame-codec'),
+  'pcb-trace-width-calculator': () => import('./pcb-trace-width-calculator'),
 };

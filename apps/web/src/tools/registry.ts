@@ -2,6 +2,8 @@ import { ToolCategoryEnum, ToolProcessingEnum } from './constants';
 import type { ToolMeta } from './types';
 import { DEFAULT_SAMPLE_INPUT as CHANGELOG_SAMPLE_INPUT } from './changelog-generator/constants';
 import { SAMPLE_PLAIN_LYRICS } from './lrc-parser/constants';
+import { DEFAULT_PCAP_HEX } from './pcap-parser/constants';
+import { DEFAULT_RTU_HEX } from './modbus-frame-codec/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -34814,6 +34816,523 @@ sqrt(area) + 2 * r`,
             question: 'What if the break is longer than the shift itself?',
             answer:
               'That segment’s net time is clamped to zero rather than going negative, and an inline hint is shown. Rows with format errors are excluded from total hours, average, and pay calculations.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ethernet-frame-codec',
+    name: '以太网 II 帧解析与 FCS 校验器',
+    nameEn: 'Ethernet II Frame Parser & FCS Validator',
+    description:
+      '按 IEEE 802.3 解析以太网 II 帧十六进制，拆解目的/源 MAC、EtherType、载荷与帧长，自动识别并校验末尾 CRC-32 FCS，同时提供自动追加 FCS 的帧构造器与最小/最大帧长提示。',
+    descriptionEn:
+      'Parse Ethernet II frame hex per IEEE 802.3: decode destination/source MAC, EtherType, payload and frame length, auto-detect and validate the trailing CRC-32 FCS, and build frames with a correct FCS appended automatically.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ethernet-frame-codec',
+    iconName: 'Wifi',
+    tags: ['Ethernet', '以太网', 'CRC-32', 'FCS', 'MAC 地址', '帧解析'],
+    tagsEn: ['Ethernet', 'CRC-32', 'FCS', 'MAC Address', 'Frame Parsing'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '02 00 00 00 00 01 02 00 00 00 00 02 08 00 45 00 00 2E 1C 46 40 00 40 06 9B 28 C0 A8 01 0A C0 A8 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 DF 73 52 01',
+    doc: {
+      zh: {
+        whatIsIt:
+          '以太网 II 帧解析与 FCS 校验器是一款纯浏览器本地的二层报文分析工具。它按 IEEE 802.3 把十六进制帧拆解为目的 MAC、源 MAC、EtherType、载荷与帧长度，自动识别末尾 4 字节 FCS 并用 CRC-32/IEEE 802.3 重算校验，同时内置可自动追加 FCS 的帧构造器，帮助网络工程师与学习者读懂抓包并验证链路层完整性。',
+        coreFeatures: [
+          '完整字段解析：6 字节目的 MAC、6 字节源 MAC、2 字节 EtherType（含 IPv4、ARP、IPv6、VLAN、MPLS、PPPoE、LLDP 等常见类型名称）与载荷',
+          'FCS 自动识别与校验：末尾 4 字节若等于帧体 CRC-32 则自动剥离并标记通过，否则给出重算值与不匹配提示',
+          '帧长合规检查：提示低于 64 字节（网卡会填充）、超过 1518 字节以及载荷短于 46 字节的填充帧',
+          '帧构造器：输入双 MAC、EtherType 与载荷后自动生成完整帧并追加正确的 CRC-32 FCS，可一键复制十六进制',
+          '宽松输入：空格、逗号、冒号、短横线与 0x 前缀均可，MAC 地址支持冒号或短横线写法',
+        ],
+        howToUse: [
+          '在文本框粘贴以太网帧十六进制（至少 14 字节），可包含也可省略末尾 4 字节 FCS',
+          '点击“载入合法示例”载入一个 64 字节、FCS 正确的 IPv4 帧',
+          '在结果区核对双 MAC、EtherType、载荷长度与 FCS 校验标签，并查看链路层提示',
+          '在构造器中填写目的/源 MAC、EtherType 与 1–1500 字节载荷，工具会实时输出带 FCS 的完整帧',
+        ],
+        useCases: [
+          '解析 Wireshark/tcpdump 导出的以太网帧字节，理解二层头部与 EtherType 含义',
+          '验证手工构造或抓取帧的 CRC-32 FCS 是否正确，排查链路层损坏',
+          '网络协议教学：演示 MAC 地址、EtherType、最小/最大帧长与填充帧',
+          '嵌入式与网卡驱动调试时快速核对发送帧的字节布局',
+        ],
+        privacyNote: '所有帧数据仅在浏览器本地解析，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '为什么工具有时提示“未检测到有效 FCS”？',
+            answer:
+              '工具只有在输入末尾 4 字节恰好等于帧体 CRC-32 时才判定包含 FCS。若抓包工具默认未抓取 FCS，或帧在传输中被损坏、末尾 4 字节不再匹配，就会给出提示并保留完整字节作为载荷展示。',
+          },
+          {
+            question: '为什么以太网最小帧长是 64 字节？',
+            answer:
+              '这是早期共享介质以太网的冲突检测要求：最远两台主机往返传播时延内必须仍在发送，因此规定最小 64 字节（含 18 字节头部与 FCS）。小于该长度的帧会被网卡自动填充，载荷不足 46 字节的部分用 0 补齐。',
+          },
+          {
+            question: 'EtherType 与 IEEE 802.3 长度字段如何区分？',
+            answer:
+              '以太网 II 中该字段表示上层协议类型，取值 ≥ 0x0600；IEEE 802.3 帧中同一位置是长度字段，取值 ≤ 1500（0x05DC），后续通常跟随 LLC/SNAP 头。看到 0x0800 即 IPv4，0x0806 即 ARP。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Ethernet II frame parser and FCS validator is a browser-local layer-2 analysis tool. Following IEEE 802.3 it decodes hexadecimal frames into destination MAC, source MAC, EtherType, payload and frame length, auto-detects the trailing 4-byte FCS and recomputes the CRC-32/IEEE 802.3 checksum, and includes a builder that appends a correct FCS automatically.',
+        coreFeatures: [
+          'Full field decoding: 6-byte destination and source MACs, 2-byte EtherType with names for IPv4, ARP, IPv6, VLAN, MPLS, PPPoE and LLDP, plus payload',
+          'Automatic FCS detection and validation: strips and validates the trailing 4 bytes when they equal the frame body CRC-32, otherwise reports the recomputed value and a mismatch warning',
+          'Frame length checks: flags frames below 64 bytes (NIC padding), above 1518 bytes, and payloads under 46 bytes that indicate padding frames',
+          'Frame builder: generates a complete frame with a correct CRC-32 FCS from two MACs, an EtherType and a payload, with one-click hex copy',
+          'Lenient input: spaces, commas, colons, hyphens and 0x prefixes are accepted, and MACs may use colon or hyphen notation',
+        ],
+        howToUse: [
+          'Paste Ethernet frame hex (at least 14 bytes) into the text area; the trailing 4-byte FCS may be present or omitted',
+          'Click “load valid sample” to load a 64-byte IPv4 frame with a correct FCS',
+          'Review both MACs, EtherType, payload length and the FCS status tag, along with any link-layer hints',
+          'In the builder, enter destination/source MACs, EtherType and a 1–1500 byte payload to get the complete frame with FCS in real time',
+        ],
+        useCases: [
+          'Decoding Ethernet frame bytes exported from Wireshark/tcpdump to understand layer-2 headers and EtherTypes',
+          'Verifying CRC-32 FCS values of hand-crafted or captured frames and debugging link-layer corruption',
+          'Teaching networking: demonstrating MAC addressing, EtherType, minimum/maximum frame size and padding frames',
+          'Quickly checking transmitted frame byte layout while debugging embedded stacks and NIC drivers',
+        ],
+        privacyNote: 'All frame data is parsed locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'Why does the tool sometimes report “no valid FCS detected”?',
+            answer:
+              'An FCS is only recognized when the last 4 bytes exactly equal the frame body CRC-32. If the capture tool did not record the FCS, or the frame was corrupted in transit so the trailing bytes no longer match, the tool warns and displays all bytes as payload.',
+          },
+          {
+            question: 'Why is the minimum Ethernet frame 64 bytes?',
+            answer:
+              'It comes from collision detection on early shared media: a station must still be transmitting within the worst-case round-trip propagation delay, so the minimum is 64 bytes including the 18 header/FCS bytes. Shorter frames are padded by the NIC with zeros up to a 46-byte payload.',
+          },
+          {
+            question: 'How do EtherType and the IEEE 802.3 length field differ?',
+            answer:
+              'In Ethernet II the field is an upper-layer protocol type with values ≥ 0x0600; in IEEE 802.3 the same position carries a length ≤ 1500 (0x05DC), usually followed by an LLC/SNAP header. A value of 0x0800 means IPv4 and 0x0806 means ARP.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'tcp-segment-codec',
+    name: 'TCP 报文段解析与构造器',
+    nameEn: 'TCP Segment Parser & Builder',
+    description:
+      '解析 TCP 报文段十六进制，拆解端口、序列号/确认号、9 个标志位、窗口、紧急指针与 MSS/窗口缩放/SACK/时间戳选项，并依据 IPv4 伪首部校验和进行验证；同时提供自动写入校验和的构造器。',
+    descriptionEn:
+      'Parse TCP segment hex into ports, sequence/acknowledgment numbers, all 9 flags, window, urgent pointer and MSS/window-scale/SACK/timestamp options, validate the checksum against the IPv4 pseudo-header, and build segments with the checksum computed automatically.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/tcp-segment-codec',
+    iconName: 'Globe',
+    tags: ['TCP', '报文段', '校验和', '伪首部', 'MSS', '网络协议'],
+    tagsEn: ['TCP', 'Segment', 'Checksum', 'Pseudo Header', 'MSS', 'Networking'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '30 39 00 50 00 00 03 E8 00 00 00 00 70 02 FB F0 3E BB 00 00 02 04 05 B4 04 02 01 01',
+    doc: {
+      zh: {
+        whatIsIt:
+          'TCP 报文段解析与构造器是一款浏览器本地的传输层报文分析工具。它把十六进制 TCP 段拆解为源/目的端口、32 位序列号与确认号、数据偏移、9 个控制标志位、窗口、校验和、紧急指针与选项，并在提供源/目的 IPv4 时按伪首部重算 CRC 校验和；构造器可生成带正确校验和的报文段，适合网络学习、抓包核对与协议调试。',
+        coreFeatures: [
+          '完整字段解析：源/目的端口、序列号、确认号、数据偏移与头部长度、窗口、校验和、紧急指针与载荷长度',
+          '9 个标志位可视化：NS、CWR、ECE、URG、ACK、PSH、RST、SYN、FIN 逐位拆解并以标签展示',
+          '选项解码：MSS、窗口缩放、SACK Permitted、SACK 块、时间戳与 NOP/EOL 对齐填充，未知选项保留原始值',
+          '伪首部校验和验证：输入源/目的 IPv4 后自动计算并标记校验通过/失败，同时给出重算值',
+          '构造器：可配置端口、序列号/确认号、标志位、窗口、紧急指针、载荷与 MSS/SACK 选项，自动追加校验和与四字节对齐填充',
+        ],
+        howToUse: [
+          '粘贴 TCP 报文段十六进制（不含 IP 首部），至少 20 字节；可点击“载入 SYN 示例”',
+          '填写该段所属报文的源/目的 IPv4，工具会按伪首部校验并重算校验和；留空则跳过校验',
+          '查看字段表、标志位标签与选项表，确认数据偏移与头部长度是否合理',
+          '在构造器中调整字段与选项，工具实时输出十六进制并自动写入校验和',
+        ],
+        useCases: [
+          '解析 Wireshark 复制的 TCP 段字节，核对序列号、标志位与选项（如 MSS、窗口缩放）',
+          '手工构造 SYN/ACK 测试段并验证伪首部校验和是否正确',
+          '网络协议教学：演示三次握手标志位组合、选项对齐与校验和覆盖范围',
+          '排查 MTU/MSS 协商、窗口缩放与时间戳选项相关问题时快速核对字段',
+        ],
+        privacyNote: '所有报文数据仅在浏览器本地解析与计算，不会上传到服务器。',
+        faqs: [
+          {
+            question: '为什么校验和显示“跳过校验”？',
+            answer:
+              'TCP 校验和依赖 IPv4 伪首部中的源/目的地址。只有同时填入合法 IPv4 地址时工具才能重算；留空或地址非法时会跳过校验，但仍会展示报文内的原始校验和字段。',
+          },
+          {
+            question: '数据偏移和头部长度是什么关系？',
+            answer:
+              '数据偏移是 4 位字段，单位为 4 字节，因此头部长度 = 数据偏移 × 4。最小值为 5（20 字节固定头部），最大 15（60 字节，含最多 40 字节选项）。工具会校验该值是否超出报文段总长。',
+          },
+          {
+            question: '构造器为什么自动补齐 NOP？',
+            answer:
+              'TCP 头部长度必须是 4 字节的整数倍。添加 MSS、SACK 等选项后若选项区长度不是 4 的倍数，工具会用 NOP（kind=1）填充，保证数据偏移字段正确，解析端可正常跳过填充。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The TCP segment parser and builder is a browser-local transport-layer analysis tool. It decodes TCP hex into source/destination ports, 32-bit sequence and acknowledgment numbers, data offset, all 9 control flags, window, checksum, urgent pointer and options, recomputes the checksum over the IPv4 pseudo-header when addresses are supplied, and builds segments with a correct checksum for learning, packet verification and protocol debugging.',
+        coreFeatures: [
+          'Full field decoding: ports, sequence/acknowledgment numbers, data offset and header length, window, checksum, urgent pointer and payload length',
+          'All 9 flags visualized: NS, CWR, ECE, URG, ACK, PSH, RST, SYN and FIN are decoded bit by bit and shown as tags',
+          'Option decoding: MSS, window scale, SACK permitted, SACK blocks, timestamps and NOP/EOL padding, with raw values preserved for unknown kinds',
+          'Pseudo-header checksum validation: computes and flags pass/fail once source and destination IPv4 are provided, along with the expected value',
+          'Builder: configurable ports, sequence/ack numbers, flags, window, urgent pointer, payload and MSS/SACK options, with automatic checksum and four-byte NOP padding',
+        ],
+        howToUse: [
+          'Paste TCP segment hex (without the IP header), at least 20 bytes, or click “load SYN sample”',
+          'Enter the source/destination IPv4 of the enclosing packet to validate and recompute the checksum; leave them empty to skip validation',
+          'Review the field table, flag tags and option table, and check that data offset and header length are consistent',
+          'Adjust fields and options in the builder to get the hex output with the checksum written automatically',
+        ],
+        useCases: [
+          'Decoding TCP bytes copied from Wireshark and checking sequence numbers, flags and options such as MSS and window scale',
+          'Hand-crafting SYN/ACK test segments and verifying the pseudo-header checksum',
+          'Teaching TCP: demonstrating handshake flag combinations, option alignment and checksum coverage',
+          'Debugging MTU/MSS negotiation, window scaling and timestamp option behavior',
+        ],
+        privacyNote: 'All packet data is parsed and computed locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'Why does the checksum show “validation skipped”?',
+            answer:
+              'The TCP checksum depends on the source and destination addresses in the IPv4 pseudo-header. Validation runs only when both addresses are valid IPv4; otherwise the tool skips the check but still shows the original checksum field.',
+          },
+          {
+            question: 'How do data offset and header length relate?',
+            answer:
+              'Data offset is a 4-bit field in units of 4 bytes, so header length = data offset × 4. The minimum is 5 (20-byte fixed header) and the maximum is 15 (60 bytes with up to 40 bytes of options). The tool verifies that it does not exceed the segment length.',
+          },
+          {
+            question: 'Why does the builder add NOP padding?',
+            answer:
+              'TCP header length must be a multiple of 4 bytes. If adding MSS, SACK or other options leaves the option area at an invalid length, the builder inserts NOP (kind 1) bytes so the data offset stays correct and parsers can skip the padding.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'pcap-parser',
+    name: 'PCAP 抓包文件解析器',
+    nameEn: 'PCAP Capture Parser',
+    description:
+      '解析经典 libpcap 抓包文件，读取全局头与每个分组记录，校验 magic、字节序与截断信息。',
+    descriptionEn:
+      'Parse classic libpcap capture files, inspect the global header and every packet record with magic, endianness and truncation checks.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/pcap-parser',
+    iconName: 'HardDrive',
+    tags: ['PCAP', '抓包', 'Wireshark', 'libpcap', '网络分析', '十六进制'],
+    tagsEn: ['PCAP', 'Packet Capture', 'Wireshark', 'libpcap', 'Network Analysis', 'Hex'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DEFAULT_PCAP_HEX,
+    doc: {
+      zh: {
+        whatIsIt:
+          'PCAP 抓包文件解析器是一款纯浏览器本地运算的网络分析工具，可读取经典 libpcap（.pcap）文件的二进制结构，展示全局头字段与每个分组的捕获长度、原始长度和时间戳，无需安装 Wireshark 即可快速核对抓包内容。',
+        coreFeatures: [
+          '自动识别 magic 与字节序：支持 0xA1B2C3D4 微秒与 0xA1B23C4D 纳秒两种精度，并区分大端与小端',
+          '逐条解析分组记录：展示时间戳、捕获长度、原始长度，自动标记被 snaplen 截断的分组',
+          '原始字节查看：点击任意分组即可查看其完整十六进制内容并一键复制',
+          '解析告警：对尾部残缺分组头、超出 snaplen、缺失数据等情况给出明确提示',
+          '本地文件读取：可直接选择 .pcap 文件在浏览器内解析，文件不会上传到任何服务器',
+        ],
+        howToUse: [
+          '点击「选择 .pcap 文件」读取本地抓包文件，或把文件内容的十六进制粘贴到输入框',
+          '工具会立即解析 24 字节全局头并展示 magic、版本、snaplen、链路类型等字段',
+          '在下方的分组列表中点击任意一行，查看该分组的时间戳与原始字节',
+          '如出现告警，可结合捕获 / 原始长度判断数据包是否在抓包阶段被截断',
+        ],
+        useCases: [
+          '排查抓包文件为何无法在分析工具中打开，快速确认 magic 与版本是否正确',
+          '核对 snaplen 设置是否导致业务报文被截断、关键字段缺失',
+          '从导出的 .pcap 中快速提取某个分组的原始字节用于复现问题',
+          '网络协议教学中演示 PCAP 全局头与分组记录的二进制布局',
+        ],
+        privacyNote:
+          '所有解析与字节计算均在本机浏览器完成，抓包文件与网络数据绝不会上传或传向任何远端服务器。',
+        faqs: [
+          {
+            question: '为什么提示检测到 pcapng？',
+            answer:
+              'pcapng（PCAP Next Generation）是 Wireshark 的默认新格式，magic 为 0x0A0D0D0A，结构与本工具支持的经典 libpcap 完全不同。可在 Wireshark 中使用「另存为 → Wireshark/tcpdump pcap」转换为经典格式后再解析。',
+          },
+          {
+            question: '捕获长度与原始长度有什么区别？',
+            answer:
+              '原始长度是数据包在网络上的真实大小；捕获长度是实际写入文件的字节数。当抓包时设置了 snaplen（快照长度），超出部分会被截断，此时原始长度大于捕获长度，工具会标记为「截断」。',
+          },
+          {
+            question: '为什么大文件只展示了前 500 个分组？',
+            answer:
+              '为避免超大抓包文件阻塞浏览器渲染，工具最多展示前 500 个分组的明细，但全局信息与分组总数仍按整个文件统计。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'PCAP Capture Parser is a fully browser-based network analysis tool that reads the binary structure of classic libpcap (.pcap) files, showing the global header plus each packet record’s capture length, original length and timestamp — no Wireshark installation required.',
+        coreFeatures: [
+          'Automatic magic and endianness detection: supports microsecond 0xA1B2C3D4 and nanosecond 0xA1B23C4D, in both little- and big-endian files',
+          'Per-record parsing: shows timestamps, captured and original lengths, and flags packets truncated by snaplen',
+          'Raw byte inspection: click any packet to view its full hex content and copy it in one click',
+          'Parsing warnings: clear messages for trailing partial record headers, snaplen overflows and missing data',
+          'Local file reading: open a .pcap file directly in the browser; the file is never uploaded',
+        ],
+        howToUse: [
+          'Click “Choose .pcap file” to read a local capture, or paste the file content as hex into the input box',
+          'The tool immediately parses the 24-byte global header and shows magic, version, snaplen and link type',
+          'Click any row in the packet table to inspect that packet’s timestamp and raw bytes',
+          'Use the captured vs original lengths in warnings to tell whether packets were truncated during capture',
+        ],
+        useCases: [
+          'Diagnosing why a capture file will not open in other analyzers by checking magic and version',
+          'Verifying whether a snaplen setting truncated business packets and dropped key fields',
+          'Extracting the raw bytes of a specific packet from an exported .pcap for reproduction',
+          'Teaching the binary layout of PCAP global headers and record headers in networking courses',
+        ],
+        privacyNote:
+          'All parsing and byte calculations run locally in your browser. Capture files and network data are never uploaded or sent to any remote server.',
+        faqs: [
+          {
+            question: 'Why does it say pcapng was detected?',
+            answer:
+              'pcapng (PCAP Next Generation) is Wireshark’s default new format with magic 0x0A0D0D0A, whose structure differs completely from classic libpcap. Save as “Wireshark/tcpdump pcap” in Wireshark to convert, then parse it here.',
+          },
+          {
+            question: 'What is the difference between captured and original length?',
+            answer:
+              'Original length is the real packet size on the wire; captured length is how many bytes were actually written to the file. When snaplen limits capture, the excess is truncated, original length exceeds captured length, and the tool marks the packet as truncated.',
+          },
+          {
+            question: 'Why are only the first 500 packets shown for large files?',
+            answer:
+              'To keep browser rendering responsive with huge captures, the tool lists at most the first 500 packet details, while the global information and total packet count still cover the entire file.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'modbus-frame-codec',
+    name: 'Modbus 报文解析与构造器',
+    nameEn: 'Modbus Frame Parser & Builder',
+    description:
+      '自动识别 Modbus RTU 与 TCP 报文，校验 CRC16 与 MBAP 头，解读功能码与 PDU 字段并支持构造报文。',
+    descriptionEn:
+      'Auto-detect Modbus RTU and TCP frames, validate CRC16 and the MBAP header, decode function codes and PDU fields, and build valid frames.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/modbus-frame-codec',
+    iconName: 'Layers',
+    tags: ['Modbus', 'RTU', 'TCP', 'CRC16', '工业协议', 'PLC'],
+    tagsEn: ['Modbus', 'RTU', 'TCP', 'CRC16', 'Industrial Protocol', 'PLC'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DEFAULT_RTU_HEX,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Modbus 报文解析与构造器是一款面向工业自动化调试的纯浏览器本地工具，可自动识别 Modbus RTU 与 Modbus TCP 报文，校验 CRC16 与 MBAP 头，并解释功能码、从站地址与 PDU 数据字段的含义。',
+        coreFeatures: [
+          '自动识别 RTU / TCP：根据 MBAP 头的协议 ID 与长度字段判断模式，无需手动切换',
+          'RTU CRC16 校验：采用反射多项式 0xA001，自动按线上低字节在前解析并给出通过 / 失败结论',
+          '功能码解读：支持 01–06、0F、10 常用功能码，并识别异常响应与异常码含义',
+          'PDU 字段解析：将起始地址、寄存器数量、写入值、线圈状态等字段翻译为可读信息',
+          '双向能力：解析和构造报文，构造 RTU 时自动追加 CRC，构造 TCP 时自动写入 MBAP 长度',
+        ],
+        howToUse: [
+          '把抓取到的 Modbus 报文十六进制粘贴到输入框，或点击示例按钮载入 RTU / TCP 样例',
+          '工具会自动识别模式并展示从站地址、功能码、CRC 校验结果或 MBAP 字段',
+          '查看「PDU 字段解读」表格，确认起始地址、数量或写入值是否符合预期',
+          '在构造器中填写模式、从站地址、功能码与数据，即可获得可直接发送的完整报文',
+        ],
+        useCases: [
+          'PLC 与上位机通信异常时，核对发送报文的 CRC 与功能码是否正确',
+          '从串口抓包数据中快速解读读保持寄存器请求的起始地址与数量',
+          '排查 Modbus TCP 设备无响应问题，确认 MBAP 长度字段与事务 ID 是否匹配',
+          '学习 Modbus 协议时对照异常响应码理解从站返回的错误原因',
+        ],
+        privacyNote:
+          '所有报文解析、CRC 计算与构造均在浏览器本地完成，工业设备地址与报文数据不会上传到任何服务器。',
+        faqs: [
+          {
+            question: 'CRC 值为什么和十六进制末尾顺序看起来相反？',
+            answer:
+              'Modbus RTU 传输 CRC 时低字节在前。例如 CRC 计算结果为 0xCDC5，线上字节顺序就是 C5 CD；工具会按这种顺序读取并显示真正的 CRC 值。',
+          },
+          {
+            question: '功能码 0x83 是什么？',
+            answer:
+              '0x83 = 0x03 的最高位置 1，表示对「读保持寄存器」请求的异常响应。数据区首字节为异常码，例如 0x02 表示非法数据地址。工具会自动识别并翻译异常码含义。',
+          },
+          {
+            question: 'TCP 报文的 MBAP 长度字段包含什么？',
+            answer:
+              'MBAP 长度字段表示其后单元 ID 与 PDU 的总字节数，即 1 字节单元 ID + 功能码 + 数据长度，不包括 MBAP 头前 6 字节。构造器会自动按此规则写入长度。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Modbus Frame Parser & Builder is a fully browser-based tool for industrial automation debugging. It auto-detects Modbus RTU and Modbus TCP frames, validates CRC16 and the MBAP header, and explains function codes, slave addresses and PDU fields.',
+        coreFeatures: [
+          'Automatic RTU / TCP detection based on the MBAP protocol ID and length field — no manual switching',
+          'RTU CRC16 validation using the reflected polynomial 0xA001, handling the on-wire low-byte-first order and reporting pass or fail',
+          'Function code decoding for 01–06, 0F and 10, including exception responses and their exception codes',
+          'Readable PDU fields: start address, register quantity, written values and coil states',
+          'Bidirectional: parse and build frames; RTU builds append the CRC automatically and TCP builds write the MBAP length',
+        ],
+        howToUse: [
+          'Paste captured Modbus frame hex into the input, or use the sample buttons to load RTU / TCP examples',
+          'The tool detects the mode automatically and shows the slave address, function code, CRC result or MBAP fields',
+          'Check the “PDU fields” table to confirm the start address, quantity or written value',
+          'In the builder, set mode, slave address, function code and data to get a complete frame ready to send',
+        ],
+        useCases: [
+          'Verifying CRC and function codes when a PLC and host software fail to communicate',
+          'Decoding start address and quantity from a captured read-holding-registers request',
+          'Diagnosing unresponsive Modbus TCP devices by checking the MBAP length and transaction ID',
+          'Learning the Modbus protocol by matching exception responses to their error causes',
+        ],
+        privacyNote:
+          'All frame parsing, CRC computation and building run locally in your browser. Device addresses and frame data are never uploaded to any server.',
+        faqs: [
+          {
+            question: 'Why does the CRC order look reversed in the hex?',
+            answer:
+              'Modbus RTU transmits the CRC low byte first. If the CRC value is 0xCDC5, the on-wire bytes are C5 CD; the tool reads and displays the actual CRC value in that order.',
+          },
+          {
+            question: 'What does function code 0x83 mean?',
+            answer:
+              '0x83 is 0x03 with its highest bit set, meaning an exception response to a read-holding-registers request. The first data byte is the exception code, e.g. 0x02 for illegal data address. The tool detects and translates it automatically.',
+          },
+          {
+            question: 'What does the MBAP length field cover?',
+            answer:
+              'MBAP length is the total bytes of the unit ID plus the PDU that follow — 1 byte unit ID + function code + data — excluding the first 6 bytes of the MBAP header. The builder writes it automatically.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'pcb-trace-width-calculator',
+    name: 'PCB 导线宽度计算器（IPC-2221）',
+    nameEn: 'PCB Trace Width Calculator (IPC-2221)',
+    description:
+      '基于 IPC-2221 载流公式计算满足指定温升的最小 PCB 走线宽度，并支持由线宽反推载流能力。',
+    descriptionEn:
+      'Compute the minimum PCB trace width for a target temperature rise using the IPC-2221 formula, with reverse current-carrying estimation.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/pcb-trace-width-calculator',
+    iconName: 'Calculator',
+    tags: ['PCB', 'IPC-2221', '线宽', '载流', '硬件设计', '温升'],
+    tagsEn: ['PCB', 'IPC-2221', 'Trace Width', 'Current', 'Hardware Design', 'Temperature Rise'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'PCB 导线宽度计算器是一款面向硬件工程师的纯浏览器本地工具，基于 IPC-2221 载流公式，根据负载电流、允许温升、铜厚与铜层位置计算满足要求的最小走线宽度，也可由已有线宽反推可持续承载的电流。',
+        coreFeatures: [
+          '正向计算最小线宽：输入电流、温升、铜厚与层类型，得到 mil 与 mm 两种单位的宽度',
+          '内外层差异对比：外层 k = 0.048、内层 k = 0.024，同一条件下自动并列展示两种线宽',
+          '常见铜厚预设：支持 0.5 oz / 1 oz / 2 oz / 3 oz，并展示对应 mil 厚度与载流截面积',
+          '反向载流估算：给定线宽、温升与铜厚，快速推算该走线可持续承载的电流',
+          '即时计算：所有输入变化立刻刷新结果，无需点击按钮，全部运算在本地完成',
+        ],
+        howToUse: [
+          '在正向计算卡片中输入负载电流（A）与允许温升（°C）',
+          '选择铜厚（oz）以及走线位于外层还是内层',
+          '查看最小线宽（mil / mm）、载流截面积与铜厚，并参考内外层对比表',
+          '如需反推，可在反向估算卡片输入线宽，得到该走线的可持续电流',
+        ],
+        useCases: [
+          '电源板设计时确定 1 A、2 A 等大电流路径所需的最小走线宽度',
+          '评估现有 PCB 走线在给定温升限制下是否足以承载负载电流',
+          '对比同一条走线布置在外层与内层时的载流能力差异',
+          '为硬件评审与打样提供快速、可复现的线宽计算依据',
+        ],
+        privacyNote:
+          '所有计算均基于浏览器本地的数学公式，不涉及任何网络请求，设计参数不会离开本机。',
+        faqs: [
+          {
+            question: '为什么内层需要的线宽比外层大很多？',
+            answer:
+              '内层铜箔被板材包裹，散热条件明显差于外层，IPC-2221 使用更小的系数 k（0.024 对 0.048），因此相同电流与温升下需要更宽的走线。',
+          },
+          {
+            question: '计算结果可以直接用于生产吗？',
+            answer:
+              '公式给出的是满足指定温升的理论最小线宽。实际设计还需考虑敷铜、过孔、走线长度、环境温度、安全裕量和板厂工艺能力，关键电源路径建议留足余量并用实测温升复核。',
+          },
+          {
+            question: '1 oz 铜对应多厚？',
+            answer:
+              '1 oz 铜约等于 1.378 mil，也就是约 35 µm；工具会按所选盎司数换算厚度并参与线宽计算。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'PCB Trace Width Calculator is a fully browser-based tool for hardware engineers. Using the IPC-2221 current-carrying formula, it computes the minimum trace width for a given current, allowed temperature rise, copper weight and layer position — and can reverse-estimate the current an existing trace can carry.',
+        coreFeatures: [
+          'Forward minimum width calculation from current, temperature rise, copper weight and layer type, in both mil and mm',
+          'External vs internal comparison: k = 0.048 external and 0.024 internal, shown side by side for the same conditions',
+          'Common copper presets: 0.5 oz / 1 oz / 2 oz / 3 oz with corresponding mil thickness and current-carrying area',
+          'Reverse estimation: given width, temperature rise and copper weight, estimate the sustainable current',
+          'Instant results: every input change recomputes immediately, entirely locally',
+        ],
+        howToUse: [
+          'Enter the load current (A) and allowed temperature rise (°C) in the forward card',
+          'Choose the copper weight (oz) and whether the trace is on an external or internal layer',
+          'Read the minimum width in mil and mm, the current-carrying area and copper thickness, and check the layer comparison',
+          'For reverse estimation, enter a trace width in the second card to get its sustainable current',
+        ],
+        useCases: [
+          'Sizing minimum trace widths for 1 A or 2 A power paths on a power board',
+          'Checking whether existing PCB traces can carry the load within a temperature-rise limit',
+          'Comparing current capacity of the same trace on external versus internal layers',
+          'Providing quick, reproducible width calculations for hardware reviews and prototyping',
+        ],
+        privacyNote:
+          'All calculations use local in-browser math with no network requests. Design parameters never leave your machine.',
+        faqs: [
+          {
+            question: 'Why do internal layers need much wider traces?',
+            answer:
+              'Internal copper is surrounded by board material and dissipates heat far worse than external layers. IPC-2221 uses a smaller coefficient k (0.024 vs 0.048), so the same current and temperature rise requires a wider trace.',
+          },
+          {
+            question: 'Can the results be used directly for production?',
+            answer:
+              'The formula gives the theoretical minimum width for the specified temperature rise. Real designs must also account for copper pours, vias, trace length, ambient temperature, safety margin and fab capabilities. Critical power paths should keep extra margin and be verified with measured temperature rise.',
+          },
+          {
+            question: 'How thick is 1 oz copper?',
+            answer:
+              '1 oz copper is about 1.378 mil, roughly 35 µm. The tool converts the selected ounce value into thickness for the width calculation.',
           },
         ],
       },
