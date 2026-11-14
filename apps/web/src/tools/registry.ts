@@ -35235,6 +35235,109 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'pcb-trace-width-calculator',
+    name: 'PCB 导线宽度计算器（IPC-2221）',
+    nameEn: 'PCB Trace Width Calculator (IPC-2221)',
+    description:
+      '基于 IPC-2221 载流公式计算满足指定温升的最小 PCB 走线宽度，并支持由线宽反推载流能力。',
+    descriptionEn:
+      'Compute the minimum PCB trace width for a target temperature rise using the IPC-2221 formula, with reverse current-carrying estimation.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/pcb-trace-width-calculator',
+    iconName: 'Calculator',
+    tags: ['PCB', 'IPC-2221', '线宽', '载流', '硬件设计', '温升'],
+    tagsEn: ['PCB', 'IPC-2221', 'Trace Width', 'Current', 'Hardware Design', 'Temperature Rise'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'PCB 导线宽度计算器是一款面向硬件工程师的纯浏览器本地工具，基于 IPC-2221 载流公式，根据负载电流、允许温升、铜厚与铜层位置计算满足要求的最小走线宽度，也可由已有线宽反推可持续承载的电流。',
+        coreFeatures: [
+          '正向计算最小线宽：输入电流、温升、铜厚与层类型，得到 mil 与 mm 两种单位的宽度',
+          '内外层差异对比：外层 k = 0.048、内层 k = 0.024，同一条件下自动并列展示两种线宽',
+          '常见铜厚预设：支持 0.5 oz / 1 oz / 2 oz / 3 oz，并展示对应 mil 厚度与载流截面积',
+          '反向载流估算：给定线宽、温升与铜厚，快速推算该走线可持续承载的电流',
+          '即时计算：所有输入变化立刻刷新结果，无需点击按钮，全部运算在本地完成',
+        ],
+        howToUse: [
+          '在正向计算卡片中输入负载电流（A）与允许温升（°C）',
+          '选择铜厚（oz）以及走线位于外层还是内层',
+          '查看最小线宽（mil / mm）、载流截面积与铜厚，并参考内外层对比表',
+          '如需反推，可在反向估算卡片输入线宽，得到该走线的可持续电流',
+        ],
+        useCases: [
+          '电源板设计时确定 1 A、2 A 等大电流路径所需的最小走线宽度',
+          '评估现有 PCB 走线在给定温升限制下是否足以承载负载电流',
+          '对比同一条走线布置在外层与内层时的载流能力差异',
+          '为硬件评审与打样提供快速、可复现的线宽计算依据',
+        ],
+        privacyNote:
+          '所有计算均基于浏览器本地的数学公式，不涉及任何网络请求，设计参数不会离开本机。',
+        faqs: [
+          {
+            question: '为什么内层需要的线宽比外层大很多？',
+            answer:
+              '内层铜箔被板材包裹，散热条件明显差于外层，IPC-2221 使用更小的系数 k（0.024 对 0.048），因此相同电流与温升下需要更宽的走线。',
+          },
+          {
+            question: '计算结果可以直接用于生产吗？',
+            answer:
+              '公式给出的是满足指定温升的理论最小线宽。实际设计还需考虑敷铜、过孔、走线长度、环境温度、安全裕量和板厂工艺能力，关键电源路径建议留足余量并用实测温升复核。',
+          },
+          {
+            question: '1 oz 铜对应多厚？',
+            answer:
+              '1 oz 铜约等于 1.378 mil，也就是约 35 µm；工具会按所选盎司数换算厚度并参与线宽计算。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'PCB Trace Width Calculator is a fully browser-based tool for hardware engineers. Using the IPC-2221 current-carrying formula, it computes the minimum trace width for a given current, allowed temperature rise, copper weight and layer position — and can reverse-estimate the current an existing trace can carry.',
+        coreFeatures: [
+          'Forward minimum width calculation from current, temperature rise, copper weight and layer type, in both mil and mm',
+          'External vs internal comparison: k = 0.048 external and 0.024 internal, shown side by side for the same conditions',
+          'Common copper presets: 0.5 oz / 1 oz / 2 oz / 3 oz with corresponding mil thickness and current-carrying area',
+          'Reverse estimation: given width, temperature rise and copper weight, estimate the sustainable current',
+          'Instant results: every input change recomputes immediately, entirely locally',
+        ],
+        howToUse: [
+          'Enter the load current (A) and allowed temperature rise (°C) in the forward card',
+          'Choose the copper weight (oz) and whether the trace is on an external or internal layer',
+          'Read the minimum width in mil and mm, the current-carrying area and copper thickness, and check the layer comparison',
+          'For reverse estimation, enter a trace width in the second card to get its sustainable current',
+        ],
+        useCases: [
+          'Sizing minimum trace widths for 1 A or 2 A power paths on a power board',
+          'Checking whether existing PCB traces can carry the load within a temperature-rise limit',
+          'Comparing current capacity of the same trace on external versus internal layers',
+          'Providing quick, reproducible width calculations for hardware reviews and prototyping',
+        ],
+        privacyNote:
+          'All calculations use local in-browser math with no network requests. Design parameters never leave your machine.',
+        faqs: [
+          {
+            question: 'Why do internal layers need much wider traces?',
+            answer:
+              'Internal copper is surrounded by board material and dissipates heat far worse than external layers. IPC-2221 uses a smaller coefficient k (0.024 vs 0.048), so the same current and temperature rise requires a wider trace.',
+          },
+          {
+            question: 'Can the results be used directly for production?',
+            answer:
+              'The formula gives the theoretical minimum width for the specified temperature rise. Real designs must also account for copper pours, vias, trace length, ambient temperature, safety margin and fab capabilities. Critical power paths should keep extra margin and be verified with measured temperature rise.',
+          },
+          {
+            question: 'How thick is 1 oz copper?',
+            answer:
+              '1 oz copper is about 1.378 mil, roughly 35 µm. The tool converts the selected ounce value into thickness for the width calculation.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
