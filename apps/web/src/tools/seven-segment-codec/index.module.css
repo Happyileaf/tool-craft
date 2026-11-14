@@ -1,0 +1,145 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.label {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.glyphCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 10px;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 12px;
+  background: rgb(249 250 251);
+  min-width: 0;
+}
+
+.char {
+  color: rgb(17 24 39);
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.mono {
+  color: rgb(55 65 81);
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+
+.meta {
+  color: rgb(107 114 128);
+  font-size: 12px;
+  text-align: center;
+  word-break: break-all;
+}
+
+.byteInput {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  max-width: 320px;
+}
+
+.decodeRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+}
+
+.decodeInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.chars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 28px;
+  align-items: center;
+}
+
+.charTag {
+  margin-inline-end: 0;
+  font-size: 16px;
+  padding: 2px 10px;
+}
+
+.muted {
+  color: rgb(156 163 175);
+  font-size: 13px;
+}
+
+.referenceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 8px;
+}
+
+.referenceItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 6px;
+  border: 1px solid rgb(243 244 246);
+  border-radius: 8px;
+  background: rgb(255 255 255);
+}
+
+.refChar {
+  color: rgb(17 24 39);
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.refHex {
+  color: rgb(37 99 235);
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-size: 12px;
+}
+
+.refLabel {
+  color: rgb(107 114 128);
+  font-size: 11px;
+  text-align: center;
+}

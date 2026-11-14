@@ -33,7 +33,7 @@ export default function CapacitorCodeCalculatorTool({ defaultInput }: ToolCompon
 
   const encoded = useMemo<{ data: EncodedCode | null; error: string | null }>(() => {
     try {
-      return { data: encodeCapacitance(targetValue * UNIT_TO_PF[targetUnit]), error: null };
+      return { data: encodeCapacitance(targetValue * (UNIT_TO_PF[targetUnit] ?? 1)), error: null };
     } catch (error) {
       return { data: null, error: toError(error) };
     }

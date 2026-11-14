@@ -381,4 +381,5 @@ export const toolLoaders: Record<
   'http-digest-auth': () => import('./http-digest-auth'),
   'depth-of-field-calculator': () => import('./depth-of-field-calculator'),
   'capacitor-code-calculator': () => import('./capacitor-code-calculator'),
+  'seven-segment-codec': () => import('./seven-segment-codec'),
 };

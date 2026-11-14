@@ -89,15 +89,15 @@ function parseValueToken(token: string): number {
   }
   match = /^(\d{1,2})([PNU])(\d{1,2})$/.exec(token);
   if (match) {
-    return Number(`${match[1]}.${match[3]}`) * VALUE_UNIT_TO_PF[match[2]];
+    return Number(`${match[1] ?? ''}.${match[3] ?? ''}`) * (VALUE_UNIT_TO_PF[match[2] ?? ''] ?? 1);
   }
   match = /^(\d+)([PNU])$/.exec(token);
   if (match) {
-    return Number(match[1]) * VALUE_UNIT_TO_PF[match[2]];
+    return Number(match[1]) * (VALUE_UNIT_TO_PF[match[2] ?? ''] ?? 1);
   }
   match = /^([PNU])(\d{1,2})$/.exec(token);
   if (match) {
-    return Number(`0.${match[2]}`) * VALUE_UNIT_TO_PF[match[1]];
+    return Number(`0.${match[2] ?? ''}`) * (VALUE_UNIT_TO_PF[match[1] ?? ''] ?? 1);
   }
   match = /^(\d{2})$/.exec(token);
   if (match) {
@@ -105,7 +105,8 @@ function parseValueToken(token: string): number {
   }
   match = /^(\d{3})$/.exec(token);
   if (match) {
-    return Number(match[1].slice(0, 2)) * 10 ** Number(match[1][2]);
+    const digits = match[1] ?? '';
+    return Number(digits.slice(0, 2)) * 10 ** Number(digits.charAt(2));
   }
   return Number.NaN;
 }
@@ -155,7 +156,9 @@ function describeValue(token: string, pf: number): string {
   }
   const threeMatch = /^(\d{3})$/.exec(token);
   if (threeMatch) {
-    return `三位数字码：前两位 ${threeMatch[1].slice(0, 2)} 为有效数字，末位 ${threeMatch[1][2]} 为倍率 10^${threeMatch[1][2]}，即 ${Number(threeMatch[1].slice(0, 2))} × 10^${threeMatch[1][2]} pF = ${formatted.pf} pF = ${formatted.nf} nF = ${formatted.uf} µF。`;
+    const digits = threeMatch[1] ?? '';
+    const exponent = digits.charAt(2);
+    return `三位数字码：前两位 ${digits.slice(0, 2)} 为有效数字，末位 ${exponent} 为倍率 10^${exponent}，即 ${Number(digits.slice(0, 2))} × 10^${exponent} pF = ${formatted.pf} pF = ${formatted.nf} nF = ${formatted.uf} µF。`;
   }
   return `两位数字码直接以 pF 为单位：${token} = ${formatted.pf} pF。`;
 }
@@ -174,16 +177,22 @@ export function parseCapacitorCode(input: string): CapacitorParseResult {
   let voltage: VoltageInfo | null = null;
   if (rest.length >= 5) {
     const tail = rest.slice(-2);
-    if (tail in VOLTAGE_CODE_TABLE) {
-      voltage = { code: tail, volts: VOLTAGE_CODE_TABLE[tail] };
+    const volts = VOLTAGE_CODE_TABLE[tail];
+    if (volts !== undefined) {
+      voltage = { code: tail, volts };
       rest = rest.slice(0, -2);
     }
   }
 
   let tolerance: ToleranceInfo | null = null;
   const lastChar = rest.slice(-1);
-  if (lastChar in TOLERANCE_TABLE && !Number.isNaN(parseValueToken(rest.slice(0, -1))) && rest.length > 1) {
-    tolerance = TOLERANCE_TABLE[lastChar];
+  const toleranceInfo = TOLERANCE_TABLE[lastChar];
+  if (
+    toleranceInfo !== undefined &&
+    rest.length > 1 &&
+    !Number.isNaN(parseValueToken(rest.slice(0, -1)))
+  ) {
+    tolerance = toleranceInfo;
     rest = rest.slice(0, -1);
   }
 

@@ -35931,6 +35931,106 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'seven-segment-codec',
+    name: '七段数码管字形编解码器（a–g / dp 段码，共阴共阳）',
+    nameEn: 'Seven-Segment Display Codec (a–g / dp Codes, Common Cathode & Anode)',
+    description:
+      '在字符与七段数码管段码之间互转：支持数字、十六进制字母与常见符号，小数点叠加到前一个字形，可切换共阴/共阳极性、MSB/LSB 位序与段序，输出十六进制、二进制与点亮段列表，并支持由段码反查字形。',
+    descriptionEn:
+      'Convert between characters and seven-segment display codes: digits, hex letters and common symbols are supported, a decimal point attaches to the previous glyph, and you can switch common-cathode/anode polarity, MSB/LSB bit order and segment order. Get hex, binary and the lit-segment list, plus reverse decoding from a code byte.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/seven-segment-codec',
+    iconName: 'Binary',
+    tags: ['七段数码管', '段码', '共阴', '共阳', '单片机'],
+    tagsEn: ['Seven-segment', 'Segment code', 'Common cathode', 'Common anode', 'MCU'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'A.8',
+    doc: {
+      zh: {
+        whatIsIt:
+          '七段数码管用 a–g 七个笔画加一个小数点 dp 显示字符，每个段对应字节中的一位。本工具在字符与段码之间双向转换：输入字符即可得到按当前段序、位序与极性编码后的十六进制/二进制字节与点亮段列表；输入 0x3F、0b00111111、63 等字节即可反查可能字形。内置 33 个常见字形，小数点会自动叠加到前一个字符，支持共阴（高电平点亮）与共阳（低电平点亮）。',
+        coreFeatures: [
+          '字符 → 段码：支持 0–9、A/b/C/d/E/F 十六进制字形与 G/H/J/L/P/S/U 等常见字母、- _ = 与空白',
+          '可切换共阴/共阳极性、MSB/LSB 位序以及 a→g→dp / dp→g→a 段序',
+          '输出十六进制、8 位二进制、规范掩码与点亮段列表，并同时给出默认共阴与共阳段码',
+          '段码 → 字符：支持 0x、0b 与十进制输入，输出完全匹配字形、基础字形（忽略小数点）与点亮段',
+          '内置字形速查表与 SVG 预览，全部计算在浏览器本地完成',
+        ],
+        howToUse: [
+          '在字符输入框输入要显示的字符（如 1234、A.8、HELLO），小数点会叠加到前一个字形',
+          '按需切换极性、位序与段序，每个字形的十六进制与二进制段码即时更新',
+          '在段码输入框输入 0x3F、0b00111111 或 63，查看可能对应的字符与点亮段',
+          '参考底部字形速查表核对常用字符的共阴段码',
+        ],
+        useCases: [
+          '单片机或 FPGA 驱动数码管时快速查表与验证段码',
+          '调试共阴/共阳极性接反、位序或段序错误导致的显示异常',
+          '从现有固件或逻辑分析仪抓到的字节反推数码管显示内容',
+        ],
+        privacyNote: '所有编解码均在浏览器本地完成，输入内容不会被上传或存储。',
+        faqs: [
+          {
+            question: '共阴和共阳的段码是什么关系？',
+            answer:
+              '共阴数码管的段引脚接低、公共端接地，段码为 1 时点亮；共阳则公共端接高电平，段引脚拉低才点亮。因此同一字形的共阳段码等于共阴段码按位取反（0x3F ↔ 0xC0）。',
+          },
+          {
+            question: '为什么 0x3F 显示 0？',
+            answer:
+              '在默认段序 a=bit0、dp=bit7 下，0 点亮 a–f 六段，对应二进制 00111111，即十六进制 0x3F。若位序改为 MSB 优先，同一字形的字节会变为 0xFC。',
+          },
+          {
+            question: '字母 B 与小写 b 为什么不同？',
+            answer:
+              '七段数码管无法区分大小写，通常用 0x7C 表示 b，而大写 B 与 8 无法区分，因此字形表中仅收录小写 b、d 与对应的大写 A、C、E、F。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A seven-segment display shows characters with segments a–g plus a decimal point dp, each mapped to one bit in a byte. This tool converts both ways: type characters to get the hex/binary byte under the current segment order, bit order and polarity, along with the lit-segment list; enter a byte such as 0x3F, 0b00111111 or 63 to decode possible glyphs. It ships with 33 common glyphs, attaches a decimal point to the preceding character, and supports common cathode (active high) and common anode (active low).',
+        coreFeatures: [
+          'Characters to codes: 0–9, A/b/C/d/E/F hex glyphs, common letters such as G/H/J/L/P/S/U, - _ = and blank',
+          'Switch common cathode/anode polarity, MSB/LSB bit order and a→g→dp / dp→g→a segment order',
+          'Outputs hex, 8-bit binary, canonical mask and lit segments, plus default common-cathode and common-anode codes',
+          'Codes to characters: accepts 0x, 0b and decimal input, returning exact matches, base glyphs ignoring the decimal point, and lit segments',
+          'Built-in glyph reference with SVG previews; all computation stays in the browser',
+        ],
+        howToUse: [
+          'Type the characters to display (e.g. 1234, A.8, HELLO); a decimal point attaches to the previous glyph',
+          'Switch polarity, bit order and segment order as needed; each glyph’s hex and binary code updates instantly',
+          'Enter a code byte (0x3F, 0b00111111 or 63) to see matching characters and lit segments',
+          'Use the glyph reference at the bottom to check common cathode codes',
+        ],
+        useCases: [
+          'Looking up and verifying segment codes while driving displays from an MCU or FPGA',
+          'Debugging display glitches caused by reversed polarity, bit order or segment order',
+          'Reverse-engineering what a display shows from bytes captured in firmware or a logic analyzer',
+        ],
+        privacyNote: 'All encoding and decoding happen locally in your browser; inputs are never uploaded or stored.',
+        faqs: [
+          {
+            question: 'How do common-cathode and common-anode codes relate?',
+            answer:
+              'With a common cathode the segment pins sink to ground and a 1 lights the segment; a common anode ties the common pin high, so segment pins must be pulled low. The common-anode byte is therefore the bitwise NOT of the common-cathode byte (0x3F ↔ 0xC0).',
+          },
+          {
+            question: 'Why does 0x3F show 0?',
+            answer:
+              'With the default order a=bit0 and dp=bit7, the digit 0 lights segments a–f: binary 00111111, i.e. 0x3F. With MSB-first bit order the same glyph becomes 0xFC.',
+          },
+          {
+            question: 'Why are B and lowercase b different?',
+            answer:
+              'Seven-segment displays cannot distinguish uppercase and lowercase, so 0x7C is used for b while an uppercase B is indistinguishable from 8. The glyph table therefore includes lowercase b and d alongside uppercase A, C, E and F.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
