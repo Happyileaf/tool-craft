@@ -370,4 +370,5 @@ export const toolLoaders: Record<
   'text-shadow-generator': () => import('./text-shadow-generator'),
   'regex-escape-tool': () => import('./regex-escape-tool'),
   'work-hours-calculator': () => import('./work-hours-calculator'),
+  'ethernet-frame-codec': () => import('./ethernet-frame-codec'),
 };

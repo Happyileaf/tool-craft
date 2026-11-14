@@ -34819,6 +34819,109 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'ethernet-frame-codec',
+    name: '以太网 II 帧解析与 FCS 校验器',
+    nameEn: 'Ethernet II Frame Parser & FCS Validator',
+    description:
+      '按 IEEE 802.3 解析以太网 II 帧十六进制，拆解目的/源 MAC、EtherType、载荷与帧长，自动识别并校验末尾 CRC-32 FCS，同时提供自动追加 FCS 的帧构造器与最小/最大帧长提示。',
+    descriptionEn:
+      'Parse Ethernet II frame hex per IEEE 802.3: decode destination/source MAC, EtherType, payload and frame length, auto-detect and validate the trailing CRC-32 FCS, and build frames with a correct FCS appended automatically.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ethernet-frame-codec',
+    iconName: 'Wifi',
+    tags: ['Ethernet', '以太网', 'CRC-32', 'FCS', 'MAC 地址', '帧解析'],
+    tagsEn: ['Ethernet', 'CRC-32', 'FCS', 'MAC Address', 'Frame Parsing'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '02 00 00 00 00 01 02 00 00 00 00 02 08 00 45 00 00 2E 1C 46 40 00 40 06 9B 28 C0 A8 01 0A C0 A8 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 DF 73 52 01',
+    doc: {
+      zh: {
+        whatIsIt:
+          '以太网 II 帧解析与 FCS 校验器是一款纯浏览器本地的二层报文分析工具。它按 IEEE 802.3 把十六进制帧拆解为目的 MAC、源 MAC、EtherType、载荷与帧长度，自动识别末尾 4 字节 FCS 并用 CRC-32/IEEE 802.3 重算校验，同时内置可自动追加 FCS 的帧构造器，帮助网络工程师与学习者读懂抓包并验证链路层完整性。',
+        coreFeatures: [
+          '完整字段解析：6 字节目的 MAC、6 字节源 MAC、2 字节 EtherType（含 IPv4、ARP、IPv6、VLAN、MPLS、PPPoE、LLDP 等常见类型名称）与载荷',
+          'FCS 自动识别与校验：末尾 4 字节若等于帧体 CRC-32 则自动剥离并标记通过，否则给出重算值与不匹配提示',
+          '帧长合规检查：提示低于 64 字节（网卡会填充）、超过 1518 字节以及载荷短于 46 字节的填充帧',
+          '帧构造器：输入双 MAC、EtherType 与载荷后自动生成完整帧并追加正确的 CRC-32 FCS，可一键复制十六进制',
+          '宽松输入：空格、逗号、冒号、短横线与 0x 前缀均可，MAC 地址支持冒号或短横线写法',
+        ],
+        howToUse: [
+          '在文本框粘贴以太网帧十六进制（至少 14 字节），可包含也可省略末尾 4 字节 FCS',
+          '点击“载入合法示例”载入一个 64 字节、FCS 正确的 IPv4 帧',
+          '在结果区核对双 MAC、EtherType、载荷长度与 FCS 校验标签，并查看链路层提示',
+          '在构造器中填写目的/源 MAC、EtherType 与 1–1500 字节载荷，工具会实时输出带 FCS 的完整帧',
+        ],
+        useCases: [
+          '解析 Wireshark/tcpdump 导出的以太网帧字节，理解二层头部与 EtherType 含义',
+          '验证手工构造或抓取帧的 CRC-32 FCS 是否正确，排查链路层损坏',
+          '网络协议教学：演示 MAC 地址、EtherType、最小/最大帧长与填充帧',
+          '嵌入式与网卡驱动调试时快速核对发送帧的字节布局',
+        ],
+        privacyNote: '所有帧数据仅在浏览器本地解析，不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '为什么工具有时提示“未检测到有效 FCS”？',
+            answer:
+              '工具只有在输入末尾 4 字节恰好等于帧体 CRC-32 时才判定包含 FCS。若抓包工具默认未抓取 FCS，或帧在传输中被损坏、末尾 4 字节不再匹配，就会给出提示并保留完整字节作为载荷展示。',
+          },
+          {
+            question: '为什么以太网最小帧长是 64 字节？',
+            answer:
+              '这是早期共享介质以太网的冲突检测要求：最远两台主机往返传播时延内必须仍在发送，因此规定最小 64 字节（含 18 字节头部与 FCS）。小于该长度的帧会被网卡自动填充，载荷不足 46 字节的部分用 0 补齐。',
+          },
+          {
+            question: 'EtherType 与 IEEE 802.3 长度字段如何区分？',
+            answer:
+              '以太网 II 中该字段表示上层协议类型，取值 ≥ 0x0600；IEEE 802.3 帧中同一位置是长度字段，取值 ≤ 1500（0x05DC），后续通常跟随 LLC/SNAP 头。看到 0x0800 即 IPv4，0x0806 即 ARP。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Ethernet II frame parser and FCS validator is a browser-local layer-2 analysis tool. Following IEEE 802.3 it decodes hexadecimal frames into destination MAC, source MAC, EtherType, payload and frame length, auto-detects the trailing 4-byte FCS and recomputes the CRC-32/IEEE 802.3 checksum, and includes a builder that appends a correct FCS automatically.',
+        coreFeatures: [
+          'Full field decoding: 6-byte destination and source MACs, 2-byte EtherType with names for IPv4, ARP, IPv6, VLAN, MPLS, PPPoE and LLDP, plus payload',
+          'Automatic FCS detection and validation: strips and validates the trailing 4 bytes when they equal the frame body CRC-32, otherwise reports the recomputed value and a mismatch warning',
+          'Frame length checks: flags frames below 64 bytes (NIC padding), above 1518 bytes, and payloads under 46 bytes that indicate padding frames',
+          'Frame builder: generates a complete frame with a correct CRC-32 FCS from two MACs, an EtherType and a payload, with one-click hex copy',
+          'Lenient input: spaces, commas, colons, hyphens and 0x prefixes are accepted, and MACs may use colon or hyphen notation',
+        ],
+        howToUse: [
+          'Paste Ethernet frame hex (at least 14 bytes) into the text area; the trailing 4-byte FCS may be present or omitted',
+          'Click “load valid sample” to load a 64-byte IPv4 frame with a correct FCS',
+          'Review both MACs, EtherType, payload length and the FCS status tag, along with any link-layer hints',
+          'In the builder, enter destination/source MACs, EtherType and a 1–1500 byte payload to get the complete frame with FCS in real time',
+        ],
+        useCases: [
+          'Decoding Ethernet frame bytes exported from Wireshark/tcpdump to understand layer-2 headers and EtherTypes',
+          'Verifying CRC-32 FCS values of hand-crafted or captured frames and debugging link-layer corruption',
+          'Teaching networking: demonstrating MAC addressing, EtherType, minimum/maximum frame size and padding frames',
+          'Quickly checking transmitted frame byte layout while debugging embedded stacks and NIC drivers',
+        ],
+        privacyNote: 'All frame data is parsed locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'Why does the tool sometimes report “no valid FCS detected”?',
+            answer:
+              'An FCS is only recognized when the last 4 bytes exactly equal the frame body CRC-32. If the capture tool did not record the FCS, or the frame was corrupted in transit so the trailing bytes no longer match, the tool warns and displays all bytes as payload.',
+          },
+          {
+            question: 'Why is the minimum Ethernet frame 64 bytes?',
+            answer:
+              'It comes from collision detection on early shared media: a station must still be transmitting within the worst-case round-trip propagation delay, so the minimum is 64 bytes including the 18 header/FCS bytes. Shorter frames are padded by the NIC with zeros up to a 46-byte payload.',
+          },
+          {
+            question: 'How do EtherType and the IEEE 802.3 length field differ?',
+            answer:
+              'In Ethernet II the field is an upper-layer protocol type with values ≥ 0x0600; in IEEE 802.3 the same position carries a length ≤ 1500 (0x05DC), usually followed by an LLC/SNAP header. A value of 0x0800 means IPv4 and 0x0806 means ARP.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
