@@ -376,4 +376,5 @@ export const toolLoaders: Record<
   'modbus-frame-codec': () => import('./modbus-frame-codec'),
   'pcb-trace-width-calculator': () => import('./pcb-trace-width-calculator'),
   'line-numberer': () => import('./line-numberer'),
+  'rss-atom-generator': () => import('./rss-atom-generator'),
 };

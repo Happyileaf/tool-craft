@@ -35339,6 +35339,99 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'rss-atom-generator',
+    name: 'RSS / Atom Feed 生成器',
+    nameEn: 'RSS / Atom Feed Generator',
+    description:
+      '填写站点信息与文章条目，一键生成符合规范的 RSS 2.0 或 Atom 1.0 XML，并自动完成日期与实体转义。',
+    descriptionEn:
+      'Fill in site metadata and article entries to generate valid RSS 2.0 or Atom 1.0 XML with correct dates and entity escaping.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/rss-atom-generator',
+    iconName: 'ScrollText',
+    tags: ['RSS', 'Atom', 'Feed', 'XML', '订阅'],
+    tagsEn: ['RSS', 'Atom', 'Feed', 'XML', 'Syndication'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'RSS / Atom Feed 生成器把站点标题、链接、描述与文章列表转换为标准的订阅源 XML，方便博客、播客或资讯站提供订阅能力。',
+        coreFeatures: [
+          '双格式输出：RSS 2.0 与 Atom 1.0 一键切换，共用同一份表单数据',
+          '规范细节：RSS 自动输出 RFC 822 pubDate 与 guid，Atom 输出 RFC 3339 updated 与 entry id',
+          '严格转义：标题、摘要中的 & < > " \' 全部进行 XML 实体转义',
+          '条目管理：动态增删文章条目，支持 ISO 8601、YYYY-MM-DD 与 RFC 822 多种日期写法',
+          '本地生成：所有内容在浏览器内拼装，不上传站点或文章信息',
+        ],
+        howToUse: [
+          '选择 RSS 2.0 或 Atom 1.0 输出格式',
+          '填写站点标题、站点链接、描述、语言与 Feed 更新时间',
+          '维护文章条目，填写标题、链接、发布时间与摘要，可随时增删',
+          '右侧预览生成的 XML，确认后复制或下载为 .xml 文件',
+        ],
+        useCases: [
+          '为静态博客快速生成可通过校验的订阅源文件',
+          '为播客或资讯栏目准备 RSS 2.0 元数据',
+          '对比同一内容的 RSS 与 Atom 表达差异',
+          '在没有后端服务时手工维护一个轻量 Feed',
+        ],
+        privacyNote:
+          '站点信息与文章内容只在浏览器本地拼装成 XML，不会发送到任何服务器。',
+        faqs: [
+          {
+            question: '生成的 XML 能通过官方校验吗？',
+            answer:
+              '输出遵循 RSS 2.0 与 Atom 1.0 的必需元素，并对文本做 XML 实体转义。校验器还可能要求真实可访问的链接与唯一 id，请用实际站点信息替换示例数据后再校验。',
+          },
+          {
+            question: '发布时间支持哪些格式？',
+            answer:
+              '支持 YYYY-MM-DD、ISO 8601（如 2026-11-15T08:00:00Z）以及 RFC 822（如 Sun, 15 Nov 2026 08:00:00 GMT）。无时区的 YYYY-MM-DD 按 UTC 零点处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'RSS / Atom Feed Generator turns site metadata and article entries into a standards-compliant syndication feed for blogs, podcasts, or news sites.',
+        coreFeatures: [
+          'Two formats: switch between RSS 2.0 and Atom 1.0 while sharing the same form data',
+          'Spec details: RSS emits RFC 822 pubDate and guid; Atom emits RFC 3339 updated and entry ids',
+          'Strict escaping: & < > " \' in titles and summaries are converted to XML entities',
+          'Entry management: add or remove articles, with ISO 8601, YYYY-MM-DD, and RFC 822 date inputs',
+          'Local generation: the XML is assembled in your browser and never uploaded',
+        ],
+        howToUse: [
+          'Choose RSS 2.0 or Atom 1.0 as the output format',
+          'Enter the site title, site link, description, language, and feed update time',
+          'Maintain article entries with title, link, publish date, and summary; add or remove as needed',
+          'Preview the XML on the right, then copy it or download a .xml file',
+        ],
+        useCases: [
+          'Generating a valid feed file for a static blog',
+          'Preparing RSS 2.0 metadata for a podcast or news section',
+          'Comparing how the same content is expressed in RSS versus Atom',
+          'Maintaining a lightweight feed without a backend service',
+        ],
+        privacyNote:
+          'Site metadata and articles are assembled into XML locally in your browser and never sent to a server.',
+        faqs: [
+          {
+            question: 'Will the XML pass official validators?',
+            answer:
+              'The output follows the required elements of RSS 2.0 and Atom 1.0 and escapes XML entities. Validators may also require reachable links and unique ids, so replace the sample data with real site values before validating.',
+          },
+          {
+            question: 'Which date formats are supported?',
+            answer:
+              'YYYY-MM-DD, ISO 8601 (for example 2026-11-15T08:00:00Z), and RFC 822 (for example Sun, 15 Nov 2026 08:00:00 GMT). A date without a timezone is treated as midnight UTC.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'line-numberer',
     name: '文本行号添加与剥离器',
     nameEn: 'Text Line Numberer',
