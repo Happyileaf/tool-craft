@@ -34922,6 +34922,109 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'tcp-segment-codec',
+    name: 'TCP 报文段解析与构造器',
+    nameEn: 'TCP Segment Parser & Builder',
+    description:
+      '解析 TCP 报文段十六进制，拆解端口、序列号/确认号、9 个标志位、窗口、紧急指针与 MSS/窗口缩放/SACK/时间戳选项，并依据 IPv4 伪首部校验和进行验证；同时提供自动写入校验和的构造器。',
+    descriptionEn:
+      'Parse TCP segment hex into ports, sequence/acknowledgment numbers, all 9 flags, window, urgent pointer and MSS/window-scale/SACK/timestamp options, validate the checksum against the IPv4 pseudo-header, and build segments with the checksum computed automatically.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/tcp-segment-codec',
+    iconName: 'Globe',
+    tags: ['TCP', '报文段', '校验和', '伪首部', 'MSS', '网络协议'],
+    tagsEn: ['TCP', 'Segment', 'Checksum', 'Pseudo Header', 'MSS', 'Networking'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput:
+      '30 39 00 50 00 00 03 E8 00 00 00 00 70 02 FB F0 3E BB 00 00 02 04 05 B4 04 02 01 01',
+    doc: {
+      zh: {
+        whatIsIt:
+          'TCP 报文段解析与构造器是一款浏览器本地的传输层报文分析工具。它把十六进制 TCP 段拆解为源/目的端口、32 位序列号与确认号、数据偏移、9 个控制标志位、窗口、校验和、紧急指针与选项，并在提供源/目的 IPv4 时按伪首部重算 CRC 校验和；构造器可生成带正确校验和的报文段，适合网络学习、抓包核对与协议调试。',
+        coreFeatures: [
+          '完整字段解析：源/目的端口、序列号、确认号、数据偏移与头部长度、窗口、校验和、紧急指针与载荷长度',
+          '9 个标志位可视化：NS、CWR、ECE、URG、ACK、PSH、RST、SYN、FIN 逐位拆解并以标签展示',
+          '选项解码：MSS、窗口缩放、SACK Permitted、SACK 块、时间戳与 NOP/EOL 对齐填充，未知选项保留原始值',
+          '伪首部校验和验证：输入源/目的 IPv4 后自动计算并标记校验通过/失败，同时给出重算值',
+          '构造器：可配置端口、序列号/确认号、标志位、窗口、紧急指针、载荷与 MSS/SACK 选项，自动追加校验和与四字节对齐填充',
+        ],
+        howToUse: [
+          '粘贴 TCP 报文段十六进制（不含 IP 首部），至少 20 字节；可点击“载入 SYN 示例”',
+          '填写该段所属报文的源/目的 IPv4，工具会按伪首部校验并重算校验和；留空则跳过校验',
+          '查看字段表、标志位标签与选项表，确认数据偏移与头部长度是否合理',
+          '在构造器中调整字段与选项，工具实时输出十六进制并自动写入校验和',
+        ],
+        useCases: [
+          '解析 Wireshark 复制的 TCP 段字节，核对序列号、标志位与选项（如 MSS、窗口缩放）',
+          '手工构造 SYN/ACK 测试段并验证伪首部校验和是否正确',
+          '网络协议教学：演示三次握手标志位组合、选项对齐与校验和覆盖范围',
+          '排查 MTU/MSS 协商、窗口缩放与时间戳选项相关问题时快速核对字段',
+        ],
+        privacyNote: '所有报文数据仅在浏览器本地解析与计算，不会上传到服务器。',
+        faqs: [
+          {
+            question: '为什么校验和显示“跳过校验”？',
+            answer:
+              'TCP 校验和依赖 IPv4 伪首部中的源/目的地址。只有同时填入合法 IPv4 地址时工具才能重算；留空或地址非法时会跳过校验，但仍会展示报文内的原始校验和字段。',
+          },
+          {
+            question: '数据偏移和头部长度是什么关系？',
+            answer:
+              '数据偏移是 4 位字段，单位为 4 字节，因此头部长度 = 数据偏移 × 4。最小值为 5（20 字节固定头部），最大 15（60 字节，含最多 40 字节选项）。工具会校验该值是否超出报文段总长。',
+          },
+          {
+            question: '构造器为什么自动补齐 NOP？',
+            answer:
+              'TCP 头部长度必须是 4 字节的整数倍。添加 MSS、SACK 等选项后若选项区长度不是 4 的倍数，工具会用 NOP（kind=1）填充，保证数据偏移字段正确，解析端可正常跳过填充。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The TCP segment parser and builder is a browser-local transport-layer analysis tool. It decodes TCP hex into source/destination ports, 32-bit sequence and acknowledgment numbers, data offset, all 9 control flags, window, checksum, urgent pointer and options, recomputes the checksum over the IPv4 pseudo-header when addresses are supplied, and builds segments with a correct checksum for learning, packet verification and protocol debugging.',
+        coreFeatures: [
+          'Full field decoding: ports, sequence/acknowledgment numbers, data offset and header length, window, checksum, urgent pointer and payload length',
+          'All 9 flags visualized: NS, CWR, ECE, URG, ACK, PSH, RST, SYN and FIN are decoded bit by bit and shown as tags',
+          'Option decoding: MSS, window scale, SACK permitted, SACK blocks, timestamps and NOP/EOL padding, with raw values preserved for unknown kinds',
+          'Pseudo-header checksum validation: computes and flags pass/fail once source and destination IPv4 are provided, along with the expected value',
+          'Builder: configurable ports, sequence/ack numbers, flags, window, urgent pointer, payload and MSS/SACK options, with automatic checksum and four-byte NOP padding',
+        ],
+        howToUse: [
+          'Paste TCP segment hex (without the IP header), at least 20 bytes, or click “load SYN sample”',
+          'Enter the source/destination IPv4 of the enclosing packet to validate and recompute the checksum; leave them empty to skip validation',
+          'Review the field table, flag tags and option table, and check that data offset and header length are consistent',
+          'Adjust fields and options in the builder to get the hex output with the checksum written automatically',
+        ],
+        useCases: [
+          'Decoding TCP bytes copied from Wireshark and checking sequence numbers, flags and options such as MSS and window scale',
+          'Hand-crafting SYN/ACK test segments and verifying the pseudo-header checksum',
+          'Teaching TCP: demonstrating handshake flag combinations, option alignment and checksum coverage',
+          'Debugging MTU/MSS negotiation, window scaling and timestamp option behavior',
+        ],
+        privacyNote: 'All packet data is parsed and computed locally in your browser and never uploaded.',
+        faqs: [
+          {
+            question: 'Why does the checksum show “validation skipped”?',
+            answer:
+              'The TCP checksum depends on the source and destination addresses in the IPv4 pseudo-header. Validation runs only when both addresses are valid IPv4; otherwise the tool skips the check but still shows the original checksum field.',
+          },
+          {
+            question: 'How do data offset and header length relate?',
+            answer:
+              'Data offset is a 4-bit field in units of 4 bytes, so header length = data offset × 4. The minimum is 5 (20-byte fixed header) and the maximum is 15 (60 bytes with up to 40 bytes of options). The tool verifies that it does not exceed the segment length.',
+          },
+          {
+            question: 'Why does the builder add NOP padding?',
+            answer:
+              'TCP header length must be a multiple of 4 bytes. If adding MSS, SACK or other options leaves the option area at an invalid length, the builder inserts NOP (kind 1) bytes so the data offset stays correct and parsers can skip the padding.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

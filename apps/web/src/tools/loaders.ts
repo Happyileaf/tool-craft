@@ -371,4 +371,5 @@ export const toolLoaders: Record<
   'regex-escape-tool': () => import('./regex-escape-tool'),
   'work-hours-calculator': () => import('./work-hours-calculator'),
   'ethernet-frame-codec': () => import('./ethernet-frame-codec'),
+  'tcp-segment-codec': () => import('./tcp-segment-codec'),
 };
