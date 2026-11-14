@@ -10256,6 +10256,530 @@ info: request finished`,
     },
   },
   {
+    slug: 'subnet-wildcard-mask',
+    name: 'IPv4 子网掩码 ↔ 反掩码（Wildcard）双向转换器',
+    nameEn: 'IPv4 Subnet Mask ↔ Wildcard Mask Converter',
+    description:
+      '在 IPv4 点分十进制子网掩码（如 255.255.255.0）与 Cisco ACL/OSPF 反掩码（wildcard mask，如 0.0.0.255）之间自动识别方向并双向转换，校验掩码必须由连续 1 后接连续 0 构成，输出前缀长度（/24）、主机位、子网掩码与反掩码；给定 IP 时进一步计算网络地址、广播地址与可用主机范围。纯位运算、多行批量逐行标注错误、纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Converts between dotted-decimal IPv4 subnet masks (e.g. 255.255.255.0) and Cisco ACL/OSPF wildcard masks (e.g. 0.0.0.255), auto-detecting the direction. It validates that a mask is a run of 1s followed by a run of 0s, reports the prefix length (/24), host bits and both mask forms, and—given an IP—computes the network address, broadcast address and usable host range. Pure bitwise logic, multi-line batch mode with line-numbered errors, fully local execution and zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/subnet-wildcard-mask',
+    iconName: 'Wifi',
+    tags: ['子网掩码', '反掩码', 'Wildcard', 'IPv4', 'ACL', 'OSPF'],
+    tagsEn: ['Subnet Mask', 'Wildcard Mask', 'IPv4', 'ACL', 'OSPF', 'CIDR'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '255.255.255.0',
+    doc: {
+      zh: {
+        whatIsIt:
+          'IPv4 子网掩码 ↔ 反掩码转换器是一款纯浏览器本地运行的网络运维工具，在子网掩码与 Cisco 风格通配符（反）掩码之间逐位取反双向转换，并校验掩码合法性、推导前缀长度与网络/广播地址。',
+        coreFeatures: [
+          '自动识别方向：合法连续掩码判为子网掩码，其取反判为反掩码，无需手动切换',
+          '合法性校验：掩码必须由连续 1 后接连续 0 构成，非连续掩码（如 255.0.255.0）明确报错',
+          '前缀与主机位：输出 /前缀长度、主机位数与两种掩码形式',
+          '网络推导：给定 IP 计算网络地址、广播地址、首个/末尾可用主机与可用主机数',
+          '极端与特殊：支持 /0、/32，/31 按 RFC 3021 点对点链路、/32 按单主机地址处理',
+          '纯本地计算：零新增依赖，位运算完成，输入内容不发起任何网络请求',
+        ],
+        howToUse: [
+          '在左侧输入一个点分十进制掩码（子网掩码或反掩码均可），每行一个可批量处理',
+          '右侧实时输出对侧掩码；首行的前缀长度、主机位与两种掩码展示在推导卡片中',
+          '在「网络地址推导」卡片填入一个 IPv4 地址，即可查看网络地址、广播地址与可用主机范围',
+          '非法行（非连续掩码、八位组越界、段数错误）原样保留并以黄色警告逐行标注原因',
+          '点击「复制」获取批量转换结果',
+        ],
+        useCases: [
+          '配置 Cisco ACL / OSPF 时快速把手写子网掩码换成反掩码，避免逐位取反出错',
+          '网络排障与子网规划：核对前缀长度、网络地址与广播地址',
+          '教学与认证备考：理解子网掩码、反掩码与 CIDR 前缀之间的位运算关系',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；输入的掩码与 IP 不会离开设备。',
+        faqs: [
+          {
+            question: '反掩码（wildcard mask）和子网掩码是什么关系？',
+            answer:
+              '反掩码是子网掩码按位取反的结果：子网掩码中为 1 的位表示网络位，反掩码中为 1 的位表示需要忽略（主机位）。例如 255.255.255.0 取反得到 0.0.0.255，Cisco ACL 与 OSPF  network 命令使用反掩码。',
+          },
+          {
+            question: '为什么 255.0.255.0 会被判为非法？',
+            answer:
+              '合法子网掩码的 32 个比特必须是连续的若干个 1 再接连续的若干个 0，不能出现 1、0 交替。255.0.255.0 的二进制中 1 被 0 隔断，既不是合法子网掩码，其取反也不连续，因此工具会报「非法掩码」。',
+          },
+          {
+            question: '/31 和 /32 是怎么处理可用主机的？',
+            answer:
+              '/32 只有一个地址，网络地址与广播地址相同，按单主机地址处理；/31 仅含 2 个地址，按 RFC 3021 用作点对点链路，不再保留传统的网络号与广播号，因此可用主机区间显示为「—」并在数量中说明。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The IPv4 Subnet Mask ↔ Wildcard Mask Converter is a fully browser-local networking tool that bit-complements between subnet masks and Cisco-style wildcard masks, validates mask contiguity, and derives the prefix length plus network/broadcast addresses.',
+        coreFeatures: [
+          'Auto-detects direction: a contiguous mask is treated as a subnet mask and its complement as a wildcard, no manual toggle',
+          'Contiguity validation: a mask must be a run of 1s then a run of 0s; non-contiguous values such as 255.0.255.0 are rejected',
+          'Prefix and host bits: reports the /prefix length, host-bit count and both mask forms',
+          'Network derivation: from an IP, computes network address, broadcast address, first/last usable hosts and host count',
+          'Edge cases: supports /0 and /32; treats /31 as an RFC 3021 point-to-point link and /32 as a single-host address',
+          '100% local computation with zero new dependencies and no network requests',
+        ],
+        howToUse: [
+          'Enter a dotted-decimal mask (subnet or wildcard) on the left, one per line for batch processing',
+          'The opposite mask appears live on the right; the prefix length, host bits and both forms of the first line show in the derivation card',
+          'Fill an IPv4 address in the network derivation card to see network, broadcast and usable host range',
+          'Invalid rows (non-contiguous mask, octet out of range, wrong segment count) are kept verbatim with yellow line-numbered warnings',
+          'Click Copy to grab the batch conversion result',
+        ],
+        useCases: [
+          'Turning hand-written subnet masks into wildcard masks for Cisco ACL / OSPF without bit-flipping mistakes',
+          'Subnet planning and troubleshooting: verifying prefix length, network and broadcast addresses',
+          'Study and certification prep: understanding the bitwise relationship among subnet masks, wildcards and CIDR prefixes',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser via zero-dependency pure functions. No network requests are made, so the masks and IPs you enter never leave your device.',
+        faqs: [
+          {
+            question: 'What is the relationship between a wildcard mask and a subnet mask?',
+            answer:
+              'A wildcard mask is the bitwise complement of the subnet mask: subnet-mask 1 bits mark network bits, while wildcard 1 bits mark ignored (host) bits. For example, 255.255.255.0 complements to 0.0.0.255, which Cisco ACL and OSPF network commands use.',
+          },
+          {
+            question: 'Why is 255.0.255.0 rejected as invalid?',
+            answer:
+              'A valid subnet mask must be a contiguous run of 1s followed by a run of 0s across all 32 bits—1s and 0s cannot alternate. The bits of 255.0.255.0 are interrupted by zeros, so it is neither a valid subnet mask nor a contiguous complement, and the tool reports an illegal mask.',
+          },
+          {
+            question: 'How are /31 and /32 usable hosts handled?',
+            answer:
+              'A /32 has a single address whose network and broadcast addresses coincide, treated as a single host; a /31 contains only two addresses and per RFC 3021 serves a point-to-point link without traditional network/broadcast reservations, so the usable range shows “—” with an explanatory count.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'line-number-tool',
+    name: '文本行号添加与剥离器（批量编号、对齐填充与还原）',
+    nameEn: 'Text Line Number Adder & Stripper',
+    description:
+      '为多行文本批量添加行号前缀，或反向剥离已有行号还原原文。添加模式支持自定义起始号、步长、分隔符（: . ) | -> 等）、零填充对齐宽度（自动按最大编号兜底）、分隔符后空格以及是否给空行编号；剥离模式自动识别行首「数字 + 分隔符 + 空白」前缀，支持多字符分隔符，无前缀行原样保留。纯字符串确定性处理、纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Adds line-number prefixes to multi-line text in bulk, or strips existing prefixes to restore the original. The add mode supports a custom start number, step, separator (: . ) | -> etc.), zero-padding width (auto-widened to the largest number), an optional space after the separator and a toggle for numbering blank lines. The strip mode recognizes a leading “digits + separator + whitespace” prefix including multi-character separators and leaves lines without a prefix untouched. Pure deterministic string processing, fully local execution and zero new dependencies.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/line-number-tool',
+    iconName: 'List',
+    tags: ['行号', '编号', '文本处理', '批量', '剥离'],
+    tagsEn: ['Line Numbers', 'Numbering', 'Text', 'Batch', 'Strip'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'alpha\nbeta\ngamma',
+    doc: {
+      zh: {
+        whatIsIt:
+          '文本行号添加与剥离器是一款纯浏览器本地运行的文本工具，既能为多行文本批量生成对齐的行号前缀，也能识别并移除已有行号把文本还原为原始内容，全程零依赖、不发起任何网络请求。',
+        coreFeatures: [
+          '批量添加：起始号、步长可任意配置，支持递减（步长为负）编号',
+          '对齐填充：零填充宽度可手动指定，宽度不足时按最大编号位数自动兜底',
+          '多种分隔符：内置 : . ) | 与多字符 ->，可控制分隔符后是否补空格',
+          '空行控制：可选择是否给空行编号，关闭时空行原样保留',
+          '智能剥离：识别行首数字前缀并移除，支持多字符分隔符，无前缀行原样保留',
+          '纯本地：纯字符串确定性计算，输入内容不离开设备',
+        ],
+        howToUse: [
+          '选择「添加行号」或「剥离行号」模式',
+          '添加模式下设置起始号、步长、填充宽度、分隔符与空行/空格选项',
+          '左侧粘贴文本，右侧实时生成带行号或还原后的结果',
+          '参数非法（如步长为 0、填充宽度为负）时给出明确错误且不产出错误结果',
+          '点击「复制」获取结果',
+        ],
+        useCases: [
+          '为代码片段、日志、清单批量编号以便讨论与定位',
+          '把带行号的文档/题面还原为可直接运行或比对的纯文本',
+          '需要固定宽度编号（如 001、002）的目录与数据整理场景',
+        ],
+        privacyNote:
+          '全部处理均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；输入文本不会离开设备。',
+        faqs: [
+          {
+            question: '填充宽度填 0 是什么意思？',
+            answer:
+              '填充宽度为 0（自动）时，工具会按本次最后一个编号的位数决定宽度，例如编号到 12 就使用两位。手动指定后若小于实际位数，仍会自动扩宽，避免编号被截断。',
+          },
+          {
+            question: '剥离模式会不会误删正文里以数字开头的内容？',
+            answer:
+              '不会。剥离仅匹配行首「可选空白 + 数字 + 已注册分隔符 + 可选空白」这一完整前缀，且每行只移除一次。像 “5 apples” 这类没有分隔符的正文会原样保留。',
+          },
+          {
+            question: '支持多字符分隔符吗？',
+            answer:
+              '支持。内置的 -> 即多字符分隔符，剥离时按最长分隔符优先匹配，避免被单字符提前截断；自定义分隔符为空时会被拒绝。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Text Line Number Adder & Stripper is a fully browser-local text tool that either generates aligned line-number prefixes for multi-line text in bulk or recognizes and removes existing prefixes to restore the original content, with zero dependencies and no network requests.',
+        coreFeatures: [
+          'Bulk adding with configurable start and step, including descending (negative step) numbering',
+          'Zero-padding width that you can set manually and that auto-widens to the largest number',
+          'Multiple separators: built-in : . ) | and multi-character ->, with an optional space after',
+          'Blank-line control: choose whether blank lines get a number; otherwise they are preserved',
+          'Smart stripping of a leading numeric prefix including multi-character separators, leaving unprefixed lines untouched',
+          '100% local, deterministic string computation—input never leaves the device',
+        ],
+        howToUse: [
+          'Pick the “Add line numbers” or “Strip line numbers” mode',
+          'In add mode, set start, step, padding width, separator and blank-line/space options',
+          'Paste text on the left; the numbered or restored result appears live on the right',
+          'Invalid parameters (zero step, negative padding width) produce a clear error instead of wrong output',
+          'Click Copy to grab the result',
+        ],
+        useCases: [
+          'Numbering code snippets, logs and lists for discussion and pinpointing',
+          'Restoring numbered documents or problem statements into runnable, comparable plain text',
+          'Catalog and data cleanup that needs fixed-width numbers such as 001, 002',
+        ],
+        privacyNote:
+          'All processing runs locally in your browser via zero-dependency pure functions. No network requests are made, so your text never leaves your device.',
+        faqs: [
+          {
+            question: 'What does a padding width of 0 mean?',
+            answer:
+              'A width of 0 (auto) derives the width from the number of digits of the last number—for example, two digits when numbering reaches 12. A smaller manual width is still widened automatically so numbers are never truncated.',
+          },
+          {
+            question: 'Will stripping accidentally remove body text that starts with a number?',
+            answer:
+              'No. Stripping only matches the complete leading pattern of optional whitespace, digits, a registered separator and optional whitespace, and removes it at most once per line. Body text without a separator such as “5 apples” is kept verbatim.',
+          },
+          {
+            question: 'Are multi-character separators supported?',
+            answer:
+              'Yes. The built-in -> is a multi-character separator; stripping matches the longest separator first to avoid early truncation by a single character, and an empty custom separator is rejected.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'fsm-simulator',
+    name: '有限状态机（DFA）设计与测试序列模拟器',
+    nameEn: 'Deterministic Finite Automaton (DFA) Simulator',
+    description:
+      '以「当前状态,输入符号 -> 目标状态」逐行声明确定型有限自动机（DFA）的转移函数，设置起始状态与接受状态后，对任意输入串逐步模拟并给出接受/拒绝结论，输出覆盖全部「状态 × 字母表」的转移表、缺失转移与不可达状态检测，并生成可粘贴到 Graphviz 的 DOT 图形描述文本。非法转移、冲突转移、未声明状态、字母表外符号均带定位报错。纯本地确定性计算、零新增依赖。',
+    descriptionEn:
+      'Declares a deterministic finite automaton (DFA) line by line as “current state,input symbol -> target state”, sets the start and accepting states, then simulates any input string step by step with an accept/reject verdict. It renders a transition table covering every state × alphabet pair, flags missing transitions and unreachable states, and emits Graphviz DOT text. Illegal or conflicting transitions, undeclared states and out-of-alphabet symbols raise located errors. Fully local deterministic computation with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/fsm-simulator',
+    iconName: 'Workflow',
+    tags: ['有限状态机', 'DFA', '自动机', '状态转移', 'Graphviz', '编译原理'],
+    tagsEn: ['FSM', 'DFA', 'Automaton', 'State Transition', 'Graphviz', 'Compilers'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'abaa',
+    doc: {
+      zh: {
+        whatIsIt:
+          '有限状态机模拟器是一款纯浏览器本地运行的自动机教学与验证工具，聚焦确定型有限自动机（DFA）：用文本声明转移函数，即可逐步模拟测试串、查看转移表并导出 Graphviz DOT 图。',
+        coreFeatures: [
+          '文本化建模：每行一条 `状态,符号 -> 状态` 转移，支持注释与空行',
+          '逐步模拟：展示每一步读入符号、当前状态与下一状态，给出接受/拒绝结论',
+          '空串处理：输入留空即 ε，停在起始状态并按是否接受态判定',
+          '完整转移表：覆盖全部「状态 × 字母表」组合，缺失转移以 ∅ 显式标记并计数',
+          '健全性检查：冲突转移、未声明状态、字母表外符号带行号报错，并检测不可达状态',
+          'DOT 导出：生成合法 digraph，接受态双圆、起始态带入口箭头，可直接粘贴 Graphviz',
+        ],
+        howToUse: [
+          '在转移函数框按 `q0,a -> q1` 格式逐行填写，# 开头为注释',
+          '填写起始状态与接受状态（多个接受态用逗号或空格分隔）',
+          '在测试序列框输入字符串（留空表示空串 ε），查看逐步路径与结论',
+          '查看转移表中的 ∅ 缺失项与不可达状态提示，修正自动机定义',
+          '复制 DOT 文本到 Graphviz 渲染状态图',
+        ],
+        useCases: [
+          '编译原理/形式语言课程中验证 DFA 是否识别目标语言',
+          '词法分析、协议状态机、正则表达式引擎的原型验证',
+          '把抽象状态机快速转成可分享的 Graphviz 图',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；状态机定义与测试串不会离开设备。',
+        faqs: [
+          {
+            question: '为什么本期只支持 DFA，不支持 NFA 或 Mealy/Moore？',
+            answer:
+              '确定型自动机中每个「状态 × 输入」恰好一个目标，模拟路径唯一、结论可确定性复现，适合固定向量验收。NFA 的 ε-转移与多目标、Mealy/Moore 的输出语义复杂度更高，将作为后续独立 Idea 实现。',
+          },
+          {
+            question: '转移表里的 ∅ 是什么意思？',
+            answer:
+              '∅ 表示该「状态 × 输入符号」组合没有定义转移。严格 DFA 要求所有组合都有定义；模拟中一旦走到 ∅ 即判定该串无法继续并报错，你可以补全转移（通常指向一个拒绝死状态）来得到完整 DFA。',
+          },
+          {
+            question: '不可达状态是如何检测的？',
+            answer:
+              '工具从起始状态出发，沿所有输入符号做广度优先遍历，能访问到的状态构成可达集合；不在该集合中的状态即不可达，意味着它们对任何输入都不会被访问到，通常是建模冗余或拼写错误。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The FSM Simulator is a fully browser-local automaton teaching and verification tool focused on deterministic finite automata (DFA): declare transitions as text, then simulate test strings step by step, inspect the transition table and export a Graphviz DOT graph.',
+        coreFeatures: [
+          'Text modeling with one `state,symbol -> state` transition per line, plus comments and blank lines',
+          'Step-by-step simulation showing each consumed symbol, current and next states, with an accept/reject verdict',
+          'Empty-string handling: a blank input means ε and stays at the start state, judged by whether it is accepting',
+          'Complete transition table covering every state × alphabet pair, with missing transitions shown as ∅ and counted',
+          'Sanity checks with line-numbered errors for conflicts, undeclared states and out-of-alphabet symbols, plus unreachable-state detection',
+          'DOT export as a valid digraph with double-circle accepting states and a start arrow, ready for Graphviz',
+        ],
+        howToUse: [
+          'Enter transitions line by line as `q0,a -> q1`; lines starting with # are comments',
+          'Set the start state and accepting states (comma/space separated for multiple)',
+          'Type a string in the test-sequence box (blank for the empty string ε) to see the path and verdict',
+          'Inspect ∅ missing cells and unreachable-state hints to fix the definition',
+          'Copy the DOT text into Graphviz to render the state diagram',
+        ],
+        useCases: [
+          'Verifying whether a DFA recognizes the target language in formal-language/compiler courses',
+          'Prototyping lexical analyzers, protocol state machines and regex engines',
+          'Quickly turning an abstract state machine into a shareable Graphviz diagram',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser via zero-dependency pure functions. No network requests are made, so your automaton definitions and test strings never leave your device.',
+        faqs: [
+          {
+            question: 'Why only DFA this round, not NFA or Mealy/Moore?',
+            answer:
+              'In a deterministic automaton every state × input pair has exactly one target, so the simulation path is unique and reproducible with fixed vectors. NFA epsilon/multi-target semantics and Mealy/Moore outputs are more complex and will be delivered as separate follow-up ideas.',
+          },
+          {
+            question: 'What does ∅ mean in the transition table?',
+            answer:
+              '∅ marks a state × symbol pair with no defined transition. A strict DFA defines every pair; during simulation, reaching ∅ means the string cannot continue and an error is raised. Add transitions (often to a rejecting trap state) to obtain a complete DFA.',
+          },
+          {
+            question: 'How are unreachable states detected?',
+            answer:
+              'From the start state, the tool runs a breadth-first traversal along every input symbol. Reachable states form the visited set; any state outside it is unreachable, meaning no input can ever reach it—usually modeling redundancy or a typo.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'gedcom-viewer',
+    name: 'GEDCOM 5.5.1 族谱文件解析与结构查看器',
+    nameEn: 'GEDCOM 5.5.1 Genealogy File Parser & Viewer',
+    description:
+      '在浏览器本地解析 GEDCOM 5.5.1 族谱文本（`层级 [指针] 标签 [值]` 行结构），构建层级缩进树并提取 INDI 人物（姓名、性别、生卒日期与地点）与 FAM 家庭记录，解析 @I1@/@F1@ 交叉引用以关联父母、配偶与子女；支持 CONC/CONT 续行拼接、CRLF/LF 行尾，对层级跳号、行首非法、悬空指针带行号定位告警且不中断解析，未知标签容忍保留。纯本地零依赖，不实现 ANSEL 转码（仅识别 CHAR 声明）。',
+    descriptionEn:
+      'Parses GEDCOM 5.5.1 genealogy text locally in the browser using the “level [pointer] tag [value]” line structure, builds an indented hierarchy tree and extracts INDI person records (name, sex, birth/death date and place) and FAM family records, resolving @I1@/@F1@ cross-references to link parents, spouses and children. It supports CONC/CONT continuation and CRLF/LF endings, reports located warnings for level jumps, malformed leading lines and dangling pointers without aborting, and tolerates unknown tags. Pure local zero-dependency processing; ANSEL transcoding is out of scope (only the CHAR declaration is recognized).',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/gedcom-viewer',
+    iconName: 'GitFork',
+    tags: ['GEDCOM', '族谱', '家谱', '系谱', '文本解析', 'INDI', 'FAM'],
+    tagsEn: ['GEDCOM', 'Genealogy', 'Family Tree', 'Text Parser', 'INDI', 'FAM'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0 HEAD',
+    doc: {
+      zh: {
+        whatIsIt:
+          'GEDCOM 5.5.1 解析与结构查看器是一款纯浏览器本地运行的族谱数据工具，把遵循 GEDCOM 5.5.1 行结构的系谱文本解析为层级树、人物卡片与家庭关系，全程零依赖、文件不上传。',
+        coreFeatures: [
+          '层级树构建：按 `层级 标签 值` 还原缩进结构，层级跳号带行号报错且不中断后续解析',
+          '人物提取：INDI 记录的 NAME（去除 /斜杠/）、SEX、BIRT/DEAT 的 DATE 与 PLAC',
+          '家庭关系：FAM 记录的 HUSB/WIFE/CHIL 指针关联到具体人物，列出配偶、子女与父母家庭',
+          '续行支持：CONC 无分隔拼接、CONT 换行拼接长文本（如 NOTE）',
+          '健壮性：悬空指针告警、未知标签容忍保留、CRLF/LF 行尾兼容、行首非法定位',
+          '零依赖本地：仅识别 CHAR 字符集声明，ANSEL 转码不在本期范围',
+        ],
+        howToUse: [
+          '把 GEDCOM 5.5.1 文本粘贴到左侧（文件内容直接粘贴即可，不会上传）',
+          '右侧实时查看层级结构树与记录/人物/家庭统计',
+          '在「人物」标签查看姓名、性别、生卒与家庭关联，在「家庭」标签查看夫妻与子女',
+          '根据黄色解析告警与红色悬空指针提示定位问题行并修正源文件',
+        ],
+        useCases: [
+          '打开家谱软件导出的 .ged 文件，快速核对人物与家庭关系是否正确',
+          '排查 GEDCOM 数据中的悬空引用、层级错误与续行拼接问题',
+          '在不安装专业系谱软件、不上传隐私数据的前提下本地查看族谱结构',
+        ],
+        privacyNote:
+          '全部解析均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；族谱中的姓名、日期与家庭关系等敏感信息不会离开设备。',
+        faqs: [
+          {
+            question: '为什么不支持 ANSEL 字符集转码？',
+            answer:
+              'ANSEL 是部分老式 GEDCOM 使用的字符集，转码需要完整的字符映射表，体量较大且现代导出多为 UTF-8/UNICODE。本工具会读取并展示 CHAR 声明，按 UTF-8 直接处理；若源文件是 ANSEL，建议先用支持转码的工具另存为 UTF-8。',
+          },
+          {
+            question: 'CONC 和 CONT 有什么区别？',
+            answer:
+              'CONC（concatenation）把值直接拼接到上一条记录，不添加任何分隔；CONT（continuation）拼接前先插入一个换行。例如长 NOTE 常由多条 CONC/CONT 组成，工具会还原成完整的多行文本。',
+          },
+          {
+            question: '悬空指针是怎么产生的？',
+            answer:
+              '当 FAM 的 HUSB/WIFE/CHIL 或人物的 FAMC/FAMS 引用了一个不存在的 @xref@（记录被删除或导出不完整）时即为悬空指针。工具会给出引用值与所在行号，而不会崩溃，方便你回到源文件修复。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The GEDCOM 5.5.1 Parser & Viewer is a fully browser-local genealogy tool that turns GEDCOM 5.5.1 line-structured text into a hierarchy tree, person cards and family relationships, with zero dependencies and no file upload.',
+        coreFeatures: [
+          'Hierarchy tree from “level tag value” lines; level jumps raise line-numbered errors without aborting the parse',
+          'Person extraction: INDI NAME (slashes removed), SEX, and BIRT/DEAT DATE and PLAC',
+          'Family links: FAM HUSB/WIFE/CHIL pointers resolve to people, exposing spouses, children and parent families',
+          'Continuation support: CONC concatenates without a separator, CONT joins with a newline for long values such as NOTE',
+          'Robustness: dangling-pointer warnings, tolerant unknown tags, CRLF/LF support and located malformed-line errors',
+          'Zero-dependency local processing; only the CHAR declaration is recognized, with ANSEL transcoding out of scope',
+        ],
+        howToUse: [
+          'Paste GEDCOM 5.5.1 text on the left (paste file contents directly—nothing is uploaded)',
+          'Inspect the hierarchy tree and record/person/family statistics on the right in real time',
+          'Use the People tab for names, sex, vital events and family links, and the Families tab for couples and children',
+          'Follow yellow parse warnings and red dangling-pointer hints to locate and fix source lines',
+        ],
+        useCases: [
+          'Reviewing people and family links in .ged exports from genealogy software',
+          'Diagnosing dangling references, level errors and continuation issues in GEDCOM data',
+          'Inspecting a family tree locally without installing specialist software or uploading private data',
+        ],
+        privacyNote:
+          'All parsing runs locally in your browser via zero-dependency pure functions. No network requests are made, so sensitive names, dates and relationships never leave your device.',
+        faqs: [
+          {
+            question: 'Why is ANSEL charset transcoding unsupported?',
+            answer:
+              'ANSEL is used by some legacy GEDCOM files and requires a large character mapping table, while modern exports are mostly UTF-8/UNICODE. The tool reads and displays the CHAR declaration and processes content as UTF-8; for ANSEL sources, re-save as UTF-8 with a transcoding-capable tool first.',
+          },
+          {
+            question: 'What is the difference between CONC and CONT?',
+            answer:
+              'CONC (concatenation) appends directly to the previous value with no separator, while CONT (continuation) inserts a newline before appending. A long NOTE, for example, is often assembled from several CONC/CONT lines, which the tool restores into full multi-line text.',
+          },
+          {
+            question: 'What causes a dangling pointer?',
+            answer:
+              'A dangling pointer occurs when a FAM HUSB/WIFE/CHIL or a person FAMC/FAMS references an @xref@ that does not exist (the record was deleted or the export was incomplete). The tool reports the reference and its line instead of crashing, so you can fix the source file.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'base64url-normalizer',
+    name: 'Base64URL 与 Base64 标准格式互转器',
+    nameEn: 'Base64URL & Base64 Normalizer',
+    description:
+      '在 RFC 4648 标准 Base64（含 `+` `/` 与 `=` 填充）与 Base64URL（`-` `_`、无填充）两种表示之间双向规范化转换：自动识别输入变体、缺失填充自动补齐、非法字符与长度问题带行号定位，支持多行令牌批量处理（JWT 片段、OIDC nonce、PASETO 负载调试），非法行原样保留并逐行告警，输出识别到的变体与填充情况。纯字符替换与确定性校验、零依赖、纯本地计算，不依赖 atob 处理 URL 变体。',
+    descriptionEn:
+      'Normalizes between RFC 4648 standard Base64 (with `+` `/` and `=` padding) and Base64URL (`-` `_`, unpadded): auto-detects the input variant, restores missing padding, locates illegal characters and invalid lengths by line number, and batch-processes multi-line tokens (JWT fragments, OIDC nonces, PASETO payload debugging). Invalid lines are kept verbatim with per-line warnings, and the detected variant and padding state are shown. Pure character substitution and deterministic validation, zero dependencies, fully local, with no reliance on atob for URL variants.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/base64url-normalizer',
+    iconName: 'Shuffle',
+    tags: ['Base64URL', 'Base64', 'RFC 4648', 'URL-safe', '填充', 'JWT', '规范化'],
+    tagsEn: ['Base64URL', 'Base64', 'RFC 4648', 'URL-safe', 'Padding', 'JWT', 'Normalizer'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Zm9vYmFy',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Base64URL 与 Base64 标准格式互转器是一款纯浏览器本地运行的规范化工具，在 RFC 4648 定义的标准 Base64 与 URL-safe Base64 两种字母表之间做确定性的字符替换、填充补齐与合法性校验，支持 JWT 风格无填充令牌的多行批量处理，全程零依赖、数据不上传。',
+        coreFeatures: [
+          '双向互转：标准 `+` `/` 与 URL-safe `-` `_` 字符替换，`=` 填充自动去除或补齐至 4 的倍数',
+          '自动识别：依据字符集与填充自动区分标准变体与 URL 变体并逐行标注',
+          '确定性校验：非法字符（如 `*`、中文）给出位置，长度非法（余数为 1 等）带行号报错',
+          '批量处理：每行一个令牌独立处理，空行保留，非法行原样保留并逐行告警',
+          '字节级验证：内置零依赖 Base64 编解码，支持 UTF-8 文本 encode→decode 往返校验',
+        ],
+        howToUse: [
+          '选择模式：自动识别（统一输出 Base64URL）、标准→URL 或 URL→标准（补填充）',
+          '把一个或多个令牌粘贴到左侧输入框，每行一个',
+          '右侧实时得到规范化结果，下方查看逐行变体标注与失败原因',
+          '点击「复制」导出结果；失败行不会中断其他行，按行号修正后重跑即可',
+        ],
+        useCases: [
+          '调试 JWT/PASETO 等无填充 URL-safe 令牌，补齐填充后用标准工具解码',
+          '把 OIDC nonce、PKCE code_verifier 等在两种表示之间互转',
+          '批量清洗接口文档或日志中混用的 Base64 变体，定位非法字符与长度问题',
+        ],
+        privacyNote:
+          '全部转换均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；令牌与负载内容不会离开设备。',
+        faqs: [
+          {
+            question: 'Base64 和 Base64URL 有什么区别？',
+            answer:
+              '两者都是 RFC 4648 定义的 64 字符编码，区别在两个字符：标准 Base64 使用 `+` 和 `/` 并以 `=` 填充，而 Base64URL 把它们替换为 URL 安全的 `-` 和 `_` 且通常省略填充，因此可以直接放进 URL、文件名或 JWT 而无需百分号转义。',
+          },
+          {
+            question: '自动识别模式如何判断变体？输出什么？',
+            answer:
+              '含 `-` 或 `_` 判定为 URL 变体，含 `+`、`/` 或 `=` 判定为标准变体；只含通用字符时按长度与填充推断。自动模式统一输出无填充的 Base64URL 形式；需要带填充的标准形式时请切换到「URL→标准」模式。',
+          },
+          {
+            question: '为什么 1 个字符的输入一定非法？',
+            answer:
+              'Base64 以 4 个字符为一组对应 3 个字节，无填充形式的合法长度余数只能是 0、2、3；余数为 1（如单个字符）无法对应任何完整字节序列，RFC 4648 明确拒绝，工具会按行号报错而不是猜测补齐。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Base64URL & Base64 Normalizer is a fully browser-local tool that performs deterministic character substitution, padding restoration and validity checks between RFC 4648 standard Base64 and URL-safe Base64 alphabets, including multi-line batch processing of unpadded JWT-style tokens, with zero dependencies and no data upload.',
+        coreFeatures: [
+          'Bidirectional conversion: `+` `/` ↔ `-` `_` substitution, with `=` padding stripped or restored to a multiple of four',
+          'Auto-detection: distinguishes standard and URL variants from the character set and padding, labeled per line',
+          'Deterministic validation: illegal characters (e.g. `*`, CJK) report their position, and invalid lengths (such as remainder 1) raise line-numbered errors',
+          'Batch processing: one token per line, blank lines preserved, invalid lines kept verbatim with per-line warnings',
+          'Byte-level verification: built-in zero-dependency Base64 codec supports UTF-8 encode→decode round trips',
+        ],
+        howToUse: [
+          'Pick a mode: auto-detect (outputs Base64URL), standard→URL, or URL→standard (with padding)',
+          'Paste one or more tokens into the left editor, one per line',
+          'Read normalized output on the right and per-line variant labels and failure reasons below',
+          'Use Copy to export; failed lines never block others—fix them by line number and rerun',
+        ],
+        useCases: [
+          'Decoding unpadded URL-safe JWT/PASETO tokens after restoring padding',
+          'Converting OIDC nonces and PKCE code verifiers between the two representations',
+          'Batch-cleaning mixed Base64 variants in API docs or logs and locating illegal characters or lengths',
+        ],
+        privacyNote:
+          'All conversions run locally in your browser via zero-dependency pure functions. No network requests are made, so tokens and payloads never leave your device.',
+        faqs: [
+          {
+            question: 'What is the difference between Base64 and Base64URL?',
+            answer:
+              'Both are 64-character encodings defined by RFC 4648. Standard Base64 uses `+` and `/` with `=` padding, while Base64URL replaces them with URL-safe `-` and `_` and usually omits padding, so it can be placed in URLs, filenames or JWTs without percent-encoding.',
+          },
+          {
+            question: 'How does auto-detect decide the variant, and what does it output?',
+            answer:
+              'Inputs containing `-` or `_` are treated as URL variant; those with `+`, `/` or `=` as standard; generic-only inputs are inferred from length and padding. Auto mode always emits unpadded Base64URL. Switch to URL→standard when padded standard output is required.',
+          },
+          {
+            question: 'Why is a single-character input always invalid?',
+            answer:
+              'Base64 groups four characters into three bytes, so unpadded lengths can only have remainders 0, 2 or 3; remainder 1 (a lone character) cannot represent any complete byte sequence and is explicitly rejected by RFC 4648. The tool reports a line-numbered error instead of guessing padding.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'websocket-accept',
     name: 'WebSocket Sec-WebSocket-Accept 握手头计算器',
     nameEn: 'WebSocket Sec-WebSocket-Accept Handshake Calculator',

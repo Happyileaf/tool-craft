@@ -18,6 +18,7 @@ import {
   Fingerprint,
   Flame,
   Gauge,
+  GitFork,
   Globe,
   HardDrive,
   Hash,
@@ -51,6 +52,7 @@ import {
   Triangle,
   Type,
   Wifi,
+  Workflow,
   Zap,
   type LucideProps,
 } from 'lucide-react';
@@ -76,6 +78,7 @@ const toolIconMap = {
   Pipette,
   Blend,
   Gauge,
+  GitFork,
   Shuffle,
   MoonStar,
   Droplets,
@@ -110,6 +113,7 @@ const toolIconMap = {
   Timer,
   Video,
   Wifi,
+  Workflow,
   Zap,
   Percent,
 };

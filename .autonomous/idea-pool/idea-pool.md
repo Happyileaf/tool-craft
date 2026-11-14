@@ -330,9 +330,4 @@
 | 20261114020131 | CSS text-shadow 多层文字阴影生成器（实时预览与代码输出） | Web Tool | Exploration | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114020131.md) |
 | 20261114020132 | 正则表达式元字符转义/反转义工具（字面量安全转义与 RegExp 构造源码输出） | Web Tool | Existing Gap | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114020132.md) |
 | 20261114020133 | 工时时长累加器（多段上下班打卡时间求和、扣除休息与跨天处理） | Web Tool | Exploration | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114020133.md) |
-| 20261114081201 | IPv4 子网掩码 ↔ 反掩码（Wildcard Mask）双向转换器 | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114081201.md) |
-| 20261114081202 | 文本行号添加与剥离器（批量编号、对齐填充与还原） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114081202.md) |
-| 20261114081203 | 有限状态机（FSM）设计与测试序列模拟器 | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114081203.md) |
-| 20261114081204 | GEDCOM 5.5.1 族谱文件解析与结构查看器 | Web Tool | External Reference | Pending | 2026-11-14 | | [详情](./idea-details/20261114081204.md) |
-| 20261114081205 | Base64URL 与 Base64 标准格式互转器（填充与字符替换规范化） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114081205.md) |
 
