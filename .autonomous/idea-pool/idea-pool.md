@@ -333,4 +333,11 @@
 | 20261114081203 | 有限状态机（FSM）设计与测试序列模拟器 | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114081203.md) |
 | 20261114081204 | GEDCOM 5.5.1 族谱文件解析与结构查看器 | Web Tool | External Reference | Pending | 2026-11-14 | | [详情](./idea-details/20261114081204.md) |
 | 20261114081205 | Base64URL 与 Base64 标准格式互转器（填充与字符替换规范化） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114081205.md) |
+| 20261114200453 | TLS ClientHello 解析器（SNI / 版本 / 密码套件与扩展明细） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114200453.md) |
+| 20261114200454 | HTTP/2 帧头解析与帧序列查看器（不含 HPACK 解压） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114200454.md) |
+| 20261114200457 | STL 三维模型解析与体积 / 表面积统计器 | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200457.md) |
+| 20261114200458 | 大整数任意精度四则运算计算器（BigInt 加减乘除 / 幂 / 取模 / 阶乘） | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200458.md) |
+| 20261114200459 | 曝光值（EV）与 ND 滤镜等效曝光计算器 | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200459.md) |
+| 20261114200501 | 电池续航时间计算器（容量 / 负载 / 效率 / Peukert 与串并联组包） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114200501.md) |
+| 20261114200502 | 经济补偿金与代通知金计算器（N / N+1 / 2N，含月工资上限与年限折算） | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200502.md) |
 
