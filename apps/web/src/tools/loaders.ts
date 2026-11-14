@@ -380,4 +380,9 @@ export const toolLoaders: Record<
   'sunrise-sunset-calculator': () => import('./sunrise-sunset-calculator'),
   'http-digest-auth': () => import('./http-digest-auth'),
   'depth-of-field-calculator': () => import('./depth-of-field-calculator'),
+  'capacitor-code-calculator': () => import('./capacitor-code-calculator'),
+  'seven-segment-codec': () => import('./seven-segment-codec'),
+  'tire-size-calculator': () => import('./tire-size-calculator'),
+  'fuel-economy-calculator': () => import('./fuel-economy-calculator'),
+  'twos-complement-calculator': () => import('./twos-complement-calculator'),
 };

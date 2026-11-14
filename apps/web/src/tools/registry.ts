@@ -35829,6 +35829,523 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'capacitor-code-calculator',
+    name: '电容标码解析与容值计算器（数字码 / R 记法 / 容差字母）',
+    nameEn: 'Capacitor Code Calculator (Numeric Code, R Notation & Tolerance)',
+    description:
+      '解析贴片陶瓷电容标码：三位数字码（104 → 100 nF）、两位小容值码、R / p / n / u 小数记法、容差字母与可选额定电压码，输出 pF / nF / µF、容差上下限，并支持由容值反查最接近的标准标码。',
+    descriptionEn:
+      'Decode ceramic capacitor markings: three-digit codes (104 → 100 nF), two-digit picofarad codes, R / p / n / u decimal notation, tolerance letters and optional voltage codes. Get pF / nF / µF values, tolerance limits, and reverse lookup from capacitance to the nearest standard code.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/capacitor-code-calculator',
+    iconName: 'Zap',
+    tags: ['电容', '标码', '104', '容差', '电子元件'],
+    tagsEn: ['Capacitor', 'Code', '104', 'Tolerance', 'Electronics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '104K',
+    doc: {
+      zh: {
+        whatIsIt:
+          '电容标码解析器把贴片陶瓷电容表面的短码换算成实际容值。三位数字码的前两位是有效数字、末位是 10 的幂次倍率（如 104 = 10 × 10⁴ pF = 100 nF）；两位数字码直接以 pF 为单位（47 = 47 pF）；R 表示小数点且单位为 µF（4R7 = 4.7 µF、R47 = 0.47 µF）；p / n / u 可作小数位或单位后缀（2N2 = 2.2 nF、100N = 100 nF）。工具同时解析 B/C/D/F/G/J/K/M/Z 容差字母与 0J/1A/1H 等额定电压码，输出容差上下限，并支持给定容值反查误差最小的标准标码。全部为本地查表与算术，零依赖。',
+        coreFeatures: [
+          '支持三位数字码、两位小容值码、R 记法、p/n/u 小数记法与单位后缀，自动去除首尾空格并忽略大小写',
+          '解析容差字母并给出绝对或百分比容差范围（Z 为非对称 +80% / −20%）',
+          '识别可选的两位额定电压码（0J 6.3 V、1A 10 V、1H 50 V、2A 100 V 等）',
+          '给定容值按 pF / nF / µF 输入，反查相对误差最小的标准标码并展示实际值与误差',
+          '纯函数核心 + 单元测试，所有计算均在浏览器本地完成，不发起任何网络请求',
+        ],
+        howToUse: [
+          '在标码输入框输入元件表面字符（如 104K、4R7、2N2、104K1H），结果即时刷新',
+          '查看 pF / nF / µF 三种单位、容差范围与额定电压，并阅读下方解析过程说明',
+          '切换到「反查标码」，输入目标容值并选择单位，即可得到最接近的标准标码与误差',
+          '点击顶部的预设标码可快速体验不同记法',
+        ],
+        useCases: [
+          '硬件选型与 BOM 核对时快速确认 104、103 等标码对应的实际容值',
+          '维修或来料检验时识读电容表面字符、容差与耐压等级',
+          '把手算出的容值（如 4.7 µF）转换成可采购的标准标码',
+        ],
+        privacyNote:
+          '所有标码解析与换算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: '104 为什么等于 100 nF？',
+            answer:
+              '三位数字码中前两位 10 是有效数字，末位 4 表示 10⁴ 倍率，单位为 pF，因此 10 × 10⁴ pF = 100000 pF = 100 nF = 0.1 µF。同理 103 = 10 nF，105 = 1 µF。',
+          },
+          {
+            question: 'R 记法的单位为什么是 µF？',
+            answer:
+              '电容标码中的 R 借用了电阻标码「R 表示小数点」的写法，但电容场景约定单位为 µF，因此 4R7 = 4.7 µF、R47 = 0.47 µF；小容值则常用 p 记法，如 4P7 = 4.7 pF。',
+          },
+          {
+            question: '两位数字码和三位数字码如何区分？',
+            answer:
+              '两位数字码（10–99）直接以 pF 为单位，例如 47 = 47 pF；三位数字码（100–999）按前两位有效数字加末位倍率解释，例如 470 = 47 pF、471 = 470 pF。本工具会按输入长度自动区分。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This calculator turns short ceramic capacitor markings into actual capacitance. Three-digit codes use the first two digits as significant figures and the last digit as a power-of-ten multiplier (104 = 10 × 10⁴ pF = 100 nF); two-digit codes are picofarads directly (47 = 47 pF); R marks the decimal point in microfarads (4R7 = 4.7 µF, R47 = 0.47 µF); p / n / u serve as decimal separators or unit suffixes (2N2 = 2.2 nF, 100N = 100 nF). Tolerance letters B/C/D/F/G/J/K/M/Z and optional voltage codes such as 0J/1A/1H are also decoded, with tolerance limits and a reverse lookup from capacitance to the nearest standard code. Pure local lookup and arithmetic with zero dependencies.',
+        coreFeatures: [
+          'Three-digit codes, two-digit picofarad codes, R notation, p/n/u decimal notation and unit suffixes, case-insensitive with whitespace trimmed',
+          'Tolerance letters decoded into absolute or percentage ranges (Z is asymmetric +80% / −20%)',
+          'Optional two-character voltage codes (0J 6.3 V, 1A 10 V, 1H 50 V, 2A 100 V, and more)',
+          'Reverse lookup in pF / nF / µF showing the nearest standard code, its actual value and relative error',
+          'Pure-function core with unit tests; everything runs locally in the browser with no network requests',
+        ],
+        howToUse: [
+          'Type the marking printed on the part (e.g. 104K, 4R7, 2N2, 104K1H); results update instantly',
+          'Read the pF / nF / µF values, tolerance range and voltage rating, plus the explanation below',
+          'Switch to reverse lookup, enter a target capacitance and unit to get the nearest standard code and its error',
+          'Click a preset code at the top to explore the different notations',
+        ],
+        useCases: [
+          'Checking what 104 or 103 markings mean during selection and BOM review',
+          'Reading capacitor markings, tolerance and voltage rating during repair or incoming inspection',
+          'Converting a calculated capacitance (e.g. 4.7 µF) into a purchasable standard code',
+        ],
+        privacyNote:
+          'All decoding and conversion happen locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Why does 104 mean 100 nF?',
+            answer:
+              'In a three-digit code the first two digits (10) are significant figures and the last digit (4) is a 10⁴ multiplier in picofarads: 10 × 10⁴ pF = 100000 pF = 100 nF = 0.1 µF. Likewise 103 = 10 nF and 105 = 1 µF.',
+          },
+          {
+            question: 'Why is the unit for R notation microfarads?',
+            answer:
+              'Capacitor markings borrow the resistor convention that R marks the decimal point, but the unit is microfarads: 4R7 = 4.7 µF and R47 = 0.47 µF. Small values often use p notation, e.g. 4P7 = 4.7 pF.',
+          },
+          {
+            question: 'How are two-digit and three-digit codes distinguished?',
+            answer:
+              'Two-digit codes (10–99) are picofarads directly, e.g. 47 = 47 pF. Three-digit codes (100–999) use two significant digits plus a multiplier, e.g. 470 = 47 pF and 471 = 470 pF. The tool distinguishes them by input length.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'seven-segment-codec',
+    name: '七段数码管字形编解码器（a–g / dp 段码，共阴共阳）',
+    nameEn: 'Seven-Segment Display Codec (a–g / dp Codes, Common Cathode & Anode)',
+    description:
+      '在字符与七段数码管段码之间互转：支持数字、十六进制字母与常见符号，小数点叠加到前一个字形，可切换共阴/共阳极性、MSB/LSB 位序与段序，输出十六进制、二进制与点亮段列表，并支持由段码反查字形。',
+    descriptionEn:
+      'Convert between characters and seven-segment display codes: digits, hex letters and common symbols are supported, a decimal point attaches to the previous glyph, and you can switch common-cathode/anode polarity, MSB/LSB bit order and segment order. Get hex, binary and the lit-segment list, plus reverse decoding from a code byte.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/seven-segment-codec',
+    iconName: 'Binary',
+    tags: ['七段数码管', '段码', '共阴', '共阳', '单片机'],
+    tagsEn: ['Seven-segment', 'Segment code', 'Common cathode', 'Common anode', 'MCU'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'A.8',
+    doc: {
+      zh: {
+        whatIsIt:
+          '七段数码管用 a–g 七个笔画加一个小数点 dp 显示字符，每个段对应字节中的一位。本工具在字符与段码之间双向转换：输入字符即可得到按当前段序、位序与极性编码后的十六进制/二进制字节与点亮段列表；输入 0x3F、0b00111111、63 等字节即可反查可能字形。内置 33 个常见字形，小数点会自动叠加到前一个字符，支持共阴（高电平点亮）与共阳（低电平点亮）。',
+        coreFeatures: [
+          '字符 → 段码：支持 0–9、A/b/C/d/E/F 十六进制字形与 G/H/J/L/P/S/U 等常见字母、- _ = 与空白',
+          '可切换共阴/共阳极性、MSB/LSB 位序以及 a→g→dp / dp→g→a 段序',
+          '输出十六进制、8 位二进制、规范掩码与点亮段列表，并同时给出默认共阴与共阳段码',
+          '段码 → 字符：支持 0x、0b 与十进制输入，输出完全匹配字形、基础字形（忽略小数点）与点亮段',
+          '内置字形速查表与 SVG 预览，全部计算在浏览器本地完成',
+        ],
+        howToUse: [
+          '在字符输入框输入要显示的字符（如 1234、A.8、HELLO），小数点会叠加到前一个字形',
+          '按需切换极性、位序与段序，每个字形的十六进制与二进制段码即时更新',
+          '在段码输入框输入 0x3F、0b00111111 或 63，查看可能对应的字符与点亮段',
+          '参考底部字形速查表核对常用字符的共阴段码',
+        ],
+        useCases: [
+          '单片机或 FPGA 驱动数码管时快速查表与验证段码',
+          '调试共阴/共阳极性接反、位序或段序错误导致的显示异常',
+          '从现有固件或逻辑分析仪抓到的字节反推数码管显示内容',
+        ],
+        privacyNote: '所有编解码均在浏览器本地完成，输入内容不会被上传或存储。',
+        faqs: [
+          {
+            question: '共阴和共阳的段码是什么关系？',
+            answer:
+              '共阴数码管的段引脚接低、公共端接地，段码为 1 时点亮；共阳则公共端接高电平，段引脚拉低才点亮。因此同一字形的共阳段码等于共阴段码按位取反（0x3F ↔ 0xC0）。',
+          },
+          {
+            question: '为什么 0x3F 显示 0？',
+            answer:
+              '在默认段序 a=bit0、dp=bit7 下，0 点亮 a–f 六段，对应二进制 00111111，即十六进制 0x3F。若位序改为 MSB 优先，同一字形的字节会变为 0xFC。',
+          },
+          {
+            question: '字母 B 与小写 b 为什么不同？',
+            answer:
+              '七段数码管无法区分大小写，通常用 0x7C 表示 b，而大写 B 与 8 无法区分，因此字形表中仅收录小写 b、d 与对应的大写 A、C、E、F。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A seven-segment display shows characters with segments a–g plus a decimal point dp, each mapped to one bit in a byte. This tool converts both ways: type characters to get the hex/binary byte under the current segment order, bit order and polarity, along with the lit-segment list; enter a byte such as 0x3F, 0b00111111 or 63 to decode possible glyphs. It ships with 33 common glyphs, attaches a decimal point to the preceding character, and supports common cathode (active high) and common anode (active low).',
+        coreFeatures: [
+          'Characters to codes: 0–9, A/b/C/d/E/F hex glyphs, common letters such as G/H/J/L/P/S/U, - _ = and blank',
+          'Switch common cathode/anode polarity, MSB/LSB bit order and a→g→dp / dp→g→a segment order',
+          'Outputs hex, 8-bit binary, canonical mask and lit segments, plus default common-cathode and common-anode codes',
+          'Codes to characters: accepts 0x, 0b and decimal input, returning exact matches, base glyphs ignoring the decimal point, and lit segments',
+          'Built-in glyph reference with SVG previews; all computation stays in the browser',
+        ],
+        howToUse: [
+          'Type the characters to display (e.g. 1234, A.8, HELLO); a decimal point attaches to the previous glyph',
+          'Switch polarity, bit order and segment order as needed; each glyph’s hex and binary code updates instantly',
+          'Enter a code byte (0x3F, 0b00111111 or 63) to see matching characters and lit segments',
+          'Use the glyph reference at the bottom to check common cathode codes',
+        ],
+        useCases: [
+          'Looking up and verifying segment codes while driving displays from an MCU or FPGA',
+          'Debugging display glitches caused by reversed polarity, bit order or segment order',
+          'Reverse-engineering what a display shows from bytes captured in firmware or a logic analyzer',
+        ],
+        privacyNote: 'All encoding and decoding happen locally in your browser; inputs are never uploaded or stored.',
+        faqs: [
+          {
+            question: 'How do common-cathode and common-anode codes relate?',
+            answer:
+              'With a common cathode the segment pins sink to ground and a 1 lights the segment; a common anode ties the common pin high, so segment pins must be pulled low. The common-anode byte is therefore the bitwise NOT of the common-cathode byte (0x3F ↔ 0xC0).',
+          },
+          {
+            question: 'Why does 0x3F show 0?',
+            answer:
+              'With the default order a=bit0 and dp=bit7, the digit 0 lights segments a–f: binary 00111111, i.e. 0x3F. With MSB-first bit order the same glyph becomes 0xFC.',
+          },
+          {
+            question: 'Why are B and lowercase b different?',
+            answer:
+              'Seven-segment displays cannot distinguish uppercase and lowercase, so 0x7C is used for b while an uppercase B is indistinguishable from 8. The glyph table therefore includes lowercase b and d alongside uppercase A, C, E and F.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'tire-size-calculator',
+    name: '轮胎规格计算器（外径 / 速度表误差 / 升级容差）',
+    nameEn: 'Tire Size Calculator (Diameter, Speedometer Error & Upgrade Tolerance)',
+    description:
+      '解析 205/55R16、225/45ZR17 91W、LT265/70R17 等轮胎规格，计算胎侧高度、外径、周长与每公里转数，并对比原厂与替换规格的外径变化、实际车速、速度表误差与离地间隙变化，提示是否超出 ±3% 推荐容差。',
+    descriptionEn:
+      'Parse tire sizes such as 205/55R16, 225/45ZR17 91W and LT265/70R17, compute sidewall height, overall diameter, circumference and revolutions per kilometre, then compare original and replacement sizes for diameter change, actual speed, speedometer error and ground clearance, flagging any change beyond the ±3% guideline.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/tire-size-calculator',
+    iconName: 'Gauge',
+    tags: ['轮胎', '规格', '外径', '速度表', '汽车'],
+    tagsEn: ['Tire', 'Size', 'Diameter', 'Speedometer', 'Automotive'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '205/55R16',
+    doc: {
+      zh: {
+        whatIsIt:
+          '轮胎规格计算器把轮胎侧壁上的规格字符串（如 205/55R16）解析为断面宽度、扁平比、结构、轮辋直径、载重指数与速度级别，并按外径公式计算胎侧高度、轮胎外径、周长与每公里转数。输入原厂与替换规格后，工具按新旧外径比例换算出表显车速对应的实际车速，给出外径变化百分比、胎侧高度差与单侧离地间隙变化，并按行业惯例的 ±3% 容差判断升级是否安全。支持 LT / P / ST / C 前缀与 Z 等附加标记，全部为本地算术，零依赖。',
+        coreFeatures: [
+          '解析 205/55R16、225/45ZR17 91W、LT265/70R17 等规格，识别前缀、附加标记、载重指数与速度级别',
+          '计算胎侧高度、外径、周长与每公里转数，并校验宽度、扁平比、轮辋直径等参数范围',
+          '对比原厂与替换规格：外径变化毫米数与百分比、胎侧高度差、单侧离地间隙变化',
+          '按外径比例换算实际车速，输出速度表误差百分比',
+          '按 ±3% 推荐容差给出通过/超出提示，并内置常见升级预设',
+        ],
+        howToUse: [
+          '在「原厂规格」与「替换规格」输入框中填写轮胎规格，例如 205/55R16 与 225/45R17',
+          '设置表显车速（默认 100 km/h），用于换算实际车速与速度表误差',
+          '查看外径、胎侧、转数与误差统计卡，若超出 ±3% 会显示黄色警告',
+          '点击顶部预设按钮可快速加载常见升级组合',
+        ],
+        useCases: [
+          '改装轮毂前评估轮胎外径变化是否在 ±3% 安全范围内',
+          '了解更换轮胎后速度表的实际读数偏差，避免超速',
+          '比较不同扁平比与轮辋组合的胎侧高度与离地间隙变化',
+        ],
+        privacyNote: '所有规格解析与几何换算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: '为什么建议轮胎外径变化控制在 ±3% 以内？',
+            answer:
+              '外径变化会直接改变速度表、里程表与 ABS/ESP 轮速信号的换算基准，同时影响离地间隙与轮拱空间。行业惯例建议变化不超过 ±3%，超出后速度误差明显，且可能触发变速箱换挡逻辑异常或刮擦轮拱。',
+          },
+          {
+            question: '外径是怎么计算的？',
+            answer:
+              '外径 = 轮辋直径（英寸）× 25.4 + 2 × 胎侧高度，其中胎侧高度 = 断面宽度 × 扁平比。例如 205/55R16：胎侧 205 × 55% = 112.75 mm，外径 16 × 25.4 + 2 × 112.75 = 631.9 mm。',
+          },
+          {
+            question: '表显车速为什么会与实际车速不同？',
+            answer:
+              '速度表按原厂轮胎的滚动周长标定。替换轮胎外径变大时，同样转速下车辆实际行驶更远，实际车速高于表显；外径变小时则相反。工具按新旧外径比例换算，例如表显 100 km/h、外径增加 0.38% 时实际约 100.38 km/h。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This calculator parses tire sidewall markings such as 205/55R16 into section width, aspect ratio, construction, rim diameter, load index and speed rating, then derives sidewall height, overall diameter, circumference and revolutions per kilometre. After entering original and replacement sizes, it converts indicated speed into actual speed using the diameter ratio, reporting the diameter change percentage, sidewall difference and one-side ground clearance change, and flags any change beyond the ±3% industry guideline. LT / P / ST / C prefixes and extra markings such as Z are supported, with pure local arithmetic and zero dependencies.',
+        coreFeatures: [
+          'Parses 205/55R16, 225/45ZR17 91W and LT265/70R17, including prefixes, extra markings, load index and speed rating',
+          'Computes sidewall height, overall diameter, circumference and revolutions per kilometre with range validation',
+          'Compares original and replacement sizes: diameter delta in millimetres and percent, sidewall difference and one-side clearance change',
+          'Converts actual speed from the diameter ratio and reports the speedometer error percentage',
+          'Flags whether the change stays within the ±3% guideline, with common upgrade presets built in',
+        ],
+        howToUse: [
+          'Enter the original and replacement tire sizes, e.g. 205/55R16 and 225/45R17',
+          'Set the indicated speed (100 km/h by default) to derive actual speed and speedometer error',
+          'Read the diameter, sidewall, revolutions and error cards; a yellow warning appears beyond ±3%',
+          'Click a preset at the top to load a common upgrade combination',
+        ],
+        useCases: [
+          'Checking whether a wheel upgrade keeps the tire diameter within the ±3% safe range',
+          'Understanding the real speedometer offset after changing tires to avoid speeding',
+          'Comparing sidewall height and ground clearance across aspect ratios and rim sizes',
+        ],
+        privacyNote:
+          'All size parsing and geometry calculations happen locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Why keep the overall diameter change within ±3%?',
+            answer:
+              'A diameter change alters the baseline used by the speedometer, odometer and ABS/ESP wheel-speed signals, and also affects ground clearance and wheel-well room. The industry guideline is ±3%; beyond that, speed error becomes significant and transmission shift logic or fender rubbing issues may appear.',
+          },
+          {
+            question: 'How is the overall diameter calculated?',
+            answer:
+              'Overall diameter = rim diameter (inches) × 25.4 + 2 × sidewall height, where sidewall height = section width × aspect ratio. For 205/55R16: sidewall = 205 × 55% = 112.75 mm and diameter = 16 × 25.4 + 2 × 112.75 = 631.9 mm.',
+          },
+          {
+            question: 'Why does indicated speed differ from actual speed?',
+            answer:
+              'The speedometer is calibrated to the original tire rolling circumference. A larger replacement tire covers more ground per revolution, so the car actually travels faster than indicated; a smaller tire does the opposite. The tool uses the diameter ratio, e.g. at 100 km/h indicated with a 0.38% larger diameter the actual speed is about 100.38 km/h.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'fuel-economy-calculator',
+    name: '燃油经济性与行程油费计算器（MPG ↔ L/100km ↔ km/L）',
+    nameEn: 'Fuel Economy & Trip Cost Calculator (MPG ↔ L/100km ↔ km/L)',
+    description:
+      '在美制 MPG、英制 MPG、L/100km 与 km/L 之间双向换算油耗，并结合行程距离、油耗、油价与油箱容量估算耗油量、油费、加油次数，支持按同行人数分摊油费。适合跨国用车、租车比价与出行预算。',
+    descriptionEn:
+      'Convert fuel economy between US MPG, UK MPG, L/100km and km/L in both directions, then estimate trip fuel consumption, cost, refuelling stops and per-person sharing from distance, economy, fuel price and tank size. Ideal for cross-country driving, rental comparisons and trip budgeting.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/fuel-economy-calculator',
+    iconName: 'Droplets',
+    tags: ['油耗', 'MPG', 'L/100km', '油费', '汽车'],
+    tagsEn: ['Fuel', 'MPG', 'L/100km', 'Trip Cost', 'Automotive'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '30 MPG',
+    doc: {
+      zh: {
+        whatIsIt:
+          '燃油经济性计算器解决不同国家油耗口径不一致的问题：输入美制 MPG、英制 MPG、L/100km 或 km/L 中任意一项，即可实时得到其余三种表示。工具同时提供行程油费估算，按行程距离、油耗、油价、油箱容量与同行人数计算耗油量、油费、中途加油次数与人均分摊。换算基于 1 英里 = 1.609344 km、1 美制加仑 = 3.785411784 L、1 英制加仑 = 4.54609 L 的精确常数，全部为本地算术，零依赖。',
+        coreFeatures: [
+          '美制 MPG、英制 MPG、L/100km、km/L 四种油耗表示双向换算',
+          '按行程距离与油耗计算耗油量，结合油价得出油费',
+          '按油箱容量估算中途加油次数（假定出发时满油）',
+          '按同行人数分摊油费，得出人均支出',
+          '对零值、负值与非法输入给出明确提示，纯本地计算无网络请求',
+        ],
+        howToUse: [
+          '在「油耗单位换算」输入数值并选择单位，下方四张卡片即时显示其余单位',
+          '在「行程油费估算」填写距离、油耗、油价、油箱容量与同行人数',
+          '查看耗油量、油费、加油次数与人均分摊结果',
+          '点击顶部预设可快速体验 MPG、L/100km 与 km/L 的差异',
+        ],
+        useCases: [
+          '对比海外租车或购车资料中的 MPG 与国内习惯的 L/100km',
+          '自驾出行前估算油费与需要中途加油的次数',
+          '多人同行时快速计算人均油费分摊',
+        ],
+        privacyNote: '所有换算与估算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: '为什么美制 MPG 与英制 MPG 差别这么大？',
+            answer:
+              '两者都表示每加仑行驶的英里数，但加仑容量不同：1 美制加仑 = 3.785411784 L，1 英制加仑 = 4.54609 L。同一辆车换算成美制 MPG 时数值会低约 20%，例如 36 MPG（英制）约等于 30 MPG（美制）。',
+          },
+          {
+            question: 'L/100km 与 km/L 如何互换？',
+            answer:
+              '两者互为倒数关系：km/L = 100 ÷ (L/100km)。例如 8 L/100km 等于 12.5 km/L；反之 20 km/L 等于 5 L/100km。',
+          },
+          {
+            question: '加油次数是怎么估算的？',
+            answer:
+              '工具假定出发时油箱是满的，用总耗油量除以油箱容量、向上取整后再减 1。例如 800 km 行程消耗 64 L、油箱 50 L，中途需要加 1 次油。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This calculator fixes the confusion between national fuel-economy conventions: enter any one of US MPG, UK MPG, L/100km or km/L and instantly get the other three. It also estimates trip cost from distance, economy, fuel price, tank size and travellers, producing fuel consumption, cost, refuelling stops and per-person sharing. Conversions use exact constants (1 mile = 1.609344 km, 1 US gallon = 3.785411784 L, 1 imperial gallon = 4.54609 L), all computed locally with zero dependencies.',
+        coreFeatures: [
+          'Two-way conversion between US MPG, UK MPG, L/100km and km/L',
+          'Trip fuel consumption from distance and economy, combined with fuel price for total cost',
+          'Refuelling stops estimated from tank size, assuming a full tank at departure',
+          'Per-person cost sharing across travellers',
+          'Clear messages for zero, negative or invalid inputs; everything runs locally with no network requests',
+        ],
+        howToUse: [
+          'Enter a value and choose its unit in the conversion card; the other four units update instantly',
+          'Fill in distance, economy, fuel price, tank size and travellers in the trip card',
+          'Read fuel consumption, total cost, refuelling stops and per-person cost',
+          'Click a preset at the top to compare MPG, L/100km and km/L side by side',
+        ],
+        useCases: [
+          'Comparing MPG figures from overseas rentals or car listings with familiar L/100km',
+          'Budgeting fuel cost and refuelling stops before a road trip',
+          'Splitting fuel cost fairly among travellers',
+        ],
+        privacyNote:
+          'All conversions and estimates happen locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Why do US MPG and UK MPG differ so much?',
+            answer:
+              'Both measure miles per gallon, but the gallons differ: 1 US gallon = 3.785411784 L while 1 imperial gallon = 4.54609 L. The same car therefore shows roughly 20% lower numbers in US MPG; 36 MPG (UK) is about 30 MPG (US).',
+          },
+          {
+            question: 'How do L/100km and km/L relate?',
+            answer:
+              'They are reciprocals: km/L = 100 ÷ (L/100km). For example 8 L/100km equals 12.5 km/L, and 20 km/L equals 5 L/100km.',
+          },
+          {
+            question: 'How are refuelling stops estimated?',
+            answer:
+              'The tool assumes a full tank at departure, divides total fuel consumption by tank capacity, rounds up and subtracts one. A 800 km trip consuming 64 L with a 50 L tank needs one refuelling stop.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'twos-complement-calculator',
+    name: '二进制补码与有符号整数运算计算器（8/16/32/64 位，含溢出检测）',
+    nameEn: 'Two’s Complement & Signed Integer Calculator (8/16/32/64-bit with Overflow Detection)',
+    description:
+      '在十进制有符号整数与二进制补码位模式（二进制 / 十六进制）之间双向转换，支持 8 / 16 / 32 / 64 位字长与有符号 / 无符号解释，展示符号位延伸与取值范围（如 int8 的 −128…127），并提供加、减、乘、左移、算术右移、逻辑右移运算与溢出回绕检测，全程 BigInt 精确计算。',
+    descriptionEn:
+      'Convert between signed decimal integers and two’s complement bit patterns (binary / hexadecimal) for 8/16/32/64-bit widths, showing signed and unsigned interpretations, sign extension and value ranges such as int8 −128…127. Includes add, subtract, multiply, logical/arithmetic shifts and overflow-wrap detection, all computed exactly with BigInt.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/twos-complement-calculator',
+    iconName: 'Binary',
+    tags: ['补码', '有符号整数', '溢出', '位运算', 'BigInt'],
+    tagsEn: ['Two’s Complement', 'Signed Integer', 'Overflow', 'Bitwise', 'BigInt'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '-42',
+    doc: {
+      zh: {
+        whatIsIt:
+          '二进制补码计算器把十进制有符号整数与其补码位模式互相转换：输入 −42 即得到 8 位的 0xD6 / 11010110，输入 0xD6 又可反查为 −42。支持 8 / 16 / 32 / 64 位字长，同时给出有符号值、无符号值、符号位、取值范围以及延伸到 64 位的符号位模式，帮助理解补码在不同字长下的一致性。运算面板支持加、减、乘与左移、算术右移、逻辑右移，按字长回绕并检测溢出，64 位数值也通过 BigInt 精确处理、不丢精度。',
+        coreFeatures: [
+          '十进制有符号整数 ↔ 二进制补码位模式双向转换，支持 8 / 16 / 32 / 64 位',
+          '同时展示有符号值、无符号值、定宽二进制、定宽十六进制、符号位与取值范围',
+          '符号位延伸到 64 位的可视化，验证补码在不同字长下表示同一数值',
+          '加、减、乘、左移、算术右移与逻辑右移运算，输出精确结果、回绕值与溢出标记',
+          '全部基于 BigInt 计算，64 位数值不丢精度，无网络请求',
+        ],
+        howToUse: [
+          '先在顶部选择 8 / 16 / 32 / 64 位字长',
+          '在「十进制 → 补码」输入有符号整数，查看二进制、十六进制与符号扩展结果',
+          '在「补码 → 十进制」输入 0x 十六进制或 0b 二进制位模式，反查十进制解释',
+          '在运算面板填写操作数 a、b 与运算类型，移位运算时 b 表示移位位数',
+          '若结果超出字长范围，会显示溢出警告并给出按 2^n 回绕后的值',
+        ],
+        useCases: [
+          '计算机组成原理学习中验证补码、符号位与移位规则',
+          '嵌入式与 C 语言调试时确认 int8_t / int16_t 溢出的回绕结果',
+          '排查位运算代码中负数右移（算术右移与逻辑右移）的差异',
+        ],
+        privacyNote: '所有转换与运算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: '为什么 8 位的 −42 表示为 0xD6？',
+            answer:
+              '补码规定负数 −x 的位模式为 2^n − x。n = 8 时 256 − 42 = 214，即二进制 11010110、十六进制 0xD6。等价理解是按位取反再加 1：42 即 00101010，取反得 11010101，加 1 得 11010110。',
+          },
+          {
+            question: '符号位延伸为什么可以保持数值不变？',
+            answer:
+              '补码把最高位解释为负权重 −2^(n−1)。把 8 位的 0xD6 扩展到 16 位时，高位全部填 1 得到 0xFFD6，其负权重部分为 −32768 + 32768 − 42 = −42，与 8 位解释一致，因此符号位延伸不改变数值。',
+          },
+          {
+            question: '算术右移和逻辑右移有什么区别？',
+            answer:
+              '算术右移保留符号位，负数右移时高位补 1，等价于向下取整除以 2^n；逻辑右移把整个位模式当作无符号数，高位补 0。例如 8 位的 −128（10000000）算术右移 1 位得到 −64（11000000），逻辑右移 1 位则得到 64（01000000）。',
+          },
+          {
+            question: '溢出后回绕的结果可以直接依赖吗？',
+            answer:
+              '回绕值是硬件按定宽位模式截断后的真实结果，但 C/C++ 中「有符号整数溢出」属于未定义行为，编译器可能据此优化出意外代码。工程上应改用无符号运算或先做范围检查，而不是依赖回绕。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This calculator converts signed decimal integers to and from their two’s complement bit patterns: −42 becomes 0xD6 / 11010110 in 8 bits, and 0xD6 resolves back to −42. It supports 8/16/32/64-bit widths and reports signed value, unsigned value, sign bit, value range and the sign-extended 64-bit pattern, making the consistency of two’s complement across widths easy to see. The arithmetic panel covers add, subtract, multiply, left shift, arithmetic and logical right shift, wrapping to the selected width and flagging overflow. 64-bit values are handled exactly with BigInt.',
+        coreFeatures: [
+          'Two-way conversion between signed decimal and two’s complement bit patterns at 8/16/32/64-bit widths',
+          'Shows signed value, unsigned value, fixed-width binary, fixed-width hex, sign bit and value range',
+          'Visualises sign extension to 64 bits to verify two’s complement consistency across widths',
+          'Add, subtract, multiply, left shift, arithmetic and logical right shift with exact result, wrapped value and overflow flag',
+          'All arithmetic uses BigInt with no precision loss at 64 bits and no network requests',
+        ],
+        howToUse: [
+          'Choose 8, 16, 32 or 64-bit width at the top',
+          'Enter a signed integer in the decimal-to-bits card to see binary, hex and sign extension',
+          'Enter a 0x hex or 0b binary pattern in the bits-to-decimal card for its decimal interpretation',
+          'Fill in operands a and b plus the operation; for shifts, b is the shift count',
+          'If the result exceeds the width, an overflow warning shows the value wrapped modulo 2^n',
+        ],
+        useCases: [
+          'Verifying two’s complement, sign bits and shift rules while studying computer architecture',
+          'Confirming int8_t / int16_t overflow wrap behaviour during embedded or C debugging',
+          'Diagnosing differences between arithmetic and logical right shifts on negative values',
+        ],
+        privacyNote:
+          'All conversions and operations happen locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Why is −42 represented as 0xD6 in 8 bits?',
+            answer:
+              'Two’s complement encodes −x as 2^n − x. With n = 8, 256 − 42 = 214, i.e. 11010110 or 0xD6. Equivalently, invert 42 (00101010) to get 11010101 and add 1 to obtain 11010110.',
+          },
+          {
+            question: 'Why does sign extension preserve the value?',
+            answer:
+              'The top bit carries the negative weight −2^(n−1). Extending 0xD6 to 16 bits fills the high bits with 1s to give 0xFFD6; its negative weight part becomes −32768 + 32768 − 42 = −42, matching the 8-bit interpretation, so the value is unchanged.',
+          },
+          {
+            question: 'What is the difference between arithmetic and logical right shift?',
+            answer:
+              'Arithmetic right shift preserves the sign bit by filling with 1s for negative numbers, equivalent to flooring the division by 2^n. Logical right shift treats the pattern as unsigned and fills with 0s. In 8 bits, −128 (10000000) arithmetic-shifted right by 1 gives −64 (11000000), while logical shift gives 64 (01000000).',
+          },
+          {
+            question: 'Can the wrapped overflow result be relied upon?',
+            answer:
+              'The wrapped value is what the hardware produces after truncating to the fixed width, but signed integer overflow is undefined behaviour in C/C++, so compilers may optimise on that assumption. In production code, use unsigned arithmetic or explicit range checks instead of relying on wrapping.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
