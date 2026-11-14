@@ -130,6 +130,7 @@ export const toolLoaders: Record<
   'line-number-tool': () => import('./line-number-tool'),
   'fsm-simulator': () => import('./fsm-simulator'),
   'gedcom-viewer': () => import('./gedcom-viewer'),
+  'base64url-normalizer': () => import('./base64url-normalizer'),
   'websocket-accept': () => import('./websocket-accept'),
   'mongodb-objectid': () => import('./mongodb-objectid'),
   'jsonc-to-json': () => import('./jsonc-to-json'),

@@ -10678,6 +10678,108 @@ info: request finished`,
     },
   },
   {
+    slug: 'base64url-normalizer',
+    name: 'Base64URL 与 Base64 标准格式互转器',
+    nameEn: 'Base64URL & Base64 Normalizer',
+    description:
+      '在 RFC 4648 标准 Base64（含 `+` `/` 与 `=` 填充）与 Base64URL（`-` `_`、无填充）两种表示之间双向规范化转换：自动识别输入变体、缺失填充自动补齐、非法字符与长度问题带行号定位，支持多行令牌批量处理（JWT 片段、OIDC nonce、PASETO 负载调试），非法行原样保留并逐行告警，输出识别到的变体与填充情况。纯字符替换与确定性校验、零依赖、纯本地计算，不依赖 atob 处理 URL 变体。',
+    descriptionEn:
+      'Normalizes between RFC 4648 standard Base64 (with `+` `/` and `=` padding) and Base64URL (`-` `_`, unpadded): auto-detects the input variant, restores missing padding, locates illegal characters and invalid lengths by line number, and batch-processes multi-line tokens (JWT fragments, OIDC nonces, PASETO payload debugging). Invalid lines are kept verbatim with per-line warnings, and the detected variant and padding state are shown. Pure character substitution and deterministic validation, zero dependencies, fully local, with no reliance on atob for URL variants.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/base64url-normalizer',
+    iconName: 'Shuffle',
+    tags: ['Base64URL', 'Base64', 'RFC 4648', 'URL-safe', '填充', 'JWT', '规范化'],
+    tagsEn: ['Base64URL', 'Base64', 'RFC 4648', 'URL-safe', 'Padding', 'JWT', 'Normalizer'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'Zm9vYmFy',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Base64URL 与 Base64 标准格式互转器是一款纯浏览器本地运行的规范化工具，在 RFC 4648 定义的标准 Base64 与 URL-safe Base64 两种字母表之间做确定性的字符替换、填充补齐与合法性校验，支持 JWT 风格无填充令牌的多行批量处理，全程零依赖、数据不上传。',
+        coreFeatures: [
+          '双向互转：标准 `+` `/` 与 URL-safe `-` `_` 字符替换，`=` 填充自动去除或补齐至 4 的倍数',
+          '自动识别：依据字符集与填充自动区分标准变体与 URL 变体并逐行标注',
+          '确定性校验：非法字符（如 `*`、中文）给出位置，长度非法（余数为 1 等）带行号报错',
+          '批量处理：每行一个令牌独立处理，空行保留，非法行原样保留并逐行告警',
+          '字节级验证：内置零依赖 Base64 编解码，支持 UTF-8 文本 encode→decode 往返校验',
+        ],
+        howToUse: [
+          '选择模式：自动识别（统一输出 Base64URL）、标准→URL 或 URL→标准（补填充）',
+          '把一个或多个令牌粘贴到左侧输入框，每行一个',
+          '右侧实时得到规范化结果，下方查看逐行变体标注与失败原因',
+          '点击「复制」导出结果；失败行不会中断其他行，按行号修正后重跑即可',
+        ],
+        useCases: [
+          '调试 JWT/PASETO 等无填充 URL-safe 令牌，补齐填充后用标准工具解码',
+          '把 OIDC nonce、PKCE code_verifier 等在两种表示之间互转',
+          '批量清洗接口文档或日志中混用的 Base64 变体，定位非法字符与长度问题',
+        ],
+        privacyNote:
+          '全部转换均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；令牌与负载内容不会离开设备。',
+        faqs: [
+          {
+            question: 'Base64 和 Base64URL 有什么区别？',
+            answer:
+              '两者都是 RFC 4648 定义的 64 字符编码，区别在两个字符：标准 Base64 使用 `+` 和 `/` 并以 `=` 填充，而 Base64URL 把它们替换为 URL 安全的 `-` 和 `_` 且通常省略填充，因此可以直接放进 URL、文件名或 JWT 而无需百分号转义。',
+          },
+          {
+            question: '自动识别模式如何判断变体？输出什么？',
+            answer:
+              '含 `-` 或 `_` 判定为 URL 变体，含 `+`、`/` 或 `=` 判定为标准变体；只含通用字符时按长度与填充推断。自动模式统一输出无填充的 Base64URL 形式；需要带填充的标准形式时请切换到「URL→标准」模式。',
+          },
+          {
+            question: '为什么 1 个字符的输入一定非法？',
+            answer:
+              'Base64 以 4 个字符为一组对应 3 个字节，无填充形式的合法长度余数只能是 0、2、3；余数为 1（如单个字符）无法对应任何完整字节序列，RFC 4648 明确拒绝，工具会按行号报错而不是猜测补齐。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Base64URL & Base64 Normalizer is a fully browser-local tool that performs deterministic character substitution, padding restoration and validity checks between RFC 4648 standard Base64 and URL-safe Base64 alphabets, including multi-line batch processing of unpadded JWT-style tokens, with zero dependencies and no data upload.',
+        coreFeatures: [
+          'Bidirectional conversion: `+` `/` ↔ `-` `_` substitution, with `=` padding stripped or restored to a multiple of four',
+          'Auto-detection: distinguishes standard and URL variants from the character set and padding, labeled per line',
+          'Deterministic validation: illegal characters (e.g. `*`, CJK) report their position, and invalid lengths (such as remainder 1) raise line-numbered errors',
+          'Batch processing: one token per line, blank lines preserved, invalid lines kept verbatim with per-line warnings',
+          'Byte-level verification: built-in zero-dependency Base64 codec supports UTF-8 encode→decode round trips',
+        ],
+        howToUse: [
+          'Pick a mode: auto-detect (outputs Base64URL), standard→URL, or URL→standard (with padding)',
+          'Paste one or more tokens into the left editor, one per line',
+          'Read normalized output on the right and per-line variant labels and failure reasons below',
+          'Use Copy to export; failed lines never block others—fix them by line number and rerun',
+        ],
+        useCases: [
+          'Decoding unpadded URL-safe JWT/PASETO tokens after restoring padding',
+          'Converting OIDC nonces and PKCE code verifiers between the two representations',
+          'Batch-cleaning mixed Base64 variants in API docs or logs and locating illegal characters or lengths',
+        ],
+        privacyNote:
+          'All conversions run locally in your browser via zero-dependency pure functions. No network requests are made, so tokens and payloads never leave your device.',
+        faqs: [
+          {
+            question: 'What is the difference between Base64 and Base64URL?',
+            answer:
+              'Both are 64-character encodings defined by RFC 4648. Standard Base64 uses `+` and `/` with `=` padding, while Base64URL replaces them with URL-safe `-` and `_` and usually omits padding, so it can be placed in URLs, filenames or JWTs without percent-encoding.',
+          },
+          {
+            question: 'How does auto-detect decide the variant, and what does it output?',
+            answer:
+              'Inputs containing `-` or `_` are treated as URL variant; those with `+`, `/` or `=` as standard; generic-only inputs are inferred from length and padding. Auto mode always emits unpadded Base64URL. Switch to URL→standard when padded standard output is required.',
+          },
+          {
+            question: 'Why is a single-character input always invalid?',
+            answer:
+              'Base64 groups four characters into three bytes, so unpadded lengths can only have remainders 0, 2 or 3; remainder 1 (a lone character) cannot represent any complete byte sequence and is explicitly rejected by RFC 4648. The tool reports a line-numbered error instead of guessing padding.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'websocket-accept',
     name: 'WebSocket Sec-WebSocket-Accept 握手头计算器',
     nameEn: 'WebSocket Sec-WebSocket-Accept Handshake Calculator',
