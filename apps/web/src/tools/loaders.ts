@@ -379,4 +379,5 @@ export const toolLoaders: Record<
   'rss-atom-generator': () => import('./rss-atom-generator'),
   'sunrise-sunset-calculator': () => import('./sunrise-sunset-calculator'),
   'http-digest-auth': () => import('./http-digest-auth'),
+  'depth-of-field-calculator': () => import('./depth-of-field-calculator'),
 };

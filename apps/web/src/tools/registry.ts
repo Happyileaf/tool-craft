@@ -35725,6 +35725,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'depth-of-field-calculator',
+    name: '摄影景深与超焦距计算器',
+    nameEn: 'Depth of Field & Hyperfocal Calculator',
+    description:
+      '输入焦距、光圈、对焦距离与弥散圆，计算超焦距、前后景深边界与总景深，支持画幅 CoC 预设、m/cm/ft 单位换算与「目标景深反求光圈」。',
+    descriptionEn:
+      'Calculate hyperfocal distance, near and far depth limits, and total depth of field from focal length, aperture, focus distance, and circle of confusion, with sensor CoC presets, m/cm/ft units, and reverse aperture solving.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/depth-of-field-calculator',
+    iconName: 'Gauge',
+    tags: ['摄影', '景深', '超焦距', '弥散圆', '光圈'],
+    tagsEn: ['Photography', 'Depth of Field', 'Hyperfocal', 'CoC', 'Aperture'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '摄影景深与超焦距计算器基于薄透镜近似公式，根据焦距、光圈、对焦距离与弥散圆直径计算超焦距、近远边界与总景深，并支持反向根据目标景深求解所需光圈，适合风光、人像与微距拍摄的取景规划。',
+        coreFeatures: [
+          '标准光学公式：H = f²/(N·c) + f 与近远边界公式，结果可追溯到具体参数',
+          '画幅 CoC 预设：全画幅、APS-C、M4/3、1 英寸，同时支持自定义弥散圆',
+          '单位互换：输入与结果均可在米、厘米、英尺之间切换',
+          '无穷远识别：对焦距离达到超焦距时将远景深标注为无穷远',
+          '反向求解：给定目标总景深，在 f/0.5 – f/64 内二分求所需光圈',
+          '纯本地计算：零网络请求，参数不离开浏览器',
+        ],
+        howToUse: [
+          '输入焦距（mm）、光圈 f 值与对焦距离，并选择距离单位',
+          '选择画幅 CoC 预设，或直接填写自定义弥散圆直径',
+          '选择结果单位，查看超焦距、近景深、远景深与总景深',
+          '在反求区域填写目标总景深，得到可达到该景深的光圈值',
+        ],
+        useCases: [
+          '风光摄影中利用超焦距安排前景到无穷远的清晰范围',
+          '人像拍摄时评估背景虚化与景深是否覆盖面部',
+          '微距摄影前比较不同光圈下的可用景深',
+          '对比全画幅与 APS-C 在同一镜头参数下的景深差异',
+        ],
+        privacyNote: '所有光学参数与计算都在浏览器本地完成，不会上传任何数据。',
+        faqs: [
+          {
+            question: '为什么计算结果是近似值？',
+            answer:
+              '工具采用薄透镜近似公式，未考虑镜头像差、实际有效焦距与对焦呼吸效应，因此与厂商景深表可能有少量差异。',
+          },
+          {
+            question: '什么是超焦距？',
+            answer:
+              '超焦距 H 是使远景深刚好延伸到无穷远的最近对焦距离。对焦在 H 处时，从约 H/2 到无穷远都在景深内。',
+          },
+          {
+            question: '反向求解为什么会显示无解？',
+            answer:
+              '当目标景深小于 f/0.5 时的最大景深，或大于 f/64 时的景深范围，当前焦距与对焦距离下无法通过光圈实现，因此提示无解。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Depth of Field & Hyperfocal Calculator uses thin-lens approximations to derive hyperfocal distance, near and far limits, and total depth of field from focal length, aperture, focus distance, and circle of confusion, and can reverse-solve the aperture needed for a target depth.',
+        coreFeatures: [
+          'Standard optics formulas: H = f²/(N·c) + f plus near/far boundary equations',
+          'Sensor CoC presets: full-frame, APS-C, M4/3, and 1-inch, with custom input',
+          'Unit switching: metres, centimetres, and feet for both input and output',
+          'Infinity detection: the far limit is marked infinity once focus reaches the hyperfocal distance',
+          'Reverse solving: bisects f/0.5 to f/64 for a target total depth of field',
+          'Fully local: no network requests and parameters never leave your browser',
+        ],
+        howToUse: [
+          'Enter focal length (mm), aperture, and focus distance, then choose a distance unit',
+          'Pick a sensor CoC preset or type a custom circle of confusion',
+          'Choose the output unit and review hyperfocal distance, near limit, far limit, and total depth',
+          'Enter a target total depth in the reverse panel to get the aperture that achieves it',
+        ],
+        useCases: [
+          'Using hyperfocal distance in landscape photography to keep foreground to infinity sharp',
+          'Checking whether portrait depth of field still covers the face',
+          'Comparing usable depth across apertures before macro shooting',
+          'Comparing full-frame and APS-C depth of field with the same lens settings',
+        ],
+        privacyNote:
+          'All optical parameters and calculations run locally in your browser; nothing is uploaded.',
+        faqs: [
+          {
+            question: 'Why are the results approximate?',
+            answer:
+              'The tool uses thin-lens approximations and ignores lens aberrations, effective focal length, and focus breathing, so values can differ slightly from manufacturer depth-of-field tables.',
+          },
+          {
+            question: 'What is hyperfocal distance?',
+            answer:
+              'Hyperfocal distance H is the closest focus distance at which the far limit just reaches infinity. Focusing at H keeps roughly H/2 to infinity within depth of field.',
+          },
+          {
+            question: 'Why does reverse solving report no solution?',
+            answer:
+              'If the target depth is smaller than the maximum depth at f/0.5 or larger than the depth at f/64, no aperture within that range can achieve it for the current focal length and focus distance.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
