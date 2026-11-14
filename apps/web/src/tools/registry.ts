@@ -36132,6 +36132,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'fuel-economy-calculator',
+    name: '燃油经济性与行程油费计算器（MPG ↔ L/100km ↔ km/L）',
+    nameEn: 'Fuel Economy & Trip Cost Calculator (MPG ↔ L/100km ↔ km/L)',
+    description:
+      '在美制 MPG、英制 MPG、L/100km 与 km/L 之间双向换算油耗，并结合行程距离、油耗、油价与油箱容量估算耗油量、油费、加油次数，支持按同行人数分摊油费。适合跨国用车、租车比价与出行预算。',
+    descriptionEn:
+      'Convert fuel economy between US MPG, UK MPG, L/100km and km/L in both directions, then estimate trip fuel consumption, cost, refuelling stops and per-person sharing from distance, economy, fuel price and tank size. Ideal for cross-country driving, rental comparisons and trip budgeting.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/fuel-economy-calculator',
+    iconName: 'Droplets',
+    tags: ['油耗', 'MPG', 'L/100km', '油费', '汽车'],
+    tagsEn: ['Fuel', 'MPG', 'L/100km', 'Trip Cost', 'Automotive'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '30 MPG',
+    doc: {
+      zh: {
+        whatIsIt:
+          '燃油经济性计算器解决不同国家油耗口径不一致的问题：输入美制 MPG、英制 MPG、L/100km 或 km/L 中任意一项，即可实时得到其余三种表示。工具同时提供行程油费估算，按行程距离、油耗、油价、油箱容量与同行人数计算耗油量、油费、中途加油次数与人均分摊。换算基于 1 英里 = 1.609344 km、1 美制加仑 = 3.785411784 L、1 英制加仑 = 4.54609 L 的精确常数，全部为本地算术，零依赖。',
+        coreFeatures: [
+          '美制 MPG、英制 MPG、L/100km、km/L 四种油耗表示双向换算',
+          '按行程距离与油耗计算耗油量，结合油价得出油费',
+          '按油箱容量估算中途加油次数（假定出发时满油）',
+          '按同行人数分摊油费，得出人均支出',
+          '对零值、负值与非法输入给出明确提示，纯本地计算无网络请求',
+        ],
+        howToUse: [
+          '在「油耗单位换算」输入数值并选择单位，下方四张卡片即时显示其余单位',
+          '在「行程油费估算」填写距离、油耗、油价、油箱容量与同行人数',
+          '查看耗油量、油费、加油次数与人均分摊结果',
+          '点击顶部预设可快速体验 MPG、L/100km 与 km/L 的差异',
+        ],
+        useCases: [
+          '对比海外租车或购车资料中的 MPG 与国内习惯的 L/100km',
+          '自驾出行前估算油费与需要中途加油的次数',
+          '多人同行时快速计算人均油费分摊',
+        ],
+        privacyNote: '所有换算与估算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: '为什么美制 MPG 与英制 MPG 差别这么大？',
+            answer:
+              '两者都表示每加仑行驶的英里数，但加仑容量不同：1 美制加仑 = 3.785411784 L，1 英制加仑 = 4.54609 L。同一辆车换算成美制 MPG 时数值会低约 20%，例如 36 MPG（英制）约等于 30 MPG（美制）。',
+          },
+          {
+            question: 'L/100km 与 km/L 如何互换？',
+            answer:
+              '两者互为倒数关系：km/L = 100 ÷ (L/100km)。例如 8 L/100km 等于 12.5 km/L；反之 20 km/L 等于 5 L/100km。',
+          },
+          {
+            question: '加油次数是怎么估算的？',
+            answer:
+              '工具假定出发时油箱是满的，用总耗油量除以油箱容量、向上取整后再减 1。例如 800 km 行程消耗 64 L、油箱 50 L，中途需要加 1 次油。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This calculator fixes the confusion between national fuel-economy conventions: enter any one of US MPG, UK MPG, L/100km or km/L and instantly get the other three. It also estimates trip cost from distance, economy, fuel price, tank size and travellers, producing fuel consumption, cost, refuelling stops and per-person sharing. Conversions use exact constants (1 mile = 1.609344 km, 1 US gallon = 3.785411784 L, 1 imperial gallon = 4.54609 L), all computed locally with zero dependencies.',
+        coreFeatures: [
+          'Two-way conversion between US MPG, UK MPG, L/100km and km/L',
+          'Trip fuel consumption from distance and economy, combined with fuel price for total cost',
+          'Refuelling stops estimated from tank size, assuming a full tank at departure',
+          'Per-person cost sharing across travellers',
+          'Clear messages for zero, negative or invalid inputs; everything runs locally with no network requests',
+        ],
+        howToUse: [
+          'Enter a value and choose its unit in the conversion card; the other four units update instantly',
+          'Fill in distance, economy, fuel price, tank size and travellers in the trip card',
+          'Read fuel consumption, total cost, refuelling stops and per-person cost',
+          'Click a preset at the top to compare MPG, L/100km and km/L side by side',
+        ],
+        useCases: [
+          'Comparing MPG figures from overseas rentals or car listings with familiar L/100km',
+          'Budgeting fuel cost and refuelling stops before a road trip',
+          'Splitting fuel cost fairly among travellers',
+        ],
+        privacyNote:
+          'All conversions and estimates happen locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Why do US MPG and UK MPG differ so much?',
+            answer:
+              'Both measure miles per gallon, but the gallons differ: 1 US gallon = 3.785411784 L while 1 imperial gallon = 4.54609 L. The same car therefore shows roughly 20% lower numbers in US MPG; 36 MPG (UK) is about 30 MPG (US).',
+          },
+          {
+            question: 'How do L/100km and km/L relate?',
+            answer:
+              'They are reciprocals: km/L = 100 ÷ (L/100km). For example 8 L/100km equals 12.5 km/L, and 20 km/L equals 5 L/100km.',
+          },
+          {
+            question: 'How are refuelling stops estimated?',
+            answer:
+              'The tool assumes a full tank at departure, divides total fuel consumption by tank capacity, rounds up and subtracts one. A 800 km trip consuming 64 L with a 50 L tank needs one refuelling stop.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

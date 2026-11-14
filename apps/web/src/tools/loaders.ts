@@ -383,4 +383,5 @@ export const toolLoaders: Record<
   'capacitor-code-calculator': () => import('./capacitor-code-calculator'),
   'seven-segment-codec': () => import('./seven-segment-codec'),
   'tire-size-calculator': () => import('./tire-size-calculator'),
+  'fuel-economy-calculator': () => import('./fuel-economy-calculator'),
 };
