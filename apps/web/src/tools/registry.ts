@@ -35529,6 +35529,101 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'sunrise-sunset-calculator',
+    name: '日出日落与晨昏时刻计算器',
+    nameEn: 'Sunrise, Sunset & Twilight Calculator',
+    description:
+      '输入日期与经纬度，按 NOAA 太阳位置算法计算日出、日落、太阳正午、昼长以及民用/航海/天文三档晨昏时刻。',
+    descriptionEn:
+      'Enter a date and coordinates to compute sunrise, sunset, solar noon, day length, and civil, nautical, and astronomical twilight with the NOAA solar position algorithm.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/sunrise-sunset-calculator',
+    iconName: 'Clock',
+    tags: ['日出', '日落', '晨昏', '太阳', '经纬度'],
+    tagsEn: ['Sunrise', 'Sunset', 'Twilight', 'Solar', 'Coordinates'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '日出日落与晨昏时刻计算器根据日期、经纬度与时区，推算当地太阳正午、日出、日落与三档晨昏时刻，适合摄影、户外活动与天文观测规划。',
+        coreFeatures: [
+          'NOAA 近似算法：基于太阳赤纬与时差计算太阳位置，附带赤纬与时差数值',
+          '三档晨昏：分别计算民用（-6°）、航海（-12°）与天文（-18°）晨光与暮光',
+          '极昼极夜识别：高纬地区自动标记全天不落或全天不升，并给出 24 小时或 0 小时昼长',
+          '城市预设：内置北京、上海、广州、乌鲁木齐、东京、伦敦、纽约、悉尼等常用坐标',
+          '本地计算：输入参数只在浏览器内参与运算，不上传任何位置信息',
+        ],
+        howToUse: [
+          '选择要计算的日期，或直接保留默认日期',
+          '选择城市预设快速填充坐标，也可手动输入纬度、经度与时区偏移',
+          '查看日出、太阳正午、日落与昼长结果，以及对应 UTC 时刻',
+          '在晨昏卡片中查看民用、航海、天文三档晨光与暮光时刻',
+          '点击「复制结果」把关键时刻整理为文本粘贴到笔记或计划中',
+        ],
+        useCases: [
+          '规划日出日落摄影的最佳拍摄时段',
+          '安排徒步、露营等户外活动的出发与返回时间',
+          '判断天文摄影时天文暮光结束的可拍摄时间',
+          '对比不同纬度城市在同一日期的昼长差异',
+        ],
+        privacyNote:
+          '日期与坐标只在浏览器本地参与计算，不会被记录或上传到任何服务器。',
+        faqs: [
+          {
+            question: '结果为什么可能与权威网站相差 1–2 分钟？',
+            answer:
+              '本工具采用 NOAA 太阳位置近似算法，未考虑地形遮挡、大气折射细节与实际海拔，因此在海平面标准条件下误差通常在 1–2 分钟内。',
+          },
+          {
+            question: '为什么高纬度地区显示「极昼」或「极夜」？',
+            answer:
+              '当太阳在整天都高于或低于地平线时，日出日落方程无解，工具会标记为极昼或极夜，并把昼长记为 24 小时或 0 小时。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Sunrise, Sunset & Twilight Calculator derives local solar noon, sunrise, sunset, and three twilight stages from a date, coordinates, and timezone, helping with photography, outdoor plans, and sky observation.',
+        coreFeatures: [
+          'NOAA approximation: computes the solar position from declination and equation of time, and reports both values',
+          'Three twilight stages: civil (-6°), nautical (-12°), and astronomical (-18°) dawn and dusk',
+          'Polar day and night detection: high latitudes are marked as always above or always below, with 24-hour or 0-hour day length',
+          'City presets: Beijing, Shanghai, Guangzhou, Urumqi, Tokyo, London, New York, and Sydney',
+          'Local computation: coordinates stay in your browser and are never uploaded',
+        ],
+        howToUse: [
+          'Pick the date to calculate, or keep the default',
+          'Choose a city preset to fill coordinates, or enter latitude, longitude, and timezone offset manually',
+          'Review sunrise, solar noon, sunset, and day length together with their UTC times',
+          'Check the twilight card for civil, nautical, and astronomical dawn and dusk',
+          'Click "Copy result" to paste the key times into notes or plans',
+        ],
+        useCases: [
+          'Planning the best window for sunrise and sunset photography',
+          'Scheduling departure and return times for hiking or camping',
+          'Finding when astronomical twilight ends for astrophotography',
+          'Comparing day length across latitudes on the same date',
+        ],
+        privacyNote:
+          'Dates and coordinates are processed entirely in your browser and never logged or sent to a server.',
+        faqs: [
+          {
+            question: 'Why can the result differ from authoritative sites by 1-2 minutes?',
+            answer:
+              'The tool uses the NOAA solar position approximation and does not model terrain, detailed atmospheric refraction, or actual elevation, so the standard sea-level error is usually within 1-2 minutes.',
+          },
+          {
+            question: 'Why does a high-latitude location show polar day or polar night?',
+            answer:
+              'When the sun stays above or below the horizon all day, the sunrise equation has no solution; the tool marks it as polar day or night and sets day length to 24 or 0 hours.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

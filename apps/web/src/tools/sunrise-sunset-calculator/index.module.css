@@ -1,0 +1,88 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.label {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.number {
+  width: 100%;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: rgb(248 250 252);
+}
+
+.statLabel {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.statValue {
+  font-size: 24px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: rgb(17 24 39);
+}
+
+.statSub {
+  color: rgb(156 163 175);
+  font-size: 12px;
+}
+
+.twilight {
+  display: flex;
+  flex-direction: column;
+}
+
+.twilightHeader,
+.twilightRow {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 12px;
+  padding: 10px 12px;
+  align-items: center;
+}
+
+.twilightHeader {
+  color: rgb(107 114 128);
+  font-size: 13px;
+  border-bottom: 1px solid rgb(229 231 235);
+}
+
+.twilightRow {
+  font-variant-numeric: tabular-nums;
+  border-bottom: 1px solid rgb(243 244 246);
+}
+
+.twilightLabel {
+  color: rgb(55 65 81);
+}
