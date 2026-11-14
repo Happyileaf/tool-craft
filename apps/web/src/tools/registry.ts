@@ -10574,6 +10574,110 @@ info: request finished`,
     },
   },
   {
+    slug: 'gedcom-viewer',
+    name: 'GEDCOM 5.5.1 族谱文件解析与结构查看器',
+    nameEn: 'GEDCOM 5.5.1 Genealogy File Parser & Viewer',
+    description:
+      '在浏览器本地解析 GEDCOM 5.5.1 族谱文本（`层级 [指针] 标签 [值]` 行结构），构建层级缩进树并提取 INDI 人物（姓名、性别、生卒日期与地点）与 FAM 家庭记录，解析 @I1@/@F1@ 交叉引用以关联父母、配偶与子女；支持 CONC/CONT 续行拼接、CRLF/LF 行尾，对层级跳号、行首非法、悬空指针带行号定位告警且不中断解析，未知标签容忍保留。纯本地零依赖，不实现 ANSEL 转码（仅识别 CHAR 声明）。',
+    descriptionEn:
+      'Parses GEDCOM 5.5.1 genealogy text locally in the browser using the “level [pointer] tag [value]” line structure, builds an indented hierarchy tree and extracts INDI person records (name, sex, birth/death date and place) and FAM family records, resolving @I1@/@F1@ cross-references to link parents, spouses and children. It supports CONC/CONT continuation and CRLF/LF endings, reports located warnings for level jumps, malformed leading lines and dangling pointers without aborting, and tolerates unknown tags. Pure local zero-dependency processing; ANSEL transcoding is out of scope (only the CHAR declaration is recognized).',
+    category: ToolCategoryEnum.TEXT,
+    path: '/tools/gedcom-viewer',
+    iconName: 'Branches',
+    tags: ['GEDCOM', '族谱', '家谱', '系谱', '文本解析', 'INDI', 'FAM'],
+    tagsEn: ['GEDCOM', 'Genealogy', 'Family Tree', 'Text Parser', 'INDI', 'FAM'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0 HEAD',
+    doc: {
+      zh: {
+        whatIsIt:
+          'GEDCOM 5.5.1 解析与结构查看器是一款纯浏览器本地运行的族谱数据工具，把遵循 GEDCOM 5.5.1 行结构的系谱文本解析为层级树、人物卡片与家庭关系，全程零依赖、文件不上传。',
+        coreFeatures: [
+          '层级树构建：按 `层级 标签 值` 还原缩进结构，层级跳号带行号报错且不中断后续解析',
+          '人物提取：INDI 记录的 NAME（去除 /斜杠/）、SEX、BIRT/DEAT 的 DATE 与 PLAC',
+          '家庭关系：FAM 记录的 HUSB/WIFE/CHIL 指针关联到具体人物，列出配偶、子女与父母家庭',
+          '续行支持：CONC 无分隔拼接、CONT 换行拼接长文本（如 NOTE）',
+          '健壮性：悬空指针告警、未知标签容忍保留、CRLF/LF 行尾兼容、行首非法定位',
+          '零依赖本地：仅识别 CHAR 字符集声明，ANSEL 转码不在本期范围',
+        ],
+        howToUse: [
+          '把 GEDCOM 5.5.1 文本粘贴到左侧（文件内容直接粘贴即可，不会上传）',
+          '右侧实时查看层级结构树与记录/人物/家庭统计',
+          '在「人物」标签查看姓名、性别、生卒与家庭关联，在「家庭」标签查看夫妻与子女',
+          '根据黄色解析告警与红色悬空指针提示定位问题行并修正源文件',
+        ],
+        useCases: [
+          '打开家谱软件导出的 .ged 文件，快速核对人物与家庭关系是否正确',
+          '排查 GEDCOM 数据中的悬空引用、层级错误与续行拼接问题',
+          '在不安装专业系谱软件、不上传隐私数据的前提下本地查看族谱结构',
+        ],
+        privacyNote:
+          '全部解析均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；族谱中的姓名、日期与家庭关系等敏感信息不会离开设备。',
+        faqs: [
+          {
+            question: '为什么不支持 ANSEL 字符集转码？',
+            answer:
+              'ANSEL 是部分老式 GEDCOM 使用的字符集，转码需要完整的字符映射表，体量较大且现代导出多为 UTF-8/UNICODE。本工具会读取并展示 CHAR 声明，按 UTF-8 直接处理；若源文件是 ANSEL，建议先用支持转码的工具另存为 UTF-8。',
+          },
+          {
+            question: 'CONC 和 CONT 有什么区别？',
+            answer:
+              'CONC（concatenation）把值直接拼接到上一条记录，不添加任何分隔；CONT（continuation）拼接前先插入一个换行。例如长 NOTE 常由多条 CONC/CONT 组成，工具会还原成完整的多行文本。',
+          },
+          {
+            question: '悬空指针是怎么产生的？',
+            answer:
+              '当 FAM 的 HUSB/WIFE/CHIL 或人物的 FAMC/FAMS 引用了一个不存在的 @xref@（记录被删除或导出不完整）时即为悬空指针。工具会给出引用值与所在行号，而不会崩溃，方便你回到源文件修复。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The GEDCOM 5.5.1 Parser & Viewer is a fully browser-local genealogy tool that turns GEDCOM 5.5.1 line-structured text into a hierarchy tree, person cards and family relationships, with zero dependencies and no file upload.',
+        coreFeatures: [
+          'Hierarchy tree from “level tag value” lines; level jumps raise line-numbered errors without aborting the parse',
+          'Person extraction: INDI NAME (slashes removed), SEX, and BIRT/DEAT DATE and PLAC',
+          'Family links: FAM HUSB/WIFE/CHIL pointers resolve to people, exposing spouses, children and parent families',
+          'Continuation support: CONC concatenates without a separator, CONT joins with a newline for long values such as NOTE',
+          'Robustness: dangling-pointer warnings, tolerant unknown tags, CRLF/LF support and located malformed-line errors',
+          'Zero-dependency local processing; only the CHAR declaration is recognized, with ANSEL transcoding out of scope',
+        ],
+        howToUse: [
+          'Paste GEDCOM 5.5.1 text on the left (paste file contents directly—nothing is uploaded)',
+          'Inspect the hierarchy tree and record/person/family statistics on the right in real time',
+          'Use the People tab for names, sex, vital events and family links, and the Families tab for couples and children',
+          'Follow yellow parse warnings and red dangling-pointer hints to locate and fix source lines',
+        ],
+        useCases: [
+          'Reviewing people and family links in .ged exports from genealogy software',
+          'Diagnosing dangling references, level errors and continuation issues in GEDCOM data',
+          'Inspecting a family tree locally without installing specialist software or uploading private data',
+        ],
+        privacyNote:
+          'All parsing runs locally in your browser via zero-dependency pure functions. No network requests are made, so sensitive names, dates and relationships never leave your device.',
+        faqs: [
+          {
+            question: 'Why is ANSEL charset transcoding unsupported?',
+            answer:
+              'ANSEL is used by some legacy GEDCOM files and requires a large character mapping table, while modern exports are mostly UTF-8/UNICODE. The tool reads and displays the CHAR declaration and processes content as UTF-8; for ANSEL sources, re-save as UTF-8 with a transcoding-capable tool first.',
+          },
+          {
+            question: 'What is the difference between CONC and CONT?',
+            answer:
+              'CONC (concatenation) appends directly to the previous value with no separator, while CONT (continuation) inserts a newline before appending. A long NOTE, for example, is often assembled from several CONC/CONT lines, which the tool restores into full multi-line text.',
+          },
+          {
+            question: 'What causes a dangling pointer?',
+            answer:
+              'A dangling pointer occurs when a FAM HUSB/WIFE/CHIL or a person FAMC/FAMS references an @xref@ that does not exist (the record was deleted or the export was incomplete). The tool reports the reference and its line instead of crashing, so you can fix the source file.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'websocket-accept',
     name: 'WebSocket Sec-WebSocket-Accept 握手头计算器',
     nameEn: 'WebSocket Sec-WebSocket-Accept Handshake Calculator',

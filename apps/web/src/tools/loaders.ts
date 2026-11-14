@@ -129,6 +129,7 @@ export const toolLoaders: Record<
   'subnet-wildcard-mask': () => import('./subnet-wildcard-mask'),
   'line-number-tool': () => import('./line-number-tool'),
   'fsm-simulator': () => import('./fsm-simulator'),
+  'gedcom-viewer': () => import('./gedcom-viewer'),
   'websocket-accept': () => import('./websocket-accept'),
   'mongodb-objectid': () => import('./mongodb-objectid'),
   'jsonc-to-json': () => import('./jsonc-to-json'),
