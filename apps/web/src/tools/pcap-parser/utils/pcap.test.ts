@@ -87,7 +87,7 @@ describe('parsePcap with the default sample', () => {
     const file = parsePcap(hexToBytes(DEFAULT_PCAP_HEX));
     expect(file.packets).toHaveLength(2);
 
-    const first = file.packets[0];
+    const first = file.packets[0]!;
     expect(first.index).toBe(1);
     expect(first.timestampSeconds).toBe(1700000000);
     expect(first.timestampFraction).toBe(123456);
@@ -96,7 +96,7 @@ describe('parsePcap with the default sample', () => {
     expect(first.originalLength).toBe(67);
     expect(first.truncated).toBe(false);
 
-    const second = file.packets[1];
+    const second = file.packets[1]!;
     expect(second.index).toBe(2);
     expect(second.timestamp).toBe('2023-11-14T22:13:21.000Z');
     expect(second.capturedLength).toBe(51);
@@ -116,8 +116,8 @@ describe('parsePcap endianness and timestamp precision', () => {
     expect(file.timestampResolution).toBe('microsecond');
     expect(file.magic).toBe('0xA1B2C3D4');
     expect(file.packets).toHaveLength(1);
-    expect(file.packets[0].timestamp).toBe('1970-01-01T00:16:40.500Z');
-    expect(file.packets[0].dataHex).toBe('AABBCCDD');
+    expect(file.packets[0]!.timestamp).toBe('1970-01-01T00:16:40.500Z');
+    expect(file.packets[0]!.dataHex).toBe('AABBCCDD');
   });
 
   it('parses a little-endian nanosecond file', () => {
@@ -129,7 +129,7 @@ describe('parsePcap endianness and timestamp precision', () => {
     expect(file.endianness).toBe('little');
     expect(file.timestampResolution).toBe('nanosecond');
     expect(file.magic).toBe('0xA1B23C4D');
-    expect(file.packets[0].timestamp).toBe('1970-01-01T00:00:01.123Z');
+    expect(file.packets[0]!.timestamp).toBe('1970-01-01T00:00:01.123Z');
   });
 });
 

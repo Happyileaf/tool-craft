@@ -196,7 +196,7 @@ const PcapParser: React.FC<ToolComponentProps> = ({ defaultInput }) => {
                     onClick: () => setSelectedIndex(record.index),
                   })}
                   rowClassName={(record) =>
-                    record.index === selectedIndex ? styles.selectedRow : ''
+                    record.index === selectedIndex ? styles.selectedRow ?? '' : ''
                   }
                 />
               </div>

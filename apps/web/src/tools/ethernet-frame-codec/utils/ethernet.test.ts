@@ -68,7 +68,7 @@ describe('parseEthernetFrame', () => {
 
   it('flags a corrupted frame', () => {
     const bytes = hexToBytes(DEFAULT_FRAME_HEX);
-    bytes[20] ^= 0xff;
+    bytes[20]! ^= 0xff;
     const frame = parseEthernetFrame(bytesToHex(bytes));
     expect(frame.fcsValid).toBe(false);
   });

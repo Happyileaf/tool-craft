@@ -83,7 +83,7 @@ export function hexToBytes(input: string): number[] {
 export function bytesToHex(bytes: ArrayLike<number>, group = 1): string {
   const hexes: string[] = [];
   for (let i = 0; i < bytes.length; i += 1) {
-    hexes.push(bytes[i].toString(16).padStart(2, '0').toUpperCase());
+    hexes.push(bytes[i]!.toString(16).padStart(2, '0').toUpperCase());
   }
   if (group <= 1) {
     return hexes.join(' ');
@@ -130,7 +130,7 @@ const CRC32_TABLE: Uint32Array = (() => {
 export function crc32(bytes: ArrayLike<number>): number {
   let crc = 0xffffffff;
   for (let i = 0; i < bytes.length; i += 1) {
-    crc = CRC32_TABLE[(crc ^ bytes[i]) & 0xff] ^ (crc >>> 8);
+    crc = CRC32_TABLE[(crc ^ bytes[i]!) & 0xff]! ^ (crc >>> 8);
   }
   return (crc ^ 0xffffffff) >>> 0;
 }
@@ -156,17 +156,17 @@ export function parseEthernetFrame(input: string): EthernetFrame {
 
   const destinationMac = formatMac(bytes.slice(0, 6));
   const sourceMac = formatMac(bytes.slice(6, 12));
-  const etherType = ((bytes[12] << 8) | bytes[13]) >>> 0;
+  const etherType = ((bytes[12]! << 8) | bytes[13]!) >>> 0;
 
   let body = bytes;
   let fcsHex: string | null = null;
   let fcsValid = false;
 
   if (bytes.length >= 18) {
-    const tailValue = ((bytes[bytes.length - 4] << 24) |
-      (bytes[bytes.length - 3] << 16) |
-      (bytes[bytes.length - 2] << 8) |
-      bytes[bytes.length - 1]) >>> 0;
+    const tailValue = ((bytes[bytes.length - 4]! << 24) |
+      (bytes[bytes.length - 3]! << 16) |
+      (bytes[bytes.length - 2]! << 8) |
+      bytes[bytes.length - 1]!) >>> 0;
     const bodyCrc = crc32(bytes.slice(0, -4));
     if (tailValue === bodyCrc) {
       body = bytes.slice(0, -4);

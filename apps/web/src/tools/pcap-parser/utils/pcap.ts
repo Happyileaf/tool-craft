@@ -73,7 +73,7 @@ export function hexToBytes(input: string): number[] {
 export function bytesToHex(bytes: ArrayLike<number>, group = 1): string {
   const hexes: string[] = [];
   for (let i = 0; i < bytes.length; i += 1) {
-    hexes.push(bytes[i].toString(16).padStart(2, '0').toUpperCase());
+    hexes.push(bytes[i]!.toString(16).padStart(2, '0').toUpperCase());
   }
   if (group <= 1) {
     return hexes.join(' ');
@@ -86,13 +86,25 @@ export function bytesToHex(bytes: ArrayLike<number>, group = 1): string {
 }
 
 const readU16 = (bytes: ArrayLike<number>, offset: number, little: boolean): number =>
-  little ? (bytes[offset] + (bytes[offset + 1] << 8)) : ((bytes[offset] << 8) + bytes[offset + 1]);
+  little
+    ? bytes[offset]! + (bytes[offset + 1]! << 8)
+    : (bytes[offset]! << 8) + bytes[offset + 1]!;
 
 const readU32 = (bytes: ArrayLike<number>, offset: number, little: boolean): number => {
   if (little) {
-    return (bytes[offset] + (bytes[offset + 1] << 8) + (bytes[offset + 2] << 16) + (bytes[offset + 3] * 0x1000000)) >>> 0;
+    return (
+      bytes[offset]! +
+      (bytes[offset + 1]! << 8) +
+      (bytes[offset + 2]! << 16) +
+      bytes[offset + 3]! * 0x1000000
+    ) >>> 0;
   }
-  return ((bytes[offset] << 24) + (bytes[offset + 1] << 16) + (bytes[offset + 2] << 8) + bytes[offset + 3]) >>> 0;
+  return (
+    (bytes[offset]! << 24) +
+    (bytes[offset + 1]! << 16) +
+    (bytes[offset + 2]! << 8) +
+    bytes[offset + 3]!
+  ) >>> 0;
 };
 
 const readI32 = (bytes: ArrayLike<number>, offset: number, little: boolean): number => {
@@ -137,7 +149,7 @@ const formatTimestamp = (seconds: number, fraction: number, nano: boolean): stri
 };
 
 /** 解析经典 PCAP 字节（Uint8Array / number[] 均可） */
-export function parsePcap(bytes: ArrayLike<number>): PcapFile {
+export function parsePcap(bytes: number[]): PcapFile {
   if (bytes.length < 24) {
     throw new Error(`PCAP 全局头需要 24 字节（当前 ${bytes.length} 字节）`);
   }

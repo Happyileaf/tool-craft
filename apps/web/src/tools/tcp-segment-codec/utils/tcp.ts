@@ -113,7 +113,7 @@ export function hexToBytes(input: string): number[] {
 export function bytesToHex(bytes: ArrayLike<number>, group = 1): string {
   const hexes: string[] = [];
   for (let i = 0; i < bytes.length; i += 1) {
-    hexes.push(bytes[i].toString(16).padStart(2, '0').toUpperCase());
+    hexes.push(bytes[i]!.toString(16).padStart(2, '0').toUpperCase());
   }
   if (group <= 1) {
     return hexes.join(' ');
@@ -155,7 +155,7 @@ function foldSum(bytes: number[]): number {
   let sum = 0;
   const padded = bytes.length % 2 === 1 ? [...bytes, 0] : bytes;
   for (let i = 0; i < padded.length; i += 2) {
-    sum += (padded[i] << 8) | padded[i + 1];
+    sum += (padded[i]! << 8) | padded[i + 1]!;
   }
   while (sum >>> 16) {
     sum = (sum & 0xffff) + (sum >>> 16);
@@ -199,11 +199,11 @@ export function parseTcpOptions(bytes: number[]): TcpOption[] {
   const options: TcpOption[] = [];
   let index = 0;
   while (index < bytes.length) {
-    const kind = bytes[index];
+    const kind = bytes[index]!;
     if (kind === 0) {
       options.push({
         kind,
-        name: OPTION_NAMES[0],
+        name: OPTION_NAMES[0]!,
         length: 1,
         valueHex: '',
         description: '选项列表结束，其后为载荷或填充',
@@ -211,14 +211,20 @@ export function parseTcpOptions(bytes: number[]): TcpOption[] {
       break;
     }
     if (kind === 1) {
-      options.push({ kind, name: OPTION_NAMES[1], length: 1, valueHex: '', description: '1 字节对齐填充' });
+      options.push({
+        kind,
+        name: OPTION_NAMES[1]!,
+        length: 1,
+        valueHex: '',
+        description: '1 字节对齐填充',
+      });
       index += 1;
       continue;
     }
     if (index + 1 >= bytes.length) {
       throw new Error(`选项类型 ${kind} 在第 ${index + 1} 字节处缺少长度字段`);
     }
-    const length = bytes[index + 1];
+    const length = bytes[index + 1]!;
     if (length < 2) {
       throw new Error(`选项类型 ${kind} 的长度字段非法（${length}）`);
     }
@@ -228,7 +234,7 @@ export function parseTcpOptions(bytes: number[]): TcpOption[] {
     const body = bytes.slice(index + 2, index + length);
     let description = '';
     if (kind === 2 && body.length === 2) {
-      description = `MSS = ${((body[0] << 8) | body[1]) >>> 0} 字节`;
+      description = `MSS = ${((body[0]! << 8) | body[1]!) >>> 0} 字节`;
     } else if (kind === 3 && body.length === 1) {
       description = `窗口缩放因子 = ${body[0]}（窗口乘 2^${body[0]}）`;
     } else if (kind === 4) {
@@ -236,17 +242,24 @@ export function parseTcpOptions(bytes: number[]): TcpOption[] {
     } else if (kind === 5) {
       const blocks: string[] = [];
       for (let offset = 0; offset + 8 <= body.length; offset += 8) {
-        const left = ((body[offset] << 24) | (body[offset + 1] << 16) | (body[offset + 2] << 8) | body[offset + 3]) >>> 0;
+        const left =
+          ((body[offset]! << 24) |
+            (body[offset + 1]! << 16) |
+            (body[offset + 2]! << 8) |
+            body[offset + 3]!) >>> 0;
         const right =
-          ((body[offset + 4] << 24) | (body[offset + 5] << 16) | (body[offset + 6] << 8) | body[offset + 7]) >>> 0;
+          ((body[offset + 4]! << 24) |
+            (body[offset + 5]! << 16) |
+            (body[offset + 6]! << 8) |
+            body[offset + 7]!) >>> 0;
         blocks.push(`${left}–${right}`);
       }
       description = blocks.length > 0 ? `SACK 块：${blocks.join('，')}` : 'SACK 块长度不足 8 字节';
     } else if (kind === 8 && body.length === 8) {
       const tsval =
-        ((body[0] << 24) | (body[1] << 16) | (body[2] << 8) | body[3]) >>> 0;
+        ((body[0]! << 24) | (body[1]! << 16) | (body[2]! << 8) | body[3]!) >>> 0;
       const tsecr =
-        ((body[4] << 24) | (body[5] << 16) | (body[6] << 8) | body[7]) >>> 0;
+        ((body[4]! << 24) | (body[5]! << 16) | (body[6]! << 8) | body[7]!) >>> 0;
       description = `TSval = ${tsval}，TSecr = ${tsecr}`;
     } else {
       description = body.length > 0 ? `原始值 ${bytesToHex(body)}` : '无数据';
@@ -269,7 +282,7 @@ export function parseTcpSegment(input: string, sourceIp?: string, destinationIp?
   if (bytes.length < 20) {
     throw new Error(`TCP 报文段至少需要 20 字节固定头部（当前 ${bytes.length} 字节）`);
   }
-  const dataOffset = bytes[12] >> 4;
+  const dataOffset = bytes[12]! >> 4;
   if (dataOffset < 5) {
     throw new Error(`数据偏移字段为 ${dataOffset}（${dataOffset * 4} 字节），必须不小于 5（20 字节）`);
   }
@@ -278,24 +291,26 @@ export function parseTcpSegment(input: string, sourceIp?: string, destinationIp?
     throw new Error(`数据偏移声明头部 ${headerLength} 字节，超出报文段总长 ${bytes.length} 字节`);
   }
 
-  const sourcePort = (bytes[0] << 8) | bytes[1];
-  const destinationPort = (bytes[2] << 8) | bytes[3];
-  const sequenceNumber = ((bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8) | bytes[7]) >>> 0;
-  const acknowledgmentNumber = ((bytes[8] << 24) | (bytes[9] << 16) | (bytes[10] << 8) | bytes[11]) >>> 0;
+  const sourcePort = (bytes[0]! << 8) | bytes[1]!;
+  const destinationPort = (bytes[2]! << 8) | bytes[3]!;
+  const sequenceNumber =
+    ((bytes[4]! << 24) | (bytes[5]! << 16) | (bytes[6]! << 8) | bytes[7]!) >>> 0;
+  const acknowledgmentNumber =
+    ((bytes[8]! << 24) | (bytes[9]! << 16) | (bytes[10]! << 8) | bytes[11]!) >>> 0;
   const flags: TcpFlags = {
-    ns: Boolean(bytes[12] & 0x01),
-    cwr: Boolean(bytes[13] & 0x80),
-    ece: Boolean(bytes[13] & 0x40),
-    urg: Boolean(bytes[13] & 0x20),
-    ack: Boolean(bytes[13] & 0x10),
-    psh: Boolean(bytes[13] & 0x08),
-    rst: Boolean(bytes[13] & 0x04),
-    syn: Boolean(bytes[13] & 0x02),
-    fin: Boolean(bytes[13] & 0x01),
+    ns: Boolean(bytes[12]! & 0x01),
+    cwr: Boolean(bytes[13]! & 0x80),
+    ece: Boolean(bytes[13]! & 0x40),
+    urg: Boolean(bytes[13]! & 0x20),
+    ack: Boolean(bytes[13]! & 0x10),
+    psh: Boolean(bytes[13]! & 0x08),
+    rst: Boolean(bytes[13]! & 0x04),
+    syn: Boolean(bytes[13]! & 0x02),
+    fin: Boolean(bytes[13]! & 0x01),
   };
-  const windowSize = (bytes[14] << 8) | bytes[15];
-  const checksum = (bytes[16] << 8) | bytes[17];
-  const urgentPointer = (bytes[18] << 8) | bytes[19];
+  const windowSize = (bytes[14]! << 8) | bytes[15]!;
+  const checksum = (bytes[16]! << 8) | bytes[17]!;
+  const urgentPointer = (bytes[18]! << 8) | bytes[19]!;
 
   const optionBytes = bytes.slice(20, headerLength);
   const options = parseTcpOptions(optionBytes);

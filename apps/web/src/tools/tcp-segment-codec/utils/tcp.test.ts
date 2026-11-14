@@ -59,8 +59,8 @@ describe('parseTcpSegment', () => {
     expect(segment.expectedChecksum).toBe(0x3ebb);
     expect(segment.payloadLength).toBe(0);
     expect(segment.options).toHaveLength(4);
-    expect(segment.options[0].description).toContain('1460');
-    expect(segment.options[1].description).toContain('SACK');
+    expect(segment.options[0]!.description).toContain('1460');
+    expect(segment.options[1]!.description).toContain('SACK');
   });
 
   it('detects a checksum mismatch for other addresses and skips without IPs', () => {

@@ -95,7 +95,7 @@ export function hexToBytes(input: string): number[] {
 export function bytesToHex(bytes: ArrayLike<number>): string {
   const hexes: string[] = [];
   for (let i = 0; i < bytes.length; i += 1) {
-    hexes.push(bytes[i].toString(16).padStart(2, '0').toUpperCase());
+    hexes.push(bytes[i]!.toString(16).padStart(2, '0').toUpperCase());
   }
   return hexes.join(' ');
 }
@@ -104,7 +104,7 @@ export function bytesToHex(bytes: ArrayLike<number>): string {
 export function crc16Modbus(bytes: ArrayLike<number>): number {
   let crc = 0xffff;
   for (let i = 0; i < bytes.length; i += 1) {
-    crc ^= bytes[i];
+    crc ^= bytes[i]!;
     for (let bit = 0; bit < 8; bit += 1) {
       if ((crc & 0x0001) !== 0) {
         crc = (crc >> 1) ^ 0xa001;
@@ -117,7 +117,7 @@ export function crc16Modbus(bytes: ArrayLike<number>): number {
 }
 
 const readU16 = (bytes: ArrayLike<number>, offset: number): number =>
-  (bytes[offset] << 8) + bytes[offset + 1];
+  (bytes[offset]! << 8) + bytes[offset + 1]!;
 
 const writeU16 = (value: number): number[] => [(value >> 8) & 0xff, value & 0xff];
 
@@ -129,7 +129,7 @@ const describePdu = (functionCode: number, data: number[]): ModbusField[] => {
 
   if ((functionCode & 0x80) !== 0) {
     if (data.length >= 1) {
-      fields.push({ label: '异常码', value: `${data[0]}（${EXCEPTION_NAMES[data[0]] ?? '未知异常'}）` });
+      fields.push({ label: '异常码', value: `${data[0]!}（${EXCEPTION_NAMES[data[0]!] ?? '未知异常'}）` });
     }
     return fields;
   }
@@ -141,7 +141,7 @@ const describePdu = (functionCode: number, data: number[]): ModbusField[] => {
       return fields;
     }
     if (data.length > 4) {
-      const byteCount = data[0];
+      const byteCount = data[0]!;
       fields.push({ label: '字节数', value: `${byteCount}` });
       if (baseFunction === 0x01 || baseFunction === 0x02) {
         fields.push({ label: '线圈状态', value: bytesToHex(data.slice(1)) });
@@ -176,7 +176,7 @@ const describePdu = (functionCode: number, data: number[]): ModbusField[] => {
       fields.push({ label: '数量', value: `${readU16(data, 2)}` });
     }
     if (data.length > 4) {
-      const byteCount = data[3];
+      const byteCount = data[3]!;
       fields.push({ label: '字节数', value: `${byteCount}` });
       if (baseFunction === 0x10) {
         const values: string[] = [];
@@ -231,8 +231,8 @@ export function parseModbusFrame(input: string): ModbusFrame {
     transactionId = readU16(bytes, 0);
     protocolId = readU16(bytes, 2);
     mbapLength = readU16(bytes, 4);
-    unitId = bytes[6];
-    functionCode = bytes[7];
+    unitId = bytes[6]!;
+    functionCode = bytes[7]!;
     data = bytes.slice(8);
     if (mbapLength < 2) {
       throw new Error(`MBAP 长度字段应至少为 2（单元 ID + 功能码），当前 ${mbapLength}`);
@@ -241,17 +241,17 @@ export function parseModbusFrame(input: string): ModbusFrame {
     if (bytes.length < 4) {
       throw new Error(`Modbus RTU 报文至少需要 4 字节（地址 + 功能码 + 2 字节 CRC），当前 ${bytes.length} 字节`);
     }
-    unitId = bytes[0];
-    functionCode = bytes[1];
+    unitId = bytes[0]!;
+    functionCode = bytes[1]!;
     data = bytes.slice(2, bytes.length - 2);
-    crcReceived = (bytes[bytes.length - 1] << 8) + bytes[bytes.length - 2];
+    crcReceived = (bytes[bytes.length - 1]! << 8) + bytes[bytes.length - 2]!;
     crc = crc16Modbus(bytes.slice(0, bytes.length - 2));
     crcValid = crc === crcReceived;
   }
 
   const isException = (functionCode & 0x80) !== 0;
   const baseFunction = functionCode & 0x7f;
-  const exceptionCode = isException && data.length >= 1 ? data[0] : null;
+  const exceptionCode = isException && data.length >= 1 ? data[0]! : null;
   const fields = describePdu(functionCode, data);
 
   return {
