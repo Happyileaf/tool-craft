@@ -35829,6 +35829,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'capacitor-code-calculator',
+    name: '电容标码解析与容值计算器（数字码 / R 记法 / 容差字母）',
+    nameEn: 'Capacitor Code Calculator (Numeric Code, R Notation & Tolerance)',
+    description:
+      '解析贴片陶瓷电容标码：三位数字码（104 → 100 nF）、两位小容值码、R / p / n / u 小数记法、容差字母与可选额定电压码，输出 pF / nF / µF、容差上下限，并支持由容值反查最接近的标准标码。',
+    descriptionEn:
+      'Decode ceramic capacitor markings: three-digit codes (104 → 100 nF), two-digit picofarad codes, R / p / n / u decimal notation, tolerance letters and optional voltage codes. Get pF / nF / µF values, tolerance limits, and reverse lookup from capacitance to the nearest standard code.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/capacitor-code-calculator',
+    iconName: 'Zap',
+    tags: ['电容', '标码', '104', '容差', '电子元件'],
+    tagsEn: ['Capacitor', 'Code', '104', 'Tolerance', 'Electronics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '104K',
+    doc: {
+      zh: {
+        whatIsIt:
+          '电容标码解析器把贴片陶瓷电容表面的短码换算成实际容值。三位数字码的前两位是有效数字、末位是 10 的幂次倍率（如 104 = 10 × 10⁴ pF = 100 nF）；两位数字码直接以 pF 为单位（47 = 47 pF）；R 表示小数点且单位为 µF（4R7 = 4.7 µF、R47 = 0.47 µF）；p / n / u 可作小数位或单位后缀（2N2 = 2.2 nF、100N = 100 nF）。工具同时解析 B/C/D/F/G/J/K/M/Z 容差字母与 0J/1A/1H 等额定电压码，输出容差上下限，并支持给定容值反查误差最小的标准标码。全部为本地查表与算术，零依赖。',
+        coreFeatures: [
+          '支持三位数字码、两位小容值码、R 记法、p/n/u 小数记法与单位后缀，自动去除首尾空格并忽略大小写',
+          '解析容差字母并给出绝对或百分比容差范围（Z 为非对称 +80% / −20%）',
+          '识别可选的两位额定电压码（0J 6.3 V、1A 10 V、1H 50 V、2A 100 V 等）',
+          '给定容值按 pF / nF / µF 输入，反查相对误差最小的标准标码并展示实际值与误差',
+          '纯函数核心 + 单元测试，所有计算均在浏览器本地完成，不发起任何网络请求',
+        ],
+        howToUse: [
+          '在标码输入框输入元件表面字符（如 104K、4R7、2N2、104K1H），结果即时刷新',
+          '查看 pF / nF / µF 三种单位、容差范围与额定电压，并阅读下方解析过程说明',
+          '切换到「反查标码」，输入目标容值并选择单位，即可得到最接近的标准标码与误差',
+          '点击顶部的预设标码可快速体验不同记法',
+        ],
+        useCases: [
+          '硬件选型与 BOM 核对时快速确认 104、103 等标码对应的实际容值',
+          '维修或来料检验时识读电容表面字符、容差与耐压等级',
+          '把手算出的容值（如 4.7 µF）转换成可采购的标准标码',
+        ],
+        privacyNote:
+          '所有标码解析与换算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: '104 为什么等于 100 nF？',
+            answer:
+              '三位数字码中前两位 10 是有效数字，末位 4 表示 10⁴ 倍率，单位为 pF，因此 10 × 10⁴ pF = 100000 pF = 100 nF = 0.1 µF。同理 103 = 10 nF，105 = 1 µF。',
+          },
+          {
+            question: 'R 记法的单位为什么是 µF？',
+            answer:
+              '电容标码中的 R 借用了电阻标码「R 表示小数点」的写法，但电容场景约定单位为 µF，因此 4R7 = 4.7 µF、R47 = 0.47 µF；小容值则常用 p 记法，如 4P7 = 4.7 pF。',
+          },
+          {
+            question: '两位数字码和三位数字码如何区分？',
+            answer:
+              '两位数字码（10–99）直接以 pF 为单位，例如 47 = 47 pF；三位数字码（100–999）按前两位有效数字加末位倍率解释，例如 470 = 47 pF、471 = 470 pF。本工具会按输入长度自动区分。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This calculator turns short ceramic capacitor markings into actual capacitance. Three-digit codes use the first two digits as significant figures and the last digit as a power-of-ten multiplier (104 = 10 × 10⁴ pF = 100 nF); two-digit codes are picofarads directly (47 = 47 pF); R marks the decimal point in microfarads (4R7 = 4.7 µF, R47 = 0.47 µF); p / n / u serve as decimal separators or unit suffixes (2N2 = 2.2 nF, 100N = 100 nF). Tolerance letters B/C/D/F/G/J/K/M/Z and optional voltage codes such as 0J/1A/1H are also decoded, with tolerance limits and a reverse lookup from capacitance to the nearest standard code. Pure local lookup and arithmetic with zero dependencies.',
+        coreFeatures: [
+          'Three-digit codes, two-digit picofarad codes, R notation, p/n/u decimal notation and unit suffixes, case-insensitive with whitespace trimmed',
+          'Tolerance letters decoded into absolute or percentage ranges (Z is asymmetric +80% / −20%)',
+          'Optional two-character voltage codes (0J 6.3 V, 1A 10 V, 1H 50 V, 2A 100 V, and more)',
+          'Reverse lookup in pF / nF / µF showing the nearest standard code, its actual value and relative error',
+          'Pure-function core with unit tests; everything runs locally in the browser with no network requests',
+        ],
+        howToUse: [
+          'Type the marking printed on the part (e.g. 104K, 4R7, 2N2, 104K1H); results update instantly',
+          'Read the pF / nF / µF values, tolerance range and voltage rating, plus the explanation below',
+          'Switch to reverse lookup, enter a target capacitance and unit to get the nearest standard code and its error',
+          'Click a preset code at the top to explore the different notations',
+        ],
+        useCases: [
+          'Checking what 104 or 103 markings mean during selection and BOM review',
+          'Reading capacitor markings, tolerance and voltage rating during repair or incoming inspection',
+          'Converting a calculated capacitance (e.g. 4.7 µF) into a purchasable standard code',
+        ],
+        privacyNote:
+          'All decoding and conversion happen locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Why does 104 mean 100 nF?',
+            answer:
+              'In a three-digit code the first two digits (10) are significant figures and the last digit (4) is a 10⁴ multiplier in picofarads: 10 × 10⁴ pF = 100000 pF = 100 nF = 0.1 µF. Likewise 103 = 10 nF and 105 = 1 µF.',
+          },
+          {
+            question: 'Why is the unit for R notation microfarads?',
+            answer:
+              'Capacitor markings borrow the resistor convention that R marks the decimal point, but the unit is microfarads: 4R7 = 4.7 µF and R47 = 0.47 µF. Small values often use p notation, e.g. 4P7 = 4.7 pF.',
+          },
+          {
+            question: 'How are two-digit and three-digit codes distinguished?',
+            answer:
+              'Two-digit codes (10–99) are picofarads directly, e.g. 47 = 47 pF. Three-digit codes (100–999) use two significant digits plus a multiplier, e.g. 470 = 47 pF and 471 = 470 pF. The tool distinguishes them by input length.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -380,4 +380,5 @@ export const toolLoaders: Record<
   'sunrise-sunset-calculator': () => import('./sunrise-sunset-calculator'),
   'http-digest-auth': () => import('./http-digest-auth'),
   'depth-of-field-calculator': () => import('./depth-of-field-calculator'),
+  'capacitor-code-calculator': () => import('./capacitor-code-calculator'),
 };
