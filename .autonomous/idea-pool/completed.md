@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261114081202 | 文本行号添加与剥离器（批量编号、对齐填充与还原） | Web Tool | Existing Gap | `line-numberer` / [PR #237](https://github.com/Happyileaf/tool-craft/pull/237) | 2026-11-15 | [详情](./idea-details/20261114081202.md) |
+| 20261027081105 | RSS / Atom Feed 生成器 | Web Tool | Exploration | `rss-atom-generator` / [PR #237](https://github.com/Happyileaf/tool-craft/pull/237) | 2026-11-15 | [详情](./idea-details/20261027081105.md) |
+| 20261023141143 | 日出日落与晨昏时刻计算器 | Web Tool | Existing Gap | `sunrise-sunset-calculator` / [PR #237](https://github.com/Happyileaf/tool-craft/pull/237) | 2026-11-15 | [详情](./idea-details/20261023141143.md) |
+| 20261031201040 | HTTP Digest 认证响应计算器（RFC 2617 / RFC 7616） | Web Tool | Existing Gap | `http-digest-auth` / [PR #237](https://github.com/Happyileaf/tool-craft/pull/237) | 2026-11-15 | [详情](./idea-details/20261031201040.md) |
+| 20261105140801 | 摄影景深与超焦距计算器（弥散圆 / 光圈 / 焦距 / 对焦距离互求） | Web Tool | Existing Gap | `depth-of-field-calculator` / [PR #237](https://github.com/Happyileaf/tool-craft/pull/237) | 2026-11-15 | [详情](./idea-details/20261105140801.md) |
 | 20261109081157 | logfmt 日志解析与格式化工具（key=value 双向转换与类型推断） | Web Tool | Existing Gap | `logfmt-parser-formatter` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081157.md) |
 | 20261109081156 | LED 限流电阻计算器（欧姆定律与功耗、E24 标称阻值选型） | Web Tool | Existing Gap | `led-resistor-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081156.md) |
 | 20261109081155 | ISSN 校验位计算器与规范化工具（含连字符定位与批量校验） | Web Tool | Existing Gap | `issn-checksum-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081155.md) |
