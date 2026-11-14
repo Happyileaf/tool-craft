@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261115020301 | 电容标码解析与容值计算器（三位数字码 / R 记法 / 容差字母） | Web Tool | Existing Gap | `capacitor-code-calculator` / [PR #239](https://github.com/Happyileaf/tool-craft/pull/239) | 2026-11-15 | [详情](./idea-details/20261115020301.md) |
+| 20261115020302 | 七段数码管字形编解码器（字符 ↔ a–g/dp 段码，共阴/共阳） | Web Tool | Existing Gap | `seven-segment-codec` / [PR #239](https://github.com/Happyileaf/tool-craft/pull/239) | 2026-11-15 | [详情](./idea-details/20261115020302.md) |
+| 20261115020304 | 轮胎规格解析与速度表误差计算器（205/55R16 ↔ 直径 / 周长 / 速度偏差） | Web Tool | Exploration | `tire-size-calculator` / [PR #239](https://github.com/Happyileaf/tool-craft/pull/239) | 2026-11-15 | [详情](./idea-details/20261115020304.md) |
+| 20261115020305 | 燃油经济性与行程油费计算器（MPG ↔ L/100km ↔ km/L） | Web Tool | Exploration | `fuel-economy-calculator` / [PR #239](https://github.com/Happyileaf/tool-craft/pull/239) | 2026-11-15 | [详情](./idea-details/20261115020305.md) |
+| 20261115020306 | 二进制补码与有符号整数运算计算器（8/16/32/64 位，含溢出检测） | Web Tool | Existing Gap | `twos-complement-calculator` / [PR #239](https://github.com/Happyileaf/tool-craft/pull/239) | 2026-11-15 | [详情](./idea-details/20261115020306.md) |
 | 20261109081157 | logfmt 日志解析与格式化工具（key=value 双向转换与类型推断） | Web Tool | Existing Gap | `logfmt-parser-formatter` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081157.md) |
 | 20261109081156 | LED 限流电阻计算器（欧姆定律与功耗、E24 标称阻值选型） | Web Tool | Existing Gap | `led-resistor-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081156.md) |
 | 20261109081155 | ISSN 校验位计算器与规范化工具（含连字符定位与批量校验） | Web Tool | Existing Gap | `issn-checksum-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081155.md) |
