@@ -36233,6 +36233,119 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'twos-complement-calculator',
+    name: '二进制补码与有符号整数运算计算器（8/16/32/64 位，含溢出检测）',
+    nameEn: 'Two’s Complement & Signed Integer Calculator (8/16/32/64-bit with Overflow Detection)',
+    description:
+      '在十进制有符号整数与二进制补码位模式（二进制 / 十六进制）之间双向转换，支持 8 / 16 / 32 / 64 位字长与有符号 / 无符号解释，展示符号位延伸与取值范围（如 int8 的 −128…127），并提供加、减、乘、左移、算术右移、逻辑右移运算与溢出回绕检测，全程 BigInt 精确计算。',
+    descriptionEn:
+      'Convert between signed decimal integers and two’s complement bit patterns (binary / hexadecimal) for 8/16/32/64-bit widths, showing signed and unsigned interpretations, sign extension and value ranges such as int8 −128…127. Includes add, subtract, multiply, logical/arithmetic shifts and overflow-wrap detection, all computed exactly with BigInt.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/twos-complement-calculator',
+    iconName: 'Binary',
+    tags: ['补码', '有符号整数', '溢出', '位运算', 'BigInt'],
+    tagsEn: ['Two’s Complement', 'Signed Integer', 'Overflow', 'Bitwise', 'BigInt'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '-42',
+    doc: {
+      zh: {
+        whatIsIt:
+          '二进制补码计算器把十进制有符号整数与其补码位模式互相转换：输入 −42 即得到 8 位的 0xD6 / 11010110，输入 0xD6 又可反查为 −42。支持 8 / 16 / 32 / 64 位字长，同时给出有符号值、无符号值、符号位、取值范围以及延伸到 64 位的符号位模式，帮助理解补码在不同字长下的一致性。运算面板支持加、减、乘与左移、算术右移、逻辑右移，按字长回绕并检测溢出，64 位数值也通过 BigInt 精确处理、不丢精度。',
+        coreFeatures: [
+          '十进制有符号整数 ↔ 二进制补码位模式双向转换，支持 8 / 16 / 32 / 64 位',
+          '同时展示有符号值、无符号值、定宽二进制、定宽十六进制、符号位与取值范围',
+          '符号位延伸到 64 位的可视化，验证补码在不同字长下表示同一数值',
+          '加、减、乘、左移、算术右移与逻辑右移运算，输出精确结果、回绕值与溢出标记',
+          '全部基于 BigInt 计算，64 位数值不丢精度，无网络请求',
+        ],
+        howToUse: [
+          '先在顶部选择 8 / 16 / 32 / 64 位字长',
+          '在「十进制 → 补码」输入有符号整数，查看二进制、十六进制与符号扩展结果',
+          '在「补码 → 十进制」输入 0x 十六进制或 0b 二进制位模式，反查十进制解释',
+          '在运算面板填写操作数 a、b 与运算类型，移位运算时 b 表示移位位数',
+          '若结果超出字长范围，会显示溢出警告并给出按 2^n 回绕后的值',
+        ],
+        useCases: [
+          '计算机组成原理学习中验证补码、符号位与移位规则',
+          '嵌入式与 C 语言调试时确认 int8_t / int16_t 溢出的回绕结果',
+          '排查位运算代码中负数右移（算术右移与逻辑右移）的差异',
+        ],
+        privacyNote: '所有转换与运算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: '为什么 8 位的 −42 表示为 0xD6？',
+            answer:
+              '补码规定负数 −x 的位模式为 2^n − x。n = 8 时 256 − 42 = 214，即二进制 11010110、十六进制 0xD6。等价理解是按位取反再加 1：42 即 00101010，取反得 11010101，加 1 得 11010110。',
+          },
+          {
+            question: '符号位延伸为什么可以保持数值不变？',
+            answer:
+              '补码把最高位解释为负权重 −2^(n−1)。把 8 位的 0xD6 扩展到 16 位时，高位全部填 1 得到 0xFFD6，其负权重部分为 −32768 + 32768 − 42 = −42，与 8 位解释一致，因此符号位延伸不改变数值。',
+          },
+          {
+            question: '算术右移和逻辑右移有什么区别？',
+            answer:
+              '算术右移保留符号位，负数右移时高位补 1，等价于向下取整除以 2^n；逻辑右移把整个位模式当作无符号数，高位补 0。例如 8 位的 −128（10000000）算术右移 1 位得到 −64（11000000），逻辑右移 1 位则得到 64（01000000）。',
+          },
+          {
+            question: '溢出后回绕的结果可以直接依赖吗？',
+            answer:
+              '回绕值是硬件按定宽位模式截断后的真实结果，但 C/C++ 中「有符号整数溢出」属于未定义行为，编译器可能据此优化出意外代码。工程上应改用无符号运算或先做范围检查，而不是依赖回绕。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This calculator converts signed decimal integers to and from their two’s complement bit patterns: −42 becomes 0xD6 / 11010110 in 8 bits, and 0xD6 resolves back to −42. It supports 8/16/32/64-bit widths and reports signed value, unsigned value, sign bit, value range and the sign-extended 64-bit pattern, making the consistency of two’s complement across widths easy to see. The arithmetic panel covers add, subtract, multiply, left shift, arithmetic and logical right shift, wrapping to the selected width and flagging overflow. 64-bit values are handled exactly with BigInt.',
+        coreFeatures: [
+          'Two-way conversion between signed decimal and two’s complement bit patterns at 8/16/32/64-bit widths',
+          'Shows signed value, unsigned value, fixed-width binary, fixed-width hex, sign bit and value range',
+          'Visualises sign extension to 64 bits to verify two’s complement consistency across widths',
+          'Add, subtract, multiply, left shift, arithmetic and logical right shift with exact result, wrapped value and overflow flag',
+          'All arithmetic uses BigInt with no precision loss at 64 bits and no network requests',
+        ],
+        howToUse: [
+          'Choose 8, 16, 32 or 64-bit width at the top',
+          'Enter a signed integer in the decimal-to-bits card to see binary, hex and sign extension',
+          'Enter a 0x hex or 0b binary pattern in the bits-to-decimal card for its decimal interpretation',
+          'Fill in operands a and b plus the operation; for shifts, b is the shift count',
+          'If the result exceeds the width, an overflow warning shows the value wrapped modulo 2^n',
+        ],
+        useCases: [
+          'Verifying two’s complement, sign bits and shift rules while studying computer architecture',
+          'Confirming int8_t / int16_t overflow wrap behaviour during embedded or C debugging',
+          'Diagnosing differences between arithmetic and logical right shifts on negative values',
+        ],
+        privacyNote:
+          'All conversions and operations happen locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Why is −42 represented as 0xD6 in 8 bits?',
+            answer:
+              'Two’s complement encodes −x as 2^n − x. With n = 8, 256 − 42 = 214, i.e. 11010110 or 0xD6. Equivalently, invert 42 (00101010) to get 11010101 and add 1 to obtain 11010110.',
+          },
+          {
+            question: 'Why does sign extension preserve the value?',
+            answer:
+              'The top bit carries the negative weight −2^(n−1). Extending 0xD6 to 16 bits fills the high bits with 1s to give 0xFFD6; its negative weight part becomes −32768 + 32768 − 42 = −42, matching the 8-bit interpretation, so the value is unchanged.',
+          },
+          {
+            question: 'What is the difference between arithmetic and logical right shift?',
+            answer:
+              'Arithmetic right shift preserves the sign bit by filling with 1s for negative numbers, equivalent to flooring the division by 2^n. Logical right shift treats the pattern as unsigned and fills with 0s. In 8 bits, −128 (10000000) arithmetic-shifted right by 1 gives −64 (11000000), while logical shift gives 64 (01000000).',
+          },
+          {
+            question: 'Can the wrapped overflow result be relied upon?',
+            answer:
+              'The wrapped value is what the hardware produces after truncating to the fixed width, but signed integer overflow is undefined behaviour in C/C++, so compilers may optimise on that assumption. In production code, use unsigned arithmetic or explicit range checks instead of relying on wrapping.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

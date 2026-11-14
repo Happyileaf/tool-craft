@@ -384,4 +384,5 @@ export const toolLoaders: Record<
   'seven-segment-codec': () => import('./seven-segment-codec'),
   'tire-size-calculator': () => import('./tire-size-calculator'),
   'fuel-economy-calculator': () => import('./fuel-economy-calculator'),
+  'twos-complement-calculator': () => import('./twos-complement-calculator'),
 };
