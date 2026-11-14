@@ -3,6 +3,7 @@ import type { ToolMeta } from './types';
 import { DEFAULT_SAMPLE_INPUT as CHANGELOG_SAMPLE_INPUT } from './changelog-generator/constants';
 import { SAMPLE_PLAIN_LYRICS } from './lrc-parser/constants';
 import { DEFAULT_PCAP_HEX } from './pcap-parser/constants';
+import { DEFAULT_RTU_HEX } from './modbus-frame-codec/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -35125,6 +35126,110 @@ sqrt(area) + 2 * r`,
             question: 'Why are only the first 500 packets shown for large files?',
             answer:
               'To keep browser rendering responsive with huge captures, the tool lists at most the first 500 packet details, while the global information and total packet count still cover the entire file.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'modbus-frame-codec',
+    name: 'Modbus 报文解析与构造器',
+    nameEn: 'Modbus Frame Parser & Builder',
+    description:
+      '自动识别 Modbus RTU 与 TCP 报文，校验 CRC16 与 MBAP 头，解读功能码与 PDU 字段并支持构造报文。',
+    descriptionEn:
+      'Auto-detect Modbus RTU and TCP frames, validate CRC16 and the MBAP header, decode function codes and PDU fields, and build valid frames.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/modbus-frame-codec',
+    iconName: 'Layers',
+    tags: ['Modbus', 'RTU', 'TCP', 'CRC16', '工业协议', 'PLC'],
+    tagsEn: ['Modbus', 'RTU', 'TCP', 'CRC16', 'Industrial Protocol', 'PLC'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DEFAULT_RTU_HEX,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Modbus 报文解析与构造器是一款面向工业自动化调试的纯浏览器本地工具，可自动识别 Modbus RTU 与 Modbus TCP 报文，校验 CRC16 与 MBAP 头，并解释功能码、从站地址与 PDU 数据字段的含义。',
+        coreFeatures: [
+          '自动识别 RTU / TCP：根据 MBAP 头的协议 ID 与长度字段判断模式，无需手动切换',
+          'RTU CRC16 校验：采用反射多项式 0xA001，自动按线上低字节在前解析并给出通过 / 失败结论',
+          '功能码解读：支持 01–06、0F、10 常用功能码，并识别异常响应与异常码含义',
+          'PDU 字段解析：将起始地址、寄存器数量、写入值、线圈状态等字段翻译为可读信息',
+          '双向能力：解析和构造报文，构造 RTU 时自动追加 CRC，构造 TCP 时自动写入 MBAP 长度',
+        ],
+        howToUse: [
+          '把抓取到的 Modbus 报文十六进制粘贴到输入框，或点击示例按钮载入 RTU / TCP 样例',
+          '工具会自动识别模式并展示从站地址、功能码、CRC 校验结果或 MBAP 字段',
+          '查看「PDU 字段解读」表格，确认起始地址、数量或写入值是否符合预期',
+          '在构造器中填写模式、从站地址、功能码与数据，即可获得可直接发送的完整报文',
+        ],
+        useCases: [
+          'PLC 与上位机通信异常时，核对发送报文的 CRC 与功能码是否正确',
+          '从串口抓包数据中快速解读读保持寄存器请求的起始地址与数量',
+          '排查 Modbus TCP 设备无响应问题，确认 MBAP 长度字段与事务 ID 是否匹配',
+          '学习 Modbus 协议时对照异常响应码理解从站返回的错误原因',
+        ],
+        privacyNote:
+          '所有报文解析、CRC 计算与构造均在浏览器本地完成，工业设备地址与报文数据不会上传到任何服务器。',
+        faqs: [
+          {
+            question: 'CRC 值为什么和十六进制末尾顺序看起来相反？',
+            answer:
+              'Modbus RTU 传输 CRC 时低字节在前。例如 CRC 计算结果为 0xCDC5，线上字节顺序就是 C5 CD；工具会按这种顺序读取并显示真正的 CRC 值。',
+          },
+          {
+            question: '功能码 0x83 是什么？',
+            answer:
+              '0x83 = 0x03 的最高位置 1，表示对「读保持寄存器」请求的异常响应。数据区首字节为异常码，例如 0x02 表示非法数据地址。工具会自动识别并翻译异常码含义。',
+          },
+          {
+            question: 'TCP 报文的 MBAP 长度字段包含什么？',
+            answer:
+              'MBAP 长度字段表示其后单元 ID 与 PDU 的总字节数，即 1 字节单元 ID + 功能码 + 数据长度，不包括 MBAP 头前 6 字节。构造器会自动按此规则写入长度。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Modbus Frame Parser & Builder is a fully browser-based tool for industrial automation debugging. It auto-detects Modbus RTU and Modbus TCP frames, validates CRC16 and the MBAP header, and explains function codes, slave addresses and PDU fields.',
+        coreFeatures: [
+          'Automatic RTU / TCP detection based on the MBAP protocol ID and length field — no manual switching',
+          'RTU CRC16 validation using the reflected polynomial 0xA001, handling the on-wire low-byte-first order and reporting pass or fail',
+          'Function code decoding for 01–06, 0F and 10, including exception responses and their exception codes',
+          'Readable PDU fields: start address, register quantity, written values and coil states',
+          'Bidirectional: parse and build frames; RTU builds append the CRC automatically and TCP builds write the MBAP length',
+        ],
+        howToUse: [
+          'Paste captured Modbus frame hex into the input, or use the sample buttons to load RTU / TCP examples',
+          'The tool detects the mode automatically and shows the slave address, function code, CRC result or MBAP fields',
+          'Check the “PDU fields” table to confirm the start address, quantity or written value',
+          'In the builder, set mode, slave address, function code and data to get a complete frame ready to send',
+        ],
+        useCases: [
+          'Verifying CRC and function codes when a PLC and host software fail to communicate',
+          'Decoding start address and quantity from a captured read-holding-registers request',
+          'Diagnosing unresponsive Modbus TCP devices by checking the MBAP length and transaction ID',
+          'Learning the Modbus protocol by matching exception responses to their error causes',
+        ],
+        privacyNote:
+          'All frame parsing, CRC computation and building run locally in your browser. Device addresses and frame data are never uploaded to any server.',
+        faqs: [
+          {
+            question: 'Why does the CRC order look reversed in the hex?',
+            answer:
+              'Modbus RTU transmits the CRC low byte first. If the CRC value is 0xCDC5, the on-wire bytes are C5 CD; the tool reads and displays the actual CRC value in that order.',
+          },
+          {
+            question: 'What does function code 0x83 mean?',
+            answer:
+              '0x83 is 0x03 with its highest bit set, meaning an exception response to a read-holding-registers request. The first data byte is the exception code, e.g. 0x02 for illegal data address. The tool detects and translates it automatically.',
+          },
+          {
+            question: 'What does the MBAP length field cover?',
+            answer:
+              'MBAP length is the total bytes of the unit ID plus the PDU that follow — 1 byte unit ID + function code + data — excluding the first 6 bytes of the MBAP header. The builder writes it automatically.',
           },
         ],
       },

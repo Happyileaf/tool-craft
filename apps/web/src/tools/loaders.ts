@@ -373,4 +373,5 @@ export const toolLoaders: Record<
   'ethernet-frame-codec': () => import('./ethernet-frame-codec'),
   'tcp-segment-codec': () => import('./tcp-segment-codec'),
   'pcap-parser': () => import('./pcap-parser'),
+  'modbus-frame-codec': () => import('./modbus-frame-codec'),
 };
