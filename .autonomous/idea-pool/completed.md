@@ -4,11 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
-| 20261114081201 | IPv4 子网掩码 ↔ 反掩码（Wildcard Mask）双向转换器 | Web Tool | Existing Gap | `subnet-wildcard-mask` / PR 待创建（分支 feat/tool-dev-20261114-trae-agent） | 2026-11-14 | [详情](./idea-details/20261114081201.md) |
-| 20261114081202 | 文本行号添加与剥离器（批量编号、对齐填充与还原） | Web Tool | Existing Gap | `line-number-tool` / PR 待创建（分支 feat/tool-dev-20261114-trae-agent） | 2026-11-14 | [详情](./idea-details/20261114081202.md) |
-| 20261114081203 | 有限状态机（FSM）设计与测试序列模拟器 | Web Tool | Exploration | `fsm-simulator` / PR 待创建（分支 feat/tool-dev-20261114-trae-agent） | 2026-11-14 | [详情](./idea-details/20261114081203.md) |
-| 20261114081204 | GEDCOM 5.5.1 族谱文件解析与结构查看器 | Web Tool | External Reference | `gedcom-viewer` / PR 待创建（分支 feat/tool-dev-20261114-trae-agent） | 2026-11-14 | [详情](./idea-details/20261114081204.md) |
-| 20261114081205 | Base64URL 与 Base64 标准格式互转器（填充与字符替换规范化） | Web Tool | Existing Gap | `base64url-normalizer` / PR 待创建（分支 feat/tool-dev-20261114-trae-agent） | 2026-11-14 | [详情](./idea-details/20261114081205.md) |
+| 20261114081201 | IPv4 子网掩码 ↔ 反掩码（Wildcard Mask）双向转换器 | Web Tool | Existing Gap | `subnet-wildcard-mask` / [PR #234](https://github.com/Happyileaf/tool-craft/pull/234) | 2026-11-14 | [详情](./idea-details/20261114081201.md) |
+| 20261114081202 | 文本行号添加与剥离器（批量编号、对齐填充与还原） | Web Tool | Existing Gap | `line-number-tool` / [PR #234](https://github.com/Happyileaf/tool-craft/pull/234) | 2026-11-14 | [详情](./idea-details/20261114081202.md) |
+| 20261114081203 | 有限状态机（FSM）设计与测试序列模拟器 | Web Tool | Exploration | `fsm-simulator` / [PR #234](https://github.com/Happyileaf/tool-craft/pull/234) | 2026-11-14 | [详情](./idea-details/20261114081203.md) |
+| 20261114081204 | GEDCOM 5.5.1 族谱文件解析与结构查看器 | Web Tool | External Reference | `gedcom-viewer` / [PR #234](https://github.com/Happyileaf/tool-craft/pull/234) | 2026-11-14 | [详情](./idea-details/20261114081204.md) |
+| 20261114081205 | Base64URL 与 Base64 标准格式互转器（填充与字符替换规范化） | Web Tool | Existing Gap | `base64url-normalizer` / [PR #234](https://github.com/Happyileaf/tool-craft/pull/234) | 2026-11-14 | [详情](./idea-details/20261114081205.md) |
 | 20261109081157 | logfmt 日志解析与格式化工具（key=value 双向转换与类型推断） | Web Tool | Existing Gap | `logfmt-parser-formatter` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081157.md) |
 | 20261109081156 | LED 限流电阻计算器（欧姆定律与功耗、E24 标称阻值选型） | Web Tool | Existing Gap | `led-resistor-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081156.md) |
 | 20261109081155 | ISSN 校验位计算器与规范化工具（含连字符定位与批量校验） | Web Tool | Existing Gap | `issn-checksum-calculator` / [PR #208](https://github.com/Happyileaf/tool-craft/pull/208) | 2026-11-09 | [详情](./idea-details/20261109081155.md) |
