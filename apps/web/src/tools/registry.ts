@@ -36031,6 +36031,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'tire-size-calculator',
+    name: '轮胎规格计算器（外径 / 速度表误差 / 升级容差）',
+    nameEn: 'Tire Size Calculator (Diameter, Speedometer Error & Upgrade Tolerance)',
+    description:
+      '解析 205/55R16、225/45ZR17 91W、LT265/70R17 等轮胎规格，计算胎侧高度、外径、周长与每公里转数，并对比原厂与替换规格的外径变化、实际车速、速度表误差与离地间隙变化，提示是否超出 ±3% 推荐容差。',
+    descriptionEn:
+      'Parse tire sizes such as 205/55R16, 225/45ZR17 91W and LT265/70R17, compute sidewall height, overall diameter, circumference and revolutions per kilometre, then compare original and replacement sizes for diameter change, actual speed, speedometer error and ground clearance, flagging any change beyond the ±3% guideline.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/tire-size-calculator',
+    iconName: 'Gauge',
+    tags: ['轮胎', '规格', '外径', '速度表', '汽车'],
+    tagsEn: ['Tire', 'Size', 'Diameter', 'Speedometer', 'Automotive'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '205/55R16',
+    doc: {
+      zh: {
+        whatIsIt:
+          '轮胎规格计算器把轮胎侧壁上的规格字符串（如 205/55R16）解析为断面宽度、扁平比、结构、轮辋直径、载重指数与速度级别，并按外径公式计算胎侧高度、轮胎外径、周长与每公里转数。输入原厂与替换规格后，工具按新旧外径比例换算出表显车速对应的实际车速，给出外径变化百分比、胎侧高度差与单侧离地间隙变化，并按行业惯例的 ±3% 容差判断升级是否安全。支持 LT / P / ST / C 前缀与 Z 等附加标记，全部为本地算术，零依赖。',
+        coreFeatures: [
+          '解析 205/55R16、225/45ZR17 91W、LT265/70R17 等规格，识别前缀、附加标记、载重指数与速度级别',
+          '计算胎侧高度、外径、周长与每公里转数，并校验宽度、扁平比、轮辋直径等参数范围',
+          '对比原厂与替换规格：外径变化毫米数与百分比、胎侧高度差、单侧离地间隙变化',
+          '按外径比例换算实际车速，输出速度表误差百分比',
+          '按 ±3% 推荐容差给出通过/超出提示，并内置常见升级预设',
+        ],
+        howToUse: [
+          '在「原厂规格」与「替换规格」输入框中填写轮胎规格，例如 205/55R16 与 225/45R17',
+          '设置表显车速（默认 100 km/h），用于换算实际车速与速度表误差',
+          '查看外径、胎侧、转数与误差统计卡，若超出 ±3% 会显示黄色警告',
+          '点击顶部预设按钮可快速加载常见升级组合',
+        ],
+        useCases: [
+          '改装轮毂前评估轮胎外径变化是否在 ±3% 安全范围内',
+          '了解更换轮胎后速度表的实际读数偏差，避免超速',
+          '比较不同扁平比与轮辋组合的胎侧高度与离地间隙变化',
+        ],
+        privacyNote: '所有规格解析与几何换算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: '为什么建议轮胎外径变化控制在 ±3% 以内？',
+            answer:
+              '外径变化会直接改变速度表、里程表与 ABS/ESP 轮速信号的换算基准，同时影响离地间隙与轮拱空间。行业惯例建议变化不超过 ±3%，超出后速度误差明显，且可能触发变速箱换挡逻辑异常或刮擦轮拱。',
+          },
+          {
+            question: '外径是怎么计算的？',
+            answer:
+              '外径 = 轮辋直径（英寸）× 25.4 + 2 × 胎侧高度，其中胎侧高度 = 断面宽度 × 扁平比。例如 205/55R16：胎侧 205 × 55% = 112.75 mm，外径 16 × 25.4 + 2 × 112.75 = 631.9 mm。',
+          },
+          {
+            question: '表显车速为什么会与实际车速不同？',
+            answer:
+              '速度表按原厂轮胎的滚动周长标定。替换轮胎外径变大时，同样转速下车辆实际行驶更远，实际车速高于表显；外径变小时则相反。工具按新旧外径比例换算，例如表显 100 km/h、外径增加 0.38% 时实际约 100.38 km/h。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This calculator parses tire sidewall markings such as 205/55R16 into section width, aspect ratio, construction, rim diameter, load index and speed rating, then derives sidewall height, overall diameter, circumference and revolutions per kilometre. After entering original and replacement sizes, it converts indicated speed into actual speed using the diameter ratio, reporting the diameter change percentage, sidewall difference and one-side ground clearance change, and flags any change beyond the ±3% industry guideline. LT / P / ST / C prefixes and extra markings such as Z are supported, with pure local arithmetic and zero dependencies.',
+        coreFeatures: [
+          'Parses 205/55R16, 225/45ZR17 91W and LT265/70R17, including prefixes, extra markings, load index and speed rating',
+          'Computes sidewall height, overall diameter, circumference and revolutions per kilometre with range validation',
+          'Compares original and replacement sizes: diameter delta in millimetres and percent, sidewall difference and one-side clearance change',
+          'Converts actual speed from the diameter ratio and reports the speedometer error percentage',
+          'Flags whether the change stays within the ±3% guideline, with common upgrade presets built in',
+        ],
+        howToUse: [
+          'Enter the original and replacement tire sizes, e.g. 205/55R16 and 225/45R17',
+          'Set the indicated speed (100 km/h by default) to derive actual speed and speedometer error',
+          'Read the diameter, sidewall, revolutions and error cards; a yellow warning appears beyond ±3%',
+          'Click a preset at the top to load a common upgrade combination',
+        ],
+        useCases: [
+          'Checking whether a wheel upgrade keeps the tire diameter within the ±3% safe range',
+          'Understanding the real speedometer offset after changing tires to avoid speeding',
+          'Comparing sidewall height and ground clearance across aspect ratios and rim sizes',
+        ],
+        privacyNote:
+          'All size parsing and geometry calculations happen locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Why keep the overall diameter change within ±3%?',
+            answer:
+              'A diameter change alters the baseline used by the speedometer, odometer and ABS/ESP wheel-speed signals, and also affects ground clearance and wheel-well room. The industry guideline is ±3%; beyond that, speed error becomes significant and transmission shift logic or fender rubbing issues may appear.',
+          },
+          {
+            question: 'How is the overall diameter calculated?',
+            answer:
+              'Overall diameter = rim diameter (inches) × 25.4 + 2 × sidewall height, where sidewall height = section width × aspect ratio. For 205/55R16: sidewall = 205 × 55% = 112.75 mm and diameter = 16 × 25.4 + 2 × 112.75 = 631.9 mm.',
+          },
+          {
+            question: 'Why does indicated speed differ from actual speed?',
+            answer:
+              'The speedometer is calibrated to the original tire rolling circumference. A larger replacement tire covers more ground per revolution, so the car actually travels faster than indicated; a smaller tire does the opposite. The tool uses the diameter ratio, e.g. at 100 km/h indicated with a 0.38% larger diameter the actual speed is about 100.38 km/h.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

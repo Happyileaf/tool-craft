@@ -382,4 +382,5 @@ export const toolLoaders: Record<
   'depth-of-field-calculator': () => import('./depth-of-field-calculator'),
   'capacitor-code-calculator': () => import('./capacitor-code-calculator'),
   'seven-segment-codec': () => import('./seven-segment-codec'),
+  'tire-size-calculator': () => import('./tire-size-calculator'),
 };
