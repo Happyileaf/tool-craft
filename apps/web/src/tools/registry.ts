@@ -10362,6 +10362,112 @@ info: request finished`,
     },
   },
   {
+    slug: 'line-number-tool',
+    name: '文本行号添加与剥离器（批量编号、对齐填充与还原）',
+    nameEn: 'Text Line Number Adder & Stripper',
+    description:
+      '为多行文本批量添加行号前缀，或反向剥离已有行号还原原文。添加模式支持自定义起始号、步长、分隔符（: . ) | -> 等）、零填充对齐宽度（自动按最大编号兜底）、分隔符后空格以及是否给空行编号；剥离模式自动识别行首「数字 + 分隔符 + 空白」前缀，支持多字符分隔符，无前缀行原样保留。纯字符串确定性处理、纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Adds line-number prefixes to multi-line text in bulk, or strips existing prefixes to restore the original. The add mode supports a custom start number, step, separator (: . ) | -> etc.), zero-padding width (auto-widened to the largest number), an optional space after the separator and a toggle for numbering blank lines. The strip mode recognizes a leading “digits + separator + whitespace” prefix including multi-character separators and leaves lines without a prefix untouched. Pure deterministic string processing, fully local execution and zero new dependencies.',
+    category: ToolCategoryEnum.TEXT,
+    path: '/tools/line-number-tool',
+    iconName: 'List',
+    tags: ['行号', '编号', '文本处理', '批量', '剥离'],
+    tagsEn: ['Line Numbers', 'Numbering', 'Text', 'Batch', 'Strip'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'alpha\nbeta\ngamma',
+    doc: {
+      zh: {
+        whatIsIt:
+          '文本行号添加与剥离器是一款纯浏览器本地运行的文本工具，既能为多行文本批量生成对齐的行号前缀，也能识别并移除已有行号把文本还原为原始内容，全程零依赖、不发起任何网络请求。',
+        coreFeatures: [
+          '批量添加：起始号、步长可任意配置，支持递减（步长为负）编号',
+          '对齐填充：零填充宽度可手动指定，宽度不足时按最大编号位数自动兜底',
+          '多种分隔符：内置 : . ) | 与多字符 ->，可控制分隔符后是否补空格',
+          '空行控制：可选择是否给空行编号，关闭时空行原样保留',
+          '智能剥离：识别行首数字前缀并移除，支持多字符分隔符，无前缀行原样保留',
+          '纯本地：纯字符串确定性计算，输入内容不离开设备',
+        ],
+        howToUse: [
+          '选择「添加行号」或「剥离行号」模式',
+          '添加模式下设置起始号、步长、填充宽度、分隔符与空行/空格选项',
+          '左侧粘贴文本，右侧实时生成带行号或还原后的结果',
+          '参数非法（如步长为 0、填充宽度为负）时给出明确错误且不产出错误结果',
+          '点击「复制」获取结果',
+        ],
+        useCases: [
+          '为代码片段、日志、清单批量编号以便讨论与定位',
+          '把带行号的文档/题面还原为可直接运行或比对的纯文本',
+          '需要固定宽度编号（如 001、002）的目录与数据整理场景',
+        ],
+        privacyNote:
+          '全部处理均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；输入文本不会离开设备。',
+        faqs: [
+          {
+            question: '填充宽度填 0 是什么意思？',
+            answer:
+              '填充宽度为 0（自动）时，工具会按本次最后一个编号的位数决定宽度，例如编号到 12 就使用两位。手动指定后若小于实际位数，仍会自动扩宽，避免编号被截断。',
+          },
+          {
+            question: '剥离模式会不会误删正文里以数字开头的内容？',
+            answer:
+              '不会。剥离仅匹配行首「可选空白 + 数字 + 已注册分隔符 + 可选空白」这一完整前缀，且每行只移除一次。像 “5 apples” 这类没有分隔符的正文会原样保留。',
+          },
+          {
+            question: '支持多字符分隔符吗？',
+            answer:
+              '支持。内置的 -> 即多字符分隔符，剥离时按最长分隔符优先匹配，避免被单字符提前截断；自定义分隔符为空时会被拒绝。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Text Line Number Adder & Stripper is a fully browser-local text tool that either generates aligned line-number prefixes for multi-line text in bulk or recognizes and removes existing prefixes to restore the original content, with zero dependencies and no network requests.',
+        coreFeatures: [
+          'Bulk adding with configurable start and step, including descending (negative step) numbering',
+          'Zero-padding width that you can set manually and that auto-widens to the largest number',
+          'Multiple separators: built-in : . ) | and multi-character ->, with an optional space after',
+          'Blank-line control: choose whether blank lines get a number; otherwise they are preserved',
+          'Smart stripping of a leading numeric prefix including multi-character separators, leaving unprefixed lines untouched',
+          '100% local, deterministic string computation—input never leaves the device',
+        ],
+        howToUse: [
+          'Pick the “Add line numbers” or “Strip line numbers” mode',
+          'In add mode, set start, step, padding width, separator and blank-line/space options',
+          'Paste text on the left; the numbered or restored result appears live on the right',
+          'Invalid parameters (zero step, negative padding width) produce a clear error instead of wrong output',
+          'Click Copy to grab the result',
+        ],
+        useCases: [
+          'Numbering code snippets, logs and lists for discussion and pinpointing',
+          'Restoring numbered documents or problem statements into runnable, comparable plain text',
+          'Catalog and data cleanup that needs fixed-width numbers such as 001, 002',
+        ],
+        privacyNote:
+          'All processing runs locally in your browser via zero-dependency pure functions. No network requests are made, so your text never leaves your device.',
+        faqs: [
+          {
+            question: 'What does a padding width of 0 mean?',
+            answer:
+              'A width of 0 (auto) derives the width from the number of digits of the last number—for example, two digits when numbering reaches 12. A smaller manual width is still widened automatically so numbers are never truncated.',
+          },
+          {
+            question: 'Will stripping accidentally remove body text that starts with a number?',
+            answer:
+              'No. Stripping only matches the complete leading pattern of optional whitespace, digits, a registered separator and optional whitespace, and removes it at most once per line. Body text without a separator such as “5 apples” is kept verbatim.',
+          },
+          {
+            question: 'Are multi-character separators supported?',
+            answer:
+              'Yes. The built-in -> is a multi-character separator; stripping matches the longest separator first to avoid early truncation by a single character, and an empty custom separator is rejected.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'websocket-accept',
     name: 'WebSocket Sec-WebSocket-Accept 握手头计算器',
     nameEn: 'WebSocket Sec-WebSocket-Accept Handshake Calculator',
