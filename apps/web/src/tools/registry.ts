@@ -35338,6 +35338,497 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'rss-atom-generator',
+    name: 'RSS / Atom Feed 生成器',
+    nameEn: 'RSS / Atom Feed Generator',
+    description:
+      '填写站点信息与文章条目，一键生成符合规范的 RSS 2.0 或 Atom 1.0 XML，并自动完成日期与实体转义。',
+    descriptionEn:
+      'Fill in site metadata and article entries to generate valid RSS 2.0 or Atom 1.0 XML with correct dates and entity escaping.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/rss-atom-generator',
+    iconName: 'ScrollText',
+    tags: ['RSS', 'Atom', 'Feed', 'XML', '订阅'],
+    tagsEn: ['RSS', 'Atom', 'Feed', 'XML', 'Syndication'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'RSS / Atom Feed 生成器把站点标题、链接、描述与文章列表转换为标准的订阅源 XML，方便博客、播客或资讯站提供订阅能力。',
+        coreFeatures: [
+          '双格式输出：RSS 2.0 与 Atom 1.0 一键切换，共用同一份表单数据',
+          '规范细节：RSS 自动输出 RFC 822 pubDate 与 guid，Atom 输出 RFC 3339 updated 与 entry id',
+          '严格转义：标题、摘要中的 & < > " \' 全部进行 XML 实体转义',
+          '条目管理：动态增删文章条目，支持 ISO 8601、YYYY-MM-DD 与 RFC 822 多种日期写法',
+          '本地生成：所有内容在浏览器内拼装，不上传站点或文章信息',
+        ],
+        howToUse: [
+          '选择 RSS 2.0 或 Atom 1.0 输出格式',
+          '填写站点标题、站点链接、描述、语言与 Feed 更新时间',
+          '维护文章条目，填写标题、链接、发布时间与摘要，可随时增删',
+          '右侧预览生成的 XML，确认后复制或下载为 .xml 文件',
+        ],
+        useCases: [
+          '为静态博客快速生成可通过校验的订阅源文件',
+          '为播客或资讯栏目准备 RSS 2.0 元数据',
+          '对比同一内容的 RSS 与 Atom 表达差异',
+          '在没有后端服务时手工维护一个轻量 Feed',
+        ],
+        privacyNote:
+          '站点信息与文章内容只在浏览器本地拼装成 XML，不会发送到任何服务器。',
+        faqs: [
+          {
+            question: '生成的 XML 能通过官方校验吗？',
+            answer:
+              '输出遵循 RSS 2.0 与 Atom 1.0 的必需元素，并对文本做 XML 实体转义。校验器还可能要求真实可访问的链接与唯一 id，请用实际站点信息替换示例数据后再校验。',
+          },
+          {
+            question: '发布时间支持哪些格式？',
+            answer:
+              '支持 YYYY-MM-DD、ISO 8601（如 2026-11-15T08:00:00Z）以及 RFC 822（如 Sun, 15 Nov 2026 08:00:00 GMT）。无时区的 YYYY-MM-DD 按 UTC 零点处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'RSS / Atom Feed Generator turns site metadata and article entries into a standards-compliant syndication feed for blogs, podcasts, or news sites.',
+        coreFeatures: [
+          'Two formats: switch between RSS 2.0 and Atom 1.0 while sharing the same form data',
+          'Spec details: RSS emits RFC 822 pubDate and guid; Atom emits RFC 3339 updated and entry ids',
+          'Strict escaping: & < > " \' in titles and summaries are converted to XML entities',
+          'Entry management: add or remove articles, with ISO 8601, YYYY-MM-DD, and RFC 822 date inputs',
+          'Local generation: the XML is assembled in your browser and never uploaded',
+        ],
+        howToUse: [
+          'Choose RSS 2.0 or Atom 1.0 as the output format',
+          'Enter the site title, site link, description, language, and feed update time',
+          'Maintain article entries with title, link, publish date, and summary; add or remove as needed',
+          'Preview the XML on the right, then copy it or download a .xml file',
+        ],
+        useCases: [
+          'Generating a valid feed file for a static blog',
+          'Preparing RSS 2.0 metadata for a podcast or news section',
+          'Comparing how the same content is expressed in RSS versus Atom',
+          'Maintaining a lightweight feed without a backend service',
+        ],
+        privacyNote:
+          'Site metadata and articles are assembled into XML locally in your browser and never sent to a server.',
+        faqs: [
+          {
+            question: 'Will the XML pass official validators?',
+            answer:
+              'The output follows the required elements of RSS 2.0 and Atom 1.0 and escapes XML entities. Validators may also require reachable links and unique ids, so replace the sample data with real site values before validating.',
+          },
+          {
+            question: 'Which date formats are supported?',
+            answer:
+              'YYYY-MM-DD, ISO 8601 (for example 2026-11-15T08:00:00Z), and RFC 822 (for example Sun, 15 Nov 2026 08:00:00 GMT). A date without a timezone is treated as midnight UTC.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'line-numberer',
+    name: '文本行号添加与剥离器',
+    nameEn: 'Text Line Numberer',
+    description:
+      '为多行文本批量添加可配置行号，或一键剥离已有编号；支持起始值、步长、分隔符与零填充对齐。',
+    descriptionEn:
+      'Add configurable line numbers to multi-line text or strip existing numbering in one click, with start, step, separator, and zero-padding controls.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/line-numberer',
+    iconName: 'List',
+    tags: ['行号', '编号', '文本处理', '对齐', '批量'],
+    tagsEn: ['Line Numbers', 'Numbering', 'Text', 'Align', 'Batch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `第一行内容
+第二行内容
+
+第四行保持为空行
+第五行是结尾`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '文本行号添加与剥离器用于给日志、清单、代码片段或文档批量添加连续编号，也能把从别处复制来的已有行号干净移除，恢复原始文本。',
+        coreFeatures: [
+          '添加模式：可设置起始编号、步长、六种常用分隔符与零填充对齐宽度',
+          '智能对齐：宽度设为 0 时自动按最大编号补零，保证左侧整齐',
+          '空行控制：可选择跳过空行不编号，或让空行也占用编号',
+          '剥离模式：自动识别行首「数字 + : . ) | Tab」前缀并移除，无前缀行保持原样',
+          '纯浏览器本地运算：文本不离开设备，不上传任何服务器',
+        ],
+        howToUse: [
+          '选择「添加行号」或「剥离行号」模式',
+          '添加模式下设置起始编号、步长、分隔符与对齐宽度，并按需开启空行编号',
+          '在左侧输入框粘贴多行文本，右侧会实时显示处理结果',
+          '确认结果后点击复制或下载 .txt 文件',
+        ],
+        useCases: [
+          '为会议纪要、需求清单或测试用例批量添加序号',
+          '给日志片段编号后方便在沟通中定位具体行',
+          '移除从网页或文档复制内容时附带的行号前缀',
+          '将带编号的清单还原为可直接粘贴的纯文本',
+        ],
+        privacyNote:
+          '所有行号计算均在浏览器本地完成，输入文本不会被记录或上传到任何服务器。',
+        faqs: [
+          {
+            question: '剥离行号会误删日期或小数吗？',
+            answer:
+              '不会。剥离规则要求数字后跟 : . ) | 或 Tab，且标点后需有空格，因此 2026.11.15、版本 1.2.3 这类内容不会被当作行号移除。',
+          },
+          {
+            question: '空行会占用编号吗？',
+            answer:
+              '默认不占用：空行保持为空且不消耗步长。开启「空行也编号」后，空行会获得当前编号并参与后续编号递增。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Text Line Numberer adds sequential numbers to logs, lists, code snippets, or documents in bulk, and removes existing numbering copied from other sources to restore the original text.',
+        coreFeatures: [
+          'Add mode: configurable start number, step, six common separators, and zero-padding width',
+          'Smart alignment: width 0 auto-pads to the largest number so the left edge stays aligned',
+          'Blank line control: skip blank lines or number them and let them consume a step',
+          'Strip mode: detects leading "number + : . ) | Tab" prefixes and keeps unprefixed lines intact',
+          'Runs entirely in your browser without uploading any text',
+        ],
+        howToUse: [
+          'Choose Add or Strip mode',
+          'In Add mode, set the start number, step, separator, padding width, and blank-line behavior',
+          'Paste multi-line text into the input; the result updates in real time on the right',
+          'Copy the result or download it as a .txt file',
+        ],
+        useCases: [
+          'Numbering meeting notes, requirement lists, or test cases in bulk',
+          'Adding line numbers to log excerpts for precise references in discussions',
+          'Removing numbering prefixes copied from web pages or documents',
+          'Restoring numbered lists back into clean plain text',
+        ],
+        privacyNote:
+          'All numbering logic runs locally in your browser. Input text is never logged or uploaded to a server.',
+        faqs: [
+          {
+            question: 'Will stripping remove dates or decimals?',
+            answer:
+              'No. A prefix must be a number followed by : . ) | or a tab, with whitespace after punctuation, so values such as 2026.11.15 or version 1.2.3 are preserved.',
+          },
+          {
+            question: 'Do blank lines consume a number?',
+            answer:
+              'By default they do not: blank lines stay empty and do not advance the step. Enable "number blank lines" to assign the current number and advance as usual.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'sunrise-sunset-calculator',
+    name: '日出日落与晨昏时刻计算器',
+    nameEn: 'Sunrise, Sunset & Twilight Calculator',
+    description:
+      '输入日期与经纬度，按 NOAA 太阳位置算法计算日出、日落、太阳正午、昼长以及民用/航海/天文三档晨昏时刻。',
+    descriptionEn:
+      'Enter a date and coordinates to compute sunrise, sunset, solar noon, day length, and civil, nautical, and astronomical twilight with the NOAA solar position algorithm.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/sunrise-sunset-calculator',
+    iconName: 'Clock',
+    tags: ['日出', '日落', '晨昏', '太阳', '经纬度'],
+    tagsEn: ['Sunrise', 'Sunset', 'Twilight', 'Solar', 'Coordinates'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '日出日落与晨昏时刻计算器根据日期、经纬度与时区，推算当地太阳正午、日出、日落与三档晨昏时刻，适合摄影、户外活动与天文观测规划。',
+        coreFeatures: [
+          'NOAA 近似算法：基于太阳赤纬与时差计算太阳位置，附带赤纬与时差数值',
+          '三档晨昏：分别计算民用（-6°）、航海（-12°）与天文（-18°）晨光与暮光',
+          '极昼极夜识别：高纬地区自动标记全天不落或全天不升，并给出 24 小时或 0 小时昼长',
+          '城市预设：内置北京、上海、广州、乌鲁木齐、东京、伦敦、纽约、悉尼等常用坐标',
+          '本地计算：输入参数只在浏览器内参与运算，不上传任何位置信息',
+        ],
+        howToUse: [
+          '选择要计算的日期，或直接保留默认日期',
+          '选择城市预设快速填充坐标，也可手动输入纬度、经度与时区偏移',
+          '查看日出、太阳正午、日落与昼长结果，以及对应 UTC 时刻',
+          '在晨昏卡片中查看民用、航海、天文三档晨光与暮光时刻',
+          '点击「复制结果」把关键时刻整理为文本粘贴到笔记或计划中',
+        ],
+        useCases: [
+          '规划日出日落摄影的最佳拍摄时段',
+          '安排徒步、露营等户外活动的出发与返回时间',
+          '判断天文摄影时天文暮光结束的可拍摄时间',
+          '对比不同纬度城市在同一日期的昼长差异',
+        ],
+        privacyNote:
+          '日期与坐标只在浏览器本地参与计算，不会被记录或上传到任何服务器。',
+        faqs: [
+          {
+            question: '结果为什么可能与权威网站相差 1–2 分钟？',
+            answer:
+              '本工具采用 NOAA 太阳位置近似算法，未考虑地形遮挡、大气折射细节与实际海拔，因此在海平面标准条件下误差通常在 1–2 分钟内。',
+          },
+          {
+            question: '为什么高纬度地区显示「极昼」或「极夜」？',
+            answer:
+              '当太阳在整天都高于或低于地平线时，日出日落方程无解，工具会标记为极昼或极夜，并把昼长记为 24 小时或 0 小时。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Sunrise, Sunset & Twilight Calculator derives local solar noon, sunrise, sunset, and three twilight stages from a date, coordinates, and timezone, helping with photography, outdoor plans, and sky observation.',
+        coreFeatures: [
+          'NOAA approximation: computes the solar position from declination and equation of time, and reports both values',
+          'Three twilight stages: civil (-6°), nautical (-12°), and astronomical (-18°) dawn and dusk',
+          'Polar day and night detection: high latitudes are marked as always above or always below, with 24-hour or 0-hour day length',
+          'City presets: Beijing, Shanghai, Guangzhou, Urumqi, Tokyo, London, New York, and Sydney',
+          'Local computation: coordinates stay in your browser and are never uploaded',
+        ],
+        howToUse: [
+          'Pick the date to calculate, or keep the default',
+          'Choose a city preset to fill coordinates, or enter latitude, longitude, and timezone offset manually',
+          'Review sunrise, solar noon, sunset, and day length together with their UTC times',
+          'Check the twilight card for civil, nautical, and astronomical dawn and dusk',
+          'Click "Copy result" to paste the key times into notes or plans',
+        ],
+        useCases: [
+          'Planning the best window for sunrise and sunset photography',
+          'Scheduling departure and return times for hiking or camping',
+          'Finding when astronomical twilight ends for astrophotography',
+          'Comparing day length across latitudes on the same date',
+        ],
+        privacyNote:
+          'Dates and coordinates are processed entirely in your browser and never logged or sent to a server.',
+        faqs: [
+          {
+            question: 'Why can the result differ from authoritative sites by 1-2 minutes?',
+            answer:
+              'The tool uses the NOAA solar position approximation and does not model terrain, detailed atmospheric refraction, or actual elevation, so the standard sea-level error is usually within 1-2 minutes.',
+          },
+          {
+            question: 'Why does a high-latitude location show polar day or polar night?',
+            answer:
+              'When the sun stays above or below the horizon all day, the sunrise equation has no solution; the tool marks it as polar day or night and sets day length to 24 or 0 hours.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'http-digest-auth',
+    name: 'HTTP Digest 认证响应计算器',
+    nameEn: 'HTTP Digest Auth Calculator',
+    description:
+      '按 RFC 2617 / RFC 7616 计算 HTTP Digest 认证的 HA1、HA2 与 response，并生成可直接使用的 Authorization 请求头，支持 MD5 / SHA-256 与 qop auth / auth-int。',
+    descriptionEn:
+      'Compute HA1, HA2, and the response for HTTP Digest authentication per RFC 2617 and RFC 7616, then build a ready-to-use Authorization header with MD5 or SHA-256 and qop auth or auth-int.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/http-digest-auth',
+    iconName: 'ShieldCheck',
+    tags: ['HTTP', 'Digest', '认证', 'RFC 2617', 'Authorization'],
+    tagsEn: ['HTTP', 'Digest', 'Auth', 'RFC 2617', 'Authorization'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP Digest 认证响应计算器根据用户名、密码、realm、nonce、请求方法与 URI，计算摘要认证所需的 HA1、HA2 与 response，并生成完整的 Authorization 请求头，便于调试或联调 Digest 认证接口。',
+        coreFeatures: [
+          '多算法支持：MD5、MD5-sess、SHA-256 与 SHA-256-sess',
+          '三种 qop 模式：不带 qop（RFC 2069 兼容）、auth 与 auth-int（实体体参与摘要）',
+          'userhash 支持：按 RFC 7616 对用户名做哈希后写入请求头',
+          '请求头生成：直接输出 Digest 开头的 Authorization 值，可一键复制',
+          '纯本地计算：密码与随机数不离开浏览器，不发起任何网络请求',
+        ],
+        howToUse: [
+          '填写用户名、密码、realm、nonce、请求 URI 与请求方法',
+          '选择摘要算法与 qop 模式；auth-int 时补充实体请求体',
+          '按需填写 nonce-count、cnonce、opaque，或启用 userhash',
+          '查看 HA1、HA2 与 response，并复制生成的 Authorization 请求头',
+        ],
+        useCases: [
+          '调试需要 HTTP Digest 认证的接口或反向代理',
+          '验证服务端返回的 WWW-Authenticate 摘要参数是否被正确响应',
+          '编写自动化测试时快速构造合法 Authorization 请求头',
+        ],
+        privacyNote:
+          '用户名、密码与 nonce 只在浏览器本地参与摘要运算，不会上传或记录到服务器。',
+        faqs: [
+          {
+            question: 'MD5 与 SHA-256 的结果长度为什么不同？',
+            answer:
+              'MD5 输出 128 位（32 个十六进制字符），SHA-256 输出 256 位（64 个十六进制字符），两者都由算法本身的摘要长度决定。',
+          },
+          {
+            question: 'nonce-count 为什么要补零到 8 位？',
+            answer:
+              'RFC 2617 要求 nonce-count 以 8 位十六进制表示。工具会自动把 1 转换为 00000001，并在输入非法时给出提示。',
+          },
+          {
+            question: 'auth-int 与 auth 有什么区别？',
+            answer:
+              'auth 只对请求方法和 URI 做摘要；auth-int 还会把实体请求体纳入 HA2 计算，因此能校验请求体完整性。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The HTTP Digest Auth Calculator derives HA1, HA2, and the response from username, password, realm, nonce, request method, and URI, then assembles a complete Authorization header for debugging Digest-protected endpoints.',
+        coreFeatures: [
+          'Multiple algorithms: MD5, MD5-sess, SHA-256, and SHA-256-sess',
+          'Three qop modes: no qop (RFC 2069 compatible), auth, and auth-int with entity body hashing',
+          'userhash support per RFC 7616, hashing the username in the header',
+          'Header generation: outputs a Digest Authorization value ready to copy',
+          'Fully local: passwords and nonces never leave your browser and no network request is made',
+        ],
+        howToUse: [
+          'Fill in username, password, realm, nonce, request URI, and method',
+          'Choose the digest algorithm and qop mode; provide an entity body for auth-int',
+          'Enter nonce-count, cnonce, and opaque as needed, or enable userhash',
+          'Review HA1, HA2, and response, then copy the generated Authorization header',
+        ],
+        useCases: [
+          'Debugging endpoints or reverse proxies protected by HTTP Digest auth',
+          'Checking that WWW-Authenticate parameters are answered correctly',
+          'Building valid Authorization headers for automated tests',
+        ],
+        privacyNote:
+          'Usernames, passwords, and nonces are used only for local digest computation and are never uploaded or logged.',
+        faqs: [
+          {
+            question: 'Why do MD5 and SHA-256 produce different lengths?',
+            answer:
+              'MD5 outputs 128 bits (32 hex characters) while SHA-256 outputs 256 bits (64 hex characters), based on the native digest size of each algorithm.',
+          },
+          {
+            question: 'Why is nonce-count padded to eight digits?',
+            answer:
+              'RFC 2617 requires nonce-count in 8-digit hexadecimal. The tool converts 1 to 00000001 automatically and reports invalid input.',
+          },
+          {
+            question: 'What is the difference between auth and auth-int?',
+            answer:
+              'auth hashes only the method and URI; auth-int also includes the entity body in HA2, which verifies request body integrity.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'depth-of-field-calculator',
+    name: '摄影景深与超焦距计算器',
+    nameEn: 'Depth of Field & Hyperfocal Calculator',
+    description:
+      '输入焦距、光圈、对焦距离与弥散圆，计算超焦距、前后景深边界与总景深，支持画幅 CoC 预设、m/cm/ft 单位换算与「目标景深反求光圈」。',
+    descriptionEn:
+      'Calculate hyperfocal distance, near and far depth limits, and total depth of field from focal length, aperture, focus distance, and circle of confusion, with sensor CoC presets, m/cm/ft units, and reverse aperture solving.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/depth-of-field-calculator',
+    iconName: 'Gauge',
+    tags: ['摄影', '景深', '超焦距', '弥散圆', '光圈'],
+    tagsEn: ['Photography', 'Depth of Field', 'Hyperfocal', 'CoC', 'Aperture'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '摄影景深与超焦距计算器基于薄透镜近似公式，根据焦距、光圈、对焦距离与弥散圆直径计算超焦距、近远边界与总景深，并支持反向根据目标景深求解所需光圈，适合风光、人像与微距拍摄的取景规划。',
+        coreFeatures: [
+          '标准光学公式：H = f²/(N·c) + f 与近远边界公式，结果可追溯到具体参数',
+          '画幅 CoC 预设：全画幅、APS-C、M4/3、1 英寸，同时支持自定义弥散圆',
+          '单位互换：输入与结果均可在米、厘米、英尺之间切换',
+          '无穷远识别：对焦距离达到超焦距时将远景深标注为无穷远',
+          '反向求解：给定目标总景深，在 f/0.5 – f/64 内二分求所需光圈',
+          '纯本地计算：零网络请求，参数不离开浏览器',
+        ],
+        howToUse: [
+          '输入焦距（mm）、光圈 f 值与对焦距离，并选择距离单位',
+          '选择画幅 CoC 预设，或直接填写自定义弥散圆直径',
+          '选择结果单位，查看超焦距、近景深、远景深与总景深',
+          '在反求区域填写目标总景深，得到可达到该景深的光圈值',
+        ],
+        useCases: [
+          '风光摄影中利用超焦距安排前景到无穷远的清晰范围',
+          '人像拍摄时评估背景虚化与景深是否覆盖面部',
+          '微距摄影前比较不同光圈下的可用景深',
+          '对比全画幅与 APS-C 在同一镜头参数下的景深差异',
+        ],
+        privacyNote: '所有光学参数与计算都在浏览器本地完成，不会上传任何数据。',
+        faqs: [
+          {
+            question: '为什么计算结果是近似值？',
+            answer:
+              '工具采用薄透镜近似公式，未考虑镜头像差、实际有效焦距与对焦呼吸效应，因此与厂商景深表可能有少量差异。',
+          },
+          {
+            question: '什么是超焦距？',
+            answer:
+              '超焦距 H 是使远景深刚好延伸到无穷远的最近对焦距离。对焦在 H 处时，从约 H/2 到无穷远都在景深内。',
+          },
+          {
+            question: '反向求解为什么会显示无解？',
+            answer:
+              '当目标景深小于 f/0.5 时的最大景深，或大于 f/64 时的景深范围，当前焦距与对焦距离下无法通过光圈实现，因此提示无解。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Depth of Field & Hyperfocal Calculator uses thin-lens approximations to derive hyperfocal distance, near and far limits, and total depth of field from focal length, aperture, focus distance, and circle of confusion, and can reverse-solve the aperture needed for a target depth.',
+        coreFeatures: [
+          'Standard optics formulas: H = f²/(N·c) + f plus near/far boundary equations',
+          'Sensor CoC presets: full-frame, APS-C, M4/3, and 1-inch, with custom input',
+          'Unit switching: metres, centimetres, and feet for both input and output',
+          'Infinity detection: the far limit is marked infinity once focus reaches the hyperfocal distance',
+          'Reverse solving: bisects f/0.5 to f/64 for a target total depth of field',
+          'Fully local: no network requests and parameters never leave your browser',
+        ],
+        howToUse: [
+          'Enter focal length (mm), aperture, and focus distance, then choose a distance unit',
+          'Pick a sensor CoC preset or type a custom circle of confusion',
+          'Choose the output unit and review hyperfocal distance, near limit, far limit, and total depth',
+          'Enter a target total depth in the reverse panel to get the aperture that achieves it',
+        ],
+        useCases: [
+          'Using hyperfocal distance in landscape photography to keep foreground to infinity sharp',
+          'Checking whether portrait depth of field still covers the face',
+          'Comparing usable depth across apertures before macro shooting',
+          'Comparing full-frame and APS-C depth of field with the same lens settings',
+        ],
+        privacyNote:
+          'All optical parameters and calculations run locally in your browser; nothing is uploaded.',
+        faqs: [
+          {
+            question: 'Why are the results approximate?',
+            answer:
+              'The tool uses thin-lens approximations and ignores lens aberrations, effective focal length, and focus breathing, so values can differ slightly from manufacturer depth-of-field tables.',
+          },
+          {
+            question: 'What is hyperfocal distance?',
+            answer:
+              'Hyperfocal distance H is the closest focus distance at which the far limit just reaches infinity. Focusing at H keeps roughly H/2 to infinity within depth of field.',
+          },
+          {
+            question: 'Why does reverse solving report no solution?',
+            answer:
+              'If the target depth is smaller than the maximum depth at f/0.5 or larger than the depth at f/64, no aperture within that range can achieve it for the current focal length and focus distance.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

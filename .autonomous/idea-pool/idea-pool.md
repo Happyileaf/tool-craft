@@ -84,7 +84,7 @@
 | 20261023040539 | ISBN-10 ↔ ISBN-13 校验与互转 | Web Tool | Exploration | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023040539.md) |
 | 20261023081556 | CHANGELOG.md 生成器（Keep a Changelog） | Web Tool | Exploration | Claimed | 2026-10-23 | trae-agent | [详情](./idea-details/20261023081556.md) |
 | 20261023141142 | CSS transform 矩阵计算器 | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023141142.md) |
-| 20261023141143 | 日出日落与晨昏时刻计算器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141143.md) |
+| 20261023141143 | 日出日落与晨昏时刻计算器 | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023141143.md) |
 | 20261023141144 | 屏幕 PPI / 像素密度计算器 | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023141144.md) |
 | 20261023141145 | 文件下载时间估算器 | Web Tool | Exploration | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023141145.md) |
 | 20261023141146 | JSON-LD 结构化数据生成器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023141146.md) |
@@ -111,7 +111,7 @@
 | 20261027081101 | 文件魔数（Magic Number）签名识别器 | Web Tool | Existing Gap | Pending | 2026-10-27 | | [详情](./idea-details/20261027081101.md) |
 | 20261027081102 | 线性回归与相关系数计算器 | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027081102.md) |
 | 20261027081103 | 个人所得税计算器（工资薪金 / 年终奖） | Web Tool | Exploration | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027081103.md) |
-| 20261027081105 | RSS / Atom Feed 生成器 | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027081105.md) |
+| 20261027081105 | RSS / Atom Feed 生成器 | Web Tool | Exploration | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027081105.md) |
 | 20261027140131 | PBKDF2 密钥派生计算器（RFC 8018） | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027140131.md) |
 | 20261027140132 | Bech32 / Bech32m 编解码器（BIP-173 / BIP-350） | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027140132.md) |
 | 20261027140134 | IP 地址范围 → 最小 CIDR 列表聚合器（IPv4 / IPv6） | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027140134.md) |
@@ -176,7 +176,7 @@
 | 20261031201037 | SQLite 数据库文件头解析器（前 100 字节只读） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201037.md) |
 | 20261031201038 | 无 schema 的 Protobuf 线格式原始解码器 | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201038.md) |
 | 20261031201039 | 定点数 Qm.n / Q 格式转换与运算可视化器 | Web Tool | Existing Gap | Claimed | 2026-10-31 | trae-agent | [详情](./idea-details/20261031201039.md) |
-| 20261031201040 | HTTP Digest 认证响应计算器（RFC 2617 / RFC 7616） | Web Tool | Existing Gap | Pending | 2026-10-31 | | [详情](./idea-details/20261031201040.md) |
+| 20261031201040 | HTTP Digest 认证响应计算器（RFC 2617 / RFC 7616） | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031201040.md) |
 | 20261101020825 | MP4 / ISO-BMFF atom（box）结构解析器（只读树） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101020825.md) |
 | 20261101020826 | MP3 ID3v2 标签解析器与剥离器 | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101020826.md) |
 | 20261101020827 | Shamir 秘密分片与恢复工具（GF(2⁸)，Shamir's Secret Sharing） | Web Tool | Existing Gap | Pending | 2026-11-01 | | [详情](./idea-details/20261101020827.md) |
@@ -243,7 +243,7 @@
 | 20261105080305 | gettext PO / POT 消息目录 ↔ JSON 双向转换器 | Web Tool | Existing Gap | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105080305.md) |
 | 20261105080308 | SQL 字符串字面量转义 / 反转义工具（标准单引号与 LIKE 通配符转义） | Web Tool | Existing Gap | In Progress | 2026-11-05 | trae-agent | [详情](./idea-details/20261105080308.md) |
 | 20261105140800 | DKIM DNS TXT 记录生成器（选择器公钥记录拼装与标签语法校验） | Web Tool | Existing Gap | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105140800.md) |
-| 20261105140801 | 摄影景深与超焦距计算器（弥散圆 / 光圈 / 焦距 / 对焦距离互求） | Web Tool | Existing Gap | Pending | 2026-11-05 | | [详情](./idea-details/20261105140801.md) |
+| 20261105140801 | 摄影景深与超焦距计算器（弥散圆 / 光圈 / 焦距 / 对焦距离互求） | Web Tool | Existing Gap | In Progress | 2026-11-05 | trae-agent | [详情](./idea-details/20261105140801.md) |
 | 20261105140802 | CORS 响应头配置生成器（Allow-Origin / Credentials / 预检缓存策略拼装与校验） | Web Tool | External Reference | Claimed | 2026-11-05 | trae-agent | [详情](./idea-details/20261105140802.md) |
 | 20261105140803 | SSE（Server-Sent Events）消息格式编码 / 解码器（event/data/id/retry 字段与多行 data） | Web Tool | External Reference | In Progress | 2026-11-05 | trae-agent | [详情](./idea-details/20261105140803.md) |
 | 20261105140804 | 表达式调度场算法可视化器（中缀转后缀 RPN 与逐步求值过程演示） | Web Tool | Exploration | In Progress | 2026-11-05 | trae-agent | [详情](./idea-details/20261105140804.md) |
@@ -328,8 +328,7 @@
 | 20261114020131 | CSS text-shadow 多层文字阴影生成器（实时预览与代码输出） | Web Tool | Exploration | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114020131.md) |
 | 20261114020132 | 正则表达式元字符转义/反转义工具（字面量安全转义与 RegExp 构造源码输出） | Web Tool | Existing Gap | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114020132.md) |
 | 20261114020133 | 工时时长累加器（多段上下班打卡时间求和、扣除休息与跨天处理） | Web Tool | Exploration | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114020133.md) |
-| 20261114081201 | IPv4 子网掩码 ↔ 反掩码（Wildcard Mask）双向转换器 | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114081201.md) |
-| 20261114081202 | 文本行号添加与剥离器（批量编号、对齐填充与还原） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114081202.md) |
+| 20261114081202 | 文本行号添加与剥离器（批量编号、对齐填充与还原） | Web Tool | Existing Gap | In Progress | 2026-11-14 | trae-agent | [详情](./idea-details/20261114081202.md) |
 | 20261114081203 | 有限状态机（FSM）设计与测试序列模拟器 | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114081203.md) |
 | 20261114081204 | GEDCOM 5.5.1 族谱文件解析与结构查看器 | Web Tool | External Reference | Pending | 2026-11-14 | | [详情](./idea-details/20261114081204.md) |
 | 20261114081205 | Base64URL 与 Base64 标准格式互转器（填充与字符替换规范化） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114081205.md) |

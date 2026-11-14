@@ -5,6 +5,7 @@
 
 | ID | Idea | Type | Source | 阶段（评估/开发/验收） | Reject Reason | 处理时间 | 详情 |
 |---|---|---|---|---|---|---|---|
+| 20261114081201 | IPv4 子网掩码 ↔ 反掩码（Wildcard Mask）双向转换器 | Web Tool | Existing Gap | 评估 | 查重未通过：与已注册工具 cidr-subnet-calculator 实质重复，其 utils/subnet.ts L248/L279 已计算输出 wildcardMask，constants.ts L33 以「通配符掩码」展示，单测 L44 断言 255.255.255.0 → 0.0.0.255，并已校验子网掩码合法性；本条能力为其真子集，反向仅逐位取反 | 2026-11-15 | [详情](./idea-details/20261114081201.md) |
 | 20260928103002 | CSS prefixer | Web Tool | Exploration | 评估 | 依赖量与价值/可验收性未通过：正确前缀依赖持续更新的 caniuse 数据与属性规则表，零依赖静态表易陈旧误导，引入 autoprefixer/postcss 属大型重依赖；前缀集合随数据版本变化，验收用例不可固定；现代浏览器/构建链已普遍自动前缀 | 2026-10-21 | [详情](./idea-details/20260928103002.md) |
 | 20260928103003 | Regular expression generator | Web Tool | Existing Gap | 评估 | 可验收性/复杂度未通过：从开放自然语言生成正则无语义理解之外的确定性算法，纯函数只能覆盖少量模板句式，可用质量须依赖 LLM（违反本地运算红线）；开放输入的正确性无法用固定用例验收 | 2026-10-21 | [详情](./idea-details/20260928103003.md) |
 | 20260928103004 | URL encoder/decoder | Web Tool | Exploration | 评估 | 查重未通过：与已注册工具 base64-codec（"Base64 & URL Encoder/Decoder"）功能实质重复，其 `runCodec` 已内置 URL 编解码模式 | 2026-10-17 | [详情](./idea-details/20260928103004.md) |

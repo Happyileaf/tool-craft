@@ -375,4 +375,9 @@ export const toolLoaders: Record<
   'pcap-parser': () => import('./pcap-parser'),
   'modbus-frame-codec': () => import('./modbus-frame-codec'),
   'pcb-trace-width-calculator': () => import('./pcb-trace-width-calculator'),
+  'line-numberer': () => import('./line-numberer'),
+  'rss-atom-generator': () => import('./rss-atom-generator'),
+  'sunrise-sunset-calculator': () => import('./sunrise-sunset-calculator'),
+  'http-digest-auth': () => import('./http-digest-auth'),
+  'depth-of-field-calculator': () => import('./depth-of-field-calculator'),
 };

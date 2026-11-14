@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-15 ：【Agent自主迭代】新增文本行号、RSS/Atom、日出日落、HTTP Digest 认证与景深计算 5 个工具
+
+- **新增**：文本行号添加/剥离器（line-numberer）— 支持自定义起始编号、步长、分隔符与对齐宽度，自动按最大编号补零，可跳过空行或对其编号，提供样例、复制与下载，11 个 Vitest 用例，纯本地运算零依赖
+- **新增**：RSS 2.0 / Atom 1.0 订阅源生成器（rss-atom-generator）— 表单化管理频道元数据与动态条目，按 RFC 822 / RFC 3339 格式化日期，输出含 guid isPermaLink、lastBuildDate、Atom updated 的合规 XML，实时预览并可复制/下载，10 个 Vitest 用例，纯本地运算零依赖
+- **新增**：日出日落与晨昏时刻计算器（sunrise-sunset-calculator）— 基于 NOAA 太阳位置近似算法，输入日期、经纬度与时区即可得到太阳正午、日出、日落、昼长及民用/航海/天文三档晨昏时刻，支持城市预设、极昼极夜识别与 UTC 对照，12 个 Vitest 用例，纯本地运算零依赖
+- **新增**：HTTP Digest 认证响应计算器（http-digest-auth）— 按 RFC 2617 / RFC 7616 计算 HA1、HA2 与 response，覆盖 MD5 / MD5-sess / SHA-256 / SHA-256-sess、qop none/auth/auth-int 与 userhash，authorization 请求头一键复制，RFC 2617 与 RFC 7616 官方向量校验，9 个 Vitest 用例，纯本地运算零依赖
+- **新增**：摄影景深与超焦距计算器（depth-of-field-calculator）— 按薄透镜公式 H=f²/(N·c)+f 与近远边界公式计算景深，支持全画幅/APS-C/M4/3/1 英寸 CoC 预设、m/cm/ft 单位换算、无穷远远景深识别与「目标景深反求光圈」，10 个 Vitest 用例，纯本地运算零依赖
+
 ## 2026-11-14 ：【Agent自主迭代】新增以太网帧、TCP 段、PCAP 抓包、Modbus 报文与 PCB 线宽 5 个工具
 
 - **新增**：以太网 II 帧解析与构造器（ethernet-frame-codec）— 解析目标/源 MAC、EtherType 与载荷，按 0xEDB88320 反射多项式计算 CRC-32 FCS，自动识别末尾 4 字节 FCS 并校验、支持构造侧自动补 FCS 与常见 EtherType 预设，14 个 Vitest 用例，纯本地运算零依赖
