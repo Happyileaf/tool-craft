@@ -10468,6 +10468,112 @@ info: request finished`,
     },
   },
   {
+    slug: 'fsm-simulator',
+    name: '有限状态机（DFA）设计与测试序列模拟器',
+    nameEn: 'Deterministic Finite Automaton (DFA) Simulator',
+    description:
+      '以「当前状态,输入符号 -> 目标状态」逐行声明确定型有限自动机（DFA）的转移函数，设置起始状态与接受状态后，对任意输入串逐步模拟并给出接受/拒绝结论，输出覆盖全部「状态 × 字母表」的转移表、缺失转移与不可达状态检测，并生成可粘贴到 Graphviz 的 DOT 图形描述文本。非法转移、冲突转移、未声明状态、字母表外符号均带定位报错。纯本地确定性计算、零新增依赖。',
+    descriptionEn:
+      'Declares a deterministic finite automaton (DFA) line by line as “current state,input symbol -> target state”, sets the start and accepting states, then simulates any input string step by step with an accept/reject verdict. It renders a transition table covering every state × alphabet pair, flags missing transitions and unreachable states, and emits Graphviz DOT text. Illegal or conflicting transitions, undeclared states and out-of-alphabet symbols raise located errors. Fully local deterministic computation with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/fsm-simulator',
+    iconName: 'Apartment',
+    tags: ['有限状态机', 'DFA', '自动机', '状态转移', 'Graphviz', '编译原理'],
+    tagsEn: ['FSM', 'DFA', 'Automaton', 'State Transition', 'Graphviz', 'Compilers'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'abaa',
+    doc: {
+      zh: {
+        whatIsIt:
+          '有限状态机模拟器是一款纯浏览器本地运行的自动机教学与验证工具，聚焦确定型有限自动机（DFA）：用文本声明转移函数，即可逐步模拟测试串、查看转移表并导出 Graphviz DOT 图。',
+        coreFeatures: [
+          '文本化建模：每行一条 `状态,符号 -> 状态` 转移，支持注释与空行',
+          '逐步模拟：展示每一步读入符号、当前状态与下一状态，给出接受/拒绝结论',
+          '空串处理：输入留空即 ε，停在起始状态并按是否接受态判定',
+          '完整转移表：覆盖全部「状态 × 字母表」组合，缺失转移以 ∅ 显式标记并计数',
+          '健全性检查：冲突转移、未声明状态、字母表外符号带行号报错，并检测不可达状态',
+          'DOT 导出：生成合法 digraph，接受态双圆、起始态带入口箭头，可直接粘贴 Graphviz',
+        ],
+        howToUse: [
+          '在转移函数框按 `q0,a -> q1` 格式逐行填写，# 开头为注释',
+          '填写起始状态与接受状态（多个接受态用逗号或空格分隔）',
+          '在测试序列框输入字符串（留空表示空串 ε），查看逐步路径与结论',
+          '查看转移表中的 ∅ 缺失项与不可达状态提示，修正自动机定义',
+          '复制 DOT 文本到 Graphviz 渲染状态图',
+        ],
+        useCases: [
+          '编译原理/形式语言课程中验证 DFA 是否识别目标语言',
+          '词法分析、协议状态机、正则表达式引擎的原型验证',
+          '把抽象状态机快速转成可分享的 Graphviz 图',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地由零依赖纯函数完成，不发起任何网络请求；状态机定义与测试串不会离开设备。',
+        faqs: [
+          {
+            question: '为什么本期只支持 DFA，不支持 NFA 或 Mealy/Moore？',
+            answer:
+              '确定型自动机中每个「状态 × 输入」恰好一个目标，模拟路径唯一、结论可确定性复现，适合固定向量验收。NFA 的 ε-转移与多目标、Mealy/Moore 的输出语义复杂度更高，将作为后续独立 Idea 实现。',
+          },
+          {
+            question: '转移表里的 ∅ 是什么意思？',
+            answer:
+              '∅ 表示该「状态 × 输入符号」组合没有定义转移。严格 DFA 要求所有组合都有定义；模拟中一旦走到 ∅ 即判定该串无法继续并报错，你可以补全转移（通常指向一个拒绝死状态）来得到完整 DFA。',
+          },
+          {
+            question: '不可达状态是如何检测的？',
+            answer:
+              '工具从起始状态出发，沿所有输入符号做广度优先遍历，能访问到的状态构成可达集合；不在该集合中的状态即不可达，意味着它们对任何输入都不会被访问到，通常是建模冗余或拼写错误。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The FSM Simulator is a fully browser-local automaton teaching and verification tool focused on deterministic finite automata (DFA): declare transitions as text, then simulate test strings step by step, inspect the transition table and export a Graphviz DOT graph.',
+        coreFeatures: [
+          'Text modeling with one `state,symbol -> state` transition per line, plus comments and blank lines',
+          'Step-by-step simulation showing each consumed symbol, current and next states, with an accept/reject verdict',
+          'Empty-string handling: a blank input means ε and stays at the start state, judged by whether it is accepting',
+          'Complete transition table covering every state × alphabet pair, with missing transitions shown as ∅ and counted',
+          'Sanity checks with line-numbered errors for conflicts, undeclared states and out-of-alphabet symbols, plus unreachable-state detection',
+          'DOT export as a valid digraph with double-circle accepting states and a start arrow, ready for Graphviz',
+        ],
+        howToUse: [
+          'Enter transitions line by line as `q0,a -> q1`; lines starting with # are comments',
+          'Set the start state and accepting states (comma/space separated for multiple)',
+          'Type a string in the test-sequence box (blank for the empty string ε) to see the path and verdict',
+          'Inspect ∅ missing cells and unreachable-state hints to fix the definition',
+          'Copy the DOT text into Graphviz to render the state diagram',
+        ],
+        useCases: [
+          'Verifying whether a DFA recognizes the target language in formal-language/compiler courses',
+          'Prototyping lexical analyzers, protocol state machines and regex engines',
+          'Quickly turning an abstract state machine into a shareable Graphviz diagram',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser via zero-dependency pure functions. No network requests are made, so your automaton definitions and test strings never leave your device.',
+        faqs: [
+          {
+            question: 'Why only DFA this round, not NFA or Mealy/Moore?',
+            answer:
+              'In a deterministic automaton every state × input pair has exactly one target, so the simulation path is unique and reproducible with fixed vectors. NFA epsilon/multi-target semantics and Mealy/Moore outputs are more complex and will be delivered as separate follow-up ideas.',
+          },
+          {
+            question: 'What does ∅ mean in the transition table?',
+            answer:
+              '∅ marks a state × symbol pair with no defined transition. A strict DFA defines every pair; during simulation, reaching ∅ means the string cannot continue and an error is raised. Add transitions (often to a rejecting trap state) to obtain a complete DFA.',
+          },
+          {
+            question: 'How are unreachable states detected?',
+            answer:
+              'From the start state, the tool runs a breadth-first traversal along every input symbol. Reachable states form the visited set; any state outside it is unreachable, meaning no input can ever reach it—usually modeling redundancy or a typo.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'websocket-accept',
     name: 'WebSocket Sec-WebSocket-Accept 握手头计算器',
     nameEn: 'WebSocket Sec-WebSocket-Accept Handshake Calculator',

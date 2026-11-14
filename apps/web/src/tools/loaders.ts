@@ -128,6 +128,7 @@ export const toolLoaders: Record<
   'gray-code-converter': () => import('./gray-code-converter'),
   'subnet-wildcard-mask': () => import('./subnet-wildcard-mask'),
   'line-number-tool': () => import('./line-number-tool'),
+  'fsm-simulator': () => import('./fsm-simulator'),
   'websocket-accept': () => import('./websocket-accept'),
   'mongodb-objectid': () => import('./mongodb-objectid'),
   'jsonc-to-json': () => import('./jsonc-to-json'),
