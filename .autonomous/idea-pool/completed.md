@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261115020303 | 睡眠周期与就寝 / 起床时间计算器（90 分钟周期 + 入睡缓冲） | Web Tool | Exploration | `sleep-cycle-calculator` / [PR #242](https://github.com/Happyileaf/tool-craft/pull/242) | 2026-11-15 | [详情](./idea-details/20261115020303.md) |
+| 20261115080618 | 心率训练区间计算器（最大心率估算与 Karvonen 储备心率五区间） | Web Tool | Exploration | `heart-rate-zone-calculator` / [PR #242](https://github.com/Happyileaf/tool-craft/pull/242) | 2026-11-15 | [详情](./idea-details/20261115080618.md) |
+| 20261115080619 | 齿轮传动比与转速 / 扭矩计算器（多级齿轮组） | Web Tool | Exploration | `gear-ratio-calculator` / [PR #242](https://github.com/Happyileaf/tool-craft/pull/242) | 2026-11-15 | [详情](./idea-details/20261115080619.md) |
+| 20261115080617 | 天线长度与频率 / 波长互算器（半波偶极子 / 四分之一波长垂直天线） | Web Tool | Exploration | `antenna-length-calculator` / [PR #242](https://github.com/Happyileaf/tool-craft/pull/242) | 2026-11-15 | [详情](./idea-details/20261115080617.md) |
+| 20261114200458 | 大整数任意精度四则运算计算器（BigInt 加减乘除 / 幂 / 取模 / 阶乘） | Web Tool | Exploration | `bigint-calculator` / [PR #242](https://github.com/Happyileaf/tool-craft/pull/242) | 2026-11-15 | [详情](./idea-details/20261114200458.md) |
 | 20261115020301 | 电容标码解析与容值计算器（三位数字码 / R 记法 / 容差字母） | Web Tool | Existing Gap | `capacitor-code-calculator` / [PR #239](https://github.com/Happyileaf/tool-craft/pull/239) | 2026-11-15 | [详情](./idea-details/20261115020301.md) |
 | 20261115020302 | 七段数码管字形编解码器（字符 ↔ a–g/dp 段码，共阴/共阳） | Web Tool | Existing Gap | `seven-segment-codec` / [PR #239](https://github.com/Happyileaf/tool-craft/pull/239) | 2026-11-15 | [详情](./idea-details/20261115020302.md) |
 | 20261115020304 | 轮胎规格解析与速度表误差计算器（205/55R16 ↔ 直径 / 周长 / 速度偏差） | Web Tool | Exploration | `tire-size-calculator` / [PR #239](https://github.com/Happyileaf/tool-craft/pull/239) | 2026-11-15 | [详情](./idea-details/20261115020304.md) |

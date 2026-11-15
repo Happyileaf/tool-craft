@@ -335,14 +335,9 @@
 | 20261114200453 | TLS ClientHello 解析器（SNI / 版本 / 密码套件与扩展明细） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114200453.md) |
 | 20261114200454 | HTTP/2 帧头解析与帧序列查看器（不含 HPACK 解压） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114200454.md) |
 | 20261114200457 | STL 三维模型解析与体积 / 表面积统计器 | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200457.md) |
-| 20261114200458 | 大整数任意精度四则运算计算器（BigInt 加减乘除 / 幂 / 取模 / 阶乘） | Web Tool | Exploration | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114200458.md) |
 | 20261114200459 | 曝光值（EV）与 ND 滤镜等效曝光计算器 | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200459.md) |
 | 20261114200501 | 电池续航时间计算器（容量 / 负载 / 效率 / Peukert 与串并联组包） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114200501.md) |
 | 20261114200502 | 经济补偿金与代通知金计算器（N / N+1 / 2N，含月工资上限与年限折算） | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200502.md) |
-| 20261115020303 | 睡眠周期与就寝 / 起床时间计算器（90 分钟周期 + 入睡缓冲） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115020303.md) |
 | 20261115080615 | ARP 地址解析协议报文解析与构造器（RFC 826，以太网/IPv4 字节布局） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115080615.md) |
 | 20261115080616 | MQTT 3.1.1 控制报文编解码器（CONNECT / PUBLISH / SUBSCRIBE 与 Remaining Length） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115080616.md) |
-| 20261115080617 | 天线长度与频率 / 波长互算器（半波偶极子 / 四分之一波长垂直天线） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080617.md) |
-| 20261115080618 | 心率训练区间计算器（最大心率估算与 Karvonen 储备心率五区间） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080618.md) |
-| 20261115080619 | 齿轮传动比与转速 / 扭矩计算器（多级齿轮组） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080619.md) |
 
