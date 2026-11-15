@@ -273,7 +273,7 @@
 | 20261107200151 | CRC-8 / CRC-16 / CRC-32 / CRC-64 多参数模型计算器 | Web Tool | Existing Gap | In Progress | 2026-11-07 | trae-agent | [详情](./idea-details/20261107200151.md) |
 | 20261107200152 | 培根 / 栅栏 / Playfair / Atbash 古典密码合集 | Web Tool | Exploration | Pending | 2026-11-07 | | [详情](./idea-details/20261107200152.md) |
 | 20261107200153 | HSV / HSL / HWB / Lab / LCH 多色彩空间互转器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200153.md) |
-| 20261107200154 | 平面解析几何计算器（两点斜率 / 直线方程 / 交点 / 距离 / 中点 / 平行垂直） | Web Tool | Exploration | Claimed | 2026-11-07 | trae-agent | [详情](./idea-details/20261107200154.md) |
+| 20261107200154 | 平面解析几何计算器（两点斜率 / 直线方程 / 交点 / 距离 / 中点 / 平行垂直） | Web Tool | Exploration | In Progress | 2026-11-07 | trae-agent | [详情](./idea-details/20261107200154.md) |
 | 20261107200155 | ICMPv4 Echo（Ping）报文构建与十六进制解析器 | Web Tool | External Reference | Pending | 2026-11-07 | | [详情](./idea-details/20261107200155.md) |
 | 20261107200157 | Markdown 表格 ↔ CSV / JSON / HTML / LaTeX 多向转换器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200157.md) |
 | 20261107200158 | HSL / HSV 多色彩空间调色板生成与 CSS 设计令牌导出器 | Web Tool | Exploration | Pending | 2026-11-07 | | [详情](./idea-details/20261107200158.md) |

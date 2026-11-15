@@ -37273,6 +37273,111 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'analytic-geometry-calculator',
+    name: '平面解析几何计算器',
+    nameEn: 'Analytic Geometry Calculator',
+    description:
+      '输入两点快速得到距离、中点、斜率与一般式 / 斜截式 / 点斜式三种直线方程，再求第二条直线的交点与平行、垂直、重合关系，并计算点到直线距离与垂足。',
+    descriptionEn:
+      'Enter two points to get distance, midpoint, slope, and the general, slope-intercept, and point-slope line equations, then find the intersection and parallel/perpendicular/coincident relation with a second line plus point-to-line distance and the perpendicular foot.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/analytic-geometry-calculator',
+    iconName: 'Triangle',
+    tags: ['解析几何', '直线方程', '交点', '距离', '斜率'],
+    tagsEn: ['Analytic Geometry', 'Line Equation', 'Intersection', 'Distance', 'Slope'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'two-points',
+    doc: {
+      zh: {
+        whatIsIt:
+          '平面解析几何计算器面向中学数学、工程制图与日常坐标计算，把两点确定直线、两直线位置关系与点到直线距离这些常见问题集中在一处完成。输入 P₁(x₁, y₁) 与 P₂(x₂, y₂) 后，工具给出两点距离、中点坐标、斜率以及一般式 Ax+By+C=0、斜截式与点斜式三种写法；第二条直线既可输入一般式系数，也可再输入两点。工具会判定两线相交、平行或重合，相交时给出精确交点，并支持选择任意一条直线计算点到直线的距离与垂足。所有结果同时给出精确分数与小数，竖直线、两点重合、平行无交点等边界情况都有明确提示而不是除零报错。',
+        coreFeatures: [
+          '两点基础量：一次算出两点距离、中点坐标与斜率，竖直线提示斜率不存在',
+          '三种直线方程：同时输出一般式、斜截式与点斜式，整数系数自动约分',
+          '两线位置关系：按行列式判定相交、平行或重合，避免浮点误判',
+          '精确交点：相交时给出 x、y 的分数与小数双表示',
+          '点到直线距离：给出距离值、垂足坐标与过该点的垂线方程',
+          '双录入方式：第二条直线支持一般式系数或两点式输入',
+        ],
+        howToUse: [
+          '在第一组面板填写 P₁ 与 P₂ 的 x、y 坐标',
+          '查看距离、中点、斜率以及三种直线方程写法',
+          '选择一般式或两点式填写第二条直线，查看位置关系与交点',
+          '在距离面板填写点的坐标并选择目标直线，得到距离、垂足与垂线方程',
+        ],
+        useCases: [
+          '中学解析几何作业中核对直线方程与交点结果',
+          '工程制图中计算两条参考线的交点与点到直线的偏移距离',
+          '判断两条路径是否平行，或是否实际为同一条直线',
+          '把斜率、截距与一般式系数互相转换并保留分数形式',
+        ],
+        privacyNote: '所有坐标与几何运算均在浏览器本地完成，不会上传任何数据。',
+        faqs: [
+          {
+            question: '为什么竖直线没有斜率？',
+            answer:
+              '斜率为 Δy/Δx，竖直线两点 x 坐标相同，Δx 为 0，因此斜率不存在。工具会改用 x = 常数 的一般式表示，并跳过斜截式输出。',
+          },
+          {
+            question: '平行和重合怎么区分？',
+            answer:
+              '先比较方向向量对应的行列式，若为 0 说明方向相同；再比较常数项。常数项也成比例时两条直线完全重合，否则只是平行而无交点。',
+          },
+          {
+            question: '分数结果是精确值吗？',
+            answer:
+              '当输入为整数或有限小数时，工具用连分数把结果还原为最简分数并同时给出小数近似。无理数距离只保留小数表示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Analytic Geometry Calculator handles the classic coordinate-plane tasks in one place: defining a line from two points, relating two lines, and measuring point-to-line distance. Given P₁(x₁, y₁) and P₂(x₂, y₂), it returns the distance, midpoint, slope, and three equation forms (general Ax+By+C=0, slope-intercept, and point-slope). The second line can be entered as general coefficients or as another pair of points; the tool classifies the pair as intersecting, parallel, or coincident, gives an exact intersection when it exists, and computes point-to-line distance with the perpendicular foot for either line. Results show exact fractions alongside decimals, and vertical lines, coincident points, and parallel lines produce explicit messages instead of divide-by-zero errors.',
+        coreFeatures: [
+          'Two-point basics: distance, midpoint, and slope, with a clear note when the slope is undefined',
+          'Three equation forms: general, slope-intercept, and point-slope with integer coefficients reduced automatically',
+          'Line relation: determinant-based classification of intersecting, parallel, or coincident lines',
+          'Exact intersection: fractional and decimal x/y values for intersecting lines',
+          'Point-to-line distance: distance, perpendicular foot, and the perpendicular line through the point',
+          'Flexible second line: general coefficients or a two-point entry mode',
+        ],
+        howToUse: [
+          'Enter the x and y coordinates of P₁ and P₂ in the first panel',
+          'Review the distance, midpoint, slope, and the three equation forms',
+          'Enter the second line as general coefficients or two points to see its relation and intersection',
+          'Enter a point and pick a target line to get the distance, foot, and perpendicular equation',
+        ],
+        useCases: [
+          'Checking line equations and intersections in coordinate-geometry homework',
+          'Finding the crossing point of two reference lines and the offset distance in drafting',
+          'Testing whether two paths are parallel or actually the same line',
+          'Converting between slope, intercept, and general-form coefficients while keeping fractions',
+        ],
+        privacyNote:
+          'All coordinates and geometry computations run locally in your browser; no data is uploaded.',
+        faqs: [
+          {
+            question: 'Why does a vertical line have no slope?',
+            answer:
+              'Slope is Δy/Δx. A vertical line has the same x for both points, so Δx is 0 and the slope is undefined. The tool switches to the general form x = constant and omits the slope-intercept output.',
+          },
+          {
+            question: 'How are parallel and coincident lines distinguished?',
+            answer:
+              'The direction determinant is checked first; zero means the directions match. The constant terms are then compared: proportional constants mean the lines coincide, otherwise they are parallel with no intersection.',
+          },
+          {
+            question: 'Are the fraction results exact?',
+            answer:
+              'For integer or finite-decimal inputs, a continued-fraction expansion recovers the simplest fraction alongside a decimal approximation. Irrational distances are shown as decimals only.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

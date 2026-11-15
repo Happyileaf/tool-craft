@@ -394,4 +394,5 @@ export const toolLoaders: Record<
   'fov-focal-length-calculator': () => import('./fov-focal-length-calculator'),
   'battery-runtime-calculator': () => import('./battery-runtime-calculator'),
   'bakers-percentage-calculator': () => import('./bakers-percentage-calculator'),
+  'analytic-geometry-calculator': () => import('./analytic-geometry-calculator'),
 };
