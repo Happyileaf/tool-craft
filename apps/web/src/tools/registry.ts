@@ -37378,6 +37378,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'endianness-converter',
+    name: '字节序转换器',
+    nameEn: 'Endianness Converter',
+    description:
+      '在十六进制字节序列与 16 / 32 / 64 位整数之间按大端、小端双向编解码，支持有无符号补码解释、整串字节反转与 16 位半字交换，64 位使用 BigInt 保证精度，并对奇数字节、非法字符给出明确告警。',
+    descriptionEn:
+      'Bidirectionally converts between hex byte sequences and 16/32/64-bit integers in big- and little-endian order, with signed two’s-complement interpretation, full byte reversal and 16-bit halfword swap. BigInt keeps 64-bit values exact and malformed input gets precise warnings.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/endianness-converter',
+    iconName: 'Binary',
+    tags: ['字节序', '大小端', 'BigInt', '十六进制', '补码', '字节反转'],
+    tagsEn: ['Endianness', 'Big Endian', 'Little Endian', 'BigInt', 'Hex', 'Two’s Complement'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'DE AD BE EF',
+    doc: {
+      zh: {
+        whatIsIt:
+          '字节序转换器是一款纯浏览器本地工具，用于在十六进制字节序列与 16 / 32 / 64 位整数之间做双向编解码。同一串字节会同时给出大端与小端两种解释值，同一个整数也会同时给出大端与小端两种字节序列；有符号模式按二进制补码解释，64 位运算走 BigInt 路径，避免 JavaScript Number 的 2^53 安全整数上限导致精度丢失。',
+        coreFeatures: [
+          '双向转换：字节序列 → 整数，整数 → 大端 / 小端字节序列',
+          '16 / 32 / 64 位位宽与有符号、无符号切换，补码边界正确',
+          '输入容错：忽略空白、逗号、下划线与 0x 前缀，奇数位自动补前导 0 并告警',
+          '字节重排：整串反转与按 16 位半字交换（CDAB 风格）',
+          '多元素模式：按位宽把长字节序列切分为多个元素逐个解释，末尾余量显式提示',
+        ],
+        howToUse: [
+          '选择「字节 → 整数」，粘贴如 DE AD BE EF 的十六进制序列，设定位宽与符号',
+          '查看大端与小端解释值、整串反转与半字交换结果，以及切分后的元素列表',
+          '或选择「整数 → 字节」，输入十进制或 0x 整数，得到两种端序的字节序列',
+          '点击示例标签快速载入典型向量，使用复制按钮带走结果',
+        ],
+        useCases: [
+          '嵌入式寄存器读数与协议字段的大端 / 小端核对',
+          '排查二进制文件、抓包载荷中的多字节字段',
+          '跨端序数据交换时生成或校验字节序列',
+          '教学演示补码、端序与半字交换的关系',
+        ],
+        privacyNote:
+          '所有转换均在浏览器本地基于纯函数完成，不发起网络请求，不发送或持久化输入。',
+        faqs: [
+          {
+            question: '为什么需要 BigInt？',
+            answer:
+              'JavaScript 的 Number 只能精确表示到 2^53-1，64 位无符号整数 0xFFFFFFFFFFFFFFFF 会丢精度。本工具在 64 位路径使用 BigInt 位运算，因此能精确输出 18446744073709551615。',
+          },
+          {
+            question: '有符号模式下的 0x8000 为什么是 -32768？',
+            answer:
+              '有符号整数采用二进制补码：最高位为符号位，0x8000 对应 16 位补码的最小值 -32768，0xFFFF 对应 -1。切换到无符号时它们分别解释为 32768 与 65535。',
+          },
+          {
+            question: '奇数个十六进制位会怎样处理？',
+            answer:
+              '解析器会在最前面补一个 0 凑成完整字节，例如 ABC 被当作 0A BC，并给出告警，避免静默改变数据含义。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Endianness Converter runs entirely in your browser and bidirectionally decodes hex byte sequences and 16/32/64-bit integers. The same bytes are shown under both big-endian and little-endian interpretation, and the same integer is emitted as both big-endian and little-endian byte sequences. Signed modes use two’s complement, and the 64-bit path uses BigInt so values beyond JavaScript’s 2^53 safe-integer limit stay exact.',
+        coreFeatures: [
+          'Two directions: bytes to integers and integers to big-/little-endian byte sequences',
+          '16/32/64-bit widths with signed and unsigned modes and correct two’s-complement boundaries',
+          'Tolerant parsing: ignores whitespace, commas, underscores and 0x prefixes; pads odd nibble counts with a warning',
+          'Byte reordering: full reversal and 16-bit halfword swap (CDAB style)',
+          'Multi-element mode splits long sequences by width, interpreting each element and flagging any trailing remainder',
+        ],
+        howToUse: [
+          'Choose "Bytes to integer", paste a sequence such as DE AD BE EF and set the width and sign',
+          'Read the big- and little-endian values, reversed and halfword-swapped bytes, and the split element list',
+          'Or choose "Integer to bytes", enter a decimal or 0x integer and get both byte orders',
+          'Click a sample tag to load a typical vector, then copy the result with the buttons',
+        ],
+        useCases: [
+          'Checking embedded register reads and protocol fields across endianness',
+          'Investigating multi-byte fields in binary files and captured payloads',
+          'Generating or verifying byte sequences for cross-endian data exchange',
+          'Teaching two’s complement, endianness and halfword swapping',
+        ],
+        privacyNote:
+          'All conversions are pure functions running locally in your browser; no network request is made and no input is sent or persisted.',
+        faqs: [
+          {
+            question: 'Why is BigInt needed?',
+            answer:
+              'JavaScript Number is exact only up to 2^53-1, so the 64-bit unsigned value 0xFFFFFFFFFFFFFFFF would lose precision. This tool uses BigInt bit operations for 64-bit values and therefore prints 18446744073709551615 exactly.',
+          },
+          {
+            question: 'Why is 0x8000 equal to -32768 in signed mode?',
+            answer:
+              'Signed integers use two’s complement: the top bit is the sign bit, so 0x8000 is the 16-bit minimum -32768 and 0xFFFF is -1. In unsigned mode they are interpreted as 32768 and 65535.',
+          },
+          {
+            question: 'What happens with an odd number of hex digits?',
+            answer:
+              'A leading zero is prepended to form whole bytes — for example ABC becomes 0A BC — with a warning, so the data meaning is never changed silently.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

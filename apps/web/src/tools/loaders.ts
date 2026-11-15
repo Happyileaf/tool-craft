@@ -395,4 +395,5 @@ export const toolLoaders: Record<
   'battery-runtime-calculator': () => import('./battery-runtime-calculator'),
   'bakers-percentage-calculator': () => import('./bakers-percentage-calculator'),
   'analytic-geometry-calculator': () => import('./analytic-geometry-calculator'),
+  'endianness-converter': () => import('./endianness-converter'),
 };
