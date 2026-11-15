@@ -397,4 +397,5 @@ export const toolLoaders: Record<
   'analytic-geometry-calculator': () => import('./analytic-geometry-calculator'),
   'endianness-converter': () => import('./endianness-converter'),
   'windows-posix-path-converter': () => import('./windows-posix-path-converter'),
+  'shell-argument-quoter': () => import('./shell-argument-quoter'),
 };

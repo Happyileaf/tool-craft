@@ -37586,6 +37586,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'shell-argument-quoter',
+    name: 'Shell 参数引用与转义器',
+    nameEn: 'Shell Argument Quoter',
+    description:
+      '把任意字符串转换成 POSIX sh、Windows CMD 或 PowerShell 安全可用的命令参数，并支持反向去引用还原；自动处理单引号断引、$’…’ 控制字符、CMD 双引号与 %VAR% 展开风险、PowerShell 单引号双写，支持逐行批量与一键互换，纯本地不执行命令。',
+    descriptionEn:
+      'Turns any string into a safe command argument for POSIX sh, Windows CMD or PowerShell and unquotes it back. Handles single-quote splitting, $\'…\' control characters, CMD double quotes and %VAR% expansion risks, PowerShell quote doubling, plus line-based batch mode and one-click swap — all locally, without executing anything.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/shell-argument-quoter',
+    iconName: 'Code',
+    tags: ['Shell', '转义', '引用', 'Bash', 'CMD', 'PowerShell'],
+    tagsEn: ['Shell', 'Escaping', 'Quoting', 'Bash', 'CMD', 'PowerShell'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: "it's",
+    doc: {
+      zh: {
+        whatIsIt:
+          'Shell 参数引用与转义器是一款纯浏览器本地工具，用于把任意字符串变成 POSIX sh、Windows CMD 或 PowerShell 中安全可用的单个命令参数，也能把已引用的参数字面量还原为原始字符串。它不会执行任何命令，也不解析完整命令行（管道、重定向、多条命令均不在范围内），只专注于单个参数的引用规则与往返无损转换。',
+        coreFeatures: [
+          '三种目标 Shell：POSIX sh / Bash、Windows CMD、PowerShell',
+          '双向转换：原文 → 引用参数，引用参数 → 原文，一键互换结果与方向',
+          'POSIX 单引号包裹、内部单引号按 \'\\\'\' 断开，控制字符改用 $\'…\'',
+          'CMD 双引号包裹，提示 %VAR% / !VAR! 展开风险与内部双引号兼容性限制',
+          'PowerShell 单引号包裹与内部单引号双写；支持逐行批量与空参数',
+        ],
+        howToUse: [
+          '选择目标 Shell 与转换方向',
+          '在输入框粘贴原始字符串或已引用的参数；需要批量时开启「每行一个参数」',
+          '查看每个参数的引用 / 还原结果与告警，按需复制或复制全部',
+          '点击「结果作为输入并切换方向」可立即验证往返是否无损',
+        ],
+        useCases: [
+          '生成含空格、引号、通配符或中文参数的可复制命令片段',
+          '排查「参数含空格 / 引号导致命令失败」的问题',
+          '编写跨平台脚本与 CI 配置时确认各 Shell 的引用写法',
+          '验证已有引用字符串能否无损还原为原始参数',
+        ],
+        privacyNote:
+          '所有处理均在浏览器本地基于纯函数完成，不执行任何命令、不发起网络请求，不发送或持久化输入。',
+        faqs: [
+          {
+            question: '为什么 POSIX 的单引号要写成 \'\\\'\'？',
+            answer:
+              'POSIX 单引号内无法再出现单引号，也没有反斜杠转义。通用写法是结束当前单引号、插入一个转义的单引号、再开启新的单引号，即 it\'s 写成 \'it\'\\\'\'s\'。本工具会自动完成这一断开。',
+          },
+          {
+            question: 'CMD 的双引号内能转义双引号吗？',
+            answer:
+              'cmd.exe 解析器本身不支持在双引号内用反斜杠转义双引号。本工具按多数程序（C 运行时）的约定输出 \\"，并给出告警，因此在带内部双引号时应在实际目标程序上验证。',
+          },
+          {
+            question: '为什么含换行时要使用 $\'…\'？',
+            answer:
+              '普通单引号虽能包含换行，但可读性差且容易在复制时出错。Bash 的 ANSI-C 引用 $\'…\' 用 \\n、\\t 等转义表达控制字符，结果更稳定清晰；去引用时本工具会还原为真实换行。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Shell Argument Quoter runs entirely in your browser and converts any string into a single safe command argument for POSIX sh, Windows CMD or PowerShell, and unquotes an already-quoted literal back to the original string. It executes nothing and does not parse whole command lines (pipes, redirections and multiple commands are out of scope) — it focuses on per-argument quoting rules and lossless round trips.',
+        coreFeatures: [
+          'Three target shells: POSIX sh/Bash, Windows CMD and PowerShell',
+          'Two directions — raw to quoted, quoted to raw — with one-click swap of results and direction',
+          'POSIX single-quote wrapping with \'\\\'\' splitting for inner quotes and $\'…\' for control characters',
+          'CMD double-quote wrapping with warnings for %VAR% / !VAR! expansion and inner-quote compatibility limits',
+          'PowerShell single-quote wrapping with quote doubling, plus line-based batch mode and empty arguments',
+        ],
+        howToUse: [
+          'Choose the target shell and direction',
+          'Paste a raw string or a quoted literal; enable "one argument per line" for batch mode',
+          'Review the quoted or unquoted result and warnings for each argument, then copy one or all',
+          'Click "Use results as input and swap direction" to verify a lossless round trip immediately',
+        ],
+        useCases: [
+          'Generating copy-ready command fragments with spaces, quotes, wildcards or non-ASCII text',
+          'Debugging commands that fail because an argument contains spaces or quotes',
+          'Confirming quoting styles for cross-platform scripts and CI configs',
+          'Verifying that an existing quoted string unquotes losslessly',
+        ],
+        privacyNote:
+          'All processing is pure functions running locally in your browser; no command is executed, no network request is made, and no input is sent or persisted.',
+        faqs: [
+          {
+            question: 'Why is a POSIX single quote written as \'\\\'\'?',
+            answer:
+              'Inside POSIX single quotes no single quote can appear and backslash has no special meaning. The portable idiom closes the current quote, inserts an escaped quote and opens a new one, so it\'s becomes \'it\'\\\'\'s\'. This tool performs that splitting automatically.',
+          },
+          {
+            question: 'Can double quotes be escaped inside CMD double quotes?',
+            answer:
+              'The cmd.exe parser does not support escaping a double quote with a backslash inside double quotes. This tool follows the common C-runtime convention of emitting \\" and warns about it, so verify against your actual target program when inner quotes are involved.',
+          },
+          {
+            question: 'Why use $\'…\' when the input contains a newline?',
+            answer:
+              'Plain single quotes can contain a newline but are hard to read and easy to corrupt when copied. Bash ANSI-C quoting $\'…\' expresses control characters as \\n, \\t and similar escapes for a more stable result; this tool restores real newlines when unquoting.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
