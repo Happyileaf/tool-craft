@@ -345,4 +345,5 @@
 | 20261115080617 | 天线长度与频率 / 波长互算器（半波偶极子 / 四分之一波长垂直天线） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080617.md) |
 | 20261115080618 | 心率训练区间计算器（最大心率估算与 Karvonen 储备心率五区间） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080618.md) |
 | 20261115080619 | 齿轮传动比与转速 / 扭矩计算器（多级齿轮组） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080619.md) |
+| 20261115140201 | 简体中文 ↔ 繁体中文转换器（词组级映射，含台湾 / 香港变体与地区用词） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115140201.md) |
 
