@@ -4,6 +4,7 @@ import { DEFAULT_SAMPLE_INPUT as CHANGELOG_SAMPLE_INPUT } from './changelog-gene
 import { SAMPLE_PLAIN_LYRICS } from './lrc-parser/constants';
 import { DEFAULT_PCAP_HEX } from './pcap-parser/constants';
 import { DEFAULT_RTU_HEX } from './modbus-frame-codec/constants';
+import { SAMPLE_ARP_REQUEST } from './arp-packet-codec/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -37685,6 +37686,112 @@ sqrt(area) + 2 * r`,
             question: 'Why use $\'…\' when the input contains a newline?',
             answer:
               'Plain single quotes can contain a newline but are hard to read and easy to corrupt when copied. Bash ANSI-C quoting $\'…\' expresses control characters as \\n, \\t and similar escapes for a more stable result; this tool restores real newlines when unquoting.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'arp-packet-codec',
+    name: 'ARP 报文解析与构造器',
+    nameEn: 'ARP Packet Codec',
+    description:
+      '解析与构造以太网 + IPv4 场景下的 28 字节 ARP（RFC 826）报文：逐字段查看硬件类型、协议类型、HLEN/PLEN、操作码与发送方 / 目标方 MAC、IP，并提供字段布局表、长度与类型校验定位、广播目标提示；纯本地计算，不上传报文。',
+    descriptionEn:
+      'Parse and build 28-byte ARP (RFC 826) packets for Ethernet + IPv4: inspect hardware type, protocol type, HLEN/PLEN, operation code and sender/target MAC and IP, with a byte-layout table, length and type validation, and broadcast-target hints — all locally, without uploading packets.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/arp-packet-codec',
+    iconName: 'Globe',
+    tags: ['ARP', 'RFC 826', 'MAC', 'IPv4', '报文解析', '网络'],
+    tagsEn: ['ARP', 'RFC 826', 'MAC', 'IPv4', 'Packet', 'Network'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: SAMPLE_ARP_REQUEST,
+    doc: {
+      zh: {
+        whatIsIt:
+          'ARP 报文解析与构造器是一款纯浏览器本地工具，用于处理以太网 + IPv4 场景下的 ARP（RFC 826）报文体。粘贴十六进制报文即可逐字段解析硬件类型、协议类型、硬件地址长度、协议地址长度、操作码（request / reply）以及发送方与目标方的 MAC 和 IP；也可以按字段直接构造标准的 28 字节 ARP 请求与应答。工具只处理 ARP 报文体，不解析外层以太网帧头，也不会发起任何网络请求。',
+        coreFeatures: [
+          '双向编解码：十六进制报文 → 字段解析，表单字段 → 28 字节报文',
+          '字段布局视图：按偏移与长度列出 HTYPE、PTYPE、HLEN、PLEN、OPER、SHA、SPA、THA、TPA',
+          '校验与定位：长度不足、非法十六进制字符、PTYPE 非 0x0800、HLEN / PLEN 不匹配均给出明确提示',
+          '操作码识别：区分 ARP 请求（who-has，操作码 1）与应答（is-at，操作码 2）',
+          '广播提示：目标 MAC 为 FF:FF:FF:FF:FF:FF 时说明该请求发往链路上的所有主机',
+          '一键回填：把解析结果直接填入构造器，便于修改后重新生成',
+        ],
+        howToUse: [
+          '选择「解析报文」或「构造报文」模式',
+          '解析模式下粘贴十六进制报文（支持空格、逗号、冒号分隔与 0x 前缀），或点击示例标签载入固定向量',
+          '构造模式下填写操作码、发送方 MAC/IP 与目标 MAC/IP，目标 MAC 通常使用广播地址',
+          '查看解析字段、告警与构造出的字节网格，点击按钮复制空格分隔或连续十六进制结果',
+        ],
+        useCases: [
+          '网络课程与协议教学中演示 ARP 报文的字段结构',
+          '抓包分析时快速核对 ARP 请求 / 应答的地址字段',
+          '构造用于测试环境的 ARP 报文十六进制样本',
+          '调试局域网内地址解析异常（who-has 与 is-at 配对）',
+        ],
+        privacyNote:
+          '所有解析与构造均在浏览器本地基于纯函数完成，不上传报文、不发起网络请求，也不持久化输入内容。',
+        faqs: [
+          {
+            question: '为什么报文固定是 28 字节？',
+            answer:
+              '以太网 + IPv4 场景下 HTYPE=1、PTYPE=0x0800、HLEN=6、PLEN=4，字段总长为 2+2+1+1+2+6+4+6+4=28 字节。若报文中的 HLEN / PLEN 不同，本工具会按实际长度解析并给出告警。',
+          },
+          {
+            question: '解析时需要包含以太网帧头吗？',
+            answer:
+              '不需要。本工具只处理 ARP 报文体，请从硬件类型字段开始粘贴。以太网帧头（含 0x0806 EtherType）可用以太网帧解析工具单独处理。',
+          },
+          {
+            question: '构造 ARP 请求时目标 MAC 应该填什么？',
+            answer:
+              '请求（who-has）通常把目标 MAC 填为广播地址 FF:FF:FF:FF:FF:FF；应答（is-at）则填入请求方的实际 MAC。工具会在使用广播地址时给出提示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'ARP Packet Codec runs entirely in your browser and processes ARP (RFC 826) payloads for the Ethernet + IPv4 case. Paste a hexadecimal packet to inspect hardware type, protocol type, hardware and protocol address lengths, the operation code (request / reply), and the sender and target MAC and IP field by field; or build a standard 28-byte ARP request or reply from form fields. It handles only the ARP payload, does not parse the outer Ethernet header, and never makes a network request.',
+        coreFeatures: [
+          'Two-way codec: hexadecimal packet to parsed fields, and form fields to a 28-byte packet',
+          'Byte-layout view listing HTYPE, PTYPE, HLEN, PLEN, OPER, SHA, SPA, THA and TPA by offset and length',
+          'Validation and pinpointing for short input, invalid hex characters, non-0x0800 PTYPE, and HLEN / PLEN mismatches',
+          'Operation detection: distinguishes ARP request (who-has, code 1) from reply (is-at, code 2)',
+          'Broadcast hint when the target MAC is FF:FF:FF:FF:FF:FF',
+          'One-click transfer: feed parsed fields into the builder for quick edits and regeneration',
+        ],
+        howToUse: [
+          'Choose the "Parse packet" or "Build packet" mode',
+          'In parse mode paste a hexadecimal packet (spaces, commas, colons and a 0x prefix are accepted) or load a sample vector',
+          'In build mode fill in the operation code, sender MAC/IP and target MAC/IP; the target MAC is usually the broadcast address',
+          'Review parsed fields, warnings and the generated byte grid, then copy the space-separated or compact hex output',
+        ],
+        useCases: [
+          'Teaching the ARP packet layout in networking courses',
+          'Checking ARP request / reply address fields during packet analysis',
+          'Generating ARP packet hex samples for test environments',
+          'Debugging local-network address resolution issues (who-has / is-at pairs)',
+        ],
+        privacyNote:
+          'All parsing and building are pure functions running locally in your browser; no packet is uploaded, no network request is made, and no input is persisted.',
+        faqs: [
+          {
+            question: 'Why is the packet exactly 28 bytes?',
+            answer:
+              'For Ethernet + IPv4, HTYPE=1, PTYPE=0x0800, HLEN=6 and PLEN=4, so the fields total 2+2+1+1+2+6+4+6+4=28 bytes. If HLEN / PLEN differ, the tool parses by the actual lengths and raises a warning.',
+          },
+          {
+            question: 'Should the Ethernet header be included?',
+            answer:
+              'No. This tool handles the ARP payload only; paste starting from the hardware type field. Use a separate Ethernet frame tool for the frame header including the 0x0806 EtherType.',
+          },
+          {
+            question: 'What target MAC should an ARP request use?',
+            answer:
+              'A request (who-has) normally sets the target MAC to the broadcast address FF:FF:FF:FF:FF:FF, while a reply (is-at) fills in the requester\'s real MAC. The tool warns when the broadcast address is used.',
           },
         ],
       },
