@@ -5,6 +5,7 @@ import { SAMPLE_PLAIN_LYRICS } from './lrc-parser/constants';
 import { DEFAULT_PCAP_HEX } from './pcap-parser/constants';
 import { DEFAULT_RTU_HEX } from './modbus-frame-codec/constants';
 import { SAMPLE_ARP_REQUEST } from './arp-packet-codec/constants';
+import { DEFAULT_SAMPLE as JSON_TO_CPP_SAMPLE } from './json-to-cpp/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -37792,6 +37793,112 @@ sqrt(area) + 2 * r`,
             question: 'What target MAC should an ARP request use?',
             answer:
               'A request (who-has) normally sets the target MAC to the broadcast address FF:FF:FF:FF:FF:FF, while a reply (is-at) fills in the requester\'s real MAC. The tool warns when the broadcast address is used.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-to-cpp',
+    name: 'JSON 转 C++ struct 生成器',
+    nameEn: 'JSON to C++ Struct Generator',
+    description:
+      '粘贴 JSON 样本即可生成 C++17 数据模型：按范围推断 int32_t / int64_t、浮点用 double、数组用 std::vector、嵌套对象生成独立 struct、缺失或 null 字段用 std::optional，字段名按 camelCase 规范化并规避 C++ 关键字，支持可选命名空间与类型推断告警。',
+    descriptionEn:
+      'Paste a JSON sample to generate C++17 data models: int32_t / int64_t by range, double for floats, std::vector for arrays, separate structs for nested objects, std::optional for missing or null fields, camelCase field names that avoid C++ keywords, an optional namespace and inference warnings.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-cpp',
+    iconName: 'FileCode',
+    tags: ['JSON', 'C++', 'C++17', 'struct', '代码生成', '类型推断'],
+    tagsEn: ['JSON', 'C++', 'C++17', 'Struct', 'Code Generation', 'Type Inference'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: JSON_TO_CPP_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON 转 C++ struct 生成器是一款纯浏览器本地工具，用于把接口返回的 JSON 样本快速落成 C++17 数据模型。它会递归推断字段类型并按 C++ 约定生成 struct：整数根据取值范围选择 int32_t 或 int64_t，浮点数使用 double，字符串使用 std::string，布尔使用 bool，数组使用 std::vector<T>，嵌套对象展开为独立 struct，缺失字段或 null 值生成 std::optional<T>。所有计算都在浏览器内完成，不上传 JSON。',
+        coreFeatures: [
+          '按范围推断整数：int32_t 与 int64_t 自动区分，超出安全整数范围时提示改用 std::string',
+          '可空字段处理：多个样本中缺失或值为 null 的属性生成 std::optional<T>',
+          '数组与嵌套对象：std::vector<T> 与独立 struct，结构定义按依赖顺序输出',
+          '字段名规范化：camelCase 转换、非法字符替换、C++ 关键字自动加后缀并列入告警',
+          '可选命名空间与缩进宽度，生成带 cstdint / optional / string / vector / any 前置包含的完整代码',
+          '空数组、异构数组、字段重名等边界情况给出明确告警',
+        ],
+        howToUse: [
+          '在左侧粘贴 JSON 文本，工具会实时解析并生成 C++ 代码',
+          '按需填写根名称（默认 Root）、命名空间（留空不包裹）与缩进宽度',
+          '空数组可选择回退为 std::vector<std::any> 或 std::any',
+          '查看右上角告警标签确认类型推断与字段改名记录，满意后点击「复制结果」',
+        ],
+        useCases: [
+          '把 REST / GraphQL 接口的 JSON 响应转换为 C++ 请求 / 响应结构体',
+          '为嵌入式或桌面客户端手写 JSON 映射结构时减少样板代码',
+          '对照接口文档快速生成 C++17 类型定义草案',
+          '检查 JSON 字段命名是否符合 C++ 标识符规范',
+        ],
+        privacyNote:
+          '所有 JSON 解析与代码生成均在浏览器本地基于纯函数完成，不上传数据、不发起网络请求，也不持久化输入内容。',
+        faqs: [
+          {
+            question: '为什么整数有时是 int32_t，有时是 int64_t？',
+            answer:
+              '工具会检查样本中该字段的所有整数值，全部落在 -2147483648 到 2147483647 之间时使用 int32_t，否则使用 int64_t；如果超出 JavaScript 安全整数范围，会提示改用 std::string 以避免精度丢失。',
+          },
+          {
+            question: '什么时候会生成 std::optional？',
+            answer:
+              '当同一字段在多个对象样本中缺失，或者值为 null 时会生成 std::optional<T>；如果所有样本都完整出现且非 null，则生成裸类型。',
+          },
+          {
+            question: '生成的代码需要 C++17 吗？',
+            answer:
+              '是的。std::optional 与 std::any 都是 C++17 引入的特性，请使用 -std=c++17 或更高标准编译；前置包含指令已按实际使用的类型自动生成。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'JSON to C++ Struct Generator runs entirely in your browser and turns a JSON sample into C++17 data models. It recursively infers field types using C++ conventions: integers become int32_t or int64_t by range, floats use double, strings use std::string, booleans use bool, arrays use std::vector<T>, nested objects become separate structs, and fields that are missing or null become std::optional<T>. Everything runs locally and the JSON is never uploaded.',
+        coreFeatures: [
+          'Range-aware integers: int32_t versus int64_t automatically, with a std::string hint when values exceed the safe integer range',
+          'Optional handling: properties missing from some samples or set to null become std::optional<T>',
+          'Arrays and nested objects: std::vector<T> plus separate structs emitted in dependency order',
+          'Field normalization: camelCase conversion, invalid character replacement, and keyword suffixing with warnings',
+          'Optional namespace and indentation width, with the required cstdint / optional / string / vector / any includes',
+          'Clear warnings for empty arrays, heterogeneous arrays, duplicate normalized field names and similar edge cases',
+        ],
+        howToUse: [
+          'Paste JSON on the left; the tool parses it and generates C++ code in real time',
+          'Set the root name (default Root), an optional namespace and the indent width',
+          'Choose how empty arrays fall back: std::vector<std::any> or std::any',
+          'Review the warning tags, then click "Copy result"',
+        ],
+        useCases: [
+          'Converting REST / GraphQL JSON responses into C++ request and response structs',
+          'Reducing boilerplate when writing JSON mapping types for embedded or desktop clients',
+          'Drafting C++17 type definitions from API documentation',
+          'Checking that JSON field names map to valid C++ identifiers',
+        ],
+        privacyNote:
+          'All JSON parsing and code generation are pure functions running locally in your browser; nothing is uploaded, no network request is made, and no input is persisted.',
+        faqs: [
+          {
+            question: 'Why is an integer sometimes int32_t and sometimes int64_t?',
+            answer:
+              'The tool checks every sampled value for that field. If all values fit between -2147483648 and 2147483647 it emits int32_t, otherwise int64_t; values beyond the JavaScript safe integer range fall back to std::string with a warning to avoid precision loss.',
+          },
+          {
+            question: 'When is std::optional generated?',
+            answer:
+              'A field becomes std::optional<T> when it is missing from some object samples or its value is null. If it appears with a non-null value in every sample, the plain type is used.',
+          },
+          {
+            question: 'Does the generated code require C++17?',
+            answer:
+              'Yes. std::optional and std::any are C++17 features, so compile with -std=c++17 or newer. The includes are emitted automatically based on the types actually used.',
           },
         ],
       },

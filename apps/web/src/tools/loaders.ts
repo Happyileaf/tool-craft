@@ -399,4 +399,5 @@ export const toolLoaders: Record<
   'windows-posix-path-converter': () => import('./windows-posix-path-converter'),
   'shell-argument-quoter': () => import('./shell-argument-quoter'),
   'arp-packet-codec': () => import('./arp-packet-codec'),
+  'json-to-cpp': () => import('./json-to-cpp'),
 };
