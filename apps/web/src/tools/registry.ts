@@ -37061,6 +37061,111 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'battery-runtime-calculator',
+    name: '电池续航时间计算器',
+    nameEn: 'Battery Runtime Calculator',
+    description:
+      '按电池容量（mAh / Ah / Wh）、负载电流或功率、转换效率与放电深度估算续航时间与可用能量，支持串并联电池组等效参数、Peukert 高倍率容量衰减修正以及不同放电倍率的续航对比表。',
+    descriptionEn:
+      'Estimate battery runtime and usable energy from capacity (mAh / Ah / Wh), load current or power, conversion efficiency, and depth of discharge; support series/parallel pack equivalents, Peukert high-rate capacity derating, and a runtime comparison table across discharge rates.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/battery-runtime-calculator',
+    iconName: 'Zap',
+    tags: ['电池', '续航', '容量', 'Peukert', '串并联'],
+    tagsEn: ['Battery', 'Runtime', 'Capacity', 'Peukert', 'Series Parallel'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'current',
+    doc: {
+      zh: {
+        whatIsIt:
+          '电池续航计算器把电池标称容量、负载功耗与放电条件统一换算为预计可用时间。它支持 mAh、Ah、Wh 三种容量单位，可输入负载电流或负载功率，并计入转换效率与放电深度；对多节电池可按串联提升电压、并联提升容量的规则生成等效电池组。工具还提供 Peukert 指数修正，用于描述高倍率放电时有效容量下降的现象，并生成 0.1C 到 2C 的续航对比表，适合移动电源、太阳能储能、航模与小型电子项目的续航估算。',
+        coreFeatures: [
+          '多单位容量：mAh、Ah、Wh 三种输入方式，自动换算标称 Ah 与 Wh',
+          '负载双模式：可直接输入电流或功率，功率模式按电压折算电池侧电流',
+          '效率与放电深度：可分别设置转换效率与允许放电深度，得到真实可用能量',
+          '串并联电池组：按单节容量、单节电压、串联数与并联数计算等效电压、容量与能量',
+          'Peukert 修正：输入指数 k 与基准电流，按 t = t_base × (I_rated / I)^(k-1) 修正高倍率续航',
+          '倍率对比表：输出 0.1C、0.25C、0.5C、1C、2C 下的电流与预计续航',
+        ],
+        howToUse: [
+          '选择单体电池或串并联电池组，填写容量、电压或单节参数',
+          '选择负载类型并输入负载电流或功率，再设置转换效率与放电深度',
+          '如需考虑高倍率容量衰减，勾选 Peukert 修正并填写指数 k 与基准电流',
+          '查看预计续航、可用能量与负载电流，并参考下方不同倍率的对比表',
+        ],
+        useCases: [
+          '估算移动电源带动树莓派与硬盘时的实际续航',
+          '为 3S2P 锂离子电池组计算等效电压、容量与带载时间',
+          '比较 0.5C 与 1C 放电下同一电池的可用时长差异',
+          '规划太阳能储能系统在 80% 放电深度下的夜间供电时间',
+        ],
+        privacyNote: '所有电池与负载参数仅在浏览器本地计算，不会上传任何数据。',
+        faqs: [
+          {
+            question: '为什么实际续航比容量除以电流更短？',
+            answer:
+              '因为存在转换效率损失与允许放电深度限制，工具会把标称能量乘以效率与放电深度后得到可用能量，再除以负载功率。',
+          },
+          {
+            question: 'Peukert 指数应该填多少？',
+            answer:
+              '常见铅酸电池约 1.2-1.35，锂离子电池接近 1.05-1.1。k 越大，高倍率放电时有效容量下降越明显；不确定时可保持 1 表示理想电池。',
+          },
+          {
+            question: '串并联后的容量怎么算？',
+            answer:
+              '串联提升电压、容量不变；并联提升容量、电压不变。3S2P 表示 3 节串联成一组、2 组并联，总电压为单节电压 × 3，总容量为单节容量 × 2。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Battery Runtime Calculator turns nominal capacity, load demand, and discharge conditions into an estimated usable time. It accepts mAh, Ah, and Wh capacity units, supports load current or load power, and accounts for conversion efficiency and depth of discharge. Multi-cell packs follow the series-voltage and parallel-capacity rules to produce an equivalent battery. A Peukert exponent correction models capacity derating at high discharge rates, and a 0.1C–2C comparison table helps estimate runtime for power banks, solar storage, RC models, and small electronics.',
+        coreFeatures: [
+          'Multiple capacity units: mAh, Ah, and Wh inputs with automatic Ah and Wh equivalents',
+          'Dual load modes: enter current or power; power mode converts to battery-side current through voltage',
+          'Efficiency and depth of discharge: derive real usable energy from both factors',
+          'Series/parallel packs: compute equivalent voltage, capacity, and energy from cell capacity, cell voltage, series, and parallel counts',
+          'Peukert correction: apply t = t_base × (I_rated / I)^(k-1) with exponent k and a reference current',
+          'Rate comparison table: currents and runtime at 0.1C, 0.25C, 0.5C, 1C, and 2C',
+        ],
+        howToUse: [
+          'Choose a single battery or a series/parallel pack and enter capacity, voltage, or cell parameters',
+          'Select a load type, enter current or power, then set conversion efficiency and depth of discharge',
+          'To model high-rate derating, enable Peukert correction and enter exponent k with a reference current',
+          'Read the estimated runtime, usable energy, and load current, then compare discharge rates in the table',
+        ],
+        useCases: [
+          'Estimating how long a power bank runs a Raspberry Pi with an external drive',
+          'Calculating equivalent voltage, capacity, and load time for a 3S2P lithium pack',
+          'Comparing usable runtime at 0.5C versus 1C discharge',
+          'Planning overnight supply time for solar storage at 80% depth of discharge',
+        ],
+        privacyNote:
+          'All battery and load parameters are calculated locally in your browser; no data is uploaded.',
+        faqs: [
+          {
+            question: 'Why is real runtime shorter than capacity divided by current?',
+            answer:
+              'Conversion losses and the allowed depth of discharge reduce usable energy. The tool multiplies nominal energy by efficiency and depth of discharge before dividing by load power.',
+          },
+          {
+            question: 'What Peukert exponent should I use?',
+            answer:
+              'Lead-acid batteries are typically around 1.2–1.35, while lithium-ion is close to 1.05–1.1. A larger k means more capacity loss at high rates; leave it at 1 for an ideal battery.',
+          },
+          {
+            question: 'How is pack capacity calculated?',
+            answer:
+              'Series raises voltage while capacity stays the same; parallel raises capacity while voltage stays the same. 3S2P means three cells in series per string and two strings in parallel, so voltage is 3 × cell voltage and capacity is 2 × cell capacity.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
