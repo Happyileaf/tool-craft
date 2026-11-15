@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261115080615 | ARP 地址解析协议报文解析与构造器（RFC 826，以太网/IPv4 字节布局） | Web Tool | Existing Gap | `arp-packet-codec` / [PR #247](https://github.com/Happyileaf/tool-craft/pull/247) | 2026-11-16 | [详情](./idea-details/20261115080615.md) |
+| 20261116020445 | Windows ↔ POSIX 路径转换器（WSL 盘符映射 / UNC / 分隔符归一） | Web Tool | Existing Gap | `windows-posix-path-converter` / [PR #247](https://github.com/Happyileaf/tool-craft/pull/247) | 2026-11-16 | [详情](./idea-details/20261116020445.md) |
+| 20261116020446 | JSON → C++ struct / class 生成器（std::optional / std::vector 推断） | Web Tool | Existing Gap | `json-to-cpp` / [PR #247](https://github.com/Happyileaf/tool-craft/pull/247) | 2026-11-16 | [详情](./idea-details/20261116020446.md) |
+| 20261116020448 | 字节序转换器（大端 / 小端整数编解码与字节重排） | Web Tool | Exploration | `endianness-converter` / [PR #247](https://github.com/Happyileaf/tool-craft/pull/247) | 2026-11-16 | [详情](./idea-details/20261116020448.md) |
+| 20261116020449 | Shell 命令参数引用与转义器（POSIX sh / CMD / PowerShell） | Web Tool | Existing Gap | `shell-argument-quoter` / [PR #247](https://github.com/Happyileaf/tool-craft/pull/247) | 2026-11-16 | [详情](./idea-details/20261116020449.md) |
 | 20261114200459 | 曝光值（EV）与 ND 滤镜等效曝光计算器 | Web Tool | Exploration | `exposure-value-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261114200459.md) |
 | 20261115140202 | 相机视角（FOV）与等效焦距计算器（传感器画幅 / 裁切系数 / 双向换算） | Web Tool | Existing Gap | `fov-focal-length-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261115140202.md) |
 | 20261114200501 | 电池续航时间计算器（容量 / 负载 / 效率 / Peukert 与串并联组包） | Web Tool | Existing Gap | `battery-runtime-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261114200501.md) |
