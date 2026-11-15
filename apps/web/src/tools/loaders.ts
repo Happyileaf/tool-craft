@@ -390,4 +390,5 @@ export const toolLoaders: Record<
   'gear-ratio-calculator': () => import('./gear-ratio-calculator'),
   'antenna-length-calculator': () => import('./antenna-length-calculator'),
   'bigint-calculator': () => import('./bigint-calculator'),
+  'exposure-value-calculator': () => import('./exposure-value-calculator'),
 };

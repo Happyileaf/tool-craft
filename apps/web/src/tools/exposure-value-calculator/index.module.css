@@ -1,0 +1,80 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.inputs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px 20px;
+  margin-bottom: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.control {
+  width: 160px;
+}
+
+.preset {
+  cursor: pointer;
+  user-select: none;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 10px;
+  background: rgb(249 250 251);
+}
+
+.statLabel {
+  color: rgb(107 114 128);
+  font-size: 12px;
+}
+
+.value {
+  color: rgb(17 24 39);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.sub {
+  color: rgb(107 114 128);
+  font-size: 12px;
+}
+
+.copy {
+  padding: 4px 14px;
+  border: 1px solid rgb(209 213 219);
+  border-radius: 6px;
+  background: rgb(255 255 255);
+  color: rgb(55 65 81);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.modeGroup {
+  margin-bottom: 16px;
+}

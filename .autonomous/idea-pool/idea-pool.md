@@ -336,7 +336,7 @@
 | 20261114200454 | HTTP/2 帧头解析与帧序列查看器（不含 HPACK 解压） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114200454.md) |
 | 20261114200457 | STL 三维模型解析与体积 / 表面积统计器 | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200457.md) |
 | 20261114200458 | 大整数任意精度四则运算计算器（BigInt 加减乘除 / 幂 / 取模 / 阶乘） | Web Tool | Exploration | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114200458.md) |
-| 20261114200459 | 曝光值（EV）与 ND 滤镜等效曝光计算器 | Web Tool | Exploration | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114200459.md) |
+| 20261114200459 | 曝光值（EV）与 ND 滤镜等效曝光计算器 | Web Tool | Exploration | In Progress | 2026-11-14 | trae-agent | [详情](./idea-details/20261114200459.md) |
 | 20261114200501 | 电池续航时间计算器（容量 / 负载 / 效率 / Peukert 与串并联组包） | Web Tool | Existing Gap | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114200501.md) |
 | 20261114200502 | 经济补偿金与代通知金计算器（N / N+1 / 2N，含月工资上限与年限折算） | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200502.md) |
 | 20261115020303 | 睡眠周期与就寝 / 起床时间计算器（90 分钟周期 + 入睡缓冲） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115020303.md) |

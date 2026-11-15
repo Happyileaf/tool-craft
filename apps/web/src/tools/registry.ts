@@ -36851,6 +36851,111 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'exposure-value-calculator',
+    name: '曝光值（EV）与 ND 滤镜等效曝光计算器',
+    nameEn: 'Exposure Value (EV) & ND Filter Calculator',
+    description:
+      '根据光圈、快门与 ISO 计算 EV100 与当前 ISO 下的曝光值，生成 1/3 与 1/2 档等效曝光组合，并支持 ND2/ND4/ND8 与 ND0.3/0.6/0.9 双标法的减光档数换算与长曝光计时。',
+    descriptionEn:
+      'Calculate EV100 and current-ISO exposure value from aperture, shutter speed, and ISO, generate 1/3- and 1/2-stop equivalent exposure pairs, and convert ND2/ND4/ND8 or ND0.3/0.6/0.9 filters into new shutter times with long-exposure timing.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/exposure-value-calculator',
+    iconName: 'Eye',
+    tags: ['摄影', '曝光', 'EV', 'ND 滤镜', '长曝光'],
+    tagsEn: ['Photography', 'Exposure', 'EV', 'ND Filter', 'Long Exposure'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1/125',
+    doc: {
+      zh: {
+        whatIsIt:
+          '曝光值与 ND 滤镜计算器用标准曝光公式 EV100 = log2(N² / t) 把光圈、快门与 ISO 统一成可比较的曝光值，并按当前 ISO 给出等效 EV。它还能生成 1/3 档与 1/2 档的等效光圈 / 快门组合，把 ND2、ND4、ND8 等倍率标法或 ND0.3、ND0.6、ND0.9 等密度标法换算为减光档数，计算加装滤镜后的新快门时间与长曝光计时，适合风光长曝光与滤镜配档。',
+        coreFeatures: [
+          '标准曝光公式：EV100 = log2(N² / t)，当前 ISO 下 EV = EV100 + log2(ISO / 100)',
+          '等效曝光组合：按 1/3 档与 1/2 档标准光圈序列输出对应快门，并过滤超出相机范围的组合',
+          'ND 双标法：同时支持 ND2/ND4/ND8 倍率名称与 ND0.3/0.6/0.9 光学密度，并支持自定义档数',
+          '双向换算：已知档数求新快门，或由原快门与目标快门反推所需档数并匹配最接近的标准 ND',
+          '长曝光计时：把结果秒数格式化为 mm:ss.s 的计时参考，便于手机计时器直接使用',
+          '纯本地计算：零网络请求，拍摄参数不离开浏览器',
+        ],
+        howToUse: [
+          '输入光圈 f 值、快门时间（支持 1/125 或 2s 写法）与 ISO，结果即时显示 EV100 与当前 ISO 下的 EV',
+          '在等效曝光组合区域切换 1/3 档或 1/2 档，查看同一曝光量下各光圈的对应快门',
+          '在 ND 滤镜区域选择「已知档数 → 新快门」，挑一个 ND 预设或输入自定义档数，得到新快门与计时',
+          '需要反推滤镜时切换到「已知目标快门 → 档数」，填写目标快门即可看到所需档数与最接近的标准 ND',
+        ],
+        useCases: [
+          '风光摄影加装 ND1000 前估算 30 秒长曝光所需的实际快门时间',
+          '夜景拍摄时比较不同光圈下的等效快门组合，避免手抖糊片',
+          '棚拍改变 ISO 后快速确认曝光值变化了几档',
+          '购买 ND 滤镜前由「想要的长曝光时间」反推需要的减光档数',
+        ],
+        privacyNote: '所有曝光参数与计算都在浏览器本地完成，不会上传任何拍摄数据。',
+        faqs: [
+          {
+            question: 'EV100 与当前 ISO 下的 EV 有什么区别？',
+            answer:
+              'EV100 是固定以 ISO 100 为基准的曝光值，只由光圈与快门决定；当前 ISO 下的 EV 再加上 log2(ISO / 100)，用来表示同一场景在不同感光度下的等效亮度。',
+          },
+          {
+            question: 'ND 滤镜的两种标法怎么对应？',
+            answer:
+              'ND2 表示减光 1 档，ND4 为 2 档、ND8 为 3 档，以此类推；密度标法 ND0.3 对应 1 档、ND0.6 对应 2 档，换算关系为档数 = 密度 × 10 / 3。',
+          },
+          {
+            question: '为什么有些光圈没有出现在等效组合里？',
+            answer:
+              '工具会把快门时间限制在 1/8000 秒到 30 秒之间，超出该范围的组合在实际相机上无法设置，因此不显示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Exposure Value & ND Filter Calculator uses the standard EV100 = log2(N² / t) formula to turn aperture, shutter speed, and ISO into a comparable exposure value and reports the EV at the current ISO. It also generates equivalent aperture/shutter pairs in 1/3 and 1/2 stops, converts ND2/ND4/ND8 multiplier markings or ND0.3/0.6/0.9 density markings into light-reduction stops, and derives the new shutter time and long-exposure timing after adding a filter, which suits landscape long exposures and filter planning.',
+        coreFeatures: [
+          'Standard exposure formula: EV100 = log2(N² / t), with current-ISO EV = EV100 + log2(ISO / 100)',
+          'Equivalent pairs: outputs matching shutter times across 1/3- and 1/2-stop aperture sequences and filters values outside camera ranges',
+          'Dual ND markings: supports ND2/ND4/ND8 multipliers and ND0.3/0.6/0.9 optical densities, plus custom stop counts',
+          'Two-way conversion: solve a new shutter from stops, or reverse a target shutter into the required stops and nearest standard ND',
+          'Long-exposure timing: formats result seconds as mm:ss.s for a phone timer',
+          'Fully local: no network requests and shooting parameters never leave your browser',
+        ],
+        howToUse: [
+          'Enter aperture, shutter time (1/125 or 2s style), and ISO to see EV100 and the current-ISO EV immediately',
+          'Switch between 1/3 and 1/2 stops in the equivalent exposure table to compare shutter times at the same exposure',
+          'In the ND panel choose “stops → new shutter”, pick a ND preset or enter custom stops, and read the new shutter and timer',
+          'To reverse a filter, switch to “target shutter → stops” and enter the target shutter to see the required stops and nearest standard ND',
+        ],
+        useCases: [
+          'Estimating the actual shutter time for a 30-second long exposure before adding an ND1000',
+          'Comparing equivalent shutter pairs at different apertures for night photography',
+          'Checking how many stops the exposure value shifts after changing ISO in the studio',
+          'Deriving the ND strength needed for a desired long exposure before buying a filter',
+        ],
+        privacyNote:
+          'All exposure parameters and calculations run locally in your browser; no shooting data is uploaded.',
+        faqs: [
+          {
+            question: 'What is the difference between EV100 and the current-ISO EV?',
+            answer:
+              'EV100 is the exposure value fixed to ISO 100 and depends only on aperture and shutter. The current-ISO EV adds log2(ISO / 100) to express the same scene brightness at a different sensitivity.',
+          },
+          {
+            question: 'How do the two ND marking systems correspond?',
+            answer:
+              'ND2 reduces light by 1 stop, ND4 by 2 stops, ND8 by 3 stops, and so on. Density markings map ND0.3 to 1 stop and ND0.6 to 2 stops, using stops = density × 10 / 3.',
+          },
+          {
+            question: 'Why are some apertures missing from the equivalent list?',
+            answer:
+              'The tool limits shutter times to 1/8000 s through 30 s. Combinations outside that range cannot be set on most cameras, so they are hidden.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
