@@ -393,4 +393,5 @@ export const toolLoaders: Record<
   'exposure-value-calculator': () => import('./exposure-value-calculator'),
   'fov-focal-length-calculator': () => import('./fov-focal-length-calculator'),
   'battery-runtime-calculator': () => import('./battery-runtime-calculator'),
+  'bakers-percentage-calculator': () => import('./bakers-percentage-calculator'),
 };

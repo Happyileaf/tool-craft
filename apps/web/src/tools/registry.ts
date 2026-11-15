@@ -37166,6 +37166,113 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'bakers-percentage-calculator',
+    name: '烘焙百分比与配方缩放计算器',
+    nameEn: "Baker's Percentage & Recipe Scaler",
+    description:
+      '以面粉为 100% 基准换算每种配料的烘焙百分比，自动识别含水量、盐与酵母比例，并按目标面粉重量、缩放倍数或面团总重等比缩放配方，附带圆模方模换算。',
+    descriptionEn:
+      "Convert every ingredient to baker's percentage with flour at 100%, detect hydration, salt, and yeast ratios automatically, scale the formula by target flour weight, factor, or total dough weight, and convert between round and square molds.",
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/bakers-percentage-calculator',
+    iconName: 'Flame',
+    tags: ['烘焙', '百分比', '配方', '含水量', '缩放'],
+    tagsEn: ['Baking', 'Percentage', 'Recipe', 'Hydration', 'Scale'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'grams',
+    doc: {
+      zh: {
+        whatIsIt:
+          '烘焙百分比与配方缩放计算器用烘焙行业通用的“面粉永远是 100%”规则整理配方。它既可以把克数换算成烘焙百分比，也可以按百分比反推克数；还能自动识别水、盐、酵母并汇总含水量、盐比例与酵母比例。确定基准配方后，可按目标面粉重量、缩放倍数或面团总重等比例放大缩小，所有配料同时按同一倍数变化，配方比例保持不变。工具还提供圆模、方模与同底面积改高度的换算倍数，方便把配方迁移到不同尺寸的模具。',
+        coreFeatures: [
+          '面粉 100% 基准：所有配料统一换算为相对面粉的烘焙百分比',
+          '双向录入：按克数或按烘焙百分比输入，另一种数值自动推算',
+          '关键比例汇总：自动识别水、盐、酵母并给出含水量、盐比例、酵母比例',
+          '三种缩放目标：按目标面粉重量、按缩放倍数或按目标面团总重等比缩放',
+          '模具换算：圆模与方模按尺寸平方比、同底面积改高度按高度比计算面团倍数',
+          '预设配方：内置法棍、吐司、贝果与酸种乡村面包示例，一键载入',
+        ],
+        howToUse: [
+          '填写面粉总重量，并选择配料按克数还是按烘焙百分比录入',
+          '逐行填写配料名称与数值，或点击预设配方快速载入一份示例',
+          '查看含水量、盐比例、酵母比例、总百分比与面团总重，核对配方结构',
+          '在配方缩放面板选择缩放目标并填写目标值，得到缩放后的各配料克数',
+          '如需更换模具，在模具换算面板填写原尺寸与新尺寸，得到面团用量倍数',
+        ],
+        useCases: [
+          '把烘焙书里的克数配方整理成标准烘焙百分比，便于记忆与调整',
+          '从 1000g 面粉的家庭配方放大到商用 5000g 面粉批量生产',
+          '按目标面团总重反推面粉与水的用量，刚好填满一个吐司模',
+          '把 20cm 圆模配方换算到 25cm 圆模，避免面团过多或过少',
+        ],
+        privacyNote: '所有配方数据仅在浏览器本地计算，不会上传或保存任何内容。',
+        faqs: [
+          {
+            question: '为什么面粉的百分比固定是 100%？',
+            answer:
+              '烘焙百分比以配方中面粉总重量为唯一基准，其他配料都表示“占面粉重量的百分比”。这样调整批量时只需改变面粉重量，所有比例都能保持稳定。',
+          },
+          {
+            question: '含水量是怎么算的？',
+            answer:
+              '含水量等于配方中所有名称含“水”的配料重量之和除以面粉重量。若使用牛奶、蛋液等含水液体，可另建一行并手动参考其含水率调整。',
+          },
+          {
+            question: '圆模和方模为什么按尺寸平方换算？',
+            answer:
+              '在高度相同时，模具容积与底面积成正比，圆形底面积为 πr²、方形底面积为边长²，二者都随尺寸的平方变化，所以 20cm 换 25cm 的倍数是 (25/20)² = 1.5625。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          "This calculator organizes recipes with the baking industry's rule that flour is always 100%. It converts grams to baker's percentages and vice versa, automatically detects water, salt, and yeast to summarize hydration, salt ratio, and yeast ratio, and then scales the whole formula by target flour weight, scale factor, or total dough weight so every ingredient changes by the same factor. Mold conversion covers round tins, square tins, and same-base height changes, making it easy to move a formula to a different pan size.",
+        coreFeatures: [
+          'Flour at 100%: every ingredient is expressed relative to the total flour weight',
+          "Bidirectional entry: input grams or baker's percentages and derive the other value",
+          'Key ratios: automatic water, salt, and yeast detection with hydration, salt, and yeast percentages',
+          'Three scaling targets: scale by target flour weight, scale factor, or target total dough weight',
+          'Mold conversion: round and square tins scale by the square of the dimension; same-base height changes scale by the height ratio',
+          'Preset formulas: one-click examples for baguette, toast, bagel, and sourdough',
+        ],
+        howToUse: [
+          'Enter the total flour weight and choose grams or baker’s percentage entry',
+          'Fill each ingredient name and value, or load a preset formula with one click',
+          'Review hydration, salt ratio, yeast ratio, total percentage, and total dough weight',
+          'Pick a scaling target, enter the target value, and read the scaled ingredient weights',
+          'For a different pan, enter the original and new mold dimensions to get the dough factor',
+        ],
+        useCases: [
+          "Normalizing a cookbook's gram-based formula into standard baker's percentages",
+          'Scaling a 1000g home formula up to a 5000g commercial batch',
+          'Working backwards from a target dough weight to fit one toast pan exactly',
+          'Converting a 20cm round-tin formula to a 25cm tin without excess or short dough',
+        ],
+        privacyNote:
+          'All recipe data is computed locally in your browser; nothing is uploaded or stored.',
+        faqs: [
+          {
+            question: 'Why is flour always 100%?',
+            answer:
+              'Baker’s percentage uses total flour weight as the only reference. Every other ingredient is a percentage of that flour weight, so changing the batch size only requires changing the flour weight while all ratios stay stable.',
+          },
+          {
+            question: 'How is hydration calculated?',
+            answer:
+              'Hydration is the summed weight of ingredients whose names contain water divided by the flour weight. If you use milk or egg, add a separate row and adjust manually for its water content.',
+          },
+          {
+            question: 'Why do round and square tins scale by the square of the dimension?',
+            answer:
+              'At equal height, volume is proportional to base area. A circle’s base area is πr² and a square’s is side², both scaling with the square of the dimension, so 20cm → 25cm gives (25/20)² = 1.5625.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
