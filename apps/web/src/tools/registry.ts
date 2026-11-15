@@ -36750,6 +36750,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'bigint-calculator',
+    name: '大整数任意精度四则运算计算器（BigInt 幂 / 阶乘 / 模运算）',
+    nameEn: 'Big Integer Calculator (Arbitrary-Precision Arithmetic)',
+    description:
+      '基于 BigInt 的任意精度整数计算器，支持加减乘除、取模、快速幂、阶乘、GCD / LCM、模幂与模逆元，并同时以十进制分组、十六进制和二进制展示结果及位数统计。',
+    descriptionEn:
+      'An arbitrary-precision integer calculator built on BigInt with add, subtract, multiply, divide, modulo, fast power, factorial, GCD/LCM, modular power and modular inverse, showing decimal-grouped, hexadecimal and binary results plus digit statistics.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/bigint-calculator',
+    iconName: 'Binary',
+    tags: ['大整数', 'BigInt', '阶乘', '模幂', '任意精度'],
+    tagsEn: ['BigInt', 'Arbitrary Precision', 'Factorial', 'Modular Power', 'Integer'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '2',
+    doc: {
+      zh: {
+        whatIsIt:
+          '大整数计算器使用浏览器内置 BigInt 完成任意精度整数运算，不受 Number 安全整数 2^53 − 1 的限制。它支持加、减、乘、整除（同时给出商与余数）、取模、快速幂、阶乘、最大公约数、最小公倍数、模幂与模逆元。每个结果同时显示带千位分隔的十进制、十六进制与二进制表示，并给出十进制位数和二进制位数，便于检查加密参数、长 ID 与组合数等大数结果。全部为本地计算，零新增依赖。',
+        coreFeatures: [
+          '任意精度加减乘除与取模，整除时同时展示商与余数',
+          '快速幂与阶乘，指数上限 10000、阶乘上限 10000',
+          'GCD / LCM、模幂与扩展欧几里得模逆元',
+          '结果同时展示十进制分组、十六进制、二进制与位长统计',
+          '一键复制全部表示，内置 2^100、50! 等常用示例',
+        ],
+        howToUse: [
+          '选择运算类型，输入操作数 A；需要时输入 B 与模数 M',
+          '支持正负号与千位逗号，工具会自动去除逗号后按整数解析',
+          '查看十进制结果以及十六进制、二进制和位数统计',
+          '点击示例按钮可快速载入 2^100、50!、100 ÷ 7 或模幂算例',
+        ],
+        useCases: [
+          '计算 RSA 等加密场景中的大数模幂与模逆元',
+          '核对阶乘、组合数与长 ID 的精确十进制结果',
+          '把超大整数转换为十六进制或二进制并统计位长',
+        ],
+        privacyNote: '所有运算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: '为什么不用普通计算器计算大整数？',
+            answer:
+              'JavaScript Number 只能精确表示到 2^53 − 1（约 9e15），更大的整数会丢失精度。本工具使用内置 BigInt，可精确表示任意长度整数，因此 2^100、50! 等结果完全准确。',
+          },
+          {
+            question: '模逆元计算失败是什么原因？',
+            answer:
+              '模逆元 A⁻¹ mod M 只有当 A 与 M 互质（gcd(A, M) = 1）时才存在。若两者存在公因数，工具会提示「模逆元不存在」，此时需要更换 A 或 M。',
+          },
+          {
+            question: '结果位数限制是多少？',
+            answer:
+              '为避免浏览器卡顿，幂运算指数上限为 10000，且估算结果规模限制在约 20000 位十进制；阶乘上限为 10000。超出限制时工具会给出提示，而不是静默截断。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This big integer calculator uses the browser-native BigInt type for arbitrary-precision integer arithmetic, free from the 2^53 − 1 safe-integer limit of Number. It supports add, subtract, multiply, integer division with quotient and remainder, modulo, fast power, factorial, greatest common divisor, least common multiple, modular power and modular inverse. Every result is shown as grouped decimal, hexadecimal and binary, along with decimal digit and binary bit counts, making it useful for cryptographic parameters, long IDs and combinatorial values. Everything runs locally with no new dependencies.',
+        coreFeatures: [
+          'Arbitrary-precision add, subtract, multiply, divide and modulo with quotient and remainder',
+          'Fast power and factorial with exponent and factorial limits of 10000',
+          'GCD/LCM, modular power and extended-Euclid modular inverse',
+          'Grouped decimal, hexadecimal and binary output with digit statistics',
+          'One-click copying of all representations and built-in 2^100 and 50! examples',
+        ],
+        howToUse: [
+          'Choose an operation and enter operand A, plus B and modulus M when required',
+          'Signs and thousands separators are accepted; commas are stripped before parsing',
+          'Review the decimal result with hexadecimal, binary and digit counts',
+          'Use example buttons to load 2^100, 50!, 100 ÷ 7 or a modular power case',
+        ],
+        useCases: [
+          'Computing large modular powers and inverses for RSA-style cryptography',
+          'Verifying exact decimal values of factorials, combinations and long IDs',
+          'Converting very large integers to hexadecimal or binary and counting bits',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Why not use an ordinary calculator for big integers?',
+            answer:
+              'JavaScript Number is exact only up to 2^53 − 1 (about 9e15), and larger integers lose precision. This tool uses BigInt to represent integers of any length exactly, so results such as 2^100 and 50! are fully accurate.',
+          },
+          {
+            question: 'Why does a modular inverse fail?',
+            answer:
+              'The inverse A⁻¹ mod M exists only when A and M are coprime (gcd(A, M) = 1). If they share a factor, the tool reports that no inverse exists; change A or M to continue.',
+          },
+          {
+            question: 'What are the result size limits?',
+            answer:
+              'To keep the browser responsive, exponents are capped at 10000 and estimated results at roughly 20000 decimal digits; factorials are capped at 10000. The tool reports the limit instead of silently truncating.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

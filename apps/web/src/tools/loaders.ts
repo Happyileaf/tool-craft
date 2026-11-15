@@ -389,4 +389,5 @@ export const toolLoaders: Record<
   'heart-rate-zone-calculator': () => import('./heart-rate-zone-calculator'),
   'gear-ratio-calculator': () => import('./gear-ratio-calculator'),
   'antenna-length-calculator': () => import('./antenna-length-calculator'),
+  'bigint-calculator': () => import('./bigint-calculator'),
 };
