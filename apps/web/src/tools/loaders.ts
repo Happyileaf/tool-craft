@@ -391,4 +391,5 @@ export const toolLoaders: Record<
   'antenna-length-calculator': () => import('./antenna-length-calculator'),
   'bigint-calculator': () => import('./bigint-calculator'),
   'exposure-value-calculator': () => import('./exposure-value-calculator'),
+  'fov-focal-length-calculator': () => import('./fov-focal-length-calculator'),
 };

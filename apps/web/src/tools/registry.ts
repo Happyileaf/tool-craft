@@ -36956,6 +36956,111 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'fov-focal-length-calculator',
+    name: '相机视角（FOV）与等效焦距计算器',
+    nameEn: 'Camera Field of View & Equivalent Focal Length Calculator',
+    description:
+      '按传感器画幅与焦距计算对角线、水平、垂直视角，输出 35mm 等效焦距与等效光圈；支持全画幅、APS-C、M4/3、1 英寸、中画幅等预设与自定义尺寸，并可由目标视角反推所需焦距。',
+    descriptionEn:
+      'Compute diagonal, horizontal, and vertical field of view from sensor size and focal length, output 35mm-equivalent focal length and aperture, support full-frame, APS-C, M4/3, 1-inch, and medium-format presets plus custom sizes, and solve the required focal length from a target FOV.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/fov-focal-length-calculator',
+    iconName: 'Image',
+    tags: ['摄影', '视角', '焦距', '等效焦距', '传感器'],
+    tagsEn: ['Photography', 'Field of View', 'Focal Length', 'Equivalent Focal', 'Sensor'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'full-frame',
+    doc: {
+      zh: {
+        whatIsIt:
+          '相机视角与等效焦距计算器把镜头焦距和传感器画幅换算成可比较的视角：按 FOV = 2 × atan(尺寸 / (2 × 焦距)) 计算对角线、水平与垂直三个方向的视角，并以 35mm 全画幅为基准给出等效焦距与等效光圈。它内置全画幅、APS-C、APS-H、M4/3、1 英寸与中画幅预设，也允许输入自定义画幅尺寸，还能反向由目标视角求解所需焦距，适合跨画幅比较镜头、估算转接后的视角以及规划拍摄机位。',
+        coreFeatures: [
+          '三向视角：同时输出对角线、水平与垂直视角，避免只对比对角线造成的误判',
+          '画幅预设与自定义：内置 7 种常见画幅，并支持任意宽高输入与自动裁切系数计算',
+          '35mm 等效：按画幅裁切系数换算等效焦距与等效光圈，便于跨系统比较镜头',
+          '反向求解：已知目标视角与画幅，按所选维度反推所需焦距',
+          '画幅对比表：同一焦距下遍历全部预设画幅，直观展示视角与等效焦距差异',
+          '纯本地计算：不上传任何拍摄或器材信息',
+        ],
+        howToUse: [
+          '选择传感器画幅预设，或切换到自定义尺寸并填写宽度与高度',
+          '在「焦距 → 视角」模式输入焦距与光圈，查看三个方向的视角、等效焦距与等效光圈',
+          '在「目标视角 → 焦距」模式选择视角维度并填写目标角度，得到所需焦距与等效焦距',
+          '查看下方的画幅对比表，比较同一焦距在不同画幅上的视角差异',
+        ],
+        useCases: [
+          '把 APS-C 镜头焦距换算为全画幅等效视角，判断是否覆盖所需场景',
+          '为中画幅转接镜头估算在 35mm 机身上的等效焦距',
+          '根据想拍的画面范围反推需要多长的焦距',
+          '比较同一支镜头在全画幅与 M4/3 机身上的视角差异',
+        ],
+        privacyNote: '所有视角与焦距计算都在浏览器本地执行，不会上传任何器材或拍摄数据。',
+        faqs: [
+          {
+            question: '等效焦距是怎么算的？',
+            answer:
+              '等效焦距 = 实际焦距 × 裁切系数，裁切系数由画幅对角线长度与 35mm 全画幅对角线（约 43.27mm）之比得出，预设画幅使用厂商常用标称值。',
+          },
+          {
+            question: '为什么三个方向的视角不一样？',
+            answer:
+              '因为传感器是矩形，水平、垂直与对角线长度不同。同一焦距下对角线视角最大，垂直视角最小，构图时应按实际使用的方向参考。',
+          },
+          {
+            question: '等效光圈有什么意义？',
+            answer:
+              '等效光圈 = 实际光圈 × 裁切系数，用于比较不同画幅在相同视角下的景深与进光量表现，并不改变实际曝光设置。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Camera Field of View & Equivalent Focal Length Calculator turns focal length and sensor format into comparable angles using FOV = 2 × atan(size / (2 × focal)). It reports diagonal, horizontal, and vertical FOV, plus 35mm-equivalent focal length and aperture. Built-in presets cover full-frame, APS-C, APS-H, M4/3, 1-inch, and medium format, custom sensor sizes are supported, and a reverse mode solves the focal length needed for a target FOV, which helps compare lenses across formats and plan compositions.',
+        coreFeatures: [
+          'Three-axis FOV: diagonal, horizontal, and vertical angles instead of diagonal alone',
+          'Presets and custom sizes: seven common formats plus arbitrary width and height with automatic crop factor',
+          '35mm equivalence: converts focal length and aperture with the sensor crop factor for cross-system comparison',
+          'Reverse solving: derives the required focal length from a target FOV in the chosen dimension',
+          'Format comparison table: shows FOV and equivalent focal length for every preset at the same focal length',
+          'Fully local: no camera or shooting information is uploaded',
+        ],
+        howToUse: [
+          'Pick a sensor preset, or switch to custom size and enter width and height',
+          'In “focal → FOV” mode enter focal length and aperture to see all three FOVs, equivalent focal length, and equivalent aperture',
+          'In “target FOV → focal” mode choose a dimension, enter the target angle, and read the required focal length',
+          'Use the comparison table below to compare the same focal length across formats',
+        ],
+        useCases: [
+          'Converting an APS-C lens focal length into its full-frame equivalent view',
+          'Estimating the equivalent focal length of a medium-format lens adapted to a 35mm body',
+          'Deriving the focal length needed for a desired framing',
+          'Comparing the same lens on full-frame and M4/3 bodies',
+        ],
+        privacyNote:
+          'All FOV and focal length calculations run locally in your browser; no gear or shooting data is uploaded.',
+        faqs: [
+          {
+            question: 'How is the equivalent focal length calculated?',
+            answer:
+              'Equivalent focal length = actual focal length × crop factor. The crop factor is the 35mm diagonal (about 43.27mm) divided by the sensor diagonal; presets use the manufacturer’s common nominal values.',
+          },
+          {
+            question: 'Why do the three FOV values differ?',
+            answer:
+              'A sensor is rectangular, so horizontal, vertical, and diagonal lengths differ. At the same focal length the diagonal FOV is largest and the vertical FOV smallest; use the direction that matches your framing.',
+          },
+          {
+            question: 'What does equivalent aperture mean?',
+            answer:
+              'Equivalent aperture = actual aperture × crop factor. It compares depth of field and light gathering at the same angle of view across formats, without changing the actual exposure settings.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
