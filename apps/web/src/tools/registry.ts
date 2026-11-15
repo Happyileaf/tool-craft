@@ -36851,6 +36851,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'zh-script-converter',
+    name: '简体中文 ↔ 繁体中文转换器（字词级映射 / 台湾与香港变体）',
+    nameEn: 'Simplified ↔ Traditional Chinese Converter (Taiwan & Hong Kong Variants)',
+    description:
+      '本地运行的简繁转换工具，采用最长匹配的词组级映射，支持简体转通用繁体、台湾繁体、香港繁体及反向转换；内置地区用词表，可处理“头发 / 后台”“软件 / 軟體 / 軟件”等上下文差异，并展示替换明细。',
+    descriptionEn:
+      'A local simplified–traditional Chinese converter using longest-match phrase mapping, supporting generic Traditional, Taiwan and Hong Kong variants in both directions. Built-in regional vocabulary handles context-sensitive cases such as 头发/頭髮, 后台/後台 and 软件/軟體/軟件, with a detailed replacement list.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/zh-script-converter',
+    iconName: 'Language',
+    tags: ['简繁转换', '繁体', 'OpenCC', '台湾用词', '香港用词'],
+    tagsEn: ['Chinese Conversion', 'Traditional Chinese', 'OpenCC', 'Taiwan Terms', 'Hong Kong Terms'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '我们发展软件，整理头发和后台，这里的信息需要同步。Hello 2026!',
+    doc: {
+      zh: {
+        whatIsIt:
+          '简繁转换器在浏览器本地完成简体中文与繁体中文的双向转换。它不是一个字一个字的机械替换，而是先匹配最长词组再回退到单字，因此能区分“头发”与“发展”、“后台”与“皇后”、“面条”与“面孔”等多义情况。除通用繁体外，还提供台湾繁体与香港繁体两种地区变体，可同时转换“软件→軟體/軟件”“鼠标→滑鼠”“信息→資訊”等地区用词。全部内置字词表，不上传文本、不调用远程接口。',
+        coreFeatures: [
+          '六种转换方向：简→繁（通用 / 台湾 / 香港）与繁→简（通用 / 台湾 / 香港）',
+          '最长匹配优先的词组级替换，避免“头发→頭发”这类逐字错误',
+          '台湾 / 香港地区用词表可单独开关',
+          '实时展示输出字符数、变更字符数、替换词条与命中词组',
+          '支持仅转换选中片段、结果转回原文、复制与示例载入',
+        ],
+        howToUse: [
+          '在左侧输入或粘贴中文文本，选择需要的转换方向',
+          '需要地区用词时保持“地区用词转换”勾选；只想转换通用繁体时取消勾选',
+          '勾选“仅转换选中片段”后，在输入框中选中部分文本即可只转换该片段',
+          '查看下方替换明细，点击“复制”获取结果，或点击“结果转回原文”进行反向验证',
+        ],
+        useCases: [
+          '把简体文档转换为台湾或香港发布版本，并统一地区用词',
+          '校对繁体文本转简体后的多音多义字，检查“髮 / 發”“後 / 后”等差异',
+          '批量检查文案中的简繁混排与地区术语一致性',
+        ],
+        privacyNote: '转换完全在浏览器本地执行，文本不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '为什么“头发”能正确转换成“頭髮”，而不是“頭发”？',
+            answer:
+              '工具采用最长匹配：先匹配“头发”这一词组并替换为“頭髮”，匹配失败时才逐字转换。类似地，“发展”会匹配到“發展”，从而避免“发”在不同语境下的错误映射。',
+          },
+          {
+            question: '台湾繁体、香港繁体与通用繁体有什么区别？',
+            answer:
+              '通用繁体主要做字形转换；台湾与香港模式还会应用地区用词差异，例如“软件”在台湾写作“軟體”、在香港写作“軟件”，“公交车”分别对应“公車”和“巴士”。地区用词可以关闭，只保留字形转换。',
+          },
+          {
+            question: '词库是否完整覆盖所有汉字？',
+            answer:
+              '内置的是 OpenCC 风格的常用字词子集，覆盖日常与常见技术文案，但并非完整 OpenCC 辞书。遇到未收录的专有名词或生僻字时可能保持原样，可在结果中人工复核。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This converter performs bidirectional Simplified–Traditional Chinese conversion entirely in the browser. Instead of replacing characters one by one, it tries the longest phrase first and falls back to single characters, so it can distinguish context-sensitive cases such as 头发 (hair) versus 发展 (develop), 后台 (backstage) versus 皇后 (empress), and 面条 (noodles) versus 面孔 (face). Besides generic Traditional Chinese, it offers Taiwan and Hong Kong variants with regional vocabulary such as 软件→軟體/軟件, 鼠标→滑鼠 and 信息→資訊. All dictionaries are bundled locally; text is never uploaded or sent to a remote API.',
+        coreFeatures: [
+          'Six directions: Simplified to generic/Taiwan/Hong Kong Traditional and back',
+          'Longest-match phrase replacement avoids character-by-character mistakes',
+          'Taiwan and Hong Kong regional vocabulary can be toggled independently',
+          'Live statistics for output characters, changed characters, replacements and phrases',
+          'Convert selected text only, swap the result back to the source side, copy and load samples',
+        ],
+        howToUse: [
+          'Type or paste Chinese text on the left and choose a conversion direction',
+          'Keep “regional vocabulary” enabled for Taiwan/Hong Kong wording, or disable it for generic Traditional output',
+          'Enable “convert selected text only” and select a range in the input to convert just that fragment',
+          'Review the replacement list, copy the result, or swap the result back for a reverse check',
+        ],
+        useCases: [
+          'Preparing Taiwan or Hong Kong editions of Simplified Chinese documents with consistent regional terms',
+          'Proofreading Traditional-to-Simplified output for ambiguous characters such as 髮/發 and 後/后',
+          'Checking mixed Simplified/Traditional copy and regional terminology consistency',
+        ],
+        privacyNote:
+          'Conversion happens locally in your browser; text is never uploaded to any server.',
+        faqs: [
+          {
+            question: 'Why does 头发 become 頭髮 instead of 頭发?',
+            answer:
+              'The converter uses longest-match replacement: it first matches the phrase 头发 and replaces it with 頭髮, falling back to single characters only when no phrase matches. The same mechanism converts 发展 to 發展, avoiding context errors.',
+          },
+          {
+            question: 'How do Taiwan, Hong Kong and generic Traditional differ?',
+            answer:
+              'Generic mode mainly converts character forms. Taiwan and Hong Kong modes also apply regional vocabulary, so 软件 becomes 軟體 in Taiwan and 軟件 in Hong Kong, while 公交车 becomes 公車 or 巴士. Regional vocabulary can be disabled to keep character-only conversion.',
+          },
+          {
+            question: 'Does the dictionary cover every Chinese character?',
+            answer:
+              'The built-in dictionary is a commonly used OpenCC-style subset covering everyday and technical copy, not the full OpenCC lexicon. Rare characters or proper nouns may remain unchanged and should be reviewed manually.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

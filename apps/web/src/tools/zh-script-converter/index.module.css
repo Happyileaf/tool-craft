@@ -1,0 +1,66 @@
+.container {
+  padding: 16px;
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.label {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+}
+
+.directionSelect {
+  min-width: 200px;
+}
+
+.hint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.textarea {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 14px;
+  line-height: 1.7;
+  resize: vertical;
+}
+
+.hits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.statistic {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.statisticLabel {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.statisticValue {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .panels {
+    grid-template-columns: 1fr;
+  }
+}
