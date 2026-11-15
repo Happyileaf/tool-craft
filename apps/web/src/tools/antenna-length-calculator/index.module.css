@@ -1,0 +1,106 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modeRow {
+  margin-bottom: 16px;
+}
+
+.inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 20px;
+  margin-bottom: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.wavelength {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 10px;
+  background: rgb(249 250 251);
+}
+
+.wavelengthValues {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.value {
+  color: rgb(17 24 39);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 10px;
+  background: rgb(255 255 255);
+}
+
+.cardTitle {
+  color: rgb(55 65 81);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.cardValue {
+  color: rgb(17 24 39);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.sub {
+  color: rgb(107 114 128);
+  font-size: 12px;
+}
+
+.note {
+  color: rgb(75 85 99);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.notes {
+  margin: 0;
+  padding-left: 18px;
+  color: rgb(55 65 81);
+  font-size: 13px;
+  line-height: 1.8;
+}

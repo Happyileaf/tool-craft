@@ -388,4 +388,5 @@ export const toolLoaders: Record<
   'sleep-cycle-calculator': () => import('./sleep-cycle-calculator'),
   'heart-rate-zone-calculator': () => import('./heart-rate-zone-calculator'),
   'gear-ratio-calculator': () => import('./gear-ratio-calculator'),
+  'antenna-length-calculator': () => import('./antenna-length-calculator'),
 };

@@ -36649,6 +36649,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'antenna-length-calculator',
+    name: '天线长度与频率 / 波长互算器（半波偶极子 / 四分之一波长）',
+    nameEn: 'Antenna Length Calculator (Dipole, Quarter-Wave & Wavelength)',
+    description:
+      '在频率与天线物理长度之间双向换算：输入频率得到自由空间波长以及半波偶极子、四分之一波长垂直天线、5/8 波长与全波环形天线的米 / 英尺长度；也可由已知长度反推谐振频率，支持速度因子与常用频段预设。',
+    descriptionEn:
+      'Convert between frequency and physical antenna length: enter a frequency to get free-space wavelength plus half-wave dipole, quarter-wave vertical, 5/8-wave and full-wave loop lengths in meters and feet, or derive resonant frequency from a known length, with velocity factor and band presets.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/antenna-length-calculator',
+    iconName: 'Satellite',
+    tags: ['天线', '波长', '频率', '射频', '业余无线电'],
+    tagsEn: ['Antenna', 'Wavelength', 'Frequency', 'RF', 'Ham Radio'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '145',
+    doc: {
+      zh: {
+        whatIsIt:
+          '天线长度计算器用于射频与业余无线电的天线制作。频率模式下输入工作频率（0.1–6000 MHz），工具按 λ = 300 / f 给出自由空间波长，并计算半波偶极子（143 / f 米）、四分之一波长垂直天线（71.5 / f 米）、5/8 波长垂直天线（187.5 / f 米）与全波环形天线（300 / f 米）的物理长度，同时显示米与英尺；长度模式下输入已知天线长度与类型，反推谐振频率。速度因子（0.50–1.00）用于修正涂覆导线或介质中的缩短，全部为本地确定性换算、零依赖。',
+        coreFeatures: [
+          '频率 → 波长与四类常见天线的物理长度',
+          '长度 → 谐振频率反推，并可直接回填频率',
+          '米 / 英尺双单位显示，长度按数量级保留 5 位有效数字',
+          '速度因子 0.50–1.00 修正介质中的波长缩短',
+          '27.185 / 145.5 / 433.92 / 868 / 915 / 2400 MHz 常用频段预设',
+        ],
+        howToUse: [
+          '选择频率 → 长度或长度 → 频率模式',
+          '输入工作频率或天线长度，并选择对应天线类型',
+          '按导线或介质情况调整速度因子，默认 1.00',
+          '查看各类天线长度或反推频率，复制结果用于制作与调试',
+        ],
+        useCases: [
+          '制作 433 MHz 或 2.4 GHz 遥控模块的 1/4 波长天线',
+          '设计 HF / VHF 偶极子天线时快速估算振子长度',
+          '已有天线振子长度，反推其理论谐振频率',
+        ],
+        privacyNote: '所有换算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: '为什么半波偶极子用 143 / f 而不是 150 / f？',
+            answer:
+              '自由空间中半波长为 150 / f 米，但实际导线存在端效应，电流分布略短于自由空间半波，因此工程上常用 143 / f 米（或 468 / f 英尺）估算偶极子总长。四分之一波长同样使用 71.5 / f 米。',
+          },
+          {
+            question: '速度因子应该怎么设置？',
+            answer:
+              '裸铜导线在空气中速度因子接近 1.00；涂覆导线、同轴电缆或存在介质支撑时可取 0.80–0.95。速度因子越小，物理长度越短。具体数值建议以厂家数据或驻波表实测为准。',
+          },
+          {
+            question: '计算结果为什么需要实测微调？',
+            answer:
+              '天线谐振频率会受架设高度、周围金属物体、地网与馈线影响。公式给出的是理想起点，实际制作时建议预留少量长度，再用驻波表或天线分析仪逐步修剪到最低驻波。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This antenna length calculator helps with RF and amateur radio construction. In frequency mode it takes an operating frequency (0.1–6000 MHz), returns the free-space wavelength from λ = 300 / f, and computes the physical length of a half-wave dipole (143 / f m), quarter-wave vertical (71.5 / f m), 5/8-wave vertical (187.5 / f m) and full-wave loop (300 / f m) in both meters and feet. In length mode it derives the resonant frequency from a known antenna length and type. A velocity factor of 0.50–1.00 accounts for shortening in coated wires or dielectrics. All conversions run locally with zero dependencies.',
+        coreFeatures: [
+          'Frequency to wavelength and physical lengths for four common antenna types',
+          'Length to resonant frequency with one-click transfer back to frequency mode',
+          'Dual meter and feet output with about five significant digits',
+          'Velocity factor from 0.50 to 1.00 for dielectric shortening',
+          'Presets for 27.185, 145.5, 433.92, 868, 915 and 2400 MHz',
+        ],
+        howToUse: [
+          'Choose frequency-to-length or length-to-frequency mode',
+          'Enter the operating frequency or antenna length and select the antenna type',
+          'Adjust the velocity factor for your wire or dielectric; the default is 1.00',
+          'Review the lengths or derived frequency and copy the result for construction and tuning',
+        ],
+        useCases: [
+          'Building a quarter-wave antenna for a 433 MHz or 2.4 GHz radio module',
+          'Estimating HF or VHF dipole element lengths during design',
+          'Deriving the theoretical resonant frequency of an existing antenna element',
+        ],
+        privacyNote:
+          'All conversions run locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Why use 143 / f instead of 150 / f for a half-wave dipole?',
+            answer:
+              'A free-space half wavelength is 150 / f meters, but real wires exhibit end effects and the current distribution is slightly shorter. Engineering practice therefore uses about 143 / f meters (or 468 / f feet) for total dipole length; quarter-wave elements use 71.5 / f meters.',
+          },
+          {
+            question: 'How should I set the velocity factor?',
+            answer:
+              'Bare copper wire in air is close to 1.00. Coated wire, coaxial cable or dielectric supports typically call for 0.80–0.95. A lower velocity factor shortens the physical length. Use manufacturer data or SWR measurements when possible.',
+          },
+          {
+            question: 'Why does the result need real-world tuning?',
+            answer:
+              'Resonance is affected by mounting height, nearby metal, ground plane and feed line. The formula is an ideal starting point; leave a little extra length and trim while watching an SWR meter or antenna analyzer for the lowest match.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
