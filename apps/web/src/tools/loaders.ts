@@ -387,4 +387,5 @@ export const toolLoaders: Record<
   'twos-complement-calculator': () => import('./twos-complement-calculator'),
   'sleep-cycle-calculator': () => import('./sleep-cycle-calculator'),
   'heart-rate-zone-calculator': () => import('./heart-rate-zone-calculator'),
+  'gear-ratio-calculator': () => import('./gear-ratio-calculator'),
 };

@@ -36548,6 +36548,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'gear-ratio-calculator',
+    name: '齿轮传动比与转速 / 扭矩计算器（单级 / 多级串联）',
+    nameEn: 'Gear Ratio Calculator (Single & Multi-Stage)',
+    description:
+      '计算单级与多级齿轮组的传动比、输出转速、输出扭矩与旋转方向，支持传动效率修正、齿数比约分、常用减速比预设与由目标输出转速反推从动轮齿数。',
+    descriptionEn:
+      'Calculate gear ratio, output RPM, output torque and rotation direction for single-stage and multi-stage gear trains, with efficiency correction, reduced tooth ratios, common reduction presets and reverse lookup of driven gear teeth from a target output speed.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/gear-ratio-calculator',
+    iconName: 'Gauge',
+    tags: ['齿轮', '传动比', '转速', '扭矩', '减速'],
+    tagsEn: ['Gear', 'Ratio', 'RPM', 'Torque', 'Reduction'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '36',
+    doc: {
+      zh: {
+        whatIsIt:
+          '齿轮传动比计算器用于机械传动选型与校核。单级模式下输入主动轮与从动轮齿数、输入转速、输入扭矩与每级效率，即可得到传动比、化简齿数比、输出转速、输出扭矩与外啮合的反转方向；多级模式可自由增删齿轮对，逐级相乘得到总传动比、最终转速与扭矩，并按级数奇偶判断方向；反推模式则由目标输出转速与主动轮齿数计算所需从动轮齿数。全部为本地确定性乘除运算，零依赖。',
+        coreFeatures: [
+          '单级齿轮的传动比、输出转速、输出扭矩与方向计算',
+          '多级串联齿轮组，支持动态增删级数并按级累乘效率',
+          '齿数比自动约分，显示化简后的分子与分母',
+          '由输入转速与目标输出转速反推所需从动轮齿数',
+          '常用 3:1 / 4:1 / 5:1 减速比预设与一键复制结果',
+        ],
+        howToUse: [
+          '选择单级齿轮、多级串联或反推齿数模式',
+          '输入各级主动轮与从动轮齿数，以及输入转速、扭矩与效率',
+          '多级模式按需添加或删除齿轮对，工具会自动汇总总传动比',
+          '查看传动比、输出转速、扭矩与方向，点击复制用于设计记录',
+        ],
+        useCases: [
+          '减速电机与关节模组选型时快速核对输出转速与扭矩',
+          '机器人多级齿轮箱方案比较，估算总减速比与末级方向',
+          '从目标输出转速反推需要采购的从动齿轮齿数',
+        ],
+        privacyNote: '所有传动计算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: '传动比是如何定义的？',
+            answer:
+              '单级外啮合齿轮的传动比 i = 从动轮齿数 / 主动轮齿数。i 大于 1 表示减速：输出转速 = 输入转速 / i，理想输出扭矩 = 输入扭矩 × i。工具再乘以传动效率得到实际扭矩。',
+          },
+          {
+            question: '多级齿轮的总传动比怎么算？',
+            answer:
+              '总传动比等于各级传动比之积，也就是所有从动轮齿数乘积除以所有主动轮齿数乘积。方向按级数奇偶交替：一级反向、两级同向、三级反向，以此类推。',
+          },
+          {
+            question: '为什么输出扭矩要乘传动效率？',
+            answer:
+              '齿轮啮合、轴承与润滑会带来功率损失，效率低于 100% 时输出扭矩按比例降低。工具默认每级效率 100%，可按实际齿轮箱数据调整到 50–100%。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This gear ratio calculator supports mechanical drive selection and verification. In single-stage mode it takes driver and driven tooth counts, input RPM, input torque and per-stage efficiency to produce the ratio, reduced tooth ratio, output RPM, output torque and the reversed direction of an external mesh. Multi-stage mode lets you add or remove gear pairs and multiplies ratios stage by stage for total ratio, final speed and torque, with direction determined by stage-count parity. Reverse mode derives the required driven teeth from a target output speed. All arithmetic runs locally with zero dependencies.',
+        coreFeatures: [
+          'Single-stage gear ratio, output RPM, output torque and direction',
+          'Multi-stage gear trains with add/remove stages and per-stage efficiency',
+          'Automatic tooth-ratio reduction showing simplified numerator and denominator',
+          'Reverse lookup of driven gear teeth from input and target output speeds',
+          'Common 3:1, 4:1 and 5:1 reduction presets with one-click result copying',
+        ],
+        howToUse: [
+          'Choose single-stage, multi-stage or reverse tooth lookup',
+          'Enter driver and driven teeth for each stage plus input RPM, torque and efficiency',
+          'Add or remove gear pairs in multi-stage mode; totals update automatically',
+          'Review ratio, output RPM, torque and direction, then copy the result for your design notes',
+        ],
+        useCases: [
+          'Checking output speed and torque when selecting geared motors and joint modules',
+          'Comparing multi-stage gearbox designs and estimating overall reduction and final direction',
+          'Deriving the driven gear tooth count needed for a target output speed',
+        ],
+        privacyNote:
+          'All gear calculations run locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'How is gear ratio defined?',
+            answer:
+              'For a single external gear mesh, ratio i = driven teeth / driver teeth. A ratio above 1 means reduction: output RPM = input RPM / i, and ideal output torque = input torque × i. The tool multiplies by efficiency to get actual torque.',
+          },
+          {
+            question: 'How is the total ratio of multiple stages calculated?',
+            answer:
+              'The total ratio is the product of all stage ratios, equivalent to the product of all driven tooth counts divided by the product of all driver tooth counts. Direction alternates with stage parity: one stage reverses, two stages restore the original direction, and so on.',
+          },
+          {
+            question: 'Why multiply output torque by efficiency?',
+            answer:
+              'Meshing, bearings and lubrication cause power losses, so torque drops when efficiency is below 100%. The default is 100% per stage; adjust between 50 and 100% to match real gearbox data.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
