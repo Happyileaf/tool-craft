@@ -36346,6 +36346,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'sleep-cycle-calculator',
+    name: '睡眠周期与就寝 / 起床时间计算器（90 分钟周期 + 入睡缓冲）',
+    nameEn: 'Sleep Cycle Calculator (90-Minute Cycles & Bedtime Buffer)',
+    description:
+      '按 90 分钟一个完整睡眠周期，双向推算作息：输入目标起床时间可倒推 4 / 5 / 6 个周期对应的就寝时刻，输入就寝时间可正推起床时刻，并考虑 0–60 分钟入睡缓冲、跨午夜日期偏移与 12 / 24 小时制显示。',
+    descriptionEn:
+      'Plan sleep around 90-minute cycles in both directions: enter a target wake time to back-calculate bedtimes for 4, 5 or 6 cycles, or enter a bedtime to get the matching wake times, with a 0–60 minute falling-asleep buffer, midnight-crossing day offsets and 12/24-hour display.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/sleep-cycle-calculator',
+    iconName: 'MoonStar',
+    tags: ['睡眠', '作息', '周期', '就寝', '起床'],
+    tagsEn: ['Sleep', 'Bedtime', 'Cycle', 'Wake-up', 'Routine'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '07:00',
+    doc: {
+      zh: {
+        whatIsIt:
+          '睡眠周期计算器按 90 分钟一个完整睡眠周期推算作息。选择「按起床时间倒推」后输入目标起床时刻，工具会扣除 0–60 分钟的入睡缓冲，分别给出 4 / 5 / 6 个周期对应的就寝时间；选择「按就寝时间正推」则从计划就寝时刻加缓冲与周期时长，给出对应起床时间。每个结果标注总睡眠时长与跨天偏移（前一日 / 当日 / 次日），并支持 12 / 24 小时制切换，全部为本地时间运算、零依赖。',
+        coreFeatures: [
+          '双向推算：按起床时间倒推就寝，或按就寝时间正推起床',
+          '按 4 / 5 / 6 个完整周期分别给出候选时刻，并可自由勾选展示',
+          '支持 0–60 分钟入睡缓冲，默认 15 分钟',
+          '自动处理跨午夜时间回绕，并标注前一日 / 当日 / 次日',
+          '支持 12 / 24 小时制切换与一键复制全部结果',
+        ],
+        howToUse: [
+          '选择推算方向：按起床时间倒推或按就寝时间正推',
+          '输入目标起床时间或计划就寝时间，格式为 HH:MM',
+          '按需要调整入睡缓冲（0–60 分钟）与要展示的周期数',
+          '查看各周期对应的时刻与总睡眠时长，需要时切换 12 小时制或复制结果',
+        ],
+        useCases: [
+          '晚上决定几点上床，才能睡满 5 个完整周期并在固定时间起床',
+          '早上确认当前就寝时间能睡几个完整周期，判断是否需要提前入睡',
+          '出差或倒班后快速重排作息，减少在周期中途被闹钟打断',
+        ],
+        privacyNote: '所有时间推算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: '为什么按 90 分钟计算一个睡眠周期？',
+            answer:
+              '成年人一个完整睡眠周期（浅睡、深睡与快速眼动睡眠）通常约 90 分钟。在周期结束时醒来通常比在深睡阶段被唤醒更清醒，因此许多作息方法以 90 分钟为单位安排睡眠时长。',
+          },
+          {
+            question: '入睡缓冲应该填多少？',
+            answer:
+              '入睡缓冲指从上床到真正入睡的时间，一般可按 10–20 分钟估算，默认 15 分钟。倒推就寝时间时会把缓冲从目标起床时间中扣除，因此缓冲越长，建议上床时间越早。',
+          },
+          {
+            question: '为什么结果会显示「前一日」或「次日」？',
+            answer:
+              '当就寝时间早于午夜时会落在输入日期前一天，例如 07:00 起床、5 个周期加 15 分钟缓冲得到 23:15，需要在前一日 23:15 上床；按就寝时间正推起床时则常落在次日凌晨。工具按 1440 分钟回绕并给出日期偏移提示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This calculator plans sleep around 90-minute cycles. In wake mode, enter your target wake time and it subtracts a configurable 0–60 minute falling-asleep buffer to show bedtimes for 4, 5 or 6 complete cycles. In bedtime mode, it adds the buffer and cycle duration to your planned bedtime to show the matching wake times. Every result carries the total sleep duration and a previous-day / same-day / next-day offset, with 12/24-hour display support. All calculations run locally with zero dependencies.',
+        coreFeatures: [
+          'Two directions: back-calculate bedtime from a wake time, or wake times from a bedtime',
+          'Separate results for 4, 5 and 6 complete cycles with selectable visibility',
+          'Configurable 0–60 minute falling-asleep buffer, 15 minutes by default',
+          'Automatic midnight wrapping with previous-day / same-day / next-day labels',
+          '12/24-hour display switching and one-click copy of all results',
+        ],
+        howToUse: [
+          'Choose the direction: back-calculate bedtime or forward-calculate wake time',
+          'Enter the target wake time or planned bedtime in HH:MM format',
+          'Adjust the falling-asleep buffer (0–60 minutes) and the cycles to display',
+          'Review each cycle result with its total sleep duration, then switch to 12-hour mode or copy if needed',
+        ],
+        useCases: [
+          'Deciding what time to go to bed to complete five full cycles before a fixed wake time',
+          'Checking how many full cycles a current bedtime allows and whether to go to bed earlier',
+          'Rebuilding a routine after travel or shift changes to avoid waking mid-cycle',
+        ],
+        privacyNote:
+          'All time calculations run locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Why use 90 minutes as one sleep cycle?',
+            answer:
+              'A full adult sleep cycle (light sleep, deep sleep and REM) usually lasts about 90 minutes. Waking at the end of a cycle often feels fresher than being woken during deep sleep, so many routines plan sleep in 90-minute units.',
+          },
+          {
+            question: 'What value should I use for the falling-asleep buffer?',
+            answer:
+              'The buffer is the time from getting into bed to actually falling asleep, commonly estimated at 10–20 minutes; the default is 15. A longer buffer makes the suggested bedtime earlier in wake mode.',
+          },
+          {
+            question: 'Why does a result say previous day or next day?',
+            answer:
+              'A bedtime earlier than midnight falls on the day before the input date. For example, waking at 07:00 with five cycles and a 15-minute buffer gives 23:15, which belongs to the previous day. Forward calculations from an evening bedtime usually land in the early hours of the next day. The tool wraps at 1440 minutes and labels the offset.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -385,4 +385,5 @@ export const toolLoaders: Record<
   'tire-size-calculator': () => import('./tire-size-calculator'),
   'fuel-economy-calculator': () => import('./fuel-economy-calculator'),
   'twos-complement-calculator': () => import('./twos-complement-calculator'),
+  'sleep-cycle-calculator': () => import('./sleep-cycle-calculator'),
 };
