@@ -273,7 +273,7 @@
 | 20261107200151 | CRC-8 / CRC-16 / CRC-32 / CRC-64 多参数模型计算器 | Web Tool | Existing Gap | In Progress | 2026-11-07 | trae-agent | [详情](./idea-details/20261107200151.md) |
 | 20261107200152 | 培根 / 栅栏 / Playfair / Atbash 古典密码合集 | Web Tool | Exploration | Pending | 2026-11-07 | | [详情](./idea-details/20261107200152.md) |
 | 20261107200153 | HSV / HSL / HWB / Lab / LCH 多色彩空间互转器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200153.md) |
-| 20261107200154 | 平面解析几何计算器（两点斜率 / 直线方程 / 交点 / 距离 / 中点 / 平行垂直） | Web Tool | Exploration | Pending | 2026-11-07 | | [详情](./idea-details/20261107200154.md) |
+| 20261107200154 | 平面解析几何计算器（两点斜率 / 直线方程 / 交点 / 距离 / 中点 / 平行垂直） | Web Tool | Exploration | Claimed | 2026-11-07 | trae-agent | [详情](./idea-details/20261107200154.md) |
 | 20261107200155 | ICMPv4 Echo（Ping）报文构建与十六进制解析器 | Web Tool | External Reference | Pending | 2026-11-07 | | [详情](./idea-details/20261107200155.md) |
 | 20261107200157 | Markdown 表格 ↔ CSV / JSON / HTML / LaTeX 多向转换器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200157.md) |
 | 20261107200158 | HSL / HSV 多色彩空间调色板生成与 CSS 设计令牌导出器 | Web Tool | Exploration | Pending | 2026-11-07 | | [详情](./idea-details/20261107200158.md) |
@@ -336,8 +336,8 @@
 | 20261114200454 | HTTP/2 帧头解析与帧序列查看器（不含 HPACK 解压） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114200454.md) |
 | 20261114200457 | STL 三维模型解析与体积 / 表面积统计器 | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200457.md) |
 | 20261114200458 | 大整数任意精度四则运算计算器（BigInt 加减乘除 / 幂 / 取模 / 阶乘） | Web Tool | Exploration | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114200458.md) |
-| 20261114200459 | 曝光值（EV）与 ND 滤镜等效曝光计算器 | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200459.md) |
-| 20261114200501 | 电池续航时间计算器（容量 / 负载 / 效率 / Peukert 与串并联组包） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114200501.md) |
+| 20261114200459 | 曝光值（EV）与 ND 滤镜等效曝光计算器 | Web Tool | Exploration | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114200459.md) |
+| 20261114200501 | 电池续航时间计算器（容量 / 负载 / 效率 / Peukert 与串并联组包） | Web Tool | Existing Gap | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114200501.md) |
 | 20261114200502 | 经济补偿金与代通知金计算器（N / N+1 / 2N，含月工资上限与年限折算） | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200502.md) |
 | 20261115020303 | 睡眠周期与就寝 / 起床时间计算器（90 分钟周期 + 入睡缓冲） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115020303.md) |
 | 20261115080615 | ARP 地址解析协议报文解析与构造器（RFC 826，以太网/IPv4 字节布局） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115080615.md) |
@@ -346,8 +346,8 @@
 | 20261115080618 | 心率训练区间计算器（最大心率估算与 Karvonen 储备心率五区间） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080618.md) |
 | 20261115080619 | 齿轮传动比与转速 / 扭矩计算器（多级齿轮组） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080619.md) |
 | 20261115140201 | 简体中文 ↔ 繁体中文转换器（词组级映射，含台湾 / 香港变体与地区用词） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115140201.md) |
-| 20261115140202 | 相机视角（FOV）与等效焦距计算器（传感器画幅 / 裁切系数 / 双向换算） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115140202.md) |
+| 20261115140202 | 相机视角（FOV）与等效焦距计算器（传感器画幅 / 裁切系数 / 双向换算） | Web Tool | Existing Gap | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115140202.md) |
 | 20261115140203 | 体脂率估算计算器（US Navy 围度法 / BMI 推导法 + 腰臀比风险区间） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115140203.md) |
-| 20261115140204 | 烘焙百分比与配方缩放计算器（Baker's Percentage / 模具尺寸换算） | Web Tool | Exploration | Pending | 2026-11-15 | | [详情](./idea-details/20261115140204.md) |
+| 20261115140204 | 烘焙百分比与配方缩放计算器（Baker's Percentage / 模具尺寸换算） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115140204.md) |
 | 20261115140205 | 视频 / 音频码率与文件大小估算器（分辨率 / 帧率 / 编码器 / 时长互算） | Web Tool | Exploration | Pending | 2026-11-15 | | [详情](./idea-details/20261115140205.md) |
 
