@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.inputs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px 20px;
+  margin-bottom: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.control {
+  width: 150px;
+}
+
+.sensorSelect {
+  width: 250px;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 10px;
+  background: rgb(249 250 251);
+}
+
+.statLabel {
+  color: rgb(107 114 128);
+  font-size: 12px;
+}
+
+.value {
+  color: rgb(17 24 39);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.modeGroup {
+  margin-bottom: 16px;
+}

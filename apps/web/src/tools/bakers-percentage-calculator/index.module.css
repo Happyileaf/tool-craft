@@ -1,0 +1,95 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 20px;
+  margin-bottom: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.control {
+  width: 180px;
+}
+
+.presets {
+  margin-bottom: 12px;
+}
+
+.preset {
+  cursor: pointer;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nameInput {
+  max-width: 260px;
+}
+
+.valueInput {
+  width: 140px;
+}
+
+.unit {
+  color: rgb(107 114 128);
+  font-size: 13px;
+  width: 16px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 10px;
+  background: rgb(249 250 251);
+}
+
+.statLabel {
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.value {
+  color: rgb(17 24 39);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.sub {
+  color: rgb(107 114 128);
+  font-size: 12px;
+}

@@ -36851,6 +36851,533 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'exposure-value-calculator',
+    name: '曝光值（EV）与 ND 滤镜等效曝光计算器',
+    nameEn: 'Exposure Value (EV) & ND Filter Calculator',
+    description:
+      '根据光圈、快门与 ISO 计算 EV100 与当前 ISO 下的曝光值，生成 1/3 与 1/2 档等效曝光组合，并支持 ND2/ND4/ND8 与 ND0.3/0.6/0.9 双标法的减光档数换算与长曝光计时。',
+    descriptionEn:
+      'Calculate EV100 and current-ISO exposure value from aperture, shutter speed, and ISO, generate 1/3- and 1/2-stop equivalent exposure pairs, and convert ND2/ND4/ND8 or ND0.3/0.6/0.9 filters into new shutter times with long-exposure timing.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/exposure-value-calculator',
+    iconName: 'Eye',
+    tags: ['摄影', '曝光', 'EV', 'ND 滤镜', '长曝光'],
+    tagsEn: ['Photography', 'Exposure', 'EV', 'ND Filter', 'Long Exposure'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '1/125',
+    doc: {
+      zh: {
+        whatIsIt:
+          '曝光值与 ND 滤镜计算器用标准曝光公式 EV100 = log2(N² / t) 把光圈、快门与 ISO 统一成可比较的曝光值，并按当前 ISO 给出等效 EV。它还能生成 1/3 档与 1/2 档的等效光圈 / 快门组合，把 ND2、ND4、ND8 等倍率标法或 ND0.3、ND0.6、ND0.9 等密度标法换算为减光档数，计算加装滤镜后的新快门时间与长曝光计时，适合风光长曝光与滤镜配档。',
+        coreFeatures: [
+          '标准曝光公式：EV100 = log2(N² / t)，当前 ISO 下 EV = EV100 + log2(ISO / 100)',
+          '等效曝光组合：按 1/3 档与 1/2 档标准光圈序列输出对应快门，并过滤超出相机范围的组合',
+          'ND 双标法：同时支持 ND2/ND4/ND8 倍率名称与 ND0.3/0.6/0.9 光学密度，并支持自定义档数',
+          '双向换算：已知档数求新快门，或由原快门与目标快门反推所需档数并匹配最接近的标准 ND',
+          '长曝光计时：把结果秒数格式化为 mm:ss.s 的计时参考，便于手机计时器直接使用',
+          '纯本地计算：零网络请求，拍摄参数不离开浏览器',
+        ],
+        howToUse: [
+          '输入光圈 f 值、快门时间（支持 1/125 或 2s 写法）与 ISO，结果即时显示 EV100 与当前 ISO 下的 EV',
+          '在等效曝光组合区域切换 1/3 档或 1/2 档，查看同一曝光量下各光圈的对应快门',
+          '在 ND 滤镜区域选择「已知档数 → 新快门」，挑一个 ND 预设或输入自定义档数，得到新快门与计时',
+          '需要反推滤镜时切换到「已知目标快门 → 档数」，填写目标快门即可看到所需档数与最接近的标准 ND',
+        ],
+        useCases: [
+          '风光摄影加装 ND1000 前估算 30 秒长曝光所需的实际快门时间',
+          '夜景拍摄时比较不同光圈下的等效快门组合，避免手抖糊片',
+          '棚拍改变 ISO 后快速确认曝光值变化了几档',
+          '购买 ND 滤镜前由「想要的长曝光时间」反推需要的减光档数',
+        ],
+        privacyNote: '所有曝光参数与计算都在浏览器本地完成，不会上传任何拍摄数据。',
+        faqs: [
+          {
+            question: 'EV100 与当前 ISO 下的 EV 有什么区别？',
+            answer:
+              'EV100 是固定以 ISO 100 为基准的曝光值，只由光圈与快门决定；当前 ISO 下的 EV 再加上 log2(ISO / 100)，用来表示同一场景在不同感光度下的等效亮度。',
+          },
+          {
+            question: 'ND 滤镜的两种标法怎么对应？',
+            answer:
+              'ND2 表示减光 1 档，ND4 为 2 档、ND8 为 3 档，以此类推；密度标法 ND0.3 对应 1 档、ND0.6 对应 2 档，换算关系为档数 = 密度 × 10 / 3。',
+          },
+          {
+            question: '为什么有些光圈没有出现在等效组合里？',
+            answer:
+              '工具会把快门时间限制在 1/8000 秒到 30 秒之间，超出该范围的组合在实际相机上无法设置，因此不显示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Exposure Value & ND Filter Calculator uses the standard EV100 = log2(N² / t) formula to turn aperture, shutter speed, and ISO into a comparable exposure value and reports the EV at the current ISO. It also generates equivalent aperture/shutter pairs in 1/3 and 1/2 stops, converts ND2/ND4/ND8 multiplier markings or ND0.3/0.6/0.9 density markings into light-reduction stops, and derives the new shutter time and long-exposure timing after adding a filter, which suits landscape long exposures and filter planning.',
+        coreFeatures: [
+          'Standard exposure formula: EV100 = log2(N² / t), with current-ISO EV = EV100 + log2(ISO / 100)',
+          'Equivalent pairs: outputs matching shutter times across 1/3- and 1/2-stop aperture sequences and filters values outside camera ranges',
+          'Dual ND markings: supports ND2/ND4/ND8 multipliers and ND0.3/0.6/0.9 optical densities, plus custom stop counts',
+          'Two-way conversion: solve a new shutter from stops, or reverse a target shutter into the required stops and nearest standard ND',
+          'Long-exposure timing: formats result seconds as mm:ss.s for a phone timer',
+          'Fully local: no network requests and shooting parameters never leave your browser',
+        ],
+        howToUse: [
+          'Enter aperture, shutter time (1/125 or 2s style), and ISO to see EV100 and the current-ISO EV immediately',
+          'Switch between 1/3 and 1/2 stops in the equivalent exposure table to compare shutter times at the same exposure',
+          'In the ND panel choose “stops → new shutter”, pick a ND preset or enter custom stops, and read the new shutter and timer',
+          'To reverse a filter, switch to “target shutter → stops” and enter the target shutter to see the required stops and nearest standard ND',
+        ],
+        useCases: [
+          'Estimating the actual shutter time for a 30-second long exposure before adding an ND1000',
+          'Comparing equivalent shutter pairs at different apertures for night photography',
+          'Checking how many stops the exposure value shifts after changing ISO in the studio',
+          'Deriving the ND strength needed for a desired long exposure before buying a filter',
+        ],
+        privacyNote:
+          'All exposure parameters and calculations run locally in your browser; no shooting data is uploaded.',
+        faqs: [
+          {
+            question: 'What is the difference between EV100 and the current-ISO EV?',
+            answer:
+              'EV100 is the exposure value fixed to ISO 100 and depends only on aperture and shutter. The current-ISO EV adds log2(ISO / 100) to express the same scene brightness at a different sensitivity.',
+          },
+          {
+            question: 'How do the two ND marking systems correspond?',
+            answer:
+              'ND2 reduces light by 1 stop, ND4 by 2 stops, ND8 by 3 stops, and so on. Density markings map ND0.3 to 1 stop and ND0.6 to 2 stops, using stops = density × 10 / 3.',
+          },
+          {
+            question: 'Why are some apertures missing from the equivalent list?',
+            answer:
+              'The tool limits shutter times to 1/8000 s through 30 s. Combinations outside that range cannot be set on most cameras, so they are hidden.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'fov-focal-length-calculator',
+    name: '相机视角（FOV）与等效焦距计算器',
+    nameEn: 'Camera Field of View & Equivalent Focal Length Calculator',
+    description:
+      '按传感器画幅与焦距计算对角线、水平、垂直视角，输出 35mm 等效焦距与等效光圈；支持全画幅、APS-C、M4/3、1 英寸、中画幅等预设与自定义尺寸，并可由目标视角反推所需焦距。',
+    descriptionEn:
+      'Compute diagonal, horizontal, and vertical field of view from sensor size and focal length, output 35mm-equivalent focal length and aperture, support full-frame, APS-C, M4/3, 1-inch, and medium-format presets plus custom sizes, and solve the required focal length from a target FOV.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/fov-focal-length-calculator',
+    iconName: 'Image',
+    tags: ['摄影', '视角', '焦距', '等效焦距', '传感器'],
+    tagsEn: ['Photography', 'Field of View', 'Focal Length', 'Equivalent Focal', 'Sensor'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'full-frame',
+    doc: {
+      zh: {
+        whatIsIt:
+          '相机视角与等效焦距计算器把镜头焦距和传感器画幅换算成可比较的视角：按 FOV = 2 × atan(尺寸 / (2 × 焦距)) 计算对角线、水平与垂直三个方向的视角，并以 35mm 全画幅为基准给出等效焦距与等效光圈。它内置全画幅、APS-C、APS-H、M4/3、1 英寸与中画幅预设，也允许输入自定义画幅尺寸，还能反向由目标视角求解所需焦距，适合跨画幅比较镜头、估算转接后的视角以及规划拍摄机位。',
+        coreFeatures: [
+          '三向视角：同时输出对角线、水平与垂直视角，避免只对比对角线造成的误判',
+          '画幅预设与自定义：内置 7 种常见画幅，并支持任意宽高输入与自动裁切系数计算',
+          '35mm 等效：按画幅裁切系数换算等效焦距与等效光圈，便于跨系统比较镜头',
+          '反向求解：已知目标视角与画幅，按所选维度反推所需焦距',
+          '画幅对比表：同一焦距下遍历全部预设画幅，直观展示视角与等效焦距差异',
+          '纯本地计算：不上传任何拍摄或器材信息',
+        ],
+        howToUse: [
+          '选择传感器画幅预设，或切换到自定义尺寸并填写宽度与高度',
+          '在「焦距 → 视角」模式输入焦距与光圈，查看三个方向的视角、等效焦距与等效光圈',
+          '在「目标视角 → 焦距」模式选择视角维度并填写目标角度，得到所需焦距与等效焦距',
+          '查看下方的画幅对比表，比较同一焦距在不同画幅上的视角差异',
+        ],
+        useCases: [
+          '把 APS-C 镜头焦距换算为全画幅等效视角，判断是否覆盖所需场景',
+          '为中画幅转接镜头估算在 35mm 机身上的等效焦距',
+          '根据想拍的画面范围反推需要多长的焦距',
+          '比较同一支镜头在全画幅与 M4/3 机身上的视角差异',
+        ],
+        privacyNote: '所有视角与焦距计算都在浏览器本地执行，不会上传任何器材或拍摄数据。',
+        faqs: [
+          {
+            question: '等效焦距是怎么算的？',
+            answer:
+              '等效焦距 = 实际焦距 × 裁切系数，裁切系数由画幅对角线长度与 35mm 全画幅对角线（约 43.27mm）之比得出，预设画幅使用厂商常用标称值。',
+          },
+          {
+            question: '为什么三个方向的视角不一样？',
+            answer:
+              '因为传感器是矩形，水平、垂直与对角线长度不同。同一焦距下对角线视角最大，垂直视角最小，构图时应按实际使用的方向参考。',
+          },
+          {
+            question: '等效光圈有什么意义？',
+            answer:
+              '等效光圈 = 实际光圈 × 裁切系数，用于比较不同画幅在相同视角下的景深与进光量表现，并不改变实际曝光设置。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Camera Field of View & Equivalent Focal Length Calculator turns focal length and sensor format into comparable angles using FOV = 2 × atan(size / (2 × focal)). It reports diagonal, horizontal, and vertical FOV, plus 35mm-equivalent focal length and aperture. Built-in presets cover full-frame, APS-C, APS-H, M4/3, 1-inch, and medium format, custom sensor sizes are supported, and a reverse mode solves the focal length needed for a target FOV, which helps compare lenses across formats and plan compositions.',
+        coreFeatures: [
+          'Three-axis FOV: diagonal, horizontal, and vertical angles instead of diagonal alone',
+          'Presets and custom sizes: seven common formats plus arbitrary width and height with automatic crop factor',
+          '35mm equivalence: converts focal length and aperture with the sensor crop factor for cross-system comparison',
+          'Reverse solving: derives the required focal length from a target FOV in the chosen dimension',
+          'Format comparison table: shows FOV and equivalent focal length for every preset at the same focal length',
+          'Fully local: no camera or shooting information is uploaded',
+        ],
+        howToUse: [
+          'Pick a sensor preset, or switch to custom size and enter width and height',
+          'In “focal → FOV” mode enter focal length and aperture to see all three FOVs, equivalent focal length, and equivalent aperture',
+          'In “target FOV → focal” mode choose a dimension, enter the target angle, and read the required focal length',
+          'Use the comparison table below to compare the same focal length across formats',
+        ],
+        useCases: [
+          'Converting an APS-C lens focal length into its full-frame equivalent view',
+          'Estimating the equivalent focal length of a medium-format lens adapted to a 35mm body',
+          'Deriving the focal length needed for a desired framing',
+          'Comparing the same lens on full-frame and M4/3 bodies',
+        ],
+        privacyNote:
+          'All FOV and focal length calculations run locally in your browser; no gear or shooting data is uploaded.',
+        faqs: [
+          {
+            question: 'How is the equivalent focal length calculated?',
+            answer:
+              'Equivalent focal length = actual focal length × crop factor. The crop factor is the 35mm diagonal (about 43.27mm) divided by the sensor diagonal; presets use the manufacturer’s common nominal values.',
+          },
+          {
+            question: 'Why do the three FOV values differ?',
+            answer:
+              'A sensor is rectangular, so horizontal, vertical, and diagonal lengths differ. At the same focal length the diagonal FOV is largest and the vertical FOV smallest; use the direction that matches your framing.',
+          },
+          {
+            question: 'What does equivalent aperture mean?',
+            answer:
+              'Equivalent aperture = actual aperture × crop factor. It compares depth of field and light gathering at the same angle of view across formats, without changing the actual exposure settings.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'battery-runtime-calculator',
+    name: '电池续航时间计算器',
+    nameEn: 'Battery Runtime Calculator',
+    description:
+      '按电池容量（mAh / Ah / Wh）、负载电流或功率、转换效率与放电深度估算续航时间与可用能量，支持串并联电池组等效参数、Peukert 高倍率容量衰减修正以及不同放电倍率的续航对比表。',
+    descriptionEn:
+      'Estimate battery runtime and usable energy from capacity (mAh / Ah / Wh), load current or power, conversion efficiency, and depth of discharge; support series/parallel pack equivalents, Peukert high-rate capacity derating, and a runtime comparison table across discharge rates.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/battery-runtime-calculator',
+    iconName: 'Zap',
+    tags: ['电池', '续航', '容量', 'Peukert', '串并联'],
+    tagsEn: ['Battery', 'Runtime', 'Capacity', 'Peukert', 'Series Parallel'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'current',
+    doc: {
+      zh: {
+        whatIsIt:
+          '电池续航计算器把电池标称容量、负载功耗与放电条件统一换算为预计可用时间。它支持 mAh、Ah、Wh 三种容量单位，可输入负载电流或负载功率，并计入转换效率与放电深度；对多节电池可按串联提升电压、并联提升容量的规则生成等效电池组。工具还提供 Peukert 指数修正，用于描述高倍率放电时有效容量下降的现象，并生成 0.1C 到 2C 的续航对比表，适合移动电源、太阳能储能、航模与小型电子项目的续航估算。',
+        coreFeatures: [
+          '多单位容量：mAh、Ah、Wh 三种输入方式，自动换算标称 Ah 与 Wh',
+          '负载双模式：可直接输入电流或功率，功率模式按电压折算电池侧电流',
+          '效率与放电深度：可分别设置转换效率与允许放电深度，得到真实可用能量',
+          '串并联电池组：按单节容量、单节电压、串联数与并联数计算等效电压、容量与能量',
+          'Peukert 修正：输入指数 k 与基准电流，按 t = t_base × (I_rated / I)^(k-1) 修正高倍率续航',
+          '倍率对比表：输出 0.1C、0.25C、0.5C、1C、2C 下的电流与预计续航',
+        ],
+        howToUse: [
+          '选择单体电池或串并联电池组，填写容量、电压或单节参数',
+          '选择负载类型并输入负载电流或功率，再设置转换效率与放电深度',
+          '如需考虑高倍率容量衰减，勾选 Peukert 修正并填写指数 k 与基准电流',
+          '查看预计续航、可用能量与负载电流，并参考下方不同倍率的对比表',
+        ],
+        useCases: [
+          '估算移动电源带动树莓派与硬盘时的实际续航',
+          '为 3S2P 锂离子电池组计算等效电压、容量与带载时间',
+          '比较 0.5C 与 1C 放电下同一电池的可用时长差异',
+          '规划太阳能储能系统在 80% 放电深度下的夜间供电时间',
+        ],
+        privacyNote: '所有电池与负载参数仅在浏览器本地计算，不会上传任何数据。',
+        faqs: [
+          {
+            question: '为什么实际续航比容量除以电流更短？',
+            answer:
+              '因为存在转换效率损失与允许放电深度限制，工具会把标称能量乘以效率与放电深度后得到可用能量，再除以负载功率。',
+          },
+          {
+            question: 'Peukert 指数应该填多少？',
+            answer:
+              '常见铅酸电池约 1.2-1.35，锂离子电池接近 1.05-1.1。k 越大，高倍率放电时有效容量下降越明显；不确定时可保持 1 表示理想电池。',
+          },
+          {
+            question: '串并联后的容量怎么算？',
+            answer:
+              '串联提升电压、容量不变；并联提升容量、电压不变。3S2P 表示 3 节串联成一组、2 组并联，总电压为单节电压 × 3，总容量为单节容量 × 2。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Battery Runtime Calculator turns nominal capacity, load demand, and discharge conditions into an estimated usable time. It accepts mAh, Ah, and Wh capacity units, supports load current or load power, and accounts for conversion efficiency and depth of discharge. Multi-cell packs follow the series-voltage and parallel-capacity rules to produce an equivalent battery. A Peukert exponent correction models capacity derating at high discharge rates, and a 0.1C–2C comparison table helps estimate runtime for power banks, solar storage, RC models, and small electronics.',
+        coreFeatures: [
+          'Multiple capacity units: mAh, Ah, and Wh inputs with automatic Ah and Wh equivalents',
+          'Dual load modes: enter current or power; power mode converts to battery-side current through voltage',
+          'Efficiency and depth of discharge: derive real usable energy from both factors',
+          'Series/parallel packs: compute equivalent voltage, capacity, and energy from cell capacity, cell voltage, series, and parallel counts',
+          'Peukert correction: apply t = t_base × (I_rated / I)^(k-1) with exponent k and a reference current',
+          'Rate comparison table: currents and runtime at 0.1C, 0.25C, 0.5C, 1C, and 2C',
+        ],
+        howToUse: [
+          'Choose a single battery or a series/parallel pack and enter capacity, voltage, or cell parameters',
+          'Select a load type, enter current or power, then set conversion efficiency and depth of discharge',
+          'To model high-rate derating, enable Peukert correction and enter exponent k with a reference current',
+          'Read the estimated runtime, usable energy, and load current, then compare discharge rates in the table',
+        ],
+        useCases: [
+          'Estimating how long a power bank runs a Raspberry Pi with an external drive',
+          'Calculating equivalent voltage, capacity, and load time for a 3S2P lithium pack',
+          'Comparing usable runtime at 0.5C versus 1C discharge',
+          'Planning overnight supply time for solar storage at 80% depth of discharge',
+        ],
+        privacyNote:
+          'All battery and load parameters are calculated locally in your browser; no data is uploaded.',
+        faqs: [
+          {
+            question: 'Why is real runtime shorter than capacity divided by current?',
+            answer:
+              'Conversion losses and the allowed depth of discharge reduce usable energy. The tool multiplies nominal energy by efficiency and depth of discharge before dividing by load power.',
+          },
+          {
+            question: 'What Peukert exponent should I use?',
+            answer:
+              'Lead-acid batteries are typically around 1.2–1.35, while lithium-ion is close to 1.05–1.1. A larger k means more capacity loss at high rates; leave it at 1 for an ideal battery.',
+          },
+          {
+            question: 'How is pack capacity calculated?',
+            answer:
+              'Series raises voltage while capacity stays the same; parallel raises capacity while voltage stays the same. 3S2P means three cells in series per string and two strings in parallel, so voltage is 3 × cell voltage and capacity is 2 × cell capacity.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'bakers-percentage-calculator',
+    name: '烘焙百分比与配方缩放计算器',
+    nameEn: "Baker's Percentage & Recipe Scaler",
+    description:
+      '以面粉为 100% 基准换算每种配料的烘焙百分比，自动识别含水量、盐与酵母比例，并按目标面粉重量、缩放倍数或面团总重等比缩放配方，附带圆模方模换算。',
+    descriptionEn:
+      "Convert every ingredient to baker's percentage with flour at 100%, detect hydration, salt, and yeast ratios automatically, scale the formula by target flour weight, factor, or total dough weight, and convert between round and square molds.",
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/bakers-percentage-calculator',
+    iconName: 'Flame',
+    tags: ['烘焙', '百分比', '配方', '含水量', '缩放'],
+    tagsEn: ['Baking', 'Percentage', 'Recipe', 'Hydration', 'Scale'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'grams',
+    doc: {
+      zh: {
+        whatIsIt:
+          '烘焙百分比与配方缩放计算器用烘焙行业通用的“面粉永远是 100%”规则整理配方。它既可以把克数换算成烘焙百分比，也可以按百分比反推克数；还能自动识别水、盐、酵母并汇总含水量、盐比例与酵母比例。确定基准配方后，可按目标面粉重量、缩放倍数或面团总重等比例放大缩小，所有配料同时按同一倍数变化，配方比例保持不变。工具还提供圆模、方模与同底面积改高度的换算倍数，方便把配方迁移到不同尺寸的模具。',
+        coreFeatures: [
+          '面粉 100% 基准：所有配料统一换算为相对面粉的烘焙百分比',
+          '双向录入：按克数或按烘焙百分比输入，另一种数值自动推算',
+          '关键比例汇总：自动识别水、盐、酵母并给出含水量、盐比例、酵母比例',
+          '三种缩放目标：按目标面粉重量、按缩放倍数或按目标面团总重等比缩放',
+          '模具换算：圆模与方模按尺寸平方比、同底面积改高度按高度比计算面团倍数',
+          '预设配方：内置法棍、吐司、贝果与酸种乡村面包示例，一键载入',
+        ],
+        howToUse: [
+          '填写面粉总重量，并选择配料按克数还是按烘焙百分比录入',
+          '逐行填写配料名称与数值，或点击预设配方快速载入一份示例',
+          '查看含水量、盐比例、酵母比例、总百分比与面团总重，核对配方结构',
+          '在配方缩放面板选择缩放目标并填写目标值，得到缩放后的各配料克数',
+          '如需更换模具，在模具换算面板填写原尺寸与新尺寸，得到面团用量倍数',
+        ],
+        useCases: [
+          '把烘焙书里的克数配方整理成标准烘焙百分比，便于记忆与调整',
+          '从 1000g 面粉的家庭配方放大到商用 5000g 面粉批量生产',
+          '按目标面团总重反推面粉与水的用量，刚好填满一个吐司模',
+          '把 20cm 圆模配方换算到 25cm 圆模，避免面团过多或过少',
+        ],
+        privacyNote: '所有配方数据仅在浏览器本地计算，不会上传或保存任何内容。',
+        faqs: [
+          {
+            question: '为什么面粉的百分比固定是 100%？',
+            answer:
+              '烘焙百分比以配方中面粉总重量为唯一基准，其他配料都表示“占面粉重量的百分比”。这样调整批量时只需改变面粉重量，所有比例都能保持稳定。',
+          },
+          {
+            question: '含水量是怎么算的？',
+            answer:
+              '含水量等于配方中所有名称含“水”的配料重量之和除以面粉重量。若使用牛奶、蛋液等含水液体，可另建一行并手动参考其含水率调整。',
+          },
+          {
+            question: '圆模和方模为什么按尺寸平方换算？',
+            answer:
+              '在高度相同时，模具容积与底面积成正比，圆形底面积为 πr²、方形底面积为边长²，二者都随尺寸的平方变化，所以 20cm 换 25cm 的倍数是 (25/20)² = 1.5625。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          "This calculator organizes recipes with the baking industry's rule that flour is always 100%. It converts grams to baker's percentages and vice versa, automatically detects water, salt, and yeast to summarize hydration, salt ratio, and yeast ratio, and then scales the whole formula by target flour weight, scale factor, or total dough weight so every ingredient changes by the same factor. Mold conversion covers round tins, square tins, and same-base height changes, making it easy to move a formula to a different pan size.",
+        coreFeatures: [
+          'Flour at 100%: every ingredient is expressed relative to the total flour weight',
+          "Bidirectional entry: input grams or baker's percentages and derive the other value",
+          'Key ratios: automatic water, salt, and yeast detection with hydration, salt, and yeast percentages',
+          'Three scaling targets: scale by target flour weight, scale factor, or target total dough weight',
+          'Mold conversion: round and square tins scale by the square of the dimension; same-base height changes scale by the height ratio',
+          'Preset formulas: one-click examples for baguette, toast, bagel, and sourdough',
+        ],
+        howToUse: [
+          'Enter the total flour weight and choose grams or baker’s percentage entry',
+          'Fill each ingredient name and value, or load a preset formula with one click',
+          'Review hydration, salt ratio, yeast ratio, total percentage, and total dough weight',
+          'Pick a scaling target, enter the target value, and read the scaled ingredient weights',
+          'For a different pan, enter the original and new mold dimensions to get the dough factor',
+        ],
+        useCases: [
+          "Normalizing a cookbook's gram-based formula into standard baker's percentages",
+          'Scaling a 1000g home formula up to a 5000g commercial batch',
+          'Working backwards from a target dough weight to fit one toast pan exactly',
+          'Converting a 20cm round-tin formula to a 25cm tin without excess or short dough',
+        ],
+        privacyNote:
+          'All recipe data is computed locally in your browser; nothing is uploaded or stored.',
+        faqs: [
+          {
+            question: 'Why is flour always 100%?',
+            answer:
+              'Baker’s percentage uses total flour weight as the only reference. Every other ingredient is a percentage of that flour weight, so changing the batch size only requires changing the flour weight while all ratios stay stable.',
+          },
+          {
+            question: 'How is hydration calculated?',
+            answer:
+              'Hydration is the summed weight of ingredients whose names contain water divided by the flour weight. If you use milk or egg, add a separate row and adjust manually for its water content.',
+          },
+          {
+            question: 'Why do round and square tins scale by the square of the dimension?',
+            answer:
+              'At equal height, volume is proportional to base area. A circle’s base area is πr² and a square’s is side², both scaling with the square of the dimension, so 20cm → 25cm gives (25/20)² = 1.5625.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'analytic-geometry-calculator',
+    name: '平面解析几何计算器',
+    nameEn: 'Analytic Geometry Calculator',
+    description:
+      '输入两点快速得到距离、中点、斜率与一般式 / 斜截式 / 点斜式三种直线方程，再求第二条直线的交点与平行、垂直、重合关系，并计算点到直线距离与垂足。',
+    descriptionEn:
+      'Enter two points to get distance, midpoint, slope, and the general, slope-intercept, and point-slope line equations, then find the intersection and parallel/perpendicular/coincident relation with a second line plus point-to-line distance and the perpendicular foot.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/analytic-geometry-calculator',
+    iconName: 'Triangle',
+    tags: ['解析几何', '直线方程', '交点', '距离', '斜率'],
+    tagsEn: ['Analytic Geometry', 'Line Equation', 'Intersection', 'Distance', 'Slope'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'two-points',
+    doc: {
+      zh: {
+        whatIsIt:
+          '平面解析几何计算器面向中学数学、工程制图与日常坐标计算，把两点确定直线、两直线位置关系与点到直线距离这些常见问题集中在一处完成。输入 P₁(x₁, y₁) 与 P₂(x₂, y₂) 后，工具给出两点距离、中点坐标、斜率以及一般式 Ax+By+C=0、斜截式与点斜式三种写法；第二条直线既可输入一般式系数，也可再输入两点。工具会判定两线相交、平行或重合，相交时给出精确交点，并支持选择任意一条直线计算点到直线的距离与垂足。所有结果同时给出精确分数与小数，竖直线、两点重合、平行无交点等边界情况都有明确提示而不是除零报错。',
+        coreFeatures: [
+          '两点基础量：一次算出两点距离、中点坐标与斜率，竖直线提示斜率不存在',
+          '三种直线方程：同时输出一般式、斜截式与点斜式，整数系数自动约分',
+          '两线位置关系：按行列式判定相交、平行或重合，避免浮点误判',
+          '精确交点：相交时给出 x、y 的分数与小数双表示',
+          '点到直线距离：给出距离值、垂足坐标与过该点的垂线方程',
+          '双录入方式：第二条直线支持一般式系数或两点式输入',
+        ],
+        howToUse: [
+          '在第一组面板填写 P₁ 与 P₂ 的 x、y 坐标',
+          '查看距离、中点、斜率以及三种直线方程写法',
+          '选择一般式或两点式填写第二条直线，查看位置关系与交点',
+          '在距离面板填写点的坐标并选择目标直线，得到距离、垂足与垂线方程',
+        ],
+        useCases: [
+          '中学解析几何作业中核对直线方程与交点结果',
+          '工程制图中计算两条参考线的交点与点到直线的偏移距离',
+          '判断两条路径是否平行，或是否实际为同一条直线',
+          '把斜率、截距与一般式系数互相转换并保留分数形式',
+        ],
+        privacyNote: '所有坐标与几何运算均在浏览器本地完成，不会上传任何数据。',
+        faqs: [
+          {
+            question: '为什么竖直线没有斜率？',
+            answer:
+              '斜率为 Δy/Δx，竖直线两点 x 坐标相同，Δx 为 0，因此斜率不存在。工具会改用 x = 常数 的一般式表示，并跳过斜截式输出。',
+          },
+          {
+            question: '平行和重合怎么区分？',
+            answer:
+              '先比较方向向量对应的行列式，若为 0 说明方向相同；再比较常数项。常数项也成比例时两条直线完全重合，否则只是平行而无交点。',
+          },
+          {
+            question: '分数结果是精确值吗？',
+            answer:
+              '当输入为整数或有限小数时，工具用连分数把结果还原为最简分数并同时给出小数近似。无理数距离只保留小数表示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Analytic Geometry Calculator handles the classic coordinate-plane tasks in one place: defining a line from two points, relating two lines, and measuring point-to-line distance. Given P₁(x₁, y₁) and P₂(x₂, y₂), it returns the distance, midpoint, slope, and three equation forms (general Ax+By+C=0, slope-intercept, and point-slope). The second line can be entered as general coefficients or as another pair of points; the tool classifies the pair as intersecting, parallel, or coincident, gives an exact intersection when it exists, and computes point-to-line distance with the perpendicular foot for either line. Results show exact fractions alongside decimals, and vertical lines, coincident points, and parallel lines produce explicit messages instead of divide-by-zero errors.',
+        coreFeatures: [
+          'Two-point basics: distance, midpoint, and slope, with a clear note when the slope is undefined',
+          'Three equation forms: general, slope-intercept, and point-slope with integer coefficients reduced automatically',
+          'Line relation: determinant-based classification of intersecting, parallel, or coincident lines',
+          'Exact intersection: fractional and decimal x/y values for intersecting lines',
+          'Point-to-line distance: distance, perpendicular foot, and the perpendicular line through the point',
+          'Flexible second line: general coefficients or a two-point entry mode',
+        ],
+        howToUse: [
+          'Enter the x and y coordinates of P₁ and P₂ in the first panel',
+          'Review the distance, midpoint, slope, and the three equation forms',
+          'Enter the second line as general coefficients or two points to see its relation and intersection',
+          'Enter a point and pick a target line to get the distance, foot, and perpendicular equation',
+        ],
+        useCases: [
+          'Checking line equations and intersections in coordinate-geometry homework',
+          'Finding the crossing point of two reference lines and the offset distance in drafting',
+          'Testing whether two paths are parallel or actually the same line',
+          'Converting between slope, intercept, and general-form coefficients while keeping fractions',
+        ],
+        privacyNote:
+          'All coordinates and geometry computations run locally in your browser; no data is uploaded.',
+        faqs: [
+          {
+            question: 'Why does a vertical line have no slope?',
+            answer:
+              'Slope is Δy/Δx. A vertical line has the same x for both points, so Δx is 0 and the slope is undefined. The tool switches to the general form x = constant and omits the slope-intercept output.',
+          },
+          {
+            question: 'How are parallel and coincident lines distinguished?',
+            answer:
+              'The direction determinant is checked first; zero means the directions match. The constant terms are then compared: proportional constants mean the lines coincide, otherwise they are parallel with no intersection.',
+          },
+          {
+            question: 'Are the fraction results exact?',
+            answer:
+              'For integer or finite-decimal inputs, a continued-fraction expansion recovers the simplest fraction alongside a decimal approximation. Irrational distances are shown as decimals only.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
