@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261114200459 | 曝光值（EV）与 ND 滤镜等效曝光计算器 | Web Tool | Exploration | `exposure-value-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261114200459.md) |
+| 20261115140202 | 相机视角（FOV）与等效焦距计算器（传感器画幅 / 裁切系数 / 双向换算） | Web Tool | Existing Gap | `fov-focal-length-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261115140202.md) |
+| 20261114200501 | 电池续航时间计算器（容量 / 负载 / 效率 / Peukert 与串并联组包） | Web Tool | Existing Gap | `battery-runtime-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261114200501.md) |
+| 20261115140204 | 烘焙百分比与配方缩放计算器（Baker's Percentage / 模具尺寸换算） | Web Tool | Exploration | `bakers-percentage-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261115140204.md) |
+| 20261107200154 | 平面解析几何计算器（两点斜率 / 直线方程 / 交点 / 距离 / 中点 / 平行垂直） | Web Tool | Exploration | `analytic-geometry-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261107200154.md) |
 | 20261115020301 | 电容标码解析与容值计算器（三位数字码 / R 记法 / 容差字母） | Web Tool | Existing Gap | `capacitor-code-calculator` / [PR #239](https://github.com/Happyileaf/tool-craft/pull/239) | 2026-11-15 | [详情](./idea-details/20261115020301.md) |
 | 20261115020302 | 七段数码管字形编解码器（字符 ↔ a–g/dp 段码，共阴/共阳） | Web Tool | Existing Gap | `seven-segment-codec` / [PR #239](https://github.com/Happyileaf/tool-craft/pull/239) | 2026-11-15 | [详情](./idea-details/20261115020302.md) |
 | 20261115020304 | 轮胎规格解析与速度表误差计算器（205/55R16 ↔ 直径 / 周长 / 速度偏差） | Web Tool | Exploration | `tire-size-calculator` / [PR #239](https://github.com/Happyileaf/tool-craft/pull/239) | 2026-11-15 | [详情](./idea-details/20261115020304.md) |
