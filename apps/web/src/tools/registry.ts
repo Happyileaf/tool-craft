@@ -36346,6 +36346,511 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'sleep-cycle-calculator',
+    name: '睡眠周期与就寝 / 起床时间计算器（90 分钟周期 + 入睡缓冲）',
+    nameEn: 'Sleep Cycle Calculator (90-Minute Cycles & Bedtime Buffer)',
+    description:
+      '按 90 分钟一个完整睡眠周期，双向推算作息：输入目标起床时间可倒推 4 / 5 / 6 个周期对应的就寝时刻，输入就寝时间可正推起床时刻，并考虑 0–60 分钟入睡缓冲、跨午夜日期偏移与 12 / 24 小时制显示。',
+    descriptionEn:
+      'Plan sleep around 90-minute cycles in both directions: enter a target wake time to back-calculate bedtimes for 4, 5 or 6 cycles, or enter a bedtime to get the matching wake times, with a 0–60 minute falling-asleep buffer, midnight-crossing day offsets and 12/24-hour display.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/sleep-cycle-calculator',
+    iconName: 'MoonStar',
+    tags: ['睡眠', '作息', '周期', '就寝', '起床'],
+    tagsEn: ['Sleep', 'Bedtime', 'Cycle', 'Wake-up', 'Routine'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '07:00',
+    doc: {
+      zh: {
+        whatIsIt:
+          '睡眠周期计算器按 90 分钟一个完整睡眠周期推算作息。选择「按起床时间倒推」后输入目标起床时刻，工具会扣除 0–60 分钟的入睡缓冲，分别给出 4 / 5 / 6 个周期对应的就寝时间；选择「按就寝时间正推」则从计划就寝时刻加缓冲与周期时长，给出对应起床时间。每个结果标注总睡眠时长与跨天偏移（前一日 / 当日 / 次日），并支持 12 / 24 小时制切换，全部为本地时间运算、零依赖。',
+        coreFeatures: [
+          '双向推算：按起床时间倒推就寝，或按就寝时间正推起床',
+          '按 4 / 5 / 6 个完整周期分别给出候选时刻，并可自由勾选展示',
+          '支持 0–60 分钟入睡缓冲，默认 15 分钟',
+          '自动处理跨午夜时间回绕，并标注前一日 / 当日 / 次日',
+          '支持 12 / 24 小时制切换与一键复制全部结果',
+        ],
+        howToUse: [
+          '选择推算方向：按起床时间倒推或按就寝时间正推',
+          '输入目标起床时间或计划就寝时间，格式为 HH:MM',
+          '按需要调整入睡缓冲（0–60 分钟）与要展示的周期数',
+          '查看各周期对应的时刻与总睡眠时长，需要时切换 12 小时制或复制结果',
+        ],
+        useCases: [
+          '晚上决定几点上床，才能睡满 5 个完整周期并在固定时间起床',
+          '早上确认当前就寝时间能睡几个完整周期，判断是否需要提前入睡',
+          '出差或倒班后快速重排作息，减少在周期中途被闹钟打断',
+        ],
+        privacyNote: '所有时间推算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: '为什么按 90 分钟计算一个睡眠周期？',
+            answer:
+              '成年人一个完整睡眠周期（浅睡、深睡与快速眼动睡眠）通常约 90 分钟。在周期结束时醒来通常比在深睡阶段被唤醒更清醒，因此许多作息方法以 90 分钟为单位安排睡眠时长。',
+          },
+          {
+            question: '入睡缓冲应该填多少？',
+            answer:
+              '入睡缓冲指从上床到真正入睡的时间，一般可按 10–20 分钟估算，默认 15 分钟。倒推就寝时间时会把缓冲从目标起床时间中扣除，因此缓冲越长，建议上床时间越早。',
+          },
+          {
+            question: '为什么结果会显示「前一日」或「次日」？',
+            answer:
+              '当就寝时间早于午夜时会落在输入日期前一天，例如 07:00 起床、5 个周期加 15 分钟缓冲得到 23:15，需要在前一日 23:15 上床；按就寝时间正推起床时则常落在次日凌晨。工具按 1440 分钟回绕并给出日期偏移提示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This calculator plans sleep around 90-minute cycles. In wake mode, enter your target wake time and it subtracts a configurable 0–60 minute falling-asleep buffer to show bedtimes for 4, 5 or 6 complete cycles. In bedtime mode, it adds the buffer and cycle duration to your planned bedtime to show the matching wake times. Every result carries the total sleep duration and a previous-day / same-day / next-day offset, with 12/24-hour display support. All calculations run locally with zero dependencies.',
+        coreFeatures: [
+          'Two directions: back-calculate bedtime from a wake time, or wake times from a bedtime',
+          'Separate results for 4, 5 and 6 complete cycles with selectable visibility',
+          'Configurable 0–60 minute falling-asleep buffer, 15 minutes by default',
+          'Automatic midnight wrapping with previous-day / same-day / next-day labels',
+          '12/24-hour display switching and one-click copy of all results',
+        ],
+        howToUse: [
+          'Choose the direction: back-calculate bedtime or forward-calculate wake time',
+          'Enter the target wake time or planned bedtime in HH:MM format',
+          'Adjust the falling-asleep buffer (0–60 minutes) and the cycles to display',
+          'Review each cycle result with its total sleep duration, then switch to 12-hour mode or copy if needed',
+        ],
+        useCases: [
+          'Deciding what time to go to bed to complete five full cycles before a fixed wake time',
+          'Checking how many full cycles a current bedtime allows and whether to go to bed earlier',
+          'Rebuilding a routine after travel or shift changes to avoid waking mid-cycle',
+        ],
+        privacyNote:
+          'All time calculations run locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Why use 90 minutes as one sleep cycle?',
+            answer:
+              'A full adult sleep cycle (light sleep, deep sleep and REM) usually lasts about 90 minutes. Waking at the end of a cycle often feels fresher than being woken during deep sleep, so many routines plan sleep in 90-minute units.',
+          },
+          {
+            question: 'What value should I use for the falling-asleep buffer?',
+            answer:
+              'The buffer is the time from getting into bed to actually falling asleep, commonly estimated at 10–20 minutes; the default is 15. A longer buffer makes the suggested bedtime earlier in wake mode.',
+          },
+          {
+            question: 'Why does a result say previous day or next day?',
+            answer:
+              'A bedtime earlier than midnight falls on the day before the input date. For example, waking at 07:00 with five cycles and a 15-minute buffer gives 23:15, which belongs to the previous day. Forward calculations from an evening bedtime usually land in the early hours of the next day. The tool wraps at 1440 minutes and labels the offset.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'heart-rate-zone-calculator',
+    name: '心率训练区间计算器（最大心率估算与 Karvonen 五区间）',
+    nameEn: 'Heart Rate Zone Calculator (Max HR & Karvonen Zones)',
+    description:
+      '输入年龄、静息心率与性别，按 Fox、Tanaka 或 Gulati 公式估算最大心率，并用 Karvonen 储备心率法输出 Z1–Z5 五级训练区间的 bpm 范围，同时给出 %HRmax 对照、区间用途与实测最大心率优先选项。',
+    descriptionEn:
+      'Enter age, resting heart rate and sex to estimate max heart rate with the Fox, Tanaka or Gulati formula, then derive Z1–Z5 training zones in bpm using the Karvonen heart-rate-reserve method, with %HRmax cross-reference, zone purposes and optional measured max HR priority.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/heart-rate-zone-calculator',
+    iconName: 'Flame',
+    tags: ['心率', '训练', '区间', 'Karvonen', '最大心率'],
+    tagsEn: ['Heart Rate', 'Training', 'Zones', 'Karvonen', 'Max HR'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '185',
+    doc: {
+      zh: {
+        whatIsIt:
+          '心率训练区间计算器把年龄、静息心率与性别转换为可执行的训练强度区间。工具先用 Fox（220 − 年龄）、Tanaka（208 − 0.7 × 年龄）或 Gulati（女性 206 − 0.88 × 年龄）公式估算最大心率；若填写实测最大心率则优先采用。随后按 Karvonen 储备心率法（HRR = HRmax − 静息心率）计算 Z1–Z5 的 bpm 上下限，并同时给出基于 %HRmax 的简化对照与每个区间的训练用途。全部为本地算术，零依赖。',
+        coreFeatures: [
+          '三种最大心率估算公式，并支持实测最大心率优先',
+          '按 Karvonen 储备心率法输出 Z1–Z5 五级区间 bpm 范围',
+          '同时给出 %HRmax 简化区间对照，便于对比两种方法',
+          '每个区间附带强度说明与训练建议',
+          '输入范围校验与一键复制区间结果',
+        ],
+        howToUse: [
+          '输入年龄、静息心率与性别',
+          '如做过实测最大心率测试，在可选输入框填写实测值',
+          '选择最大心率公式；保持自动即可在未填实测值时使用 Tanaka',
+          '查看 Z1–Z5 区间与 %HRmax 对照，点击复制区间用于手表或训练计划',
+        ],
+        useCases: [
+          '跑步或骑行前设置运动手表的心率区间',
+          '比较 Fox、Tanaka 与 Gulati 公式对个人最大心率的差异',
+          '根据静息心率变化调整有氧基础与阈值训练强度',
+        ],
+        privacyNote: '所有心率计算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: 'Karvonen 法和最大心率百分比法有什么区别？',
+            answer:
+              '最大心率百分比法直接用 HRmax 乘以百分比；Karvonen 法先用 HRmax − 静息心率得到储备心率，再按「静息心率 + 百分比 × HRR」计算。后者考虑了个人静息心率差异，通常更贴近实际训练强度。',
+          },
+          {
+            question: '为什么 Gulati 公式只用于女性？',
+            answer:
+              'Gulati 公式（206 − 0.88 × 年龄）来自针对女性的研究，对女性最大心率估算更准确。男性选择该公式时工具会自动回退到 Tanaka 公式并在界面提示。',
+          },
+          {
+            question: 'Z2 区间为什么适合有氧基础训练？',
+            answer:
+              'Z2 对应 60–70% 储备心率，强度足以刺激有氧系统，又能较长时间持续并促进脂肪利用，因此常作为耐力训练的主要区间。具体感受因体能而异，建议结合配速与主观用力程度判断。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This calculator turns age, resting heart rate and sex into actionable training zones. It estimates max heart rate with Fox (220 − age), Tanaka (208 − 0.7 × age) or Gulati (206 − 0.88 × age for women), and prefers a measured max HR when provided. It then applies the Karvonen heart-rate-reserve method (HRR = HRmax − resting HR) to produce Z1–Z5 bpm ranges, alongside a %HRmax cross-reference and the purpose of each zone. All arithmetic runs locally with zero dependencies.',
+        coreFeatures: [
+          'Three max-heart-rate formulas with optional measured max HR taking priority',
+          'Z1–Z5 training zones in bpm using the Karvonen reserve method',
+          'A %HRmax cross-reference for comparing the two common approaches',
+          'Intensity guidance and training suggestions for every zone',
+          'Input range validation and one-click copying of zone results',
+        ],
+        howToUse: [
+          'Enter age, resting heart rate and sex',
+          'If you have a measured max heart rate, fill it into the optional field',
+          'Pick a max HR formula; auto mode uses Tanaka when no measured value is present',
+          'Review Z1–Z5 ranges and the %HRmax comparison, then copy the zones into your watch or plan',
+        ],
+        useCases: [
+          'Configuring heart rate zones on a running or cycling watch',
+          'Comparing Fox, Tanaka and Gulati estimates for your own max heart rate',
+          'Adjusting aerobic and threshold intensities as resting heart rate changes',
+        ],
+        privacyNote:
+          'All heart rate calculations run locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'How does Karvonen differ from the %HRmax method?',
+            answer:
+              'The %HRmax method multiplies HRmax directly by a percentage. Karvonen first derives the heart rate reserve as HRmax − resting HR, then uses resting HR + percentage × HRR. It accounts for individual resting heart rate differences and usually tracks real training intensity more closely.',
+          },
+          {
+            question: 'Why is the Gulati formula limited to women?',
+            answer:
+              'The Gulati formula (206 − 0.88 × age) comes from research on women and estimates female max heart rate more accurately. When a male selects it, the tool falls back to Tanaka and explains the fallback in the interface.',
+          },
+          {
+            question: 'Why is Z2 useful for aerobic base training?',
+            answer:
+              'Z2 corresponds to 60–70% of heart rate reserve, intense enough to stimulate the aerobic system while remaining sustainable for long sessions and promoting fat use. Perceived effort varies with fitness, so combine the zone with pace and RPE feedback.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'gear-ratio-calculator',
+    name: '齿轮传动比与转速 / 扭矩计算器（单级 / 多级串联）',
+    nameEn: 'Gear Ratio Calculator (Single & Multi-Stage)',
+    description:
+      '计算单级与多级齿轮组的传动比、输出转速、输出扭矩与旋转方向，支持传动效率修正、齿数比约分、常用减速比预设与由目标输出转速反推从动轮齿数。',
+    descriptionEn:
+      'Calculate gear ratio, output RPM, output torque and rotation direction for single-stage and multi-stage gear trains, with efficiency correction, reduced tooth ratios, common reduction presets and reverse lookup of driven gear teeth from a target output speed.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/gear-ratio-calculator',
+    iconName: 'Gauge',
+    tags: ['齿轮', '传动比', '转速', '扭矩', '减速'],
+    tagsEn: ['Gear', 'Ratio', 'RPM', 'Torque', 'Reduction'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '36',
+    doc: {
+      zh: {
+        whatIsIt:
+          '齿轮传动比计算器用于机械传动选型与校核。单级模式下输入主动轮与从动轮齿数、输入转速、输入扭矩与每级效率，即可得到传动比、化简齿数比、输出转速、输出扭矩与外啮合的反转方向；多级模式可自由增删齿轮对，逐级相乘得到总传动比、最终转速与扭矩，并按级数奇偶判断方向；反推模式则由目标输出转速与主动轮齿数计算所需从动轮齿数。全部为本地确定性乘除运算，零依赖。',
+        coreFeatures: [
+          '单级齿轮的传动比、输出转速、输出扭矩与方向计算',
+          '多级串联齿轮组，支持动态增删级数并按级累乘效率',
+          '齿数比自动约分，显示化简后的分子与分母',
+          '由输入转速与目标输出转速反推所需从动轮齿数',
+          '常用 3:1 / 4:1 / 5:1 减速比预设与一键复制结果',
+        ],
+        howToUse: [
+          '选择单级齿轮、多级串联或反推齿数模式',
+          '输入各级主动轮与从动轮齿数，以及输入转速、扭矩与效率',
+          '多级模式按需添加或删除齿轮对，工具会自动汇总总传动比',
+          '查看传动比、输出转速、扭矩与方向，点击复制用于设计记录',
+        ],
+        useCases: [
+          '减速电机与关节模组选型时快速核对输出转速与扭矩',
+          '机器人多级齿轮箱方案比较，估算总减速比与末级方向',
+          '从目标输出转速反推需要采购的从动齿轮齿数',
+        ],
+        privacyNote: '所有传动计算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: '传动比是如何定义的？',
+            answer:
+              '单级外啮合齿轮的传动比 i = 从动轮齿数 / 主动轮齿数。i 大于 1 表示减速：输出转速 = 输入转速 / i，理想输出扭矩 = 输入扭矩 × i。工具再乘以传动效率得到实际扭矩。',
+          },
+          {
+            question: '多级齿轮的总传动比怎么算？',
+            answer:
+              '总传动比等于各级传动比之积，也就是所有从动轮齿数乘积除以所有主动轮齿数乘积。方向按级数奇偶交替：一级反向、两级同向、三级反向，以此类推。',
+          },
+          {
+            question: '为什么输出扭矩要乘传动效率？',
+            answer:
+              '齿轮啮合、轴承与润滑会带来功率损失，效率低于 100% 时输出扭矩按比例降低。工具默认每级效率 100%，可按实际齿轮箱数据调整到 50–100%。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This gear ratio calculator supports mechanical drive selection and verification. In single-stage mode it takes driver and driven tooth counts, input RPM, input torque and per-stage efficiency to produce the ratio, reduced tooth ratio, output RPM, output torque and the reversed direction of an external mesh. Multi-stage mode lets you add or remove gear pairs and multiplies ratios stage by stage for total ratio, final speed and torque, with direction determined by stage-count parity. Reverse mode derives the required driven teeth from a target output speed. All arithmetic runs locally with zero dependencies.',
+        coreFeatures: [
+          'Single-stage gear ratio, output RPM, output torque and direction',
+          'Multi-stage gear trains with add/remove stages and per-stage efficiency',
+          'Automatic tooth-ratio reduction showing simplified numerator and denominator',
+          'Reverse lookup of driven gear teeth from input and target output speeds',
+          'Common 3:1, 4:1 and 5:1 reduction presets with one-click result copying',
+        ],
+        howToUse: [
+          'Choose single-stage, multi-stage or reverse tooth lookup',
+          'Enter driver and driven teeth for each stage plus input RPM, torque and efficiency',
+          'Add or remove gear pairs in multi-stage mode; totals update automatically',
+          'Review ratio, output RPM, torque and direction, then copy the result for your design notes',
+        ],
+        useCases: [
+          'Checking output speed and torque when selecting geared motors and joint modules',
+          'Comparing multi-stage gearbox designs and estimating overall reduction and final direction',
+          'Deriving the driven gear tooth count needed for a target output speed',
+        ],
+        privacyNote:
+          'All gear calculations run locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'How is gear ratio defined?',
+            answer:
+              'For a single external gear mesh, ratio i = driven teeth / driver teeth. A ratio above 1 means reduction: output RPM = input RPM / i, and ideal output torque = input torque × i. The tool multiplies by efficiency to get actual torque.',
+          },
+          {
+            question: 'How is the total ratio of multiple stages calculated?',
+            answer:
+              'The total ratio is the product of all stage ratios, equivalent to the product of all driven tooth counts divided by the product of all driver tooth counts. Direction alternates with stage parity: one stage reverses, two stages restore the original direction, and so on.',
+          },
+          {
+            question: 'Why multiply output torque by efficiency?',
+            answer:
+              'Meshing, bearings and lubrication cause power losses, so torque drops when efficiency is below 100%. The default is 100% per stage; adjust between 50 and 100% to match real gearbox data.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'antenna-length-calculator',
+    name: '天线长度与频率 / 波长互算器（半波偶极子 / 四分之一波长）',
+    nameEn: 'Antenna Length Calculator (Dipole, Quarter-Wave & Wavelength)',
+    description:
+      '在频率与天线物理长度之间双向换算：输入频率得到自由空间波长以及半波偶极子、四分之一波长垂直天线、5/8 波长与全波环形天线的米 / 英尺长度；也可由已知长度反推谐振频率，支持速度因子与常用频段预设。',
+    descriptionEn:
+      'Convert between frequency and physical antenna length: enter a frequency to get free-space wavelength plus half-wave dipole, quarter-wave vertical, 5/8-wave and full-wave loop lengths in meters and feet, or derive resonant frequency from a known length, with velocity factor and band presets.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/antenna-length-calculator',
+    iconName: 'Satellite',
+    tags: ['天线', '波长', '频率', '射频', '业余无线电'],
+    tagsEn: ['Antenna', 'Wavelength', 'Frequency', 'RF', 'Ham Radio'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '145',
+    doc: {
+      zh: {
+        whatIsIt:
+          '天线长度计算器用于射频与业余无线电的天线制作。频率模式下输入工作频率（0.1–6000 MHz），工具按 λ = 300 / f 给出自由空间波长，并计算半波偶极子（143 / f 米）、四分之一波长垂直天线（71.5 / f 米）、5/8 波长垂直天线（187.5 / f 米）与全波环形天线（300 / f 米）的物理长度，同时显示米与英尺；长度模式下输入已知天线长度与类型，反推谐振频率。速度因子（0.50–1.00）用于修正涂覆导线或介质中的缩短，全部为本地确定性换算、零依赖。',
+        coreFeatures: [
+          '频率 → 波长与四类常见天线的物理长度',
+          '长度 → 谐振频率反推，并可直接回填频率',
+          '米 / 英尺双单位显示，长度按数量级保留 5 位有效数字',
+          '速度因子 0.50–1.00 修正介质中的波长缩短',
+          '27.185 / 145.5 / 433.92 / 868 / 915 / 2400 MHz 常用频段预设',
+        ],
+        howToUse: [
+          '选择频率 → 长度或长度 → 频率模式',
+          '输入工作频率或天线长度，并选择对应天线类型',
+          '按导线或介质情况调整速度因子，默认 1.00',
+          '查看各类天线长度或反推频率，复制结果用于制作与调试',
+        ],
+        useCases: [
+          '制作 433 MHz 或 2.4 GHz 遥控模块的 1/4 波长天线',
+          '设计 HF / VHF 偶极子天线时快速估算振子长度',
+          '已有天线振子长度，反推其理论谐振频率',
+        ],
+        privacyNote: '所有换算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: '为什么半波偶极子用 143 / f 而不是 150 / f？',
+            answer:
+              '自由空间中半波长为 150 / f 米，但实际导线存在端效应，电流分布略短于自由空间半波，因此工程上常用 143 / f 米（或 468 / f 英尺）估算偶极子总长。四分之一波长同样使用 71.5 / f 米。',
+          },
+          {
+            question: '速度因子应该怎么设置？',
+            answer:
+              '裸铜导线在空气中速度因子接近 1.00；涂覆导线、同轴电缆或存在介质支撑时可取 0.80–0.95。速度因子越小，物理长度越短。具体数值建议以厂家数据或驻波表实测为准。',
+          },
+          {
+            question: '计算结果为什么需要实测微调？',
+            answer:
+              '天线谐振频率会受架设高度、周围金属物体、地网与馈线影响。公式给出的是理想起点，实际制作时建议预留少量长度，再用驻波表或天线分析仪逐步修剪到最低驻波。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This antenna length calculator helps with RF and amateur radio construction. In frequency mode it takes an operating frequency (0.1–6000 MHz), returns the free-space wavelength from λ = 300 / f, and computes the physical length of a half-wave dipole (143 / f m), quarter-wave vertical (71.5 / f m), 5/8-wave vertical (187.5 / f m) and full-wave loop (300 / f m) in both meters and feet. In length mode it derives the resonant frequency from a known antenna length and type. A velocity factor of 0.50–1.00 accounts for shortening in coated wires or dielectrics. All conversions run locally with zero dependencies.',
+        coreFeatures: [
+          'Frequency to wavelength and physical lengths for four common antenna types',
+          'Length to resonant frequency with one-click transfer back to frequency mode',
+          'Dual meter and feet output with about five significant digits',
+          'Velocity factor from 0.50 to 1.00 for dielectric shortening',
+          'Presets for 27.185, 145.5, 433.92, 868, 915 and 2400 MHz',
+        ],
+        howToUse: [
+          'Choose frequency-to-length or length-to-frequency mode',
+          'Enter the operating frequency or antenna length and select the antenna type',
+          'Adjust the velocity factor for your wire or dielectric; the default is 1.00',
+          'Review the lengths or derived frequency and copy the result for construction and tuning',
+        ],
+        useCases: [
+          'Building a quarter-wave antenna for a 433 MHz or 2.4 GHz radio module',
+          'Estimating HF or VHF dipole element lengths during design',
+          'Deriving the theoretical resonant frequency of an existing antenna element',
+        ],
+        privacyNote:
+          'All conversions run locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Why use 143 / f instead of 150 / f for a half-wave dipole?',
+            answer:
+              'A free-space half wavelength is 150 / f meters, but real wires exhibit end effects and the current distribution is slightly shorter. Engineering practice therefore uses about 143 / f meters (or 468 / f feet) for total dipole length; quarter-wave elements use 71.5 / f meters.',
+          },
+          {
+            question: 'How should I set the velocity factor?',
+            answer:
+              'Bare copper wire in air is close to 1.00. Coated wire, coaxial cable or dielectric supports typically call for 0.80–0.95. A lower velocity factor shortens the physical length. Use manufacturer data or SWR measurements when possible.',
+          },
+          {
+            question: 'Why does the result need real-world tuning?',
+            answer:
+              'Resonance is affected by mounting height, nearby metal, ground plane and feed line. The formula is an ideal starting point; leave a little extra length and trim while watching an SWR meter or antenna analyzer for the lowest match.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'bigint-calculator',
+    name: '大整数任意精度四则运算计算器（BigInt 幂 / 阶乘 / 模运算）',
+    nameEn: 'Big Integer Calculator (Arbitrary-Precision Arithmetic)',
+    description:
+      '基于 BigInt 的任意精度整数计算器，支持加减乘除、取模、快速幂、阶乘、GCD / LCM、模幂与模逆元，并同时以十进制分组、十六进制和二进制展示结果及位数统计。',
+    descriptionEn:
+      'An arbitrary-precision integer calculator built on BigInt with add, subtract, multiply, divide, modulo, fast power, factorial, GCD/LCM, modular power and modular inverse, showing decimal-grouped, hexadecimal and binary results plus digit statistics.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/bigint-calculator',
+    iconName: 'Binary',
+    tags: ['大整数', 'BigInt', '阶乘', '模幂', '任意精度'],
+    tagsEn: ['BigInt', 'Arbitrary Precision', 'Factorial', 'Modular Power', 'Integer'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '2',
+    doc: {
+      zh: {
+        whatIsIt:
+          '大整数计算器使用浏览器内置 BigInt 完成任意精度整数运算，不受 Number 安全整数 2^53 − 1 的限制。它支持加、减、乘、整除（同时给出商与余数）、取模、快速幂、阶乘、最大公约数、最小公倍数、模幂与模逆元。每个结果同时显示带千位分隔的十进制、十六进制与二进制表示，并给出十进制位数和二进制位数，便于检查加密参数、长 ID 与组合数等大数结果。全部为本地计算，零新增依赖。',
+        coreFeatures: [
+          '任意精度加减乘除与取模，整除时同时展示商与余数',
+          '快速幂与阶乘，指数上限 10000、阶乘上限 10000',
+          'GCD / LCM、模幂与扩展欧几里得模逆元',
+          '结果同时展示十进制分组、十六进制、二进制与位长统计',
+          '一键复制全部表示，内置 2^100、50! 等常用示例',
+        ],
+        howToUse: [
+          '选择运算类型，输入操作数 A；需要时输入 B 与模数 M',
+          '支持正负号与千位逗号，工具会自动去除逗号后按整数解析',
+          '查看十进制结果以及十六进制、二进制和位数统计',
+          '点击示例按钮可快速载入 2^100、50!、100 ÷ 7 或模幂算例',
+        ],
+        useCases: [
+          '计算 RSA 等加密场景中的大数模幂与模逆元',
+          '核对阶乘、组合数与长 ID 的精确十进制结果',
+          '把超大整数转换为十六进制或二进制并统计位长',
+        ],
+        privacyNote: '所有运算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: '为什么不用普通计算器计算大整数？',
+            answer:
+              'JavaScript Number 只能精确表示到 2^53 − 1（约 9e15），更大的整数会丢失精度。本工具使用内置 BigInt，可精确表示任意长度整数，因此 2^100、50! 等结果完全准确。',
+          },
+          {
+            question: '模逆元计算失败是什么原因？',
+            answer:
+              '模逆元 A⁻¹ mod M 只有当 A 与 M 互质（gcd(A, M) = 1）时才存在。若两者存在公因数，工具会提示「模逆元不存在」，此时需要更换 A 或 M。',
+          },
+          {
+            question: '结果位数限制是多少？',
+            answer:
+              '为避免浏览器卡顿，幂运算指数上限为 10000，且估算结果规模限制在约 20000 位十进制；阶乘上限为 10000。超出限制时工具会给出提示，而不是静默截断。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This big integer calculator uses the browser-native BigInt type for arbitrary-precision integer arithmetic, free from the 2^53 − 1 safe-integer limit of Number. It supports add, subtract, multiply, integer division with quotient and remainder, modulo, fast power, factorial, greatest common divisor, least common multiple, modular power and modular inverse. Every result is shown as grouped decimal, hexadecimal and binary, along with decimal digit and binary bit counts, making it useful for cryptographic parameters, long IDs and combinatorial values. Everything runs locally with no new dependencies.',
+        coreFeatures: [
+          'Arbitrary-precision add, subtract, multiply, divide and modulo with quotient and remainder',
+          'Fast power and factorial with exponent and factorial limits of 10000',
+          'GCD/LCM, modular power and extended-Euclid modular inverse',
+          'Grouped decimal, hexadecimal and binary output with digit statistics',
+          'One-click copying of all representations and built-in 2^100 and 50! examples',
+        ],
+        howToUse: [
+          'Choose an operation and enter operand A, plus B and modulus M when required',
+          'Signs and thousands separators are accepted; commas are stripped before parsing',
+          'Review the decimal result with hexadecimal, binary and digit counts',
+          'Use example buttons to load 2^100, 50!, 100 ÷ 7 or a modular power case',
+        ],
+        useCases: [
+          'Computing large modular powers and inverses for RSA-style cryptography',
+          'Verifying exact decimal values of factorials, combinations and long IDs',
+          'Converting very large integers to hexadecimal or binary and counting bits',
+        ],
+        privacyNote:
+          'All calculations run locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Why not use an ordinary calculator for big integers?',
+            answer:
+              'JavaScript Number is exact only up to 2^53 − 1 (about 9e15), and larger integers lose precision. This tool uses BigInt to represent integers of any length exactly, so results such as 2^100 and 50! are fully accurate.',
+          },
+          {
+            question: 'Why does a modular inverse fail?',
+            answer:
+              'The inverse A⁻¹ mod M exists only when A and M are coprime (gcd(A, M) = 1). If they share a factor, the tool reports that no inverse exists; change A or M to continue.',
+          },
+          {
+            question: 'What are the result size limits?',
+            answer:
+              'To keep the browser responsive, exponents are capped at 10000 and estimated results at roughly 20000 decimal digits; factorials are capped at 10000. The tool reports the limit instead of silently truncating.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
