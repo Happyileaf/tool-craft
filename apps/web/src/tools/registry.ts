@@ -4,6 +4,8 @@ import { DEFAULT_SAMPLE_INPUT as CHANGELOG_SAMPLE_INPUT } from './changelog-gene
 import { SAMPLE_PLAIN_LYRICS } from './lrc-parser/constants';
 import { DEFAULT_PCAP_HEX } from './pcap-parser/constants';
 import { DEFAULT_RTU_HEX } from './modbus-frame-codec/constants';
+import { SAMPLE_ARP_REQUEST } from './arp-packet-codec/constants';
+import { DEFAULT_SAMPLE as JSON_TO_CPP_SAMPLE } from './json-to-cpp/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -37373,6 +37375,530 @@ sqrt(area) + 2 * r`,
             question: 'Are the fraction results exact?',
             answer:
               'For integer or finite-decimal inputs, a continued-fraction expansion recovers the simplest fraction alongside a decimal approximation. Irrational distances are shown as decimals only.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'endianness-converter',
+    name: '字节序转换器',
+    nameEn: 'Endianness Converter',
+    description:
+      '在十六进制字节序列与 16 / 32 / 64 位整数之间按大端、小端双向编解码，支持有无符号补码解释、整串字节反转与 16 位半字交换，64 位使用 BigInt 保证精度，并对奇数字节、非法字符给出明确告警。',
+    descriptionEn:
+      'Bidirectionally converts between hex byte sequences and 16/32/64-bit integers in big- and little-endian order, with signed two’s-complement interpretation, full byte reversal and 16-bit halfword swap. BigInt keeps 64-bit values exact and malformed input gets precise warnings.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/endianness-converter',
+    iconName: 'Binary',
+    tags: ['字节序', '大小端', 'BigInt', '十六进制', '补码', '字节反转'],
+    tagsEn: ['Endianness', 'Big Endian', 'Little Endian', 'BigInt', 'Hex', 'Two’s Complement'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'DE AD BE EF',
+    doc: {
+      zh: {
+        whatIsIt:
+          '字节序转换器是一款纯浏览器本地工具，用于在十六进制字节序列与 16 / 32 / 64 位整数之间做双向编解码。同一串字节会同时给出大端与小端两种解释值，同一个整数也会同时给出大端与小端两种字节序列；有符号模式按二进制补码解释，64 位运算走 BigInt 路径，避免 JavaScript Number 的 2^53 安全整数上限导致精度丢失。',
+        coreFeatures: [
+          '双向转换：字节序列 → 整数，整数 → 大端 / 小端字节序列',
+          '16 / 32 / 64 位位宽与有符号、无符号切换，补码边界正确',
+          '输入容错：忽略空白、逗号、下划线与 0x 前缀，奇数位自动补前导 0 并告警',
+          '字节重排：整串反转与按 16 位半字交换（CDAB 风格）',
+          '多元素模式：按位宽把长字节序列切分为多个元素逐个解释，末尾余量显式提示',
+        ],
+        howToUse: [
+          '选择「字节 → 整数」，粘贴如 DE AD BE EF 的十六进制序列，设定位宽与符号',
+          '查看大端与小端解释值、整串反转与半字交换结果，以及切分后的元素列表',
+          '或选择「整数 → 字节」，输入十进制或 0x 整数，得到两种端序的字节序列',
+          '点击示例标签快速载入典型向量，使用复制按钮带走结果',
+        ],
+        useCases: [
+          '嵌入式寄存器读数与协议字段的大端 / 小端核对',
+          '排查二进制文件、抓包载荷中的多字节字段',
+          '跨端序数据交换时生成或校验字节序列',
+          '教学演示补码、端序与半字交换的关系',
+        ],
+        privacyNote:
+          '所有转换均在浏览器本地基于纯函数完成，不发起网络请求，不发送或持久化输入。',
+        faqs: [
+          {
+            question: '为什么需要 BigInt？',
+            answer:
+              'JavaScript 的 Number 只能精确表示到 2^53-1，64 位无符号整数 0xFFFFFFFFFFFFFFFF 会丢精度。本工具在 64 位路径使用 BigInt 位运算，因此能精确输出 18446744073709551615。',
+          },
+          {
+            question: '有符号模式下的 0x8000 为什么是 -32768？',
+            answer:
+              '有符号整数采用二进制补码：最高位为符号位，0x8000 对应 16 位补码的最小值 -32768，0xFFFF 对应 -1。切换到无符号时它们分别解释为 32768 与 65535。',
+          },
+          {
+            question: '奇数个十六进制位会怎样处理？',
+            answer:
+              '解析器会在最前面补一个 0 凑成完整字节，例如 ABC 被当作 0A BC，并给出告警，避免静默改变数据含义。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Endianness Converter runs entirely in your browser and bidirectionally decodes hex byte sequences and 16/32/64-bit integers. The same bytes are shown under both big-endian and little-endian interpretation, and the same integer is emitted as both big-endian and little-endian byte sequences. Signed modes use two’s complement, and the 64-bit path uses BigInt so values beyond JavaScript’s 2^53 safe-integer limit stay exact.',
+        coreFeatures: [
+          'Two directions: bytes to integers and integers to big-/little-endian byte sequences',
+          '16/32/64-bit widths with signed and unsigned modes and correct two’s-complement boundaries',
+          'Tolerant parsing: ignores whitespace, commas, underscores and 0x prefixes; pads odd nibble counts with a warning',
+          'Byte reordering: full reversal and 16-bit halfword swap (CDAB style)',
+          'Multi-element mode splits long sequences by width, interpreting each element and flagging any trailing remainder',
+        ],
+        howToUse: [
+          'Choose "Bytes to integer", paste a sequence such as DE AD BE EF and set the width and sign',
+          'Read the big- and little-endian values, reversed and halfword-swapped bytes, and the split element list',
+          'Or choose "Integer to bytes", enter a decimal or 0x integer and get both byte orders',
+          'Click a sample tag to load a typical vector, then copy the result with the buttons',
+        ],
+        useCases: [
+          'Checking embedded register reads and protocol fields across endianness',
+          'Investigating multi-byte fields in binary files and captured payloads',
+          'Generating or verifying byte sequences for cross-endian data exchange',
+          'Teaching two’s complement, endianness and halfword swapping',
+        ],
+        privacyNote:
+          'All conversions are pure functions running locally in your browser; no network request is made and no input is sent or persisted.',
+        faqs: [
+          {
+            question: 'Why is BigInt needed?',
+            answer:
+              'JavaScript Number is exact only up to 2^53-1, so the 64-bit unsigned value 0xFFFFFFFFFFFFFFFF would lose precision. This tool uses BigInt bit operations for 64-bit values and therefore prints 18446744073709551615 exactly.',
+          },
+          {
+            question: 'Why is 0x8000 equal to -32768 in signed mode?',
+            answer:
+              'Signed integers use two’s complement: the top bit is the sign bit, so 0x8000 is the 16-bit minimum -32768 and 0xFFFF is -1. In unsigned mode they are interpreted as 32768 and 65535.',
+          },
+          {
+            question: 'What happens with an odd number of hex digits?',
+            answer:
+              'A leading zero is prepended to form whole bytes — for example ABC becomes 0A BC — with a warning, so the data meaning is never changed silently.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'windows-posix-path-converter',
+    name: 'Windows ↔ POSIX 路径转换器',
+    nameEn: 'Windows ↔ POSIX Path Converter',
+    description:
+      '在 Windows 与 POSIX 路径之间双向转换，支持 WSL /mnt/c 与 WSL2 /c 两种盘符映射、UNC 网络路径互转、盘符大小写归一、混合分隔符识别，以及可选的 . 与 .. 段折叠和逐行批量转换。',
+    descriptionEn:
+      'Bidirectionally converts Windows and POSIX paths with WSL /mnt/c and WSL2 /c drive mappings, UNC network-path translation, drive-letter case normalization, mixed-separator detection, optional . and .. segment folding, and line-by-line batch conversion.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/windows-posix-path-converter',
+    iconName: 'Shuffle',
+    tags: ['WSL', '路径转换', 'UNC', 'Windows', 'POSIX', '批量转换'],
+    tagsEn: ['WSL', 'Path Conversion', 'UNC', 'Windows', 'POSIX', 'Batch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'C:\\Users\\me\\project',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Windows ↔ POSIX 路径转换器是一款纯浏览器本地工具，用于在 Windows 路径与 POSIX 路径之间互相转换。它既支持 WSL 的 /mnt/c 挂载形式，也支持 WSL2 的 /c 形式，能够双向处理 UNC 网络路径（\\\\server\\share ↔ //server/share），自动识别正反斜杠混用，并可选择折叠 . 与 .. 段、去除重复与尾随分隔符。全程只做字符串处理，不访问任何文件系统。',
+        coreFeatures: [
+          '双向转换：Windows 盘符路径、UNC 路径与 POSIX 路径互转',
+          '两种 WSL 风格：/mnt/c 与 /c，盘符自动小写（转回 Windows 时自动大写）',
+          '混合分隔符自动识别，C:/Users\\me/project 也能正确分类',
+          '可选段归一：折叠 . 与 ..、去除重复与尾随分隔符，越界回退给出告警',
+          '多行批量转换，逐行展示识别类型、结果与告警，空行忽略并计数',
+        ],
+        howToUse: [
+          '选择转换方向（Windows → POSIX 或 POSIX → Windows）与 POSIX 风格',
+          '按需开启段归一，在输入框粘贴一条或多条路径',
+          '查看每行的识别类型、转换结果与告警，点击复制按钮获取结果',
+          '点击示例标签可载入盘符、UNC、WSL 挂载、相对路径与 URL 等典型输入',
+        ],
+        useCases: [
+          '在 WSL / Git Bash 与 Windows 工具之间复制可用的路径',
+          '编写跨平台脚本、Makefile 或 CI 配置时核对路径写法',
+          '排查「路径找不到」问题，确认盘符映射与分隔符是否正确',
+          '整理 UNC 共享路径与 POSIX 双斜杠形式之间的对应关系',
+        ],
+        privacyNote:
+          '所有转换均在浏览器本地基于纯函数完成，不读取文件系统、不发起网络请求，不发送或持久化输入。',
+        faqs: [
+          {
+            question: '为什么盘符要转成小写？',
+            answer:
+              'WSL 挂载目录约定为 /mnt/c、/mnt/d 等小写形式。本工具在 Windows → POSIX 时把盘符统一小写；反向转换回 Windows 时再统一大写，保证结果可直接使用。',
+          },
+          {
+            question: '相对路径和 URL 会怎么处理？',
+            answer:
+              '相对路径无法确定对应盘符，因此只做分隔符归一并在告警中说明；含 :// 的 URL 不是文件路径，会原样返回并提示。两种情况都不会报错，方便批量粘贴时混入说明文字。',
+          },
+          {
+            question: '.. 超出根目录会怎样？',
+            answer:
+              '开启段归一后，位于根目录（盘符根或共享根）的 .. 没有上层可回退，会被忽略并给出告警，而不是生成非法路径或抛出异常。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Windows ↔ POSIX Path Converter runs entirely in your browser and translates paths between Windows and POSIX forms. It supports both the WSL /mnt/c mount and the WSL2 /c form, maps UNC network paths in both directions (\\\\server\\share ↔ //server/share), detects mixed separators, and can optionally fold . and .. segments while removing duplicate and trailing separators. It only manipulates strings and never touches the filesystem.',
+        coreFeatures: [
+          'Bidirectional conversion between Windows drive paths, UNC paths and POSIX paths',
+          'Two WSL styles — /mnt/c and /c — with automatic drive-letter lowercasing and uppercasing on the way back',
+          'Mixed separators detected automatically, so C:/Users\\me/project is classified correctly',
+          'Optional segment normalization folding . and .., removing duplicates and trailing separators, with warnings for out-of-range rollback',
+          'Multi-line batch conversion showing the detected kind, result and warnings per line, ignoring empty lines',
+        ],
+        howToUse: [
+          'Choose the direction (Windows to POSIX or POSIX to Windows) and the POSIX style',
+          'Toggle segment normalization as needed and paste one or more paths',
+          'Inspect the detected path kind, converted output and warnings for each line, then copy the result',
+          'Click a sample tag to load a drive, UNC, WSL mount, relative path or URL example',
+        ],
+        useCases: [
+          'Copying usable paths between WSL/Git Bash and Windows tools',
+          'Checking path spelling when writing cross-platform scripts, Makefiles or CI configs',
+          'Diagnosing "path not found" issues by confirming drive mapping and separators',
+          'Reconciling UNC share paths with their POSIX double-slash forms',
+        ],
+        privacyNote:
+          'All conversions are pure functions running locally in your browser; no filesystem access, network request, or persistence occurs.',
+        faqs: [
+          {
+            question: 'Why lowercase the drive letter?',
+            answer:
+              'WSL mount directories follow the lowercase convention /mnt/c, /mnt/d and so on. This tool lowercases the drive for Windows to POSIX and uppercases it when converting back, so the result is directly usable.',
+          },
+          {
+            question: 'How are relative paths and URLs handled?',
+            answer:
+              'A relative path has no determinable drive, so it only gets separator normalization with a warning; a URL containing :// is not a file path and is returned unchanged with a notice. Neither case raises an error, which keeps mixed batch input safe.',
+          },
+          {
+            question: 'What happens when .. goes above the root?',
+            answer:
+              'With normalization enabled, a .. at the drive or share root has nothing to pop, so it is dropped with a warning instead of producing an illegal path or throwing.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'shell-argument-quoter',
+    name: 'Shell 参数引用与转义器',
+    nameEn: 'Shell Argument Quoter',
+    description:
+      '把任意字符串转换成 POSIX sh、Windows CMD 或 PowerShell 安全可用的命令参数，并支持反向去引用还原；自动处理单引号断引、$’…’ 控制字符、CMD 双引号与 %VAR% 展开风险、PowerShell 单引号双写，支持逐行批量与一键互换，纯本地不执行命令。',
+    descriptionEn:
+      'Turns any string into a safe command argument for POSIX sh, Windows CMD or PowerShell and unquotes it back. Handles single-quote splitting, $\'…\' control characters, CMD double quotes and %VAR% expansion risks, PowerShell quote doubling, plus line-based batch mode and one-click swap — all locally, without executing anything.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/shell-argument-quoter',
+    iconName: 'Code',
+    tags: ['Shell', '转义', '引用', 'Bash', 'CMD', 'PowerShell'],
+    tagsEn: ['Shell', 'Escaping', 'Quoting', 'Bash', 'CMD', 'PowerShell'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: "it's",
+    doc: {
+      zh: {
+        whatIsIt:
+          'Shell 参数引用与转义器是一款纯浏览器本地工具，用于把任意字符串变成 POSIX sh、Windows CMD 或 PowerShell 中安全可用的单个命令参数，也能把已引用的参数字面量还原为原始字符串。它不会执行任何命令，也不解析完整命令行（管道、重定向、多条命令均不在范围内），只专注于单个参数的引用规则与往返无损转换。',
+        coreFeatures: [
+          '三种目标 Shell：POSIX sh / Bash、Windows CMD、PowerShell',
+          '双向转换：原文 → 引用参数，引用参数 → 原文，一键互换结果与方向',
+          'POSIX 单引号包裹、内部单引号按 \'\\\'\' 断开，控制字符改用 $\'…\'',
+          'CMD 双引号包裹，提示 %VAR% / !VAR! 展开风险与内部双引号兼容性限制',
+          'PowerShell 单引号包裹与内部单引号双写；支持逐行批量与空参数',
+        ],
+        howToUse: [
+          '选择目标 Shell 与转换方向',
+          '在输入框粘贴原始字符串或已引用的参数；需要批量时开启「每行一个参数」',
+          '查看每个参数的引用 / 还原结果与告警，按需复制或复制全部',
+          '点击「结果作为输入并切换方向」可立即验证往返是否无损',
+        ],
+        useCases: [
+          '生成含空格、引号、通配符或中文参数的可复制命令片段',
+          '排查「参数含空格 / 引号导致命令失败」的问题',
+          '编写跨平台脚本与 CI 配置时确认各 Shell 的引用写法',
+          '验证已有引用字符串能否无损还原为原始参数',
+        ],
+        privacyNote:
+          '所有处理均在浏览器本地基于纯函数完成，不执行任何命令、不发起网络请求，不发送或持久化输入。',
+        faqs: [
+          {
+            question: '为什么 POSIX 的单引号要写成 \'\\\'\'？',
+            answer:
+              'POSIX 单引号内无法再出现单引号，也没有反斜杠转义。通用写法是结束当前单引号、插入一个转义的单引号、再开启新的单引号，即 it\'s 写成 \'it\'\\\'\'s\'。本工具会自动完成这一断开。',
+          },
+          {
+            question: 'CMD 的双引号内能转义双引号吗？',
+            answer:
+              'cmd.exe 解析器本身不支持在双引号内用反斜杠转义双引号。本工具按多数程序（C 运行时）的约定输出 \\"，并给出告警，因此在带内部双引号时应在实际目标程序上验证。',
+          },
+          {
+            question: '为什么含换行时要使用 $\'…\'？',
+            answer:
+              '普通单引号虽能包含换行，但可读性差且容易在复制时出错。Bash 的 ANSI-C 引用 $\'…\' 用 \\n、\\t 等转义表达控制字符，结果更稳定清晰；去引用时本工具会还原为真实换行。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Shell Argument Quoter runs entirely in your browser and converts any string into a single safe command argument for POSIX sh, Windows CMD or PowerShell, and unquotes an already-quoted literal back to the original string. It executes nothing and does not parse whole command lines (pipes, redirections and multiple commands are out of scope) — it focuses on per-argument quoting rules and lossless round trips.',
+        coreFeatures: [
+          'Three target shells: POSIX sh/Bash, Windows CMD and PowerShell',
+          'Two directions — raw to quoted, quoted to raw — with one-click swap of results and direction',
+          'POSIX single-quote wrapping with \'\\\'\' splitting for inner quotes and $\'…\' for control characters',
+          'CMD double-quote wrapping with warnings for %VAR% / !VAR! expansion and inner-quote compatibility limits',
+          'PowerShell single-quote wrapping with quote doubling, plus line-based batch mode and empty arguments',
+        ],
+        howToUse: [
+          'Choose the target shell and direction',
+          'Paste a raw string or a quoted literal; enable "one argument per line" for batch mode',
+          'Review the quoted or unquoted result and warnings for each argument, then copy one or all',
+          'Click "Use results as input and swap direction" to verify a lossless round trip immediately',
+        ],
+        useCases: [
+          'Generating copy-ready command fragments with spaces, quotes, wildcards or non-ASCII text',
+          'Debugging commands that fail because an argument contains spaces or quotes',
+          'Confirming quoting styles for cross-platform scripts and CI configs',
+          'Verifying that an existing quoted string unquotes losslessly',
+        ],
+        privacyNote:
+          'All processing is pure functions running locally in your browser; no command is executed, no network request is made, and no input is sent or persisted.',
+        faqs: [
+          {
+            question: 'Why is a POSIX single quote written as \'\\\'\'?',
+            answer:
+              'Inside POSIX single quotes no single quote can appear and backslash has no special meaning. The portable idiom closes the current quote, inserts an escaped quote and opens a new one, so it\'s becomes \'it\'\\\'\'s\'. This tool performs that splitting automatically.',
+          },
+          {
+            question: 'Can double quotes be escaped inside CMD double quotes?',
+            answer:
+              'The cmd.exe parser does not support escaping a double quote with a backslash inside double quotes. This tool follows the common C-runtime convention of emitting \\" and warns about it, so verify against your actual target program when inner quotes are involved.',
+          },
+          {
+            question: 'Why use $\'…\' when the input contains a newline?',
+            answer:
+              'Plain single quotes can contain a newline but are hard to read and easy to corrupt when copied. Bash ANSI-C quoting $\'…\' expresses control characters as \\n, \\t and similar escapes for a more stable result; this tool restores real newlines when unquoting.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'arp-packet-codec',
+    name: 'ARP 报文解析与构造器',
+    nameEn: 'ARP Packet Codec',
+    description:
+      '解析与构造以太网 + IPv4 场景下的 28 字节 ARP（RFC 826）报文：逐字段查看硬件类型、协议类型、HLEN/PLEN、操作码与发送方 / 目标方 MAC、IP，并提供字段布局表、长度与类型校验定位、广播目标提示；纯本地计算，不上传报文。',
+    descriptionEn:
+      'Parse and build 28-byte ARP (RFC 826) packets for Ethernet + IPv4: inspect hardware type, protocol type, HLEN/PLEN, operation code and sender/target MAC and IP, with a byte-layout table, length and type validation, and broadcast-target hints — all locally, without uploading packets.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/arp-packet-codec',
+    iconName: 'Globe',
+    tags: ['ARP', 'RFC 826', 'MAC', 'IPv4', '报文解析', '网络'],
+    tagsEn: ['ARP', 'RFC 826', 'MAC', 'IPv4', 'Packet', 'Network'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: SAMPLE_ARP_REQUEST,
+    doc: {
+      zh: {
+        whatIsIt:
+          'ARP 报文解析与构造器是一款纯浏览器本地工具，用于处理以太网 + IPv4 场景下的 ARP（RFC 826）报文体。粘贴十六进制报文即可逐字段解析硬件类型、协议类型、硬件地址长度、协议地址长度、操作码（request / reply）以及发送方与目标方的 MAC 和 IP；也可以按字段直接构造标准的 28 字节 ARP 请求与应答。工具只处理 ARP 报文体，不解析外层以太网帧头，也不会发起任何网络请求。',
+        coreFeatures: [
+          '双向编解码：十六进制报文 → 字段解析，表单字段 → 28 字节报文',
+          '字段布局视图：按偏移与长度列出 HTYPE、PTYPE、HLEN、PLEN、OPER、SHA、SPA、THA、TPA',
+          '校验与定位：长度不足、非法十六进制字符、PTYPE 非 0x0800、HLEN / PLEN 不匹配均给出明确提示',
+          '操作码识别：区分 ARP 请求（who-has，操作码 1）与应答（is-at，操作码 2）',
+          '广播提示：目标 MAC 为 FF:FF:FF:FF:FF:FF 时说明该请求发往链路上的所有主机',
+          '一键回填：把解析结果直接填入构造器，便于修改后重新生成',
+        ],
+        howToUse: [
+          '选择「解析报文」或「构造报文」模式',
+          '解析模式下粘贴十六进制报文（支持空格、逗号、冒号分隔与 0x 前缀），或点击示例标签载入固定向量',
+          '构造模式下填写操作码、发送方 MAC/IP 与目标 MAC/IP，目标 MAC 通常使用广播地址',
+          '查看解析字段、告警与构造出的字节网格，点击按钮复制空格分隔或连续十六进制结果',
+        ],
+        useCases: [
+          '网络课程与协议教学中演示 ARP 报文的字段结构',
+          '抓包分析时快速核对 ARP 请求 / 应答的地址字段',
+          '构造用于测试环境的 ARP 报文十六进制样本',
+          '调试局域网内地址解析异常（who-has 与 is-at 配对）',
+        ],
+        privacyNote:
+          '所有解析与构造均在浏览器本地基于纯函数完成，不上传报文、不发起网络请求，也不持久化输入内容。',
+        faqs: [
+          {
+            question: '为什么报文固定是 28 字节？',
+            answer:
+              '以太网 + IPv4 场景下 HTYPE=1、PTYPE=0x0800、HLEN=6、PLEN=4，字段总长为 2+2+1+1+2+6+4+6+4=28 字节。若报文中的 HLEN / PLEN 不同，本工具会按实际长度解析并给出告警。',
+          },
+          {
+            question: '解析时需要包含以太网帧头吗？',
+            answer:
+              '不需要。本工具只处理 ARP 报文体，请从硬件类型字段开始粘贴。以太网帧头（含 0x0806 EtherType）可用以太网帧解析工具单独处理。',
+          },
+          {
+            question: '构造 ARP 请求时目标 MAC 应该填什么？',
+            answer:
+              '请求（who-has）通常把目标 MAC 填为广播地址 FF:FF:FF:FF:FF:FF；应答（is-at）则填入请求方的实际 MAC。工具会在使用广播地址时给出提示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'ARP Packet Codec runs entirely in your browser and processes ARP (RFC 826) payloads for the Ethernet + IPv4 case. Paste a hexadecimal packet to inspect hardware type, protocol type, hardware and protocol address lengths, the operation code (request / reply), and the sender and target MAC and IP field by field; or build a standard 28-byte ARP request or reply from form fields. It handles only the ARP payload, does not parse the outer Ethernet header, and never makes a network request.',
+        coreFeatures: [
+          'Two-way codec: hexadecimal packet to parsed fields, and form fields to a 28-byte packet',
+          'Byte-layout view listing HTYPE, PTYPE, HLEN, PLEN, OPER, SHA, SPA, THA and TPA by offset and length',
+          'Validation and pinpointing for short input, invalid hex characters, non-0x0800 PTYPE, and HLEN / PLEN mismatches',
+          'Operation detection: distinguishes ARP request (who-has, code 1) from reply (is-at, code 2)',
+          'Broadcast hint when the target MAC is FF:FF:FF:FF:FF:FF',
+          'One-click transfer: feed parsed fields into the builder for quick edits and regeneration',
+        ],
+        howToUse: [
+          'Choose the "Parse packet" or "Build packet" mode',
+          'In parse mode paste a hexadecimal packet (spaces, commas, colons and a 0x prefix are accepted) or load a sample vector',
+          'In build mode fill in the operation code, sender MAC/IP and target MAC/IP; the target MAC is usually the broadcast address',
+          'Review parsed fields, warnings and the generated byte grid, then copy the space-separated or compact hex output',
+        ],
+        useCases: [
+          'Teaching the ARP packet layout in networking courses',
+          'Checking ARP request / reply address fields during packet analysis',
+          'Generating ARP packet hex samples for test environments',
+          'Debugging local-network address resolution issues (who-has / is-at pairs)',
+        ],
+        privacyNote:
+          'All parsing and building are pure functions running locally in your browser; no packet is uploaded, no network request is made, and no input is persisted.',
+        faqs: [
+          {
+            question: 'Why is the packet exactly 28 bytes?',
+            answer:
+              'For Ethernet + IPv4, HTYPE=1, PTYPE=0x0800, HLEN=6 and PLEN=4, so the fields total 2+2+1+1+2+6+4+6+4=28 bytes. If HLEN / PLEN differ, the tool parses by the actual lengths and raises a warning.',
+          },
+          {
+            question: 'Should the Ethernet header be included?',
+            answer:
+              'No. This tool handles the ARP payload only; paste starting from the hardware type field. Use a separate Ethernet frame tool for the frame header including the 0x0806 EtherType.',
+          },
+          {
+            question: 'What target MAC should an ARP request use?',
+            answer:
+              'A request (who-has) normally sets the target MAC to the broadcast address FF:FF:FF:FF:FF:FF, while a reply (is-at) fills in the requester\'s real MAC. The tool warns when the broadcast address is used.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'json-to-cpp',
+    name: 'JSON 转 C++ struct 生成器',
+    nameEn: 'JSON to C++ Struct Generator',
+    description:
+      '粘贴 JSON 样本即可生成 C++17 数据模型：按范围推断 int32_t / int64_t、浮点用 double、数组用 std::vector、嵌套对象生成独立 struct、缺失或 null 字段用 std::optional，字段名按 camelCase 规范化并规避 C++ 关键字，支持可选命名空间与类型推断告警。',
+    descriptionEn:
+      'Paste a JSON sample to generate C++17 data models: int32_t / int64_t by range, double for floats, std::vector for arrays, separate structs for nested objects, std::optional for missing or null fields, camelCase field names that avoid C++ keywords, an optional namespace and inference warnings.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/json-to-cpp',
+    iconName: 'FileCode',
+    tags: ['JSON', 'C++', 'C++17', 'struct', '代码生成', '类型推断'],
+    tagsEn: ['JSON', 'C++', 'C++17', 'Struct', 'Code Generation', 'Type Inference'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: JSON_TO_CPP_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          'JSON 转 C++ struct 生成器是一款纯浏览器本地工具，用于把接口返回的 JSON 样本快速落成 C++17 数据模型。它会递归推断字段类型并按 C++ 约定生成 struct：整数根据取值范围选择 int32_t 或 int64_t，浮点数使用 double，字符串使用 std::string，布尔使用 bool，数组使用 std::vector<T>，嵌套对象展开为独立 struct，缺失字段或 null 值生成 std::optional<T>。所有计算都在浏览器内完成，不上传 JSON。',
+        coreFeatures: [
+          '按范围推断整数：int32_t 与 int64_t 自动区分，超出安全整数范围时提示改用 std::string',
+          '可空字段处理：多个样本中缺失或值为 null 的属性生成 std::optional<T>',
+          '数组与嵌套对象：std::vector<T> 与独立 struct，结构定义按依赖顺序输出',
+          '字段名规范化：camelCase 转换、非法字符替换、C++ 关键字自动加后缀并列入告警',
+          '可选命名空间与缩进宽度，生成带 cstdint / optional / string / vector / any 前置包含的完整代码',
+          '空数组、异构数组、字段重名等边界情况给出明确告警',
+        ],
+        howToUse: [
+          '在左侧粘贴 JSON 文本，工具会实时解析并生成 C++ 代码',
+          '按需填写根名称（默认 Root）、命名空间（留空不包裹）与缩进宽度',
+          '空数组可选择回退为 std::vector<std::any> 或 std::any',
+          '查看右上角告警标签确认类型推断与字段改名记录，满意后点击「复制结果」',
+        ],
+        useCases: [
+          '把 REST / GraphQL 接口的 JSON 响应转换为 C++ 请求 / 响应结构体',
+          '为嵌入式或桌面客户端手写 JSON 映射结构时减少样板代码',
+          '对照接口文档快速生成 C++17 类型定义草案',
+          '检查 JSON 字段命名是否符合 C++ 标识符规范',
+        ],
+        privacyNote:
+          '所有 JSON 解析与代码生成均在浏览器本地基于纯函数完成，不上传数据、不发起网络请求，也不持久化输入内容。',
+        faqs: [
+          {
+            question: '为什么整数有时是 int32_t，有时是 int64_t？',
+            answer:
+              '工具会检查样本中该字段的所有整数值，全部落在 -2147483648 到 2147483647 之间时使用 int32_t，否则使用 int64_t；如果超出 JavaScript 安全整数范围，会提示改用 std::string 以避免精度丢失。',
+          },
+          {
+            question: '什么时候会生成 std::optional？',
+            answer:
+              '当同一字段在多个对象样本中缺失，或者值为 null 时会生成 std::optional<T>；如果所有样本都完整出现且非 null，则生成裸类型。',
+          },
+          {
+            question: '生成的代码需要 C++17 吗？',
+            answer:
+              '是的。std::optional 与 std::any 都是 C++17 引入的特性，请使用 -std=c++17 或更高标准编译；前置包含指令已按实际使用的类型自动生成。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'JSON to C++ Struct Generator runs entirely in your browser and turns a JSON sample into C++17 data models. It recursively infers field types using C++ conventions: integers become int32_t or int64_t by range, floats use double, strings use std::string, booleans use bool, arrays use std::vector<T>, nested objects become separate structs, and fields that are missing or null become std::optional<T>. Everything runs locally and the JSON is never uploaded.',
+        coreFeatures: [
+          'Range-aware integers: int32_t versus int64_t automatically, with a std::string hint when values exceed the safe integer range',
+          'Optional handling: properties missing from some samples or set to null become std::optional<T>',
+          'Arrays and nested objects: std::vector<T> plus separate structs emitted in dependency order',
+          'Field normalization: camelCase conversion, invalid character replacement, and keyword suffixing with warnings',
+          'Optional namespace and indentation width, with the required cstdint / optional / string / vector / any includes',
+          'Clear warnings for empty arrays, heterogeneous arrays, duplicate normalized field names and similar edge cases',
+        ],
+        howToUse: [
+          'Paste JSON on the left; the tool parses it and generates C++ code in real time',
+          'Set the root name (default Root), an optional namespace and the indent width',
+          'Choose how empty arrays fall back: std::vector<std::any> or std::any',
+          'Review the warning tags, then click "Copy result"',
+        ],
+        useCases: [
+          'Converting REST / GraphQL JSON responses into C++ request and response structs',
+          'Reducing boilerplate when writing JSON mapping types for embedded or desktop clients',
+          'Drafting C++17 type definitions from API documentation',
+          'Checking that JSON field names map to valid C++ identifiers',
+        ],
+        privacyNote:
+          'All JSON parsing and code generation are pure functions running locally in your browser; nothing is uploaded, no network request is made, and no input is persisted.',
+        faqs: [
+          {
+            question: 'Why is an integer sometimes int32_t and sometimes int64_t?',
+            answer:
+              'The tool checks every sampled value for that field. If all values fit between -2147483648 and 2147483647 it emits int32_t, otherwise int64_t; values beyond the JavaScript safe integer range fall back to std::string with a warning to avoid precision loss.',
+          },
+          {
+            question: 'When is std::optional generated?',
+            answer:
+              'A field becomes std::optional<T> when it is missing from some object samples or its value is null. If it appears with a non-null value in every sample, the plain type is used.',
+          },
+          {
+            question: 'Does the generated code require C++17?',
+            answer:
+              'Yes. std::optional and std::any are C++17 features, so compile with -std=c++17 or newer. The includes are emitted automatically based on the types actually used.',
           },
         ],
       },

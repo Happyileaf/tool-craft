@@ -337,7 +337,7 @@
 | 20261114200458 | 大整数任意精度四则运算计算器（BigInt 加减乘除 / 幂 / 取模 / 阶乘） | Web Tool | Exploration | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114200458.md) |
 | 20261114200502 | 经济补偿金与代通知金计算器（N / N+1 / 2N，含月工资上限与年限折算） | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200502.md) |
 | 20261115020303 | 睡眠周期与就寝 / 起床时间计算器（90 分钟周期 + 入睡缓冲） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115020303.md) |
-| 20261115080615 | ARP 地址解析协议报文解析与构造器（RFC 826，以太网/IPv4 字节布局） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115080615.md) |
+| 20261115080615 | ARP 地址解析协议报文解析与构造器（RFC 826，以太网/IPv4 字节布局） | Web Tool | Existing Gap | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080615.md) |
 | 20261115080616 | MQTT 3.1.1 控制报文编解码器（CONNECT / PUBLISH / SUBSCRIBE 与 Remaining Length） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115080616.md) |
 | 20261115080617 | 天线长度与频率 / 波长互算器（半波偶极子 / 四分之一波长垂直天线） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080617.md) |
 | 20261115080618 | 心率训练区间计算器（最大心率估算与 Karvonen 储备心率五区间） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080618.md) |
@@ -345,9 +345,9 @@
 | 20261115140201 | 简体中文 ↔ 繁体中文转换器（词组级映射，含台湾 / 香港变体与地区用词） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115140201.md) |
 | 20261115140203 | 体脂率估算计算器（US Navy 围度法 / BMI 推导法 + 腰臀比风险区间） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115140203.md) |
 | 20261115140205 | 视频 / 音频码率与文件大小估算器（分辨率 / 帧率 / 编码器 / 时长互算） | Web Tool | Exploration | Pending | 2026-11-15 | | [详情](./idea-details/20261115140205.md) |
-| 20261116020445 | Windows ↔ POSIX 路径转换器（WSL 盘符映射 / UNC / 分隔符归一） | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116020445.md) |
-| 20261116020446 | JSON → C++ struct / class 生成器（std::optional / std::vector 推断） | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116020446.md) |
+| 20261116020445 | Windows ↔ POSIX 路径转换器（WSL 盘符映射 / UNC / 分隔符归一） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116020445.md) |
+| 20261116020446 | JSON → C++ struct / class 生成器（std::optional / std::vector 推断） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116020446.md) |
 | 20261116020447 | 排序算法逐步可视化器（冒泡 / 选择 / 插入 / 归并 / 快排） | Web Tool | Exploration | Pending | 2026-11-16 | | [详情](./idea-details/20261116020447.md) |
-| 20261116020448 | 字节序转换器（大端 / 小端整数编解码与字节重排） | Web Tool | Exploration | Pending | 2026-11-16 | | [详情](./idea-details/20261116020448.md) |
-| 20261116020449 | Shell 命令参数引用与转义器（POSIX sh / CMD / PowerShell） | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116020449.md) |
+| 20261116020448 | 字节序转换器（大端 / 小端整数编解码与字节重排） | Web Tool | Exploration | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116020448.md) |
+| 20261116020449 | Shell 命令参数引用与转义器（POSIX sh / CMD / PowerShell） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116020449.md) |
 

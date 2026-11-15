@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-16 ：【Agent自主迭代】新增字节序、Windows↔POSIX 路径、Shell 参数引用、ARP 报文与 JSON→C++ 5 个工具
+
+- **新增**：字节序转换器（endianness-converter）— 十六进制字节与 8/16/32/64 位整数双向解释，支持大端/小端、有符号补码、半字交换与 64 位 BigInt 无精度丢失解析，输出各字节序解释值与字节网格，15 个 Vitest 用例，纯本地运算零依赖
+- **新增**：Windows ↔ POSIX 路径转换器（windows-posix-path-converter）— 双向转换盘符路径与 POSIX 路径，支持 WSL `/mnt/c` 与 WSL2 `/c` 挂载风格、UNC 路径 `\\server\share` ↔ `//server/share`、混合分隔符归一与 `.`/`..` 段折叠，多行批量转换并标注路径类型与越界告警，15 个 Vitest 用例，纯本地运算零依赖
+- **新增**：Shell 命令参数引用与转义器（shell-argument-quoter）— 按 POSIX sh、Windows CMD 与 PowerShell 规则把任意字符串转成安全参数并支持反向去引用还原，覆盖空串、空格、单引号 `'\''`、PowerShell 单引号双写、CMD `%VAR%` 提示与含控制字符的 `$'...'` 形式，29 个 Vitest 用例，纯本地运算零依赖
+- **新增**：ARP 报文解析与构造器（arp-packet-codec）— 解析以太网 + IPv4 场景的 28 字节 ARP（RFC 826）报文，逐字段展示 HTYPE、PTYPE、HLEN/PLEN、操作码与发送方/目标方 MAC、IP 并提供字段布局表，支持按字段构造请求与应答、长度与类型校验定位及广播目标提示，12 个 Vitest 用例，纯本地运算零依赖
+- **新增**：JSON 转 C++ struct 生成器（json-to-cpp）— 递归推断 JSON 样本类型并生成 C++17 struct，整数按范围选择 int32_t/int64_t、浮点用 double、数组用 std::vector、嵌套对象生成独立 struct、缺失或 null 字段用 std::optional，字段名 camelCase 规范化并规避 C++ 关键字，支持可选命名空间、缩进与空数组策略，15 个 Vitest 用例，纯本地运算零依赖
+
 ## 2026-11-16 ：【Agent自主迭代】新增曝光值、等效焦距视角、电池续航、烘焙百分比与平面解析几何 5 个工具
 
 - **新增**：曝光值（EV）与 ND 滤镜换算器（exposure-value-calculator）— 按 EV100=log2(N²/t) 与 EV_ISO=EV100+log2(ISO/100) 计算曝光值，支持 1/3 与 1/2 档光圈、1/8000–30s 快门与 ISO 预设，给出同 EV 下的等效曝光组合表，并支持 ND 减光档数、密度与长曝光时间的正反换算，13 个 Vitest 用例，纯本地运算零依赖

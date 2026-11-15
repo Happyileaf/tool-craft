@@ -1,0 +1,79 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mono {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 4px;
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.inlineFields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+
+.samples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.resultRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 8px;
+  padding: 12px 16px;
+  background: rgb(249 250 251);
+}
+
+.label {
+  color: rgb(107 114 128);
+  font-size: 12px;
+}
+
+.inputText {
+  word-break: break-all;
+  color: rgb(55 65 81);
+  font-size: 13px;
+}
+
+.outputRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.outputText {
+  flex: 1;
+  word-break: break-all;
+  font-size: 15px;
+}
+
+.hint {
+  margin-top: 8px;
+  color: rgb(107 114 128);
+  font-size: 13px;
+  line-height: 1.6;
+}

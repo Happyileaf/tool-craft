@@ -395,4 +395,9 @@ export const toolLoaders: Record<
   'battery-runtime-calculator': () => import('./battery-runtime-calculator'),
   'bakers-percentage-calculator': () => import('./bakers-percentage-calculator'),
   'analytic-geometry-calculator': () => import('./analytic-geometry-calculator'),
+  'endianness-converter': () => import('./endianness-converter'),
+  'windows-posix-path-converter': () => import('./windows-posix-path-converter'),
+  'shell-argument-quoter': () => import('./shell-argument-quoter'),
+  'arp-packet-codec': () => import('./arp-packet-codec'),
+  'json-to-cpp': () => import('./json-to-cpp'),
 };
