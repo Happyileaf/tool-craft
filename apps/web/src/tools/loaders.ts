@@ -386,4 +386,5 @@ export const toolLoaders: Record<
   'fuel-economy-calculator': () => import('./fuel-economy-calculator'),
   'twos-complement-calculator': () => import('./twos-complement-calculator'),
   'sleep-cycle-calculator': () => import('./sleep-cycle-calculator'),
+  'heart-rate-zone-calculator': () => import('./heart-rate-zone-calculator'),
 };

@@ -36447,6 +36447,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'heart-rate-zone-calculator',
+    name: '心率训练区间计算器（最大心率估算与 Karvonen 五区间）',
+    nameEn: 'Heart Rate Zone Calculator (Max HR & Karvonen Zones)',
+    description:
+      '输入年龄、静息心率与性别，按 Fox、Tanaka 或 Gulati 公式估算最大心率，并用 Karvonen 储备心率法输出 Z1–Z5 五级训练区间的 bpm 范围，同时给出 %HRmax 对照、区间用途与实测最大心率优先选项。',
+    descriptionEn:
+      'Enter age, resting heart rate and sex to estimate max heart rate with the Fox, Tanaka or Gulati formula, then derive Z1–Z5 training zones in bpm using the Karvonen heart-rate-reserve method, with %HRmax cross-reference, zone purposes and optional measured max HR priority.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/heart-rate-zone-calculator',
+    iconName: 'Flame',
+    tags: ['心率', '训练', '区间', 'Karvonen', '最大心率'],
+    tagsEn: ['Heart Rate', 'Training', 'Zones', 'Karvonen', 'Max HR'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '185',
+    doc: {
+      zh: {
+        whatIsIt:
+          '心率训练区间计算器把年龄、静息心率与性别转换为可执行的训练强度区间。工具先用 Fox（220 − 年龄）、Tanaka（208 − 0.7 × 年龄）或 Gulati（女性 206 − 0.88 × 年龄）公式估算最大心率；若填写实测最大心率则优先采用。随后按 Karvonen 储备心率法（HRR = HRmax − 静息心率）计算 Z1–Z5 的 bpm 上下限，并同时给出基于 %HRmax 的简化对照与每个区间的训练用途。全部为本地算术，零依赖。',
+        coreFeatures: [
+          '三种最大心率估算公式，并支持实测最大心率优先',
+          '按 Karvonen 储备心率法输出 Z1–Z5 五级区间 bpm 范围',
+          '同时给出 %HRmax 简化区间对照，便于对比两种方法',
+          '每个区间附带强度说明与训练建议',
+          '输入范围校验与一键复制区间结果',
+        ],
+        howToUse: [
+          '输入年龄、静息心率与性别',
+          '如做过实测最大心率测试，在可选输入框填写实测值',
+          '选择最大心率公式；保持自动即可在未填实测值时使用 Tanaka',
+          '查看 Z1–Z5 区间与 %HRmax 对照，点击复制区间用于手表或训练计划',
+        ],
+        useCases: [
+          '跑步或骑行前设置运动手表的心率区间',
+          '比较 Fox、Tanaka 与 Gulati 公式对个人最大心率的差异',
+          '根据静息心率变化调整有氧基础与阈值训练强度',
+        ],
+        privacyNote: '所有心率计算均在浏览器本地完成，输入内容不会被存储或上传。',
+        faqs: [
+          {
+            question: 'Karvonen 法和最大心率百分比法有什么区别？',
+            answer:
+              '最大心率百分比法直接用 HRmax 乘以百分比；Karvonen 法先用 HRmax − 静息心率得到储备心率，再按「静息心率 + 百分比 × HRR」计算。后者考虑了个人静息心率差异，通常更贴近实际训练强度。',
+          },
+          {
+            question: '为什么 Gulati 公式只用于女性？',
+            answer:
+              'Gulati 公式（206 − 0.88 × 年龄）来自针对女性的研究，对女性最大心率估算更准确。男性选择该公式时工具会自动回退到 Tanaka 公式并在界面提示。',
+          },
+          {
+            question: 'Z2 区间为什么适合有氧基础训练？',
+            answer:
+              'Z2 对应 60–70% 储备心率，强度足以刺激有氧系统，又能较长时间持续并促进脂肪利用，因此常作为耐力训练的主要区间。具体感受因体能而异，建议结合配速与主观用力程度判断。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This calculator turns age, resting heart rate and sex into actionable training zones. It estimates max heart rate with Fox (220 − age), Tanaka (208 − 0.7 × age) or Gulati (206 − 0.88 × age for women), and prefers a measured max HR when provided. It then applies the Karvonen heart-rate-reserve method (HRR = HRmax − resting HR) to produce Z1–Z5 bpm ranges, alongside a %HRmax cross-reference and the purpose of each zone. All arithmetic runs locally with zero dependencies.',
+        coreFeatures: [
+          'Three max-heart-rate formulas with optional measured max HR taking priority',
+          'Z1–Z5 training zones in bpm using the Karvonen reserve method',
+          'A %HRmax cross-reference for comparing the two common approaches',
+          'Intensity guidance and training suggestions for every zone',
+          'Input range validation and one-click copying of zone results',
+        ],
+        howToUse: [
+          'Enter age, resting heart rate and sex',
+          'If you have a measured max heart rate, fill it into the optional field',
+          'Pick a max HR formula; auto mode uses Tanaka when no measured value is present',
+          'Review Z1–Z5 ranges and the %HRmax comparison, then copy the zones into your watch or plan',
+        ],
+        useCases: [
+          'Configuring heart rate zones on a running or cycling watch',
+          'Comparing Fox, Tanaka and Gulati estimates for your own max heart rate',
+          'Adjusting aerobic and threshold intensities as resting heart rate changes',
+        ],
+        privacyNote:
+          'All heart rate calculations run locally in your browser; inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'How does Karvonen differ from the %HRmax method?',
+            answer:
+              'The %HRmax method multiplies HRmax directly by a percentage. Karvonen first derives the heart rate reserve as HRmax − resting HR, then uses resting HR + percentage × HRR. It accounts for individual resting heart rate differences and usually tracks real training intensity more closely.',
+          },
+          {
+            question: 'Why is the Gulati formula limited to women?',
+            answer:
+              'The Gulati formula (206 − 0.88 × age) comes from research on women and estimates female max heart rate more accurately. When a male selects it, the tool falls back to Tanaka and explains the fallback in the interface.',
+          },
+          {
+            question: 'Why is Z2 useful for aerobic base training?',
+            answer:
+              'Z2 corresponds to 60–70% of heart rate reserve, intense enough to stimulate the aerobic system while remaining sustainable for long sessions and promoting fat use. Perceived effort varies with fitness, so combine the zone with pace and RPE feedback.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
