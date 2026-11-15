@@ -396,4 +396,5 @@ export const toolLoaders: Record<
   'bakers-percentage-calculator': () => import('./bakers-percentage-calculator'),
   'analytic-geometry-calculator': () => import('./analytic-geometry-calculator'),
   'endianness-converter': () => import('./endianness-converter'),
+  'windows-posix-path-converter': () => import('./windows-posix-path-converter'),
 };

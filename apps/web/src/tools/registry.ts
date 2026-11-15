@@ -37482,6 +37482,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'windows-posix-path-converter',
+    name: 'Windows ↔ POSIX 路径转换器',
+    nameEn: 'Windows ↔ POSIX Path Converter',
+    description:
+      '在 Windows 与 POSIX 路径之间双向转换，支持 WSL /mnt/c 与 WSL2 /c 两种盘符映射、UNC 网络路径互转、盘符大小写归一、混合分隔符识别，以及可选的 . 与 .. 段折叠和逐行批量转换。',
+    descriptionEn:
+      'Bidirectionally converts Windows and POSIX paths with WSL /mnt/c and WSL2 /c drive mappings, UNC network-path translation, drive-letter case normalization, mixed-separator detection, optional . and .. segment folding, and line-by-line batch conversion.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/windows-posix-path-converter',
+    iconName: 'Shuffle',
+    tags: ['WSL', '路径转换', 'UNC', 'Windows', 'POSIX', '批量转换'],
+    tagsEn: ['WSL', 'Path Conversion', 'UNC', 'Windows', 'POSIX', 'Batch'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'C:\\Users\\me\\project',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Windows ↔ POSIX 路径转换器是一款纯浏览器本地工具，用于在 Windows 路径与 POSIX 路径之间互相转换。它既支持 WSL 的 /mnt/c 挂载形式，也支持 WSL2 的 /c 形式，能够双向处理 UNC 网络路径（\\\\server\\share ↔ //server/share），自动识别正反斜杠混用，并可选择折叠 . 与 .. 段、去除重复与尾随分隔符。全程只做字符串处理，不访问任何文件系统。',
+        coreFeatures: [
+          '双向转换：Windows 盘符路径、UNC 路径与 POSIX 路径互转',
+          '两种 WSL 风格：/mnt/c 与 /c，盘符自动小写（转回 Windows 时自动大写）',
+          '混合分隔符自动识别，C:/Users\\me/project 也能正确分类',
+          '可选段归一：折叠 . 与 ..、去除重复与尾随分隔符，越界回退给出告警',
+          '多行批量转换，逐行展示识别类型、结果与告警，空行忽略并计数',
+        ],
+        howToUse: [
+          '选择转换方向（Windows → POSIX 或 POSIX → Windows）与 POSIX 风格',
+          '按需开启段归一，在输入框粘贴一条或多条路径',
+          '查看每行的识别类型、转换结果与告警，点击复制按钮获取结果',
+          '点击示例标签可载入盘符、UNC、WSL 挂载、相对路径与 URL 等典型输入',
+        ],
+        useCases: [
+          '在 WSL / Git Bash 与 Windows 工具之间复制可用的路径',
+          '编写跨平台脚本、Makefile 或 CI 配置时核对路径写法',
+          '排查「路径找不到」问题，确认盘符映射与分隔符是否正确',
+          '整理 UNC 共享路径与 POSIX 双斜杠形式之间的对应关系',
+        ],
+        privacyNote:
+          '所有转换均在浏览器本地基于纯函数完成，不读取文件系统、不发起网络请求，不发送或持久化输入。',
+        faqs: [
+          {
+            question: '为什么盘符要转成小写？',
+            answer:
+              'WSL 挂载目录约定为 /mnt/c、/mnt/d 等小写形式。本工具在 Windows → POSIX 时把盘符统一小写；反向转换回 Windows 时再统一大写，保证结果可直接使用。',
+          },
+          {
+            question: '相对路径和 URL 会怎么处理？',
+            answer:
+              '相对路径无法确定对应盘符，因此只做分隔符归一并在告警中说明；含 :// 的 URL 不是文件路径，会原样返回并提示。两种情况都不会报错，方便批量粘贴时混入说明文字。',
+          },
+          {
+            question: '.. 超出根目录会怎样？',
+            answer:
+              '开启段归一后，位于根目录（盘符根或共享根）的 .. 没有上层可回退，会被忽略并给出告警，而不是生成非法路径或抛出异常。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Windows ↔ POSIX Path Converter runs entirely in your browser and translates paths between Windows and POSIX forms. It supports both the WSL /mnt/c mount and the WSL2 /c form, maps UNC network paths in both directions (\\\\server\\share ↔ //server/share), detects mixed separators, and can optionally fold . and .. segments while removing duplicate and trailing separators. It only manipulates strings and never touches the filesystem.',
+        coreFeatures: [
+          'Bidirectional conversion between Windows drive paths, UNC paths and POSIX paths',
+          'Two WSL styles — /mnt/c and /c — with automatic drive-letter lowercasing and uppercasing on the way back',
+          'Mixed separators detected automatically, so C:/Users\\me/project is classified correctly',
+          'Optional segment normalization folding . and .., removing duplicates and trailing separators, with warnings for out-of-range rollback',
+          'Multi-line batch conversion showing the detected kind, result and warnings per line, ignoring empty lines',
+        ],
+        howToUse: [
+          'Choose the direction (Windows to POSIX or POSIX to Windows) and the POSIX style',
+          'Toggle segment normalization as needed and paste one or more paths',
+          'Inspect the detected path kind, converted output and warnings for each line, then copy the result',
+          'Click a sample tag to load a drive, UNC, WSL mount, relative path or URL example',
+        ],
+        useCases: [
+          'Copying usable paths between WSL/Git Bash and Windows tools',
+          'Checking path spelling when writing cross-platform scripts, Makefiles or CI configs',
+          'Diagnosing "path not found" issues by confirming drive mapping and separators',
+          'Reconciling UNC share paths with their POSIX double-slash forms',
+        ],
+        privacyNote:
+          'All conversions are pure functions running locally in your browser; no filesystem access, network request, or persistence occurs.',
+        faqs: [
+          {
+            question: 'Why lowercase the drive letter?',
+            answer:
+              'WSL mount directories follow the lowercase convention /mnt/c, /mnt/d and so on. This tool lowercases the drive for Windows to POSIX and uppercases it when converting back, so the result is directly usable.',
+          },
+          {
+            question: 'How are relative paths and URLs handled?',
+            answer:
+              'A relative path has no determinable drive, so it only gets separator normalization with a warning; a URL containing :// is not a file path and is returned unchanged with a notice. Neither case raises an error, which keeps mixed batch input safe.',
+          },
+          {
+            question: 'What happens when .. goes above the root?',
+            answer:
+              'With normalization enabled, a .. at the drive or share root has nothing to pop, so it is dropped with a warning instead of producing an illegal path or throwing.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
