@@ -1,0 +1,56 @@
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.fieldRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.fieldLabel {
+  min-width: 132px;
+  font-size: 13px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.55));
+}
+
+.flexOne {
+  flex: 1;
+  min-width: 220px;
+}
+
+.times {
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+}
+
+.dpiSelect {
+  width: 140px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.matchBox {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+}

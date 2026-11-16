@@ -6,6 +6,11 @@ import { DEFAULT_PCAP_HEX } from './pcap-parser/constants';
 import { DEFAULT_RTU_HEX } from './modbus-frame-codec/constants';
 import { SAMPLE_ARP_REQUEST } from './arp-packet-codec/constants';
 import { DEFAULT_SAMPLE as JSON_TO_CPP_SAMPLE } from './json-to-cpp/constants';
+import { DEFAULT_INPUT as BASE64URL_CONVERTER_SAMPLE } from './base64url-base64-converter/constants';
+import { DEFAULT_PRESET_ID as PAPER_DPI_PRESET, DEFAULT_DPI as PAPER_DPI_DEFAULT } from './paper-size-dpi-calculator/constants';
+import { DEFAULT_FLAT_PRICE as ELECTRICITY_FLAT_PRICE } from './electricity-bill-calculator/constants';
+import { DEFAULT_SAMPLE as DNA_RNA_SAMPLE } from './dna-rna-sequence-analyzer/constants';
+import { DEFAULT_SAMPLE as SQL_PLACEHOLDER_SAMPLE } from './sql-parameter-placeholder-converter/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -37899,6 +37904,550 @@ sqrt(area) + 2 * r`,
             question: 'Does the generated code require C++17?',
             answer:
               'Yes. std::optional and std::any are C++17 features, so compile with -std=c++17 or newer. The includes are emitted automatically based on the types actually used.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'base64url-base64-converter',
+    name: 'Base64URL 与 Base64 互转器',
+    nameEn: 'Base64URL ↔ Base64 Converter',
+    description:
+      '在 RFC 4648 标准 Base64 与 Base64URL 两种字母表变体之间双向规范化转换：自动识别输入变体，- _ 与 + / 互相替换，按需补齐或去除 = 填充，支持多行令牌批量处理、非法字符定位与字节级解码验证，适合 JWT、OIDC nonce、URL 安全参数调试。',
+    descriptionEn:
+      'Convert between RFC 4648 standard Base64 and Base64URL variants with automatic variant detection, - _ versus + / substitution, padding normalization, multi-line batch processing, illegal-character location and byte-level decode verification — ideal for JWT, OIDC nonce and URL-safe parameter debugging.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/base64url-base64-converter',
+    iconName: 'ArrowLeftRight',
+    tags: ['Base64URL', 'Base64', 'RFC 4648', 'JWT', '编码转换', 'URL-safe'],
+    tagsEn: ['Base64URL', 'Base64', 'RFC 4648', 'JWT', 'Encoding', 'URL-safe'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: BASE64URL_CONVERTER_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Base64URL 与 Base64 互转器是一款纯浏览器本地工具，用于在 RFC 4648 定义的两种 Base64 字母表变体之间做规范化转换。标准 Base64（§4）含 +、/ 字符并以 = 填充到 4 字节倍数；Base64URL（§5）以 -、_ 替换这两个字符并省略填充，可安全出现在 URL、文件名与 JWT 分段中。工具自动识别输入变体，按目标变体完成字符替换与填充补齐 / 去除，并提供多行批量处理与字节级解码验证。',
+        coreFeatures: [
+          '双向规范化：标准 Base64 与 Base64URL 互转，自动识别输入变体并统一字母表',
+          '填充管理：转标准变体时按 4 字节倍数补齐 =，转 URL 变体时去除全部填充',
+          '多行批量：每行一个令牌独立转换，空行保留，非法行原样保留并逐行告警',
+          '错误定位：非法字符给出在令牌中的 1-based 位置，区分非法字符与非法填充',
+          '字节级验证：调用 atob 还原字节并输出字节数与十六进制预览，验证字母表与填充自洽',
+        ],
+        howToUse: [
+          '在左侧粘贴 Base64 或 Base64URL 令牌（可多行），工具自动识别每行变体',
+          '通过右上角单选切换目标变体：→ 标准 Base64 或 → Base64URL',
+          '在右侧实时查看转换结果，点击「复制」拷贝全部输出',
+          '查看底部字节级解码验证，确认首行令牌可还原为合法字节序列',
+          '出现告警时按提示的行号与字符位置修正输入后重试',
+        ],
+        useCases: [
+          '调试 JWT / PASETO 分段、OIDC nonce 与 code_verifier 等 URL-safe 令牌',
+          '把标准 Base64 数据嵌入 URL 查询参数、文件名或 JSON 键',
+          '对接只接受填充标准 Base64 的旧系统时补齐 = 填充',
+          '核对不同语言 SDK（Java getUrlEncoder、Python urlsafe_b64encode）输出差异',
+        ],
+        privacyNote:
+          '所有转换均在浏览器本地基于纯函数完成，不上传数据、不发起网络请求，也不持久化输入内容。',
+        faqs: [
+          {
+            question: 'Base64URL 和标准 Base64 有什么区别？',
+            answer:
+              '两者编码同一字节序列时有效载荷一致，差别在字母表与填充：标准 Base64 使用 +、/ 并以 = 补齐到 4 的倍数；Base64URL 用 -、_ 替换这两个在 URL 中有特殊含义的字符，并省略填充。',
+          },
+          {
+            question: '为什么转换后有的结果带 =，有的不带？',
+            answer:
+              '填充只用于标准变体，使其长度始终为 4 字节倍数；Base64URL 规范允许省略填充，因此转 URL 变体时会去除全部 =，反向转换时再按长度自动补齐。',
+          },
+          {
+            question: '工具会真正解码数据吗？',
+            answer:
+              '主转换只做字符层面的确定性替换与填充规范化；底部「字节级解码验证」会额外调用 atob 把首行令牌还原为字节，验证字符组合在字节层面自洽，并输出字节数与前 16 字节的十六进制预览。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Base64URL ↔ Base64 Converter runs entirely in your browser and normalizes between the two Base64 alphabets defined by RFC 4648. Standard Base64 (§4) uses + and / with = padding to a multiple of four, while Base64URL (§5) replaces those characters with - and _ and omits padding so it is safe in URLs, filenames and JWT segments. It auto-detects the input variant, performs substitution and padding normalization for the target variant, and offers multi-line batch processing plus byte-level decode verification.',
+        coreFeatures: [
+          'Bidirectional normalization between standard Base64 and Base64URL with automatic variant detection',
+          'Padding management: add = to a multiple of four for standard output, strip all padding for URL output',
+          'Multi-line batch mode converts each token independently, keeps blank lines, and preserves invalid lines with per-line warnings',
+          'Error location reports the 1-based offset of illegal characters and distinguishes bad characters from bad padding',
+          'Byte-level verification uses atob to restore bytes, reporting byte count and a hex preview to confirm alphabet/padding consistency',
+        ],
+        howToUse: [
+          'Paste Base64 or Base64URL tokens on the left (multiple lines allowed); each line is detected automatically',
+          'Switch the target variant with the top-right radio: → standard Base64 or → Base64URL',
+          'Read the converted output on the right and click "Copy" to copy everything',
+          'Check the byte-level verification banner to confirm the first line decodes to valid bytes',
+          'When a warning appears, fix the input at the reported line and character offset, then retry',
+        ],
+        useCases: [
+          'Debugging URL-safe tokens such as JWT / PASETO segments, OIDC nonce and code_verifier',
+          'Embedding standard Base64 data in URL query parameters, filenames or JSON keys',
+          'Adding = padding when integrating legacy systems that only accept padded standard Base64',
+          'Comparing output from language SDKs such as Java getUrlEncoder and Python urlsafe_b64encode',
+        ],
+        privacyNote:
+          'All conversions are pure functions running locally in your browser; nothing is uploaded, no network request is made, and no input is persisted.',
+        faqs: [
+          {
+            question: 'What is the difference between Base64URL and standard Base64?',
+            answer:
+              'They encode the same byte payload identically except for the alphabet and padding: standard Base64 uses +, / and pads with = to a multiple of four, while Base64URL replaces the two URL-sensitive characters with - and _ and drops the padding.',
+          },
+          {
+            question: 'Why do some results contain = and others do not?',
+            answer:
+              'Padding belongs to the standard variant and keeps its length at a multiple of four. Base64URL allows omitting padding, so converting to the URL variant strips every =, and the reverse conversion restores padding automatically based on length.',
+          },
+          {
+            question: 'Does the tool actually decode the data?',
+            answer:
+              'The main conversion is deterministic character substitution and padding normalization. The byte-level verification banner additionally calls atob on the first line to restore raw bytes, confirming the character combination is self-consistent, and reports the byte count with a hex preview of the first 16 bytes.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'paper-size-dpi-calculator',
+    name: '纸张尺寸与 DPI 像素换算器',
+    nameEn: 'Paper Size & DPI Pixel Calculator',
+    description:
+      '在 ISO A/B/C 全系列与 Letter/Legal 等北美纸张之间选择，按 DPI 计算印刷像素（A4@300DPI=2480×3508），或由像素反推物理尺寸并匹配最接近的标准纸张；支持横竖切换、mm/cm/in/px 互转、总像素与百万像素输出和常用尺寸速查表。',
+    descriptionEn:
+      'Pick from the full ISO A/B/C series and North American paper sizes to compute print pixels from DPI (A4@300DPI=2480×3508), or reverse pixels to physical dimensions with closest-paper matching; supports orientation swap, mm/cm/in/px conversion, total and megapixel counts, and a quick-reference table.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/paper-size-dpi-calculator',
+    iconName: 'Ruler',
+    tags: ['纸张尺寸', 'DPI', '像素换算', 'A4', '印刷', 'ISO 216'],
+    tagsEn: ['Paper Size', 'DPI', 'Pixel', 'A4', 'Print', 'ISO 216'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `预设纸张：${PAPER_DPI_PRESET}，DPI：${PAPER_DPI_DEFAULT}（工具内可切换纸张、方向与单位）`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '纸张尺寸与 DPI 像素换算器是一款纯浏览器本地工具，面向设计稿新建画布、印刷分辨率核对与扫描件尺寸估算。它内置 ISO 216 的 A0–A10、B0–B10、C0–C10 全系列以及 Letter、Legal、Tabloid、Executive 北美纸张，按「像素 = 毫米 ÷ 25.4 × DPI」的确定公式把物理尺寸换算为四舍五入的整数像素，也支持由像素与 DPI 反推物理尺寸并在标准纸张（含横竖两个方向）中匹配最接近项。',
+        coreFeatures: [
+          '正向换算：标准纸张或自定义宽高 + DPI → 整数像素宽高，统一 Math.round 取整',
+          '反向换算：像素 + DPI → 物理尺寸（mm/cm/in），按最大相对误差匹配最接近的标准纸张，误差 ≤2% 标注近似匹配',
+          '完整纸表：ISO A/B/C 各 11 级与北美 4 种常用纸张，横向 / 纵向一键交换且面积不变',
+          '单位互转：mm、cm、in 双向输入，1in = 25.4mm 精确换算',
+          '汇总输出：总像素、百万像素与 A3–A6、Letter、Legal 在 72/150/300 DPI 下的速查表',
+          '严格校验：DPI 限定 1–2400、边长 1–2000mm、像素 1–100000，非法输入明确报错而非回退默认值',
+        ],
+        howToUse: [
+          '选择换算方向：「纸张 → 像素」或「像素 → 纸张」',
+          '正向时从下拉选择标准纸张（自动填入宽高），或直接修改自定义宽高与单位、切换横竖方向',
+          '选择 DPI 预设（72/96/150/300/600/1200）或输入 1–2400 的自定义 DPI',
+          '反向时输入像素宽高，查看还原的物理尺寸与最接近纸张及误差',
+          '点击「复制」拷贝结果，或参考底部速查表快速取值',
+        ],
+        useCases: [
+          '在 Photoshop / Figma 中按印刷尺寸与 DPI 新建画布时确定像素宽高',
+          '核对海报、名片、画册导出分辨率是否满足 300 DPI 印刷要求',
+          '估算扫描件、证件照在不同 DPI 下的像素尺寸与文件量级',
+          '拿到一张图片的像素尺寸时反推其可打印的物理幅面并判断接近哪种纸张',
+        ],
+        privacyNote:
+          '所有换算均在浏览器本地基于纯函数完成，不上传数据、不发起网络请求，也不持久化输入内容。',
+        faqs: [
+          {
+            question: 'DPI 和屏幕 PPI 是一回事吗？',
+            answer:
+              '不是。DPI 描述打印设备每英寸的墨点密度，决定印刷像素；屏幕 PPI 是显示器每英寸的物理像素，影响显示清晰度。本工具面向印刷输出，不能用屏幕 PPI 直接替代 DPI。',
+          },
+          {
+            question: '为什么 A4 在 300 DPI 下是 2480×3508？',
+            answer:
+              'A4 为 210×297mm，先除以 25.4 换算为英寸（约 8.27×11.69in），再乘以 300 DPI 并四舍五入，得到 2480×3508 像素。',
+          },
+          {
+            question: '反向匹配的误差怎么算？',
+            answer:
+              '工具把输入像素还原为毫米后，与每种标准纸张的纵向、横向两种形态分别比较宽度误差和高度误差，取两者最大值作为相对误差；误差最小的纸张即为匹配项，最大误差不超过 2% 时标注「近似匹配」。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Paper Size & DPI Pixel Calculator runs entirely in your browser for canvas setup, print-resolution checks and scan-size estimation. It embeds the full ISO 216 A0–A10, B0–B10 and C0–C10 series plus Letter, Legal, Tabloid and Executive, converting physical dimensions to rounded integer pixels with pixels = mm ÷ 25.4 × DPI, or reversing pixels with DPI back to physical dimensions and matching the closest standard paper in both orientations.',
+        coreFeatures: [
+          'Forward conversion: standard or custom size plus DPI to integer pixel dimensions, rounded with Math.round',
+          'Reverse conversion: pixels plus DPI to physical size (mm/cm/in) with closest-paper matching by maximum relative error, flagged as approximate within 2%',
+          'Complete tables: eleven levels each of ISO A/B/C and four North American sizes, with one-click orientation swap that preserves area',
+          'Unit conversion: bidirectional mm, cm and in input using the exact 1in = 25.4mm relation',
+          'Summary output: total pixels, megapixels and a quick-reference table for A3–A6, Letter and Legal at 72/150/300 DPI',
+          'Strict validation: DPI 1–2400, sides 1–2000mm, pixels 1–100000, with explicit errors instead of silent defaults',
+        ],
+        howToUse: [
+          'Choose a direction: paper to pixels or pixels to paper',
+          'For forward conversion pick a standard paper (dimensions auto-fill) or edit custom width/height, unit and orientation',
+          'Pick a DPI preset (72/96/150/300/600/1200) or enter a custom DPI from 1–2400',
+          'For reverse conversion enter pixel dimensions and read the restored physical size, closest paper and error',
+          'Click "Copy" for the result or use the quick-reference table at the bottom',
+        ],
+        useCases: [
+          'Determining pixel dimensions when creating print canvases in Photoshop or Figma',
+          'Verifying that posters, business cards and brochures meet the 300 DPI print requirement',
+          'Estimating pixel size and file scale of scans and ID photos at various DPI',
+          'Recovering the printable physical size of an image from its pixel dimensions and identifying the nearest paper format',
+        ],
+        privacyNote:
+          'All calculations are pure functions running locally in your browser; nothing is uploaded, no network request is made, and no input is persisted.',
+        faqs: [
+          {
+            question: 'Is DPI the same as screen PPI?',
+            answer:
+              'No. DPI describes ink dots per inch on a printer and drives print pixels; screen PPI is the physical pixel density of a display. This tool targets print output, so screen PPI cannot be substituted directly for DPI.',
+          },
+          {
+            question: 'Why is A4 2480×3508 at 300 DPI?',
+            answer:
+              'A4 is 210×297mm. Dividing by 25.4 gives about 8.27×11.69 inches; multiplying by 300 DPI and rounding yields 2480×3508 pixels.',
+          },
+          {
+            question: 'How is the reverse-match error computed?',
+            answer:
+              'After restoring millimeters from pixels, the tool compares width and height error against both orientations of every standard paper and takes the larger of the two as the relative error. The paper with the smallest error wins, and a maximum error of 2% or less is flagged as an approximate match.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'electricity-bill-calculator',
+    name: '家庭用电量与电费计算器',
+    nameEn: 'Home Electricity Usage & Bill Calculator',
+    description:
+      '按电器额定功率（W/kW）、每日时长、每月天数与数量，结合单一电价或峰谷电价，逐行计算日/月/年用电量（kWh）与电费、占比与耗电排行，输出合计面板，并支持把能效标签年耗电量反推为平均功率；纯本地估算，明确标注不含阶梯加价与待机功耗。',
+    descriptionEn:
+      'Compute daily/monthly/yearly energy use (kWh) and cost per appliance from rated power (W/kW), daily hours, monthly days and quantity, with flat or time-of-use pricing, share and ranking views, a totals dashboard, and reverse average-power estimation from an annual kWh label; fully local, explicitly excluding tiered pricing and standby draw.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/electricity-bill-calculator',
+    iconName: 'PlugZap',
+    tags: ['电费', '用电量', 'kWh', '峰谷电价', '能效', '节能'],
+    tagsEn: ['Electricity Bill', 'Energy Usage', 'kWh', 'TOU Pricing', 'Efficiency', 'Saving'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `两台示例电器（2000W 电暖器、100W 电视），单一电价 ${ELECTRICITY_FLAT_PRICE} 元/kWh，可在工具内增删电器并切换峰谷电价`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '家庭用电量与电费计算器是一款纯浏览器本地工具，用于电费预估、电器耗电对比与节能决策。它按「功率 × 时长 × 天数 × 数量」计算每台电器的日、月、年用电量与电费，支持 W/kW 功率单位、单一电价或峰谷电价（峰价、谷价、峰段占比），输出逐行明细、占比、排行与合计面板，并能把能效标签上的年耗电量反推为全年平均功率。结果为估算值，不含阶梯加价、基本电费、税费与待机功耗。',
+        coreFeatures: [
+          '多电器表格：名称、功率（W/kW 自动换算）、每日时长、每月天数、数量可增删编辑',
+          '逐行指标：日耗电、月耗电、月电费、年耗电、年电费与占月度用电比例',
+          '两种电价：单一电价或峰谷电价，峰谷模式按峰段占比加权计算综合单价',
+          '合计面板：月度 / 年度总 kWh 与总电费、平均每日电费、月度平均功率',
+          '耗电排行：按月电费降序的条形列表，直观定位高耗电电器',
+          '能效反推：年耗电量 kWh ÷ 8760 小时得到平均功率 W',
+          '严格校验：功率 0–100000W、时长 0–24h、天数 0–31、数量 1–100、电价 0–10 元，非法输入即时报错',
+        ],
+        howToUse: [
+          '在电器清单中填写每台电器的功率、每日使用小时、每月天数与数量，可随时增删行',
+          '功率可在 W 与 kW 之间切换，内部统一按瓦计算',
+          '在电价设置中选择单一电价或峰谷电价并填写费率',
+          '查看合计面板获取月度、年度汇总，查看排行了解各电器占比',
+          '在底部输入能效标签的年耗电量，读取反推的平均功率',
+          '点击「复制汇总」可把全部结果复制到剪贴板',
+        ],
+        useCases: [
+          '搬家或采购电器前预估月度、年度电费支出',
+          '对比空调、电暖器、热水器等高功率电器的耗电差异以安排使用时段',
+          '在峰谷电价地区测算把负荷转移到谷段能节省的费用',
+          '解读能效标识年耗电量，换算为持续运行的平均功率',
+        ],
+        privacyNote:
+          '所有数据仅保存在浏览器内存中并由纯函数计算，不上传任何电器或电费信息，不发起网络请求，刷新页面即清空。',
+        faqs: [
+          {
+            question: '计算结果为什么和实际电费账单不一样？',
+            answer:
+              '本工具按固定功率与使用时长做线性估算，未考虑阶梯电价、基本电费、税费、功率因数以及电器的待机功耗和变频波动，实际账单以电表计量为准。',
+          },
+          {
+            question: '峰谷电价是怎么计算的？',
+            answer:
+              '峰谷模式下综合单价 = 峰价 × 峰段占比 + 谷价 ×（1 − 峰段占比），再用该单价乘以合计电量。例如 135kWh、峰占比 60%、峰价 1.0 元、谷价 0.3 元时，单价为 0.72 元，月电费 97.20 元。',
+          },
+          {
+            question: '年度数字是怎么来的？',
+            answer:
+              '年度用电量与电费统一按月度值 ×12 估算，不区分大小月与季节差异；能效反推则按全年 365×24=8760 小时计算平均功率。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Home Electricity Usage & Bill Calculator runs entirely in your browser for bill estimation, appliance comparison and energy-saving decisions. It multiplies rated power by duration, days and quantity to derive daily, monthly and yearly kWh and cost per appliance, supports W/kW units and flat or time-of-use pricing (peak price, valley price, peak share), and provides per-line details, shares, rankings and a totals dashboard, plus reverse average-power estimation from an annual-kWh efficiency label. Results are estimates excluding tiered pricing, base fees, taxes and standby consumption.',
+        coreFeatures: [
+          'Editable appliance table with name, power (auto W/kW conversion), daily hours, monthly days and quantity',
+          'Per-row metrics: daily kWh, monthly kWh, monthly cost, yearly kWh, yearly cost and monthly share',
+          'Two pricing models: flat rate or time-of-use with a peak-ratio weighted blended unit price',
+          'Totals dashboard: monthly/yearly kWh and cost, average daily cost and monthly average power',
+          'Cost ranking as descending bars to pinpoint the most expensive appliances',
+          'Reverse estimation: annual kWh divided by 8760 hours yields average watts',
+          'Strict validation for power 0–100000W, hours 0–24, days 0–31, quantity 1–100 and price 0–10, with instant errors',
+        ],
+        howToUse: [
+          'Fill each appliance row with power, daily hours, monthly days and quantity; add or remove rows freely',
+          'Switch power units between W and kW; the engine normalizes everything to watts',
+          'Choose flat or time-of-use pricing and enter the rates in the pricing card',
+          'Read monthly and yearly totals in the dashboard and compare appliances in the ranking',
+          'Enter an annual-kWh efficiency label at the bottom to read the reversed average power',
+          'Click "Copy summary" to copy all results to the clipboard',
+        ],
+        useCases: [
+          'Estimating monthly and yearly electricity spending before moving or buying appliances',
+          'Comparing high-draw devices such as air conditioners, heaters and water heaters to schedule usage',
+          'Quantifying savings from shifting load to valley hours in time-of-use regions',
+          'Interpreting annual-kWh efficiency labels as continuous average power',
+        ],
+        privacyNote:
+          'All data stays in browser memory and is processed by pure functions. No appliance or billing data is uploaded, no network request is made, and refreshing the page clears everything.',
+        faqs: [
+          {
+            question: 'Why does the result differ from my real bill?',
+            answer:
+              'The tool performs a linear estimate from fixed power and duration, ignoring tiered pricing, base fees, taxes, power factor, standby draw and inverter fluctuations. Always rely on the meter-based bill for exact charges.',
+          },
+          {
+            question: 'How is time-of-use pricing calculated?',
+            answer:
+              'The blended price equals peak price × peak share plus valley price × (1 − peak share), then multiplies total kWh. For 135 kWh with 60% peak share, 1.0 peak and 0.3 valley rates, the blended price is 0.72 and the monthly cost is 97.20.',
+          },
+          {
+            question: 'How are yearly figures derived?',
+            answer:
+              'Yearly kWh and cost are estimated as monthly values × 12 without distinguishing month lengths or seasons; the reverse estimate uses 365×24 = 8760 hours per year for average power.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'dna-rna-sequence-analyzer',
+    name: 'DNA / RNA 序列分析器',
+    nameEn: 'DNA / RNA Sequence Analyzer',
+    description:
+      '粘贴 DNA 或 RNA 序列（支持 FASTA 头、空白、换行、行号与空位），自动识别核酸类型并计算长度、碱基组成与 GC 含量，生成互补链、反向互补链与转录 mRNA，按标准遗传密码表对正链与反向互补链做六框翻译，标注终止密码子、模糊碱基与不完整末尾密码子；纯本地文本处理，序列不上传。',
+    descriptionEn:
+      'Paste a DNA or RNA sequence with FASTA headers, whitespace, line numbers and gaps to auto-detect nucleic-acid type, compute length, base composition and GC content, build the complement, reverse complement and transcribed mRNA, and translate all six reading frames with the standard genetic code, flagging stop codons, ambiguous bases and incomplete trailing codons; fully local with no upload.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/dna-rna-sequence-analyzer',
+    iconName: 'Dna',
+    tags: ['DNA', 'RNA', '反向互补', '转录', '六框翻译', 'GC 含量'],
+    tagsEn: ['DNA', 'RNA', 'Reverse Complement', 'Transcription', 'Six-Frame Translation', 'GC Content'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DNA_RNA_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          'DNA / RNA 序列分析器是一款纯浏览器本地的分子生物学工具，用于核酸学习、引物检查与 ORF 快速浏览。它会先清洗输入（忽略 FASTA 头、空白、数字行号与比对空位），再识别 DNA / RNA 类型，计算长度、碱基组成与 GC / AT 含量，生成互补链、反向互补链与转录 mRNA，并依据标准遗传密码表（64 个密码子）对正链与反向互补链各三个读框做六框翻译，终止密码子输出 *、含模糊碱基的密码子输出 X，末尾不足三个碱基的部分不翻译并提示剩余长度。',
+        coreFeatures: [
+          '智能清洗：跳过 FASTA 头行，移除空白、数字行号与 - 空位（并计数），统一转大写、自动拼接多行',
+          '类型识别：含 U 不含 T 判为 RNA、含 T 不含 U 判为 DNA，同时含 T/U 报错，两者皆无按 DNA 推断并注明',
+          '序列统计：长度、各碱基计数、GC 含量、AT/AU 含量与 IUPAC 模糊碱基数量',
+          '序列变换：互补链、反向互补链（RNA 不产生 T）与转录 mRNA（DNA 的 T→U）',
+          '六框翻译：+1/+2/+3 与 -1/-2/-3 读框，终止密码子 * 保留以便识别完整 ORF，模糊密码子输出 X',
+          'IUPAC 支持：R↔Y、S↔S、W↔W、K↔M、B↔V、D↔H、N↔N 等模糊碱基互补',
+          '严格边界：清洗后为空、含非 IUPAC 字符（给出 1-based 位置）、T/U 混用或长度超 100000 nt 均明确报错',
+        ],
+        howToUse: [
+          '把序列粘贴到输入框，可带 FASTA 头、空格、换行与行号，工具自动清洗拼接',
+          '查看类型与统计卡片，确认核酸类型、长度、GC 含量与碱基组成',
+          '在序列变换区复制互补链、反向互补链或 mRNA',
+          '在六框翻译表中查看各读框氨基酸序列、终止密码子位置与未翻译的末尾碱基',
+          '出现错误时按提示的位置修正非法字符或 T/U 混用后重试',
+        ],
+        useCases: [
+          '分子生物学课程中练习反向互补、转录与翻译',
+          '检查 PCR / 测序引物的 GC 含量与反向互补序列',
+          '快速浏览一段序列六个读框中的开放阅读框（ORF）与终止密码子分布',
+          '处理含 IUPAC 模糊碱基或比对空位的测序结果',
+        ],
+        privacyNote:
+          '所有序列仅在浏览器内存中由纯函数处理，不上传任何数据、不发起网络请求，刷新页面即清空。',
+        faqs: [
+          {
+            question: '为什么翻译结果里有 * 和 X？',
+            answer:
+              '* 代表终止密码子（UAA、UAG、UGA），保留在肽链中便于判断完整 ORF 的边界；X 表示该密码子含 N、R、Y 等 IUPAC 模糊碱基，无法唯一确定氨基酸。',
+          },
+          {
+            question: 'RNA 的反向互补为什么没有 T？',
+            answer:
+              'RNA 以 U 替代 T，互补时 A 与 U 配对，因此 RNA 序列的互补与反向互补仍只含 A/U/C/G（及模糊碱基），不会产生 DNA 特有的 T。',
+          },
+          {
+            question: '末尾不足三个碱基怎么办？',
+            answer:
+              '翻译以三个碱基为一个密码子，末尾剩余 1–2 个碱基无法构成完整密码子，工具不会强行翻译，而在读框结果中提示未翻译的末尾碱基数量。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The DNA / RNA Sequence Analyzer is a fully in-browser molecular-biology tool for coursework, primer checks and quick ORF review. It first cleans the input by skipping FASTA headers and stripping whitespace, numeric line numbers and alignment gaps (with counts), then detects DNA versus RNA, computes length, base composition and GC/AT content, builds the complement, reverse complement and transcribed mRNA, and translates all six reading frames of the forward and reverse-complement strands using the standard 64-codon genetic code — stop codons become *, ambiguous codons become X, and incomplete trailing codons are reported rather than forced.',
+        coreFeatures: [
+          'Smart cleaning: FASTA headers skipped, whitespace, line numbers and - gaps removed with counts, uppercased and multi-line joined',
+          'Type detection: U without T means RNA, T without U means DNA, mixed T/U errors, neither present infers DNA with a note',
+          'Statistics: length, per-base counts, GC content, AT/AU content and IUPAC ambiguous-base count',
+          'Transforms: complement, reverse complement (RNA never produces T) and transcribed mRNA (DNA T→U)',
+          'Six-frame translation: +1/+2/+3 and -1/-2/-3 frames with retained stop markers for full-ORF spotting and X for ambiguous codons',
+          'IUPAC support including R↔Y, S↔S, W↔W, K↔M, B↔V, D↔H and N↔N ambiguity complements',
+          'Strict boundaries: empty cleaned input, non-IUPAC characters with 1-based position, mixed T/U and sequences over 100000 nt all produce explicit errors',
+        ],
+        howToUse: [
+          'Paste the sequence with optional FASTA headers, spaces, line breaks and line numbers; cleaning and joining are automatic',
+          'Check the type and statistics card for nucleic-acid type, length, GC content and base counts',
+          'Copy the complement, reverse complement or mRNA from the transforms section',
+          'Read amino-acid sequences, stop positions and untranslated trailing bases in the six-frame table',
+          'On error, fix the flagged illegal character or mixed T/U at the reported position and retry',
+        ],
+        useCases: [
+          'Practising reverse complement, transcription and translation in molecular-biology courses',
+          'Checking GC content and reverse complements of PCR or sequencing primers',
+          'Scanning open reading frames and stop-codon distribution across all six frames',
+          'Handling sequencing results with IUPAC ambiguity codes or alignment gaps',
+        ],
+        privacyNote:
+          'Sequences are processed only in browser memory by pure functions. Nothing is uploaded, no network request is made, and refreshing the page clears the input.',
+        faqs: [
+          {
+            question: 'What do * and X mean in the translation?',
+            answer:
+              '* marks a stop codon (UAA, UAG, UGA) kept in the peptide so full-ORF boundaries are visible; X means the codon contains an IUPAC ambiguity code such as N, R or Y and cannot map to a single amino acid.',
+          },
+          {
+            question: 'Why does an RNA reverse complement contain no T?',
+            answer:
+              'RNA uses U instead of T, and A pairs with U during complementing, so RNA complements only ever contain A/U/C/G (plus ambiguity codes), never the DNA-specific T.',
+          },
+          {
+            question: 'What happens with one or two leftover bases at the end?',
+            answer:
+              'Translation consumes three bases per codon, so a trailing one- or two-base remainder cannot form a complete codon. It is left untranslated and the frame result reports how many trailing bases were skipped.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'sql-parameter-placeholder-converter',
+    name: 'SQL 参数占位符风格转换器',
+    nameEn: 'SQL Parameter Placeholder Converter',
+    description:
+      '词法扫描 SQL 中的参数占位符，在问号 ?、%s、$n、:n、@pN、:name、@name、%(name)s 与 {{name}} 九种风格之间互转，自动跳过字符串字面量、引号 / 反引号 / 方括号标识符、行注释、块注释与 PostgreSQL 美元引用，输出去重后的参数清单与绑定次数；纯本地处理，SQL 不上传。',
+    descriptionEn:
+      'Lexically scan SQL parameter placeholders and convert between nine styles — ?, %s, $n, :n, @pN, :name, @name, %(name)s and {{name}} — while skipping string literals, quoted/backtick/bracket identifiers, line and block comments and PostgreSQL dollar-quoted strings, with a deduplicated parameter list and binding counts; fully local with no upload.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/sql-parameter-placeholder-converter',
+    iconName: 'FileInput',
+    tags: ['SQL', '占位符', '参数绑定', 'Prepared Statement', '词法扫描'],
+    tagsEn: ['SQL', 'Placeholder', 'Parameter Binding', 'Prepared Statement', 'Lexer'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: SQL_PLACEHOLDER_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          'SQL 参数占位符风格转换器是一款纯浏览器本地的开发工具，用于在不同数据库驱动与 ORM 的参数占位符风格之间迁移 SQL。它基于词法扫描而非 SQL 语法解析：识别代码区中的九类占位符，同时原样保留单引号字符串、双引号 / 反引号 / 方括号标识符、-- 行注释、/* */ 块注释与 PostgreSQL 美元引用字符串，确保这些区域内的符号永不被改写。转换输出新 SQL、自动识别的源风格、去重后的逻辑参数清单与每个参数的绑定次数。',
+        coreFeatures: [
+          '九种风格互转：位置式 ? 与 %s，编号式 $n、:n、@pN，命名式 :name、@name、%(name)s、{{name}}',
+          '自动识别源风格：仅含单一风格时可直接转换，检测到混合风格时报错并列出涉及的风格',
+          '词法级跳过区域：字符串字面量（含双写与反斜杠转义）、引号 / 反引号 / 方括号标识符、行 / 块注释（支持嵌套）、$$ 与 $tag$ 美元引用',
+          '歧义语法排除：:: 类型转换、@@ 系统变量、?| 与 ?& jsonb 运算符不会被误判为占位符',
+          '统一参数模型：编号与命名占位符按逻辑参数去重并统计绑定次数；位置式 → 命名式自动生成「前缀 + 序号」参数名',
+          '命名式 → 位置式展开：同名重复绑定在目标 SQL 中展开为多个独立位置占位符，参数清单仍按逻辑参数呈现',
+          '严格校验：编号式须从 1 开始且连续（可重复），命名须匹配 [A-Za-z_][A-Za-z0-9_]*，未闭合字符串 / 注释 / 美元引用给出偏移错误',
+        ],
+        howToUse: [
+          '粘贴含占位符的 SQL，源风格保持「自动识别」或手动指定，选择目标风格',
+          '位置式转命名式时可调整命名前缀（默认 p，生成 p1、p2…）',
+          '查看转换结果与参数清单，确认逻辑参数数量与绑定次数',
+          '使用复制按钮获取新 SQL；出现错误时按提示的偏移修正未闭合区域或非法编号',
+        ],
+        useCases: [
+          '在 JDBC（?）、PostgreSQL（$n）、SQL Server（@pN）与 Python DB-API（%s / %(name)s）之间迁移 SQL',
+          '把 MyBatis / Hibernate 风格的命名参数改写为目标驱动要求的位置或编号占位符',
+          '审计 SQL 中参数占位符的数量、重复绑定与参数命名',
+          '为预编译语句（Prepared Statement）生成驱动匹配的占位符序列',
+        ],
+        privacyNote:
+          'SQL 仅在浏览器内存中由纯函数做词法处理，不上传任何数据、不发起网络请求，刷新页面即清空。',
+        faqs: [
+          {
+            question: '为什么字符串或注释里的 ? / :name 没有被转换？',
+            answer:
+              '这是刻意设计：词法扫描器会跳过单引号字符串、引号 / 反引号 / 方括号标识符、行注释、块注释与美元引用，这些区域内的符号属于数据或注释而非参数，改写它们会破坏 SQL 语义。',
+          },
+          {
+            question: '命名式转成问号后参数顺序如何确定？',
+            answer:
+              '按占位符在 SQL 中从左到右的出现顺序展开；同名参数重复出现时每次绑定都生成一个独立的 ?，参数清单中该逻辑参数的绑定次数相应累计，绑定时按相同顺序重复传值即可。',
+          },
+          {
+            question: '自动识别为什么有时报错？',
+            answer:
+              '同一条 SQL 中出现两种及以上占位符风格（例如同时有 ? 和 :name）时无法安全推断意图，工具会列出检测到的风格，请在源风格下拉中手动指定实际要转换的那一种。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The SQL Parameter Placeholder Converter is a fully in-browser developer tool for migrating SQL across the placeholder conventions used by different database drivers and ORMs. It works by lexical scanning rather than SQL parsing: it recognizes the nine placeholder families in code regions while leaving single-quoted strings, double-quoted/backtick/bracket identifiers, -- line comments, /* */ block comments and PostgreSQL dollar-quoted strings untouched, so symbols inside those regions are never rewritten. Output includes the rewritten SQL, auto-detected source style, a deduplicated logical parameter list and per-parameter binding counts.',
+        coreFeatures: [
+          'Nine-style conversion: positional ? and %s; numbered $n, :n, @pN; named :name, @name, %(name)s and {{name}}',
+          'Auto-detection of a single source style, with an explicit error listing styles when mixed conventions are found',
+          'Lexically skipped regions: string literals (with doubled and backslash escapes), quoted/backtick/bracket identifiers, nested-capable line/block comments and $$ / $tag$ dollar quotes',
+          'Ambiguity guards: :: casts, @@ system variables and the ?| / ?& jsonb operators are never mistaken for placeholders',
+          'Unified parameter model: numbered and named placeholders deduplicate into logical parameters with binding counts; positional-to-named generates prefix-plus-index names',
+          'Named-to-positional expansion: repeated same-name bindings become separate positional placeholders while the parameter list stays logically deduplicated',
+          'Strict validation: numbered placeholders must start at 1 and be contiguous (repeats allowed), names must match [A-Za-z_][A-Za-z0-9_]*, and unterminated strings/comments/dollar quotes report their offset',
+        ],
+        howToUse: [
+          'Paste SQL with placeholders, keep auto-detect or pick the source style manually, then choose a target style',
+          'For positional-to-named conversion, adjust the name prefix if needed (default p producing p1, p2…)',
+          'Review the rewritten SQL and parameter table for logical parameter count and binding counts',
+          'Copy the new SQL; on error, fix the unterminated region or illegal number at the reported offset',
+        ],
+        useCases: [
+          'Migrating SQL between JDBC (?), PostgreSQL ($n), SQL Server (@pN) and Python DB-API (%s / %(name)s)',
+          'Rewriting MyBatis/Hibernate-style named parameters into the positional or numbered form a driver requires',
+          'Auditing placeholder counts, repeated bindings and parameter naming in existing SQL',
+          'Generating driver-matching placeholder sequences for prepared statements',
+        ],
+        privacyNote:
+          'SQL is processed only in browser memory by pure lexical functions. Nothing is uploaded, no network request is made, and refreshing the page clears the input.',
+        faqs: [
+          {
+            question: 'Why are ? or :name tokens inside strings and comments left unchanged?',
+            answer:
+              'By design: the lexer skips single-quoted strings, quoted/backtick/bracket identifiers, line and block comments and dollar-quoted regions, because symbols there are data or comments rather than parameters, and rewriting them would corrupt the SQL.',
+          },
+          {
+            question: 'How is parameter order decided when converting named placeholders to question marks?',
+            answer:
+              'Placeholders expand in left-to-right appearance order; a repeated same-name parameter produces a separate ? for every binding while its binding count accumulates in the parameter table, so bind values in the same order, repeating as needed.',
+          },
+          {
+            question: 'Why does auto-detect sometimes fail?',
+            answer:
+              'When two or more placeholder families coexist in one statement (for example both ? and :name), intent cannot be inferred safely. The tool lists the detected styles; manually choose the actual source style in the dropdown to proceed.',
           },
         ],
       },

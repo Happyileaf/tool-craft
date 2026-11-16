@@ -400,4 +400,9 @@ export const toolLoaders: Record<
   'shell-argument-quoter': () => import('./shell-argument-quoter'),
   'arp-packet-codec': () => import('./arp-packet-codec'),
   'json-to-cpp': () => import('./json-to-cpp'),
+  'base64url-base64-converter': () => import('./base64url-base64-converter'),
+  'paper-size-dpi-calculator': () => import('./paper-size-dpi-calculator'),
+  'electricity-bill-calculator': () => import('./electricity-bill-calculator'),
+  'dna-rna-sequence-analyzer': () => import('./dna-rna-sequence-analyzer'),
+  'sql-parameter-placeholder-converter': () => import('./sql-parameter-placeholder-converter'),
 };
