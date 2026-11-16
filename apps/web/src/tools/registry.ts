@@ -7,6 +7,7 @@ import { DEFAULT_RTU_HEX } from './modbus-frame-codec/constants';
 import { SAMPLE_ARP_REQUEST } from './arp-packet-codec/constants';
 import { DEFAULT_SAMPLE as JSON_TO_CPP_SAMPLE } from './json-to-cpp/constants';
 import { DEFAULT_INPUT as BASE64URL_CONVERTER_SAMPLE } from './base64url-base64-converter/constants';
+import { DEFAULT_PRESET_ID as PAPER_DPI_PRESET, DEFAULT_DPI as PAPER_DPI_DEFAULT } from './paper-size-dpi-calculator/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -38006,6 +38007,114 @@ sqrt(area) + 2 * r`,
             question: 'Does the tool actually decode the data?',
             answer:
               'The main conversion is deterministic character substitution and padding normalization. The byte-level verification banner additionally calls atob on the first line to restore raw bytes, confirming the character combination is self-consistent, and reports the byte count with a hex preview of the first 16 bytes.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'paper-size-dpi-calculator',
+    name: '纸张尺寸与 DPI 像素换算器',
+    nameEn: 'Paper Size & DPI Pixel Calculator',
+    description:
+      '在 ISO A/B/C 全系列与 Letter/Legal 等北美纸张之间选择，按 DPI 计算印刷像素（A4@300DPI=2480×3508），或由像素反推物理尺寸并匹配最接近的标准纸张；支持横竖切换、mm/cm/in/px 互转、总像素与百万像素输出和常用尺寸速查表。',
+    descriptionEn:
+      'Pick from the full ISO A/B/C series and North American paper sizes to compute print pixels from DPI (A4@300DPI=2480×3508), or reverse pixels to physical dimensions with closest-paper matching; supports orientation swap, mm/cm/in/px conversion, total and megapixel counts, and a quick-reference table.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/paper-size-dpi-calculator',
+    iconName: 'Ruler',
+    tags: ['纸张尺寸', 'DPI', '像素换算', 'A4', '印刷', 'ISO 216'],
+    tagsEn: ['Paper Size', 'DPI', 'Pixel', 'A4', 'Print', 'ISO 216'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `预设纸张：${PAPER_DPI_PRESET}，DPI：${PAPER_DPI_DEFAULT}（工具内可切换纸张、方向与单位）`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '纸张尺寸与 DPI 像素换算器是一款纯浏览器本地工具，面向设计稿新建画布、印刷分辨率核对与扫描件尺寸估算。它内置 ISO 216 的 A0–A10、B0–B10、C0–C10 全系列以及 Letter、Legal、Tabloid、Executive 北美纸张，按「像素 = 毫米 ÷ 25.4 × DPI」的确定公式把物理尺寸换算为四舍五入的整数像素，也支持由像素与 DPI 反推物理尺寸并在标准纸张（含横竖两个方向）中匹配最接近项。',
+        coreFeatures: [
+          '正向换算：标准纸张或自定义宽高 + DPI → 整数像素宽高，统一 Math.round 取整',
+          '反向换算：像素 + DPI → 物理尺寸（mm/cm/in），按最大相对误差匹配最接近的标准纸张，误差 ≤2% 标注近似匹配',
+          '完整纸表：ISO A/B/C 各 11 级与北美 4 种常用纸张，横向 / 纵向一键交换且面积不变',
+          '单位互转：mm、cm、in 双向输入，1in = 25.4mm 精确换算',
+          '汇总输出：总像素、百万像素与 A3–A6、Letter、Legal 在 72/150/300 DPI 下的速查表',
+          '严格校验：DPI 限定 1–2400、边长 1–2000mm、像素 1–100000，非法输入明确报错而非回退默认值',
+        ],
+        howToUse: [
+          '选择换算方向：「纸张 → 像素」或「像素 → 纸张」',
+          '正向时从下拉选择标准纸张（自动填入宽高），或直接修改自定义宽高与单位、切换横竖方向',
+          '选择 DPI 预设（72/96/150/300/600/1200）或输入 1–2400 的自定义 DPI',
+          '反向时输入像素宽高，查看还原的物理尺寸与最接近纸张及误差',
+          '点击「复制」拷贝结果，或参考底部速查表快速取值',
+        ],
+        useCases: [
+          '在 Photoshop / Figma 中按印刷尺寸与 DPI 新建画布时确定像素宽高',
+          '核对海报、名片、画册导出分辨率是否满足 300 DPI 印刷要求',
+          '估算扫描件、证件照在不同 DPI 下的像素尺寸与文件量级',
+          '拿到一张图片的像素尺寸时反推其可打印的物理幅面并判断接近哪种纸张',
+        ],
+        privacyNote:
+          '所有换算均在浏览器本地基于纯函数完成，不上传数据、不发起网络请求，也不持久化输入内容。',
+        faqs: [
+          {
+            question: 'DPI 和屏幕 PPI 是一回事吗？',
+            answer:
+              '不是。DPI 描述打印设备每英寸的墨点密度，决定印刷像素；屏幕 PPI 是显示器每英寸的物理像素，影响显示清晰度。本工具面向印刷输出，不能用屏幕 PPI 直接替代 DPI。',
+          },
+          {
+            question: '为什么 A4 在 300 DPI 下是 2480×3508？',
+            answer:
+              'A4 为 210×297mm，先除以 25.4 换算为英寸（约 8.27×11.69in），再乘以 300 DPI 并四舍五入，得到 2480×3508 像素。',
+          },
+          {
+            question: '反向匹配的误差怎么算？',
+            answer:
+              '工具把输入像素还原为毫米后，与每种标准纸张的纵向、横向两种形态分别比较宽度误差和高度误差，取两者最大值作为相对误差；误差最小的纸张即为匹配项，最大误差不超过 2% 时标注「近似匹配」。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Paper Size & DPI Pixel Calculator runs entirely in your browser for canvas setup, print-resolution checks and scan-size estimation. It embeds the full ISO 216 A0–A10, B0–B10 and C0–C10 series plus Letter, Legal, Tabloid and Executive, converting physical dimensions to rounded integer pixels with pixels = mm ÷ 25.4 × DPI, or reversing pixels with DPI back to physical dimensions and matching the closest standard paper in both orientations.',
+        coreFeatures: [
+          'Forward conversion: standard or custom size plus DPI to integer pixel dimensions, rounded with Math.round',
+          'Reverse conversion: pixels plus DPI to physical size (mm/cm/in) with closest-paper matching by maximum relative error, flagged as approximate within 2%',
+          'Complete tables: eleven levels each of ISO A/B/C and four North American sizes, with one-click orientation swap that preserves area',
+          'Unit conversion: bidirectional mm, cm and in input using the exact 1in = 25.4mm relation',
+          'Summary output: total pixels, megapixels and a quick-reference table for A3–A6, Letter and Legal at 72/150/300 DPI',
+          'Strict validation: DPI 1–2400, sides 1–2000mm, pixels 1–100000, with explicit errors instead of silent defaults',
+        ],
+        howToUse: [
+          'Choose a direction: paper to pixels or pixels to paper',
+          'For forward conversion pick a standard paper (dimensions auto-fill) or edit custom width/height, unit and orientation',
+          'Pick a DPI preset (72/96/150/300/600/1200) or enter a custom DPI from 1–2400',
+          'For reverse conversion enter pixel dimensions and read the restored physical size, closest paper and error',
+          'Click "Copy" for the result or use the quick-reference table at the bottom',
+        ],
+        useCases: [
+          'Determining pixel dimensions when creating print canvases in Photoshop or Figma',
+          'Verifying that posters, business cards and brochures meet the 300 DPI print requirement',
+          'Estimating pixel size and file scale of scans and ID photos at various DPI',
+          'Recovering the printable physical size of an image from its pixel dimensions and identifying the nearest paper format',
+        ],
+        privacyNote:
+          'All calculations are pure functions running locally in your browser; nothing is uploaded, no network request is made, and no input is persisted.',
+        faqs: [
+          {
+            question: 'Is DPI the same as screen PPI?',
+            answer:
+              'No. DPI describes ink dots per inch on a printer and drives print pixels; screen PPI is the physical pixel density of a display. This tool targets print output, so screen PPI cannot be substituted directly for DPI.',
+          },
+          {
+            question: 'Why is A4 2480×3508 at 300 DPI?',
+            answer:
+              'A4 is 210×297mm. Dividing by 25.4 gives about 8.27×11.69 inches; multiplying by 300 DPI and rounding yields 2480×3508 pixels.',
+          },
+          {
+            question: 'How is the reverse-match error computed?',
+            answer:
+              'After restoring millimeters from pixels, the tool compares width and height error against both orientations of every standard paper and takes the larger of the two as the relative error. The paper with the smallest error wins, and a maximum error of 2% or less is flagged as an approximate match.',
           },
         ],
       },
