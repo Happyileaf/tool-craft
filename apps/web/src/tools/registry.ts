@@ -38986,6 +38986,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'delta-wye-transform',
+    name: 'Δ-Y 电阻网络等效变换计算器',
+    nameEn: 'Delta-Wye (Δ-Y) Transform Calculator',
+    description:
+      '在三角形（Δ）三边电阻与星形（Y）三臂电阻之间双向等效变换：Δ→Y 按 R_A=R_AB·R_CA/S 等公式求解，Y→Δ 按两两乘积和除以对臂求解，附网络结构示意、平衡网络识别与往返一致性。',
+    descriptionEn:
+      'Convert between delta (Δ) edge resistors and wye (Y) arm resistors in both directions, with structure diagrams, balanced-network detection and round-trip equivalence checks, fully offline.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/delta-wye-transform',
+    iconName: 'Triangle',
+    tags: ['Δ-Y 变换', '三角形星形', '电阻网络', '电路等效', '电子工程'],
+    tagsEn: ['Delta-Wye', 'Delta-Star', 'Resistor Network', 'Circuit Equivalence', 'Electronics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Δ-Y（三角形-星形）变换计算器是一款面向电子工程师与电气专业学生的纯浏览器本地工具：输入三角形网络的三边电阻 R_AB、R_BC、R_CA 即可求出等效星形三臂电阻 R_A、R_B、R_C，也支持反向由星形求三角形。两种网络在三个对外端子上的等效电阻完全相同，是化简桥式与复杂电阻网络的基础操作。',
+        coreFeatures: [
+          'Δ → Y：R_A = R_AB·R_CA / S、R_B = R_AB·R_BC / S、R_C = R_BC·R_CA / S，S 为三边之和',
+          'Y → Δ：R_AB = P / R_C、R_BC = P / R_A、R_CA = P / R_B，P 为三臂两两乘积之和',
+          '平衡网络自动识别：三边 / 三臂相等时提示 R_Y = R_Δ / 3 的简化关系',
+          'Δ / Y 网络结构 SVG 示意图与端子 A、B、C、中心节点 N 标注',
+          '非正数 / 非有限值输入给出明确错误；示例预设与一键复制结果',
+        ],
+        howToUse: [
+          '选择变换方向（Δ→Y 或 Y→Δ）',
+          '在输入卡片中填入三个电阻值（单位 Ω，支持小数）',
+          '结果表实时给出三个等效电阻及其所用公式',
+          '平衡网络会显示提示；可点示例预设快速验证教材向量',
+        ],
+        useCases: [
+          '化简含桥式结构的电阻网络，求端子间等效电阻',
+          '电力系统中三相负载 Δ / Y 接法的阻抗换算教学',
+          '电路分析课程中验证 Δ-Y、Y-Δ 恒等变换与往返一致性',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地完成，不发起任何网络请求，输入的参数不会离开设备。',
+        faqs: [
+          {
+            question: 'Δ-Y 变换的等效条件是什么？',
+            answer:
+              '变换前后三个对外端子 A、B、C 两两之间的等效电阻必须完全相等。满足该条件时，两种网络对外电路而言不可区分；网络内部的功率分布并不等效，仅端口特性一致。',
+          },
+          {
+            question: '平衡网络为什么满足 R_Y = R_Δ / 3？',
+            answer:
+              '当三角形三边电阻均为 R_Δ 时，三边之和 S = 3·R_Δ，代入 Δ→Y 公式得每条星形臂 R_Y = R_Δ² / (3·R_Δ) = R_Δ / 3；反向即 R_Δ = 3·R_Y。',
+          },
+          {
+            question: '为什么只支持纯电阻，不支持复阻抗？',
+            answer:
+              '公式对复阻抗同样成立，只需把电阻替换为复数阻抗并做复数乘除。本轮实现聚焦最常用的纯电阻场景，保证零依赖与结果可手工复核；含感抗 / 容抗的交流网络可先分别计算各臂阻抗模值做近似估算。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Delta-Wye (Δ-Y) Transform Calculator is a fully local tool for electronics engineers and electrical students: enter the three delta edge resistors R_AB, R_BC, R_CA to obtain the equivalent wye arm resistors R_A, R_B, R_C, or convert in the reverse direction. Both networks present identical terminal-to-terminal resistance, making the transform the basis for simplifying bridge and complex resistor networks.',
+        coreFeatures: [
+          'Δ → Y: R_A = R_AB·R_CA / S, R_B = R_AB·R_BC / S, R_C = R_BC·R_CA / S, where S is the edge sum',
+          'Y → Δ: R_AB = P / R_C, R_BC = P / R_A, R_CA = P / R_B, where P is the pairwise product sum',
+          'Automatic balanced-network detection with the R_Y = R_Δ / 3 shortcut',
+          'SVG diagrams of both networks labelled with terminals A, B, C and center node N',
+          'Explicit errors for non-positive or non-finite inputs; presets and one-click copy',
+        ],
+        howToUse: [
+          'Pick the transform direction (Δ→Y or Y→Δ)',
+          'Fill the three resistor values in ohms (decimals allowed)',
+          'Read the equivalent resistors and their formulas from the result table',
+          'Balanced networks show a hint; use presets to verify textbook vectors',
+        ],
+        useCases: [
+          'Simplifying resistor networks containing bridge structures',
+          'Teaching delta / wye impedance conversion for three-phase loads',
+          'Verifying Δ-Y and Y-Δ identities and round-trip equivalence in circuit courses',
+        ],
+        privacyNote:
+          'All computation runs locally in your browser with no network requests; your inputs never leave the device.',
+        faqs: [
+          {
+            question: 'What is the equivalence condition of the transform?',
+            answer:
+              'The equivalent resistance between every pair of external terminals A, B, C must be identical before and after the transform. The two networks are then indistinguishable to the outside circuit; internal power distribution is not equivalent, only port behavior is.',
+          },
+          {
+            question: 'Why does a balanced network satisfy R_Y = R_Δ / 3?',
+            answer:
+              'When every delta edge equals R_Δ, the edge sum is S = 3·R_Δ, so each wye arm is R_Δ² / (3·R_Δ) = R_Δ / 3; the reverse gives R_Δ = 3·R_Y.',
+          },
+          {
+            question: 'Why only pure resistance, not complex impedance?',
+            answer:
+              'The formulas also hold for complex impedance with complex arithmetic. This implementation focuses on the most common pure-resistance case to stay dependency-free and easy to verify by hand; for AC networks with reactance, compute each arm impedance magnitude separately as an approximation.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -410,4 +410,5 @@ export const toolLoaders: Record<
   'rtp-header-codec': () => import('./rtp-header-codec'),
   'bitrate-size-calculator': () => import('./bitrate-size-calculator'),
   'porter-stemmer': () => import('./porter-stemmer'),
+  'delta-wye-transform': () => import('./delta-wye-transform'),
 };
