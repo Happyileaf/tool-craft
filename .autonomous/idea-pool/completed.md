@@ -4,11 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
-| 20261116141425 | 曼彻斯特 / 差分曼彻斯特线路编解码器（IEEE 802.3 与 Thomas 约定） | Web Tool | External Reference | `manchester-line-codec` / [PR #252](https://github.com/kh2533/toolhub/pull/252) | 2026-11-16 | [详情](./idea-details/20261116141425.md) |
-| 20261116141424 | RTP 报文头字段解析与构造器（RFC 3550，含 CSRC / 扩展头） | Web Tool | Exploration | `rtp-header-codec` / [PR #252](https://github.com/kh2533/toolhub/pull/252) | 2026-11-16 | [详情](./idea-details/20261116141424.md) |
-| 20261116141423 | UDP 报文头构造与十六进制解析器（RFC 768，含伪首部校验和） | Web Tool | Existing Gap | `udp-datagram-codec` / [PR #252](https://github.com/kh2533/toolhub/pull/252) | 2026-11-16 | [详情](./idea-details/20261116141423.md) |
-| 20261115140205 | 视频 / 音频码率与文件大小估算器（分辨率 / 帧率 / 编码器 / 时长互算） | Web Tool | Exploration | `bitrate-size-calculator` / [PR #252](https://github.com/kh2533/toolhub/pull/252) | 2026-11-16 | [详情](./idea-details/20261115140205.md) |
-| 20261109020217 | 英文 Porter 词干提取器（Stemmer）与词形归并批处理 | Web Tool | External Reference | `porter-stemmer` / [PR #252](https://github.com/kh2533/toolhub/pull/252) | 2026-11-16 | [详情](./idea-details/20261109020217.md) |
+| 20261116141425 | 曼彻斯特 / 差分曼彻斯特线路编解码器（IEEE 802.3 与 Thomas 约定） | Web Tool | External Reference | `manchester-line-codec` / [PR #252](https://github.com/Happyileaf/tool-craft/pull/252) | 2026-11-16 | [详情](./idea-details/20261116141425.md) |
+| 20261116141424 | RTP 报文头字段解析与构造器（RFC 3550，含 CSRC / 扩展头） | Web Tool | Exploration | `rtp-header-codec` / [PR #252](https://github.com/Happyileaf/tool-craft/pull/252) | 2026-11-16 | [详情](./idea-details/20261116141424.md) |
+| 20261116141423 | UDP 报文头构造与十六进制解析器（RFC 768，含伪首部校验和） | Web Tool | Existing Gap | `udp-datagram-codec` / [PR #252](https://github.com/Happyileaf/tool-craft/pull/252) | 2026-11-16 | [详情](./idea-details/20261116141423.md) |
+| 20261115140205 | 视频 / 音频码率与文件大小估算器（分辨率 / 帧率 / 编码器 / 时长互算） | Web Tool | Exploration | `bitrate-size-calculator` / [PR #252](https://github.com/Happyileaf/tool-craft/pull/252) | 2026-11-16 | [详情](./idea-details/20261115140205.md) |
+| 20261109020217 | 英文 Porter 词干提取器（Stemmer）与词形归并批处理 | Web Tool | External Reference | `porter-stemmer` / [PR #252](https://github.com/Happyileaf/tool-craft/pull/252) | 2026-11-16 | [详情](./idea-details/20261109020217.md) |
 | 20261114200459 | 曝光值（EV）与 ND 滤镜等效曝光计算器 | Web Tool | Exploration | `exposure-value-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261114200459.md) |
 | 20261115140202 | 相机视角（FOV）与等效焦距计算器（传感器画幅 / 裁切系数 / 双向换算） | Web Tool | Existing Gap | `fov-focal-length-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261115140202.md) |
 | 20261114200501 | 电池续航时间计算器（容量 / 负载 / 效率 / Peukert 与串并联组包） | Web Tool | Existing Gap | `battery-runtime-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261114200501.md) |
