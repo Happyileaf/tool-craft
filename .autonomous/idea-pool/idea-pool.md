@@ -350,4 +350,9 @@
 | 20261116020447 | 排序算法逐步可视化器（冒泡 / 选择 / 插入 / 归并 / 快排） | Web Tool | Exploration | Pending | 2026-11-16 | | [详情](./idea-details/20261116020447.md) |
 | 20261116020448 | 字节序转换器（大端 / 小端整数编解码与字节重排） | Web Tool | Exploration | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116020448.md) |
 | 20261116020449 | Shell 命令参数引用与转义器（POSIX sh / CMD / PowerShell） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116020449.md) |
+| 20261116081908 | 纸张尺寸与 DPI 像素换算器（ISO A/B/C 与 Letter/Legal；mm/in ↔ px） | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116081908.md) |
+| 20261116081909 | 家庭用电量与电费计算器（多电器功率 / 每日时长 / 电价 / 月度年度汇总） | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116081909.md) |
+| 20261116081910 | DNA / RNA 序列分析器（反向互补 / 转录 / 六框翻译 / GC 含量） | Web Tool | Exploration | Pending | 2026-11-16 | | [详情](./idea-details/20261116081910.md) |
+| 20261116081911 | 国际象棋 FEN 局面解析与棋盘可视化器（结构校验 / Unicode 棋盘 / 标准序列化） | Web Tool | Exploration | Pending | 2026-11-16 | | [详情](./idea-details/20261116081911.md) |
+| 20261116081912 | SQL 参数占位符风格转换器（? / :name / $1 / @p1 / %s / {{name}}） | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116081912.md) |
 
