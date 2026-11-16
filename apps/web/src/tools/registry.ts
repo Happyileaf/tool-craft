@@ -38986,6 +38986,511 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'delta-wye-transform',
+    name: 'Δ-Y 电阻网络等效变换计算器',
+    nameEn: 'Delta-Wye (Δ-Y) Transform Calculator',
+    description:
+      '在三角形（Δ）三边电阻与星形（Y）三臂电阻之间双向等效变换：Δ→Y 按 R_A=R_AB·R_CA/S 等公式求解，Y→Δ 按两两乘积和除以对臂求解，附网络结构示意、平衡网络识别与往返一致性。',
+    descriptionEn:
+      'Convert between delta (Δ) edge resistors and wye (Y) arm resistors in both directions, with structure diagrams, balanced-network detection and round-trip equivalence checks, fully offline.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/delta-wye-transform',
+    iconName: 'Triangle',
+    tags: ['Δ-Y 变换', '三角形星形', '电阻网络', '电路等效', '电子工程'],
+    tagsEn: ['Delta-Wye', 'Delta-Star', 'Resistor Network', 'Circuit Equivalence', 'Electronics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Δ-Y（三角形-星形）变换计算器是一款面向电子工程师与电气专业学生的纯浏览器本地工具：输入三角形网络的三边电阻 R_AB、R_BC、R_CA 即可求出等效星形三臂电阻 R_A、R_B、R_C，也支持反向由星形求三角形。两种网络在三个对外端子上的等效电阻完全相同，是化简桥式与复杂电阻网络的基础操作。',
+        coreFeatures: [
+          'Δ → Y：R_A = R_AB·R_CA / S、R_B = R_AB·R_BC / S、R_C = R_BC·R_CA / S，S 为三边之和',
+          'Y → Δ：R_AB = P / R_C、R_BC = P / R_A、R_CA = P / R_B，P 为三臂两两乘积之和',
+          '平衡网络自动识别：三边 / 三臂相等时提示 R_Y = R_Δ / 3 的简化关系',
+          'Δ / Y 网络结构 SVG 示意图与端子 A、B、C、中心节点 N 标注',
+          '非正数 / 非有限值输入给出明确错误；示例预设与一键复制结果',
+        ],
+        howToUse: [
+          '选择变换方向（Δ→Y 或 Y→Δ）',
+          '在输入卡片中填入三个电阻值（单位 Ω，支持小数）',
+          '结果表实时给出三个等效电阻及其所用公式',
+          '平衡网络会显示提示；可点示例预设快速验证教材向量',
+        ],
+        useCases: [
+          '化简含桥式结构的电阻网络，求端子间等效电阻',
+          '电力系统中三相负载 Δ / Y 接法的阻抗换算教学',
+          '电路分析课程中验证 Δ-Y、Y-Δ 恒等变换与往返一致性',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地完成，不发起任何网络请求，输入的参数不会离开设备。',
+        faqs: [
+          {
+            question: 'Δ-Y 变换的等效条件是什么？',
+            answer:
+              '变换前后三个对外端子 A、B、C 两两之间的等效电阻必须完全相等。满足该条件时，两种网络对外电路而言不可区分；网络内部的功率分布并不等效，仅端口特性一致。',
+          },
+          {
+            question: '平衡网络为什么满足 R_Y = R_Δ / 3？',
+            answer:
+              '当三角形三边电阻均为 R_Δ 时，三边之和 S = 3·R_Δ，代入 Δ→Y 公式得每条星形臂 R_Y = R_Δ² / (3·R_Δ) = R_Δ / 3；反向即 R_Δ = 3·R_Y。',
+          },
+          {
+            question: '为什么只支持纯电阻，不支持复阻抗？',
+            answer:
+              '公式对复阻抗同样成立，只需把电阻替换为复数阻抗并做复数乘除。本轮实现聚焦最常用的纯电阻场景，保证零依赖与结果可手工复核；含感抗 / 容抗的交流网络可先分别计算各臂阻抗模值做近似估算。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Delta-Wye (Δ-Y) Transform Calculator is a fully local tool for electronics engineers and electrical students: enter the three delta edge resistors R_AB, R_BC, R_CA to obtain the equivalent wye arm resistors R_A, R_B, R_C, or convert in the reverse direction. Both networks present identical terminal-to-terminal resistance, making the transform the basis for simplifying bridge and complex resistor networks.',
+        coreFeatures: [
+          'Δ → Y: R_A = R_AB·R_CA / S, R_B = R_AB·R_BC / S, R_C = R_BC·R_CA / S, where S is the edge sum',
+          'Y → Δ: R_AB = P / R_C, R_BC = P / R_A, R_CA = P / R_B, where P is the pairwise product sum',
+          'Automatic balanced-network detection with the R_Y = R_Δ / 3 shortcut',
+          'SVG diagrams of both networks labelled with terminals A, B, C and center node N',
+          'Explicit errors for non-positive or non-finite inputs; presets and one-click copy',
+        ],
+        howToUse: [
+          'Pick the transform direction (Δ→Y or Y→Δ)',
+          'Fill the three resistor values in ohms (decimals allowed)',
+          'Read the equivalent resistors and their formulas from the result table',
+          'Balanced networks show a hint; use presets to verify textbook vectors',
+        ],
+        useCases: [
+          'Simplifying resistor networks containing bridge structures',
+          'Teaching delta / wye impedance conversion for three-phase loads',
+          'Verifying Δ-Y and Y-Δ identities and round-trip equivalence in circuit courses',
+        ],
+        privacyNote:
+          'All computation runs locally in your browser with no network requests; your inputs never leave the device.',
+        faqs: [
+          {
+            question: 'What is the equivalence condition of the transform?',
+            answer:
+              'The equivalent resistance between every pair of external terminals A, B, C must be identical before and after the transform. The two networks are then indistinguishable to the outside circuit; internal power distribution is not equivalent, only port behavior is.',
+          },
+          {
+            question: 'Why does a balanced network satisfy R_Y = R_Δ / 3?',
+            answer:
+              'When every delta edge equals R_Δ, the edge sum is S = 3·R_Δ, so each wye arm is R_Δ² / (3·R_Δ) = R_Δ / 3; the reverse gives R_Δ = 3·R_Y.',
+          },
+          {
+            question: 'Why only pure resistance, not complex impedance?',
+            answer:
+              'The formulas also hold for complex impedance with complex arithmetic. This implementation focuses on the most common pure-resistance case to stay dependency-free and easy to verify by hand; for AC networks with reactance, compute each arm impedance magnitude separately as an approximation.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'adc-dac-quantizer',
+    name: 'ADC / DAC 量化参数计算器',
+    nameEn: 'ADC / DAC Quantization Calculator',
+    description:
+      'N 位模数 / 数模转换器量化关系双向计算：码值总数、满幅码、LSB 步进、满幅输出、理想 SNR（6.02N+1.76 dB）、量化噪声 RMS 与 ENOB 反算，支持单 / 双极性、四舍五入 / 截断、电压↔码值互算与超量程夹取，N>24 位码值用 BigInt 精确处理。',
+    descriptionEn:
+      'Bidirectional quantization math for N-bit ADC/DAC: code count, full-scale code, LSB step, full-scale output, ideal SNR (6.02N+1.76 dB), quantization noise RMS and ENOB inversion, with unipolar/bipolar modes, round/floor quantization and BigInt-exact codes beyond 24 bits.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/adc-dac-quantizer',
+    iconName: 'Binary',
+    tags: ['ADC', 'DAC', '量化', 'LSB', 'SNR', 'ENOB', '嵌入式'],
+    tagsEn: ['ADC', 'DAC', 'Quantization', 'LSB', 'SNR', 'ENOB', 'Embedded'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'ADC / DAC 量化参数计算器面向单片机 ADC 配置、数据采集电路评估与嵌入式教学：给定分辨率位数 N（1–32）、参考电压 Vref 与极性，即可算出码值总数 2^N、满幅码 2^N−1、LSB 步进电压、理想满幅输出、理想 SNR 与量化噪声 RMS，并支持「电压 → 最近码值」与「码值 → 电压」两个方向的互算，以及由实测 SINAD 反算有效位数 ENOB。',
+        coreFeatures: [
+          '参数总览：LSB = Vref/2^N（单极性）或 2·Vref/2^N（双极性），码值总数与满幅码精确输出',
+          '电压 → 码值：四舍五入 / 向下截断两种模式，输出 hex、还原电压、量化误差与折合 LSB 个数',
+          '码值 → 电压：单极性 Vout=code×LSB；双极性偏移二进制 Vout=(code−2^(N−1))×LSB，附有符号码',
+          '动态性能：理想 SNR=6.02N+1.76 dB、量化噪声 RMS=LSB/√12、峰值误差 ½ LSB，SINAD → ENOB 反算',
+          '超量程自动夹取并标注 clipping；N>24 的整数码值以 BigInt 精确计算，8/10/12/16/24 位预设',
+        ],
+        howToUse: [
+          '选择或输入分辨率位数 N 与参考电压 Vref，切换单 / 双极性',
+          '在「电压 → 码值」卡片输入电压并选择取整模式，查看码值、hex 与误差',
+          '在「码值 → 电压」卡片输入十进制码值，查看还原电压（双极性附有符号码）',
+          '输入实测 SINAD 即可得到 ENOB；可点预设位数快速对照不同分辨率',
+        ],
+        useCases: [
+          '配置 STM32 / ESP32 等 MCU 的 ADC 采样，估算 LSB 与可分辨最小电压',
+          '评估数据采集系统的理论 SNR、量化噪声与有效位数',
+          '嵌入式与数字电子课程中演示量化传递函数、截断误差与双极性补码映射',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地完成，不发起任何网络请求，输入的参数不会离开设备。',
+        faqs: [
+          {
+            question: '单极性和双极性的 LSB 为什么差一倍？',
+            answer:
+              '单极性量程只有 0..Vref 一段，跨度为 Vref；双极性量程为 −Vref..+Vref，跨度为 2·Vref。同样 N 位下码值总数都是 2^N，因此双极性 LSB = 2·Vref/2^N，是单极性的两倍，电压分辨率相应变粗。',
+          },
+          {
+            question: '为什么满幅输出不是恰好 Vref？',
+            answer:
+              'N 位转换器只有 2^N 个离散电平，码值 0 对应 0V，最高码 2^N−1 对应 (2^N−1)×LSB = Vref − 1 LSB。Vref 本身无法被任何码值精确表示，这就是理想传递函数固有的 1 LSB 满幅缺口。',
+          },
+          {
+            question: 'SNR = 6.02N + 1.76 dB 的前提是什么？',
+            answer:
+              '该公式假设量化误差在 ±½ LSB 内均匀分布、输入为满幅理想正弦波，且只考虑量化噪声这一种误差源。实际 ADC 还存在热噪声、积分 / 微分非线性、孔径抖动等，因此实测 SINAD 通常低于理想值，反算出的 ENOB 也小于标称位数。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ADC / DAC Quantization Calculator supports MCU ADC configuration, data-acquisition evaluation and embedded teaching: given resolution N (1–32 bits), reference voltage Vref and polarity, it derives code count 2^N, full-scale code 2^N−1, LSB step, ideal full-scale output, ideal SNR and quantization noise RMS, with bidirectional voltage↔code conversion and SINAD-to-ENOB inversion.',
+        coreFeatures: [
+          'Overview: LSB = Vref/2^N (unipolar) or 2·Vref/2^N (bipolar), exact code count and full-scale code',
+          'Voltage → code: round / floor modes with hex output, reconstructed voltage and error in volts and LSBs',
+          'Code → voltage: Vout=code×LSB unipolar; offset-binary Vout=(code−2^(N−1))×LSB bipolar with signed code',
+          'Dynamic performance: ideal SNR=6.02N+1.76 dB, noise RMS=LSB/√12, peak error ½ LSB, SINAD → ENOB',
+          'Out-of-range inputs are clipped with a clipping flag; BigInt-exact integer codes beyond 24 bits; 8/10/12/16/24-bit presets',
+        ],
+        howToUse: [
+          'Pick or enter resolution N and reference voltage Vref, then switch polarity',
+          'Enter a voltage in the voltage→code card and choose rounding mode to get the code, hex and error',
+          'Enter a decimal code in the code→voltage card to recover the voltage (with signed code in bipolar mode)',
+          'Enter measured SINAD to obtain ENOB; use bit presets to compare resolutions quickly',
+        ],
+        useCases: [
+          'Configuring ADC sampling on STM32 / ESP32 MCUs and estimating LSB and resolvable voltage',
+          'Evaluating theoretical SNR, quantization noise and effective bits of acquisition systems',
+          'Teaching quantization transfer functions, truncation error and bipolar complement mapping',
+        ],
+        privacyNote:
+          'All computation runs locally in your browser with no network requests; your inputs never leave the device.',
+        faqs: [
+          {
+            question: 'Why is the bipolar LSB twice the unipolar one?',
+            answer:
+              'A unipolar converter spans 0..Vref while a bipolar one spans −Vref..+Vref, twice the span. With the same 2^N codes, bipolar LSB = 2·Vref/2^N, so voltage resolution is correspondingly coarser.',
+          },
+          {
+            question: 'Why is full-scale output not exactly Vref?',
+            answer:
+              'An N-bit converter has only 2^N discrete levels: code 0 maps to 0 V and the highest code 2^N−1 maps to (2^N−1)×LSB = Vref − 1 LSB. Vref itself cannot be represented exactly, the inherent 1-LSB full-scale gap of an ideal transfer function.',
+          },
+          {
+            question: 'What assumptions lie behind SNR = 6.02N + 1.76 dB?',
+            answer:
+              'The formula assumes quantization error uniformly distributed within ±½ LSB, a full-scale ideal sine input, and quantization noise as the only error source. Real ADCs also exhibit thermal noise, INL/DNL and aperture jitter, so measured SINAD and the inverted ENOB are typically below the nominal resolution.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'body-fat-calculator',
+    name: '体脂率估算计算器',
+    nameEn: 'Body Fat Calculator',
+    description:
+      'US Navy 围度法与 Deurenberg BMI 推导法双引擎估算体脂率、脂肪 / 瘦体重，输出 BMI、腰臀比 WHR 风险区间与 ACE 五档分级，支持公制 / 英制切换与两法对比，纯本地计算。',
+    descriptionEn:
+      'Estimate body fat percentage with the US Navy circumference method and the Deurenberg BMI formula, including fat/lean mass, BMI, waist-to-hip risk bands and ACE classification, with metric/imperial units and side-by-side method comparison, fully local.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/body-fat-calculator',
+    iconName: 'Percent',
+    tags: ['体脂率', 'US Navy', 'BMI', '腰臀比', 'ACE 分级', '健身'],
+    tagsEn: ['Body Fat', 'US Navy', 'BMI', 'WHR', 'ACE', 'Fitness'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '体脂率估算计算器基于两套公开确定性公式在浏览器本地估算身体成分：US Navy 围度法由身高与颈、腰、臀围推导体密度再换算体脂率，适合有软尺测量数据的场景；Deurenberg BMI 推导法仅需身高、体重与年龄，适合无围度数据时快速粗估。工具同时给出脂肪重量、瘦体重、BMI、腰臀比（WHR）WHO 风险区间与 ACE 五档分级，并可并列对比两种方法的差值。',
+        coreFeatures: [
+          'US Navy 围度法：男性与女性分别采用颈 / 腰 / 臀围对数公式，英制输入自动换算厘米制',
+          'Deurenberg BMI 法：BF% = 1.2·BMI + 0.23·年龄 − 10.8·性别系数 − 5.4，年龄限定 15–100',
+          '输出体脂率、脂肪重量、瘦体重、BMI，围度齐全时附腰臀比 WHR 与 WHO 低 / 中 / 高风险分级',
+          'ACE 五档分级（必需脂肪 / 运动员 / 健身 / 平均 / 肥胖），男女阈值分别判定',
+          '公制（cm/kg）/ 英制（in/lb）一键切换，两法对比模式直接显示差值',
+        ],
+        howToUse: [
+          '选择性别与单位制，再选择估算方法（围度法 / BMI 法 / 两法对比）',
+          '填写年龄、身高、体重；围度法还需填写颈围、腰围，女性另需臀围',
+          '查看结果卡片中的体脂率、脂肪 / 瘦体重、ACE 分级与 WHR 风险标签',
+          '可点击「复制结果」导出文本；输入矛盾（如腰围 ≤ 颈围）时会给出明确错误提示',
+        ],
+        useCases: [
+          '健身减脂周期中跟踪体成分变化，比单看体重更能反映脂肪与肌肉比例',
+          '无专业体测设备时用围度或 BMI 做体脂率快速粗估与健康风险自查',
+          '对照 ACE 分级与 WHO 腰臀比阈值，判断中心性肥胖与心血管风险区间',
+        ],
+        privacyNote:
+          '所有身体数据仅在浏览器本地参与计算，不发起任何网络请求，不存储或上传任何个人测量值。',
+        faqs: [
+          {
+            question: '围度法和 BMI 法哪个更准？',
+            answer:
+              'US Navy 围度法纳入了脂肪倾向堆积的腰腹围度，对普通人群通常优于只看身高体重的 BMI 法，但两者都是估算，误差可达 3–5 个百分点。BMI 法对肌肉量高的运动员容易高估体脂率，建议两法对比并结合长期趋势判断，精确评估需 DEXA、 Bod Pod 等专业设备。',
+          },
+          {
+            question: '为什么提示「腰围必须大于颈围」？',
+            answer:
+              '男性 Navy 公式含 log10(腰围 − 颈围) 项，腰围不大于颈围时对数无定义，通常意味着测量或录入有误。请确认软尺水平、在呼气末放松状态测量，腰围取肚脐水平最细处，颈围取喉结下方最细处。',
+          },
+          {
+            question: '腰臀比 WHR 的风险阈值是多少？',
+            answer:
+              '按 WHO 标准，男性 WHR < 0.85 为低风险、0.85–0.90 为中等风险、≥ 0.90 为高风险；女性对应阈值为 0.75 与 0.80。WHR 反映中心性脂肪堆积，比单纯 BMI 更能提示腹型肥胖相关的心血管与代谢风险。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Body Fat Calculator estimates body composition locally in the browser with two published deterministic formulas: the US Navy circumference method derives body density from height and neck/waist/hip circumferences, while the Deurenberg BMI method needs only height, weight and age. It reports body fat percentage, fat mass, lean mass, BMI, waist-to-hip ratio (WHR) with WHO risk bands and the five-level ACE classification, and can compare both methods side by side.',
+        coreFeatures: [
+          'US Navy method: sex-specific log formulas over neck/waist/hip circumferences, imperial inputs auto-converted to metric',
+          'Deurenberg BMI method: BF% = 1.2·BMI + 0.23·age − 10.8·sex − 5.4, age restricted to 15–100',
+          'Outputs body fat %, fat mass, lean mass and BMI, plus WHR with WHO low/moderate/high risk when circumferences are complete',
+          'ACE five-level classification (essential/athletes/fitness/average/obese) with sex-specific thresholds',
+          'Metric (cm/kg) and imperial (in/lb) units with one click, plus a comparison mode showing the gap between methods',
+        ],
+        howToUse: [
+          'Choose sex and unit system, then pick an estimation method (Navy / BMI / both)',
+          'Fill in age, height and weight; the Navy method additionally needs neck and waist, and hip for female users',
+          'Read body fat %, fat/lean mass, ACE category and WHR risk tag from the result cards',
+          'Use "Copy" to export the text; contradictory inputs such as waist ≤ neck produce an explicit error',
+        ],
+        useCases: [
+          'Tracking body composition across cutting or bulking cycles instead of relying on body weight alone',
+          'Quick body-fat estimation and health self-check without professional equipment',
+          'Screening central obesity and cardiovascular risk against ACE categories and WHO WHR thresholds',
+        ],
+        privacyNote:
+          'All body data is processed locally in your browser with no network requests; personal measurements are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Which is more accurate, the Navy method or the BMI method?',
+            answer:
+              'The Navy method incorporates abdominal circumferences where fat preferentially accumulates, so it generally beats the height-weight-only BMI formula for ordinary adults, but both are estimates with errors up to 3–5 percentage points. The BMI formula tends to overestimate muscular athletes. Compare both and watch long-term trends; use DEXA or a Bod Pod for precise assessment.',
+          },
+          {
+            question: 'Why does it say waist must be greater than neck?',
+            answer:
+              'The male Navy formula contains log10(waist − neck), which is undefined when the waist is not larger than the neck. This usually signals a measurement or entry error. Keep the tape horizontal and measure at relaxed end-exhalation: waist at navel level and neck at the narrowest point below the larynx.',
+          },
+          {
+            question: 'What are the WHO WHR risk thresholds?',
+            answer:
+              'For men, WHR below 0.85 is low risk, 0.85–0.90 moderate and 0.90 or above high risk; for women the thresholds are 0.75 and 0.80. WHR captures central fat accumulation and flags cardiometabolic risk of abdominal obesity better than BMI alone.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'severance-pay-calculator',
+    name: '经济补偿金与代通知金计算器',
+    nameEn: 'Severance Pay Calculator (N / N+1 / 2N)',
+    description:
+      '依据《劳动合同法》估算解除劳动合同补偿：工龄折算补偿月数（满一年一个月、满六个月按一年、不足六个月半个月），支持 N / N+1 代通知金 / 2N 违法解除赔偿，自动处理社平工资三倍封顶与 12 年年限封顶，输出分项计算明细，纯本地计算。',
+    descriptionEn:
+      'Estimate Chinese labor-contract severance under the Labor Contract Law: tenure-to-month conversion, N / N+1 notice pay / 2N illegal-termination scenarios, automatic 3x average-wage cap and 12-year cap, with an itemized breakdown, fully local.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/severance-pay-calculator',
+    iconName: 'Coins',
+    tags: ['经济补偿金', '代通知金', 'N+1', '2N', '劳动合同法', 'HR'],
+    tagsEn: ['Severance', 'Notice Pay', 'N+1', '2N', 'Labor Law', 'HR'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '经济补偿金与代通知金计算器依据《中华人民共和国劳动合同法》第 40、47、87 条，在浏览器本地估算用人单位解除劳动合同时应支付的补偿。输入工龄（年 + 剩余月）、离职前月平均工资与当地上年度职工月平均工资，即可得到折算补偿月数 N、计算基数、经济补偿金、代通知金或 2N 赔偿金，并展示每一步的分项计算过程与封顶判定。',
+        coreFeatures: [
+          '年限折算：每满一年一个月工资，六个月以上不满一年按一年，不满六个月按半个月',
+          '三种情形：N 经济补偿、N+1（未提前 30 日通知的代通知金）、2N 违法解除赔偿金',
+          '三倍封顶：月工资高于社平三倍时基数按三倍封顶，且补偿年限最高不超过 12 年',
+          '社平工资留空时不触发封顶，按实际工资与实际年限计算并明确提示',
+          '输出 N、计发月数、月基数、补偿金、代通知金、总额与逐条计算明细，金额保留两位小数',
+        ],
+        howToUse: [
+          '选择解除情形（N / N+1 / 2N），界面会同步显示该情形对应的法律条款提示',
+          '填写工作年数与剩余月数（0–11）、离职前 12 个月平均月工资',
+          '如已知当地上年度职工月平均工资则填写，工具会自动判断是否触发三倍与 12 年封顶；未知可留空',
+          '查看总额卡片、指标卡与分项明细表，可点击「复制明细」导出文本备查',
+        ],
+        useCases: [
+          'HR 在协商解除、裁员方案中快速测算不同情形下的补偿预算',
+          '劳动者评估本人应得经济补偿或赔偿金，作为与用人单位协商的参考',
+          '教学与普法场景演示第 47 条年限折算与三倍封顶规则的实际运算',
+        ],
+        privacyNote:
+          '工资与工龄数据仅在浏览器本地参与计算，不发起任何网络请求，不存储或上传任何个人信息。',
+        faqs: [
+          {
+            question: 'N、N+1、2N 分别适用于什么情形？',
+            answer:
+              'N 是《劳动合同法》第 46 条规定的一般经济补偿（如协商一致解除、无过失性辞退、经济性裁员）；N+1 适用于第 40 条的医疗期满、不胜任工作、客观情况重大变化三种情形且单位未提前 30 日书面通知，多付的一个月即代通知金；2N 是第 87 条规定的违法解除赔偿金，标准为经济补偿的二倍，且不再叠加代通知金。',
+          },
+          {
+            question: '三倍社平工资封顶和 12 年上限怎么触发？',
+            answer:
+              '当劳动者月工资高于当地上年度职工月平均工资的三倍时，计算基数按三倍数额封顶，同时支付经济补偿的年限最高不超过 12 年。两个条件联动：未超过三倍社平时，即使工龄超过 12 年也按实际年限计算。工资恰好等于三倍社平时不属于「高于」，不触发封顶。',
+          },
+          {
+            question: '为什么工具结果可能与实际仲裁金额不同？',
+            answer:
+              '本工具为规则化估算，未纳入 2008 年《劳动合同法》施行前后的工龄分段计算、各地司法口径差异、月工资构成（奖金 / 津贴 / 加班费是否计入）的个案认定以及证据因素。实际金额以劳动仲裁或法院认定为准，页面固定标注「估算结果，非正式法律意见」。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Severance Pay Calculator estimates employer-paid compensation for terminating a Chinese labor contract locally in the browser, based on Articles 40, 47 and 87 of the PRC Labor Contract Law. Given tenure (years plus remaining months), average monthly wage and the local prior-year average wage, it derives the compensation month count N, capped wage base, severance, notice pay or 2N illegal-termination damages, with a step-by-step breakdown and cap decisions.',
+        coreFeatures: [
+          'Tenure conversion: one month per full year, one month for six-plus remaining months, half a month under six',
+          'Three scenarios: N severance, N+1 with one-month notice pay, 2N damages for illegal termination',
+          'Triple-average-wage cap on the base plus a 12-year maximum on compensated tenure once the cap triggers',
+          'No cap when local average wage is left blank, with an explicit notice that actual wage and tenure apply',
+          'Outputs N, payable months, monthly base, severance, notice pay, total and an itemized breakdown rounded to two decimals',
+        ],
+        howToUse: [
+          'Pick the termination scenario (N / N+1 / 2N); the matching legal article is shown as a hint',
+          'Enter full years, remaining months (0–11) and your average monthly wage over the last 12 months',
+          'Enter the local prior-year average wage if known to enable automatic cap checks, or leave it blank',
+          'Review the total card, metric cards and breakdown table; use "Copy" to export the details',
+        ],
+        useCases: [
+          'HR budgeting severance for mutual termination and redundancy plans',
+          'Workers benchmarking their statutory compensation before negotiating with an employer',
+          'Legal education demonstrating the Article 47 tenure conversion and triple-wage cap in action',
+        ],
+        privacyNote:
+          'Wage and tenure data is processed only in your browser with no network requests and no storage or upload of personal information.',
+        faqs: [
+          {
+            question: 'When do N, N+1 and 2N apply?',
+            answer:
+              'N is the general severance under Article 46 (mutual agreement, non-fault dismissal, economic layoff). N+1 applies to the three Article 40 cases—medical period expiry, incompetence, major objective change—when 30-day written notice was not given, adding one month of notice pay. 2N is double severance for illegal termination under Article 87 and is not stacked with notice pay.',
+          },
+          {
+            question: 'How do the triple-wage cap and 12-year limit trigger?',
+            answer:
+              'When monthly wage exceeds three times the local prior-year average wage, the calculation base is capped at that triple amount and compensated tenure is limited to 12 years. The two rules are linked: below the triple threshold, full tenure counts even beyond 12 years. A wage exactly equal to the triple average is not "above" it and does not trigger the cap.',
+          },
+          {
+            question: 'Why might the estimate differ from an actual arbitration award?',
+            answer:
+              'This is a rule-based estimate. It excludes pre/post-2008 tenure segmentation, local judicial variations, case-specific treatment of wage components (bonuses, allowances, overtime) and evidentiary factors. Actual amounts are determined by labor arbitration or court; the page always states that the output is an estimate, not legal advice.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'fen-parser',
+    name: '国际象棋 FEN 局面解析与棋盘可视化器',
+    nameEn: 'Chess FEN Parser & Board Visualizer',
+    description:
+      '解析 FEN 字符串为 8×8 棋盘并以 Unicode / ASCII 渲染，支持黑白方视角与坐标标注，校验字段结构、王数量、兵升变、易位权利与吃过路兵目标格，输出警告代码、规范化 FEN 与棋子统计，纯本地零依赖。',
+    descriptionEn:
+      'Parse a FEN string into an 8x8 chessboard rendered as Unicode or ASCII with both perspectives and coordinates, validating field structure, king counts, pawn promotion, castling rights and en-passant targets, with warning codes, normalized FEN and piece stats, fully local.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/fen-parser',
+    iconName: 'LayoutGrid',
+    tags: ['FEN', '国际象棋', '棋盘', '棋谱', '易位', '吃过路兵'],
+    tagsEn: ['FEN', 'Chess', 'Board', 'PGN', 'Castling', 'En Passant'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '国际象棋 FEN 局面解析与棋盘可视化器在浏览器本地解析 Forsyth–Edwards Notation：把由 8 条横线组成的布局字段展开为 8×8 棋盘矩阵，校验字段结构与静态合法性，渲染 Unicode 棋子棋盘或 ASCII 棋盘，并输出规范化 FEN（易位权利按 KQkq 排序、计数缺省补全）。阻断性结构错误与非阻断合法性警告分区展示，便于棋谱调试与引擎对接。',
+        coreFeatures: [
+          '完整字段解析：布局 / 走子方 w|b / 易位权利 / 吃过路兵目标格 / 半回合 / 回合数，支持 4–6 字段（省略计数补 0 与 1 并提示）',
+          '结构校验：横线数、每横线 8 格、非法棋子字符、数字 0/9 与连续数字、易位重复字符、计数上限 100000 等阻断性错误精确定位',
+          '合法性警告：双方王数量、兵位于首末横线、易位权利与王车位置一致性、过路兵目标格与走子方 / 占位 / 对应兵匹配',
+          '双视角渲染：白方视角（第 8 横线在上、a→h）与黑方视角（第 1 横线在上、h→a），Unicode 与 ASCII 两种棋盘可切换',
+          '规范化 FEN 与 ASCII 棋盘一键复制，输出棋子总数与六个字段的明细表',
+        ],
+        howToUse: [
+          '把 FEN 文本粘贴到输入框，或点击示例按钮载入初始局面、空棋盘、乱序易位等样例',
+          '结构合法时查看 Unicode / ASCII 棋盘与字段明细；有结构错误时棋盘不渲染，仅显示错误定位',
+          '切换白方 / 黑方视角与 Unicode / ASCII 渲染模式，坐标自动跟随调整',
+          '查看警告区的代码与文案，点击「复制规范化 FEN」或「复制 ASCII 棋盘」导出结果',
+        ],
+        useCases: [
+          '调试国际象棋引擎、棋谱工具或 UCI 接口时校验 FEN 输入是否结构合法',
+          '教学场景下演示易位权利、吃过路兵目标格等 FEN 字段的语义与常见错误',
+          '把凌乱或字段顺序不规范的 FEN 序列化为标准形式，供下游程序消费',
+        ],
+        privacyNote:
+          'FEN 文本仅在浏览器本地解析与渲染，不发起任何网络请求，不存储或上传任何棋谱数据。',
+        faqs: [
+          {
+            question: '结构错误和合法性警告有什么区别？',
+            answer:
+              '结构错误是阻断性的，例如横线不足 8 格、出现非法棋子字符、易位字段重复等，此时无法可靠还原棋盘，工具不渲染棋盘并给出错误位置。合法性警告不阻断渲染，例如缺少某个王、兵停在第 8 横线、易位权利声称的车已不在原位等，棋盘照常显示但以警告代码逐条列出，提示该局面虽可解析却不符合棋规。',
+          },
+          {
+            question: '为什么有些明显不合法的局面没有报错？',
+            answer:
+              '本工具只做 FEN 层面的静态校验，不推断走子合法性：是否处于将军 / 将杀、王车易位通路是否被攻击、兵吃子与将军规则等需要完整走子引擎才能判断，页面已明确声明这一范围边界。需要动态合法性时应将规范化 FEN 交给 chess.js 等引擎库处理。',
+          },
+          {
+            question: 'Unicode 棋盘显示错位怎么办？',
+            answer:
+              'Unicode 棋子字符在非等宽字体或部分系统字体下宽度不一致，可能导致行列错位。切换到 ASCII 模式即可得到等宽稳定的棋盘（PNBRQK 大写为白方、pnbrqk 小写为黑方、点号表示空格），该模式也是复制到纯文本环境时的推荐格式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Chess FEN Parser & Board Visualizer parses Forsyth–Edwards Notation locally in the browser: it expands the eight-rank placement field into an 8x8 board matrix, validates field structure and static legality, renders Unicode or ASCII boards, and emits a normalized FEN with castling rights sorted as KQkq and defaulted counters. Blocking structural errors are separated from non-blocking legality warnings to ease chess-tool debugging and engine integration.',
+        coreFeatures: [
+          'Full field parsing: placement, side to move (w|b), castling, en-passant target, halfmove and fullmove counters, accepting 4–6 fields with 0/1 defaults',
+          'Structural validation: rank count, eight squares per rank, illegal piece letters, digits 0/9 and consecutive digits, duplicate castling letters, counter cap of 100000, with precise error locations',
+          'Legality warnings: king counts, pawns on first/last rank, castling rights versus king/rook positions, and en-passant target checks against side to move, occupancy and the source pawn',
+          'Dual-perspective rendering: white view (rank 8 on top, a→h) and black view (rank 1 on top, h→a), switchable Unicode and ASCII boards with coordinates',
+          'One-click copy of normalized FEN and ASCII board, plus total piece count and a six-field detail table',
+        ],
+        howToUse: [
+          'Paste a FEN string into the input, or load samples such as the initial position, empty board or shuffled castling rights',
+          'When structurally valid, inspect the Unicode/ASCII board and field details; structural errors suppress the board and show the error location instead',
+          'Switch between white/black perspectives and Unicode/ASCII rendering; coordinates follow automatically',
+          'Review warning codes and messages, then copy the normalized FEN or ASCII board for downstream use',
+        ],
+        useCases: [
+          'Validating FEN inputs while debugging chess engines, PGN tools or UCI interfaces',
+          'Teaching the semantics of castling and en-passant FEN fields together with common mistakes',
+          'Canonicalizing messy or non-standard FEN strings before feeding them to other programs',
+        ],
+        privacyNote:
+          'FEN text is parsed and rendered only in your browser with no network requests; no chess data is stored or uploaded.',
+        faqs: [
+          {
+            question: 'What is the difference between structural errors and legality warnings?',
+            answer:
+              'Structural errors are blocking—wrong rank length, illegal piece letters, duplicate castling characters—so the board cannot be reconstructed reliably and no board is rendered. Legality warnings are non-blocking: missing kings, pawns parked on rank 8, castling rights whose rooks have moved, and so on. The board still renders while each issue is listed with a warning code.',
+          },
+          {
+            question: 'Why are some obviously illegal positions not flagged?',
+            answer:
+              'The tool performs only static FEN-level validation. Move legality—check or checkmate, whether the castling corridor is attacked, pawn capture rules—requires a full move generator. The page states this boundary explicitly; for dynamic legality, feed the normalized FEN into an engine library such as chess.js.',
+          },
+          {
+            question: 'What if the Unicode board looks misaligned?',
+            answer:
+              'Unicode chess glyphs have inconsistent widths in non-monospaced or platform fonts, which can break the grid. Switch to ASCII mode for a stable fixed-width board (uppercase PNBRQK for White, lowercase for Black, dots for empty squares); it is also the recommended format for copying into plain-text environments.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

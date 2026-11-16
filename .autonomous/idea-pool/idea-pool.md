@@ -335,7 +335,7 @@
 | 20261114200454 | HTTP/2 帧头解析与帧序列查看器（不含 HPACK 解压） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114200454.md) |
 | 20261114200457 | STL 三维模型解析与体积 / 表面积统计器 | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200457.md) |
 | 20261114200458 | 大整数任意精度四则运算计算器（BigInt 加减乘除 / 幂 / 取模 / 阶乘） | Web Tool | Exploration | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114200458.md) |
-| 20261114200502 | 经济补偿金与代通知金计算器（N / N+1 / 2N，含月工资上限与年限折算） | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200502.md) |
+| 20261114200502 | 经济补偿金与代通知金计算器（N / N+1 / 2N，含月工资上限与年限折算） | Web Tool | Exploration | Completed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114200502.md) |
 | 20261115020303 | 睡眠周期与就寝 / 起床时间计算器（90 分钟周期 + 入睡缓冲） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115020303.md) |
 | 20261115080615 | ARP 地址解析协议报文解析与构造器（RFC 826，以太网/IPv4 字节布局） | Web Tool | Existing Gap | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080615.md) |
 | 20261115080616 | MQTT 3.1.1 控制报文编解码器（CONNECT / PUBLISH / SUBSCRIBE 与 Remaining Length） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115080616.md) |
@@ -343,7 +343,7 @@
 | 20261115080618 | 心率训练区间计算器（最大心率估算与 Karvonen 储备心率五区间） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080618.md) |
 | 20261115080619 | 齿轮传动比与转速 / 扭矩计算器（多级齿轮组） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080619.md) |
 | 20261115140201 | 简体中文 ↔ 繁体中文转换器（词组级映射，含台湾 / 香港变体与地区用词） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115140201.md) |
-| 20261115140203 | 体脂率估算计算器（US Navy 围度法 / BMI 推导法 + 腰臀比风险区间） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115140203.md) |
+| 20261115140203 | 体脂率估算计算器（US Navy 围度法 / BMI 推导法 + 腰臀比风险区间） | Web Tool | Existing Gap | Completed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115140203.md) |
 | 20261115140205 | 视频 / 音频码率与文件大小估算器（分辨率 / 帧率 / 编码器 / 时长互算） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115140205.md) |
 | 20261116020445 | Windows ↔ POSIX 路径转换器（WSL 盘符映射 / UNC / 分隔符归一） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116020445.md) |
 | 20261116020446 | JSON → C++ struct / class 生成器（std::optional / std::vector 推断） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116020446.md) |
@@ -353,13 +353,13 @@
 | 20261116081908 | 纸张尺寸与 DPI 像素换算器（ISO A/B/C 与 Letter/Legal；mm/in ↔ px） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116081908.md) |
 | 20261116081909 | 家庭用电量与电费计算器（多电器功率 / 每日时长 / 电价 / 月度年度汇总） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116081909.md) |
 | 20261116081910 | DNA / RNA 序列分析器（反向互补 / 转录 / 六框翻译 / GC 含量） | Web Tool | Exploration | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116081910.md) |
-| 20261116081911 | 国际象棋 FEN 局面解析与棋盘可视化器（结构校验 / Unicode 棋盘 / 标准序列化） | Web Tool | Exploration | Pending | 2026-11-16 | | [详情](./idea-details/20261116081911.md) |
+| 20261116081911 | 国际象棋 FEN 局面解析与棋盘可视化器（结构校验 / Unicode 棋盘 / 标准序列化） | Web Tool | Exploration | Completed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116081911.md) |
 | 20261116081912 | SQL 参数占位符风格转换器（? / :name / $1 / @p1 / %s / {{name}}） | Web Tool | Existing Gap | In Progress | 2026-11-16 | trae-agent | [详情](./idea-details/20261116081912.md) |
 | 20261116141423 | UDP 报文头构造与十六进制解析器（RFC 768，含伪首部校验和） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141423.md) |
 | 20261116141424 | RTP 报文头字段解析与构造器（RFC 3550，含 CSRC / 扩展头） | Web Tool | Exploration | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141424.md) |
 | 20261116141425 | 曼彻斯特 / 差分曼彻斯特线路编解码器（IEEE 802.3 与 Thomas 约定） | Web Tool | External Reference | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141425.md) |
-| 20261116141426 | ADC / DAC 量化参数计算器（分辨率 / LSB / 量化误差 / SNR / 电压码值互算） | Web Tool | Exploration | Pending | 2026-11-16 | | [详情](./idea-details/20261116141426.md) |
-| 20261116141427 | 电阻 / 阻抗网络 Δ-Y（三角形-星形）双向等效变换计算器 | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116141427.md) |
+| 20261116141426 | ADC / DAC 量化参数计算器（分辨率 / LSB / 量化误差 / SNR / 电压码值互算） | Web Tool | Exploration | Completed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141426.md) |
+| 20261116141427 | 电阻 / 阻抗网络 Δ-Y（三角形-星形）双向等效变换计算器 | Web Tool | Existing Gap | Completed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141427.md) |
 | 20261116200511 | ACME dns-01 挑战 TXT 记录与 Key Authorization 生成器（RFC 8555） | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116200511.md) |
 | 20261116200512 | 802.1Q VLAN 标签（含 QinQ 双层）编解码与字段解析器 | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116200512.md) |
 | 20261116200513 | CAN 2.0 总线帧字段与位时序 / 波特率计算器（含 CRC-15 与位填充计数） | Web Tool | External Reference | Pending | 2026-11-16 | | [详情](./idea-details/20261116200513.md) |
