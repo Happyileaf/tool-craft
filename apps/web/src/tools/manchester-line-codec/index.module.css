@@ -1,0 +1,121 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  color: rgb(107 114 128);
+}
+
+.inputArea,
+.monoInput,
+.monoText {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+
+.monoText {
+  font-weight: 600;
+  color: rgb(37 99 235);
+}
+
+.resultCard {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.hexBlock {
+  background: rgb(249 250 251);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.hexHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  color: rgb(107 114 128);
+  font-size: 13px;
+}
+
+.hexText {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  color: rgb(37 99 235);
+  word-break: break-all;
+  line-height: 1.8;
+}
+
+.hint {
+  color: rgb(107 114 128);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.hint p {
+  margin: 0 0 6px;
+}
+
+.hint p:last-child {
+  margin-bottom: 0;
+}
+
+.fieldRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.waveformScroll {
+  overflow-x: auto;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 8px;
+  padding: 8px;
+  background: #fff;
+}
+
+.waveformSvg {
+  display: block;
+  min-width: 100%;
+}
+
+.waveLabel {
+  font-size: 12px;
+  fill: rgb(75 85 99);
+}
+
+.waveIndex {
+  font-size: 11px;
+  fill: rgb(107 114 128);
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+
+.waveAxis {
+  stroke: rgb(243 244 246);
+  stroke-width: 1;
+}
+
+.waveBoundary {
+  stroke: rgb(209 213 219);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
