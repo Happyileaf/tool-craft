@@ -8,6 +8,7 @@ import { SAMPLE_ARP_REQUEST } from './arp-packet-codec/constants';
 import { DEFAULT_SAMPLE as JSON_TO_CPP_SAMPLE } from './json-to-cpp/constants';
 import { DEFAULT_INPUT as BASE64URL_CONVERTER_SAMPLE } from './base64url-base64-converter/constants';
 import { DEFAULT_PRESET_ID as PAPER_DPI_PRESET, DEFAULT_DPI as PAPER_DPI_DEFAULT } from './paper-size-dpi-calculator/constants';
+import { DEFAULT_FLAT_PRICE as ELECTRICITY_FLAT_PRICE } from './electricity-bill-calculator/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -38115,6 +38116,118 @@ sqrt(area) + 2 * r`,
             question: 'How is the reverse-match error computed?',
             answer:
               'After restoring millimeters from pixels, the tool compares width and height error against both orientations of every standard paper and takes the larger of the two as the relative error. The paper with the smallest error wins, and a maximum error of 2% or less is flagged as an approximate match.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'electricity-bill-calculator',
+    name: '家庭用电量与电费计算器',
+    nameEn: 'Home Electricity Usage & Bill Calculator',
+    description:
+      '按电器额定功率（W/kW）、每日时长、每月天数与数量，结合单一电价或峰谷电价，逐行计算日/月/年用电量（kWh）与电费、占比与耗电排行，输出合计面板，并支持把能效标签年耗电量反推为平均功率；纯本地估算，明确标注不含阶梯加价与待机功耗。',
+    descriptionEn:
+      'Compute daily/monthly/yearly energy use (kWh) and cost per appliance from rated power (W/kW), daily hours, monthly days and quantity, with flat or time-of-use pricing, share and ranking views, a totals dashboard, and reverse average-power estimation from an annual kWh label; fully local, explicitly excluding tiered pricing and standby draw.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/electricity-bill-calculator',
+    iconName: 'PlugZap',
+    tags: ['电费', '用电量', 'kWh', '峰谷电价', '能效', '节能'],
+    tagsEn: ['Electricity Bill', 'Energy Usage', 'kWh', 'TOU Pricing', 'Efficiency', 'Saving'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: `两台示例电器（2000W 电暖器、100W 电视），单一电价 ${ELECTRICITY_FLAT_PRICE} 元/kWh，可在工具内增删电器并切换峰谷电价`,
+    doc: {
+      zh: {
+        whatIsIt:
+          '家庭用电量与电费计算器是一款纯浏览器本地工具，用于电费预估、电器耗电对比与节能决策。它按「功率 × 时长 × 天数 × 数量」计算每台电器的日、月、年用电量与电费，支持 W/kW 功率单位、单一电价或峰谷电价（峰价、谷价、峰段占比），输出逐行明细、占比、排行与合计面板，并能把能效标签上的年耗电量反推为全年平均功率。结果为估算值，不含阶梯加价、基本电费、税费与待机功耗。',
+        coreFeatures: [
+          '多电器表格：名称、功率（W/kW 自动换算）、每日时长、每月天数、数量可增删编辑',
+          '逐行指标：日耗电、月耗电、月电费、年耗电、年电费与占月度用电比例',
+          '两种电价：单一电价或峰谷电价，峰谷模式按峰段占比加权计算综合单价',
+          '合计面板：月度 / 年度总 kWh 与总电费、平均每日电费、月度平均功率',
+          '耗电排行：按月电费降序的条形列表，直观定位高耗电电器',
+          '能效反推：年耗电量 kWh ÷ 8760 小时得到平均功率 W',
+          '严格校验：功率 0–100000W、时长 0–24h、天数 0–31、数量 1–100、电价 0–10 元，非法输入即时报错',
+        ],
+        howToUse: [
+          '在电器清单中填写每台电器的功率、每日使用小时、每月天数与数量，可随时增删行',
+          '功率可在 W 与 kW 之间切换，内部统一按瓦计算',
+          '在电价设置中选择单一电价或峰谷电价并填写费率',
+          '查看合计面板获取月度、年度汇总，查看排行了解各电器占比',
+          '在底部输入能效标签的年耗电量，读取反推的平均功率',
+          '点击「复制汇总」可把全部结果复制到剪贴板',
+        ],
+        useCases: [
+          '搬家或采购电器前预估月度、年度电费支出',
+          '对比空调、电暖器、热水器等高功率电器的耗电差异以安排使用时段',
+          '在峰谷电价地区测算把负荷转移到谷段能节省的费用',
+          '解读能效标识年耗电量，换算为持续运行的平均功率',
+        ],
+        privacyNote:
+          '所有数据仅保存在浏览器内存中并由纯函数计算，不上传任何电器或电费信息，不发起网络请求，刷新页面即清空。',
+        faqs: [
+          {
+            question: '计算结果为什么和实际电费账单不一样？',
+            answer:
+              '本工具按固定功率与使用时长做线性估算，未考虑阶梯电价、基本电费、税费、功率因数以及电器的待机功耗和变频波动，实际账单以电表计量为准。',
+          },
+          {
+            question: '峰谷电价是怎么计算的？',
+            answer:
+              '峰谷模式下综合单价 = 峰价 × 峰段占比 + 谷价 ×（1 − 峰段占比），再用该单价乘以合计电量。例如 135kWh、峰占比 60%、峰价 1.0 元、谷价 0.3 元时，单价为 0.72 元，月电费 97.20 元。',
+          },
+          {
+            question: '年度数字是怎么来的？',
+            answer:
+              '年度用电量与电费统一按月度值 ×12 估算，不区分大小月与季节差异；能效反推则按全年 365×24=8760 小时计算平均功率。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Home Electricity Usage & Bill Calculator runs entirely in your browser for bill estimation, appliance comparison and energy-saving decisions. It multiplies rated power by duration, days and quantity to derive daily, monthly and yearly kWh and cost per appliance, supports W/kW units and flat or time-of-use pricing (peak price, valley price, peak share), and provides per-line details, shares, rankings and a totals dashboard, plus reverse average-power estimation from an annual-kWh efficiency label. Results are estimates excluding tiered pricing, base fees, taxes and standby consumption.',
+        coreFeatures: [
+          'Editable appliance table with name, power (auto W/kW conversion), daily hours, monthly days and quantity',
+          'Per-row metrics: daily kWh, monthly kWh, monthly cost, yearly kWh, yearly cost and monthly share',
+          'Two pricing models: flat rate or time-of-use with a peak-ratio weighted blended unit price',
+          'Totals dashboard: monthly/yearly kWh and cost, average daily cost and monthly average power',
+          'Cost ranking as descending bars to pinpoint the most expensive appliances',
+          'Reverse estimation: annual kWh divided by 8760 hours yields average watts',
+          'Strict validation for power 0–100000W, hours 0–24, days 0–31, quantity 1–100 and price 0–10, with instant errors',
+        ],
+        howToUse: [
+          'Fill each appliance row with power, daily hours, monthly days and quantity; add or remove rows freely',
+          'Switch power units between W and kW; the engine normalizes everything to watts',
+          'Choose flat or time-of-use pricing and enter the rates in the pricing card',
+          'Read monthly and yearly totals in the dashboard and compare appliances in the ranking',
+          'Enter an annual-kWh efficiency label at the bottom to read the reversed average power',
+          'Click "Copy summary" to copy all results to the clipboard',
+        ],
+        useCases: [
+          'Estimating monthly and yearly electricity spending before moving or buying appliances',
+          'Comparing high-draw devices such as air conditioners, heaters and water heaters to schedule usage',
+          'Quantifying savings from shifting load to valley hours in time-of-use regions',
+          'Interpreting annual-kWh efficiency labels as continuous average power',
+        ],
+        privacyNote:
+          'All data stays in browser memory and is processed by pure functions. No appliance or billing data is uploaded, no network request is made, and refreshing the page clears everything.',
+        faqs: [
+          {
+            question: 'Why does the result differ from my real bill?',
+            answer:
+              'The tool performs a linear estimate from fixed power and duration, ignoring tiered pricing, base fees, taxes, power factor, standby draw and inverter fluctuations. Always rely on the meter-based bill for exact charges.',
+          },
+          {
+            question: 'How is time-of-use pricing calculated?',
+            answer:
+              'The blended price equals peak price × peak share plus valley price × (1 − peak share), then multiplies total kWh. For 135 kWh with 60% peak share, 1.0 peak and 0.3 valley rates, the blended price is 0.72 and the monthly cost is 97.20.',
+          },
+          {
+            question: 'How are yearly figures derived?',
+            answer:
+              'Yearly kWh and cost are estimated as monthly values × 12 without distinguishing month lengths or seasons; the reverse estimate uses 365×24 = 8760 hours per year for average power.',
           },
         ],
       },

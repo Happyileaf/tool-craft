@@ -402,4 +402,5 @@ export const toolLoaders: Record<
   'json-to-cpp': () => import('./json-to-cpp'),
   'base64url-base64-converter': () => import('./base64url-base64-converter'),
   'paper-size-dpi-calculator': () => import('./paper-size-dpi-calculator'),
+  'electricity-bill-calculator': () => import('./electricity-bill-calculator'),
 };
