@@ -39087,6 +39087,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'adc-dac-quantizer',
+    name: 'ADC / DAC 量化参数计算器',
+    nameEn: 'ADC / DAC Quantization Calculator',
+    description:
+      'N 位模数 / 数模转换器量化关系双向计算：码值总数、满幅码、LSB 步进、满幅输出、理想 SNR（6.02N+1.76 dB）、量化噪声 RMS 与 ENOB 反算，支持单 / 双极性、四舍五入 / 截断、电压↔码值互算与超量程夹取，N>24 位码值用 BigInt 精确处理。',
+    descriptionEn:
+      'Bidirectional quantization math for N-bit ADC/DAC: code count, full-scale code, LSB step, full-scale output, ideal SNR (6.02N+1.76 dB), quantization noise RMS and ENOB inversion, with unipolar/bipolar modes, round/floor quantization and BigInt-exact codes beyond 24 bits.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/adc-dac-quantizer',
+    iconName: 'Binary',
+    tags: ['ADC', 'DAC', '量化', 'LSB', 'SNR', 'ENOB', '嵌入式'],
+    tagsEn: ['ADC', 'DAC', 'Quantization', 'LSB', 'SNR', 'ENOB', 'Embedded'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'ADC / DAC 量化参数计算器面向单片机 ADC 配置、数据采集电路评估与嵌入式教学：给定分辨率位数 N（1–32）、参考电压 Vref 与极性，即可算出码值总数 2^N、满幅码 2^N−1、LSB 步进电压、理想满幅输出、理想 SNR 与量化噪声 RMS，并支持「电压 → 最近码值」与「码值 → 电压」两个方向的互算，以及由实测 SINAD 反算有效位数 ENOB。',
+        coreFeatures: [
+          '参数总览：LSB = Vref/2^N（单极性）或 2·Vref/2^N（双极性），码值总数与满幅码精确输出',
+          '电压 → 码值：四舍五入 / 向下截断两种模式，输出 hex、还原电压、量化误差与折合 LSB 个数',
+          '码值 → 电压：单极性 Vout=code×LSB；双极性偏移二进制 Vout=(code−2^(N−1))×LSB，附有符号码',
+          '动态性能：理想 SNR=6.02N+1.76 dB、量化噪声 RMS=LSB/√12、峰值误差 ½ LSB，SINAD → ENOB 反算',
+          '超量程自动夹取并标注 clipping；N>24 的整数码值以 BigInt 精确计算，8/10/12/16/24 位预设',
+        ],
+        howToUse: [
+          '选择或输入分辨率位数 N 与参考电压 Vref，切换单 / 双极性',
+          '在「电压 → 码值」卡片输入电压并选择取整模式，查看码值、hex 与误差',
+          '在「码值 → 电压」卡片输入十进制码值，查看还原电压（双极性附有符号码）',
+          '输入实测 SINAD 即可得到 ENOB；可点预设位数快速对照不同分辨率',
+        ],
+        useCases: [
+          '配置 STM32 / ESP32 等 MCU 的 ADC 采样，估算 LSB 与可分辨最小电压',
+          '评估数据采集系统的理论 SNR、量化噪声与有效位数',
+          '嵌入式与数字电子课程中演示量化传递函数、截断误差与双极性补码映射',
+        ],
+        privacyNote:
+          '全部计算均在浏览器本地完成，不发起任何网络请求，输入的参数不会离开设备。',
+        faqs: [
+          {
+            question: '单极性和双极性的 LSB 为什么差一倍？',
+            answer:
+              '单极性量程只有 0..Vref 一段，跨度为 Vref；双极性量程为 −Vref..+Vref，跨度为 2·Vref。同样 N 位下码值总数都是 2^N，因此双极性 LSB = 2·Vref/2^N，是单极性的两倍，电压分辨率相应变粗。',
+          },
+          {
+            question: '为什么满幅输出不是恰好 Vref？',
+            answer:
+              'N 位转换器只有 2^N 个离散电平，码值 0 对应 0V，最高码 2^N−1 对应 (2^N−1)×LSB = Vref − 1 LSB。Vref 本身无法被任何码值精确表示，这就是理想传递函数固有的 1 LSB 满幅缺口。',
+          },
+          {
+            question: 'SNR = 6.02N + 1.76 dB 的前提是什么？',
+            answer:
+              '该公式假设量化误差在 ±½ LSB 内均匀分布、输入为满幅理想正弦波，且只考虑量化噪声这一种误差源。实际 ADC 还存在热噪声、积分 / 微分非线性、孔径抖动等，因此实测 SINAD 通常低于理想值，反算出的 ENOB 也小于标称位数。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ADC / DAC Quantization Calculator supports MCU ADC configuration, data-acquisition evaluation and embedded teaching: given resolution N (1–32 bits), reference voltage Vref and polarity, it derives code count 2^N, full-scale code 2^N−1, LSB step, ideal full-scale output, ideal SNR and quantization noise RMS, with bidirectional voltage↔code conversion and SINAD-to-ENOB inversion.',
+        coreFeatures: [
+          'Overview: LSB = Vref/2^N (unipolar) or 2·Vref/2^N (bipolar), exact code count and full-scale code',
+          'Voltage → code: round / floor modes with hex output, reconstructed voltage and error in volts and LSBs',
+          'Code → voltage: Vout=code×LSB unipolar; offset-binary Vout=(code−2^(N−1))×LSB bipolar with signed code',
+          'Dynamic performance: ideal SNR=6.02N+1.76 dB, noise RMS=LSB/√12, peak error ½ LSB, SINAD → ENOB',
+          'Out-of-range inputs are clipped with a clipping flag; BigInt-exact integer codes beyond 24 bits; 8/10/12/16/24-bit presets',
+        ],
+        howToUse: [
+          'Pick or enter resolution N and reference voltage Vref, then switch polarity',
+          'Enter a voltage in the voltage→code card and choose rounding mode to get the code, hex and error',
+          'Enter a decimal code in the code→voltage card to recover the voltage (with signed code in bipolar mode)',
+          'Enter measured SINAD to obtain ENOB; use bit presets to compare resolutions quickly',
+        ],
+        useCases: [
+          'Configuring ADC sampling on STM32 / ESP32 MCUs and estimating LSB and resolvable voltage',
+          'Evaluating theoretical SNR, quantization noise and effective bits of acquisition systems',
+          'Teaching quantization transfer functions, truncation error and bipolar complement mapping',
+        ],
+        privacyNote:
+          'All computation runs locally in your browser with no network requests; your inputs never leave the device.',
+        faqs: [
+          {
+            question: 'Why is the bipolar LSB twice the unipolar one?',
+            answer:
+              'A unipolar converter spans 0..Vref while a bipolar one spans −Vref..+Vref, twice the span. With the same 2^N codes, bipolar LSB = 2·Vref/2^N, so voltage resolution is correspondingly coarser.',
+          },
+          {
+            question: 'Why is full-scale output not exactly Vref?',
+            answer:
+              'An N-bit converter has only 2^N discrete levels: code 0 maps to 0 V and the highest code 2^N−1 maps to (2^N−1)×LSB = Vref − 1 LSB. Vref itself cannot be represented exactly, the inherent 1-LSB full-scale gap of an ideal transfer function.',
+          },
+          {
+            question: 'What assumptions lie behind SNR = 6.02N + 1.76 dB?',
+            answer:
+              'The formula assumes quantization error uniformly distributed within ±½ LSB, a full-scale ideal sine input, and quantization noise as the only error source. Real ADCs also exhibit thermal noise, INL/DNL and aperture jitter, so measured SINAD and the inverted ENOB are typically below the nominal resolution.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

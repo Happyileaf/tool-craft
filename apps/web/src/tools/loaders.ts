@@ -411,4 +411,5 @@ export const toolLoaders: Record<
   'bitrate-size-calculator': () => import('./bitrate-size-calculator'),
   'porter-stemmer': () => import('./porter-stemmer'),
   'delta-wye-transform': () => import('./delta-wye-transform'),
+  'adc-dac-quantizer': () => import('./adc-dac-quantizer'),
 };
