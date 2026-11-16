@@ -10,6 +10,7 @@ import { DEFAULT_INPUT as BASE64URL_CONVERTER_SAMPLE } from './base64url-base64-
 import { DEFAULT_PRESET_ID as PAPER_DPI_PRESET, DEFAULT_DPI as PAPER_DPI_DEFAULT } from './paper-size-dpi-calculator/constants';
 import { DEFAULT_FLAT_PRICE as ELECTRICITY_FLAT_PRICE } from './electricity-bill-calculator/constants';
 import { DEFAULT_SAMPLE as DNA_RNA_SAMPLE } from './dna-rna-sequence-analyzer/constants';
+import { DEFAULT_SAMPLE as SQL_PLACEHOLDER_SAMPLE } from './sql-parameter-placeholder-converter/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -38339,6 +38340,114 @@ sqrt(area) + 2 * r`,
             question: 'What happens with one or two leftover bases at the end?',
             answer:
               'Translation consumes three bases per codon, so a trailing one- or two-base remainder cannot form a complete codon. It is left untranslated and the frame result reports how many trailing bases were skipped.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'sql-parameter-placeholder-converter',
+    name: 'SQL 参数占位符风格转换器',
+    nameEn: 'SQL Parameter Placeholder Converter',
+    description:
+      '词法扫描 SQL 中的参数占位符，在问号 ?、%s、$n、:n、@pN、:name、@name、%(name)s 与 {{name}} 九种风格之间互转，自动跳过字符串字面量、引号 / 反引号 / 方括号标识符、行注释、块注释与 PostgreSQL 美元引用，输出去重后的参数清单与绑定次数；纯本地处理，SQL 不上传。',
+    descriptionEn:
+      'Lexically scan SQL parameter placeholders and convert between nine styles — ?, %s, $n, :n, @pN, :name, @name, %(name)s and {{name}} — while skipping string literals, quoted/backtick/bracket identifiers, line and block comments and PostgreSQL dollar-quoted strings, with a deduplicated parameter list and binding counts; fully local with no upload.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/sql-parameter-placeholder-converter',
+    iconName: 'FileInput',
+    tags: ['SQL', '占位符', '参数绑定', 'Prepared Statement', '词法扫描'],
+    tagsEn: ['SQL', 'Placeholder', 'Parameter Binding', 'Prepared Statement', 'Lexer'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: SQL_PLACEHOLDER_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          'SQL 参数占位符风格转换器是一款纯浏览器本地的开发工具，用于在不同数据库驱动与 ORM 的参数占位符风格之间迁移 SQL。它基于词法扫描而非 SQL 语法解析：识别代码区中的九类占位符，同时原样保留单引号字符串、双引号 / 反引号 / 方括号标识符、-- 行注释、/* */ 块注释与 PostgreSQL 美元引用字符串，确保这些区域内的符号永不被改写。转换输出新 SQL、自动识别的源风格、去重后的逻辑参数清单与每个参数的绑定次数。',
+        coreFeatures: [
+          '九种风格互转：位置式 ? 与 %s，编号式 $n、:n、@pN，命名式 :name、@name、%(name)s、{{name}}',
+          '自动识别源风格：仅含单一风格时可直接转换，检测到混合风格时报错并列出涉及的风格',
+          '词法级跳过区域：字符串字面量（含双写与反斜杠转义）、引号 / 反引号 / 方括号标识符、行 / 块注释（支持嵌套）、$$ 与 $tag$ 美元引用',
+          '歧义语法排除：:: 类型转换、@@ 系统变量、?| 与 ?& jsonb 运算符不会被误判为占位符',
+          '统一参数模型：编号与命名占位符按逻辑参数去重并统计绑定次数；位置式 → 命名式自动生成「前缀 + 序号」参数名',
+          '命名式 → 位置式展开：同名重复绑定在目标 SQL 中展开为多个独立位置占位符，参数清单仍按逻辑参数呈现',
+          '严格校验：编号式须从 1 开始且连续（可重复），命名须匹配 [A-Za-z_][A-Za-z0-9_]*，未闭合字符串 / 注释 / 美元引用给出偏移错误',
+        ],
+        howToUse: [
+          '粘贴含占位符的 SQL，源风格保持「自动识别」或手动指定，选择目标风格',
+          '位置式转命名式时可调整命名前缀（默认 p，生成 p1、p2…）',
+          '查看转换结果与参数清单，确认逻辑参数数量与绑定次数',
+          '使用复制按钮获取新 SQL；出现错误时按提示的偏移修正未闭合区域或非法编号',
+        ],
+        useCases: [
+          '在 JDBC（?）、PostgreSQL（$n）、SQL Server（@pN）与 Python DB-API（%s / %(name)s）之间迁移 SQL',
+          '把 MyBatis / Hibernate 风格的命名参数改写为目标驱动要求的位置或编号占位符',
+          '审计 SQL 中参数占位符的数量、重复绑定与参数命名',
+          '为预编译语句（Prepared Statement）生成驱动匹配的占位符序列',
+        ],
+        privacyNote:
+          'SQL 仅在浏览器内存中由纯函数做词法处理，不上传任何数据、不发起网络请求，刷新页面即清空。',
+        faqs: [
+          {
+            question: '为什么字符串或注释里的 ? / :name 没有被转换？',
+            answer:
+              '这是刻意设计：词法扫描器会跳过单引号字符串、引号 / 反引号 / 方括号标识符、行注释、块注释与美元引用，这些区域内的符号属于数据或注释而非参数，改写它们会破坏 SQL 语义。',
+          },
+          {
+            question: '命名式转成问号后参数顺序如何确定？',
+            answer:
+              '按占位符在 SQL 中从左到右的出现顺序展开；同名参数重复出现时每次绑定都生成一个独立的 ?，参数清单中该逻辑参数的绑定次数相应累计，绑定时按相同顺序重复传值即可。',
+          },
+          {
+            question: '自动识别为什么有时报错？',
+            answer:
+              '同一条 SQL 中出现两种及以上占位符风格（例如同时有 ? 和 :name）时无法安全推断意图，工具会列出检测到的风格，请在源风格下拉中手动指定实际要转换的那一种。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The SQL Parameter Placeholder Converter is a fully in-browser developer tool for migrating SQL across the placeholder conventions used by different database drivers and ORMs. It works by lexical scanning rather than SQL parsing: it recognizes the nine placeholder families in code regions while leaving single-quoted strings, double-quoted/backtick/bracket identifiers, -- line comments, /* */ block comments and PostgreSQL dollar-quoted strings untouched, so symbols inside those regions are never rewritten. Output includes the rewritten SQL, auto-detected source style, a deduplicated logical parameter list and per-parameter binding counts.',
+        coreFeatures: [
+          'Nine-style conversion: positional ? and %s; numbered $n, :n, @pN; named :name, @name, %(name)s and {{name}}',
+          'Auto-detection of a single source style, with an explicit error listing styles when mixed conventions are found',
+          'Lexically skipped regions: string literals (with doubled and backslash escapes), quoted/backtick/bracket identifiers, nested-capable line/block comments and $$ / $tag$ dollar quotes',
+          'Ambiguity guards: :: casts, @@ system variables and the ?| / ?& jsonb operators are never mistaken for placeholders',
+          'Unified parameter model: numbered and named placeholders deduplicate into logical parameters with binding counts; positional-to-named generates prefix-plus-index names',
+          'Named-to-positional expansion: repeated same-name bindings become separate positional placeholders while the parameter list stays logically deduplicated',
+          'Strict validation: numbered placeholders must start at 1 and be contiguous (repeats allowed), names must match [A-Za-z_][A-Za-z0-9_]*, and unterminated strings/comments/dollar quotes report their offset',
+        ],
+        howToUse: [
+          'Paste SQL with placeholders, keep auto-detect or pick the source style manually, then choose a target style',
+          'For positional-to-named conversion, adjust the name prefix if needed (default p producing p1, p2…)',
+          'Review the rewritten SQL and parameter table for logical parameter count and binding counts',
+          'Copy the new SQL; on error, fix the unterminated region or illegal number at the reported offset',
+        ],
+        useCases: [
+          'Migrating SQL between JDBC (?), PostgreSQL ($n), SQL Server (@pN) and Python DB-API (%s / %(name)s)',
+          'Rewriting MyBatis/Hibernate-style named parameters into the positional or numbered form a driver requires',
+          'Auditing placeholder counts, repeated bindings and parameter naming in existing SQL',
+          'Generating driver-matching placeholder sequences for prepared statements',
+        ],
+        privacyNote:
+          'SQL is processed only in browser memory by pure lexical functions. Nothing is uploaded, no network request is made, and refreshing the page clears the input.',
+        faqs: [
+          {
+            question: 'Why are ? or :name tokens inside strings and comments left unchanged?',
+            answer:
+              'By design: the lexer skips single-quoted strings, quoted/backtick/bracket identifiers, line and block comments and dollar-quoted regions, because symbols there are data or comments rather than parameters, and rewriting them would corrupt the SQL.',
+          },
+          {
+            question: 'How is parameter order decided when converting named placeholders to question marks?',
+            answer:
+              'Placeholders expand in left-to-right appearance order; a repeated same-name parameter produces a separate ? for every binding while its binding count accumulates in the parameter table, so bind values in the same order, repeating as needed.',
+          },
+          {
+            question: 'Why does auto-detect sometimes fail?',
+            answer:
+              'When two or more placeholder families coexist in one statement (for example both ? and :name), intent cannot be inferred safely. The tool lists the detected styles; manually choose the actual source style in the dropdown to proceed.',
           },
         ],
       },
