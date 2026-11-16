@@ -403,4 +403,5 @@ export const toolLoaders: Record<
   'base64url-base64-converter': () => import('./base64url-base64-converter'),
   'paper-size-dpi-calculator': () => import('./paper-size-dpi-calculator'),
   'electricity-bill-calculator': () => import('./electricity-bill-calculator'),
+  'dna-rna-sequence-analyzer': () => import('./dna-rna-sequence-analyzer'),
 };

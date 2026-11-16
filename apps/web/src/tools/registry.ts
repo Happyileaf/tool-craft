@@ -9,6 +9,7 @@ import { DEFAULT_SAMPLE as JSON_TO_CPP_SAMPLE } from './json-to-cpp/constants';
 import { DEFAULT_INPUT as BASE64URL_CONVERTER_SAMPLE } from './base64url-base64-converter/constants';
 import { DEFAULT_PRESET_ID as PAPER_DPI_PRESET, DEFAULT_DPI as PAPER_DPI_DEFAULT } from './paper-size-dpi-calculator/constants';
 import { DEFAULT_FLAT_PRICE as ELECTRICITY_FLAT_PRICE } from './electricity-bill-calculator/constants';
+import { DEFAULT_SAMPLE as DNA_RNA_SAMPLE } from './dna-rna-sequence-analyzer/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -38228,6 +38229,116 @@ sqrt(area) + 2 * r`,
             question: 'How are yearly figures derived?',
             answer:
               'Yearly kWh and cost are estimated as monthly values × 12 without distinguishing month lengths or seasons; the reverse estimate uses 365×24 = 8760 hours per year for average power.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'dna-rna-sequence-analyzer',
+    name: 'DNA / RNA 序列分析器',
+    nameEn: 'DNA / RNA Sequence Analyzer',
+    description:
+      '粘贴 DNA 或 RNA 序列（支持 FASTA 头、空白、换行、行号与空位），自动识别核酸类型并计算长度、碱基组成与 GC 含量，生成互补链、反向互补链与转录 mRNA，按标准遗传密码表对正链与反向互补链做六框翻译，标注终止密码子、模糊碱基与不完整末尾密码子；纯本地文本处理，序列不上传。',
+    descriptionEn:
+      'Paste a DNA or RNA sequence with FASTA headers, whitespace, line numbers and gaps to auto-detect nucleic-acid type, compute length, base composition and GC content, build the complement, reverse complement and transcribed mRNA, and translate all six reading frames with the standard genetic code, flagging stop codons, ambiguous bases and incomplete trailing codons; fully local with no upload.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/dna-rna-sequence-analyzer',
+    iconName: 'Dna',
+    tags: ['DNA', 'RNA', '反向互补', '转录', '六框翻译', 'GC 含量'],
+    tagsEn: ['DNA', 'RNA', 'Reverse Complement', 'Transcription', 'Six-Frame Translation', 'GC Content'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DNA_RNA_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          'DNA / RNA 序列分析器是一款纯浏览器本地的分子生物学工具，用于核酸学习、引物检查与 ORF 快速浏览。它会先清洗输入（忽略 FASTA 头、空白、数字行号与比对空位），再识别 DNA / RNA 类型，计算长度、碱基组成与 GC / AT 含量，生成互补链、反向互补链与转录 mRNA，并依据标准遗传密码表（64 个密码子）对正链与反向互补链各三个读框做六框翻译，终止密码子输出 *、含模糊碱基的密码子输出 X，末尾不足三个碱基的部分不翻译并提示剩余长度。',
+        coreFeatures: [
+          '智能清洗：跳过 FASTA 头行，移除空白、数字行号与 - 空位（并计数），统一转大写、自动拼接多行',
+          '类型识别：含 U 不含 T 判为 RNA、含 T 不含 U 判为 DNA，同时含 T/U 报错，两者皆无按 DNA 推断并注明',
+          '序列统计：长度、各碱基计数、GC 含量、AT/AU 含量与 IUPAC 模糊碱基数量',
+          '序列变换：互补链、反向互补链（RNA 不产生 T）与转录 mRNA（DNA 的 T→U）',
+          '六框翻译：+1/+2/+3 与 -1/-2/-3 读框，终止密码子 * 保留以便识别完整 ORF，模糊密码子输出 X',
+          'IUPAC 支持：R↔Y、S↔S、W↔W、K↔M、B↔V、D↔H、N↔N 等模糊碱基互补',
+          '严格边界：清洗后为空、含非 IUPAC 字符（给出 1-based 位置）、T/U 混用或长度超 100000 nt 均明确报错',
+        ],
+        howToUse: [
+          '把序列粘贴到输入框，可带 FASTA 头、空格、换行与行号，工具自动清洗拼接',
+          '查看类型与统计卡片，确认核酸类型、长度、GC 含量与碱基组成',
+          '在序列变换区复制互补链、反向互补链或 mRNA',
+          '在六框翻译表中查看各读框氨基酸序列、终止密码子位置与未翻译的末尾碱基',
+          '出现错误时按提示的位置修正非法字符或 T/U 混用后重试',
+        ],
+        useCases: [
+          '分子生物学课程中练习反向互补、转录与翻译',
+          '检查 PCR / 测序引物的 GC 含量与反向互补序列',
+          '快速浏览一段序列六个读框中的开放阅读框（ORF）与终止密码子分布',
+          '处理含 IUPAC 模糊碱基或比对空位的测序结果',
+        ],
+        privacyNote:
+          '所有序列仅在浏览器内存中由纯函数处理，不上传任何数据、不发起网络请求，刷新页面即清空。',
+        faqs: [
+          {
+            question: '为什么翻译结果里有 * 和 X？',
+            answer:
+              '* 代表终止密码子（UAA、UAG、UGA），保留在肽链中便于判断完整 ORF 的边界；X 表示该密码子含 N、R、Y 等 IUPAC 模糊碱基，无法唯一确定氨基酸。',
+          },
+          {
+            question: 'RNA 的反向互补为什么没有 T？',
+            answer:
+              'RNA 以 U 替代 T，互补时 A 与 U 配对，因此 RNA 序列的互补与反向互补仍只含 A/U/C/G（及模糊碱基），不会产生 DNA 特有的 T。',
+          },
+          {
+            question: '末尾不足三个碱基怎么办？',
+            answer:
+              '翻译以三个碱基为一个密码子，末尾剩余 1–2 个碱基无法构成完整密码子，工具不会强行翻译，而在读框结果中提示未翻译的末尾碱基数量。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The DNA / RNA Sequence Analyzer is a fully in-browser molecular-biology tool for coursework, primer checks and quick ORF review. It first cleans the input by skipping FASTA headers and stripping whitespace, numeric line numbers and alignment gaps (with counts), then detects DNA versus RNA, computes length, base composition and GC/AT content, builds the complement, reverse complement and transcribed mRNA, and translates all six reading frames of the forward and reverse-complement strands using the standard 64-codon genetic code — stop codons become *, ambiguous codons become X, and incomplete trailing codons are reported rather than forced.',
+        coreFeatures: [
+          'Smart cleaning: FASTA headers skipped, whitespace, line numbers and - gaps removed with counts, uppercased and multi-line joined',
+          'Type detection: U without T means RNA, T without U means DNA, mixed T/U errors, neither present infers DNA with a note',
+          'Statistics: length, per-base counts, GC content, AT/AU content and IUPAC ambiguous-base count',
+          'Transforms: complement, reverse complement (RNA never produces T) and transcribed mRNA (DNA T→U)',
+          'Six-frame translation: +1/+2/+3 and -1/-2/-3 frames with retained stop markers for full-ORF spotting and X for ambiguous codons',
+          'IUPAC support including R↔Y, S↔S, W↔W, K↔M, B↔V, D↔H and N↔N ambiguity complements',
+          'Strict boundaries: empty cleaned input, non-IUPAC characters with 1-based position, mixed T/U and sequences over 100000 nt all produce explicit errors',
+        ],
+        howToUse: [
+          'Paste the sequence with optional FASTA headers, spaces, line breaks and line numbers; cleaning and joining are automatic',
+          'Check the type and statistics card for nucleic-acid type, length, GC content and base counts',
+          'Copy the complement, reverse complement or mRNA from the transforms section',
+          'Read amino-acid sequences, stop positions and untranslated trailing bases in the six-frame table',
+          'On error, fix the flagged illegal character or mixed T/U at the reported position and retry',
+        ],
+        useCases: [
+          'Practising reverse complement, transcription and translation in molecular-biology courses',
+          'Checking GC content and reverse complements of PCR or sequencing primers',
+          'Scanning open reading frames and stop-codon distribution across all six frames',
+          'Handling sequencing results with IUPAC ambiguity codes or alignment gaps',
+        ],
+        privacyNote:
+          'Sequences are processed only in browser memory by pure functions. Nothing is uploaded, no network request is made, and refreshing the page clears the input.',
+        faqs: [
+          {
+            question: 'What do * and X mean in the translation?',
+            answer:
+              '* marks a stop codon (UAA, UAG, UGA) kept in the peptide so full-ORF boundaries are visible; X means the codon contains an IUPAC ambiguity code such as N, R or Y and cannot map to a single amino acid.',
+          },
+          {
+            question: 'Why does an RNA reverse complement contain no T?',
+            answer:
+              'RNA uses U instead of T, and A pairs with U during complementing, so RNA complements only ever contain A/U/C/G (plus ambiguity codes), never the DNA-specific T.',
+          },
+          {
+            question: 'What happens with one or two leftover bases at the end?',
+            answer:
+              'Translation consumes three bases per codon, so a trailing one- or two-base remainder cannot form a complete codon. It is left untranslated and the frame result reports how many trailing bases were skipped.',
           },
         ],
       },

@@ -1,0 +1,87 @@
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.editor {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.inputMeta {
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+}
+
+.baseCounts {
+  margin-top: 16px;
+}
+
+.ambiguousTag {
+  margin-inline-start: 4px;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.noticeRow {
+  margin-top: 12px;
+}
+
+.transformList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.transformRow {
+  display: grid;
+  grid-template-columns: 110px 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.transformLabel {
+  font-size: 13px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.55));
+}
+
+.sequenceBox {
+  display: block;
+  padding: 8px 12px;
+  background: var(--color-fill-secondary, rgba(0, 0, 0, 0.04));
+  border-radius: 6px;
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-size: 13px;
+  word-break: break-all;
+  min-height: 34px;
+}
+
+.mono {
+  font-family: var(--font-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace);
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+}
+
+.aminoLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .transformRow {
+    grid-template-columns: 1fr;
+  }
+}
