@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261116141427 | 电阻 / 阻抗网络 Δ-Y（三角形-星形）双向等效变换计算器 | Web Tool | Existing Gap | `delta-wye-transform` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261116141427.md) |
+| 20261116141426 | ADC / DAC 量化参数计算器（分辨率 / LSB / 量化误差 / SNR / 电压码值互算） | Web Tool | Exploration | `adc-dac-quantizer` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261116141426.md) |
+| 20261115140203 | 体脂率估算计算器（US Navy 围度法 / BMI 推导法 + 腰臀比风险区间） | Web Tool | Existing Gap | `body-fat-calculator` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261115140203.md) |
+| 20261114200502 | 经济补偿金与代通知金计算器（N / N+1 / 2N，含月工资上限与年限折算） | Web Tool | Exploration | `severance-pay-calculator` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261114200502.md) |
+| 20261116081911 | 国际象棋 FEN 局面解析与棋盘可视化器（结构校验 / Unicode 棋盘 / 标准序列化） | Web Tool | Exploration | `fen-parser` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261116081911.md) |
 | 20261114200459 | 曝光值（EV）与 ND 滤镜等效曝光计算器 | Web Tool | Exploration | `exposure-value-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261114200459.md) |
 | 20261115140202 | 相机视角（FOV）与等效焦距计算器（传感器画幅 / 裁切系数 / 双向换算） | Web Tool | Existing Gap | `fov-focal-length-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261115140202.md) |
 | 20261114200501 | 电池续航时间计算器（容量 / 负载 / 效率 / Peukert 与串并联组包） | Web Tool | Existing Gap | `battery-runtime-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261114200501.md) |
