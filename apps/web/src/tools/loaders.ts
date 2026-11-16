@@ -413,4 +413,5 @@ export const toolLoaders: Record<
   'delta-wye-transform': () => import('./delta-wye-transform'),
   'adc-dac-quantizer': () => import('./adc-dac-quantizer'),
   'body-fat-calculator': () => import('./body-fat-calculator'),
+  'severance-pay-calculator': () => import('./severance-pay-calculator'),
 };

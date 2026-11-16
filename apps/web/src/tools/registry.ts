@@ -39289,6 +39289,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'severance-pay-calculator',
+    name: '经济补偿金与代通知金计算器',
+    nameEn: 'Severance Pay Calculator (N / N+1 / 2N)',
+    description:
+      '依据《劳动合同法》估算解除劳动合同补偿：工龄折算补偿月数（满一年一个月、满六个月按一年、不足六个月半个月），支持 N / N+1 代通知金 / 2N 违法解除赔偿，自动处理社平工资三倍封顶与 12 年年限封顶，输出分项计算明细，纯本地计算。',
+    descriptionEn:
+      'Estimate Chinese labor-contract severance under the Labor Contract Law: tenure-to-month conversion, N / N+1 notice pay / 2N illegal-termination scenarios, automatic 3x average-wage cap and 12-year cap, with an itemized breakdown, fully local.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/severance-pay-calculator',
+    iconName: 'Coins',
+    tags: ['经济补偿金', '代通知金', 'N+1', '2N', '劳动合同法', 'HR'],
+    tagsEn: ['Severance', 'Notice Pay', 'N+1', '2N', 'Labor Law', 'HR'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '经济补偿金与代通知金计算器依据《中华人民共和国劳动合同法》第 40、47、87 条，在浏览器本地估算用人单位解除劳动合同时应支付的补偿。输入工龄（年 + 剩余月）、离职前月平均工资与当地上年度职工月平均工资，即可得到折算补偿月数 N、计算基数、经济补偿金、代通知金或 2N 赔偿金，并展示每一步的分项计算过程与封顶判定。',
+        coreFeatures: [
+          '年限折算：每满一年一个月工资，六个月以上不满一年按一年，不满六个月按半个月',
+          '三种情形：N 经济补偿、N+1（未提前 30 日通知的代通知金）、2N 违法解除赔偿金',
+          '三倍封顶：月工资高于社平三倍时基数按三倍封顶，且补偿年限最高不超过 12 年',
+          '社平工资留空时不触发封顶，按实际工资与实际年限计算并明确提示',
+          '输出 N、计发月数、月基数、补偿金、代通知金、总额与逐条计算明细，金额保留两位小数',
+        ],
+        howToUse: [
+          '选择解除情形（N / N+1 / 2N），界面会同步显示该情形对应的法律条款提示',
+          '填写工作年数与剩余月数（0–11）、离职前 12 个月平均月工资',
+          '如已知当地上年度职工月平均工资则填写，工具会自动判断是否触发三倍与 12 年封顶；未知可留空',
+          '查看总额卡片、指标卡与分项明细表，可点击「复制明细」导出文本备查',
+        ],
+        useCases: [
+          'HR 在协商解除、裁员方案中快速测算不同情形下的补偿预算',
+          '劳动者评估本人应得经济补偿或赔偿金，作为与用人单位协商的参考',
+          '教学与普法场景演示第 47 条年限折算与三倍封顶规则的实际运算',
+        ],
+        privacyNote:
+          '工资与工龄数据仅在浏览器本地参与计算，不发起任何网络请求，不存储或上传任何个人信息。',
+        faqs: [
+          {
+            question: 'N、N+1、2N 分别适用于什么情形？',
+            answer:
+              'N 是《劳动合同法》第 46 条规定的一般经济补偿（如协商一致解除、无过失性辞退、经济性裁员）；N+1 适用于第 40 条的医疗期满、不胜任工作、客观情况重大变化三种情形且单位未提前 30 日书面通知，多付的一个月即代通知金；2N 是第 87 条规定的违法解除赔偿金，标准为经济补偿的二倍，且不再叠加代通知金。',
+          },
+          {
+            question: '三倍社平工资封顶和 12 年上限怎么触发？',
+            answer:
+              '当劳动者月工资高于当地上年度职工月平均工资的三倍时，计算基数按三倍数额封顶，同时支付经济补偿的年限最高不超过 12 年。两个条件联动：未超过三倍社平时，即使工龄超过 12 年也按实际年限计算。工资恰好等于三倍社平时不属于「高于」，不触发封顶。',
+          },
+          {
+            question: '为什么工具结果可能与实际仲裁金额不同？',
+            answer:
+              '本工具为规则化估算，未纳入 2008 年《劳动合同法》施行前后的工龄分段计算、各地司法口径差异、月工资构成（奖金 / 津贴 / 加班费是否计入）的个案认定以及证据因素。实际金额以劳动仲裁或法院认定为准，页面固定标注「估算结果，非正式法律意见」。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Severance Pay Calculator estimates employer-paid compensation for terminating a Chinese labor contract locally in the browser, based on Articles 40, 47 and 87 of the PRC Labor Contract Law. Given tenure (years plus remaining months), average monthly wage and the local prior-year average wage, it derives the compensation month count N, capped wage base, severance, notice pay or 2N illegal-termination damages, with a step-by-step breakdown and cap decisions.',
+        coreFeatures: [
+          'Tenure conversion: one month per full year, one month for six-plus remaining months, half a month under six',
+          'Three scenarios: N severance, N+1 with one-month notice pay, 2N damages for illegal termination',
+          'Triple-average-wage cap on the base plus a 12-year maximum on compensated tenure once the cap triggers',
+          'No cap when local average wage is left blank, with an explicit notice that actual wage and tenure apply',
+          'Outputs N, payable months, monthly base, severance, notice pay, total and an itemized breakdown rounded to two decimals',
+        ],
+        howToUse: [
+          'Pick the termination scenario (N / N+1 / 2N); the matching legal article is shown as a hint',
+          'Enter full years, remaining months (0–11) and your average monthly wage over the last 12 months',
+          'Enter the local prior-year average wage if known to enable automatic cap checks, or leave it blank',
+          'Review the total card, metric cards and breakdown table; use "Copy" to export the details',
+        ],
+        useCases: [
+          'HR budgeting severance for mutual termination and redundancy plans',
+          'Workers benchmarking their statutory compensation before negotiating with an employer',
+          'Legal education demonstrating the Article 47 tenure conversion and triple-wage cap in action',
+        ],
+        privacyNote:
+          'Wage and tenure data is processed only in your browser with no network requests and no storage or upload of personal information.',
+        faqs: [
+          {
+            question: 'When do N, N+1 and 2N apply?',
+            answer:
+              'N is the general severance under Article 46 (mutual agreement, non-fault dismissal, economic layoff). N+1 applies to the three Article 40 cases—medical period expiry, incompetence, major objective change—when 30-day written notice was not given, adding one month of notice pay. 2N is double severance for illegal termination under Article 87 and is not stacked with notice pay.',
+          },
+          {
+            question: 'How do the triple-wage cap and 12-year limit trigger?',
+            answer:
+              'When monthly wage exceeds three times the local prior-year average wage, the calculation base is capped at that triple amount and compensated tenure is limited to 12 years. The two rules are linked: below the triple threshold, full tenure counts even beyond 12 years. A wage exactly equal to the triple average is not "above" it and does not trigger the cap.',
+          },
+          {
+            question: 'Why might the estimate differ from an actual arbitration award?',
+            answer:
+              'This is a rule-based estimate. It excludes pre/post-2008 tenure segmentation, local judicial variations, case-specific treatment of wage components (bonuses, allowances, overtime) and evidentiary factors. Actual amounts are determined by labor arbitration or court; the page always states that the output is an estimate, not legal advice.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
