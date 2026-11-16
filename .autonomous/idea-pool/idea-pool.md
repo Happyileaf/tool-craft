@@ -360,4 +360,9 @@
 | 20261116141425 | 曼彻斯特 / 差分曼彻斯特线路编解码器（IEEE 802.3 与 Thomas 约定） | Web Tool | External Reference | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141425.md) |
 | 20261116141426 | ADC / DAC 量化参数计算器（分辨率 / LSB / 量化误差 / SNR / 电压码值互算） | Web Tool | Exploration | Pending | 2026-11-16 | | [详情](./idea-details/20261116141426.md) |
 | 20261116141427 | 电阻 / 阻抗网络 Δ-Y（三角形-星形）双向等效变换计算器 | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116141427.md) |
+| 20261116200511 | ACME dns-01 挑战 TXT 记录与 Key Authorization 生成器（RFC 8555） | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116200511.md) |
+| 20261116200512 | 802.1Q VLAN 标签（含 QinQ 双层）编解码与字段解析器 | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116200512.md) |
+| 20261116200513 | CAN 2.0 总线帧字段与位时序 / 波特率计算器（含 CRC-15 与位填充计数） | Web Tool | External Reference | Pending | 2026-11-16 | | [详情](./idea-details/20261116200513.md) |
+| 20261116200514 | JavaScript 错误堆栈（Error Stack）解析与结构化查看器（V8 / Firefox / Safari 多方言） | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116200514.md) |
+| 20261116200515 | APNG 动画 PNG 块（chunk）结构解析与帧信息查看器 | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116200515.md) |
 
