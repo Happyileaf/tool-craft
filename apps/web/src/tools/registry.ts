@@ -39592,6 +39592,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'acme-dns01-challenge',
+    name: 'ACME dns-01 挑战 TXT 记录生成器',
+    nameEn: 'ACME dns-01 Challenge TXT Record Builder',
+    description:
+      '按 RFC 8555 在本地生成 dns-01 挑战所需的 Key Authorization 与 DNS TXT 记录值（base64url(SHA-256)），支持手动 token + JWK thumbprint 或浏览器内生成 P-256 密钥对，并可反向校验记录值，覆盖通配符域名。',
+    descriptionEn:
+      'Build RFC 8555 dns-01 challenge Key Authorization and DNS TXT values (base64url-encoded SHA-256) locally, from a manual token plus JWK thumbprint or an in-browser P-256 key pair, with reverse verification and wildcard domain support.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/acme-dns01-challenge',
+    iconName: 'SafetyCertificate',
+    tags: ['ACME', 'dns-01', 'Let\u0027s Encrypt', 'TXT 记录', 'JWK', '证书续期'],
+    tagsEn: ['ACME', 'dns-01', "Let's Encrypt", 'TXT Record', 'JWK', 'Cert Renewal'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'ACME dns-01 挑战 TXT 记录生成器在浏览器本地完成 RFC 8555 定义的 DNS-01 挑战计算：Key Authorization 由挑战 token、点号与账户 JWK 公钥指纹（RFC 7638 thumbprint）拼接而成，再对其做 SHA-256 并以 base64url 编码得到写入 _acme-challenge.<域名> 的 TXT 记录值。支持手动输入或直接在浏览器中生成 P-256 密钥对，全程无网络请求。',
+        coreFeatures: [
+          '双输入模式：手动 token + JWK thumbprint，或 Web Crypto 生成 P-256（ECDSA P-256）密钥对并自动计算指纹',
+          'RFC 7638 规范化 JWK：仅保留 crv/kty/x/y 并按字典序序列化，指纹计算与官方 RSA 标准向量互验通过',
+          '一键产出记录名、TXT 值与完整 Key Authorization，附 TTL 建议的 DNS 记录表格与复制按钮',
+          '通配符域名自动剥离前导 *（*.example.com → _acme-challenge.example.com）',
+          '反向校验模式：粘贴 Key Authorization 与 TXT 值核对哈希是否匹配',
+        ],
+        howToUse: [
+          '选择输入模式：手动模式填入 ACME 服务端下发的 token 与账户 JWK thumbprint；密钥对模式点击生成 P-256 密钥',
+          '填入需要验证的域名（通配符证书填 *.example.com 即可）',
+          '复制记录名 _acme-challenge.<域名> 与 TXT 值到 DNS 服务商处发布，等待 DNS 生效后回到 ACME 客户端触发校验',
+          '可用校验模式核对已有 Key Authorization 与 TXT 值是否一致',
+        ],
+        useCases: [
+          'Let\u0027s Encrypt 等 ACME CA 的通配符证书手动签发与续期排障',
+          '离线环境或自动化脚本中预计算 dns-01 挑战记录',
+          '学习 ACME 协议挑战流程与 JWK thumbprint 计算原理',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地通过 Web Crypto 完成，密钥材料不会离开设备，工具不发起任何网络请求也不记录输入。',
+        faqs: [
+          {
+            question: 'TXT 记录值为什么是 43 个字符？',
+            answer:
+              'SHA-256 输出 32 字节，经 base64url 编码（无填充）后固定为 43 个字符，字符集仅含 A-Z、a-z、0-9、- 与 _。',
+          },
+          {
+            question: '通配符域名的记录名要带星号吗？',
+            answer:
+              '不需要。RFC 8555 规定对 *.example.com 的挑战仍发布在 _acme-challenge.example.com，工具会自动剥离前导星号。',
+          },
+          {
+            question: 'JWK thumbprint 是怎么算的？',
+            answer:
+              '按 RFC 7638，从 JWK 中仅提取 RSA 的 n/e 或 EC 的 crv/kty/x/y，按键名字典序组成无空白 JSON，SHA-256 后做 base64url 编码即得指纹。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ACME dns-01 Challenge TXT Record Builder performs the RFC 8555 DNS-01 computation entirely in your browser: the Key Authorization is the challenge token, a dot, and the account JWK thumbprint (RFC 7638); hashing it with SHA-256 and base64url-encoding the digest yields the TXT record published at _acme-challenge.<domain>. It accepts manual input or an in-browser P-256 key pair, with no network calls.',
+        coreFeatures: [
+          'Dual input: manual token plus JWK thumbprint, or a Web Crypto P-256 (ECDSA) key pair with automatic thumbprint',
+          'RFC 7638 canonical JWK: only crv/kty/x/y in lexicographic order; verified against the official RSA test vector',
+          'One-click record name, TXT value and full Key Authorization with a TTL-guided DNS table and copy buttons',
+          'Wildcard domains: leading * is stripped automatically (*.example.com → _acme-challenge.example.com)',
+          'Reverse verification mode to cross-check an existing Key Authorization against its TXT value',
+        ],
+        howToUse: [
+          'Pick an input mode: paste the ACME token and account JWK thumbprint, or generate a P-256 key in the browser',
+          'Enter the domain to validate (use *.example.com for wildcard certificates)',
+          'Publish the record name and TXT value at your DNS provider, wait for propagation, then trigger validation in your ACME client',
+          'Use verify mode to check that an existing Key Authorization and TXT value match',
+        ],
+        useCases: [
+          'Manual issuance and renewal troubleshooting of wildcard certificates with Let\u0027s Encrypt and other ACME CAs',
+          'Pre-computing dns-01 records for offline environments or automation scripts',
+          'Learning the ACME challenge flow and JWK thumbprint mechanics',
+        ],
+        privacyNote:
+          'All computation runs locally via Web Crypto. Key material never leaves your device; the tool makes no network requests and stores no input.',
+        faqs: [
+          {
+            question: 'Why is the TXT value always 43 characters?',
+            answer:
+              'SHA-256 produces 32 bytes, which encode to 43 unpadded base64url characters using only A-Z, a-z, 0-9, - and _.',
+          },
+          {
+            question: 'Does the wildcard record name keep the asterisk?',
+            answer:
+              'No. RFC 8555 publishes the challenge for *.example.com at _acme-challenge.example.com; the tool strips the leading asterisk automatically.',
+          },
+          {
+            question: 'How is the JWK thumbprint computed?',
+            answer:
+              'Per RFC 7638, keep only RSA n/e or EC crv/kty/x/y, serialize them as whitespace-free JSON with lexicographically sorted keys, then base64url-encode the SHA-256 digest.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
