@@ -415,4 +415,9 @@ export const toolLoaders: Record<
   'body-fat-calculator': () => import('./body-fat-calculator'),
   'severance-pay-calculator': () => import('./severance-pay-calculator'),
   'fen-parser': () => import('./fen-parser'),
+  'wake-on-lan-magic-packet': () => import('./wake-on-lan-magic-packet'),
+  'acme-dns01-challenge': () => import('./acme-dns01-challenge'),
+  'vlan-tag-codec': () => import('./vlan-tag-codec'),
+  'dhcpv4-packet-codec': () => import('./dhcpv4-packet-codec'),
+  'error-stack-parser': () => import('./error-stack-parser'),
 };

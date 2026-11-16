@@ -355,14 +355,9 @@
 | 20261116141423 | UDP 报文头构造与十六进制解析器（RFC 768，含伪首部校验和） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141423.md) |
 | 20261116141424 | RTP 报文头字段解析与构造器（RFC 3550，含 CSRC / 扩展头） | Web Tool | Exploration | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141424.md) |
 | 20261116141425 | 曼彻斯特 / 差分曼彻斯特线路编解码器（IEEE 802.3 与 Thomas 约定） | Web Tool | External Reference | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141425.md) |
-| 20261116200511 | ACME dns-01 挑战 TXT 记录与 Key Authorization 生成器（RFC 8555） | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116200511.md) |
-| 20261116200512 | 802.1Q VLAN 标签（含 QinQ 双层）编解码与字段解析器 | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116200512.md) |
 | 20261116200513 | CAN 2.0 总线帧字段与位时序 / 波特率计算器（含 CRC-15 与位填充计数） | Web Tool | External Reference | Pending | 2026-11-16 | | [详情](./idea-details/20261116200513.md) |
-| 20261116200514 | JavaScript 错误堆栈（Error Stack）解析与结构化查看器（V8 / Firefox / Safari 多方言） | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116200514.md) |
 | 20261116200515 | APNG 动画 PNG 块（chunk）结构解析与帧信息查看器 | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116200515.md) |
-| 20261117020628 | DHCPv4 报文解析与构造器（RFC 2131，BOOTP 头与 TLV options） | Web Tool | Existing Gap | Pending | 2026-11-17 | | [详情](./idea-details/20261117020628.md) |
 | 20261117020629 | PDF 结构解析器（对象 / xref / Trailer 查看器） | Web Tool | Existing Gap | Pending | 2026-11-17 | | [详情](./idea-details/20261117020629.md) |
 | 20261117020630 | 运算放大器电路计算器（反相 / 同相 / 加法 / 差分） | Web Tool | Existing Gap | Pending | 2026-11-17 | | [详情](./idea-details/20261117020630.md) |
-| 20261117020631 | Wake-on-LAN 魔术包构造器（含反向校验解析） | Web Tool | Existing Gap | Pending | 2026-11-17 | | [详情](./idea-details/20261117020631.md) |
 | 20261117020632 | 图像直方图与通道统计分析器（RGB / 亮度分布与曝光量化） | Web Tool | Existing Gap | Pending | 2026-11-17 | | [详情](./idea-details/20261117020632.md) |
 

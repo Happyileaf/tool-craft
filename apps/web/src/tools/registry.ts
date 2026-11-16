@@ -39491,6 +39491,511 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'wake-on-lan-magic-packet',
+    name: 'Wake-on-LAN 魔术包构造与校验器',
+    nameEn: 'Wake-on-LAN Magic Packet Builder & Validator',
+    description:
+      '按 AMD Magic Packet 规范在本地构造 102 字节 WoL 唤醒帧（6 字节 FF 同步流 + 目标 MAC 重复 16 次），输出 HEX 与 Base64，并支持粘贴报文反向校验与目标 MAC 提取，兼容多种 MAC 写法。',
+    descriptionEn:
+      'Build a 102-byte AMD Wake-on-LAN magic packet locally (6-byte FF sync stream plus the target MAC repeated 16 times), output HEX and Base64, and validate pasted packets to extract the target MAC, accepting multiple MAC notations.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/wake-on-lan-magic-packet',
+    iconName: 'Package',
+    tags: ['Wake-on-LAN', 'WoL', '魔术包', 'MAC 地址', 'UDP', '局域网唤醒'],
+    tagsEn: ['Wake-on-LAN', 'WoL', 'Magic Packet', 'MAC Address', 'UDP', 'LAN Wake'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Wake-on-LAN 魔术包构造与校验器在浏览器本地按 AMD Magic Packet 规范生成唤醒帧：报文以 6 字节 0xFF 同步流开头，后接目标网卡 MAC 地址连续重复 16 次，固定总长 102 字节。工具同时提供 HEX / Base64 双视图输出与反向解析校验，帮助网络运维与嵌入式开发人员快速构造、核对 WoL 报文。',
+        coreFeatures: [
+          '规范构造：6 字节 0xFF 同步流 + 目标 MAC 重复 16 次，输出固定 102 字节报文',
+          'MAC 写法自适应：兼容冒号、连字符、Cisco 点分（aabb.ccdd.eeff）与无分隔符等写法',
+          '双视图输出：连续 / 按字节分组的 HEX 与 Base64，一键复制并附 UDP 端口与广播地址说明',
+          '反向校验：粘贴 HEX 或 Base64 报文，校验长度、同步头与 16 份 MAC 一致性并提取目标 MAC',
+          '精准错误定位：长度不符、同步头错误、重复不一致、非法字符均返回带偏移的明确提示',
+        ],
+        howToUse: [
+          '在「构造魔术包」模式输入目标设备 MAC（如 AA:BB:CC:DD:EE:FF），页面即时生成报文',
+          '按需切换 HEX 空格分组、选择常用 UDP 端口（9 / 7），点击复制按钮取走 HEX 或 Base64',
+          '切换到「反向解析校验」模式，粘贴待验报文并选择 HEX / Base64 载体',
+          '查看校验结论与提取出的目标 MAC；畸形报文会显示具体失败原因',
+        ],
+        useCases: [
+          '运维批量唤醒机房 / 办公网内处于待机状态的主机',
+          '嵌入式与网卡固件开发中核对 WoL 帧的字节布局',
+          '教学演示数据链路层广播唤醒原理与魔术包结构',
+        ],
+        privacyNote:
+          '所有 MAC 规范化与字节运算均在浏览器本地完成，工具不会发送任何网络数据包，也不记录或上传输入内容。',
+        faqs: [
+          {
+            question: '魔术包为什么固定是 102 字节？',
+            answer:
+              'AMD 规范规定报文由 6 字节 0xFF 同步流和紧随其后的 16 份目标 MAC（每份 6 字节）组成，6 + 16 × 6 = 102 字节，外层再由 UDP 数据报承载。',
+          },
+          {
+            question: '构造出来的包会直接把电脑唤醒吗？',
+            answer:
+              '不会。本工具只在浏览器本地完成字节构造与展示，不实际发送数据。实际唤醒需将报文通过 UDP（常见端口 9）发往子网定向广播地址，且目标网卡需在 BIOS / 系统中启用 WoL 并保持待机供电。',
+          },
+          {
+            question: '反向解析提示 MAC 重复一致性失败是什么意思？',
+            answer:
+              '报文中同步头之后的 16 份 MAC 必须逐字节完全相同。若其中任意一份被篡改或截断，工具会定位到第一处不一致的字节偏移并报错，说明该报文不是合法魔术包或传输中已损坏。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Wake-on-LAN Magic Packet Builder & Validator creates AMD-standard wake frames locally in your browser: a 6-byte 0xFF sync stream followed by the target NIC MAC repeated 16 times, always 102 bytes. It offers HEX and Base64 views plus reverse validation, helping network operators and embedded developers build and verify WoL frames quickly.',
+        coreFeatures: [
+          'Spec-compliant build: 6-byte 0xFF sync stream plus 16 copies of the target MAC, always 102 bytes',
+          'Flexible MAC input: colon, hyphen, Cisco dotted (aabb.ccdd.eeff) and separator-free notations',
+          'Dual output views: continuous or byte-grouped HEX and Base64 with one-click copy, plus UDP port and broadcast guidance',
+          'Reverse validation: paste HEX or Base64 to verify length, sync header and 16-fold MAC consistency, then extract the target MAC',
+          'Precise error locations for bad length, sync header, repeated-MAC mismatch and illegal characters',
+        ],
+        howToUse: [
+          'In build mode, enter the target MAC (e.g. AA:BB:CC:DD:EE:FF) to generate the packet instantly',
+          'Toggle spaced HEX, pick a common UDP port (9/7), and copy the HEX or Base64 output',
+          'Switch to parse mode, paste a packet and choose its HEX or Base64 carrier',
+          'Review the validation verdict and extracted MAC; malformed packets show a concrete failure reason',
+        ],
+        useCases: [
+          'Remotely waking sleeping hosts in datacenters or office LANs',
+          'Verifying WoL frame byte layout during NIC or firmware development',
+          'Teaching link-layer broadcast wake-up principles and magic packet structure',
+        ],
+        privacyNote:
+          'All MAC normalization and byte arithmetic run locally in your browser. The tool never sends packets and never logs or uploads your input.',
+        faqs: [
+          {
+            question: 'Why is the magic packet exactly 102 bytes?',
+            answer:
+              'The AMD spec defines a 6-byte 0xFF sync stream followed by 16 copies of the target MAC (6 bytes each): 6 + 16 × 6 = 102 bytes, carried inside a UDP datagram.',
+          },
+          {
+            question: 'Will the generated packet wake a computer directly?',
+            answer:
+              'No. The tool only builds and displays bytes locally without sending anything. A real wake requires sending the packet over UDP (commonly port 9) to the subnet directed broadcast address, with WoL enabled in BIOS/OS and standby power on the target NIC.',
+          },
+          {
+            question: 'What does the repeated-MAC consistency error mean?',
+            answer:
+              'The 16 MAC copies after the sync header must be byte-identical. If any copy is altered or truncated, the tool pinpoints the first mismatching byte offset, indicating an invalid magic packet or transport corruption.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'acme-dns01-challenge',
+    name: 'ACME dns-01 挑战 TXT 记录生成器',
+    nameEn: 'ACME dns-01 Challenge TXT Record Builder',
+    description:
+      '按 RFC 8555 在本地生成 dns-01 挑战所需的 Key Authorization 与 DNS TXT 记录值（base64url(SHA-256)），支持手动 token + JWK thumbprint 或浏览器内生成 P-256 密钥对，并可反向校验记录值，覆盖通配符域名。',
+    descriptionEn:
+      'Build RFC 8555 dns-01 challenge Key Authorization and DNS TXT values (base64url-encoded SHA-256) locally, from a manual token plus JWK thumbprint or an in-browser P-256 key pair, with reverse verification and wildcard domain support.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/acme-dns01-challenge',
+    iconName: 'ShieldCheck',
+    tags: ['ACME', 'dns-01', 'Let\u0027s Encrypt', 'TXT 记录', 'JWK', '证书续期'],
+    tagsEn: ['ACME', 'dns-01', "Let's Encrypt", 'TXT Record', 'JWK', 'Cert Renewal'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'ACME dns-01 挑战 TXT 记录生成器在浏览器本地完成 RFC 8555 定义的 DNS-01 挑战计算：Key Authorization 由挑战 token、点号与账户 JWK 公钥指纹（RFC 7638 thumbprint）拼接而成，再对其做 SHA-256 并以 base64url 编码得到写入 _acme-challenge.<域名> 的 TXT 记录值。支持手动输入或直接在浏览器中生成 P-256 密钥对，全程无网络请求。',
+        coreFeatures: [
+          '双输入模式：手动 token + JWK thumbprint，或 Web Crypto 生成 P-256（ECDSA P-256）密钥对并自动计算指纹',
+          'RFC 7638 规范化 JWK：仅保留 crv/kty/x/y 并按字典序序列化，指纹计算与官方 RSA 标准向量互验通过',
+          '一键产出记录名、TXT 值与完整 Key Authorization，附 TTL 建议的 DNS 记录表格与复制按钮',
+          '通配符域名自动剥离前导 *（*.example.com → _acme-challenge.example.com）',
+          '反向校验模式：粘贴 Key Authorization 与 TXT 值核对哈希是否匹配',
+        ],
+        howToUse: [
+          '选择输入模式：手动模式填入 ACME 服务端下发的 token 与账户 JWK thumbprint；密钥对模式点击生成 P-256 密钥',
+          '填入需要验证的域名（通配符证书填 *.example.com 即可）',
+          '复制记录名 _acme-challenge.<域名> 与 TXT 值到 DNS 服务商处发布，等待 DNS 生效后回到 ACME 客户端触发校验',
+          '可用校验模式核对已有 Key Authorization 与 TXT 值是否一致',
+        ],
+        useCases: [
+          'Let\u0027s Encrypt 等 ACME CA 的通配符证书手动签发与续期排障',
+          '离线环境或自动化脚本中预计算 dns-01 挑战记录',
+          '学习 ACME 协议挑战流程与 JWK thumbprint 计算原理',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地通过 Web Crypto 完成，密钥材料不会离开设备，工具不发起任何网络请求也不记录输入。',
+        faqs: [
+          {
+            question: 'TXT 记录值为什么是 43 个字符？',
+            answer:
+              'SHA-256 输出 32 字节，经 base64url 编码（无填充）后固定为 43 个字符，字符集仅含 A-Z、a-z、0-9、- 与 _。',
+          },
+          {
+            question: '通配符域名的记录名要带星号吗？',
+            answer:
+              '不需要。RFC 8555 规定对 *.example.com 的挑战仍发布在 _acme-challenge.example.com，工具会自动剥离前导星号。',
+          },
+          {
+            question: 'JWK thumbprint 是怎么算的？',
+            answer:
+              '按 RFC 7638，从 JWK 中仅提取 RSA 的 n/e 或 EC 的 crv/kty/x/y，按键名字典序组成无空白 JSON，SHA-256 后做 base64url 编码即得指纹。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ACME dns-01 Challenge TXT Record Builder performs the RFC 8555 DNS-01 computation entirely in your browser: the Key Authorization is the challenge token, a dot, and the account JWK thumbprint (RFC 7638); hashing it with SHA-256 and base64url-encoding the digest yields the TXT record published at _acme-challenge.<domain>. It accepts manual input or an in-browser P-256 key pair, with no network calls.',
+        coreFeatures: [
+          'Dual input: manual token plus JWK thumbprint, or a Web Crypto P-256 (ECDSA) key pair with automatic thumbprint',
+          'RFC 7638 canonical JWK: only crv/kty/x/y in lexicographic order; verified against the official RSA test vector',
+          'One-click record name, TXT value and full Key Authorization with a TTL-guided DNS table and copy buttons',
+          'Wildcard domains: leading * is stripped automatically (*.example.com → _acme-challenge.example.com)',
+          'Reverse verification mode to cross-check an existing Key Authorization against its TXT value',
+        ],
+        howToUse: [
+          'Pick an input mode: paste the ACME token and account JWK thumbprint, or generate a P-256 key in the browser',
+          'Enter the domain to validate (use *.example.com for wildcard certificates)',
+          'Publish the record name and TXT value at your DNS provider, wait for propagation, then trigger validation in your ACME client',
+          'Use verify mode to check that an existing Key Authorization and TXT value match',
+        ],
+        useCases: [
+          'Manual issuance and renewal troubleshooting of wildcard certificates with Let\u0027s Encrypt and other ACME CAs',
+          'Pre-computing dns-01 records for offline environments or automation scripts',
+          'Learning the ACME challenge flow and JWK thumbprint mechanics',
+        ],
+        privacyNote:
+          'All computation runs locally via Web Crypto. Key material never leaves your device; the tool makes no network requests and stores no input.',
+        faqs: [
+          {
+            question: 'Why is the TXT value always 43 characters?',
+            answer:
+              'SHA-256 produces 32 bytes, which encode to 43 unpadded base64url characters using only A-Z, a-z, 0-9, - and _.',
+          },
+          {
+            question: 'Does the wildcard record name keep the asterisk?',
+            answer:
+              'No. RFC 8555 publishes the challenge for *.example.com at _acme-challenge.example.com; the tool strips the leading asterisk automatically.',
+          },
+          {
+            question: 'How is the JWK thumbprint computed?',
+            answer:
+              'Per RFC 7638, keep only RSA n/e or EC crv/kty/x/y, serialize them as whitespace-free JSON with lexicographically sorted keys, then base64url-encode the SHA-256 digest.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'vlan-tag-codec',
+    name: '802.1Q VLAN 标签编解码器',
+    nameEn: '802.1Q VLAN Tag Codec (with QinQ)',
+    description:
+      '按 IEEE 802.1Q 在本地编解 VLAN 标签：拆解/拼装 TCI 位域（PCP 3bit、DEI 1bit、VID 12bit）与 TPID，支持从完整以太网帧定位标签、QinQ 双层（0x88A8 + 0x8100）编解码与保留 VID 告警。',
+    descriptionEn:
+      'Encode and decode IEEE 802.1Q VLAN tags locally: unpack/pack the TCI bit fields (PCP 3-bit, DEI 1-bit, VID 12-bit) and TPID, locate tags inside full Ethernet frames, and handle QinQ double tagging (0x88A8 + 0x8100) with reserved-VID warnings.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/vlan-tag-codec',
+    iconName: 'Network',
+    tags: ['802.1Q', 'VLAN', 'QinQ', 'PCP', 'TPID', '以太网'],
+    tagsEn: ['802.1Q', 'VLAN', 'QinQ', 'PCP', 'TPID', 'Ethernet'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '802.1Q VLAN 标签编解码器在浏览器本地完成 VLAN 标签的字节级编解码。单标签为 4 字节：2 字节 TPID（标准 0x8100）加 2 字节 TCI，TCI 又分为 3 bit PCP（802.1p 优先级）、1 bit DEI（丢包 eligibility）与 12 bit VID（VLAN 编号）。工具同时支持 QinQ 双层标签（外层 0x88A8、内层 0x8100，共 8 字节）以及从完整以太网帧的源/目的 MAC 之后自动定位标签。',
+        coreFeatures: [
+          'TCI 位域双向拆解：PCP（0–7，附 802.1p 优先级名称）、DEI（0/1）、VID（0–4095）逐位拼装与解析',
+          '双输入模式：仅 4/8 字节标签 hex，或完整以太网帧 hex（自动在偏移 12 处识别 TPID）',
+          'QinQ 双层：外层 0x88A8 + 内层 0x8100 共 8 字节，按外→内顺序解析并可往返构造',
+          '保留值告警：VID 0（优先级标签）与 4095（保留）给出提示但仍允许计算',
+          '严格校验：奇数位 hex、非 hex 字符、字节截断、未知 TPID 均返回带字节偏移的中文错误',
+        ],
+        howToUse: [
+          '选择「解析」或「构造」模式，并选择单层 802.1Q 或 QinQ 双层',
+          '解析时粘贴标签或完整帧 hex 并点击示例可快速体验；结果表格展示 TPID/PCP/DEI/VID',
+          '构造时填写 PCP、DEI、VID（QinQ 需填内外两层），即时生成标签 hex 并一键复制',
+          '出现告警时优先检查 VID 是否使用了 0/4095 保留值或 TPID 是否被设备厂商改写',
+        ],
+        useCases: [
+          '交换机配置与抓包排障时核对 trunk 端口中的 VLAN 标签字节',
+          '网络设备驱动 / eBPF / OVS 开发中验证标签插入与剥离逻辑',
+          '教学演示 802.1Q 位域布局、PCP 优先级与 QinQ 嵌套原理',
+        ],
+        privacyNote:
+          '所有 hex 解析与位运算均在浏览器本地完成，工具不发起网络请求，也不存储粘贴的报文内容。',
+        faqs: [
+          {
+            question: 'TCI 的 16 个 bit 是怎么划分的？',
+            answer:
+              '高 3 bit 为 PCP（位 15–13），次 1 bit 为 DEI（位 12），低 12 bit 为 VID（位 11–0）。例如 PCP=5、DEI=1、VID=100 时，TCI = 5<<13 | 1<<12 | 100 = 0xB064。',
+          },
+          {
+            question: 'QinQ 双层标签的字节顺序是什么？',
+            answer:
+              '外层（服务提供商）标签在前：TPID 0x88A8 加外层 TCI 共 4 字节；其后是内层（客户）标签 0x8100 加内层 TCI，合计 8 字节，解析顺序为由外而内。',
+          },
+          {
+            question: '为什么 VID 0 和 4095 不能随便用？',
+            answer:
+              'VID 0 按 IEEE 规定表示「优先级标签」（不带 VLAN 成员含义），4095（0xFFF）为保留值，业务 VLAN 可用范围是 1–4094。工具会对这两个值显示告警。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The 802.1Q VLAN Tag Codec performs byte-level VLAN tag encoding and decoding locally in your browser. A single tag is 4 bytes: a 2-byte TPID (standard 0x8100) plus a 2-byte TCI holding a 3-bit PCP (802.1p priority), 1-bit DEI and 12-bit VID. It also supports QinQ double tags (outer 0x88A8, inner 0x8100, 8 bytes total) and auto-locates tags after the source/destination MAC of a full Ethernet frame.',
+        coreFeatures: [
+          'Bidirectional TCI bit-field packing: PCP (0–7 with 802.1p names), DEI (0/1) and VID (0–4095)',
+          'Two input modes: bare 4/8-byte tag hex, or full Ethernet frame hex with TPID detection at offset 12',
+          'QinQ double tagging: outer 0x88A8 plus inner 0x8100, parsed outside-in and round-trippable',
+          'Reserved-value warnings for VID 0 (priority-tagged) and 4095 (reserved), while still computing',
+          'Strict validation: odd-length hex, non-hex characters, truncation and unknown TPIDs raise offset-annotated errors',
+        ],
+        howToUse: [
+          'Choose decode or build mode, then single 802.1Q or QinQ double tagging',
+          'Paste tag or full-frame hex (use the example button); results show TPID/PCP/DEI/VID in a table',
+          'For building, enter PCP, DEI and VID (two layers for QinQ) to generate tag hex with one-click copy',
+          'On warnings, check whether VID uses reserved 0/4095 or the TPID was rewritten by a vendor',
+        ],
+        useCases: [
+          'Verifying VLAN tag bytes in trunk captures and switch troubleshooting',
+          'Validating tag insertion/stripping in NIC drivers, eBPF or OVS development',
+          'Teaching 802.1Q bit layout, PCP priorities and QinQ nesting',
+        ],
+        privacyNote:
+          'All hex parsing and bit arithmetic run locally in your browser; the tool makes no network requests and never stores pasted frames.',
+        faqs: [
+          {
+            question: 'How are the 16 TCI bits laid out?',
+            answer:
+              'The top 3 bits are PCP (bits 15–13), the next bit is DEI (bit 12), and the low 12 bits are VID (bits 11–0). For PCP=5, DEI=1, VID=100, TCI = 5<<13 | 1<<12 | 100 = 0xB064.',
+          },
+          {
+            question: 'What is the byte order of a QinQ double tag?',
+            answer:
+              'The outer (service-provider) tag comes first: TPID 0x88A8 with the outer TCI (4 bytes), followed by the inner (customer) tag 0x8100 with its TCI — 8 bytes total, parsed outside-in.',
+          },
+          {
+            question: 'Why should VID 0 and 4095 be avoided?',
+            answer:
+              'VID 0 means a priority-tagged frame with no VLAN membership semantics, and 4095 (0xFFF) is reserved; usable business VLANs range from 1 to 4094. The tool warns when either reserved value appears.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'dhcpv4-packet-codec',
+    name: 'DHCPv4 报文解析与构造器',
+    nameEn: 'DHCPv4 Packet Parser & Builder (RFC 2131)',
+    description:
+      '按 RFC 2131 在本地解析与构造 DHCPv4 报文：236 字节 BOOTP 定长头逐字段展示（op/xid/flags/地址/chaddr 等），magic cookie 校验与 TLV options 遍历（含 53 消息类型、51 租期、55 参数请求列表等），支持 8 种消息构造与往返一致校验。',
+    descriptionEn:
+      'Parse and build RFC 2131 DHCPv4 packets locally: field-by-field view of the 236-byte BOOTP header (op/xid/flags/addresses/chaddr), magic cookie validation and TLV option walking (message type 53, lease time 51, parameter list 55 and more), with all eight message types and round-trip consistency checks.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/dhcpv4-packet-codec',
+    iconName: 'Boxes',
+    tags: ['DHCP', 'DHCPv4', 'RFC 2131', 'BOOTP', 'TLV', '网络协议'],
+    tagsEn: ['DHCP', 'DHCPv4', 'RFC 2131', 'BOOTP', 'TLV', 'Network Protocol'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'DHCPv4 报文解析与构造器在浏览器本地完成 RFC 2131 定义的 DHCP 报文字节级处理。报文由 236 字节 BOOTP 定长头（op、硬件类型、xid 事务 ID、flags、ciaddr/yiaddr/siaddr/giaddr、chaddr 客户端硬件地址、sname、file）、4 字节 magic cookie（0x63825363）与 TLV 编码的 options 区组成。工具可将 hex 报文解析为结构化字段表，也可按表单构造 DISCOVER 等八种消息并保证往返一致。',
+        coreFeatures: [
+          '完整 BOOTP 头解析：DataView 大端读取，IP 字段转点分十进制，chaddr 按 hlen 还原为 MAC',
+          'magic cookie 校验与 TLV options 遍历：自动跳过 0x00 padding、识别 0xFF end，越界长度带偏移报错',
+          '常用选项命名：消息类型(53)、请求 IP(50)、租期(51，秒与天/时换算)、参数请求列表(55)、client-id(61)、DNS/路由/子网掩码等',
+          '八种消息构造：DISCOVER/OFFER/REQUEST/DECLINE/ACK/NAK/RELEASE/INFORM，自动补 cookie、padding 与 end',
+          '往返一致：构造产物可被本解析器还原为相同字段；未知 option 以 Unknown(type) 保留原始 hex',
+        ],
+        howToUse: [
+          '解析模式：粘贴 DHCPv4 报文 hex（支持空格/换行/0x 前缀），或点击「填充示例」载入内置 DISCOVER',
+          '查看头部字段表与 options 明细，租期自动换算天/时，警告区提示缺 end 等非阻断问题',
+          '构造模式：选择消息类型并逐项添加 option，实时生成完整 hex 并可一键复制',
+          '可用解析模式回读构造结果，核对消息类型与全部 option 是否往返一致',
+        ],
+        useCases: [
+          'DHCP 服务器 / 中继开发与抓包排障，快速核对报文字段与 option 编码',
+          '网络协议教学中演示 BOOTP 头布局、cookie 与 TLV 变长选项机制',
+          '构造特定 option 组合的测试报文验证设备兼容性',
+        ],
+        privacyNote:
+          '所有 hex 解析与字节构造均在浏览器本地完成，工具不发起任何网络请求，也不存储粘贴的报文。',
+        faqs: [
+          {
+            question: 'magic cookie 是什么？校验失败怎么办？',
+            answer:
+              'magic cookie 是固定值 0x63825363，位于 236 字节 BOOTP 头之后、options 之前，用于标记 BOOTP 厂商扩展区。校验失败通常说明输入不是 DHCP/BOOTP 报文或字节偏移错位，工具会直接报错并指出期望与实际值。',
+          },
+          {
+            question: 'option 的 TLV 结构是怎样的？',
+            answer:
+              '每个 option 由 1 字节 type、1 字节 length 与 length 字节 value 组成；type 0 为 padding（无 length/value，直接跳过），type 255(0xFF) 为结束标记。length 指向报文边界之外时工具会带偏移报错。',
+          },
+          {
+            question: '为什么构造的报文末尾可能有多个 00？',
+            answer:
+              'DHCP 报文常按字节（历史上为最小 300 字节）对齐，构造器在 end 标记前补 0x00 padding 属于正常现象，解析时会自动跳过，不影响字段还原。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The DHCPv4 Packet Parser & Builder handles RFC 2131 DHCP messages at byte level entirely in your browser. A packet consists of the 236-byte fixed BOOTP header (op, hardware type, xid, flags, ciaddr/yiaddr/siaddr/giaddr, chaddr, sname, file), a 4-byte magic cookie (0x63825363) and TLV-encoded options. The tool turns hex packets into structured field tables and builds all eight message types from a form with guaranteed round-trip consistency.',
+        coreFeatures: [
+          'Full BOOTP header parsing via big-endian DataView: dotted-decimal IPs and chaddr rendered as MAC according to hlen',
+          'Magic cookie validation and TLV option walking with 0x00 padding skip, 0xFF end detection and offset-annotated overflow errors',
+          'Named common options: message type (53), requested IP (50), lease time (51 with days/hours), parameter list (55), client-id (61), DNS/router/subnet mask',
+          'Build all eight messages: DISCOVER/OFFER/REQUEST/DECLINE/ACK/NAK/RELEASE/INFORM with automatic cookie, padding and end',
+          'Round-trip fidelity: built packets re-parse to identical fields; unknown options stay as Unknown(type) with raw hex',
+        ],
+        howToUse: [
+          'In parse mode, paste DHCPv4 packet hex (spaces/newlines/0x tolerated) or load the built-in DISCOVER example',
+          'Review the header table and option details; lease times convert to days/hours and non-blocking issues appear as warnings',
+          'In build mode, pick a message type and add options to generate full hex with one-click copy',
+          'Re-parse built output to confirm message type and every option round-trips',
+        ],
+        useCases: [
+          'DHCP server/relay development and capture troubleshooting with fast field and option inspection',
+          'Teaching BOOTP header layout, the magic cookie and TLV variable-length options',
+          'Crafting option-specific test packets for device compatibility checks',
+        ],
+        privacyNote:
+          'All hex parsing and byte construction run locally in your browser; the tool makes no network requests and never stores pasted packets.',
+        faqs: [
+          {
+            question: 'What is the magic cookie, and what if validation fails?',
+            answer:
+              'The magic cookie is the fixed value 0x63825363 sitting between the 236-byte BOOTP header and the options, marking the BOOTP vendor extensions area. A failure usually means the input is not a DHCP/BOOTP packet or bytes are misaligned; the tool reports the expected versus actual value.',
+          },
+          {
+            question: 'How are TLV options structured?',
+            answer:
+              'Each option is a 1-byte type, 1-byte length and length-byte value. Type 0 is padding (no length/value, skipped), type 255 (0xFF) ends the options. A length reaching past the packet boundary raises an offset-annotated error.',
+          },
+          {
+            question: 'Why may a built packet contain trailing 00 bytes?',
+            answer:
+              'DHCP packets are conventionally byte-aligned (historically to a 300-byte minimum); the builder inserts 0x00 padding before the end marker, which parsers skip without affecting field reconstruction.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'error-stack-parser',
+    name: 'JavaScript 错误堆栈解析器',
+    nameEn: 'JavaScript Error Stack Parser (V8 / Firefox / Safari)',
+    description:
+      '在本地解析 JavaScript Error.stack 文本，自动识别 V8（Chrome/Node）、Firefox、Safari 三种方言，将错误名、消息与每一帧的函数名、文件、行列号、async/eval 标记结构化为表格，并导出 JSON。',
+    descriptionEn:
+      'Parse JavaScript Error.stack text locally with automatic dialect detection for V8 (Chrome/Node), Firefox and Safari, structuring error name, message and every frame (function, file, line, column, async/eval flags) into a table with JSON export.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/error-stack-parser',
+    iconName: 'Bug',
+    tags: ['JavaScript', 'Error Stack', '堆栈解析', 'V8', 'Firefox', 'Safari'],
+    tagsEn: ['JavaScript', 'Error Stack', 'Stack Trace', 'V8', 'Firefox', 'Safari'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'JavaScript 错误堆栈解析器把浏览器或 Node.js 抛出的 Error.stack 纯文本在本地解析为结构化数据：自动探测 V8（Chrome/Edge/Node）、Firefox 与 Safari 三种堆栈方言，提取错误名与消息，并逐帧还原函数名、文件路径、行列号以及 async、eval、native、node:internal 等标记，结果以表格展示并可复制 JSON，便于日志排障与监控入库。',
+        coreFeatures: [
+          '三方言自动识别：按帧语法特征探测 V8 / Firefox / Safari，无法识别时给出明确提示',
+          '完整帧字段：函数名（匿名帧标记）、文件 URL（含 file://、node:、Windows 反斜杠路径与查询串）、行号、列号',
+          '特殊帧标记：async、eval（含 eval origin）、native 与 node:internal 一图看清',
+          '健壮的消息处理：V8 消息含冒号时仅按第一个冒号拆分错误名，多行消息自动合并',
+          'JSON 导出与内置示例：三种方言各附样例，一键填充，结构化结果可复制接入日志系统',
+        ],
+        howToUse: [
+          '把 catch 到的 error.stack 完整文本粘贴到输入框（保留首行 ErrorName: message）',
+          '工具即时显示探测到的方言 Tag、错误名、消息与帧表格，缺失列号显示为空',
+          '用 async/eval/native 标记快速定位异步链与动态执行代码，点击复制 JSON 取走结构化结果',
+          '可点击方言示例按钮对照学习三种引擎的堆栈格式差异',
+        ],
+        useCases: [
+          '前端监控 / APM 场景下把上报的堆栈文本归一化为结构化字段',
+          '排障时快速解读混合 async/eval 的复杂调用链与源文件位置',
+          '编写日志解析器或教学演示 V8、SpiderMonkey、JavaScriptCore 的堆栈差异',
+        ],
+        privacyNote:
+          '堆栈文本仅在浏览器本地解析，不会被上传或存储；工具不发起任何网络请求。',
+        faqs: [
+          {
+            question: '三种方言的帧格式有什么区别？',
+            answer:
+              'V8 使用「at 函数名 (文件:行:列)」或「at 文件:行:列」，并带 async/eval 前缀；Firefox 与 Safari 使用「函数名@文件:行:列」，匿名帧以 @ 开头，列号可能缺省。工具按这些特征自动投票判定方言。',
+          },
+          {
+            question: '为什么有些帧没有列号？',
+            answer:
+              'Firefox/Safari 在部分场景（如 native 代码或被引擎裁剪的帧）只输出行号不输出列号，解析结果中列号为 null，表格留空展示，属于正常现象。',
+          },
+          {
+            question: '消息里本身包含冒号会拆错吗？',
+            answer:
+              '不会。首行仅按第一个冒号拆分错误名与消息，剩余冒号（例如 HTTP 状态文本、URL）完整保留在消息中；首行之后的续行也会合并进多行消息。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JavaScript Error Stack Parser turns raw Error.stack text from browsers or Node.js into structured data entirely in your browser. It auto-detects V8 (Chrome/Edge/Node), Firefox and Safari dialects, extracts the error name and message, and reconstructs every frame with function, file, line, column and async/eval/native/node:internal markers, presenting a table with copyable JSON for log troubleshooting and monitoring ingestion.',
+        coreFeatures: [
+          'Automatic dialect detection for V8, Firefox and Safari based on frame syntax, with an explicit notice when none match',
+          'Full frame fields: function (anonymous marked), file URL (file://, node:, Windows backslash paths and query strings), line and column',
+          'Special-frame markers: async, eval (with eval origin), native and node:internal at a glance',
+          'Robust message handling: the name splits only at the first colon, and multi-line messages merge automatically',
+          'JSON export and built-in samples for all three dialects, with one-click fill for structured output',
+        ],
+        howToUse: [
+          'Paste the full error.stack text from a catch block, keeping the leading ErrorName: message line',
+          'Review the detected dialect tag, error name, message and frame table; missing columns render empty',
+          'Use async/eval/native markers to trace asynchronous chains and dynamic code, then copy JSON for your log pipeline',
+          'Load the dialect samples to compare stack formats across the three engines',
+        ],
+        useCases: [
+          'Normalizing reported stack text into structured fields for frontend monitoring/APM systems',
+          'Quickly reading complex async/eval call chains and source locations during incident response',
+          'Building log parsers or teaching stack-format differences among V8, SpiderMonkey and JavaScriptCore',
+        ],
+        privacyNote:
+          'Stack text is parsed locally in your browser only; it is never uploaded, stored or sent over the network.',
+        faqs: [
+          {
+            question: 'How do the three dialect frame formats differ?',
+            answer:
+              'V8 uses "at fn (file:line:col)" or "at file:line:col" with async/eval prefixes; Firefox and Safari use "fn@file:line:col" with anonymous frames starting with @ and optional columns. The tool votes on these features to detect the dialect.',
+          },
+          {
+            question: 'Why do some frames lack a column number?',
+            answer:
+              'Firefox/Safari may emit line-only frames for native code or engine-trimmed frames; the parsed column is then null and shown blank, which is expected.',
+          },
+          {
+            question: 'Will colons inside the message break parsing?',
+            answer:
+              'No. The first line splits name and message only at the first colon, so later colons (HTTP status text, URLs) stay inside the message, and continuation lines merge into a multi-line message.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
