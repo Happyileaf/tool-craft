@@ -39491,6 +39491,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'wake-on-lan-magic-packet',
+    name: 'Wake-on-LAN 魔术包构造与校验器',
+    nameEn: 'Wake-on-LAN Magic Packet Builder & Validator',
+    description:
+      '按 AMD Magic Packet 规范在本地构造 102 字节 WoL 唤醒帧（6 字节 FF 同步流 + 目标 MAC 重复 16 次），输出 HEX 与 Base64，并支持粘贴报文反向校验与目标 MAC 提取，兼容多种 MAC 写法。',
+    descriptionEn:
+      'Build a 102-byte AMD Wake-on-LAN magic packet locally (6-byte FF sync stream plus the target MAC repeated 16 times), output HEX and Base64, and validate pasted packets to extract the target MAC, accepting multiple MAC notations.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/wake-on-lan-magic-packet',
+    iconName: 'Package',
+    tags: ['Wake-on-LAN', 'WoL', '魔术包', 'MAC 地址', 'UDP', '局域网唤醒'],
+    tagsEn: ['Wake-on-LAN', 'WoL', 'Magic Packet', 'MAC Address', 'UDP', 'LAN Wake'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Wake-on-LAN 魔术包构造与校验器在浏览器本地按 AMD Magic Packet 规范生成唤醒帧：报文以 6 字节 0xFF 同步流开头，后接目标网卡 MAC 地址连续重复 16 次，固定总长 102 字节。工具同时提供 HEX / Base64 双视图输出与反向解析校验，帮助网络运维与嵌入式开发人员快速构造、核对 WoL 报文。',
+        coreFeatures: [
+          '规范构造：6 字节 0xFF 同步流 + 目标 MAC 重复 16 次，输出固定 102 字节报文',
+          'MAC 写法自适应：兼容冒号、连字符、Cisco 点分（aabb.ccdd.eeff）与无分隔符等写法',
+          '双视图输出：连续 / 按字节分组的 HEX 与 Base64，一键复制并附 UDP 端口与广播地址说明',
+          '反向校验：粘贴 HEX 或 Base64 报文，校验长度、同步头与 16 份 MAC 一致性并提取目标 MAC',
+          '精准错误定位：长度不符、同步头错误、重复不一致、非法字符均返回带偏移的明确提示',
+        ],
+        howToUse: [
+          '在「构造魔术包」模式输入目标设备 MAC（如 AA:BB:CC:DD:EE:FF），页面即时生成报文',
+          '按需切换 HEX 空格分组、选择常用 UDP 端口（9 / 7），点击复制按钮取走 HEX 或 Base64',
+          '切换到「反向解析校验」模式，粘贴待验报文并选择 HEX / Base64 载体',
+          '查看校验结论与提取出的目标 MAC；畸形报文会显示具体失败原因',
+        ],
+        useCases: [
+          '运维批量唤醒机房 / 办公网内处于待机状态的主机',
+          '嵌入式与网卡固件开发中核对 WoL 帧的字节布局',
+          '教学演示数据链路层广播唤醒原理与魔术包结构',
+        ],
+        privacyNote:
+          '所有 MAC 规范化与字节运算均在浏览器本地完成，工具不会发送任何网络数据包，也不记录或上传输入内容。',
+        faqs: [
+          {
+            question: '魔术包为什么固定是 102 字节？',
+            answer:
+              'AMD 规范规定报文由 6 字节 0xFF 同步流和紧随其后的 16 份目标 MAC（每份 6 字节）组成，6 + 16 × 6 = 102 字节，外层再由 UDP 数据报承载。',
+          },
+          {
+            question: '构造出来的包会直接把电脑唤醒吗？',
+            answer:
+              '不会。本工具只在浏览器本地完成字节构造与展示，不实际发送数据。实际唤醒需将报文通过 UDP（常见端口 9）发往子网定向广播地址，且目标网卡需在 BIOS / 系统中启用 WoL 并保持待机供电。',
+          },
+          {
+            question: '反向解析提示 MAC 重复一致性失败是什么意思？',
+            answer:
+              '报文中同步头之后的 16 份 MAC 必须逐字节完全相同。若其中任意一份被篡改或截断，工具会定位到第一处不一致的字节偏移并报错，说明该报文不是合法魔术包或传输中已损坏。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Wake-on-LAN Magic Packet Builder & Validator creates AMD-standard wake frames locally in your browser: a 6-byte 0xFF sync stream followed by the target NIC MAC repeated 16 times, always 102 bytes. It offers HEX and Base64 views plus reverse validation, helping network operators and embedded developers build and verify WoL frames quickly.',
+        coreFeatures: [
+          'Spec-compliant build: 6-byte 0xFF sync stream plus 16 copies of the target MAC, always 102 bytes',
+          'Flexible MAC input: colon, hyphen, Cisco dotted (aabb.ccdd.eeff) and separator-free notations',
+          'Dual output views: continuous or byte-grouped HEX and Base64 with one-click copy, plus UDP port and broadcast guidance',
+          'Reverse validation: paste HEX or Base64 to verify length, sync header and 16-fold MAC consistency, then extract the target MAC',
+          'Precise error locations for bad length, sync header, repeated-MAC mismatch and illegal characters',
+        ],
+        howToUse: [
+          'In build mode, enter the target MAC (e.g. AA:BB:CC:DD:EE:FF) to generate the packet instantly',
+          'Toggle spaced HEX, pick a common UDP port (9/7), and copy the HEX or Base64 output',
+          'Switch to parse mode, paste a packet and choose its HEX or Base64 carrier',
+          'Review the validation verdict and extracted MAC; malformed packets show a concrete failure reason',
+        ],
+        useCases: [
+          'Remotely waking sleeping hosts in datacenters or office LANs',
+          'Verifying WoL frame byte layout during NIC or firmware development',
+          'Teaching link-layer broadcast wake-up principles and magic packet structure',
+        ],
+        privacyNote:
+          'All MAC normalization and byte arithmetic run locally in your browser. The tool never sends packets and never logs or uploads your input.',
+        faqs: [
+          {
+            question: 'Why is the magic packet exactly 102 bytes?',
+            answer:
+              'The AMD spec defines a 6-byte 0xFF sync stream followed by 16 copies of the target MAC (6 bytes each): 6 + 16 × 6 = 102 bytes, carried inside a UDP datagram.',
+          },
+          {
+            question: 'Will the generated packet wake a computer directly?',
+            answer:
+              'No. The tool only builds and displays bytes locally without sending anything. A real wake requires sending the packet over UDP (commonly port 9) to the subnet directed broadcast address, with WoL enabled in BIOS/OS and standby power on the target NIC.',
+          },
+          {
+            question: 'What does the repeated-MAC consistency error mean?',
+            answer:
+              'The 16 MAC copies after the sync header must be byte-identical. If any copy is altered or truncated, the tool pinpoints the first mismatching byte offset, indicating an invalid magic packet or transport corruption.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
