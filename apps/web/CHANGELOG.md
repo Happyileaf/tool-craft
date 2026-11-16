@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-17 ：【Agent自主迭代】新增 Wake-on-LAN 魔术包、ACME dns-01、802.1Q VLAN、DHCPv4 与错误堆栈解析 5 个工具
+
+- **新增**：Wake-on-LAN 魔术包构造与校验器（wake-on-lan-magic-packet）— 按 AMD Magic Packet 规范构造固定 102 字节唤醒帧（6 字节 0xFF 同步流 + 目标 MAC 重复 16 次），兼容冒号 / 连字符 / Cisco 点分 / 无分隔符 MAC 写法，输出 HEX（可按字节分组）与 Base64 并附 UDP 端口 9/7 与子网广播说明，反向解析校验长度、同步头与 16 份 MAC 一致性并提取目标 MAC，错误带字节偏移定位，10 个 Vitest 用例，纯本地运算零依赖
+- **新增**：ACME dns-01 挑战 TXT 记录生成器（acme-dns01-challenge）— 按 RFC 8555 拼接 Key Authorization（token + JWK thumbprint）并计算 base64url(SHA-256) TXT 记录值，RFC 7638 规范化 JWK 通过官方 RSA 标准指纹向量互验，支持手动 token + 指纹或 Web Crypto 生成 P-256 密钥对、通配符域名自动剥离 `*.`、DNS 记录表格与反向校验，26 个 Vitest 用例，纯本地运算零依赖
+- **新增**：802.1Q VLAN 标签编解码器（vlan-tag-codec）— TCI 位域（PCP 3bit + DEI 1bit + VID 12bit）与 TPID（0x8100/0x88A8）双向编解码，支持完整以太网帧偏移 12 自动定位标签、QinQ 双层 8 字节外→内解析与往返构造、PCP 802.1p 优先级名称表、VID 0/4095 保留值告警及带偏移中文校验错误，18 个 Vitest 用例，纯本地运算零依赖
+- **新增**：DHCPv4 报文解析与构造器（dhcpv4-packet-codec）— 按 RFC 2131 大端解析 236 字节 BOOTP 定长头（op/xid/flags/四地址/chaddr 还原 MAC）、magic cookie 0x63825363 校验与 TLV options 遍历（padding/end、Unknown 类型保留原始 hex），覆盖消息类型(53)/请求 IP(50)/租期(51 秒与天/时换算)/参数请求列表(55)/client-id(61) 等常用选项，支持八种消息构造且 parse(build(x)) 往返一致，19 个 Vitest 用例，纯本地运算零依赖
+- **新增**：JavaScript 错误堆栈解析器（error-stack-parser）— 自动识别 V8（Chrome/Node）、Firefox、Safari 三种 Error.stack 方言并结构化错误名、消息与逐帧函数 / 文件 / 行列号，标注 async、eval、native、node:internal 帧，兼容匿名帧、列号缺省、Windows 反斜杠与 file:// 路径、查询串及多行消息，结果表格展示并可导出 JSON，20 个 Vitest 用例，纯本地运算零依赖
+
 ## 2026-11-17 ：【Agent自主迭代】新增 Δ-Y 变换、ADC/DAC 量化、体脂率估算、经济补偿金与 FEN 解析 5 个工具
 
 - **新增**：电阻 / 阻抗网络 Δ-Y 双向等效变换计算器（delta-wye-transform）— 按「邻边乘积除以三边和」与「两两乘积之和除以对臂」做三角形 ↔ 星形六公式互算，支持 330/1k/2.2kΩ/4.7M 等单位后缀归一、内联 SVG 拓扑示意与三端口等效阻抗自校验，平衡网络 RY=RΔ/3 快捷结论，14 个 Vitest 用例，纯本地运算零依赖
