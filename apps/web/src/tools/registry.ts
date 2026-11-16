@@ -39602,7 +39602,7 @@ sqrt(area) + 2 * r`,
       'Build RFC 8555 dns-01 challenge Key Authorization and DNS TXT values (base64url-encoded SHA-256) locally, from a manual token plus JWK thumbprint or an in-browser P-256 key pair, with reverse verification and wildcard domain support.',
     category: ToolCategoryEnum.DEV_CODE,
     path: '/tools/acme-dns01-challenge',
-    iconName: 'SafetyCertificate',
+    iconName: 'ShieldCheck',
     tags: ['ACME', 'dns-01', 'Let\u0027s Encrypt', 'TXT 记录', 'JWK', '证书续期'],
     tagsEn: ['ACME', 'dns-01', "Let's Encrypt", 'TXT Record', 'JWK', 'Cert Renewal'],
     isPopular: false,
@@ -39703,7 +39703,7 @@ sqrt(area) + 2 * r`,
       'Encode and decode IEEE 802.1Q VLAN tags locally: unpack/pack the TCI bit fields (PCP 3-bit, DEI 1-bit, VID 12-bit) and TPID, locate tags inside full Ethernet frames, and handle QinQ double tagging (0x88A8 + 0x8100) with reserved-VID warnings.',
     category: ToolCategoryEnum.DEV_CODE,
     path: '/tools/vlan-tag-codec',
-    iconName: 'Partition',
+    iconName: 'Network',
     tags: ['802.1Q', 'VLAN', 'QinQ', 'PCP', 'TPID', '以太网'],
     tagsEn: ['802.1Q', 'VLAN', 'QinQ', 'PCP', 'TPID', 'Ethernet'],
     isPopular: false,
@@ -39804,7 +39804,7 @@ sqrt(area) + 2 * r`,
       'Parse and build RFC 2131 DHCPv4 packets locally: field-by-field view of the 236-byte BOOTP header (op/xid/flags/addresses/chaddr), magic cookie validation and TLV option walking (message type 53, lease time 51, parameter list 55 and more), with all eight message types and round-trip consistency checks.',
     category: ToolCategoryEnum.DEV_CODE,
     path: '/tools/dhcpv4-packet-codec',
-    iconName: 'Apartment',
+    iconName: 'Boxes',
     tags: ['DHCP', 'DHCPv4', 'RFC 2131', 'BOOTP', 'TLV', '网络协议'],
     tagsEn: ['DHCP', 'DHCPv4', 'RFC 2131', 'BOOTP', 'TLV', 'Network Protocol'],
     isPopular: false,
@@ -39890,6 +39890,107 @@ sqrt(area) + 2 * r`,
             question: 'Why may a built packet contain trailing 00 bytes?',
             answer:
               'DHCP packets are conventionally byte-aligned (historically to a 300-byte minimum); the builder inserts 0x00 padding before the end marker, which parsers skip without affecting field reconstruction.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'error-stack-parser',
+    name: 'JavaScript 错误堆栈解析器',
+    nameEn: 'JavaScript Error Stack Parser (V8 / Firefox / Safari)',
+    description:
+      '在本地解析 JavaScript Error.stack 文本，自动识别 V8（Chrome/Node）、Firefox、Safari 三种方言，将错误名、消息与每一帧的函数名、文件、行列号、async/eval 标记结构化为表格，并导出 JSON。',
+    descriptionEn:
+      'Parse JavaScript Error.stack text locally with automatic dialect detection for V8 (Chrome/Node), Firefox and Safari, structuring error name, message and every frame (function, file, line, column, async/eval flags) into a table with JSON export.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/error-stack-parser',
+    iconName: 'Bug',
+    tags: ['JavaScript', 'Error Stack', '堆栈解析', 'V8', 'Firefox', 'Safari'],
+    tagsEn: ['JavaScript', 'Error Stack', 'Stack Trace', 'V8', 'Firefox', 'Safari'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'JavaScript 错误堆栈解析器把浏览器或 Node.js 抛出的 Error.stack 纯文本在本地解析为结构化数据：自动探测 V8（Chrome/Edge/Node）、Firefox 与 Safari 三种堆栈方言，提取错误名与消息，并逐帧还原函数名、文件路径、行列号以及 async、eval、native、node:internal 等标记，结果以表格展示并可复制 JSON，便于日志排障与监控入库。',
+        coreFeatures: [
+          '三方言自动识别：按帧语法特征探测 V8 / Firefox / Safari，无法识别时给出明确提示',
+          '完整帧字段：函数名（匿名帧标记）、文件 URL（含 file://、node:、Windows 反斜杠路径与查询串）、行号、列号',
+          '特殊帧标记：async、eval（含 eval origin）、native 与 node:internal 一图看清',
+          '健壮的消息处理：V8 消息含冒号时仅按第一个冒号拆分错误名，多行消息自动合并',
+          'JSON 导出与内置示例：三种方言各附样例，一键填充，结构化结果可复制接入日志系统',
+        ],
+        howToUse: [
+          '把 catch 到的 error.stack 完整文本粘贴到输入框（保留首行 ErrorName: message）',
+          '工具即时显示探测到的方言 Tag、错误名、消息与帧表格，缺失列号显示为空',
+          '用 async/eval/native 标记快速定位异步链与动态执行代码，点击复制 JSON 取走结构化结果',
+          '可点击方言示例按钮对照学习三种引擎的堆栈格式差异',
+        ],
+        useCases: [
+          '前端监控 / APM 场景下把上报的堆栈文本归一化为结构化字段',
+          '排障时快速解读混合 async/eval 的复杂调用链与源文件位置',
+          '编写日志解析器或教学演示 V8、SpiderMonkey、JavaScriptCore 的堆栈差异',
+        ],
+        privacyNote:
+          '堆栈文本仅在浏览器本地解析，不会被上传或存储；工具不发起任何网络请求。',
+        faqs: [
+          {
+            question: '三种方言的帧格式有什么区别？',
+            answer:
+              'V8 使用「at 函数名 (文件:行:列)」或「at 文件:行:列」，并带 async/eval 前缀；Firefox 与 Safari 使用「函数名@文件:行:列」，匿名帧以 @ 开头，列号可能缺省。工具按这些特征自动投票判定方言。',
+          },
+          {
+            question: '为什么有些帧没有列号？',
+            answer:
+              'Firefox/Safari 在部分场景（如 native 代码或被引擎裁剪的帧）只输出行号不输出列号，解析结果中列号为 null，表格留空展示，属于正常现象。',
+          },
+          {
+            question: '消息里本身包含冒号会拆错吗？',
+            answer:
+              '不会。首行仅按第一个冒号拆分错误名与消息，剩余冒号（例如 HTTP 状态文本、URL）完整保留在消息中；首行之后的续行也会合并进多行消息。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JavaScript Error Stack Parser turns raw Error.stack text from browsers or Node.js into structured data entirely in your browser. It auto-detects V8 (Chrome/Edge/Node), Firefox and Safari dialects, extracts the error name and message, and reconstructs every frame with function, file, line, column and async/eval/native/node:internal markers, presenting a table with copyable JSON for log troubleshooting and monitoring ingestion.',
+        coreFeatures: [
+          'Automatic dialect detection for V8, Firefox and Safari based on frame syntax, with an explicit notice when none match',
+          'Full frame fields: function (anonymous marked), file URL (file://, node:, Windows backslash paths and query strings), line and column',
+          'Special-frame markers: async, eval (with eval origin), native and node:internal at a glance',
+          'Robust message handling: the name splits only at the first colon, and multi-line messages merge automatically',
+          'JSON export and built-in samples for all three dialects, with one-click fill for structured output',
+        ],
+        howToUse: [
+          'Paste the full error.stack text from a catch block, keeping the leading ErrorName: message line',
+          'Review the detected dialect tag, error name, message and frame table; missing columns render empty',
+          'Use async/eval/native markers to trace asynchronous chains and dynamic code, then copy JSON for your log pipeline',
+          'Load the dialect samples to compare stack formats across the three engines',
+        ],
+        useCases: [
+          'Normalizing reported stack text into structured fields for frontend monitoring/APM systems',
+          'Quickly reading complex async/eval call chains and source locations during incident response',
+          'Building log parsers or teaching stack-format differences among V8, SpiderMonkey and JavaScriptCore',
+        ],
+        privacyNote:
+          'Stack text is parsed locally in your browser only; it is never uploaded, stored or sent over the network.',
+        faqs: [
+          {
+            question: 'How do the three dialect frame formats differ?',
+            answer:
+              'V8 uses "at fn (file:line:col)" or "at file:line:col" with async/eval prefixes; Firefox and Safari use "fn@file:line:col" with anonymous frames starting with @ and optional columns. The tool votes on these features to detect the dialect.',
+          },
+          {
+            question: 'Why do some frames lack a column number?',
+            answer:
+              'Firefox/Safari may emit line-only frames for native code or engine-trimmed frames; the parsed column is then null and shown blank, which is expected.',
+          },
+          {
+            question: 'Will colons inside the message break parsing?',
+            answer:
+              'No. The first line splits name and message only at the first colon, so later colons (HTTP status text, URLs) stay inside the message, and continuation lines merge into a multi-line message.',
           },
         ],
       },

@@ -419,4 +419,5 @@ export const toolLoaders: Record<
   'acme-dns01-challenge': () => import('./acme-dns01-challenge'),
   'vlan-tag-codec': () => import('./vlan-tag-codec'),
   'dhcpv4-packet-codec': () => import('./dhcpv4-packet-codec'),
+  'error-stack-parser': () => import('./error-stack-parser'),
 };
