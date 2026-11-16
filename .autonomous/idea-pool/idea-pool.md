@@ -285,7 +285,7 @@
 | 20261109020214 | APR 实际年利率计算器（EAR 等效年费率与贷款成本对比） | Web Tool | Existing Gap | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109020214.md) |
 | 20261109020215 | 有向图拓扑排序与环检测可视化器（Kahn / DFS 双算法） | Web Tool | Exploration | In Progress | 2026-11-09 | trae-agent | [详情](./idea-details/20261109020215.md) |
 | 20261109020216 | 加权网格最短路径求解器（Dijkstra / A* 逐步演示） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109020216.md) |
-| 20261109020217 | 英文 Porter 词干提取器（Stemmer）与词形归并批处理 | Web Tool | External Reference | Pending | 2026-11-09 | | [详情](./idea-details/20261109020217.md) |
+| 20261109020217 | 英文 Porter 词干提取器（Stemmer）与词形归并批处理 | Web Tool | External Reference | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109020217.md) |
 | 20261109020218 | IPv4 网络地址与二进制位掩码教学可视化器（逐位 AND 演算） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109020218.md) |
 | 20261109200616 | BBCode ↔ HTML 双向转换器（论坛标记语言与富文本互转） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200616.md) |
 | 20261109200617 | FLAC 音频元数据块只读解析器（STREAMINFO / VORBIS_COMMENT / 图片块结构展示） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200617.md) |
@@ -344,7 +344,7 @@
 | 20261115080619 | 齿轮传动比与转速 / 扭矩计算器（多级齿轮组） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080619.md) |
 | 20261115140201 | 简体中文 ↔ 繁体中文转换器（词组级映射，含台湾 / 香港变体与地区用词） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115140201.md) |
 | 20261115140203 | 体脂率估算计算器（US Navy 围度法 / BMI 推导法 + 腰臀比风险区间） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115140203.md) |
-| 20261115140205 | 视频 / 音频码率与文件大小估算器（分辨率 / 帧率 / 编码器 / 时长互算） | Web Tool | Exploration | Pending | 2026-11-15 | | [详情](./idea-details/20261115140205.md) |
+| 20261115140205 | 视频 / 音频码率与文件大小估算器（分辨率 / 帧率 / 编码器 / 时长互算） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115140205.md) |
 | 20261116020445 | Windows ↔ POSIX 路径转换器（WSL 盘符映射 / UNC / 分隔符归一） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116020445.md) |
 | 20261116020446 | JSON → C++ struct / class 生成器（std::optional / std::vector 推断） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116020446.md) |
 | 20261116020447 | 排序算法逐步可视化器（冒泡 / 选择 / 插入 / 归并 / 快排） | Web Tool | Exploration | Pending | 2026-11-16 | | [详情](./idea-details/20261116020447.md) |
@@ -355,9 +355,9 @@
 | 20261116081910 | DNA / RNA 序列分析器（反向互补 / 转录 / 六框翻译 / GC 含量） | Web Tool | Exploration | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116081910.md) |
 | 20261116081911 | 国际象棋 FEN 局面解析与棋盘可视化器（结构校验 / Unicode 棋盘 / 标准序列化） | Web Tool | Exploration | Pending | 2026-11-16 | | [详情](./idea-details/20261116081911.md) |
 | 20261116081912 | SQL 参数占位符风格转换器（? / :name / $1 / @p1 / %s / {{name}}） | Web Tool | Existing Gap | In Progress | 2026-11-16 | trae-agent | [详情](./idea-details/20261116081912.md) |
-| 20261116141423 | UDP 报文头构造与十六进制解析器（RFC 768，含伪首部校验和） | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116141423.md) |
-| 20261116141424 | RTP 报文头字段解析与构造器（RFC 3550，含 CSRC / 扩展头） | Web Tool | Exploration | Pending | 2026-11-16 | | [详情](./idea-details/20261116141424.md) |
-| 20261116141425 | 曼彻斯特 / 差分曼彻斯特线路编解码器（IEEE 802.3 与 Thomas 约定） | Web Tool | External Reference | Pending | 2026-11-16 | | [详情](./idea-details/20261116141425.md) |
+| 20261116141423 | UDP 报文头构造与十六进制解析器（RFC 768，含伪首部校验和） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141423.md) |
+| 20261116141424 | RTP 报文头字段解析与构造器（RFC 3550，含 CSRC / 扩展头） | Web Tool | Exploration | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141424.md) |
+| 20261116141425 | 曼彻斯特 / 差分曼彻斯特线路编解码器（IEEE 802.3 与 Thomas 约定） | Web Tool | External Reference | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141425.md) |
 | 20261116141426 | ADC / DAC 量化参数计算器（分辨率 / LSB / 量化误差 / SNR / 电压码值互算） | Web Tool | Exploration | Pending | 2026-11-16 | | [详情](./idea-details/20261116141426.md) |
 | 20261116141427 | 电阻 / 阻抗网络 Δ-Y（三角形-星形）双向等效变换计算器 | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116141427.md) |
 
