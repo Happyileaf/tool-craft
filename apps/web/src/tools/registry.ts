@@ -39794,6 +39794,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'dhcpv4-packet-codec',
+    name: 'DHCPv4 报文解析与构造器',
+    nameEn: 'DHCPv4 Packet Parser & Builder (RFC 2131)',
+    description:
+      '按 RFC 2131 在本地解析与构造 DHCPv4 报文：236 字节 BOOTP 定长头逐字段展示（op/xid/flags/地址/chaddr 等），magic cookie 校验与 TLV options 遍历（含 53 消息类型、51 租期、55 参数请求列表等），支持 8 种消息构造与往返一致校验。',
+    descriptionEn:
+      'Parse and build RFC 2131 DHCPv4 packets locally: field-by-field view of the 236-byte BOOTP header (op/xid/flags/addresses/chaddr), magic cookie validation and TLV option walking (message type 53, lease time 51, parameter list 55 and more), with all eight message types and round-trip consistency checks.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/dhcpv4-packet-codec',
+    iconName: 'Apartment',
+    tags: ['DHCP', 'DHCPv4', 'RFC 2131', 'BOOTP', 'TLV', '网络协议'],
+    tagsEn: ['DHCP', 'DHCPv4', 'RFC 2131', 'BOOTP', 'TLV', 'Network Protocol'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'DHCPv4 报文解析与构造器在浏览器本地完成 RFC 2131 定义的 DHCP 报文字节级处理。报文由 236 字节 BOOTP 定长头（op、硬件类型、xid 事务 ID、flags、ciaddr/yiaddr/siaddr/giaddr、chaddr 客户端硬件地址、sname、file）、4 字节 magic cookie（0x63825363）与 TLV 编码的 options 区组成。工具可将 hex 报文解析为结构化字段表，也可按表单构造 DISCOVER 等八种消息并保证往返一致。',
+        coreFeatures: [
+          '完整 BOOTP 头解析：DataView 大端读取，IP 字段转点分十进制，chaddr 按 hlen 还原为 MAC',
+          'magic cookie 校验与 TLV options 遍历：自动跳过 0x00 padding、识别 0xFF end，越界长度带偏移报错',
+          '常用选项命名：消息类型(53)、请求 IP(50)、租期(51，秒与天/时换算)、参数请求列表(55)、client-id(61)、DNS/路由/子网掩码等',
+          '八种消息构造：DISCOVER/OFFER/REQUEST/DECLINE/ACK/NAK/RELEASE/INFORM，自动补 cookie、padding 与 end',
+          '往返一致：构造产物可被本解析器还原为相同字段；未知 option 以 Unknown(type) 保留原始 hex',
+        ],
+        howToUse: [
+          '解析模式：粘贴 DHCPv4 报文 hex（支持空格/换行/0x 前缀），或点击「填充示例」载入内置 DISCOVER',
+          '查看头部字段表与 options 明细，租期自动换算天/时，警告区提示缺 end 等非阻断问题',
+          '构造模式：选择消息类型并逐项添加 option，实时生成完整 hex 并可一键复制',
+          '可用解析模式回读构造结果，核对消息类型与全部 option 是否往返一致',
+        ],
+        useCases: [
+          'DHCP 服务器 / 中继开发与抓包排障，快速核对报文字段与 option 编码',
+          '网络协议教学中演示 BOOTP 头布局、cookie 与 TLV 变长选项机制',
+          '构造特定 option 组合的测试报文验证设备兼容性',
+        ],
+        privacyNote:
+          '所有 hex 解析与字节构造均在浏览器本地完成，工具不发起任何网络请求，也不存储粘贴的报文。',
+        faqs: [
+          {
+            question: 'magic cookie 是什么？校验失败怎么办？',
+            answer:
+              'magic cookie 是固定值 0x63825363，位于 236 字节 BOOTP 头之后、options 之前，用于标记 BOOTP 厂商扩展区。校验失败通常说明输入不是 DHCP/BOOTP 报文或字节偏移错位，工具会直接报错并指出期望与实际值。',
+          },
+          {
+            question: 'option 的 TLV 结构是怎样的？',
+            answer:
+              '每个 option 由 1 字节 type、1 字节 length 与 length 字节 value 组成；type 0 为 padding（无 length/value，直接跳过），type 255(0xFF) 为结束标记。length 指向报文边界之外时工具会带偏移报错。',
+          },
+          {
+            question: '为什么构造的报文末尾可能有多个 00？',
+            answer:
+              'DHCP 报文常按字节（历史上为最小 300 字节）对齐，构造器在 end 标记前补 0x00 padding 属于正常现象，解析时会自动跳过，不影响字段还原。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The DHCPv4 Packet Parser & Builder handles RFC 2131 DHCP messages at byte level entirely in your browser. A packet consists of the 236-byte fixed BOOTP header (op, hardware type, xid, flags, ciaddr/yiaddr/siaddr/giaddr, chaddr, sname, file), a 4-byte magic cookie (0x63825363) and TLV-encoded options. The tool turns hex packets into structured field tables and builds all eight message types from a form with guaranteed round-trip consistency.',
+        coreFeatures: [
+          'Full BOOTP header parsing via big-endian DataView: dotted-decimal IPs and chaddr rendered as MAC according to hlen',
+          'Magic cookie validation and TLV option walking with 0x00 padding skip, 0xFF end detection and offset-annotated overflow errors',
+          'Named common options: message type (53), requested IP (50), lease time (51 with days/hours), parameter list (55), client-id (61), DNS/router/subnet mask',
+          'Build all eight messages: DISCOVER/OFFER/REQUEST/DECLINE/ACK/NAK/RELEASE/INFORM with automatic cookie, padding and end',
+          'Round-trip fidelity: built packets re-parse to identical fields; unknown options stay as Unknown(type) with raw hex',
+        ],
+        howToUse: [
+          'In parse mode, paste DHCPv4 packet hex (spaces/newlines/0x tolerated) or load the built-in DISCOVER example',
+          'Review the header table and option details; lease times convert to days/hours and non-blocking issues appear as warnings',
+          'In build mode, pick a message type and add options to generate full hex with one-click copy',
+          'Re-parse built output to confirm message type and every option round-trips',
+        ],
+        useCases: [
+          'DHCP server/relay development and capture troubleshooting with fast field and option inspection',
+          'Teaching BOOTP header layout, the magic cookie and TLV variable-length options',
+          'Crafting option-specific test packets for device compatibility checks',
+        ],
+        privacyNote:
+          'All hex parsing and byte construction run locally in your browser; the tool makes no network requests and never stores pasted packets.',
+        faqs: [
+          {
+            question: 'What is the magic cookie, and what if validation fails?',
+            answer:
+              'The magic cookie is the fixed value 0x63825363 sitting between the 236-byte BOOTP header and the options, marking the BOOTP vendor extensions area. A failure usually means the input is not a DHCP/BOOTP packet or bytes are misaligned; the tool reports the expected versus actual value.',
+          },
+          {
+            question: 'How are TLV options structured?',
+            answer:
+              'Each option is a 1-byte type, 1-byte length and length-byte value. Type 0 is padding (no length/value, skipped), type 255 (0xFF) ends the options. A length reaching past the packet boundary raises an offset-annotated error.',
+          },
+          {
+            question: 'Why may a built packet contain trailing 00 bytes?',
+            answer:
+              'DHCP packets are conventionally byte-aligned (historically to a 300-byte minimum); the builder inserts 0x00 padding before the end marker, which parsers skip without affecting field reconstruction.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
