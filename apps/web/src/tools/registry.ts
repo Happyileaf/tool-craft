@@ -39390,6 +39390,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'fen-parser',
+    name: '国际象棋 FEN 局面解析与棋盘可视化器',
+    nameEn: 'Chess FEN Parser & Board Visualizer',
+    description:
+      '解析 FEN 字符串为 8×8 棋盘并以 Unicode / ASCII 渲染，支持黑白方视角与坐标标注，校验字段结构、王数量、兵升变、易位权利与吃过路兵目标格，输出警告代码、规范化 FEN 与棋子统计，纯本地零依赖。',
+    descriptionEn:
+      'Parse a FEN string into an 8x8 chessboard rendered as Unicode or ASCII with both perspectives and coordinates, validating field structure, king counts, pawn promotion, castling rights and en-passant targets, with warning codes, normalized FEN and piece stats, fully local.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/fen-parser',
+    iconName: 'LayoutGrid',
+    tags: ['FEN', '国际象棋', '棋盘', '棋谱', '易位', '吃过路兵'],
+    tagsEn: ['FEN', 'Chess', 'Board', 'PGN', 'Castling', 'En Passant'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '国际象棋 FEN 局面解析与棋盘可视化器在浏览器本地解析 Forsyth–Edwards Notation：把由 8 条横线组成的布局字段展开为 8×8 棋盘矩阵，校验字段结构与静态合法性，渲染 Unicode 棋子棋盘或 ASCII 棋盘，并输出规范化 FEN（易位权利按 KQkq 排序、计数缺省补全）。阻断性结构错误与非阻断合法性警告分区展示，便于棋谱调试与引擎对接。',
+        coreFeatures: [
+          '完整字段解析：布局 / 走子方 w|b / 易位权利 / 吃过路兵目标格 / 半回合 / 回合数，支持 4–6 字段（省略计数补 0 与 1 并提示）',
+          '结构校验：横线数、每横线 8 格、非法棋子字符、数字 0/9 与连续数字、易位重复字符、计数上限 100000 等阻断性错误精确定位',
+          '合法性警告：双方王数量、兵位于首末横线、易位权利与王车位置一致性、过路兵目标格与走子方 / 占位 / 对应兵匹配',
+          '双视角渲染：白方视角（第 8 横线在上、a→h）与黑方视角（第 1 横线在上、h→a），Unicode 与 ASCII 两种棋盘可切换',
+          '规范化 FEN 与 ASCII 棋盘一键复制，输出棋子总数与六个字段的明细表',
+        ],
+        howToUse: [
+          '把 FEN 文本粘贴到输入框，或点击示例按钮载入初始局面、空棋盘、乱序易位等样例',
+          '结构合法时查看 Unicode / ASCII 棋盘与字段明细；有结构错误时棋盘不渲染，仅显示错误定位',
+          '切换白方 / 黑方视角与 Unicode / ASCII 渲染模式，坐标自动跟随调整',
+          '查看警告区的代码与文案，点击「复制规范化 FEN」或「复制 ASCII 棋盘」导出结果',
+        ],
+        useCases: [
+          '调试国际象棋引擎、棋谱工具或 UCI 接口时校验 FEN 输入是否结构合法',
+          '教学场景下演示易位权利、吃过路兵目标格等 FEN 字段的语义与常见错误',
+          '把凌乱或字段顺序不规范的 FEN 序列化为标准形式，供下游程序消费',
+        ],
+        privacyNote:
+          'FEN 文本仅在浏览器本地解析与渲染，不发起任何网络请求，不存储或上传任何棋谱数据。',
+        faqs: [
+          {
+            question: '结构错误和合法性警告有什么区别？',
+            answer:
+              '结构错误是阻断性的，例如横线不足 8 格、出现非法棋子字符、易位字段重复等，此时无法可靠还原棋盘，工具不渲染棋盘并给出错误位置。合法性警告不阻断渲染，例如缺少某个王、兵停在第 8 横线、易位权利声称的车已不在原位等，棋盘照常显示但以警告代码逐条列出，提示该局面虽可解析却不符合棋规。',
+          },
+          {
+            question: '为什么有些明显不合法的局面没有报错？',
+            answer:
+              '本工具只做 FEN 层面的静态校验，不推断走子合法性：是否处于将军 / 将杀、王车易位通路是否被攻击、兵吃子与将军规则等需要完整走子引擎才能判断，页面已明确声明这一范围边界。需要动态合法性时应将规范化 FEN 交给 chess.js 等引擎库处理。',
+          },
+          {
+            question: 'Unicode 棋盘显示错位怎么办？',
+            answer:
+              'Unicode 棋子字符在非等宽字体或部分系统字体下宽度不一致，可能导致行列错位。切换到 ASCII 模式即可得到等宽稳定的棋盘（PNBRQK 大写为白方、pnbrqk 小写为黑方、点号表示空格），该模式也是复制到纯文本环境时的推荐格式。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Chess FEN Parser & Board Visualizer parses Forsyth–Edwards Notation locally in the browser: it expands the eight-rank placement field into an 8x8 board matrix, validates field structure and static legality, renders Unicode or ASCII boards, and emits a normalized FEN with castling rights sorted as KQkq and defaulted counters. Blocking structural errors are separated from non-blocking legality warnings to ease chess-tool debugging and engine integration.',
+        coreFeatures: [
+          'Full field parsing: placement, side to move (w|b), castling, en-passant target, halfmove and fullmove counters, accepting 4–6 fields with 0/1 defaults',
+          'Structural validation: rank count, eight squares per rank, illegal piece letters, digits 0/9 and consecutive digits, duplicate castling letters, counter cap of 100000, with precise error locations',
+          'Legality warnings: king counts, pawns on first/last rank, castling rights versus king/rook positions, and en-passant target checks against side to move, occupancy and the source pawn',
+          'Dual-perspective rendering: white view (rank 8 on top, a→h) and black view (rank 1 on top, h→a), switchable Unicode and ASCII boards with coordinates',
+          'One-click copy of normalized FEN and ASCII board, plus total piece count and a six-field detail table',
+        ],
+        howToUse: [
+          'Paste a FEN string into the input, or load samples such as the initial position, empty board or shuffled castling rights',
+          'When structurally valid, inspect the Unicode/ASCII board and field details; structural errors suppress the board and show the error location instead',
+          'Switch between white/black perspectives and Unicode/ASCII rendering; coordinates follow automatically',
+          'Review warning codes and messages, then copy the normalized FEN or ASCII board for downstream use',
+        ],
+        useCases: [
+          'Validating FEN inputs while debugging chess engines, PGN tools or UCI interfaces',
+          'Teaching the semantics of castling and en-passant FEN fields together with common mistakes',
+          'Canonicalizing messy or non-standard FEN strings before feeding them to other programs',
+        ],
+        privacyNote:
+          'FEN text is parsed and rendered only in your browser with no network requests; no chess data is stored or uploaded.',
+        faqs: [
+          {
+            question: 'What is the difference between structural errors and legality warnings?',
+            answer:
+              'Structural errors are blocking—wrong rank length, illegal piece letters, duplicate castling characters—so the board cannot be reconstructed reliably and no board is rendered. Legality warnings are non-blocking: missing kings, pawns parked on rank 8, castling rights whose rooks have moved, and so on. The board still renders while each issue is listed with a warning code.',
+          },
+          {
+            question: 'Why are some obviously illegal positions not flagged?',
+            answer:
+              'The tool performs only static FEN-level validation. Move legality—check or checkmate, whether the castling corridor is attacked, pawn capture rules—requires a full move generator. The page states this boundary explicitly; for dynamic legality, feed the normalized FEN into an engine library such as chess.js.',
+          },
+          {
+            question: 'What if the Unicode board looks misaligned?',
+            answer:
+              'Unicode chess glyphs have inconsistent widths in non-monospaced or platform fonts, which can break the grid. Switch to ASCII mode for a stable fixed-width board (uppercase PNBRQK for White, lowercase for Black, dots for empty squares); it is also the recommended format for copying into plain-text environments.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

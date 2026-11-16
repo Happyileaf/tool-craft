@@ -414,4 +414,5 @@ export const toolLoaders: Record<
   'adc-dac-quantizer': () => import('./adc-dac-quantizer'),
   'body-fat-calculator': () => import('./body-fat-calculator'),
   'severance-pay-calculator': () => import('./severance-pay-calculator'),
+  'fen-parser': () => import('./fen-parser'),
 };

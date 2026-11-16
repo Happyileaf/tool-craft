@@ -353,7 +353,7 @@
 | 20261116081908 | 纸张尺寸与 DPI 像素换算器（ISO A/B/C 与 Letter/Legal；mm/in ↔ px） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116081908.md) |
 | 20261116081909 | 家庭用电量与电费计算器（多电器功率 / 每日时长 / 电价 / 月度年度汇总） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116081909.md) |
 | 20261116081910 | DNA / RNA 序列分析器（反向互补 / 转录 / 六框翻译 / GC 含量） | Web Tool | Exploration | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116081910.md) |
-| 20261116081911 | 国际象棋 FEN 局面解析与棋盘可视化器（结构校验 / Unicode 棋盘 / 标准序列化） | Web Tool | Exploration | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116081911.md) |
+| 20261116081911 | 国际象棋 FEN 局面解析与棋盘可视化器（结构校验 / Unicode 棋盘 / 标准序列化） | Web Tool | Exploration | Completed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116081911.md) |
 | 20261116081912 | SQL 参数占位符风格转换器（? / :name / $1 / @p1 / %s / {{name}}） | Web Tool | Existing Gap | In Progress | 2026-11-16 | trae-agent | [详情](./idea-details/20261116081912.md) |
 | 20261116141423 | UDP 报文头构造与十六进制解析器（RFC 768，含伪首部校验和） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141423.md) |
 | 20261116141424 | RTP 报文头字段解析与构造器（RFC 3550，含 CSRC / 扩展头） | Web Tool | Exploration | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141424.md) |
