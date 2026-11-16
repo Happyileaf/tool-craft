@@ -6,6 +6,7 @@ import { DEFAULT_PCAP_HEX } from './pcap-parser/constants';
 import { DEFAULT_RTU_HEX } from './modbus-frame-codec/constants';
 import { SAMPLE_ARP_REQUEST } from './arp-packet-codec/constants';
 import { DEFAULT_SAMPLE as JSON_TO_CPP_SAMPLE } from './json-to-cpp/constants';
+import { DEFAULT_INPUT as BASE64URL_CONVERTER_SAMPLE } from './base64url-base64-converter/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -37899,6 +37900,112 @@ sqrt(area) + 2 * r`,
             question: 'Does the generated code require C++17?',
             answer:
               'Yes. std::optional and std::any are C++17 features, so compile with -std=c++17 or newer. The includes are emitted automatically based on the types actually used.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'base64url-base64-converter',
+    name: 'Base64URL 与 Base64 互转器',
+    nameEn: 'Base64URL ↔ Base64 Converter',
+    description:
+      '在 RFC 4648 标准 Base64 与 Base64URL 两种字母表变体之间双向规范化转换：自动识别输入变体，- _ 与 + / 互相替换，按需补齐或去除 = 填充，支持多行令牌批量处理、非法字符定位与字节级解码验证，适合 JWT、OIDC nonce、URL 安全参数调试。',
+    descriptionEn:
+      'Convert between RFC 4648 standard Base64 and Base64URL variants with automatic variant detection, - _ versus + / substitution, padding normalization, multi-line batch processing, illegal-character location and byte-level decode verification — ideal for JWT, OIDC nonce and URL-safe parameter debugging.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/base64url-base64-converter',
+    iconName: 'ArrowLeftRight',
+    tags: ['Base64URL', 'Base64', 'RFC 4648', 'JWT', '编码转换', 'URL-safe'],
+    tagsEn: ['Base64URL', 'Base64', 'RFC 4648', 'JWT', 'Encoding', 'URL-safe'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: BASE64URL_CONVERTER_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Base64URL 与 Base64 互转器是一款纯浏览器本地工具，用于在 RFC 4648 定义的两种 Base64 字母表变体之间做规范化转换。标准 Base64（§4）含 +、/ 字符并以 = 填充到 4 字节倍数；Base64URL（§5）以 -、_ 替换这两个字符并省略填充，可安全出现在 URL、文件名与 JWT 分段中。工具自动识别输入变体，按目标变体完成字符替换与填充补齐 / 去除，并提供多行批量处理与字节级解码验证。',
+        coreFeatures: [
+          '双向规范化：标准 Base64 与 Base64URL 互转，自动识别输入变体并统一字母表',
+          '填充管理：转标准变体时按 4 字节倍数补齐 =，转 URL 变体时去除全部填充',
+          '多行批量：每行一个令牌独立转换，空行保留，非法行原样保留并逐行告警',
+          '错误定位：非法字符给出在令牌中的 1-based 位置，区分非法字符与非法填充',
+          '字节级验证：调用 atob 还原字节并输出字节数与十六进制预览，验证字母表与填充自洽',
+        ],
+        howToUse: [
+          '在左侧粘贴 Base64 或 Base64URL 令牌（可多行），工具自动识别每行变体',
+          '通过右上角单选切换目标变体：→ 标准 Base64 或 → Base64URL',
+          '在右侧实时查看转换结果，点击「复制」拷贝全部输出',
+          '查看底部字节级解码验证，确认首行令牌可还原为合法字节序列',
+          '出现告警时按提示的行号与字符位置修正输入后重试',
+        ],
+        useCases: [
+          '调试 JWT / PASETO 分段、OIDC nonce 与 code_verifier 等 URL-safe 令牌',
+          '把标准 Base64 数据嵌入 URL 查询参数、文件名或 JSON 键',
+          '对接只接受填充标准 Base64 的旧系统时补齐 = 填充',
+          '核对不同语言 SDK（Java getUrlEncoder、Python urlsafe_b64encode）输出差异',
+        ],
+        privacyNote:
+          '所有转换均在浏览器本地基于纯函数完成，不上传数据、不发起网络请求，也不持久化输入内容。',
+        faqs: [
+          {
+            question: 'Base64URL 和标准 Base64 有什么区别？',
+            answer:
+              '两者编码同一字节序列时有效载荷一致，差别在字母表与填充：标准 Base64 使用 +、/ 并以 = 补齐到 4 的倍数；Base64URL 用 -、_ 替换这两个在 URL 中有特殊含义的字符，并省略填充。',
+          },
+          {
+            question: '为什么转换后有的结果带 =，有的不带？',
+            answer:
+              '填充只用于标准变体，使其长度始终为 4 字节倍数；Base64URL 规范允许省略填充，因此转 URL 变体时会去除全部 =，反向转换时再按长度自动补齐。',
+          },
+          {
+            question: '工具会真正解码数据吗？',
+            answer:
+              '主转换只做字符层面的确定性替换与填充规范化；底部「字节级解码验证」会额外调用 atob 把首行令牌还原为字节，验证字符组合在字节层面自洽，并输出字节数与前 16 字节的十六进制预览。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Base64URL ↔ Base64 Converter runs entirely in your browser and normalizes between the two Base64 alphabets defined by RFC 4648. Standard Base64 (§4) uses + and / with = padding to a multiple of four, while Base64URL (§5) replaces those characters with - and _ and omits padding so it is safe in URLs, filenames and JWT segments. It auto-detects the input variant, performs substitution and padding normalization for the target variant, and offers multi-line batch processing plus byte-level decode verification.',
+        coreFeatures: [
+          'Bidirectional normalization between standard Base64 and Base64URL with automatic variant detection',
+          'Padding management: add = to a multiple of four for standard output, strip all padding for URL output',
+          'Multi-line batch mode converts each token independently, keeps blank lines, and preserves invalid lines with per-line warnings',
+          'Error location reports the 1-based offset of illegal characters and distinguishes bad characters from bad padding',
+          'Byte-level verification uses atob to restore bytes, reporting byte count and a hex preview to confirm alphabet/padding consistency',
+        ],
+        howToUse: [
+          'Paste Base64 or Base64URL tokens on the left (multiple lines allowed); each line is detected automatically',
+          'Switch the target variant with the top-right radio: → standard Base64 or → Base64URL',
+          'Read the converted output on the right and click "Copy" to copy everything',
+          'Check the byte-level verification banner to confirm the first line decodes to valid bytes',
+          'When a warning appears, fix the input at the reported line and character offset, then retry',
+        ],
+        useCases: [
+          'Debugging URL-safe tokens such as JWT / PASETO segments, OIDC nonce and code_verifier',
+          'Embedding standard Base64 data in URL query parameters, filenames or JSON keys',
+          'Adding = padding when integrating legacy systems that only accept padded standard Base64',
+          'Comparing output from language SDKs such as Java getUrlEncoder and Python urlsafe_b64encode',
+        ],
+        privacyNote:
+          'All conversions are pure functions running locally in your browser; nothing is uploaded, no network request is made, and no input is persisted.',
+        faqs: [
+          {
+            question: 'What is the difference between Base64URL and standard Base64?',
+            answer:
+              'They encode the same byte payload identically except for the alphabet and padding: standard Base64 uses +, / and pads with = to a multiple of four, while Base64URL replaces the two URL-sensitive characters with - and _ and drops the padding.',
+          },
+          {
+            question: 'Why do some results contain = and others do not?',
+            answer:
+              'Padding belongs to the standard variant and keeps its length at a multiple of four. Base64URL allows omitting padding, so converting to the URL variant strips every =, and the reverse conversion restores padding automatically based on length.',
+          },
+          {
+            question: 'Does the tool actually decode the data?',
+            answer:
+              'The main conversion is deterministic character substitution and padding normalization. The byte-level verification banner additionally calls atob on the first line to restore raw bytes, confirming the character combination is self-consistent, and reports the byte count with a hex preview of the first 16 bytes.',
           },
         ],
       },
