@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261114081205 | Base64URL 与 Base64 标准格式互转器（填充与字符替换规范化） | Web Tool | Existing Gap | `base64url-base64-converter` / [PR #250](https://github.com/Happyileaf/tool-craft/pull/250) | 2026-11-16 | [详情](./idea-details/20261114081205.md) |
+| 20261116081908 | 纸张尺寸与 DPI 像素换算器（ISO A/B/C 与 Letter/Legal；mm/in ↔ px） | Web Tool | Existing Gap | `paper-size-dpi-calculator` / [PR #250](https://github.com/Happyileaf/tool-craft/pull/250) | 2026-11-16 | [详情](./idea-details/20261116081908.md) |
+| 20261116081909 | 家庭用电量与电费计算器（多电器功率 / 每日时长 / 电价 / 月度年度汇总） | Web Tool | Existing Gap | `electricity-bill-calculator` / [PR #250](https://github.com/Happyileaf/tool-craft/pull/250) | 2026-11-16 | [详情](./idea-details/20261116081909.md) |
+| 20261116081910 | DNA / RNA 序列分析器（反向互补 / 转录 / 六框翻译 / GC 含量） | Web Tool | Exploration | `dna-rna-sequence-analyzer` / [PR #250](https://github.com/Happyileaf/tool-craft/pull/250) | 2026-11-16 | [详情](./idea-details/20261116081910.md) |
+| 20261116081912 | SQL 参数占位符风格转换器（? / :name / $1 / @p1 / %s / {{name}}） | Web Tool | Existing Gap | `sql-parameter-placeholder-converter` / [PR #250](https://github.com/Happyileaf/tool-craft/pull/250) | 2026-11-16 | [详情](./idea-details/20261116081912.md) |
 | 20261114200459 | 曝光值（EV）与 ND 滤镜等效曝光计算器 | Web Tool | Exploration | `exposure-value-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261114200459.md) |
 | 20261115140202 | 相机视角（FOV）与等效焦距计算器（传感器画幅 / 裁切系数 / 双向换算） | Web Tool | Existing Gap | `fov-focal-length-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261115140202.md) |
 | 20261114200501 | 电池续航时间计算器（容量 / 负载 / 效率 / Peukert 与串并联组包） | Web Tool | Existing Gap | `battery-runtime-calculator` / [PR #244](https://github.com/Happyileaf/tool-craft/pull/244) | 2026-11-16 | [详情](./idea-details/20261114200501.md) |
