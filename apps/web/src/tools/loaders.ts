@@ -412,4 +412,5 @@ export const toolLoaders: Record<
   'porter-stemmer': () => import('./porter-stemmer'),
   'delta-wye-transform': () => import('./delta-wye-transform'),
   'adc-dac-quantizer': () => import('./adc-dac-quantizer'),
+  'body-fat-calculator': () => import('./body-fat-calculator'),
 };

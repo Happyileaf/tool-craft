@@ -39188,6 +39188,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'body-fat-calculator',
+    name: '体脂率估算计算器',
+    nameEn: 'Body Fat Calculator',
+    description:
+      'US Navy 围度法与 Deurenberg BMI 推导法双引擎估算体脂率、脂肪 / 瘦体重，输出 BMI、腰臀比 WHR 风险区间与 ACE 五档分级，支持公制 / 英制切换与两法对比，纯本地计算。',
+    descriptionEn:
+      'Estimate body fat percentage with the US Navy circumference method and the Deurenberg BMI formula, including fat/lean mass, BMI, waist-to-hip risk bands and ACE classification, with metric/imperial units and side-by-side method comparison, fully local.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/body-fat-calculator',
+    iconName: 'Percent',
+    tags: ['体脂率', 'US Navy', 'BMI', '腰臀比', 'ACE 分级', '健身'],
+    tagsEn: ['Body Fat', 'US Navy', 'BMI', 'WHR', 'ACE', 'Fitness'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '体脂率估算计算器基于两套公开确定性公式在浏览器本地估算身体成分：US Navy 围度法由身高与颈、腰、臀围推导体密度再换算体脂率，适合有软尺测量数据的场景；Deurenberg BMI 推导法仅需身高、体重与年龄，适合无围度数据时快速粗估。工具同时给出脂肪重量、瘦体重、BMI、腰臀比（WHR）WHO 风险区间与 ACE 五档分级，并可并列对比两种方法的差值。',
+        coreFeatures: [
+          'US Navy 围度法：男性与女性分别采用颈 / 腰 / 臀围对数公式，英制输入自动换算厘米制',
+          'Deurenberg BMI 法：BF% = 1.2·BMI + 0.23·年龄 − 10.8·性别系数 − 5.4，年龄限定 15–100',
+          '输出体脂率、脂肪重量、瘦体重、BMI，围度齐全时附腰臀比 WHR 与 WHO 低 / 中 / 高风险分级',
+          'ACE 五档分级（必需脂肪 / 运动员 / 健身 / 平均 / 肥胖），男女阈值分别判定',
+          '公制（cm/kg）/ 英制（in/lb）一键切换，两法对比模式直接显示差值',
+        ],
+        howToUse: [
+          '选择性别与单位制，再选择估算方法（围度法 / BMI 法 / 两法对比）',
+          '填写年龄、身高、体重；围度法还需填写颈围、腰围，女性另需臀围',
+          '查看结果卡片中的体脂率、脂肪 / 瘦体重、ACE 分级与 WHR 风险标签',
+          '可点击「复制结果」导出文本；输入矛盾（如腰围 ≤ 颈围）时会给出明确错误提示',
+        ],
+        useCases: [
+          '健身减脂周期中跟踪体成分变化，比单看体重更能反映脂肪与肌肉比例',
+          '无专业体测设备时用围度或 BMI 做体脂率快速粗估与健康风险自查',
+          '对照 ACE 分级与 WHO 腰臀比阈值，判断中心性肥胖与心血管风险区间',
+        ],
+        privacyNote:
+          '所有身体数据仅在浏览器本地参与计算，不发起任何网络请求，不存储或上传任何个人测量值。',
+        faqs: [
+          {
+            question: '围度法和 BMI 法哪个更准？',
+            answer:
+              'US Navy 围度法纳入了脂肪倾向堆积的腰腹围度，对普通人群通常优于只看身高体重的 BMI 法，但两者都是估算，误差可达 3–5 个百分点。BMI 法对肌肉量高的运动员容易高估体脂率，建议两法对比并结合长期趋势判断，精确评估需 DEXA、 Bod Pod 等专业设备。',
+          },
+          {
+            question: '为什么提示「腰围必须大于颈围」？',
+            answer:
+              '男性 Navy 公式含 log10(腰围 − 颈围) 项，腰围不大于颈围时对数无定义，通常意味着测量或录入有误。请确认软尺水平、在呼气末放松状态测量，腰围取肚脐水平最细处，颈围取喉结下方最细处。',
+          },
+          {
+            question: '腰臀比 WHR 的风险阈值是多少？',
+            answer:
+              '按 WHO 标准，男性 WHR < 0.85 为低风险、0.85–0.90 为中等风险、≥ 0.90 为高风险；女性对应阈值为 0.75 与 0.80。WHR 反映中心性脂肪堆积，比单纯 BMI 更能提示腹型肥胖相关的心血管与代谢风险。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Body Fat Calculator estimates body composition locally in the browser with two published deterministic formulas: the US Navy circumference method derives body density from height and neck/waist/hip circumferences, while the Deurenberg BMI method needs only height, weight and age. It reports body fat percentage, fat mass, lean mass, BMI, waist-to-hip ratio (WHR) with WHO risk bands and the five-level ACE classification, and can compare both methods side by side.',
+        coreFeatures: [
+          'US Navy method: sex-specific log formulas over neck/waist/hip circumferences, imperial inputs auto-converted to metric',
+          'Deurenberg BMI method: BF% = 1.2·BMI + 0.23·age − 10.8·sex − 5.4, age restricted to 15–100',
+          'Outputs body fat %, fat mass, lean mass and BMI, plus WHR with WHO low/moderate/high risk when circumferences are complete',
+          'ACE five-level classification (essential/athletes/fitness/average/obese) with sex-specific thresholds',
+          'Metric (cm/kg) and imperial (in/lb) units with one click, plus a comparison mode showing the gap between methods',
+        ],
+        howToUse: [
+          'Choose sex and unit system, then pick an estimation method (Navy / BMI / both)',
+          'Fill in age, height and weight; the Navy method additionally needs neck and waist, and hip for female users',
+          'Read body fat %, fat/lean mass, ACE category and WHR risk tag from the result cards',
+          'Use "Copy" to export the text; contradictory inputs such as waist ≤ neck produce an explicit error',
+        ],
+        useCases: [
+          'Tracking body composition across cutting or bulking cycles instead of relying on body weight alone',
+          'Quick body-fat estimation and health self-check without professional equipment',
+          'Screening central obesity and cardiovascular risk against ACE categories and WHO WHR thresholds',
+        ],
+        privacyNote:
+          'All body data is processed locally in your browser with no network requests; personal measurements are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Which is more accurate, the Navy method or the BMI method?',
+            answer:
+              'The Navy method incorporates abdominal circumferences where fat preferentially accumulates, so it generally beats the height-weight-only BMI formula for ordinary adults, but both are estimates with errors up to 3–5 percentage points. The BMI formula tends to overestimate muscular athletes. Compare both and watch long-term trends; use DEXA or a Bod Pod for precise assessment.',
+          },
+          {
+            question: 'Why does it say waist must be greater than neck?',
+            answer:
+              'The male Navy formula contains log10(waist − neck), which is undefined when the waist is not larger than the neck. This usually signals a measurement or entry error. Keep the tape horizontal and measure at relaxed end-exhalation: waist at navel level and neck at the narrowest point below the larynx.',
+          },
+          {
+            question: 'What are the WHO WHR risk thresholds?',
+            answer:
+              'For men, WHR below 0.85 is low risk, 0.85–0.90 moderate and 0.90 or above high risk; for women the thresholds are 0.75 and 0.80. WHR captures central fat accumulation and flags cardiometabolic risk of abdominal obesity better than BMI alone.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

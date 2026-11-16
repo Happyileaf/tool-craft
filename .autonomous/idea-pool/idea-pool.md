@@ -343,7 +343,7 @@
 | 20261115080618 | 心率训练区间计算器（最大心率估算与 Karvonen 储备心率五区间） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080618.md) |
 | 20261115080619 | 齿轮传动比与转速 / 扭矩计算器（多级齿轮组） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080619.md) |
 | 20261115140201 | 简体中文 ↔ 繁体中文转换器（词组级映射，含台湾 / 香港变体与地区用词） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115140201.md) |
-| 20261115140203 | 体脂率估算计算器（US Navy 围度法 / BMI 推导法 + 腰臀比风险区间） | Web Tool | Existing Gap | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115140203.md) |
+| 20261115140203 | 体脂率估算计算器（US Navy 围度法 / BMI 推导法 + 腰臀比风险区间） | Web Tool | Existing Gap | Completed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115140203.md) |
 | 20261115140205 | 视频 / 音频码率与文件大小估算器（分辨率 / 帧率 / 编码器 / 时长互算） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115140205.md) |
 | 20261116020445 | Windows ↔ POSIX 路径转换器（WSL 盘符映射 / UNC / 分隔符归一） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116020445.md) |
 | 20261116020446 | JSON → C++ struct / class 生成器（std::optional / std::vector 推断） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116020446.md) |
