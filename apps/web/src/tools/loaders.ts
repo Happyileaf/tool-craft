@@ -405,4 +405,9 @@ export const toolLoaders: Record<
   'electricity-bill-calculator': () => import('./electricity-bill-calculator'),
   'dna-rna-sequence-analyzer': () => import('./dna-rna-sequence-analyzer'),
   'sql-parameter-placeholder-converter': () => import('./sql-parameter-placeholder-converter'),
+  'manchester-line-codec': () => import('./manchester-line-codec'),
+  'udp-datagram-codec': () => import('./udp-datagram-codec'),
+  'rtp-header-codec': () => import('./rtp-header-codec'),
+  'bitrate-size-calculator': () => import('./bitrate-size-calculator'),
+  'porter-stemmer': () => import('./porter-stemmer'),
 };

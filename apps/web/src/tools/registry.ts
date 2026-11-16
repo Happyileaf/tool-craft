@@ -11,6 +11,10 @@ import { DEFAULT_PRESET_ID as PAPER_DPI_PRESET, DEFAULT_DPI as PAPER_DPI_DEFAULT
 import { DEFAULT_FLAT_PRICE as ELECTRICITY_FLAT_PRICE } from './electricity-bill-calculator/constants';
 import { DEFAULT_SAMPLE as DNA_RNA_SAMPLE } from './dna-rna-sequence-analyzer/constants';
 import { DEFAULT_SAMPLE as SQL_PLACEHOLDER_SAMPLE } from './sql-parameter-placeholder-converter/constants';
+import { DEFAULT_BITS as MANCHESTER_SAMPLE } from './manchester-line-codec/constants';
+import { DEFAULT_UDP_HEX as UDP_DATAGRAM_SAMPLE } from './udp-datagram-codec/constants';
+import { DEFAULT_RTP_HEX as RTP_HEADER_SAMPLE } from './rtp-header-codec/constants';
+import { DEFAULT_TEXT as PORTER_SAMPLE } from './porter-stemmer/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -38448,6 +38452,535 @@ sqrt(area) + 2 * r`,
             question: 'Why does auto-detect sometimes fail?',
             answer:
               'When two or more placeholder families coexist in one statement (for example both ? and :name), intent cannot be inferred safely. The tool lists the detected styles; manually choose the actual source style in the dropdown to proceed.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'manchester-line-codec',
+    name: '曼彻斯特线路编解码器',
+    nameEn: 'Manchester Line Codec',
+    description:
+      '在比特串与曼彻斯特 / 差分曼彻斯特双相电平（H/L）之间双向编解码，支持 IEEE 802.3 与 Thomas 两种极性约定，逐位映射、波形 SVG 可视化、码元宽度与带宽时序参数计算，错误带位序号定位；纯本地运算，数据不上传。',
+    descriptionEn:
+      'Bidirectional encoder/decoder between bit strings and Manchester / differential Manchester two-phase levels (H/L), supporting both IEEE 802.3 and Thomas polarity conventions, with per-bit mapping, inline SVG waveform visualization, symbol-width and bandwidth timing calculations and position-indexed error reporting; fully local with no upload.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/manchester-line-codec',
+    iconName: 'Activity',
+    tags: ['曼彻斯特编码', '差分曼彻斯特', '线路编码', 'IEEE 802.3', '数字通信'],
+    tagsEn: ['Manchester', 'Differential Manchester', 'Line Coding', 'IEEE 802.3', 'Digital Comm'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: MANCHESTER_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          '曼彻斯特线路编解码器是一款纯浏览器本地的数字通信教学与排障工具。曼彻斯特编码把每个比特拆成两个电平、在位中间保证一次跳变，接收端无需独立时钟线即可自同步；本工具同时实现 IEEE 802.3（0→HL、1→LH）与 Thomas（极性相反）两种约定，以及用位起始边界是否跳变来承载数据的差分曼彻斯特编码，并提供编码、解码、逐位判定、波形图与时序参数。',
+        coreFeatures: [
+          '双约定普通曼彻斯特：IEEE 802.3 与 Thomas，两者极性完全相反可一键切换',
+          '差分曼彻斯特：按位起始边界跳变（0）/ 不跳变（1）编码，支持设置初始电平，具备抗极性反转特性',
+          '双向编解码：比特串 ↔ H/L 电平序列，也接受全 0/1 双相采样输入（0→L、1→H）',
+          '严格校验：奇数长度电平、非法符号、缺少中间跳变沿均报错并给出 1-based 位序号',
+          '逐位映射表与内联 SVG 三行波形（NRZ 数据、时钟 Clock、双相波形），长输入自动只渲染前 64 位',
+          '时序参数：按比特率计算码元宽度（秒 / 微秒 / 纳秒）与主瓣带宽提示',
+        ],
+        howToUse: [
+          '选择编码或解码模式，并选择 IEEE 802.3、Thomas 或差分曼彻斯特约定',
+          '编码模式下输入 0/1 比特串（可含空白与 0b 前缀）与可选比特率，查看双相电平序列和波形',
+          '解码模式下粘贴 H/L 电平（或全 0/1 采样），差分模式需与编码端使用同一初始电平',
+          '通过逐位映射表核对每位判定依据，出错时按提示的位序号修正输入',
+        ],
+        useCases: [
+          '计算机网络与数字通信课程中讲解自同步编码、以太网物理层与时钟恢复',
+          '验证嵌入式 / FPGA 串口、总线收发器的双相码元波形与位边界',
+          '对比普通曼彻斯特与差分曼彻斯特在极性反转场景下的鲁棒性',
+          '根据目标比特率估算码元宽度与信道带宽需求',
+        ],
+        privacyNote:
+          '所有编解码与波形绘制均在浏览器内存中由纯函数完成，不发起任何网络请求，刷新页面即清空。',
+        faqs: [
+          {
+            question: 'IEEE 802.3 与 Thomas 约定有什么区别？',
+            answer:
+              '两者对每个比特的电平极性完全相反：IEEE 802.3 规定 0→HL、1→LH，而 Thomas 约定规定 0→LH、1→HL。位中间必有跳变这一自同步特性两者一致，切换约定即可得到极性相反的波形。',
+          },
+          {
+            question: '差分曼彻斯特为什么能抗极性反转？',
+            answer:
+              '差分编码把信息承载在相邻码元边界「是否跳变」上而非绝对电平上：比特 1 位起始不跳变、比特 0 位起始跳变。即使线路整体高低电平被对调，跳变关系依然成立，因此不依赖绝对极性，只需与发送端约定同一初始电平。',
+          },
+          {
+            question: '解码报「缺少中间跳变沿」是什么原因？',
+            answer:
+              '曼彻斯特码每个比特对应一对电平且两位必须不同（HL 或 LH）。如果某一对出现 HH 或 LL，说明该位中间没有跳变，无法自同步，工具会按 1-based 位序号指出问题位置，通常源于输入截断或采样错误。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Manchester Line Codec is a fully in-browser teaching and troubleshooting tool for digital communications. Manchester coding splits every bit into two levels with a guaranteed mid-bit transition so the receiver can recover the clock without a separate clock line. It implements both the IEEE 802.3 (0→HL, 1→LH) and Thomas (inverted polarity) conventions, plus differential Manchester which encodes data in the presence or absence of a transition at each bit boundary, with encoding, decoding, per-bit decisions, waveform graphics and timing parameters.',
+        coreFeatures: [
+          'Two-convention plain Manchester: IEEE 802.3 and Thomas with fully inverted polarity, switchable in one click',
+          'Differential Manchester: transition at bit start means 0, no transition means 1; configurable initial level; polarity-inversion tolerant',
+          'Bidirectional: bit string ↔ H/L level sequence, also accepts all-0/1 two-phase samples (0→L, 1→H)',
+          'Strict validation: odd level count, illegal symbols and missing mid-bit transitions report a 1-based position',
+          'Per-bit mapping table and inline three-row SVG waveform (NRZ data, clock and two-phase waveform); long inputs render only the first 64 bits',
+          'Timing parameters: symbol width (seconds/microseconds/nanoseconds) and main-lobe bandwidth hint from bit rate',
+        ],
+        howToUse: [
+          'Choose encode or decode mode and pick IEEE 802.3, Thomas or differential Manchester',
+          'In encode mode enter a 0/1 bit string (whitespace and 0b prefix allowed) and an optional bit rate, then inspect the level sequence and waveform',
+          'In decode mode paste H/L levels (or all-0/1 samples); differential mode needs the same initial level as the encoder',
+          'Use the per-bit table to review each decision and fix input at the position index shown on error',
+        ],
+        useCases: [
+          'Teaching self-clocking codes, Ethernet physical layer and clock recovery in networking courses',
+          'Verifying two-phase symbols and bit boundaries in embedded/FPGA serial and bus transceivers',
+          'Comparing the robustness of plain versus differential Manchester under polarity inversion',
+          'Estimating symbol width and channel bandwidth from a target bit rate',
+        ],
+        privacyNote:
+          'All coding, decoding and waveform drawing run in browser memory through pure functions. No network request is made and refreshing the page clears everything.',
+        faqs: [
+          {
+            question: 'What is the difference between IEEE 802.3 and Thomas conventions?',
+            answer:
+              'They use exactly inverted per-bit polarity: IEEE 802.3 maps 0→HL and 1→LH, while Thomas maps 0→LH and 1→HL. The self-clocking mid-bit transition is identical; switching conventions produces a polarity-inverted waveform.',
+          },
+          {
+            question: 'Why is differential Manchester tolerant of polarity inversion?',
+            answer:
+              'Differential coding carries information in whether a transition happens at the symbol boundary rather than in absolute levels: bit 1 has no start transition and bit 0 has one. Even if the line swaps high and low globally, the transition relationships remain valid, so absolute polarity does not matter as long as both ends share the initial level.',
+          },
+          {
+            question: 'What causes a "missing mid-bit transition" decode error?',
+            answer:
+              'Each Manchester bit is a pair of two different levels (HL or LH). A pair such as HH or LL has no mid-bit transition and cannot self-clock. The tool reports the offending 1-based bit index, which usually indicates truncated input or a sampling mistake.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'udp-datagram-codec',
+    name: 'UDP 报文头编解码器',
+    nameEn: 'UDP Datagram Header Codec',
+    description:
+      '按 RFC 768 在表单与十六进制之间构造 / 解析 UDP 报文，自动计算 Length 与含 IPv4/IPv6 伪首部的校验和（零和改写 0xFFFF、奇数补零、IPv6 强制启用），提供字节偏移表、载荷文本/Hex 双视图与逐字段错误定位；纯本地运算，数据不上传。',
+    descriptionEn:
+      'Build and parse UDP datagrams between form fields and hex per RFC 768, automatically computing Length and the checksum over the IPv4/IPv6 pseudo-header (zero-sum rewritten to 0xFFFF, odd-length zero padding, mandatory under IPv6), with a byte-offset table, text/hex payload views and field-indexed errors; fully local with no upload.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/udp-datagram-codec',
+    iconName: 'Network',
+    tags: ['UDP', 'RFC 768', '校验和', '伪首部', '协议解析'],
+    tagsEn: ['UDP', 'RFC 768', 'Checksum', 'Pseudo-Header', 'Protocol Parser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: UDP_DATAGRAM_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          'UDP 报文头编解码器是一款纯浏览器本地的传输层协议工具，实现 RFC 768 规定的 8 字节首部（源端口、目的端口、长度、校验和）与载荷的双向构造和解析。校验和基于 IP 伪首部做 16 位反码求和，完整覆盖 IPv4 可选、IPv6 强制、奇数字节补零、求和为零时传输 0xFFFF 等边界规则，并输出逐字段字节偏移表，便于教学与抓包对照。',
+        coreFeatures: [
+          'RFC 768 双向编解码：端口 / 长度 / 校验和字段表单构造，十六进制报文逐字段解析',
+          '伪首部校验和：支持 IPv4 与 IPv6（含 :: 压缩地址）双版本，自动 16 位反码求和与折叠',
+          '边界规则完整：奇数载荷补零仅参与求和不写入报文，反码和为 0 时传输值改写 0xFFFF',
+          'IPv6 强制校验：禁用校验和仅允许 IPv4，IPv6 下选择禁用直接报错（RFC 8200）',
+          '载荷双模式：文本经 TextEncoder/TextDecoder 与 Hex 互转，校验 Length 与实际字节一致',
+          '严格校验：截断报文、长度不符、端口越界、非法 Hex / IP 均带字段名或字节偏移报错',
+        ],
+        howToUse: [
+          '解析模式粘贴 UDP 报文 Hex（可含空格、逗号、冒号、0x 前缀），填写伪首部源 / 目的 IP 以回验校验和',
+          '构造模式填写源 / 目的端口、选择载荷输入模式（文本或 Hex）与校验和模式（禁用 / IPv4 / IPv6）',
+          '查看输出报文的 16 字节分行 Hex、长度与校验和，使用复制按钮取用',
+          '借助字节偏移表对照 Wireshark 等抓包结果，出错时按字段名 / 偏移定位',
+        ],
+        useCases: [
+          '计算机网络课程讲解 UDP 首部布局、伪首部作用与反码校验和计算',
+          '构造教学用报文样本并与抓包软件逐字节对照',
+          '验证嵌入式协议栈 UDP 校验和实现，覆盖奇数长度与零和等边界',
+          '排查 IPv4 / IPv6 双栈下校验和启用规则差异',
+        ],
+        privacyNote:
+          '报文构造、解析与校验和全部在浏览器本地由纯函数完成，不发起网络请求、不连接任何真实端口，刷新即清空。',
+        faqs: [
+          {
+            question: '为什么校验和算出来是 0xFFFF 而不是 0x0000？',
+            answer:
+              'RFC 768 规定反码求和取反后若结果为 0x0000，在线路上传输时必须改写为 0xFFFF，因为全 0 已被保留为「校验和未启用」的含义。工具自动完成该改写，解析回验时也按此规则判定通过。',
+          },
+          {
+            question: '伪首部是什么，为什么校验和要包含它？',
+            answer:
+              '伪首部来自 IP 层（源 / 目的地址、协议号、UDP 长度），并不作为 UDP 报文实际传输，但参与校验和计算，可让接收端确认报文确实送达正确的主机与协议、且长度无误。IPv4 伪首部 12 字节，IPv6 伪首部 40 字节并使用 4 字节长度字段。',
+          },
+          {
+            question: '为什么 IPv6 下不能禁用校验和？',
+            answer:
+              'IPv4 中 UDP 校验和是可选的（字段为 0 表示未启用），而 RFC 8200 规定 IPv6 节点必须使用 UDP 校验和以借助伪首部保护地址与长度，因此工具在 IPv6 模式选择禁用时会直接报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The UDP Datagram Header Codec is a fully in-browser transport-layer tool that builds and parses the 8-byte RFC 768 header (source port, destination port, length, checksum) plus payload between form fields and hex. The checksum uses 16-bit ones-complement summation over the IP pseudo-header and fully covers the edge rules — optional under IPv4, mandatory under IPv6, zero padding for odd payloads, and transmitting 0xFFFF when the sum is zero — while a per-field byte-offset table supports teaching and packet-capture comparison.',
+        coreFeatures: [
+          'RFC 768 bidirectional codec: build from port/length/checksum fields, parse hex into fields',
+          'Pseudo-header checksum for both IPv4 and IPv6 (including :: compressed addresses), with ones-complement sum and folding',
+          'Complete edge handling: odd payload zero padding affects only the sum, never the wire bytes; a zero complement is transmitted as 0xFFFF',
+          'Mandatory IPv6 checksum: disabling is allowed only for IPv4 and raises an error under IPv6 (RFC 8200)',
+          'Dual payload modes: text via TextEncoder/TextDecoder and hex, with Length-vs-bytes consistency checks',
+          'Strict validation: truncated datagrams, mismatched length, out-of-range ports and illegal hex/IP report field names or byte offsets',
+        ],
+        howToUse: [
+          'In parse mode paste UDP hex (spaces, commas, colons and 0x prefixes allowed) and fill pseudo-header source/destination IPs to verify the checksum',
+          'In build mode enter source/destination ports, choose payload mode (text or hex) and checksum mode (disabled/IPv4/IPv6)',
+          'Review the 16-byte-wrapped hex output, length and checksum, and copy as needed',
+          'Use the byte-offset table to compare against Wireshark captures and locate errors by field or offset',
+        ],
+        useCases: [
+          'Teaching the UDP header layout, pseudo-header purpose and ones-complement checksum in networking courses',
+          'Building instructional datagram samples for byte-by-byte comparison with packet captures',
+          'Validating embedded UDP stack checksum implementations, including odd-length and zero-sum cases',
+          'Diagnosing checksum policy differences between IPv4 and IPv6 dual-stack networks',
+        ],
+        privacyNote:
+          'All building, parsing and checksum work runs locally in the browser via pure functions. No network request is made, no real port is contacted, and refreshing clears the data.',
+        faqs: [
+          {
+            question: 'Why is the checksum 0xFFFF instead of 0x0000?',
+            answer:
+              'RFC 768 requires that when the complemented sum equals 0x0000 it must be transmitted as 0xFFFF, because all-zero is reserved to mean "checksum disabled". The tool applies this rewrite automatically and accepts it when verifying.',
+          },
+          {
+            question: 'What is the pseudo-header and why is it included?',
+            answer:
+              'The pseudo-header is derived from the IP layer (source/destination addresses, protocol number, UDP length) and is not transmitted as part of UDP, but covering it in the checksum lets the receiver confirm the datagram reached the correct host and protocol with an intact length. The IPv4 pseudo-header is 12 bytes; the IPv6 one is 40 bytes with a 4-byte length field.',
+          },
+          {
+            question: 'Why cannot the checksum be disabled under IPv6?',
+            answer:
+              'The UDP checksum is optional in IPv4 (a zero field means disabled), but RFC 8200 mandates it for IPv6 nodes so the pseudo-header protects addresses and length. The tool therefore rejects the disabled option explicitly in IPv6 mode.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'rtp-header-codec',
+    name: 'RTP 报文头编解码器',
+    nameEn: 'RTP Header Codec',
+    description:
+      '按 RFC 3550 在表单与十六进制之间构造 / 解析 RTP 报文头，完整支持 V/P/X/CC、Marker、PT、序号、时间戳、SSRC、CSRC 列表、扩展头与填充剥离，输出五段分层字节偏移与静态载荷类型名称，错误带字节偏移定位；纯本地运算，数据不上传。',
+    descriptionEn:
+      'Build and parse RTP headers between form fields and hex per RFC 3550, fully supporting V/P/X/CC, marker, payload type, sequence, timestamp, SSRC, CSRC list, header extension and padding removal, with a five-layer byte-offset breakdown and static payload-type names, plus offset-indexed errors; fully local with no upload.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/rtp-header-codec',
+    iconName: 'VideoCamera',
+    tags: ['RTP', 'RFC 3550', '流媒体', 'CSRC', '协议解析'],
+    tagsEn: ['RTP', 'RFC 3550', 'Streaming', 'CSRC', 'Protocol Parser'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: RTP_HEADER_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          'RTP 报文头编解码器是一款纯浏览器本地的实时传输协议工具，严格按 RFC 3550 §5.1 实现固定 12 字节头部以及 CSRC 贡献源列表、头部扩展与尾部填充的逐层构造和解析。所有多字节字段按大端序处理，工具会还原版本、填充、扩展、CSRC 计数、Marker、载荷类型（附静态 PT 名称）、序号、时间戳与 SSRC，并给出固定头 / CSRC / 扩展 / 载荷 / 填充五段字节偏移，方便音视频流媒体排障与教学。',
+        coreFeatures: [
+          'RFC 3550 全字段解析：V/P/X/CC、M/PT、序号、时间戳、SSRC 全部大端还原',
+          'CSRC 列表：按 CC 自动拆出 0–15 项贡献源，并校验声明数量与实际字节匹配',
+          '头部扩展：解析 profile-specific、32 位字计数与扩展数据，构造时自动计算长度',
+          '填充处理：按末字节填充长度剥离尾部 padding，并校验越界与零长度非法情形',
+          '静态载荷类型表：PCMU/PCMA/JPEG/H263 等名称标注，96–127 提示动态载荷范围',
+          '严格校验与教学开关：截断、版本号非 2、CSRC/扩展越界均带字节偏移报错，可放行非 V2 教学向量并附 warning',
+        ],
+        howToUse: [
+          '解析模式粘贴 RTP 报文 Hex（至少固定头 12 字节，可含空格与 0x 前缀），查看分层偏移表与各字段',
+          '需要分析历史教学抓包时可勾选「允许非 V2」，工具会返回字段并附带警告',
+          '构造模式填写固定头字段、按需增删 CSRC、配置扩展头 / 填充 / 载荷 Hex',
+          '复制生成的 Hex 并与抓包对照，通过五段偏移表核对载荷起始位置',
+        ],
+        useCases: [
+          '音视频流媒体课程讲解 RTP 固定头、CSRC 混流与扩展机制',
+          'WebRTC / SIP / RTSP 排障时逐字段核对报文头与载荷偏移',
+          '构造带扩展头或填充的测试报文验证解码器健壮性',
+          '识别静态与动态载荷类型，辅助 PT 协商分析',
+        ],
+        privacyNote:
+          '所有报文构造与解析均在浏览器本地由纯函数完成，不发起网络请求、不接触真实媒体流，刷新页面即清空。',
+        faqs: [
+          {
+            question: 'Marker 位（M）是怎么编码的？',
+            answer:
+              'RTP 第二个字节最高位是 Marker，低 7 位是载荷类型 PT。例如字节 0xE0 表示 M=1、PT=96；而 0x60 表示 M=0、PT=96。工具严格按该位布局解析，并在 PT 后附静态名称或「动态载荷范围」提示。',
+          },
+          {
+            question: '扩展头长度字段的单位是什么？',
+            answer:
+              '头部扩展中 16 位 length 以 32 位字（4 字节）为单位，且不包含扩展头自身前 4 字节（profile + length）。例如 length=1 表示后面有 4 字节扩展数据；构造时工具按数据 Hex 自动换算并校验 4 字节对齐。',
+          },
+          {
+            question: '填充字节如何确定载荷边界？',
+            answer:
+              '当 P=1 时，报文最后一个字节记录填充总长度（包含该字节自身），载荷结束位置要据此回退。工具会剥离填充并校验该长度至少为 1 且不超出可用尾部，越界或为 0 时按字节偏移报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The RTP Header Codec is a fully in-browser Real-time Transport Protocol tool implementing the 12-byte fixed header of RFC 3550 §5.1 together with the CSRC contributing-source list, header extension and trailing padding, in both build and parse directions. All multi-byte fields are big-endian; the tool recovers version, padding, extension, CSRC count, marker, payload type (with static PT names), sequence number, timestamp and SSRC, and reports byte offsets across five layers — fixed header, CSRC, extension, payload and padding — for streaming media troubleshooting and teaching.',
+        coreFeatures: [
+          'Full RFC 3550 field parsing: V/P/X/CC, M/PT, sequence, timestamp and SSRC, all big-endian',
+          'CSRC list: extracts 0–15 contributing sources from CC and validates declared count against actual bytes',
+          'Header extension: parses profile-specific field, 32-bit word count and extension data; build mode computes the length automatically',
+          'Padding handling: strips trailing padding using the final length byte and rejects out-of-range or zero-length cases',
+          'Static payload-type table with names such as PCMU/PCMA/JPEG/H263; 96–127 flagged as the dynamic range',
+          'Strict validation with a teaching switch: truncation, non-2 version and CSRC/extension overrun report byte offsets; non-V2 samples can be allowed with a warning',
+        ],
+        howToUse: [
+          'In parse mode paste RTP hex (at least the 12-byte fixed header; spaces and 0x allowed) and inspect the layered offset table and fields',
+          'Enable "allow non-V2" when analyzing legacy teaching captures; fields are returned with an attached warning',
+          'In build mode fill fixed-header fields, add/remove CSRC entries and configure extension, padding and payload hex',
+          'Copy the generated hex to compare with captures and use the five-layer table to confirm payload offset',
+        ],
+        useCases: [
+          'Teaching the RTP fixed header, CSRC mixing and extension mechanisms in audio/video streaming courses',
+          'Field-by-field header and payload inspection during WebRTC/SIP/RTSP troubleshooting',
+          'Building extension- or padding-bearing test packets to validate decoder robustness',
+          'Identifying static versus dynamic payload types to support PT negotiation analysis',
+        ],
+        privacyNote:
+          'All packet building and parsing run locally in the browser through pure functions. No network request is made, no real media stream is touched, and refreshing clears the page.',
+        faqs: [
+          {
+            question: 'How is the marker bit (M) encoded?',
+            answer:
+              'The highest bit of the second RTP byte is the marker, while the low seven bits are the payload type. For example 0xE0 means M=1 and PT=96, whereas 0x60 means M=0 and PT=96. The tool follows this layout strictly and appends the static name or a dynamic-range hint after the PT.',
+          },
+          {
+            question: 'What is the unit of the extension length field?',
+            answer:
+              'The 16-bit length in a header extension counts 32-bit words (4 bytes each) and excludes the first four extension bytes themselves (profile plus length). A length of 1 therefore means four extension-data bytes; build mode converts the data hex automatically and enforces 4-byte alignment.',
+          },
+          {
+            question: 'How do padding bytes determine the payload boundary?',
+            answer:
+              'When P=1, the final packet byte holds the total padding length including itself, so the payload end is rolled back by that amount. The tool strips the padding and verifies the length is at least 1 and within the available tail, reporting a byte-offset error otherwise.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'bitrate-size-calculator',
+    name: '码率与文件大小估算器',
+    nameEn: 'Bitrate & File Size Calculator',
+    description:
+      '面向视频 / 音频的码率与体积互算工具：按分辨率、帧率、编码器与 bpp 档位估算码率，正向推算文件大小（MB/MiB、每分钟体积、上传耗时），反向由目标体积求解推荐码率，并支持多片段汇总与容器开销调整；纯本地计算，数据不上传。',
+    descriptionEn:
+      'A video/audio bitrate and size calculator: estimate bitrate from resolution, frame rate, codec and bpp tier, derive file size forward (MB/MiB, per-minute size, upload time), solve recommended bitrate backward from a target size, and summarize multi-segment outputs with container overhead adjustment; fully local with no upload.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/bitrate-size-calculator',
+    iconName: 'Calculator',
+    tags: ['码率', '文件大小', '视频编码', 'bpp', '流媒体'],
+    tagsEn: ['Bitrate', 'File Size', 'Video Encoding', 'bpp', 'Streaming'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '码率与文件大小估算器是一款纯浏览器本地的音视频规划工具，围绕「体积 = 总码率 × 时长 / 8」这一核心关系提供正向估算、反向求解与多片段汇总三种模式。内置 H.264、H.265/HEVC、AV1、VP9、ProRes 的 bits-per-pixel 参考档位，可由分辨率与帧率自动估算码率并手动覆盖，同时区分十进制 MB 与二进制 MiB、支持 0–10% 容器开销与可选上传带宽耗时计算。',
+        coreFeatures: [
+          '三模式：正向估算（码率→体积）、反向求解（目标体积→推荐码率）、多片段汇总',
+          'bpp 档位表：H.264 / H.265 / AV1 / VP9 / ProRes 低中高 bits-per-pixel，自动估码率可手动覆盖',
+          '精确单位：码率统一 kbps（1 Mbps=1000 kbps），体积同时给十进制 MB 与二进制 MiB',
+          '容器开销 0–10% 可调，输出每分钟体积与可选上行带宽下的上传耗时',
+          '反向求解自动扣除音频码率，目标体积不足覆盖音频时明确报错',
+          '多片段独立计算后求和，给出总 MB / MiB 与总时长',
+        ],
+        howToUse: [
+          '选择正向、反向或多片段模式',
+          '正向模式选择分辨率预设或自定义宽高、帧率、编码器与档位，填写音频码率、时长与开销，可选上行带宽',
+          '反向模式填写目标体积、时长、音频码率与开销，读取可用总码率与推荐视频码率',
+          '多片段模式逐行添加时长与码率，查看底部汇总；所有结果为估算值，实际以编码器输出为准',
+        ],
+        useCases: [
+          '直播 / 点播上线前估算带宽成本与存储空间',
+          '为固定容量介质（U 盘、光盘、移动端缓存）反推可用编码码率',
+          '对比不同编码器在同画质下的码率与体积差异',
+          '规划多片段录制 / 剪辑工程的总体积与上传时间',
+        ],
+        privacyNote:
+          '所有计算均在浏览器本地由纯函数完成，不读取真实媒体文件、不发起网络请求，刷新页面即清空。',
+        faqs: [
+          {
+            question: 'MB 和 MiB 有什么区别？',
+            answer:
+              'MB 是十进制单位，1 MB = 1,000,000 字节；MiB 是二进制单位，1 MiB = 1,048,576 字节。操作系统常用 MiB 却常标注为 MB，因此同一文件两者数值不同，工具同时给出避免混淆。',
+          },
+          {
+            question: 'bpp（bits per pixel）档位如何影响估算？',
+            answer:
+              '码率 ≈ 宽 × 高 × 帧率 × bpp / 1000（kbps）。bpp 反映每个像素分配的比特数，编码器越新（如 AV1、H.265）同画质所需 bpp 越低。低 / 中 / 高档位对应不同画质目标，估算结果可手动覆盖为实测码率。',
+          },
+          {
+            question: '为什么结果可能与实际文件大小不符？',
+            answer:
+              '该工具基于恒定码率公式与平均 bpp 估算，而真实编码器采用 VBR、场景复杂度、GOP 结构、音频编码与封装开销都会影响最终体积。结果用于规划量级参考，容器开销滑块可部分补偿封装差异，但不能替代实测。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Bitrate & File Size Calculator is a fully in-browser audio/video planning tool built on the relationship size = total bitrate × duration / 8, offering forward estimation, reverse solving and multi-segment summary modes. It ships bits-per-pixel reference tiers for H.264, H.265/HEVC, AV1, VP9 and ProRes to estimate bitrate from resolution and frame rate (with manual override), distinguishes decimal MB from binary MiB, and supports 0–10% container overhead plus optional upload-time calculation.',
+        coreFeatures: [
+          'Three modes: forward (bitrate→size), reverse (target size→recommended bitrate) and multi-segment summary',
+          'bpp tier table for H.264/H.265/AV1/VP9/ProRes with low/medium/high bits-per-pixel; auto estimate with manual override',
+          'Precise units: bitrate in kbps (1 Mbps = 1000 kbps), size shown in both decimal MB and binary MiB',
+          'Adjustable 0–10% container overhead, per-minute size and optional upload time from uplink bandwidth',
+          'Reverse mode subtracts audio bitrate and errors clearly when the target size cannot cover it',
+          'Multi-segment results computed independently then summed, with total MB/MiB and total duration',
+        ],
+        howToUse: [
+          'Choose forward, reverse or multi-segment mode',
+          'In forward mode pick a resolution preset or custom width/height, frame rate, codec and tier; enter audio bitrate, duration and overhead, and optionally uplink bandwidth',
+          'In reverse mode enter target size, duration, audio bitrate and overhead, then read the available total and recommended video bitrates',
+          'In multi-segment mode add duration/bitrate rows and review the summary; all figures are estimates subject to real encoder output',
+        ],
+        useCases: [
+          'Estimating bandwidth cost and storage before live or on-demand deployment',
+          'Deriving usable encoding bitrate for fixed-capacity media (USB drives, discs, mobile cache)',
+          'Comparing bitrate and size across codecs at equivalent quality',
+          'Planning total size and upload time for multi-segment recordings or editing projects',
+        ],
+        privacyNote:
+          'All calculations run locally in the browser through pure functions. No real media file is read, no network request is made, and refreshing clears the page.',
+        faqs: [
+          {
+            question: 'What is the difference between MB and MiB?',
+            answer:
+              'MB is decimal: 1 MB = 1,000,000 bytes. MiB is binary: 1 MiB = 1,048,576 bytes. Operating systems often use MiB while labeling it MB, so the two numbers differ for the same file; the tool shows both to avoid confusion.',
+          },
+          {
+            question: 'How does the bpp tier affect the estimate?',
+            answer:
+              'Bitrate ≈ width × height × frame rate × bpp / 1000 in kbps. bpp is the bits allocated per pixel; newer codecs such as AV1 and H.265 need less bpp for the same quality. Low/medium/high tiers target different quality levels, and the estimate can be overridden with a measured bitrate.',
+          },
+          {
+            question: 'Why might the result differ from the real file size?',
+            answer:
+              'The tool uses a constant-bitrate formula and average bpp, while real encoders apply VBR, scene complexity, GOP structure, audio coding and muxing overhead. The figures are order-of-magnitude planning references; the overhead slider partially compensates for container differences but cannot replace measurement.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'porter-stemmer',
+    name: 'Porter 词干提取器',
+    nameEn: 'Porter Stemmer',
+    description:
+      '实现经典 Porter 1980 五步骤词干提取算法，对英文文本批量归并词形（running/runs→run），输出逐词明细与按词干聚合的词形 / 词频分组，支持忽略大小写开关与一键复制；纯本地规则运算，文本不上传。',
+    descriptionEn:
+      'Implements the classic five-step Porter 1980 stemming algorithm to batch-merge English word forms (running/runs→run), with per-word details and stem-aggregated form/frequency groups, a case-insensitivity toggle and one-click copy; fully local rule-based processing with no upload.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/porter-stemmer',
+    iconName: 'FontSize',
+    tags: ['Porter Stemmer', '词干提取', 'NLP', '文本分析', '词形归并'],
+    tagsEn: ['Porter Stemmer', 'Stemming', 'NLP', 'Text Analysis', 'Morphology'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: PORTER_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Porter 词干提取器是一款纯浏览器本地的英文文本分析工具，完整实现 Martin Porter 于 1980 年提出的规则式词干提取算法（Step 1a/1b/1c、2、3、4、5a/5b）。它不依赖词典，而是依据后缀规则与 measure（VC 序列计数）把同根词归并到同一词干，例如 running、runs 归并为 run。工具提供逐词明细与按词干聚合的分组视图，便于信息检索、文本分类与搜索召回场景的预处理验证。',
+        coreFeatures: [
+          '完整 Porter 1980 五步骤：复数 / 时态后缀、关联后缀、名词形容词后缀与 E / 双 L 收尾规则',
+          '批量处理：自动分词并对每个 token 输出原文、词干与序号',
+          '词干归并分组：按词干聚合不同词形，统计出现次数并按词频降序排列',
+          '大小写开关：默认忽略大小写归并，可切换为按原始精确形式分组',
+          '统计概览：token 总数、唯一词干数与归并组数，结果一键复制',
+          '纯规则零依赖：输出可能是非常规真实词（如 triplic），这是 Porter 算法的固有特性',
+        ],
+        howToUse: [
+          '把英文文本粘贴到输入框，或载入内置样例',
+          '选择是否忽略大小写（默认开启），结果实时计算',
+          '在「词干归并」标签查看每个词干下的词形与词频，在「逐词明细」标签核对每个 token',
+          '使用复制按钮导出具名分组或明细，空文本会给出空状态提示',
+        ],
+        useCases: [
+          '搜索引擎与信息检索中构建倒排索引前的词项归一化',
+          '文本分类、情感分析等 NLP 任务的特征预处理演示',
+          '对比词干提取（stemming）与词形还原（lemmatization）的差异',
+          '教学演示后缀规则、measure 计数与英文构词法',
+        ],
+        privacyNote:
+          '文本仅在浏览器内存中由纯规则函数处理，不上传任何数据、不请求外部词典服务，刷新页面即清空。',
+        faqs: [
+          {
+            question: '为什么有些提取结果不是真实单词？',
+            answer:
+              'Porter 是规则式算法而非词典式还原，目标是把同根词映射到同一记号以提升召回，并不保证输出是合法单词。例如 triplicate 会得到 triplic、agreed 会得到 agre，这与官方 C 实现的经典输出一致。',
+          },
+          {
+            question: '词干提取和词形还原（lemmatization）有什么区别？',
+            answer:
+              '词干提取用固定后缀规则粗暴裁剪，速度快、零词典依赖，但可能产生非词或过度合并；词形还原依赖词性与词典，返回真实词元（lemma），更准确但更重。本工具实现的是前者，适合演示与大规模预处理。',
+          },
+          {
+            question: '忽略大小写开关具体影响什么？',
+            answer:
+              '开启时 Dog 与 dog 先统一小写再按词干归并到同一组；关闭后按原始大小写精确形式分别成组。算法内部始终对单词做小写归一后再套用规则，因此开关只改变分组方式，不改变词干字符串本身。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Porter Stemmer is a fully in-browser English text analysis tool implementing the rule-based stemming algorithm published by Martin Porter in 1980 (Steps 1a/1b/1c, 2, 3, 4, 5a/5b). Without any dictionary, it merges words sharing a root into one stem through suffix rules and the measure (VC sequence count), for example running and runs into run. It provides both per-word details and stem-aggregated group views to support preprocessing experiments in information retrieval, text classification and search recall.',
+        coreFeatures: [
+          'Complete Porter 1980 five steps: plural/tense suffixes, relational suffixes, noun/adjective suffixes and final E/double-L rules',
+          'Batch processing: automatic tokenization with original text, stem and index for every token',
+          'Stem aggregation: groups word forms under each stem, counts occurrences and sorts by frequency',
+          'Case toggle: case-insensitive grouping by default, switchable to exact original-form grouping',
+          'Overview stats: total tokens, unique stems and group count, with one-click copy',
+          'Pure rules, zero dependencies: outputs may be non-words such as triplic, an inherent Porter property',
+        ],
+        howToUse: [
+          'Paste English text into the input box or load the built-in sample',
+          'Choose whether to ignore case (on by default); results compute in real time',
+          'Review forms and frequencies per stem in the grouped tab, or every token in the detail tab',
+          'Use copy buttons to export groups or details; empty input shows an empty-state hint',
+        ],
+        useCases: [
+          'Term normalization before building inverted indexes for search and information retrieval',
+          'Feature preprocessing demos for NLP tasks such as text classification and sentiment analysis',
+          'Comparing stemming against dictionary-based lemmatization',
+          'Teaching suffix rules, measure counting and English morphology',
+        ],
+        privacyNote:
+          'Text is processed only in browser memory by pure rule functions. Nothing is uploaded, no external dictionary service is called, and refreshing clears the page.',
+        faqs: [
+          {
+            question: 'Why are some stems not real words?',
+            answer:
+              'Porter is rule-based rather than dictionary-based, aiming to map same-root words to one token for recall, with no guarantee of a valid word. For example triplicate becomes triplic and agreed becomes agre, matching the classic output of the official C implementation.',
+          },
+          {
+            question: 'What is the difference between stemming and lemmatization?',
+            answer:
+              'Stemming applies fixed suffix rules aggressively — fast and dictionary-free but able to produce non-words or over-merge. Lemmatization uses part-of-speech and a dictionary to return real lemmas, which is more accurate but heavier. This tool implements the former, suited to demos and large-scale preprocessing.',
+          },
+          {
+            question: 'What exactly does the case-insensitivity toggle change?',
+            answer:
+              'When on, Dog and dog are lowercased and merged under one stem group; when off, exact original casing forms separate groups. The algorithm always lowercases internally before applying rules, so the toggle changes grouping only, never the stem string itself.',
           },
         ],
       },
