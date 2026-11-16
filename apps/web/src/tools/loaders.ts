@@ -417,4 +417,5 @@ export const toolLoaders: Record<
   'fen-parser': () => import('./fen-parser'),
   'wake-on-lan-magic-packet': () => import('./wake-on-lan-magic-packet'),
   'acme-dns01-challenge': () => import('./acme-dns01-challenge'),
+  'vlan-tag-codec': () => import('./vlan-tag-codec'),
 };

@@ -39693,6 +39693,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'vlan-tag-codec',
+    name: '802.1Q VLAN 标签编解码器',
+    nameEn: '802.1Q VLAN Tag Codec (with QinQ)',
+    description:
+      '按 IEEE 802.1Q 在本地编解 VLAN 标签：拆解/拼装 TCI 位域（PCP 3bit、DEI 1bit、VID 12bit）与 TPID，支持从完整以太网帧定位标签、QinQ 双层（0x88A8 + 0x8100）编解码与保留 VID 告警。',
+    descriptionEn:
+      'Encode and decode IEEE 802.1Q VLAN tags locally: unpack/pack the TCI bit fields (PCP 3-bit, DEI 1-bit, VID 12-bit) and TPID, locate tags inside full Ethernet frames, and handle QinQ double tagging (0x88A8 + 0x8100) with reserved-VID warnings.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/vlan-tag-codec',
+    iconName: 'Partition',
+    tags: ['802.1Q', 'VLAN', 'QinQ', 'PCP', 'TPID', '以太网'],
+    tagsEn: ['802.1Q', 'VLAN', 'QinQ', 'PCP', 'TPID', 'Ethernet'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '802.1Q VLAN 标签编解码器在浏览器本地完成 VLAN 标签的字节级编解码。单标签为 4 字节：2 字节 TPID（标准 0x8100）加 2 字节 TCI，TCI 又分为 3 bit PCP（802.1p 优先级）、1 bit DEI（丢包 eligibility）与 12 bit VID（VLAN 编号）。工具同时支持 QinQ 双层标签（外层 0x88A8、内层 0x8100，共 8 字节）以及从完整以太网帧的源/目的 MAC 之后自动定位标签。',
+        coreFeatures: [
+          'TCI 位域双向拆解：PCP（0–7，附 802.1p 优先级名称）、DEI（0/1）、VID（0–4095）逐位拼装与解析',
+          '双输入模式：仅 4/8 字节标签 hex，或完整以太网帧 hex（自动在偏移 12 处识别 TPID）',
+          'QinQ 双层：外层 0x88A8 + 内层 0x8100 共 8 字节，按外→内顺序解析并可往返构造',
+          '保留值告警：VID 0（优先级标签）与 4095（保留）给出提示但仍允许计算',
+          '严格校验：奇数位 hex、非 hex 字符、字节截断、未知 TPID 均返回带字节偏移的中文错误',
+        ],
+        howToUse: [
+          '选择「解析」或「构造」模式，并选择单层 802.1Q 或 QinQ 双层',
+          '解析时粘贴标签或完整帧 hex 并点击示例可快速体验；结果表格展示 TPID/PCP/DEI/VID',
+          '构造时填写 PCP、DEI、VID（QinQ 需填内外两层），即时生成标签 hex 并一键复制',
+          '出现告警时优先检查 VID 是否使用了 0/4095 保留值或 TPID 是否被设备厂商改写',
+        ],
+        useCases: [
+          '交换机配置与抓包排障时核对 trunk 端口中的 VLAN 标签字节',
+          '网络设备驱动 / eBPF / OVS 开发中验证标签插入与剥离逻辑',
+          '教学演示 802.1Q 位域布局、PCP 优先级与 QinQ 嵌套原理',
+        ],
+        privacyNote:
+          '所有 hex 解析与位运算均在浏览器本地完成，工具不发起网络请求，也不存储粘贴的报文内容。',
+        faqs: [
+          {
+            question: 'TCI 的 16 个 bit 是怎么划分的？',
+            answer:
+              '高 3 bit 为 PCP（位 15–13），次 1 bit 为 DEI（位 12），低 12 bit 为 VID（位 11–0）。例如 PCP=5、DEI=1、VID=100 时，TCI = 5<<13 | 1<<12 | 100 = 0xB064。',
+          },
+          {
+            question: 'QinQ 双层标签的字节顺序是什么？',
+            answer:
+              '外层（服务提供商）标签在前：TPID 0x88A8 加外层 TCI 共 4 字节；其后是内层（客户）标签 0x8100 加内层 TCI，合计 8 字节，解析顺序为由外而内。',
+          },
+          {
+            question: '为什么 VID 0 和 4095 不能随便用？',
+            answer:
+              'VID 0 按 IEEE 规定表示「优先级标签」（不带 VLAN 成员含义），4095（0xFFF）为保留值，业务 VLAN 可用范围是 1–4094。工具会对这两个值显示告警。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The 802.1Q VLAN Tag Codec performs byte-level VLAN tag encoding and decoding locally in your browser. A single tag is 4 bytes: a 2-byte TPID (standard 0x8100) plus a 2-byte TCI holding a 3-bit PCP (802.1p priority), 1-bit DEI and 12-bit VID. It also supports QinQ double tags (outer 0x88A8, inner 0x8100, 8 bytes total) and auto-locates tags after the source/destination MAC of a full Ethernet frame.',
+        coreFeatures: [
+          'Bidirectional TCI bit-field packing: PCP (0–7 with 802.1p names), DEI (0/1) and VID (0–4095)',
+          'Two input modes: bare 4/8-byte tag hex, or full Ethernet frame hex with TPID detection at offset 12',
+          'QinQ double tagging: outer 0x88A8 plus inner 0x8100, parsed outside-in and round-trippable',
+          'Reserved-value warnings for VID 0 (priority-tagged) and 4095 (reserved), while still computing',
+          'Strict validation: odd-length hex, non-hex characters, truncation and unknown TPIDs raise offset-annotated errors',
+        ],
+        howToUse: [
+          'Choose decode or build mode, then single 802.1Q or QinQ double tagging',
+          'Paste tag or full-frame hex (use the example button); results show TPID/PCP/DEI/VID in a table',
+          'For building, enter PCP, DEI and VID (two layers for QinQ) to generate tag hex with one-click copy',
+          'On warnings, check whether VID uses reserved 0/4095 or the TPID was rewritten by a vendor',
+        ],
+        useCases: [
+          'Verifying VLAN tag bytes in trunk captures and switch troubleshooting',
+          'Validating tag insertion/stripping in NIC drivers, eBPF or OVS development',
+          'Teaching 802.1Q bit layout, PCP priorities and QinQ nesting',
+        ],
+        privacyNote:
+          'All hex parsing and bit arithmetic run locally in your browser; the tool makes no network requests and never stores pasted frames.',
+        faqs: [
+          {
+            question: 'How are the 16 TCI bits laid out?',
+            answer:
+              'The top 3 bits are PCP (bits 15–13), the next bit is DEI (bit 12), and the low 12 bits are VID (bits 11–0). For PCP=5, DEI=1, VID=100, TCI = 5<<13 | 1<<12 | 100 = 0xB064.',
+          },
+          {
+            question: 'What is the byte order of a QinQ double tag?',
+            answer:
+              'The outer (service-provider) tag comes first: TPID 0x88A8 with the outer TCI (4 bytes), followed by the inner (customer) tag 0x8100 with its TCI — 8 bytes total, parsed outside-in.',
+          },
+          {
+            question: 'Why should VID 0 and 4095 be avoided?',
+            answer:
+              'VID 0 means a priority-tagged frame with no VLAN membership semantics, and 4095 (0xFFF) is reserved; usable business VLANs range from 1 to 4094. The tool warns when either reserved value appears.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
