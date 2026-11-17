@@ -40115,6 +40115,112 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'classical-cipher-collection',
+    name: '古典密码合集',
+    nameEn: 'Classical Cipher Collection',
+    description:
+      '培根、栅栏、Playfair、Atbash 四种古典密码的在线加解密：培根 5 位 AB 编码与隐写原理、栅栏行列置换、Playfair 5×5 双字母方阵、Atbash 字母表反转，输出过程步骤说明，纯浏览器本地计算，适合密码学教学。',
+    descriptionEn:
+      'Encrypt and decrypt with four classical ciphers in the browser: Bacon 5-bit AB encoding with steganography roots, Rail Fence transposition, Playfair 5×5 digram square and Atbash alphabet reversal, each with step-by-step explanations for cryptography education.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/classical-cipher-collection',
+    iconName: 'KeyRound',
+    tags: ['古典密码', '培根密码', '栅栏密码', 'Playfair', 'Atbash'],
+    tagsEn: ['Classical Cipher', "Bacon's Cipher", 'Rail Fence', 'Playfair', 'Atbash'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: CIPHER_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          '古典密码合集把四种密码学发展史上的代表性对称密码汇集到同一界面：培根密码把每个字母替换为 5 位 A/B 编码（历史上曾用两种字体承载以实现隐写）；栅栏密码按指定行数把文本锯齿排列后按行读出，属于换位密码；Playfair 密码基于密钥构造 5×5 字母方阵（I/J 合并），以双字母组为单位按同行、同列、矩形规则替换；Atbash 密码直接反转字母表（A↔Z、B↔Y），是自逆变换。每种算法都输出中间步骤说明，帮助理解其数学结构。注意：古典密码可被频率分析等手段轻易破解，本工具仅用于教学演示。',
+        coreFeatures: [
+          '四种算法合一：培根、栅栏、Playfair、Atbash，一键切换加密 / 解密模式',
+          '过程可视化：输出方阵内容、分组结果、各行字符数等关键中间量',
+          '参数可调：栅栏支持 2–12 行，Playfair 支持自定义密钥（J 自动按 I 处理）',
+          '规范的分组规则：Playfair 重复字母插 X、奇数长度补 X；培根尾组不足自动丢弃',
+          '大小写与非字母处理明确：Atbash 保留非字母，其余算法按规则提取字母',
+          '纯本地计算：零网络请求、零依赖，文本不离开浏览器',
+        ],
+        howToUse: [
+          '在顶部选择密码算法，并切换「加密」或「解密」',
+          '栅栏密码设置行数，Playfair 设置字母密钥，培根与 Atbash 无需参数',
+          '在输入框粘贴文本，结果与步骤说明实时更新',
+          '点击复制按钮导出密文或明文，可在加密后切换解密做往返验证',
+        ],
+        useCases: [
+          '密码学导论课程的课堂演示与课后练习',
+          'CTF 入门题中古典密码题型的快速加解密与验证',
+          '推理小说、密室游戏、寻宝活动中的谜题设计',
+          '理解替换密码与换位密码的区别及频率分析攻击面',
+        ],
+        privacyNote:
+          '所有加解密均由浏览器内的纯函数完成，不发起网络请求、不写入存储。但古典密码不具备现代安全强度，请勿输入真实机密信息。',
+        faqs: [
+          {
+            question: 'Playfair 解密结果里为什么会出现多余的 X？',
+            answer:
+              'Playfair 以双字母组为单位，加密时同组重复字母（如 LL）之间会插入补位 X，明文长度为奇数时也会在末尾补 X。这些补位字符在解密后无法自动判定，需要结合语境人工识别并删除。',
+          },
+          {
+            question: '培根密码为什么 J 和 I、U 和 V 的编码相同？',
+            answer:
+              '培根在 1605 年提出该编码时英语字母表只有 24 个字母，I/J 与 U/V 尚未分化，因此共用编码。本工具沿用原始 24 字母表，加密时 J 按 I、V 按 U 编码，解密统一输出 I 与 U。',
+          },
+          {
+            question: '这些密码能用来加密重要数据吗？',
+            answer:
+              '不能。四种古典密码的密钥空间都很小，且保留了明文的统计特征，使用频率分析、已知明文攻击等手段可以在很短时间内破解。现代场景应使用 AES、RSA 等经过公开检验的现代密码算法，本工具仅用于教学与解谜。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Classical Cipher Collection brings four representative symmetric ciphers from cryptography history into one interface. Bacon’s cipher replaces each letter with a 5-bit A/B code (historically carried by two typefaces for steganography); Rail Fence writes text in a zigzag across a chosen number of rails and reads it row by row as a transposition cipher; Playfair builds a 5×5 key square with merged I/J and transforms digraphs using same-row, same-column and rectangle rules; Atbash simply reverses the alphabet (A↔Z, B↔Y) and is self-inverse. Every algorithm prints intermediate steps so the underlying mathematical structure is visible. Classical ciphers are trivially breakable by frequency analysis and this tool is intended solely for education.',
+        coreFeatures: [
+          'Four algorithms in one place: Bacon, Rail Fence, Playfair and Atbash, with encrypt/decrypt toggle',
+          'Step-by-step output including the key square, digram grouping and per-rail character counts',
+          'Adjustable parameters: 2–12 rails and a custom Playfair key (J treated as I)',
+          'Standard grouping rules: X insertion for repeated digram letters and odd-length padding; truncated Bacon tail groups',
+          'Explicit casing and non-letter handling: Atbash preserves non-letters while other algorithms extract letters by rule',
+          'Fully local, dependency-free computation with no network request',
+        ],
+        howToUse: [
+          'Pick a cipher at the top and switch between encrypt and decrypt',
+          'Set the rail count for Rail Fence or the letter key for Playfair; Bacon and Atbash need no parameters',
+          'Paste text into the input area and read the live result plus step explanations',
+          'Copy the output with one click, or flip to decrypt to verify round-trip behavior',
+        ],
+        useCases: [
+          'Classroom demos and homework for introductory cryptography courses',
+          'Quick encryption and verification for classical-cipher puzzles in beginner CTF events',
+          'Designing riddles for mystery games, escape rooms and treasure hunts',
+          'Learning the difference between substitution and transposition ciphers and their frequency-analysis attack surface',
+        ],
+        privacyNote:
+          'All encryption and decryption run through in-browser pure functions with no network calls or storage writes. Classical ciphers provide no modern security strength, so never enter genuinely confidential information.',
+        faqs: [
+          {
+            question: 'Why does the decrypted Playfair output contain extra X letters?',
+            answer:
+              'Playfair works on digraphs: an X is inserted between repeated letters such as LL and appended when the plaintext length is odd. These padding letters cannot be distinguished automatically after decryption and must be identified and removed using context.',
+          },
+          {
+            question: 'Why do J/I and U/V share Bacon codes?',
+            answer:
+              'When Bacon proposed the encoding in 1605 the English alphabet had only 24 letters because I/J and U/V had not yet differentiated. The tool follows the original 24-letter table: J is encoded as I and V as U, while decryption always yields I and U.',
+          },
+          {
+            question: 'Can these ciphers protect important data?',
+            answer:
+              'No. All four have tiny key spaces and preserve plaintext statistics, so frequency analysis or known-plaintext attacks break them quickly. Use publicly vetted modern algorithms such as AES or RSA for real-world protection; this tool exists only for teaching and puzzles.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -65,7 +65,7 @@ function replacePhrases(text: string, phraseMap: Record<string, string>): { text
   if (keys.length === 0) {
     return { text, count: 0 };
   }
-  const maxLen = keys[0].length;
+  const maxLen = keys[0]?.length ?? 0;
   const lookup = new Set(keys);
   const chars = toCodePoints(text);
   const output: string[] = [];

@@ -396,7 +396,6 @@ export const S2T_CHAR_MAP: Record<string, string> = {
   戏: '戲',
   简: '簡',
   现: '現',
-  题: '題',
   问: '問',
 };
 
