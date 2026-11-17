@@ -315,6 +315,7 @@ export const toolLoaders: Record<
   'bic-code-validator': () => import('./bic-code-validator'),
   'gs1-checksum-calculator': () => import('./gs1-checksum-calculator'),
   'dicom-uid-tool': () => import('./dicom-uid-tool'),
+  'ical-todo-journal-generator': () => import('./ical-todo-journal-generator'),
   'plus-code-codec': () => import('./plus-code-codec'),
   'changelog-generator': () => import('./changelog-generator'),
   'lrc-parser': () => import('./lrc-parser'),

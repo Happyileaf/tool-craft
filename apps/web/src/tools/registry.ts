@@ -28517,6 +28517,124 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'ical-todo-journal-generator',
+    name: 'iCalendar VTODO/VJOURNAL 待办与日记生成器（RFC 5545）',
+    nameEn: 'iCalendar VTODO/VJOURNAL Todo & Journal Generator (RFC 5545)',
+    description:
+      '在浏览器本地生成 RFC 5545 待办与日记组件：VTODO 支持 DTSTART/DUE/STATUS/PRIORITY/PERCENT-COMPLETE/COMPLETED/RRULE/RELATED-TO/CATEGORIES，VJOURNAL 支持 DTSTART/STATUS/DESCRIPTION/CATEGORIES；自动处理 TEXT 转义、UTC 时间、UID/DTSTAMP 必填字段与 75 八位组 CRLF 折行，可复制或下载 .ics 直接导入 Apple 提醒事项、Google Calendar 与 Outlook 任务，并支持两类组件合并到同一 VCALENDAR。',
+    descriptionEn:
+      'Build RFC 5545 to-do and journal components locally in the browser: VTODO supports DTSTART/DUE/STATUS/PRIORITY/PERCENT-COMPLETE/COMPLETED/RRULE/RELATED-TO/CATEGORIES while VJOURNAL supports DTSTART/STATUS/DESCRIPTION/CATEGORIES. TEXT escaping, UTC timestamps, mandatory UID/DTSTAMP and 75-octet CRLF folding are handled automatically. Copy or download .ics files ready for Apple Reminders, Google Calendar and Outlook Tasks, or merge both component types into one VCALENDAR.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ical-todo-journal-generator',
+    iconName: 'List',
+    tags: ['iCalendar', 'VTODO', 'VJOURNAL', 'RFC 5545', '待办', 'ICS'],
+    tagsEn: ['iCalendar', 'VTODO', 'VJOURNAL', 'RFC 5545', 'Todo', 'ICS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '生成带 RRULE 的 VTODO 待办与 FINAL 状态 VJOURNAL 日记，输出可导入的 .ics',
+    doc: {
+      zh: {
+        whatIsIt:
+          'iCalendar VTODO/VJOURNAL 生成器补齐了现有 .ics 日历事件生成器仅覆盖 VEVENT 的空白，按 RFC 5545 Section 3.6.2 与 3.6.3 在浏览器本地拼装待办（VTODO）与日记（VJOURNAL）组件。工具通过结构化表单收集字段，输出带 VERSION/PRODID/CALSCALE 外壳的标准 .ics 文本：所有时间统一为 UTC（YYYYMMDDTHHMMSSZ），TEXT 值按 Section 3.3.11 转义反斜杠、逗号、分号与换行，逻辑行按 Section 3.1 在 75 个八位组处折叠、续行以单空格开头并使用 CRLF 行尾，UID 与 DTSTAMP 等必填字段自动生成。',
+        coreFeatures: [
+          '完整 VTODO 字段：SUMMARY、DTSTART、DUE、STATUS（NEEDS-ACTION/IN-PROCESS/COMPLETED/CANCELLED）、PRIORITY 1-9、PERCENT-COMPLETE 0-100、COMPLETED 与 RELATED-TO',
+          'RRULE 重复规则：FREQ/INTERVAL/COUNT/UNTIL 结构化录入，COUNT 与 UNTIL 互斥校验，UNTIL 自动转 UTC',
+          'VJOURNAL 日记组件：SUMMARY、可选 DTSTART、STATUS（DRAFT/FINAL/CANCELLED）、DESCRIPTION、CATEGORIES 与 RELATED-TO',
+          'RFC 5545 序列化：TEXT 转义、属性参数引号、UTC 时间格式、UID/DTSTAMP 必填字段与 75 八位组 CRLF 折行（多字节 UTF-8 不截断）',
+          '组合日历：VTODO 与 VJOURNAL 可合并进同一个 VCALENDAR，组件自动分配独立 UID',
+          '严格表单校验：DUE 晚于 DTSTART、优先级与完成度取值范围、COMPLETED 与状态联动等错误即时提示',
+        ],
+        howToUse: [
+          '在「VTODO 待办」页填写标题（必填）、开始/截止时间、状态、优先级、完成度，需要重复时打开 RRULE 开关并设置 FREQ/INTERVAL/COUNT 或 UNTIL',
+          '在「VJOURNAL 日记」页填写标题与正文，选择 DRAFT/FINAL/CANCELLED 状态，DTSTART 可留空',
+          '右侧预览实时展示 .ics 文本；校验未通过时显示具体原因且禁用复制/下载',
+          '点击「复制 ICS」获取文本，或「下载 .ics」得到可直接导入 Apple 提醒事项、Google Calendar、Outlook 任务的文件',
+          '需要同一文件同时包含待办与日记时，使用「组合日历」页生成合并 VCALENDAR',
+        ],
+        useCases: [
+          '为任务管理系统导出符合标准的待办事项 .ics 订阅文件',
+          '在医疗、合规等场景生成带时间戳与状态的 VJOURNAL 审计日记',
+          '测试日历客户端对 RRULE、PERCENT-COMPLETE、RELATED-TO 等字段的兼容性',
+          '把项目管理数据迁移到 Apple 提醒事项或 Outlook 任务',
+        ],
+        privacyNote:
+          '全部表单内容仅在浏览器本地序列化为文本，不发起任何网络请求；下载的 .ics 文件由本地 Blob 生成，刷新页面后数据即清除。',
+        faqs: [
+          {
+            question: 'VTODO 和普通 VEVENT 日历事件有什么区别？',
+            answer:
+              'VEVENT 描述有明确起止时间的日历事件，而 VTODO（RFC 5545 3.6.2）描述可被完成的任务，携带 STATUS、PRIORITY、PERCENT-COMPLETE、DUE、COMPLETED 等任务专属字段，Apple 提醒事项、Google Tasks 与 Outlook 任务消费的正是这类组件。VJOURNAL（3.6.3）则是带日期的文字记录，不占用日历时段。',
+          },
+          {
+            question: '为什么生成的文本每行最多 75 个字符还有空格开头的行？',
+            answer:
+              '这是 RFC 5545 Section 3.1 规定的折行（folding）：逻辑行超过 75 个八位组时必须拆成多条物理行，续行以一个空格开头，解析时去掉 CRLF 与紧随的空格即可还原。工具按 UTF-8 字节长度切分，中文字符占 3 字节也不会被截断。',
+          },
+          {
+            question: 'RRULE 的 COUNT 和 UNTIL 能同时填写吗？',
+            answer:
+              '不能。RFC 5545 规定 COUNT（重复次数）与 UNTIL（截止时间）互斥，同时出现的规则不合法，工具会直接报错。界面上二选一录入：填 COUNT 时自动清空 UNTIL，反之亦然。',
+          },
+          {
+            question: '为什么时间都带 Z 后缀，不支持时区吗？',
+            answer:
+              '本工具统一输出 UTC 形式（Z 后缀），把表单时间按 UTC 解释，避免不同客户端对浮动时间（floating time）理解不一致。需要特定时区展示时，可在导入端设置时区；现有 VEVENT 事件生成器则提供 TZID 本地时间形式，两者互补。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The iCalendar VTODO/VJOURNAL generator fills the gap left by .ics event generators that only cover VEVENT, assembling to-do (VTODO, RFC 5545 3.6.2) and journal (VJOURNAL, 3.6.3) components entirely in the browser. Structured forms produce standard .ics text wrapped with VERSION/PRODID/CALSCALE: every timestamp is UTC (YYYYMMDDTHHMMSSZ), TEXT values escape backslashes, commas, semicolons and newlines per 3.3.11, and logical lines fold at 75 octets per 3.1 with a single leading space on continuation lines and CRLF endings; mandatory UID and DTSTAMP are generated automatically.',
+        coreFeatures: [
+          'Full VTODO fields: SUMMARY, DTSTART, DUE, STATUS (NEEDS-ACTION/IN-PROCESS/COMPLETED/CANCELLED), PRIORITY 1-9, PERCENT-COMPLETE 0-100, COMPLETED and RELATED-TO',
+          'RRULE recurrence: structured FREQ/INTERVAL/COUNT/UNTIL input with mutual-exclusion validation and UTC conversion of UNTIL',
+          'VJOURNAL components: SUMMARY, optional DTSTART, STATUS (DRAFT/FINAL/CANCELLED), DESCRIPTION, CATEGORIES and RELATED-TO',
+          'RFC 5545 serialization: TEXT escaping, quoted parameter values, UTC timestamps, mandatory UID/DTSTAMP and 75-octet CRLF folding without splitting multibyte UTF-8 characters',
+          'Combined calendar: merge VTODO and VJOURNAL into one VCALENDAR with automatically distinct UIDs',
+          'Strict form validation: DUE after DTSTART, priority/completion ranges, COMPLETED-vs-STATUS consistency, all reported inline',
+        ],
+        howToUse: [
+          'On the VTODO tab fill the required title, start/due times, status, priority and completion; enable RRULE for recurrence with FREQ/INTERVAL and COUNT or UNTIL',
+          'On the VJOURNAL tab fill title and body, pick DRAFT/FINAL/CANCELLED; DTSTART is optional',
+          'The right-hand preview updates live; when validation fails it shows the reason and disables copy/download',
+          'Click Copy ICS for the text or Download .ics for a file importable into Apple Reminders, Google Calendar and Outlook Tasks',
+          'Use the Combined tab when one file must contain both a to-do and a journal in the same VCALENDAR',
+        ],
+        useCases: [
+          'Exporting standards-compliant to-do .ics feeds from task management systems',
+          'Producing timestamped VJOURNAL audit journals in regulated medical or compliance workflows',
+          'Testing calendar-client compatibility for RRULE, PERCENT-COMPLETE and RELATED-TO',
+          'Migrating project-management data into Apple Reminders or Outlook Tasks',
+        ],
+        privacyNote:
+          'All form content is serialized to text locally in the browser with no network requests; downloaded .ics files are created from local Blobs and everything clears on refresh.',
+        faqs: [
+          {
+            question: 'How is VTODO different from a normal VEVENT?',
+            answer:
+              'VEVENT describes a calendar occurrence with fixed start and end, while VTODO (RFC 5545 3.6.2) describes an actionable task with STATUS, PRIORITY, PERCENT-COMPLETE, DUE and COMPLETED fields—the component consumed by Apple Reminders, Google Tasks and Outlook Tasks. VJOURNAL (3.6.3) is a dated textual entry that occupies no time slot.',
+          },
+          {
+            question: 'Why are lines capped at 75 characters and why do some start with a space?',
+            answer:
+              'That is the folding rule of RFC 5545 Section 3.1: logical lines longer than 75 octets split into physical lines, each continuation beginning with one space. Parsers remove CRLF plus the following space to reconstruct the line. The tool splits by UTF-8 byte length so 3-byte Chinese characters are never cut.',
+          },
+          {
+            question: 'Can RRULE COUNT and UNTIL be set together?',
+            answer:
+              'No. RFC 5545 makes COUNT (occurrence limit) and UNTIL (deadline) mutually exclusive; a rule containing both is invalid and the tool rejects it. The UI enforces either/or: entering COUNT clears UNTIL and vice versa.',
+          },
+          {
+            question: 'Why do all timestamps carry a Z suffix—no timezone support?',
+            answer:
+              'The tool emits UTC (Z suffix) consistently, interpreting form times as UTC to avoid clients disagreeing on floating times. Set the display timezone on the importing side if needed. The existing VEVENT generator complements this tool by offering TZID local-time forms.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'plus-code-codec',
     name: 'Plus Codes 编解码器',
     nameEn: 'Plus Codes (Open Location Code) Encoder & Decoder',
