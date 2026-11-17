@@ -28169,6 +28169,122 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'bic-code-validator',
+    name: 'BIC/SWIFT 代码结构校验器（ISO 9362）',
+    nameEn: 'BIC/SWIFT Code Structure Validator (ISO 9362)',
+    description:
+      '在浏览器本地校验并解析 ISO 9362 BIC（SWIFT 代码）：检查 8 位主代码 / 11 位完整代码的 4 位银行码、ISO 3166-1 alpha-2 国家码（含 XK）、地区码与可选分行码，识别测试代码与主办公室语义；支持每行一个的批量校验、逐行状态与合法结果复制。',
+    descriptionEn:
+      'Validate and parse ISO 9362 BIC (SWIFT codes) locally: check the 4-letter bank code, ISO 3166-1 alpha-2 country code (including XK), location code and optional branch code for 8/11-character forms, flag test codes and primary-office semantics, and run line-by-line batch validation with one-click copy of valid results.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/bic-code-validator',
+    iconName: 'PiggyBank',
+    tags: ['BIC', 'SWIFT', 'ISO9362', '跨境支付', '银行代码'],
+    tagsEn: ['BIC', 'SWIFT', 'ISO 9362', 'Cross-border Payment', 'Bank Code'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'DEUTDEFF500',
+    doc: {
+      zh: {
+        whatIsIt:
+          'BIC/SWIFT 代码结构校验器是一款纯浏览器本地工具，依据 ISO 9362 标准核对银行识别码的字符结构。BIC 由 4 位银行代码、2 位 ISO 3166-1 国家码、2 位地区码与可选 3 位分行码组成，共 8 位主代码或 11 位完整代码。工具逐段校验字符集与国家码合法性，解析各字段含义，识别地区码第二位为 0 的测试 / 培训代码、为 1 的独立连接成员，以及 XXX 分行码代表的主办公室，并支持批量文本逐行核对。',
+        coreFeatures: [
+          '严格结构校验：8 位主代码与 11 位完整代码双形态，长度错误立即终止并提示',
+          '四段逐段解析：银行码（A–Z）、国家码（ISO 3166-1 alpha-2 全量集合，含 SWIFT 专用 XK）、地区码（字母数字）、分行码（字母数字，8 位时补 XXX）',
+          '语义识别：地区码第二位 0 = 测试 / 培训代码、1 = SWIFT 独立连接成员；XXX / 省略 = 主办公室',
+          '容错输入：自动去除首尾空白、小写转大写；含空格、非法符号、错误国家码等问题逐类报错且多错误同时收集',
+          '批量模式：每行一个 BIC，空行跳过，输出逐行状态、结构化字段与合法 / 非法统计，一键复制全部合法代码',
+          '零依赖纯字符串规则，内置公开文档示例（DEUTDEFF、CHASUS33XXX 等）便于快速验证',
+        ],
+        howToUse: [
+          '「单条校验」页输入或粘贴一个 BIC，界面实时显示合法状态、四段结构卡片与语义标签',
+          '点击示例按钮可快速填充公开演示代码；输入小写或带空白时自动规范化',
+          '「批量校验」页每行粘贴一个 BIC，表格逐行展示合法 / 非法与错误原因',
+          '用「复制全部合法 BIC」导出规范化大写结果，供支付系统或表格回填使用',
+        ],
+        useCases: [
+          '跨境汇款 / 信用证单据录入前核对收款行 SWIFT 代码是否结构合法',
+          '财务系统批量导入银行主数据时清洗 BIC 字段、定位错误行',
+          '区分生产 BIC 与测试 / 培训代码，避免在联调环境误用',
+          '教学与合规培训中讲解 ISO 9362 代码各字段含义',
+        ],
+        privacyNote:
+          '所有 BIC 代码仅在浏览器本地内存中校验，不发起任何网络查询，也不维护或上传机构名录。',
+        faqs: [
+          {
+            question: '校验通过是否代表该 BIC 一定真实存在、对应某家银行？',
+            answer:
+              '不代表。本工具只按 ISO 9362 校验字符结构（长度、字符集、国家码集合与字段语义），不联网查询 SWIFT 官方 BIC 名录，因此无法确认代码是否已实际注册或归属哪家机构。需要权威归属信息时应查询 SWIFT BIC Directory 或开户行提供的资料。',
+          },
+          {
+            question: '8 位和 11 位 BIC 有什么区别？',
+            answer:
+              '8 位是主代码（银行 + 国家 + 地区），语义上等同于 11 位且分行码为 XXX，代表银行主办公室；11 位完整代码追加 3 位分行码用于区分具体分支机构。收付款时两者都可能出现，工具都会接受并把 8 位形式的分行码显示为 XXX。',
+          },
+          {
+            question: '国家码 XK 是什么？',
+            answer:
+              'XK 是 SWIFT 在 ISO 3166 正式分配前为科索沃（Kosovo）使用的用户分配代码，广泛出现在欧洲银行报文里。工具的国家码集合在 ISO 3166-1 alpha-2 之外额外收录 XK，因此 ABCDXKXX 这类代码可正常通过。',
+          },
+          {
+            question: '为什么地区码第二位为 0 会给出警告？',
+            answer:
+              '按 SWIFT 约定，地区码第二位为 0 标识测试 / 培训 BIC，不用于生产金融报文；第二位为 1 表示 SWIFT 网络独立连接成员。工具对测试代码给出显著警告，防止把沙箱代码填入真实汇款指令。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local validator for ISO 9362 Business Identifier Codes (SWIFT codes). A BIC consists of a 4-letter bank code, 2-letter ISO 3166-1 country code, 2-character location code and an optional 3-character branch code, giving an 8-character primary code or 11-character full code. The tool checks character sets and country codes field by field, explains test/training codes, standalone connected members and primary-office semantics, and supports line-by-line batch validation.',
+        coreFeatures: [
+          'Strict structural validation for both 8-character and 11-character forms with fast length rejection',
+          'Four-field parsing: bank code (A–Z), country code (full ISO 3166-1 alpha-2 set plus SWIFT user-assigned XK), alphanumeric location and branch codes (XXX implied for 8-character input)',
+          'Semantics: second location character 0 = test/training code, 1 = SWIFT standalone connected member; XXX / omitted = primary office',
+          'Lenient input with whitespace trimming and uppercase normalization; spaces, illegal symbols and unknown country codes reported together',
+          'Batch mode with one BIC per line, blank lines skipped, per-row status, parsed fields, validity counts and one-click copy of normalized valid codes',
+          'Zero-dependency string rules with public documentation samples such as DEUTDEFF and CHASUS33XXX',
+        ],
+        howToUse: [
+          'On the Single tab type or paste a BIC to see the validity state, four-field structure card and semantic tags instantly',
+          'Use the sample buttons to load public demonstration codes; lowercase and surrounding spaces are normalized automatically',
+          'On the Batch tab paste one BIC per line to get a per-row table with validity and error reasons',
+          'Copy all valid BICs to feed normalized uppercase values into payment systems or spreadsheets',
+        ],
+        useCases: [
+          'Checking beneficiary-bank SWIFT codes before cross-border transfers or letters of credit',
+          'Cleaning BIC columns during bulk bank-master-data imports and locating bad rows',
+          'Separating production BICs from test/training codes to avoid sandbox values in live instructions',
+          'Teaching ISO 9362 field semantics in compliance and onboarding training',
+        ],
+        privacyNote:
+          'Every BIC is checked in browser memory using string rules only; no network directory lookup is performed and no data is uploaded.',
+        faqs: [
+          {
+            question: 'Does a passing check prove the BIC really exists and belongs to a bank?',
+            answer:
+              'No. The tool validates ISO 9362 character structure only (length, character sets, country-code set and field semantics). It does not query the official SWIFT BIC directory, so it cannot confirm registration or institutional ownership. Use the SWIFT BIC Directory or the issuing bank for authoritative attribution.',
+          },
+          {
+            question: 'What is the difference between 8- and 11-character BICs?',
+            answer:
+              'The 8-character primary code (bank + country + location) is equivalent to an 11-character code with branch code XXX and denotes the primary office. The 11-character form adds a branch code to identify a specific office. Both are accepted; an 8-character input is displayed with branch code XXX.',
+          },
+          {
+            question: 'What is country code XK?',
+            answer:
+              'XK is a user-assigned code used by SWIFT for Kosovo before a formal ISO 3166 allocation, commonly seen in European banking messages. The country-code set includes XK alongside ISO 3166-1 alpha-2, so codes such as ABCDXKXX validate successfully.',
+          },
+          {
+            question: 'Why does a location code ending in 0 trigger a warning?',
+            answer:
+              'SWIFT conventions mark a second location character of 0 as a test/training BIC that must not appear in production messages, while 1 denotes a standalone connected member. The tool warns prominently about test codes so sandbox values never reach real payment instructions.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'plus-code-codec',
     name: 'Plus Codes 编解码器',
     nameEn: 'Plus Codes (Open Location Code) Encoder & Decoder',

@@ -312,6 +312,7 @@ export const toolLoaders: Record<
   'e123-phone-formatter': () => import('./e123-phone-formatter'),
   'dmarc-record-generator': () => import('./dmarc-record-generator'),
   'caa-record-generator': () => import('./caa-record-generator'),
+  'bic-code-validator': () => import('./bic-code-validator'),
   'plus-code-codec': () => import('./plus-code-codec'),
   'changelog-generator': () => import('./changelog-generator'),
   'lrc-parser': () => import('./lrc-parser'),
