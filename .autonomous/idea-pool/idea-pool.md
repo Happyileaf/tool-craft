@@ -375,4 +375,5 @@
 | 20261117200506 | 离散傅里叶变换（DFT/FFT）计算器（幅度谱 / 相位谱与逆变换） | Web Tool | Exploration | Pending | 2026-11-17 | - | [详情](./idea-details/20261117200506.md) |
 | 20261117200507 | 理想气体状态方程（PV=nRT）计算器（四量求一 + 单位换算） | Web Tool | Exploration | Claimed | 2026-11-17 | trae-agent | [详情](./idea-details/20261117200507.md) |
 | 20261117200508 | 跨平台深链关联文件生成器（apple-app-site-association / assetlinks.json） | Web Tool | Existing Gap | Pending | 2026-11-17 | - | [详情](./idea-details/20261117200508.md) |
+| 20261118020209 | DHCPv6 DUID 构造 / 解析器与 IAID 计算器（RFC 8415 / RFC 6355 四种 DUID 类型） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118020209.md) |
 
