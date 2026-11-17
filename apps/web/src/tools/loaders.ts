@@ -419,4 +419,5 @@ export const toolLoaders: Record<
   'acme-dns01-challenge': () => import('./acme-dns01-challenge'),
   'opamp-calculator': () => import('./opamp-calculator'),
   'm3u-playlist-tool': () => import('./m3u-playlist-tool'),
+  'js-error-stack-parser': () => import('./js-error-stack-parser'),
 };

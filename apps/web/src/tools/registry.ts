@@ -39901,6 +39901,109 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'js-error-stack-parser',
+    name: 'JavaScript 错误堆栈解析器（V8 / Firefox / Safari）',
+    nameEn: 'JavaScript Error Stack Parser (V8 / Firefox / Safari)',
+    description:
+      '把粘贴的 Error.stack 文本解析为统一帧结构：自动识别 V8、SpiderMonkey、JavaScriptCore 三方言，提取函数名、文件、行列号与 eval/native/async/node: 标志，支持用户代码过滤、首帧高亮与结构化 JSON 复制，零依赖纯本地解析。',
+    descriptionEn:
+      'Parse pasted Error.stack text into unified frame objects: auto-detect V8, SpiderMonkey and JavaScriptCore dialects, extract function names, files, line/column numbers and eval/native/async/node: flags, with user-code filtering, first-frame highlight and structured JSON copy. Zero dependencies, fully local.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/js-error-stack-parser',
+    iconName: 'ScrollText',
+    tags: ['JavaScript', 'Error Stack', '堆栈', '调试', 'V8', 'Node.js'],
+    tagsEn: ['JavaScript', 'Error Stack', 'Stack Trace', 'Debugging', 'V8', 'Node.js'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'JavaScript 错误堆栈解析器面向前端与 Node.js 排障场景，把非结构化的 Error.stack 文本转换为统一的帧表格。工具自动识别 V8（Chrome/Node/Electron，at 前缀）、SpiderMonkey（Firefox，func@file 语法）与 JavaScriptCore（Safari，含 eval code/native code 行内描述）三种引擎方言，提取函数名、文件 URL、行号列号及 eval、native、async、构造调用、node: 内置、node_modules 等标志，无法识别的行保留原文并标记 unparsed 而不丢弃。',
+        coreFeatures: [
+          '三方言自动识别：依据 at 前缀、@ 分隔与 eval/native code 特征判定引擎，也可手动覆盖',
+          '统一帧结构：函数名（匿名统一 <anonymous>）、文件、行号、列号、六类标志位，缺列号/缺行号自动置空',
+          '特殊帧支持：eval 嵌套（eval at 内外层位置）、native code、async 钩子、new 构造调用与 node: 内置模块',
+          '过滤与首帧：隐藏 node:/node_modules/native、仅看用户代码、关键字过滤，绿色高亮最接近用户代码的首帧',
+          '错误头与 JSON：单独提取错误名与 message、保留 Caused by 附加消息，一键复制固定字段的结构化 JSON',
+        ],
+        howToUse: [
+          '把完整 Error.stack 文本粘贴到输入框，或点击 V8/Firefox/Safari 示例一键填充',
+          '引擎默认自动识别；识别不准时用顶部 Radio 手动指定方言重新解析',
+          '在过滤区勾选「仅看用户代码」等开关，或输入函数名/文件关键字缩小帧范围',
+          '点击「复制 JSON」获取可程序化消费的结构化结果，绿色「首帧」标记即最接近用户代码的位置',
+        ],
+        useCases: [
+          '线上报错截图/日志中堆栈文本的快速结构化定位',
+          '跨浏览器（Chrome/Firefox/Safari）与 Node.js 堆栈格式差异的统一处理',
+          '剥离 node: 内置与 node_modules 噪音帧，快速锁定自有代码入口',
+          '把 Error.stack 接入上报或分析流程前的本地预处理与字段核对',
+        ],
+        privacyNote:
+          '全部解析为浏览器本地字符串规则匹配，不发起任何网络请求，也不会保存或上报粘贴的堆栈内容。',
+        faqs: [
+          {
+            question: '三种引擎的堆栈格式有什么区别？',
+            answer:
+              'V8 使用缩进的「at 函数 (文件:行:列)」语法，匿名帧没有函数名；Firefox 的 SpiderMonkey 使用「函数@文件:行:列」；Safari 的 JavaScriptCore 同为 @ 语法，但 eval 与原生帧写作 eval code、[native code] 且可能没有行列号。工具按这些特征自动判定并归一到同一帧结构。',
+          },
+          {
+            question: '无法识别的行会怎样处理？',
+            answer:
+              '不符合任何已知帧语法的行会保留在结果中：标志位 unparsed 置 true、raw 字段保存原文，既不丢弃也不会中断后续行解析。错误消息行（含 TypeError: 前缀等）单独进入错误头，Caused by 等附加消息放入 extraMessages。',
+          },
+          {
+            question: '「首帧」高亮的含义是什么？',
+            answer:
+              '首帧是第一个既非 node: 内置、也非 native、且带文件位置的帧，通常就是最接近你自有代码的调用点。过滤视图中该行以绿色底色与「首帧」标签标记，firstUserFrameIndex 字段同时给出其序号。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JavaScript Error Stack Parser turns unstructured Error.stack text into a unified frame table for frontend and Node.js debugging. It auto-detects the dialects of V8 (Chrome/Node/Electron, "at" prefix), SpiderMonkey (Firefox, func@file syntax) and JavaScriptCore (Safari, with inline eval code/native code descriptions), extracting function names, file URLs, line/column numbers and flags such as eval, native, async, constructor, node: internals and node_modules. Unrecognized lines keep their raw text with an unparsed flag instead of being dropped.',
+        coreFeatures: [
+          'Auto-detection of three dialects from "at" prefixes, @ separators and eval/native code markers, with manual override available',
+          'Unified frame schema: function name (anonymous as <anonymous>), file, line, column and six flag bits; missing line/column becomes null',
+          'Special frames: nested eval (eval at inner/outer locations), native code, async hooks, new constructor calls and node: built-in modules',
+          'Filtering and first frame: hide node:/node_modules/native, user-code-only mode, keyword filter, green highlight on the frame closest to user code',
+          'Error header and JSON: separate error name/message extraction, preserved Caused by lines, one-click copy of fixed-field structured JSON',
+        ],
+        howToUse: [
+          'Paste a complete Error.stack into the textarea, or load a V8/Firefox/Safari sample with one click',
+          'Engine detection is automatic; use the top radio group to force a dialect if detection is off',
+          'Use filters such as "user code only" or type a function/file keyword to narrow the frame list',
+          'Click "Copy JSON" for machine-readable output; the green "first frame" tag marks the closest entry point into your own code',
+        ],
+        useCases: [
+          'Quickly structuring stack text from production screenshots or logs',
+          'Normalizing stack format differences across Chrome, Firefox, Safari and Node.js',
+          'Stripping node: built-in and node_modules noise to locate the first own-code frame',
+          'Local preprocessing and field verification before feeding Error.stack into reporting pipelines',
+        ],
+        privacyNote:
+          'All parsing uses local string-pattern matching in the browser. No network request is made, and pasted stack content is never stored or uploaded.',
+        faqs: [
+          {
+            question: 'How do the three engine stack formats differ?',
+            answer:
+              'V8 uses indented "at function (file:line:column)" syntax with nameless anonymous frames; Firefox SpiderMonkey uses "function@file:line:column"; Safari JavaScriptCore shares the @ syntax but renders eval and native frames as eval code / [native code], sometimes without line or column. The tool detects these markers and normalizes everything into one frame schema.',
+          },
+          {
+            question: 'What happens to lines that cannot be parsed?',
+            answer:
+              'Lines matching no known frame grammar are kept in the result with the unparsed flag set to true and their original text in the raw field; they are neither dropped nor allowed to abort parsing of later lines. Error message lines (such as a TypeError: prefix) go to the error header, while extra lines like Caused by go into extraMessages.',
+          },
+          {
+            question: 'What does the highlighted "first frame" mean?',
+            answer:
+              'The first frame is the earliest frame that is neither a node: built-in nor native and carries a file location — typically the call site closest to your own code. It gets a green row and "first frame" tag, and its index is exposed as firstUserFrameIndex.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
