@@ -28053,6 +28053,588 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'caa-record-generator',
+    name: 'DNS CAA 记录生成与校验器（RFC 8659/8658）',
+    nameEn: 'DNS CAA Record Generator & Validator (RFC 8659/8658)',
+    description:
+      '在浏览器本地生成并校验 CAA（证书颁发机构授权）DNS 记录：支持 issue / issuewild / iodef 三类标签、critical（flag 128）标志、RFC 8658 accounturi 与 validationmethods 参数、空 value 禁用记录与长字符串 255 字符分段提示；可粘贴现有区域文件逐行解析结构、标签、flags 与参数错误。',
+    descriptionEn:
+      'Generate and validate CAA (Certification Authority Authorization) DNS records locally: issue / issuewild / iodef tags, the critical (flag 128) bit, RFC 8658 accounturi and validationmethods parameters, empty-value prohibition records, and 255-character chunking guidance. Paste existing zone data to parse structure, tags, flags and parameter errors line by line.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/caa-record-generator',
+    iconName: 'ShieldCheck',
+    tags: ['CAA', 'DNS记录', '证书授权', 'RFC8659', 'TLS运维'],
+    tagsEn: ['CAA', 'DNS Record', 'Certificate Authorization', 'RFC 8659', 'TLS Ops'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'example.com 允许 letsencrypt.org 签发，违规上报到 mailto:security@example.com',
+    doc: {
+      zh: {
+        whatIsIt:
+          'DNS CAA 记录生成与校验器是一款纯浏览器本地工具，依据 RFC 8659（CAA 资源记录）与 RFC 8658（accounturi / validationmethods 参数）拼装并核对 CAA 记录。CAA 让域名持有者声明哪些证书颁发机构（CA）允许为该域名签发证书；解析器在签发前查询 CAA，未获授权的 CA 必须拒绝签发。工具覆盖 issue（普通证书授权）、issuewild（通配符证书授权）、iodef（证书事件上报）三类标签，支持 critical 标志与多值参数，并能反向解析粘贴的区域文件片段。',
+        coreFeatures: [
+          '三类标签完整支持：issue / issuewild / iodef，表单化录入域名、TTL、flags 与标签值，实时生成标准区域文件行',
+          'RFC 8658 参数：为 issue / issuewild 附加 accounturi（http(s) URL）与 validationmethods（dns-01 / http-01 / tls-alpn-01），自动按分号拼装',
+          'critical 与禁用记录：一键切换 flag 0 / 128；勾选禁用输出空 value 记录（0 issue ";"）表示拒绝该类签发',
+          'iodef URI 校验：强制 mailto:name@domain 或 http(s) URL 两种合法形态，非法地址即时报错',
+          '反向校验器：粘贴区域文件片段（可带域名 / TTL 前缀，也可只粘 flags tag "value"），逐行解析 flags、标签、参数并按行号报告结构与语义错误，注释与空行自动跳过',
+          '策略警告：仅 issuewild 无 issue、critical 兼容性、仅 iodef 不限制签发等配置给出提示；超长 value 提供 255 字符分段工具函数',
+        ],
+        howToUse: [
+          '在「记录生成器」页填写域名与 TTL（TTL 留空则不输出该字段），默认含一条 issue 与一条 iodef 示例',
+          '为每条记录选择标签：issue / issuewild 填写 CA 域名并可选添加 accounturi、validationmethods；iodef 填写 mailto 或 http(s) 上报地址',
+          '需要关键标签时勾选 critical（输出 flag 128）；要拒绝某类签发时勾选「禁用」生成空 value 记录，点「添加一条 CAA 记录」可继续追加',
+          '校验通过后复制下方区域文件文本到 DNS 服务商；切到「记录校验器」粘贴现有 CAA 记录，查看逐行解析表与错误 / 警告',
+        ],
+        useCases: [
+          '域名上线前配置 CAA，限定仅受信任 CA（如 Let’s Encrypt）可签发证书',
+          '为 ACME 自动化签发绑定 accounturi 与 validationmethods，缩小证书颁发范围',
+          '审计现有 DNS 区域文件中的 CAA 记录，排查 flags、标签拼写与参数格式错误',
+          '配置 iodef 接收 CA 的证书签发违规事件上报',
+        ],
+        privacyNote:
+          '所有域名、记录与粘贴内容仅在浏览器本地内存中处理，不向任何服务器发送，刷新页面即清除。',
+        faqs: [
+          {
+            question: 'CAA 记录配置错误会导致证书无法签发吗？',
+            answer:
+              '会。CA 在签发前必须查询 CAA：若存在 issue / issuewild 且该 CA 未获授权，或 critical 标签不被识别，CA 会拒绝签发。因此工具对 flags（仅 0 / 128）、标签拼写、CA 域名与参数格式做严格校验，并对仅配 issuewild 等易漏配场景给出警告，发布前建议先用校验器页核对。',
+          },
+          {
+            question: 'issue ";" 空 value 记录是什么含义？',
+            answer:
+              'RFC 8659 规定 issue / issuewild 的 value 为空（区域文件写作 0 issue ";"）时，表示没有任何 CA 被授权签发该类证书。issue ";" 拒绝所有普通证书，issuewild ";" 拒绝所有通配符证书；勾选工具中的「禁用该类签发」即生成此形式。',
+          },
+          {
+            question: '为什么我的 CAA 值需要按 255 字符分段？',
+            answer:
+              'DNS 区域文件中单个引号字符串受 RFC 1035 字符串长度限制（255 字节）。多数 CAA 记录远短于此，工具内置 splitQuotedChunks 在超长时把 value 拆成多个相邻引号串；普通 accounturi 场景不会触发。',
+          },
+          {
+            question: 'CAA 与 DMARC / SPF / DKIM 有什么区别？',
+            answer:
+              'DMARC / SPF / DKIM 约束的是邮件发送方身份与防伪；CAA 约束的是 TLS 证书颁发机构，决定谁能为域名签发证书。二者分属不同 DNS 记录类型（CAA 是独立资源记录类型 257，DMARC / SPF 承载于 TXT），互不替代，可在同一域同时配置。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local browser tool that builds and checks CAA (Certification Authority Authorization) DNS records per RFC 8659 and the RFC 8658 accounturi / validationmethods parameters. CAA lets a domain name holder state which certificate authorities may issue certificates for the domain; CAs must query CAA before issuance and refuse when not authorized. The tool covers issue, issuewild and iodef tags, the critical flag, multi-value parameters, and reverse parsing of pasted zone snippets.',
+        coreFeatures: [
+          'All three tags: issue / issuewild / iodef with form-based domain, TTL, flags and value entry and live zone-line output',
+          'RFC 8658 parameters: accounturi (http(s) URL) and validationmethods (dns-01 / http-01 / tls-alpn-01) joined with semicolons',
+          'Critical flag and prohibition records: toggle flag 0 / 128; empty-value records (0 issue ";") block a certificate class',
+          'iodef URI validation limited to mailto:name@domain or http(s) URLs with instant errors',
+          'Reverse validator: paste zone lines (with or without owner / TTL prefix) to parse flags, tags and parameters with line-numbered structural and semantic errors; comments and blank lines are skipped',
+          'Policy warnings for issuewild-without-issue, critical compatibility and iodef-only setups, plus a 255-character chunking helper for long values',
+        ],
+        howToUse: [
+          'On the Generator tab enter the domain and TTL (leave TTL empty to omit it); a sample issue and iodef record is preloaded',
+          'Pick a tag per row: fill the CA domain for issue / issuewild with optional accounturi and validationmethods, or a mailto / http(s) URL for iodef',
+          'Toggle critical for flag 128 or the disable checkbox for an empty-value prohibition record; add more rows as needed',
+          'Copy the generated zone text into your DNS provider, then use the Validator tab to parse existing CAA records with a structured table and error list',
+        ],
+        useCases: [
+          'Restricting certificate issuance to trusted CAs such as Let’s Encrypt before a domain goes live',
+          'Binding ACME automation to an accounturi and allowed validation methods',
+          'Auditing CAA records in existing zone files for flags, tag spelling and parameter mistakes',
+          'Publishing an iodef address to receive certificate issuance violation reports',
+        ],
+        privacyNote:
+          'All domains, records and pasted content stay in browser memory and are never sent to a server; everything clears on refresh.',
+        faqs: [
+          {
+            question: 'Can a misconfigured CAA record block certificate issuance?',
+            answer:
+              'Yes. CAs must query CAA before issuing: an unauthorized CA, or an unrecognized critical tag, forces refusal. The tool strictly validates flags (only 0 / 128), tag spelling, CA domains and parameters, and warns about easy-to-miss setups such as issuewild without issue.',
+          },
+          {
+            question: 'What does an empty issue ";" value mean?',
+            answer:
+              'Per RFC 8659, an empty issue / issuewild value (written as 0 issue ";") means no CA is authorized for that certificate class: issue ";" blocks all normal certificates and issuewild ";" blocks all wildcard certificates. The disable checkbox produces exactly this form.',
+          },
+          {
+            question: 'When does the 255-character chunking apply?',
+            answer:
+              'A single quoted DNS character-string is limited to 255 bytes by RFC 1035. Typical CAA records are much shorter; the built-in splitQuotedChunks helper splits an oversized value into adjacent quoted strings, which normal accounturi scenarios never reach.',
+          },
+          {
+            question: 'How is CAA different from DMARC / SPF / DKIM?',
+            answer:
+              'DMARC / SPF / DKIM govern email sender identity and anti-spoofing; CAA governs TLS certificate authorities. CAA is its own resource record type (257) while DMARC / SPF live in TXT records. They are complementary and can coexist on the same domain.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'bic-code-validator',
+    name: 'BIC/SWIFT 代码结构校验器（ISO 9362）',
+    nameEn: 'BIC/SWIFT Code Structure Validator (ISO 9362)',
+    description:
+      '在浏览器本地校验并解析 ISO 9362 BIC（SWIFT 代码）：检查 8 位主代码 / 11 位完整代码的 4 位银行码、ISO 3166-1 alpha-2 国家码（含 XK）、地区码与可选分行码，识别测试代码与主办公室语义；支持每行一个的批量校验、逐行状态与合法结果复制。',
+    descriptionEn:
+      'Validate and parse ISO 9362 BIC (SWIFT codes) locally: check the 4-letter bank code, ISO 3166-1 alpha-2 country code (including XK), location code and optional branch code for 8/11-character forms, flag test codes and primary-office semantics, and run line-by-line batch validation with one-click copy of valid results.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/bic-code-validator',
+    iconName: 'PiggyBank',
+    tags: ['BIC', 'SWIFT', 'ISO9362', '跨境支付', '银行代码'],
+    tagsEn: ['BIC', 'SWIFT', 'ISO 9362', 'Cross-border Payment', 'Bank Code'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'DEUTDEFF500',
+    doc: {
+      zh: {
+        whatIsIt:
+          'BIC/SWIFT 代码结构校验器是一款纯浏览器本地工具，依据 ISO 9362 标准核对银行识别码的字符结构。BIC 由 4 位银行代码、2 位 ISO 3166-1 国家码、2 位地区码与可选 3 位分行码组成，共 8 位主代码或 11 位完整代码。工具逐段校验字符集与国家码合法性，解析各字段含义，识别地区码第二位为 0 的测试 / 培训代码、为 1 的独立连接成员，以及 XXX 分行码代表的主办公室，并支持批量文本逐行核对。',
+        coreFeatures: [
+          '严格结构校验：8 位主代码与 11 位完整代码双形态，长度错误立即终止并提示',
+          '四段逐段解析：银行码（A–Z）、国家码（ISO 3166-1 alpha-2 全量集合，含 SWIFT 专用 XK）、地区码（字母数字）、分行码（字母数字，8 位时补 XXX）',
+          '语义识别：地区码第二位 0 = 测试 / 培训代码、1 = SWIFT 独立连接成员；XXX / 省略 = 主办公室',
+          '容错输入：自动去除首尾空白、小写转大写；含空格、非法符号、错误国家码等问题逐类报错且多错误同时收集',
+          '批量模式：每行一个 BIC，空行跳过，输出逐行状态、结构化字段与合法 / 非法统计，一键复制全部合法代码',
+          '零依赖纯字符串规则，内置公开文档示例（DEUTDEFF、CHASUS33XXX 等）便于快速验证',
+        ],
+        howToUse: [
+          '「单条校验」页输入或粘贴一个 BIC，界面实时显示合法状态、四段结构卡片与语义标签',
+          '点击示例按钮可快速填充公开演示代码；输入小写或带空白时自动规范化',
+          '「批量校验」页每行粘贴一个 BIC，表格逐行展示合法 / 非法与错误原因',
+          '用「复制全部合法 BIC」导出规范化大写结果，供支付系统或表格回填使用',
+        ],
+        useCases: [
+          '跨境汇款 / 信用证单据录入前核对收款行 SWIFT 代码是否结构合法',
+          '财务系统批量导入银行主数据时清洗 BIC 字段、定位错误行',
+          '区分生产 BIC 与测试 / 培训代码，避免在联调环境误用',
+          '教学与合规培训中讲解 ISO 9362 代码各字段含义',
+        ],
+        privacyNote:
+          '所有 BIC 代码仅在浏览器本地内存中校验，不发起任何网络查询，也不维护或上传机构名录。',
+        faqs: [
+          {
+            question: '校验通过是否代表该 BIC 一定真实存在、对应某家银行？',
+            answer:
+              '不代表。本工具只按 ISO 9362 校验字符结构（长度、字符集、国家码集合与字段语义），不联网查询 SWIFT 官方 BIC 名录，因此无法确认代码是否已实际注册或归属哪家机构。需要权威归属信息时应查询 SWIFT BIC Directory 或开户行提供的资料。',
+          },
+          {
+            question: '8 位和 11 位 BIC 有什么区别？',
+            answer:
+              '8 位是主代码（银行 + 国家 + 地区），语义上等同于 11 位且分行码为 XXX，代表银行主办公室；11 位完整代码追加 3 位分行码用于区分具体分支机构。收付款时两者都可能出现，工具都会接受并把 8 位形式的分行码显示为 XXX。',
+          },
+          {
+            question: '国家码 XK 是什么？',
+            answer:
+              'XK 是 SWIFT 在 ISO 3166 正式分配前为科索沃（Kosovo）使用的用户分配代码，广泛出现在欧洲银行报文里。工具的国家码集合在 ISO 3166-1 alpha-2 之外额外收录 XK，因此 ABCDXKXX 这类代码可正常通过。',
+          },
+          {
+            question: '为什么地区码第二位为 0 会给出警告？',
+            answer:
+              '按 SWIFT 约定，地区码第二位为 0 标识测试 / 培训 BIC，不用于生产金融报文；第二位为 1 表示 SWIFT 网络独立连接成员。工具对测试代码给出显著警告，防止把沙箱代码填入真实汇款指令。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local validator for ISO 9362 Business Identifier Codes (SWIFT codes). A BIC consists of a 4-letter bank code, 2-letter ISO 3166-1 country code, 2-character location code and an optional 3-character branch code, giving an 8-character primary code or 11-character full code. The tool checks character sets and country codes field by field, explains test/training codes, standalone connected members and primary-office semantics, and supports line-by-line batch validation.',
+        coreFeatures: [
+          'Strict structural validation for both 8-character and 11-character forms with fast length rejection',
+          'Four-field parsing: bank code (A–Z), country code (full ISO 3166-1 alpha-2 set plus SWIFT user-assigned XK), alphanumeric location and branch codes (XXX implied for 8-character input)',
+          'Semantics: second location character 0 = test/training code, 1 = SWIFT standalone connected member; XXX / omitted = primary office',
+          'Lenient input with whitespace trimming and uppercase normalization; spaces, illegal symbols and unknown country codes reported together',
+          'Batch mode with one BIC per line, blank lines skipped, per-row status, parsed fields, validity counts and one-click copy of normalized valid codes',
+          'Zero-dependency string rules with public documentation samples such as DEUTDEFF and CHASUS33XXX',
+        ],
+        howToUse: [
+          'On the Single tab type or paste a BIC to see the validity state, four-field structure card and semantic tags instantly',
+          'Use the sample buttons to load public demonstration codes; lowercase and surrounding spaces are normalized automatically',
+          'On the Batch tab paste one BIC per line to get a per-row table with validity and error reasons',
+          'Copy all valid BICs to feed normalized uppercase values into payment systems or spreadsheets',
+        ],
+        useCases: [
+          'Checking beneficiary-bank SWIFT codes before cross-border transfers or letters of credit',
+          'Cleaning BIC columns during bulk bank-master-data imports and locating bad rows',
+          'Separating production BICs from test/training codes to avoid sandbox values in live instructions',
+          'Teaching ISO 9362 field semantics in compliance and onboarding training',
+        ],
+        privacyNote:
+          'Every BIC is checked in browser memory using string rules only; no network directory lookup is performed and no data is uploaded.',
+        faqs: [
+          {
+            question: 'Does a passing check prove the BIC really exists and belongs to a bank?',
+            answer:
+              'No. The tool validates ISO 9362 character structure only (length, character sets, country-code set and field semantics). It does not query the official SWIFT BIC directory, so it cannot confirm registration or institutional ownership. Use the SWIFT BIC Directory or the issuing bank for authoritative attribution.',
+          },
+          {
+            question: 'What is the difference between 8- and 11-character BICs?',
+            answer:
+              'The 8-character primary code (bank + country + location) is equivalent to an 11-character code with branch code XXX and denotes the primary office. The 11-character form adds a branch code to identify a specific office. Both are accepted; an 8-character input is displayed with branch code XXX.',
+          },
+          {
+            question: 'What is country code XK?',
+            answer:
+              'XK is a user-assigned code used by SWIFT for Kosovo before a formal ISO 3166 allocation, commonly seen in European banking messages. The country-code set includes XK alongside ISO 3166-1 alpha-2, so codes such as ABCDXKXX validate successfully.',
+          },
+          {
+            question: 'Why does a location code ending in 0 trigger a warning?',
+            answer:
+              'SWIFT conventions mark a second location character of 0 as a test/training BIC that must not appear in production messages, while 1 denotes a standalone connected member. The tool warns prominently about test codes so sandbox values never reach real payment instructions.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'gs1-checksum-calculator',
+    name: 'GS1 SSCC/GTIN 校验位计算器（Mod 10 + AI 包装）',
+    nameEn: 'GS1 SSCC/GTIN Check Digit Calculator (Mod 10 + AI Wrapping)',
+    description:
+      '在浏览器本地按 GS1 General Specifications 的 Mod 10 加权（×3/×1 交替）算法补全或核对条码校验位：覆盖 SSCC（18 位，AI 00，含扩展位提示）、GTIN-14/EAN-14（AI 01）、GTIN-13/EAN-13、GTIN-12/UPC-A、GTIN-8/EAN-8，输出含应用标识符的 GS1-128 数据载体与人类可读形式，支持「类型,编码」批量处理。',
+    descriptionEn:
+      'Compute or verify GS1 Mod 10 check digits locally with alternating ×3/×1 weights: SSCC (18 digits, AI 00, with extension-digit hints), GTIN-14/EAN-14 (AI 01), GTIN-13/EAN-13, GTIN-12/UPC-A and GTIN-8/EAN-8. Outputs GS1-128 data strings with application identifiers and human-readable forms, plus batch processing of "type,code" lines.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/gs1-checksum-calculator',
+    iconName: 'Barcode',
+    tags: ['GS1', 'SSCC', 'GTIN', 'EAN-14', '校验位', '条码'],
+    tagsEn: ['GS1', 'SSCC', 'GTIN', 'EAN-14', 'Check Digit', 'Barcode'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'SSCC 17 位本体 00123456000000001 补全为 18 位并加 (00) AI 包装',
+    doc: {
+      zh: {
+        whatIsIt:
+          'GS1 SSCC/GTIN 校验位计算器是一款纯浏览器本地工具，实现 GS1 通用规范（General Specifications）第 7.9 节的 Mod 10 加权校验位算法：从数字串最右侧起自右向左按 ×3、×1 交替加权求和，校验位 = (10 − 加权和模 10) 模 10。工具覆盖物流与零售常用的 SSCC 系列货运包装箱代码（18 位，AI 00）、GTIN-14/EAN-14 贸易项目代码（AI 01）以及 GTIN-13/EAN-13、GTIN-12/UPC-A、GTIN-8/EAN-8 零售单元，并能把结果包装成带应用标识符的 GS1-128 数据串。',
+        coreFeatures: [
+          '五类 GS1 标识全覆盖：SSCC、GTIN-14、GTIN-13、GTIN-12、GTIN-8，按类型自动判断 17/13/12/11/7 位补全或 18/14/13/12/8 位核对',
+          'Mod 10 加权算法：自右向左 ×3/×1 交替，固定向量可复现，补全与完整编码核对双模式',
+          '应用标识符包装：SSCC 输出 (00) 前缀、GTIN-14 输出 (01) 前缀的 GS1-128 数据载体与人类可读形式，一键复制',
+          'SSCC 扩展位语义：首位扩展位为 9 时提示 GS1 保留用途，普通货运箱建议 0–8',
+          '容错输入：自动去除空白与连字符；长度不符、含非数字、校验位错误等逐类报错并给出期望值',
+          '批量模式：每行「类型,编码」混合处理，未知前缀回退默认 GTIN-13，输出逐行状态与成功 / 失败统计',
+        ],
+        howToUse: [
+          '「单条计算」页选择标识类型（如 SSCC），粘贴不含校验位的本体（17 位）即自动补全，或粘贴完整 18 位编码做核对',
+          '查看结果卡片中高亮的校验位、完整编码，以及带 (00)/(01) 前缀的 GS1-128 形式，按需复制',
+          '处理 SSCC 时关注扩展位警告；零售 GTIN-13/12/8 无固定 AI，结果直接显示纯编码',
+          '「批量处理」页每行输入「类型,编码」（逗号或制表符分隔），表格逐行查看补全 / 核对结果并可复制全部 AI 形式',
+        ],
+        useCases: [
+          '仓储与发运环节生成 SSCC 物流标签序列号并核对打印质量',
+          '箱级 / 托盘级贸易项目分配 GTIN-14 包装指示符后计算校验位',
+          'ERP / WMS 批量导入条码主数据时清洗并定位校验位错误行',
+          'GS1-128 条码标签制作前准备带应用标识符的数据串',
+        ],
+        privacyNote:
+          '所有编码仅在浏览器本地内存中计算，不向任何服务器发送，刷新页面即清除。',
+        faqs: [
+          {
+            question: '这个工具和站内 EAN-13 校验位工具有什么区别？',
+            answer:
+              'EAN-13 工具只处理 GTIN-13/EAN-13 与 UPC-A 两种零售编码的裸校验位；本工具面向 GS1 物流与包装体系，额外覆盖 SSCC（18 位，含扩展位）、GTIN-14/EAN-14 与 GTIN-8，并输出 (00)/(01) 应用标识符包装、SSCC 扩展位语义与「类型,编码」批量处理，二者互补不重复。',
+          },
+          {
+            question: '为什么加权要 ×3 和 ×1 交替？',
+            answer:
+              '这是 GS1 Mod 10 标准的规定：从校验位左侧相邻数字开始自右向左，第一位乘 3、第二位乘 1 交替循环。乘 3 权重让相邻数字互换或单数字抄写错误几乎都会改变校验结果，从而在人工录入与扫描场景检出错误。算法对所有 GTIN 长度族和 SSCC 完全一致，区别只在本体长度。',
+          },
+          {
+            question: 'SSCC 的扩展位是什么？填 9 可以吗？',
+            answer:
+              'SSCC 首位是 1 位扩展位（extension digit），由发运方自行定义包装类型（如 0=纸箱、1=托盘），合法范围 0–9。GS1 保留 9 用于特殊用途，普通货运包装箱建议使用 0–8，工具检测到首位为 9 时会给出警告，但仍按规则计算校验位。',
+          },
+          {
+            question: 'AI(00) 和 AI(01) 的输出能用在 GS1-128 条码里吗？',
+            answer:
+              '可以。工具输出的 aiForm（如 00+18 位 SSCC）正是 GS1-128 数据载体中应用标识符 + 数据的拼接形式，humanReadable 则用括号标注 AI 供标签印刷。实际制码时还需配合 FNC1 分隔与标签设计软件，本工具负责数据层面的校验位与 AI 拼装。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local implementation of the GS1 General Specifications §7.9 Mod 10 check-digit algorithm: sum digits from right to left with alternating ×3/×1 weights, then the check digit is (10 − sum mod 10) mod 10. It covers SSCC shipping serial codes (18 digits, AI 00), GTIN-14/EAN-14 trade items (AI 01) and retail GTIN-13/EAN-13, GTIN-12/UPC-A and GTIN-8/EAN-8, wrapping results into GS1-128 data strings with application identifiers.',
+        coreFeatures: [
+          'Five GS1 identifier types: SSCC, GTIN-14, GTIN-13, GTIN-12 and GTIN-8 with type-specific body/full length handling',
+          'Mod 10 alternating ×3/×1 weighting with reproducible fixed vectors in both completion and verification modes',
+          'Application identifier wrapping: (00) for SSCC and (01) for GTIN-14 GS1-128 data strings plus human-readable forms, one-click copy',
+          'SSCC extension-digit semantics with a warning when the reserved digit 9 is used',
+          'Lenient input that strips spaces and hyphens; length, non-digit and check-digit errors reported with the expected value',
+          'Batch mode for mixed "type,code" lines (comma or tab), unknown prefixes falling back to GTIN-13, with per-row status and counts',
+        ],
+        howToUse: [
+          'On the Single tab pick an identifier type (e.g. SSCC), paste a body without check digit to complete it, or a full code to verify',
+          'Review the highlighted check digit, full code and (00)/(01)-prefixed GS1-128 form in the result card and copy as needed',
+          'Watch the extension-digit warning for SSCC; retail GTIN-13/12/8 have no fixed AI and show plain codes',
+          'On the Batch tab enter one "type,code" pair per line for per-row completion/verification and copy all AI forms together',
+        ],
+        useCases: [
+          'Generating SSCC logistics label serials in warehousing and shipping and verifying print quality',
+          'Computing check digits after assigning GTIN-14 packaging indicators for case/pallet trade items',
+          'Cleaning barcode master data in ERP/WMS bulk imports and locating bad rows',
+          'Preparing application-identifier data strings before producing GS1-128 barcode labels',
+        ],
+        privacyNote:
+          'All codes are computed in browser memory only; nothing is sent to any server and everything clears on refresh.',
+        faqs: [
+          {
+            question: 'How does this differ from the EAN-13 check digit tool on this site?',
+            answer:
+              'The EAN-13 tool handles bare check digits for GTIN-13/EAN-13 and UPC-A retail codes only. This tool targets the GS1 logistics and packaging hierarchy: it additionally covers SSCC (18 digits with extension digit), GTIN-14/EAN-14 and GTIN-8, emits (00)/(01) application-identifier wrappers, explains SSCC extension digits and processes "type,code" batches. The two are complementary.',
+          },
+          {
+            question: 'Why alternate ×3 and ×1 weights?',
+            answer:
+              'GS1 Mod 10 mandates multiplying the digit immediately left of the check position by 3, the next by 1, and so on from right to left. The weight 3 makes adjacent transpositions and single-digit transcription errors almost always change the check result, catching mistakes in manual entry and scanning. The algorithm is identical across all GTIN length families and SSCC; only the body length differs.',
+          },
+          {
+            question: 'What is the SSCC extension digit and can I use 9?',
+            answer:
+              'The leading SSCC digit is a shipper-defined extension digit for packaging types (e.g. 0=carton, 1=pallet), valid from 0–9. GS1 reserves 9 for special purposes, so ordinary shipping containers should use 0–8; the tool warns when the first digit is 9 but still computes the check digit per the rules.',
+          },
+          {
+            question: 'Can the AI(00)/AI(01) output go straight into a GS1-128 barcode?',
+            answer:
+              'Yes. The aiForm output (e.g. 00 followed by an 18-digit SSCC) is exactly the application-identifier-plus-data concatenation used in GS1-128 data carriers, while humanReadable brackets the AI for label printing. Actual encoding also needs FNC1 separators and label design software; this tool handles the data-layer check digit and AI assembly.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'dicom-uid-tool',
+    name: 'DICOM UID 生成器与校验器（医疗影像唯一标识符）',
+    nameEn: 'DICOM UID Generator & Validator (Medical Imaging Unique Identifiers)',
+    description:
+      '在浏览器本地按 DICOM PS3.5 Chapter 9 / PS3.7 B.2 规则生成与校验 UID：输入组织根后以 Web Crypto 安全随机数或时间戳+计数器批量生成 Study / Series / SOP Instance UID，自动遵守仅数字与句点、总长 ≤64 字符、每段无前导零（单字符段允许 0）等约束；粘贴 UID 逐段定位违规位置，并区分标准保留的 Well-known UID 与自定义 UID。',
+    descriptionEn:
+      'Generate and validate DICOM Unique Identifiers locally per PS3.5 Chapter 9 / PS3.7 B.2: from an organization root, batch-build Study / Series / SOP Instance UIDs with Web Crypto randomness or timestamp-plus-counter suffixes, enforcing digits-and-dots-only syntax, the 64-character limit and no leading zeros per component (a lone "0" is allowed). Paste UIDs for segment-by-segment error location and automatic Well-known vs custom UID classification.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/dicom-uid-tool',
+    iconName: 'Fingerprint',
+    tags: ['DICOM', 'UID', '医疗影像', 'PACS', '标识符', '校验'],
+    tagsEn: ['DICOM', 'UID', 'Medical Imaging', 'PACS', 'Identifier', 'Validation'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '组织根 1.3.6.1.4.1.99999 下生成 Study/Series/SOP Instance UID 并校验 1.2.840.10008.1.2.1',
+    doc: {
+      zh: {
+        whatIsIt:
+          'DICOM UID 生成器与校验器是一款面向医疗影像开发与 PACS 集成的纯浏览器本地工具，实现 DICOM PS3.5 Chapter 9 规定的 UID（Unique Identifier）语法：UID 是由句点分隔的数字 component 序列，总长不超过 64 字符，每个 component 只含数字且多位数不得以 0 开头（单字符段允许单独的 "0"），首个 component 起于申请到的组织根（Organization Root）。工具可在组织根之后拼接安全随机或时间戳后缀，批量产出 Study Instance UID、Series Instance UID 与 SOP Instance UID，并对粘贴的 UID 逐段校验、定位违规位置，同时识别 DICOM 标准保留的 Well-known UID。',
+        coreFeatures: [
+          '两种后缀模式：crypto.getRandomValues 密码学安全随机数，或时间戳+递增计数器，均保证批量 UID 互不重复',
+          '三级实例 UID：一次生成 1 个 Study Instance UID、1 个 Series Instance UID 与 1–100 个 SOP Instance UID',
+          '全量规则自检：仅数字与句点、总长 ≤64 字符、component 无前导零、空段检测，生成结果返回前再次走校验器',
+          '逐段违规定位：校验器按 component 序号指出前导零、连续句点、句点开头/结尾、非法字符与超长问题',
+          'Well-known 识别：内置传输语法、应用上下文、SOP 类、IOD 等 NEMA 保留前缀，自动区分标准 UID 与自定义 UID',
+          '超长组织根保护：根 UID 自身先校验，拼接后超 64 字符时明确报错而非返回违规 UID',
+        ],
+        howToUse: [
+          '在「UID 生成器」页填入机构组织根（如 IANA 企业编号分支 1.3.6.1.4.1.<企业号>），选择随机或计数器模式与 SOP 数量',
+          '点击「生成 UID」，结果卡片展示 Study / Series UID 与 SOP UID 表格，可单条或一键复制全部',
+          '若组织根命中 Well-known 保留段会出现黄色警告，私有系统应改用机构自有组织根',
+          '在「UID 校验器」页每行粘贴一个 UID，表格逐行显示长度/段数、合法状态与具体违规段说明',
+        ],
+        useCases: [
+          'PACS / DICOM 网关开发时为检查、序列与影像实例分配合规 UID',
+          '对接设备厂商前验证对方样本数据中的 UID 是否符合 PS3.5 语法',
+          '清洗历史迁移数据中的前导零、超长或含非法字符的 UID',
+          '教学与集成测试中快速构造确定性的计数器型 UID 固定向量',
+        ],
+        privacyNote:
+          '组织根与全部 UID 仅在浏览器本地内存中生成与校验，随机数来自浏览器 Web Crypto，不向任何服务器发送数据，刷新页面即清除。',
+        faqs: [
+          {
+            question: 'DICOM UID 为什么不能有前导零？',
+            answer:
+              'PS3.5 Chapter 9 规定每个 component 是一串数字，且当 component 多于一位时首位必须非零，单字符 component 才允许单独的 "0"。前导零会让 "012" 与 "12" 产生歧义表达，破坏 UID 作为全局唯一字符串的确定性。工具会逐段标出违规 component 的序号。',
+          },
+          {
+            question: '随机模式生成的 UID 会不会重复？',
+            answer:
+              '随机后缀由 10 位 Web Crypto 安全随机数字（首位重抽保证非零）加批内递增计数器组成，同一批次内计数器保证唯一；跨批次的碰撞概率由 10 位随机空间（约 9×10^9 种首位合法组合）保证，医疗站点常规批量规模下可忽略。需要严格可复现的场景可改用时间戳+计数器模式。',
+          },
+          {
+            question: 'Well-known UID 和自定义 UID 有什么区别？',
+            answer:
+              'Well-known UID 是 DICOM 标准在 NEMA 组织根 1.2.840.10008 下保留定义的传输语法、SOP 类、应用上下文等标识符，全球含义固定，不能挪作私有实例 UID。自定义 UID 基于机构自己申请的组织根（常见为 IANA 企业编号 1.3.6.1.4.1.<企业号>）向下分配。工具检测到输入命中保留前缀时会给出名称与警告。',
+          },
+          {
+            question: '为什么我的组织根生成时报超过 64 字符？',
+            answer:
+              'PS3.5 要求完整 UID（含所有句点）不超过 64 字符。组织根本身占用越多，留给后缀的空间越少。工具在生成后逐条自检，发现超限会返回明确错误并拒绝输出，请更换层级更短的组织根或减少后缀 component。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local tool for medical imaging development and PACS integration that implements the DICOM PS3.5 Chapter 9 UID syntax: a dot-separated sequence of numeric components, at most 64 characters total, each component containing only digits with no leading zero unless it is the single character "0", starting from an assigned Organization Root. It appends secure-random or timestamp suffixes to batch-produce Study Instance UID, Series Instance UID and SOP Instance UID, validates pasted UIDs component by component with precise error location, and recognizes NEMA-reserved Well-known UIDs.',
+        coreFeatures: [
+          'Two suffix modes: crypto.getRandomValues secure randomness or timestamp plus incrementing counter, both guaranteeing uniqueness within a batch',
+          'Three instance levels: one Study Instance UID, one Series Instance UID and 1–100 SOP Instance UIDs per run',
+          'Full rule self-check: digits-and-dots only, ≤64 characters, no leading-zero components, empty-segment detection; outputs are revalidated before return',
+          'Segment-level error location: the validator reports the component index for leading zeros, consecutive dots, leading/trailing dots, illegal characters and overlength strings',
+          'Well-known detection: built-in NEMA-reserved prefixes for transfer syntaxes, application contexts, SOP classes and IODs, separating standard UIDs from custom ones',
+          'Oversize-root protection: the root is validated first and any post-concatenation breach of 64 characters raises an explicit error instead of returning an invalid UID',
+        ],
+        howToUse: [
+          'On the Generator tab enter your organization root (e.g. the IANA enterprise branch 1.3.6.1.4.1.<enterprise>) and pick random or counter mode plus the SOP count',
+          'Click Generate; the result card shows the Study / Series UIDs and a SOP table with per-row or copy-all actions',
+          'A yellow warning appears if the root matches a reserved Well-known prefix—private systems should use an organization-owned root',
+          'On the Validator tab paste one UID per line; the table shows length/component count, validity and the exact violating segment per row',
+        ],
+        useCases: [
+          'Assigning compliant UIDs for studies, series and image instances in PACS / DICOM gateway development',
+          'Verifying sample UIDs from equipment vendors against PS3.5 syntax before integration',
+          'Cleaning legacy migration data containing leading zeros, overlength or illegal-character UIDs',
+          'Building deterministic counter-based UID fixtures for teaching and integration tests',
+        ],
+        privacyNote:
+          'Roots and UIDs are generated and validated in browser memory only; randomness comes from the browser Web Crypto API, nothing is sent to any server and everything clears on refresh.',
+        faqs: [
+          {
+            question: 'Why are leading zeros forbidden in DICOM UIDs?',
+            answer:
+              'PS3.5 Chapter 9 requires each component to be a digit string whose first character is non-zero for multi-digit components; the single character "0" is the only exception. Leading zeros would make "012" and "12" ambiguous encodings and break the determinism of the UID as a globally unique string. The tool reports the exact component index of every violation.',
+          },
+          {
+            question: 'Can random-mode UIDs collide?',
+            answer:
+              'Each random suffix combines a 10-digit Web Crypto number (the first digit is re-drawn to avoid zero) with an in-batch incrementing counter, so uniqueness within a batch is guaranteed by the counter. Across batches, the roughly 9×10^9 valid first-digit combinations of the 10-digit space make collisions negligible at normal medical-site batch sizes. Use timestamp-counter mode when strict reproducibility is required.',
+          },
+          {
+            question: 'What is the difference between Well-known and custom UIDs?',
+            answer:
+              'Well-known UIDs are reserved by the DICOM standard under the NEMA root 1.2.840.10008 for transfer syntaxes, SOP classes, application contexts and similar identifiers with fixed global meaning; they must never be reused as private instance UIDs. Custom UIDs are allocated beneath an organization-owned root, commonly an IANA enterprise number 1.3.6.1.4.1.<enterprise>. The tool names the reserved family and warns when input matches a reserved prefix.',
+          },
+          {
+            question: 'Why does generation report that 64 characters are exceeded?',
+            answer:
+              'PS3.5 limits the complete UID, including every dot, to 64 characters. The longer the organization root, the less room remains for suffixes. The tool revalidates every generated UID and refuses output with an explicit overlength error; switch to a shorter root or reduce suffix components.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ical-todo-journal-generator',
+    name: 'iCalendar VTODO/VJOURNAL 待办与日记生成器（RFC 5545）',
+    nameEn: 'iCalendar VTODO/VJOURNAL Todo & Journal Generator (RFC 5545)',
+    description:
+      '在浏览器本地生成 RFC 5545 待办与日记组件：VTODO 支持 DTSTART/DUE/STATUS/PRIORITY/PERCENT-COMPLETE/COMPLETED/RRULE/RELATED-TO/CATEGORIES，VJOURNAL 支持 DTSTART/STATUS/DESCRIPTION/CATEGORIES；自动处理 TEXT 转义、UTC 时间、UID/DTSTAMP 必填字段与 75 八位组 CRLF 折行，可复制或下载 .ics 直接导入 Apple 提醒事项、Google Calendar 与 Outlook 任务，并支持两类组件合并到同一 VCALENDAR。',
+    descriptionEn:
+      'Build RFC 5545 to-do and journal components locally in the browser: VTODO supports DTSTART/DUE/STATUS/PRIORITY/PERCENT-COMPLETE/COMPLETED/RRULE/RELATED-TO/CATEGORIES while VJOURNAL supports DTSTART/STATUS/DESCRIPTION/CATEGORIES. TEXT escaping, UTC timestamps, mandatory UID/DTSTAMP and 75-octet CRLF folding are handled automatically. Copy or download .ics files ready for Apple Reminders, Google Calendar and Outlook Tasks, or merge both component types into one VCALENDAR.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/ical-todo-journal-generator',
+    iconName: 'List',
+    tags: ['iCalendar', 'VTODO', 'VJOURNAL', 'RFC 5545', '待办', 'ICS'],
+    tagsEn: ['iCalendar', 'VTODO', 'VJOURNAL', 'RFC 5545', 'Todo', 'ICS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '生成带 RRULE 的 VTODO 待办与 FINAL 状态 VJOURNAL 日记，输出可导入的 .ics',
+    doc: {
+      zh: {
+        whatIsIt:
+          'iCalendar VTODO/VJOURNAL 生成器补齐了现有 .ics 日历事件生成器仅覆盖 VEVENT 的空白，按 RFC 5545 Section 3.6.2 与 3.6.3 在浏览器本地拼装待办（VTODO）与日记（VJOURNAL）组件。工具通过结构化表单收集字段，输出带 VERSION/PRODID/CALSCALE 外壳的标准 .ics 文本：所有时间统一为 UTC（YYYYMMDDTHHMMSSZ），TEXT 值按 Section 3.3.11 转义反斜杠、逗号、分号与换行，逻辑行按 Section 3.1 在 75 个八位组处折叠、续行以单空格开头并使用 CRLF 行尾，UID 与 DTSTAMP 等必填字段自动生成。',
+        coreFeatures: [
+          '完整 VTODO 字段：SUMMARY、DTSTART、DUE、STATUS（NEEDS-ACTION/IN-PROCESS/COMPLETED/CANCELLED）、PRIORITY 1-9、PERCENT-COMPLETE 0-100、COMPLETED 与 RELATED-TO',
+          'RRULE 重复规则：FREQ/INTERVAL/COUNT/UNTIL 结构化录入，COUNT 与 UNTIL 互斥校验，UNTIL 自动转 UTC',
+          'VJOURNAL 日记组件：SUMMARY、可选 DTSTART、STATUS（DRAFT/FINAL/CANCELLED）、DESCRIPTION、CATEGORIES 与 RELATED-TO',
+          'RFC 5545 序列化：TEXT 转义、属性参数引号、UTC 时间格式、UID/DTSTAMP 必填字段与 75 八位组 CRLF 折行（多字节 UTF-8 不截断）',
+          '组合日历：VTODO 与 VJOURNAL 可合并进同一个 VCALENDAR，组件自动分配独立 UID',
+          '严格表单校验：DUE 晚于 DTSTART、优先级与完成度取值范围、COMPLETED 与状态联动等错误即时提示',
+        ],
+        howToUse: [
+          '在「VTODO 待办」页填写标题（必填）、开始/截止时间、状态、优先级、完成度，需要重复时打开 RRULE 开关并设置 FREQ/INTERVAL/COUNT 或 UNTIL',
+          '在「VJOURNAL 日记」页填写标题与正文，选择 DRAFT/FINAL/CANCELLED 状态，DTSTART 可留空',
+          '右侧预览实时展示 .ics 文本；校验未通过时显示具体原因且禁用复制/下载',
+          '点击「复制 ICS」获取文本，或「下载 .ics」得到可直接导入 Apple 提醒事项、Google Calendar、Outlook 任务的文件',
+          '需要同一文件同时包含待办与日记时，使用「组合日历」页生成合并 VCALENDAR',
+        ],
+        useCases: [
+          '为任务管理系统导出符合标准的待办事项 .ics 订阅文件',
+          '在医疗、合规等场景生成带时间戳与状态的 VJOURNAL 审计日记',
+          '测试日历客户端对 RRULE、PERCENT-COMPLETE、RELATED-TO 等字段的兼容性',
+          '把项目管理数据迁移到 Apple 提醒事项或 Outlook 任务',
+        ],
+        privacyNote:
+          '全部表单内容仅在浏览器本地序列化为文本，不发起任何网络请求；下载的 .ics 文件由本地 Blob 生成，刷新页面后数据即清除。',
+        faqs: [
+          {
+            question: 'VTODO 和普通 VEVENT 日历事件有什么区别？',
+            answer:
+              'VEVENT 描述有明确起止时间的日历事件，而 VTODO（RFC 5545 3.6.2）描述可被完成的任务，携带 STATUS、PRIORITY、PERCENT-COMPLETE、DUE、COMPLETED 等任务专属字段，Apple 提醒事项、Google Tasks 与 Outlook 任务消费的正是这类组件。VJOURNAL（3.6.3）则是带日期的文字记录，不占用日历时段。',
+          },
+          {
+            question: '为什么生成的文本每行最多 75 个字符还有空格开头的行？',
+            answer:
+              '这是 RFC 5545 Section 3.1 规定的折行（folding）：逻辑行超过 75 个八位组时必须拆成多条物理行，续行以一个空格开头，解析时去掉 CRLF 与紧随的空格即可还原。工具按 UTF-8 字节长度切分，中文字符占 3 字节也不会被截断。',
+          },
+          {
+            question: 'RRULE 的 COUNT 和 UNTIL 能同时填写吗？',
+            answer:
+              '不能。RFC 5545 规定 COUNT（重复次数）与 UNTIL（截止时间）互斥，同时出现的规则不合法，工具会直接报错。界面上二选一录入：填 COUNT 时自动清空 UNTIL，反之亦然。',
+          },
+          {
+            question: '为什么时间都带 Z 后缀，不支持时区吗？',
+            answer:
+              '本工具统一输出 UTC 形式（Z 后缀），把表单时间按 UTC 解释，避免不同客户端对浮动时间（floating time）理解不一致。需要特定时区展示时，可在导入端设置时区；现有 VEVENT 事件生成器则提供 TZID 本地时间形式，两者互补。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The iCalendar VTODO/VJOURNAL generator fills the gap left by .ics event generators that only cover VEVENT, assembling to-do (VTODO, RFC 5545 3.6.2) and journal (VJOURNAL, 3.6.3) components entirely in the browser. Structured forms produce standard .ics text wrapped with VERSION/PRODID/CALSCALE: every timestamp is UTC (YYYYMMDDTHHMMSSZ), TEXT values escape backslashes, commas, semicolons and newlines per 3.3.11, and logical lines fold at 75 octets per 3.1 with a single leading space on continuation lines and CRLF endings; mandatory UID and DTSTAMP are generated automatically.',
+        coreFeatures: [
+          'Full VTODO fields: SUMMARY, DTSTART, DUE, STATUS (NEEDS-ACTION/IN-PROCESS/COMPLETED/CANCELLED), PRIORITY 1-9, PERCENT-COMPLETE 0-100, COMPLETED and RELATED-TO',
+          'RRULE recurrence: structured FREQ/INTERVAL/COUNT/UNTIL input with mutual-exclusion validation and UTC conversion of UNTIL',
+          'VJOURNAL components: SUMMARY, optional DTSTART, STATUS (DRAFT/FINAL/CANCELLED), DESCRIPTION, CATEGORIES and RELATED-TO',
+          'RFC 5545 serialization: TEXT escaping, quoted parameter values, UTC timestamps, mandatory UID/DTSTAMP and 75-octet CRLF folding without splitting multibyte UTF-8 characters',
+          'Combined calendar: merge VTODO and VJOURNAL into one VCALENDAR with automatically distinct UIDs',
+          'Strict form validation: DUE after DTSTART, priority/completion ranges, COMPLETED-vs-STATUS consistency, all reported inline',
+        ],
+        howToUse: [
+          'On the VTODO tab fill the required title, start/due times, status, priority and completion; enable RRULE for recurrence with FREQ/INTERVAL and COUNT or UNTIL',
+          'On the VJOURNAL tab fill title and body, pick DRAFT/FINAL/CANCELLED; DTSTART is optional',
+          'The right-hand preview updates live; when validation fails it shows the reason and disables copy/download',
+          'Click Copy ICS for the text or Download .ics for a file importable into Apple Reminders, Google Calendar and Outlook Tasks',
+          'Use the Combined tab when one file must contain both a to-do and a journal in the same VCALENDAR',
+        ],
+        useCases: [
+          'Exporting standards-compliant to-do .ics feeds from task management systems',
+          'Producing timestamped VJOURNAL audit journals in regulated medical or compliance workflows',
+          'Testing calendar-client compatibility for RRULE, PERCENT-COMPLETE and RELATED-TO',
+          'Migrating project-management data into Apple Reminders or Outlook Tasks',
+        ],
+        privacyNote:
+          'All form content is serialized to text locally in the browser with no network requests; downloaded .ics files are created from local Blobs and everything clears on refresh.',
+        faqs: [
+          {
+            question: 'How is VTODO different from a normal VEVENT?',
+            answer:
+              'VEVENT describes a calendar occurrence with fixed start and end, while VTODO (RFC 5545 3.6.2) describes an actionable task with STATUS, PRIORITY, PERCENT-COMPLETE, DUE and COMPLETED fields—the component consumed by Apple Reminders, Google Tasks and Outlook Tasks. VJOURNAL (3.6.3) is a dated textual entry that occupies no time slot.',
+          },
+          {
+            question: 'Why are lines capped at 75 characters and why do some start with a space?',
+            answer:
+              'That is the folding rule of RFC 5545 Section 3.1: logical lines longer than 75 octets split into physical lines, each continuation beginning with one space. Parsers remove CRLF plus the following space to reconstruct the line. The tool splits by UTF-8 byte length so 3-byte Chinese characters are never cut.',
+          },
+          {
+            question: 'Can RRULE COUNT and UNTIL be set together?',
+            answer:
+              'No. RFC 5545 makes COUNT (occurrence limit) and UNTIL (deadline) mutually exclusive; a rule containing both is invalid and the tool rejects it. The UI enforces either/or: entering COUNT clears UNTIL and vice versa.',
+          },
+          {
+            question: 'Why do all timestamps carry a Z suffix—no timezone support?',
+            answer:
+              'The tool emits UTC (Z suffix) consistently, interpreting form times as UTC to avoid clients disagreeing on floating times. Set the display timezone on the importing side if needed. The existing VEVENT generator complements this tool by offering TZID local-time forms.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'plus-code-codec',
     name: 'Plus Codes 编解码器',
     nameEn: 'Plus Codes (Open Location Code) Encoder & Decoder',
