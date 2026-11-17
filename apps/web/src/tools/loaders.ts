@@ -415,4 +415,9 @@ export const toolLoaders: Record<
   'body-fat-calculator': () => import('./body-fat-calculator'),
   'severance-pay-calculator': () => import('./severance-pay-calculator'),
   'fen-parser': () => import('./fen-parser'),
+  'wake-on-lan-magic-packet': () => import('./wake-on-lan-magic-packet'),
+  'acme-dns01-challenge': () => import('./acme-dns01-challenge'),
+  'opamp-calculator': () => import('./opamp-calculator'),
+  'm3u-playlist-tool': () => import('./m3u-playlist-tool'),
+  'js-error-stack-parser': () => import('./js-error-stack-parser'),
 };

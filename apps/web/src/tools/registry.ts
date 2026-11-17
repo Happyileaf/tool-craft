@@ -39491,6 +39491,519 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'wake-on-lan-magic-packet',
+    name: 'Wake-on-LAN 魔术包构造器（含反向校验解析）',
+    nameEn: 'Wake-on-LAN Magic Packet Builder & Parser',
+    description:
+      '把目标网卡 MAC 地址构造为 102 字节 AMD WoL 魔术包（6 字节 0xFF 同步流 + 16 次 MAC 重复），支持冒号 / 连字符 / Cisco 点分等多种 MAC 写法，输出紧凑与带空格十六进制；反向解析校验魔术包长度、同步流与 16 次重复一致性并还原目标 MAC，纯本地零依赖。',
+    descriptionEn:
+      'Build a 102-byte AMD Wake-on-LAN magic packet (6-byte 0xFF sync stream plus 16 MAC repetitions) from a target NIC MAC in colon, hyphen or Cisco dotted notation, with compact and spaced hex output; reverse-parse any hex packet to validate length, sync stream and repetition consistency and recover the target MAC, fully local.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/wake-on-lan-magic-packet',
+    iconName: 'Wifi',
+    tags: ['Wake-on-LAN', 'WoL', '魔术包', 'MAC 地址', '网络唤醒', 'UDP'],
+    tagsEn: ['Wake-on-LAN', 'WoL', 'Magic Packet', 'MAC', 'Network Wake', 'UDP'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Wake-on-LAN 魔术包构造器在浏览器本地把目标网卡 MAC 地址转换为 AMD Magic Packet Technology 定义的唤醒帧：前 6 字节为全 0xFF 同步流，随后连续重复 16 次目标 MAC，整帧固定 102 字节。工具同时提供反向校验：粘贴任意魔术包十六进制，验证其长度、同步流与 16 次 MAC 重复是否一致，并还原出目标 MAC 地址。',
+        coreFeatures: [
+          '多写法 MAC 解析：支持冒号（AA:BB:CC:DD:EE:FF）、连字符、无分隔符与 Cisco 点分（0011.2233.4455）格式，自动规范化为大写冒号形式',
+          '标准帧构造：6 字节 0xFF 同步流 + 16 次 MAC 重复，输出固定 102 字节的 Uint8Array',
+          '双格式十六进制输出：紧凑 HEX 与带空格 HEX，一键复制，便于嵌入脚本或报文调试工具',
+          '反向校验解析：校验帧长（必须 102 字节）、同步流（必须全 0xFF）与 16 次 MAC 一致性，损坏位置精确报错',
+          '全部运算为本地字节拼装，不发起任何 UDP 广播或网络请求，零第三方依赖',
+        ],
+        howToUse: [
+          '在「构造魔术包」页签输入目标设备网卡 MAC，支持多种常见分隔符写法',
+          '查看实时生成的 102 字节十六进制帧，点击按钮复制紧凑或带空格格式',
+          '切换到「校验 / 解析」页签，粘贴收到的魔术包十六进制（允许空格、换行与 0x 前缀）',
+          '查看还原出的目标 MAC、同步流与重复次数；帧损坏时根据错误信息定位问题',
+        ],
+        useCases: [
+          '编写或调试网络唤醒脚本前，先在本地确认魔术包字节结构是否正确',
+          '网络运维教学中演示 WoL 帧格式，以及同步流、MAC 重复等字段含义',
+          '对抓包得到的 WoL 报文做离线校验，确认目标 MAC 与帧完整性',
+        ],
+        privacyNote:
+          'MAC 地址与魔术包仅在浏览器本地处理，工具不会发送任何网络报文，也不存储或上传输入数据。',
+        faqs: [
+          {
+            question: '魔术包为什么是 102 字节？',
+            answer:
+              'AMD 定义的魔术包结构固定为 6 字节同步流（FF FF FF FF FF FF）加上 16 次目标 MAC 地址重复（每次 6 字节），6 + 16×6 = 102 字节。该帧通常封装在 UDP 广播报文中（常用端口 7 或 9），本工具只构造帧本身，不负责发送。',
+          },
+          {
+            question: '支持哪些 MAC 地址写法？',
+            answer:
+              '支持冒号分隔（AA:BB:CC:DD:EE:FF）、连字符分隔、无分隔符的 12 位十六进制，以及 Cisco 风格的点分写法（0011.2233.4455，三组 4 位十六进制）。输入会统一规范化为大写冒号形式；字节数不是 6 或含非法字符时会给出明确错误。',
+          },
+          {
+            question: '反向解析报「第 N 次 MAC 重复不一致」是什么意思？',
+            answer:
+              '合法魔术包中同步流之后的 16 次 MAC 必须逐字节相同。解析器逐次比对，一旦某次重复与第一次不符即说明帧在传输或粘贴过程中被截断、篡改或损坏，会指出具体是第几次重复出错，而不是静默返回错误结果。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Wake-on-LAN Magic Packet Builder converts a target NIC MAC address locally into the wake frame defined by AMD Magic Packet Technology: a 6-byte all-0xFF sync stream followed by 16 repetitions of the target MAC, totalling a fixed 102 bytes. It also works in reverse: paste any magic packet in hex to validate its length, sync stream and repetition consistency and recover the target MAC address.',
+        coreFeatures: [
+          'Multi-notation MAC parsing: colon (AA:BB:CC:DD:EE:FF), hyphen, bare 12-hex-digit and Cisco dotted style (0011.2233.4455), normalized to uppercase colon form',
+          'Standard frame construction: 6-byte 0xFF sync stream plus 16 MAC repetitions, always a 102-byte Uint8Array',
+          'Dual hex output: compact and spaced hex with one-click copy, ready for scripts or packet debuggers',
+          'Reverse validation: checks frame length (must be 102 bytes), sync stream (all 0xFF) and that all 16 MAC copies match, reporting the exact damaged repetition',
+          'Pure local byte assembly with no UDP broadcast, no network requests and no third-party dependencies',
+        ],
+        howToUse: [
+          'On the Build tab, enter the target device NIC MAC in any supported notation',
+          'Review the generated 102-byte hex frame and copy it in compact or spaced form',
+          'Switch to the Validate/Parse tab and paste a captured magic packet in hex (spaces, newlines and 0x prefixes allowed)',
+          'Inspect the recovered target MAC, sync stream and repetition count; damaged frames produce a precise error',
+        ],
+        useCases: [
+          'Verifying magic packet byte structure before embedding it in a wake-on-LAN script',
+          'Teaching the WoL frame format, including the sync stream and MAC repetition semantics',
+          'Offline validation of captured WoL traffic to confirm the target MAC and frame integrity',
+        ],
+        privacyNote:
+          'MAC addresses and packets are processed only in your browser; the tool sends no network traffic and never stores or uploads your input.',
+        faqs: [
+          {
+            question: 'Why is the magic packet 102 bytes?',
+            answer:
+              'The AMD magic packet is a fixed 6-byte sync stream (FF FF FF FF FF FF) followed by 16 copies of the target MAC (6 bytes each): 6 + 16×6 = 102 bytes. It is usually carried inside a UDP broadcast datagram (often port 7 or 9); this tool builds the frame only and does not transmit it.',
+          },
+          {
+            question: 'Which MAC notations are accepted?',
+            answer:
+              'Colon-separated (AA:BB:CC:DD:EE:FF), hyphen-separated, bare 12 hex digits, and Cisco dotted notation (0011.2233.4455, three groups of four hex digits). Input is normalized to uppercase colon form; anything that is not exactly 6 bytes or contains illegal characters raises a clear error.',
+          },
+          {
+            question: 'What does "MAC repetition N mismatch" mean during parsing?',
+            answer:
+              'In a valid packet the 16 MAC copies after the sync stream must be byte-identical. The parser compares each copy against the first; a mismatch means the frame was truncated, altered or corrupted during transport or pasting, and the offending repetition number is reported instead of silently returning a wrong result.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'acme-dns01-challenge',
+    name: 'ACME dns-01 挑战 TXT 记录与 Key Authorization 生成器',
+    nameEn: 'ACME DNS-01 Challenge & Key Authorization Generator',
+    description:
+      '按 RFC 8555 在浏览器本地计算 dns-01 挑战：拼装 token.thumbprint 形式的 key authorization，对其求 SHA-256 并输出无填充 Base64URL 的 43 字符 TXT 记录值，自动生成 _acme-challenge 记录名，支持通配符与 FQDN 规范化，并可反向校验已有 key authorization，零依赖、不接触私钥。',
+    descriptionEn:
+      'Compute the ACME DNS-01 challenge locally per RFC 8555: build the token.thumbprint key authorization, hash it with SHA-256 and emit the 43-char unpadded Base64URL TXT value plus the _acme-challenge record name, with wildcard and FQDN normalization and reverse verification of existing key authorizations, no private key handling.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/acme-dns01-challenge',
+    iconName: 'Key',
+    tags: ['ACME', 'dns-01', 'Let\u2019s Encrypt', 'TLS 证书', 'Key Authorization', 'TXT 记录'],
+    tagsEn: ['ACME', 'DNS-01', "Let's Encrypt", 'TLS Certificate', 'Key Authorization', 'TXT Record'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'ACME dns-01 挑战生成器在浏览器本地完成 RFC 8555 §8.1 与 §8.4 规定的确定性运算：把挑战 token 与账户 JWK 指纹以点号拼成 key authorization，对其 UTF-8 字节求 SHA-256，再做无填充 Base64URL 编码得到 43 字符 TXT 记录值，同时在规范化域名前拼接 _acme-challenge 标签生成记录名。工具不读取账户私钥，指纹由使用者自行粘贴。',
+        coreFeatures: [
+          'Key authorization 拼装：token + "." + 账户 JWK 指纹，两段分别做 Base64URL 字符集校验',
+          'TXT 记录值计算：SHA-256(key authorization) 的无填充 Base64URL 编码，固定 43 字符且不含 +、/、=',
+          '记录名生成：自动剥离通配符 *. 前缀与 FQDN 末尾点，输出 _acme-challenge.<域名> 并对通配符场景给出说明',
+          '域名规范化与校验：拒绝协议前缀、端口、路径，主机名标签逐段校验，IDN 按输入原样处理',
+          '反向校验模式：校验已有 key authorization 的两段式结构与字符集，重算应有 TXT 值供对照',
+        ],
+        howToUse: [
+          '在「生成挑战」页签填写域名、ACME 挑战 token 与账户 JWK 指纹（可点示例一键填充）',
+          '复制输出的 TXT 记录名与 43 字符记录值，到 DNS 服务商处添加对应 TXT 记录',
+          '需要核对已有配置时切换到「校验已有值」，粘贴 key authorization 查看重算 TXT 值',
+          '通配符证书直接填写 *.example.com，工具会自动剥离前缀并提示记录落在基础域名',
+        ],
+        useCases: [
+          '使用 Let\u2019s Encrypt 等 ACME CA 申请证书时手工准备 dns-01 挑战记录',
+          '核对自动化 ACME 客户端（certbot、acme.sh 等）生成的 TXT 值是否正确',
+          '教学演示 RFC 8555 挑战中 key authorization 与 DNS 记录值的派生关系',
+        ],
+        privacyNote:
+          '域名、token 与指纹仅在浏览器本地参与字符串与 SHA-256 运算，不发起任何网络请求，不接触账户私钥，也不存储或上传输入内容。',
+        faqs: [
+          {
+            question: '为什么 TXT 记录值是 43 个字符？',
+            answer:
+              'SHA-256 摘要为 32 字节，按 Base64URL 无填充编码后长度固定为 ceil(32/3)*4 - 填充数 = 43 字符，且字母表把 + 换为 -、/ 换为 _ 并去掉等号填充，可直接放入 DNS TXT 记录。',
+          },
+          {
+            question: '通配符证书的挑战记录应该写在哪里？',
+            answer:
+              '按 RFC 8555 §8.4，*.example.com 的 dns-01 挑战记录同样写在 _acme-challenge.example.com 上：工具会剥离 *. 前缀再拼标签，并明确给出通配符提示，因此通配符与基础域名证书可共用同一条挑战记录。',
+          },
+          {
+            question: '为什么提示 token 或指纹含非法字符？',
+            answer:
+              'RFC 8555 规定 token 与 JWK 指纹都是无填充 Base64URL，只允许 A–Z、a–z、0–9、-、_。出现 +、/ 或末尾 = 说明拿到的是标准 Base64 而非 Base64URL，应先转换或回到 ACME 客户端重新复制正确字段。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ACME DNS-01 Challenge Generator performs the deterministic operations of RFC 8555 sections 8.1 and 8.4 locally: it joins the challenge token and account JWK thumbprint with a dot into a key authorization, hashes its UTF-8 bytes with SHA-256 and encodes the digest as unpadded Base64URL to obtain the 43-character TXT value, while prefixing the normalized domain with _acme-challenge for the record name. The account private key is never read; users paste the thumbprint themselves.',
+        coreFeatures: [
+          'Key authorization assembly: token + "." + account JWK thumbprint, with per-segment Base64URL charset validation',
+          'TXT value computation: unpadded Base64URL of SHA-256(key authorization), always 43 characters with no +, / or =',
+          'Record name generation: strips wildcard *. prefixes and FQDN trailing dots, emits _acme-challenge.<domain> with an explicit wildcard note',
+          'Domain normalization and validation: rejects schemes, ports and paths, checks hostname labels, and leaves IDN input untouched',
+          'Reverse verification: validates the two-segment structure and charset of an existing key authorization and recomputes the expected TXT value',
+        ],
+        howToUse: [
+          'On the Generate tab, fill in the domain, ACME challenge token and account JWK thumbprint (or load the sample)',
+          'Copy the TXT record name and 43-character value, then create the TXT record at your DNS provider',
+          'To audit an existing setup, switch to Verify, paste the key authorization and compare the recomputed TXT value',
+          'For wildcard certificates enter *.example.com directly; the prefix is stripped automatically with an explanatory note',
+        ],
+        useCases: [
+          'Preparing DNS-01 challenge records manually when issuing certificates from Let\u2019s Encrypt or other ACME CAs',
+          'Checking TXT values produced by automation clients such as certbot or acme.sh',
+          'Teaching how the key authorization and DNS record value derive from each other under RFC 8555',
+        ],
+        privacyNote:
+          'Domains, tokens and thumbprints participate only in local string and SHA-256 operations; no network requests are made, the account private key is never touched, and inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Why is the TXT record value exactly 43 characters?',
+            answer:
+              'A SHA-256 digest is 32 bytes; unpadded Base64URL encoding yields a fixed 43 characters, with + mapped to -, / to _ and the padding equals signs removed, so the result fits directly into a DNS TXT record.',
+          },
+          {
+            question: 'Where does the challenge record for a wildcard certificate go?',
+            answer:
+              'Per RFC 8555 section 8.4, the DNS-01 record for *.example.com also lives at _acme-challenge.example.com: the tool strips the *. prefix before adding the label and shows a wildcard note, so the wildcard and base-domain certificates can share one challenge record.',
+          },
+          {
+            question: 'Why am I told the token or thumbprint contains illegal characters?',
+            answer:
+              'RFC 8555 requires tokens and JWK thumbprints to be unpadded Base64URL using only A-Z, a-z, 0-9, - and _. A +, / or trailing = means you copied standard Base64 instead of Base64URL; convert it first or re-copy the correct field from your ACME client.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'opamp-calculator',
+    name: '运算放大器电路计算器（反相 / 同相 / 加法 / 差分）',
+    nameEn: 'Op-Amp Circuit Calculator (Inverting / Non-Inverting / Summing / Differential)',
+    description:
+      '基于理想运放虚短、虚断模型计算四种经典负反馈拓扑：反相放大器（−Rf/Rin）、同相放大器（1+Rf/Rg）、反相加法器（−Rf·ΣVi/Ri）与差分放大器（Rf/R1·(V2−V1)，含电阻匹配警告），支持 Ω/kΩ/MΩ 与 V/mV 单位后缀、反馈电流与输入阻抗输出、纯 SVG 电路示意图，以及按目标增益反推 E24 标称电阻，零依赖本地运算。',
+    descriptionEn:
+      'Compute four classic negative-feedback topologies from the ideal op-amp virtual-short/virtual-open model: inverting (−Rf/Rin), non-inverting (1+Rf/Rg), inverting summing (−Rf·ΣVi/Ri) and differential (Rf/R1·(V2−V1) with resistor-mismatch warning), with Ω/kΩ/MΩ and V/mV suffixes, feedback current and input impedance, pure SVG schematics, and E24 resistor recommendations reverse-derived from a target gain; fully local.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/opamp-calculator',
+    iconName: 'Calculator',
+    tags: ['运算放大器', '运放', '反相放大器', '同相放大器', '差分放大器', '模拟电路', 'E24'],
+    tagsEn: ['Op-Amp', 'Operational Amplifier', 'Inverting', 'Non-Inverting', 'Differential Amplifier', 'Analog Circuit', 'E24'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '运算放大器电路计算器基于理想运放的两条黄金假设——虚短（同相端与反相端电位相等）与虚断（输入端不取电流），对反相放大器、同相放大器、反相加法器与差分放大器四种经典负反馈拓扑做闭环增益、输出电压、反馈电流与输入阻抗的确定性计算，并为每种拓扑绘制纯 SVG 电路连接示意图，还能由目标闭环增益反推电阻比值与最接近的 E24 标称阻值。',
+        coreFeatures: [
+          '四种拓扑全覆盖：反相 Av=−Rf/Rin、同相 Av=1+Rf/Rg、反相加法 Vout=−Rf·Σ(Vi/Ri)、差分 Vout=(Rf/R1)(V2−V1)',
+          '工程单位解析：电阻支持 Ω/kΩ/MΩ 后缀与纯数字，电压支持 V/mV/kV，非法、零值、负值给出明确中文错误',
+          '完整电气量输出：闭环增益（带符号）、输出电压、反相拓扑输入阻抗、反馈支路电流，数值按有效数字格式化',
+          '差分匹配检查：自动比对 Rf/R1 与 Rg2/Rg1，不匹配时给出偏差百分比与 CMRR 下降警告，并按通用节点公式计算',
+          '增益反推：输入目标增益即得电阻比值与 E24 标称建议（10kΩ 基准），同相拓扑自动换算 Av−1',
+          '纯 SVG 电路示意图：电阻、运放三角符号与节点标注随拓扑切换，无外部图片资源',
+        ],
+        howToUse: [
+          '顶部选择拓扑，界面自动载入该拓扑的默认示例参数',
+          '在左侧填写电阻（如 10k、100kΩ、2.2M）与电压（如 0.5V、200mV），右侧实时显示计算结果与电路图',
+          '差分拓扑下留意匹配状态提示：绿色表示电阻网络匹配，黄色警告表示存在偏差',
+          '在「由目标增益反推电阻」卡片输入目标增益（反相填绝对值即可，自动取负），查看 E24 标称建议',
+        ],
+        useCases: [
+          '电子工程教学中演示虚短虚断如何推导出各拓扑增益公式',
+          '电路设计评审时快速核对增益、输出摆幅与反馈电流数量级',
+          '硬件面试复习：手算后用工具校验反相、同相、加法与差分电路结果',
+          '选型阶段按目标增益获取可采购的 E24 标称电阻组合',
+        ],
+        privacyNote:
+          '所有参数与计算均在浏览器本地完成，不涉及网络请求、不存储输入数据，也不引入任何第三方依赖。',
+        faqs: [
+          {
+            question: '理想运放模型和真实运放有什么差距？',
+            answer:
+              '本工具假设开环增益无穷大、输入电流为零、带宽无限且无失调电压，因此只反映负反馈闭环的一阶行为。真实运放存在输入失调电压、偏置电流、增益带宽积（GBW）、压摆率与输出摆幅限制，精密或高频设计还需查阅具体器件数据手册做进一步校核。',
+          },
+          {
+            question: '差分放大器为什么提示电阻不匹配？',
+            answer:
+              '简洁公式 Vout=(Rf/R1)(V2−V1) 只在 Rf/R1=Rg2/Rg1 时严格成立。工具会计算两个比值的相对偏差，不为零时给出百分比警告——不匹配会让同相端与反相端增益不对称，导致共模输入被放大、共模抑制比（CMRR）下降；此时结果仍按通用节点公式 V+=V2·Rg2/(Rg1+Rg2) 精确计算。',
+          },
+          {
+            question: '反推电阻时为什么固定用 10kΩ 做基准？',
+            answer:
+              '10kΩ 是模拟电路中兼顾输入偏置电流影响、噪声与功耗的常用基准量级。工具以基准电阻（Rin 或 Rg）=10kΩ 计算反馈电阻理论值，再在 E24 标称序列（每数量级 24 个优选值）中按对数距离选最接近的可采购阻值，并回报采用标称值后的实际增益，方便评估误差。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Op-Amp Circuit Calculator builds on the two golden assumptions of an ideal op-amp — virtual short (equal voltages at the inputs) and virtual open (zero input current) — to deterministically compute closed-loop gain, output voltage, feedback current and input impedance for the inverting, non-inverting, inverting summing and differential topologies, each accompanied by a pure SVG schematic. It also reverse-derives resistor ratios and the nearest E24 standard values from a target closed-loop gain.',
+        coreFeatures: [
+          'Four topologies: inverting Av=−Rf/Rin, non-inverting Av=1+Rf/Rg, summing Vout=−Rf·Σ(Vi/Ri), differential Vout=(Rf/R1)(V2−V1)',
+          'Engineering unit parsing: resistors accept Ω/kΩ/MΩ suffixes or bare numbers, voltages accept V/mV/kV, with clear errors for illegal, zero or negative values',
+          'Full electrical outputs: signed closed-loop gain, output voltage, input impedance for inverting stages, feedback current, all formatted to sensible significant digits',
+          'Differential match check: compares Rf/R1 against Rg2/Rg1, warns with a percentage mismatch and CMRR impact, and falls back to the exact nodal formula',
+          'Gain reverse-design: enter a target gain to obtain the resistor ratio and E24 recommendation against a 10 kΩ baseline (Av−1 handled automatically for non-inverting)',
+          'Pure SVG schematics: resistors, op-amp triangle and node labels switch with the topology, no external images',
+        ],
+        howToUse: [
+          'Pick a topology at the top; default sample parameters load automatically',
+          'Fill resistors (e.g. 10k, 100kΩ, 2.2M) and voltages (e.g. 0.5V, 200mV) on the left; results and the schematic update live on the right',
+          'Watch the match indicator in differential mode: green means a matched network, yellow signals a ratio deviation',
+          'Enter a target gain in the reverse-design card (absolute value suffices for inverting) to see E24 recommendations',
+        ],
+        useCases: [
+          'Teaching how virtual short and virtual open lead to each topology’s gain equation',
+          'Sanity-checking gain, output swing and feedback current magnitude during design review',
+          'Hardware interview prep: verify hand calculations for all four classic stages',
+          'Getting purchasable E24 resistor combinations from a target gain during component selection',
+        ],
+        privacyNote:
+          'Every parameter and calculation runs locally in the browser; there are no network requests, no stored inputs and no third-party dependencies.',
+        faqs: [
+          {
+            question: 'How does the ideal model differ from a real op-amp?',
+            answer:
+              'The tool assumes infinite open-loop gain, zero input current, unlimited bandwidth and no offset voltage, so it captures only the first-order closed-loop behavior. Real devices exhibit input offset voltage, bias current, gain-bandwidth product (GBW), slew rate and output swing limits; precision or high-frequency designs need further checks against the specific datasheet.',
+          },
+          {
+            question: 'Why does the differential stage warn about resistor mismatch?',
+            answer:
+              'The neat formula Vout=(Rf/R1)(V2−V1) holds strictly only when Rf/R1=Rg2/Rg1. The tool computes the relative deviation of the two ratios and warns when it is non-zero: mismatch makes the two gains asymmetric, amplifies common-mode input and degrades CMRR. Even then, the result is computed exactly from the general nodal expression V+=V2·Rg2/(Rg1+Rg2).',
+          },
+          {
+            question: 'Why is 10 kΩ used as the baseline for reverse design?',
+            answer:
+              '10 kΩ is a common analog baseline that balances bias-current effects, noise and power consumption. The tool takes the base resistor (Rin or Rg) as 10 kΩ, derives the theoretical feedback resistor, then picks the nearest purchasable E24 value (24 preferred values per decade) by logarithmic distance and reports the achieved gain so the error can be judged.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'm3u-playlist-tool',
+    name: 'M3U / M3U8 播放列表生成与解析器',
+    nameEn: 'M3U / M3U8 Playlist Builder & Parser (HLS)',
+    description:
+      '在结构化条目与 M3U/M3U8 文本之间双向转换：生成普通播放列表或 HLS 媒体播放列表（EXT-X-VERSION / TARGETDURATION / MEDIA-SEQUENCE / PLAYLIST-TYPE / ENDLIST），解析粘贴文本还原分片表格、总时长与格式错误，支持 BOM 与 CRLF，零依赖纯本地处理。',
+    descriptionEn:
+      'Convert between structured entries and M3U/M3U8 text in both directions: build plain playlists or HLS media playlists (EXT-X-VERSION / TARGETDURATION / MEDIA-SEQUENCE / PLAYLIST-TYPE / ENDLIST), or parse pasted text back into a segment table with total duration and format errors. BOM and CRLF aware, fully local with zero dependencies.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/m3u-playlist-tool',
+    iconName: 'Music',
+    tags: ['M3U', 'M3U8', 'HLS', '播放列表', '流媒体', 'EXTINF'],
+    tagsEn: ['M3U', 'M3U8', 'HLS', 'Playlist', 'Streaming', 'EXTINF'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'M3U / M3U8 播放列表生成与解析器面向音视频整理与流媒体调试场景，在结构化条目表格与 M3U/M3U8 文本之间做确定性双向转换。生成方向支持普通播放列表（#EXTM3U + #EXTINF 时长/标题 + 资源 URI）与符合 RFC 8216 的 HLS 媒体播放列表；解析方向用逐行状态机把粘贴文本还原为分片表格、全局 HLS 标签与总时长统计，畸形行收集为错误列表而非中断。',
+        coreFeatures: [
+          '双模式生成：普通 M3U（#EXTINF + URI）与 HLS 媒体播放列表（M3U8），条目可增删改并实时预览文本',
+          '完整 HLS 标签：#EXT-X-VERSION、#EXT-X-TARGETDURATION（分片时长向上取整最大值自动计算）、#EXT-X-MEDIA-SEQUENCE、#EXT-X-PLAYLIST-TYPE:VOD/EVENT 与 #EXT-X-ENDLIST',
+          '健壮解析：逐行状态机配对 #EXTINF 与 URI，识别 BOM、CRLF/LF/CR 混用、裸 URI、未知注释与其他 #EXT-X-* 标签',
+          '错误不中断：缺 #EXTM3U 头给警告、#EXTINF 缺配对 URI 或时长非数字给带行号错误，不丢行、不抛异常',
+          '统计与导出：条目数、总时长（HH:mm:ss）、HLS 标签摘要，一键复制并下载 .m3u / .m3u8 文件',
+        ],
+        howToUse: [
+          '生成模式：选择普通 M3U 或 HLS，在表格中填写每条目的资源 URI、时长（秒）与标题，HLS 模式下设置 VERSION / MEDIA-SEQUENCE / PLAYLIST-TYPE 等标签',
+          '右侧文本区实时生成结果，点击「复制」或「下载」保存为 .m3u / .m3u8',
+          '解析模式：把现有播放列表粘贴到文本框，下方自动展示分片表格、总时长、HLS 标签与全部警告/错误',
+          '可先用「载入示例」查看 RFC 8216 风格的完整 HLS 播放列表，再替换为自己的分片地址',
+        ],
+        useCases: [
+          '整理本地音视频文件为可共享的 M3U 播放列表',
+          '调试 HLS 点播/直播切片，核对 TARGETDURATION、MEDIA-SEQUENCE 与 ENDLIST 是否合规',
+          '排查第三方返回的 M3U8 文本中的配对错误、非法时长与缺失头部',
+          '在无网络环境下做播放列表文本与结构化数据的往返核对',
+        ],
+        privacyNote:
+          '全部文本处理均在浏览器本地完成，不会请求任何 URI、不发起媒体下载，也不向服务器发送播放列表内容。',
+        faqs: [
+          {
+            question: 'TARGETDURATION 是怎么算出来的？',
+            answer:
+              '按 RFC 8216 §4.3.3.1，#EXT-X-TARGETDURATION 必须是不小于任一分片 #EXTINF 时长的最小整数。工具取所有分片时长的最大值再向上取整，例如分片时长 8.12/7.96/8.0 秒时得到 9。',
+          },
+          {
+            question: '普通 M3U 和 HLS M3U8 有什么区别？',
+            answer:
+              '普通 M3U 只有 #EXTM3U 头与可选的 #EXTINF 行，常用于本地播放器；HLS 媒体播放列表额外携带 #EXT-X-* 全局标签，要求每个分片都有浮点时长，并以 #EXT-X-ENDLIST 表示点播结束（EVENT 直播列表可不带）。工具按所选模式校验对应约束。',
+          },
+          {
+            question: '解析时为什么有些问题只是警告？',
+            answer:
+              '缺少 #EXTM3U 头不影响逐行还原条目，因此按宽松模式给警告并继续解析；而 #EXTINF 后缺少 URI、时长非数字、HLS 标签取值非法等会破坏语义，列为错误并标注行号，方便定位修复。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The M3U / M3U8 Playlist Builder & Parser serves media organization and streaming debugging by converting deterministically between a structured entry table and M3U/M3U8 text. The builder supports plain playlists (#EXTM3U + #EXTINF duration/title + URI) and RFC 8216 HLS media playlists; the parser uses a line-by-line state machine to restore the segment table, global HLS tags and total duration, collecting malformed lines as errors instead of aborting.',
+        coreFeatures: [
+          'Two build modes: plain M3U (#EXTINF + URI) and HLS media playlist (M3U8), with editable entries and live text preview',
+          'Full HLS tags: #EXT-X-VERSION, #EXT-X-TARGETDURATION (auto ceil of the maximum segment duration), #EXT-X-MEDIA-SEQUENCE, #EXT-X-PLAYLIST-TYPE:VOD/EVENT and #EXT-X-ENDLIST',
+          'Robust parsing: state-machine pairing of #EXTINF and URI, handling BOM, mixed CRLF/LF/CR, bare URIs, unknown comments and other #EXT-X-* tags',
+          'Non-fatal errors: missing #EXTM3U header becomes a warning; unpaired #EXTINF, non-numeric durations or bad HLS values become line-numbered errors with no rows lost',
+          'Stats and export: entry count, total duration (HH:mm:ss), HLS tag summary, one-click copy and .m3u / .m3u8 download',
+        ],
+        howToUse: [
+          'In build mode, pick plain M3U or HLS, then fill each entry’s URI, duration in seconds and title; for HLS set VERSION / MEDIA-SEQUENCE / PLAYLIST-TYPE',
+          'The right pane updates live; use Copy or Download to save the result as .m3u / .m3u8',
+          'In parse mode, paste an existing playlist to get the segment table, total duration, HLS tags and all warnings/errors',
+          'Use "Load sample" to inspect a complete RFC 8216-style HLS playlist before replacing the segment URIs with your own',
+        ],
+        useCases: [
+          'Turning local media files into a shareable M3U playlist',
+          'Debugging HLS VOD/live segments and checking TARGETDURATION, MEDIA-SEQUENCE and ENDLIST compliance',
+          'Diagnosing pairing errors, illegal durations and missing headers in third-party M3U8 text',
+          'Round-tripping playlist text against structured data in an offline environment',
+        ],
+        privacyNote:
+          'All text processing happens locally in the browser. No URI is ever requested, no media is downloaded, and playlist content is never sent to a server.',
+        faqs: [
+          {
+            question: 'How is TARGETDURATION computed?',
+            answer:
+              'Per RFC 8216 §4.3.3.1, #EXT-X-TARGETDURATION is the smallest integer greater than or equal to every segment #EXTINF duration. The tool takes the maximum segment duration and rounds it up, so 8.12/7.96/8.0 seconds yields 9.',
+          },
+          {
+            question: 'What is the difference between plain M3U and HLS M3U8?',
+            answer:
+              'A plain M3U only has the #EXTM3U header and optional #EXTINF lines, typically for local players. An HLS media playlist adds global #EXT-X-* tags, requires a floating-point duration on every segment, and uses #EXT-X-ENDLIST to mark the end of VOD (an EVENT live playlist may omit it). The tool enforces the matching constraints per mode.',
+          },
+          {
+            question: 'Why are some parse issues only warnings?',
+            answer:
+              'A missing #EXTM3U header does not prevent line-by-line recovery, so it is a warning and parsing continues leniently. A missing URI after #EXTINF, a non-numeric duration or an illegal HLS tag value breaks the semantics, so those are errors with line numbers for quick fixing.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'js-error-stack-parser',
+    name: 'JavaScript 错误堆栈解析器（V8 / Firefox / Safari）',
+    nameEn: 'JavaScript Error Stack Parser (V8 / Firefox / Safari)',
+    description:
+      '把粘贴的 Error.stack 文本解析为统一帧结构：自动识别 V8、SpiderMonkey、JavaScriptCore 三方言，提取函数名、文件、行列号与 eval/native/async/node: 标志，支持用户代码过滤、首帧高亮与结构化 JSON 复制，零依赖纯本地解析。',
+    descriptionEn:
+      'Parse pasted Error.stack text into unified frame objects: auto-detect V8, SpiderMonkey and JavaScriptCore dialects, extract function names, files, line/column numbers and eval/native/async/node: flags, with user-code filtering, first-frame highlight and structured JSON copy. Zero dependencies, fully local.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/js-error-stack-parser',
+    iconName: 'ScrollText',
+    tags: ['JavaScript', 'Error Stack', '堆栈', '调试', 'V8', 'Node.js'],
+    tagsEn: ['JavaScript', 'Error Stack', 'Stack Trace', 'Debugging', 'V8', 'Node.js'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'JavaScript 错误堆栈解析器面向前端与 Node.js 排障场景，把非结构化的 Error.stack 文本转换为统一的帧表格。工具自动识别 V8（Chrome/Node/Electron，at 前缀）、SpiderMonkey（Firefox，func@file 语法）与 JavaScriptCore（Safari，含 eval code/native code 行内描述）三种引擎方言，提取函数名、文件 URL、行号列号及 eval、native、async、构造调用、node: 内置、node_modules 等标志，无法识别的行保留原文并标记 unparsed 而不丢弃。',
+        coreFeatures: [
+          '三方言自动识别：依据 at 前缀、@ 分隔与 eval/native code 特征判定引擎，也可手动覆盖',
+          '统一帧结构：函数名（匿名统一 <anonymous>）、文件、行号、列号、六类标志位，缺列号/缺行号自动置空',
+          '特殊帧支持：eval 嵌套（eval at 内外层位置）、native code、async 钩子、new 构造调用与 node: 内置模块',
+          '过滤与首帧：隐藏 node:/node_modules/native、仅看用户代码、关键字过滤，绿色高亮最接近用户代码的首帧',
+          '错误头与 JSON：单独提取错误名与 message、保留 Caused by 附加消息，一键复制固定字段的结构化 JSON',
+        ],
+        howToUse: [
+          '把完整 Error.stack 文本粘贴到输入框，或点击 V8/Firefox/Safari 示例一键填充',
+          '引擎默认自动识别；识别不准时用顶部 Radio 手动指定方言重新解析',
+          '在过滤区勾选「仅看用户代码」等开关，或输入函数名/文件关键字缩小帧范围',
+          '点击「复制 JSON」获取可程序化消费的结构化结果，绿色「首帧」标记即最接近用户代码的位置',
+        ],
+        useCases: [
+          '线上报错截图/日志中堆栈文本的快速结构化定位',
+          '跨浏览器（Chrome/Firefox/Safari）与 Node.js 堆栈格式差异的统一处理',
+          '剥离 node: 内置与 node_modules 噪音帧，快速锁定自有代码入口',
+          '把 Error.stack 接入上报或分析流程前的本地预处理与字段核对',
+        ],
+        privacyNote:
+          '全部解析为浏览器本地字符串规则匹配，不发起任何网络请求，也不会保存或上报粘贴的堆栈内容。',
+        faqs: [
+          {
+            question: '三种引擎的堆栈格式有什么区别？',
+            answer:
+              'V8 使用缩进的「at 函数 (文件:行:列)」语法，匿名帧没有函数名；Firefox 的 SpiderMonkey 使用「函数@文件:行:列」；Safari 的 JavaScriptCore 同为 @ 语法，但 eval 与原生帧写作 eval code、[native code] 且可能没有行列号。工具按这些特征自动判定并归一到同一帧结构。',
+          },
+          {
+            question: '无法识别的行会怎样处理？',
+            answer:
+              '不符合任何已知帧语法的行会保留在结果中：标志位 unparsed 置 true、raw 字段保存原文，既不丢弃也不会中断后续行解析。错误消息行（含 TypeError: 前缀等）单独进入错误头，Caused by 等附加消息放入 extraMessages。',
+          },
+          {
+            question: '「首帧」高亮的含义是什么？',
+            answer:
+              '首帧是第一个既非 node: 内置、也非 native、且带文件位置的帧，通常就是最接近你自有代码的调用点。过滤视图中该行以绿色底色与「首帧」标签标记，firstUserFrameIndex 字段同时给出其序号。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The JavaScript Error Stack Parser turns unstructured Error.stack text into a unified frame table for frontend and Node.js debugging. It auto-detects the dialects of V8 (Chrome/Node/Electron, "at" prefix), SpiderMonkey (Firefox, func@file syntax) and JavaScriptCore (Safari, with inline eval code/native code descriptions), extracting function names, file URLs, line/column numbers and flags such as eval, native, async, constructor, node: internals and node_modules. Unrecognized lines keep their raw text with an unparsed flag instead of being dropped.',
+        coreFeatures: [
+          'Auto-detection of three dialects from "at" prefixes, @ separators and eval/native code markers, with manual override available',
+          'Unified frame schema: function name (anonymous as <anonymous>), file, line, column and six flag bits; missing line/column becomes null',
+          'Special frames: nested eval (eval at inner/outer locations), native code, async hooks, new constructor calls and node: built-in modules',
+          'Filtering and first frame: hide node:/node_modules/native, user-code-only mode, keyword filter, green highlight on the frame closest to user code',
+          'Error header and JSON: separate error name/message extraction, preserved Caused by lines, one-click copy of fixed-field structured JSON',
+        ],
+        howToUse: [
+          'Paste a complete Error.stack into the textarea, or load a V8/Firefox/Safari sample with one click',
+          'Engine detection is automatic; use the top radio group to force a dialect if detection is off',
+          'Use filters such as "user code only" or type a function/file keyword to narrow the frame list',
+          'Click "Copy JSON" for machine-readable output; the green "first frame" tag marks the closest entry point into your own code',
+        ],
+        useCases: [
+          'Quickly structuring stack text from production screenshots or logs',
+          'Normalizing stack format differences across Chrome, Firefox, Safari and Node.js',
+          'Stripping node: built-in and node_modules noise to locate the first own-code frame',
+          'Local preprocessing and field verification before feeding Error.stack into reporting pipelines',
+        ],
+        privacyNote:
+          'All parsing uses local string-pattern matching in the browser. No network request is made, and pasted stack content is never stored or uploaded.',
+        faqs: [
+          {
+            question: 'How do the three engine stack formats differ?',
+            answer:
+              'V8 uses indented "at function (file:line:column)" syntax with nameless anonymous frames; Firefox SpiderMonkey uses "function@file:line:column"; Safari JavaScriptCore shares the @ syntax but renders eval and native frames as eval code / [native code], sometimes without line or column. The tool detects these markers and normalizes everything into one frame schema.',
+          },
+          {
+            question: 'What happens to lines that cannot be parsed?',
+            answer:
+              'Lines matching no known frame grammar are kept in the result with the unparsed flag set to true and their original text in the raw field; they are neither dropped nor allowed to abort parsing of later lines. Error message lines (such as a TypeError: prefix) go to the error header, while extra lines like Caused by go into extraMessages.',
+          },
+          {
+            question: 'What does the highlighted "first frame" mean?',
+            answer:
+              'The first frame is the earliest frame that is neither a node: built-in nor native and carries a file location — typically the call site closest to your own code. It gets a green row and "first frame" tag, and its index is exposed as firstUserFrameIndex.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
