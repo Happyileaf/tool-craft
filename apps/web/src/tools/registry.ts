@@ -40847,6 +40847,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'annuity-calculator',
+    name: '年金现值终值计算器（普通/预付/递延/永续）',
+    nameEn: 'Annuity PV & FV Calculator (Ordinary, Due, Deferred, Perpetuity)',
+    description:
+      '按货币时间价值 TVM 闭式公式计算普通年金、预付年金、递延年金与永续年金的现值 PV 和终值 FV，支持按目标 PV/FV 反算每期收付额 A，附 PVIFA、FVIFA、资本回收系数与偿债基金系数表；利率以百分数输入，i=0 走极限分支，永续年金终值明确标注无定义，纯浏览器本地计算。',
+    descriptionEn:
+      'Compute the present and future values of ordinary, annuity-due, deferred and perpetuity annuities with closed-form time-value-of-money formulas, or solve the periodic payment A from a target PV/FV. Includes PVIFA, FVIFA, capital-recovery and sinking-fund factor tables, percentage rate input, explicit i=0 limit branches, and an explicit "undefined" label for perpetuity FV. Runs fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/annuity-calculator',
+    iconName: 'PiggyBank',
+    tags: ['年金', '现值', '终值', 'TVM', '永续年金', '财务计算'],
+    tagsEn: ['Annuity', 'Present Value', 'Future Value', 'TVM', 'Perpetuity', 'Finance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '普通年金 A=1000，i=5%，n=10，期末收付',
+    doc: {
+      zh: {
+        whatIsIt:
+          '年金计算器覆盖货币时间价值（TVM）入门场景：对普通年金（期末收付）、预付年金（期初收付）、递延年金（递延 m 期后连续 n 期收付）与永续年金（无限期）四种形态，按 PVIFA=[1−(1+i)^−n]/i、FVIFA=[(1+i)^n−1]/i 等闭式公式求现值 PV 与终值 FV，也可给定目标 PV 或 FV 反算每期收付额 A，并同步展示资本回收系数（1/PVIFA）与偿债基金系数（1/FVIFA）。永续年金终值在数学上无定义，工具明确标注而非给出伪数值。',
+        coreFeatures: [
+          '四类年金：普通、预付（×(1+i)）、递延（PVA 再折现 m 期）、永续（PV=A/i，预付永续 PV=A/i+A）',
+          '正算 PV/FV 与按目标 PV/FV 反算每期收付额 A，反算结果回代正算公式复核',
+          '系数表：PVIFA、FVIFA、资本回收系数、偿债基金系数，i=0 时自动走极限分支',
+          '利率以百分数输入（3.5 即 3.5%），支持零利率与负利率（>−100%）场景',
+          '完整边界校验：期数正整数、递延期非负整数、金额为正、溢出可读报错',
+        ],
+        howToUse: [
+          '选择年金类型（普通/预付/递延/永续）与期粒度（按年/按月），保证利率与期数同期单位',
+          '选择计算模式：正算 PV/FV、按目标现值反算 A 或按目标终值反算 A',
+          '填写每期收付额 A（正算）或目标金额（反算）、利率百分数与期数 n；递延型另填递延期 m',
+          '永续型无需填 n，可开启「预付永续」开关；结果区查看 PV、FV 与系数表',
+          '点击「复制结果」导出文本摘要，或参考底部常见年利率区间核对输入合理性',
+        ],
+        useCases: [
+          '贷款等额本息、租金、养老金等定期现金流的现值与终值估算',
+          '教育金、定投目标金额反推每期所需投入额',
+          '财务/工程经济教学中验证年金系数表与四类年金公式手算结果',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地同步完成，金额、利率与期数等财务数据不会离开设备，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '普通年金和预付年金结果差多少？',
+            answer:
+              '预付年金的每笔现金流比普通年金早一期，因此现值与终值都等于普通年金结果乘以 (1+i)；i=0 时两者相等。工具按该恒等关系实现并在测试中校验。',
+          },
+          {
+            question: '为什么永续年金没有终值？',
+            answer:
+              '永续年金的收付期数 n→∞，终值 A·[(1+i)^n−1]/i 在 i>0 时发散，数学上无定义，工具对 FV 明确标注「无定义」，也不支持按目标终值反算永续年金的收付额；其现值 A/i 收敛，可以正常计算。',
+          },
+          {
+            question: '利率为 0 时公式会除以零吗？',
+            answer:
+              '不会。PVIFA 与 FVIFA 在 i=0 的极限都是 n，资本回收与偿债基金系数极限为 1/n，工具内置 i=0 闭式分支；但永续年金在 i=0 时现值发散，此时会给出明确错误提示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This annuity calculator covers introductory time-value-of-money scenarios for four annuity forms — ordinary (end-of-period payments), annuity due (beginning-of-period), deferred (n payments after m deferral periods) and perpetuity (infinite horizon). Closed-form factors PVIFA=[1−(1+i)^−n]/i and FVIFA=[(1+i)^n−1]/i drive PV and FV, while a reverse mode solves the periodic payment A from a target PV or FV. Capital-recovery (1/PVIFA) and sinking-fund (1/FVIFA) factors are shown alongside, and the undefined perpetuity FV is labeled explicitly instead of producing a bogus number.',
+        coreFeatures: [
+          'Four annuity types: ordinary, due (×(1+i)), deferred (PVA discounted back m more periods), perpetuity (PV=A/i, due version PV=A/i+A)',
+          'Forward PV/FV and reverse payment A from target PV/FV, with results substituted back for verification',
+          'Factor tables: PVIFA, FVIFA, capital-recovery and sinking-fund factors, with explicit i=0 limit branches',
+          'Percentage rate input (3.5 means 3.5%), supporting zero and negative rates above −100%',
+          'Full validation: positive-integer periods, non-negative integer deferral, positive amounts, readable overflow errors',
+        ],
+        howToUse: [
+          'Pick the annuity type (ordinary/due/deferred/perpetuity) and period granularity (annual/monthly), keeping rate and periods in the same unit',
+          'Choose a mode: forward PV/FV, reverse payment from target PV, or reverse payment from target FV',
+          'Enter the payment A (forward) or target amount (reverse), the percentage rate and periods n; deferred annuities also need m',
+          'Perpetuities skip n and offer an "annuity due" toggle; review PV, FV and the factor table in the result area',
+          'Use "Copy result" for a text summary, or check the reference annual-rate ranges to sanity-check your inputs',
+        ],
+        useCases: [
+          'Valuing regular cash flows such as loan installments, rent and pensions',
+          'Deriving the periodic contribution needed for an education fund or savings goal',
+          'Teaching engineering economics and finance: verifying printed annuity factor tables and hand calculations',
+        ],
+        privacyNote:
+          'All computation runs synchronously in your browser; financial figures such as amounts, rates and periods never leave your device and no network requests are made.',
+        faqs: [
+          {
+            question: 'How do ordinary and annuity-due results differ?',
+            answer:
+              'Each due cash flow arrives one period earlier, so both its PV and FV equal the ordinary result multiplied by (1+i); at i=0 the two coincide. The tool implements this identity and verifies it in unit tests.',
+          },
+          {
+            question: 'Why does a perpetuity have no future value?',
+            answer:
+              'With n→∞ the future value A·[(1+i)^n−1]/i diverges for i>0, so it is mathematically undefined. The tool labels FV as undefined and disallows reverse-FV for perpetuities, while the present value A/i converges and is computed normally.',
+          },
+          {
+            question: 'Do the formulas divide by zero at i=0?',
+            answer:
+              'No. The limits of PVIFA and FVIFA at i=0 are both n, and the capital-recovery and sinking-fund factors converge to 1/n; dedicated zero-rate branches handle these cases. A perpetuity at i=0 does diverge in present value and raises an explicit error.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
