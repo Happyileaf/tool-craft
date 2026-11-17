@@ -39592,6 +39592,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'acme-dns01-challenge',
+    name: 'ACME dns-01 挑战 TXT 记录与 Key Authorization 生成器',
+    nameEn: 'ACME DNS-01 Challenge & Key Authorization Generator',
+    description:
+      '按 RFC 8555 在浏览器本地计算 dns-01 挑战：拼装 token.thumbprint 形式的 key authorization，对其求 SHA-256 并输出无填充 Base64URL 的 43 字符 TXT 记录值，自动生成 _acme-challenge 记录名，支持通配符与 FQDN 规范化，并可反向校验已有 key authorization，零依赖、不接触私钥。',
+    descriptionEn:
+      'Compute the ACME DNS-01 challenge locally per RFC 8555: build the token.thumbprint key authorization, hash it with SHA-256 and emit the 43-char unpadded Base64URL TXT value plus the _acme-challenge record name, with wildcard and FQDN normalization and reverse verification of existing key authorizations, no private key handling.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/acme-dns01-challenge',
+    iconName: 'Key',
+    tags: ['ACME', 'dns-01', 'Let\u2019s Encrypt', 'TLS 证书', 'Key Authorization', 'TXT 记录'],
+    tagsEn: ['ACME', 'DNS-01', "Let's Encrypt", 'TLS Certificate', 'Key Authorization', 'TXT Record'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'ACME dns-01 挑战生成器在浏览器本地完成 RFC 8555 §8.1 与 §8.4 规定的确定性运算：把挑战 token 与账户 JWK 指纹以点号拼成 key authorization，对其 UTF-8 字节求 SHA-256，再做无填充 Base64URL 编码得到 43 字符 TXT 记录值，同时在规范化域名前拼接 _acme-challenge 标签生成记录名。工具不读取账户私钥，指纹由使用者自行粘贴。',
+        coreFeatures: [
+          'Key authorization 拼装：token + "." + 账户 JWK 指纹，两段分别做 Base64URL 字符集校验',
+          'TXT 记录值计算：SHA-256(key authorization) 的无填充 Base64URL 编码，固定 43 字符且不含 +、/、=',
+          '记录名生成：自动剥离通配符 *. 前缀与 FQDN 末尾点，输出 _acme-challenge.<域名> 并对通配符场景给出说明',
+          '域名规范化与校验：拒绝协议前缀、端口、路径，主机名标签逐段校验，IDN 按输入原样处理',
+          '反向校验模式：校验已有 key authorization 的两段式结构与字符集，重算应有 TXT 值供对照',
+        ],
+        howToUse: [
+          '在「生成挑战」页签填写域名、ACME 挑战 token 与账户 JWK 指纹（可点示例一键填充）',
+          '复制输出的 TXT 记录名与 43 字符记录值，到 DNS 服务商处添加对应 TXT 记录',
+          '需要核对已有配置时切换到「校验已有值」，粘贴 key authorization 查看重算 TXT 值',
+          '通配符证书直接填写 *.example.com，工具会自动剥离前缀并提示记录落在基础域名',
+        ],
+        useCases: [
+          '使用 Let\u2019s Encrypt 等 ACME CA 申请证书时手工准备 dns-01 挑战记录',
+          '核对自动化 ACME 客户端（certbot、acme.sh 等）生成的 TXT 值是否正确',
+          '教学演示 RFC 8555 挑战中 key authorization 与 DNS 记录值的派生关系',
+        ],
+        privacyNote:
+          '域名、token 与指纹仅在浏览器本地参与字符串与 SHA-256 运算，不发起任何网络请求，不接触账户私钥，也不存储或上传输入内容。',
+        faqs: [
+          {
+            question: '为什么 TXT 记录值是 43 个字符？',
+            answer:
+              'SHA-256 摘要为 32 字节，按 Base64URL 无填充编码后长度固定为 ceil(32/3)*4 - 填充数 = 43 字符，且字母表把 + 换为 -、/ 换为 _ 并去掉等号填充，可直接放入 DNS TXT 记录。',
+          },
+          {
+            question: '通配符证书的挑战记录应该写在哪里？',
+            answer:
+              '按 RFC 8555 §8.4，*.example.com 的 dns-01 挑战记录同样写在 _acme-challenge.example.com 上：工具会剥离 *. 前缀再拼标签，并明确给出通配符提示，因此通配符与基础域名证书可共用同一条挑战记录。',
+          },
+          {
+            question: '为什么提示 token 或指纹含非法字符？',
+            answer:
+              'RFC 8555 规定 token 与 JWK 指纹都是无填充 Base64URL，只允许 A–Z、a–z、0–9、-、_。出现 +、/ 或末尾 = 说明拿到的是标准 Base64 而非 Base64URL，应先转换或回到 ACME 客户端重新复制正确字段。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The ACME DNS-01 Challenge Generator performs the deterministic operations of RFC 8555 sections 8.1 and 8.4 locally: it joins the challenge token and account JWK thumbprint with a dot into a key authorization, hashes its UTF-8 bytes with SHA-256 and encodes the digest as unpadded Base64URL to obtain the 43-character TXT value, while prefixing the normalized domain with _acme-challenge for the record name. The account private key is never read; users paste the thumbprint themselves.',
+        coreFeatures: [
+          'Key authorization assembly: token + "." + account JWK thumbprint, with per-segment Base64URL charset validation',
+          'TXT value computation: unpadded Base64URL of SHA-256(key authorization), always 43 characters with no +, / or =',
+          'Record name generation: strips wildcard *. prefixes and FQDN trailing dots, emits _acme-challenge.<domain> with an explicit wildcard note',
+          'Domain normalization and validation: rejects schemes, ports and paths, checks hostname labels, and leaves IDN input untouched',
+          'Reverse verification: validates the two-segment structure and charset of an existing key authorization and recomputes the expected TXT value',
+        ],
+        howToUse: [
+          'On the Generate tab, fill in the domain, ACME challenge token and account JWK thumbprint (or load the sample)',
+          'Copy the TXT record name and 43-character value, then create the TXT record at your DNS provider',
+          'To audit an existing setup, switch to Verify, paste the key authorization and compare the recomputed TXT value',
+          'For wildcard certificates enter *.example.com directly; the prefix is stripped automatically with an explanatory note',
+        ],
+        useCases: [
+          'Preparing DNS-01 challenge records manually when issuing certificates from Let\u2019s Encrypt or other ACME CAs',
+          'Checking TXT values produced by automation clients such as certbot or acme.sh',
+          'Teaching how the key authorization and DNS record value derive from each other under RFC 8555',
+        ],
+        privacyNote:
+          'Domains, tokens and thumbprints participate only in local string and SHA-256 operations; no network requests are made, the account private key is never touched, and inputs are never stored or uploaded.',
+        faqs: [
+          {
+            question: 'Why is the TXT record value exactly 43 characters?',
+            answer:
+              'A SHA-256 digest is 32 bytes; unpadded Base64URL encoding yields a fixed 43 characters, with + mapped to -, / to _ and the padding equals signs removed, so the result fits directly into a DNS TXT record.',
+          },
+          {
+            question: 'Where does the challenge record for a wildcard certificate go?',
+            answer:
+              'Per RFC 8555 section 8.4, the DNS-01 record for *.example.com also lives at _acme-challenge.example.com: the tool strips the *. prefix before adding the label and shows a wildcard note, so the wildcard and base-domain certificates can share one challenge record.',
+          },
+          {
+            question: 'Why am I told the token or thumbprint contains illegal characters?',
+            answer:
+              'RFC 8555 requires tokens and JWK thumbprints to be unpadded Base64URL using only A-Z, a-z, 0-9, - and _. A +, / or trailing = means you copied standard Base64 instead of Base64URL; convert it first or re-copy the correct field from your ACME client.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

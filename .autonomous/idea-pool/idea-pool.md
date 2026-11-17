@@ -355,7 +355,7 @@
 | 20261116141423 | UDP 报文头构造与十六进制解析器（RFC 768，含伪首部校验和） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141423.md) |
 | 20261116141424 | RTP 报文头字段解析与构造器（RFC 3550，含 CSRC / 扩展头） | Web Tool | Exploration | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141424.md) |
 | 20261116141425 | 曼彻斯特 / 差分曼彻斯特线路编解码器（IEEE 802.3 与 Thomas 约定） | Web Tool | External Reference | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116141425.md) |
-| 20261116200511 | ACME dns-01 挑战 TXT 记录与 Key Authorization 生成器（RFC 8555） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116200511.md) |
+| 20261116200511 | ACME dns-01 挑战 TXT 记录与 Key Authorization 生成器（RFC 8555） | Web Tool | Existing Gap | Done | 2026-11-16 | trae-agent | [详情](./idea-details/20261116200511.md) |
 | 20261116200512 | 802.1Q VLAN 标签（含 QinQ 双层）编解码与字段解析器 | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116200512.md) |
 | 20261116200513 | CAN 2.0 总线帧字段与位时序 / 波特率计算器（含 CRC-15 与位填充计数） | Web Tool | External Reference | Pending | 2026-11-16 | | [详情](./idea-details/20261116200513.md) |
 | 20261116200514 | JavaScript 错误堆栈（Error Stack）解析与结构化查看器（V8 / Firefox / Safari 多方言） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116200514.md) |

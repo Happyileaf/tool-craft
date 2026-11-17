@@ -416,4 +416,5 @@ export const toolLoaders: Record<
   'severance-pay-calculator': () => import('./severance-pay-calculator'),
   'fen-parser': () => import('./fen-parser'),
   'wake-on-lan-magic-packet': () => import('./wake-on-lan-magic-packet'),
+  'acme-dns01-challenge': () => import('./acme-dns01-challenge'),
 };
