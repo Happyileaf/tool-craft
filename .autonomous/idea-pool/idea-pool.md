@@ -375,4 +375,9 @@
 | 20261117200506 | 离散傅里叶变换（DFT/FFT）计算器（幅度谱 / 相位谱与逆变换） | Web Tool | Exploration | Pending | 2026-11-17 | - | [详情](./idea-details/20261117200506.md) |
 | 20261117200507 | 理想气体状态方程（PV=nRT）计算器（四量求一 + 单位换算） | Web Tool | Exploration | Claimed | 2026-11-17 | trae-agent | [详情](./idea-details/20261117200507.md) |
 | 20261117200508 | 跨平台深链关联文件生成器（apple-app-site-association / assetlinks.json） | Web Tool | Existing Gap | Pending | 2026-11-17 | - | [详情](./idea-details/20261117200508.md) |
+| 20261118040100 | 一致性哈希（Consistent Hashing）环模拟器（含虚拟节点与增删节点迁移量可视化） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118040100.md) |
+| 20261118040101 | 限流算法交互式模拟器（令牌桶 / 漏桶 / 固定窗口 / 滑动窗口 / 滑动日志） | Web Tool | Exploration | Pending | 2026-11-18 | - | [详情](./idea-details/20261118040101.md) |
+| 20261118040102 | DNS CAA 记录生成与校验器（RFC 8659/8658，issue/issuewild/iodef 标签与多值语法） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118040102.md) |
+| 20261118040103 | UART 串行帧编解码与波特率时序计算器（起始/数据/校验/停止位，含位时序波形） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118040103.md) |
+| 20261118040104 | Merkle 默克尔树构造与审计路径验证器（含根哈希、Merkle Proof 生成与逐层校验可视化） | Web Tool | Exploration | Pending | 2026-11-18 | - | [详情](./idea-details/20261118040104.md) |
 
