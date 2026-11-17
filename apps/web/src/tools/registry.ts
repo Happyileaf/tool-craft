@@ -28053,6 +28053,122 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'caa-record-generator',
+    name: 'DNS CAA 记录生成与校验器（RFC 8659/8658）',
+    nameEn: 'DNS CAA Record Generator & Validator (RFC 8659/8658)',
+    description:
+      '在浏览器本地生成并校验 CAA（证书颁发机构授权）DNS 记录：支持 issue / issuewild / iodef 三类标签、critical（flag 128）标志、RFC 8658 accounturi 与 validationmethods 参数、空 value 禁用记录与长字符串 255 字符分段提示；可粘贴现有区域文件逐行解析结构、标签、flags 与参数错误。',
+    descriptionEn:
+      'Generate and validate CAA (Certification Authority Authorization) DNS records locally: issue / issuewild / iodef tags, the critical (flag 128) bit, RFC 8658 accounturi and validationmethods parameters, empty-value prohibition records, and 255-character chunking guidance. Paste existing zone data to parse structure, tags, flags and parameter errors line by line.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/caa-record-generator',
+    iconName: 'ShieldCheck',
+    tags: ['CAA', 'DNS记录', '证书授权', 'RFC8659', 'TLS运维'],
+    tagsEn: ['CAA', 'DNS Record', 'Certificate Authorization', 'RFC 8659', 'TLS Ops'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'example.com 允许 letsencrypt.org 签发，违规上报到 mailto:security@example.com',
+    doc: {
+      zh: {
+        whatIsIt:
+          'DNS CAA 记录生成与校验器是一款纯浏览器本地工具，依据 RFC 8659（CAA 资源记录）与 RFC 8658（accounturi / validationmethods 参数）拼装并核对 CAA 记录。CAA 让域名持有者声明哪些证书颁发机构（CA）允许为该域名签发证书；解析器在签发前查询 CAA，未获授权的 CA 必须拒绝签发。工具覆盖 issue（普通证书授权）、issuewild（通配符证书授权）、iodef（证书事件上报）三类标签，支持 critical 标志与多值参数，并能反向解析粘贴的区域文件片段。',
+        coreFeatures: [
+          '三类标签完整支持：issue / issuewild / iodef，表单化录入域名、TTL、flags 与标签值，实时生成标准区域文件行',
+          'RFC 8658 参数：为 issue / issuewild 附加 accounturi（http(s) URL）与 validationmethods（dns-01 / http-01 / tls-alpn-01），自动按分号拼装',
+          'critical 与禁用记录：一键切换 flag 0 / 128；勾选禁用输出空 value 记录（0 issue ";"）表示拒绝该类签发',
+          'iodef URI 校验：强制 mailto:name@domain 或 http(s) URL 两种合法形态，非法地址即时报错',
+          '反向校验器：粘贴区域文件片段（可带域名 / TTL 前缀，也可只粘 flags tag "value"），逐行解析 flags、标签、参数并按行号报告结构与语义错误，注释与空行自动跳过',
+          '策略警告：仅 issuewild 无 issue、critical 兼容性、仅 iodef 不限制签发等配置给出提示；超长 value 提供 255 字符分段工具函数',
+        ],
+        howToUse: [
+          '在「记录生成器」页填写域名与 TTL（TTL 留空则不输出该字段），默认含一条 issue 与一条 iodef 示例',
+          '为每条记录选择标签：issue / issuewild 填写 CA 域名并可选添加 accounturi、validationmethods；iodef 填写 mailto 或 http(s) 上报地址',
+          '需要关键标签时勾选 critical（输出 flag 128）；要拒绝某类签发时勾选「禁用」生成空 value 记录，点「添加一条 CAA 记录」可继续追加',
+          '校验通过后复制下方区域文件文本到 DNS 服务商；切到「记录校验器」粘贴现有 CAA 记录，查看逐行解析表与错误 / 警告',
+        ],
+        useCases: [
+          '域名上线前配置 CAA，限定仅受信任 CA（如 Let’s Encrypt）可签发证书',
+          '为 ACME 自动化签发绑定 accounturi 与 validationmethods，缩小证书颁发范围',
+          '审计现有 DNS 区域文件中的 CAA 记录，排查 flags、标签拼写与参数格式错误',
+          '配置 iodef 接收 CA 的证书签发违规事件上报',
+        ],
+        privacyNote:
+          '所有域名、记录与粘贴内容仅在浏览器本地内存中处理，不向任何服务器发送，刷新页面即清除。',
+        faqs: [
+          {
+            question: 'CAA 记录配置错误会导致证书无法签发吗？',
+            answer:
+              '会。CA 在签发前必须查询 CAA：若存在 issue / issuewild 且该 CA 未获授权，或 critical 标签不被识别，CA 会拒绝签发。因此工具对 flags（仅 0 / 128）、标签拼写、CA 域名与参数格式做严格校验，并对仅配 issuewild 等易漏配场景给出警告，发布前建议先用校验器页核对。',
+          },
+          {
+            question: 'issue ";" 空 value 记录是什么含义？',
+            answer:
+              'RFC 8659 规定 issue / issuewild 的 value 为空（区域文件写作 0 issue ";"）时，表示没有任何 CA 被授权签发该类证书。issue ";" 拒绝所有普通证书，issuewild ";" 拒绝所有通配符证书；勾选工具中的「禁用该类签发」即生成此形式。',
+          },
+          {
+            question: '为什么我的 CAA 值需要按 255 字符分段？',
+            answer:
+              'DNS 区域文件中单个引号字符串受 RFC 1035 字符串长度限制（255 字节）。多数 CAA 记录远短于此，工具内置 splitQuotedChunks 在超长时把 value 拆成多个相邻引号串；普通 accounturi 场景不会触发。',
+          },
+          {
+            question: 'CAA 与 DMARC / SPF / DKIM 有什么区别？',
+            answer:
+              'DMARC / SPF / DKIM 约束的是邮件发送方身份与防伪；CAA 约束的是 TLS 证书颁发机构，决定谁能为域名签发证书。二者分属不同 DNS 记录类型（CAA 是独立资源记录类型 257，DMARC / SPF 承载于 TXT），互不替代，可在同一域同时配置。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local browser tool that builds and checks CAA (Certification Authority Authorization) DNS records per RFC 8659 and the RFC 8658 accounturi / validationmethods parameters. CAA lets a domain name holder state which certificate authorities may issue certificates for the domain; CAs must query CAA before issuance and refuse when not authorized. The tool covers issue, issuewild and iodef tags, the critical flag, multi-value parameters, and reverse parsing of pasted zone snippets.',
+        coreFeatures: [
+          'All three tags: issue / issuewild / iodef with form-based domain, TTL, flags and value entry and live zone-line output',
+          'RFC 8658 parameters: accounturi (http(s) URL) and validationmethods (dns-01 / http-01 / tls-alpn-01) joined with semicolons',
+          'Critical flag and prohibition records: toggle flag 0 / 128; empty-value records (0 issue ";") block a certificate class',
+          'iodef URI validation limited to mailto:name@domain or http(s) URLs with instant errors',
+          'Reverse validator: paste zone lines (with or without owner / TTL prefix) to parse flags, tags and parameters with line-numbered structural and semantic errors; comments and blank lines are skipped',
+          'Policy warnings for issuewild-without-issue, critical compatibility and iodef-only setups, plus a 255-character chunking helper for long values',
+        ],
+        howToUse: [
+          'On the Generator tab enter the domain and TTL (leave TTL empty to omit it); a sample issue and iodef record is preloaded',
+          'Pick a tag per row: fill the CA domain for issue / issuewild with optional accounturi and validationmethods, or a mailto / http(s) URL for iodef',
+          'Toggle critical for flag 128 or the disable checkbox for an empty-value prohibition record; add more rows as needed',
+          'Copy the generated zone text into your DNS provider, then use the Validator tab to parse existing CAA records with a structured table and error list',
+        ],
+        useCases: [
+          'Restricting certificate issuance to trusted CAs such as Let’s Encrypt before a domain goes live',
+          'Binding ACME automation to an accounturi and allowed validation methods',
+          'Auditing CAA records in existing zone files for flags, tag spelling and parameter mistakes',
+          'Publishing an iodef address to receive certificate issuance violation reports',
+        ],
+        privacyNote:
+          'All domains, records and pasted content stay in browser memory and are never sent to a server; everything clears on refresh.',
+        faqs: [
+          {
+            question: 'Can a misconfigured CAA record block certificate issuance?',
+            answer:
+              'Yes. CAs must query CAA before issuing: an unauthorized CA, or an unrecognized critical tag, forces refusal. The tool strictly validates flags (only 0 / 128), tag spelling, CA domains and parameters, and warns about easy-to-miss setups such as issuewild without issue.',
+          },
+          {
+            question: 'What does an empty issue ";" value mean?',
+            answer:
+              'Per RFC 8659, an empty issue / issuewild value (written as 0 issue ";") means no CA is authorized for that certificate class: issue ";" blocks all normal certificates and issuewild ";" blocks all wildcard certificates. The disable checkbox produces exactly this form.',
+          },
+          {
+            question: 'When does the 255-character chunking apply?',
+            answer:
+              'A single quoted DNS character-string is limited to 255 bytes by RFC 1035. Typical CAA records are much shorter; the built-in splitQuotedChunks helper splits an oversized value into adjacent quoted strings, which normal accounturi scenarios never reach.',
+          },
+          {
+            question: 'How is CAA different from DMARC / SPF / DKIM?',
+            answer:
+              'DMARC / SPF / DKIM govern email sender identity and anti-spoofing; CAA governs TLS certificate authorities. CAA is its own resource record type (257) while DMARC / SPF live in TXT records. They are complementary and can coexist on the same domain.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'plus-code-codec',
     name: 'Plus Codes 编解码器',
     nameEn: 'Plus Codes (Open Location Code) Encoder & Decoder',

@@ -311,6 +311,7 @@ export const toolLoaders: Record<
   'java-descriptor-converter': () => import('./java-descriptor-converter'),
   'e123-phone-formatter': () => import('./e123-phone-formatter'),
   'dmarc-record-generator': () => import('./dmarc-record-generator'),
+  'caa-record-generator': () => import('./caa-record-generator'),
   'plus-code-codec': () => import('./plus-code-codec'),
   'changelog-generator': () => import('./changelog-generator'),
   'lrc-parser': () => import('./lrc-parser'),
