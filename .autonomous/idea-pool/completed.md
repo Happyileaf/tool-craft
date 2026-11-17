@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261117020631 | Wake-on-LAN 魔术包构造器（102 字节唤醒帧构造与反向校验） | Web Tool | Existing Gap | `wake-on-lan-magic-packet` / [PR #260](https://github.com/Happyileaf/tool-craft/pull/260) | 2026-11-17 | [详情](./idea-details/20261117020631.md) |
+| 20261116200511 | ACME dns-01 挑战 TXT 记录与 Key Authorization 生成器（RFC 8555） | Web Tool | Existing Gap | `acme-dns01-challenge` / [PR #260](https://github.com/Happyileaf/tool-craft/pull/260) | 2026-11-17 | [详情](./idea-details/20261116200511.md) |
+| 20261117020630 | 运算放大器电路计算器（反相 / 同相 / 加法 / 差分） | Web Tool | Existing Gap | `opamp-calculator` / [PR #260](https://github.com/Happyileaf/tool-craft/pull/260) | 2026-11-17 | [详情](./idea-details/20261117020630.md) |
+| 20261107140230 | M3U / M3U8 播放列表生成与解析器（含 HLS 媒体序列） | Web Tool | Existing Gap | `m3u-playlist-tool` / [PR #260](https://github.com/Happyileaf/tool-craft/pull/260) | 2026-11-17 | [详情](./idea-details/20261107140230.md) |
+| 20261116200514 | JavaScript 错误堆栈解析与结构化查看器（V8 / Firefox / Safari 多方言） | Web Tool | Existing Gap | `js-error-stack-parser` / [PR #260](https://github.com/Happyileaf/tool-craft/pull/260) | 2026-11-17 | [详情](./idea-details/20261116200514.md) |
 | 20261116141427 | 电阻 / 阻抗网络 Δ-Y（三角形-星形）双向等效变换计算器 | Web Tool | Existing Gap | `delta-wye-transform` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261116141427.md) |
 | 20261116141426 | ADC / DAC 量化参数计算器（分辨率 / LSB / 量化误差 / SNR / 电压码值互算） | Web Tool | Exploration | `adc-dac-quantizer` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261116141426.md) |
 | 20261115140203 | 体脂率估算计算器（US Navy 围度法 / BMI 推导法 + 腰臀比风险区间） | Web Tool | Existing Gap | `body-fat-calculator` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261115140203.md) |
