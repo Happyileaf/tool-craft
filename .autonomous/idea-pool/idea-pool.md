@@ -370,4 +370,9 @@
 | 20261117140208 | 梁弯曲应力与挠度计算器（简支/悬臂、点载与均布载） | Web Tool | Exploration | Pending | 2026-11-17 | | [详情](./idea-details/20261117140208.md) |
 | 20261117140209 | 室内平均照度计算器（利用系数法/流明法） | Web Tool | Exploration | Pending | 2026-11-17 | | [详情](./idea-details/20261117140209.md) |
 | 20261117140210 | 年金现值 / 终值计算器（普通、预付、递延、永续年金） | Web Tool | Existing Gap | Pending | 2026-11-17 | | [详情](./idea-details/20261117140210.md) |
+| 20261117200504 | BIC / SWIFT 银行代码校验与解析器（ISO 9362 结构校验） | Web Tool | Existing Gap | Pending | 2026-11-17 | - | [详情](./idea-details/20261117200504.md) |
+| 20261117200505 | 以太坊 ABI 函数选择器与事件 Topic0 计算器（keccak-256 签名摘要） | Web Tool | Existing Gap | Pending | 2026-11-17 | - | [详情](./idea-details/20261117200505.md) |
+| 20261117200506 | 离散傅里叶变换（DFT/FFT）计算器（幅度谱 / 相位谱与逆变换） | Web Tool | Exploration | Pending | 2026-11-17 | - | [详情](./idea-details/20261117200506.md) |
+| 20261117200507 | 理想气体状态方程（PV=nRT）计算器（四量求一 + 单位换算） | Web Tool | Exploration | Pending | 2026-11-17 | - | [详情](./idea-details/20261117200507.md) |
+| 20261117200508 | 跨平台深链关联文件生成器（apple-app-site-association / assetlinks.json） | Web Tool | Existing Gap | Pending | 2026-11-17 | - | [详情](./idea-details/20261117200508.md) |
 
