@@ -39798,6 +39798,109 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'm3u-playlist-tool',
+    name: 'M3U / M3U8 播放列表生成与解析器',
+    nameEn: 'M3U / M3U8 Playlist Builder & Parser (HLS)',
+    description:
+      '在结构化条目与 M3U/M3U8 文本之间双向转换：生成普通播放列表或 HLS 媒体播放列表（EXT-X-VERSION / TARGETDURATION / MEDIA-SEQUENCE / PLAYLIST-TYPE / ENDLIST），解析粘贴文本还原分片表格、总时长与格式错误，支持 BOM 与 CRLF，零依赖纯本地处理。',
+    descriptionEn:
+      'Convert between structured entries and M3U/M3U8 text in both directions: build plain playlists or HLS media playlists (EXT-X-VERSION / TARGETDURATION / MEDIA-SEQUENCE / PLAYLIST-TYPE / ENDLIST), or parse pasted text back into a segment table with total duration and format errors. BOM and CRLF aware, fully local with zero dependencies.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/m3u-playlist-tool',
+    iconName: 'Music',
+    tags: ['M3U', 'M3U8', 'HLS', '播放列表', '流媒体', 'EXTINF'],
+    tagsEn: ['M3U', 'M3U8', 'HLS', 'Playlist', 'Streaming', 'EXTINF'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'M3U / M3U8 播放列表生成与解析器面向音视频整理与流媒体调试场景，在结构化条目表格与 M3U/M3U8 文本之间做确定性双向转换。生成方向支持普通播放列表（#EXTM3U + #EXTINF 时长/标题 + 资源 URI）与符合 RFC 8216 的 HLS 媒体播放列表；解析方向用逐行状态机把粘贴文本还原为分片表格、全局 HLS 标签与总时长统计，畸形行收集为错误列表而非中断。',
+        coreFeatures: [
+          '双模式生成：普通 M3U（#EXTINF + URI）与 HLS 媒体播放列表（M3U8），条目可增删改并实时预览文本',
+          '完整 HLS 标签：#EXT-X-VERSION、#EXT-X-TARGETDURATION（分片时长向上取整最大值自动计算）、#EXT-X-MEDIA-SEQUENCE、#EXT-X-PLAYLIST-TYPE:VOD/EVENT 与 #EXT-X-ENDLIST',
+          '健壮解析：逐行状态机配对 #EXTINF 与 URI，识别 BOM、CRLF/LF/CR 混用、裸 URI、未知注释与其他 #EXT-X-* 标签',
+          '错误不中断：缺 #EXTM3U 头给警告、#EXTINF 缺配对 URI 或时长非数字给带行号错误，不丢行、不抛异常',
+          '统计与导出：条目数、总时长（HH:mm:ss）、HLS 标签摘要，一键复制并下载 .m3u / .m3u8 文件',
+        ],
+        howToUse: [
+          '生成模式：选择普通 M3U 或 HLS，在表格中填写每条目的资源 URI、时长（秒）与标题，HLS 模式下设置 VERSION / MEDIA-SEQUENCE / PLAYLIST-TYPE 等标签',
+          '右侧文本区实时生成结果，点击「复制」或「下载」保存为 .m3u / .m3u8',
+          '解析模式：把现有播放列表粘贴到文本框，下方自动展示分片表格、总时长、HLS 标签与全部警告/错误',
+          '可先用「载入示例」查看 RFC 8216 风格的完整 HLS 播放列表，再替换为自己的分片地址',
+        ],
+        useCases: [
+          '整理本地音视频文件为可共享的 M3U 播放列表',
+          '调试 HLS 点播/直播切片，核对 TARGETDURATION、MEDIA-SEQUENCE 与 ENDLIST 是否合规',
+          '排查第三方返回的 M3U8 文本中的配对错误、非法时长与缺失头部',
+          '在无网络环境下做播放列表文本与结构化数据的往返核对',
+        ],
+        privacyNote:
+          '全部文本处理均在浏览器本地完成，不会请求任何 URI、不发起媒体下载，也不向服务器发送播放列表内容。',
+        faqs: [
+          {
+            question: 'TARGETDURATION 是怎么算出来的？',
+            answer:
+              '按 RFC 8216 §4.3.3.1，#EXT-X-TARGETDURATION 必须是不小于任一分片 #EXTINF 时长的最小整数。工具取所有分片时长的最大值再向上取整，例如分片时长 8.12/7.96/8.0 秒时得到 9。',
+          },
+          {
+            question: '普通 M3U 和 HLS M3U8 有什么区别？',
+            answer:
+              '普通 M3U 只有 #EXTM3U 头与可选的 #EXTINF 行，常用于本地播放器；HLS 媒体播放列表额外携带 #EXT-X-* 全局标签，要求每个分片都有浮点时长，并以 #EXT-X-ENDLIST 表示点播结束（EVENT 直播列表可不带）。工具按所选模式校验对应约束。',
+          },
+          {
+            question: '解析时为什么有些问题只是警告？',
+            answer:
+              '缺少 #EXTM3U 头不影响逐行还原条目，因此按宽松模式给警告并继续解析；而 #EXTINF 后缺少 URI、时长非数字、HLS 标签取值非法等会破坏语义，列为错误并标注行号，方便定位修复。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The M3U / M3U8 Playlist Builder & Parser serves media organization and streaming debugging by converting deterministically between a structured entry table and M3U/M3U8 text. The builder supports plain playlists (#EXTM3U + #EXTINF duration/title + URI) and RFC 8216 HLS media playlists; the parser uses a line-by-line state machine to restore the segment table, global HLS tags and total duration, collecting malformed lines as errors instead of aborting.',
+        coreFeatures: [
+          'Two build modes: plain M3U (#EXTINF + URI) and HLS media playlist (M3U8), with editable entries and live text preview',
+          'Full HLS tags: #EXT-X-VERSION, #EXT-X-TARGETDURATION (auto ceil of the maximum segment duration), #EXT-X-MEDIA-SEQUENCE, #EXT-X-PLAYLIST-TYPE:VOD/EVENT and #EXT-X-ENDLIST',
+          'Robust parsing: state-machine pairing of #EXTINF and URI, handling BOM, mixed CRLF/LF/CR, bare URIs, unknown comments and other #EXT-X-* tags',
+          'Non-fatal errors: missing #EXTM3U header becomes a warning; unpaired #EXTINF, non-numeric durations or bad HLS values become line-numbered errors with no rows lost',
+          'Stats and export: entry count, total duration (HH:mm:ss), HLS tag summary, one-click copy and .m3u / .m3u8 download',
+        ],
+        howToUse: [
+          'In build mode, pick plain M3U or HLS, then fill each entry’s URI, duration in seconds and title; for HLS set VERSION / MEDIA-SEQUENCE / PLAYLIST-TYPE',
+          'The right pane updates live; use Copy or Download to save the result as .m3u / .m3u8',
+          'In parse mode, paste an existing playlist to get the segment table, total duration, HLS tags and all warnings/errors',
+          'Use "Load sample" to inspect a complete RFC 8216-style HLS playlist before replacing the segment URIs with your own',
+        ],
+        useCases: [
+          'Turning local media files into a shareable M3U playlist',
+          'Debugging HLS VOD/live segments and checking TARGETDURATION, MEDIA-SEQUENCE and ENDLIST compliance',
+          'Diagnosing pairing errors, illegal durations and missing headers in third-party M3U8 text',
+          'Round-tripping playlist text against structured data in an offline environment',
+        ],
+        privacyNote:
+          'All text processing happens locally in the browser. No URI is ever requested, no media is downloaded, and playlist content is never sent to a server.',
+        faqs: [
+          {
+            question: 'How is TARGETDURATION computed?',
+            answer:
+              'Per RFC 8216 §4.3.3.1, #EXT-X-TARGETDURATION is the smallest integer greater than or equal to every segment #EXTINF duration. The tool takes the maximum segment duration and rounds it up, so 8.12/7.96/8.0 seconds yields 9.',
+          },
+          {
+            question: 'What is the difference between plain M3U and HLS M3U8?',
+            answer:
+              'A plain M3U only has the #EXTM3U header and optional #EXTINF lines, typically for local players. An HLS media playlist adds global #EXT-X-* tags, requires a floating-point duration on every segment, and uses #EXT-X-ENDLIST to mark the end of VOD (an EVENT live playlist may omit it). The tool enforces the matching constraints per mode.',
+          },
+          {
+            question: 'Why are some parse issues only warnings?',
+            answer:
+              'A missing #EXTM3U header does not prevent line-by-line recovery, so it is a warning and parsing continues leniently. A missing URI after #EXTINF, a non-numeric duration or an illegal HLS tag value breaks the semantics, so those are errors with line numbers for quick fixing.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

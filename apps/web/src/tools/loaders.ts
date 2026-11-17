@@ -418,4 +418,5 @@ export const toolLoaders: Record<
   'wake-on-lan-magic-packet': () => import('./wake-on-lan-magic-packet'),
   'acme-dns01-challenge': () => import('./acme-dns01-challenge'),
   'opamp-calculator': () => import('./opamp-calculator'),
+  'm3u-playlist-tool': () => import('./m3u-playlist-tool'),
 };
