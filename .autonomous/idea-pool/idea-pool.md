@@ -372,4 +372,5 @@
 | 20261117140210 | 年金现值 / 终值计算器（普通、预付、递延、永续年金） | Web Tool | Existing Gap | Pending | 2026-11-17 | | [详情](./idea-details/20261117140210.md) |
 | 20261117200504 | BIC / SWIFT 银行代码校验与解析器（ISO 9362 结构校验） | Web Tool | Existing Gap | Pending | 2026-11-17 | - | [详情](./idea-details/20261117200504.md) |
 | 20261117200505 | 以太坊 ABI 函数选择器与事件 Topic0 计算器（keccak-256 签名摘要） | Web Tool | Existing Gap | Pending | 2026-11-17 | - | [详情](./idea-details/20261117200505.md) |
+| 20261117200506 | 离散傅里叶变换（DFT/FFT）计算器（幅度谱 / 相位谱与逆变换） | Web Tool | Exploration | Pending | 2026-11-17 | - | [详情](./idea-details/20261117200506.md) |
 
