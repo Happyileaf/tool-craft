@@ -40221,6 +40221,112 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'probability-distribution-calculator',
+    name: '概率分布计算器',
+    nameEn: 'Probability Distribution Calculator',
+    description:
+      '正态、二项、泊松三种常用分布的 PDF/PMF、CDF、分位数与均值方差计算：正态 CDF 采用 A&S 有理逼近加二分求逆，离散分布基于对数阶乘防止数值下溢，输出求值点左右尾概率与完整概率质量表，纯浏览器本地数值计算。',
+    descriptionEn:
+      'Compute PDF/PMF, CDF, quantiles, mean and variance for normal, binomial and Poisson distributions. Normal CDF uses the Abramowitz & Stegun approximation with bisection-based inverse, discrete distributions use log-factorial arithmetic to avoid underflow, with tail probabilities and a full probability mass table, all calculated locally in the browser.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/probability-distribution-calculator',
+    iconName: 'Calculator',
+    tags: ['概率分布', '正态分布', '二项分布', '泊松分布', 'CDF'],
+    tagsEn: ['Probability', 'Normal Distribution', 'Binomial Distribution', 'Poisson Distribution', 'CDF'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: JSON.stringify(PROBABILITY_SAMPLE),
+    doc: {
+      zh: {
+        whatIsIt:
+          '概率分布计算器把数理统计中最常用的三种概率模型整合到一个界面：连续型的正态分布（由均值 μ 与标准差 σ 参数化），以及离散型的二项分布（n 次独立伯努利试验，成功概率 p）与泊松分布（单位区间内平均发生 λ 次事件）。对任意求值点，工具给出概率密度 / 质量函数值、累积分布 CDF、右尾概率、均值、方差与标准差；正态分布额外提供 95% 分位数，离散分布则输出逐点概率质量表。数值实现上，正态 CDF 采用 Abramowitz & Stegun 7.1.26 有理逼近（绝对误差小于 7.5e-8），分位数用二分法求逆；二项与泊松的组合数与阶乘全部在对数空间计算，避免大 n 时的浮点下溢。',
+        coreFeatures: [
+          '三种分布合一：正态（连续）、二项与泊松（离散），参数表单随分布动态切换',
+          '完整概率指标：PDF/PMF、CDF、右尾概率、均值、方差、标准差一次给出',
+          '稳健数值实现：A&S 有理逼近 + 二分求逆分位，对数阶乘防止组合数下溢',
+          '离散质量表：分页展示每个 k 的 P(X=k) 与累积 P(X≤k)，支持 60 个取值点',
+          '参数校验：标准差非正、概率越界、λ 非正等非法输入给出明确错误提示',
+          '纯本地计算：零网络请求，适合课堂演示与考试复习',
+        ],
+        howToUse: [
+          '在顶部选择分布类型，表单会切换为对应的参数（μ/σ、n/p 或 λ）',
+          '填写参数与求值点（离散分布的非整数求值点会按取整后的 k 计算）',
+          '查看汇总卡片中的密度 / 质量、CDF、右尾与均值方差；正态分布同时给出 95% 分位数',
+          '离散分布可在下方质量表中分页浏览各取值点的概率与累积概率',
+        ],
+        useCases: [
+          '质量管理中计算正态过程的缺陷率与 ±kσ 覆盖概率',
+          'A/B 试验里用二项分布估算转化率显著性与样本量边界',
+          '排队论与运维告警中用泊松分布建模请求 / 故障到达次数',
+          '概率论课程作业与期末考试的数值核对',
+        ],
+        privacyNote:
+          '所有数值由浏览器内的纯函数计算，不发起网络请求、不写入存储，参数与结果刷新页面即消失。',
+        faqs: [
+          {
+            question: '为什么正态 CDF 在 0 处显示 0.50000000 而不是精确的 0.5？',
+            answer:
+              '工具使用 Abramowitz & Stegun 有理逼近计算 CDF，其绝对误差小于 7.5×10⁻⁸，因此在 0 处可能出现约 5×10⁻¹⁰ 量级的尾差，显示到 4 位小数时即为 0.5000。该精度远高于工程与教学场景的需求。',
+          },
+          {
+            question: '二项分布的 n 很大时结果还准确吗？',
+            answer:
+              '组合数与阶乘在对数空间累加后再取指数，避免了直接计算 n! 时的溢出与下溢；CDF 还会自动选择较短的一侧求和。常规教学与工程范围内（n 到数千）结果稳定，极端大 n 时建议改用正态近似。',
+          },
+          {
+            question: '分位数是什么意思？',
+            answer:
+              '分位数 xₚ 是满足 P(X ≤ xₚ) = p 的取值。例如正态分布的 95% 分位数表示累积概率达到 95% 的临界点，标准正态下约为 1.6449；双侧 95% 置信区间则使用 ±1.96。工具通过二分法在 CDF 上求逆得到该值。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Probability Distribution Calculator unifies three workhorse probability models in one interface: the continuous normal distribution parameterized by mean μ and standard deviation σ, and the discrete binomial distribution (n independent Bernoulli trials with success probability p) and Poisson distribution (λ events per interval on average). For any evaluation point it returns the density or mass value, cumulative CDF, right-tail probability, mean, variance and standard deviation; the normal distribution additionally exposes the 95% quantile while discrete distributions render a point-by-point probability mass table. Numerically, the normal CDF uses the Abramowitz & Stegun 7.1.26 rational approximation with absolute error below 7.5e-8 and quantiles are inverted by bisection, while binomial and Poisson combinatorics are evaluated in log space to prevent floating-point underflow for large n.',
+        coreFeatures: [
+          'Three distributions in one place: normal (continuous), binomial and Poisson (discrete) with dynamic parameter forms',
+          'Full probability metrics: PDF/PMF, CDF, right-tail probability, mean, variance and standard deviation at once',
+          'Robust numerics: A&S approximation with bisection inverse quantile, log-factorial arithmetic to avoid combinatorial underflow',
+          'Discrete mass table: paginated P(X=k) and cumulative P(X≤k) for up to 60 values',
+          'Parameter validation with explicit error messages for non-positive σ, out-of-range p, non-positive λ and similar mistakes',
+          'Fully local computation with no network requests, suitable for lectures and exam review',
+        ],
+        howToUse: [
+          'Choose a distribution at the top; the form switches to μ/σ, n/p or λ parameters accordingly',
+          'Enter the parameters and the evaluation point (non-integer points for discrete distributions are rounded to integer k)',
+          'Read density/mass, CDF, tail and moment statistics in the summary card; the normal distribution also shows the 95% quantile',
+          'For discrete distributions, browse the paginated mass table for per-value and cumulative probabilities',
+        ],
+        useCases: [
+          'Computing defect rates and ±kσ coverage for normally distributed quality processes',
+          'Estimating conversion-rate significance and sample-size boundaries with the binomial distribution in A/B testing',
+          'Modeling request or failure arrivals with Poisson in queueing theory and operations alerting',
+          'Checking homework and exam answers in probability and statistics courses',
+        ],
+        privacyNote:
+          'All numerics run through in-browser pure functions with no network calls or storage writes; parameters and results disappear on refresh.',
+        faqs: [
+          {
+            question: 'Why does the normal CDF show 0.50000000 instead of exactly 0.5 at zero?',
+            answer:
+              'The CDF is computed with the Abramowitz & Stegun rational approximation, whose absolute error stays below 7.5×10⁻⁸, so a residual around 5×10⁻¹⁰ can appear at zero. Rounded to four decimals it is exactly 0.5000, and the precision is far beyond engineering and classroom needs.',
+          },
+          {
+            question: 'Are binomial results still accurate for very large n?',
+            answer:
+              'Binomial coefficients and factorials are accumulated in log space and exponentiated only at the end, which avoids overflow and underflow of raw n! values. The CDF also sums from the shorter tail. Results remain stable for n in the thousands typical of teaching and engineering; for extreme n a normal approximation is preferable.',
+          },
+          {
+            question: 'What is a quantile?',
+            answer:
+              'The quantile xₚ is the value satisfying P(X ≤ xₚ) = p. For example the 95% normal quantile is the cutoff where cumulative probability reaches 95%, about 1.6449 for the standard normal, while the two-sided 95% interval uses ±1.96. The tool inverts the CDF through bisection to obtain it.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
