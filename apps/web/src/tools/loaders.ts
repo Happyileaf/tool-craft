@@ -426,4 +426,9 @@ export const toolLoaders: Record<
     import('./probability-distribution-calculator'),
   'bbcode-html-converter': () => import('./bbcode-html-converter'),
   'css-shape-generator': () => import('./css-shape-generator'),
+  'reynolds-number-calculator': () => import('./reynolds-number-calculator'),
+  'beam-bending-calculator': () => import('./beam-bending-calculator'),
+  'average-illuminance-calculator': () => import('./average-illuminance-calculator'),
+  'annuity-calculator': () => import('./annuity-calculator'),
+  'ideal-gas-law-calculator': () => import('./ideal-gas-law-calculator'),
 };

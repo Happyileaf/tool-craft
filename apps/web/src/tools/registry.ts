@@ -40539,6 +40539,522 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'reynolds-number-calculator',
+    name: '雷诺数与管内流态判定计算器（圆管沿程阻力）',
+    nameEn: 'Reynolds Number & Pipe Flow Regime Calculator',
+    description:
+      '输入流速（或体积流量）、圆管内径与运动黏度，计算雷诺数 Re 并判定层流（Re<2300）/临界（2300–4000）/湍流（>4000）；层流按 64/Re、湍流按 Swamee–Jain 显式式求 Darcy 摩擦系数，再由 Darcy–Weisbach 计算单位长度沿程水头损失与压降，内置水、空气等介质预设与管材粗糙度参考，纯浏览器本地计算。',
+    descriptionEn:
+      'Enter velocity (or volumetric flow rate), pipe inner diameter and kinematic viscosity to obtain the Reynolds number Re and classify flow as laminar (Re<2300), critical (2300–4000) or turbulent (>4000). Laminar friction uses 64/Re while turbulent flow uses the explicit Swamee–Jain equation, followed by Darcy–Weisbach head loss and pressure drop per unit length, with fluid presets and pipe roughness hints. Runs fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/reynolds-number-calculator',
+    iconName: 'Droplets',
+    tags: ['雷诺数', '流态', '沿程阻力', '摩擦系数', '水头损失', '流体力学', '暖通'],
+    tagsEn: ['Reynolds Number', 'Flow Regime', 'Head Loss', 'Friction Factor', 'Darcy-Weisbach', 'Fluid Mechanics', 'HVAC'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'v=1 m/s, d=50 mm, 20°C 水',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具面向流体、暖通与给排水入门工程计算：由流速或体积流量、圆管内径与运动黏度求雷诺数 Re=v·d/ν，按 2300/4000 分界判定层流、临界过渡区或湍流；层流摩擦系数取解析解 f=64/Re，湍流采用 Swamee–Jain 显式式（光滑管 ε=0 也适用），再经 Darcy–Weisbach 公式级联得到单位长度沿程水头损失 hf/L 与压降 ΔP/L。所有计算在浏览器本地完成。',
+        coreFeatures: [
+          '两种输入模式：流速 v+内径 d，或体积流量 Q+内径 d，按 Q=v·πd²/4 自动互算',
+          '雷诺数计算与层流/临界/湍流三态判定，临界区明确提示摩擦公式不适用',
+          'Darcy 摩擦系数：层流 64/Re 解析解，湍流 Swamee–Jain 显式式，支持相对粗糙度 ε/d',
+          'Darcy–Weisbach 级联输出 hf/L（mm/m、m/100m）与 ΔP/L（Pa/m、kPa/100m）多单位',
+          '内置 20°C 水、60°C 热水、20°C 空气等介质预设与常用管材粗糙度参考',
+        ],
+        howToUse: [
+          '选择输入模式并填写流速或流量、圆管内径，可在单位下拉中切换 mm、m³/h、L/min 等单位',
+          '选择介质预设自动回填运动黏度与密度，或选择“自定义”手动覆写 ν 与 ρ',
+          '填写管壁绝对粗糙度（光滑管留空或 0），结果区即时显示 Re、流态徽标、摩擦系数与损失',
+          '临界过渡区不会强行给出摩擦系数；密度留空时仅输出水头损失而不计算压降',
+        ],
+        useCases: [
+          '判断供水、空调水管内的流态并估算沿程水头损失与泵扬程需求',
+          '通风管道选型：由风量与管径校核雷诺数与单位长度压降',
+          '流体力学教学：对照层流 64/Re 与湍流 Swamee–Jain 公式的适用区间',
+        ],
+        privacyNote:
+          '全部为浏览器本地同步运算，管路与流体参数不会离开设备，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么临界区（2300–4000）不给出摩擦系数？',
+            answer:
+              '该区间是层流向湍流的过渡段，流态不稳定，层流公式 64/Re 与湍流显式式均不能可靠预测摩擦系数。工具明确标注“公式不适用”而非给出虚假数值，工程上通常按湍流偏保守估算或查阅实验曲线。',
+          },
+          {
+            question: 'Swamee–Jain 公式与 Colebrook 方程差别大吗？',
+            answer:
+              'Swamee–Jain 是 Colebrook 隐式方程的显式拟合式，在 Re 10⁴–10⁶、ε/d 0–0.01 的常用区间内与 Colebrook 数值解偏差通常小于 2%，且无需迭代，适合浏览器内即时计算。',
+          },
+          {
+            question: 'Darcy 摩擦系数和 Fanning 摩擦系数是一回事吗？',
+            answer:
+              '不是。本工具使用 Darcy 摩擦系数 f，层流时 f=64/Re；Fanning 摩擦系数 f′=f/4，层流时为 16/Re。Darcy–Weisbach 水头损失公式 hf=f·(L/d)·v²/(2g) 与 Darcy 系数配套，引用教材或软件结果时需先确认系数体系。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool covers introductory fluid, HVAC and plumbing calculations: from velocity or volumetric flow rate, pipe inner diameter and kinematic viscosity it derives Re=v·d/ν, classifies laminar / critical / turbulent flow at the 2300/4000 thresholds, computes the Darcy friction factor (64/Re for laminar, explicit Swamee–Jain for turbulent, including smooth pipes), and chains the Darcy–Weisbach equation to head loss and pressure drop per unit length. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Two input modes: velocity v + diameter d, or flow rate Q + diameter d, linked via Q=v·πd²/4',
+          'Reynolds number with three-way laminar/critical/turbulent classification and explicit critical-zone warning',
+          'Darcy friction factor: analytical 64/Re for laminar flow, Swamee–Jain explicit equation for turbulent flow with ε/d support',
+          'Darcy–Weisbach outputs in multiple units: hf/L in mm/m and m/100m, ΔP/L in Pa/m and kPa/100m',
+          'Built-in fluid presets (20°C/60°C water, 20°C air, oil) and common pipe-material roughness hints',
+        ],
+        howToUse: [
+          'Pick an input mode and fill velocity or flow rate plus inner diameter, switching units such as mm, m³/h or L/min in the dropdowns',
+          'Choose a fluid preset to fill viscosity and density automatically, or select Custom to override ν and ρ',
+          'Enter absolute wall roughness (leave empty or 0 for smooth pipes); results update instantly with Re, regime badge, friction factor and losses',
+          'The critical zone intentionally omits the friction factor; leaving density empty yields head loss only without pressure drop',
+        ],
+        useCases: [
+          'Classify flow in water-supply or HVAC pipes and estimate friction head loss and pump head requirements',
+          'Duct sizing: check Reynolds number and pressure gradient from air flow rate and duct diameter',
+          'Fluid-mechanics teaching: compare the laminar 64/Re and turbulent Swamee–Jain applicability ranges',
+        ],
+        privacyNote:
+          'All computation is synchronous and local; pipe and fluid parameters never leave your device and no network requests are made.',
+        faqs: [
+          {
+            question: 'Why is no friction factor shown in the critical zone (2300–4000)?',
+            answer:
+              'This transitional band has unstable flow where neither the laminar 64/Re formula nor the turbulent explicit equation reliably predicts friction. The tool reports “not applicable” instead of bogus numbers; engineers often conservatively treat it as turbulent or consult experimental curves.',
+          },
+          {
+            question: 'How different are Swamee–Jain and Colebrook?',
+            answer:
+              'Swamee–Jain is an explicit curve-fit of the implicit Colebrook equation. Over the common range Re 10⁴–10⁶ and ε/d 0–0.01 it typically stays within 2% of the Colebrook numerical solution while requiring no iteration, which suits instant in-browser calculation.',
+          },
+          {
+            question: 'Are Darcy and Fanning friction factors the same?',
+            answer:
+              'No. This tool uses the Darcy factor f, equal to 64/Re for laminar flow; the Fanning factor f′=f/4 equals 16/Re. The Darcy–Weisbach head-loss equation hf=f·(L/d)·v²/(2g) pairs with the Darcy factor, so always confirm the convention when cross-checking textbooks or software.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'beam-bending-calculator',
+    name: '梁弯曲应力与挠度计算器（简支/悬臂、点载与均布载）',
+    nameEn: 'Beam Bending Stress & Deflection Calculator',
+    description:
+      '选择简支梁或悬臂梁与荷载类型（跨中/任意位置集中力、满跨均布荷载），输入梁长、矩形或圆形截面尺寸（也可直输 I、W）与弹性模量，按材料力学标准梁表闭式解输出最大弯矩 Mmax、弯曲正应力 σ=M/W、最大挠度 δmax 与跨挠比 L/δ，并可按许用应力做通过/超限校核；内置结构钢、铝合金等材料预设，纯浏览器本地计算。',
+    descriptionEn:
+      'Pick a simply-supported or cantilever beam and a load case (mid-span or arbitrary point load, full-span uniform load), then enter length, rectangular/circular section dimensions (or I and W directly) and Young’s modulus to obtain the maximum bending moment Mmax, bending stress σ=M/W, maximum deflection δmax and L/δ ratio from standard closed-form beam tables, with an optional allowable-stress check and steel/aluminum presets. Runs fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/beam-bending-calculator',
+    iconName: 'Ruler',
+    tags: ['梁', '弯曲应力', '挠度', '弯矩', '截面模量', '惯性矩', '材料力学'],
+    tagsEn: ['Beam', 'Bending Stress', 'Deflection', 'Bending Moment', 'Section Modulus', 'Moment of Inertia', 'Mechanics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '简支梁 L=4m，P=10kN，矩形 100×200mm，E=206GPa',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具面向材料力学与结构入门计算，覆盖静定梁的单一荷载工况：简支梁支持跨中集中力、任意位置集中力与满跨均布荷载；悬臂梁（固定端在 x=0）支持自由端/任意位置集中力与满跨均布。截面支持矩形（I=bh³/12、W=bh²/6）、实心圆（I=πd⁴/64、W=πd³/32）与自定义 I/W 直输，按标准梁表闭式公式给出 Mmax、σmax、δmax 及出现位置，并可按许用应力做强度校核。',
+        coreFeatures: [
+          '5 种梁/荷载组合的标准梁表闭式解，输出弯矩、应力、挠度及极值位置与所用公式',
+          '矩形、实心圆截面自动计算 I 与 W，也支持自定义 I/W 直输',
+          '材料预设（Q235/Q355 钢、6061 铝、混凝土、木材）一键回填 E 与参考许用应力',
+          'mm/kN/GPa/MPa 等工程单位自动换算，输出 MPa、mm 与跨挠比 L/δ',
+          '可选强度校核：利用率百分比与通过/超限徽标，恰好等于许用值判通过',
+        ],
+        howToUse: [
+          '选择梁形式与荷载类型，填写梁长、集中力或均布荷载；任意点载需填写距支座/固定端的距离 a',
+          '选择截面类型并填写尺寸，或切换自定义直接输入惯性矩 I 与截面模量 W',
+          '选择材料预设或手动填写弹性模量 E；需要强度校核时填写许用应力 [σ]，留空则跳过',
+          '结果区即时显示 Mmax、σmax、δmax、L/δ 与校核结论，超限或高宽比异常时给出提示',
+        ],
+        useCases: [
+          '估算简支钢梁在设备集中荷载下的弯曲应力与挠度，初选截面规格',
+          '校核悬臂支架自由端受载时固定端弯矩与下挠量',
+          '材料力学教学：对照标准梁表公式验证手算结果',
+        ],
+        privacyNote:
+          '全部为浏览器本地同步运算，梁尺寸、荷载与材料参数不会离开设备，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么不支持多种荷载同时作用？',
+            answer:
+              '多种荷载叠加或连续梁等超静定结构需要积分/位移法等数值过程，超出本工具“标准梁表闭式解”的范围。工具在适用范围中明确排除超静定、组合荷载与压杆稳定，这类场景应使用专业结构软件。',
+          },
+          {
+            question: '自定义 I/W 时两个量都必须填吗？',
+            answer:
+              '是的。挠度计算需要惯性矩 I，弯曲应力需要截面模量 W，二者单位均可切换（如 cm⁴、cm³）。若只知道截面尺寸，直接选择矩形或圆形截面让工具自动计算更方便。',
+          },
+          {
+            question: '跨挠比 L/δ 怎么看？',
+            answer:
+              'L/δ 是梁长与最大挠度的比值，越大说明刚度越富余。常见设计限值参考：一般楼盖 L/250、有吊顶或脆性面层时 L/360 左右，具体应以适用结构规范为准，本工具仅给出量级参考。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool covers introductory mechanics-of-materials calculations for statically determinate beams under a single load case: simply-supported beams with mid-span point load, arbitrary point load or full uniform load, and cantilevers (fixed at x=0) with tip/arbitrary point loads or uniform load. Sections may be rectangular (I=bh³/12, W=bh²/6), solid circular (I=πd⁴/64, W=πd³/32) or custom I/W values. Standard closed-form beam tables yield Mmax, σmax, δmax with locations, plus an optional allowable-stress check.',
+        coreFeatures: [
+          'Closed-form beam-table solutions for five beam/load combinations with extremum locations and the formula used',
+          'Automatic I and W for rectangular and solid circular sections, plus direct custom I/W entry',
+          'Material presets (Q235/Q355 steel, 6061 aluminum, concrete, timber) fill E and reference allowable stress',
+          'Engineering unit conversion for mm/kN/GPa/MPa; outputs in MPa, mm and the L/δ stiffness ratio',
+          'Optional strength check with utilization percentage and pass/fail badge; equality with allowable stress passes',
+        ],
+        howToUse: [
+          'Choose beam type and load case, then enter length and point or uniform load; arbitrary point loads also need distance a',
+          'Pick a section type and dimensions, or switch to custom and enter inertia I and section modulus W directly',
+          'Choose a material preset or enter Young’s modulus E manually; fill allowable stress [σ] to enable the check, or leave it empty',
+          'Results update instantly with Mmax, σmax, δmax, L/δ and the check verdict, including over-limit and slender-section warnings',
+        ],
+        useCases: [
+          'Estimate bending stress and deflection of a simply-supported steel beam under equipment loads for initial sizing',
+          'Check the fixed-end moment and tip deflection of a cantilever bracket',
+          'Mechanics teaching: verify hand calculations against standard beam-table formulas',
+        ],
+        privacyNote:
+          'All computation is synchronous and local; beam dimensions, loads and material parameters never leave your device and no network requests are made.',
+        faqs: [
+          {
+            question: 'Why are combined loads not supported?',
+            answer:
+              'Superimposed loads or statically indeterminate continuous beams require integration or displacement methods beyond closed-form beam tables. The scope explicitly excludes indeterminate structures, load combinations and column buckling; use professional structural software for those cases.',
+          },
+          {
+            question: 'Are both I and W required for custom sections?',
+            answer:
+              'Yes. Deflection needs the moment of inertia I and bending stress needs the section modulus W, each with switchable units such as cm⁴ and cm³. If you know the dimensions, choosing the rectangular or circular section type computes both automatically.',
+          },
+          {
+            question: 'How should I interpret the L/δ ratio?',
+            answer:
+              'L/δ compares span to maximum deflection; larger means stiffer. Common design limits are around L/250 for general floors and L/360 with brittle finishes or suspended ceilings, but the governing structural code should be consulted — the tool provides an order-of-magnitude reference only.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'average-illuminance-calculator',
+    name: '室内平均照度计算器（利用系数法/流明法）',
+    nameEn: 'Average Illuminance Calculator (Lumen Method)',
+    description:
+      '输入房间长、宽、灯具安装高度与工作面高度，自动求计算高度 hrc、室空间比 RCR 与室形指数 RI，按流明法 Eavg=N·Φ·CU·MF/A 计算工作面平均维持照度，并支持反算所需灯具数量（向上取整+复核照度）与所需单灯光通量；利用系数 CU 可直输或按可编辑 RCR 对照表线性插值，附维护系数参考与高 RCR 诊断，纯浏览器本地计算。',
+    descriptionEn:
+      'Enter room length, width, mounting height and working-plane height to derive hrc, room cavity ratio RCR and room index RI, then compute the average maintained illuminance Eavg=N·Φ·CU·MF/A with the lumen method. Reverse modes solve the required luminaire count (rounded up with an achieved-lux check) or the required lumens per fitting; CU can be entered directly or linearly interpolated from an editable RCR table, with maintenance-factor hints and high-RCR diagnostics. Runs fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/average-illuminance-calculator',
+    iconName: 'Lightbulb',
+    tags: ['照度', '流明法', '利用系数', '室空间比', '照明设计', '维护系数'],
+    tagsEn: ['Illuminance', 'Lumen Method', 'Utilization Factor', 'Room Cavity Ratio', 'Lighting Design', 'Maintenance Factor'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '10m×8m 房间，hrc=2.5m，Φ=3000lm，N=12，CU=0.55，MF=0.8',
+    doc: {
+      zh: {
+        whatIsIt:
+          '室内平均照度计算器面向照明设计入门场景，基于利用系数法（流明法）实现：先由房间几何求出计算高度 hrc、室空间比 RCR=5·hrc·(L+W)/(L·W) 与室形指数 RI=L·W/[hrc·(L+W)]（恒等关系 RCR·RI=5），再按 Eavg=N·Φ·CU·MF/A 计算工作面平均维持照度，并支持两类反算——给定目标照度求所需灯具数（向上取整并复核实际照度）或求每盏灯所需光通量。利用系数 CU 可直接输入，也可在可编辑的 RCR→CU 对照表中做分段线性插值。',
+        coreFeatures: [
+          '几何量自动计算：面积 A、计算高度 hrc、室空间比 RCR 与室形指数 RI（RI=5/RCR 恒等）',
+          '流明法正算 Eavg=N·Φ·CU·MF/A，输出工作面平均维持照度（lux）',
+          '反算灯具数量 N：理论值向上取整，并给取整后复核照度确保不低于目标值',
+          '反算单灯光通量 Φ：与正算公式互逆，固定 N 时求每盏灯所需流明数',
+          'CU 直输或 RCR 对照表分段线性插值（表可编辑、节点精确、拒绝外插），附 MF 参考区间与高 RCR 利用系数偏低诊断',
+        ],
+        howToUse: [
+          '填写房间长、宽、灯具安装高度与工作面高度（支持 m/cm/ft），工具即时算出面积、hrc、RCR、RI',
+          '选择计算模式：正算照度、反算灯具数或反算光通量，并按模式填写 Φ、N 或目标照度',
+          '填写维护系数 MF（可参考洁净/一般/污染环境的区间提示）',
+          'CU 可直接输入 (0,1] 数值，或切换为对照表模式，按厂商光度数据编辑 RCR→CU 表后自动插值',
+          '查看结果徽标与设计提示；需要时点击「复制结果」导出文本',
+        ],
+        useCases: [
+          '办公室、教室、仓库等场所照明方案的灯具数量初选与照度复核',
+          '已知灯具参数时反推满足目标照度所需的光通量规格',
+          '建筑电气/照明设计教学中验证流明法手算过程与 RCR、RI 中间量',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地同步完成，房间尺寸、灯具参数与对照表数据不会离开设备，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '室形指数 RI 与室空间比 RCR 是什么关系？',
+            answer:
+              '按 IES 体系定义，RCR=5·hrc·(L+W)/(L·W)，RI=L·W/[hrc·(L+W)]，两者恒等满足 RCR·RI=5，即 RI=5/RCR。工具同时给出两个中间量并在结果区标注该恒等关系，便于对照教材。',
+          },
+          {
+            question: '为什么插值表超出范围会报错？',
+            answer:
+              '分段线性插值只在表的最小与最大 RCR 节点之间有效，外插没有光度数据支撑、误差不可控，因此工具明确报错并提示扩充厂商数据表；表还必须按 RCR 升序且不含重复节点，CU 须落在 (0,1]。',
+          },
+          {
+            question: '反算灯具数为什么要向上取整？',
+            answer:
+              '理论灯具数 N=E·A/(Φ·CU·MF) 通常不是整数，实际只能布置整数盏，因此向上取整并回代正算公式给出复核照度，保证实际平均照度不低于目标值；若结果超过 10000 盏会判定为输入异常并报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This introductory lighting-design tool implements the utilization-factor (lumen) method: room geometry yields the cavity height hrc, room cavity ratio RCR=5·hrc·(L+W)/(L·W) and room index RI=L·W/[hrc·(L+W)] (with the identity RCR·RI=5), then the average maintained illuminance Eavg=N·Φ·CU·MF/A is computed. Two reverse modes solve the luminaire count needed for a target illuminance (rounded up with an achieved-lux check) or the lumens required per fitting at a fixed count. CU may be entered directly or interpolated piecewise-linearly from an editable RCR→CU table.',
+        coreFeatures: [
+          'Automatic geometry: area A, cavity height hrc, room cavity ratio RCR and room index RI (RI=5/RCR identity)',
+          'Forward lumen-method calculation Eavg=N·Φ·CU·MF/A in lux',
+          'Reverse luminaire count: the theoretical value is rounded up and an achieved-illuminance check guarantees the target is met',
+          'Reverse lumens per fitting: the exact inverse of the forward formula at a fixed count N',
+          'CU entered directly or interpolated from an editable RCR table (exact at nodes, no extrapolation), plus MF reference ranges and a high-RCR low-utilization diagnostic',
+        ],
+        howToUse: [
+          'Enter room length, width, mounting height and working-plane height (m/cm/ft supported); area, hrc, RCR and RI update instantly',
+          'Pick a mode — forward illuminance, reverse count or reverse lumens — and fill Φ, N or the target lux accordingly',
+          'Set the maintenance factor MF, using the clean/general/dirty environment hints as reference',
+          'Enter CU directly within (0,1], or switch to table mode and edit the RCR→CU rows with manufacturer photometric data for automatic interpolation',
+          'Review the result badges and design hints; use "Copy result" to export the figures as text',
+        ],
+        useCases: [
+          'Initial luminaire-count selection and illuminance verification for offices, classrooms and warehouses',
+          'Deriving the required lumen package when luminaire parameters are already fixed',
+          'Teaching the lumen method with cross-checks of hand calculations and the RCR/RI intermediate values',
+        ],
+        privacyNote:
+          'All computation runs synchronously in your browser; room dimensions, luminaire parameters and table data never leave your device and no network requests are made.',
+        faqs: [
+          {
+            question: 'What is the relation between RI and RCR?',
+            answer:
+              'Under the IES definitions RCR=5·hrc·(L+W)/(L·W) and RI=L·W/[hrc·(L+W)], so RCR·RI=5 identically, i.e. RI=5/RCR. The tool shows both intermediates and labels the identity so textbook calculations can be compared directly.',
+          },
+          {
+            question: 'Why does an out-of-range table raise an error?',
+            answer:
+              'Piecewise-linear interpolation is only valid between the smallest and largest RCR nodes. Extrapolation has no photometric basis and uncontrolled error, so the tool rejects it and asks you to extend the manufacturer table. Tables must also be ascending in RCR with unique nodes, and every CU must lie within (0,1].',
+          },
+          {
+            question: 'Why is the required luminaire count rounded up?',
+            answer:
+              'The theoretical count N=E·A/(Φ·CU·MF) is rarely an integer, while only whole luminaires can be installed. Rounding up and substituting back into the forward formula gives an achieved illuminance that meets or exceeds the target; a result above 10,000 luminaires is treated as an input error.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'annuity-calculator',
+    name: '年金现值终值计算器（普通/预付/递延/永续）',
+    nameEn: 'Annuity PV & FV Calculator (Ordinary, Due, Deferred, Perpetuity)',
+    description:
+      '按货币时间价值 TVM 闭式公式计算普通年金、预付年金、递延年金与永续年金的现值 PV 和终值 FV，支持按目标 PV/FV 反算每期收付额 A，附 PVIFA、FVIFA、资本回收系数与偿债基金系数表；利率以百分数输入，i=0 走极限分支，永续年金终值明确标注无定义，纯浏览器本地计算。',
+    descriptionEn:
+      'Compute the present and future values of ordinary, annuity-due, deferred and perpetuity annuities with closed-form time-value-of-money formulas, or solve the periodic payment A from a target PV/FV. Includes PVIFA, FVIFA, capital-recovery and sinking-fund factor tables, percentage rate input, explicit i=0 limit branches, and an explicit "undefined" label for perpetuity FV. Runs fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/annuity-calculator',
+    iconName: 'PiggyBank',
+    tags: ['年金', '现值', '终值', 'TVM', '永续年金', '财务计算'],
+    tagsEn: ['Annuity', 'Present Value', 'Future Value', 'TVM', 'Perpetuity', 'Finance'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '普通年金 A=1000，i=5%，n=10，期末收付',
+    doc: {
+      zh: {
+        whatIsIt:
+          '年金计算器覆盖货币时间价值（TVM）入门场景：对普通年金（期末收付）、预付年金（期初收付）、递延年金（递延 m 期后连续 n 期收付）与永续年金（无限期）四种形态，按 PVIFA=[1−(1+i)^−n]/i、FVIFA=[(1+i)^n−1]/i 等闭式公式求现值 PV 与终值 FV，也可给定目标 PV 或 FV 反算每期收付额 A，并同步展示资本回收系数（1/PVIFA）与偿债基金系数（1/FVIFA）。永续年金终值在数学上无定义，工具明确标注而非给出伪数值。',
+        coreFeatures: [
+          '四类年金：普通、预付（×(1+i)）、递延（PVA 再折现 m 期）、永续（PV=A/i，预付永续 PV=A/i+A）',
+          '正算 PV/FV 与按目标 PV/FV 反算每期收付额 A，反算结果回代正算公式复核',
+          '系数表：PVIFA、FVIFA、资本回收系数、偿债基金系数，i=0 时自动走极限分支',
+          '利率以百分数输入（3.5 即 3.5%），支持零利率与负利率（>−100%）场景',
+          '完整边界校验：期数正整数、递延期非负整数、金额为正、溢出可读报错',
+        ],
+        howToUse: [
+          '选择年金类型（普通/预付/递延/永续）与期粒度（按年/按月），保证利率与期数同期单位',
+          '选择计算模式：正算 PV/FV、按目标现值反算 A 或按目标终值反算 A',
+          '填写每期收付额 A（正算）或目标金额（反算）、利率百分数与期数 n；递延型另填递延期 m',
+          '永续型无需填 n，可开启「预付永续」开关；结果区查看 PV、FV 与系数表',
+          '点击「复制结果」导出文本摘要，或参考底部常见年利率区间核对输入合理性',
+        ],
+        useCases: [
+          '贷款等额本息、租金、养老金等定期现金流的现值与终值估算',
+          '教育金、定投目标金额反推每期所需投入额',
+          '财务/工程经济教学中验证年金系数表与四类年金公式手算结果',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地同步完成，金额、利率与期数等财务数据不会离开设备，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '普通年金和预付年金结果差多少？',
+            answer:
+              '预付年金的每笔现金流比普通年金早一期，因此现值与终值都等于普通年金结果乘以 (1+i)；i=0 时两者相等。工具按该恒等关系实现并在测试中校验。',
+          },
+          {
+            question: '为什么永续年金没有终值？',
+            answer:
+              '永续年金的收付期数 n→∞，终值 A·[(1+i)^n−1]/i 在 i>0 时发散，数学上无定义，工具对 FV 明确标注「无定义」，也不支持按目标终值反算永续年金的收付额；其现值 A/i 收敛，可以正常计算。',
+          },
+          {
+            question: '利率为 0 时公式会除以零吗？',
+            answer:
+              '不会。PVIFA 与 FVIFA 在 i=0 的极限都是 n，资本回收与偿债基金系数极限为 1/n，工具内置 i=0 闭式分支；但永续年金在 i=0 时现值发散，此时会给出明确错误提示。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This annuity calculator covers introductory time-value-of-money scenarios for four annuity forms — ordinary (end-of-period payments), annuity due (beginning-of-period), deferred (n payments after m deferral periods) and perpetuity (infinite horizon). Closed-form factors PVIFA=[1−(1+i)^−n]/i and FVIFA=[(1+i)^n−1]/i drive PV and FV, while a reverse mode solves the periodic payment A from a target PV or FV. Capital-recovery (1/PVIFA) and sinking-fund (1/FVIFA) factors are shown alongside, and the undefined perpetuity FV is labeled explicitly instead of producing a bogus number.',
+        coreFeatures: [
+          'Four annuity types: ordinary, due (×(1+i)), deferred (PVA discounted back m more periods), perpetuity (PV=A/i, due version PV=A/i+A)',
+          'Forward PV/FV and reverse payment A from target PV/FV, with results substituted back for verification',
+          'Factor tables: PVIFA, FVIFA, capital-recovery and sinking-fund factors, with explicit i=0 limit branches',
+          'Percentage rate input (3.5 means 3.5%), supporting zero and negative rates above −100%',
+          'Full validation: positive-integer periods, non-negative integer deferral, positive amounts, readable overflow errors',
+        ],
+        howToUse: [
+          'Pick the annuity type (ordinary/due/deferred/perpetuity) and period granularity (annual/monthly), keeping rate and periods in the same unit',
+          'Choose a mode: forward PV/FV, reverse payment from target PV, or reverse payment from target FV',
+          'Enter the payment A (forward) or target amount (reverse), the percentage rate and periods n; deferred annuities also need m',
+          'Perpetuities skip n and offer an "annuity due" toggle; review PV, FV and the factor table in the result area',
+          'Use "Copy result" for a text summary, or check the reference annual-rate ranges to sanity-check your inputs',
+        ],
+        useCases: [
+          'Valuing regular cash flows such as loan installments, rent and pensions',
+          'Deriving the periodic contribution needed for an education fund or savings goal',
+          'Teaching engineering economics and finance: verifying printed annuity factor tables and hand calculations',
+        ],
+        privacyNote:
+          'All computation runs synchronously in your browser; financial figures such as amounts, rates and periods never leave your device and no network requests are made.',
+        faqs: [
+          {
+            question: 'How do ordinary and annuity-due results differ?',
+            answer:
+              'Each due cash flow arrives one period earlier, so both its PV and FV equal the ordinary result multiplied by (1+i); at i=0 the two coincide. The tool implements this identity and verifies it in unit tests.',
+          },
+          {
+            question: 'Why does a perpetuity have no future value?',
+            answer:
+              'With n→∞ the future value A·[(1+i)^n−1]/i diverges for i>0, so it is mathematically undefined. The tool labels FV as undefined and disallows reverse-FV for perpetuities, while the present value A/i converges and is computed normally.',
+          },
+          {
+            question: 'Do the formulas divide by zero at i=0?',
+            answer:
+              'No. The limits of PVIFA and FVIFA at i=0 are both n, and the capital-recovery and sinking-fund factors converge to 1/n; dedicated zero-rate branches handle these cases. A perpetuity at i=0 does diverge in present value and raises an explicit error.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'ideal-gas-law-calculator',
+    name: '理想气体状态方程计算器（PV=nRT · 四量求一）',
+    nameEn: 'Ideal Gas Law Calculator (PV=nRT, Solve for Any One of Four)',
+    description:
+      '在压强 P、体积 V、物质的量 n、热力学温度 T 中留空一个作为待求量，填写其余三个即可按 PV=nRT 实时求解；每个物理量支持常用单位切换（Pa/kPa/bar/atm/mmHg、m³/L/mL、mol/mmol、K/°C/°F），内部统一换算 SI。附摩尔质量模式 n=m/M 一键回填、STP/SATP 参考点快捷填充与 22.414/24.465 L/mol 摩尔体积对照，输出含完整公式代入文本，纯浏览器本地计算。',
+    descriptionEn:
+      'Leave any one of pressure P, volume V, amount of substance n or temperature T blank and enter the other three to solve PV=nRT in real time. Every quantity supports common units (Pa/kPa/bar/atm/mmHg, m³/L/mL, mol/mmol, K/°C/°F) and is converted to SI internally. Includes a molar-mass helper n=m/M with one-click backfill, STP/SATP quick presets with 22.414/24.465 L/mol molar-volume comparison, and full formula substitution text. Runs fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/ideal-gas-law-calculator',
+    iconName: 'FlaskConical',
+    tags: ['理想气体', '状态方程', 'PV=nRT', '摩尔体积', 'STP', '化学计算'],
+    tagsEn: ['Ideal Gas', 'Gas Law', 'PV=nRT', 'Molar Volume', 'STP', 'Chemistry'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'STP：101325 Pa、n=1 mol、T=0 °C，求体积 V',
+    doc: {
+      zh: {
+        whatIsIt:
+          '理想气体状态方程计算器围绕 PV=nRT 做「四量求一」：压强、体积、物质的量与热力学温度四个字段中任意留空一个，其余三个带单位输入后，工具先统一换算到 SI（Pa、m³、mol、K），再按闭式公式求解待求量，并同时给出 SI 单位与所选常用单位两种表达、R=8.314462618 J/(mol·K) 取值与完整代入过程。另提供摩尔质量辅助（n=m/M）与 STP（0 °C/1 atm，22.414 L/mol）、SATP（25 °C/1 atm，24.465 L/mol）参考点对照。',
+        coreFeatures: [
+          '四量求一：P、V、n、T 任选一个留空，其余三个实时求解，待求量可单选切换',
+          '全量单位：压强 Pa/kPa/bar/atm/mmHg、体积 m³/L/mL、n 为 mol/mmol、温度 K/°C/°F，内部统一 SI 换算',
+          '摩尔质量模式：输入质量与摩尔质量求 n=m/M 并一键回填，附常见气体摩尔质量表（N₂、O₂、CO₂ 等）',
+          'STP/SATP 快捷填充参考温度压强，并对照计算值与标称摩尔体积 22.414、24.465 L/mol',
+          '完整边界处理：绝对温度 ≤0 K、留空 ≥2 个字段、P=0 发散等均有明确错误，结果默认 6 位有效数字且不显示 −0',
+        ],
+        howToUse: [
+          '在顶部单选待求量（默认求体积 V），对应输入行会自动禁用并标记「待求」',
+          '为其余三个字段填写数值并选择单位；温度可直接用 °C 或 °F，工具自动转 K',
+          '需要标准条件时点击「填充 STP/SATP」；需要由质量求 n 时在下方摩尔质量区计算并回填',
+          '查看结果徽标、SI 结果与公式代入文本，点击「复制结果」导出',
+          '参考底部 STP/SATP 摩尔体积表与量纲提示，判断理想气体模型是否适用',
+        ],
+        useCases: [
+          '中学与大学化学/物理教学中验证 PV=nRT 教科书算例与单位换算',
+          '已知储气压力、温度与体积时估算气体物质的量或质量',
+          '标准状况与环境状况下气体摩尔体积、气体密度相关的工程速算',
+        ],
+        privacyNote:
+          '全部公式与单位换算在浏览器本地同步完成，输入的物理量不会离开设备，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么有时候结果和教科书略有出入？',
+            answer:
+              '工具采用 CODATA 推荐的 R=8.314462618 J/(mol·K) 与精确换算（1 atm=101325 Pa、0 °C=273.15 K），而教材常用 R≈8.314、Vm≈22.4 L 等舍入值；STP 摩尔体积计算值约 22.414 L/mol，与标称值偏差远小于 0.1%。',
+          },
+          {
+            question: '压强填 0 会怎样？',
+            answer:
+              'P=0 时 V=nRT/P 在数学上发散，工具不会给出无穷大或崩溃，而是明确报错说明该输入组合非物理；同理，按 P=0 反解 n 或 T 也会给出对应错误提示。',
+          },
+          {
+            question: '摄氏温度和华氏温度需要自己先换算吗？',
+            answer:
+              '不需要。温度字段可直接选择 °C 或 °F，工具在内部按 T(K)=t(°C)+273.15 或 T(K)=(t(°F)−32)×5/9+273.15 换算后再代入方程；若换算结果不高于 0 K（如 −300 °C），会立即提示违反绝对温度约束。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This calculator solves the ideal gas law PV=nRT for any one of four quantities: leave pressure P, volume V, amount of substance n or temperature T blank, enter the other three with their units, and the tool converts everything to SI (Pa, m³, mol, K), applies the closed-form equation, and returns the unknown in both SI and the chosen display unit, with R=8.314462618 J/(mol·K) and the full substitution shown. A molar-mass helper (n=m/M), STP (0 °C/1 atm, 22.414 L/mol) and SATP (25 °C/1 atm, 24.465 L/mol) presets with molar-volume comparison are included.',
+        coreFeatures: [
+          'Solve for any one of P, V, n, T by leaving exactly one field blank, with radio switching of the unknown',
+          'Full unit coverage: Pa/kPa/bar/atm/mmHg, m³/L/mL, mol/mmol, K/°C/°F, all normalized to SI internally',
+          'Molar-mass mode: derive n=m/M from mass and molar mass with one-click backfill, plus a common-gas molar-mass table (N₂, O₂, CO₂, etc.)',
+          'STP/SATP quick presets that fill reference T and P and compare computed molar volume against 22.414 and 24.465 L/mol',
+          'Robust edge handling: explicit errors for sub-zero absolute temperature, two or more blank fields, and divergent P=0 cases; six-significant-digit output with no −0 artifacts',
+        ],
+        howToUse: [
+          'Pick the unknown quantity at the top (volume V by default); its input row is disabled and tagged as the target',
+          'Fill the other three fields with values and units; temperatures may be entered directly in °C or °F and are converted to K automatically',
+          'Use "Fill STP/SATP" for standard conditions, or the molar-mass section to derive and backfill n from mass',
+          'Review the result badge, SI value and formula substitution, then use "Copy result" to export',
+          'Check the STP/SATP molar-volume table and dimensional notes to judge whether the ideal-gas approximation fits',
+        ],
+        useCases: [
+          'Verifying PV=nRT textbook examples and unit conversions in school and university chemistry/physics',
+          'Estimating the amount of substance or mass of gas in a tank from pressure, temperature and volume',
+          'Quick engineering calculations of gas molar volume and density at standard and ambient conditions',
+        ],
+        privacyNote:
+          'All equations and unit conversions run synchronously in your browser; the physical quantities you enter never leave your device and no network requests are made.',
+        faqs: [
+          {
+            question: 'Why do results differ slightly from my textbook?',
+            answer:
+              'The tool uses the CODATA value R=8.314462618 J/(mol·K) and exact conversions (1 atm=101325 Pa, 0 °C=273.15 K), while textbooks often round R to 8.314 and Vm to 22.4 L. The computed STP molar volume is about 22.414 L/mol, within 0.1% of the nominal figure.',
+          },
+          {
+            question: 'What happens at zero pressure?',
+            answer:
+              'At P=0 the expression V=nRT/P diverges mathematically. Instead of returning infinity or crashing, the tool raises an explicit non-physical-input error; reverse-solving n or T with P=0 is likewise rejected with a targeted message.',
+          },
+          {
+            question: 'Must I convert Celsius or Fahrenheit temperatures myself?',
+            answer:
+              'No. The temperature field accepts °C or °F directly; internally it applies T(K)=t(°C)+273.15 or T(K)=(t(°F)−32)×5/9+273.15 before substitution. If the converted value is not above 0 K (for example −300 °C), an absolute-temperature error is shown immediately.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

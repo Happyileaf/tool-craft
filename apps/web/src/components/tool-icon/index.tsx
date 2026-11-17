@@ -28,6 +28,7 @@ import {
   KeyRound,
   Layers,
   LayoutGrid,
+  Lightbulb,
   Link2,
   List,
   Map,
@@ -36,8 +37,10 @@ import {
   Music,
   Palette,
   Percent,
+  PiggyBank,
   Pipette,
   PlugZap,
+  FlaskConical,
   QrCode,
   Radical,
   Ruler,
@@ -122,6 +125,9 @@ const toolIconMap = {
   Wifi,
   Zap,
   Percent,
+  Lightbulb,
+  PiggyBank,
+  FlaskConical,
 };
 
 /**
