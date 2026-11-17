@@ -39693,6 +39693,111 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'opamp-calculator',
+    name: '运算放大器电路计算器（反相 / 同相 / 加法 / 差分）',
+    nameEn: 'Op-Amp Circuit Calculator (Inverting / Non-Inverting / Summing / Differential)',
+    description:
+      '基于理想运放虚短、虚断模型计算四种经典负反馈拓扑：反相放大器（−Rf/Rin）、同相放大器（1+Rf/Rg）、反相加法器（−Rf·ΣVi/Ri）与差分放大器（Rf/R1·(V2−V1)，含电阻匹配警告），支持 Ω/kΩ/MΩ 与 V/mV 单位后缀、反馈电流与输入阻抗输出、纯 SVG 电路示意图，以及按目标增益反推 E24 标称电阻，零依赖本地运算。',
+    descriptionEn:
+      'Compute four classic negative-feedback topologies from the ideal op-amp virtual-short/virtual-open model: inverting (−Rf/Rin), non-inverting (1+Rf/Rg), inverting summing (−Rf·ΣVi/Ri) and differential (Rf/R1·(V2−V1) with resistor-mismatch warning), with Ω/kΩ/MΩ and V/mV suffixes, feedback current and input impedance, pure SVG schematics, and E24 resistor recommendations reverse-derived from a target gain; fully local.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/opamp-calculator',
+    iconName: 'Calculator',
+    tags: ['运算放大器', '运放', '反相放大器', '同相放大器', '差分放大器', '模拟电路', 'E24'],
+    tagsEn: ['Op-Amp', 'Operational Amplifier', 'Inverting', 'Non-Inverting', 'Differential Amplifier', 'Analog Circuit', 'E24'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '运算放大器电路计算器基于理想运放的两条黄金假设——虚短（同相端与反相端电位相等）与虚断（输入端不取电流），对反相放大器、同相放大器、反相加法器与差分放大器四种经典负反馈拓扑做闭环增益、输出电压、反馈电流与输入阻抗的确定性计算，并为每种拓扑绘制纯 SVG 电路连接示意图，还能由目标闭环增益反推电阻比值与最接近的 E24 标称阻值。',
+        coreFeatures: [
+          '四种拓扑全覆盖：反相 Av=−Rf/Rin、同相 Av=1+Rf/Rg、反相加法 Vout=−Rf·Σ(Vi/Ri)、差分 Vout=(Rf/R1)(V2−V1)',
+          '工程单位解析：电阻支持 Ω/kΩ/MΩ 后缀与纯数字，电压支持 V/mV/kV，非法、零值、负值给出明确中文错误',
+          '完整电气量输出：闭环增益（带符号）、输出电压、反相拓扑输入阻抗、反馈支路电流，数值按有效数字格式化',
+          '差分匹配检查：自动比对 Rf/R1 与 Rg2/Rg1，不匹配时给出偏差百分比与 CMRR 下降警告，并按通用节点公式计算',
+          '增益反推：输入目标增益即得电阻比值与 E24 标称建议（10kΩ 基准），同相拓扑自动换算 Av−1',
+          '纯 SVG 电路示意图：电阻、运放三角符号与节点标注随拓扑切换，无外部图片资源',
+        ],
+        howToUse: [
+          '顶部选择拓扑，界面自动载入该拓扑的默认示例参数',
+          '在左侧填写电阻（如 10k、100kΩ、2.2M）与电压（如 0.5V、200mV），右侧实时显示计算结果与电路图',
+          '差分拓扑下留意匹配状态提示：绿色表示电阻网络匹配，黄色警告表示存在偏差',
+          '在「由目标增益反推电阻」卡片输入目标增益（反相填绝对值即可，自动取负），查看 E24 标称建议',
+        ],
+        useCases: [
+          '电子工程教学中演示虚短虚断如何推导出各拓扑增益公式',
+          '电路设计评审时快速核对增益、输出摆幅与反馈电流数量级',
+          '硬件面试复习：手算后用工具校验反相、同相、加法与差分电路结果',
+          '选型阶段按目标增益获取可采购的 E24 标称电阻组合',
+        ],
+        privacyNote:
+          '所有参数与计算均在浏览器本地完成，不涉及网络请求、不存储输入数据，也不引入任何第三方依赖。',
+        faqs: [
+          {
+            question: '理想运放模型和真实运放有什么差距？',
+            answer:
+              '本工具假设开环增益无穷大、输入电流为零、带宽无限且无失调电压，因此只反映负反馈闭环的一阶行为。真实运放存在输入失调电压、偏置电流、增益带宽积（GBW）、压摆率与输出摆幅限制，精密或高频设计还需查阅具体器件数据手册做进一步校核。',
+          },
+          {
+            question: '差分放大器为什么提示电阻不匹配？',
+            answer:
+              '简洁公式 Vout=(Rf/R1)(V2−V1) 只在 Rf/R1=Rg2/Rg1 时严格成立。工具会计算两个比值的相对偏差，不为零时给出百分比警告——不匹配会让同相端与反相端增益不对称，导致共模输入被放大、共模抑制比（CMRR）下降；此时结果仍按通用节点公式 V+=V2·Rg2/(Rg1+Rg2) 精确计算。',
+          },
+          {
+            question: '反推电阻时为什么固定用 10kΩ 做基准？',
+            answer:
+              '10kΩ 是模拟电路中兼顾输入偏置电流影响、噪声与功耗的常用基准量级。工具以基准电阻（Rin 或 Rg）=10kΩ 计算反馈电阻理论值，再在 E24 标称序列（每数量级 24 个优选值）中按对数距离选最接近的可采购阻值，并回报采用标称值后的实际增益，方便评估误差。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Op-Amp Circuit Calculator builds on the two golden assumptions of an ideal op-amp — virtual short (equal voltages at the inputs) and virtual open (zero input current) — to deterministically compute closed-loop gain, output voltage, feedback current and input impedance for the inverting, non-inverting, inverting summing and differential topologies, each accompanied by a pure SVG schematic. It also reverse-derives resistor ratios and the nearest E24 standard values from a target closed-loop gain.',
+        coreFeatures: [
+          'Four topologies: inverting Av=−Rf/Rin, non-inverting Av=1+Rf/Rg, summing Vout=−Rf·Σ(Vi/Ri), differential Vout=(Rf/R1)(V2−V1)',
+          'Engineering unit parsing: resistors accept Ω/kΩ/MΩ suffixes or bare numbers, voltages accept V/mV/kV, with clear errors for illegal, zero or negative values',
+          'Full electrical outputs: signed closed-loop gain, output voltage, input impedance for inverting stages, feedback current, all formatted to sensible significant digits',
+          'Differential match check: compares Rf/R1 against Rg2/Rg1, warns with a percentage mismatch and CMRR impact, and falls back to the exact nodal formula',
+          'Gain reverse-design: enter a target gain to obtain the resistor ratio and E24 recommendation against a 10 kΩ baseline (Av−1 handled automatically for non-inverting)',
+          'Pure SVG schematics: resistors, op-amp triangle and node labels switch with the topology, no external images',
+        ],
+        howToUse: [
+          'Pick a topology at the top; default sample parameters load automatically',
+          'Fill resistors (e.g. 10k, 100kΩ, 2.2M) and voltages (e.g. 0.5V, 200mV) on the left; results and the schematic update live on the right',
+          'Watch the match indicator in differential mode: green means a matched network, yellow signals a ratio deviation',
+          'Enter a target gain in the reverse-design card (absolute value suffices for inverting) to see E24 recommendations',
+        ],
+        useCases: [
+          'Teaching how virtual short and virtual open lead to each topology’s gain equation',
+          'Sanity-checking gain, output swing and feedback current magnitude during design review',
+          'Hardware interview prep: verify hand calculations for all four classic stages',
+          'Getting purchasable E24 resistor combinations from a target gain during component selection',
+        ],
+        privacyNote:
+          'Every parameter and calculation runs locally in the browser; there are no network requests, no stored inputs and no third-party dependencies.',
+        faqs: [
+          {
+            question: 'How does the ideal model differ from a real op-amp?',
+            answer:
+              'The tool assumes infinite open-loop gain, zero input current, unlimited bandwidth and no offset voltage, so it captures only the first-order closed-loop behavior. Real devices exhibit input offset voltage, bias current, gain-bandwidth product (GBW), slew rate and output swing limits; precision or high-frequency designs need further checks against the specific datasheet.',
+          },
+          {
+            question: 'Why does the differential stage warn about resistor mismatch?',
+            answer:
+              'The neat formula Vout=(Rf/R1)(V2−V1) holds strictly only when Rf/R1=Rg2/Rg1. The tool computes the relative deviation of the two ratios and warns when it is non-zero: mismatch makes the two gains asymmetric, amplifies common-mode input and degrades CMRR. Even then, the result is computed exactly from the general nodal expression V+=V2·Rg2/(Rg1+Rg2).',
+          },
+          {
+            question: 'Why is 10 kΩ used as the baseline for reverse design?',
+            answer:
+              '10 kΩ is a common analog baseline that balances bias-current effects, noise and power consumption. The tool takes the base resistor (Rin or Rg) as 10 kΩ, derives the theoretical feedback resistor, then picks the nearest purchasable E24 value (24 preferred values per decade) by logarithmic distance and reports the achieved gain so the error can be judged.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

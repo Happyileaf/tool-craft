@@ -362,7 +362,7 @@
 | 20261116200515 | APNG 动画 PNG 块（chunk）结构解析与帧信息查看器 | Web Tool | Existing Gap | Pending | 2026-11-16 | | [详情](./idea-details/20261116200515.md) |
 | 20261117020628 | DHCPv4 报文解析与构造器（RFC 2131，BOOTP 头与 TLV options） | Web Tool | Existing Gap | Pending | 2026-11-17 | | [详情](./idea-details/20261117020628.md) |
 | 20261117020629 | PDF 结构解析器（对象 / xref / Trailer 查看器） | Web Tool | Existing Gap | Pending | 2026-11-17 | | [详情](./idea-details/20261117020629.md) |
-| 20261117020630 | 运算放大器电路计算器（反相 / 同相 / 加法 / 差分） | Web Tool | Existing Gap | Claimed | 2026-11-17 | trae-agent | [详情](./idea-details/20261117020630.md) |
+| 20261117020630 | 运算放大器电路计算器（反相 / 同相 / 加法 / 差分） | Web Tool | Existing Gap | Done | 2026-11-17 | trae-agent | [详情](./idea-details/20261117020630.md) |
 | 20261117020631 | Wake-on-LAN 魔术包构造器（含反向校验解析） | Web Tool | Existing Gap | Done | 2026-11-17 | trae-agent | [详情](./idea-details/20261117020631.md) |
 | 20261117020632 | 图像直方图与通道统计分析器（RGB / 亮度分布与曝光量化） | Web Tool | Existing Gap | Pending | 2026-11-17 | | [详情](./idea-details/20261117020632.md) |
 
