@@ -420,4 +420,10 @@ export const toolLoaders: Record<
   'opamp-calculator': () => import('./opamp-calculator'),
   'm3u-playlist-tool': () => import('./m3u-playlist-tool'),
   'js-error-stack-parser': () => import('./js-error-stack-parser'),
+  'chinese-s2t-converter': () => import('./chinese-s2t-converter'),
+  'classical-cipher-collection': () => import('./classical-cipher-collection'),
+  'probability-distribution-calculator': () =>
+    import('./probability-distribution-calculator'),
+  'bbcode-html-converter': () => import('./bbcode-html-converter'),
+  'css-shape-generator': () => import('./css-shape-generator'),
 };

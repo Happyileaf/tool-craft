@@ -73,7 +73,7 @@
 | 20261022221409 | ANSI 终端颜色码生成器 | Web Tool | Exploration | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261022221409.md) |
 | 20261023020508 | iCalendar (.ics) 日历事件文件生成器 | Web Tool | Exploration | In Progress | 2026-10-23 | 20261112180415 (trae-agent) | [详情](./idea-details/20261023020508.md) |
 | 20261023020509 | Web App Manifest 生成器 | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023020509.md) |
-| 20261023020510 | CSS 形状生成器 | Web Tool | Exploration | Pending | 2026-10-23 | | [详情](./idea-details/20261023020510.md) |
+| 20261023020510 | CSS 形状生成器 | Web Tool | Exploration | Claimed | 2026-10-23 | trae-agent | [详情](./idea-details/20261023020510.md) |
 | 20261023020513 | sitemap.xml 生成器 | Web Tool | Existing Gap | In Progress | 2026-10-23 | trae-agent | [详情](./idea-details/20261023020513.md) |
 | 20261023020514 | 占位图片生成器 | Web Tool | External Reference | Pending | 2026-10-23 | | [详情](./idea-details/20261023020514.md) |
 | 20261023040530 | CSS Grid 布局可视化生成器 | Web Tool | Existing Gap | Pending | 2026-10-23 | | [详情](./idea-details/20261023040530.md) |
@@ -116,7 +116,7 @@
 | 20261027140132 | Bech32 / Bech32m 编解码器（BIP-173 / BIP-350） | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027140132.md) |
 | 20261027140134 | IP 地址范围 → 最小 CIDR 列表聚合器（IPv4 / IPv6） | Web Tool | Existing Gap | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027140134.md) |
 | 20261027201026 | ASCII 码表查询器（字符 / 十进制 / 十六进制 / 二进制对照） | Web Tool | External Reference | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027201026.md) |
-| 20261027201028 | 概率分布计算器（正态 / 二项 / 泊松 PMF、PDF、CDF 与分位） | Web Tool | Exploration | Pending | 2026-10-27 | | [详情](./idea-details/20261027201028.md) |
+| 20261027201028 | 概率分布计算器（正态 / 二项 / 泊松 PMF、PDF、CDF 与分位） | Web Tool | Exploration | Claimed | 2026-10-27 | trae-agent | [详情](./idea-details/20261027201028.md) |
 | 20261027201029 | 欧姆定律与功率计算器（V / I / R / P 知二求二） | Web Tool | Exploration | In Progress | 2026-10-27 | trae-agent | [详情](./idea-details/20261027201029.md) |
 | 20261028020202 | Sqids / Hashids 短 ID 编解码器 | Web Tool | External Reference | Pending | 2026-10-28 | | [详情](./idea-details/20261028020202.md) |
 | 20261028020204 | BIP-39 助记词生成与校验器 | Web Tool | External Reference | Pending | 2026-10-28 | | [详情](./idea-details/20261028020204.md) |
@@ -271,7 +271,7 @@
 | 20261107140230 | M3U / M3U8 播放列表生成与解析器（含 HLS 媒体序列） | Web Tool | Existing Gap | Done | 2026-11-07 | trae-agent | [详情](./idea-details/20261107140230.md) |
 | 20261107200150 | Base-N 任意进制整数互转器（radix 2–36 与自定义字母表） | Web Tool | Existing Gap | In Progress | 2026-11-07 | trae-agent | [详情](./idea-details/20261107200150.md) |
 | 20261107200151 | CRC-8 / CRC-16 / CRC-32 / CRC-64 多参数模型计算器 | Web Tool | Existing Gap | In Progress | 2026-11-07 | trae-agent | [详情](./idea-details/20261107200151.md) |
-| 20261107200152 | 培根 / 栅栏 / Playfair / Atbash 古典密码合集 | Web Tool | Exploration | Pending | 2026-11-07 | | [详情](./idea-details/20261107200152.md) |
+| 20261107200152 | 培根 / 栅栏 / Playfair / Atbash 古典密码合集 | Web Tool | Exploration | Claimed | 2026-11-07 | trae-agent | [详情](./idea-details/20261107200152.md) |
 | 20261107200153 | HSV / HSL / HWB / Lab / LCH 多色彩空间互转器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200153.md) |
 | 20261107200155 | ICMPv4 Echo（Ping）报文构建与十六进制解析器 | Web Tool | External Reference | Pending | 2026-11-07 | | [详情](./idea-details/20261107200155.md) |
 | 20261107200157 | Markdown 表格 ↔ CSV / JSON / HTML / LaTeX 多向转换器 | Web Tool | Existing Gap | Pending | 2026-11-07 | | [详情](./idea-details/20261107200157.md) |
@@ -287,7 +287,7 @@
 | 20261109020216 | 加权网格最短路径求解器（Dijkstra / A* 逐步演示） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109020216.md) |
 | 20261109020217 | 英文 Porter 词干提取器（Stemmer）与词形归并批处理 | Web Tool | External Reference | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109020217.md) |
 | 20261109020218 | IPv4 网络地址与二进制位掩码教学可视化器（逐位 AND 演算） | Web Tool | Exploration | Pending | 2026-11-09 | | [详情](./idea-details/20261109020218.md) |
-| 20261109200616 | BBCode ↔ HTML 双向转换器（论坛标记语言与富文本互转） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200616.md) |
+| 20261109200616 | BBCode ↔ HTML 双向转换器（论坛标记语言与富文本互转） | Web Tool | Existing Gap | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109200616.md) |
 | 20261109200617 | FLAC 音频元数据块只读解析器（STREAMINFO / VORBIS_COMMENT / 图片块结构展示） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200617.md) |
 | 20261109200618 | Ogg 容器页（page）结构只读解析器（OggS 页头 / 段表 / 编解码流分帧展示） | Web Tool | Existing Gap | Pending | 2026-11-09 | | [详情](./idea-details/20261109200618.md) |
 | 20261109200619 | 可见光波长 → RGB/HEX 颜色转换器（380–750nm 光谱色与近紫外/近红外越界提示） | Web Tool | Exploration | Claimed | 2026-11-09 | trae-agent | [详情](./idea-details/20261109200619.md) |
@@ -341,7 +341,7 @@
 | 20261115080617 | 天线长度与频率 / 波长互算器（半波偶极子 / 四分之一波长垂直天线） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080617.md) |
 | 20261115080618 | 心率训练区间计算器（最大心率估算与 Karvonen 储备心率五区间） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080618.md) |
 | 20261115080619 | 齿轮传动比与转速 / 扭矩计算器（多级齿轮组） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115080619.md) |
-| 20261115140201 | 简体中文 ↔ 繁体中文转换器（词组级映射，含台湾 / 香港变体与地区用词） | Web Tool | Existing Gap | Pending | 2026-11-15 | | [详情](./idea-details/20261115140201.md) |
+| 20261115140201 | 简体中文 ↔ 繁体中文转换器（词组级映射，含台湾 / 香港变体与地区用词） | Web Tool | Existing Gap | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115140201.md) |
 | 20261115140205 | 视频 / 音频码率与文件大小估算器（分辨率 / 帧率 / 编码器 / 时长互算） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115140205.md) |
 | 20261116020445 | Windows ↔ POSIX 路径转换器（WSL 盘符映射 / UNC / 分隔符归一） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116020445.md) |
 | 20261116020446 | JSON → C++ struct / class 生成器（std::optional / std::vector 推断） | Web Tool | Existing Gap | Claimed | 2026-11-16 | trae-agent | [详情](./idea-details/20261116020446.md) |

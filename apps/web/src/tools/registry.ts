@@ -15,6 +15,11 @@ import { DEFAULT_BITS as MANCHESTER_SAMPLE } from './manchester-line-codec/const
 import { DEFAULT_UDP_HEX as UDP_DATAGRAM_SAMPLE } from './udp-datagram-codec/constants';
 import { DEFAULT_RTP_HEX as RTP_HEADER_SAMPLE } from './rtp-header-codec/constants';
 import { DEFAULT_TEXT as PORTER_SAMPLE } from './porter-stemmer/constants';
+import { DEFAULT_TEXT as CHINESE_S2T_SAMPLE } from './chinese-s2t-converter/constants';
+import { DEFAULT_TEXT as CIPHER_SAMPLE } from './classical-cipher-collection/constants';
+import { DEFAULT_DISTRIBUTION as PROBABILITY_SAMPLE } from './probability-distribution-calculator/constants';
+import { DEFAULT_BBCODE as BBCODE_SAMPLE } from './bbcode-html-converter/constants';
+import { DEFAULT_CONFIG as CSS_SHAPE_SAMPLE } from './css-shape-generator/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -39999,6 +40004,536 @@ sqrt(area) + 2 * r`,
             question: 'What does the highlighted "first frame" mean?',
             answer:
               'The first frame is the earliest frame that is neither a node: built-in nor native and carries a file location — typically the call site closest to your own code. It gets a green row and "first frame" tag, and its index is exposed as firstUserFrameIndex.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'chinese-s2t-converter',
+    name: '简繁中文转换器',
+    nameEn: 'Simplified-Traditional Chinese Converter',
+    description:
+      '基于词组级最长匹配与单字级静态映射的简繁双向转换，正确处理「发 / 面 / 干 / 松」等一对多歧义字，支持通用、台湾、香港三种地区用词变体，实时输出替换统计，纯本地零上传。',
+    descriptionEn:
+      'Bidirectional simplified-traditional Chinese conversion based on longest-match phrase tables and per-character static maps, correctly handling one-to-many ambiguous characters such as fa/mian/gan/song, with standard, Taiwan and Hong Kong regional variants, live replacement statistics, and fully local processing.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/chinese-s2t-converter',
+    iconName: 'Language',
+    tags: ['简繁转换', '繁体', '台湾用词', '香港用词', '中文处理'],
+    tagsEn: ['S2T', 'Traditional Chinese', 'Taiwan Locale', 'Hong Kong Locale', 'Chinese NLP'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: CHINESE_S2T_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          '简繁中文转换器是一款纯浏览器本地的中文文本转换工具，采用「词组级最长匹配 + 单字级兜底」两级静态映射，在简体与繁体之间双向转换。它针对简繁关系中最棘手的一对多歧义字（如简体「发」对应繁体「發 / 髮」、「面」对应「面 / 麵」、「干」对应「干 / 幹 / 乾」、「松」对应「松 / 鬆」）内置词组表，确保「理发 → 理髮」而「发展 → 發展」、「牛肉面 → 牛肉麵」而「当面 → 當面」。工具还提供通用繁体、台湾地区用词（软件→軟體、公交車→公車）与香港地区用词（出租车→的士、公交车→巴士）三种变体，并实时统计替换事件数与输入输出字符数。',
+        coreFeatures: [
+          '双向转换：简体转繁体、繁体转简体，一键交换方向并以结果回填',
+          '词组级歧义消解：最长匹配优先，正确区分發/髮、面/麵、幹/乾/干、松/鬆等高频歧义',
+          '三种地区变体：通用繁体、台湾用词、香港用词，覆盖 IT、饮食、交通等高频地区差异词',
+          '单字级兜底映射：覆盖数百个高频简繁异写字，未命中字符（英文、数字、标点）原样保留',
+          '实时统计：输入 / 输出字符数（按 Unicode 码点计）与替换事件次数',
+          '纯本地零依赖：静态映射表 + 纯函数计算，不请求任何网络服务，文本不上传',
+        ],
+        howToUse: [
+          '把中文文本粘贴到输入框，或点击「载入样例」查看内置示例',
+          '选择转换方向（简体→繁体 / 繁体→简体），结果随输入实时更新',
+          '需要地区用词时切换「台湾用词」或「香港用词」变体，转换结果会额外替换地区差异词',
+          '点击「交换方向并以结果回填」可基于当前结果反向转换，点击复制按钮导出结果',
+        ],
+        useCases: [
+          '面向港澳台用户发布内容前的本地化文案转换',
+          '字幕、游戏文本、软件界面多地区版本的快速对照',
+          '中文 NLP 预处理中统一字形，或演示简繁一对多映射的不对称性',
+          '核对地区用词差异（如软件/軟體、鼠标/滑鼠、地铁/捷運）',
+        ],
+        privacyNote:
+          '全部转换由浏览器内存中的静态映射表与纯函数完成，不发起任何网络请求、不写入本地存储，输入文本刷新页面即消失。',
+        faqs: [
+          {
+            question: '为什么繁体转简体时「發」和「髮」都变成了「发」？',
+            answer:
+              '这是简繁关系的固有不对称性：一个简体字可能对应多个繁体字，而反向转换只能合并为单一简体字形。工具在简体转繁体时通过词组表区分语境（理发→理髮、发展→發展），繁体转简体则按合并规则统一为「发」。',
+          },
+          {
+            question: '台湾变体和香港变体有什么区别？',
+            answer:
+              '两者都先完成通用简繁转换，再替换地区用词。台湾变体采用台湾常用 IT 与生活用词（软件→軟體、服务器→伺服器、地铁→捷運、菠萝→鳳梨）；香港变体采用港式用词（公交车→巴士、出租车→的士、屏幕→熒幕、方便面→公仔麵）。部分词两个地区相同（如鼠标→滑鼠），部分则各自不同。',
+          },
+          {
+            question: '转换结果的准确度如何保证？',
+            answer:
+              '工具内置高频单字映射与数十条歧义词组，并按最长词组优先匹配来避免误判。但简繁转换涉及语境理解，静态映射无法覆盖全部专有名词与生僻用法，因此未命中的字符会原样保留，方便人工复核；对正式发布内容建议再做一次校对。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Simplified-Traditional Chinese Converter is a fully in-browser text tool that converts between simplified and traditional Chinese using a two-level static scheme: longest-match phrase tables followed by per-character fallback mapping. It specifically handles the notorious one-to-many ambiguous simplified characters — for example fa maps to 發/髮, mian to 面/麵, gan to 干/幹/乾 and song to 松/鬆 — so that haircut becomes 理髮 while development becomes 發展, and beef noodles becomes 牛肉麵 while face-to-face stays 當面. Three regional variants are offered: standard traditional, Taiwan usage (software→軟體, bus→公車) and Hong Kong usage (taxi→的士, bus→巴士), with live counts of replacement events and input/output characters.',
+        coreFeatures: [
+          'Bidirectional conversion: simplified-to-traditional and traditional-to-simplified, with one-click direction swap that back-fills the result',
+          'Phrase-level disambiguation: longest-match-first tables correctly separate 發/髮, 面/麵, 幹/乾/干 and 松/鬆 in context',
+          'Three regional variants: standard traditional, Taiwan locale and Hong Kong locale, covering high-frequency IT, food and transport vocabulary',
+          'Per-character fallback map covering hundreds of common variant characters; unmatched characters (English, digits, punctuation) are preserved',
+          'Live statistics: input/output character counts by Unicode code point and replacement event count',
+          'Fully local and dependency-free: static tables plus pure functions, no network calls and no upload',
+        ],
+        howToUse: [
+          'Paste Chinese text into the input box or load the built-in sample',
+          'Choose the conversion direction; the result updates in real time as you type',
+          'Switch to the Taiwan or Hong Kong variant when regional vocabulary is needed',
+          'Use the swap button to reverse the conversion from the current result, or copy the output with one click',
+        ],
+        useCases: [
+          'Localizing marketing or product copy before publishing to Taiwan, Hong Kong or Macau audiences',
+          'Quick comparison of subtitles, game text and software UI across regional Chinese variants',
+          'Character normalization in Chinese NLP preprocessing and demos of asymmetric s2t mapping',
+          'Checking regional vocabulary differences such as 软件/軟體, 鼠标/滑鼠 and 地铁/捷運',
+        ],
+        privacyNote:
+          'All conversion runs in browser memory through static mapping tables and pure functions. No network request is made, nothing is written to storage, and the input disappears when the page refreshes.',
+        faqs: [
+          {
+            question: 'Why do both 發 and 髮 become 发 when converting traditional to simplified?',
+            answer:
+              'This reflects the inherent asymmetry of the simplified-traditional relationship: one simplified character can correspond to several traditional forms, so reverse conversion merges them into one glyph. Simplified-to-traditional uses phrase context to choose correctly (理发→理髮 vs 发展→發展), while traditional-to-simplified deliberately merges both back into 发.',
+          },
+          {
+            question: 'What is the difference between the Taiwan and Hong Kong variants?',
+            answer:
+              'Both first perform the standard conversion and then replace regional vocabulary. Taiwan uses common Taiwanese IT and daily terms (软件→軟體, 服务器→伺服器, 地铁→捷運, 菠萝→鳳梨); Hong Kong uses Cantonese-region terms (公交车→巴士, 出租车→的士, 屏幕→熒幕, 方便面→公仔麵). Some words coincide (鼠标→滑鼠) while others differ.',
+          },
+          {
+            question: 'How accurate is the conversion?',
+            answer:
+              'The tool ships with a high-frequency character map and dozens of disambiguation phrases matched longest-first to avoid misfires. Because full conversion requires contextual understanding, static tables cannot cover every proper noun or rare usage; unmatched characters are preserved verbatim for human review, and formal publications should still be proofread.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'classical-cipher-collection',
+    name: '古典密码合集',
+    nameEn: 'Classical Cipher Collection',
+    description:
+      '培根、栅栏、Playfair、Atbash 四种古典密码的在线加解密：培根 5 位 AB 编码与隐写原理、栅栏行列置换、Playfair 5×5 双字母方阵、Atbash 字母表反转，输出过程步骤说明，纯浏览器本地计算，适合密码学教学。',
+    descriptionEn:
+      'Encrypt and decrypt with four classical ciphers in the browser: Bacon 5-bit AB encoding with steganography roots, Rail Fence transposition, Playfair 5×5 digram square and Atbash alphabet reversal, each with step-by-step explanations for cryptography education.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/classical-cipher-collection',
+    iconName: 'KeyRound',
+    tags: ['古典密码', '培根密码', '栅栏密码', 'Playfair', 'Atbash'],
+    tagsEn: ['Classical Cipher', "Bacon's Cipher", 'Rail Fence', 'Playfair', 'Atbash'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: CIPHER_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          '古典密码合集把四种密码学发展史上的代表性对称密码汇集到同一界面：培根密码把每个字母替换为 5 位 A/B 编码（历史上曾用两种字体承载以实现隐写）；栅栏密码按指定行数把文本锯齿排列后按行读出，属于换位密码；Playfair 密码基于密钥构造 5×5 字母方阵（I/J 合并），以双字母组为单位按同行、同列、矩形规则替换；Atbash 密码直接反转字母表（A↔Z、B↔Y），是自逆变换。每种算法都输出中间步骤说明，帮助理解其数学结构。注意：古典密码可被频率分析等手段轻易破解，本工具仅用于教学演示。',
+        coreFeatures: [
+          '四种算法合一：培根、栅栏、Playfair、Atbash，一键切换加密 / 解密模式',
+          '过程可视化：输出方阵内容、分组结果、各行字符数等关键中间量',
+          '参数可调：栅栏支持 2–12 行，Playfair 支持自定义密钥（J 自动按 I 处理）',
+          '规范的分组规则：Playfair 重复字母插 X、奇数长度补 X；培根尾组不足自动丢弃',
+          '大小写与非字母处理明确：Atbash 保留非字母，其余算法按规则提取字母',
+          '纯本地计算：零网络请求、零依赖，文本不离开浏览器',
+        ],
+        howToUse: [
+          '在顶部选择密码算法，并切换「加密」或「解密」',
+          '栅栏密码设置行数，Playfair 设置字母密钥，培根与 Atbash 无需参数',
+          '在输入框粘贴文本，结果与步骤说明实时更新',
+          '点击复制按钮导出密文或明文，可在加密后切换解密做往返验证',
+        ],
+        useCases: [
+          '密码学导论课程的课堂演示与课后练习',
+          'CTF 入门题中古典密码题型的快速加解密与验证',
+          '推理小说、密室游戏、寻宝活动中的谜题设计',
+          '理解替换密码与换位密码的区别及频率分析攻击面',
+        ],
+        privacyNote:
+          '所有加解密均由浏览器内的纯函数完成，不发起网络请求、不写入存储。但古典密码不具备现代安全强度，请勿输入真实机密信息。',
+        faqs: [
+          {
+            question: 'Playfair 解密结果里为什么会出现多余的 X？',
+            answer:
+              'Playfair 以双字母组为单位，加密时同组重复字母（如 LL）之间会插入补位 X，明文长度为奇数时也会在末尾补 X。这些补位字符在解密后无法自动判定，需要结合语境人工识别并删除。',
+          },
+          {
+            question: '培根密码为什么 J 和 I、U 和 V 的编码相同？',
+            answer:
+              '培根在 1605 年提出该编码时英语字母表只有 24 个字母，I/J 与 U/V 尚未分化，因此共用编码。本工具沿用原始 24 字母表，加密时 J 按 I、V 按 U 编码，解密统一输出 I 与 U。',
+          },
+          {
+            question: '这些密码能用来加密重要数据吗？',
+            answer:
+              '不能。四种古典密码的密钥空间都很小，且保留了明文的统计特征，使用频率分析、已知明文攻击等手段可以在很短时间内破解。现代场景应使用 AES、RSA 等经过公开检验的现代密码算法，本工具仅用于教学与解谜。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Classical Cipher Collection brings four representative symmetric ciphers from cryptography history into one interface. Bacon’s cipher replaces each letter with a 5-bit A/B code (historically carried by two typefaces for steganography); Rail Fence writes text in a zigzag across a chosen number of rails and reads it row by row as a transposition cipher; Playfair builds a 5×5 key square with merged I/J and transforms digraphs using same-row, same-column and rectangle rules; Atbash simply reverses the alphabet (A↔Z, B↔Y) and is self-inverse. Every algorithm prints intermediate steps so the underlying mathematical structure is visible. Classical ciphers are trivially breakable by frequency analysis and this tool is intended solely for education.',
+        coreFeatures: [
+          'Four algorithms in one place: Bacon, Rail Fence, Playfair and Atbash, with encrypt/decrypt toggle',
+          'Step-by-step output including the key square, digram grouping and per-rail character counts',
+          'Adjustable parameters: 2–12 rails and a custom Playfair key (J treated as I)',
+          'Standard grouping rules: X insertion for repeated digram letters and odd-length padding; truncated Bacon tail groups',
+          'Explicit casing and non-letter handling: Atbash preserves non-letters while other algorithms extract letters by rule',
+          'Fully local, dependency-free computation with no network request',
+        ],
+        howToUse: [
+          'Pick a cipher at the top and switch between encrypt and decrypt',
+          'Set the rail count for Rail Fence or the letter key for Playfair; Bacon and Atbash need no parameters',
+          'Paste text into the input area and read the live result plus step explanations',
+          'Copy the output with one click, or flip to decrypt to verify round-trip behavior',
+        ],
+        useCases: [
+          'Classroom demos and homework for introductory cryptography courses',
+          'Quick encryption and verification for classical-cipher puzzles in beginner CTF events',
+          'Designing riddles for mystery games, escape rooms and treasure hunts',
+          'Learning the difference between substitution and transposition ciphers and their frequency-analysis attack surface',
+        ],
+        privacyNote:
+          'All encryption and decryption run through in-browser pure functions with no network calls or storage writes. Classical ciphers provide no modern security strength, so never enter genuinely confidential information.',
+        faqs: [
+          {
+            question: 'Why does the decrypted Playfair output contain extra X letters?',
+            answer:
+              'Playfair works on digraphs: an X is inserted between repeated letters such as LL and appended when the plaintext length is odd. These padding letters cannot be distinguished automatically after decryption and must be identified and removed using context.',
+          },
+          {
+            question: 'Why do J/I and U/V share Bacon codes?',
+            answer:
+              'When Bacon proposed the encoding in 1605 the English alphabet had only 24 letters because I/J and U/V had not yet differentiated. The tool follows the original 24-letter table: J is encoded as I and V as U, while decryption always yields I and U.',
+          },
+          {
+            question: 'Can these ciphers protect important data?',
+            answer:
+              'No. All four have tiny key spaces and preserve plaintext statistics, so frequency analysis or known-plaintext attacks break them quickly. Use publicly vetted modern algorithms such as AES or RSA for real-world protection; this tool exists only for teaching and puzzles.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'probability-distribution-calculator',
+    name: '概率分布计算器',
+    nameEn: 'Probability Distribution Calculator',
+    description:
+      '正态、二项、泊松三种常用分布的 PDF/PMF、CDF、分位数与均值方差计算：正态 CDF 采用 A&S 有理逼近加二分求逆，离散分布基于对数阶乘防止数值下溢，输出求值点左右尾概率与完整概率质量表，纯浏览器本地数值计算。',
+    descriptionEn:
+      'Compute PDF/PMF, CDF, quantiles, mean and variance for normal, binomial and Poisson distributions. Normal CDF uses the Abramowitz & Stegun approximation with bisection-based inverse, discrete distributions use log-factorial arithmetic to avoid underflow, with tail probabilities and a full probability mass table, all calculated locally in the browser.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/probability-distribution-calculator',
+    iconName: 'Calculator',
+    tags: ['概率分布', '正态分布', '二项分布', '泊松分布', 'CDF'],
+    tagsEn: ['Probability', 'Normal Distribution', 'Binomial Distribution', 'Poisson Distribution', 'CDF'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: JSON.stringify(PROBABILITY_SAMPLE),
+    doc: {
+      zh: {
+        whatIsIt:
+          '概率分布计算器把数理统计中最常用的三种概率模型整合到一个界面：连续型的正态分布（由均值 μ 与标准差 σ 参数化），以及离散型的二项分布（n 次独立伯努利试验，成功概率 p）与泊松分布（单位区间内平均发生 λ 次事件）。对任意求值点，工具给出概率密度 / 质量函数值、累积分布 CDF、右尾概率、均值、方差与标准差；正态分布额外提供 95% 分位数，离散分布则输出逐点概率质量表。数值实现上，正态 CDF 采用 Abramowitz & Stegun 7.1.26 有理逼近（绝对误差小于 7.5e-8），分位数用二分法求逆；二项与泊松的组合数与阶乘全部在对数空间计算，避免大 n 时的浮点下溢。',
+        coreFeatures: [
+          '三种分布合一：正态（连续）、二项与泊松（离散），参数表单随分布动态切换',
+          '完整概率指标：PDF/PMF、CDF、右尾概率、均值、方差、标准差一次给出',
+          '稳健数值实现：A&S 有理逼近 + 二分求逆分位，对数阶乘防止组合数下溢',
+          '离散质量表：分页展示每个 k 的 P(X=k) 与累积 P(X≤k)，支持 60 个取值点',
+          '参数校验：标准差非正、概率越界、λ 非正等非法输入给出明确错误提示',
+          '纯本地计算：零网络请求，适合课堂演示与考试复习',
+        ],
+        howToUse: [
+          '在顶部选择分布类型，表单会切换为对应的参数（μ/σ、n/p 或 λ）',
+          '填写参数与求值点（离散分布的非整数求值点会按取整后的 k 计算）',
+          '查看汇总卡片中的密度 / 质量、CDF、右尾与均值方差；正态分布同时给出 95% 分位数',
+          '离散分布可在下方质量表中分页浏览各取值点的概率与累积概率',
+        ],
+        useCases: [
+          '质量管理中计算正态过程的缺陷率与 ±kσ 覆盖概率',
+          'A/B 试验里用二项分布估算转化率显著性与样本量边界',
+          '排队论与运维告警中用泊松分布建模请求 / 故障到达次数',
+          '概率论课程作业与期末考试的数值核对',
+        ],
+        privacyNote:
+          '所有数值由浏览器内的纯函数计算，不发起网络请求、不写入存储，参数与结果刷新页面即消失。',
+        faqs: [
+          {
+            question: '为什么正态 CDF 在 0 处显示 0.50000000 而不是精确的 0.5？',
+            answer:
+              '工具使用 Abramowitz & Stegun 有理逼近计算 CDF，其绝对误差小于 7.5×10⁻⁸，因此在 0 处可能出现约 5×10⁻¹⁰ 量级的尾差，显示到 4 位小数时即为 0.5000。该精度远高于工程与教学场景的需求。',
+          },
+          {
+            question: '二项分布的 n 很大时结果还准确吗？',
+            answer:
+              '组合数与阶乘在对数空间累加后再取指数，避免了直接计算 n! 时的溢出与下溢；CDF 还会自动选择较短的一侧求和。常规教学与工程范围内（n 到数千）结果稳定，极端大 n 时建议改用正态近似。',
+          },
+          {
+            question: '分位数是什么意思？',
+            answer:
+              '分位数 xₚ 是满足 P(X ≤ xₚ) = p 的取值。例如正态分布的 95% 分位数表示累积概率达到 95% 的临界点，标准正态下约为 1.6449；双侧 95% 置信区间则使用 ±1.96。工具通过二分法在 CDF 上求逆得到该值。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Probability Distribution Calculator unifies three workhorse probability models in one interface: the continuous normal distribution parameterized by mean μ and standard deviation σ, and the discrete binomial distribution (n independent Bernoulli trials with success probability p) and Poisson distribution (λ events per interval on average). For any evaluation point it returns the density or mass value, cumulative CDF, right-tail probability, mean, variance and standard deviation; the normal distribution additionally exposes the 95% quantile while discrete distributions render a point-by-point probability mass table. Numerically, the normal CDF uses the Abramowitz & Stegun 7.1.26 rational approximation with absolute error below 7.5e-8 and quantiles are inverted by bisection, while binomial and Poisson combinatorics are evaluated in log space to prevent floating-point underflow for large n.',
+        coreFeatures: [
+          'Three distributions in one place: normal (continuous), binomial and Poisson (discrete) with dynamic parameter forms',
+          'Full probability metrics: PDF/PMF, CDF, right-tail probability, mean, variance and standard deviation at once',
+          'Robust numerics: A&S approximation with bisection inverse quantile, log-factorial arithmetic to avoid combinatorial underflow',
+          'Discrete mass table: paginated P(X=k) and cumulative P(X≤k) for up to 60 values',
+          'Parameter validation with explicit error messages for non-positive σ, out-of-range p, non-positive λ and similar mistakes',
+          'Fully local computation with no network requests, suitable for lectures and exam review',
+        ],
+        howToUse: [
+          'Choose a distribution at the top; the form switches to μ/σ, n/p or λ parameters accordingly',
+          'Enter the parameters and the evaluation point (non-integer points for discrete distributions are rounded to integer k)',
+          'Read density/mass, CDF, tail and moment statistics in the summary card; the normal distribution also shows the 95% quantile',
+          'For discrete distributions, browse the paginated mass table for per-value and cumulative probabilities',
+        ],
+        useCases: [
+          'Computing defect rates and ±kσ coverage for normally distributed quality processes',
+          'Estimating conversion-rate significance and sample-size boundaries with the binomial distribution in A/B testing',
+          'Modeling request or failure arrivals with Poisson in queueing theory and operations alerting',
+          'Checking homework and exam answers in probability and statistics courses',
+        ],
+        privacyNote:
+          'All numerics run through in-browser pure functions with no network calls or storage writes; parameters and results disappear on refresh.',
+        faqs: [
+          {
+            question: 'Why does the normal CDF show 0.50000000 instead of exactly 0.5 at zero?',
+            answer:
+              'The CDF is computed with the Abramowitz & Stegun rational approximation, whose absolute error stays below 7.5×10⁻⁸, so a residual around 5×10⁻¹⁰ can appear at zero. Rounded to four decimals it is exactly 0.5000, and the precision is far beyond engineering and classroom needs.',
+          },
+          {
+            question: 'Are binomial results still accurate for very large n?',
+            answer:
+              'Binomial coefficients and factorials are accumulated in log space and exponentiated only at the end, which avoids overflow and underflow of raw n! values. The CDF also sums from the shorter tail. Results remain stable for n in the thousands typical of teaching and engineering; for extreme n a normal approximation is preferable.',
+          },
+          {
+            question: 'What is a quantile?',
+            answer:
+              'The quantile xₚ is the value satisfying P(X ≤ xₚ) = p. For example the 95% normal quantile is the cutoff where cumulative probability reaches 95%, about 1.6449 for the standard normal, while the two-sided 95% interval uses ±1.96. The tool inverts the CDF through bisection to obtain it.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'bbcode-html-converter',
+    name: 'BBCode ↔ HTML 双向转换器',
+    nameEn: 'BBCode ↔ HTML Converter',
+    description:
+      '论坛 BBCode 与 HTML 富文本双向互转：支持 b/i/u/s、url、img、quote、list、code、color、size 标签与嵌套，自动实体转义并拦截 javascript: 危险链接，纯浏览器本地计算。',
+    descriptionEn:
+      'Convert forum BBCode to HTML and back, covering b/i/u/s, url, img, quote, list, code, color and size tags with nesting, automatic entity escaping and javascript: URL blocking, entirely in your browser.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/bbcode-html-converter',
+    iconName: 'FileText',
+    tags: ['BBCode', 'HTML', '论坛', '标记语言', '转换'],
+    tagsEn: ['BBCode', 'HTML', 'Forum', 'Markup', 'Converter'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: JSON.stringify(BBCODE_SAMPLE),
+    doc: {
+      zh: {
+        whatIsIt:
+          'BBCode ↔ HTML 双向转换器面向 phpBB、Discuz 等传统论坛与现代博客 / CMS 之间的内容迁移场景。BBCode 用方括号标签（如 [b]、[url=...]、[list]）描述富文本，HTML 则使用尖括号元素。工具内置一个零依赖的确定性解析器：BBCode → HTML 方向先把输入切分为标签与文本 token，再以栈结构处理嵌套与未闭合标签；HTML → BBCode 方向用极简 HTML 解析器构建节点树后递归映射回 BBCode。文本节点统一做 HTML 实体转义 / 还原，所有 URL 经过 http/https/ftp 协议白名单校验，javascript: 等危险协议会被拦截或降级为纯文本。',
+        coreFeatures: [
+          '双向转换：BBCode → HTML 与 HTML → BBCode 一键切换，核心语义可往返',
+          '标签覆盖全：b/i/u/s、url（带参与无参）、img、quote、有序 / 无序列表、code、color、size',
+          '嵌套与容错：基于栈的解析支持标签嵌套，未闭合标签自动补齐，未知标签降级保留文本',
+          '安全默认：实体转义防止标记注入，URL 协议白名单拦截 javascript:，颜色与字号值做合法性校验',
+          '代码块保护：[code] 内部内容原样保留，不解析其中的方括号标签',
+          '纯本地运行：零网络请求，帖子草稿等敏感内容不会离开浏览器',
+        ],
+        howToUse: [
+          '在顶部选择转换方向（BBCode → HTML 或 HTML → BBCode）',
+          '在左侧编辑框粘贴源文本，右侧实时给出转换结果',
+          'BBCode → HTML 方向可切换「HTML 预览」标签查看渲染效果',
+          '点击「复制结果」获取输出；处理统计卡片会显示已处理与降级的标签数量',
+        ],
+        useCases: [
+          '把论坛帖子迁移到博客 / CMS 等只接受 HTML 的发布平台',
+          '把网页编辑器产出的 HTML 降级为论坛可粘贴的 BBCode',
+          '审查用户生成内容中的危险链接与未转义特殊字符',
+          '学习标记语言解析与栈式嵌套处理的教学示例',
+        ],
+        privacyNote:
+          '转换完全在浏览器本地由纯函数完成，不发起任何网络请求，也不写入本地存储；关闭页面后输入与结果即被清除。',
+        faqs: [
+          {
+            question: '为什么有些标签被计入「降级 / 丢弃」？',
+            answer:
+              '工具只覆盖论坛最常用的标签集合。无法识别的 BBCode 标签会保留原文并计入降级；HTML 中没有对应 BBCode 的元素（如 section、div 样式）会移除标签但保留内部文本，确保内容不丢失。',
+          },
+          {
+            question: 'javascript: 链接会怎么处理？',
+            answer:
+              '所有 URL 都必须命中 http、https、ftp 协议白名单，或以 / 开头的站内相对路径。javascript:、data: 等协议在两个方向上都会被拦截：BBCode → HTML 时降级为纯文本，HTML → BBCode 时直接丢弃链接外壳。',
+          },
+          {
+            question: '为什么 [code] 里的 [b] 没有被转换？',
+            answer:
+              '代码块中的方括号文本属于字面内容而非标记，工具在词法分析阶段就把 [code]...[/code] 整体作为文本处理，这与论坛渲染器的行为一致，可以安全粘贴代码片段。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The BBCode ↔ HTML Converter bridges content between legacy forums such as phpBB and Discuz and modern blogs or CMS platforms. BBCode describes rich text with square-bracket tags like [b], [url=...] and [list], while HTML uses angle-bracket elements. The tool ships with a dependency-free deterministic parser: the BBCode → HTML direction tokenizes the input into tags and text and handles nesting and unclosed tags with a stack, while the HTML → BBCode direction builds a node tree with a minimal HTML parser and recursively maps it back to BBCode. Text nodes are consistently entity-escaped and unescaped, every URL passes an http/https/ftp allow-list check, and dangerous schemes such as javascript: are blocked or downgraded to plain text.',
+        coreFeatures: [
+          'Bidirectional conversion between BBCode and HTML with one click, preserving core semantics on round trips',
+          'Broad tag coverage: b/i/u/s, parameterized and bare url, img, quote, ordered/unordered lists, code, color and size',
+          'Stack-based nesting with automatic closing of unclosed tags and graceful degradation of unknown tags',
+          'Secure defaults: entity escaping against markup injection, URL scheme allow-list blocking javascript:, validated color and size values',
+          'Protected code blocks: content inside [code] is kept literal without parsing inner bracket tags',
+          'Fully local execution with zero network requests, keeping draft posts inside the browser',
+        ],
+        howToUse: [
+          'Pick a conversion direction at the top (BBCode → HTML or HTML → BBCode)',
+          'Paste the source text into the left editor and read the live result on the right',
+          'In the BBCode → HTML direction, switch to the HTML preview tab to see the rendered output',
+          'Click Copy to grab the result; the statistics card reports handled and downgraded tag counts',
+        ],
+        useCases: [
+          'Migrating forum posts into blog or CMS platforms that only accept HTML',
+          'Downgrading HTML from web editors into BBCode that forums accept',
+          'Auditing user-generated content for dangerous links and unescaped special characters',
+          'Teaching markup parsing and stack-based nesting handling',
+        ],
+        privacyNote:
+          'All conversion runs locally in the browser through pure functions, with no network requests and no storage writes; input and output are cleared when the page closes.',
+        faqs: [
+          {
+            question: 'Why are some tags counted as downgraded or dropped?',
+            answer:
+              'The tool covers the most common forum tag set. Unrecognized BBCode tags keep their literal text and are counted as downgraded; HTML elements without a BBCode equivalent such as styled sections or divs lose their wrapper but keep their inner text so no content is lost.',
+          },
+          {
+            question: 'What happens to javascript: links?',
+            answer:
+              'Every URL must match the http, https or ftp allow-list, or start with / as a site-relative path. Schemes such as javascript: and data: are blocked in both directions: downgraded to plain text for BBCode → HTML, and stripped of their link wrapper for HTML → BBCode.',
+          },
+          {
+            question: 'Why is [b] inside [code] not converted?',
+            answer:
+              'Bracket text inside a code block is literal content rather than markup. The lexer treats the whole [code]...[/code] region as text, matching forum renderer behavior, so code snippets can be pasted safely.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'css-shape-generator',
+    name: 'CSS 形状生成器',
+    nameEn: 'CSS Shape Generator',
+    description:
+      '可视化生成三角形、箭头、圆形、椭圆、对话气泡、八角形与梯形的 CSS 代码，实时预览 border / border-radius / clip-path 三种实现方案，一键复制即用。',
+    descriptionEn:
+      'Visually generate CSS for triangles, arrows, circles, ellipses, speech bubbles, octagons and trapezoids, with live previews across border, border-radius and clip-path techniques and one-click copy.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/css-shape-generator',
+    iconName: 'Triangle',
+    tags: ['CSS', '形状', 'clip-path', 'border-radius', '设计'],
+    tagsEn: ['CSS', 'Shape', 'clip-path', 'border-radius', 'Design'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: JSON.stringify(CSS_SHAPE_SAMPLE),
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS 形状生成器把常见几何图形的手写 CSS 套路沉淀为参数化工具。纯 CSS 绘制形状主要有三条技术路线：透明边框法（border）利用零尺寸元素的四向边框拼出三角形与箭头；圆角法（border-radius）通过百分比圆角把矩形变成圆形或椭圆；裁剪法（clip-path: polygon）用百分比顶点定义八角形、梯形等任意多边形。工具内部用一组零依赖纯函数把宽高、颜色、朝向、切角等参数确定性地映射为 CSS 声明，并同步输出可直接粘贴的规则文本与实时预览。',
+        coreFeatures: [
+          '七种形状：三角形、箭头、圆形、椭圆、对话气泡、八角形、梯形',
+          '三类实现方案自动匹配：border 透明边框、border-radius 圆角、clip-path polygon 裁剪',
+          '参数化调节：宽高、颜色、朝向、圆角、切角比例、上底宽度、气泡圆角与尖角',
+          '实时预览：棋盘格背景直观展示透明区域，参数改动即时重渲染',
+          '安全颜色输入：命名色白名单与十六进制校验，杜绝表达式注入',
+          '纯本地计算：几何推导与代码生成全部在浏览器主线程完成，无网络请求',
+        ],
+        howToUse: [
+          '在顶部选择需要的形状类型',
+          '在左侧参数面板调节尺寸、颜色、朝向及形状专属参数',
+          '在右侧「实时预览」卡片确认效果与实现方案',
+          '点击「复制 CSS」获取 .shape 规则，粘贴到样式表并按需要改类名即可',
+        ],
+        useCases: [
+          '快速制作 tooltip 尖角、步骤箭头、聊天气泡等界面元素',
+          '为落地页装饰图形生成无需图片资源的纯 CSS 实现',
+          '学习透明边框法与 clip-path polygon 的几何原理',
+          '在设计走查时快速比对不同形状参数的视觉效果',
+        ],
+        privacyNote:
+          '所有参数仅保存在组件内存状态中，几何计算与 CSS 文本生成完全在本地进行；工具不发起网络请求，也不写入浏览器存储。',
+        faqs: [
+          {
+            question: 'clip-path 方案会不会有浏览器兼容问题？',
+            answer:
+              'clip-path: polygon 在当前主流浏览器（Chrome、Edge、Firefox、Safari）均已支持，移动端兼容性也很好；若需兼容非常老旧的浏览器，可优先选择三角形 / 箭头使用的 border 方案，两者生成结果并列展示，便于按项目目标选择。',
+          },
+          {
+            question: '为什么三角形元素的宽高是 0？',
+            answer:
+              '透明边框法的原理是让元素自身宽高为 0，再用四个方向、不同颜色的边框拼接；朝向目标方向的边框着色，其余三边设为 transparent，浏览器渲染边框斜边时自然形成三角形。这是纯 CSS 三角形最经典的零图片实现。',
+          },
+          {
+            question: '生成的颜色安全吗？',
+            answer:
+              '颜色值必须命中命名色白名单或 #rgb / #rrggbb / #rrggbbaa 格式，任何包含表达式、url 或脚本的输入都会回退为黑色，避免把恶意字符串注入到生成的 CSS 中。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CSS Shape Generator turns hand-written CSS shape recipes into a parameterized tool. Drawing shapes with pure CSS follows three main techniques: the transparent-border trick uses the four borders of a zero-size element to compose triangles and arrows; border-radius turns rectangles into circles and ellipses with percentage radii; and clip-path: polygon defines octagons, trapezoids and other polygons with percentage vertices. A set of dependency-free pure functions deterministically maps width, height, color, direction, cut ratio and other parameters into CSS declarations, emitting ready-to-paste rules alongside a live preview.',
+        coreFeatures: [
+          'Seven shapes: triangle, arrow, circle, ellipse, speech bubble, octagon and trapezoid',
+          'Automatic technique matching across transparent borders, border-radius and clip-path polygon',
+          'Parameterized controls for size, color, direction, radius, cut ratio, top width and bubble tail',
+          'Live preview on a checkerboard background that makes transparent regions obvious',
+          'Safe color input through named-color allow-list and hex validation, blocking expression injection',
+          'Fully local geometry and code generation on the main thread with no network requests',
+        ],
+        howToUse: [
+          'Choose the target shape type at the top',
+          'Adjust size, color, direction and shape-specific parameters in the left panel',
+          'Confirm the result and its implementation technique in the live preview card',
+          'Click Copy CSS to grab the .shape rule, paste it into your stylesheet and rename the class as needed',
+        ],
+        useCases: [
+          'Building tooltip tails, step arrows and chat bubbles without image assets',
+          'Generating pure-CSS decorative graphics for landing pages',
+          'Learning the geometry behind transparent borders and clip-path polygons',
+          'Comparing visual outcomes of shape parameters during design reviews',
+        ],
+        privacyNote:
+          'All parameters live only in component memory. Geometry calculations and CSS text generation run entirely locally; the tool makes no network requests and writes nothing to browser storage.',
+        faqs: [
+          {
+            question: 'Are clip-path solutions compatible across browsers?',
+            answer:
+              'clip-path: polygon is supported by all current mainstream browsers including Chrome, Edge, Firefox and Safari, with strong mobile support as well. For very old browser targets, prefer the border-based technique used for triangles and arrows; both outputs are shown so you can choose according to your project requirements.',
+          },
+          {
+            question: 'Why does the triangle element have zero width and height?',
+            answer:
+              'The transparent-border trick relies on a zero-size element whose four borders meet at angles. The border pointing toward the target direction is colored while the other three are transparent, and the browser renders the border slopes as a triangle. This is the classic image-free CSS triangle technique.',
+          },
+          {
+            question: 'Is the generated color safe?',
+            answer:
+              'Color values must match the named-color allow-list or the #rgb / #rrggbb / #rrggbbaa formats. Any input containing expressions, urls or scripts falls back to black, preventing malicious strings from being injected into the generated CSS.',
           },
         ],
       },
