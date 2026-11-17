@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261115140201 | 简体中文 ↔ 繁体中文转换器（词组级映射，含台湾 / 香港变体与地区用词） | Web Tool | Existing Gap | `chinese-s2t-converter` / [PR #262](https://github.com/Happyileaf/tool-craft/pull/262) | 2026-11-17 | [详情](./idea-details/20261115140201.md) |
+| 20261109200616 | BBCode ↔ HTML 双向转换器（论坛标记语言与富文本互转） | Web Tool | Existing Gap | `bbcode-html-converter` / [PR #262](https://github.com/Happyileaf/tool-craft/pull/262) | 2026-11-17 | [详情](./idea-details/20261109200616.md) |
+| 20261107200152 | 培根 / 栅栏 / Playfair / Atbash 古典密码合集 | Web Tool | Exploration | `classical-cipher-collection` / [PR #262](https://github.com/Happyileaf/tool-craft/pull/262) | 2026-11-17 | [详情](./idea-details/20261107200152.md) |
+| 20261027201028 | 概率分布计算器（正态 / 二项 / 泊松 PMF、PDF、CDF 与分位） | Web Tool | Exploration | `probability-distribution-calculator` / [PR #262](https://github.com/Happyileaf/tool-craft/pull/262) | 2026-11-17 | [详情](./idea-details/20261027201028.md) |
+| 20261023020510 | CSS 形状生成器 | Web Tool | Exploration | `css-shape-generator` / [PR #262](https://github.com/Happyileaf/tool-craft/pull/262) | 2026-11-17 | [详情](./idea-details/20261023020510.md) |
 | 20261116141427 | 电阻 / 阻抗网络 Δ-Y（三角形-星形）双向等效变换计算器 | Web Tool | Existing Gap | `delta-wye-transform` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261116141427.md) |
 | 20261116141426 | ADC / DAC 量化参数计算器（分辨率 / LSB / 量化误差 / SNR / 电压码值互算） | Web Tool | Exploration | `adc-dac-quantizer` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261116141426.md) |
 | 20261115140203 | 体脂率估算计算器（US Navy 围度法 / BMI 推导法 + 腰臀比风险区间） | Web Tool | Existing Gap | `body-fat-calculator` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261115140203.md) |
