@@ -39491,6 +39491,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'wake-on-lan-magic-packet',
+    name: 'Wake-on-LAN 魔术包构造器（含反向校验解析）',
+    nameEn: 'Wake-on-LAN Magic Packet Builder & Parser',
+    description:
+      '把目标网卡 MAC 地址构造为 102 字节 AMD WoL 魔术包（6 字节 0xFF 同步流 + 16 次 MAC 重复），支持冒号 / 连字符 / Cisco 点分等多种 MAC 写法，输出紧凑与带空格十六进制；反向解析校验魔术包长度、同步流与 16 次重复一致性并还原目标 MAC，纯本地零依赖。',
+    descriptionEn:
+      'Build a 102-byte AMD Wake-on-LAN magic packet (6-byte 0xFF sync stream plus 16 MAC repetitions) from a target NIC MAC in colon, hyphen or Cisco dotted notation, with compact and spaced hex output; reverse-parse any hex packet to validate length, sync stream and repetition consistency and recover the target MAC, fully local.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/wake-on-lan-magic-packet',
+    iconName: 'Wifi',
+    tags: ['Wake-on-LAN', 'WoL', '魔术包', 'MAC 地址', '网络唤醒', 'UDP'],
+    tagsEn: ['Wake-on-LAN', 'WoL', 'Magic Packet', 'MAC', 'Network Wake', 'UDP'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Wake-on-LAN 魔术包构造器在浏览器本地把目标网卡 MAC 地址转换为 AMD Magic Packet Technology 定义的唤醒帧：前 6 字节为全 0xFF 同步流，随后连续重复 16 次目标 MAC，整帧固定 102 字节。工具同时提供反向校验：粘贴任意魔术包十六进制，验证其长度、同步流与 16 次 MAC 重复是否一致，并还原出目标 MAC 地址。',
+        coreFeatures: [
+          '多写法 MAC 解析：支持冒号（AA:BB:CC:DD:EE:FF）、连字符、无分隔符与 Cisco 点分（0011.2233.4455）格式，自动规范化为大写冒号形式',
+          '标准帧构造：6 字节 0xFF 同步流 + 16 次 MAC 重复，输出固定 102 字节的 Uint8Array',
+          '双格式十六进制输出：紧凑 HEX 与带空格 HEX，一键复制，便于嵌入脚本或报文调试工具',
+          '反向校验解析：校验帧长（必须 102 字节）、同步流（必须全 0xFF）与 16 次 MAC 一致性，损坏位置精确报错',
+          '全部运算为本地字节拼装，不发起任何 UDP 广播或网络请求，零第三方依赖',
+        ],
+        howToUse: [
+          '在「构造魔术包」页签输入目标设备网卡 MAC，支持多种常见分隔符写法',
+          '查看实时生成的 102 字节十六进制帧，点击按钮复制紧凑或带空格格式',
+          '切换到「校验 / 解析」页签，粘贴收到的魔术包十六进制（允许空格、换行与 0x 前缀）',
+          '查看还原出的目标 MAC、同步流与重复次数；帧损坏时根据错误信息定位问题',
+        ],
+        useCases: [
+          '编写或调试网络唤醒脚本前，先在本地确认魔术包字节结构是否正确',
+          '网络运维教学中演示 WoL 帧格式，以及同步流、MAC 重复等字段含义',
+          '对抓包得到的 WoL 报文做离线校验，确认目标 MAC 与帧完整性',
+        ],
+        privacyNote:
+          'MAC 地址与魔术包仅在浏览器本地处理，工具不会发送任何网络报文，也不存储或上传输入数据。',
+        faqs: [
+          {
+            question: '魔术包为什么是 102 字节？',
+            answer:
+              'AMD 定义的魔术包结构固定为 6 字节同步流（FF FF FF FF FF FF）加上 16 次目标 MAC 地址重复（每次 6 字节），6 + 16×6 = 102 字节。该帧通常封装在 UDP 广播报文中（常用端口 7 或 9），本工具只构造帧本身，不负责发送。',
+          },
+          {
+            question: '支持哪些 MAC 地址写法？',
+            answer:
+              '支持冒号分隔（AA:BB:CC:DD:EE:FF）、连字符分隔、无分隔符的 12 位十六进制，以及 Cisco 风格的点分写法（0011.2233.4455，三组 4 位十六进制）。输入会统一规范化为大写冒号形式；字节数不是 6 或含非法字符时会给出明确错误。',
+          },
+          {
+            question: '反向解析报「第 N 次 MAC 重复不一致」是什么意思？',
+            answer:
+              '合法魔术包中同步流之后的 16 次 MAC 必须逐字节相同。解析器逐次比对，一旦某次重复与第一次不符即说明帧在传输或粘贴过程中被截断、篡改或损坏，会指出具体是第几次重复出错，而不是静默返回错误结果。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Wake-on-LAN Magic Packet Builder converts a target NIC MAC address locally into the wake frame defined by AMD Magic Packet Technology: a 6-byte all-0xFF sync stream followed by 16 repetitions of the target MAC, totalling a fixed 102 bytes. It also works in reverse: paste any magic packet in hex to validate its length, sync stream and repetition consistency and recover the target MAC address.',
+        coreFeatures: [
+          'Multi-notation MAC parsing: colon (AA:BB:CC:DD:EE:FF), hyphen, bare 12-hex-digit and Cisco dotted style (0011.2233.4455), normalized to uppercase colon form',
+          'Standard frame construction: 6-byte 0xFF sync stream plus 16 MAC repetitions, always a 102-byte Uint8Array',
+          'Dual hex output: compact and spaced hex with one-click copy, ready for scripts or packet debuggers',
+          'Reverse validation: checks frame length (must be 102 bytes), sync stream (all 0xFF) and that all 16 MAC copies match, reporting the exact damaged repetition',
+          'Pure local byte assembly with no UDP broadcast, no network requests and no third-party dependencies',
+        ],
+        howToUse: [
+          'On the Build tab, enter the target device NIC MAC in any supported notation',
+          'Review the generated 102-byte hex frame and copy it in compact or spaced form',
+          'Switch to the Validate/Parse tab and paste a captured magic packet in hex (spaces, newlines and 0x prefixes allowed)',
+          'Inspect the recovered target MAC, sync stream and repetition count; damaged frames produce a precise error',
+        ],
+        useCases: [
+          'Verifying magic packet byte structure before embedding it in a wake-on-LAN script',
+          'Teaching the WoL frame format, including the sync stream and MAC repetition semantics',
+          'Offline validation of captured WoL traffic to confirm the target MAC and frame integrity',
+        ],
+        privacyNote:
+          'MAC addresses and packets are processed only in your browser; the tool sends no network traffic and never stores or uploads your input.',
+        faqs: [
+          {
+            question: 'Why is the magic packet 102 bytes?',
+            answer:
+              'The AMD magic packet is a fixed 6-byte sync stream (FF FF FF FF FF FF) followed by 16 copies of the target MAC (6 bytes each): 6 + 16×6 = 102 bytes. It is usually carried inside a UDP broadcast datagram (often port 7 or 9); this tool builds the frame only and does not transmit it.',
+          },
+          {
+            question: 'Which MAC notations are accepted?',
+            answer:
+              'Colon-separated (AA:BB:CC:DD:EE:FF), hyphen-separated, bare 12 hex digits, and Cisco dotted notation (0011.2233.4455, three groups of four hex digits). Input is normalized to uppercase colon form; anything that is not exactly 6 bytes or contains illegal characters raises a clear error.',
+          },
+          {
+            question: 'What does "MAC repetition N mismatch" mean during parsing?',
+            answer:
+              'In a valid packet the 16 MAC copies after the sync stream must be byte-identical. The parser compares each copy against the first; a mismatch means the frame was truncated, altered or corrupted during transport or pasting, and the offending repetition number is reported instead of silently returning a wrong result.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

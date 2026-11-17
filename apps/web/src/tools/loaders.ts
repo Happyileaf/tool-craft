@@ -415,4 +415,5 @@ export const toolLoaders: Record<
   'body-fat-calculator': () => import('./body-fat-calculator'),
   'severance-pay-calculator': () => import('./severance-pay-calculator'),
   'fen-parser': () => import('./fen-parser'),
+  'wake-on-lan-magic-packet': () => import('./wake-on-lan-magic-packet'),
 };
