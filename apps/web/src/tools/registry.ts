@@ -40539,6 +40539,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'reynolds-number-calculator',
+    name: '雷诺数与管内流态判定计算器（圆管沿程阻力）',
+    nameEn: 'Reynolds Number & Pipe Flow Regime Calculator',
+    description:
+      '输入流速（或体积流量）、圆管内径与运动黏度，计算雷诺数 Re 并判定层流（Re<2300）/临界（2300–4000）/湍流（>4000）；层流按 64/Re、湍流按 Swamee–Jain 显式式求 Darcy 摩擦系数，再由 Darcy–Weisbach 计算单位长度沿程水头损失与压降，内置水、空气等介质预设与管材粗糙度参考，纯浏览器本地计算。',
+    descriptionEn:
+      'Enter velocity (or volumetric flow rate), pipe inner diameter and kinematic viscosity to obtain the Reynolds number Re and classify flow as laminar (Re<2300), critical (2300–4000) or turbulent (>4000). Laminar friction uses 64/Re while turbulent flow uses the explicit Swamee–Jain equation, followed by Darcy–Weisbach head loss and pressure drop per unit length, with fluid presets and pipe roughness hints. Runs fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/reynolds-number-calculator',
+    iconName: 'Droplets',
+    tags: ['雷诺数', '流态', '沿程阻力', '摩擦系数', '水头损失', '流体力学', '暖通'],
+    tagsEn: ['Reynolds Number', 'Flow Regime', 'Head Loss', 'Friction Factor', 'Darcy-Weisbach', 'Fluid Mechanics', 'HVAC'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'v=1 m/s, d=50 mm, 20°C 水',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具面向流体、暖通与给排水入门工程计算：由流速或体积流量、圆管内径与运动黏度求雷诺数 Re=v·d/ν，按 2300/4000 分界判定层流、临界过渡区或湍流；层流摩擦系数取解析解 f=64/Re，湍流采用 Swamee–Jain 显式式（光滑管 ε=0 也适用），再经 Darcy–Weisbach 公式级联得到单位长度沿程水头损失 hf/L 与压降 ΔP/L。所有计算在浏览器本地完成。',
+        coreFeatures: [
+          '两种输入模式：流速 v+内径 d，或体积流量 Q+内径 d，按 Q=v·πd²/4 自动互算',
+          '雷诺数计算与层流/临界/湍流三态判定，临界区明确提示摩擦公式不适用',
+          'Darcy 摩擦系数：层流 64/Re 解析解，湍流 Swamee–Jain 显式式，支持相对粗糙度 ε/d',
+          'Darcy–Weisbach 级联输出 hf/L（mm/m、m/100m）与 ΔP/L（Pa/m、kPa/100m）多单位',
+          '内置 20°C 水、60°C 热水、20°C 空气等介质预设与常用管材粗糙度参考',
+        ],
+        howToUse: [
+          '选择输入模式并填写流速或流量、圆管内径，可在单位下拉中切换 mm、m³/h、L/min 等单位',
+          '选择介质预设自动回填运动黏度与密度，或选择“自定义”手动覆写 ν 与 ρ',
+          '填写管壁绝对粗糙度（光滑管留空或 0），结果区即时显示 Re、流态徽标、摩擦系数与损失',
+          '临界过渡区不会强行给出摩擦系数；密度留空时仅输出水头损失而不计算压降',
+        ],
+        useCases: [
+          '判断供水、空调水管内的流态并估算沿程水头损失与泵扬程需求',
+          '通风管道选型：由风量与管径校核雷诺数与单位长度压降',
+          '流体力学教学：对照层流 64/Re 与湍流 Swamee–Jain 公式的适用区间',
+        ],
+        privacyNote:
+          '全部为浏览器本地同步运算，管路与流体参数不会离开设备，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么临界区（2300–4000）不给出摩擦系数？',
+            answer:
+              '该区间是层流向湍流的过渡段，流态不稳定，层流公式 64/Re 与湍流显式式均不能可靠预测摩擦系数。工具明确标注“公式不适用”而非给出虚假数值，工程上通常按湍流偏保守估算或查阅实验曲线。',
+          },
+          {
+            question: 'Swamee–Jain 公式与 Colebrook 方程差别大吗？',
+            answer:
+              'Swamee–Jain 是 Colebrook 隐式方程的显式拟合式，在 Re 10⁴–10⁶、ε/d 0–0.01 的常用区间内与 Colebrook 数值解偏差通常小于 2%，且无需迭代，适合浏览器内即时计算。',
+          },
+          {
+            question: 'Darcy 摩擦系数和 Fanning 摩擦系数是一回事吗？',
+            answer:
+              '不是。本工具使用 Darcy 摩擦系数 f，层流时 f=64/Re；Fanning 摩擦系数 f′=f/4，层流时为 16/Re。Darcy–Weisbach 水头损失公式 hf=f·(L/d)·v²/(2g) 与 Darcy 系数配套，引用教材或软件结果时需先确认系数体系。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool covers introductory fluid, HVAC and plumbing calculations: from velocity or volumetric flow rate, pipe inner diameter and kinematic viscosity it derives Re=v·d/ν, classifies laminar / critical / turbulent flow at the 2300/4000 thresholds, computes the Darcy friction factor (64/Re for laminar, explicit Swamee–Jain for turbulent, including smooth pipes), and chains the Darcy–Weisbach equation to head loss and pressure drop per unit length. Everything runs locally in the browser.',
+        coreFeatures: [
+          'Two input modes: velocity v + diameter d, or flow rate Q + diameter d, linked via Q=v·πd²/4',
+          'Reynolds number with three-way laminar/critical/turbulent classification and explicit critical-zone warning',
+          'Darcy friction factor: analytical 64/Re for laminar flow, Swamee–Jain explicit equation for turbulent flow with ε/d support',
+          'Darcy–Weisbach outputs in multiple units: hf/L in mm/m and m/100m, ΔP/L in Pa/m and kPa/100m',
+          'Built-in fluid presets (20°C/60°C water, 20°C air, oil) and common pipe-material roughness hints',
+        ],
+        howToUse: [
+          'Pick an input mode and fill velocity or flow rate plus inner diameter, switching units such as mm, m³/h or L/min in the dropdowns',
+          'Choose a fluid preset to fill viscosity and density automatically, or select Custom to override ν and ρ',
+          'Enter absolute wall roughness (leave empty or 0 for smooth pipes); results update instantly with Re, regime badge, friction factor and losses',
+          'The critical zone intentionally omits the friction factor; leaving density empty yields head loss only without pressure drop',
+        ],
+        useCases: [
+          'Classify flow in water-supply or HVAC pipes and estimate friction head loss and pump head requirements',
+          'Duct sizing: check Reynolds number and pressure gradient from air flow rate and duct diameter',
+          'Fluid-mechanics teaching: compare the laminar 64/Re and turbulent Swamee–Jain applicability ranges',
+        ],
+        privacyNote:
+          'All computation is synchronous and local; pipe and fluid parameters never leave your device and no network requests are made.',
+        faqs: [
+          {
+            question: 'Why is no friction factor shown in the critical zone (2300–4000)?',
+            answer:
+              'This transitional band has unstable flow where neither the laminar 64/Re formula nor the turbulent explicit equation reliably predicts friction. The tool reports “not applicable” instead of bogus numbers; engineers often conservatively treat it as turbulent or consult experimental curves.',
+          },
+          {
+            question: 'How different are Swamee–Jain and Colebrook?',
+            answer:
+              'Swamee–Jain is an explicit curve-fit of the implicit Colebrook equation. Over the common range Re 10⁴–10⁶ and ε/d 0–0.01 it typically stays within 2% of the Colebrook numerical solution while requiring no iteration, which suits instant in-browser calculation.',
+          },
+          {
+            question: 'Are Darcy and Fanning friction factors the same?',
+            answer:
+              'No. This tool uses the Darcy factor f, equal to 64/Re for laminar flow; the Fanning factor f′=f/4 equals 16/Re. The Darcy–Weisbach head-loss equation hf=f·(L/d)·v²/(2g) pairs with the Darcy factor, so always confirm the convention when cross-checking textbooks or software.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

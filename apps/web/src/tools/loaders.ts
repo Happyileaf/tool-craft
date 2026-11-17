@@ -426,4 +426,5 @@ export const toolLoaders: Record<
     import('./probability-distribution-calculator'),
   'bbcode-html-converter': () => import('./bbcode-html-converter'),
   'css-shape-generator': () => import('./css-shape-generator'),
+  'reynolds-number-calculator': () => import('./reynolds-number-calculator'),
 };
