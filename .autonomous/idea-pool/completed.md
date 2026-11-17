@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261117200507 | 理想气体状态方程（PV=nRT）计算器（四量求一 + 单位换算） | Web Tool | Exploration | `ideal-gas-law-calculator` / [PR #265](https://github.com/Happyileaf/tool-craft/pull/265) | 2026-11-18 | [详情](./idea-details/20261117200507.md) |
+| 20261117140210 | 年金现值 / 终值计算器（普通、预付、递延、永续年金） | Web Tool | Existing Gap | `annuity-calculator` / [PR #265](https://github.com/Happyileaf/tool-craft/pull/265) | 2026-11-18 | [详情](./idea-details/20261117140210.md) |
+| 20261117140209 | 室内平均照度计算器（利用系数法/流明法） | Web Tool | Exploration | `average-illuminance-calculator` / [PR #265](https://github.com/Happyileaf/tool-craft/pull/265) | 2026-11-18 | [详情](./idea-details/20261117140209.md) |
+| 20261117140208 | 梁弯曲应力与挠度计算器（简支/悬臂、点载与均布载） | Web Tool | Exploration | `beam-bending-calculator` / [PR #265](https://github.com/Happyileaf/tool-craft/pull/265) | 2026-11-18 | [详情](./idea-details/20261117140208.md) |
+| 20261117140207 | 雷诺数与管内流态判定计算器（圆管沿程阻力） | Web Tool | Exploration | `reynolds-number-calculator` / [PR #265](https://github.com/Happyileaf/tool-craft/pull/265) | 2026-11-18 | [详情](./idea-details/20261117140207.md) |
 | 20261116141427 | 电阻 / 阻抗网络 Δ-Y（三角形-星形）双向等效变换计算器 | Web Tool | Existing Gap | `delta-wye-transform` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261116141427.md) |
 | 20261116141426 | ADC / DAC 量化参数计算器（分辨率 / LSB / 量化误差 / SNR / 电压码值互算） | Web Tool | Exploration | `adc-dac-quantizer` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261116141426.md) |
 | 20261115140203 | 体脂率估算计算器（US Navy 围度法 / BMI 推导法 + 腰臀比风险区间） | Web Tool | Existing Gap | `body-fat-calculator` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261115140203.md) |
