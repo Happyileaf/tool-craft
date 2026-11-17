@@ -370,4 +370,5 @@
 | 20261117140208 | 梁弯曲应力与挠度计算器（简支/悬臂、点载与均布载） | Web Tool | Exploration | Pending | 2026-11-17 | | [详情](./idea-details/20261117140208.md) |
 | 20261117140209 | 室内平均照度计算器（利用系数法/流明法） | Web Tool | Exploration | Pending | 2026-11-17 | | [详情](./idea-details/20261117140209.md) |
 | 20261117140210 | 年金现值 / 终值计算器（普通、预付、递延、永续年金） | Web Tool | Existing Gap | Pending | 2026-11-17 | | [详情](./idea-details/20261117140210.md) |
+| 20261117200504 | BIC / SWIFT 银行代码校验与解析器（ISO 9362 结构校验） | Web Tool | Existing Gap | Pending | 2026-11-17 | - | [详情](./idea-details/20261117200504.md) |
 
