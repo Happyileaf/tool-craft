@@ -15,6 +15,11 @@ import { DEFAULT_BITS as MANCHESTER_SAMPLE } from './manchester-line-codec/const
 import { DEFAULT_UDP_HEX as UDP_DATAGRAM_SAMPLE } from './udp-datagram-codec/constants';
 import { DEFAULT_RTP_HEX as RTP_HEADER_SAMPLE } from './rtp-header-codec/constants';
 import { DEFAULT_TEXT as PORTER_SAMPLE } from './porter-stemmer/constants';
+import { DEFAULT_TEXT as CHINESE_S2T_SAMPLE } from './chinese-s2t-converter/constants';
+import { DEFAULT_TEXT as CIPHER_SAMPLE } from './classical-cipher-collection/constants';
+import { DEFAULT_DISTRIBUTION as PROBABILITY_SAMPLE } from './probability-distribution-calculator/constants';
+import { DEFAULT_BBCODE as BBCODE_SAMPLE } from './bbcode-html-converter/constants';
+import { DEFAULT_CONFIG as CSS_SHAPE_SAMPLE } from './css-shape-generator/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -39999,6 +40004,112 @@ sqrt(area) + 2 * r`,
             question: 'What does the highlighted "first frame" mean?',
             answer:
               'The first frame is the earliest frame that is neither a node: built-in nor native and carries a file location — typically the call site closest to your own code. It gets a green row and "first frame" tag, and its index is exposed as firstUserFrameIndex.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'chinese-s2t-converter',
+    name: '简繁中文转换器',
+    nameEn: 'Simplified-Traditional Chinese Converter',
+    description:
+      '基于词组级最长匹配与单字级静态映射的简繁双向转换，正确处理「发 / 面 / 干 / 松」等一对多歧义字，支持通用、台湾、香港三种地区用词变体，实时输出替换统计，纯本地零上传。',
+    descriptionEn:
+      'Bidirectional simplified-traditional Chinese conversion based on longest-match phrase tables and per-character static maps, correctly handling one-to-many ambiguous characters such as fa/mian/gan/song, with standard, Taiwan and Hong Kong regional variants, live replacement statistics, and fully local processing.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/chinese-s2t-converter',
+    iconName: 'Language',
+    tags: ['简繁转换', '繁体', '台湾用词', '香港用词', '中文处理'],
+    tagsEn: ['S2T', 'Traditional Chinese', 'Taiwan Locale', 'Hong Kong Locale', 'Chinese NLP'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: CHINESE_S2T_SAMPLE,
+    doc: {
+      zh: {
+        whatIsIt:
+          '简繁中文转换器是一款纯浏览器本地的中文文本转换工具，采用「词组级最长匹配 + 单字级兜底」两级静态映射，在简体与繁体之间双向转换。它针对简繁关系中最棘手的一对多歧义字（如简体「发」对应繁体「發 / 髮」、「面」对应「面 / 麵」、「干」对应「干 / 幹 / 乾」、「松」对应「松 / 鬆」）内置词组表，确保「理发 → 理髮」而「发展 → 發展」、「牛肉面 → 牛肉麵」而「当面 → 當面」。工具还提供通用繁体、台湾地区用词（软件→軟體、公交車→公車）与香港地区用词（出租车→的士、公交车→巴士）三种变体，并实时统计替换事件数与输入输出字符数。',
+        coreFeatures: [
+          '双向转换：简体转繁体、繁体转简体，一键交换方向并以结果回填',
+          '词组级歧义消解：最长匹配优先，正确区分發/髮、面/麵、幹/乾/干、松/鬆等高频歧义',
+          '三种地区变体：通用繁体、台湾用词、香港用词，覆盖 IT、饮食、交通等高频地区差异词',
+          '单字级兜底映射：覆盖数百个高频简繁异写字，未命中字符（英文、数字、标点）原样保留',
+          '实时统计：输入 / 输出字符数（按 Unicode 码点计）与替换事件次数',
+          '纯本地零依赖：静态映射表 + 纯函数计算，不请求任何网络服务，文本不上传',
+        ],
+        howToUse: [
+          '把中文文本粘贴到输入框，或点击「载入样例」查看内置示例',
+          '选择转换方向（简体→繁体 / 繁体→简体），结果随输入实时更新',
+          '需要地区用词时切换「台湾用词」或「香港用词」变体，转换结果会额外替换地区差异词',
+          '点击「交换方向并以结果回填」可基于当前结果反向转换，点击复制按钮导出结果',
+        ],
+        useCases: [
+          '面向港澳台用户发布内容前的本地化文案转换',
+          '字幕、游戏文本、软件界面多地区版本的快速对照',
+          '中文 NLP 预处理中统一字形，或演示简繁一对多映射的不对称性',
+          '核对地区用词差异（如软件/軟體、鼠标/滑鼠、地铁/捷運）',
+        ],
+        privacyNote:
+          '全部转换由浏览器内存中的静态映射表与纯函数完成，不发起任何网络请求、不写入本地存储，输入文本刷新页面即消失。',
+        faqs: [
+          {
+            question: '为什么繁体转简体时「發」和「髮」都变成了「发」？',
+            answer:
+              '这是简繁关系的固有不对称性：一个简体字可能对应多个繁体字，而反向转换只能合并为单一简体字形。工具在简体转繁体时通过词组表区分语境（理发→理髮、发展→發展），繁体转简体则按合并规则统一为「发」。',
+          },
+          {
+            question: '台湾变体和香港变体有什么区别？',
+            answer:
+              '两者都先完成通用简繁转换，再替换地区用词。台湾变体采用台湾常用 IT 与生活用词（软件→軟體、服务器→伺服器、地铁→捷運、菠萝→鳳梨）；香港变体采用港式用词（公交车→巴士、出租车→的士、屏幕→熒幕、方便面→公仔麵）。部分词两个地区相同（如鼠标→滑鼠），部分则各自不同。',
+          },
+          {
+            question: '转换结果的准确度如何保证？',
+            answer:
+              '工具内置高频单字映射与数十条歧义词组，并按最长词组优先匹配来避免误判。但简繁转换涉及语境理解，静态映射无法覆盖全部专有名词与生僻用法，因此未命中的字符会原样保留，方便人工复核；对正式发布内容建议再做一次校对。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Simplified-Traditional Chinese Converter is a fully in-browser text tool that converts between simplified and traditional Chinese using a two-level static scheme: longest-match phrase tables followed by per-character fallback mapping. It specifically handles the notorious one-to-many ambiguous simplified characters — for example fa maps to 發/髮, mian to 面/麵, gan to 干/幹/乾 and song to 松/鬆 — so that haircut becomes 理髮 while development becomes 發展, and beef noodles becomes 牛肉麵 while face-to-face stays 當面. Three regional variants are offered: standard traditional, Taiwan usage (software→軟體, bus→公車) and Hong Kong usage (taxi→的士, bus→巴士), with live counts of replacement events and input/output characters.',
+        coreFeatures: [
+          'Bidirectional conversion: simplified-to-traditional and traditional-to-simplified, with one-click direction swap that back-fills the result',
+          'Phrase-level disambiguation: longest-match-first tables correctly separate 發/髮, 面/麵, 幹/乾/干 and 松/鬆 in context',
+          'Three regional variants: standard traditional, Taiwan locale and Hong Kong locale, covering high-frequency IT, food and transport vocabulary',
+          'Per-character fallback map covering hundreds of common variant characters; unmatched characters (English, digits, punctuation) are preserved',
+          'Live statistics: input/output character counts by Unicode code point and replacement event count',
+          'Fully local and dependency-free: static tables plus pure functions, no network calls and no upload',
+        ],
+        howToUse: [
+          'Paste Chinese text into the input box or load the built-in sample',
+          'Choose the conversion direction; the result updates in real time as you type',
+          'Switch to the Taiwan or Hong Kong variant when regional vocabulary is needed',
+          'Use the swap button to reverse the conversion from the current result, or copy the output with one click',
+        ],
+        useCases: [
+          'Localizing marketing or product copy before publishing to Taiwan, Hong Kong or Macau audiences',
+          'Quick comparison of subtitles, game text and software UI across regional Chinese variants',
+          'Character normalization in Chinese NLP preprocessing and demos of asymmetric s2t mapping',
+          'Checking regional vocabulary differences such as 软件/軟體, 鼠标/滑鼠 and 地铁/捷運',
+        ],
+        privacyNote:
+          'All conversion runs in browser memory through static mapping tables and pure functions. No network request is made, nothing is written to storage, and the input disappears when the page refreshes.',
+        faqs: [
+          {
+            question: 'Why do both 發 and 髮 become 发 when converting traditional to simplified?',
+            answer:
+              'This reflects the inherent asymmetry of the simplified-traditional relationship: one simplified character can correspond to several traditional forms, so reverse conversion merges them into one glyph. Simplified-to-traditional uses phrase context to choose correctly (理发→理髮 vs 发展→發展), while traditional-to-simplified deliberately merges both back into 发.',
+          },
+          {
+            question: 'What is the difference between the Taiwan and Hong Kong variants?',
+            answer:
+              'Both first perform the standard conversion and then replace regional vocabulary. Taiwan uses common Taiwanese IT and daily terms (软件→軟體, 服务器→伺服器, 地铁→捷運, 菠萝→鳳梨); Hong Kong uses Cantonese-region terms (公交车→巴士, 出租车→的士, 屏幕→熒幕, 方便面→公仔麵). Some words coincide (鼠标→滑鼠) while others differ.',
+          },
+          {
+            question: 'How accurate is the conversion?',
+            answer:
+              'The tool ships with a high-frequency character map and dozens of disambiguation phrases matched longest-first to avoid misfires. Because full conversion requires contextual understanding, static tables cannot cover every proper noun or rare usage; unmatched characters are preserved verbatim for human review, and formal publications should still be proofread.',
           },
         ],
       },
