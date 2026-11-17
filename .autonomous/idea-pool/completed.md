@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261118040102 | DNS CAA 记录生成与校验器（RFC 8659/8658，issue/issuewild/iodef 标签与多值语法） | Web Tool | Existing Gap | `caa-record-generator` / [PR #273](https://github.com/Happyileaf/tool-craft/pull/273) | 2026-11-18 | [详情](./idea-details/20261118040102.md) |
+| 20261117200504 | BIC / SWIFT 银行代码校验与解析器（ISO 9362 结构校验） | Web Tool | Existing Gap | `bic-code-validator` / [PR #273](https://github.com/Happyileaf/tool-craft/pull/273) | 2026-11-18 | [详情](./idea-details/20261117200504.md) |
+| 20261107140226 | iCalendar VTODO / VJOURNAL 待办与日记组件生成器（RFC 5545） | Web Tool | Existing Gap | `ical-todo-journal-generator` / [PR #273](https://github.com/Happyileaf/tool-craft/pull/273) | 2026-11-18 | [详情](./idea-details/20261107140226.md) |
+| 20261106160207 | GS1-128 / SSCC / EAN-14 校验位计算器与包装层级条码助手 | Web Tool | External Reference | `gs1-checksum-calculator` / [PR #273](https://github.com/Happyileaf/tool-craft/pull/273) | 2026-11-18 | [详情](./idea-details/20261106160207.md) |
+| 20261105080303 | DICOM UID 生成器与校验器（医疗影像唯一标识符，根 UID + 后缀） | Web Tool | External Reference | `dicom-uid-tool` / [PR #273](https://github.com/Happyileaf/tool-craft/pull/273) | 2026-11-18 | [详情](./idea-details/20261105080303.md) |
 | 20261116141427 | 电阻 / 阻抗网络 Δ-Y（三角形-星形）双向等效变换计算器 | Web Tool | Existing Gap | `delta-wye-transform` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261116141427.md) |
 | 20261116141426 | ADC / DAC 量化参数计算器（分辨率 / LSB / 量化误差 / SNR / 电压码值互算） | Web Tool | Exploration | `adc-dac-quantizer` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261116141426.md) |
 | 20261115140203 | 体脂率估算计算器（US Navy 围度法 / BMI 推导法 + 腰臀比风险区间） | Web Tool | Existing Gap | `body-fat-calculator` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261115140203.md) |
