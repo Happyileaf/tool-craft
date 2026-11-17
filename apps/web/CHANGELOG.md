@@ -4,13 +4,18 @@
 
 ## 日志
 
-## 2026-11-17 ：【Agent自主迭代】新增 Δ-Y 变换、ADC/DAC 量化、体脂率估算、经济补偿金与 FEN 解析 5 个工具
+## 2026-11-17 ：【Agent自主迭代】新增 Δ-Y 变换、ADC/DAC 量化、体脂率估算、经济补偿金、FEN 解析、WoL 魔术包、ACME dns-01、运放、M3U 播放列表与 JS 堆栈解析 10 个工具
 
 - **新增**：电阻 / 阻抗网络 Δ-Y 双向等效变换计算器（delta-wye-transform）— 按「邻边乘积除以三边和」与「两两乘积之和除以对臂」做三角形 ↔ 星形六公式互算，支持 330/1k/2.2kΩ/4.7M 等单位后缀归一、内联 SVG 拓扑示意与三端口等效阻抗自校验，平衡网络 RY=RΔ/3 快捷结论，14 个 Vitest 用例，纯本地运算零依赖
 - **新增**：ADC / DAC 量化参数计算器（adc-dac-quantizer）— 1–32 位分辨率下输出码值总数、LSB、满幅码与满幅电压，单 / 双极性（偏移二进制）双向电压 ↔ 码值互算与 round/floor 取整、clipping 标注，SNR=6.02N+1.76、量化噪声 RMS=LSB/√12 与 SINAD→ENOB 反算，N>24 全程 BigInt 精确码值，16 个 Vitest 用例，纯本地运算零依赖
 - **新增**：体脂率估算计算器（body-fat-calculator）— US Navy 围度法（男女分用颈 / 腰 / 臀对数公式）与 Deurenberg BMI 推导法双引擎，输出体脂率、脂肪 / 瘦体重、BMI、腰臀比 WHR 的 WHO 风险区间与 ACE 五档分级，支持公制 / 英制切换与两法对比差值，矛盾围度即时中文报错并附医学免责声明，19 个 Vitest 用例，纯本地运算零依赖
 - **新增**：经济补偿金与代通知金计算器（severance-pay-calculator）— 依据《劳动合同法》第 40/47/87 条做工龄折算（满一年一个月、满六月按一年、不足六月半个月），支持 N / N+1 代通知金 / 2N 违法解除三情形，自动处理社平工资三倍基数封顶与 12 年年限联动封顶，输出分项计算明细与法律提示，13 个 Vitest 用例，纯本地运算零依赖
 - **新增**：国际象棋 FEN 局面解析与棋盘可视化器（fen-parser）— 4–6 字段 FEN 结构校验（横线 / 格数 / 非法字符 / 连续数字 / 易位重复 / 计数上限）与非阻断合法性警告（王数量、兵在首末横线、王车位置、过路兵目标格三重匹配）分离，Unicode / ASCII 双渲染与黑白双视角，易位权利 KQkq 排序规范化序列化，21 个 Vitest 用例，纯本地运算零依赖
+- **新增**：Wake-on-LAN 魔术包构造与解析器（wake-on-lan-magic-packet）— 按 AMD WoL 规范构造 6 字节 `0xFF` 同步流 + 目标 MAC 重复 16 次的 102 字节魔术包，MAC 支持 `:`/`-`/Cisco `xxxx.xxxx.xxxx` 三种写法双向规范化，提供 Hex/Base64 双视图输出与字节偏移表、反向解析回读校验，非法 MAC/长度/同步流按字段定位报错，14 个 Vitest 用例，纯本地运算零依赖
+- **新增**：ACME dns-01 挑战 TXT 记录生成器（acme-dns01-challenge）— 按 RFC 8555 拼装 key authorization（token + JWK thumbprint）并以 Web Crypto 计算 SHA-256 无填充 Base64URL 的 43 字符 TXT 值，自动生成 `_acme-challenge.` 记录名、剥离 `*.` 通配前缀与末尾点，另支持粘贴已有 key authorization 的结构/字符集校验与重算对照，RFC 固定向量验收，11 个 Vitest 用例，纯本地运算零依赖
+- **新增**：运算放大器电路计算器（opamp-calculator）— 基于理想运放虚短/虚断模型实现反相（Av=−Rf/Rin）、同相（1+Rf/Rg）、反相加法器与差分放大器四拓扑，电阻支持 Ω/kΩ/MΩ 后缀、电压支持 V/mV，输出带符号增益、输出电压、输入阻抗与反馈电流，差分电阻不匹配给共模抑制警告，附四拓扑纯 SVG 示意图与目标增益反推 E24 标称阻值，16 个 Vitest 用例，纯本地运算零依赖
+- **新增**：M3U / M3U8 播放列表生成与解析器（m3u-playlist-tool）— 结构化条目与播放列表文本双向转换，普通 M3U 与 RFC 8216 HLS 媒体列表双模式，自动计算 `#EXT-X-TARGETDURATION`（分片时长向上取整最大值）并支持 VERSION/MEDIA-SEQUENCE/PLAYLIST-TYPE/ENDLIST，逐行状态机解析兼容 BOM 与 CRLF，缺头/未配对 EXTINF/非法时长按行号告警不丢行，支持 .m3u/.m3u8 下载，15 个 Vitest 用例，纯本地运算零依赖
+- **新增**：JavaScript 错误堆栈解析器（js-error-stack-parser）— 自动识别 V8（Chrome/Node）、SpiderMonkey（Firefox）、JavaScriptCore（Safari）三方言并归一为统一帧结构（函数名、文件、行列号），覆盖 eval 嵌套、native code、async 钩子、new 构造与 node:/node_modules 标志，匿名帧统一 `<anonymous>`、不可解析行保留原文标 unparsed，支持用户代码过滤、首帧高亮与固定字段 JSON 序列化，13 个 Vitest 用例，纯本地运算零依赖
 
 ## 2026-11-16 ：【Agent自主迭代】新增曼彻斯特线路码、UDP 报文、RTP 报文头、码率体积与 Porter 词干 5 个工具
 
