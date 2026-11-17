@@ -427,4 +427,5 @@ export const toolLoaders: Record<
   'bbcode-html-converter': () => import('./bbcode-html-converter'),
   'css-shape-generator': () => import('./css-shape-generator'),
   'reynolds-number-calculator': () => import('./reynolds-number-calculator'),
+  'beam-bending-calculator': () => import('./beam-bending-calculator'),
 };

@@ -40641,6 +40641,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'beam-bending-calculator',
+    name: '梁弯曲应力与挠度计算器（简支/悬臂、点载与均布载）',
+    nameEn: 'Beam Bending Stress & Deflection Calculator',
+    description:
+      '选择简支梁或悬臂梁与荷载类型（跨中/任意位置集中力、满跨均布荷载），输入梁长、矩形或圆形截面尺寸（也可直输 I、W）与弹性模量，按材料力学标准梁表闭式解输出最大弯矩 Mmax、弯曲正应力 σ=M/W、最大挠度 δmax 与跨挠比 L/δ，并可按许用应力做通过/超限校核；内置结构钢、铝合金等材料预设，纯浏览器本地计算。',
+    descriptionEn:
+      'Pick a simply-supported or cantilever beam and a load case (mid-span or arbitrary point load, full-span uniform load), then enter length, rectangular/circular section dimensions (or I and W directly) and Young’s modulus to obtain the maximum bending moment Mmax, bending stress σ=M/W, maximum deflection δmax and L/δ ratio from standard closed-form beam tables, with an optional allowable-stress check and steel/aluminum presets. Runs fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/beam-bending-calculator',
+    iconName: 'Ruler',
+    tags: ['梁', '弯曲应力', '挠度', '弯矩', '截面模量', '惯性矩', '材料力学'],
+    tagsEn: ['Beam', 'Bending Stress', 'Deflection', 'Bending Moment', 'Section Modulus', 'Moment of Inertia', 'Mechanics'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '简支梁 L=4m，P=10kN，矩形 100×200mm，E=206GPa',
+    doc: {
+      zh: {
+        whatIsIt:
+          '本工具面向材料力学与结构入门计算，覆盖静定梁的单一荷载工况：简支梁支持跨中集中力、任意位置集中力与满跨均布荷载；悬臂梁（固定端在 x=0）支持自由端/任意位置集中力与满跨均布。截面支持矩形（I=bh³/12、W=bh²/6）、实心圆（I=πd⁴/64、W=πd³/32）与自定义 I/W 直输，按标准梁表闭式公式给出 Mmax、σmax、δmax 及出现位置，并可按许用应力做强度校核。',
+        coreFeatures: [
+          '5 种梁/荷载组合的标准梁表闭式解，输出弯矩、应力、挠度及极值位置与所用公式',
+          '矩形、实心圆截面自动计算 I 与 W，也支持自定义 I/W 直输',
+          '材料预设（Q235/Q355 钢、6061 铝、混凝土、木材）一键回填 E 与参考许用应力',
+          'mm/kN/GPa/MPa 等工程单位自动换算，输出 MPa、mm 与跨挠比 L/δ',
+          '可选强度校核：利用率百分比与通过/超限徽标，恰好等于许用值判通过',
+        ],
+        howToUse: [
+          '选择梁形式与荷载类型，填写梁长、集中力或均布荷载；任意点载需填写距支座/固定端的距离 a',
+          '选择截面类型并填写尺寸，或切换自定义直接输入惯性矩 I 与截面模量 W',
+          '选择材料预设或手动填写弹性模量 E；需要强度校核时填写许用应力 [σ]，留空则跳过',
+          '结果区即时显示 Mmax、σmax、δmax、L/δ 与校核结论，超限或高宽比异常时给出提示',
+        ],
+        useCases: [
+          '估算简支钢梁在设备集中荷载下的弯曲应力与挠度，初选截面规格',
+          '校核悬臂支架自由端受载时固定端弯矩与下挠量',
+          '材料力学教学：对照标准梁表公式验证手算结果',
+        ],
+        privacyNote:
+          '全部为浏览器本地同步运算，梁尺寸、荷载与材料参数不会离开设备，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么不支持多种荷载同时作用？',
+            answer:
+              '多种荷载叠加或连续梁等超静定结构需要积分/位移法等数值过程，超出本工具“标准梁表闭式解”的范围。工具在适用范围中明确排除超静定、组合荷载与压杆稳定，这类场景应使用专业结构软件。',
+          },
+          {
+            question: '自定义 I/W 时两个量都必须填吗？',
+            answer:
+              '是的。挠度计算需要惯性矩 I，弯曲应力需要截面模量 W，二者单位均可切换（如 cm⁴、cm³）。若只知道截面尺寸，直接选择矩形或圆形截面让工具自动计算更方便。',
+          },
+          {
+            question: '跨挠比 L/δ 怎么看？',
+            answer:
+              'L/δ 是梁长与最大挠度的比值，越大说明刚度越富余。常见设计限值参考：一般楼盖 L/250、有吊顶或脆性面层时 L/360 左右，具体应以适用结构规范为准，本工具仅给出量级参考。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This tool covers introductory mechanics-of-materials calculations for statically determinate beams under a single load case: simply-supported beams with mid-span point load, arbitrary point load or full uniform load, and cantilevers (fixed at x=0) with tip/arbitrary point loads or uniform load. Sections may be rectangular (I=bh³/12, W=bh²/6), solid circular (I=πd⁴/64, W=πd³/32) or custom I/W values. Standard closed-form beam tables yield Mmax, σmax, δmax with locations, plus an optional allowable-stress check.',
+        coreFeatures: [
+          'Closed-form beam-table solutions for five beam/load combinations with extremum locations and the formula used',
+          'Automatic I and W for rectangular and solid circular sections, plus direct custom I/W entry',
+          'Material presets (Q235/Q355 steel, 6061 aluminum, concrete, timber) fill E and reference allowable stress',
+          'Engineering unit conversion for mm/kN/GPa/MPa; outputs in MPa, mm and the L/δ stiffness ratio',
+          'Optional strength check with utilization percentage and pass/fail badge; equality with allowable stress passes',
+        ],
+        howToUse: [
+          'Choose beam type and load case, then enter length and point or uniform load; arbitrary point loads also need distance a',
+          'Pick a section type and dimensions, or switch to custom and enter inertia I and section modulus W directly',
+          'Choose a material preset or enter Young’s modulus E manually; fill allowable stress [σ] to enable the check, or leave it empty',
+          'Results update instantly with Mmax, σmax, δmax, L/δ and the check verdict, including over-limit and slender-section warnings',
+        ],
+        useCases: [
+          'Estimate bending stress and deflection of a simply-supported steel beam under equipment loads for initial sizing',
+          'Check the fixed-end moment and tip deflection of a cantilever bracket',
+          'Mechanics teaching: verify hand calculations against standard beam-table formulas',
+        ],
+        privacyNote:
+          'All computation is synchronous and local; beam dimensions, loads and material parameters never leave your device and no network requests are made.',
+        faqs: [
+          {
+            question: 'Why are combined loads not supported?',
+            answer:
+              'Superimposed loads or statically indeterminate continuous beams require integration or displacement methods beyond closed-form beam tables. The scope explicitly excludes indeterminate structures, load combinations and column buckling; use professional structural software for those cases.',
+          },
+          {
+            question: 'Are both I and W required for custom sections?',
+            answer:
+              'Yes. Deflection needs the moment of inertia I and bending stress needs the section modulus W, each with switchable units such as cm⁴ and cm³. If you know the dimensions, choosing the rectangular or circular section type computes both automatically.',
+          },
+          {
+            question: 'How should I interpret the L/δ ratio?',
+            answer:
+              'L/δ compares span to maximum deflection; larger means stiffer. Common design limits are around L/250 for general floors and L/360 with brittle finishes or suspended ceilings, but the governing structural code should be consulted — the tool provides an order-of-magnitude reference only.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
