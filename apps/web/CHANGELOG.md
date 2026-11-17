@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-18 ：【Agent自主迭代】新增 CAA 记录、BIC 校验、GS1 校验位、DICOM UID 与 iCalendar 待办日记 5 个行业标识符/协议工具
+
+- **新增**：CAA DNS 记录生成器与校验器（caa-record-generator）— 按 RFC 8659/8658 生成 issue/issuewild/iodef 三类记录，支持 tag flags（0/128）、accounturi 与 validationmethods（dns-01/http-01/tls-alpn-01）参数、255 字符引号分段与空 value 禁用记录 `0 issue ";"`，双 Tab 生成/校验，20 个 Vitest 用例，纯本地运算零依赖
+- **新增**：BIC/SWIFT 码校验器（bic-code-validator）— 按 ISO 9362 校验 8/11 位银行代码结构（4 位银行码+ISO 3166-1 alpha-2 国家码含 XK+2 位地区码+可选 3 位分行码），识别第二位 0/1 特殊地区码与 XXX 主办公室，单条与批量双视图，20 个 Vitest 用例，纯本地运算零依赖
+- **新增**：GS1 校验位计算器（gs1-checksum-calculator）— 覆盖 SSCC（18 位/AI 00）、GTIN-14/13/12/8 五类条码的 Mod 10 自右向左 ×3/×1 加权校验位，支持补全、校验与 AI 包装/人工可读形式输出，单条与批量双 Tab，19 个 Vitest 用例，纯本地运算零依赖
+- **新增**：DICOM UID 生成器与校验器（dicom-uid-tool）— 按 DICOM PS3.5 Chapter 9 / PS3.7 B.2 在组织根下以 Web Crypto 安全随机数或时间戳+计数器批量生成 Study/Series/SOP Instance UID，强制仅数字与句点、总长 ≤64 字符、component 无前导零（单字符段允许 0）并自检，粘贴 UID 逐段定位违规且识别 NEMA Well-known 保留 UID，20 个 Vitest 用例，纯本地运算零依赖
+- **新增**：iCalendar VTODO/VJOURNAL 待办与日记生成器（ical-todo-journal-generator）— 按 RFC 5545 3.6.2/3.6.3 生成待办（DTSTART/DUE/STATUS/PRIORITY/PERCENT-COMPLETE/COMPLETED/RRULE/RELATED-TO）与日记（DTSTART/STATUS/DESCRIPTION/CATEGORIES），自动 TEXT 转义、UTC 时间、UID/DTSTAMP 与 75 八位组 CRLF 折行（多字节 UTF-8 不截断），支持两类组件合并同一 VCALENDAR 与 .ics 下载，24 个 Vitest 用例，纯本地运算零依赖
+
 ## 2026-11-18 ：【Agent自主迭代】新增雷诺数、梁弯曲、室内平均照度、年金与理想气体 5 个工程/财务/理化计算工具
 
 - **新增**：雷诺数与管内流态判定计算器（reynolds-number-calculator）— 输入流速（或体积流量）、圆管内径与运动黏度计算雷诺数 Re 并判定层流（Re<2300）/临界/湍流（Re>4000），层流按 64/Re、湍流按 Swamee–Jain 显式式求 Darcy 摩擦系数，再由 Darcy–Weisbach 计算单位长度沿程水头损失与压降，内置水、空气等介质预设与管材粗糙度参考，20 个 Vitest 用例，纯本地运算零依赖
