@@ -40433,6 +40433,112 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'css-shape-generator',
+    name: 'CSS 形状生成器',
+    nameEn: 'CSS Shape Generator',
+    description:
+      '可视化生成三角形、箭头、圆形、椭圆、对话气泡、八角形与梯形的 CSS 代码，实时预览 border / border-radius / clip-path 三种实现方案，一键复制即用。',
+    descriptionEn:
+      'Visually generate CSS for triangles, arrows, circles, ellipses, speech bubbles, octagons and trapezoids, with live previews across border, border-radius and clip-path techniques and one-click copy.',
+    category: ToolCategoryEnum.DESIGN_COLOR,
+    path: '/tools/css-shape-generator',
+    iconName: 'Triangle',
+    tags: ['CSS', '形状', 'clip-path', 'border-radius', '设计'],
+    tagsEn: ['CSS', 'Shape', 'clip-path', 'border-radius', 'Design'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: JSON.stringify(CSS_SHAPE_SAMPLE),
+    doc: {
+      zh: {
+        whatIsIt:
+          'CSS 形状生成器把常见几何图形的手写 CSS 套路沉淀为参数化工具。纯 CSS 绘制形状主要有三条技术路线：透明边框法（border）利用零尺寸元素的四向边框拼出三角形与箭头；圆角法（border-radius）通过百分比圆角把矩形变成圆形或椭圆；裁剪法（clip-path: polygon）用百分比顶点定义八角形、梯形等任意多边形。工具内部用一组零依赖纯函数把宽高、颜色、朝向、切角等参数确定性地映射为 CSS 声明，并同步输出可直接粘贴的规则文本与实时预览。',
+        coreFeatures: [
+          '七种形状：三角形、箭头、圆形、椭圆、对话气泡、八角形、梯形',
+          '三类实现方案自动匹配：border 透明边框、border-radius 圆角、clip-path polygon 裁剪',
+          '参数化调节：宽高、颜色、朝向、圆角、切角比例、上底宽度、气泡圆角与尖角',
+          '实时预览：棋盘格背景直观展示透明区域，参数改动即时重渲染',
+          '安全颜色输入：命名色白名单与十六进制校验，杜绝表达式注入',
+          '纯本地计算：几何推导与代码生成全部在浏览器主线程完成，无网络请求',
+        ],
+        howToUse: [
+          '在顶部选择需要的形状类型',
+          '在左侧参数面板调节尺寸、颜色、朝向及形状专属参数',
+          '在右侧「实时预览」卡片确认效果与实现方案',
+          '点击「复制 CSS」获取 .shape 规则，粘贴到样式表并按需要改类名即可',
+        ],
+        useCases: [
+          '快速制作 tooltip 尖角、步骤箭头、聊天气泡等界面元素',
+          '为落地页装饰图形生成无需图片资源的纯 CSS 实现',
+          '学习透明边框法与 clip-path polygon 的几何原理',
+          '在设计走查时快速比对不同形状参数的视觉效果',
+        ],
+        privacyNote:
+          '所有参数仅保存在组件内存状态中，几何计算与 CSS 文本生成完全在本地进行；工具不发起网络请求，也不写入浏览器存储。',
+        faqs: [
+          {
+            question: 'clip-path 方案会不会有浏览器兼容问题？',
+            answer:
+              'clip-path: polygon 在当前主流浏览器（Chrome、Edge、Firefox、Safari）均已支持，移动端兼容性也很好；若需兼容非常老旧的浏览器，可优先选择三角形 / 箭头使用的 border 方案，两者生成结果并列展示，便于按项目目标选择。',
+          },
+          {
+            question: '为什么三角形元素的宽高是 0？',
+            answer:
+              '透明边框法的原理是让元素自身宽高为 0，再用四个方向、不同颜色的边框拼接；朝向目标方向的边框着色，其余三边设为 transparent，浏览器渲染边框斜边时自然形成三角形。这是纯 CSS 三角形最经典的零图片实现。',
+          },
+          {
+            question: '生成的颜色安全吗？',
+            answer:
+              '颜色值必须命中命名色白名单或 #rgb / #rrggbb / #rrggbbaa 格式，任何包含表达式、url 或脚本的输入都会回退为黑色，避免把恶意字符串注入到生成的 CSS 中。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The CSS Shape Generator turns hand-written CSS shape recipes into a parameterized tool. Drawing shapes with pure CSS follows three main techniques: the transparent-border trick uses the four borders of a zero-size element to compose triangles and arrows; border-radius turns rectangles into circles and ellipses with percentage radii; and clip-path: polygon defines octagons, trapezoids and other polygons with percentage vertices. A set of dependency-free pure functions deterministically maps width, height, color, direction, cut ratio and other parameters into CSS declarations, emitting ready-to-paste rules alongside a live preview.',
+        coreFeatures: [
+          'Seven shapes: triangle, arrow, circle, ellipse, speech bubble, octagon and trapezoid',
+          'Automatic technique matching across transparent borders, border-radius and clip-path polygon',
+          'Parameterized controls for size, color, direction, radius, cut ratio, top width and bubble tail',
+          'Live preview on a checkerboard background that makes transparent regions obvious',
+          'Safe color input through named-color allow-list and hex validation, blocking expression injection',
+          'Fully local geometry and code generation on the main thread with no network requests',
+        ],
+        howToUse: [
+          'Choose the target shape type at the top',
+          'Adjust size, color, direction and shape-specific parameters in the left panel',
+          'Confirm the result and its implementation technique in the live preview card',
+          'Click Copy CSS to grab the .shape rule, paste it into your stylesheet and rename the class as needed',
+        ],
+        useCases: [
+          'Building tooltip tails, step arrows and chat bubbles without image assets',
+          'Generating pure-CSS decorative graphics for landing pages',
+          'Learning the geometry behind transparent borders and clip-path polygons',
+          'Comparing visual outcomes of shape parameters during design reviews',
+        ],
+        privacyNote:
+          'All parameters live only in component memory. Geometry calculations and CSS text generation run entirely locally; the tool makes no network requests and writes nothing to browser storage.',
+        faqs: [
+          {
+            question: 'Are clip-path solutions compatible across browsers?',
+            answer:
+              'clip-path: polygon is supported by all current mainstream browsers including Chrome, Edge, Firefox and Safari, with strong mobile support as well. For very old browser targets, prefer the border-based technique used for triangles and arrows; both outputs are shown so you can choose according to your project requirements.',
+          },
+          {
+            question: 'Why does the triangle element have zero width and height?',
+            answer:
+              'The transparent-border trick relies on a zero-size element whose four borders meet at angles. The border pointing toward the target direction is colored while the other three are transparent, and the browser renders the border slopes as a triangle. This is the classic image-free CSS triangle technique.',
+          },
+          {
+            question: 'Is the generated color safe?',
+            answer:
+              'Color values must match the named-color allow-list or the #rgb / #rrggbb / #rrggbbaa formats. Any input containing expressions, urls or scripts falls back to black, preventing malicious strings from being injected into the generated CSS.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
