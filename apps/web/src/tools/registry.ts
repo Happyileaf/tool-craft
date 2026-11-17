@@ -40327,6 +40327,112 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'bbcode-html-converter',
+    name: 'BBCode ↔ HTML 双向转换器',
+    nameEn: 'BBCode ↔ HTML Converter',
+    description:
+      '论坛 BBCode 与 HTML 富文本双向互转：支持 b/i/u/s、url、img、quote、list、code、color、size 标签与嵌套，自动实体转义并拦截 javascript: 危险链接，纯浏览器本地计算。',
+    descriptionEn:
+      'Convert forum BBCode to HTML and back, covering b/i/u/s, url, img, quote, list, code, color and size tags with nesting, automatic entity escaping and javascript: URL blocking, entirely in your browser.',
+    category: ToolCategoryEnum.TEXT_CONTENT,
+    path: '/tools/bbcode-html-converter',
+    iconName: 'FileText',
+    tags: ['BBCode', 'HTML', '论坛', '标记语言', '转换'],
+    tagsEn: ['BBCode', 'HTML', 'Forum', 'Markup', 'Converter'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: JSON.stringify(BBCODE_SAMPLE),
+    doc: {
+      zh: {
+        whatIsIt:
+          'BBCode ↔ HTML 双向转换器面向 phpBB、Discuz 等传统论坛与现代博客 / CMS 之间的内容迁移场景。BBCode 用方括号标签（如 [b]、[url=...]、[list]）描述富文本，HTML 则使用尖括号元素。工具内置一个零依赖的确定性解析器：BBCode → HTML 方向先把输入切分为标签与文本 token，再以栈结构处理嵌套与未闭合标签；HTML → BBCode 方向用极简 HTML 解析器构建节点树后递归映射回 BBCode。文本节点统一做 HTML 实体转义 / 还原，所有 URL 经过 http/https/ftp 协议白名单校验，javascript: 等危险协议会被拦截或降级为纯文本。',
+        coreFeatures: [
+          '双向转换：BBCode → HTML 与 HTML → BBCode 一键切换，核心语义可往返',
+          '标签覆盖全：b/i/u/s、url（带参与无参）、img、quote、有序 / 无序列表、code、color、size',
+          '嵌套与容错：基于栈的解析支持标签嵌套，未闭合标签自动补齐，未知标签降级保留文本',
+          '安全默认：实体转义防止标记注入，URL 协议白名单拦截 javascript:，颜色与字号值做合法性校验',
+          '代码块保护：[code] 内部内容原样保留，不解析其中的方括号标签',
+          '纯本地运行：零网络请求，帖子草稿等敏感内容不会离开浏览器',
+        ],
+        howToUse: [
+          '在顶部选择转换方向（BBCode → HTML 或 HTML → BBCode）',
+          '在左侧编辑框粘贴源文本，右侧实时给出转换结果',
+          'BBCode → HTML 方向可切换「HTML 预览」标签查看渲染效果',
+          '点击「复制结果」获取输出；处理统计卡片会显示已处理与降级的标签数量',
+        ],
+        useCases: [
+          '把论坛帖子迁移到博客 / CMS 等只接受 HTML 的发布平台',
+          '把网页编辑器产出的 HTML 降级为论坛可粘贴的 BBCode',
+          '审查用户生成内容中的危险链接与未转义特殊字符',
+          '学习标记语言解析与栈式嵌套处理的教学示例',
+        ],
+        privacyNote:
+          '转换完全在浏览器本地由纯函数完成，不发起任何网络请求，也不写入本地存储；关闭页面后输入与结果即被清除。',
+        faqs: [
+          {
+            question: '为什么有些标签被计入「降级 / 丢弃」？',
+            answer:
+              '工具只覆盖论坛最常用的标签集合。无法识别的 BBCode 标签会保留原文并计入降级；HTML 中没有对应 BBCode 的元素（如 section、div 样式）会移除标签但保留内部文本，确保内容不丢失。',
+          },
+          {
+            question: 'javascript: 链接会怎么处理？',
+            answer:
+              '所有 URL 都必须命中 http、https、ftp 协议白名单，或以 / 开头的站内相对路径。javascript:、data: 等协议在两个方向上都会被拦截：BBCode → HTML 时降级为纯文本，HTML → BBCode 时直接丢弃链接外壳。',
+          },
+          {
+            question: '为什么 [code] 里的 [b] 没有被转换？',
+            answer:
+              '代码块中的方括号文本属于字面内容而非标记，工具在词法分析阶段就把 [code]...[/code] 整体作为文本处理，这与论坛渲染器的行为一致，可以安全粘贴代码片段。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The BBCode ↔ HTML Converter bridges content between legacy forums such as phpBB and Discuz and modern blogs or CMS platforms. BBCode describes rich text with square-bracket tags like [b], [url=...] and [list], while HTML uses angle-bracket elements. The tool ships with a dependency-free deterministic parser: the BBCode → HTML direction tokenizes the input into tags and text and handles nesting and unclosed tags with a stack, while the HTML → BBCode direction builds a node tree with a minimal HTML parser and recursively maps it back to BBCode. Text nodes are consistently entity-escaped and unescaped, every URL passes an http/https/ftp allow-list check, and dangerous schemes such as javascript: are blocked or downgraded to plain text.',
+        coreFeatures: [
+          'Bidirectional conversion between BBCode and HTML with one click, preserving core semantics on round trips',
+          'Broad tag coverage: b/i/u/s, parameterized and bare url, img, quote, ordered/unordered lists, code, color and size',
+          'Stack-based nesting with automatic closing of unclosed tags and graceful degradation of unknown tags',
+          'Secure defaults: entity escaping against markup injection, URL scheme allow-list blocking javascript:, validated color and size values',
+          'Protected code blocks: content inside [code] is kept literal without parsing inner bracket tags',
+          'Fully local execution with zero network requests, keeping draft posts inside the browser',
+        ],
+        howToUse: [
+          'Pick a conversion direction at the top (BBCode → HTML or HTML → BBCode)',
+          'Paste the source text into the left editor and read the live result on the right',
+          'In the BBCode → HTML direction, switch to the HTML preview tab to see the rendered output',
+          'Click Copy to grab the result; the statistics card reports handled and downgraded tag counts',
+        ],
+        useCases: [
+          'Migrating forum posts into blog or CMS platforms that only accept HTML',
+          'Downgrading HTML from web editors into BBCode that forums accept',
+          'Auditing user-generated content for dangerous links and unescaped special characters',
+          'Teaching markup parsing and stack-based nesting handling',
+        ],
+        privacyNote:
+          'All conversion runs locally in the browser through pure functions, with no network requests and no storage writes; input and output are cleared when the page closes.',
+        faqs: [
+          {
+            question: 'Why are some tags counted as downgraded or dropped?',
+            answer:
+              'The tool covers the most common forum tag set. Unrecognized BBCode tags keep their literal text and are counted as downgraded; HTML elements without a BBCode equivalent such as styled sections or divs lose their wrapper but keep their inner text so no content is lost.',
+          },
+          {
+            question: 'What happens to javascript: links?',
+            answer:
+              'Every URL must match the http, https or ftp allow-list, or start with / as a site-relative path. Schemes such as javascript: and data: are blocked in both directions: downgraded to plain text for BBCode → HTML, and stripped of their link wrapper for HTML → BBCode.',
+          },
+          {
+            question: 'Why is [b] inside [code] not converted?',
+            answer:
+              'Bracket text inside a code block is literal content rather than markup. The lexer treats the whole [code]...[/code] region as text, matching forum renderer behavior, so code snippets can be pasted safely.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
