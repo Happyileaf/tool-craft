@@ -365,4 +365,9 @@
 | 20261117020630 | 运算放大器电路计算器（反相 / 同相 / 加法 / 差分） | Web Tool | Existing Gap | Done | 2026-11-17 | trae-agent | [详情](./idea-details/20261117020630.md) |
 | 20261117020631 | Wake-on-LAN 魔术包构造器（含反向校验解析） | Web Tool | Existing Gap | Done | 2026-11-17 | trae-agent | [详情](./idea-details/20261117020631.md) |
 | 20261117020632 | 图像直方图与通道统计分析器（RGB / 亮度分布与曝光量化） | Web Tool | Existing Gap | Pending | 2026-11-17 | | [详情](./idea-details/20261117020632.md) |
+| 20261117140206 | 色盲 / 色弱视觉模拟与调色板无障碍检查器 | Web Tool | Existing Gap | Pending | 2026-11-17 | | [详情](./idea-details/20261117140206.md) |
+| 20261117140207 | 雷诺数与管内流态判定计算器（圆管沿程阻力） | Web Tool | Exploration | Pending | 2026-11-17 | | [详情](./idea-details/20261117140207.md) |
+| 20261117140208 | 梁弯曲应力与挠度计算器（简支/悬臂、点载与均布载） | Web Tool | Exploration | Pending | 2026-11-17 | | [详情](./idea-details/20261117140208.md) |
+| 20261117140209 | 室内平均照度计算器（利用系数法/流明法） | Web Tool | Exploration | Pending | 2026-11-17 | | [详情](./idea-details/20261117140209.md) |
+| 20261117140210 | 年金现值 / 终值计算器（普通、预付、递延、永续年金） | Web Tool | Existing Gap | Pending | 2026-11-17 | | [详情](./idea-details/20261117140210.md) |
 
