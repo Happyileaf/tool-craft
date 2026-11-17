@@ -28285,6 +28285,122 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'gs1-checksum-calculator',
+    name: 'GS1 SSCC/GTIN 校验位计算器（Mod 10 + AI 包装）',
+    nameEn: 'GS1 SSCC/GTIN Check Digit Calculator (Mod 10 + AI Wrapping)',
+    description:
+      '在浏览器本地按 GS1 General Specifications 的 Mod 10 加权（×3/×1 交替）算法补全或核对条码校验位：覆盖 SSCC（18 位，AI 00，含扩展位提示）、GTIN-14/EAN-14（AI 01）、GTIN-13/EAN-13、GTIN-12/UPC-A、GTIN-8/EAN-8，输出含应用标识符的 GS1-128 数据载体与人类可读形式，支持「类型,编码」批量处理。',
+    descriptionEn:
+      'Compute or verify GS1 Mod 10 check digits locally with alternating ×3/×1 weights: SSCC (18 digits, AI 00, with extension-digit hints), GTIN-14/EAN-14 (AI 01), GTIN-13/EAN-13, GTIN-12/UPC-A and GTIN-8/EAN-8. Outputs GS1-128 data strings with application identifiers and human-readable forms, plus batch processing of "type,code" lines.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/gs1-checksum-calculator',
+    iconName: 'Barcode',
+    tags: ['GS1', 'SSCC', 'GTIN', 'EAN-14', '校验位', '条码'],
+    tagsEn: ['GS1', 'SSCC', 'GTIN', 'EAN-14', 'Check Digit', 'Barcode'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'SSCC 17 位本体 00123456000000001 补全为 18 位并加 (00) AI 包装',
+    doc: {
+      zh: {
+        whatIsIt:
+          'GS1 SSCC/GTIN 校验位计算器是一款纯浏览器本地工具，实现 GS1 通用规范（General Specifications）第 7.9 节的 Mod 10 加权校验位算法：从数字串最右侧起自右向左按 ×3、×1 交替加权求和，校验位 = (10 − 加权和模 10) 模 10。工具覆盖物流与零售常用的 SSCC 系列货运包装箱代码（18 位，AI 00）、GTIN-14/EAN-14 贸易项目代码（AI 01）以及 GTIN-13/EAN-13、GTIN-12/UPC-A、GTIN-8/EAN-8 零售单元，并能把结果包装成带应用标识符的 GS1-128 数据串。',
+        coreFeatures: [
+          '五类 GS1 标识全覆盖：SSCC、GTIN-14、GTIN-13、GTIN-12、GTIN-8，按类型自动判断 17/13/12/11/7 位补全或 18/14/13/12/8 位核对',
+          'Mod 10 加权算法：自右向左 ×3/×1 交替，固定向量可复现，补全与完整编码核对双模式',
+          '应用标识符包装：SSCC 输出 (00) 前缀、GTIN-14 输出 (01) 前缀的 GS1-128 数据载体与人类可读形式，一键复制',
+          'SSCC 扩展位语义：首位扩展位为 9 时提示 GS1 保留用途，普通货运箱建议 0–8',
+          '容错输入：自动去除空白与连字符；长度不符、含非数字、校验位错误等逐类报错并给出期望值',
+          '批量模式：每行「类型,编码」混合处理，未知前缀回退默认 GTIN-13，输出逐行状态与成功 / 失败统计',
+        ],
+        howToUse: [
+          '「单条计算」页选择标识类型（如 SSCC），粘贴不含校验位的本体（17 位）即自动补全，或粘贴完整 18 位编码做核对',
+          '查看结果卡片中高亮的校验位、完整编码，以及带 (00)/(01) 前缀的 GS1-128 形式，按需复制',
+          '处理 SSCC 时关注扩展位警告；零售 GTIN-13/12/8 无固定 AI，结果直接显示纯编码',
+          '「批量处理」页每行输入「类型,编码」（逗号或制表符分隔），表格逐行查看补全 / 核对结果并可复制全部 AI 形式',
+        ],
+        useCases: [
+          '仓储与发运环节生成 SSCC 物流标签序列号并核对打印质量',
+          '箱级 / 托盘级贸易项目分配 GTIN-14 包装指示符后计算校验位',
+          'ERP / WMS 批量导入条码主数据时清洗并定位校验位错误行',
+          'GS1-128 条码标签制作前准备带应用标识符的数据串',
+        ],
+        privacyNote:
+          '所有编码仅在浏览器本地内存中计算，不向任何服务器发送，刷新页面即清除。',
+        faqs: [
+          {
+            question: '这个工具和站内 EAN-13 校验位工具有什么区别？',
+            answer:
+              'EAN-13 工具只处理 GTIN-13/EAN-13 与 UPC-A 两种零售编码的裸校验位；本工具面向 GS1 物流与包装体系，额外覆盖 SSCC（18 位，含扩展位）、GTIN-14/EAN-14 与 GTIN-8，并输出 (00)/(01) 应用标识符包装、SSCC 扩展位语义与「类型,编码」批量处理，二者互补不重复。',
+          },
+          {
+            question: '为什么加权要 ×3 和 ×1 交替？',
+            answer:
+              '这是 GS1 Mod 10 标准的规定：从校验位左侧相邻数字开始自右向左，第一位乘 3、第二位乘 1 交替循环。乘 3 权重让相邻数字互换或单数字抄写错误几乎都会改变校验结果，从而在人工录入与扫描场景检出错误。算法对所有 GTIN 长度族和 SSCC 完全一致，区别只在本体长度。',
+          },
+          {
+            question: 'SSCC 的扩展位是什么？填 9 可以吗？',
+            answer:
+              'SSCC 首位是 1 位扩展位（extension digit），由发运方自行定义包装类型（如 0=纸箱、1=托盘），合法范围 0–9。GS1 保留 9 用于特殊用途，普通货运包装箱建议使用 0–8，工具检测到首位为 9 时会给出警告，但仍按规则计算校验位。',
+          },
+          {
+            question: 'AI(00) 和 AI(01) 的输出能用在 GS1-128 条码里吗？',
+            answer:
+              '可以。工具输出的 aiForm（如 00+18 位 SSCC）正是 GS1-128 数据载体中应用标识符 + 数据的拼接形式，humanReadable 则用括号标注 AI 供标签印刷。实际制码时还需配合 FNC1 分隔与标签设计软件，本工具负责数据层面的校验位与 AI 拼装。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local implementation of the GS1 General Specifications §7.9 Mod 10 check-digit algorithm: sum digits from right to left with alternating ×3/×1 weights, then the check digit is (10 − sum mod 10) mod 10. It covers SSCC shipping serial codes (18 digits, AI 00), GTIN-14/EAN-14 trade items (AI 01) and retail GTIN-13/EAN-13, GTIN-12/UPC-A and GTIN-8/EAN-8, wrapping results into GS1-128 data strings with application identifiers.',
+        coreFeatures: [
+          'Five GS1 identifier types: SSCC, GTIN-14, GTIN-13, GTIN-12 and GTIN-8 with type-specific body/full length handling',
+          'Mod 10 alternating ×3/×1 weighting with reproducible fixed vectors in both completion and verification modes',
+          'Application identifier wrapping: (00) for SSCC and (01) for GTIN-14 GS1-128 data strings plus human-readable forms, one-click copy',
+          'SSCC extension-digit semantics with a warning when the reserved digit 9 is used',
+          'Lenient input that strips spaces and hyphens; length, non-digit and check-digit errors reported with the expected value',
+          'Batch mode for mixed "type,code" lines (comma or tab), unknown prefixes falling back to GTIN-13, with per-row status and counts',
+        ],
+        howToUse: [
+          'On the Single tab pick an identifier type (e.g. SSCC), paste a body without check digit to complete it, or a full code to verify',
+          'Review the highlighted check digit, full code and (00)/(01)-prefixed GS1-128 form in the result card and copy as needed',
+          'Watch the extension-digit warning for SSCC; retail GTIN-13/12/8 have no fixed AI and show plain codes',
+          'On the Batch tab enter one "type,code" pair per line for per-row completion/verification and copy all AI forms together',
+        ],
+        useCases: [
+          'Generating SSCC logistics label serials in warehousing and shipping and verifying print quality',
+          'Computing check digits after assigning GTIN-14 packaging indicators for case/pallet trade items',
+          'Cleaning barcode master data in ERP/WMS bulk imports and locating bad rows',
+          'Preparing application-identifier data strings before producing GS1-128 barcode labels',
+        ],
+        privacyNote:
+          'All codes are computed in browser memory only; nothing is sent to any server and everything clears on refresh.',
+        faqs: [
+          {
+            question: 'How does this differ from the EAN-13 check digit tool on this site?',
+            answer:
+              'The EAN-13 tool handles bare check digits for GTIN-13/EAN-13 and UPC-A retail codes only. This tool targets the GS1 logistics and packaging hierarchy: it additionally covers SSCC (18 digits with extension digit), GTIN-14/EAN-14 and GTIN-8, emits (00)/(01) application-identifier wrappers, explains SSCC extension digits and processes "type,code" batches. The two are complementary.',
+          },
+          {
+            question: 'Why alternate ×3 and ×1 weights?',
+            answer:
+              'GS1 Mod 10 mandates multiplying the digit immediately left of the check position by 3, the next by 1, and so on from right to left. The weight 3 makes adjacent transpositions and single-digit transcription errors almost always change the check result, catching mistakes in manual entry and scanning. The algorithm is identical across all GTIN length families and SSCC; only the body length differs.',
+          },
+          {
+            question: 'What is the SSCC extension digit and can I use 9?',
+            answer:
+              'The leading SSCC digit is a shipper-defined extension digit for packaging types (e.g. 0=carton, 1=pallet), valid from 0–9. GS1 reserves 9 for special purposes, so ordinary shipping containers should use 0–8; the tool warns when the first digit is 9 but still computes the check digit per the rules.',
+          },
+          {
+            question: 'Can the AI(00)/AI(01) output go straight into a GS1-128 barcode?',
+            answer:
+              'Yes. The aiForm output (e.g. 00 followed by an 18-digit SSCC) is exactly the application-identifier-plus-data concatenation used in GS1-128 data carriers, while humanReadable brackets the AI for label printing. Actual encoding also needs FNC1 separators and label design software; this tool handles the data-layer check digit and AI assembly.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'plus-code-codec',
     name: 'Plus Codes 编解码器',
     nameEn: 'Plus Codes (Open Location Code) Encoder & Decoder',
