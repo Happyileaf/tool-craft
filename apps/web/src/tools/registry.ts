@@ -40951,6 +40951,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'ideal-gas-law-calculator',
+    name: '理想气体状态方程计算器（PV=nRT · 四量求一）',
+    nameEn: 'Ideal Gas Law Calculator (PV=nRT, Solve for Any One of Four)',
+    description:
+      '在压强 P、体积 V、物质的量 n、热力学温度 T 中留空一个作为待求量，填写其余三个即可按 PV=nRT 实时求解；每个物理量支持常用单位切换（Pa/kPa/bar/atm/mmHg、m³/L/mL、mol/mmol、K/°C/°F），内部统一换算 SI。附摩尔质量模式 n=m/M 一键回填、STP/SATP 参考点快捷填充与 22.414/24.465 L/mol 摩尔体积对照，输出含完整公式代入文本，纯浏览器本地计算。',
+    descriptionEn:
+      'Leave any one of pressure P, volume V, amount of substance n or temperature T blank and enter the other three to solve PV=nRT in real time. Every quantity supports common units (Pa/kPa/bar/atm/mmHg, m³/L/mL, mol/mmol, K/°C/°F) and is converted to SI internally. Includes a molar-mass helper n=m/M with one-click backfill, STP/SATP quick presets with 22.414/24.465 L/mol molar-volume comparison, and full formula substitution text. Runs fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/ideal-gas-law-calculator',
+    iconName: 'FlaskConical',
+    tags: ['理想气体', '状态方程', 'PV=nRT', '摩尔体积', 'STP', '化学计算'],
+    tagsEn: ['Ideal Gas', 'Gas Law', 'PV=nRT', 'Molar Volume', 'STP', 'Chemistry'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'STP：101325 Pa、n=1 mol、T=0 °C，求体积 V',
+    doc: {
+      zh: {
+        whatIsIt:
+          '理想气体状态方程计算器围绕 PV=nRT 做「四量求一」：压强、体积、物质的量与热力学温度四个字段中任意留空一个，其余三个带单位输入后，工具先统一换算到 SI（Pa、m³、mol、K），再按闭式公式求解待求量，并同时给出 SI 单位与所选常用单位两种表达、R=8.314462618 J/(mol·K) 取值与完整代入过程。另提供摩尔质量辅助（n=m/M）与 STP（0 °C/1 atm，22.414 L/mol）、SATP（25 °C/1 atm，24.465 L/mol）参考点对照。',
+        coreFeatures: [
+          '四量求一：P、V、n、T 任选一个留空，其余三个实时求解，待求量可单选切换',
+          '全量单位：压强 Pa/kPa/bar/atm/mmHg、体积 m³/L/mL、n 为 mol/mmol、温度 K/°C/°F，内部统一 SI 换算',
+          '摩尔质量模式：输入质量与摩尔质量求 n=m/M 并一键回填，附常见气体摩尔质量表（N₂、O₂、CO₂ 等）',
+          'STP/SATP 快捷填充参考温度压强，并对照计算值与标称摩尔体积 22.414、24.465 L/mol',
+          '完整边界处理：绝对温度 ≤0 K、留空 ≥2 个字段、P=0 发散等均有明确错误，结果默认 6 位有效数字且不显示 −0',
+        ],
+        howToUse: [
+          '在顶部单选待求量（默认求体积 V），对应输入行会自动禁用并标记「待求」',
+          '为其余三个字段填写数值并选择单位；温度可直接用 °C 或 °F，工具自动转 K',
+          '需要标准条件时点击「填充 STP/SATP」；需要由质量求 n 时在下方摩尔质量区计算并回填',
+          '查看结果徽标、SI 结果与公式代入文本，点击「复制结果」导出',
+          '参考底部 STP/SATP 摩尔体积表与量纲提示，判断理想气体模型是否适用',
+        ],
+        useCases: [
+          '中学与大学化学/物理教学中验证 PV=nRT 教科书算例与单位换算',
+          '已知储气压力、温度与体积时估算气体物质的量或质量',
+          '标准状况与环境状况下气体摩尔体积、气体密度相关的工程速算',
+        ],
+        privacyNote:
+          '全部公式与单位换算在浏览器本地同步完成，输入的物理量不会离开设备，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '为什么有时候结果和教科书略有出入？',
+            answer:
+              '工具采用 CODATA 推荐的 R=8.314462618 J/(mol·K) 与精确换算（1 atm=101325 Pa、0 °C=273.15 K），而教材常用 R≈8.314、Vm≈22.4 L 等舍入值；STP 摩尔体积计算值约 22.414 L/mol，与标称值偏差远小于 0.1%。',
+          },
+          {
+            question: '压强填 0 会怎样？',
+            answer:
+              'P=0 时 V=nRT/P 在数学上发散，工具不会给出无穷大或崩溃，而是明确报错说明该输入组合非物理；同理，按 P=0 反解 n 或 T 也会给出对应错误提示。',
+          },
+          {
+            question: '摄氏温度和华氏温度需要自己先换算吗？',
+            answer:
+              '不需要。温度字段可直接选择 °C 或 °F，工具在内部按 T(K)=t(°C)+273.15 或 T(K)=(t(°F)−32)×5/9+273.15 换算后再代入方程；若换算结果不高于 0 K（如 −300 °C），会立即提示违反绝对温度约束。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This calculator solves the ideal gas law PV=nRT for any one of four quantities: leave pressure P, volume V, amount of substance n or temperature T blank, enter the other three with their units, and the tool converts everything to SI (Pa, m³, mol, K), applies the closed-form equation, and returns the unknown in both SI and the chosen display unit, with R=8.314462618 J/(mol·K) and the full substitution shown. A molar-mass helper (n=m/M), STP (0 °C/1 atm, 22.414 L/mol) and SATP (25 °C/1 atm, 24.465 L/mol) presets with molar-volume comparison are included.',
+        coreFeatures: [
+          'Solve for any one of P, V, n, T by leaving exactly one field blank, with radio switching of the unknown',
+          'Full unit coverage: Pa/kPa/bar/atm/mmHg, m³/L/mL, mol/mmol, K/°C/°F, all normalized to SI internally',
+          'Molar-mass mode: derive n=m/M from mass and molar mass with one-click backfill, plus a common-gas molar-mass table (N₂, O₂, CO₂, etc.)',
+          'STP/SATP quick presets that fill reference T and P and compare computed molar volume against 22.414 and 24.465 L/mol',
+          'Robust edge handling: explicit errors for sub-zero absolute temperature, two or more blank fields, and divergent P=0 cases; six-significant-digit output with no −0 artifacts',
+        ],
+        howToUse: [
+          'Pick the unknown quantity at the top (volume V by default); its input row is disabled and tagged as the target',
+          'Fill the other three fields with values and units; temperatures may be entered directly in °C or °F and are converted to K automatically',
+          'Use "Fill STP/SATP" for standard conditions, or the molar-mass section to derive and backfill n from mass',
+          'Review the result badge, SI value and formula substitution, then use "Copy result" to export',
+          'Check the STP/SATP molar-volume table and dimensional notes to judge whether the ideal-gas approximation fits',
+        ],
+        useCases: [
+          'Verifying PV=nRT textbook examples and unit conversions in school and university chemistry/physics',
+          'Estimating the amount of substance or mass of gas in a tank from pressure, temperature and volume',
+          'Quick engineering calculations of gas molar volume and density at standard and ambient conditions',
+        ],
+        privacyNote:
+          'All equations and unit conversions run synchronously in your browser; the physical quantities you enter never leave your device and no network requests are made.',
+        faqs: [
+          {
+            question: 'Why do results differ slightly from my textbook?',
+            answer:
+              'The tool uses the CODATA value R=8.314462618 J/(mol·K) and exact conversions (1 atm=101325 Pa, 0 °C=273.15 K), while textbooks often round R to 8.314 and Vm to 22.4 L. The computed STP molar volume is about 22.414 L/mol, within 0.1% of the nominal figure.',
+          },
+          {
+            question: 'What happens at zero pressure?',
+            answer:
+              'At P=0 the expression V=nRT/P diverges mathematically. Instead of returning infinity or crashing, the tool raises an explicit non-physical-input error; reverse-solving n or T with P=0 is likewise rejected with a targeted message.',
+          },
+          {
+            question: 'Must I convert Celsius or Fahrenheit temperatures myself?',
+            answer:
+              'No. The temperature field accepts °C or °F directly; internally it applies T(K)=t(°C)+273.15 or T(K)=(t(°F)−32)×5/9+273.15 before substitution. If the converted value is not above 0 K (for example −300 °C), an absolute-temperature error is shown immediately.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

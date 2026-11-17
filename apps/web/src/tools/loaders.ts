@@ -430,4 +430,5 @@ export const toolLoaders: Record<
   'beam-bending-calculator': () => import('./beam-bending-calculator'),
   'average-illuminance-calculator': () => import('./average-illuminance-calculator'),
   'annuity-calculator': () => import('./annuity-calculator'),
+  'ideal-gas-law-calculator': () => import('./ideal-gas-law-calculator'),
 };
