@@ -314,6 +314,7 @@ export const toolLoaders: Record<
   'caa-record-generator': () => import('./caa-record-generator'),
   'bic-code-validator': () => import('./bic-code-validator'),
   'gs1-checksum-calculator': () => import('./gs1-checksum-calculator'),
+  'dicom-uid-tool': () => import('./dicom-uid-tool'),
   'plus-code-codec': () => import('./plus-code-codec'),
   'changelog-generator': () => import('./changelog-generator'),
   'lrc-parser': () => import('./lrc-parser'),

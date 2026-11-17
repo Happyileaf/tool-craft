@@ -28401,6 +28401,122 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'dicom-uid-tool',
+    name: 'DICOM UID 生成器与校验器（医疗影像唯一标识符）',
+    nameEn: 'DICOM UID Generator & Validator (Medical Imaging Unique Identifiers)',
+    description:
+      '在浏览器本地按 DICOM PS3.5 Chapter 9 / PS3.7 B.2 规则生成与校验 UID：输入组织根后以 Web Crypto 安全随机数或时间戳+计数器批量生成 Study / Series / SOP Instance UID，自动遵守仅数字与句点、总长 ≤64 字符、每段无前导零（单字符段允许 0）等约束；粘贴 UID 逐段定位违规位置，并区分标准保留的 Well-known UID 与自定义 UID。',
+    descriptionEn:
+      'Generate and validate DICOM Unique Identifiers locally per PS3.5 Chapter 9 / PS3.7 B.2: from an organization root, batch-build Study / Series / SOP Instance UIDs with Web Crypto randomness or timestamp-plus-counter suffixes, enforcing digits-and-dots-only syntax, the 64-character limit and no leading zeros per component (a lone "0" is allowed). Paste UIDs for segment-by-segment error location and automatic Well-known vs custom UID classification.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/dicom-uid-tool',
+    iconName: 'Fingerprint',
+    tags: ['DICOM', 'UID', '医疗影像', 'PACS', '标识符', '校验'],
+    tagsEn: ['DICOM', 'UID', 'Medical Imaging', 'PACS', 'Identifier', 'Validation'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '组织根 1.3.6.1.4.1.99999 下生成 Study/Series/SOP Instance UID 并校验 1.2.840.10008.1.2.1',
+    doc: {
+      zh: {
+        whatIsIt:
+          'DICOM UID 生成器与校验器是一款面向医疗影像开发与 PACS 集成的纯浏览器本地工具，实现 DICOM PS3.5 Chapter 9 规定的 UID（Unique Identifier）语法：UID 是由句点分隔的数字 component 序列，总长不超过 64 字符，每个 component 只含数字且多位数不得以 0 开头（单字符段允许单独的 "0"），首个 component 起于申请到的组织根（Organization Root）。工具可在组织根之后拼接安全随机或时间戳后缀，批量产出 Study Instance UID、Series Instance UID 与 SOP Instance UID，并对粘贴的 UID 逐段校验、定位违规位置，同时识别 DICOM 标准保留的 Well-known UID。',
+        coreFeatures: [
+          '两种后缀模式：crypto.getRandomValues 密码学安全随机数，或时间戳+递增计数器，均保证批量 UID 互不重复',
+          '三级实例 UID：一次生成 1 个 Study Instance UID、1 个 Series Instance UID 与 1–100 个 SOP Instance UID',
+          '全量规则自检：仅数字与句点、总长 ≤64 字符、component 无前导零、空段检测，生成结果返回前再次走校验器',
+          '逐段违规定位：校验器按 component 序号指出前导零、连续句点、句点开头/结尾、非法字符与超长问题',
+          'Well-known 识别：内置传输语法、应用上下文、SOP 类、IOD 等 NEMA 保留前缀，自动区分标准 UID 与自定义 UID',
+          '超长组织根保护：根 UID 自身先校验，拼接后超 64 字符时明确报错而非返回违规 UID',
+        ],
+        howToUse: [
+          '在「UID 生成器」页填入机构组织根（如 IANA 企业编号分支 1.3.6.1.4.1.<企业号>），选择随机或计数器模式与 SOP 数量',
+          '点击「生成 UID」，结果卡片展示 Study / Series UID 与 SOP UID 表格，可单条或一键复制全部',
+          '若组织根命中 Well-known 保留段会出现黄色警告，私有系统应改用机构自有组织根',
+          '在「UID 校验器」页每行粘贴一个 UID，表格逐行显示长度/段数、合法状态与具体违规段说明',
+        ],
+        useCases: [
+          'PACS / DICOM 网关开发时为检查、序列与影像实例分配合规 UID',
+          '对接设备厂商前验证对方样本数据中的 UID 是否符合 PS3.5 语法',
+          '清洗历史迁移数据中的前导零、超长或含非法字符的 UID',
+          '教学与集成测试中快速构造确定性的计数器型 UID 固定向量',
+        ],
+        privacyNote:
+          '组织根与全部 UID 仅在浏览器本地内存中生成与校验，随机数来自浏览器 Web Crypto，不向任何服务器发送数据，刷新页面即清除。',
+        faqs: [
+          {
+            question: 'DICOM UID 为什么不能有前导零？',
+            answer:
+              'PS3.5 Chapter 9 规定每个 component 是一串数字，且当 component 多于一位时首位必须非零，单字符 component 才允许单独的 "0"。前导零会让 "012" 与 "12" 产生歧义表达，破坏 UID 作为全局唯一字符串的确定性。工具会逐段标出违规 component 的序号。',
+          },
+          {
+            question: '随机模式生成的 UID 会不会重复？',
+            answer:
+              '随机后缀由 10 位 Web Crypto 安全随机数字（首位重抽保证非零）加批内递增计数器组成，同一批次内计数器保证唯一；跨批次的碰撞概率由 10 位随机空间（约 9×10^9 种首位合法组合）保证，医疗站点常规批量规模下可忽略。需要严格可复现的场景可改用时间戳+计数器模式。',
+          },
+          {
+            question: 'Well-known UID 和自定义 UID 有什么区别？',
+            answer:
+              'Well-known UID 是 DICOM 标准在 NEMA 组织根 1.2.840.10008 下保留定义的传输语法、SOP 类、应用上下文等标识符，全球含义固定，不能挪作私有实例 UID。自定义 UID 基于机构自己申请的组织根（常见为 IANA 企业编号 1.3.6.1.4.1.<企业号>）向下分配。工具检测到输入命中保留前缀时会给出名称与警告。',
+          },
+          {
+            question: '为什么我的组织根生成时报超过 64 字符？',
+            answer:
+              'PS3.5 要求完整 UID（含所有句点）不超过 64 字符。组织根本身占用越多，留给后缀的空间越少。工具在生成后逐条自检，发现超限会返回明确错误并拒绝输出，请更换层级更短的组织根或减少后缀 component。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully browser-local tool for medical imaging development and PACS integration that implements the DICOM PS3.5 Chapter 9 UID syntax: a dot-separated sequence of numeric components, at most 64 characters total, each component containing only digits with no leading zero unless it is the single character "0", starting from an assigned Organization Root. It appends secure-random or timestamp suffixes to batch-produce Study Instance UID, Series Instance UID and SOP Instance UID, validates pasted UIDs component by component with precise error location, and recognizes NEMA-reserved Well-known UIDs.',
+        coreFeatures: [
+          'Two suffix modes: crypto.getRandomValues secure randomness or timestamp plus incrementing counter, both guaranteeing uniqueness within a batch',
+          'Three instance levels: one Study Instance UID, one Series Instance UID and 1–100 SOP Instance UIDs per run',
+          'Full rule self-check: digits-and-dots only, ≤64 characters, no leading-zero components, empty-segment detection; outputs are revalidated before return',
+          'Segment-level error location: the validator reports the component index for leading zeros, consecutive dots, leading/trailing dots, illegal characters and overlength strings',
+          'Well-known detection: built-in NEMA-reserved prefixes for transfer syntaxes, application contexts, SOP classes and IODs, separating standard UIDs from custom ones',
+          'Oversize-root protection: the root is validated first and any post-concatenation breach of 64 characters raises an explicit error instead of returning an invalid UID',
+        ],
+        howToUse: [
+          'On the Generator tab enter your organization root (e.g. the IANA enterprise branch 1.3.6.1.4.1.<enterprise>) and pick random or counter mode plus the SOP count',
+          'Click Generate; the result card shows the Study / Series UIDs and a SOP table with per-row or copy-all actions',
+          'A yellow warning appears if the root matches a reserved Well-known prefix—private systems should use an organization-owned root',
+          'On the Validator tab paste one UID per line; the table shows length/component count, validity and the exact violating segment per row',
+        ],
+        useCases: [
+          'Assigning compliant UIDs for studies, series and image instances in PACS / DICOM gateway development',
+          'Verifying sample UIDs from equipment vendors against PS3.5 syntax before integration',
+          'Cleaning legacy migration data containing leading zeros, overlength or illegal-character UIDs',
+          'Building deterministic counter-based UID fixtures for teaching and integration tests',
+        ],
+        privacyNote:
+          'Roots and UIDs are generated and validated in browser memory only; randomness comes from the browser Web Crypto API, nothing is sent to any server and everything clears on refresh.',
+        faqs: [
+          {
+            question: 'Why are leading zeros forbidden in DICOM UIDs?',
+            answer:
+              'PS3.5 Chapter 9 requires each component to be a digit string whose first character is non-zero for multi-digit components; the single character "0" is the only exception. Leading zeros would make "012" and "12" ambiguous encodings and break the determinism of the UID as a globally unique string. The tool reports the exact component index of every violation.',
+          },
+          {
+            question: 'Can random-mode UIDs collide?',
+            answer:
+              'Each random suffix combines a 10-digit Web Crypto number (the first digit is re-drawn to avoid zero) with an in-batch incrementing counter, so uniqueness within a batch is guaranteed by the counter. Across batches, the roughly 9×10^9 valid first-digit combinations of the 10-digit space make collisions negligible at normal medical-site batch sizes. Use timestamp-counter mode when strict reproducibility is required.',
+          },
+          {
+            question: 'What is the difference between Well-known and custom UIDs?',
+            answer:
+              'Well-known UIDs are reserved by the DICOM standard under the NEMA root 1.2.840.10008 for transfer syntaxes, SOP classes, application contexts and similar identifiers with fixed global meaning; they must never be reused as private instance UIDs. Custom UIDs are allocated beneath an organization-owned root, commonly an IANA enterprise number 1.3.6.1.4.1.<enterprise>. The tool names the reserved family and warns when input matches a reserved prefix.',
+          },
+          {
+            question: 'Why does generation report that 64 characters are exceeded?',
+            answer:
+              'PS3.5 limits the complete UID, including every dot, to 64 characters. The longer the organization root, the less room remains for suffixes. The tool revalidates every generated UID and refuses output with an explicit overlength error; switch to a shorter root or reduce suffix components.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'plus-code-codec',
     name: 'Plus Codes 编解码器',
     nameEn: 'Plus Codes (Open Location Code) Encoder & Decoder',
