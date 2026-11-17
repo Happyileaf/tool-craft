@@ -40743,6 +40743,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'average-illuminance-calculator',
+    name: '室内平均照度计算器（利用系数法/流明法）',
+    nameEn: 'Average Illuminance Calculator (Lumen Method)',
+    description:
+      '输入房间长、宽、灯具安装高度与工作面高度，自动求计算高度 hrc、室空间比 RCR 与室形指数 RI，按流明法 Eavg=N·Φ·CU·MF/A 计算工作面平均维持照度，并支持反算所需灯具数量（向上取整+复核照度）与所需单灯光通量；利用系数 CU 可直输或按可编辑 RCR 对照表线性插值，附维护系数参考与高 RCR 诊断，纯浏览器本地计算。',
+    descriptionEn:
+      'Enter room length, width, mounting height and working-plane height to derive hrc, room cavity ratio RCR and room index RI, then compute the average maintained illuminance Eavg=N·Φ·CU·MF/A with the lumen method. Reverse modes solve the required luminaire count (rounded up with an achieved-lux check) or the required lumens per fitting; CU can be entered directly or linearly interpolated from an editable RCR table, with maintenance-factor hints and high-RCR diagnostics. Runs fully locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/average-illuminance-calculator',
+    iconName: 'Lightbulb',
+    tags: ['照度', '流明法', '利用系数', '室空间比', '照明设计', '维护系数'],
+    tagsEn: ['Illuminance', 'Lumen Method', 'Utilization Factor', 'Room Cavity Ratio', 'Lighting Design', 'Maintenance Factor'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '10m×8m 房间，hrc=2.5m，Φ=3000lm，N=12，CU=0.55，MF=0.8',
+    doc: {
+      zh: {
+        whatIsIt:
+          '室内平均照度计算器面向照明设计入门场景，基于利用系数法（流明法）实现：先由房间几何求出计算高度 hrc、室空间比 RCR=5·hrc·(L+W)/(L·W) 与室形指数 RI=L·W/[hrc·(L+W)]（恒等关系 RCR·RI=5），再按 Eavg=N·Φ·CU·MF/A 计算工作面平均维持照度，并支持两类反算——给定目标照度求所需灯具数（向上取整并复核实际照度）或求每盏灯所需光通量。利用系数 CU 可直接输入，也可在可编辑的 RCR→CU 对照表中做分段线性插值。',
+        coreFeatures: [
+          '几何量自动计算：面积 A、计算高度 hrc、室空间比 RCR 与室形指数 RI（RI=5/RCR 恒等）',
+          '流明法正算 Eavg=N·Φ·CU·MF/A，输出工作面平均维持照度（lux）',
+          '反算灯具数量 N：理论值向上取整，并给取整后复核照度确保不低于目标值',
+          '反算单灯光通量 Φ：与正算公式互逆，固定 N 时求每盏灯所需流明数',
+          'CU 直输或 RCR 对照表分段线性插值（表可编辑、节点精确、拒绝外插），附 MF 参考区间与高 RCR 利用系数偏低诊断',
+        ],
+        howToUse: [
+          '填写房间长、宽、灯具安装高度与工作面高度（支持 m/cm/ft），工具即时算出面积、hrc、RCR、RI',
+          '选择计算模式：正算照度、反算灯具数或反算光通量，并按模式填写 Φ、N 或目标照度',
+          '填写维护系数 MF（可参考洁净/一般/污染环境的区间提示）',
+          'CU 可直接输入 (0,1] 数值，或切换为对照表模式，按厂商光度数据编辑 RCR→CU 表后自动插值',
+          '查看结果徽标与设计提示；需要时点击「复制结果」导出文本',
+        ],
+        useCases: [
+          '办公室、教室、仓库等场所照明方案的灯具数量初选与照度复核',
+          '已知灯具参数时反推满足目标照度所需的光通量规格',
+          '建筑电气/照明设计教学中验证流明法手算过程与 RCR、RI 中间量',
+        ],
+        privacyNote:
+          '全部计算在浏览器本地同步完成，房间尺寸、灯具参数与对照表数据不会离开设备，也不发起任何网络请求。',
+        faqs: [
+          {
+            question: '室形指数 RI 与室空间比 RCR 是什么关系？',
+            answer:
+              '按 IES 体系定义，RCR=5·hrc·(L+W)/(L·W)，RI=L·W/[hrc·(L+W)]，两者恒等满足 RCR·RI=5，即 RI=5/RCR。工具同时给出两个中间量并在结果区标注该恒等关系，便于对照教材。',
+          },
+          {
+            question: '为什么插值表超出范围会报错？',
+            answer:
+              '分段线性插值只在表的最小与最大 RCR 节点之间有效，外插没有光度数据支撑、误差不可控，因此工具明确报错并提示扩充厂商数据表；表还必须按 RCR 升序且不含重复节点，CU 须落在 (0,1]。',
+          },
+          {
+            question: '反算灯具数为什么要向上取整？',
+            answer:
+              '理论灯具数 N=E·A/(Φ·CU·MF) 通常不是整数，实际只能布置整数盏，因此向上取整并回代正算公式给出复核照度，保证实际平均照度不低于目标值；若结果超过 10000 盏会判定为输入异常并报错。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'This introductory lighting-design tool implements the utilization-factor (lumen) method: room geometry yields the cavity height hrc, room cavity ratio RCR=5·hrc·(L+W)/(L·W) and room index RI=L·W/[hrc·(L+W)] (with the identity RCR·RI=5), then the average maintained illuminance Eavg=N·Φ·CU·MF/A is computed. Two reverse modes solve the luminaire count needed for a target illuminance (rounded up with an achieved-lux check) or the lumens required per fitting at a fixed count. CU may be entered directly or interpolated piecewise-linearly from an editable RCR→CU table.',
+        coreFeatures: [
+          'Automatic geometry: area A, cavity height hrc, room cavity ratio RCR and room index RI (RI=5/RCR identity)',
+          'Forward lumen-method calculation Eavg=N·Φ·CU·MF/A in lux',
+          'Reverse luminaire count: the theoretical value is rounded up and an achieved-illuminance check guarantees the target is met',
+          'Reverse lumens per fitting: the exact inverse of the forward formula at a fixed count N',
+          'CU entered directly or interpolated from an editable RCR table (exact at nodes, no extrapolation), plus MF reference ranges and a high-RCR low-utilization diagnostic',
+        ],
+        howToUse: [
+          'Enter room length, width, mounting height and working-plane height (m/cm/ft supported); area, hrc, RCR and RI update instantly',
+          'Pick a mode — forward illuminance, reverse count or reverse lumens — and fill Φ, N or the target lux accordingly',
+          'Set the maintenance factor MF, using the clean/general/dirty environment hints as reference',
+          'Enter CU directly within (0,1], or switch to table mode and edit the RCR→CU rows with manufacturer photometric data for automatic interpolation',
+          'Review the result badges and design hints; use "Copy result" to export the figures as text',
+        ],
+        useCases: [
+          'Initial luminaire-count selection and illuminance verification for offices, classrooms and warehouses',
+          'Deriving the required lumen package when luminaire parameters are already fixed',
+          'Teaching the lumen method with cross-checks of hand calculations and the RCR/RI intermediate values',
+        ],
+        privacyNote:
+          'All computation runs synchronously in your browser; room dimensions, luminaire parameters and table data never leave your device and no network requests are made.',
+        faqs: [
+          {
+            question: 'What is the relation between RI and RCR?',
+            answer:
+              'Under the IES definitions RCR=5·hrc·(L+W)/(L·W) and RI=L·W/[hrc·(L+W)], so RCR·RI=5 identically, i.e. RI=5/RCR. The tool shows both intermediates and labels the identity so textbook calculations can be compared directly.',
+          },
+          {
+            question: 'Why does an out-of-range table raise an error?',
+            answer:
+              'Piecewise-linear interpolation is only valid between the smallest and largest RCR nodes. Extrapolation has no photometric basis and uncontrolled error, so the tool rejects it and asks you to extend the manufacturer table. Tables must also be ascending in RCR with unique nodes, and every CU must lie within (0,1].',
+          },
+          {
+            question: 'Why is the required luminaire count rounded up?',
+            answer:
+              'The theoretical count N=E·A/(Φ·CU·MF) is rarely an integer, while only whole luminaires can be installed. Rounding up and substituting back into the forward formula gives an achieved illuminance that meets or exceeds the target; a result above 10,000 luminaires is treated as an input error.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

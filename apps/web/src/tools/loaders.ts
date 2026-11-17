@@ -428,4 +428,5 @@ export const toolLoaders: Record<
   'css-shape-generator': () => import('./css-shape-generator'),
   'reynolds-number-calculator': () => import('./reynolds-number-calculator'),
   'beam-bending-calculator': () => import('./beam-bending-calculator'),
+  'average-illuminance-calculator': () => import('./average-illuminance-calculator'),
 };
