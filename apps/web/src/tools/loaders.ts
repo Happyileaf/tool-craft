@@ -440,4 +440,5 @@ export const toolLoaders: Record<
   'erlang-b-calculator': () => import('./erlang-b-calculator'),
   'mta-sts-tls-rpt-generator': () => import('./mta-sts-tls-rpt-generator'),
   'http2-frame-parser': () => import('./http2-frame-parser'),
+  'universal-links-generator': () => import('./universal-links-generator'),
 };

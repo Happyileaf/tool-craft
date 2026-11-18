@@ -42043,6 +42043,111 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'universal-links-generator',
+    name: '跨平台深链关联文件生成器',
+    nameEn: 'Universal Links & App Links Association File Generator',
+    description:
+      '表单化生成移动端深链所需的两份站点关联文件：iOS apple-app-site-association（AASA，appIDs + 现代 components 语法，支持 path/query/fragment、exclude、webcredentials、appclips）与 Android assetlinks.json（package_name、SHA-256 指纹数组、handle_all_urls 与可选凭据 relation）。内置 Team ID/Bundle ID/包名校验与 32 组冒号指纹格式校验（自动大写、去重），实时预览稳定键序 JSON，一键复制与本地下载，并给出 /.well-known/ 部署路径与 Content-Type 检查清单，纯本地拼装、零新增依赖。',
+    descriptionEn:
+      'Build the two site-association files required for mobile deep links through a form: the iOS apple-app-site-association (AASA with appIDs and modern components syntax, covering path/query/fragment, exclude, webcredentials and appclips) and Android assetlinks.json (package_name, SHA-256 fingerprint array, handle_all_urls and an optional credentials relation). Built-in validation covers Team ID, Bundle ID and package name plus the 32-group colon-separated fingerprint format with auto-uppercase and de-duplication. Enjoy live stable-key-order JSON preview, one-click copy and local download, plus a /.well-known/ deployment path and Content-Type checklist. Fully local assembly with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/universal-links-generator',
+    iconName: 'Link2',
+    tags: ['Universal Links', 'App Links', 'AASA', 'assetlinks', '深链', 'iOS', 'Android'],
+    tagsEn: ['Universal Links', 'App Links', 'AASA', 'assetlinks', 'Deep Link', 'iOS', 'Android'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '移动操作系统通过托管在站点上的关联文件确认“哪个 App 有权打开这个域名的链接”：iOS Universal Links 读取 apple-app-site-association（AASA），Android App Links 读取 assetlinks.json。本工具在浏览器本地以表单方式生成这两份 JSON，支持多 Team ID / Bundle ID 拼接 appID、component 级 path/query/fragment 与 exclude 规则、多条 SHA-256 签名指纹，并对全部字段做即时格式校验，输出可直接部署到 /.well-known/ 的稳定键序文件。',
+        coreFeatures: [
+          'iOS AASA：Team ID + Bundle ID 自动拼接 TEAMID.com.example.app 形式 appID，支持多条与去重',
+          '现代 components 语法：按 / ? # 三段编辑匹配规则，支持 comment 备注与 exclude 排除开关，空字段不输出',
+          '可选 webcredentials（密码自动填充）与 appclips（App Clip）关联段，一键开关',
+          'Android assetlinks：package_name、一条或多条 SHA-256 指纹，固定 handle_all_urls relation 与可选 get_login_credentials',
+          '指纹校验：强制 32 组两位十六进制、冒号分隔共 95 字符，非法字符 / 组数错误明确指出位置，统一大写并去重',
+          '实时 JSON 预览、复制与 Blob 本地下载，附双文件部署路径、Content-Type、HTTPS 与 keytool 取指纹命令检查清单',
+        ],
+        howToUse: [
+          '在 iOS Tab 维护 appID 条目与 components 规则，按需开启 webcredentials / appclips，修正红色校验错误后复制或下载 AASA',
+          '在 Android Tab 填写 package_name，粘贴 keytool 输出的 SHA-256 指纹（可多条），按需附加凭据 relation',
+          '在部署清单 Tab 对照发布路径、application/json 类型、HTTPS 无重定向等要求配置站点',
+          '把两份文件分别发布到 https://<域名>/.well-known/apple-app-site-association 与 .../assetlinks.json',
+          '在 Xcode Associated Domains 与 AndroidManifest intent-filter（autoVerify）中完成客户端声明后验证抓取',
+        ],
+        useCases: [
+          '上线 iOS Universal Links / Android App Links，让 https 链接直接打开 App 而非浏览器',
+          '多团队、多签名证书（调试 / 发布）场景下统一维护 appID 与指纹列表',
+          '排查深链失效时快速核对站点关联文件结构、指纹大小写与字段拼写',
+        ],
+        privacyNote:
+          '所有表单内容仅在浏览器本地拼装与校验，下载通过本地 Blob 完成，不发起任何网络请求，Team ID、包名与签名指纹不会离开设备。',
+        faqs: [
+          {
+            question: 'AASA 文件需要签名吗？',
+            answer:
+              '自 iOS 9 起不再要求对 apple-app-site-association 进行 CMS 签名，直接返回未签名的 JSON 即可，但必须通过有效 HTTPS 证书访问、状态码 200 且不能有重定向，并以 application/json 返回。',
+          },
+          {
+            question: 'SHA-256 指纹从哪里获取？格式有什么要求？',
+            answer:
+              '在 Android 侧运行 keytool -list -v -keystore <release.keystore> -alias <alias>，复制输出中的 SHA256 行。它由 32 组两位十六进制、以 31 个冒号分隔，共 95 个字符。工具会自动去除空白、统一转大写并对重复条目去重；少一组或出现非十六进制字符时会指出具体是第几组出错。',
+          },
+          {
+            question: 'components 里的 exclude 有什么作用？',
+            answer:
+              'exclude 为 true 的规则表示“命中该 path/query/fragment 时不交给 App 处理”，常用于把帮助中心、营销落地页等路径保留给网页。规则按数组顺序匹配，系统使用第一条命中的组件，因此应把更具体或需要排除的规则放在前面。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Mobile operating systems confirm which app may open a domain\u2019s links through association files hosted on the website: iOS Universal Links read apple-app-site-association (AASA), while Android App Links read assetlinks.json. This tool builds both JSON files locally in the browser through forms, supporting multiple Team ID / Bundle ID appIDs, component-level path/query/fragment and exclude rules, and multiple SHA-256 signing fingerprints, with instant field validation and stable-key-order output ready to deploy under /.well-known/.',
+        coreFeatures: [
+          'iOS AASA: Team ID + Bundle ID are joined into TEAMID.com.example.app appIDs, with multiple entries and de-duplication',
+          'Modern components syntax: edit matching rules in / ? # sections, with comment notes and an exclude toggle; empty fields are omitted',
+          'Optional webcredentials (password AutoFill) and appclips association sections with simple switches',
+          'Android assetlinks: package_name, one or more SHA-256 fingerprints, the fixed handle_all_urls relation and optional get_login_credentials',
+          'Fingerprint validation: exactly 32 two-digit hex groups separated by colons (95 chars), with precise error positions, auto-uppercase and de-duplication',
+          'Live JSON preview, copy and local Blob download, plus a checklist covering deployment paths, Content-Type, HTTPS and the keytool fingerprint command',
+        ],
+        howToUse: [
+          'On the iOS tab maintain appID entries and component rules, toggle webcredentials / appclips as needed, then copy or download the AASA after clearing validation errors',
+          'On the Android tab enter the package name and paste the SHA-256 fingerprints from keytool (multiple allowed), optionally adding the credentials relation',
+          'Use the deployment checklist tab to configure publication paths, application/json Content-Type and redirect-free HTTPS',
+          'Publish the two files at https://<domain>/.well-known/apple-app-site-association and .../assetlinks.json',
+          'Finish the client side with Xcode Associated Domains and an AndroidManifest intent-filter (autoVerify), then verify retrieval',
+        ],
+        useCases: [
+          'Launching iOS Universal Links / Android App Links so https URLs open the app directly instead of the browser',
+          'Maintaining appIDs and fingerprints across multiple teams and signing certificates (debug / release) in one place',
+          'Quickly checking association-file structure, fingerprint casing and field spelling when deep links fail',
+        ],
+        privacyNote:
+          'All form content is assembled and validated locally in the browser and downloads use a local Blob; no network requests are made, so Team IDs, package names and signing fingerprints never leave the device.',
+        faqs: [
+          {
+            question: 'Does the AASA file need to be signed?',
+            answer:
+              'Since iOS 9 the apple-app-site-association file no longer needs CMS signing and may be served as plain JSON, but it must still be reachable over valid HTTPS with a 200 status, no redirects and the application/json content type.',
+          },
+          {
+            question: 'Where do I get the SHA-256 fingerprint and what is the required format?',
+            answer:
+              'Run keytool -list -v -keystore <release.keystore> -alias <alias> on the Android side and copy the SHA256 line. It consists of 32 two-digit hex groups separated by 31 colons, 95 characters in total. The tool strips whitespace, uppercases automatically and removes duplicates; if a group is missing or contains non-hex characters, it reports exactly which group is wrong.',
+          },
+          {
+            question: 'What does exclude do inside components?',
+            answer:
+              'A rule with exclude set to true means that matching path/query/fragment URLs are not handed to the app, which is useful for keeping help centers or marketing pages on the web. Rules are evaluated in array order and the first match wins, so place more specific or exclusion rules near the top.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
