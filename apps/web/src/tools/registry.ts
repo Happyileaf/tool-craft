@@ -42062,6 +42062,108 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'jsdoc-tsdoc-generator',
+    name: 'JSDoc / TSDoc 文档注释块生成与解析器',
+    nameEn: 'JSDoc / TSDoc Docblock Generator & Parser',
+    description:
+      '函数签名与标准文档注释块双向转换：粘贴 JS/TS 签名（支持泛型、async、可选参数、默认值与剩余参数）一键生成对齐的 JSDoc（花括号内联类型、async 自动包 Promise）或 TSDoc（@typeParam、无冗余类型、@remarks 占位）；反向粘贴既有注释块可结构化提取摘要、@param/@returns/@throws 等标签，并与签名比对缺失或多余参数、顺序不一致与返回值标签缺失。零依赖、纯本地词法解析。',
+    descriptionEn:
+      'Bidirectional conversion between function signatures and standard documentation blocks: paste a JS/TS signature (generics, async, optional params, defaults and rest params) to emit an aligned JSDoc (brace inline types, async auto-wrapped in Promise) or TSDoc (@typeParam, no redundant types, @remarks placeholder) block; in reverse, parse an existing block into structured summary, @param/@returns/@throws tags and compare it against a signature for missing or extra params, ordering drift and missing return tags. Zero-dependency, fully local lexical parsing.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/jsdoc-tsdoc-generator',
+    iconName: 'FileCode',
+    tags: ['JSDoc', 'TSDoc', '文档注释', 'TypeScript', '函数签名', '代码规范'],
+    tagsEn: ['JSDoc', 'TSDoc', 'Docblock', 'TypeScript', 'Function Signature', 'Code Style'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'async function fetchJson<T>(url: string, init?: RequestInit): Promise<T>',
+    doc: {
+      zh: {
+        whatIsIt:
+          '为 JavaScript / TypeScript 函数补文档注释时，参数名、类型、可选性与返回值需要手工同步到 @param、@returns 等标签，签名一改注释就容易漂移。本工具基于正则与轻量词法解析，在浏览器本地完成函数签名与 JSDoc/TSDoc 注释块的双向转换：正向按签名生成对齐的标准注释块，逆向把旧代码中的注释块解析为结构化标签并与签名做一致性体检。',
+        coreFeatures: [
+          '签名解析：识别 function 声明、const 箭头函数与方法简写，支持泛型类型参数、async、可选参数 ?、默认值与 ...rest 剩余参数',
+          'JSDoc 生成：输出 @template、带花括号类型的 @param（可选参数加方括号）与 @returns，async 函数自动把返回类型包成 Promise<T>',
+          'TSDoc 生成：使用 @typeParam、不带冗余内联类型的 @param，并附 @remarks 占位，符合 TSDoc 标签惯例',
+          '注释解析：提取摘要、@param（兼容 {type} name - desc 与纯 name - desc 两种写法）、@returns、@throws 及其他标签，支持跨行描述折叠',
+          '一致性比对：报告缺失 / 多余的 @param、缺失的类型参数与 @returns、参数顺序漂移以及可选参数未标注等问题',
+        ],
+        howToUse: [
+          '在「签名 → 注释块」页粘贴函数签名，选择 JSDoc 或 TSDoc 方言并决定是否带摘要占位行',
+          '点击「复制注释块」把结果粘贴到函数定义上方，再把占位说明替换为真实描述',
+          '维护旧代码时切到「注释块 → 解析校验」页，粘贴注释块与当前签名，查看结构化标签和告警清单',
+          '签名迭代后重新生成或重新比对，确保注释与参数列表、返回类型保持同步',
+        ],
+        useCases: [
+          '新函数补注释：一键生成标签骨架，团队成员只需填写描述而不必记忆标签语法',
+          '签名重构后的注释漂移体检：CI 之外本地快速找出漏改的 @param 与 @returns',
+          '旧代码文档化：把历史 JSDoc 块解析成表格，评估文档完整度并迁移到 TSDoc 风格',
+        ],
+        privacyNote:
+          '所有签名与注释文本仅在浏览器本地做词法解析与字符串拼装，工具不发起任何网络请求，不收集或上传代码内容；剪贴板写入仅在点击复制按钮时发生。',
+        faqs: [
+          {
+            question: 'JSDoc 和 TSDoc 两种输出有什么区别？',
+            answer:
+              'JSDoc 方言在 @param 与 @returns 后用花括号写内联类型（如 @param {string} url），泛型用 @template；TSDoc 方言遵循微软 TSDoc 规范，类型信息交给 TS 签名本身，注释里使用 @typeParam 且不重复写类型，并额外提供 @remarks 占位。TS 项目推荐 TSDoc，纯 JS 项目推荐 JSDoc。',
+          },
+          {
+            question: '为什么 async 函数的返回类型被包了一层 Promise？',
+            answer:
+              'async 函数在运行时总是返回 Promise。当签名只写了解包后的类型（如 : number）时，JSDoc 的 @returns 会按实际运行类型输出 Promise<number>；若签名本身已经是 Promise<T> 则不会重复包装。TSDoc 方言不写内联类型，因此不存在这个问题。',
+          },
+          {
+            question: '支持解析对象解构参数或函数类型重载吗？',
+            answer:
+              '工具面向最常见的具名参数签名与标准标签写法，支持嵌套泛型、对象类型返回值与括号嵌套；解构参数（{ a, b }）和 TS 函数重载等复杂形态不在当前词法解析范围内，遇到无法识别的结构会给出明确报错而不是产出错误结果。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Documenting JavaScript / TypeScript functions means manually keeping parameter names, types, optionality and return values in sync with @param and @returns tags, and comments drift as soon as a signature changes. Using regex and a lightweight lexer, this tool converts function signatures into JSDoc/TSDoc blocks and back entirely in the browser: it generates aligned standard blocks from signatures, and parses legacy blocks into structured tags with a consistency check against the current signature.',
+        coreFeatures: [
+          'Signature parsing: recognizes function declarations, const arrow functions and method shorthand, with generic type parameters, async, optional params (?), defaults and ...rest params',
+          'JSDoc generation: emits @template, typed @param with braces (square brackets for optional params) and @returns; async return types are auto-wrapped as Promise<T>',
+          'TSDoc generation: uses @typeParam, @param without redundant inline types and an @remarks placeholder, following TSDoc tag conventions',
+          'Block parsing: extracts summary, @param (both {type} name - desc and plain name - desc forms), @returns, @throws and other tags, folding continuation lines into descriptions',
+          'Consistency check: reports missing or extra @param entries, missing type parameters and @returns, parameter ordering drift and unmarked optional params',
+        ],
+        howToUse: [
+          'On the signature-to-block tab, paste a function signature, pick the JSDoc or TSDoc dialect and decide whether to include a summary placeholder line',
+          'Click "Copy block" above the function definition and replace the placeholder text with real descriptions',
+          'For legacy code, switch to the parse tab, paste the doc block and the current signature to inspect structured tags and warnings',
+          'After signature changes, regenerate or re-compare to keep the comment aligned with parameters and return type',
+        ],
+        useCases: [
+          'Documenting new functions: get a tag skeleton instantly and only fill in descriptions instead of memorizing tag syntax',
+          'Comment-drift audits after refactors: quickly spot stale @param and @returns entries locally, outside CI',
+          'Legacy documentation: parse historical JSDoc blocks into tables to assess completeness and migrate to TSDoc style',
+        ],
+        privacyNote:
+          'All signatures and comment text are lexed and assembled locally in the browser. The tool makes no network requests and never collects or uploads code; clipboard writes happen only on an explicit copy click.',
+        faqs: [
+          {
+            question: 'What is the difference between the JSDoc and TSDoc outputs?',
+            answer:
+              'The JSDoc dialect writes inline brace types after @param and @returns (e.g. @param {string} url) and uses @template for generics. The TSDoc dialect follows the Microsoft TSDoc spec: types live in the TS signature itself, comments use @typeParam without repeating types, and an @remarks placeholder is included. Prefer TSDoc for TypeScript projects and JSDoc for plain JavaScript.',
+          },
+          {
+            question: 'Why is the async return type wrapped in another Promise?',
+            answer:
+              'An async function always returns a Promise at runtime. When the signature only states the unwrapped type (such as : number), the JSDoc @returns emits the real runtime type Promise<number>; an existing Promise<T> annotation is not wrapped twice. The TSDoc dialect carries no inline types, so this does not apply there.',
+          },
+          {
+            question: 'Does it handle destructured parameters or function overloads?',
+            answer:
+              'The tool targets the most common named-parameter signatures and standard tag forms, including nested generics, object return types and nested brackets. Destructured parameters ({ a, b }) and TS function overloads are outside the current lexical scope; unrecognized structures produce an explicit error rather than a wrong result.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

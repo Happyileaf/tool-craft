@@ -119,15 +119,15 @@ describe('sensitivityTable', () => {
     expect(rows.map((row) => row.delta)).toEqual([-2, -1, 0, 1, 2]);
     expect(rows.map((row) => row.lines)).toEqual([8, 9, 10, 11, 12]);
     for (let i = 1; i < rows.length; i += 1) {
-      expect(rows[i].blocking).toBeLessThan(rows[i - 1].blocking);
+      expect(rows[i]?.blocking).toBeLessThan(rows[i - 1]?.blocking ?? Infinity);
     }
-    expect(rows[2].blocking).toBeCloseTo(erlangBBlocking(10, 8), 12);
+    expect(rows[2]?.blocking).toBeCloseTo(erlangBBlocking(10, 8), 12);
   });
 
   it('clips at one line when the center is small', () => {
     const rows = sensitivityTable(2, 5);
     expect(rows.map((row) => row.lines)).toEqual([1, 2, 3, 4]);
-    expect(rows[0].delta).toBe(-1);
+    expect(rows[0]?.delta).toBe(-1);
   });
 });
 
@@ -135,10 +135,10 @@ describe('gradeOfServiceTable', () => {
   it('maps engineering GoS targets onto required line counts', () => {
     const rows = gradeOfServiceTable(20, [0.05, 0.01, 0.001]);
     expect(rows).toHaveLength(3);
-    expect(rows[0].target).toBe(0.05);
+    expect(rows[0]?.target).toBe(0.05);
     // 目标越严格所需线数越多
-    expect(rows[0].lines).toBeLessThan(rows[1].lines);
-    expect(rows[1].lines).toBeLessThan(rows[2].lines);
+    expect(rows[0]?.lines).toBeLessThan(rows[1]?.lines ?? Infinity);
+    expect(rows[1]?.lines).toBeLessThan(rows[2]?.lines ?? Infinity);
     for (const row of rows) {
       expect(row.blocking).toBeLessThanOrEqual(row.target);
     }

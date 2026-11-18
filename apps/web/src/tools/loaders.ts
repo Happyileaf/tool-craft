@@ -440,4 +440,5 @@ export const toolLoaders: Record<
   'mta-sts-tlsrpt-generator': () => import('./mta-sts-tlsrpt-generator'),
   'erlang-b-calculator': () => import('./erlang-b-calculator'),
   'problem-details-generator': () => import('./problem-details-generator'),
+  'jsdoc-tsdoc-generator': () => import('./jsdoc-tsdoc-generator'),
 };
