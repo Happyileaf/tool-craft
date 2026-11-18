@@ -159,7 +159,7 @@
 | 20261030140204 | Verhoeff / Damm 校验位计算器 | Web Tool | Exploration | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030140204.md) |
 | 20261030140205 | BMR 基础代谢与 TDEE 每日热量消耗计算器 | Web Tool | Exploration | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030140205.md) |
 | 20261030200909 | MGRS 军用地形图坐标 ↔ WGS-84 经纬度编解码器 | Web Tool | External Reference | Pending | 2026-10-30 | | [详情](./idea-details/20261030200909.md) |
-| 20261030200911 | systemd .service 单元文件生成器 | Web Tool | Exploration | Claimed | 2026-10-30 | trae-agent | [详情](./idea-details/20261030200911.md) |
+| 20261030200911 | systemd .service 单元文件生成器 | Web Tool | Exploration | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030200911.md) |
 | 20261031020750 | Unified Diff / Patch 解析与统计查看器 | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031020750.md) |
 | 20261031020752 | ELF 文件头解析器 | Web Tool | Exploration | Pending | 2026-10-31 | | [详情](./idea-details/20261031020752.md) |
 | 20261031020753 | C 结构体位域打包 / 解包器 | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261031020753.md) |

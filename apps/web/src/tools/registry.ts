@@ -21,6 +21,8 @@ import { DEFAULT_DISTRIBUTION as PROBABILITY_SAMPLE } from './probability-distri
 import { DEFAULT_BBCODE as BBCODE_SAMPLE } from './bbcode-html-converter/constants';
 import { DEFAULT_CONFIG as CSS_SHAPE_SAMPLE } from './css-shape-generator/constants';
 import { SAMPLE_PAYLOAD as SAMPLE_PAYLOAD_EPC } from './epc-qr-sepa-codec/constants';
+import { DEFAULT_PRESET_KEY as SYSTEMD_PRESET_KEY, SERVICE_PRESETS } from './systemd-service-generator/constants';
+import { generateServiceUnit } from './systemd-service-generator/utils/systemd';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -40383,6 +40385,115 @@ sqrt(area) + 2 * r`,
             question: 'Is the BIC mandatory?',
             answer:
               'Since version 002 the BIC field is optional (most SEPA-area banks route on IBAN alone), while version 001 still requires it. The tool always emits 12 lines; when the BIC is blank its line is an empty string and the scanning application handles it according to the selected version.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'systemd-service-generator',
+    name: 'systemd .service 单元文件生成器',
+    nameEn: 'systemd Service Unit File Generator',
+    description:
+      '按 [Unit]/[Service]/[Install] 分组表单生成合法 systemd .service 单元文件：空字段自动省略、Environment 多行校验、Type/Restart 枚举与 RestartSec 非负校验，实时输出确定性 INI 文本并给出 daemon-reload、enable --now 安装命令，内置 Node 守护 / 一次性脚本 / forking 预设，纯浏览器本地运算。',
+    descriptionEn:
+      'Build valid systemd .service unit files through grouped [Unit]/[Service]/[Install] form fields: blank directives are omitted, multi-line Environment entries are validated, Type/Restart enums and non-negative RestartSec are checked, and deterministic INI text plus daemon-reload and enable --now commands are produced live. Ships with Node daemon, oneshot script and forking presets, all running locally in the browser.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/systemd-service-generator',
+    iconName: 'ScrollText',
+    tags: ['systemd', 'service', 'Linux', '单元文件', '部署', 'INI'],
+    tagsEn: ['systemd', 'service', 'Linux', 'unit file', 'deployment', 'INI'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: (() => {
+      const preset = SERVICE_PRESETS.find((item) => item.key === SYSTEMD_PRESET_KEY);
+      return preset ? generateServiceUnit(preset.form) : '';
+    })(),
+    doc: {
+      zh: {
+        whatIsIt:
+          'systemd 是绝大多数现代 Linux 发行版的初始化系统与服务管理器，服务通过 .service 单元文件（INI 风格文本）声明启动指令、依赖、运行用户与重启策略。本工具把易出错的手写单元文件流程变成结构化表单：按 [Unit]、[Service]、[Install] 三个标准段分组录入，实时生成键顺序稳定的单元文本，并同步给出文件名与 systemctl 安装启用命令。全部计算在浏览器本地完成，不接触任何服务器。',
+        coreFeatures: [
+          '三段式表单：覆盖 Description/After/Wants/Requires、Type、ExecStart/Stop/Reload、User/Group、WorkingDirectory、Environment、Restart/RestartSec、StandardOutput/Error、WantedBy/RequiredBy/Also',
+          '空值省略规则：未填写字段对应指令整行跳过，空 section 不输出，Restart=no 等默认值不产生冗余行',
+          '输入校验：ExecStart 与单元名必填，Environment 每行必须为合法 KEY=VALUE，RestartSec 限非负数',
+          '实时确定性输出：固定 section 顺序 Unit → Service → Install 与稳定键顺序，适合快照比对',
+          '配套命令提示：自动生成 cp 到 /etc/systemd/system、daemon-reload、enable --now 与 status 命令，文件名与单元名一致',
+          '内置预设：Node Web 守护服务、定时 / 一次性脚本、传统 forking 守护进程三套可一键载入的模板',
+        ],
+        howToUse: [
+          '点击顶部预设按钮载入贴近场景的模板，或从空白表单开始填写',
+          '先填单元名（不含 .service 后缀）与 ExecStart，再按需补充依赖、运行用户、环境变量和重启策略',
+          '右侧输出区实时显示生成的单元文件，出现校验错误时会暂停生成并逐字段提示',
+          '复制单元文件与安装命令，按提示部署到 /etc/systemd/system 并执行 daemon-reload、enable --now',
+        ],
+        useCases: [
+          '部署 Node.js、Python 等应用时快速生成开机自启的守护服务单元',
+          '为定时维护脚本编写 oneshot 单元，配合 timer 触发',
+          '把传统 forking 守护进程迁移到 systemd 管理，补齐 PIDFile 之外的标准指令',
+          '教学与评审 systemd 单元语法，替代记忆 systemd.unit(5) 手册中的字段细节',
+        ],
+        privacyNote:
+          '表单内容与生成的单元文件全程只存在于浏览器内存中，工具不发起任何网络请求，也不执行或上传任何命令。',
+        faqs: [
+          {
+            question: '为什么有些字段填了却没有出现在输出里？',
+            answer:
+              '工具遵循空值省略规则：空白字段对应的指令整行跳过；当整个 section 没有任何有效指令时（例如完全不填 [Install]），该 section 标题也不会输出，避免生成无效空段。',
+          },
+          {
+            question: 'Environment 为什么每条都重复一行而不是合并？',
+            answer:
+              'systemd 允许同一指令重复出现，Environment= 每行设置一个变量是官方推荐写法，便于阅读与覆盖。工具按输入逐行输出 Environment=KEY=VALUE，并校验每行变量名与等号格式。',
+          },
+          {
+            question: '生成后会自动帮我部署到服务器吗？',
+            answer:
+              '不会。工具只生成文本与命令提示，所有 systemctl 操作都需要你自己在目标机器上执行，这保证本地表单中的路径、用户名等信息不会离开浏览器。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'systemd is the init system and service manager of most modern Linux distributions, where services are declared in INI-style .service unit files covering start commands, dependencies, run users and restart policies. This tool turns error-prone hand-written units into a structured form grouped by the standard [Unit], [Service] and [Install] sections, producing unit text with a stable key order along with the matching filename and systemctl installation commands. Everything is computed locally in the browser with no server involved.',
+        coreFeatures: [
+          'Three-section form covering Description/After/Wants/Requires, Type, ExecStart/Stop/Reload, User/Group, WorkingDirectory, Environment, Restart/RestartSec, StandardOutput/Error and WantedBy/RequiredBy/Also',
+          'Blank-omission rules: empty fields skip their directive lines, sections without directives are not emitted, and defaults such as Restart=no add no redundant lines',
+          'Input validation: unit name and ExecStart are required, every Environment line must be a valid KEY=VALUE pair, and RestartSec must be non-negative',
+          'Deterministic live output with a fixed Unit → Service → Install section order and stable key order, ideal for snapshot comparison',
+          'Command hints generating cp into /etc/systemd/system, daemon-reload, enable --now and status with a filename matching the unit name',
+          'Built-in presets for a Node web daemon, a oneshot scheduled script and a legacy forking daemon, loadable in one click',
+        ],
+        howToUse: [
+          'Click a preset at the top to load a close-to-scenario template, or start from an empty form',
+          'Fill the unit name (without the .service suffix) and ExecStart first, then add dependencies, run user, environment variables and restart policy as needed',
+          'The output panel shows the generated unit live; validation errors pause generation and explain each offending field',
+          'Copy the unit file and installation commands, deploy to /etc/systemd/system and run daemon-reload and enable --now as prompted',
+        ],
+        useCases: [
+          'Quickly creating auto-start daemon units when deploying Node.js, Python or similar applications',
+          'Writing oneshot units for scheduled maintenance scripts triggered by timers',
+          'Migrating legacy forking daemons to systemd with standard directives beyond PIDFile',
+          'Teaching and reviewing systemd unit syntax without memorizing every systemd.unit(5) directive',
+        ],
+        privacyNote:
+          'Form content and generated unit files stay entirely in browser memory. The tool makes no network requests and never executes or uploads any command.',
+        faqs: [
+          {
+            question: 'Why do some filled fields not appear in the output?',
+            answer:
+              'Blank-omission rules skip directive lines for empty fields; when a whole section has no valid directives (for example an untouched [Install] section), its header is omitted too so no empty invalid section is generated.',
+          },
+          {
+            question: 'Why is each Environment entry on its own repeated line instead of merged?',
+            answer:
+              'systemd allows repeated directives, and one variable per Environment= line is the officially recommended style for readability and overrides. The tool emits Environment=KEY=VALUE per input line and validates each variable name and equals sign.',
+          },
+          {
+            question: 'Does it deploy to my server automatically?',
+            answer:
+              'No. The tool only produces text and command hints; every systemctl operation must be run by you on the target machine, keeping paths, usernames and other form data inside the browser.',
           },
         ],
       },

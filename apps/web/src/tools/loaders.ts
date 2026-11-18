@@ -444,4 +444,5 @@ export const toolLoaders: Record<
   'magic-number-identifier': () => import('./magic-number-identifier'),
   'maidenhead-locator-codec': () => import('./maidenhead-locator-codec'),
   'epc-qr-sepa-codec': () => import('./epc-qr-sepa-codec'),
+  'systemd-service-generator': () => import('./systemd-service-generator'),
 };
