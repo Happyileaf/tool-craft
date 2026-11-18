@@ -437,4 +437,5 @@ export const toolLoaders: Record<
   'annuity-calculator': () => import('./annuity-calculator'),
   'ideal-gas-law-calculator': () => import('./ideal-gas-law-calculator'),
   'i2c-address-converter': () => import('./i2c-address-converter'),
+  'erlang-b-calculator': () => import('./erlang-b-calculator'),
 };

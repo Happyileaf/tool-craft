@@ -41738,6 +41738,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'erlang-b-calculator',
+    name: 'Erlang B 中继线话务量计算器',
+    nameEn: 'Erlang B Trunk Traffic Calculator',
+    description:
+      '基于 Erlang B（M/M/c/c 阻塞清除）模型，在中继线数、流入话务量（Erlang）与阻塞概率（GoS）间三量互算：正算阻塞概率、按目标 GoS 反求最少线数、二分反算最大可承载话务量，并提供逐线数灵敏度对照表。数值稳定递推避免阶乘溢出，纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Apply the Erlang B (M/M/c/c blocked-calls-cleared) model to relate trunk count, offered load in Erlangs and blocking probability (GoS): compute blocking directly, solve the minimum lines for a target GoS, binary-search the maximum carried load, and review a per-line sensitivity table. A numerically stable recurrence avoids factorial overflow; runs entirely in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/erlang-b-calculator',
+    iconName: 'PhoneCall',
+    tags: ['Erlang B', '话务量', '中继线', '阻塞概率', 'GoS', '通信容量规划'],
+    tagsEn: ['Erlang B', 'Traffic Load', 'Trunk Lines', 'Blocking Probability', 'GoS', 'Capacity Planning'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Erlang B 中继线话务量计算器是一款面向呼叫中心、电信中继与无线信道容量规划的纯浏览器工具。Erlang B 公式描述阻塞呼叫清除模型：呼叫按泊松过程到达、占用时长指数分布，当 c 条中继线全忙时新呼叫立即被清除。工具在中继线数、话务量与服务等级（GoS，即阻塞概率）之间互算，帮助确定满足目标呼损所需的线路数量。',
+        coreFeatures: [
+          '三量互算：已知线数与话务量正算阻塞概率，按目标 GoS 反求最少线数，或反算最大可承载话务量',
+          '数值稳定：采用 B_n = A·B_{n-1}/(n + A·B_{n-1}) 递推，大线数下不发生阶乘溢出',
+          '灵敏度对照表：固定话务量逐线数列出阻塞概率，并按 1%/5% 阈值标注达标状态',
+          'GoS 预设：内置 1%、2%、5%、10% 四档常用服务等级快捷填充',
+          '纯函数实现：计算零依赖、确定性输出，固定查表向量单测覆盖',
+        ],
+        howToUse: [
+          '在计算器 Tab 选择计算模式（阻塞概率 / 所需线数 / 可承载话务量）',
+          '填写中继线数、话务量（Erlang）或目标 GoS，反算模式可点击 GoS 预设',
+          '查看结果卡片，阻塞超 50% 等异常情形会给出黄色提示',
+          '切换到灵敏度对照表，观察逐线数阻塞概率变化以选择经济的线路配置',
+        ],
+        useCases: [
+          '呼叫中心或企业 PBX 规划中继线数量，把高峰呼损控制在目标 GoS 内',
+          '电信运营商评估局间中继群、移动网络信道在给定话务量下的阻塞表现',
+          '在有限线路预算下反算可承诺的话务量，支撑容量报价与扩容决策',
+        ],
+        privacyNote:
+          '所有话务量与线数计算均在浏览器本地完成，不发起任何网络请求，规划数据不会离开设备。',
+        faqs: [
+          {
+            question: 'Erlang 和阻塞概率分别是什么？',
+            answer:
+              'Erlang（爱尔兰）是话务量单位，1 Erlang 表示一条中继线被连续占用一小时的负荷。阻塞概率（GoS，Grade of Service）是呼叫到达时所有线路全忙、呼叫被立即清除的概率，例如 GoS=1% 意味着平均每 100 个呼叫有 1 个被阻塞。',
+          },
+          {
+            question: 'Erlang B 和 Erlang C 有什么区别？',
+            answer:
+              'Erlang B 假设线路全忙时呼叫立即清除（不排队），适用于中继线、无线信道等场景；Erlang C 假设呼叫进入队列等待，适用于坐席排队的呼叫中心。本工具只实现 Erlang B，不涉及排队等待模型。',
+          },
+          {
+            question: '为什么不用阶乘直接套公式？',
+            answer:
+              '经典 Erlang B 公式含 A^c/c!，当线数 c 达到数百时阶乘会超出浮点范围导致溢出。本工具改用等价的递推式逐项更新，只做乘除运算，数值稳定且与查表值一致，适合大线数容量规划。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Erlang B Trunk Traffic Calculator is a fully browser-local tool for call-center, telecom trunk and radio-channel capacity planning. The Erlang B formula describes the blocked-calls-cleared model: calls arrive as a Poisson process with exponential holding times, and a new call is cleared immediately when all c trunks are busy. The tool converts among trunk count, offered load and Grade of Service (the blocking probability) to size a trunk group for a target loss rate.',
+        coreFeatures: [
+          'Three-way solving: blocking from lines and load, minimum lines for a target GoS, or the maximum carried load via binary search',
+          'Numerically stable B_n = A·B_{n-1}/(n + A·B_{n-1}) recurrence that avoids factorial overflow at large line counts',
+          'Sensitivity table: per-line blocking probabilities at fixed load, flagged against 1%/5% thresholds',
+          'GoS presets: one-click fill for the common 1%, 2%, 5% and 10% service levels',
+          'Pure functions: dependency-free, deterministic computation covered by fixed table-lookup unit tests',
+        ],
+        howToUse: [
+          'Pick a mode on the calculator tab (blocking / required lines / carried load)',
+          'Enter trunk count, offered load in Erlangs or target GoS; use a GoS preset in reverse modes',
+          'Read the result cards; extreme cases such as blocking above 50% raise a yellow hint',
+          'Open the sensitivity table to see how blocking falls with each added line and choose an economical configuration',
+        ],
+        useCases: [
+          'Sizing trunks for a call center or enterprise PBX so peak call loss stays within the target GoS',
+          'Evaluating blocking of inter-office trunk groups or mobile radio channels under a given offered load',
+          'Reverse-engineering the committable load under a fixed line budget to support pricing and expansion decisions',
+        ],
+        privacyNote:
+          'All traffic and line calculations run locally in the browser with no network requests; planning data never leaves the device.',
+        faqs: [
+          {
+            question: 'What are an Erlang and a blocking probability?',
+            answer:
+              'The Erlang is the unit of traffic load: one Erlang means one trunk occupied continuously for one hour. Blocking probability (GoS, Grade of Service) is the chance that a call arrives when every line is busy and is cleared immediately; GoS=1% means on average one call in 100 is blocked.',
+          },
+          {
+            question: 'How does Erlang B differ from Erlang C?',
+            answer:
+              'Erlang B assumes calls are cleared immediately when all lines are busy (no queue), fitting trunks and radio channels. Erlang C assumes calls join a waiting queue, fitting agent-staffed call centers. This tool implements only Erlang B and does not model queuing delay.',
+          },
+          {
+            question: 'Why not evaluate the factorial formula directly?',
+            answer:
+              'The classic formula contains A^c/c!, and the factorial overflows floating-point range at hundreds of lines. The equivalent recurrence used here updates the result with only multiplication and division, staying numerically stable and matching published lookup tables even for large trunk groups.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
