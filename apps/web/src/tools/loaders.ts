@@ -442,4 +442,5 @@ export const toolLoaders: Record<
   'http2-frame-parser': () => import('./http2-frame-parser'),
   'universal-links-generator': () => import('./universal-links-generator'),
   'magic-number-identifier': () => import('./magic-number-identifier'),
+  'maidenhead-locator-codec': () => import('./maidenhead-locator-codec'),
 };

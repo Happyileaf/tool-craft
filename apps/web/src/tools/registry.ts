@@ -40079,6 +40079,108 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'maidenhead-locator-codec',
+    name: 'Maidenhead 网格定位编解码器（QTH Locator）',
+    nameEn: 'Maidenhead Locator Codec',
+    description:
+      'WGS-84 经纬度与 Maidenhead（QTH Locator）网格字符串互转，支持 4/6/8/10 字符精度，输出网格西南/东北角与中心坐标、覆盖跨度，按 ARRL 字母对与数字对交替规则在浏览器本地纯函数计算。',
+    descriptionEn:
+      'Convert WGS-84 latitude/longitude to and from Maidenhead (QTH Locator) grid strings at 4/6/8/10-character precision, with bounding box, center coordinates and cell span output, computed locally following the ARRL alternating letter/digit pair rules.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/maidenhead-locator-codec',
+    iconName: 'Map',
+    tags: ['Maidenhead', 'QTH Locator', '网格定位', '经纬度', '业余无线电', '地理编码'],
+    tagsEn: ['Maidenhead', 'QTH Locator', 'Grid Locator', 'Latitude Longitude', 'Ham Radio', 'Geocoding'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Maidenhead Locator System（又称 QTH Locator 或 IARU Locator）是业余无线电领域广泛使用的全球位置压缩编码。它把地球表面递归切分为层级网格：第一对字段用字母 A–R 把经度分 18 格（每格 20°）、纬度分 18 格（每格 10°）；第二对用数字 0–9 各再分 10 格；第三对用字母 A–X 各再分 24 格，之后按 10/24 交替继续细分。常见 6 字符网格（如 JN58TD）精度约为 5 角分 × 2.5 角分。本工具在编码与解码两个方向上实现完整的层级换算。',
+        coreFeatures: [
+          '编码：输入纬度、经度与精度（2–5 对字段），输出大写规范网格字符串',
+          '解码：网格字符串（大小写与空白容错）还原西南角、东北角、中心坐标与经纬度跨度',
+          '支持 4/6/8/10 字符四级精度，高精度编码自动以低精度为前缀',
+          '严格边界校验：经纬度越界、奇数字符长度、非法字符、字段超范围均给出明确错误',
+          '纯函数核心与完整单元测试，编解码往返一致，全部在浏览器本地计算',
+        ],
+        howToUse: [
+          '在「坐标 → 网格」页签填入 WGS-84 十进制度经纬度并选择精度，立即得到网格与地理范围',
+          '在「网格 → 坐标」页签粘贴如 JN58TD 的网格字符串，查看中心坐标与边界',
+          '需要通联日志或竞赛上报时，通常使用 6 字符（3 对）精度',
+          '输入非法时按红色提示修正坐标范围或网格字符',
+        ],
+        useCases: [
+          '业余无线电 VHF/UHF 通联记录、DX 竞赛与奖状申请中的位置填报',
+          '把电台、信标、SOTA/POTA 点位快速压缩为短网格字符串交换',
+          '教学演示层级地理网格的递归切分与编解码原理',
+          '与 Geohash、Plus Code 等其他网格体系做精度与编码风格对照',
+        ],
+        privacyNote: '所有坐标与网格换算均在浏览器本地由纯函数完成，不涉及任何网络请求或位置数据上传。',
+        faqs: [
+          {
+            question: 'Maidenhead 和 Geohash 有什么区别？',
+            answer:
+              '两者都是层级网格，但字符体系与切分基数不同：Maidenhead 使用字母对/数字对交替、固定 18→10→24→10→24 的切分序列，面向业余无线电社区；Geohash 使用 base32 字母表并按 5 位比特交错经纬度。两者网格边界并不重合，不能直接互换，需要经纬度作为中间量转换。',
+          },
+          {
+            question: '6 字符网格的实际精度是多少？',
+            answer:
+              '6 字符（3 对字段）网格在经度方向宽 5 角分（赤道附近约 9.3 km），纬度方向高 2.5 角分（约 4.6 km）。8 字符再细分 24 倍，10 字符继续细分 10 倍，可达到百米级。',
+          },
+          {
+            question: '为什么经度 180° 会报错而 -180° 可以？',
+            answer:
+              '网格字段把经度区间 [-180, 180) 半开半闭地切分，180° 与 -180° 物理上是同一条经线，规范统一从 -180° 起算，因此 180° 被排除以避免同一位置出现两个编码。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Maidenhead Locator System (also called QTH Locator or IARU Locator) is a compact global position encoding widely used in amateur radio. It recursively subdivides the Earth into hierarchical grids: the first pair uses letters A–R to divide longitude into 18 cells of 20° and latitude into 18 cells of 10°; the second pair uses digits 0–9 for a further 10-way split; the third pair uses letters A–X for a 24-way split, and deeper pairs alternate between 10 and 24. A typical six-character locator such as JN58TD offers about 5 arcminutes by 2.5 arcminutes of precision. This tool implements the full hierarchical conversion in both directions.',
+        coreFeatures: [
+          'Encoding: enter latitude, longitude and precision (2–5 field pairs) to obtain the canonical uppercase locator',
+          'Decoding: turn a locator string (case and whitespace tolerant) back into south-west/north-east corners, center coordinates and spans',
+          'Four precision levels at 4/6/8/10 characters, with higher precision always prefixed by the lower one',
+          'Strict validation with explicit errors for out-of-range coordinates, odd lengths, illegal characters and over-range fields',
+          'Pure-function core with comprehensive unit tests and guaranteed round-trip consistency, fully local',
+        ],
+        howToUse: [
+          'On the Coordinates → Locator tab, enter WGS-84 decimal degrees and pick a precision to get the locator and its geographic extent',
+          'On the Locator → Coordinates tab, paste a locator such as JN58TD to inspect its center and bounding box',
+          'Use six-character (three-pair) precision for typical contact logs and contest submissions',
+          'Follow the red error hints to fix coordinate ranges or locator characters when input is invalid',
+        ],
+        useCases: [
+          'Position reporting in amateur radio VHF/UHF logs, DX contests and award applications',
+          'Compressing stations, beacons and SOTA/POTA points into short exchangeable grid strings',
+          'Teaching recursive hierarchical grid subdivision and codec principles',
+          'Comparing precision and encoding style with other grid systems such as Geohash and Plus Code',
+        ],
+        privacyNote:
+          'All coordinate and locator calculations run locally in the browser as pure functions with no network requests or location uploads.',
+        faqs: [
+          {
+            question: 'How does Maidenhead differ from Geohash?',
+            answer:
+              'Both are hierarchical grids, but they use different alphabets and subdivision bases. Maidenhead alternates letter and digit pairs with a fixed 18→10→24→10→24 sequence for the ham radio community, whereas Geohash uses a base32 alphabet interleaving longitude and latitude bits five at a time. Their cell boundaries do not coincide; convert through latitude/longitude as the intermediate representation.',
+          },
+          {
+            question: 'What is the real-world precision of a six-character locator?',
+            answer:
+              'A six-character (three-pair) cell spans 5 arcminutes of longitude (about 9.3 km at the equator) by 2.5 arcminutes of latitude (about 4.6 km). Eight characters refine it another 24 times and ten characters another 10 times, reaching hundred-meter scale.',
+          },
+          {
+            question: 'Why is longitude 180° rejected while -180° is accepted?',
+            answer:
+              'The fields partition the half-open longitude interval [-180, 180). Since 180° and -180° describe the same meridian, the specification always counts from -180° and excludes 180° so that one position never gets two encodings.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'magic-number-identifier',
     name: '文件魔数识别器（Magic Number 签名鉴别）',
     nameEn: 'File Magic Number Identifier',
