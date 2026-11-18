@@ -41637,6 +41637,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'i2c-address-converter',
+    name: 'I2C 地址换算器',
+    nameEn: 'I2C Address Converter',
+    description:
+      '在 7-bit 从机地址与 8-bit 读 / 写地址之间互转：写地址 = 7-bit 左移一位、读地址置最低位，支持 0x/$ 十六进制与十进制输入，依据 NXP UM10204 标注 0x00–0x07、0x78–0x7F 保留段，内置 EEPROM、RTC、OLED 等常见器件预设。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert between a 7-bit slave address and the 8-bit read/write addresses: the write address shifts the 7-bit value left by one while the read address sets the LSB. Accepts 0x/$ hex and decimal input, flags the UM10204 reserved ranges 0x00–0x07 and 0x78–0x7F, and ships with presets for EEPROM, RTC, OLED and other common devices. Runs entirely in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/i2c-address-converter',
+    iconName: 'Cpu',
+    tags: ['I2C', '地址换算', '嵌入式', '硬件调试', '保留地址', '总线'],
+    tagsEn: ['I2C', 'Address Conversion', 'Embedded', 'Hardware Debug', 'Reserved Address', 'Bus'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'I2C 地址换算器是一款面向嵌入式与硬件调试场景的纯浏览器工具。I2C 器件的数据手册通常给出 7-bit 从机地址，而逻辑分析仪抓包、部分驱动与 i2c-tools 场景使用 8-bit 地址：最低位 R/W 为 0 表示写、为 1 表示读。本工具在两种表示间精确互转，并按 NXP UM10204 规范提示保留地址，避免误用通用呼叫等特殊地址。',
+        coreFeatures: [
+          '双向换算：7-bit → 8-bit 读 / 写地址，或由 8-bit 地址反推 7-bit 地址与 R/W 位',
+          '灵活输入：支持 0x、$ 前缀十六进制与裸十进制，自动裁剪空白并容错',
+          '保留地址识别：内置 UM10204 Table 4 的 0x00–0x07 与 0x78–0x7F 保留段及用途说明',
+          '器件预设：一键填充 24Cxx EEPROM、DS3231、SSD1306、BMP280、PCF8574 等常见地址',
+          '纯函数实现：换算与校验零依赖、确定性输出，固定向量单测覆盖',
+        ],
+        howToUse: [
+          '选择换算方向：已知从机地址选 7-bit→8-bit，分析抓包选 8-bit→7-bit',
+          '在输入框填写地址，可点击器件预设快速填充',
+          '查看 7-bit 地址、8-bit 写地址、读地址与保留状态，按需一键复制',
+          '出现黄色警告时核对该地址是否属于保留段，避免分配给普通从机',
+        ],
+        useCases: [
+          '驱动开发时把数据手册的 7-bit 地址换算为 i2c_smbus 或抓包所见的 8-bit 地址',
+          '逻辑分析仪解码 I2C 波形后由 0xA0/0xA1 等读写地址反推真实从机地址',
+          '排查多器件地址冲突，确认所选地址不在保留段且未被板上其他从机占用',
+        ],
+        privacyNote:
+          '所有地址换算均在浏览器本地完成，不发起任何网络请求，输入内容不会离开设备。',
+        faqs: [
+          {
+            question: '为什么同一个器件会看到两个不同的地址？',
+            answer:
+              '数据手册通常标注 7-bit 地址（如 0x50），而总线传输时在最低位补 R/W 位形成两个 8-bit 地址：写 0xA0、读 0xA1。二者描述的是同一个从机，只是表示视角不同，本工具一键完成互转。',
+          },
+          {
+            question: '哪些 I2C 地址不能随便用？',
+            answer:
+              '按 NXP UM10204，0x00–0x07 为保留段（0x00 是通用呼叫地址、0x01 是 CBUS 地址），0x78–0x7F 保留给 10-bit 寻址等特殊用途。普通 7-bit 从机应在 0x08–0x77 之间选址，工具会对保留地址给出警告。',
+          },
+          {
+            question: '输入支持哪些格式？',
+            answer:
+              '支持 0x 前缀十六进制（如 0x50）、部分烧录器使用的 $ 前缀（如 $50）以及裸十进制（如 80）。大小写与首尾空白都会自动处理，含非法字符时会提示无法识别。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The I2C Address Converter is a fully browser-local tool for embedded and hardware-debugging work. Datasheets usually quote a 7-bit slave address, while logic-analyzer captures, some drivers and i2c-tools workflows use 8-bit addresses where the LSB is the R/W bit (0 = write, 1 = read). The tool converts precisely between the two representations and flags reserved addresses per the NXP UM10204 specification.',
+        coreFeatures: [
+          'Bidirectional conversion: 7-bit to 8-bit read/write addresses, or recover the 7-bit address and R/W bit from an 8-bit value',
+          'Flexible input: 0x or $ prefixed hex and plain decimal, with whitespace trimming and tolerant parsing',
+          'Reserved-address detection: built-in UM10204 Table 4 ranges 0x00–0x07 and 0x78–0x7F with purpose notes',
+          'Device presets: one-click fill for 24Cxx EEPROM, DS3231, SSD1306, BMP280, PCF8574 and more',
+          'Pure functions: dependency-free, deterministic conversion and validation covered by fixed-vector unit tests',
+        ],
+        howToUse: [
+          'Pick the direction: 7-bit→8-bit when you know the slave address, or 8-bit→7-bit when analyzing a capture',
+          'Enter the address, or click a device preset to fill it quickly',
+          'Review the 7-bit address, 8-bit write/read addresses and reserved status, copying any value as needed',
+          'If a yellow warning appears, verify whether the address falls in a reserved range before assigning it',
+        ],
+        useCases: [
+          'Turning a datasheet 7-bit address into the 8-bit address seen by i2c_smbus calls or a logic analyzer',
+          'Recovering the real slave address from read/write values such as 0xA0/0xA1 in a decoded I2C trace',
+          'Debugging multi-device address conflicts and confirming an address is neither reserved nor already occupied',
+        ],
+        privacyNote:
+          'All address math runs locally in the browser with no network requests; your input never leaves the device.',
+        faqs: [
+          {
+            question: 'Why do I see two different addresses for the same device?',
+            answer:
+              'Datasheets usually give the 7-bit address (e.g. 0x50), while on-wire traffic appends an R/W bit to form two 8-bit addresses: 0xA0 for write and 0xA1 for read. They describe the same slave from different viewpoints, and the tool converts between them instantly.',
+          },
+          {
+            question: 'Which I2C addresses should not be used freely?',
+            answer:
+              'Per NXP UM10204, 0x00–0x07 are reserved (0x00 is the general-call address, 0x01 the CBUS address) and 0x78–0x7F are reserved for 10-bit addressing and other special uses. Ordinary 7-bit slaves should pick an address between 0x08 and 0x77; the tool warns when a reserved value is entered.',
+          },
+          {
+            question: 'What input formats are accepted?',
+            answer:
+            'Hex with a 0x prefix (e.g. 0x50), the $ prefix used by some programmers (e.g. $50), and plain decimal (e.g. 80). Case and surrounding whitespace are handled automatically, and illegal characters produce a clear error.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
