@@ -316,6 +316,12 @@ export const toolLoaders: Record<
   'gs1-checksum-calculator': () => import('./gs1-checksum-calculator'),
   'dicom-uid-tool': () => import('./dicom-uid-tool'),
   'ical-todo-journal-generator': () => import('./ical-todo-journal-generator'),
+  'i2c-address-calculator': () => import('./i2c-address-calculator'),
+  // 其余 4 个工具随各自实现 commit 恢复注册
+  // 'mta-sts-tlsrpt-generator': () => import('./mta-sts-tlsrpt-generator'),
+  // 'erlang-b-calculator': () => import('./erlang-b-calculator'),
+  // 'evm-abi-selector-calculator': () => import('./evm-abi-selector-calculator'),
+  // 'dft-fft-calculator': () => import('./dft-fft-calculator'),
   'plus-code-codec': () => import('./plus-code-codec'),
   'changelog-generator': () => import('./changelog-generator'),
   'lrc-parser': () => import('./lrc-parser'),

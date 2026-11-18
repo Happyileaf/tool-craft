@@ -41637,6 +41637,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'i2c-address-calculator',
+    name: 'I2C 地址换算器（7-bit / 8-bit 读写地址与保留地址校验）',
+    nameEn: 'I2C Address Calculator (7-bit / 8-bit R/W Addresses)',
+    description:
+      '在浏览器本地完成 I2C 地址双向换算：输入 7-bit 地址自动左移生成 8-bit 写地址（addr<<1|0）与读地址（addr<<1|1），粘贴 8-bit 读写字节自动右移还原 7-bit 地址；支持 0x/0b/0o/h 后缀与十进制写法，同步输出 HEX/DEC/BIN 三种进制，并按 NXP UM10204 标注 0x00–0x07、0x78–0x7F 保留区间与通用呼叫地址。',
+    descriptionEn:
+      'Convert I2C addresses locally: turn a 7-bit address into the 8-bit write (addr<<1|0) and read (addr<<1|1) bytes, or paste an 8-bit byte to recover the 7-bit address. Accepts 0x/0b/0o/h-suffix and decimal notations, shows HEX/DEC/BIN in parallel, and flags the UM10204 reserved ranges 0x00–0x07 and 0x78–0x7F including the General Call address.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/i2c-address-calculator',
+    iconName: 'PlugZap',
+    tags: ['I2C', '嵌入式', '地址换算', '硬件调试', 'UM10204'],
+    tagsEn: ['I2C', 'Embedded', 'Address Conversion', 'Hardware Debug', 'UM10204'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '0x50',
+    doc: {
+      zh: {
+        whatIsIt:
+          'I2C 地址换算器是一款纯浏览器本地工具，解决嵌入式开发中 I2C 设备地址在数据手册、Linux i2cdetect 输出、HAL 库与实际发送字节之间表示法不一致的问题。7-bit 地址在总线上以左移一位后的 8-bit 字节传输，最低位区分写（0）与读（1）；工具依据 NXP UM10204 规范完成双向移位换算、多进制展示与保留区间校验，全部计算离线运行。',
+        coreFeatures: [
+          '双向换算：7-bit 地址左移生成 8-bit 写 / 读地址；粘贴 8-bit 字节自动右移还原 7-bit 地址',
+          '多进制输入输出：支持 0x50、50h、0b1010000、0o120 与十进制 80，结果同步给出 HEX/DEC/BIN',
+          '保留地址校验：按 UM10204 §3.1.10 标注 0x00–0x07（含通用呼叫 0x00）与 0x78–0x7F（10-bit 寻址等）保留区间',
+          '读地址智能识别：输入最低位为 1 的 8-bit 字节时按读地址解释并给出对应写地址提示',
+          '一键复制：每个进制结果均可单独复制，位运算公式随结果展示便于核对',
+        ],
+        howToUse: [
+          '在输入框填写 I2C 地址，可带 0x / 0b / 0o 前缀、h 后缀或直接写十进制',
+          '输入 0–127 的值按 7-bit 从机地址解释，自动生成 8-bit 写 / 读地址三进制结果表',
+          '输入 128–255 的值按 8-bit 读 / 写字节解释，自动右移还原 7-bit 地址',
+          '出现黄色警告表示地址落在保留区间或输入为读地址，按提示核对数据手册后再使用',
+        ],
+        useCases: [
+          '阅读传感器数据手册时把 7-bit 地址换算为 HAL 库需要的 8-bit 读 / 写地址',
+          '对照 i2cdetect 输出与逻辑分析仪抓取的地址字节，快速排查线序与方向位问题',
+          '校验候选地址是否落在 UM10204 保留区间，避免与通用呼叫或 10-bit 寻址冲突',
+          '嵌入式教学中演示 I2C 地址移位与 R/W 方向位的位运算关系',
+        ],
+        privacyNote:
+          '所有地址仅在浏览器本地内存中换算，不发起任何网络请求，刷新页面即清除。',
+        faqs: [
+          {
+            question: '为什么同一个 I2C 设备会看到两个地址（如 0xA0 和 0xA1）？',
+            answer:
+              'I2C 设备的核心地址是 7-bit（如 0x50），总线上实际发送的是左移一位后的 8-bit 字节：写操作最低位补 0 得到 0xA0，读操作最低位补 1 得到 0xA1。数据手册与 HAL 库常混用两种记法，本工具同时给出三种形式以便核对。',
+          },
+          {
+            question: '哪些 I2C 地址不能分配给普通从设备？',
+            answer:
+              '依据 NXP UM10204，0x00–0x07 为保留地址（0x00 是通用呼叫 General Call，0x01–0x07 用于 CBUS 等保留用途），0x78–0x7F 用于 10-bit 寻址使能与保留；工具对落在这些区间的 7-bit 地址给出醒目警告。',
+          },
+          {
+            question: '粘贴 0xA1 为什么提示是读地址？',
+            answer:
+              '0xA1 的最低位为 1，表示它是 7-bit 地址 0x50 的读操作字节；工具右移一位还原出 0x50，并提示对应的写地址为 0xA0。输入偶数对齐的 8-bit 值（如 0xA0）则按写地址直接处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local browser tool that bridges the I2C address notation gap between datasheets, Linux i2cdetect output, HAL libraries and the bytes actually sent on the wire. A 7-bit address is transmitted shifted left by one bit, with the least significant bit selecting write (0) or read (1). The tool performs the bidirectional shift conversion per NXP UM10204, shows every result in HEX/DEC/BIN, and validates reserved address ranges entirely offline.',
+        coreFeatures: [
+          'Bidirectional conversion: shift a 7-bit address left into 8-bit write/read bytes, or paste an 8-bit byte to recover the 7-bit address',
+          'Multi-radix input and output: 0x50, 50h, 0b1010000, 0o120 and decimal 80, with HEX/DEC/BIN shown together',
+          'Reserved-address validation per UM10204 §3.1.10: flags 0x00–0x07 (including General Call 0x00) and 0x78–0x7F (10-bit addressing)',
+          'Smart read-byte detection: an 8-bit value with LSB 1 is interpreted as a read address with its write counterpart shown',
+          'One-click copy per radix and the underlying bit-shift formulas displayed alongside results',
+        ],
+        howToUse: [
+          'Enter an I2C address with 0x / 0b / 0o prefix, an h suffix, or plain decimal',
+          'Values 0–127 are treated as 7-bit slave addresses and expanded into 8-bit write/read bytes in three radices',
+          'Values 128–255 are treated as 8-bit bytes and shifted right to recover the 7-bit address',
+          'Yellow warnings indicate a reserved range or a read-byte input; cross-check against the datasheet before use',
+        ],
+        useCases: [
+          'Converting a 7-bit datasheet address into the 8-bit read/write bytes expected by HAL libraries',
+          'Reconciling i2cdetect output with logic-analyzer bytes to debug direction-bit and wiring issues',
+          'Checking candidate addresses against the UM10204 reserved ranges to avoid General Call / 10-bit conflicts',
+          'Teaching the bit-shift and R/W direction-bit semantics of I2C addressing',
+        ],
+        privacyNote:
+          'All addresses are converted in browser memory only; no network requests are made and everything clears on refresh.',
+        faqs: [
+          {
+            question: 'Why does one I2C device appear with two addresses such as 0xA0 and 0xA1?',
+            answer:
+              'The device identity is a 7-bit address (e.g. 0x50); the wire byte is shifted left by one, with LSB 0 for writes (0xA0) and LSB 1 for reads (0xA1). Datasheets and HALs mix both notations, so this tool displays all three forms side by side.',
+          },
+          {
+            question: 'Which I2C addresses cannot be assigned to ordinary slaves?',
+            answer:
+              'Per NXP UM10204, 0x00–0x07 are reserved (0x00 is General Call, 0x01–0x07 cover CBUS and similar uses) and 0x78–0x7F are reserved for 10-bit addressing enable and other purposes. The tool raises a prominent warning for any 7-bit address in these ranges.',
+          },
+          {
+            question: 'Why is pasting 0xA1 flagged as a read address?',
+            answer:
+              '0xA1 has LSB 1, so it is the read-operation byte of 7-bit address 0x50. The tool shifts it right to recover 0x50 and points out that the matching write byte is 0xA0; an even 8-bit value such as 0xA0 is treated as a write byte directly.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
