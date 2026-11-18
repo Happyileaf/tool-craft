@@ -41637,6 +41637,517 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'i2c-address-converter',
+    name: 'I2C 地址换算器',
+    nameEn: 'I2C Address Converter',
+    description:
+      '在 7-bit 从机地址与 8-bit 读 / 写地址之间互转：写地址 = 7-bit 左移一位、读地址置最低位，支持 0x/$ 十六进制与十进制输入，依据 NXP UM10204 标注 0x00–0x07、0x78–0x7F 保留段，内置 EEPROM、RTC、OLED 等常见器件预设。纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Convert between a 7-bit slave address and the 8-bit read/write addresses: the write address shifts the 7-bit value left by one while the read address sets the LSB. Accepts 0x/$ hex and decimal input, flags the UM10204 reserved ranges 0x00–0x07 and 0x78–0x7F, and ships with presets for EEPROM, RTC, OLED and other common devices. Runs entirely in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/i2c-address-converter',
+    iconName: 'Cpu',
+    tags: ['I2C', '地址换算', '嵌入式', '硬件调试', '保留地址', '总线'],
+    tagsEn: ['I2C', 'Address Conversion', 'Embedded', 'Hardware Debug', 'Reserved Address', 'Bus'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'I2C 地址换算器是一款面向嵌入式与硬件调试场景的纯浏览器工具。I2C 器件的数据手册通常给出 7-bit 从机地址，而逻辑分析仪抓包、部分驱动与 i2c-tools 场景使用 8-bit 地址：最低位 R/W 为 0 表示写、为 1 表示读。本工具在两种表示间精确互转，并按 NXP UM10204 规范提示保留地址，避免误用通用呼叫等特殊地址。',
+        coreFeatures: [
+          '双向换算：7-bit → 8-bit 读 / 写地址，或由 8-bit 地址反推 7-bit 地址与 R/W 位',
+          '灵活输入：支持 0x、$ 前缀十六进制与裸十进制，自动裁剪空白并容错',
+          '保留地址识别：内置 UM10204 Table 4 的 0x00–0x07 与 0x78–0x7F 保留段及用途说明',
+          '器件预设：一键填充 24Cxx EEPROM、DS3231、SSD1306、BMP280、PCF8574 等常见地址',
+          '纯函数实现：换算与校验零依赖、确定性输出，固定向量单测覆盖',
+        ],
+        howToUse: [
+          '选择换算方向：已知从机地址选 7-bit→8-bit，分析抓包选 8-bit→7-bit',
+          '在输入框填写地址，可点击器件预设快速填充',
+          '查看 7-bit 地址、8-bit 写地址、读地址与保留状态，按需一键复制',
+          '出现黄色警告时核对该地址是否属于保留段，避免分配给普通从机',
+        ],
+        useCases: [
+          '驱动开发时把数据手册的 7-bit 地址换算为 i2c_smbus 或抓包所见的 8-bit 地址',
+          '逻辑分析仪解码 I2C 波形后由 0xA0/0xA1 等读写地址反推真实从机地址',
+          '排查多器件地址冲突，确认所选地址不在保留段且未被板上其他从机占用',
+        ],
+        privacyNote:
+          '所有地址换算均在浏览器本地完成，不发起任何网络请求，输入内容不会离开设备。',
+        faqs: [
+          {
+            question: '为什么同一个器件会看到两个不同的地址？',
+            answer:
+              '数据手册通常标注 7-bit 地址（如 0x50），而总线传输时在最低位补 R/W 位形成两个 8-bit 地址：写 0xA0、读 0xA1。二者描述的是同一个从机，只是表示视角不同，本工具一键完成互转。',
+          },
+          {
+            question: '哪些 I2C 地址不能随便用？',
+            answer:
+              '按 NXP UM10204，0x00–0x07 为保留段（0x00 是通用呼叫地址、0x01 是 CBUS 地址），0x78–0x7F 保留给 10-bit 寻址等特殊用途。普通 7-bit 从机应在 0x08–0x77 之间选址，工具会对保留地址给出警告。',
+          },
+          {
+            question: '输入支持哪些格式？',
+            answer:
+              '支持 0x 前缀十六进制（如 0x50）、部分烧录器使用的 $ 前缀（如 $50）以及裸十进制（如 80）。大小写与首尾空白都会自动处理，含非法字符时会提示无法识别。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The I2C Address Converter is a fully browser-local tool for embedded and hardware-debugging work. Datasheets usually quote a 7-bit slave address, while logic-analyzer captures, some drivers and i2c-tools workflows use 8-bit addresses where the LSB is the R/W bit (0 = write, 1 = read). The tool converts precisely between the two representations and flags reserved addresses per the NXP UM10204 specification.',
+        coreFeatures: [
+          'Bidirectional conversion: 7-bit to 8-bit read/write addresses, or recover the 7-bit address and R/W bit from an 8-bit value',
+          'Flexible input: 0x or $ prefixed hex and plain decimal, with whitespace trimming and tolerant parsing',
+          'Reserved-address detection: built-in UM10204 Table 4 ranges 0x00–0x07 and 0x78–0x7F with purpose notes',
+          'Device presets: one-click fill for 24Cxx EEPROM, DS3231, SSD1306, BMP280, PCF8574 and more',
+          'Pure functions: dependency-free, deterministic conversion and validation covered by fixed-vector unit tests',
+        ],
+        howToUse: [
+          'Pick the direction: 7-bit→8-bit when you know the slave address, or 8-bit→7-bit when analyzing a capture',
+          'Enter the address, or click a device preset to fill it quickly',
+          'Review the 7-bit address, 8-bit write/read addresses and reserved status, copying any value as needed',
+          'If a yellow warning appears, verify whether the address falls in a reserved range before assigning it',
+        ],
+        useCases: [
+          'Turning a datasheet 7-bit address into the 8-bit address seen by i2c_smbus calls or a logic analyzer',
+          'Recovering the real slave address from read/write values such as 0xA0/0xA1 in a decoded I2C trace',
+          'Debugging multi-device address conflicts and confirming an address is neither reserved nor already occupied',
+        ],
+        privacyNote:
+          'All address math runs locally in the browser with no network requests; your input never leaves the device.',
+        faqs: [
+          {
+            question: 'Why do I see two different addresses for the same device?',
+            answer:
+              'Datasheets usually give the 7-bit address (e.g. 0x50), while on-wire traffic appends an R/W bit to form two 8-bit addresses: 0xA0 for write and 0xA1 for read. They describe the same slave from different viewpoints, and the tool converts between them instantly.',
+          },
+          {
+            question: 'Which I2C addresses should not be used freely?',
+            answer:
+              'Per NXP UM10204, 0x00–0x07 are reserved (0x00 is the general-call address, 0x01 the CBUS address) and 0x78–0x7F are reserved for 10-bit addressing and other special uses. Ordinary 7-bit slaves should pick an address between 0x08 and 0x77; the tool warns when a reserved value is entered.',
+          },
+          {
+            question: 'What input formats are accepted?',
+            answer:
+            'Hex with a 0x prefix (e.g. 0x50), the $ prefix used by some programmers (e.g. $50), and plain decimal (e.g. 80). Case and surrounding whitespace are handled automatically, and illegal characters produce a clear error.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'erlang-b-calculator',
+    name: 'Erlang B 中继线话务量计算器',
+    nameEn: 'Erlang B Trunk Traffic Calculator',
+    description:
+      '基于 Erlang B（M/M/c/c 阻塞清除）模型，在中继线数、流入话务量（Erlang）与阻塞概率（GoS）间三量互算：正算阻塞概率、按目标 GoS 反求最少线数、二分反算最大可承载话务量，并提供逐线数灵敏度对照表。数值稳定递推避免阶乘溢出，纯浏览器本地运算、零新增依赖。',
+    descriptionEn:
+      'Apply the Erlang B (M/M/c/c blocked-calls-cleared) model to relate trunk count, offered load in Erlangs and blocking probability (GoS): compute blocking directly, solve the minimum lines for a target GoS, binary-search the maximum carried load, and review a per-line sensitivity table. A numerically stable recurrence avoids factorial overflow; runs entirely in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/erlang-b-calculator',
+    iconName: 'PhoneCall',
+    tags: ['Erlang B', '话务量', '中继线', '阻塞概率', 'GoS', '通信容量规划'],
+    tagsEn: ['Erlang B', 'Traffic Load', 'Trunk Lines', 'Blocking Probability', 'GoS', 'Capacity Planning'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'Erlang B 中继线话务量计算器是一款面向呼叫中心、电信中继与无线信道容量规划的纯浏览器工具。Erlang B 公式描述阻塞呼叫清除模型：呼叫按泊松过程到达、占用时长指数分布，当 c 条中继线全忙时新呼叫立即被清除。工具在中继线数、话务量与服务等级（GoS，即阻塞概率）之间互算，帮助确定满足目标呼损所需的线路数量。',
+        coreFeatures: [
+          '三量互算：已知线数与话务量正算阻塞概率，按目标 GoS 反求最少线数，或反算最大可承载话务量',
+          '数值稳定：采用 B_n = A·B_{n-1}/(n + A·B_{n-1}) 递推，大线数下不发生阶乘溢出',
+          '灵敏度对照表：固定话务量逐线数列出阻塞概率，并按 1%/5% 阈值标注达标状态',
+          'GoS 预设：内置 1%、2%、5%、10% 四档常用服务等级快捷填充',
+          '纯函数实现：计算零依赖、确定性输出，固定查表向量单测覆盖',
+        ],
+        howToUse: [
+          '在计算器 Tab 选择计算模式（阻塞概率 / 所需线数 / 可承载话务量）',
+          '填写中继线数、话务量（Erlang）或目标 GoS，反算模式可点击 GoS 预设',
+          '查看结果卡片，阻塞超 50% 等异常情形会给出黄色提示',
+          '切换到灵敏度对照表，观察逐线数阻塞概率变化以选择经济的线路配置',
+        ],
+        useCases: [
+          '呼叫中心或企业 PBX 规划中继线数量，把高峰呼损控制在目标 GoS 内',
+          '电信运营商评估局间中继群、移动网络信道在给定话务量下的阻塞表现',
+          '在有限线路预算下反算可承诺的话务量，支撑容量报价与扩容决策',
+        ],
+        privacyNote:
+          '所有话务量与线数计算均在浏览器本地完成，不发起任何网络请求，规划数据不会离开设备。',
+        faqs: [
+          {
+            question: 'Erlang 和阻塞概率分别是什么？',
+            answer:
+              'Erlang（爱尔兰）是话务量单位，1 Erlang 表示一条中继线被连续占用一小时的负荷。阻塞概率（GoS，Grade of Service）是呼叫到达时所有线路全忙、呼叫被立即清除的概率，例如 GoS=1% 意味着平均每 100 个呼叫有 1 个被阻塞。',
+          },
+          {
+            question: 'Erlang B 和 Erlang C 有什么区别？',
+            answer:
+              'Erlang B 假设线路全忙时呼叫立即清除（不排队），适用于中继线、无线信道等场景；Erlang C 假设呼叫进入队列等待，适用于坐席排队的呼叫中心。本工具只实现 Erlang B，不涉及排队等待模型。',
+          },
+          {
+            question: '为什么不用阶乘直接套公式？',
+            answer:
+              '经典 Erlang B 公式含 A^c/c!，当线数 c 达到数百时阶乘会超出浮点范围导致溢出。本工具改用等价的递推式逐项更新，只做乘除运算，数值稳定且与查表值一致，适合大线数容量规划。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The Erlang B Trunk Traffic Calculator is a fully browser-local tool for call-center, telecom trunk and radio-channel capacity planning. The Erlang B formula describes the blocked-calls-cleared model: calls arrive as a Poisson process with exponential holding times, and a new call is cleared immediately when all c trunks are busy. The tool converts among trunk count, offered load and Grade of Service (the blocking probability) to size a trunk group for a target loss rate.',
+        coreFeatures: [
+          'Three-way solving: blocking from lines and load, minimum lines for a target GoS, or the maximum carried load via binary search',
+          'Numerically stable B_n = A·B_{n-1}/(n + A·B_{n-1}) recurrence that avoids factorial overflow at large line counts',
+          'Sensitivity table: per-line blocking probabilities at fixed load, flagged against 1%/5% thresholds',
+          'GoS presets: one-click fill for the common 1%, 2%, 5% and 10% service levels',
+          'Pure functions: dependency-free, deterministic computation covered by fixed table-lookup unit tests',
+        ],
+        howToUse: [
+          'Pick a mode on the calculator tab (blocking / required lines / carried load)',
+          'Enter trunk count, offered load in Erlangs or target GoS; use a GoS preset in reverse modes',
+          'Read the result cards; extreme cases such as blocking above 50% raise a yellow hint',
+          'Open the sensitivity table to see how blocking falls with each added line and choose an economical configuration',
+        ],
+        useCases: [
+          'Sizing trunks for a call center or enterprise PBX so peak call loss stays within the target GoS',
+          'Evaluating blocking of inter-office trunk groups or mobile radio channels under a given offered load',
+          'Reverse-engineering the committable load under a fixed line budget to support pricing and expansion decisions',
+        ],
+        privacyNote:
+          'All traffic and line calculations run locally in the browser with no network requests; planning data never leaves the device.',
+        faqs: [
+          {
+            question: 'What are an Erlang and a blocking probability?',
+            answer:
+              'The Erlang is the unit of traffic load: one Erlang means one trunk occupied continuously for one hour. Blocking probability (GoS, Grade of Service) is the chance that a call arrives when every line is busy and is cleared immediately; GoS=1% means on average one call in 100 is blocked.',
+          },
+          {
+            question: 'How does Erlang B differ from Erlang C?',
+            answer:
+              'Erlang B assumes calls are cleared immediately when all lines are busy (no queue), fitting trunks and radio channels. Erlang C assumes calls join a waiting queue, fitting agent-staffed call centers. This tool implements only Erlang B and does not model queuing delay.',
+          },
+          {
+            question: 'Why not evaluate the factorial formula directly?',
+            answer:
+              'The classic formula contains A^c/c!, and the factorial overflows floating-point range at hundreds of lines. The equivalent recurrence used here updates the result with only multiplication and division, staying numerically stable and matching published lookup tables even for large trunk groups.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'mta-sts-tls-rpt-generator',
+    name: 'MTA-STS 策略与 TLS-RPT 记录生成器',
+    nameEn: 'MTA-STS Policy & TLS-RPT Record Generator',
+    category: ToolCategoryEnum.DEV_CODE,
+    description:
+      '依据 RFC 8461 / RFC 8460 生成邮件域名的 MTA-STS 策略文件（mta-sts.txt）与两条 DNS TXT 记录：_mta-sts 宣告 v=STSv1 策略版本、_smtp._tls 配置 v=TLSRPTv1 报告地址 rua。内置 mode/max_age/MX 与 rua 校验、testing→enforce 灰度提示和第三方网关跨域告警，纯浏览器本地拼装、零新增依赖。',
+    descriptionEn:
+      'Generate the MTA-STS policy file (mta-sts.txt) and the two DNS TXT records for an email domain per RFC 8461 / RFC 8460: the _mta-sts v=STSv1 policy announcement and the _smtp._tls v=TLSRPTv1 reporting rua. Built-in validation covers mode, max_age, MX hosts and rua, with testing-to-enforce rollout guidance and third-party gateway warnings. Everything is assembled locally in the browser with zero new dependencies.',
+    path: '/tools/mta-sts-tls-rpt-generator',
+    iconName: 'SafetyCertificate',
+    tags: ['MTA-STS', 'TLS-RPT', 'SMTP', 'DNS TXT', '邮件安全', 'RFC 8461'],
+    tagsEn: ['MTA-STS', 'TLS-RPT', 'SMTP', 'DNS TXT', 'Email Security', 'RFC 8461'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'MTA-STS（SMTP MTA Strict Transport Security）让收件方能够强制发送方使用有效 TLS 证书加密投递邮件，抵御 STARTTLS 降级与中间人攻击；TLS-RPT（TLS Reporting）则让发送方把投递失败报告回传给域名所有者。本工具按 RFC 8461 与 RFC 8460 在浏览器本地生成策略文件全文、MTA-STS 与 TLS-RPT 两条 DNS TXT 记录，并对域名、MX、max_age、报告地址做完整校验。',
+        coreFeatures: [
+          '策略文件生成：按 version/mode/max_age/mx 规范键序输出 mta-sts.txt，并给出 HTTPS 发布 URL',
+          '双 DNS 记录：拼装 _mta-sts.<域> 的 v=STSv1 与 _smtp._tls.<域> 的 v=TLSRPTv1 TXT 记录',
+          '完整校验：域名 / 通配符 MX / 邮箱或 https rua / max_age 上限 31557600 秒 / 策略 id 字符合法性',
+          '灰度提示：testing 仅观察不拦截、enforce 短 max_age 告警、第三方 MX 跨域提醒',
+          '一键复制：策略文件与记录值独立复制，纯函数实现并由固定向量单测覆盖',
+        ],
+        howToUse: [
+          '填写邮件域名，选择 testing 或 enforce 模式并维护允许的 MX 主机名列表',
+          '设置 max_age（可使用快捷预设）与 TLS-RPT 报告接收方式（mailto 或 https）',
+          '修正所有红色校验错误，留意黄色灰度与跨域告警',
+          '把策略文件发布到 https://mta-sts.<域>/.well-known/mta-sts.txt，再到 DNS 服务商添加两条 TXT 记录',
+          '观察 TLS-RPT 报告确认无投递失败后，再从 testing 切换到 enforce 并调大 max_age',
+        ],
+        useCases: [
+          '企业邮件域名上线 MTA-STS，强制对端以有效证书走 TLS 加密投递',
+          '配置 TLS-RPT 收集发送方上报的证书失效、明文降级等失败事件',
+          '邮件安全合规审查中快速产出符合 RFC 的策略与 DNS 配置底稿',
+        ],
+        privacyNote:
+          '所有配置仅在浏览器本地拼装与校验，不发起任何网络请求，域名与报告地址不会离开设备。',
+        faqs: [
+          {
+            question: 'testing 和 enforce 模式有什么区别？',
+            answer:
+              'testing 模式不强制拦截：证书无效或明文投递不会被拒绝，但发送方会通过 TLS-RPT 上报失败，适合先观察兼容性；enforce 模式下发送方在无法建立有效 TLS 连接时必须放弃投递。建议先 testing 灰度、确认报告干净后再切 enforce。',
+          },
+          {
+            question: '为什么更新策略必须更换 id？',
+            answer:
+              '发送方会按 max_age 缓存 MTA-STS 策略。DNS TXT 记录里的 id 变化是触发刷新的信号：保持 id 不变时，收件方可能继续使用旧缓存。每次修改 mta-sts.txt 的 mode、max_age 或 MX 后，都应生成新 id 并更新 _mta-sts TXT 记录。',
+          },
+          {
+            question: 'MX 主机名可以用通配符吗？',
+            answer:
+              '可以，RFC 8461 允许以 *.example.com 形式匹配同一父域下的多级主机名。通配符不会跨域匹配，因此使用第三方邮件网关（主机名不在本域之下）时需要显式列出，工具会给出跨域告警提醒确认。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'MTA-STS (SMTP MTA Strict Transport Security) lets a receiving domain force senders to deliver mail over TLS with a valid certificate, defending against STARTTLS downgrade and man-in-the-middle attacks; TLS-RPT lets senders report delivery failures back to the domain owner. Following RFC 8461 and RFC 8460, this tool builds the policy file and both DNS TXT records entirely in the browser, with full validation of domain, MX, max_age and reporting endpoints.',
+        coreFeatures: [
+          'Policy file: emits mta-sts.txt in the canonical version/mode/max_age/mx key order with its HTTPS publication URL',
+          'Twin DNS records: assembles the _mta-sts v=STSv1 and _smtp._tls v=TLSRPTv1 TXT records',
+          'Thorough validation: domain, wildcard MX, mailto/https rua, max_age ceiling of 31557600 seconds and policy-id character rules',
+          'Rollout guidance: testing observe-only hints, short max_age warnings in enforce, and cross-domain third-party MX alerts',
+          'One-click copy for the policy file and each record value; pure functions covered by fixed-vector unit tests',
+        ],
+        howToUse: [
+          'Enter the email domain, choose testing or enforce, and maintain the allowed MX host list',
+          'Set max_age (or use a preset) and the TLS-RPT reporting channel (mailto or https)',
+          'Resolve every red validation error and review the yellow rollout and cross-domain warnings',
+          'Publish the policy file at https://mta-sts.<domain>/.well-known/mta-sts.txt, then add the two TXT records at your DNS provider',
+          'Watch TLS-RPT reports for delivery failures before switching from testing to enforce and raising max_age',
+        ],
+        useCases: [
+          'Rolling out MTA-STS on an enterprise mail domain to require valid-certificate TLS from peers',
+          'Collecting sender-reported failures such as invalid certificates or plaintext downgrades via TLS-RPT',
+          'Producing RFC-compliant policy and DNS drafts during email-security compliance reviews',
+        ],
+        privacyNote:
+          'All configuration is assembled and validated locally in the browser with no network requests; domains and reporting addresses never leave the device.',
+        faqs: [
+          {
+            question: 'What is the difference between testing and enforce?',
+            answer:
+              'In testing mode failures are not blocked: invalid certificates or plaintext delivery still proceed, but senders report them via TLS-RPT, making it ideal for checking compatibility. In enforce mode senders must give up when they cannot establish a valid TLS connection. Start in testing, confirm clean reports, then switch to enforce.',
+          },
+          {
+            question: 'Why must the id change when the policy is updated?',
+            answer:
+              'Senders cache MTA-STS policies for up to max_age. A changed id in the DNS TXT record is the signal to refresh: keeping the same id may leave peers on stale cached policy. Whenever mode, max_age or MX entries in mta-sts.txt change, generate a new id and update the _mta-sts TXT record.',
+          },
+          {
+            question: 'Can MX hosts use wildcards?',
+            answer:
+              'Yes. RFC 8461 allows patterns such as *.example.com to match multiple hosts under the same parent domain. Wildcards never cross domain boundaries, so third-party mail gateways whose hostnames live outside your domain must be listed explicitly; the tool raises a cross-domain warning to prompt confirmation.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'http2-frame-parser',
+    name: 'HTTP/2 帧头解析与帧序列查看器',
+    nameEn: 'HTTP/2 Frame Header Parser & Sequence Viewer',
+    description:
+      '粘贴十六进制帧流即可按 RFC 7540 解析 9 字节定长帧头（24 位长度 / 类型 / 标志 / R 位 / 31 位流标识），逐帧展示类型、标志位（END_STREAM、ACK 等）、流标识与偏移，并展开 SETTINGS、WINDOW_UPDATE、PING、GOAWAY、RST_STREAM 载荷摘要；内置保留位、连接级帧流标识、载荷长度规则校验与截断检测。不实现 HPACK 解压，纯浏览器本地解析、零新增依赖。',
+    descriptionEn:
+      'Paste a hex frame stream and parse the 9-byte fixed frame header per RFC 7540 (24-bit length, type, flags, R bit and 31-bit stream identifier), with per-frame type, flags such as END_STREAM and ACK, stream id and offset. Payload summaries are expanded for SETTINGS, WINDOW_UPDATE, PING, GOAWAY and RST_STREAM, while built-in checks cover the reserved bit, connection-level stream ids, payload-length rules and truncation. HPACK decompression is intentionally out of scope; parsing runs entirely in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/http2-frame-parser',
+    iconName: 'Api',
+    tags: ['HTTP/2', '帧解析', 'RFC 7540', '协议调试', '二进制', '网络抓包'],
+    tagsEn: ['HTTP/2', 'Frame Parser', 'RFC 7540', 'Protocol Debug', 'Binary', 'Packet Analysis'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP/2 帧头解析与帧序列查看器是一款面向协议调试与抓包分析的纯浏览器工具。HTTP/2 把所有通信封装为二进制帧，每帧以 9 字节定长帧头开始：24 位载荷长度、8 位类型、8 位标志、1 位保留 R 与 31 位流标识。工具逐帧还原帧序列与载荷摘要，并按 RFC 7540 规则检查保留位、连接级帧流标识、SETTINGS / WINDOW_UPDATE / PING 等载荷长度约束及数据截断，帮助快速定位协议实现问题。本工具不实现 HPACK（RFC 7541）首部解压。',
+        coreFeatures: [
+          '帧头全字段解析：长度、类型（含未知类型 UNKNOWN 展示）、标志位名称、R 保留位与流标识',
+          '载荷摘要：SETTINGS 参数键值、WINDOW_UPDATE 增量、PING 不透明数据、GOAWAY 最后流与错误码、RST_STREAM 错误码',
+          '规则校验：连接级帧必须流标识 0、SETTINGS 6 字节倍数与 ACK 空载荷、PING 8 字节、保留位为 0 等',
+          '截断与残余检测：帧中途结束给出明确错误并报告已消费与残余字节，不产生半截帧',
+          '内置 SETTINGS + WINDOW_UPDATE + PING 样例，纯函数实现由 21 个固定向量单测覆盖',
+        ],
+        howToUse: [
+          '把抓包得到的 HTTP/2 帧十六进制粘贴到输入框（可含空格、换行与 0x 前缀，可省略连接前导）',
+          '查看解析帧数、已消费 / 残余字节等汇总指标',
+          '在表格中逐帧核对类型、标志、流标识与载荷摘要，橙色标签标记规则告警',
+          '对照底部帧类型速查表确认各类型编码与语义',
+        ],
+        useCases: [
+          '调试自研 HTTP/2 客户端 / 服务端的帧拼装与状态机实现',
+          '分析抓包数据中的 SETTINGS 协商、流量控制窗口与 GOAWAY 关连接原因',
+          '教学场景下直观理解二进制帧头布局、标志位与流复用机制',
+        ],
+        privacyNote:
+          '所有十六进制数据仅在浏览器本地解析，不发起任何网络请求，抓包内容不会离开设备。',
+        faqs: [
+          {
+            question: '为什么 HEADERS 帧只显示“HPACK 压缩块”而不展开首部？',
+            answer:
+              'HTTP/2 首部使用独立的 HPACK（RFC 7541）压缩，且解压依赖连接级动态表状态，需要维护完整的表演进与索引引用。本工具聚焦帧头与无状态载荷，明确不实现 HPACK，避免给出脱离动态表上下文的错误首部。可结合 Wireshark 等工具查看解压后的首部。',
+          },
+          {
+            question: '连接前导（PRI * HTTP/2.0）需要粘贴吗？',
+            answer:
+              '不需要。h2c 明文升级中的 24 字节连接前导不是帧结构，工具从 9 字节帧头开始解析。直接粘贴 SETTINGS 等帧的十六进制即可；若误贴前导，长度字段会无法对齐并触发截断或非法提示，删除前导后即可正常解析。',
+          },
+          {
+            question: '什么是连接级帧？为什么流标识必须是 0？',
+            answer:
+              'SETTINGS、PING、GOAWAY 以及连接级 WINDOW_UPDATE 作用于整条 HTTP/2 连接而非某一条流，RFC 7540 规定它们的流标识必须为 0。若这些帧携带非零流标识即属协议错误，工具会以橙色告警标出，便于发现对端或自身实现的违规帧。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The HTTP/2 Frame Header Parser & Sequence Viewer is a fully browser-local tool for protocol debugging and capture analysis. HTTP/2 encapsulates all communication in binary frames, each beginning with a fixed 9-byte header: a 24-bit payload length, an 8-bit type, 8 bits of flags, a reserved R bit and a 31-bit stream identifier. The tool reconstructs the frame sequence and payload summaries frame by frame, and applies RFC 7540 rule checks for the reserved bit, connection-level stream ids, payload-length constraints of SETTINGS / WINDOW_UPDATE / PING, and truncation. HPACK (RFC 7541) header decompression is deliberately out of scope.',
+        coreFeatures: [
+          'Full header decoding: length, type (with UNKNOWN fallback), named flag bits, R reserved bit and stream id',
+          'Payload summaries: SETTINGS key-value pairs, WINDOW_UPDATE increment, PING opaque bytes, GOAWAY last stream and error code, RST_STREAM error code',
+          'Rule validation: zero stream id for connection-level frames, 6-byte SETTINGS multiples, empty SETTINGS ACK, 8-byte PING, zero reserved bit and more',
+          'Truncation and trailing-byte detection: mid-frame endings raise explicit errors with consumed/remaining byte counts, never producing half frames',
+          'Built-in SETTINGS + WINDOW_UPDATE + PING sample; pure functions covered by 21 fixed-vector unit tests',
+        ],
+        howToUse: [
+          'Paste captured HTTP/2 frame hex into the input (spaces, newlines and 0x prefixes are accepted; the connection preface may be omitted)',
+          'Review summary metrics: parsed frame count, consumed and trailing bytes',
+          'Walk the table frame by frame checking type, flags, stream id and payload summary; orange tags mark rule warnings',
+          'Use the frame-type reference at the bottom to confirm type codes and semantics',
+        ],
+        useCases: [
+          'Debugging frame assembly and state machines in a hand-written HTTP/2 client or server',
+          'Analyzing SETTINGS negotiation, flow-control windows and GOAWAY shutdown reasons in captures',
+          'Teaching the binary header layout, flag bits and stream multiplexing model',
+        ],
+        privacyNote:
+          'All hex data is parsed locally in the browser with no network requests; captured traffic never leaves the device.',
+        faqs: [
+          {
+            question: 'Why do HEADERS frames only show an "HPACK block" without expanded headers?',
+            answer:
+              'HTTP/2 headers use the separate HPACK (RFC 7541) compression, whose decompression depends on connection-level dynamic-table state, index references and table evolution. This tool focuses on frame headers and stateless payloads and intentionally omits HPACK, rather than rendering headers that would be wrong without the dynamic-table context. Use a tool such as Wireshark for decompressed headers.',
+          },
+          {
+            question: 'Do I need to paste the connection preface (PRI * HTTP/2.0)?',
+            answer:
+              'No. The 24-byte h2c connection preface is not a frame, and parsing starts at the 9-byte frame header. Paste frame hex such as SETTINGS directly. If the preface is included by mistake, length fields will misalign and trigger truncation or invalid-input hints; remove the preface to parse normally.',
+          },
+          {
+            question: 'What is a connection-level frame and why must its stream id be zero?',
+            answer:
+              'SETTINGS, PING, GOAWAY and the connection-level WINDOW_UPDATE act on the whole HTTP/2 connection rather than any single stream, so RFC 7540 requires their stream identifier to be 0. A non-zero id on these frames is a protocol violation, which the tool flags with an orange warning to expose buggy peer or local implementations.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'universal-links-generator',
+    name: '跨平台深链关联文件生成器',
+    nameEn: 'Universal Links & App Links Association File Generator',
+    description:
+      '表单化生成移动端深链所需的两份站点关联文件：iOS apple-app-site-association（AASA，appIDs + 现代 components 语法，支持 path/query/fragment、exclude、webcredentials、appclips）与 Android assetlinks.json（package_name、SHA-256 指纹数组、handle_all_urls 与可选凭据 relation）。内置 Team ID/Bundle ID/包名校验与 32 组冒号指纹格式校验（自动大写、去重），实时预览稳定键序 JSON，一键复制与本地下载，并给出 /.well-known/ 部署路径与 Content-Type 检查清单，纯本地拼装、零新增依赖。',
+    descriptionEn:
+      'Build the two site-association files required for mobile deep links through a form: the iOS apple-app-site-association (AASA with appIDs and modern components syntax, covering path/query/fragment, exclude, webcredentials and appclips) and Android assetlinks.json (package_name, SHA-256 fingerprint array, handle_all_urls and an optional credentials relation). Built-in validation covers Team ID, Bundle ID and package name plus the 32-group colon-separated fingerprint format with auto-uppercase and de-duplication. Enjoy live stable-key-order JSON preview, one-click copy and local download, plus a /.well-known/ deployment path and Content-Type checklist. Fully local assembly with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/universal-links-generator',
+    iconName: 'Link2',
+    tags: ['Universal Links', 'App Links', 'AASA', 'assetlinks', '深链', 'iOS', 'Android'],
+    tagsEn: ['Universal Links', 'App Links', 'AASA', 'assetlinks', 'Deep Link', 'iOS', 'Android'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '移动操作系统通过托管在站点上的关联文件确认“哪个 App 有权打开这个域名的链接”：iOS Universal Links 读取 apple-app-site-association（AASA），Android App Links 读取 assetlinks.json。本工具在浏览器本地以表单方式生成这两份 JSON，支持多 Team ID / Bundle ID 拼接 appID、component 级 path/query/fragment 与 exclude 规则、多条 SHA-256 签名指纹，并对全部字段做即时格式校验，输出可直接部署到 /.well-known/ 的稳定键序文件。',
+        coreFeatures: [
+          'iOS AASA：Team ID + Bundle ID 自动拼接 TEAMID.com.example.app 形式 appID，支持多条与去重',
+          '现代 components 语法：按 / ? # 三段编辑匹配规则，支持 comment 备注与 exclude 排除开关，空字段不输出',
+          '可选 webcredentials（密码自动填充）与 appclips（App Clip）关联段，一键开关',
+          'Android assetlinks：package_name、一条或多条 SHA-256 指纹，固定 handle_all_urls relation 与可选 get_login_credentials',
+          '指纹校验：强制 32 组两位十六进制、冒号分隔共 95 字符，非法字符 / 组数错误明确指出位置，统一大写并去重',
+          '实时 JSON 预览、复制与 Blob 本地下载，附双文件部署路径、Content-Type、HTTPS 与 keytool 取指纹命令检查清单',
+        ],
+        howToUse: [
+          '在 iOS Tab 维护 appID 条目与 components 规则，按需开启 webcredentials / appclips，修正红色校验错误后复制或下载 AASA',
+          '在 Android Tab 填写 package_name，粘贴 keytool 输出的 SHA-256 指纹（可多条），按需附加凭据 relation',
+          '在部署清单 Tab 对照发布路径、application/json 类型、HTTPS 无重定向等要求配置站点',
+          '把两份文件分别发布到 https://<域名>/.well-known/apple-app-site-association 与 .../assetlinks.json',
+          '在 Xcode Associated Domains 与 AndroidManifest intent-filter（autoVerify）中完成客户端声明后验证抓取',
+        ],
+        useCases: [
+          '上线 iOS Universal Links / Android App Links，让 https 链接直接打开 App 而非浏览器',
+          '多团队、多签名证书（调试 / 发布）场景下统一维护 appID 与指纹列表',
+          '排查深链失效时快速核对站点关联文件结构、指纹大小写与字段拼写',
+        ],
+        privacyNote:
+          '所有表单内容仅在浏览器本地拼装与校验，下载通过本地 Blob 完成，不发起任何网络请求，Team ID、包名与签名指纹不会离开设备。',
+        faqs: [
+          {
+            question: 'AASA 文件需要签名吗？',
+            answer:
+              '自 iOS 9 起不再要求对 apple-app-site-association 进行 CMS 签名，直接返回未签名的 JSON 即可，但必须通过有效 HTTPS 证书访问、状态码 200 且不能有重定向，并以 application/json 返回。',
+          },
+          {
+            question: 'SHA-256 指纹从哪里获取？格式有什么要求？',
+            answer:
+              '在 Android 侧运行 keytool -list -v -keystore <release.keystore> -alias <alias>，复制输出中的 SHA256 行。它由 32 组两位十六进制、以 31 个冒号分隔，共 95 个字符。工具会自动去除空白、统一转大写并对重复条目去重；少一组或出现非十六进制字符时会指出具体是第几组出错。',
+          },
+          {
+            question: 'components 里的 exclude 有什么作用？',
+            answer:
+              'exclude 为 true 的规则表示“命中该 path/query/fragment 时不交给 App 处理”，常用于把帮助中心、营销落地页等路径保留给网页。规则按数组顺序匹配，系统使用第一条命中的组件，因此应把更具体或需要排除的规则放在前面。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Mobile operating systems confirm which app may open a domain\u2019s links through association files hosted on the website: iOS Universal Links read apple-app-site-association (AASA), while Android App Links read assetlinks.json. This tool builds both JSON files locally in the browser through forms, supporting multiple Team ID / Bundle ID appIDs, component-level path/query/fragment and exclude rules, and multiple SHA-256 signing fingerprints, with instant field validation and stable-key-order output ready to deploy under /.well-known/.',
+        coreFeatures: [
+          'iOS AASA: Team ID + Bundle ID are joined into TEAMID.com.example.app appIDs, with multiple entries and de-duplication',
+          'Modern components syntax: edit matching rules in / ? # sections, with comment notes and an exclude toggle; empty fields are omitted',
+          'Optional webcredentials (password AutoFill) and appclips association sections with simple switches',
+          'Android assetlinks: package_name, one or more SHA-256 fingerprints, the fixed handle_all_urls relation and optional get_login_credentials',
+          'Fingerprint validation: exactly 32 two-digit hex groups separated by colons (95 chars), with precise error positions, auto-uppercase and de-duplication',
+          'Live JSON preview, copy and local Blob download, plus a checklist covering deployment paths, Content-Type, HTTPS and the keytool fingerprint command',
+        ],
+        howToUse: [
+          'On the iOS tab maintain appID entries and component rules, toggle webcredentials / appclips as needed, then copy or download the AASA after clearing validation errors',
+          'On the Android tab enter the package name and paste the SHA-256 fingerprints from keytool (multiple allowed), optionally adding the credentials relation',
+          'Use the deployment checklist tab to configure publication paths, application/json Content-Type and redirect-free HTTPS',
+          'Publish the two files at https://<domain>/.well-known/apple-app-site-association and .../assetlinks.json',
+          'Finish the client side with Xcode Associated Domains and an AndroidManifest intent-filter (autoVerify), then verify retrieval',
+        ],
+        useCases: [
+          'Launching iOS Universal Links / Android App Links so https URLs open the app directly instead of the browser',
+          'Maintaining appIDs and fingerprints across multiple teams and signing certificates (debug / release) in one place',
+          'Quickly checking association-file structure, fingerprint casing and field spelling when deep links fail',
+        ],
+        privacyNote:
+          'All form content is assembled and validated locally in the browser and downloads use a local Blob; no network requests are made, so Team IDs, package names and signing fingerprints never leave the device.',
+        faqs: [
+          {
+            question: 'Does the AASA file need to be signed?',
+            answer:
+              'Since iOS 9 the apple-app-site-association file no longer needs CMS signing and may be served as plain JSON, but it must still be reachable over valid HTTPS with a 200 status, no redirects and the application/json content type.',
+          },
+          {
+            question: 'Where do I get the SHA-256 fingerprint and what is the required format?',
+            answer:
+              'Run keytool -list -v -keystore <release.keystore> -alias <alias> on the Android side and copy the SHA256 line. It consists of 32 two-digit hex groups separated by 31 colons, 95 characters in total. The tool strips whitespace, uppercases automatically and removes duplicates; if a group is missing or contains non-hex characters, it reports exactly which group is wrong.',
+          },
+          {
+            question: 'What does exclude do inside components?',
+            answer:
+              'A rule with exclude set to true means that matching path/query/fragment URLs are not handed to the app, which is useful for keeping help centers or marketing pages on the web. Rules are evaluated in array order and the first match wins, so place more specific or exclusion rules near the top.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

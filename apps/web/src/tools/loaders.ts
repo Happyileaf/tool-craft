@@ -436,4 +436,9 @@ export const toolLoaders: Record<
   'average-illuminance-calculator': () => import('./average-illuminance-calculator'),
   'annuity-calculator': () => import('./annuity-calculator'),
   'ideal-gas-law-calculator': () => import('./ideal-gas-law-calculator'),
+  'i2c-address-converter': () => import('./i2c-address-converter'),
+  'erlang-b-calculator': () => import('./erlang-b-calculator'),
+  'mta-sts-tls-rpt-generator': () => import('./mta-sts-tls-rpt-generator'),
+  'http2-frame-parser': () => import('./http2-frame-parser'),
+  'universal-links-generator': () => import('./universal-links-generator'),
 };
