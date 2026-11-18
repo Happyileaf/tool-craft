@@ -146,10 +146,8 @@
 | 20261029140205 | 中文数字 ↔ 阿拉伯数字双向转换器（含大写金额用字） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029140205.md) |
 | 20261029200825 | UUID v3 / v5 名称型 UUID 生成器（RFC 9562 命名空间哈希） | Web Tool | Existing Gap | In Progress | 2026-10-29 | trae-agent | [详情](./idea-details/20261029200825.md) |
 | 20261029200826 | JWK Thumbprint 指纹计算器（RFC 7638） | Web Tool | Existing Gap | In Progress | 2026-10-31 | trae-agent | [详情](./idea-details/20261029200826.md) |
-| 20261030021004 | AWS SigV4 请求签名生成器 | Web Tool | Exploration | Pending | 2026-10-30 | | [详情](./idea-details/20261030021004.md) |
 | 20261030021006 | JSON 转 Zod schema 生成器 | Web Tool | Existing Gap | Claimed | 2026-10-30 | trae-agent | [详情](./idea-details/20261030021006.md) |
 | 20261030021007 | multipart/form-data 请求体构造器 | Web Tool | Existing Gap | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030021007.md) |
-| 20261030021008 | SHA-3 / Keccak 哈希计算器（FIPS 202） | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030021008.md) |
 | 20261030080719 | Intel HEX 解析与校验和工具 | Web Tool | Existing Gap | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030080719.md) |
 | 20261030080720 | UTM ↔ WGS84 经纬度坐标互转器 | Web Tool | Existing Gap | Pending | 2026-10-30 | | [详情](./idea-details/20261030080720.md) |
 | 20261030080721 | ISIN 证券识别码校验器 | Web Tool | External Reference | In Progress | 2026-10-30 | trae-agent | [详情](./idea-details/20261030080721.md) |
@@ -204,7 +202,6 @@
 | 20261102200315 | 露点 / 湿球温度与气压海拔计算器 | Web Tool | Existing Gap | In Progress | 2026-11-02 | trae-agent | [详情](./idea-details/20261102200315.md) |
 | 20261103081157 | JSON5 ↔ JSON 双向转换器 | Web Tool | Existing Gap | In Progress | 2026-11-03 | trae-agent @ 2026-11-03 18:05 CST | [详情](./idea-details/20261103081157.md) |
 | 20261103081158 | BibTeX 条目解析器（.bib ↔ JSON / 格式化引用） | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103081158.md) |
-| 20261103140201 | 假设检验计算器（t 检验 / 卡方检验） | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103140201.md) |
 | 20261103140202 | 月相查询与月龄计算器 | Web Tool | External Reference | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103140202.md) |
 | 20261103140203 | VLSM 可变长子网划分规划器 | Web Tool | External Reference | Pending | 2026-11-03 | | [详情](./idea-details/20261103140203.md) |
 | 20261103140204 | Syslog 日志行解析与字段拆分器 | Web Tool | External Reference | In Progress | 2026-11-03 | trae-agent | [详情](./idea-details/20261103140204.md) |
@@ -218,7 +215,6 @@
 | 20261104020114 | CUSIP / SEDOL 证券识别码校验器（模 10 加权校验位与模 10 双倍加权） | Web Tool | Exploration | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104020114.md) |
 | 20261104020115 | ABA 银行路由号码（RTN / Routing Number）校验器 | Web Tool | Exploration | Claimed | 2026-11-04 | trae-agent | [详情](./idea-details/20261104020115.md) |
 | 20261104020116 | IPFS CID 解析器与格式转换器（CIDv0/CIDv1、multibase 与 multihash 拆解） | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104020116.md) |
-| 20261104081012 | APCA（WCAG 3）感知对比度计算器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104081012.md) |
 | 20261104081013 | 555 定时器（Astable / Monostable）参数计算器 | Web Tool | Exploration | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104081013.md) |
 | 20261104081014 | EPC QR Code（SEPA 转账）负载生成与解析器 | Web Tool | Existing Gap | In Progress | 2026-11-04 | trae-agent | [详情](./idea-details/20261104081014.md) |
 | 20261104081015 | BMP / DIB 位图文件头结构只读解析器 | Web Tool | Existing Gap | Pending | 2026-11-04 | | [详情](./idea-details/20261104081015.md) |
@@ -378,7 +374,6 @@
 | 20261118040102 | DNS CAA 记录生成与校验器（RFC 8659/8658，issue/issuewild/iodef 标签与多值语法） | Web Tool | Existing Gap | Claimed | 2026-11-18 | trae-agent | [详情](./idea-details/20261118040102.md) |
 | 20261118040103 | UART 串行帧编解码与波特率时序计算器（起始/数据/校验/停止位，含位时序波形） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118040103.md) |
 | 20261118040104 | Merkle 默克尔树构造与审计路径验证器（含根哈希、Merkle Proof 生成与逐层校验可视化） | Web Tool | Exploration | Pending | 2026-11-18 | - | [详情](./idea-details/20261118040104.md) |
-| 20261118140710 | RFC 7807 Problem Details 错误响应生成与解析器（application/problem+json） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118140710.md) |
 | 20261118140711 | JSDoc / TSDoc 文档注释块生成与解析器（函数签名 ↔ 标准注释块双向转换） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118140711.md) |
 | 20261119020118 | Erlang C 呼叫中心坐席与服务水平计算器（来话量 / AHT / 服务水平 ↔ 坐席数，含等待概率与占用率） | Web Tool | Existing Gap | Pending | 2026-11-19 | - | [详情](./idea-details/20261119020118.md) |
 | 20261119020119 | 代理 ARP 与本地代理 ARP（Proxy ARP / Local Proxy ARP）报文构造与应答判定器（RFC 1027，含子网边界判定教学视图） | Web Tool | Existing Gap | Pending | 2026-11-19 | - | [详情](./idea-details/20261119020119.md) |

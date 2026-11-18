@@ -5,6 +5,11 @@
 
 | ID | Idea | Type | Source | 阶段（评估/开发/验收） | Reject Reason | 处理时间 | 详情 |
 |---|---|---|---|---|---|---|---|
+| 20261118140710 | RFC 7807 Problem Details 错误响应生成与解析器（application/problem+json） | Web Tool | Existing Gap | 评估 | 查重未通过：开放 PR #276 已含 problem-details-generator 完整实现（标准成员表单、扩展成员与 problem+json 校验），本条与在途实现实质重复（轮次 20261119060247 四源查重确认） | 2026-11-19 | [详情](./idea-details/20261118140710.md) |
+| 20261104081012 | APCA（WCAG 3）感知对比度计算器 | Web Tool | Existing Gap | 评估 | 查重未通过：开放 PR #220 与 #227 均已含 apca-contrast-calculator 完整实现（APCA Lc 计算与 Lc15–Lc90 阈值等级），本条与在途实现实质重复（轮次 20261119060247 四源查重确认） | 2026-11-19 | [详情](./idea-details/20261104081012.md) |
+| 20261103140201 | 假设检验计算器（t 检验 / 卡方检验） | Web Tool | External Reference | 评估 | 测试可验收性/复杂度未通过：p 值需手写正则化不完全 Beta/Gamma 函数（t/卡方 CDF），零依赖下尾区精度与边界连续性难以用固定向量充分验收，数值正确性风险高于本轮 S–M 候选（轮次 20261119060247 六维评估） | 2026-11-19 | [详情](./idea-details/20261103140201.md) |
+| 20261030021008 | SHA-3 / Keccak 哈希计算器（FIPS 202） | Web Tool | Existing Gap | 评估 | 测试可验收性/复杂度未通过：零依赖手写 Keccak-f[1600] 海绵置换（24 轮步映射+FIPS 202 填充）正确性风险高，置换级错误难以用有限黑盒向量定位，超出 S–M 复杂度上限（轮次 20261119060247 六维评估） | 2026-11-19 | [详情](./idea-details/20261030021008.md) |
+| 20261030021004 | AWS SigV4 请求签名生成器 | Web Tool | Exploration | 评估 | 复杂度未通过：Canonical Request 规范化、String to Sign、凭证范围与四次 HMAC-SHA256 派生链路长、边界规则多，单轮 M 上限内交付与验收风险高，建议拆分范围后重新提案（轮次 20261119060247 六维评估） | 2026-11-19 | [详情](./idea-details/20261030021004.md) |
 | 20261114081201 | IPv4 子网掩码 ↔ 反掩码（Wildcard Mask）双向转换器 | Web Tool | Existing Gap | 评估 | 查重未通过：与已注册工具 cidr-subnet-calculator 实质重复，其 utils/subnet.ts L248/L279 已计算输出 wildcardMask，constants.ts L33 以「通配符掩码」展示，单测 L44 断言 255.255.255.0 → 0.0.0.255，并已校验子网掩码合法性；本条能力为其真子集，反向仅逐位取反 | 2026-11-15 | [详情](./idea-details/20261114081201.md) |
 | 20260928103002 | CSS prefixer | Web Tool | Exploration | 评估 | 依赖量与价值/可验收性未通过：正确前缀依赖持续更新的 caniuse 数据与属性规则表，零依赖静态表易陈旧误导，引入 autoprefixer/postcss 属大型重依赖；前缀集合随数据版本变化，验收用例不可固定；现代浏览器/构建链已普遍自动前缀 | 2026-10-21 | [详情](./idea-details/20260928103002.md) |
 | 20260928103003 | Regular expression generator | Web Tool | Existing Gap | 评估 | 可验收性/复杂度未通过：从开放自然语言生成正则无语义理解之外的确定性算法，纯函数只能覆盖少量模板句式，可用质量须依赖 LLM（违反本地运算红线）；开放输入的正确性无法用固定用例验收 | 2026-10-21 | [详情](./idea-details/20260928103003.md) |
