@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-18 ：【Agent自主迭代】新增 I2C 地址换算、MTA-STS/TLS-RPT、Erlang B、RFC 7807 与 JSDoc/TSDoc 5 个开发者/协议工具
+
+- **新增**：I2C 7-bit/8-bit 地址双向换算器（i2c-address-converter）— 按 NXP UM10204 在 7-bit 从机地址与读写位拼包后的 8-bit 字节间互算，支持 0x/0h/0b/0o/十进制多进制输入，识别 0000xxx 通用呼叫、0001xxx CBUS、1111xxx 保留与 11110xx 10-bit 从机四段保留区间，0xFF 显式拒绝，16 个 Vitest 用例，纯本地运算零依赖
+- **新增**：MTA-STS 策略与 TLS-RPT 记录生成/解析器（mta-sts-tlsrpt-generator）— 按 RFC 8461 生成 `_mta-sts` TXT 记录与 `.well-known/mta-sts.txt` 策略文件（enforce/testing/none、mx 通配与 max_age 校验），按 RFC 8460 生成 `_smtp._tls` TLS-RPT（rua mailto/https 地址、双地址去重），解析页双向回读并校验 policy id，18 个 Vitest 用例，纯本地运算零依赖
+- **新增**：Erlang B 中继线话务量计算器（erlang-b-calculator）— 递推公式 B(n)=A·B(n−1)/(n+A·B(n−1)) 计算阻塞概率，支持按服务等级反算所需中继线数、按线数反算可承载话务量，输出 N±2 灵敏度表与多 GoS 目标对照表，大线数（1000 中继）数值稳定，15 个 Vitest 用例并以独立闭式实现逐点交叉验证，纯本地运算零依赖
+- **新增**：RFC 7807 Problem Details 错误响应生成与解析器（problem-details-generator）— 按 RFC 7807 维护 type/title/status/detail/instance 五个标准成员，title 留空时由 HTTP 状态码自动推导标准短语，扩展成员值按 JSON 还原类型并拦截标准字段冲突键，解析页拆分标准/扩展字段并对缺 status、about:blank 标题不一致等输出合规告警，11 个 Vitest 用例，纯本地运算零依赖
+- **新增**：JSDoc / TSDoc 文档注释块生成与解析器（jsdoc-tsdoc-generator）— 函数签名（function/箭头函数/方法简写，覆盖泛型、async、可选参数、默认值、剩余参数）一键生成 JSDoc（花括号内联类型、async 自动包 Promise）或 TSDoc（@typeParam、@remarks）注释块，反向解析既有注释块的 @param/@returns/@throws 等标签并与签名比对缺失/多余参数、顺序漂移与返回值标签缺失，17 个 Vitest 用例，纯本地词法解析零依赖
+
 ## 2026-11-18 ：【Agent自主迭代】新增 CAA 记录、BIC 校验、GS1 校验位、DICOM UID 与 iCalendar 待办日记 5 个行业标识符/协议工具
 
 - **新增**：CAA DNS 记录生成器与校验器（caa-record-generator）— 按 RFC 8659/8658 生成 issue/issuewild/iodef 三类记录，支持 tag flags（0/128）、accounturi 与 validationmethods（dns-01/http-01/tls-alpn-01）参数、255 字符引号分段与空 value 禁用记录 `0 issue ";"`，双 Tab 生成/校验，20 个 Vitest 用例，纯本地运算零依赖
