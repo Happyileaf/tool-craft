@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-18 ：【Agent自主迭代】新增 I2C 地址、MTA-STS/TLS-RPT、Erlang B、EVM ABI 选择器与 DFT/FFT 5 个通信/话务/合约/信号工具
+
+- **新增**：I2C 地址换算器（i2c-address-calculator）— 7-bit 与 8-bit 读/写地址双向移位换算，HEX/DEC/BIN 多进制展示，按 UM10204 校验保留区间与通用呼叫地址，17 个 Vitest 用例，纯本地运算零依赖
+- **新增**：MTA-STS 策略与 TLS-RPT 记录生成器（mta-sts-tlsrpt-generator）— 按 RFC 8461/8460 本地拼装 mta-sts.txt 策略文件、_mta-sts 与 _smtp._tls 两条 TXT 记录，含字段校验与反向校验模式，24 个 Vitest 用例，纯本地运算零依赖
+- **新增**：Erlang B 中继线话务量计算器（erlang-b-calculator）— 递归式计算 M/M/c/c 损失模型阻塞概率，支持给定 GoS 求最少中继线数与二分反算最大话务量，附 N±1 灵敏度对照表与纯 SVG 阻塞率曲线，20 个 Vitest 用例，纯本地运算零依赖
+- **新增**：EVM ABI 选择器与 Topic0 计算器（evm-abi-selector-calculator）— 按 Solidity ABI 规范计算函数 selector（keccak-256 前 4 字节）与事件 Topic0（完整 32 字节），支持签名规范化、tuple 递归展开、ABI JSON 批量解析与 selector 反查，零依赖本地 keccak-256，28 个 Vitest 用例
+- **新增**：DFT/FFT 离散傅里叶变换计算器（dft-fft-calculator）— 朴素 DFT 与 radix-2 Cooley–Tukey FFT（非 2 的幂自动回退），支持复数输入、双边/单边幅度谱与相位谱、IDFT/IFFT 逆变换与往返误差自检（N≤4096），22 个 Vitest 用例，纯本地运算零依赖
+
 ## 2026-11-18 ：【Agent自主迭代】新增 CAA 记录、BIC 校验、GS1 校验位、DICOM UID 与 iCalendar 待办日记 5 个行业标识符/协议工具
 
 - **新增**：CAA DNS 记录生成器与校验器（caa-record-generator）— 按 RFC 8659/8658 生成 issue/issuewild/iodef 三类记录，支持 tag flags（0/128）、accounturi 与 validationmethods（dns-01/http-01/tls-alpn-01）参数、255 字符引号分段与空 value 禁用记录 `0 issue ";"`，双 Tab 生成/校验，20 个 Vitest 用例，纯本地运算零依赖
