@@ -320,8 +320,7 @@ export const toolLoaders: Record<
   'mta-sts-tlsrpt-generator': () => import('./mta-sts-tlsrpt-generator'),
   'erlang-b-calculator': () => import('./erlang-b-calculator'),
   'evm-abi-selector-calculator': () => import('./evm-abi-selector-calculator'),
-  // 其余 1 个工具随实现 commit 恢复注册
-  // 'dft-fft-calculator': () => import('./dft-fft-calculator'),
+  'dft-fft-calculator': () => import('./dft-fft-calculator'),
   'plus-code-codec': () => import('./plus-code-codec'),
   'changelog-generator': () => import('./changelog-generator'),
   'lrc-parser': () => import('./lrc-parser'),

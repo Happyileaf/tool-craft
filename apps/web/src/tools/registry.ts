@@ -21,6 +21,7 @@ import { DEFAULT_DISTRIBUTION as PROBABILITY_SAMPLE } from './probability-distri
 import { DEFAULT_BBCODE as BBCODE_SAMPLE } from './bbcode-html-converter/constants';
 import { DEFAULT_CONFIG as CSS_SHAPE_SAMPLE } from './css-shape-generator/constants';
 import { DEFAULT_ABI_JSON } from './evm-abi-selector-calculator/constants';
+import { DEFAULT_SAMPLES as DFT_FFT_DEFAULT_SAMPLES } from './dft-fft-calculator/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -42045,6 +42046,106 @@ sqrt(area) + 2 * r`,
             question: 'How are tuples and structs handled?',
             answer:
               'Tuples are recursively expanded into (type1,type2) form. Struct Name(...) syntax and tuple[] array suffixes are canonicalized per the ABI spec before hashing, matching Solidity compiler output.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'dft-fft-calculator',
+    name: 'DFT/FFT 离散傅里叶变换计算器',
+    nameEn: 'DFT/FFT Discrete Fourier Transform Calculator',
+    description:
+      '支持复数输入的 DFT 与 radix-2 Cooley–Tukey FFT（非 2 的幂自动回退朴素 DFT），输出双边/单边幅度谱与相位谱，附 IFFT 逆变换与往返误差自检，最大 4096 点。',
+    descriptionEn:
+      'Complex-number DFT and radix-2 Cooley–Tukey FFT with automatic naive-DFT fallback for non-power-of-two lengths, double/single-sided magnitude and phase spectra, IFFT and round-trip error check, up to 4096 points.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/dft-fft-calculator',
+    iconName: 'Sigma',
+    tags: ['DFT', 'FFT', '傅里叶变换', '频谱分析', '信号处理'],
+    tagsEn: ['DFT', 'FFT', 'Fourier Transform', 'Spectrum', 'Signal Processing'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DFT_FFT_DEFAULT_SAMPLES,
+    doc: {
+      zh: {
+        whatIsIt:
+          'DFT/FFT 离散傅里叶变换计算器是一款面向 DSP 教学与工程验证的本地工具，按标准定义式 X[k]=Σx[n]·e^(−j2πkn/N) 对时域复数序列做离散傅里叶变换，并提供带 1/N 归一化的逆变换。N 为 2 的幂时采用 O(N log N) 的 radix-2 Cooley–Tukey FFT，否则回退 O(N²) 朴素 DFT。',
+        coreFeatures: [
+          '复数序列解析：支持逗号/空格/换行分隔，a+bi、纯虚数 i/-i/5j 等多种写法',
+          '双算法自动选择：2 的幂走 radix-2 FFT，其余长度回退朴素 DFT，界面明确标注所用算法与复杂度',
+          '完整频谱输出：每个 bin 给出 k、归一化频率、实部、虚部、幅度、相位（弧度/角度可切），支持双边谱与 2/N 缩放的单边谱',
+          '逆变换与自检：IDFT/IFFT 一键还原时域，实数信号自动取实，并展示 FFT→IFFT 往返最大绝对误差，支持 CSV 复制',
+        ],
+        howToUse: [
+          '在正变换页粘贴时域采样序列，如 1, 0, -1, 0，支持复数 1+2i 写法',
+          '查看表格中每个频率 bin 的幅度与相位，切换双边/单边谱及弧度/角度',
+          '在顶部元信息区确认实际使用的算法（FFT 或 naive DFT）与往返误差',
+          '切换到逆变换页粘贴频域序列即可得到时域结果，或点击复制 CSV 导出频谱',
+        ],
+        useCases: [
+          'DSP 课程教学：对照固定向量理解 DFT 定义式、幅度谱与相位谱',
+          '算法验证：比较 radix-2 FFT 与朴素 DFT 的数值一致性',
+          '工程预处理：对短序列做频域分析、滤波器设计前的谱估计',
+        ],
+        privacyNote:
+          '全部复数运算均在浏览器本地完成，采样数据不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '为什么有时显示 naive DFT 而不是 FFT？',
+            answer:
+              'radix-2 Cooley–Tukey 算法要求采样点数 N 为 2 的幂。当 N 不满足时工具自动回退到适用于任意长度的朴素 DFT（O(N²)），结果与定义式完全一致，仅速度较慢。',
+          },
+          {
+            question: '单边谱的幅度为什么和双边谱不一样？',
+            answer:
+              '单边谱只保留前 N/2+1 个 bin，并按 2/N 缩放（DC 与 Nyquist 不翻倍），使每个实正弦分量的幅度直接对应其真实振幅；双边谱则是未经缩放的原始 DFT 输出。',
+          },
+          {
+            question: '相位显示「未定义」是什么意思？',
+            answer:
+              '当某个 bin 的幅度低于 1e-12 时，该频率分量能量近似为零，atan2 在原点处的相位没有数学意义，因此标记为未定义，避免展示由浮点噪声产生的随机角度。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The DFT/FFT Calculator is a local tool for DSP education and engineering verification. It applies the standard definition X[k]=Σx[n]·e^(−j2πkn/N) to complex time-domain sequences and provides an inverse transform with 1/N normalization. Power-of-two lengths use the O(N log N) radix-2 Cooley–Tukey FFT; other lengths fall back to the O(N²) naive DFT.',
+        coreFeatures: [
+          'Complex sequence parsing: comma/space/newline separators with a+bi, pure imaginary i/-i/5j forms',
+          'Automatic algorithm selection: radix-2 FFT for power-of-two N, naive DFT otherwise, with explicit algorithm and complexity labels',
+          'Full spectrum output: k, normalized frequency, real/imaginary parts, magnitude, and phase (radians or degrees) per bin, with double-sided and 2/N-scaled single-sided spectra',
+          'Inverse transform and self-check: one-click IDFT/IFFT reconstruction with automatic real-part taking for real signals, round-trip max error display, and CSV copy export',
+        ],
+        howToUse: [
+          'Paste a time-domain sequence such as 1, 0, -1, 0 on the forward tab; complex values like 1+2i are supported',
+          'Inspect magnitude and phase per frequency bin, switching between double/single-sided spectra and radians/degrees',
+          'Check the header meta area for the actual algorithm (FFT or naive DFT) and the round-trip error',
+          'Switch to the inverse tab with a frequency-domain sequence to recover the time-domain signal, or copy the spectrum as CSV',
+        ],
+        useCases: [
+          'DSP education: understanding the DFT definition, magnitude spectrum, and phase spectrum with fixed vectors',
+          'Algorithm verification: comparing numerical results of radix-2 FFT against the naive DFT',
+          'Engineering preprocessing: spectral analysis of short sequences and filter-design estimation',
+        ],
+        privacyNote:
+          'All complex arithmetic runs locally in your browser; sample data is never uploaded to any server.',
+        faqs: [
+          {
+            question: 'Why does it sometimes show naive DFT instead of FFT?',
+            answer:
+              'The radix-2 Cooley–Tukey algorithm requires the sample count N to be a power of two. Otherwise the tool falls back to the naive DFT (O(N²)), which works for any length and matches the definition exactly, at the cost of speed.',
+          },
+          {
+            question: 'Why do single-sided magnitudes differ from double-sided ones?',
+            answer:
+              'The single-sided spectrum keeps only the first N/2+1 bins and scales them by 2/N (DC and Nyquist are not doubled), so each real sinusoid maps directly to its true amplitude. The double-sided spectrum is the unscaled raw DFT output.',
+          },
+          {
+            question: 'What does an "undefined" phase mean?',
+            answer:
+              'When a bin magnitude is below 1e-12, that frequency component carries essentially zero energy, and the phase of atan2 at the origin has no mathematical meaning. It is marked undefined to avoid showing random angles caused by floating-point noise.',
           },
         ],
       },
