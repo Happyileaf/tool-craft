@@ -41839,6 +41839,109 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'mta-sts-tls-rpt-generator',
+    name: 'MTA-STS 策略与 TLS-RPT 记录生成器',
+    nameEn: 'MTA-STS Policy & TLS-RPT Record Generator',
+    category: ToolCategoryEnum.DEV_CODE,
+    description:
+      '依据 RFC 8461 / RFC 8460 生成邮件域名的 MTA-STS 策略文件（mta-sts.txt）与两条 DNS TXT 记录：_mta-sts 宣告 v=STSv1 策略版本、_smtp._tls 配置 v=TLSRPTv1 报告地址 rua。内置 mode/max_age/MX 与 rua 校验、testing→enforce 灰度提示和第三方网关跨域告警，纯浏览器本地拼装、零新增依赖。',
+    descriptionEn:
+      'Generate the MTA-STS policy file (mta-sts.txt) and the two DNS TXT records for an email domain per RFC 8461 / RFC 8460: the _mta-sts v=STSv1 policy announcement and the _smtp._tls v=TLSRPTv1 reporting rua. Built-in validation covers mode, max_age, MX hosts and rua, with testing-to-enforce rollout guidance and third-party gateway warnings. Everything is assembled locally in the browser with zero new dependencies.',
+    path: '/tools/mta-sts-tls-rpt-generator',
+    iconName: 'SafetyCertificate',
+    tags: ['MTA-STS', 'TLS-RPT', 'SMTP', 'DNS TXT', '邮件安全', 'RFC 8461'],
+    tagsEn: ['MTA-STS', 'TLS-RPT', 'SMTP', 'DNS TXT', 'Email Security', 'RFC 8461'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'MTA-STS（SMTP MTA Strict Transport Security）让收件方能够强制发送方使用有效 TLS 证书加密投递邮件，抵御 STARTTLS 降级与中间人攻击；TLS-RPT（TLS Reporting）则让发送方把投递失败报告回传给域名所有者。本工具按 RFC 8461 与 RFC 8460 在浏览器本地生成策略文件全文、MTA-STS 与 TLS-RPT 两条 DNS TXT 记录，并对域名、MX、max_age、报告地址做完整校验。',
+        coreFeatures: [
+          '策略文件生成：按 version/mode/max_age/mx 规范键序输出 mta-sts.txt，并给出 HTTPS 发布 URL',
+          '双 DNS 记录：拼装 _mta-sts.<域> 的 v=STSv1 与 _smtp._tls.<域> 的 v=TLSRPTv1 TXT 记录',
+          '完整校验：域名 / 通配符 MX / 邮箱或 https rua / max_age 上限 31557600 秒 / 策略 id 字符合法性',
+          '灰度提示：testing 仅观察不拦截、enforce 短 max_age 告警、第三方 MX 跨域提醒',
+          '一键复制：策略文件与记录值独立复制，纯函数实现并由固定向量单测覆盖',
+        ],
+        howToUse: [
+          '填写邮件域名，选择 testing 或 enforce 模式并维护允许的 MX 主机名列表',
+          '设置 max_age（可使用快捷预设）与 TLS-RPT 报告接收方式（mailto 或 https）',
+          '修正所有红色校验错误，留意黄色灰度与跨域告警',
+          '把策略文件发布到 https://mta-sts.<域>/.well-known/mta-sts.txt，再到 DNS 服务商添加两条 TXT 记录',
+          '观察 TLS-RPT 报告确认无投递失败后，再从 testing 切换到 enforce 并调大 max_age',
+        ],
+        useCases: [
+          '企业邮件域名上线 MTA-STS，强制对端以有效证书走 TLS 加密投递',
+          '配置 TLS-RPT 收集发送方上报的证书失效、明文降级等失败事件',
+          '邮件安全合规审查中快速产出符合 RFC 的策略与 DNS 配置底稿',
+        ],
+        privacyNote:
+          '所有配置仅在浏览器本地拼装与校验，不发起任何网络请求，域名与报告地址不会离开设备。',
+        faqs: [
+          {
+            question: 'testing 和 enforce 模式有什么区别？',
+            answer:
+              'testing 模式不强制拦截：证书无效或明文投递不会被拒绝，但发送方会通过 TLS-RPT 上报失败，适合先观察兼容性；enforce 模式下发送方在无法建立有效 TLS 连接时必须放弃投递。建议先 testing 灰度、确认报告干净后再切 enforce。',
+          },
+          {
+            question: '为什么更新策略必须更换 id？',
+            answer:
+              '发送方会按 max_age 缓存 MTA-STS 策略。DNS TXT 记录里的 id 变化是触发刷新的信号：保持 id 不变时，收件方可能继续使用旧缓存。每次修改 mta-sts.txt 的 mode、max_age 或 MX 后，都应生成新 id 并更新 _mta-sts TXT 记录。',
+          },
+          {
+            question: 'MX 主机名可以用通配符吗？',
+            answer:
+              '可以，RFC 8461 允许以 *.example.com 形式匹配同一父域下的多级主机名。通配符不会跨域匹配，因此使用第三方邮件网关（主机名不在本域之下）时需要显式列出，工具会给出跨域告警提醒确认。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'MTA-STS (SMTP MTA Strict Transport Security) lets a receiving domain force senders to deliver mail over TLS with a valid certificate, defending against STARTTLS downgrade and man-in-the-middle attacks; TLS-RPT lets senders report delivery failures back to the domain owner. Following RFC 8461 and RFC 8460, this tool builds the policy file and both DNS TXT records entirely in the browser, with full validation of domain, MX, max_age and reporting endpoints.',
+        coreFeatures: [
+          'Policy file: emits mta-sts.txt in the canonical version/mode/max_age/mx key order with its HTTPS publication URL',
+          'Twin DNS records: assembles the _mta-sts v=STSv1 and _smtp._tls v=TLSRPTv1 TXT records',
+          'Thorough validation: domain, wildcard MX, mailto/https rua, max_age ceiling of 31557600 seconds and policy-id character rules',
+          'Rollout guidance: testing observe-only hints, short max_age warnings in enforce, and cross-domain third-party MX alerts',
+          'One-click copy for the policy file and each record value; pure functions covered by fixed-vector unit tests',
+        ],
+        howToUse: [
+          'Enter the email domain, choose testing or enforce, and maintain the allowed MX host list',
+          'Set max_age (or use a preset) and the TLS-RPT reporting channel (mailto or https)',
+          'Resolve every red validation error and review the yellow rollout and cross-domain warnings',
+          'Publish the policy file at https://mta-sts.<domain>/.well-known/mta-sts.txt, then add the two TXT records at your DNS provider',
+          'Watch TLS-RPT reports for delivery failures before switching from testing to enforce and raising max_age',
+        ],
+        useCases: [
+          'Rolling out MTA-STS on an enterprise mail domain to require valid-certificate TLS from peers',
+          'Collecting sender-reported failures such as invalid certificates or plaintext downgrades via TLS-RPT',
+          'Producing RFC-compliant policy and DNS drafts during email-security compliance reviews',
+        ],
+        privacyNote:
+          'All configuration is assembled and validated locally in the browser with no network requests; domains and reporting addresses never leave the device.',
+        faqs: [
+          {
+            question: 'What is the difference between testing and enforce?',
+            answer:
+              'In testing mode failures are not blocked: invalid certificates or plaintext delivery still proceed, but senders report them via TLS-RPT, making it ideal for checking compatibility. In enforce mode senders must give up when they cannot establish a valid TLS connection. Start in testing, confirm clean reports, then switch to enforce.',
+          },
+          {
+            question: 'Why must the id change when the policy is updated?',
+            answer:
+              'Senders cache MTA-STS policies for up to max_age. A changed id in the DNS TXT record is the signal to refresh: keeping the same id may leave peers on stale cached policy. Whenever mode, max_age or MX entries in mta-sts.txt change, generate a new id and update the _mta-sts TXT record.',
+          },
+          {
+            question: 'Can MX hosts use wildcards?',
+            answer:
+              'Yes. RFC 8461 allows patterns such as *.example.com to match multiple hosts under the same parent domain. Wildcards never cross domain boundaries, so third-party mail gateways whose hostnames live outside your domain must be listed explicitly; the tool raises a cross-domain warning to prompt confirmation.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
