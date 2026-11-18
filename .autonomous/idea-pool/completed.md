@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261118140711 | JSDoc / TSDoc 文档注释块生成与解析器（函数签名 ↔ 标准注释块双向转换） | Web Tool | Existing Gap | `jsdoc-tsdoc-generator` / [PR #276](https://github.com/Happyileaf/tool-craft/pull/276) | 2026-11-18 | [详情](./idea-details/20261118140711.md) |
+| 20261118140710 | RFC 7807 Problem Details 错误响应生成与解析器（application/problem+json） | Web Tool | Existing Gap | `problem-details-generator` / [PR #276](https://github.com/Happyileaf/tool-craft/pull/276) | 2026-11-18 | [详情](./idea-details/20261118140710.md) |
+| 20261118080938 | Erlang B 中继线话务量计算器（阻塞概率、所需中继线数与负载反算，含查表与灵敏度对照） | Web Tool | Exploration | `erlang-b-calculator` / [PR #276](https://github.com/Happyileaf/tool-craft/pull/276) | 2026-11-18 | [详情](./idea-details/20261118080938.md) |
+| 20261118080937 | MTA-STS 策略与 TLS-RPT 记录生成器（RFC 8461 / RFC 8460，含策略文件与 DNS TXT 记录拼装校验） | Web Tool | Existing Gap | `mta-sts-tlsrpt-generator` / [PR #276](https://github.com/Happyileaf/tool-craft/pull/276) | 2026-11-18 | [详情](./idea-details/20261118080937.md) |
+| 20261118080936 | I2C 地址换算器（7-bit 地址 / 8-bit 读写地址 / 十六进制与十进制互转及保留地址校验） | Web Tool | Existing Gap | `i2c-address-converter` / [PR #276](https://github.com/Happyileaf/tool-craft/pull/276) | 2026-11-18 | [详情](./idea-details/20261118080936.md) |
 | 20261116141427 | 电阻 / 阻抗网络 Δ-Y（三角形-星形）双向等效变换计算器 | Web Tool | Existing Gap | `delta-wye-transform` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261116141427.md) |
 | 20261116141426 | ADC / DAC 量化参数计算器（分辨率 / LSB / 量化误差 / SNR / 电压码值互算） | Web Tool | Exploration | `adc-dac-quantizer` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261116141426.md) |
 | 20261115140203 | 体脂率估算计算器（US Navy 围度法 / BMI 推导法 + 腰臀比风险区间） | Web Tool | Existing Gap | `body-fat-calculator` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261115140203.md) |
