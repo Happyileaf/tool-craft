@@ -41645,7 +41645,7 @@ sqrt(area) + 2 * r`,
       '在 I2C/SMBus 的 7-bit 设备地址与总线实际发送的 8-bit 读/写字节之间双向换算：正向按「写字节 = 地址左移一位 | 0、读字节 = 地址左移一位 | 1」派生，反向粘贴 8-bit 字节自动右移还原 7-bit 地址并识别 R/W 方向位。支持 0x50、50h、0b1010000、十进制等多进制输入，同步输出 HEX/DEC/BIN 三进制视图；依据 UM10204 标注 0x00–0x03（General Call 等）与 0x78–0x7F（10-bit 寻址）保留区间，全部本地计算、无网络请求。',
     descriptionEn:
       'Convert between the 7-bit I2C/SMBus device address and the 8-bit bytes actually driven on the wire: forward mode derives the write byte (address << 1 | 0) and read byte (address << 1 | 1), while reverse mode pastes an 8-bit byte, shifts it right to recover the 7-bit address and decodes the R/W direction bit. Accepts 0x50, 50h, 0b1010000 and decimal spellings and renders HEX/DEC/BIN views side by side. Reserved windows 0x00–0x03 (General Call etc.) and 0x78–0x7F (10-bit addressing) per UM10204 are flagged. Fully local, no network calls.',
-    category: ToolCategoryEnum.TEXT_FORMAT,
+    category: ToolCategoryEnum.DEV_CODE,
     path: '/tools/i2c-address-converter',
     iconName: 'Binary',
     tags: ['I2C', 'SMBus', '嵌入式', '寄存器', '硬件地址', 'UM10204', '进制换算'],
@@ -41749,7 +41749,7 @@ sqrt(area) + 2 * r`,
       '一站式生成邮件域的 MTA-STS 与 TLS-RPT 配置：输出 _mta-sts TXT 记录（v=STSv1; id=时间戳）、需发布到 mta-sts.<域>/.well-known/mta-sts.txt 的策略文件正文（version/mode/max_age/mx 白名单，支持通配后缀），以及 _smtp._tls TXT 报告记录（mailto 与 https 两类 rua 端点，最多两个）。内置解析校验页可对既有记录做字段级 RFC 校验；域名、MX、邮箱与 https 端点均有前置校验，全部本地运行、不发送 DNS 请求。',
     descriptionEn:
       'Generate the full MTA-STS and TLS-RPT configuration for a mail domain in one place: the _mta-sts TXT record (v=STSv1; id=timestamp), the policy file body to publish at mta-sts.<domain>/.well-known/mta-sts.txt (version/mode/max_age/mx allow-list with wildcard suffixes), and the _smtp._tls TXT reporting record with up to two mailto/https rua endpoints. A built-in parser validates existing records field by field against the RFCs. Domain, MX, email and https endpoint inputs are checked up front; everything runs locally with no DNS lookups.',
-    category: ToolCategoryEnum.NETWORK,
+    category: ToolCategoryEnum.DEV_CODE,
     path: '/tools/mta-sts-tlsrpt-generator',
     iconName: 'ShieldCheck',
     tags: ['MTA-STS', 'TLS-RPT', '邮件安全', 'SMTP', 'DNS TXT', 'TLS', 'RFC 8461'],
@@ -41853,7 +41853,7 @@ sqrt(area) + 2 * r`,
       '面向呼叫中心与电信容量规划的 Erlang B 计算器：输入中继线数 N 与话务量 A（Erlang）正算阻塞概率（采用数值稳定递推，万线规模不溢出）；给定目标服务等级 GoS 可反算最少所需线数，或反算线群可承载的最大话务量。内置 N±2 灵敏度对照表与 5%/2%/1%/0.5%/0.1% 五档 GoS 查表，输出每千次呼叫预期阻塞次数。全部本地浮点计算、零网络请求。',
     descriptionEn:
       'An Erlang B calculator for call-center and telecom capacity planning: enter trunk count N and offered traffic A in Erlang to compute blocking probability via a numerically stable recurrence that scales to 10,000 trunks without overflow; invert against a target grade of service to obtain the minimum line count, or invert for the maximum sustainable traffic. Includes an N±2 sensitivity table and the classic 5%/2%/1%/0.5%/0.1% GoS lookup, plus expected blocked calls per thousand. Entirely local floating-point math with no network calls.',
-    category: ToolCategoryEnum.DEVELOPER,
+    category: ToolCategoryEnum.TIME_MATH,
     path: '/tools/erlang-b-calculator',
     iconName: 'Calculator',
     tags: ['Erlang B', '话务量', '中继线', '呼叫中心', '阻塞概率', 'GoS', '容量规划'],
@@ -41944,6 +41944,119 @@ sqrt(area) + 2 * r`,
             question: 'Why not evaluate the direct A^N/N! formula?',
             answer:
               'Both A^N and N! exceed double-precision range once N reaches a few dozen, corrupting the result. The tool uses the equivalent recurrence B(n)=A·B(n−1)/(n+A·B(n−1)), keeping every step inside normal floating-point range; tests cross-check an independent closed-form implementation point by point up to 100 trunks and verify stability at 1,000 trunks.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'problem-details-generator',
+    name: 'RFC 7807 Problem Details 错误响应生成与解析器',
+    nameEn: 'RFC 7807 Problem Details Generator & Parser',
+    description:
+      '按 RFC 7807 生成 application/problem+json 错误响应：维护 type/title/status/detail/instance 五个标准成员，title 留空时由 HTTP 状态码自动推导标准短语，扩展成员值按 JSON 自动还原类型并拦截与标准字段冲突的键名；解析页拆分标准字段与扩展成员，对缺 status、about:blank 标题不一致等问题给出合规告警。全部本地运行、不发起网络请求。',
+    descriptionEn:
+      'Generate application/problem+json error bodies per RFC 7807: manage the five standard members type/title/status/detail/instance, derive title automatically from the HTTP status phrase when left blank, coerce extension values through JSON and reject keys colliding with standard fields. The parser tab separates standard fields from extension members and raises compliance warnings such as missing status or an about:blank title mismatch. Fully local with no network calls.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/problem-details-generator',
+    iconName: 'FileText',
+    tags: ['RFC 7807', 'Problem Details', 'HTTP API', '错误响应', 'REST', 'JSON'],
+    tagsEn: ['RFC 7807', 'Problem Details', 'HTTP API', 'Error Response', 'REST', 'JSON'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: JSON.stringify(
+      {
+        type: 'https://example.com/probs/out-of-credit',
+        title: 'You do not have enough credit.',
+        status: 403,
+        detail: 'Your current balance is 30, but that costs 50.',
+        instance: '/account/1234/msgs/abc',
+        balance: 30,
+      },
+      null,
+      2,
+    ),
+    doc: {
+      zh: {
+        whatIsIt:
+          'RFC 7807 为 HTTP API 定义了一种机器可读的通用错误格式 application/problem+json：错误对象以 type（问题类型文档 URI，缺省 about:blank）、title（人类可读摘要）、status（真实 HTTP 状态码）、detail（本次错误的具体解释）、instance（出错资源 URI）五个标准成员表达，并允许任意扩展成员携带业务上下文。本工具把字段校验、序列化与反向解析收敛在浏览器本地，避免手写错误体时漏字段或键名冲突。',
+        coreFeatures: [
+          '标准五成员表单：type 留空自动取 about:blank，status 限定 100–599 整数并即时校验',
+          'title 自动推导：留空且填写 status 时按状态码标准短语（如 403 → Forbidden）补全，符合 RFC §3.1',
+          '扩展成员管理：动态增删键值行，值先按 JSON 解析（数字/数组/对象）失败再保留字符串，拦截重复键与标准字段冲突',
+          '解析校验页：粘贴既有 problem+json 自动拆分标准字段与扩展成员，输出缺字段、about:blank 标题不一致等合规告警',
+          '双格式输出：同步产出美化与紧凑 JSON，标注 Content-Type: application/problem+json 并支持一键复制',
+        ],
+        howToUse: [
+          '在「生成错误对象」页填写 type（可留空）、status、title（可留空）、detail 与 instance',
+          '需要业务上下文时点击「添加扩展成员」，键名用字母/下划线开头，值按 JSON 书写（如 30 或 ["a","b"]）',
+          '点击「填入 RFC 附录示例」可加载规范余额不足示例对照学习',
+          '在「解析校验」页粘贴线上接口返回的 problem+json，查看标准/扩展拆分表与告警清单',
+        ],
+        useCases: [
+          '后端接口统一错误信封设计：为 4xx/5xx 响应快速产出符合 RFC 7807 的 JSON 模板',
+          '联调排障：把网关或第三方 API 返回的错误体粘贴进解析页，快速定位 status 与扩展错误码',
+          'API 文档与测试夹具：生成可直接放入 OpenAPI 示例或单测断言的错误响应样本',
+        ],
+        privacyNote:
+          '所有字段处理、JSON 序列化与解析均在浏览器本地完成，工具不发起任何 HTTP 请求，不收集或上传错误内容；剪贴板写入仅在点击复制按钮时发生。',
+        faqs: [
+          {
+            question: 'type 不填可以吗？about:blank 是什么意思？',
+            answer:
+              '可以。RFC 7807 规定 type 缺省为 about:blank，表示错误语义完全由 HTTP 状态码表达；此时 title 应当与该状态码的标准短语一致，解析页会据此给出告警。自定义 type 应指向一份描述该问题类型的可访问文档 URI。',
+          },
+          {
+            question: '扩展成员的键名有什么限制？',
+            answer:
+              '扩展键不能与 type/title/status/detail/instance 五个标准成员同名，需以字母或下划线开头、仅含字母数字下划线与连字符，且同一对象内不能重复。值会先尝试按 JSON 解析（这样数字与数组能保留原生类型），解析失败时原样保留为字符串。',
+          },
+          {
+            question: 'problem+json 和普通 JSON 错误体有什么区别？',
+            answer:
+              '区别在于标准化契约：application/problem+json 规定了五个跨厂商通用的成员名与语义，客户端可以按统一方式读取 status、type 并跟随 URI 获取文档，而不是为每种 API 学习一套自定义错误字段；HTTP 响应头的 Content-Type 也应相应声明为 application/problem+json。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'RFC 7807 defines a machine-readable common error format for HTTP APIs, application/problem+json: an error object expressed with five standard members — type (a problem-type documentation URI, defaulting to about:blank), title (a human-readable summary), status (the real HTTP status code), detail (an explanation specific to this occurrence) and instance (the URI of the specific resource) — plus arbitrary extension members carrying business context. This tool keeps validation, serialization and reverse parsing entirely local in the browser, so hand-written error bodies cannot silently miss fields or collide on key names.',
+        coreFeatures: [
+          'Standard five-member form: type defaults to about:blank when empty; status is restricted to integer 100–599 with instant validation',
+          'Automatic title derivation: when title is blank and status is given, it is filled from the standard status phrase (e.g. 403 → Forbidden) per RFC §3.1',
+          'Extension management: add and remove key/value rows dynamically; values are JSON-parsed first (numbers, arrays, objects) and fall back to strings, with duplicate-key and standard-field collision rejection',
+          'Parser tab: paste an existing problem+json body to split standard fields from extensions, with compliance warnings for missing status, about:blank title mismatch and more',
+          'Dual output: pretty and compact JSON rendered together, labeled with Content-Type: application/problem+json and ready to copy in one click',
+        ],
+        howToUse: [
+          'On the generator tab, fill type (optional), status, title (optional), detail and instance',
+          'Click "Add extension member" for business context; keys start with a letter or underscore and values are written as JSON, such as 30 or ["a","b"]',
+          'Use "Load RFC appendix example" to study the canonical out-of-credit sample',
+          'On the parser tab, paste a problem+json response from a live API to inspect the standard/extension split and the warning list',
+        ],
+        useCases: [
+          'Designing a unified backend error envelope: quickly produce RFC 7807 JSON templates for 4xx/5xx responses',
+          'Integration debugging: paste error bodies from gateways or third-party APIs into the parser to locate status and extension error codes fast',
+          'API documentation and test fixtures: generate error samples that drop straight into OpenAPI examples or unit-test assertions',
+        ],
+        privacyNote:
+          'All field handling, JSON serialization and parsing happen locally in the browser. The tool makes no HTTP requests and never collects or uploads error content; clipboard writes occur only on an explicit copy click.',
+        faqs: [
+          {
+            question: 'Can I leave type empty? What does about:blank mean?',
+            answer:
+              'Yes. RFC 7807 defaults type to about:blank, meaning the error semantics are expressed solely by the HTTP status code; in that case title should match the standard phrase for that status, and the parser warns otherwise. A custom type should point to an accessible documentation URI describing the problem type.',
+          },
+          {
+            question: 'What restrictions apply to extension member names?',
+            answer:
+            'Extension keys must not share the names type, title, status, detail or instance; they must start with a letter or underscore and contain only letters, digits, underscores and hyphens, with no duplicates within one object. Values are first parsed as JSON so numbers and arrays keep their native types, falling back to plain strings on failure.',
+          },
+          {
+            question: 'How does problem+json differ from an ordinary JSON error body?',
+            answer:
+              'The difference is a standardized contract: application/problem+json fixes five cross-vendor member names and semantics, so clients can read status and type uniformly and follow the URI to documentation instead of learning a bespoke error schema per API. The HTTP Content-Type header should correspondingly be declared as application/problem+json.',
           },
         ],
       },

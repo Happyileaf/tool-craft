@@ -439,4 +439,5 @@ export const toolLoaders: Record<
   'i2c-address-converter': () => import('./i2c-address-converter'),
   'mta-sts-tlsrpt-generator': () => import('./mta-sts-tlsrpt-generator'),
   'erlang-b-calculator': () => import('./erlang-b-calculator'),
+  'problem-details-generator': () => import('./problem-details-generator'),
 };
