@@ -4,6 +4,14 @@
 
 ## 日志
 
+## 2026-11-19 ：【Agent自主迭代】新增 I2C 地址换算、Erlang B、MTA-STS/TLS-RPT、HTTP/2 帧解析与跨平台深链关联文件 5 个通信协议/工程工具
+
+- **新增**：I2C 7 位/8 位地址双向换算器（i2c-address-converter）— 按 NXP UM10204 在 7 位地址（0x00–0x77）与 8 位读写地址（左移一位 +R/W）间双向换算，支持 `0x`/`$`/十进制输入、保留段（0x00–0x07、0x78–0x7F）识别与越界校验，19 个 Vitest 用例，纯本地运算零依赖
+- **新增**：Erlang B 中继线话务量计算器（erlang-b-calculator）— 基于 M/M/c/c 阻塞清除模型的稳定递推，覆盖阻塞概率正算（B(5,10)=0.563952 等固定向量）、满足 GoS 所需线数反算、可承载话务量二分反算与灵敏度对照表，18 个 Vitest 用例，纯本地运算零依赖
+- **新增**：MTA-STS 策略与 TLS-RPT 记录生成器（mta-sts-tls-rpt-generator）— 按 RFC 8461/8460 生成策略文件（STSv1/mode/max_age/mx 稳定键序）、`_mta-sts` 与 `_smtp._tls` 两条 DNS 记录及 policy 发布 URL，max_age 上限 31557600 秒等字段级校验，16 个 Vitest 用例，纯本地运算零依赖
+- **新增**：HTTP/2 帧头解析与帧序列查看器（http2-frame-parser）— 按 RFC 7540 解析 9 字节定长帧头与 SETTINGS/WINDOW_UPDATE/PING/GOAWAY/RST_STREAM 载荷摘要（不含 HPACK），覆盖保留位 R、连接级帧流标识必须为 0、载荷长度规则、截断与残余字节检测，内置三帧样例，21 个 Vitest 用例，纯本地运算零依赖
+- **新增**：跨平台深链关联文件生成器（universal-links-generator）— 表单化生成 iOS apple-app-site-association（appIDs + 现代 components 语法、exclude、webcredentials/appclips 开关）与 Android assetlinks.json（package_name、SHA-256 指纹数组、handle_all_urls 与可选凭据 relation），Team ID/Bundle ID/包名与 32 组冒号指纹格式校验（自动大写、去重、错误定位），实时 JSON 预览、复制与本地下载并附 /.well-known/ 部署检查清单，20 个 Vitest 用例，纯本地运算零依赖
+
 ## 2026-11-18 ：【Agent自主迭代】新增 CAA 记录、BIC 校验、GS1 校验位、DICOM UID 与 iCalendar 待办日记 5 个行业标识符/协议工具
 
 - **新增**：CAA DNS 记录生成器与校验器（caa-record-generator）— 按 RFC 8659/8658 生成 issue/issuewild/iodef 三类记录，支持 tag flags（0/128）、accounturi 与 validationmethods（dns-01/http-01/tls-alpn-01）参数、255 字符引号分段与空 value 禁用记录 `0 issue ";"`，双 Tab 生成/校验，20 个 Vitest 用例，纯本地运算零依赖
