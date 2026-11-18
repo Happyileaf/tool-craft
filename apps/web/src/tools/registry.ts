@@ -41845,6 +41845,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'erlang-b-calculator',
+    name: 'Erlang B 中继线话务量计算器（阻塞概率 / 线数 / 负载反算 · 灵敏度查表）',
+    nameEn: 'Erlang B Trunk Traffic Calculator (Blocking / Lines / Load Inversion, Sensitivity Tables)',
+    description:
+      '面向呼叫中心与电信容量规划的 Erlang B 计算器：输入中继线数 N 与话务量 A（Erlang）正算阻塞概率（采用数值稳定递推，万线规模不溢出）；给定目标服务等级 GoS 可反算最少所需线数，或反算线群可承载的最大话务量。内置 N±2 灵敏度对照表与 5%/2%/1%/0.5%/0.1% 五档 GoS 查表，输出每千次呼叫预期阻塞次数。全部本地浮点计算、零网络请求。',
+    descriptionEn:
+      'An Erlang B calculator for call-center and telecom capacity planning: enter trunk count N and offered traffic A in Erlang to compute blocking probability via a numerically stable recurrence that scales to 10,000 trunks without overflow; invert against a target grade of service to obtain the minimum line count, or invert for the maximum sustainable traffic. Includes an N±2 sensitivity table and the classic 5%/2%/1%/0.5%/0.1% GoS lookup, plus expected blocked calls per thousand. Entirely local floating-point math with no network calls.',
+    category: ToolCategoryEnum.DEVELOPER,
+    path: '/tools/erlang-b-calculator',
+    iconName: 'Calculator',
+    tags: ['Erlang B', '话务量', '中继线', '呼叫中心', '阻塞概率', 'GoS', '容量规划'],
+    tagsEn: ['Erlang B', 'Traffic Engineering', 'Trunking', 'Call Center', 'Blocking Probability', 'GoS', 'Capacity Planning'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'N=10 条中继线，A=8 Erlang，目标 GoS=1%',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Erlang B 是 ITU-T E.600 体系下描述「阻塞呼叫清除」中继线群的经典话务模型：当呼叫到达且 N 条中继线全忙时呼叫被拒绝，其概率 B(N,A) 只取决于线数 N 与到达话务量 A（单位 Erlang，1 Erlang 等于一条线被持续占用一小时）。本工具用数值稳定的递推式替代会溢出的 A^N/N! 闭式，支持正算与两个方向的反算，并把工程上常用的灵敏度与 GoS 查表直接呈现。',
+        coreFeatures: [
+          '阻塞概率正算：Erlang B 递推公式 B(n)=A·B(n−1)/(n+A·B(n−1))，万线规模无数值溢出',
+          '线数反算：给定话务量与目标 GoS，逐项递推求首个达标的最少中继线数并回显实际阻塞率',
+          '负载反算：给定线数与 GoS，二分搜索可承载的最大话务量（Erlang，四位小数）并正向校验',
+          '灵敏度对照：固定话务量输出 N−2…N+2 各线数阻塞概率，直观展示增减一条线的边际收益',
+          '五档 GoS 查表：5%/2%/1%/0.5%/0.1% 目标对应的所需线数一次列出，附每千次呼叫阻塞次数换算',
+        ],
+        howToUse: [
+          '「阻塞概率正算」页填入中继线数与话务量（Erlang），立即得到阻塞百分比、科学计数原始值与灵敏度表',
+          '规划新线群时用「所需线数反算」：填预测话务量与可接受 GoS（如 0.01），读取最少线数与五档查表',
+          '评估既有线群容量时用「可承载话务量反算」：填现有线数与 GoS，得到不超载前提下的话务量上限',
+          '话务量可由「忙时呼叫次数 × 平均通话时长（小时）」估算，例如 600 次 × 300 秒 ≈ 50 Erlang',
+        ],
+        useCases: [
+          '呼叫中心排班与中继采购：按预测话务量和 1% 阻塞目标确定需要租用多少条 PSTN/SIP 中继',
+          '无线与专线容量设计：对 PDH/SDH 时隙、卫星信道等「全忙即拒绝」的资源做 Erlang B 配容',
+          '成本灵敏度分析：通过 N±2 对照表评估多加一条中继能把阻塞率压低多少，支撑投资决策',
+          '教学与认证备考：交互式复现 Erlang B 查表题，验证手写计算与递推结果的一致性',
+        ],
+        privacyNote:
+          '所有计算均为浏览器本地浮点运算，不读取联系人或通话记录，不发起任何网络请求；输入参数仅保存在组件内存中，离开页面即清除。',
+        faqs: [
+          {
+            question: 'Erlang B 和 Erlang C 有什么区别？',
+            answer:
+              'Erlang B 假设呼叫遇到全忙立即被清除（阻塞清除模型），适合中继线、信道等硬件资源规划；Erlang C 假设呼叫进入队列等待，适合客服坐席等待时长预测。本工具实现的是 Erlang B，不能直接用于坐席排队计算。',
+          },
+          {
+            question: '话务量 Erlang 怎么估算？',
+            answer:
+              '话务量 A = 单位时间呼叫次数 × 平均占用时长（同一时间单位）。例如忙时 360 次呼叫、每次平均通话 300 秒，则 A = 360 × 300 / 3600 = 30 Erlang。注意应使用忙时（最忙一小时）数据而非全天平均。',
+          },
+          {
+            question: '为什么不用直接的 A^N/N! 公式？',
+            answer:
+              '闭式中的 A^N 与 N! 在 N 稍大（几十以上）时都会超出双精度浮点范围导致结果失真。工具改用等价的递推式 B(n)=A·B(n−1)/(n+A·B(n−1))，每一步都保持在普通浮点区间，测试中以独立闭式实现逐点核对到 100 线、并在 1000 线规模验证稳定性。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Erlang B is the classic traffic model under the ITU-T E.600 family for trunk groups where blocked calls are cleared: when a call arrives while all N trunks are busy it is rejected, and the probability B(N,A) depends only on the trunk count N and offered traffic A in Erlang (one Erlang equals one circuit occupied continuously for one hour). This tool replaces the overflow-prone closed form A^N/N! with a numerically stable recurrence, supports forward evaluation and inversion in both directions, and presents the sensitivity and grade-of-service lookups engineers actually use.',
+        coreFeatures: [
+          'Forward blocking via the recurrence B(n)=A·B(n−1)/(n+A·B(n−1)), stable up to 10,000 trunks without floating-point overflow',
+          'Line-count inversion: given traffic and a target GoS, iterates to the smallest trunk count that meets it and reports the realized blocking rate',
+          'Load inversion: given trunks and GoS, binary-searches the maximum sustainable traffic in Erlang (four decimals) with forward verification',
+          'Sensitivity table: blocking for N−2…N+2 at fixed traffic, showing the marginal gain of adding or removing a trunk',
+          'Five GoS lookup rows (5%/2%/1%/0.5%/0.1%) in one table, plus expected blocked calls per thousand attempts',
+        ],
+        howToUse: [
+          'On the blocking tab, enter trunk count and traffic in Erlang to get the blocking percentage, raw scientific value and sensitivity table',
+          'For new builds, use the line-count inversion tab with forecast traffic and an acceptable GoS (such as 0.01) to read the minimum trunks and the five-tier lookup',
+          'For existing groups, use the traffic inversion tab with current trunks and GoS to find the maximum load that stays within target',
+          'Estimate traffic as busy-hour call count multiplied by average hold time in hours: 600 calls × 300 seconds ≈ 50 Erlang',
+        ],
+        useCases: [
+          'Call-center trunk procurement: size PSTN/SIP trunks from forecast traffic and a 1% blocking target',
+          'Wireless and leased-line design: Erlang B dimensioning for time slots, satellite channels and other reject-when-busy resources',
+          'Cost sensitivity: the N±2 table quantifies how much one extra trunk lowers blocking, supporting investment decisions',
+          'Training and certification: interactively reproduce Erlang B table exercises and cross-check hand calculations',
+        ],
+        privacyNote:
+          'All math runs locally on browser floating-point hardware. No contacts or call records are read, no network requests are made, and inputs live only in component memory until the page is closed.',
+        faqs: [
+          {
+            question: 'What is the difference between Erlang B and Erlang C?',
+            answer:
+              'Erlang B assumes calls are cleared immediately when all servers are busy (blocked-calls-cleared), which fits trunks and channels; Erlang C assumes calls join a waiting queue, which fits agent staffing and wait-time prediction. This tool implements Erlang B and is not suitable for agent queue calculations.',
+          },
+          {
+            question: 'How do I estimate traffic in Erlang?',
+            answer:
+              'Traffic A = calls per interval × average hold time expressed in the same unit. For example, 360 calls in the busy hour at 300 seconds average gives A = 360 × 300 / 3600 = 30 Erlang. Always use busy-hour figures rather than whole-day averages.',
+          },
+          {
+            question: 'Why not evaluate the direct A^N/N! formula?',
+            answer:
+              'Both A^N and N! exceed double-precision range once N reaches a few dozen, corrupting the result. The tool uses the equivalent recurrence B(n)=A·B(n−1)/(n+A·B(n−1)), keeping every step inside normal floating-point range; tests cross-check an independent closed-form implementation point by point up to 100 trunks and verify stability at 1,000 trunks.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

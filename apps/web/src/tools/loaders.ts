@@ -438,4 +438,5 @@ export const toolLoaders: Record<
   'ideal-gas-law-calculator': () => import('./ideal-gas-law-calculator'),
   'i2c-address-converter': () => import('./i2c-address-converter'),
   'mta-sts-tlsrpt-generator': () => import('./mta-sts-tlsrpt-generator'),
+  'erlang-b-calculator': () => import('./erlang-b-calculator'),
 };
