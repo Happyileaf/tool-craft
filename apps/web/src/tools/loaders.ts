@@ -441,4 +441,5 @@ export const toolLoaders: Record<
   'mta-sts-tls-rpt-generator': () => import('./mta-sts-tls-rpt-generator'),
   'http2-frame-parser': () => import('./http2-frame-parser'),
   'universal-links-generator': () => import('./universal-links-generator'),
+  'magic-number-identifier': () => import('./magic-number-identifier'),
 };

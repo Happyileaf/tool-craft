@@ -40079,6 +40079,109 @@ sqrt(area) + 2 * r`,
     },
   },
   {
+    slug: 'magic-number-identifier',
+    name: '文件魔数识别器（Magic Number 签名鉴别）',
+    nameEn: 'File Magic Number Identifier',
+    description:
+      '粘贴 Hex dump 或读取本地文件前 64 字节，按内置魔数签名表识别 PNG/JPEG/GIF/PDF/ZIP/ELF/OLE 等真实文件类型，输出扩展名、MIME、命中偏移与签名，支持 xxd 偏移前缀与 ASCII 侧栏剥离，全部在浏览器本地完成、不上传文件。',
+    descriptionEn:
+      'Identify the real file type from a pasted hex dump or the first 64 bytes of a local file using a built-in magic signature table covering PNG, JPEG, GIF, PDF, ZIP, ELF, OLE and more, with extension, MIME, hit offset and signature output, xxd offset and ASCII gutter stripping, fully local with no uploads.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/magic-number-identifier',
+    iconName: 'Fingerprint',
+    tags: ['文件魔数', 'Magic Number', '文件签名', 'Hex', '文件类型', '十六进制'],
+    tagsEn: ['Magic Number', 'File Signature', 'Hex Dump', 'File Type', 'Sniffer', 'MIME'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          '文件魔数识别器依据公开的文件签名（Magic Number）表，在浏览器本地把 Hex dump 或文件开头字节与已知签名做前缀比对，鉴别文件的真实类型。许多文件的扩展名可以随意更改，而文件头中的签名字节由格式规范固定，因此魔数比对是判断真实格式的可靠手段。工具覆盖图像、文档、压缩包、音视频、可执行文件与数据库等常见格式，并对 OLE、RIFF 等共享签名给出多候选说明。',
+        coreFeatures: [
+          '双输入模式：粘贴 Hex dump（自动剥离空格、冒号、0x 前缀、xxd 偏移与 ASCII 侧栏）或拖拽本地文件（FileReader 仅读前 64 字节）',
+          '内置 30+ 条常见签名：PNG/JPEG/GIF87a/GIF89a/BMP/TIFF/PDF/ZIP/RAR/gzip/7z/OLE/FLAC/Ogg/MP3/WAV/AVI/ELF/Mach-O/PE/SQLite 等',
+          '多候选识别：OLE 复合文档（doc/xls/ppt/msi 共用签名）与 RIFF 容器等场景并列返回全部命中并附说明',
+          '结果按特异性排序：签名更长、偏移更大的条目优先，展示扩展名、MIME、命中偏移与签名 hex',
+          '明确失败语义：非十六进制字符、奇数长度、数据过短、未命中签名均给出具体原因而非静默误判',
+        ],
+        howToUse: [
+          '在「Hex dump 输入」页签粘贴十六进制内容，或在「本地文件识别」页签拖入文件',
+          '工具自动归一化输入并逐条比对签名表，结果表格展示全部命中候选',
+          '通过命中偏移与签名字段核对判定依据；共享签名场景查看说明列了解区分限制',
+          '未命中时根据提示检查输入长度与字符，或确认该格式是否为纯文本 / 未知二进制',
+        ],
+        useCases: [
+          '扩展名被改动或丢失时，鉴别附件、下载文件的真实格式',
+          '取证与安全分析中快速判断可疑文件是否伪装成图片或文档',
+          '开发文件解析器时验证自己生成的二进制头部是否符合规范',
+          '教学演示文件格式规范中魔数 / 签名字段的作用',
+        ],
+        privacyNote:
+          'Hex 文本与文件字节仅在浏览器内存中处理，本地文件只读取前 64 字节，工具不会上传任何内容，也不发起网络请求。',
+        faqs: [
+          {
+            question: '为什么只读取文件前 64 字节？',
+            answer:
+              '绝大多数文件格式的魔数签名位于文件开头 0–16 字节，少数容器格式（如 RIFF 的 WAVE/WEBP 标识）在偏移 8 处，64 字节足以覆盖内置签名表的全部判定需求，同时避免把整个文件读入内存。',
+          },
+          {
+            question: 'OLE 复合文档为什么同时显示 doc/xls/ppt？',
+            answer:
+              '旧版 Microsoft Office 的 Word、Excel、PowerPoint 以及 MSI 安装包都基于复合文件二进制格式，共享 D0 CF 11 E0 A1 B1 1A E1 签名，仅凭文件头无法区分，需要进一步解析内部流名称，工具会如实列出全部候选并在说明中注明这一限制。',
+          },
+          {
+            question: '识别结果和扩展名不一致怎么办？',
+            answer:
+              '魔数反映文件的真实字节格式，扩展名只是可随意修改的命名约定。两者不一致通常意味着文件被重命名、下载时后缀错误或存在伪装，应以魔数识别结果为准并谨慎打开。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The File Magic Number Identifier compares a hex dump or the leading bytes of a file against a built-in table of publicly documented file signatures entirely in your browser. Because extensions can be renamed freely while header signatures are fixed by format specifications, magic-number matching is a reliable way to determine the true file type. It covers common image, document, archive, audio/video, executable and database formats, and returns multiple candidates for shared signatures such as OLE and RIFF.',
+        coreFeatures: [
+          'Two input modes: paste a hex dump (spaces, colons, 0x prefixes, xxd offsets and ASCII gutters stripped automatically) or drag in a local file (only the first 64 bytes are read via FileReader)',
+          '30+ built-in signatures including PNG, JPEG, GIF87a/GIF89a, BMP, TIFF, PDF, ZIP, RAR, gzip, 7z, OLE, FLAC, Ogg, MP3, WAV, AVI, ELF, Mach-O, PE and SQLite',
+          'Multi-candidate detection: shared signatures like OLE compound files (doc/xls/ppt/msi) and RIFF containers return every match with explanatory notes',
+          'Specificity ordering: longer signatures and larger offsets rank first, with extension, MIME, hit offset and signature hex shown for each match',
+          'Explicit failure semantics: illegal hex characters, odd-length input, truncated data and no-match situations all produce a concrete reason instead of a silent misclassification',
+        ],
+        howToUse: [
+          'Paste hex content on the Hex dump tab, or drag a file onto the Local File tab',
+          'The tool normalizes the input and walks the signature table automatically, listing every matching candidate',
+          'Verify the basis of each verdict using the hit offset and signature columns; read the description for shared-signature limitations',
+          'On no match, follow the hint to check length and characters, or consider plain text / unknown binary content',
+        ],
+        useCases: [
+          'Determining the real format of attachments or downloads whose extension was changed or missing',
+          'Quick triage in forensics and security work when a file may be disguised as an image or document',
+          'Validating binary headers produced by your own parser against format specifications',
+          'Teaching the role of magic-number signature fields in file format specifications',
+        ],
+        privacyNote:
+          'Hex text and file bytes are processed only in browser memory; local files are read for their first 64 bytes only. Nothing is uploaded and no network requests are made.',
+        faqs: [
+          {
+            question: 'Why read only the first 64 bytes?',
+            answer:
+              'Nearly all format signatures live at offsets 0–16, and a few container markers (such as the WAVE/WEBP label inside RIFF) sit at offset 8. Sixty-four bytes cover every signature in the built-in table while avoiding loading the whole file into memory.',
+          },
+          {
+            question: 'Why does OLE show doc/xls/ppt at the same time?',
+            answer:
+              'Legacy Microsoft Word, Excel, PowerPoint documents and MSI packages all use the Compound File Binary Format with the shared D0 CF 11 E0 A1 B1 1A E1 signature. The header alone cannot distinguish them; internal stream parsing would be required, so the tool lists every candidate and states this limitation explicitly.',
+          },
+          {
+            question: 'What if the result disagrees with the file extension?',
+            answer:
+              'The magic number reflects the actual byte format, whereas the extension is just a renameable naming convention. A mismatch usually means the file was renamed, saved with the wrong suffix, or deliberately disguised—trust the magic-number verdict and open the file with caution.',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'wake-on-lan-magic-packet',
     name: 'Wake-on-LAN 魔术包构造器（含反向校验解析）',
     nameEn: 'Wake-on-LAN Magic Packet Builder & Parser',
