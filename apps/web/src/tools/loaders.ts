@@ -445,4 +445,5 @@ export const toolLoaders: Record<
   'maidenhead-locator-codec': () => import('./maidenhead-locator-codec'),
   'epc-qr-sepa-codec': () => import('./epc-qr-sepa-codec'),
   'systemd-service-generator': () => import('./systemd-service-generator'),
+  'icmpv4-echo-codec': () => import('./icmpv4-echo-codec'),
 };

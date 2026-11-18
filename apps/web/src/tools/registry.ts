@@ -23,6 +23,7 @@ import { DEFAULT_CONFIG as CSS_SHAPE_SAMPLE } from './css-shape-generator/consta
 import { SAMPLE_PAYLOAD as SAMPLE_PAYLOAD_EPC } from './epc-qr-sepa-codec/constants';
 import { DEFAULT_PRESET_KEY as SYSTEMD_PRESET_KEY, SERVICE_PRESETS } from './systemd-service-generator/constants';
 import { generateServiceUnit } from './systemd-service-generator/utils/systemd';
+import { SAMPLE_PACKET_HEX as SAMPLE_ICMP_HEX } from './icmpv4-echo-codec/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -40494,6 +40495,112 @@ sqrt(area) + 2 * r`,
             question: 'Does it deploy to my server automatically?',
             answer:
               'No. The tool only produces text and command hints; every systemctl operation must be run by you on the target machine, keeping paths, usernames and other form data inside the browser.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'icmpv4-echo-codec',
+    name: 'ICMPv4 Echo 报文编解码器（ping 组包 / 拆包）',
+    nameEn: 'ICMPv4 Echo Packet Codec (ping Build & Parse)',
+    description:
+      '按 RFC 792 在字段与十六进制之间构造 / 解析 ICMPv4 Echo Request/Reply 报文：DataView 大端处理 Type、Code、Checksum、Identifier、Sequence 与 payload，RFC 1071 反码求和自动计算并核对校验和（奇数补零、进位折叠），解析侧容忍空格/冒号/逗号/0x 前缀噪声并给出 Code 非零与超 MTU 警告，纯本地运算不发送数据包。',
+    descriptionEn:
+      'Build and parse ICMPv4 Echo Request/Reply packets between fields and hex per RFC 792: big-endian DataView handling of Type, Code, Checksum, Identifier, Sequence and payload, with RFC 1071 ones-complement checksum computed and verified automatically (zero padding for odd lengths, carry folding). Parsing tolerates space/colon/comma/0x noise and warns on non-zero Code and over-MTU payloads, fully local with no packets sent.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/icmpv4-echo-codec',
+    iconName: 'Wifi',
+    tags: ['ICMP', 'ping', 'RFC 792', 'RFC 1071', '校验和', '报文'],
+    tagsEn: ['ICMP', 'ping', 'RFC 792', 'RFC 1071', 'Checksum', 'Packet'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: SAMPLE_ICMP_HEX,
+    doc: {
+      zh: {
+        whatIsIt:
+          'ICMP（Internet Control Message Protocol，互联网控制报文协议）是 IPv4 套件中用于诊断与差错通知的协议，日常使用的 ping 工具就基于 ICMP Echo Request（Type=8）与 Echo Reply（Type=0）。RFC 792 规定 Echo 报文由 8 字节定长首部与可选数据组成：Type、Code（Echo 固定为 0）、16 位 Checksum、16 位 Identifier、16 位 Sequence Number，随后是原样回显的 Data。校验和遵循 RFC 1071：把校验和字段清零后对整个报文按 16 位反码求和、折叠进位再取反。本工具在浏览器本地完成组包、拆包与校验和核对，不会向网络发送任何数据包。',
+        coreFeatures: [
+          'RFC 792 组包：表单选择 Echo Request/Reply，填写 Identifier、Sequence 与文本 payload，输出大端 hex 报文',
+          'RFC 1071 校验和：自动清零计算、回填偏移 2–3，并在解析侧重算核对，篡改报文可被立即识别',
+          '健壮 hex 解析：剥离空格、冒号、逗号、换行与 0x 前缀噪声，奇数长度与非法字符明确报错',
+          '逐字段拆包：还原 Type/Code/Checksum/Identifier/Sequence/Data，payload 支持 UTF-8 文本预览',
+          '协议告警：Code 非 0、Type 非 Echo、payload 超过典型 MTU（1472 字节）时给出非致命警告',
+          '与 tcpip-checksum 互补：本工具聚焦完整 ICMP Echo 报文的端到端组包 / 拆包，而非通用校验和计算',
+        ],
+        howToUse: [
+          '在「字段 → 报文」页签选择 Type，填写标识符、序列号与 payload 文本，点击构建得到 hex 与自动校验和',
+          '在「报文 → 字段」页签粘贴 Wireshark 等工具抓到的 ICMP hex（分隔符任意），查看逐字段解析',
+          '观察校验和提示：绿色表示携带值与重算值一致，红色表示报文被篡改或截断',
+          '修改 hex 中任意字节后重新解析，可直观验证 RFC 1071 校验和的检错能力',
+        ],
+        useCases: [
+          '学习 ping 原理与 ICMP 报文结构，替代手工记忆字段偏移',
+          '调试网络抓包：核对 ICMP 校验和、Identifier 与 Sequence 字段',
+          '构造教学用报文样例，配合 Wireshark 过滤器 icmp 进行对照实验',
+          '验证嵌入式协议栈的 ICMP 实现输出是否符合 RFC 792 / RFC 1071',
+        ],
+        privacyNote:
+          '所有报文仅在浏览器内存中构建与解析，工具不调用任何网络接口、不发送 ping 或其他数据包，抓包 hex 不会被上传。',
+        faqs: [
+          {
+            question: '这个工具会真的发出 ping 吗？',
+            answer:
+              '不会。浏览器页面无法直接构造原始 ICMP 套接字，工具只做报文的字节级构建与解析，全部计算在本地完成，不会产生任何网络流量。需要实际 ping 请使用操作系统的 ping 命令。',
+          },
+          {
+            question: '校验和是怎么算出来的？',
+            answer:
+              '按 RFC 1071：先把偏移 2–3 的校验和字段清零，将整个报文按 16 位大端字相加，把超出 16 位的进位反复折叠回低 16 位，最后对结果取反即得校验和。解析时对携带校验和的完整报文求和，折叠结果为 0xFFFF 即表示校验通过。',
+          },
+          {
+            question: '为什么 payload 长度警告是 1472 字节？',
+            answer:
+              '常见以太网 MTU 为 1500 字节，扣除 20 字节 IPv4 首部与 8 字节 ICMP 首部后，单包不分片的 ICMP payload 上限为 1472 字节。超过该值在真实链路上通常会触发 IP 分片；工具只做提示，不阻止构建更大的报文。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'ICMP (Internet Control Message Protocol) is the diagnostic and error-reporting protocol of the IPv4 suite; the everyday ping utility is built on ICMP Echo Request (Type=8) and Echo Reply (Type=0). RFC 792 defines an Echo message as an 8-byte fixed header plus optional data: Type, Code (fixed at zero for Echo), a 16-bit Checksum, a 16-bit Identifier, a 16-bit Sequence Number, followed by Data echoed back unchanged. The checksum follows RFC 1071: zero the checksum field, sum the whole message in 16-bit ones-complement words, fold carries and invert the result. This tool builds, parses and verifies packets entirely in the browser without sending any network data.',
+        coreFeatures: [
+          'RFC 792 packet building: pick Echo Request/Reply, fill Identifier, Sequence and a text payload to produce big-endian hex',
+          'RFC 1071 checksum: automatically computed with the field zeroed, written back at offset 2-3 and re-verified when parsing so tampered packets are caught immediately',
+          'Robust hex parsing: strips space, colon, comma, newline and 0x noise, with explicit errors for odd digit counts and invalid characters',
+          'Field-level decoding of Type/Code/Checksum/Identifier/Sequence/Data with a UTF-8 preview of the payload',
+          'Protocol warnings for non-zero Code, non-Echo Type and payloads beyond the typical 1472-byte MTU budget',
+          'Complements tcpip-checksum: this tool focuses on end-to-end ICMP Echo packet build/parse rather than generic checksum math',
+        ],
+        howToUse: [
+          'On the Fields → Packet tab, choose Type, enter identifier, sequence and payload text, then build the hex with an automatic checksum',
+          'On the Packet → Fields tab, paste ICMP hex captured in Wireshark or similar (any separators) to inspect every field',
+          'Watch the checksum banner: green means the carried value matches the recomputed one, red means tampering or truncation',
+          'Change any hex byte and re-parse to see the error-detection power of the RFC 1071 checksum firsthand',
+        ],
+        useCases: [
+          'Learning how ping and ICMP packets work without memorizing field offsets',
+          'Debugging captures by verifying ICMP checksums, identifiers and sequence numbers',
+          'Building teaching samples to compare against Wireshark with the icmp display filter',
+          'Validating ICMP output from embedded protocol stacks against RFC 792 / RFC 1071',
+        ],
+        privacyNote:
+          'All packets are built and parsed in browser memory only. The tool never calls a network socket, sends ping or any other packet, and captured hex is never uploaded.',
+        faqs: [
+          {
+            question: 'Does this tool actually send a ping?',
+            answer:
+              'No. Browser pages cannot open raw ICMP sockets; the tool only performs byte-level construction and parsing locally and generates no network traffic. Use your operating system ping command for real probes.',
+          },
+          {
+            question: 'How is the checksum computed?',
+            answer:
+              'Per RFC 1071: zero the checksum field at offset 2-3, add the whole message as 16-bit big-endian words, fold any carries above 16 bits back into the low half repeatedly, then invert the result. When verifying, summing the complete message including its checksum folds to 0xFFFF if the packet is intact.',
+          },
+          {
+            question: 'Why is the payload warning threshold 1472 bytes?',
+            answer:
+              'With a common Ethernet MTU of 1500 bytes, subtracting the 20-byte IPv4 header and 8-byte ICMP header leaves 1472 bytes for an unfragmented ICMP payload. Larger payloads typically trigger IP fragmentation on real links; the tool only warns and still allows building larger packets.',
           },
         ],
       },
