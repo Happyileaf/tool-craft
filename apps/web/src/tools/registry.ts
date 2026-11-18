@@ -41637,6 +41637,533 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'i2c-address-converter',
+    name: 'I2C 地址换算器（7-bit ↔ 8-bit 读写地址 · 保留地址校验）',
+    nameEn: 'I2C Address Converter (7-bit ↔ 8-bit Read/Write, Reserved-Range Check)',
+    description:
+      '在 I2C/SMBus 的 7-bit 设备地址与总线实际发送的 8-bit 读/写字节之间双向换算：正向按「写字节 = 地址左移一位 | 0、读字节 = 地址左移一位 | 1」派生，反向粘贴 8-bit 字节自动右移还原 7-bit 地址并识别 R/W 方向位。支持 0x50、50h、0b1010000、十进制等多进制输入，同步输出 HEX/DEC/BIN 三进制视图；依据 UM10204 标注 0x00–0x03（General Call 等）与 0x78–0x7F（10-bit 寻址）保留区间，全部本地计算、无网络请求。',
+    descriptionEn:
+      'Convert between the 7-bit I2C/SMBus device address and the 8-bit bytes actually driven on the wire: forward mode derives the write byte (address << 1 | 0) and read byte (address << 1 | 1), while reverse mode pastes an 8-bit byte, shifts it right to recover the 7-bit address and decodes the R/W direction bit. Accepts 0x50, 50h, 0b1010000 and decimal spellings and renders HEX/DEC/BIN views side by side. Reserved windows 0x00–0x03 (General Call etc.) and 0x78–0x7F (10-bit addressing) per UM10204 are flagged. Fully local, no network calls.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/i2c-address-converter',
+    iconName: 'Binary',
+    tags: ['I2C', 'SMBus', '嵌入式', '寄存器', '硬件地址', 'UM10204', '进制换算'],
+    tagsEn: ['I2C', 'SMBus', 'Embedded', 'Register', 'Hardware Address', 'UM10204', 'Radix Conversion'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '7-bit 地址 0x50 → 写 0xA0 / 读 0xA1',
+    doc: {
+      zh: {
+        whatIsIt:
+          'I2C 地址换算器解决嵌入式开发中最常见的地址口径混乱：数据手册与 Linux 设备树普遍使用 7-bit 地址，而部分 HAL 库、逻辑分析仪与旧资料使用含读写方向位的 8-bit 字节。工具依据 NXP UM10204 §2.1.2 的寻址规则做双向移位换算，同时给出十六进制、十进制、二进制三种表示，并对协议保留区间（0x00–0x03 与 0x78–0x7F）给出明确警告，避免把保留地址分配给普通从设备。',
+        coreFeatures: [
+          '正向换算：7-bit 地址左移一位，分别派生 8-bit 写地址（R/W=0）与读地址（R/W=1），附 HEX/DEC/BIN 三进制视图',
+          '反向还原：粘贴任意 8-bit 发送字节，右移一位还原 7-bit 地址，并根据最低位标注读 / 写方向',
+          '多进制输入：支持 0x 前缀、h 后缀、0b 二进制、0o 八进制与纯十进制，允许下划线分隔与首尾空白',
+          '保留地址校验：UM10204 规定的 0x00–0x03（General Call、CBUS 等）与 0x78–0x7F（10-bit 寻址使能）实时警告',
+          '全本地计算：纯前端移位与范围判断，输入不上传、无网络请求，复制按钮可一键取走 HEX 结果',
+        ],
+        howToUse: [
+          '选择「7-bit → 8-bit」模式，输入设备的 7-bit 地址（如 EEPROM 的 0x50），立即得到写地址 0xA0 与读地址 0xA1',
+          '需要反查时切到「8-bit → 7-bit」，粘贴逻辑分析仪或 HAL 配置中的字节（如 0xA1），工具还原 0x50 并标注为读方向',
+          '看到黄色保留警告时，说明该地址属于协议保留用途，不能分配给普通从设备，请更换地址',
+          '点击结果块上的「复制 HEX」可直接把地址粘进代码或设备树，二进制视图可用于核对引脚采样的位序',
+        ],
+        useCases: [
+          '驱动调试：核对数据手册 7-bit 地址与 STM32 HAL、Linux i2cdetect 等 8-bit 口径之间的差异',
+          '逻辑分析仪解读：把抓取到的地址字节还原成设备地址与读写方向，快速定位 NACK 发生在寻址还是数据阶段',
+          '原理图评审：检查两颗 I2C 从设备地址是否冲突，以及是否误用了 General Call 等保留地址',
+          '教学演示：用三进制并排视图直观展示地址左移、方向位拼接的位操作过程',
+        ],
+        privacyNote:
+          '所有地址均在浏览器本地完成解析与移位计算，不发起任何网络请求，不写入存储以外的位置；剪贴板写入仅在用户点击复制按钮时发生。',
+        faqs: [
+          {
+            question: '为什么同一颗 EEPROM 有时写 0x50，有时写 0xA0？',
+            answer:
+              '0x50 是 7-bit 设备地址，0xA0 是它在写事务中实际出现的字节：0x50 左移一位得到 0xA0，最低位 0 表示写；对应读字节为 0xA1。两种口径都对，只是所处层级不同，本工具可在两者间一键互转。',
+          },
+          {
+            question: '0x00 和 0x78 以上的地址为什么不能用？',
+            answer:
+              '按 UM10204 Table 2，0x00–0x03 保留给通用呼叫（General Call）、CBUS 等特殊用途，0x78–0x7F 用于 10-bit 寻址使能与保留位。普通 7-bit 从设备只能使用 0x04–0x77，工具会对保留区间给出黄色警告。',
+          },
+          {
+            question: '输入 0xFF 为什么报错？',
+            answer:
+              '8-bit 地址字节的最低位是方向位，因此有效取值为 0x00–0xFE；0xFF 右移后虽然等于 0x7F，但它本身不是合法的单字节寻址编码。工具在反向模式对超出 0xFE 的输入直接报错，防止误判。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The I2C Address Converter resolves the most common addressing confusion in embedded development: datasheets and Linux device trees use 7-bit addresses, while some HAL libraries, logic analyzers and legacy material use 8-bit bytes that embed the read/write direction bit. It applies the addressing rules of NXP UM10204 §2.1.2 in both directions, renders hexadecimal, decimal and binary representations together, and warns about the protocol-reserved windows 0x00–0x03 and 0x78–0x7F so reserved addresses are never assigned to ordinary slaves.',
+        coreFeatures: [
+          'Forward conversion: shifts the 7-bit address left by one to derive the 8-bit write byte (R/W=0) and read byte (R/W=1), each with HEX/DEC/BIN views',
+          'Reverse recovery: pastes any 8-bit wire byte, shifts right to recover the 7-bit address and labels read/write direction from the least significant bit',
+          'Multi-radix input: 0x prefix, h suffix, 0b binary, 0o octal and plain decimal, with underscore separators and surrounding whitespace tolerated',
+          'Reserved-range validation: real-time warnings for UM10204 windows 0x00–0x03 (General Call, CBUS) and 0x78–0x7F (10-bit addressing enable)',
+          'Fully local: pure shift and range checks in the browser; no network calls, and copy buttons only touch the clipboard on explicit click',
+        ],
+        howToUse: [
+          'In "7-bit → 8-bit" mode, enter the device 7-bit address (for example EEPROM 0x50) to instantly obtain write byte 0xA0 and read byte 0xA1',
+          'Switch to "8-bit → 7-bit" and paste a byte from a logic analyzer or HAL configuration (such as 0xA1) to recover 0x50 with a read-direction tag',
+          'A yellow reserved warning means the address serves a protocol-reserved purpose and cannot be assigned to a normal slave; pick another address',
+          'Use "Copy HEX" on a result block to paste the value straight into code or a device tree; the binary view helps verify bit ordering against pin captures',
+        ],
+        useCases: [
+          'Driver debugging: reconcile datasheet 7-bit addresses with the 8-bit convention used by STM32 HAL, Linux i2cdetect and similar tooling',
+          'Logic-analyzer decoding: turn captured address bytes back into device address and direction to localize a NACK at addressing versus data phase',
+          'Schematic review: detect address collisions between two I2C slaves and catch misuse of reserved addresses such as General Call',
+          'Teaching: the side-by-side radix views make the left-shift plus direction-bit composition visible bit by bit',
+        ],
+        privacyNote:
+          'Every address is parsed and shifted locally in the browser. No network requests are made; clipboard writes happen only when you click a copy button.',
+        faqs: [
+          {
+            question: 'Why is the same EEPROM sometimes written as 0x50 and sometimes as 0xA0?',
+            answer:
+              '0x50 is the 7-bit device address; 0xA0 is the byte that appears on the wire for a write transaction: shifting 0x50 left by one yields 0xA0 with the low bit 0 meaning write, while the read byte is 0xA1. Both conventions are correct at different layers, and this tool converts between them in one click.',
+          },
+          {
+            question: 'Why are 0x00 and addresses above 0x78 unusable?',
+            answer:
+              'Per UM10204 Table 2, 0x00–0x03 are reserved for General Call, CBUS and similar special purposes, and 0x78–0x7F enable 10-bit addressing or stay reserved. Ordinary 7-bit slaves may only use 0x04–0x77; the tool raises a yellow warning for the reserved windows.',
+          },
+          {
+            question: 'Why does entering 0xFF produce an error?',
+            answer:
+              'The least significant bit of an 8-bit address byte is the direction bit, so valid encodings span 0x00–0xFE. Although 0xFF shifted right equals 0x7F, 0xFF itself is not a legal single-byte addressing encoding; reverse mode rejects anything above 0xFE to prevent misinterpretation.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'mta-sts-tlsrpt-generator',
+    name: 'MTA-STS 策略与 TLS-RPT 记录生成器（RFC 8461 / RFC 8460）',
+    nameEn: 'MTA-STS Policy & TLS-RPT Record Generator (RFC 8461 / RFC 8460)',
+    description:
+      '一站式生成邮件域的 MTA-STS 与 TLS-RPT 配置：输出 _mta-sts TXT 记录（v=STSv1; id=时间戳）、需发布到 mta-sts.<域>/.well-known/mta-sts.txt 的策略文件正文（version/mode/max_age/mx 白名单，支持通配后缀），以及 _smtp._tls TXT 报告记录（mailto 与 https 两类 rua 端点，最多两个）。内置解析校验页可对既有记录做字段级 RFC 校验；域名、MX、邮箱与 https 端点均有前置校验，全部本地运行、不发送 DNS 请求。',
+    descriptionEn:
+      'Generate the full MTA-STS and TLS-RPT configuration for a mail domain in one place: the _mta-sts TXT record (v=STSv1; id=timestamp), the policy file body to publish at mta-sts.<domain>/.well-known/mta-sts.txt (version/mode/max_age/mx allow-list with wildcard suffixes), and the _smtp._tls TXT reporting record with up to two mailto/https rua endpoints. A built-in parser validates existing records field by field against the RFCs. Domain, MX, email and https endpoint inputs are checked up front; everything runs locally with no DNS lookups.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/mta-sts-tlsrpt-generator',
+    iconName: 'ShieldCheck',
+    tags: ['MTA-STS', 'TLS-RPT', '邮件安全', 'SMTP', 'DNS TXT', 'TLS', 'RFC 8461'],
+    tagsEn: ['MTA-STS', 'TLS-RPT', 'Email Security', 'SMTP', 'DNS TXT', 'TLS', 'RFC 8461'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'example.com / testing / mx1.example.com / tls-reports@example.com',
+    doc: {
+      zh: {
+        whatIsIt:
+          'MTA-STS（RFC 8461）让发送方 MTA 能发现某邮件域强制使用有效 TLS 与授权 MX，抵御降级与中间人攻击；TLS-RPT（RFC 8460）则让接收方以聚合报告形式收集 TLS 投递失败。本工具把两者所需的 DNS TXT 记录与 HTTPS 策略文件一次生成，并提供反向解析校验，避免手工拼装时漏字段、版本号写错或 rua 端点不合规。',
+        coreFeatures: [
+          'MTA-STS 全套产物：_mta-sts TXT 记录（含 UTC 时间戳策略 ID）与 mta-sts.txt 策略文件正文，含发布 URL',
+          '策略模式 enforce / testing / none 与 max_age 秒级配置，MX 白名单支持 *.example.com 通配后缀并自动去重',
+          'TLS-RPT 记录：_smtp._tls TXT，支持 mailto 与 https 两类 rua 端点，最多两个并强制 https:// 协议',
+          '解析校验页：对既有 TXT 记录或策略文件做版本号、必填字段、mode 取值与 max_age 整数性逐项校验',
+          '前置输入校验：域名语法、MX 主机名、邮箱格式与 URL 协议即时报错；全本地计算，不发起 DNS 或 HTTPS 请求',
+        ],
+        howToUse: [
+          '在「生成记录」页填写邮件域名，建议先用 testing 模式、max_age 设为 86400 观察一段时间再切 enforce',
+          '每行填写一条授权 MX 主机名后缀（可含通配 *），切换模式或 MX 后策略 ID 自动更新，记得同步 DNS 与策略文件',
+          '把策略文件正文发布到 https://mta-sts.<域>/.well-known/mta-sts.txt（证书必须有效），再部署两条 TXT 记录',
+          '在「解析校验」页粘贴线上记录或策略文件，可快速核对版本号与字段是否符合 RFC',
+        ],
+        useCases: [
+          '邮件域加固：为自有域名启用 MTA-STS 强制 TLS，并通过 TLS-RPT 收集发送方上报的失败报告',
+          '运维巡检：把 DNS 控制台中的现有记录粘进解析页，排查 v= 版本、id 缺失或 rua 拼写问题',
+          '迁移与撤回：临时生成 none 模式策略用于平滑撤回，或在更换 MX 提供方时重建白名单',
+          '合规交付：为客户邮件安全项目一次性产出可直接粘贴的 DNS 记录与策略文件清单',
+        ],
+        privacyNote:
+          '所有域名、MX 与端点仅在浏览器本地参与字符串拼装和校验，工具不发起任何 DNS、HTTPS 或其他网络请求，剪贴板写入仅在点击复制按钮时发生。',
+        faqs: [
+          {
+            question: 'MTA-STS 的策略文件应该放在哪里？',
+            answer:
+              '必须通过 HTTPS 发布在固定路径 https://mta-sts.<你的域>/.well-known/mta-sts.txt，且证书必须由公共可信 CA 签发、不能有证书错误。工具会直接给出该 URL 与可粘贴的文件正文。',
+          },
+          {
+            question: '为什么建议先用 testing 模式？',
+            answer:
+              'enforce 模式下，发送方发现 MX 证书无效或 MX 不在白名单会直接退信；testing 模式只通过 TLS-RPT 报告问题而不拦截投递，适合先观察 1–2 周确认没有误伤，再切换到 enforce 并逐步调大 max_age。',
+          },
+          {
+            question: '策略 ID（id）有什么用，什么时候要换？',
+            answer:
+              'id 是策略版本标识，发送方用它判断策略是否更新。任何对 mode、max_age 或 mx 白名单的修改都应同时更换 id（本工具默认用 UTC 时间戳）并更新 DNS 记录，否则缓存中的旧策略可能持续生效到 max_age 过期。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'MTA-STS (RFC 8461) lets sending MTAs discover that a mail domain mandates valid TLS and authorized MX hosts, mitigating downgrade and man-in-the-middle attacks; TLS-RPT (RFC 8460) lets receivers collect aggregate reports about TLS delivery failures. This tool generates every DNS TXT record and HTTPS policy file both standards require in one pass, and parses existing deployments back into validated fields so hand-edited records cannot silently miss a field or misspell a version token.',
+        coreFeatures: [
+          'Full MTA-STS bundle: _mta-sts TXT record with a UTC timestamp policy id plus the mta-sts.txt body and its publication URL',
+          'enforce / testing / none modes with second-granularity max_age; MX allow-list accepts wildcard suffixes such as *.example.com and deduplicates automatically',
+          'TLS-RPT record at _smtp._tls with up to two mailto/https rua endpoints, enforcing the https:// scheme for web endpoints',
+          'Parser tab: field-by-field validation of existing TXT records and policy files covering version tokens, required fields, mode values and integer max_age',
+          'Up-front validation of domain syntax, MX hostnames, email addresses and URL schemes; fully local with no DNS or HTTPS traffic from the tool itself',
+        ],
+        howToUse: [
+          'On the generator tab, enter the mail domain; start with testing mode and max_age 86400 to observe before switching to enforce',
+          'Put one authorized MX suffix per line (wildcards allowed); whenever mode or MX changes, the policy id changes, so update both DNS and the policy file together',
+          'Publish the policy body at https://mta-sts.<domain>/.well-known/mta-sts.txt with a publicly trusted valid certificate, then deploy the two TXT records',
+          'Paste live records or policy files into the parser tab to verify version tokens and fields against the RFCs',
+        ],
+        useCases: [
+          'Mail-domain hardening: enforce TLS with MTA-STS and collect sender failure reports through TLS-RPT',
+          'Operations audits: paste records from the DNS console into the parser to spot version, missing-id or rua spelling issues',
+          'Migration and rollback: emit a none policy for smooth withdrawal, or rebuild the MX allow-list when changing mail providers',
+          'Compliance delivery: hand customers a ready-to-paste set of DNS records and policy files for email security engagements',
+        ],
+        privacyNote:
+          'Domains, MX hosts and endpoints are only assembled and validated locally in the browser. The tool performs no DNS, HTTPS or other network calls; clipboard writes happen only on explicit copy clicks.',
+        faqs: [
+          {
+            question: 'Where must the MTA-STS policy file live?',
+            answer:
+              'It must be served over HTTPS at the fixed path https://mta-sts.<your-domain>/.well-known/mta-sts.txt with a certificate from a publicly trusted CA and no certificate errors. The tool prints both the URL and the paste-ready body.',
+          },
+          {
+            question: 'Why start in testing mode?',
+            answer:
+              'In enforce mode, senders bounce mail when an MX certificate is invalid or the MX is outside the allow-list; testing mode only surfaces problems through TLS-RPT without blocking delivery. Observe for one to two weeks, then switch to enforce and raise max_age gradually.',
+          },
+          {
+            question: 'What is the policy id for and when must it change?',
+            answer:
+              'The id is the policy version marker senders use to detect updates. Every change to mode, max_age or the mx allow-list must ship with a fresh id (the tool defaults to a UTC timestamp) and an updated DNS record, otherwise cached policies remain in effect until max_age expires.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'erlang-b-calculator',
+    name: 'Erlang B 中继线话务量计算器（阻塞概率 / 线数 / 负载反算 · 灵敏度查表）',
+    nameEn: 'Erlang B Trunk Traffic Calculator (Blocking / Lines / Load Inversion, Sensitivity Tables)',
+    description:
+      '面向呼叫中心与电信容量规划的 Erlang B 计算器：输入中继线数 N 与话务量 A（Erlang）正算阻塞概率（采用数值稳定递推，万线规模不溢出）；给定目标服务等级 GoS 可反算最少所需线数，或反算线群可承载的最大话务量。内置 N±2 灵敏度对照表与 5%/2%/1%/0.5%/0.1% 五档 GoS 查表，输出每千次呼叫预期阻塞次数。全部本地浮点计算、零网络请求。',
+    descriptionEn:
+      'An Erlang B calculator for call-center and telecom capacity planning: enter trunk count N and offered traffic A in Erlang to compute blocking probability via a numerically stable recurrence that scales to 10,000 trunks without overflow; invert against a target grade of service to obtain the minimum line count, or invert for the maximum sustainable traffic. Includes an N±2 sensitivity table and the classic 5%/2%/1%/0.5%/0.1% GoS lookup, plus expected blocked calls per thousand. Entirely local floating-point math with no network calls.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/erlang-b-calculator',
+    iconName: 'Calculator',
+    tags: ['Erlang B', '话务量', '中继线', '呼叫中心', '阻塞概率', 'GoS', '容量规划'],
+    tagsEn: ['Erlang B', 'Traffic Engineering', 'Trunking', 'Call Center', 'Blocking Probability', 'GoS', 'Capacity Planning'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'N=10 条中继线，A=8 Erlang，目标 GoS=1%',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Erlang B 是 ITU-T E.600 体系下描述「阻塞呼叫清除」中继线群的经典话务模型：当呼叫到达且 N 条中继线全忙时呼叫被拒绝，其概率 B(N,A) 只取决于线数 N 与到达话务量 A（单位 Erlang，1 Erlang 等于一条线被持续占用一小时）。本工具用数值稳定的递推式替代会溢出的 A^N/N! 闭式，支持正算与两个方向的反算，并把工程上常用的灵敏度与 GoS 查表直接呈现。',
+        coreFeatures: [
+          '阻塞概率正算：Erlang B 递推公式 B(n)=A·B(n−1)/(n+A·B(n−1))，万线规模无数值溢出',
+          '线数反算：给定话务量与目标 GoS，逐项递推求首个达标的最少中继线数并回显实际阻塞率',
+          '负载反算：给定线数与 GoS，二分搜索可承载的最大话务量（Erlang，四位小数）并正向校验',
+          '灵敏度对照：固定话务量输出 N−2…N+2 各线数阻塞概率，直观展示增减一条线的边际收益',
+          '五档 GoS 查表：5%/2%/1%/0.5%/0.1% 目标对应的所需线数一次列出，附每千次呼叫阻塞次数换算',
+        ],
+        howToUse: [
+          '「阻塞概率正算」页填入中继线数与话务量（Erlang），立即得到阻塞百分比、科学计数原始值与灵敏度表',
+          '规划新线群时用「所需线数反算」：填预测话务量与可接受 GoS（如 0.01），读取最少线数与五档查表',
+          '评估既有线群容量时用「可承载话务量反算」：填现有线数与 GoS，得到不超载前提下的话务量上限',
+          '话务量可由「忙时呼叫次数 × 平均通话时长（小时）」估算，例如 600 次 × 300 秒 ≈ 50 Erlang',
+        ],
+        useCases: [
+          '呼叫中心排班与中继采购：按预测话务量和 1% 阻塞目标确定需要租用多少条 PSTN/SIP 中继',
+          '无线与专线容量设计：对 PDH/SDH 时隙、卫星信道等「全忙即拒绝」的资源做 Erlang B 配容',
+          '成本灵敏度分析：通过 N±2 对照表评估多加一条中继能把阻塞率压低多少，支撑投资决策',
+          '教学与认证备考：交互式复现 Erlang B 查表题，验证手写计算与递推结果的一致性',
+        ],
+        privacyNote:
+          '所有计算均为浏览器本地浮点运算，不读取联系人或通话记录，不发起任何网络请求；输入参数仅保存在组件内存中，离开页面即清除。',
+        faqs: [
+          {
+            question: 'Erlang B 和 Erlang C 有什么区别？',
+            answer:
+              'Erlang B 假设呼叫遇到全忙立即被清除（阻塞清除模型），适合中继线、信道等硬件资源规划；Erlang C 假设呼叫进入队列等待，适合客服坐席等待时长预测。本工具实现的是 Erlang B，不能直接用于坐席排队计算。',
+          },
+          {
+            question: '话务量 Erlang 怎么估算？',
+            answer:
+              '话务量 A = 单位时间呼叫次数 × 平均占用时长（同一时间单位）。例如忙时 360 次呼叫、每次平均通话 300 秒，则 A = 360 × 300 / 3600 = 30 Erlang。注意应使用忙时（最忙一小时）数据而非全天平均。',
+          },
+          {
+            question: '为什么不用直接的 A^N/N! 公式？',
+            answer:
+              '闭式中的 A^N 与 N! 在 N 稍大（几十以上）时都会超出双精度浮点范围导致结果失真。工具改用等价的递推式 B(n)=A·B(n−1)/(n+A·B(n−1))，每一步都保持在普通浮点区间，测试中以独立闭式实现逐点核对到 100 线、并在 1000 线规模验证稳定性。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Erlang B is the classic traffic model under the ITU-T E.600 family for trunk groups where blocked calls are cleared: when a call arrives while all N trunks are busy it is rejected, and the probability B(N,A) depends only on the trunk count N and offered traffic A in Erlang (one Erlang equals one circuit occupied continuously for one hour). This tool replaces the overflow-prone closed form A^N/N! with a numerically stable recurrence, supports forward evaluation and inversion in both directions, and presents the sensitivity and grade-of-service lookups engineers actually use.',
+        coreFeatures: [
+          'Forward blocking via the recurrence B(n)=A·B(n−1)/(n+A·B(n−1)), stable up to 10,000 trunks without floating-point overflow',
+          'Line-count inversion: given traffic and a target GoS, iterates to the smallest trunk count that meets it and reports the realized blocking rate',
+          'Load inversion: given trunks and GoS, binary-searches the maximum sustainable traffic in Erlang (four decimals) with forward verification',
+          'Sensitivity table: blocking for N−2…N+2 at fixed traffic, showing the marginal gain of adding or removing a trunk',
+          'Five GoS lookup rows (5%/2%/1%/0.5%/0.1%) in one table, plus expected blocked calls per thousand attempts',
+        ],
+        howToUse: [
+          'On the blocking tab, enter trunk count and traffic in Erlang to get the blocking percentage, raw scientific value and sensitivity table',
+          'For new builds, use the line-count inversion tab with forecast traffic and an acceptable GoS (such as 0.01) to read the minimum trunks and the five-tier lookup',
+          'For existing groups, use the traffic inversion tab with current trunks and GoS to find the maximum load that stays within target',
+          'Estimate traffic as busy-hour call count multiplied by average hold time in hours: 600 calls × 300 seconds ≈ 50 Erlang',
+        ],
+        useCases: [
+          'Call-center trunk procurement: size PSTN/SIP trunks from forecast traffic and a 1% blocking target',
+          'Wireless and leased-line design: Erlang B dimensioning for time slots, satellite channels and other reject-when-busy resources',
+          'Cost sensitivity: the N±2 table quantifies how much one extra trunk lowers blocking, supporting investment decisions',
+          'Training and certification: interactively reproduce Erlang B table exercises and cross-check hand calculations',
+        ],
+        privacyNote:
+          'All math runs locally on browser floating-point hardware. No contacts or call records are read, no network requests are made, and inputs live only in component memory until the page is closed.',
+        faqs: [
+          {
+            question: 'What is the difference between Erlang B and Erlang C?',
+            answer:
+              'Erlang B assumes calls are cleared immediately when all servers are busy (blocked-calls-cleared), which fits trunks and channels; Erlang C assumes calls join a waiting queue, which fits agent staffing and wait-time prediction. This tool implements Erlang B and is not suitable for agent queue calculations.',
+          },
+          {
+            question: 'How do I estimate traffic in Erlang?',
+            answer:
+              'Traffic A = calls per interval × average hold time expressed in the same unit. For example, 360 calls in the busy hour at 300 seconds average gives A = 360 × 300 / 3600 = 30 Erlang. Always use busy-hour figures rather than whole-day averages.',
+          },
+          {
+            question: 'Why not evaluate the direct A^N/N! formula?',
+            answer:
+              'Both A^N and N! exceed double-precision range once N reaches a few dozen, corrupting the result. The tool uses the equivalent recurrence B(n)=A·B(n−1)/(n+A·B(n−1)), keeping every step inside normal floating-point range; tests cross-check an independent closed-form implementation point by point up to 100 trunks and verify stability at 1,000 trunks.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'problem-details-generator',
+    name: 'RFC 7807 Problem Details 错误响应生成与解析器',
+    nameEn: 'RFC 7807 Problem Details Generator & Parser',
+    description:
+      '按 RFC 7807 生成 application/problem+json 错误响应：维护 type/title/status/detail/instance 五个标准成员，title 留空时由 HTTP 状态码自动推导标准短语，扩展成员值按 JSON 自动还原类型并拦截与标准字段冲突的键名；解析页拆分标准字段与扩展成员，对缺 status、about:blank 标题不一致等问题给出合规告警。全部本地运行、不发起网络请求。',
+    descriptionEn:
+      'Generate application/problem+json error bodies per RFC 7807: manage the five standard members type/title/status/detail/instance, derive title automatically from the HTTP status phrase when left blank, coerce extension values through JSON and reject keys colliding with standard fields. The parser tab separates standard fields from extension members and raises compliance warnings such as missing status or an about:blank title mismatch. Fully local with no network calls.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/problem-details-generator',
+    iconName: 'FileText',
+    tags: ['RFC 7807', 'Problem Details', 'HTTP API', '错误响应', 'REST', 'JSON'],
+    tagsEn: ['RFC 7807', 'Problem Details', 'HTTP API', 'Error Response', 'REST', 'JSON'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: JSON.stringify(
+      {
+        type: 'https://example.com/probs/out-of-credit',
+        title: 'You do not have enough credit.',
+        status: 403,
+        detail: 'Your current balance is 30, but that costs 50.',
+        instance: '/account/1234/msgs/abc',
+        balance: 30,
+      },
+      null,
+      2,
+    ),
+    doc: {
+      zh: {
+        whatIsIt:
+          'RFC 7807 为 HTTP API 定义了一种机器可读的通用错误格式 application/problem+json：错误对象以 type（问题类型文档 URI，缺省 about:blank）、title（人类可读摘要）、status（真实 HTTP 状态码）、detail（本次错误的具体解释）、instance（出错资源 URI）五个标准成员表达，并允许任意扩展成员携带业务上下文。本工具把字段校验、序列化与反向解析收敛在浏览器本地，避免手写错误体时漏字段或键名冲突。',
+        coreFeatures: [
+          '标准五成员表单：type 留空自动取 about:blank，status 限定 100–599 整数并即时校验',
+          'title 自动推导：留空且填写 status 时按状态码标准短语（如 403 → Forbidden）补全，符合 RFC §3.1',
+          '扩展成员管理：动态增删键值行，值先按 JSON 解析（数字/数组/对象）失败再保留字符串，拦截重复键与标准字段冲突',
+          '解析校验页：粘贴既有 problem+json 自动拆分标准字段与扩展成员，输出缺字段、about:blank 标题不一致等合规告警',
+          '双格式输出：同步产出美化与紧凑 JSON，标注 Content-Type: application/problem+json 并支持一键复制',
+        ],
+        howToUse: [
+          '在「生成错误对象」页填写 type（可留空）、status、title（可留空）、detail 与 instance',
+          '需要业务上下文时点击「添加扩展成员」，键名用字母/下划线开头，值按 JSON 书写（如 30 或 ["a","b"]）',
+          '点击「填入 RFC 附录示例」可加载规范余额不足示例对照学习',
+          '在「解析校验」页粘贴线上接口返回的 problem+json，查看标准/扩展拆分表与告警清单',
+        ],
+        useCases: [
+          '后端接口统一错误信封设计：为 4xx/5xx 响应快速产出符合 RFC 7807 的 JSON 模板',
+          '联调排障：把网关或第三方 API 返回的错误体粘贴进解析页，快速定位 status 与扩展错误码',
+          'API 文档与测试夹具：生成可直接放入 OpenAPI 示例或单测断言的错误响应样本',
+        ],
+        privacyNote:
+          '所有字段处理、JSON 序列化与解析均在浏览器本地完成，工具不发起任何 HTTP 请求，不收集或上传错误内容；剪贴板写入仅在点击复制按钮时发生。',
+        faqs: [
+          {
+            question: 'type 不填可以吗？about:blank 是什么意思？',
+            answer:
+              '可以。RFC 7807 规定 type 缺省为 about:blank，表示错误语义完全由 HTTP 状态码表达；此时 title 应当与该状态码的标准短语一致，解析页会据此给出告警。自定义 type 应指向一份描述该问题类型的可访问文档 URI。',
+          },
+          {
+            question: '扩展成员的键名有什么限制？',
+            answer:
+              '扩展键不能与 type/title/status/detail/instance 五个标准成员同名，需以字母或下划线开头、仅含字母数字下划线与连字符，且同一对象内不能重复。值会先尝试按 JSON 解析（这样数字与数组能保留原生类型），解析失败时原样保留为字符串。',
+          },
+          {
+            question: 'problem+json 和普通 JSON 错误体有什么区别？',
+            answer:
+              '区别在于标准化契约：application/problem+json 规定了五个跨厂商通用的成员名与语义，客户端可以按统一方式读取 status、type 并跟随 URI 获取文档，而不是为每种 API 学习一套自定义错误字段；HTTP 响应头的 Content-Type 也应相应声明为 application/problem+json。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'RFC 7807 defines a machine-readable common error format for HTTP APIs, application/problem+json: an error object expressed with five standard members — type (a problem-type documentation URI, defaulting to about:blank), title (a human-readable summary), status (the real HTTP status code), detail (an explanation specific to this occurrence) and instance (the URI of the specific resource) — plus arbitrary extension members carrying business context. This tool keeps validation, serialization and reverse parsing entirely local in the browser, so hand-written error bodies cannot silently miss fields or collide on key names.',
+        coreFeatures: [
+          'Standard five-member form: type defaults to about:blank when empty; status is restricted to integer 100–599 with instant validation',
+          'Automatic title derivation: when title is blank and status is given, it is filled from the standard status phrase (e.g. 403 → Forbidden) per RFC §3.1',
+          'Extension management: add and remove key/value rows dynamically; values are JSON-parsed first (numbers, arrays, objects) and fall back to strings, with duplicate-key and standard-field collision rejection',
+          'Parser tab: paste an existing problem+json body to split standard fields from extensions, with compliance warnings for missing status, about:blank title mismatch and more',
+          'Dual output: pretty and compact JSON rendered together, labeled with Content-Type: application/problem+json and ready to copy in one click',
+        ],
+        howToUse: [
+          'On the generator tab, fill type (optional), status, title (optional), detail and instance',
+          'Click "Add extension member" for business context; keys start with a letter or underscore and values are written as JSON, such as 30 or ["a","b"]',
+          'Use "Load RFC appendix example" to study the canonical out-of-credit sample',
+          'On the parser tab, paste a problem+json response from a live API to inspect the standard/extension split and the warning list',
+        ],
+        useCases: [
+          'Designing a unified backend error envelope: quickly produce RFC 7807 JSON templates for 4xx/5xx responses',
+          'Integration debugging: paste error bodies from gateways or third-party APIs into the parser to locate status and extension error codes fast',
+          'API documentation and test fixtures: generate error samples that drop straight into OpenAPI examples or unit-test assertions',
+        ],
+        privacyNote:
+          'All field handling, JSON serialization and parsing happen locally in the browser. The tool makes no HTTP requests and never collects or uploads error content; clipboard writes occur only on an explicit copy click.',
+        faqs: [
+          {
+            question: 'Can I leave type empty? What does about:blank mean?',
+            answer:
+              'Yes. RFC 7807 defaults type to about:blank, meaning the error semantics are expressed solely by the HTTP status code; in that case title should match the standard phrase for that status, and the parser warns otherwise. A custom type should point to an accessible documentation URI describing the problem type.',
+          },
+          {
+            question: 'What restrictions apply to extension member names?',
+            answer:
+            'Extension keys must not share the names type, title, status, detail or instance; they must start with a letter or underscore and contain only letters, digits, underscores and hyphens, with no duplicates within one object. Values are first parsed as JSON so numbers and arrays keep their native types, falling back to plain strings on failure.',
+          },
+          {
+            question: 'How does problem+json differ from an ordinary JSON error body?',
+            answer:
+              'The difference is a standardized contract: application/problem+json fixes five cross-vendor member names and semantics, so clients can read status and type uniformly and follow the URI to documentation instead of learning a bespoke error schema per API. The HTTP Content-Type header should correspondingly be declared as application/problem+json.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'jsdoc-tsdoc-generator',
+    name: 'JSDoc / TSDoc 文档注释块生成与解析器',
+    nameEn: 'JSDoc / TSDoc Docblock Generator & Parser',
+    description:
+      '函数签名与标准文档注释块双向转换：粘贴 JS/TS 签名（支持泛型、async、可选参数、默认值与剩余参数）一键生成对齐的 JSDoc（花括号内联类型、async 自动包 Promise）或 TSDoc（@typeParam、无冗余类型、@remarks 占位）；反向粘贴既有注释块可结构化提取摘要、@param/@returns/@throws 等标签，并与签名比对缺失或多余参数、顺序不一致与返回值标签缺失。零依赖、纯本地词法解析。',
+    descriptionEn:
+      'Bidirectional conversion between function signatures and standard documentation blocks: paste a JS/TS signature (generics, async, optional params, defaults and rest params) to emit an aligned JSDoc (brace inline types, async auto-wrapped in Promise) or TSDoc (@typeParam, no redundant types, @remarks placeholder) block; in reverse, parse an existing block into structured summary, @param/@returns/@throws tags and compare it against a signature for missing or extra params, ordering drift and missing return tags. Zero-dependency, fully local lexical parsing.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/jsdoc-tsdoc-generator',
+    iconName: 'FileCode',
+    tags: ['JSDoc', 'TSDoc', '文档注释', 'TypeScript', '函数签名', '代码规范'],
+    tagsEn: ['JSDoc', 'TSDoc', 'Docblock', 'TypeScript', 'Function Signature', 'Code Style'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'async function fetchJson<T>(url: string, init?: RequestInit): Promise<T>',
+    doc: {
+      zh: {
+        whatIsIt:
+          '为 JavaScript / TypeScript 函数补文档注释时，参数名、类型、可选性与返回值需要手工同步到 @param、@returns 等标签，签名一改注释就容易漂移。本工具基于正则与轻量词法解析，在浏览器本地完成函数签名与 JSDoc/TSDoc 注释块的双向转换：正向按签名生成对齐的标准注释块，逆向把旧代码中的注释块解析为结构化标签并与签名做一致性体检。',
+        coreFeatures: [
+          '签名解析：识别 function 声明、const 箭头函数与方法简写，支持泛型类型参数、async、可选参数 ?、默认值与 ...rest 剩余参数',
+          'JSDoc 生成：输出 @template、带花括号类型的 @param（可选参数加方括号）与 @returns，async 函数自动把返回类型包成 Promise<T>',
+          'TSDoc 生成：使用 @typeParam、不带冗余内联类型的 @param，并附 @remarks 占位，符合 TSDoc 标签惯例',
+          '注释解析：提取摘要、@param（兼容 {type} name - desc 与纯 name - desc 两种写法）、@returns、@throws 及其他标签，支持跨行描述折叠',
+          '一致性比对：报告缺失 / 多余的 @param、缺失的类型参数与 @returns、参数顺序漂移以及可选参数未标注等问题',
+        ],
+        howToUse: [
+          '在「签名 → 注释块」页粘贴函数签名，选择 JSDoc 或 TSDoc 方言并决定是否带摘要占位行',
+          '点击「复制注释块」把结果粘贴到函数定义上方，再把占位说明替换为真实描述',
+          '维护旧代码时切到「注释块 → 解析校验」页，粘贴注释块与当前签名，查看结构化标签和告警清单',
+          '签名迭代后重新生成或重新比对，确保注释与参数列表、返回类型保持同步',
+        ],
+        useCases: [
+          '新函数补注释：一键生成标签骨架，团队成员只需填写描述而不必记忆标签语法',
+          '签名重构后的注释漂移体检：CI 之外本地快速找出漏改的 @param 与 @returns',
+          '旧代码文档化：把历史 JSDoc 块解析成表格，评估文档完整度并迁移到 TSDoc 风格',
+        ],
+        privacyNote:
+          '所有签名与注释文本仅在浏览器本地做词法解析与字符串拼装，工具不发起任何网络请求，不收集或上传代码内容；剪贴板写入仅在点击复制按钮时发生。',
+        faqs: [
+          {
+            question: 'JSDoc 和 TSDoc 两种输出有什么区别？',
+            answer:
+              'JSDoc 方言在 @param 与 @returns 后用花括号写内联类型（如 @param {string} url），泛型用 @template；TSDoc 方言遵循微软 TSDoc 规范，类型信息交给 TS 签名本身，注释里使用 @typeParam 且不重复写类型，并额外提供 @remarks 占位。TS 项目推荐 TSDoc，纯 JS 项目推荐 JSDoc。',
+          },
+          {
+            question: '为什么 async 函数的返回类型被包了一层 Promise？',
+            answer:
+              'async 函数在运行时总是返回 Promise。当签名只写了解包后的类型（如 : number）时，JSDoc 的 @returns 会按实际运行类型输出 Promise<number>；若签名本身已经是 Promise<T> 则不会重复包装。TSDoc 方言不写内联类型，因此不存在这个问题。',
+          },
+          {
+            question: '支持解析对象解构参数或函数类型重载吗？',
+            answer:
+              '工具面向最常见的具名参数签名与标准标签写法，支持嵌套泛型、对象类型返回值与括号嵌套；解构参数（{ a, b }）和 TS 函数重载等复杂形态不在当前词法解析范围内，遇到无法识别的结构会给出明确报错而不是产出错误结果。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'Documenting JavaScript / TypeScript functions means manually keeping parameter names, types, optionality and return values in sync with @param and @returns tags, and comments drift as soon as a signature changes. Using regex and a lightweight lexer, this tool converts function signatures into JSDoc/TSDoc blocks and back entirely in the browser: it generates aligned standard blocks from signatures, and parses legacy blocks into structured tags with a consistency check against the current signature.',
+        coreFeatures: [
+          'Signature parsing: recognizes function declarations, const arrow functions and method shorthand, with generic type parameters, async, optional params (?), defaults and ...rest params',
+          'JSDoc generation: emits @template, typed @param with braces (square brackets for optional params) and @returns; async return types are auto-wrapped as Promise<T>',
+          'TSDoc generation: uses @typeParam, @param without redundant inline types and an @remarks placeholder, following TSDoc tag conventions',
+          'Block parsing: extracts summary, @param (both {type} name - desc and plain name - desc forms), @returns, @throws and other tags, folding continuation lines into descriptions',
+          'Consistency check: reports missing or extra @param entries, missing type parameters and @returns, parameter ordering drift and unmarked optional params',
+        ],
+        howToUse: [
+          'On the signature-to-block tab, paste a function signature, pick the JSDoc or TSDoc dialect and decide whether to include a summary placeholder line',
+          'Click "Copy block" above the function definition and replace the placeholder text with real descriptions',
+          'For legacy code, switch to the parse tab, paste the doc block and the current signature to inspect structured tags and warnings',
+          'After signature changes, regenerate or re-compare to keep the comment aligned with parameters and return type',
+        ],
+        useCases: [
+          'Documenting new functions: get a tag skeleton instantly and only fill in descriptions instead of memorizing tag syntax',
+          'Comment-drift audits after refactors: quickly spot stale @param and @returns entries locally, outside CI',
+          'Legacy documentation: parse historical JSDoc blocks into tables to assess completeness and migrate to TSDoc style',
+        ],
+        privacyNote:
+          'All signatures and comment text are lexed and assembled locally in the browser. The tool makes no network requests and never collects or uploads code; clipboard writes happen only on an explicit copy click.',
+        faqs: [
+          {
+            question: 'What is the difference between the JSDoc and TSDoc outputs?',
+            answer:
+              'The JSDoc dialect writes inline brace types after @param and @returns (e.g. @param {string} url) and uses @template for generics. The TSDoc dialect follows the Microsoft TSDoc spec: types live in the TS signature itself, comments use @typeParam without repeating types, and an @remarks placeholder is included. Prefer TSDoc for TypeScript projects and JSDoc for plain JavaScript.',
+          },
+          {
+            question: 'Why is the async return type wrapped in another Promise?',
+            answer:
+              'An async function always returns a Promise at runtime. When the signature only states the unwrapped type (such as : number), the JSDoc @returns emits the real runtime type Promise<number>; an existing Promise<T> annotation is not wrapped twice. The TSDoc dialect carries no inline types, so this does not apply there.',
+          },
+          {
+            question: 'Does it handle destructured parameters or function overloads?',
+            answer:
+              'The tool targets the most common named-parameter signatures and standard tag forms, including nested generics, object return types and nested brackets. Destructured parameters ({ a, b }) and TS function overloads are outside the current lexical scope; unrecognized structures produce an explicit error rather than a wrong result.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
