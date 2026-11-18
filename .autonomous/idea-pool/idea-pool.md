@@ -383,4 +383,6 @@
 | 20261118080936 | I2C 地址换算器（7-bit 地址 / 8-bit 读写地址 / 十六进制与十进制互转及保留地址校验） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118080936.md) |
 | 20261118080937 | MTA-STS 策略与 TLS-RPT 记录生成器（RFC 8461 / RFC 8460，含策略文件与 DNS TXT 记录拼装校验） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118080937.md) |
 | 20261118080938 | Erlang B 中继线话务量计算器（阻塞概率、所需中继线数与负载反算，含查表与灵敏度对照） | Web Tool | Exploration | Pending | 2026-11-18 | - | [详情](./idea-details/20261118080938.md) |
+| 20261118100747 | ISO 8583 金融交易报文编解码器（MTI / 主副位图 / 常用数据域 BCD、ASCII 与定长变长解析及往返构造） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118100747.md) |
+| 20261118100748 | BACnet/IP 楼宇自控报文编解码器（BVLC 封装 / NPDU 网络层 / 常用 APDU 服务与对象属性解析构造） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118100748.md) |
 
