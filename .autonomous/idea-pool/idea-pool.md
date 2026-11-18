@@ -380,4 +380,9 @@
 | 20261118040104 | Merkle 默克尔树构造与审计路径验证器（含根哈希、Merkle Proof 生成与逐层校验可视化） | Web Tool | Exploration | Pending | 2026-11-18 | - | [详情](./idea-details/20261118040104.md) |
 | 20261118140710 | RFC 7807 Problem Details 错误响应生成与解析器（application/problem+json） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118140710.md) |
 | 20261118140711 | JSDoc / TSDoc 文档注释块生成与解析器（函数签名 ↔ 标准注释块双向转换） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118140711.md) |
+| 20261119020118 | Erlang C 呼叫中心坐席与服务水平计算器（来话量 / AHT / 服务水平 ↔ 坐席数，含等待概率与占用率） | Web Tool | Existing Gap | Pending | 2026-11-19 | - | [详情](./idea-details/20261119020118.md) |
+| 20261119020119 | 代理 ARP 与本地代理 ARP（Proxy ARP / Local Proxy ARP）报文构造与应答判定器（RFC 1027，含子网边界判定教学视图） | Web Tool | Existing Gap | Pending | 2026-11-19 | - | [详情](./idea-details/20261119020119.md) |
+| 20261119020120 | SDP 会话描述协议解析与生成器（RFC 8866，含 offer/answer 字段校验与 WebRTC 兼容性提示） | Web Tool | Existing Gap | Pending | 2026-11-19 | - | [详情](./idea-details/20261119020120.md) |
+| 20261119020121 | LEI 全球法人识别编码校验与解析器（ISO 17442，20 位结构拆解与 Luhn mod-25 校验位验证） | Web Tool | External Reference | Pending | 2026-11-19 | - | [详情](./idea-details/20261119020121.md) |
+| 20261119020122 | 附息债券到期收益率（YTM）与定价计算器（净价/全价/应计利息/久期，含票息频率与计息惯例） | Web Tool | Existing Gap | Pending | 2026-11-19 | - | [详情](./idea-details/20261119020122.md) |
 
