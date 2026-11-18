@@ -4,13 +4,18 @@
 
 ## 日志
 
-## 2026-11-19 ：【Agent自主迭代】新增 I2C 地址换算、Erlang B、MTA-STS/TLS-RPT、HTTP/2 帧解析与跨平台深链关联文件 5 个通信协议/工程工具
+## 2026-11-19 ：【Agent自主迭代】新增 I2C 地址换算、Erlang B、MTA-STS/TLS-RPT、HTTP/2 帧解析、跨平台深链关联文件、文件魔数识别、Maidenhead 网格、EPC QR SEPA、systemd 单元与 ICMPv4 Echo 共 10 个通信协议/工程工具
 
 - **新增**：I2C 7 位/8 位地址双向换算器（i2c-address-converter）— 按 NXP UM10204 在 7 位地址（0x00–0x77）与 8 位读写地址（左移一位 +R/W）间双向换算，支持 `0x`/`$`/十进制输入、保留段（0x00–0x07、0x78–0x7F）识别与越界校验，19 个 Vitest 用例，纯本地运算零依赖
 - **新增**：Erlang B 中继线话务量计算器（erlang-b-calculator）— 基于 M/M/c/c 阻塞清除模型的稳定递推，覆盖阻塞概率正算（B(5,10)=0.563952 等固定向量）、满足 GoS 所需线数反算、可承载话务量二分反算与灵敏度对照表，18 个 Vitest 用例，纯本地运算零依赖
 - **新增**：MTA-STS 策略与 TLS-RPT 记录生成器（mta-sts-tls-rpt-generator）— 按 RFC 8461/8460 生成策略文件（STSv1/mode/max_age/mx 稳定键序）、`_mta-sts` 与 `_smtp._tls` 两条 DNS 记录及 policy 发布 URL，max_age 上限 31557600 秒等字段级校验，16 个 Vitest 用例，纯本地运算零依赖
 - **新增**：HTTP/2 帧头解析与帧序列查看器（http2-frame-parser）— 按 RFC 7540 解析 9 字节定长帧头与 SETTINGS/WINDOW_UPDATE/PING/GOAWAY/RST_STREAM 载荷摘要（不含 HPACK），覆盖保留位 R、连接级帧流标识必须为 0、载荷长度规则、截断与残余字节检测，内置三帧样例，21 个 Vitest 用例，纯本地运算零依赖
 - **新增**：跨平台深链关联文件生成器（universal-links-generator）— 表单化生成 iOS apple-app-site-association（appIDs + 现代 components 语法、exclude、webcredentials/appclips 开关）与 Android assetlinks.json（package_name、SHA-256 指纹数组、handle_all_urls 与可选凭据 relation），Team ID/Bundle ID/包名与 32 组冒号指纹格式校验（自动大写、去重、错误定位），实时 JSON 预览、复制与本地下载并附 /.well-known/ 部署检查清单，20 个 Vitest 用例，纯本地运算零依赖
+- **新增**：文件魔数识别器（magic-number-identifier）— 粘贴 Hex dump 或读取本地文件前 64 字节，按内置签名表识别 PNG/JPEG/GIF/PDF/ZIP/ELF/OLE 等真实文件类型，输出扩展名、MIME、命中偏移与签名，自动剥离 xxd 偏移前缀与 ASCII 侧栏，文件不出浏览器、不上传，17 个 Vitest 用例，纯本地运算零依赖
+- **新增**：Maidenhead 网格定位编解码器（maidenhead-locator-codec）— 按 ARRL 字母对/数字对交替规则在 WGS-84 经纬度与 QTH Locator 网格字符串间互转，支持 4/6/8/10 字符精度并输出网格西南/东北角、中心坐标与覆盖跨度，13 个 Vitest 用例，纯本地运算零依赖
+- **新增**：EPC QR 码 SEPA 转账负载编解码器（epc-qr-sepa-codec）— 按 EPC069-12 生成/解析 SEPA SCT 固定 12 行 CRLF 负载，IBAN 走 mod97 校验并复用 iban-validator，覆盖 BIC、用途代码、EUR 金额行与各字段长度上限校验，反向解析容忍 LF/CR 换行并逐行校验头部，17 个 Vitest 用例，纯本地运算零依赖
+- **新增**：systemd .service 单元文件生成器（systemd-service-generator）— 按 [Unit]/[Service]/[Install] 三段式表单生成确定性 INI 单元文本，空字段自动省略、Environment 可重复多行，Type/Restart 枚举与字段校验，附 daemon-reload、enable --now 安装命令与 Node 守护/oneshot/forking 预设，支持反向解析往返，15 个 Vitest 用例，纯本地运算零依赖
+- **新增**：ICMPv4 Echo 报文编解码器（icmpv4-echo-codec）— 按 RFC 792 以 DataView 大端组包/拆包 Type 8/0 Echo 报文（Type、Code、Checksum、Identifier、Sequence、payload），RFC 1071 反码求和自动计算并核对校验和（奇数补零、进位折叠），hex 输入容忍空格/冒号/逗号/0x 噪声，Code 非零与超 1472 字节 MTU 给出警告，纯本地运算不发送数据包，14 个 Vitest 用例，纯本地运算零依赖
 
 ## 2026-11-18 ：【Agent自主迭代】新增 CAA 记录、BIC 校验、GS1 校验位、DICOM UID 与 iCalendar 待办日记 5 个行业标识符/协议工具
 
