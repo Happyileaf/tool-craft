@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1080px;
+}
+
+.card {
+  width: 100%;
+}
+
+.mono {
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+}
+
+.bigNumber {
+  font-family: var(--font-mono, monospace);
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.hint {
+  color: rgb(0 0 0 / 45%);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.chart {
+  width: 100%;
+  height: 260px;
+}

@@ -41845,6 +41845,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'erlang-b-calculator',
+    name: 'Erlang B 中继线话务量计算器（阻塞概率 / GoS 反算 / 灵敏度对照）',
+    nameEn: 'Erlang B Traffic & Trunk Capacity Calculator',
+    description:
+      '基于 M/M/c/c 损失制模型的电信容量规划工具：输入忙时话务量 A（Erlang）与中继线数 N，用数值稳定的递归式计算呼叫阻塞概率 B；支持两类反向工程——给定目标服务等级 GoS（如 1%）求最少中继线数、给定 N 与 GoS 二分反算最大可承载话务量；附 N±1 在 0.1%/1%/5% 三档 GoS 下的灵敏度对照表与阻塞率随 N 变化的 SVG 曲线，全部本地计算零依赖。',
+    descriptionEn:
+      'A telecom capacity-planning tool based on the M/M/c/c loss model. Given busy-hour traffic A in Erlangs and trunk count N, it computes the call blocking probability B with the numerically stable Erlang B recursion, and solves both reverse problems: the minimum trunks for a target grade of service (e.g. 1%) and the maximum traffic a trunk group can carry at that GoS via bisection. Includes an N±1 sensitivity table at 0.1%/1%/5% GoS and an SVG blocking curve, all computed locally.',
+    category: ToolCategoryEnum.TIME_MATH,
+    path: '/tools/erlang-b-calculator',
+    iconName: 'Gauge',
+    tags: ['Erlang B', '话务量', '中继线', '容量规划', '服务等级 GoS'],
+    tagsEn: ['Erlang B', 'Traffic Engineering', 'Trunk Capacity', 'Capacity Planning', 'GoS'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'A=10 Erlang, N=10',
+    doc: {
+      zh: {
+        whatIsIt:
+          'Erlang B 计算器面向电信与呼叫中心容量规划，实现经典的 M/M/c/c 损失制排队模型：到达呼叫遇到全部中继线忙时立即损失（阻塞、无排队）。工具以数值稳定的递归形式 B(n)=A·B(n-1)/(n+A·B(n-1)) 计算阻塞概率，并覆盖工程上最常用的两个反算问题与灵敏度对照，所有数值均在浏览器本地完成，不依赖任何服务端。',
+        coreFeatures: [
+          '正算阻塞概率：输入话务量 A（Erlang）与中继线数 N，递归计算 B 并换算每百次呼叫损失次数',
+          '反算最少中继线：给定 GoS（如 1%）逐项递归求满足 B≤GoS 的最小 N，并验证 N-1 不达标',
+          '反算最大话务量：给定 N 与 GoS，二分查找可承载的最大 Erlang 数，与正算结果自洽',
+          'N±1 灵敏度表：三行对照在 0.1% / 1% / 5% 三档 GoS 下的承载能力，辅助扩容决策',
+          '阻塞率曲线：纯 SVG 绘制 B 随 N 变化的单调下降曲线并高亮当前配置，零图表依赖',
+        ],
+        howToUse: [
+          '填写忙时话务量 A（单位 Erlang，可由呼叫量×平均保持时长得到）与现有中继线数 N',
+          '在「正算」页签查看阻塞概率、每百次呼叫损失与阻塞率曲线',
+          '设定目标 GoS（小数形式，0.01 即 1%），在「反算」页签读取最少中继线与最大承载话务量',
+          '在「灵敏度对照」页签比较 N-1 / N / N+1 的服务等级变化，评估增减一条中继线的边际收益',
+        ],
+        useCases: [
+          '呼叫中心或 PBX 扩容时按目标 GoS 测算所需中继线 / 坐席线路数量',
+          '无线信道、SIP trunk 与专线带宽的容量评审与投资决策',
+          '核对设备厂商给出的 Erlang B 工程表值，验证招标技术指标',
+          '通信工程教学中演示损失制排队模型、GoS 与中继效率的关系',
+        ],
+        privacyNote:
+          '所有话务参数仅在浏览器本地参与递归与二分计算，不发起任何网络请求。',
+        faqs: [
+          {
+            question: 'Erlang B 和 Erlang C 有什么区别？',
+            answer:
+              'Erlang B 对应 M/M/c/c 损失制：所有中继线忙时新呼叫立即被阻塞，没有排队，适用于中继线、信道等“占线即损失”的场景；Erlang C 对应 M/M/c 等待制，呼叫会排队等待，适用于坐席接听场景。本工具只实现 Erlang B 及其 GoS 反算。',
+          },
+          {
+            question: '话务量单位 Erlang 是怎么来的？',
+            answer:
+              '1 Erlang 等于一条中继线被连续占用一小时的话务量，工程上等于忙时呼叫次数（CCS 换算后）乘以平均保持时长（小时）。例如 600 次呼叫、平均 180 秒，则 A = 600×180/3600 = 30 Erlang。',
+          },
+          {
+            question: '为什么用递归式而不是直接套阶乘公式？',
+            answer:
+              'Erlang B 的闭合式含 A^N 与 N!，N 稍大就会触发浮点溢出或精度损失；递归式 B(n)=A·B(n-1)/(n+A·B(n-1)) 每一步都是归一化的小数，数值稳定且 O(N) 复杂度，反算时配合二分查找即可收敛到 1e-9 精度。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'An Erlang B calculator for telecom and contact-center capacity planning implementing the classic M/M/c/c loss queue: when every trunk is busy, newly arriving calls are blocked immediately with no queueing. It evaluates the blocking probability through the numerically stable recursion B(n)=A·B(n-1)/(n+A·B(n-1)), covers both engineering reverse problems, and adds sensitivity analysis. Every number is computed locally in the browser.',
+        coreFeatures: [
+          'Forward blocking probability: recursion over traffic A in Erlangs and trunk count N, with lost calls per 100 derived automatically',
+          'Minimum trunks for a GoS target (e.g. 1%): the smallest N with B≤GoS, verified against N-1',
+          'Maximum carried traffic: bisection search for the largest Erlang load satisfying the GoS at fixed N, self-consistent with the forward formula',
+          'N±1 sensitivity table comparing capacity at 0.1% / 1% / 5% GoS to support expansion decisions',
+          'Pure-SVG blocking curve showing the monotonic decrease of B with N and highlighting the current configuration, with no charting dependency',
+        ],
+        howToUse: [
+          'Enter busy-hour traffic A in Erlangs (call count multiplied by mean holding time in hours) and the current trunk count N',
+          'Read the blocking probability, lost calls per 100 and the curve on the Forward tab',
+          'Set the target GoS as a decimal (0.01 = 1%) and read minimum trunks and maximum traffic on the Reverse tab',
+          'Use the Sensitivity tab to compare N-1 / N / N+1 and judge the marginal benefit of adding one trunk',
+        ],
+        useCases: [
+          'Sizing trunk groups or contact-center lines against a target grade of service during expansion',
+          'Capacity reviews for radio channels, SIP trunks and leased-line investments',
+          'Verifying vendor Erlang B engineering tables and tender specifications',
+          'Teaching loss-system queueing models and the relationship between GoS and trunk efficiency',
+        ],
+        privacyNote:
+          'All traffic parameters participate only in local recursion and bisection in the browser; no network requests are made.',
+        faqs: [
+          {
+            question: 'What is the difference between Erlang B and Erlang C?',
+            answer:
+              'Erlang B models the M/M/c/c loss system where calls are blocked immediately when all servers are busy, fitting trunks and channels. Erlang C models M/M/c with a waiting queue, fitting agent-based call centers. This tool implements only Erlang B and its GoS reverse calculations.',
+          },
+          {
+            question: 'How is traffic in Erlangs derived?',
+            answer:
+              'One Erlang equals one circuit occupied continuously for one hour. In practice, A = busy-hour call count × mean holding time in hours. For example, 600 calls averaging 180 seconds gives A = 600×180/3600 = 30 Erlangs.',
+          },
+          {
+            question: 'Why use the recursion instead of the factorial formula?',
+            answer:
+              'The closed form contains A^N and N!, which overflow or lose precision at moderate N. The recursion B(n)=A·B(n-1)/(n+A·B(n-1)) keeps every step normalized, stays numerically stable in O(N), and pairs with bisection to converge reverse problems to 1e-9 precision.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

@@ -318,8 +318,8 @@ export const toolLoaders: Record<
   'ical-todo-journal-generator': () => import('./ical-todo-journal-generator'),
   'i2c-address-calculator': () => import('./i2c-address-calculator'),
   'mta-sts-tlsrpt-generator': () => import('./mta-sts-tlsrpt-generator'),
-  // 其余 3 个工具随各自实现 commit 恢复注册
-  // 'erlang-b-calculator': () => import('./erlang-b-calculator'),
+  'erlang-b-calculator': () => import('./erlang-b-calculator'),
+  // 其余 2 个工具随各自实现 commit 恢复注册
   // 'evm-abi-selector-calculator': () => import('./evm-abi-selector-calculator'),
   // 'dft-fft-calculator': () => import('./dft-fft-calculator'),
   'plus-code-codec': () => import('./plus-code-codec'),
