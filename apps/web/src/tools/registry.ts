@@ -41942,6 +41942,107 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'http2-frame-parser',
+    name: 'HTTP/2 帧头解析与帧序列查看器',
+    nameEn: 'HTTP/2 Frame Header Parser & Sequence Viewer',
+    description:
+      '粘贴十六进制帧流即可按 RFC 7540 解析 9 字节定长帧头（24 位长度 / 类型 / 标志 / R 位 / 31 位流标识），逐帧展示类型、标志位（END_STREAM、ACK 等）、流标识与偏移，并展开 SETTINGS、WINDOW_UPDATE、PING、GOAWAY、RST_STREAM 载荷摘要；内置保留位、连接级帧流标识、载荷长度规则校验与截断检测。不实现 HPACK 解压，纯浏览器本地解析、零新增依赖。',
+    descriptionEn:
+      'Paste a hex frame stream and parse the 9-byte fixed frame header per RFC 7540 (24-bit length, type, flags, R bit and 31-bit stream identifier), with per-frame type, flags such as END_STREAM and ACK, stream id and offset. Payload summaries are expanded for SETTINGS, WINDOW_UPDATE, PING, GOAWAY and RST_STREAM, while built-in checks cover the reserved bit, connection-level stream ids, payload-length rules and truncation. HPACK decompression is intentionally out of scope; parsing runs entirely in the browser with zero new dependencies.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/http2-frame-parser',
+    iconName: 'Api',
+    tags: ['HTTP/2', '帧解析', 'RFC 7540', '协议调试', '二进制', '网络抓包'],
+    tagsEn: ['HTTP/2', 'Frame Parser', 'RFC 7540', 'Protocol Debug', 'Binary', 'Packet Analysis'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    doc: {
+      zh: {
+        whatIsIt:
+          'HTTP/2 帧头解析与帧序列查看器是一款面向协议调试与抓包分析的纯浏览器工具。HTTP/2 把所有通信封装为二进制帧，每帧以 9 字节定长帧头开始：24 位载荷长度、8 位类型、8 位标志、1 位保留 R 与 31 位流标识。工具逐帧还原帧序列与载荷摘要，并按 RFC 7540 规则检查保留位、连接级帧流标识、SETTINGS / WINDOW_UPDATE / PING 等载荷长度约束及数据截断，帮助快速定位协议实现问题。本工具不实现 HPACK（RFC 7541）首部解压。',
+        coreFeatures: [
+          '帧头全字段解析：长度、类型（含未知类型 UNKNOWN 展示）、标志位名称、R 保留位与流标识',
+          '载荷摘要：SETTINGS 参数键值、WINDOW_UPDATE 增量、PING 不透明数据、GOAWAY 最后流与错误码、RST_STREAM 错误码',
+          '规则校验：连接级帧必须流标识 0、SETTINGS 6 字节倍数与 ACK 空载荷、PING 8 字节、保留位为 0 等',
+          '截断与残余检测：帧中途结束给出明确错误并报告已消费与残余字节，不产生半截帧',
+          '内置 SETTINGS + WINDOW_UPDATE + PING 样例，纯函数实现由 21 个固定向量单测覆盖',
+        ],
+        howToUse: [
+          '把抓包得到的 HTTP/2 帧十六进制粘贴到输入框（可含空格、换行与 0x 前缀，可省略连接前导）',
+          '查看解析帧数、已消费 / 残余字节等汇总指标',
+          '在表格中逐帧核对类型、标志、流标识与载荷摘要，橙色标签标记规则告警',
+          '对照底部帧类型速查表确认各类型编码与语义',
+        ],
+        useCases: [
+          '调试自研 HTTP/2 客户端 / 服务端的帧拼装与状态机实现',
+          '分析抓包数据中的 SETTINGS 协商、流量控制窗口与 GOAWAY 关连接原因',
+          '教学场景下直观理解二进制帧头布局、标志位与流复用机制',
+        ],
+        privacyNote:
+          '所有十六进制数据仅在浏览器本地解析，不发起任何网络请求，抓包内容不会离开设备。',
+        faqs: [
+          {
+            question: '为什么 HEADERS 帧只显示“HPACK 压缩块”而不展开首部？',
+            answer:
+              'HTTP/2 首部使用独立的 HPACK（RFC 7541）压缩，且解压依赖连接级动态表状态，需要维护完整的表演进与索引引用。本工具聚焦帧头与无状态载荷，明确不实现 HPACK，避免给出脱离动态表上下文的错误首部。可结合 Wireshark 等工具查看解压后的首部。',
+          },
+          {
+            question: '连接前导（PRI * HTTP/2.0）需要粘贴吗？',
+            answer:
+              '不需要。h2c 明文升级中的 24 字节连接前导不是帧结构，工具从 9 字节帧头开始解析。直接粘贴 SETTINGS 等帧的十六进制即可；若误贴前导，长度字段会无法对齐并触发截断或非法提示，删除前导后即可正常解析。',
+          },
+          {
+            question: '什么是连接级帧？为什么流标识必须是 0？',
+            answer:
+              'SETTINGS、PING、GOAWAY 以及连接级 WINDOW_UPDATE 作用于整条 HTTP/2 连接而非某一条流，RFC 7540 规定它们的流标识必须为 0。若这些帧携带非零流标识即属协议错误，工具会以橙色告警标出，便于发现对端或自身实现的违规帧。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The HTTP/2 Frame Header Parser & Sequence Viewer is a fully browser-local tool for protocol debugging and capture analysis. HTTP/2 encapsulates all communication in binary frames, each beginning with a fixed 9-byte header: a 24-bit payload length, an 8-bit type, 8 bits of flags, a reserved R bit and a 31-bit stream identifier. The tool reconstructs the frame sequence and payload summaries frame by frame, and applies RFC 7540 rule checks for the reserved bit, connection-level stream ids, payload-length constraints of SETTINGS / WINDOW_UPDATE / PING, and truncation. HPACK (RFC 7541) header decompression is deliberately out of scope.',
+        coreFeatures: [
+          'Full header decoding: length, type (with UNKNOWN fallback), named flag bits, R reserved bit and stream id',
+          'Payload summaries: SETTINGS key-value pairs, WINDOW_UPDATE increment, PING opaque bytes, GOAWAY last stream and error code, RST_STREAM error code',
+          'Rule validation: zero stream id for connection-level frames, 6-byte SETTINGS multiples, empty SETTINGS ACK, 8-byte PING, zero reserved bit and more',
+          'Truncation and trailing-byte detection: mid-frame endings raise explicit errors with consumed/remaining byte counts, never producing half frames',
+          'Built-in SETTINGS + WINDOW_UPDATE + PING sample; pure functions covered by 21 fixed-vector unit tests',
+        ],
+        howToUse: [
+          'Paste captured HTTP/2 frame hex into the input (spaces, newlines and 0x prefixes are accepted; the connection preface may be omitted)',
+          'Review summary metrics: parsed frame count, consumed and trailing bytes',
+          'Walk the table frame by frame checking type, flags, stream id and payload summary; orange tags mark rule warnings',
+          'Use the frame-type reference at the bottom to confirm type codes and semantics',
+        ],
+        useCases: [
+          'Debugging frame assembly and state machines in a hand-written HTTP/2 client or server',
+          'Analyzing SETTINGS negotiation, flow-control windows and GOAWAY shutdown reasons in captures',
+          'Teaching the binary header layout, flag bits and stream multiplexing model',
+        ],
+        privacyNote:
+          'All hex data is parsed locally in the browser with no network requests; captured traffic never leaves the device.',
+        faqs: [
+          {
+            question: 'Why do HEADERS frames only show an "HPACK block" without expanded headers?',
+            answer:
+              'HTTP/2 headers use the separate HPACK (RFC 7541) compression, whose decompression depends on connection-level dynamic-table state, index references and table evolution. This tool focuses on frame headers and stateless payloads and intentionally omits HPACK, rather than rendering headers that would be wrong without the dynamic-table context. Use a tool such as Wireshark for decompressed headers.',
+          },
+          {
+            question: 'Do I need to paste the connection preface (PRI * HTTP/2.0)?',
+            answer:
+              'No. The 24-byte h2c connection preface is not a frame, and parsing starts at the 9-byte frame header. Paste frame hex such as SETTINGS directly. If the preface is included by mistake, length fields will misalign and trigger truncation or invalid-input hints; remove the preface to parse normally.',
+          },
+          {
+            question: 'What is a connection-level frame and why must its stream id be zero?',
+            answer:
+              'SETTINGS, PING, GOAWAY and the connection-level WINDOW_UPDATE act on the whole HTTP/2 connection rather than any single stream, so RFC 7540 requires their stream identifier to be 0. A non-zero id on these frames is a protocol violation, which the tool flags with an orange warning to expose buggy peer or local implementations.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
