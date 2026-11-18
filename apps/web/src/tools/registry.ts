@@ -41741,6 +41741,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'mta-sts-tlsrpt-generator',
+    name: 'MTA-STS 策略与 TLS-RPT 记录生成器（RFC 8461 / RFC 8460）',
+    nameEn: 'MTA-STS Policy & TLS-RPT Record Generator (RFC 8461 / RFC 8460)',
+    description:
+      '一站式生成邮件域的 MTA-STS 与 TLS-RPT 配置：输出 _mta-sts TXT 记录（v=STSv1; id=时间戳）、需发布到 mta-sts.<域>/.well-known/mta-sts.txt 的策略文件正文（version/mode/max_age/mx 白名单，支持通配后缀），以及 _smtp._tls TXT 报告记录（mailto 与 https 两类 rua 端点，最多两个）。内置解析校验页可对既有记录做字段级 RFC 校验；域名、MX、邮箱与 https 端点均有前置校验，全部本地运行、不发送 DNS 请求。',
+    descriptionEn:
+      'Generate the full MTA-STS and TLS-RPT configuration for a mail domain in one place: the _mta-sts TXT record (v=STSv1; id=timestamp), the policy file body to publish at mta-sts.<domain>/.well-known/mta-sts.txt (version/mode/max_age/mx allow-list with wildcard suffixes), and the _smtp._tls TXT reporting record with up to two mailto/https rua endpoints. A built-in parser validates existing records field by field against the RFCs. Domain, MX, email and https endpoint inputs are checked up front; everything runs locally with no DNS lookups.',
+    category: ToolCategoryEnum.NETWORK,
+    path: '/tools/mta-sts-tlsrpt-generator',
+    iconName: 'ShieldCheck',
+    tags: ['MTA-STS', 'TLS-RPT', '邮件安全', 'SMTP', 'DNS TXT', 'TLS', 'RFC 8461'],
+    tagsEn: ['MTA-STS', 'TLS-RPT', 'Email Security', 'SMTP', 'DNS TXT', 'TLS', 'RFC 8461'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'example.com / testing / mx1.example.com / tls-reports@example.com',
+    doc: {
+      zh: {
+        whatIsIt:
+          'MTA-STS（RFC 8461）让发送方 MTA 能发现某邮件域强制使用有效 TLS 与授权 MX，抵御降级与中间人攻击；TLS-RPT（RFC 8460）则让接收方以聚合报告形式收集 TLS 投递失败。本工具把两者所需的 DNS TXT 记录与 HTTPS 策略文件一次生成，并提供反向解析校验，避免手工拼装时漏字段、版本号写错或 rua 端点不合规。',
+        coreFeatures: [
+          'MTA-STS 全套产物：_mta-sts TXT 记录（含 UTC 时间戳策略 ID）与 mta-sts.txt 策略文件正文，含发布 URL',
+          '策略模式 enforce / testing / none 与 max_age 秒级配置，MX 白名单支持 *.example.com 通配后缀并自动去重',
+          'TLS-RPT 记录：_smtp._tls TXT，支持 mailto 与 https 两类 rua 端点，最多两个并强制 https:// 协议',
+          '解析校验页：对既有 TXT 记录或策略文件做版本号、必填字段、mode 取值与 max_age 整数性逐项校验',
+          '前置输入校验：域名语法、MX 主机名、邮箱格式与 URL 协议即时报错；全本地计算，不发起 DNS 或 HTTPS 请求',
+        ],
+        howToUse: [
+          '在「生成记录」页填写邮件域名，建议先用 testing 模式、max_age 设为 86400 观察一段时间再切 enforce',
+          '每行填写一条授权 MX 主机名后缀（可含通配 *），切换模式或 MX 后策略 ID 自动更新，记得同步 DNS 与策略文件',
+          '把策略文件正文发布到 https://mta-sts.<域>/.well-known/mta-sts.txt（证书必须有效），再部署两条 TXT 记录',
+          '在「解析校验」页粘贴线上记录或策略文件，可快速核对版本号与字段是否符合 RFC',
+        ],
+        useCases: [
+          '邮件域加固：为自有域名启用 MTA-STS 强制 TLS，并通过 TLS-RPT 收集发送方上报的失败报告',
+          '运维巡检：把 DNS 控制台中的现有记录粘进解析页，排查 v= 版本、id 缺失或 rua 拼写问题',
+          '迁移与撤回：临时生成 none 模式策略用于平滑撤回，或在更换 MX 提供方时重建白名单',
+          '合规交付：为客户邮件安全项目一次性产出可直接粘贴的 DNS 记录与策略文件清单',
+        ],
+        privacyNote:
+          '所有域名、MX 与端点仅在浏览器本地参与字符串拼装和校验，工具不发起任何 DNS、HTTPS 或其他网络请求，剪贴板写入仅在点击复制按钮时发生。',
+        faqs: [
+          {
+            question: 'MTA-STS 的策略文件应该放在哪里？',
+            answer:
+              '必须通过 HTTPS 发布在固定路径 https://mta-sts.<你的域>/.well-known/mta-sts.txt，且证书必须由公共可信 CA 签发、不能有证书错误。工具会直接给出该 URL 与可粘贴的文件正文。',
+          },
+          {
+            question: '为什么建议先用 testing 模式？',
+            answer:
+              'enforce 模式下，发送方发现 MX 证书无效或 MX 不在白名单会直接退信；testing 模式只通过 TLS-RPT 报告问题而不拦截投递，适合先观察 1–2 周确认没有误伤，再切换到 enforce 并逐步调大 max_age。',
+          },
+          {
+            question: '策略 ID（id）有什么用，什么时候要换？',
+            answer:
+              'id 是策略版本标识，发送方用它判断策略是否更新。任何对 mode、max_age 或 mx 白名单的修改都应同时更换 id（本工具默认用 UTC 时间戳）并更新 DNS 记录，否则缓存中的旧策略可能持续生效到 max_age 过期。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'MTA-STS (RFC 8461) lets sending MTAs discover that a mail domain mandates valid TLS and authorized MX hosts, mitigating downgrade and man-in-the-middle attacks; TLS-RPT (RFC 8460) lets receivers collect aggregate reports about TLS delivery failures. This tool generates every DNS TXT record and HTTPS policy file both standards require in one pass, and parses existing deployments back into validated fields so hand-edited records cannot silently miss a field or misspell a version token.',
+        coreFeatures: [
+          'Full MTA-STS bundle: _mta-sts TXT record with a UTC timestamp policy id plus the mta-sts.txt body and its publication URL',
+          'enforce / testing / none modes with second-granularity max_age; MX allow-list accepts wildcard suffixes such as *.example.com and deduplicates automatically',
+          'TLS-RPT record at _smtp._tls with up to two mailto/https rua endpoints, enforcing the https:// scheme for web endpoints',
+          'Parser tab: field-by-field validation of existing TXT records and policy files covering version tokens, required fields, mode values and integer max_age',
+          'Up-front validation of domain syntax, MX hostnames, email addresses and URL schemes; fully local with no DNS or HTTPS traffic from the tool itself',
+        ],
+        howToUse: [
+          'On the generator tab, enter the mail domain; start with testing mode and max_age 86400 to observe before switching to enforce',
+          'Put one authorized MX suffix per line (wildcards allowed); whenever mode or MX changes, the policy id changes, so update both DNS and the policy file together',
+          'Publish the policy body at https://mta-sts.<domain>/.well-known/mta-sts.txt with a publicly trusted valid certificate, then deploy the two TXT records',
+          'Paste live records or policy files into the parser tab to verify version tokens and fields against the RFCs',
+        ],
+        useCases: [
+          'Mail-domain hardening: enforce TLS with MTA-STS and collect sender failure reports through TLS-RPT',
+          'Operations audits: paste records from the DNS console into the parser to spot version, missing-id or rua spelling issues',
+          'Migration and rollback: emit a none policy for smooth withdrawal, or rebuild the MX allow-list when changing mail providers',
+          'Compliance delivery: hand customers a ready-to-paste set of DNS records and policy files for email security engagements',
+        ],
+        privacyNote:
+          'Domains, MX hosts and endpoints are only assembled and validated locally in the browser. The tool performs no DNS, HTTPS or other network calls; clipboard writes happen only on explicit copy clicks.',
+        faqs: [
+          {
+            question: 'Where must the MTA-STS policy file live?',
+            answer:
+              'It must be served over HTTPS at the fixed path https://mta-sts.<your-domain>/.well-known/mta-sts.txt with a certificate from a publicly trusted CA and no certificate errors. The tool prints both the URL and the paste-ready body.',
+          },
+          {
+            question: 'Why start in testing mode?',
+            answer:
+              'In enforce mode, senders bounce mail when an MX certificate is invalid or the MX is outside the allow-list; testing mode only surfaces problems through TLS-RPT without blocking delivery. Observe for one to two weeks, then switch to enforce and raise max_age gradually.',
+          },
+          {
+            question: 'What is the policy id for and when must it change?',
+            answer:
+              'The id is the policy version marker senders use to detect updates. Every change to mode, max_age or the mx allow-list must ship with a fresh id (the tool defaults to a UTC timestamp) and an updated DNS record, otherwise cached policies remain in effect until max_age expires.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
