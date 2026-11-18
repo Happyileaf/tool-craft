@@ -20,6 +20,7 @@ import { DEFAULT_TEXT as CIPHER_SAMPLE } from './classical-cipher-collection/con
 import { DEFAULT_DISTRIBUTION as PROBABILITY_SAMPLE } from './probability-distribution-calculator/constants';
 import { DEFAULT_BBCODE as BBCODE_SAMPLE } from './bbcode-html-converter/constants';
 import { DEFAULT_CONFIG as CSS_SHAPE_SAMPLE } from './css-shape-generator/constants';
+import { SAMPLE_PAYLOAD as SAMPLE_PAYLOAD_EPC } from './epc-qr-sepa-codec/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -40278,6 +40279,110 @@ sqrt(area) + 2 * r`,
             question: 'What if the result disagrees with the file extension?',
             answer:
               'The magic number reflects the actual byte format, whereas the extension is just a renameable naming convention. A mismatch usually means the file was renamed, saved with the wrong suffix, or deliberately disguised—trust the magic-number verdict and open the file with caution.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'epc-qr-sepa-codec',
+    name: 'EPC QR 码 SEPA 转账负载编解码器',
+    nameEn: 'EPC QR Code SEPA Credit Transfer Codec',
+    description:
+      '按 EPC069-12 规范在浏览器本地生成与解析 SEPA 信用转账（SCT）二维码负载：表单输出固定 12 行 CRLF 文本，IBAN 走 mod97 校验，校验 BIC、用途代码、金额行与字段长度；反向解析容忍 LF/CR 换行并逐行校验头部，纯本地零依赖。',
+    descriptionEn:
+      'Generate and parse SEPA Credit Transfer (SCT) QR payloads per the EPC069-12 specification locally: a form produces the fixed 12-line CRLF text with mod97 IBAN validation and checks on BIC, purpose code, amount line and field lengths; reverse parsing tolerates LF/CR line endings and validates every header line, fully offline with no dependencies.',
+    category: ToolCategoryEnum.CRYPTO_ENCODING,
+    path: '/tools/epc-qr-sepa-codec',
+    iconName: 'QrCode',
+    tags: ['EPC QR', 'SEPA', 'SCT', 'IBAN', '二维码', '欧洲转账'],
+    tagsEn: ['EPC QR', 'SEPA', 'SCT', 'IBAN', 'QR Code', 'Euro Transfer'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: SAMPLE_PAYLOAD_EPC,
+    doc: {
+      zh: {
+        whatIsIt:
+          'EPC QR Code 是欧洲支付理事会（European Payments Council）在 EPC069-12 指南中定义的 SEPA 信用转账二维码数据格式。扫码后银行 App 可自动带出收款人 BIC、名称、IBAN、金额、用途代码与汇款说明，减少手工录入与转账错误。负载为纯文本：前 4 行固定为 BCD / 版本（001 或 002）/ 字符集（1=UTF-8）/ SCT，之后依次是 BIC、收款人名称、IBAN、金额行（EUR + 两位小数）、4 位用途代码、结构化债权人引用、普通汇款说明与备注，共 12 行，以 CRLF 分隔。本工具在浏览器本地完成生成与反向解析，不依赖任何二维码或支付服务。',
+        coreFeatures: [
+          '表单生成：按 EPC069-12 输出固定 12 行 CRLF 负载，可直接复制到任意二维码生成器',
+          '严格校验：IBAN 复用 ISO 7064 mod97-10 校验，BIC 限 8/11 位字母数字，用途代码限 4 位，金额行限 EUR + 两位小数',
+          '长度约束：名称与备注 ≤70、IBAN ≤34、引用与汇款说明 ≤35、金额行 ≤12 字符，超限逐字段报错',
+          '互斥规则：结构化债权人引用（RF 引用）与普通汇款说明只能二选一',
+          '反向解析：容忍 CRLF/LF/CR 换行，逐行校验 BCD/版本/字符集/SCT 头部与金额格式，还原全部字段',
+        ],
+        howToUse: [
+          '在「表单 → 负载」页签填写收款人名称与 IBAN（必填），BIC、金额、用途代码等按需填写',
+          '表单实时显示字段级校验错误，全部通过后点击「生成 EPC 负载」并复制文本',
+          '把负载文本粘贴到任意二维码生成器即可得到可被欧洲银行 App 识别的 EPC QR 码',
+          '在「负载 → 字段」页签粘贴现有 EPC 负载，查看结构化解析结果或定位头部 / 金额格式错误',
+        ],
+        useCases: [
+          '欧洲商户、慈善机构与自由职业者生成收款二维码，印在账单、捐赠页或发票上',
+          '财务与开发人员调试 EPC QR 内容，核对 12 行字段顺序与长度限制',
+          '教学演示 SEPA 信用转账数据标准与 IBAN mod97 校验原理',
+          '离线环境下检查来自他人的 EPC 负载是否头部合法、金额行格式正确',
+        ],
+        privacyNote:
+          '所有收款信息、IBAN 与负载文本仅在浏览器本地处理，工具不发起任何网络请求，也不生成或上传二维码图片。',
+        faqs: [
+          {
+            question: '为什么生成后没有直接显示二维码图片？',
+            answer:
+              'EPC069-12 规范只定义二维码内承载的文本负载，二维码图像编码属于独立环节。工具输出标准 12 行负载，你可以把它粘贴到任意外部二维码生成器；这样也保证全部银行信息无需经过任何第三方服务。',
+          },
+          {
+            question: '金额可以留空吗？',
+            answer:
+              '可以。EPC 允许金额行为空，表示由付款人在银行 App 中自行填写金额。表单中把金额留空或填 0 时，生成负载的第 8 行为空字符串，但仍占用一行以保持 12 行结构。',
+          },
+          {
+            question: 'BIC 是必填的吗？',
+            answer:
+              '版本 002 起 BIC 为可选字段（SEPA 区内多数银行可仅凭 IBAN 路由），版本 001 仍要求填写。本工具始终输出 12 行结构，BIC 留空时对应行为空字符串，由扫码方按所选版本处理。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The EPC QR Code is the SEPA Credit Transfer data format defined by the European Payments Council in guideline EPC069-12. Scanning it lets a banking app prefill the payee BIC, name, IBAN, amount, purpose code and remittance information, reducing manual entry and payment errors. The payload is plain text: the first four lines are fixed as BCD / version (001 or 002) / character set (1 = UTF-8) / SCT, followed by BIC, payee name, IBAN, the amount line (EUR plus two decimals), a four-character purpose code, structured creditor reference, unstructured remittance and a note, totaling 12 lines separated by CRLF. This tool generates and parses payloads entirely in the browser without any QR or payment service.',
+        coreFeatures: [
+          'Form-based generation producing the fixed 12-line CRLF payload, ready to paste into any QR code generator',
+          'Strict validation: IBAN checked with ISO 7064 mod97-10, BIC limited to 8/11 alphanumerics, purpose code to four characters, amount line to EUR plus two decimals',
+          'Length limits enforced per field: name and note up to 70, IBAN up to 34, reference/remittance up to 35, amount line up to 12 characters, with field-level errors',
+          'Exclusivity rule: a structured creditor reference (RF reference) and unstructured remittance cannot both be present',
+          'Reverse parsing tolerant of CRLF/LF/CR endings, validating each BCD/version/charset/SCT header line and the amount format before returning every field',
+        ],
+        howToUse: [
+          'On the Form → Payload tab, fill in the payee name and IBAN (required), plus BIC, amount and purpose code as needed',
+          'Field-level validation errors appear live; once everything passes, click Generate EPC Payload and copy the text',
+          'Paste the payload into any QR code generator to obtain an EPC QR code recognized by European banking apps',
+          'On the Payload → Fields tab, paste an existing EPC payload to inspect the parsed fields or locate header/amount format errors',
+        ],
+        useCases: [
+          'European merchants, charities and freelancers creating payment QR codes for invoices, donation pages and bills',
+          'Finance and engineering teams debugging EPC QR content, checking the 12-line field order and length limits',
+          'Teaching the SEPA Credit Transfer data standard and IBAN mod97 checksum principles',
+          'Verifying offline whether an EPC payload received from someone else has valid headers and a well-formed amount line',
+        ],
+        privacyNote:
+          'All payee data, IBANs and payload text are processed locally in the browser. The tool makes no network requests and never generates or uploads QR images.',
+        faqs: [
+          {
+            question: 'Why is no QR image shown directly?',
+            answer:
+              'EPC069-12 only defines the text payload carried inside the QR code; image encoding is a separate step. The tool outputs the canonical 12-line payload that you can paste into any external QR generator, which also keeps banking details away from third-party services.',
+          },
+          {
+            question: 'Can the amount be left empty?',
+            answer:
+              'Yes. EPC allows an empty amount line so the payer enters the amount in their banking app. When the amount is blank or zero, line 8 of the generated payload is an empty string while still occupying its line to preserve the 12-line structure.',
+          },
+          {
+            question: 'Is the BIC mandatory?',
+            answer:
+              'Since version 002 the BIC field is optional (most SEPA-area banks route on IBAN alone), while version 001 still requires it. The tool always emits 12 lines; when the BIC is blank its line is an empty string and the scanning application handles it according to the selected version.',
           },
         ],
       },
