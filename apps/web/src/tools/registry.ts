@@ -20,6 +20,7 @@ import { DEFAULT_TEXT as CIPHER_SAMPLE } from './classical-cipher-collection/con
 import { DEFAULT_DISTRIBUTION as PROBABILITY_SAMPLE } from './probability-distribution-calculator/constants';
 import { DEFAULT_BBCODE as BBCODE_SAMPLE } from './bbcode-html-converter/constants';
 import { DEFAULT_CONFIG as CSS_SHAPE_SAMPLE } from './css-shape-generator/constants';
+import { DEFAULT_ABI_JSON } from './evm-abi-selector-calculator/constants';
 
 /**
  * 已注册工具的元数据集合，覆盖站点当前提供的全部工具
@@ -41944,6 +41945,106 @@ sqrt(area) + 2 * r`,
             question: 'Why use the recursion instead of the factorial formula?',
             answer:
               'The closed form contains A^N and N!, which overflow or lose precision at moderate N. The recursion B(n)=A·B(n-1)/(n+A·B(n-1)) keeps every step normalized, stays numerically stable in O(N), and pairs with bisection to converge reverse problems to 1e-9 precision.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'evm-abi-selector-calculator',
+    name: 'EVM ABI 选择器与 Topic0 计算器',
+    nameEn: 'EVM ABI Selector & Topic0 Calculator',
+    description:
+      '按 Solidity ABI 规范计算函数 selector（keccak-256 前 4 字节）与事件 Topic0（32 字节），支持签名规范化、tuple 展开与 ABI JSON 批量解析。',
+    descriptionEn:
+      'Compute EVM function selectors (first 4 bytes of keccak-256) and event Topic0 (full 32 bytes) per the Solidity ABI spec, with signature canonicalization, tuple expansion, and batch ABI JSON parsing.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/evm-abi-selector-calculator',
+    iconName: 'Binary',
+    tags: ['EVM', 'Solidity', 'ABI', 'keccak256', '智能合约'],
+    tagsEn: ['EVM', 'Solidity', 'ABI', 'keccak256', 'Smart Contract'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: DEFAULT_ABI_JSON,
+    doc: {
+      zh: {
+        whatIsIt:
+          'EVM ABI 选择器与 Topic0 计算器是一款面向智能合约开发者的本地工具，依据 Solidity ABI 编码规范，对规范化后的函数、事件或自定义 error 签名计算 keccak-256 摘要，并截取函数 selector（前 4 字节）或事件 Topic0（完整 32 字节）。',
+        coreFeatures: [
+          '签名规范化：自动剔除参数名、空格与 memory/calldata/storage 位置关键字',
+          'tuple 递归展开：支持 struct 写法与嵌套 tuple、定长/变长数组后缀',
+          '双产物输出：函数与自定义 error 输出 4 字节 selector，事件输出 32 字节 Topic0',
+          'ABI JSON 批量解析：粘贴合约 ABI 一次性产出全部 selector/Topic0，并支持 selector 反查签名',
+        ],
+        howToUse: [
+          '在单条签名模式输入形如 transfer(address,uint256) 的签名，允许带参数名与空格',
+          '切换 function / event / error 类型，系统自动选择截取前 4 字节或完整 32 字节',
+          '或切换到 ABI 批量模式，粘贴合约 ABI JSON 数组查看全部条目结果',
+          '在反查框输入 4 字节 selector 即可定位所属函数，点击复制按钮获取结果',
+        ],
+        useCases: [
+          '链上交易排查：根据 calldata 前 4 字节识别实际调用的合约函数',
+          '日志解析：用 Topic0 匹配 Transfer 等事件签名',
+          '合约开发与审计：核对手写 ABI、自定义 error 编码与文档签名一致性',
+        ],
+        privacyNote:
+          'keccak-256 哈希与全部解析均在浏览器本地完成，签名与 ABI 内容不会上传到任何服务器。',
+        faqs: [
+          {
+            question: '为什么带参数名的签名计算结果与不带参数名一致？',
+            answer:
+              'ABI 规范规定 selector 只基于 canonical signature，即 name(type1,type2) 形式，参数名、空格与存储位置关键字都不参与哈希，工具会先规范化再计算。',
+          },
+          {
+            question: '事件为什么取完整 32 字节而不是前 4 字节？',
+            answer:
+              'EVM 日志的 Topic0 是事件签名 keccak-256 的完整 32 字节摘要，用于在日志布隆过滤器中唯一标识事件类型；函数 selector 才截取前 4 字节。',
+          },
+          {
+            question: 'tuple 与 struct 类型如何处理？',
+            answer:
+              'tuple 会被递归展开为 (type1,type2) 形式，struct Name(...) 写法与 tuple[] 数组后缀均按 ABI 规范规范化后再参与哈希，与 Solidity 编译器输出一致。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The EVM ABI Selector & Topic0 Calculator is a local tool for smart-contract developers. Following the Solidity ABI encoding spec, it hashes the canonical signature of a function, event, or custom error with keccak-256 and derives the 4-byte function selector or the full 32-byte event Topic0.',
+        coreFeatures: [
+          'Signature canonicalization: strips parameter names, whitespace, and memory/calldata/storage location keywords',
+          'Recursive tuple expansion: supports struct syntax, nested tuples, and fixed/dynamic array suffixes',
+          'Dual outputs: 4-byte selector for functions and custom errors, 32-byte Topic0 for events',
+          'Batch ABI JSON parsing: paste a contract ABI to produce every selector/Topic0 at once, with reverse selector lookup',
+        ],
+        howToUse: [
+          'Enter a signature such as transfer(address,uint256) in single-signature mode; parameter names and spaces are allowed',
+          'Switch between function / event / error to choose the 4-byte prefix or full 32-byte hash',
+          'Or switch to batch mode and paste a contract ABI JSON array to see all entries',
+          'Type a 4-byte selector in the lookup box to locate its function, then copy any result',
+        ],
+        useCases: [
+          'On-chain transaction debugging: identifying the called function from the first 4 bytes of calldata',
+          'Log decoding: matching events such as Transfer via their Topic0',
+          'Contract development and audit: verifying hand-written ABI, custom error encoding, and documentation',
+        ],
+        privacyNote:
+          'All keccak-256 hashing and parsing runs locally in your browser; signatures and ABI content are never uploaded.',
+        faqs: [
+          {
+            question: 'Why does a signature with parameter names hash to the same selector?',
+            answer:
+              'The ABI spec defines the selector over the canonical signature name(type1,type2) only. Parameter names, whitespace, and data-location keywords are excluded, so the tool canonicalizes first and hashes after.',
+          },
+          {
+            question: 'Why do events use the full 32 bytes instead of the first 4?',
+            answer:
+              'An EVM log Topic0 is the full 32-byte keccak-256 hash of the event signature, uniquely identifying the event in log bloom filters. Only function selectors take the first 4 bytes.',
+          },
+          {
+            question: 'How are tuples and structs handled?',
+            answer:
+              'Tuples are recursively expanded into (type1,type2) form. Struct Name(...) syntax and tuple[] array suffixes are canonicalized per the ABI spec before hashing, matching Solidity compiler output.',
           },
         ],
       },

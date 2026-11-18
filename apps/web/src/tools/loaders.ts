@@ -319,8 +319,8 @@ export const toolLoaders: Record<
   'i2c-address-calculator': () => import('./i2c-address-calculator'),
   'mta-sts-tlsrpt-generator': () => import('./mta-sts-tlsrpt-generator'),
   'erlang-b-calculator': () => import('./erlang-b-calculator'),
-  // 其余 2 个工具随各自实现 commit 恢复注册
-  // 'evm-abi-selector-calculator': () => import('./evm-abi-selector-calculator'),
+  'evm-abi-selector-calculator': () => import('./evm-abi-selector-calculator'),
+  // 其余 1 个工具随实现 commit 恢复注册
   // 'dft-fft-calculator': () => import('./dft-fft-calculator'),
   'plus-code-codec': () => import('./plus-code-codec'),
   'changelog-generator': () => import('./changelog-generator'),

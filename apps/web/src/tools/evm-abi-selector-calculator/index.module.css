@@ -1,0 +1,64 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background: var(--color-bg-container, #fff);
+  border: 1px solid var(--color-border-secondary, #f0f0f0);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.title {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.mono {
+  font-family: var(--font-family-mono, 'SFMono-Regular', Consolas, monospace);
+  word-break: break-all;
+}
+
+.hashLine {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.copyRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hashText {
+  font-family: var(--font-family-mono, 'SFMono-Regular', Consolas, monospace);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-primary, #1677ff);
+  word-break: break-all;
+}
+
+.canonical {
+  font-family: var(--font-family-mono, 'SFMono-Regular', Consolas, monospace);
+  color: var(--color-text-secondary, #666);
+  word-break: break-all;
+}
+
+.hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--color-text-tertiary, #999);
+}
+
+.errorBox {
+  margin-top: 12px;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
