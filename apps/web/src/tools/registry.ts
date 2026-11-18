@@ -41637,6 +41637,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'i2c-address-converter',
+    name: 'I2C 地址换算器（7-bit ↔ 8-bit 读写地址 · 保留地址校验）',
+    nameEn: 'I2C Address Converter (7-bit ↔ 8-bit Read/Write, Reserved-Range Check)',
+    description:
+      '在 I2C/SMBus 的 7-bit 设备地址与总线实际发送的 8-bit 读/写字节之间双向换算：正向按「写字节 = 地址左移一位 | 0、读字节 = 地址左移一位 | 1」派生，反向粘贴 8-bit 字节自动右移还原 7-bit 地址并识别 R/W 方向位。支持 0x50、50h、0b1010000、十进制等多进制输入，同步输出 HEX/DEC/BIN 三进制视图；依据 UM10204 标注 0x00–0x03（General Call 等）与 0x78–0x7F（10-bit 寻址）保留区间，全部本地计算、无网络请求。',
+    descriptionEn:
+      'Convert between the 7-bit I2C/SMBus device address and the 8-bit bytes actually driven on the wire: forward mode derives the write byte (address << 1 | 0) and read byte (address << 1 | 1), while reverse mode pastes an 8-bit byte, shifts it right to recover the 7-bit address and decodes the R/W direction bit. Accepts 0x50, 50h, 0b1010000 and decimal spellings and renders HEX/DEC/BIN views side by side. Reserved windows 0x00–0x03 (General Call etc.) and 0x78–0x7F (10-bit addressing) per UM10204 are flagged. Fully local, no network calls.',
+    category: ToolCategoryEnum.TEXT_FORMAT,
+    path: '/tools/i2c-address-converter',
+    iconName: 'Binary',
+    tags: ['I2C', 'SMBus', '嵌入式', '寄存器', '硬件地址', 'UM10204', '进制换算'],
+    tagsEn: ['I2C', 'SMBus', 'Embedded', 'Register', 'Hardware Address', 'UM10204', 'Radix Conversion'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: '7-bit 地址 0x50 → 写 0xA0 / 读 0xA1',
+    doc: {
+      zh: {
+        whatIsIt:
+          'I2C 地址换算器解决嵌入式开发中最常见的地址口径混乱：数据手册与 Linux 设备树普遍使用 7-bit 地址，而部分 HAL 库、逻辑分析仪与旧资料使用含读写方向位的 8-bit 字节。工具依据 NXP UM10204 §2.1.2 的寻址规则做双向移位换算，同时给出十六进制、十进制、二进制三种表示，并对协议保留区间（0x00–0x03 与 0x78–0x7F）给出明确警告，避免把保留地址分配给普通从设备。',
+        coreFeatures: [
+          '正向换算：7-bit 地址左移一位，分别派生 8-bit 写地址（R/W=0）与读地址（R/W=1），附 HEX/DEC/BIN 三进制视图',
+          '反向还原：粘贴任意 8-bit 发送字节，右移一位还原 7-bit 地址，并根据最低位标注读 / 写方向',
+          '多进制输入：支持 0x 前缀、h 后缀、0b 二进制、0o 八进制与纯十进制，允许下划线分隔与首尾空白',
+          '保留地址校验：UM10204 规定的 0x00–0x03（General Call、CBUS 等）与 0x78–0x7F（10-bit 寻址使能）实时警告',
+          '全本地计算：纯前端移位与范围判断，输入不上传、无网络请求，复制按钮可一键取走 HEX 结果',
+        ],
+        howToUse: [
+          '选择「7-bit → 8-bit」模式，输入设备的 7-bit 地址（如 EEPROM 的 0x50），立即得到写地址 0xA0 与读地址 0xA1',
+          '需要反查时切到「8-bit → 7-bit」，粘贴逻辑分析仪或 HAL 配置中的字节（如 0xA1），工具还原 0x50 并标注为读方向',
+          '看到黄色保留警告时，说明该地址属于协议保留用途，不能分配给普通从设备，请更换地址',
+          '点击结果块上的「复制 HEX」可直接把地址粘进代码或设备树，二进制视图可用于核对引脚采样的位序',
+        ],
+        useCases: [
+          '驱动调试：核对数据手册 7-bit 地址与 STM32 HAL、Linux i2cdetect 等 8-bit 口径之间的差异',
+          '逻辑分析仪解读：把抓取到的地址字节还原成设备地址与读写方向，快速定位 NACK 发生在寻址还是数据阶段',
+          '原理图评审：检查两颗 I2C 从设备地址是否冲突，以及是否误用了 General Call 等保留地址',
+          '教学演示：用三进制并排视图直观展示地址左移、方向位拼接的位操作过程',
+        ],
+        privacyNote:
+          '所有地址均在浏览器本地完成解析与移位计算，不发起任何网络请求，不写入存储以外的位置；剪贴板写入仅在用户点击复制按钮时发生。',
+        faqs: [
+          {
+            question: '为什么同一颗 EEPROM 有时写 0x50，有时写 0xA0？',
+            answer:
+              '0x50 是 7-bit 设备地址，0xA0 是它在写事务中实际出现的字节：0x50 左移一位得到 0xA0，最低位 0 表示写；对应读字节为 0xA1。两种口径都对，只是所处层级不同，本工具可在两者间一键互转。',
+          },
+          {
+            question: '0x00 和 0x78 以上的地址为什么不能用？',
+            answer:
+              '按 UM10204 Table 2，0x00–0x03 保留给通用呼叫（General Call）、CBUS 等特殊用途，0x78–0x7F 用于 10-bit 寻址使能与保留位。普通 7-bit 从设备只能使用 0x04–0x77，工具会对保留区间给出黄色警告。',
+          },
+          {
+            question: '输入 0xFF 为什么报错？',
+            answer:
+              '8-bit 地址字节的最低位是方向位，因此有效取值为 0x00–0xFE；0xFF 右移后虽然等于 0x7F，但它本身不是合法的单字节寻址编码。工具在反向模式对超出 0xFE 的输入直接报错，防止误判。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'The I2C Address Converter resolves the most common addressing confusion in embedded development: datasheets and Linux device trees use 7-bit addresses, while some HAL libraries, logic analyzers and legacy material use 8-bit bytes that embed the read/write direction bit. It applies the addressing rules of NXP UM10204 §2.1.2 in both directions, renders hexadecimal, decimal and binary representations together, and warns about the protocol-reserved windows 0x00–0x03 and 0x78–0x7F so reserved addresses are never assigned to ordinary slaves.',
+        coreFeatures: [
+          'Forward conversion: shifts the 7-bit address left by one to derive the 8-bit write byte (R/W=0) and read byte (R/W=1), each with HEX/DEC/BIN views',
+          'Reverse recovery: pastes any 8-bit wire byte, shifts right to recover the 7-bit address and labels read/write direction from the least significant bit',
+          'Multi-radix input: 0x prefix, h suffix, 0b binary, 0o octal and plain decimal, with underscore separators and surrounding whitespace tolerated',
+          'Reserved-range validation: real-time warnings for UM10204 windows 0x00–0x03 (General Call, CBUS) and 0x78–0x7F (10-bit addressing enable)',
+          'Fully local: pure shift and range checks in the browser; no network calls, and copy buttons only touch the clipboard on explicit click',
+        ],
+        howToUse: [
+          'In "7-bit → 8-bit" mode, enter the device 7-bit address (for example EEPROM 0x50) to instantly obtain write byte 0xA0 and read byte 0xA1',
+          'Switch to "8-bit → 7-bit" and paste a byte from a logic analyzer or HAL configuration (such as 0xA1) to recover 0x50 with a read-direction tag',
+          'A yellow reserved warning means the address serves a protocol-reserved purpose and cannot be assigned to a normal slave; pick another address',
+          'Use "Copy HEX" on a result block to paste the value straight into code or a device tree; the binary view helps verify bit ordering against pin captures',
+        ],
+        useCases: [
+          'Driver debugging: reconcile datasheet 7-bit addresses with the 8-bit convention used by STM32 HAL, Linux i2cdetect and similar tooling',
+          'Logic-analyzer decoding: turn captured address bytes back into device address and direction to localize a NACK at addressing versus data phase',
+          'Schematic review: detect address collisions between two I2C slaves and catch misuse of reserved addresses such as General Call',
+          'Teaching: the side-by-side radix views make the left-shift plus direction-bit composition visible bit by bit',
+        ],
+        privacyNote:
+          'Every address is parsed and shifted locally in the browser. No network requests are made; clipboard writes happen only when you click a copy button.',
+        faqs: [
+          {
+            question: 'Why is the same EEPROM sometimes written as 0x50 and sometimes as 0xA0?',
+            answer:
+              '0x50 is the 7-bit device address; 0xA0 is the byte that appears on the wire for a write transaction: shifting 0x50 left by one yields 0xA0 with the low bit 0 meaning write, while the read byte is 0xA1. Both conventions are correct at different layers, and this tool converts between them in one click.',
+          },
+          {
+            question: 'Why are 0x00 and addresses above 0x78 unusable?',
+            answer:
+              'Per UM10204 Table 2, 0x00–0x03 are reserved for General Call, CBUS and similar special purposes, and 0x78–0x7F enable 10-bit addressing or stay reserved. Ordinary 7-bit slaves may only use 0x04–0x77; the tool raises a yellow warning for the reserved windows.',
+          },
+          {
+            question: 'Why does entering 0xFF produce an error?',
+            answer:
+              'The least significant bit of an 8-bit address byte is the direction bit, so valid encodings span 0x00–0xFE. Although 0xFF shifted right equals 0x7F, 0xFF itself is not a legal single-byte addressing encoding; reverse mode rejects anything above 0xFE to prevent misinterpretation.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**
