@@ -380,9 +380,9 @@
 | 20261118040102 | DNS CAA 记录生成与校验器（RFC 8659/8658，issue/issuewild/iodef 标签与多值语法） | Web Tool | Existing Gap | Claimed | 2026-11-18 | trae-agent | [详情](./idea-details/20261118040102.md) |
 | 20261118040103 | UART 串行帧编解码与波特率时序计算器（起始/数据/校验/停止位，含位时序波形） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118040103.md) |
 | 20261118040104 | Merkle 默克尔树构造与审计路径验证器（含根哈希、Merkle Proof 生成与逐层校验可视化） | Web Tool | Exploration | Pending | 2026-11-18 | - | [详情](./idea-details/20261118040104.md) |
-| 20261118080936 | I2C 地址换算器（7-bit 地址 / 8-bit 读写地址 / 十六进制与十进制互转及保留地址校验） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118080936.md) |
-| 20261118080937 | MTA-STS 策略与 TLS-RPT 记录生成器（RFC 8461 / RFC 8460，含策略文件与 DNS TXT 记录拼装校验） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118080937.md) |
-| 20261118080938 | Erlang B 中继线话务量计算器（阻塞概率、所需中继线数与负载反算，含查表与灵敏度对照） | Web Tool | Exploration | Pending | 2026-11-18 | - | [详情](./idea-details/20261118080938.md) |
-| 20261118140710 | RFC 7807 Problem Details 错误响应生成与解析器（application/problem+json） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118140710.md) |
-| 20261118140711 | JSDoc / TSDoc 文档注释块生成与解析器（函数签名 ↔ 标准注释块双向转换） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118140711.md) |
+| 20261118080936 | I2C 地址换算器（7-bit 地址 / 8-bit 读写地址 / 十六进制与十进制互转及保留地址校验） | Web Tool | Existing Gap | In Progress | 2026-11-18 | trae-agent | [详情](./idea-details/20261118080936.md) |
+| 20261118080937 | MTA-STS 策略与 TLS-RPT 记录生成器（RFC 8461 / RFC 8460，含策略文件与 DNS TXT 记录拼装校验） | Web Tool | Existing Gap | In Progress | 2026-11-18 | trae-agent | [详情](./idea-details/20261118080937.md) |
+| 20261118080938 | Erlang B 中继线话务量计算器（阻塞概率、所需中继线数与负载反算，含查表与灵敏度对照） | Web Tool | Exploration | In Progress | 2026-11-18 | trae-agent | [详情](./idea-details/20261118080938.md) |
+| 20261118140710 | RFC 7807 Problem Details 错误响应生成与解析器（application/problem+json） | Web Tool | Existing Gap | In Progress | 2026-11-18 | trae-agent | [详情](./idea-details/20261118140710.md) |
+| 20261118140711 | JSDoc / TSDoc 文档注释块生成与解析器（函数签名 ↔ 标准注释块双向转换） | Web Tool | Existing Gap | In Progress | 2026-11-18 | trae-agent | [详情](./idea-details/20261118140711.md) |
 
