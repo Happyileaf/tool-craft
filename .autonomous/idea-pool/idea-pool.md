@@ -332,7 +332,6 @@
 | 20261114081204 | GEDCOM 5.5.1 族谱文件解析与结构查看器 | Web Tool | External Reference | Pending | 2026-11-14 | | [详情](./idea-details/20261114081204.md) |
 | 20261114081205 | Base64URL 与 Base64 标准格式互转器（填充与字符替换规范化） | Web Tool | Existing Gap | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114081205.md) |
 | 20261114200453 | TLS ClientHello 解析器（SNI / 版本 / 密码套件与扩展明细） | Web Tool | Existing Gap | Pending | 2026-11-14 | | [详情](./idea-details/20261114200453.md) |
-| 20261114200454 | HTTP/2 帧头解析与帧序列查看器（不含 HPACK 解压） | Web Tool | Existing Gap | In Progress | 2026-11-14 | trae-agent | [详情](./idea-details/20261114200454.md) |
 | 20261114200457 | STL 三维模型解析与体积 / 表面积统计器 | Web Tool | Exploration | Pending | 2026-11-14 | | [详情](./idea-details/20261114200457.md) |
 | 20261114200458 | 大整数任意精度四则运算计算器（BigInt 加减乘除 / 幂 / 取模 / 阶乘） | Web Tool | Exploration | Claimed | 2026-11-14 | trae-agent | [详情](./idea-details/20261114200458.md) |
 | 20261115020303 | 睡眠周期与就寝 / 起床时间计算器（90 分钟周期 + 入睡缓冲） | Web Tool | Exploration | Claimed | 2026-11-15 | trae-agent | [详情](./idea-details/20261115020303.md) |
@@ -374,15 +373,11 @@
 | 20261117200505 | 以太坊 ABI 函数选择器与事件 Topic0 计算器（keccak-256 签名摘要） | Web Tool | Existing Gap | Pending | 2026-11-17 | - | [详情](./idea-details/20261117200505.md) |
 | 20261117200506 | 离散傅里叶变换（DFT/FFT）计算器（幅度谱 / 相位谱与逆变换） | Web Tool | Exploration | Pending | 2026-11-17 | - | [详情](./idea-details/20261117200506.md) |
 | 20261117200507 | 理想气体状态方程（PV=nRT）计算器（四量求一 + 单位换算） | Web Tool | Exploration | Claimed | 2026-11-17 | trae-agent | [详情](./idea-details/20261117200507.md) |
-| 20261117200508 | 跨平台深链关联文件生成器（apple-app-site-association / assetlinks.json） | Web Tool | Existing Gap | In Progress | 2026-11-17 | trae-agent | [详情](./idea-details/20261117200508.md) |
 | 20261118040100 | 一致性哈希（Consistent Hashing）环模拟器（含虚拟节点与增删节点迁移量可视化） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118040100.md) |
 | 20261118040101 | 限流算法交互式模拟器（令牌桶 / 漏桶 / 固定窗口 / 滑动窗口 / 滑动日志） | Web Tool | Exploration | Pending | 2026-11-18 | - | [详情](./idea-details/20261118040101.md) |
 | 20261118040102 | DNS CAA 记录生成与校验器（RFC 8659/8658，issue/issuewild/iodef 标签与多值语法） | Web Tool | Existing Gap | Claimed | 2026-11-18 | trae-agent | [详情](./idea-details/20261118040102.md) |
 | 20261118040103 | UART 串行帧编解码与波特率时序计算器（起始/数据/校验/停止位，含位时序波形） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118040103.md) |
 | 20261118040104 | Merkle 默克尔树构造与审计路径验证器（含根哈希、Merkle Proof 生成与逐层校验可视化） | Web Tool | Exploration | Pending | 2026-11-18 | - | [详情](./idea-details/20261118040104.md) |
-| 20261118080936 | I2C 地址换算器（7-bit 地址 / 8-bit 读写地址 / 十六进制与十进制互转及保留地址校验） | Web Tool | Existing Gap | In Progress | 2026-11-18 | trae-agent | [详情](./idea-details/20261118080936.md) |
-| 20261118080937 | MTA-STS 策略与 TLS-RPT 记录生成器（RFC 8461 / RFC 8460，含策略文件与 DNS TXT 记录拼装校验） | Web Tool | Existing Gap | In Progress | 2026-11-18 | trae-agent | [详情](./idea-details/20261118080937.md) |
-| 20261118080938 | Erlang B 中继线话务量计算器（阻塞概率、所需中继线数与负载反算，含查表与灵敏度对照） | Web Tool | Exploration | In Progress | 2026-11-18 | trae-agent | [详情](./idea-details/20261118080938.md) |
 | 20261118140710 | RFC 7807 Problem Details 错误响应生成与解析器（application/problem+json） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118140710.md) |
 | 20261118140711 | JSDoc / TSDoc 文档注释块生成与解析器（函数签名 ↔ 标准注释块双向转换） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118140711.md) |
 

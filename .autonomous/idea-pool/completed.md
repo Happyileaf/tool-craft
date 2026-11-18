@@ -4,6 +4,11 @@
 
 | ID | Idea | Type | Source | Result（工具 slug / PR） | 完成时间 | 详情 |
 |---|---|---|---|---|---|---|
+| 20261118080938 | Erlang B 中继线话务量计算器（阻塞概率、所需中继线数与负载反算，含查表与灵敏度对照） | Web Tool | Exploration | `erlang-b-calculator` / [PR #277](https://github.com/Happyileaf/tool-craft/pull/277) | 2026-11-19 | [详情](./idea-details/20261118080938.md) |
+| 20261118080937 | MTA-STS 策略与 TLS-RPT 记录生成器（RFC 8461 / RFC 8460，含策略文件与 DNS TXT 记录拼装校验） | Web Tool | Existing Gap | `mta-sts-tls-rpt-generator` / [PR #277](https://github.com/Happyileaf/tool-craft/pull/277) | 2026-11-19 | [详情](./idea-details/20261118080937.md) |
+| 20261118080936 | I2C 地址换算器（7-bit 地址 / 8-bit 读写地址 / 十六进制与十进制互转及保留地址校验） | Web Tool | Existing Gap | `i2c-address-converter` / [PR #277](https://github.com/Happyileaf/tool-craft/pull/277) | 2026-11-19 | [详情](./idea-details/20261118080936.md) |
+| 20261117200508 | 跨平台深链关联文件生成器（apple-app-site-association / assetlinks.json） | Web Tool | Existing Gap | `universal-links-generator` / [PR #277](https://github.com/Happyileaf/tool-craft/pull/277) | 2026-11-19 | [详情](./idea-details/20261117200508.md) |
+| 20261114200454 | HTTP/2 帧头解析与帧序列查看器（不含 HPACK 解压） | Web Tool | Existing Gap | `http2-frame-parser` / [PR #277](https://github.com/Happyileaf/tool-craft/pull/277) | 2026-11-19 | [详情](./idea-details/20261114200454.md) |
 | 20261116141427 | 电阻 / 阻抗网络 Δ-Y（三角形-星形）双向等效变换计算器 | Web Tool | Existing Gap | `delta-wye-transform` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261116141427.md) |
 | 20261116141426 | ADC / DAC 量化参数计算器（分辨率 / LSB / 量化误差 / SNR / 电压码值互算） | Web Tool | Exploration | `adc-dac-quantizer` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261116141426.md) |
 | 20261115140203 | 体脂率估算计算器（US Navy 围度法 / BMI 推导法 + 腰臀比风险区间） | Web Tool | Existing Gap | `body-fat-calculator` / [PR #255](https://github.com/Happyileaf/tool-craft/pull/255) | 2026-11-17 | [详情](./idea-details/20261115140203.md) |
