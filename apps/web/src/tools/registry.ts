@@ -41741,6 +41741,110 @@ sqrt(area) + 2 * r`,
       },
     },
   },
+  {
+    slug: 'mta-sts-tlsrpt-generator',
+    name: 'MTA-STS 策略与 TLS-RPT 记录生成器（RFC 8461 / RFC 8460）',
+    nameEn: 'MTA-STS Policy & TLS-RPT Record Generator',
+    description:
+      '在浏览器本地生成 SMTP 传输加固所需的三份产物：部署于 https://mta-sts.<域>/.well-known/mta-sts.txt 的 MTA-STS 策略文件（version/mode/mx/max_age 字段顺序与换行规范化）、_mta-sts.<域> 启用 TXT 记录与 _smtp._tls.<域> 的 TLS-RPT 报告 TXT 记录（多 rua 端点按 RFC 8460 逗号拼接）；另提供反向校验模式，检查字段缺失、非法 mode、mx 通配符层级、max_age 上限与 rua URI scheme。',
+    descriptionEn:
+      'Generate all three SMTP transport-hardening artifacts locally: the MTA-STS policy file served from /.well-known/mta-sts.txt (RFC 8461 field order and line endings), the _mta-sts TXT enablement record, and the _smtp._tls TLS-RPT TXT record with RFC 8460 comma-joined rua endpoints. A reverse validation mode checks missing fields, invalid modes, mx wildcard depth, max_age limits and rua URI schemes.',
+    category: ToolCategoryEnum.DEV_CODE,
+    path: '/tools/mta-sts-tlsrpt-generator',
+    iconName: 'ShieldCheck',
+    tags: ['MTA-STS', 'TLS-RPT', '邮件安全', 'DNS', 'RFC 8461'],
+    tagsEn: ['MTA-STS', 'TLS-RPT', 'Email Security', 'DNS', 'RFC 8461'],
+    isPopular: false,
+    isNew: true,
+    processing: ToolProcessingEnum.MAINTHREAD,
+    defaultSampleInput: 'example.com',
+    doc: {
+      zh: {
+        whatIsIt:
+          'MTA-STS 策略与 TLS-RPT 记录生成器是一款纯浏览器本地工具，帮助邮件域管理员一次配齐 SMTP 传输层加固的两类标准：MTA-STS（RFC 8461）通过 HTTPS 策略文件声明合法 MX 与强制 TLS 模式，TLS-RPT（RFC 8460）通过 DNS TXT 记录声明 TLS 失败报告的投递端点。工具按 RFC 规定的字段、顺序、分隔符拼装三份产物，并支持对已部署策略与记录做反向校验，全部计算离线完成。',
+        coreFeatures: [
+          '策略文件生成：version: STSv1、mode、逐行 mx、max_age 按 RFC 8461 顺序输出，CRLF 换行',
+          'DNS 记录生成：_mta-sts 启用记录（v=STSv1; id=…）与 _smtp._tls 报告记录（v=TLSRPTv1; rua=…）',
+          '多端点支持：TLS-RPT rua 接受多个 mailto: / https: 端点，自动按逗号拼接',
+          '规则校验：非法域名、mode 枚举、mx 通配符层级（*. 后至少两级标签）、max_age 一年上限、id 字符集、rua scheme 逐项拦截',
+          '反向校验模式：粘贴已有策略文件或 TXT 值，按行号定位字段缺失、顺序告警与格式错误',
+        ],
+        howToUse: [
+          '填写邮件域、策略模式（建议先 testing 后 enforce）、MX 主机名列表（每行一个）、max_age 与策略 id',
+          '在 rua 框每行填写一个 mailto: 或 https: 报告端点，工具自动拼接 TLS-RPT 记录',
+          '复制策略文件部署到 https://mta-sts.<域>/.well-known/mta-sts.txt，再到 DNS 控制台添加两条 TXT 记录',
+          '切换到「反向校验」页签可核对线上已部署的策略文件与 TXT 记录是否合规',
+        ],
+        useCases: [
+          '邮件域上线 MTA-STS 强制 TLS，防止降级攻击与中间人篡改 MX 协商',
+          '配置 TLS-RPT 收集对端 MTA 的 TLS 握手失败报告，评估 enforce 切换风险',
+          '审计存量 mta-sts.txt 与 DNS TXT 记录的字段完整性与通配符配置',
+          '与 SPF / DKIM / DMARC / DANE 记录一起完成邮件安全基线加固',
+        ],
+        privacyNote:
+          '域名、MX 与报告端点仅在浏览器本地参与字符串拼装，不发起任何网络请求或 DNS 查询。',
+        faqs: [
+          {
+            question: 'MTA-STS 的 testing 和 enforce 模式有什么区别？',
+            answer:
+              'testing 模式下对端 MTA 发现 TLS 问题不会中断投递，只通过 TLS-RPT 上报失败，适合观察期；确认报告链路稳定后切换 enforce，此时无法建立可信 TLS 连接的邮件将被拒绝。两种模式都必须提供合法 mx 列表，none 模式才允许省略 mx。',
+          },
+          {
+            question: 'mx 字段的通配符怎么写才合法？',
+            answer:
+              'RFC 8461 规定通配符只能出现在首标签并写作 *.，且必须至少匹配一个子域层级：*.mail.example.com 合法，而 *.com 或 mail.*.example.com 均非法。工具会对每条 mx 主机名做层级与标签校验并给出具体错误。',
+          },
+          {
+            question: 'TLS-RPT 的 rua 支持哪些端点？',
+            answer:
+              '仅支持 mailto:（邮箱地址）与 https:（POST 上报 URL）两种 scheme，多个端点用逗号拼接且不允许空格。工具逐端点校验邮箱格式或 HTTPS URL 合法性，ftp、http 等其他 scheme 会被直接拒绝。',
+          },
+        ],
+      },
+      en: {
+        whatIsIt:
+          'A fully local browser tool that provisions the two standards behind hardened SMTP transport in one pass: MTA-STS (RFC 8461), which publishes the legitimate MX set and mandatory-TLS mode through an HTTPS policy file, and TLS-RPT (RFC 8460), which advertises reporting endpoints via a DNS TXT record. It assembles the three deployment artifacts with RFC-exact fields, ordering and separators, and reverse-validates existing policies and records entirely offline.',
+        coreFeatures: [
+          'Policy file generation: version STSv1, mode, per-line mx and max_age in RFC 8461 order with CRLF endings',
+          'DNS records: the _mta-sts enablement TXT (v=STSv1; id=…) and _smtp._tls reporting TXT (v=TLSRPTv1; rua=…)',
+          'Multi-endpoint rua: several mailto: / https: endpoints joined with commas per RFC 8460',
+          'Rule validation: domain syntax, mode enum, mx wildcard depth (at least two labels after *.), one-year max_age cap, id charset and rua scheme checks',
+          'Reverse validation: paste an existing policy or TXT value to locate missing fields, ordering warnings and formatting errors by line',
+        ],
+        howToUse: [
+          'Enter the mail domain, policy mode (testing first, then enforce), one MX host per line, max_age and a policy id',
+          'List one mailto: or https: reporting endpoint per line in the rua box; the TLS-RPT record is assembled automatically',
+          'Publish the policy at https://mta-sts.<domain>/.well-known/mta-sts.txt and add the two TXT records in DNS',
+          'Use the Reverse Validation tab to audit already-deployed policy files and TXT records',
+        ],
+        useCases: [
+          'Rolling out MTA-STS enforced TLS to block downgrade and MITM attacks on MX negotiation',
+          'Collecting TLS failure reports via TLS-RPT before flipping from testing to enforce',
+          'Auditing field completeness and wildcard usage in existing mta-sts.txt and TXT records',
+          'Completing the email-security baseline alongside SPF, DKIM, DMARC and DANE records',
+        ],
+        privacyNote:
+          'Domains, MX hosts and reporting endpoints are assembled into strings in browser memory only; no network requests or DNS lookups are performed.',
+        faqs: [
+          {
+            question: 'What is the difference between testing and enforce mode?',
+            answer:
+              'In testing mode, sending MTAs report TLS failures through TLS-RPT without blocking mail, which is ideal for observation. Once the reporting pipeline is proven stable, switch to enforce so that messages requiring an untrusted or missing TLS connection are rejected. Both modes require a valid mx list; only mode none may omit mx entries.',
+          },
+          {
+            question: 'How must mx wildcard entries be written?',
+            answer:
+              'Per RFC 8461 the wildcard may only appear as the leading *. label and must match at least one subdomain level: *.mail.example.com is valid, while *.com and mail.*.example.com are rejected. The tool validates label structure and depth for every mx entry and reports the exact violation.',
+          },
+          {
+            question: 'Which endpoints are allowed in TLS-RPT rua?',
+            answer:
+              'Only mailto: (email address) and https: (POST reporting URL) schemes are supported; multiple endpoints are comma-joined without spaces. Each endpoint is checked as an email address or HTTPS URL, and schemes such as ftp or plain http are rejected outright.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 /**

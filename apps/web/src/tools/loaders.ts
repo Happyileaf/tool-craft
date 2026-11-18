@@ -317,8 +317,8 @@ export const toolLoaders: Record<
   'dicom-uid-tool': () => import('./dicom-uid-tool'),
   'ical-todo-journal-generator': () => import('./ical-todo-journal-generator'),
   'i2c-address-calculator': () => import('./i2c-address-calculator'),
-  // 其余 4 个工具随各自实现 commit 恢复注册
-  // 'mta-sts-tlsrpt-generator': () => import('./mta-sts-tlsrpt-generator'),
+  'mta-sts-tlsrpt-generator': () => import('./mta-sts-tlsrpt-generator'),
+  // 其余 3 个工具随各自实现 commit 恢复注册
   // 'erlang-b-calculator': () => import('./erlang-b-calculator'),
   // 'evm-abi-selector-calculator': () => import('./evm-abi-selector-calculator'),
   // 'dft-fft-calculator': () => import('./dft-fft-calculator'),

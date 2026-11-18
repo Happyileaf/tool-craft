@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1080px;
+}
+
+.card {
+  width: 100%;
+}
+
+.mono {
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+}
+
+.policyBlock {
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: rgb(0 0 0 / 4%);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.hint {
+  color: rgb(0 0 0 / 45%);
+  font-size: 12px;
+  line-height: 1.7;
+}
