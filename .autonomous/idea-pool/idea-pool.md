@@ -383,4 +383,6 @@
 | 20261118080936 | I2C 地址换算器（7-bit 地址 / 8-bit 读写地址 / 十六进制与十进制互转及保留地址校验） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118080936.md) |
 | 20261118080937 | MTA-STS 策略与 TLS-RPT 记录生成器（RFC 8461 / RFC 8460，含策略文件与 DNS TXT 记录拼装校验） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118080937.md) |
 | 20261118080938 | Erlang B 中继线话务量计算器（阻塞概率、所需中继线数与负载反算，含查表与灵敏度对照） | Web Tool | Exploration | Pending | 2026-11-18 | - | [详情](./idea-details/20261118080938.md) |
+| 20261118120348 | Crontab 表达式下次执行时间推算器（未来 N 次触发时刻列表与表达式校验） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118120348.md) |
+| 20261118120349 | Dockerfile 生成器（基础镜像 / 指令向导拼装与最佳实践校验） | Web Tool | Existing Gap | Pending | 2026-11-18 | - | [详情](./idea-details/20261118120349.md) |
 
